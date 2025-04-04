@@ -1,18 +1,29 @@
 {
-  "name": "mywebsite",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "name": "site-npm-package",
+  "version": "1.0.0",
+  "description": "MyWebsiteNpm",
+  "main": "index.js",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "vite build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lomuss33/myWebsite.git"
+  },
+  "keywords": [
+    "website"
+  ],
+  "author": "Lovro Music",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lomuss33/myWebsite/issues"
+  },
+  "homepage": "https://github.com/Lomuss33/myWebsite#readme",
+  "dependencies": {
+    "three": "^0.175.0"
   },
   "devDependencies": {
-    "@types/three": "^0.163.0",
-    "vite": "^5.2.0"
-  },
-  "dependencies": {
-    "three": "^0.163.0"
+    "vite": "^6.2.5"
   }
 }

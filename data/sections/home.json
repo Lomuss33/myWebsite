@@ -2,25 +2,25 @@
   "title": {
     "locales": {
       "en": {
-        "title_short": "o",
+        "title_short": "Hello!",
         "title_short_nav": "Home",
         "title_long_prefix": "Hello friend,",
         "title_long": "Welcome to {{my corner}} of the internet!"
       },
       "de": {
-        "title_short": "o",
+        "title_short": "Hallo!",
         "title_short_nav": "Startseite",
         "title_long_prefix": "Hallo Freund,",
         "title_long": "Willkommen in {{meiner Ecke}} des Internets!"
       },
       "hr": {
-        "title_short": "o",
+        "title_short": "Bok!",
         "title_short_nav": "Početna",
         "title_long_prefix": "Bok prijatelju,",
         "title_long": "Dobrodošao u {{moj kutak}} interneta!"
       },
       "tr": {
-        "title_short": "o",
+        "title_short": "Merhaba!",
         "title_short_nav": "Anasayfa",
         "title_long_prefix": "Merhaba arkadaşım,",
         "title_long": "İnternetteki {{köşeme}} hoş geldin!"
@@ -40,15 +40,14 @@
       "items": [
         {
           "id": 1,
-          "label": "Frankfurt am Main - DE",
-          "link": { "href": "", "tooltipString": "" },
-          "faIcon": "fa-regular fa-address-book"
-        },
-        {
-          "id": 2,
           "label": "ciao@lovro-music.de",
           "link": { "href": "mailto:ciao@lovro-music.de", "tooltipString": "email_me" },
           "faIcon": "fa-regular fa-envelope"
+        },        {
+          "id": 2,
+          "label": "+49 176 62236934",
+          "link": { "href": "", "tooltipString": "" },
+          "faIcon": "fa-regular fa-address-book"
         },
         {
           "id": 3,
@@ -446,19 +445,19 @@
           "copyToClipboardButton": false,
           "locales": {
             "en": {
-              "title": "Driving license (B, 7 years)",
+              "title": "Driving license (Car)",
               "text": "Category B driving license with 7 years of experience and readiness for regular business travel."
             },
             "de": {
-              "title": "Führerschein (Klasse B, 7 Jahre)",
+              "title": "Führerschein (Klasse B)",
               "text": "Führerschein der Klasse B mit 7 Jahren Fahrpraxis und Bereitschaft für regelmäßige Dienstreisen."
             },
             "hr": {
-              "title": "Vozačka dozvola (B, 7 godina)",
+              "title": "Vozačka dozvola (Kategorije B)",
               "text": "Vozačka dozvola B kategorije sa 7 godina iskustva i spremnošću za poslovna putovanja."
             },
             "tr": {
-              "title": "Sürücü belgesi (B, 7 yıl)",
+              "title": "Sürücü belgesi (Kategori B)",
               "text": "7 yıllık deneyime sahip B sınıfı sürücü belgesi ve düzenli iş seyahatlerine hazır."
             }
           }

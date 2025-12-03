@@ -19,7 +19,7 @@
             }
         },
         {
-            "id": "experience",
+            "id": "history",
             "faIcon": "fa-regular fa-clock",
             "locales": {
                 "en": {
@@ -37,40 +37,40 @@
             }
         },        
         {
-            "id": "education",
-            "faIcon": "fa-regular fa-object-ungroup",
-            "locales": {
-                "en": {
-                    "title": "Education"
-                },
-                "de": {
-                    "title": "Bildung"
-                },
-                "hr": {
-                    "title": "Obrazovanje"
-                },
-                "tr": {
-                    "title": "Eğitim"
-                }
-            }
-        },
-        {
-            "id": "hobby",
+            "id": "hobbys",
             "faIcon": "fa-solid fa-bicycle",
             "locales": {
                 "en": {
-                    "title": "Hobby"
+                    "title": "Hobbys"
                 },
                 "de": {
-                    "title": "Hobby"
+                    "title": "Hobbys"
                 },
                 "hr": {
-                    "title": "Hobi"
+                    "title": "Hobiji"
                 },
                 "tr": {
-                    "title": "Hobi"
+                    "title": "Hobiler"
                 }
             }
+        }, 
+        {
+        "id": "contact",
+        "faIcon": "fa-solid fa-paper-plane",
+        "locales": {
+            "en": {
+            "title": "Contact"
+            },
+            "de": {
+            "title": "Kontakt"
+            },
+            "hr": {
+            "title": "Kontakt"
+            },
+            "tr": {
+            "title": "İletişim"
+            }
+        }
         }
     ]
 }

@@ -438,6 +438,247 @@
                     }
                 }
             ]
+        },
+        {
+            "id": 3,
+            "component": "ArticleSkills",
+            "locales": {
+                "en": {
+                "title": "{{Languages}}"
+                },
+                "de": {
+                "title": "{{Sprachen}}"
+                },
+                "hr": {
+                "title": "{{Jezici}}"
+                },
+                "tr": {
+                "title": "{{Diller}}"
+                },
+                "mk": {
+                "title": "{{Јазици}}"
+                }
+            },
+            "settings": {
+                "max_items_per_row": 3,
+                "max_rows_collapse_threshold": 6,
+                "order_items_by": "percentage",
+                "order_items_sort": "desc",
+                "round_icons": false
+            },
+            "items": [
+                {
+                    "id": 1,
+                    "img": "/images/flags/hr.png",
+                    "faIcon": "",
+                    "faIconColors": { "bg": "", "fill": "#1E88E5" },
+                    "date": { "year": 2001, "month": 2 },
+                    "percentage": 100,
+                    "locales": {
+                        "en": {
+                        "title": "Croatian",
+                        "text": "Native level; I can communicate effortlessly in everyday life, technical topics, and professional settings.",
+                        "level": "Native / 100%"
+                        },
+                        "de": {
+                        "title": "Kroatisch",
+                        "text": "Muttersprache; ich kann mühelos im Alltag, zu technischen Themen und im Berufsleben kommunizieren.",
+                        "level": "Muttersprache / 100%"
+                        },
+                        "hr": {
+                        "title": "Hrvatski",
+                        "text": "Maternji jezik; mogu se potpuno prirodno izražavati u svakodnevnim, stručnim i poslovnim situacijama.",
+                        "level": "Izvorni / 100%"
+                        },
+                        "tr": {
+                        "title": "Hırvatça",
+                        "text": "Anadil seviyesinde, günlük yaşamda ve teknik konularda çok akıcı iletişim kurabiliyorum.",
+                        "level": "Anadil / 100%"
+                        },
+                        "mk": {
+                        "title": "Хрватски",
+                        "text": "Мој мајчин јазик; течно зборувам во секојдневни, технички и професионални ситуации.",
+                        "level": "Мајчин / 100%"
+                        }
+                    }
+                    },
+                    {
+                    "id": 2,
+                    "img": "/images/flags/en-uk.png",
+                    "faIcon": "",
+                    "faIconColors": { "bg": "", "fill": "#43A047" },
+                    "date": { "year": 2008, "month": 9 },
+                    "percentage": 98,
+                    "locales": {
+                        "en": {
+                        "title": "English",
+                        "text": "Very strong working proficiency; I use English daily for technical documentation, learning, and professional communication.",
+                        "level": "C2 / 98%"
+                        },
+                        "de": {
+                        "title": "Englisch",
+                        "text": "Sehr gute Arbeitssprache; ich nutze Englisch täglich für technische Dokumentation, Lernen und professionelle Kommunikation.",
+                        "level": "C2 / 98%"
+                        },
+                        "hr": {
+                        "title": "Engleski",
+                        "text": "Vrlo snažno radno znanje; svakodnevno koristim engleski za tehničku dokumentaciju, učenje i profesionalnu komunikaciju.",
+                        "level": "C2 / 98%"
+                        },
+                        "tr": {
+                        "title": "İngilizce",
+                        "text": "İyi düzeyde, özellikle teknik dökümanlar ve günlük iletişim için rahatça kullanabiliyorum.",
+                        "level": "İleri / 98%"
+                        },
+                        "mk": {
+                        "title": "Англиски",
+                        "text": "Многу добро ниво за работа; го користам за документација, учење и професионална комуникација.",
+                        "level": "C2 / 98%"
+                        }
+                    }
+                    },
+                    {
+                    "id": 3,
+                    "img": "/images/flags/de.png",
+                    "faIcon": "",
+                    "faIconColors": { "bg": "", "fill": "#FBC02D" },
+                    "date": { "year": 2016, "month": 7 },
+                    "percentage": 95,
+                    "locales": {
+                        "en": {
+                        "title": "German",
+                        "text": "Comfortable in everyday and professional contexts; I can discuss technical topics and integrate well in German-speaking teams.",
+                        "level": "C1-C2 / 95%"
+                        },
+                        "de": {
+                        "title": "Deutsch",
+                        "text": "Sicher im Alltag und Beruf; ich kann technische Themen besprechen und mich gut in deutschsprachige Teams integrieren.",
+                        "level": "C1-C2 / 95%"
+                        },
+                        "hr": {
+                        "title": "Njemački",
+                        "text": "Siguran u svakodnevnim i poslovnim situacijama; mogu raspravljati o tehničkim temama i dobro funkcionirati u njemačkim timovima.",
+                        "level": "C1-C2 / 95%"
+                        },
+                        "tr": {
+                        "title": "Almanca",
+                        "text": "Günlük hayat ve iş ortamında kendimi rahat ifade edebiliyorum.",
+                        "level": "Orta–ileri / 95%"
+                        },
+                        "mk": {
+                        "title": "Германски",
+                        "text": "Добро ниво за секојдневна комуникација и работа, особено во технички средини.",
+                        "level": "C1-C2 / 95%"
+                        }
+                    }
+                    },
+                    {
+                    "id": 4,
+                    "img": "/images/flags/ma.png",
+                    "faIcon": "",
+                    "faIconColors": { "bg": "", "fill": "#8E24AA" },
+                    "date": { "year": 2024, "month": 1 },
+                    "percentage": 40,
+                    "locales": {
+                        "en": {
+                        "title": "Macedonian",
+                        "text": "Basic understanding and communication, especially with speakers from the region; still improving over time.",
+                        "level": "A2 / 40%"
+                        },
+                        "de": {
+                        "title": "Mazedonisch",
+                        "text": "Grundkenntnisse in Verständnis und einfacher Kommunikation, besonders mit Sprechern aus der Region.",
+                        "level": "A2 / 40%"
+                        },
+                        "hr": {
+                        "title": "Makedonski",
+                        "text": "Osnovno razumijevanje i jednostavna komunikacija, posebno s govornicima iz regije; znanje polako raste.",
+                        "level": "A2 / 40%"
+                        },
+                        "tr": {
+                        "title": "Makedonca",
+                        "text": "Temel seviyede anlayabiliyorum, bölgede konuşulan dile biraz aşinayım.",
+                        "level": "Temel / 40%"
+                        },
+                        "mk": {
+                        "title": "Македонски",
+                        "text": "Основно ниво на комуникација; разбирам едноставни реченици и изрази и постепено напредувам.",
+                        "level": "A2 / 40%"
+                        }
+                    }
+                    },
+                    {
+                    "id": 5,
+                    "img": "/images/flags/tr.png",
+                    "faIcon": "",
+                    "faIconColors": { "bg": "", "fill": "#EF6C00" },
+                    "date": { "year": 2025, "month": 1 },
+                    "percentage": 15,
+                    "locales": {
+                        "en": {
+                        "title": "Turkish",
+                        "text": "Very basic level; I understand a few common phrases and am slowly building up more vocabulary.",
+                        "level": "Beginner / 15%"
+                        },
+                        "de": {
+                        "title": "Türkisch",
+                        "text": "Sehr einfaches Niveau; ich verstehe einige häufige Ausdrücke und baue langsam Wortschatz auf.",
+                        "level": "Anfänger / 15%"
+                        },
+                        "hr": {
+                        "title": "Turski",
+                        "text": "Vrlo osnovna razina; razumijem nekoliko najčešćih fraza i polako učim nove riječi.",
+                        "level": "Početnik / 15%"
+                        },
+                        "tr": {
+                        "title": "Türkçe",
+                        "text": "Şimdilik sadece birkaç temel kelime ve ifade biliyorum, ama zamanla geliştirmek istiyorum.",
+                        "level": "Başlangıç / 15%"
+                        },
+                        "mk": {
+                        "title": "Турски",
+                        "text": "Многу основно ниво; знам неколку изрази и полека учам нови зборови.",
+                        "level": "A1 / 15%"
+                        }
+                    }
+                    
+                },
+                {
+                    "id": 6,
+                    "img": "/images/flags/zh.png",
+                    "faIcon": "",
+                    "faIconColors": { "bg": "", "fill": "#009688" },
+                    "date": { "year": 2026, "month": 1 },
+                    "percentage": 1,
+                    "locales": {
+                        "en": {
+                        "title": "Chinese (Mandarin)",
+                        "text": "Just starting out; I know a few basic words and phrases and am curious to explore the language more over time.",
+                        "level": "Absolute beginner / 1%"
+                        },
+                        "de": {
+                        "title": "Chinesisch (Mandarin)",
+                        "text": "Ganz am Anfang; ich kenne nur ein paar grundlegende Wörter und Ausdrücke und möchte die Sprache nach und nach besser kennenlernen.",
+                        "level": "Anfänger / 1%"
+                        },
+                        "hr": {
+                        "title": "Kineski (mandarinski)",
+                        "text": "Tek sam na početku; znam par osnovnih riječi i fraza i rado bih s vremenom više upoznao jezik.",
+                        "level": "Potpuni početnik / 1%"
+                        },
+                        "tr": {
+                        "title": "Çince (Mandarin)",
+                        "text": "Henüz en baştayım; sadece birkaç temel kelime biliyorum ve dili yavaş yavaş keşfetmek istiyorum.",
+                        "level": "Başlangıç / 1%"
+                        },
+                        "mk": {
+                        "title": "Кинески (Мандарин)",
+                        "text": "Само почетно ниво; знам неколку основни зборови и изрази и сакам со време подобро да го запознаам јазикот.",
+                        "level": "Почетник / 1%"
+                        }
+                    }
+                }
+            ]
         }
 
     ]

@@ -82,7 +82,7 @@
       "items": [
         {
           "id": 1,
-          "img": "public/images/contant/engineer.png",
+          "img": "public/images/contant/engineer.svg",
           "faIcon": "",
           "faIconColors": { "bg": "", "fill": "", "fillLight": "" },
           "locales": {

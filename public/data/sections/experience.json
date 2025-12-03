@@ -1,0 +1,438 @@
+{
+    "title": {
+        "locales": {
+            "en": {
+                "title_short": "Xp",
+                "title_short_nav": "Experience",
+                "title_long_prefix": "A never-ending story of",
+                "title_long": "{{Building}} and {{Learning}}"
+            },
+            "de": {
+                "title_short": "Erf.",
+                "title_short_nav": "Erfahrung",
+                "title_long_prefix": "Eine niemals endende Geschichte von",
+                "title_long": "{{Bauen}} und {{Lernen}}"
+            },
+            "hr": {
+                "title_short": "Isk.",
+                "title_short_nav": "Iskustvo",
+                "title_long_prefix": "Nikad završna priča o",
+                "title_long": "{{Gradnji}} i {{učenju}}"
+            },
+            "tr": {
+                "title_short": "Den.",
+                "title_short_nav": "Deneyim",
+                "title_long_prefix": "Sonsuz bir hikaye",
+                "title_long": "İnşa {{etmek}} ve {{öğrenmek}}"
+            }
+        }
+    },
+    "articles": [
+        {
+            "id": 1,
+            "component": "ArticleTimeline",
+            "locales": {
+                "en": {
+                    "title": "My {{timeline}}"
+                },
+                "de": {
+                    "title": "Moja {{vremenska linija}}"
+                },
+                "hr": {
+                    "title": "Moja {{vremenska linija}}"
+                },
+                "tr": {
+                    "title": "Benim {{zaman çizelgem}}"
+                }
+            },
+            "settings": {
+                "order_items_by": "dateStart",
+                "order_items_sort": "desc"
+            },
+            "items": [
+                {
+                    "id": 1,
+                    "img": "public/images/contant/inlingua.jpg",
+                    "faIcon": "",
+                    "faIconColors": {"bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF"},
+                    "dateStart": {"year": 2024, "month": 11},
+                    "dateEnd": {"year": 2025, "month": 7},
+                    "locales": {
+                        "en": {
+                            "title": "Office-365 Project Developer",
+                            "province": "Germany",
+                            "country": "Remote",
+                            "institution": "inlingua",
+                            "text": "Internship focused on Project Management, Project Planning, and more.",
+                            "list": [
+                                "Project Management",
+                                "Project Planning",
+                                "+5 skills"
+                            ],
+                            "tags": [
+                                "Internship",
+                                "Remote",
+                                "Project Management"
+                            ]
+                        },
+                        "de": {
+                            "title": "Office-365 Projektentwickler",
+                            "province": "Deutschland",
+                            "country": "Remote",
+                            "institution": "inlingua",
+                            "text": "Praktikum, usmjereno na upravljanje projektima, planiranje projekata i još više.",
+                            "list": [
+                                "Projektmanagement",
+                                "Projektplanung",
+                                "+5 Fähigkeiten"
+                            ],
+                            "tags": [
+                                "Praktikant",
+                                "Remote",
+                                "Projektmanagement"
+                            ]
+                        },
+                        "hr": {
+                            "title": "Office-365 Projektni Razvijač",
+                            "province": "Njemačka",
+                            "country": "Remote",
+                            "institution": "inlingua",
+                            "text": "Praktikantska pozicija usmjerena na upravljanje projektima, planiranje i još više.",
+                            "list": [
+                                "Upravljanje projektima",
+                                "Planiranje projekata",
+                                "+5 vještina"
+                            ],
+                            "tags": [
+                                "Praktikant",
+                                "Remote",
+                                "Upravljanje projektima"
+                            ]
+                        },
+                        "tr": {
+                            "title": "Office-365 Proje Geliştirici",
+                            "province": "Almanya",
+                            "country": "Uzaktan",
+                            "institution": "inlingua",
+                            "text": "Proje Yönetimi, Proje Planlaması ve daha fazlası üzerine odaklanan staj.",
+                            "list": [
+                                "Proje Yönetimi",
+                                "Proje Planlama",
+                                "+5 beceri"
+                            ],
+                            "tags": [
+                                "Staj",
+                                "Uzaktan",
+                                "Proje Yönetimi"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "id": 2,
+                    "img": "public/images/contant/tci_gmbh_logo.jpeg",
+                    "faIcon": "",
+                    "faIconColors": {"bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF"},
+                    "dateStart": {"year": 2024, "month": 1},
+                    "dateEnd": {"year": 2024, "month": 10},
+                    "locales": {
+                        "en": {
+                            "title": "Working Student in Computer Production",
+                            "province": "Giessen, Hesse",
+                            "country": "Germany",
+                            "institution": "tci - Gesellschaft für technische Informatik mbH",
+                            "text": "Internship involving programming and documentation.",
+                            "list": [
+                                "C (Programming Language)",
+                                "Documentation",
+                                "+10 skills"
+                            ],
+                            "tags": [
+                                "Internship",
+                                "On-site",
+                                "Computer Production"
+                            ]
+                        },
+                        "de": {
+                            "title": "Werkstudent Computer Produktion",
+                            "province": "Giessen, Hessen",
+                            "country": "Deutschland",
+                            "institution": "tci - Gesellschaft für technische Informatik mbH",
+                            "text": "Praktikum, koje uključuje programiranje i dokumentaciju.",
+                            "list": [
+                                "C (Programmiersprache)",
+                                "Dokumentation",
+                                "+10 Fähigkeiten"
+                            ],
+                            "tags": [
+                                "Praktikant",
+                                "Vor Ort",
+                                "Computer Produktion"
+                            ]
+                        },
+                        "hr": {
+                            "title": "Student na Prakshi u Računalnoj Proizvodnji",
+                            "province": "Giessen, Hessen",
+                            "country": "Njemačka",
+                            "institution": "tci - Gesellschaft für technische Informatik mbH",
+                            "text": "Praktikantska pozicija koja uključuje programiranje i dokumentaciju.",
+                            "list": [
+                                "C (Programski jezik)",
+                                "Dokumentacija",
+                                "+10 vještina"
+                            ],
+                            "tags": [
+                                "Praktikant",
+                                "Na licu mjesta",
+                                "Računalna Proizvodnja"
+                            ]
+                        },
+                        "tr": {
+                            "title": "Bilgisayar Üretiminde Çalışan Öğrenci",
+                            "province": "Giessen, Hessen",
+                            "country": "Almanya",
+                            "institution": "tci - Gesellschaft für technische Informatik mbH",
+                            "text": "Programlama ve belgelendirmeyi içeren staj.",
+                            "list": [
+                                "C (Programlama Dili)",
+                                "Belgelendirme",
+                                "+10 beceri"
+                            ],
+                            "tags": [
+                                "Staj",
+                                "Yüzyüze",
+                                "Bilgisayar Üretimi"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "id": 3,
+                    "img": "public/images/contant/tipwinLogo.jpg",
+                    "faIcon": "",
+                    "faIconColors": {"bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF"},
+                    "dateStart": {"year": 2022, "month": 9},
+                    "dateEnd": {"year": 2023, "month": 8},
+                    "locales": {
+                        "en": {
+                            "title": "IT Support Technician (Level 2)",
+                            "province": "Frankfurt am Main, Hesse",
+                            "country": "Germany",
+                            "institution": "Tipwin Limited",
+                            "text": "Part-time role focused on technical support.",
+                            "list": [
+                                "Documentation",
+                                "Technical Support",
+                                "+18 skills"
+                            ],
+                            "tags": [
+                                "Part-time",
+                                "On-site",
+                                "IT Support"
+                            ]
+                        },
+                        "de": {
+                            "title": "IT Support Technician (Level 2)",
+                            "province": "Frankfurt am Main, Hessen",
+                            "country": "Deutschland",
+                            "institution": "Tipwin Limited",
+                            "text": "Teilzeitstelle mit dem Fokus auf technischen Support.",
+                            "list": [
+                                "Dokumentation",
+                                "Technischer Support",
+                                "+18 Fähigkeiten"
+                            ],
+                            "tags": [
+                                "Teilzeit",
+                                "Vor Ort",
+                                "IT-Support"
+                            ]
+                        },
+                        "hr": {
+                            "title": "IT Podrška Tehničar (Razina 2)",
+                            "province": "Frankfurt am Main, Hessen",
+                            "country": "Njemačka",
+                            "institution": "Tipwin Limited",
+                            "text": "Polu radno mjesto usmjereno na tehničku podršku.",
+                            "list": [
+                                "Dokumentacija",
+                                "Tehnička podrška",
+                                "+18 vještina"
+                            ],
+                            "tags": [
+                                "Polu radno vrijeme",
+                                "Na licu mjesta",
+                                "IT Podrška"
+                            ]
+                        },
+                        "tr": {
+                            "title": "IT Destek Teknisyeni (Seviye 2)",
+                            "province": "Frankfurt am Main, Hessen",
+                            "country": "Almanya",
+                            "institution": "Tipwin Limited",
+                            "text": "Teknik desteğe odaklanan yarı zamanlı pozisyon.",
+                            "list": [
+                                "Belgelendirme",
+                                "Teknik Destek",
+                                "+18 beceri"
+                            ],
+                            "tags": [
+                                "Yarı zamanlı",
+                                "Yüzyüze",
+                                "İT Desteği"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "id": 4,
+                    "img": "public/images/contant/tueg_logo.jpeg",
+                    "faIcon": "",
+                    "faIconColors": {"bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF"},
+                    "dateStart": {"year": 2022, "month": 3},
+                    "dateEnd": {"year": 2022, "month": 8},
+                    "locales": {
+                        "en": {
+                            "title": "Test Technician for Plant Safety",
+                            "province": "Germany",
+                            "country": "On-site",
+                            "institution": "TUEG Schillings GmbH",
+                            "text": "Full-time role focused on documentation and electrical safety.",
+                            "list": [
+                                "Documentation",
+                                "Electrical Safety",
+                                "+14 skills"
+                            ],
+                            "tags": [
+                                "Full-time",
+                                "On-site",
+                                "Plant Safety"
+                            ]
+                        },
+                        "de": {
+                            "title": "Prüftechniker für Anlagensicherheit",
+                            "province": "Deutschland",
+                            "country": "Vor Ort",
+                            "institution": "TUEG Schillings GmbH",
+                            "text": "Vollzeitstelle mit dem Fokus auf Dokumentation und elektrischer Sicherheit.",
+                            "list": [
+                                "Dokumentation",
+                                "Elektrische Sicherheit",
+                                "+14 Fähigkeiten"
+                            ],
+                            "tags": [
+                                "Vollzeit",
+                                "Vor Ort",
+                                "Anlagensicherheit"
+                            ]
+                        },
+                        "hr": {
+                            "title": "Tehničar za Testiranje Sigurnosti Postrojenja",
+                            "province": "Njemačka",
+                            "country": "Na licu mjesta",
+                            "institution": "TUEG Schillings GmbH",
+                            "text": "Puno radno vrijeme usmjereno na dokumentaciju i električnu sigurnost.",
+                            "list": [
+                                "Dokumentacija",
+                                "Električna sigurnost",
+                                "+14 vještina"
+                            ],
+                            "tags": [
+                                "Puno radno vrijeme",
+                                "Na licu mjesta",
+                                "Sigurnost postrojenja"
+                            ]
+                        },
+                        "tr": {
+                            "title": "Tesis Güvenliği için Test Teknisyeni",
+                            "province": "Almanya",
+                            "country": "Yüzyüze",
+                            "institution": "TUEG Schillings GmbH",
+                            "text": "Dokümantasyon ve elektrik güvenliğine odaklanan tam zamanlı pozisyon.",
+                            "list": [
+                                "Dokümantasyon",
+                                "Elektrik Güvenliği",
+                                "+14 beceri"
+                            ],
+                            "tags": [
+                                "Tam zamanlı",
+                                "Yüzyüze",
+                                "Tesis Güvenliği"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "id": 5,
+                    "img": "public/images/contant/clariant.png",
+                    "faIcon": "",
+                    "faIconColors": {"bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF"},
+                    "dateStart": {"year": 2018, "month": 9},
+                    "dateEnd": {"year": 2022, "month": 2},
+                    "locales": {
+                        "en": {
+                            "title": "Training as Electronic Technician for Automation Technology",
+                            "institution": "Clariant AG",
+                            "country": "Frankfurt AM, Germany",
+                            "text": "Completed a training program focusing on automation technology.",
+                            "list": [
+                                "3 years and 6 months of training",
+                                "Hands-on experience in automation systems",
+                                "Collaboration on technical projects"
+                            ],
+                            "tags": [
+                                "Training",
+                                "Automation Technology"
+                            ]
+                        },
+                        "de": {
+                            "title": "Ausbildung als Elektroniker für Automatisierungstechnik",
+                            "institution": "Clariant",
+                            "country": "Deutschland",
+                            "text": "Absolvierte eine Ausbildung mit dem Schwerpunkt Automatisierungstechnik.",
+                            "list": [
+                                "3 Jahre und 6 Monate Ausbildung",
+                                "Praktische Erfahrung in Automatisierungssystemen",
+                                "Zusammenarbeit an technischen Projekten"
+                            ],
+                            "tags": [
+                                "Ausbildung",
+                                "Automatisierungstechnik"
+                            ]
+                        },
+                        "hr": {
+                            "title": "Obuka za Elektroničara za Automatizaciju",
+                            "institution": "Clariant",
+                            "country": "Njemačka",
+                            "text": "Završena obuka s fokusom na automatizaciju.",
+                            "list": [
+                                "3 godine i 6 mjeseci obuke",
+                                "Praktično iskustvo u automatizacijskim sustavima",
+                                "Suradnja na tehničkim projektima"
+                            ],
+                            "tags": [
+                                "Obuka",
+                                "Automatizacija"
+                            ]
+                        },
+                        "tr": {
+                            "title": "Otomasyon Teknolojisi Eğitimine Elektronik Teknisyeni",
+                            "institution": "Clariant",
+                            "country": "Almanya",
+                            "text": "Otomasyon teknolojisi üzerine odaklanan bir eğitim programını tamamladım.",
+                            "list": [
+                                "3 yıl 6 ay eğitim",
+                                "Otomasyon sistemlerinde uygulamalı deneyim",
+                                "Teknik projelerde işbirliği"
+                            ],
+                            "tags": [
+                                "Eğitim",
+                                "Otomasyon Teknolojisi"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

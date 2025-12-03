@@ -1,0 +1,28 @@
+{
+    "sections": [
+        {
+            "id": "about",
+            "categoryId": "home",
+            "jsonPath": "/data/sections/home.json",
+            "faIcon": "fa-solid fa-address-card"
+        },
+        {
+            "id": "experience",
+            "categoryId": "experience",
+            "jsonPath": "/data/sections/experience.json",
+            "faIcon": "fa-solid fa-tools"
+        },
+        {
+            "id": "education",
+            "categoryId": "education",
+            "jsonPath": "/data/sections/education.json",
+            "faIcon": "fa-solid fa-pen-to-square"
+        },
+        {
+            "id": "hobby",
+            "categoryId": "hobby",
+            "jsonPath": "/data/sections/hobby.json",
+            "faIcon": "fa-solid fa-bicycle"
+        }
+    ]
+}

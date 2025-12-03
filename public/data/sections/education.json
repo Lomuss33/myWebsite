@@ -1,0 +1,444 @@
+{
+    "title": {
+        "locales": {
+            "en": {
+                "title_short": "School",
+                "title_short_nav": "Education",
+                "title_long_prefix": "Knowledge is power",
+                "title_long": "Life long learning"
+            },
+            "de": {
+                "title_short": "Schule",
+                "title_short_nav": "Bildung",
+                "title_long_prefix": "Wissen ist Macht",
+                "title_long": "Lebenslanges Lernen"
+            },
+            "hr": {
+                "title_short": "Škola",
+                "title_short_nav": "Obrazovanje",
+                "title_long_prefix": "Znanje je moć",
+                "title_long": "Cjelovit životno učenje"
+            },
+            "tr": {
+                "title_short": "Okul",
+                "title_short_nav": "Eğitim",
+                "title_long_prefix": "Bilgi güçtür",
+                "title_long": "Hayat boyu öğrenme"
+            }
+        }
+    },
+    "articles": [
+        {
+            "id": 1,
+            "component": "ArticleTimeline",
+            "locales": {
+                "en": {
+                    "title": "My {{education}}"
+                },
+                "de": {
+                    "title": "Meine {{Ausbildung}}"
+                },
+                "hr": {
+                    "title": "Moje {{obrazovanje}}"
+                },
+                "tr": {
+                    "title": "Benim {{eğitimim}}"
+                }
+            },
+            "settings": {
+                "order_items_by": "dateStart",
+                "order_items_sort": "desc"
+            },
+            "items": [
+                {
+                    "id": 1,
+                    "img": "public/images/contant/provadis_logo.webp",
+                    "faIcon": "",
+                    "faIconColors": {"bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF"},
+                    "dateStart": {"year": 2018, "month": 9},
+                    "dateEnd": {"year": 2022, "month": 2},
+                    "locales": {
+                        "en": {
+                            "title": "Training as Electronic Technician for Automation Technology",
+                            "institution": "Provadis",
+                            "country": "Frankfurt AM, Germany",
+                            "text": "Completed a training program focusing on automation technology.",
+                            "list": [
+                                "3 years and 6 months of training",
+                                "Hands-on experience in automation systems",
+                                "Collaboration on technical projects"
+                            ],
+                            "tags": [
+                                "Training",
+                                "Automation Technology"
+                            ]
+                        },
+                        "de": {
+                            "title": "Ausbildung als Elektroniker für Automatisierungstechnik",
+                            "institution": "Clariant",
+                            "country": "Deutschland",
+                            "text": "Absolvierte eine Ausbildung mit dem Schwerpunkt Automatisierungstechnik.",
+                            "list": [
+                                "3 Jahre und 6 Monate Ausbildung",
+                                "Praktische Erfahrung in Automatisierungssystemen",
+                                "Zusammenarbeit an technischen Projekten"
+                            ],
+                            "tags": [
+                                "Ausbildung",
+                                "Automatisierungstechnik"
+                            ]
+                        },
+                        "hr": {
+                            "title": "Obuka za Elektroničara za Automatizaciju",
+                            "institution": "Clariant",
+                            "country": "Njemačka",
+                            "text": "Završena obuka s fokusom na automatizaciju.",
+                            "list": [
+                                "3 godine i 6 mjeseci obuke",
+                                "Praktično iskustvo u automatizacijskim sustavima",
+                                "Suradnja na tehničkim projektima"
+                            ],
+                            "tags": [
+                                "Obuka",
+                                "Automatizacija"
+                            ]
+                        },
+                        "tr": {
+                            "title": "Otomasyon Teknolojisi Eğitimine Elektronik Teknisyeni",
+                            "institution": "Clariant",
+                            "country": "Almanya",
+                            "text": "Otomasyon teknolojisi üzerine odaklanan bir eğitim programını tamamladım.",
+                            "list": [
+                                "3 yıl 6 ay eğitim",
+                                "Otomasyon sistemlerinde uygulamalı deneyim",
+                                "Teknik projelerde işbirliği"
+                            ],
+                            "tags": [
+                                "Eğitim",
+                                "Otomasyon Teknolojisi"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "id": 2,
+                    "img": "public/images/contant/thm_logo.jpg", 
+                    "faIcon": "",
+                    "faIconColors": {"bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF"},
+                    "dateStart": {"year": 2023, "month": 10},
+                    "dateEnd": {"now": true},
+                    "locales": {
+                        "en": {
+                            "title": "Engineering Computer Science",
+                            "institution": "Technische Hochschule Mittelhessen - THM",
+                            "country": "Germany",
+                            "text": "Currently pursuing a degree in Engineering Computer Science.",
+                            "list": [
+                                "Now studying for 2 years and 2 months",
+                                "Focus on software development and engineering principles"
+                            ],
+                            "tags": [
+                                "Current Studies",
+                                "Engineering"
+                            ]
+                        },
+                        "de": {
+                            "title": "Ingenieurinformatik",
+                            "institution": "Technische Hochschule Mittelhessen - THM",
+                            "country": "Deutschland",
+                            "text": "Aktuell studiere ich Ingenieurinformatik.",
+                            "list": [
+                                "Jetzt seit 2 Jahren und 2 Monaten am Studium",
+                                "Schwerpunkt auf Softwareentwicklung und Ingenieurprinzipien"
+                            ],
+                            "tags": [
+                                "Aktuelles Studium",
+                                "Ingenieurwesen"
+                            ]
+                        },
+                        "hr": {
+                            "title": "Inženjerska Računalna Sindrom",
+                            "institution": "Tehnička Visoka Škola Mittelhessen - THM",
+                            "country": "Njemačka",
+                            "text": "Trenutno studiram inženjersku računalnu znanost.",
+                            "list": [
+                                "Sad studiram 2 godine i 2 mjeseca",
+                                "Fokus na razvoju softvera i inženjerskim principima"
+                            ],
+                            "tags": [
+                                "Trenutne Studije",
+                                "Inženjerstvo"
+                            ]
+                        },
+                        "tr": {
+                            "title": "Mühendislik Bilgisayar Bilimi",
+                            "institution": "Mittelhessen Teknik Üniversitesi - THM",
+                            "country": "Almanya",
+                            "text": "Şu anda Mühendislik Bilgisayar Biliminde okumaktayım.",
+                            "list": [
+                                "Şu anda 2 yıl 2 ay okuma",
+                                "Yazılım geliştirme ve mühendislik ilkeleri üzerine odaklanma"
+                            ],
+                            "tags": [
+                                "Mevcut Çalışmalar",
+                                "Mühendislik"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "id": 3,
+                    "img": "public/images/contant/bruehlwiesenschule_logo.png",
+                    "faIcon": "",
+                    "faIconColors": {"bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF"},
+                    "dateStart": {"year": 2020, "month": 9},
+                    "dateEnd": {"year": 2021, "month": 6},
+                    "locales": {
+                        "en": {
+                            "title": "Vocational School",
+                            "institution": "Brühlwiesenschule",
+                            "country": "Hofheim am Taunus, Germany",
+                            "text": "Completed vocational training after the apprenticeship.",
+                            "list": [
+                                "Focus on relevant technical skills",
+                                "Preparation for further studies"
+                            ],
+                            "tags": [
+                                "Vocational Training",
+                                "Technical Skills"
+                            ]
+                        },
+                        "de": {
+                            "title": "Fachschule",
+                            "institution": "Brühlwiesenschule",
+                            "country": "Hofheim am Taunus, Deutschland",
+                            "text": "Abschluss der Fachschule nach der Ausbildung.",
+                            "list": [
+                                "Schwerpunkt auf relevanten technischen Fähigkeiten",
+                                "Vorbereitung auf das Studium"
+                            ],
+                            "tags": [
+                                "Fachliche Ausbildung",
+                                "Technische Fähigkeiten"
+                            ]
+                        },
+                        "hr": {
+                            "title": "Stručna Škola",
+                            "institution": "Brühlwiesenschule",
+                            "country": "Hofheim am Taunus, Njemačka",
+                            "text": "Završena stručna izobrazba nakon naukovanja.",
+                            "list": [
+                                "Fokus na relevantnim tehničkim vještinama",
+                                "Priprema za daljnje studije"
+                            ],
+                            "tags": [
+                                "Stručna Priprema",
+                                "Tehničke Vještine"
+                            ]
+                        },
+                        "tr": {
+                            "title": "Meslek Okulu",
+                            "institution": "Brühlwiesenschule",
+                            "country": "Hofheim am Taunus, Almanya",
+                            "text": "Stajdan sonra mesleki eğitim tamamlandı.",
+                            "list": [
+                                "İlgili teknik becerilere odaklanma",
+                                "Daha ileri çalışmalar için hazırlık"
+                            ],
+                            "tags": [
+                                "Mesleki Eğitim",
+                                "Teknik Beceriler"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "id": 4,
+                    "img": "public/images/contant/eichendorfschule_logo.png",
+                    "faIcon": "",
+                    "faIconColors": {"bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF"},
+                    "dateStart": {"year": 2018, "month": 9},
+                    "dateEnd": {"year": 2020, "month": 6},
+                    "locales": {
+                        "en": {
+                            "title": "Secondary School",
+                            "institution": "EichendorfSchule Kelkheim",
+                            "country": "Germany",
+                            "text": "Completed secondary education before vocational training.",
+                            "list": [
+                                "General education",
+                                "Preparation for vocational training"
+                            ],
+                            "tags": [
+                                "Secondary Education",
+                                "General Knowledge"
+                            ]
+                        },
+                        "de": {
+                            "title": "Realschule",
+                            "institution": "EichendorfSchule Kelkheim",
+                            "country": "Deutschland",
+                            "text": "Abschluss der Realschule vor der Berufsbildung.",
+                            "list": [
+                                "Allgemeine Bildung",
+                                "Vorbereitung auf die Ausbildung"
+                            ],
+                            "tags": [
+                                "Realschulausbildung",
+                                "Allgemeinbildung"
+                            ]
+                        },
+                        "hr": {
+                            "title": "Srednja Škola",
+                            "institution": "EichendorfSchule Kelkheim",
+                            "country": "Njemačka",
+                            "text": "Završena srednja škola prije stručne izobrazbe.",
+                            "list": [
+                                "Opća obrazovanja",
+                                "Priprema za stručnu izobrazbu"
+                            ],
+                            "tags": [
+                                "Srednje Obrazovanje",
+                                "Opće Znanje"
+                            ]
+                        },
+                        "tr": {
+                            "title": "Ortaokul",
+                            "institution": "EichendorfSchule Kelkheim",
+                            "country": "Almanya",
+                            "text": "Meslek eğitiminden önce ortaokuldan mezun oldum.",
+                            "list": [
+                                "Genel eğitim",
+                                "Meslek eğitimine hazırlık"
+                            ],
+                            "tags": [
+                                "Ortaöğretim",
+                                "Genel Bilgi"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "id": 5,
+                    "img": "public/images/contant/tomislavgrad_logo.png",
+                    "faIcon": "",
+                    "faIconColors": {"bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF"},
+                    "dateStart": {"year": 2007, "month": 1},
+                    "dateEnd": {"year": 2018, "month": 6},
+                    "locales": {
+                        "en": {
+                            "title": "Primary School",
+                            "institution": "Tomislavgrad, Bosnia",
+                            "country": "Bosnia and Herzegovina",
+                            "text": "Completed primary education before moving to Germany.",
+                            "list": [
+                                "Basic education",
+                                "Foundation for further studies"
+                            ],
+                            "tags": [
+                                "Primary Education",
+                                "Foundational Skills"
+                            ]
+                        },
+                        "de": {
+                            "title": "Grundschule",
+                            "institution": "Tomislavgrad, Bosnien",
+                            "country": "Bosnien und Herzegowina",
+                            "text": "Abschluss der Grundschule vor dem Umzug nach Deutschland.",
+                            "list": [
+                                "Grundlegende Bildung",
+                                "Basis für weitere Studien"
+                            ],
+                            "tags": [
+                                "Grundschule",
+                                "Grundfähigkeiten"
+                            ]
+                        },
+                        "hr": {
+                            "title": "Osnovna Škola",
+                            "institution": "Tomislavgrad, Bosna",
+                            "country": "Bosna i Hercegovina",
+                            "text": "Završena osnovna škola prije preseljenja u Njemačku.",
+                            "list": [
+                                "Osnovna edukacija",
+                                "Temelj za daljnja istraživanja"
+                            ],
+                            "tags": [
+                                "Osnovno Obrazovanje",
+                                "Temeljne Vještine"
+                            ]
+                        },
+                        "tr": {
+                            "title": "İlkokul",
+                            "institution": "Tomislavgrad, Bosna",
+                            "country": "Bosna-Hersek",
+                            "text": "Almanya'ya taşınmadan önce ilkokuldan mezun oldum.",
+                            "list": [
+                                "Temel eğitim",
+                                "Daha ileri çalışmalar için temeldir"
+                            ],
+                            "tags": [
+                                "İlköğretim",
+                                "Temel Beceriler"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "component": "ArticleCards",
+            "locales": {
+                "en": {
+                    "title": "My {{Certifications}}"
+                },
+                "de": {
+                    "title": "Meine {{Zertifikate}}"
+                },
+                "hr": {
+                    "title": "Moji {{Certifikati}}"
+                },
+                "tr": {
+                    "title": "{{Sertifikalarım}}"
+                }
+            },
+            "settings": {
+                "order_items_by": "id",
+                "order_items_sort": "asc"
+            },
+            "items": [
+                {
+                    "id": 1,
+                    "img": "public/images/contant/aevo_logo.png",
+                    "faIcon": "",
+                    "faIconColors": {"bg": "#000", "bgLight": "#000", "fill": "#FFF", "fillLight": "#FFF"},
+                    "date": {"year": 2026, "month": 3},
+                    "link": {"href": "https://www.frankfurt-main.ihk.de/aus-und-weiterbildung/weiterbildung/weiterbildungspruefungen/weiterbildungspruefungen-von-a-bis-z/a-z-liste/ausbildereignung-pruefung-5189130", "tooltipString": "open_website"},
+                    "locales": {
+                        "en": {
+                            "title": "{{AusbEignV}} Certification",
+                            "text": "I hold the AEVO-Schein certification from IHK, which qualifies me as a certified instructor permitted to train apprentices in Germany."
+                        }
+                    }
+                },
+
+                {
+                    "id": 2,
+                    "img": "public/images/contant/ccna.webp",
+                    "faIcon": "",
+                    "faIconColors": {"bg": "red", "bgLight": "red", "fill": "white", "fillLight": "white"},
+                    "date": {"year": 2025, "month": 12},
+                    "link": {"href": "", "tooltipString": ""},
+                    "locales": {
+                        "en": {
+                            "title": "{{CCNA}} Certification",
+                            "text": "I am a Cisco certified network associate (CCNA) skilled in foundational network infrastructure, security, and automation."
+                        }
+                    }
+                }
+            ]
+        }
+
+    ]
+}

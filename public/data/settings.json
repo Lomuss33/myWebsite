@@ -1,0 +1,122 @@
+{
+    "developerSettings": {
+        "debugMode": true,
+        "fakeEmailRequests": false,
+        "stayOnThePreloaderScreen": false,
+        "version": "1.0.0"
+    },
+    "preloaderSettings": {
+        "enabled": true,
+        "title": "Lovro <b>Musić</b>",
+        "subtitle": "Hardware Engineer",
+        "logoOffset": {
+            "right": 12,
+            "top": -12,
+            "bottom": 10
+        }
+    },
+    "templateSettings": {
+        "animatedCursorEnabled": true,
+        "backgroundStyle": "animated",
+        "defaultLanguageId": "en",
+        "defaultThemeId": "dark",
+        "fullscreenEnabled": true,
+        "showSpinnerOnThemeChange": false
+    },
+    "supportedLanguages": [
+        {
+            "name": "English",
+            "id": "en",
+            "flagUrl": "images/flags/en-uk.png"
+        },
+        {
+            "name": "Deutsch",
+            "id": "de",
+            "flagUrl": "images/flags/de.png"
+        },
+        {
+            "name": "Hrvatski",
+            "id": "hr",
+            "flagUrl": "images/flags/hr.png"
+        },
+        {
+            "name": "Türkçe",
+            "id": "tr",
+            "flagUrl": "images/flags/tr.png"
+        }
+    ],
+    "supportedThemes": [
+        {
+            "id": "dark",
+            "icon": "fa-solid fa-moon",
+            "dark": true,
+            "locales": {
+                "en": {
+                    "name": "Dark Mode"
+                },
+                "de": {
+                    "name": "Dunkler Modus"
+                },
+                "hr": {
+                    "name": "Tamni Način"
+                },
+                "tr": {
+                    "name": "Karanlık Mod"
+                }
+            }
+        },
+        {
+            "id": "light",
+            "icon": "fa-solid fa-sun",
+            "dark": false,
+            "locales": {
+                "en": {
+                    "name": "Light Mode"
+                },
+                "de": {
+                    "name": "Heller Modus"
+                },
+                "hr": {
+                    "name": "Svijetli Način"
+                },
+                "tr": {
+                    "name": "Aydınlık Mod"
+                }
+            }
+        }
+    ],
+    "consoleMessageForDevelopers": {
+        "title": {
+            "en": "🖥️ Hey there, fellow developer!",
+            "de": "🖥️ Hallo, mitentwickler!",
+            "hr": "🖥️ Pozdrav, dragi programeru!",
+            "tr": "🖥️ Merhaba, sevgili geliştirici!"
+        },
+        "items": [
+            {
+                "description": {
+                    "en": "This is an open-source template based on the React framework.",
+                    "de": "Dies ist eine Open-Source-Vorlage, die auf dem React-Framework basiert.",
+                    "hr": "Ovo je open-source predložak zasnovan na React frameworku.",
+                    "tr": "Bu, React çerçevesine dayanan açık kaynaklı bir şablondur."
+                },
+                "list": [],
+                "listStyle": "none"
+            },
+            {
+                "description": {
+                    "en": "Like what you see? Let's connect!",
+                    "de": "Gefällt dir, was du siehst? Lass uns verbinden!",
+                    "hr": "Sviđa ti se što vidiš? Povežimo se!",
+                    "tr": "Beğendin mi? Bağlanalım!"
+                },
+                "list": [
+                    "GitHub: https://github.com/username",
+                    "Website: https://website.com"
+                ],
+                "listStyle": "bulleted"
+            }
+        ]
+    },
+    "imagesToCache": []
+}

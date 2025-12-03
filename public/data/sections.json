@@ -8,21 +8,27 @@
         },
         {
             "id": "experience",
-            "categoryId": "experience",
+            "categoryId": "history",
             "jsonPath": "/data/sections/experience.json",
             "faIcon": "fa-solid fa-tools"
         },
         {
             "id": "education",
-            "categoryId": "education",
+            "categoryId": "history",
             "jsonPath": "/data/sections/education.json",
             "faIcon": "fa-solid fa-pen-to-square"
         },
         {
             "id": "hobby",
-            "categoryId": "hobby",
+            "categoryId": "hobbys",
             "jsonPath": "/data/sections/hobby.json",
             "faIcon": "fa-solid fa-bicycle"
+        },        
+        {
+            "id": "contact",
+            "categoryId": "contact",
+            "jsonPath": "/data/sections/contact.json",
+            "faIcon": "fa-solid fa-paper-plane"
         }
     ]
 }

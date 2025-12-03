@@ -1,0 +1,62 @@
+{
+    "name": "Lovro Musić",
+    "profilePictureUrl": "images/contant/profil.png",
+    "resumePdfUrl": "",
+    "statusCircleVisible": true,
+    "statusCircleVariant": "available",
+    "statusCircleHoverMessage": "status_message_available_for_freelance",
+    "locales": {
+        "en": {
+            "localized_name": "Lovro Musić",
+            "localized_name_stylized": "<strong>Lovro {{Musić}}</strong>",
+            "status_message_available_for_freelance": "Available for hire!",
+            "roles": [
+                "Network Security Engineer",
+                "Embedded Systems Engineer",
+                "ERP Data Engineer",
+                "Industrial Automation Engineer"
+            ],
+            "name_pronunciation_ipa": "",
+            "name_pronunciation_audio_url": ""
+        },
+        "de": {
+            "localized_name": "Lovro Musić",
+            "localized_name_stylized": "<strong>Lovro {{Musić}}</strong>",
+            "status_message_available_for_freelance": "Verfügbar zur Anstellung!",
+            "roles": [
+                "Netzwerksicherheitsingenieur",
+                "Embedded Systems Ingenieur",
+                "ERP-Dateningenieur",
+                "Industrielle Automatisierungsingenieur"
+            ],
+            "name_pronunciation_ipa": "",
+            "name_pronunciation_audio_url": ""
+        },
+        "hr": {
+            "localized_name": "Lovro Musić",
+            "localized_name_stylized": "<strong>Lovro {{Musić}}</strong>",
+            "status_message_available_for_freelance": "Dostupan za angažman!",
+            "roles": [
+                "Inženjer za sigurnost mreže",
+                "Inženjer za ugrađene sustave",
+                "Inženjer ERP podataka",
+                "Inženjer za industrijsku automatizaciju"
+            ],
+            "name_pronunciation_ipa": "",
+            "name_pronunciation_audio_url": ""
+        },
+        "tr": {
+            "localized_name": "Lovro Musić",
+            "localized_name_stylized": "<strong>Lovro {{Musić}}</strong>",
+            "status_message_available_for_freelance": "İş için uygun!",
+            "roles": [
+                "Ağ Güvenliği Mühendisi",
+                "Gömülü Sistemler Mühendisi",
+                "ERP Veri Mühendisi",
+                "Endüstriyel Otomasyon Mühendisi"
+            ],
+            "name_pronunciation_ipa": "",
+            "name_pronunciation_audio_url": ""
+        }
+    }
+}

@@ -1,0 +1,76 @@
+{
+    "categories": [
+        {
+            "id": "home",
+            "faIcon": "fa-regular fa-user",
+            "locales": {
+                "en": {
+                    "title": "Home"
+                },
+                "de": {
+                    "title": "Startseite"
+                },
+                "hr": {
+                    "title": "Početna"
+                },
+                "tr": {
+                    "title": "Ana Sayfa"
+                }
+            }
+        },
+        {
+            "id": "experience",
+            "faIcon": "fa-regular fa-clock",
+            "locales": {
+                "en": {
+                    "title": "History"
+                },
+                "de": {
+                    "title": "Geschichte"
+                },
+                "hr": {
+                    "title": "Povijest"
+                },
+                "tr": {
+                    "title": "Geçmiş"
+                }
+            }
+        },        
+        {
+            "id": "education",
+            "faIcon": "fa-regular fa-object-ungroup",
+            "locales": {
+                "en": {
+                    "title": "Education"
+                },
+                "de": {
+                    "title": "Bildung"
+                },
+                "hr": {
+                    "title": "Obrazovanje"
+                },
+                "tr": {
+                    "title": "Eğitim"
+                }
+            }
+        },
+        {
+            "id": "hobby",
+            "faIcon": "fa-solid fa-bicycle",
+            "locales": {
+                "en": {
+                    "title": "Hobby"
+                },
+                "de": {
+                    "title": "Hobby"
+                },
+                "hr": {
+                    "title": "Hobi"
+                },
+                "tr": {
+                    "title": "Hobi"
+                }
+            }
+        }
+    ]
+}

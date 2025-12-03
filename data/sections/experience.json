@@ -52,7 +52,7 @@
             "items": [
                 {
                     "id": 1,
-                    "img": "public/images/contant/inlingua.jpg",
+                    "img": "public/images/contant/inlingua.svg",
                     "faIcon": "",
                     "faIconColors": {"bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF"},
                     "dateStart": {"year": 2024, "month": 11},
@@ -130,7 +130,7 @@
                 },
                 {
                     "id": 2,
-                    "img": "public/images/contant/tci_gmbh_logo.jpeg",
+                    "img": "public/images/contant/tci_gmbh_logo.svg",
                     "faIcon": "",
                     "faIconColors": {"bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF"},
                     "dateStart": {"year": 2024, "month": 1},
@@ -208,7 +208,7 @@
                 },
                 {
                     "id": 3,
-                    "img": "public/images/contant/tipwinLogo.jpg",
+                    "img": "public/images/contant/tipwinLogo.svg",
                     "faIcon": "",
                     "faIconColors": {"bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF"},
                     "dateStart": {"year": 2022, "month": 9},
@@ -286,7 +286,7 @@
                 },
                 {
                     "id": 4,
-                    "img": "public/images/contant/tueg_logo.jpeg",
+                    "img": "public/images/contant/tueg_logo.svg",
                     "faIcon": "",
                     "faIconColors": {"bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF"},
                     "dateStart": {"year": 2022, "month": 3},
@@ -364,7 +364,7 @@
                 },
                 {
                     "id": 5,
-                    "img": "public/images/contant/clariant.png",
+                    "img": "public/images/contant/clariant.svg",
                     "faIcon": "",
                     "faIconColors": {"bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF"},
                     "dateStart": {"year": 2018, "month": 9},

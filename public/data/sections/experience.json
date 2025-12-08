@@ -433,6 +433,94 @@
                     }
                 }
             ]
-        }
+        },
+        {
+            "id": 2,
+            "component": "ArticleText",
+            "locales": {
+                "en": { "title": "Real-world {{experiences}}" },
+                "de": { "title": "Praxisnahe {{Erfahrungen}}" },
+                "hr": { "title": "Stvarna {{iskustva}}" },
+                "tr": { "title": "Gerçek dünya {{deneyimleri}}" }
+            },
+            "settings": {
+                "order_items_by": "id",
+                "order_items_sort": "asc"
+            },
+            "items": [
+                {
+                "id": 1,
+                "img": "",
+                "faIcon": "fa-solid fa-tractor",
+                "faIconColors": {
+                    "bg": "#0B1A0E",
+                    "fill": "#2E7D32",
+                    "fillLight": "#1B5E20"
+                },
+                "locales": {
+                    "en": {
+                    "text": "<p>From my childhood through my teenage years, I worked on our family farm: {{milking}}, feeding livestock, field work, cleaning stalls, and basic repairs.</p><p>These years built [[discipline]], reliability, and a strong safety mindset—plus the ability to stay calm and focused during hard, early-morning work.</p>"
+                    },
+                    "de": {
+                    "text": "<p>Seit meiner Kindheit bis in die Teenagerjahre habe ich auf unserem Hof gearbeitet: {{Melken}}, Füttern des Viehs, Feldarbeit, Stallreinigung und einfache Reparaturen.</p><p>Diese Zeit hat [[Disziplin]], Zuverlässigkeit und ein starkes Sicherheitsbewusstsein geprägt – sowie Ruhe und Fokus bei harter Frühschichtarbeit.</p>"
+                    },
+                    "hr": {
+                    "text": "<p>Od djetinjstva do tinejdžerskih godina radio sam na našem imanju: {{mužnja}}, hranjenje stoke, rad u polju, čišćenje štala i osnovni popravci.</p><p>Ta iskustva su izgradila [[disciplinu]], pouzdanost i snažan osjećaj za sigurnost – te mirnoću i fokus u zahtjevnom, ranom radu.</p>"
+                    },
+                    "tr": {
+                    "text": "<p>Çocukluktan gençlik yıllarıma kadar aile çiftliğinde çalıştım: {{sağım}}, hayvan besleme, tarla işleri, ahır temizliği ve basit onarımlar.</p><p>Bu yıllar [[disiplin]], güvenilirlik ve güçlü bir güvenlik anlayışı kazandırdı; zorlu sabah işlerinde sakin ve odaklı kalmayı öğrendim.</p>"
+                    }
+                }
+                },
+                {
+                "id": 2,
+                "img": "",
+                "faIcon": "fa-solid fa-church",
+                "faIconColors": {
+                    "bg": "#150A1E",
+                    "fill": "#6A1B9A",
+                    "fillLight": "#4A148C"
+                },
+                "locales": {
+                    "en": {
+                    "text": "<p>Active church volunteering: teaching kids, delivering food to families, and helping with {{event organization}}.</p><p>I also prepare presentations and lead short teachings—building [[communication]], empathy, and logistics skills while coordinating volunteers.</p>"
+                    },
+                    "de": {
+                    "text": "<p>Aktives kirchliches Ehrenamt: Kinder unterrichten, Lebensmittel an Familien ausliefern und bei der {{Veranstaltungsorganisation}} helfen.</p><p>Außerdem bereite ich Präsentationen vor und halte kurze Lehreinheiten – das stärkt [[Kommunikation]], Empathie und Logistik bei der Koordination von Freiwilligen.</p>"
+                    },
+                    "hr": {
+                    "text": "<p>Aktivno volontiranje u crkvi: podučavanje djece, dostava hrane obiteljima i pomoć u {{organizaciji događaja}}.</p><p>Pripremam i prezentacije te vodim kratka poučavanja – razvijam [[komunikaciju]], empatiju i logistiku koordinirajući volontere.</p>"
+                    },
+                    "tr": {
+                    "text": "<p>Kilise gönüllülüğü: çocuklara ders, ailelere yiyecek teslimi ve {{etkinlik organizasyonu}}.</p><p>Ayrıca sunumlar hazırlıyor ve kısa öğretimler yapıyorum; gönüllüleri koordine ederken [[iletişim]], empati ve lojistik becerilerimi geliştiriyorum.</p>"
+                    }
+                }
+                },
+                {
+                "id": 3,
+                "img": "",
+                "faIcon": "fa-solid fa-chart-line",
+                "faIconColors": {
+                    "bg": "#071521",
+                    "fill": "#1565C0",
+                    "fillLight": "#0D47A1"
+                },
+                "locales": {
+                    "en": {
+                    "text": "<p>Self-directed stock trading experience with equities and ETFs: research, journaling trades, {{risk management}}, and basic strategy backtesting.</p><p>Comfortable analyzing earnings, trends, and macro headlines, while keeping a disciplined, [[non-advisory]] approach focused on learning and process.</p>"
+                    },
+                    "de": {
+                    "text": "<p>Eigenständige Erfahrung im Aktienhandel (Aktien & ETFs): Recherche, Handeltagebuch, {{Risikomanagement}} und grundlegendes Strategy-Backtesting.</p><p>Sicher in der Analyse von Quartalszahlen, Trends und Makro-News – mit einem disziplinierten, [[nicht-beratenden]] Ansatz, der Lernen und Prozess in den Fokus stellt.</p>"
+                    },
+                    "hr": {
+                    "text": "<p>Samostalno iskustvo u trgovanju dionicama i ETF-ovima: istraživanje, vođenje dnevnika transakcija, {{upravljanje rizikom}} i osnovni backtesting strategija.</p><p>Ugodno analiziram izvješća, trendove i makro vijesti uz discipliniran, [[ne-savjetodavni]] pristup usmjeren na učenje i proces.</p>"
+                    },
+                    "tr": {
+                    "text": "<p>Hisse senedi ve ETF’lerde bireysel işlem deneyimi: araştırma, işlem günlüğü, {{risk yönetimi}} ve temel strateji backtest.</p><p>Kazanç raporları ve trendleri analiz edebiliyorum; öğrenme ve sürece odaklanan disiplinli, [[yatırım tavsiyesi değildir]] yaklaşımı benimsiyorum.</p>"
+                    }
+                }
+                }
+            ]
+            }
     ]
 }

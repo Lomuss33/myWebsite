@@ -1,0 +1,31 @@
+{
+  "title": {
+        "locales": {
+            "en": {
+                "title_short": "Hardware & Making",
+                "title_short_nav": "Hardware",
+                "title_long_prefix": "Built with tools, patience and precision",
+                "title_long": "Here are {{my silicons}}"
+            },
+            "de": {
+                "title_short": "Hardware & Basteln",
+                "title_short_nav": "Hardware",
+                "title_long_prefix": "Gebaut mit Werkzeugen, Geduld und Präzision",
+                "title_long": "Hier sind {{meine Siliziume}}"
+            },
+            "hr": {
+                "title_short": "Hardver i izrada",
+                "title_short_nav": "Hardver",
+                "title_long_prefix": "Izrađena s alatom, strpljenjem i preciznošću",
+                "title_long": "Evo {{mojih silicija}}"
+            },
+            "tr": {
+                "title_short": "Donanım ve Yapım",
+                "title_short_nav": "Donanım",
+                "title_long_prefix": "Alet, sabır ve hassasiyetle inşa edildi",
+                "title_long": "İşte {{benim silisyumlarım}}"
+            }
+        }
+    },
+    "articles": []
+}

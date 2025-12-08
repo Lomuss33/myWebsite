@@ -51,6 +51,68 @@
             },
             "items": [
                 {
+                    "id": 6,
+                    "img": "/images/contant/ibu_logo.svg",
+                    "faIcon": "",
+                    "faIconColors": { "bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF" },
+                    "dateStart": { "year": 2025, "month": 10 },
+                    "dateEnd": { "now": true },
+                    "locales": {
+                        "en": {
+                        "title": "Erasmus+ Exchange — Computer Engineering",
+                        "institution": "International Balkan University (IBU)",
+                        "country": "Skopje, North Macedonia",
+                        "text": "One-semester Erasmus+ exchange in Computer Engineering at IBU Skopje.",
+                        "list": [
+                            "Current mobility semester",
+                            "Selected courses in computer engineering and applied projects",
+                            "Cross-cultural teamwork and presentations",
+                            "ECTS credits transferable to THM"
+                        ],
+                        "tags": ["Erasmus+", "Exchange", "Computer Engineering"]
+                        },
+                        "de": {
+                        "title": "Erasmus+ Austausch — Computer Engineering",
+                        "institution": "International Balkan University (IBU)",
+                        "country": "Skopje, Nordmazedonien",
+                        "text": "Erasmus+-Austausch (ein Semester) im Bereich Computer Engineering an der IBU Skopje.",
+                        "list": [
+                            "Aktuelles Mobilitätssemester",
+                            "Ausgewählte Kurse in Computer Engineering und Praxisprojekten",
+                            "Interkulturelle Teamarbeit und Präsentationen",
+                            "ECTS an die THM anrechenbar"
+                        ],
+                        "tags": ["Erasmus+", "Austausch", "Computer Engineering"]
+                        },
+                        "hr": {
+                        "title": "Erasmus+ razmjena — Računalno inženjerstvo",
+                        "institution": "International Balkan University (IBU)",
+                        "country": "Skopje, Sjeverna Makedonija",
+                        "text": "Jednosemestralna Erasmus+ razmjena iz računalnog inženjerstva na IBU Skopje.",
+                        "list": [
+                            "Trenutni semestar mobilnosti",
+                            "Odabrani kolegiji iz računalnog inženjerstva i primijenjenih projekata",
+                            "Međukulturni timski rad i prezentacije",
+                            "ECTS bodovi se priznaju na THM"
+                        ],
+                        "tags": ["Erasmus+", "Razmjena", "Računalno inženjerstvo"]
+                        },
+                        "tr": {
+                        "title": "Erasmus+ Değişim — Bilgisayar Mühendisliği",
+                        "institution": "International Balkan University (IBU)",
+                        "country": "Üsküp, Kuzey Makedonya",
+                        "text": "IBU Üsküp’te bir dönemlik Erasmus+ bilgisayar mühendisliği değişim programı.",
+                        "list": [
+                            "Güncel hareketlilik dönemi",
+                            "Bilgisayar mühendisliği dersleri ve uygulamalı projeler",
+                            "Kültürlerarası takım çalışması ve sunumlar",
+                            "ECTS kredileri THM’ye aktarılabilir"
+                        ],
+                        "tags": ["Erasmus+", "Değişim", "Bilgisayar Mühendisliği"]
+                        }
+                    }
+                },
+                {
                     "id": 1,
                     "img": "/images/contant/provadis_logo.svg",
                     "faIcon": "",
@@ -677,6 +739,100 @@
                         "level": "Почетник / 1%"
                         }
                     }
+                }
+            ]
+        },
+        {
+            "id": 1,
+            "component": "ArticleStack",
+            "locales": {
+                "en": { "title": "Favourite {{educators / YouTubers}}" },
+                "de": { "title": "Lieblings-{{Educators / YouTuber}}" },
+                "hr": { "title": "Omiljeni {{edukatori / YouTuberi}}" },
+                "tr": { "title": "Favori {{eğitmenler / YouTuber'lar}}" }
+            },
+            "settings": {
+                "order_items_by": "id",
+                "order_items_sort": "asc"
+            },
+            "items": [
+                {
+                "id": 1,
+                "img": "",
+                "faIcon": "fa-brands fa-youtube",
+                "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
+                "date": { "year": null, "month": null },
+                "locales": {
+                    "en": { "title": "Khan Academy" },
+                    "de": { "title": "Khan Academy" },
+                    "hr": { "title": "Khan Academy" },
+                    "tr": { "title": "Khan Academy" }
+                }
+                },
+                {
+                "id": 2,
+                "img": "",
+                "faIcon": "fa-brands fa-youtube",
+                "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
+                "date": { "year": null, "month": null },
+                "locales": {
+                    "en": { "title": "3Blue1Brown" },
+                    "de": { "title": "3Blue1Brown" },
+                    "hr": { "title": "3Blue1Brown" },
+                    "tr": { "title": "3Blue1Brown" }
+                }
+                },
+                {
+                "id": 3,
+                "img": "",
+                "faIcon": "fa-brands fa-youtube",
+                "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
+                "date": { "year": null, "month": null },
+                "locales": {
+                    "en": { "title": "Veritasium" },
+                    "de": { "title": "Veritasium" },
+                    "hr": { "title": "Veritasium" },
+                    "tr": { "title": "Veritasium" }
+                }
+                },
+                {
+                "id": 4,
+                "img": "",
+                "faIcon": "fa-brands fa-youtube",
+                "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
+                "date": { "year": null, "month": null },
+                "locales": {
+                    "en": { "title": "freeCodeCamp" },
+                    "de": { "title": "freeCodeCamp" },
+                    "hr": { "title": "freeCodeCamp" },
+                    "tr": { "title": "freeCodeCamp" }
+                }
+                },
+                {
+                "id": 5,
+                "img": "",
+                "faIcon": "fa-brands fa-youtube",
+                "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
+                "date": { "year": null, "month": null },
+                "locales": {
+                    "en": { "title": "MIT OpenCourseWare" },
+                    "de": { "title": "MIT OpenCourseWare" },
+                    "hr": { "title": "MIT OpenCourseWare" },
+                    "tr": { "title": "MIT OpenCourseWare" }
+                }
+                },
+                {
+                "id": 6,
+                "img": "",
+                "faIcon": "fa-brands fa-youtube",
+                "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
+                "date": { "year": null, "month": null },
+                "locales": {
+                    "en": { "title": "Fireship" },
+                    "de": { "title": "Fireship" },
+                    "hr": { "title": "Fireship" },
+                    "tr": { "title": "Fireship" }
+                }
                 }
             ]
         }

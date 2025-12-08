@@ -1,0 +1,31 @@
+{
+  "title": {
+        "locales": {
+            "en": {
+                "title_short": "Writings & Notes",
+                "title_short_nav": "Writings",
+                "title_long_prefix": "Penned with ink, thought and rhythm",
+                "title_long": "Here are {{my words}}"
+            },
+            "de": {
+                "title_short": "Texte & Notizen",
+                "title_short_nav": "Texte",
+                "title_long_prefix": "Niedergeschrieben mit Tinte, Gedanken und Rhythmus",
+                "title_long": "Hier sind {{meine Worte}}"
+            },
+            "hr": {
+                "title_short": "Zapisi i bilješke",
+                "title_short_nav": "Zapisi",
+                "title_long_prefix": "Zapisano tintom, mišlju i ritmom",
+                "title_long": "Evo {{mojih riječi}}"
+            },
+            "tr": {
+                "title_short": "Yazılar ve Notlar",
+                "title_short_nav": "Yazılar",
+                "title_long_prefix": "Mürekkeple, düşünceyle ve ritimle yazıldı",
+                "title_long": "İşte {{benim kelimelerim}}"
+            }
+        }
+    },
+    "articles": []
+}

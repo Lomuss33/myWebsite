@@ -1,0 +1,31 @@
+{
+  "title": {
+        "locales": {
+            "en": {
+                "title_short": "Art & Creativity",
+                "title_short_nav": "Art",
+                "title_long_prefix": "Drawn in color, lines and curiosity",
+                "title_long": "Here are {{my diamonds}}"
+            },
+            "de": {
+                "title_short": "Kunst & Kreativität",
+                "title_short_nav": "Kunst",
+                "title_long_prefix": "Entstanden aus Farbe, Linien und Neugier",
+                "title_long": "Hier sind {{meine Diamanten}}"
+            },
+            "hr": {
+                "title_short": "Umjetnost i kreativnost",
+                "title_short_nav": "Umjetnost",
+                "title_long_prefix": "Nacrtana u bojama, linijama i znatiželji",
+                "title_long": "Evo {{mojih dijamanata}}"
+            },
+            "tr": {
+                "title_short": "Sanat ve Yaratıcılık",
+                "title_short_nav": "Sanat",
+                "title_long_prefix": "Renk, çizgi ve merakla çizildi",
+                "title_long": "İşte {{benim elmaslarım}}"
+            }
+        }
+    },
+    "articles": []
+}

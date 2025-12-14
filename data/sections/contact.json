@@ -87,8 +87,8 @@
             "fill": "#25D366",
             "fillLight": "#1FA955"
           },
-          "label": "Chat on WhatsApp",
-          "link": { "href": "https://wa.me/49XXXXXXXXXX", "tooltipString": "open_website" },
+          "label": " Quick connect!",
+          "link": { "href": "https://wa.me/4917662236934", "tooltipString": "open_website" },
           "copyToClipboardButton": false,
           "locales": {
             "en": { "title": "WhatsApp", "text": "Quick chat for scheduling and follow-ups." },
@@ -106,8 +106,8 @@
             "fill": "#0088CC",
             "fillLight": "#007BB5"
           },
-          "label": "@your_username",
-          "link": { "href": "https://t.me/your_username", "tooltipString": "open_website" },
+          "label": " @lovromusic",
+          "link": { "href": "https://t.me/lovromusic", "tooltipString": "open_website" },
           "copyToClipboardButton": true,
           "locales": {
             "en": { "title": "Telegram", "text": "Preferred for technical links/files." },
@@ -125,9 +125,9 @@
             "fill": "#EA4335",
             "fillLight": "#D33426"
           },
-          "label": "Open Gmail",
+          "label": " Open Gmail",
           "link": {
-            "href": "https://mail.google.com/mail/?view=cm&to=ciao@lovro-music.de&su=Hello&fs=1&tf=1",
+            "href": "https://mail.google.com/mail/?view=cm&to=contact@lovro-music.de&su=HelloFromMyWebsite&fs=1&tf=1",
             "tooltipString": "open_website"
           },
           "copyToClipboardButton": false,
@@ -147,7 +147,7 @@
             "fill": "#0A66C2",
             "fillLight": "#0A57A5"
           },
-          "label": "LinkedIn Profile",
+          "label": " Profile Page",
           "link": {
             "href": "https://www.linkedin.com/in/lovro-musi%C4%87/",
             "tooltipString": "open_website"
@@ -169,9 +169,9 @@
             "fill": "#5865F2",
             "fillLight": "#4752C4"
           },
-          "label": "your_discord_handle",
+          "label": " @lomus33",
           "link": {
-            "href": "https://discordapp.com/users/000000000000000000",
+            "href": "https://discordapp.com/users/lomus33",
             "tooltipString": "open_website"
           },
           "copyToClipboardButton": true,
@@ -191,7 +191,7 @@
             "fill": "#E4405F",
             "fillLight": "#C3324C"
           },
-          "label": "@your_username",
+          "label": " @snopdan_dogovic",
           "link": { "href": "https://instagram.com/your_username", "tooltipString": "open_website" },
           "copyToClipboardButton": false,
           "locales": {

@@ -19,27 +19,27 @@
         "faIcon": "fa-solid fa-pen-to-square"
         },
         {
-        "id": "hobby-art",
+        "id": "my-art",
         "categoryId": "hobbys",
-        "jsonPath": "/data/sections/hobby-art.json",
+        "jsonPath": "/data/sections/my-art.json",
         "faIcon": "fa-solid fa-palette"
         },
         {
-        "id": "hobby-hardware",
+        "id": "my-hardware",
         "categoryId": "hobbys",
-        "jsonPath": "/data/sections/hobby-hardware.json",
+        "jsonPath": "/data/sections/my-hardware.json",
         "faIcon": "fa-solid fa-screwdriver-wrench"
         },
         {
-        "id": "hobby-software",
+        "id": "my-software",
         "categoryId": "hobbys",
-        "jsonPath": "/data/sections/hobby-software.json",
+        "jsonPath": "/data/sections/my-software.json",
         "faIcon": "fa-solid fa-code"
         },
         {
-          "id": "hobby-writings",
+          "id": "my-writings",
           "categoryId": "hobbys",
-          "jsonPath": "/data/sections/hobby-writings.json",
+          "jsonPath": "/data/sections/my-writings.json",
           "faIcon": "fa-solid fa-pen-nib"
         },
         {

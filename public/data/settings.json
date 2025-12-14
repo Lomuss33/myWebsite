@@ -6,7 +6,7 @@
         "version": "1.0.1"
     },
     "preloaderSettings": {
-        "enabled": true,
+        "enabled": false,
         "title": "Lovro <b>Musić</b>",
         "subtitle": "Hardware Engineer",
         "logoOffset": {

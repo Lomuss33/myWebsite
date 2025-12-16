@@ -27,5 +27,221 @@
             }
         }
     },
-    "articles": []
+    "articles": [
+        {
+        "id": 1,
+        "component": "ArticleThread",
+        "locales": {
+            "en": { "title": "My {{Artworks & Travel Albums}}" }
+        },
+        "settings": {
+            "max_rows_collapse_threshold": 3,
+            "order_items_by": "date",
+            "order_items_sort": "desc"
+        },
+        "items": [
+            {
+            "id": 1,
+            "date": { "year": 2023, "month": 10 },
+            "preview": {
+                "links": [
+                {
+                    "href": "https://instagram.com/yourtattooinsta",
+                    "tooltipString": "See on Instagram",
+                    "faIcon": "fa-brands fa-instagram"
+                }
+                ],
+                "screenshots": [
+                "images/flags_large/tattoo-main.png"
+                ],
+                "screenshotsAspectRatio": "1:1"
+            },
+            "locales": {
+                "en": {
+                "title": "Tattoos — My Living Canvas",
+                "country": "Germany",
+                "text": "Personal comic, geometric, and life-story tattoos.",
+                "medium": "Tattoo"
+                }
+            }
+            },
+            {
+            "id": 2,
+            "date": { "year": 2023, "month": 8 },
+            "preview": {
+                "links": [
+                {
+                    "href": "https://vsco.co/yourmacedoniaalbum",
+                    "tooltipString": "Open Macedonia Album",
+                    "faIcon": "fa-solid fa-images"
+                }
+                ],
+                "screenshots": [
+                "images/flags_large/vsco-macedonia.png"
+                ],
+                "screenshotsAspectRatio": "16:9"
+            },
+            "locales": {
+                "en": {
+                "title": "Macedonia — VSCO Album",
+                "country": "Macedonia",
+                "text": "Mountains, monasteries, city life and landscapes.",
+                "medium": "Photography"
+                }
+            }
+            },
+            {
+            "id": 3,
+            "img": "images/flags_large/vsco-greece-cover.png",
+            "date": { "year": 2023, "month": 7 },
+            "preview": {
+                "links": [
+                {
+                    "href": "https://vsco.co/yourgreecealbum",
+                    "tooltipString": "Open Greece Album",
+                    "faIcon": "fa-solid fa-images"
+                }
+                ],
+                "screenshots": [
+                "images/flags_large/vsco-greece-cover.png"
+                ],
+                "screenshotsAspectRatio": "16:9"
+            },
+            "locales": {
+                "en": {
+                "title": "Greece — VSCO Album",
+                "country": "Greece",
+                "text": "Blue seas, islands, and sun-drenched villages.",
+                "medium": "Photography"
+                }
+            }
+            },
+            {
+            "id": 4,
+            "date": { "year": 2023, "month": 6 },
+            "preview": {
+                "links": [
+                {
+                    "href": "https://vsco.co/yourbulgariaalbum",
+                    "tooltipString": "Open Bulgaria Album",
+                    "faIcon": "fa-solid fa-images"
+                }
+                ],
+                "screenshots": [
+                "images/flags_large/vsco-bulgaria.png"
+                ],
+                "screenshotsAspectRatio": "16:9"
+            },
+            "locales": {
+                "en": {
+                "title": "Bulgaria — VSCO Album",
+                "country": "Bulgaria",
+                "text": "Urban and Black Sea — contemporary and classic moments.",
+                "medium": "Photography"
+                }
+            }
+            },
+            {
+            "id": 5,
+            "date": { "year": 2023, "month": 5 },
+            "preview": {
+                "links": [
+                {
+                    "href": "https://vsco.co/yourserbiaalbum",
+                    "tooltipString": "Open Serbia Album",
+                    "faIcon": "fa-solid fa-images"
+                }
+                ],
+                "screenshots": [
+                "images/flags_large/vsco-serbia.png"
+                ],
+                "screenshotsAspectRatio": "16:9"
+            },
+            "locales": {
+                "en": {
+                "title": "Serbia — VSCO Album",
+                "country": "Serbia",
+                "text": "Belgrade, brutalism, neighborhoods, and night views.",
+                "medium": "Photography"
+                }
+            }
+            },
+            {
+            "id": 6,
+            "date": { "year": 2022, "month": 9 },
+            "preview": {
+                "links": [
+                {
+                    "href": "https://vsco.co/yourbihalbum",
+                    "tooltipString": "Open Bosnia Album",
+                    "faIcon": "fa-solid fa-images"
+                }
+                ],
+                "screenshots": [
+                "images/flags_large/vsco-bosnia.png"
+                ],
+                "screenshotsAspectRatio": "16:9"
+            },
+            "locales": {
+                "en": {
+                "title": "Bosnia — VSCO Album",
+                "country": "Bosnia and Herzegovina",
+                "text": "Sarajevo, bridges and rivers—history and modern life.",
+                "medium": "Photography"
+                }
+            }
+            },
+            {
+            "id": 7,
+            "date": { "year": 2022, "month": 8 },
+            "preview": {
+                "links": [
+                {
+                    "href": "https://vsco.co/yourcroatiaalbum",
+                    "tooltipString": "Open Croatia Album",
+                    "faIcon": "fa-solid fa-images"
+                }
+                ],
+                "screenshots": [
+                "images/flags_large/vsco-croatia.png"
+                ],
+                "screenshotsAspectRatio": "16:9"
+            },
+            "locales": {
+                "en": {
+                "title": "Croatia — VSCO Album",
+                "country": "Croatia",
+                "text": "Islands, Adriatic color, street moments from Split to Dubrovnik.",
+                "medium": "Photography"
+                }
+            }
+            },
+            {
+            "id": 8,
+            "date": { "year": 2022, "month": 4 },
+            "preview": {
+                "links": [
+                {
+                    "href": "https://vsco.co/yourgermanyalbum",
+                    "tooltipString": "Open Germany Album",
+                    "faIcon": "fa-solid fa-images"
+                }
+                ],
+                "screenshots": [
+                "images/flags_large/vsco-germany.png"
+                ],
+                "screenshotsAspectRatio": "16:9"
+            },
+            "locales": {
+                "en": {
+                "title": "Germany — VSCO Album",
+                "country": "Germany",
+                "text": "Urban Hessen, culture, skylines, and city parks.",
+                "medium": "Photography"
+                }
+            }
+            }
+        ]
+        }
+    ]
 }

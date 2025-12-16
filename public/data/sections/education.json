@@ -746,33 +746,53 @@
             "id": 1,
             "component": "ArticleStack",
             "locales": {
-                "en": { "title": "Favourite {{educators / YouTubers}}" },
-                "de": { "title": "Lieblings-{{Educators / YouTuber}}" },
-                "hr": { "title": "Omiljeni {{edukatori / YouTuberi}}" },
-                "tr": { "title": "Favori {{eğitmenler / YouTuber'lar}}" }
+                "en": { "title": "Favourite {{educators / YouTubers}}",
+                        "category_all": "All",
+                        "category_languages": "Languages",
+                        "category_frameworks": "Frameworks",
+                        "category_tools": "Tools"
+                },
+                "de": { "title": "Lieblings-{{Educators / YouTuber}}",
+                        "category_all": "Alle",
+                        "category_languages": "Sprachen",
+                        "category_frameworks": "Frameworks",
+                        "category_tools": "Werkzeuge"
+                },
+                "hr": { "title": "Omiljeni {{edukatori / YouTuberi}}",          
+                        "category_all": "Sve",
+                        "category_languages": "Jezici",
+                        "category_frameworks": "Okviri",
+                        "category_tools": "Alati"
+                },
+                "tr": { "title": "Favori {{eğitmenler / YouTuber'lar}}",
+                        "category_all": "Tümü",
+                        "category_languages": "Diller",
+                        "category_frameworks": "Frameworkler",
+                        "category_tools": "Araçlar" }
             },
             "settings": {
+                "categorize_by": ["category_languages", "category_frameworks"],
                 "order_items_by": "id",
                 "order_items_sort": "asc"
             },
             "items": [
                 {
                 "id": 1,
-                "img": "",
-                "faIcon": "fa-brands fa-youtube",
+                "img": "/public/images/yt_fav/Lyle Forever.jpg",
+                "faIcon": "",
                 "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
                 "date": { "year": null, "month": null },
                 "locales": {
-                    "en": { "title": "Khan Academy" },
-                    "de": { "title": "Khan Academy" },
-                    "hr": { "title": "Khan Academy" },
-                    "tr": { "title": "Khan Academy" }
+                    "en": { "title": "Lyle Forever" },
+                    "de": { "title": "Lyle Forever" },
+                    "hr": { "title": "Lyle Forever" },
+                    "tr": { "title": "Lyle Forever" }
                 }
                 },
                 {
                 "id": 2,
-                "img": "",
-                "faIcon": "fa-brands fa-youtube",
+                "img": "public/images/yt_fav/3Blue1Brown.jpg",
+                "faIcon": "",
                 "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
                 "date": { "year": null, "month": null },
                 "locales": {

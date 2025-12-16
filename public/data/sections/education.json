@@ -742,120 +742,451 @@
                 }
             ]
         },
-        {
-            "id": 1,
-            "component": "ArticleStack",
-            "locales": {
-                "en": { "title": "Favourite {{educators / YouTubers}}",
-                        "category_all": "All",
-                        "category_languages": "Languages",
-                        "category_frameworks": "Frameworks",
-                        "category_tools": "Tools"
-                },
-                "de": { "title": "Lieblings-{{Educators / YouTuber}}",
-                        "category_all": "Alle",
-                        "category_languages": "Sprachen",
-                        "category_frameworks": "Frameworks",
-                        "category_tools": "Werkzeuge"
-                },
-                "hr": { "title": "Omiljeni {{edukatori / YouTuberi}}",          
-                        "category_all": "Sve",
-                        "category_languages": "Jezici",
-                        "category_frameworks": "Okviri",
-                        "category_tools": "Alati"
-                },
-                "tr": { "title": "Favori {{eğitmenler / YouTuber'lar}}",
-                        "category_all": "Tümü",
-                        "category_languages": "Diller",
-                        "category_frameworks": "Frameworkler",
-                        "category_tools": "Araçlar" }
-            },
-            "settings": {
-                "categorize_by": ["category_languages", "category_frameworks"],
-                "order_items_by": "id",
-                "order_items_sort": "asc"
-            },
-            "items": [
-                {
-                "id": 1,
-                "img": "/public/images/yt_fav/Lyle Forever.jpg",
-                "faIcon": "",
-                "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
-                "date": { "year": null, "month": null },
-                "locales": {
-                    "en": { "title": "Lyle Forever" },
-                    "de": { "title": "Lyle Forever" },
-                    "hr": { "title": "Lyle Forever" },
-                    "tr": { "title": "Lyle Forever" }
-                }
-                },
-                {
-                "id": 2,
-                "img": "public/images/yt_fav/3Blue1Brown.jpg",
-                "faIcon": "",
-                "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
-                "date": { "year": null, "month": null },
-                "locales": {
-                    "en": { "title": "3Blue1Brown" },
-                    "de": { "title": "3Blue1Brown" },
-                    "hr": { "title": "3Blue1Brown" },
-                    "tr": { "title": "3Blue1Brown" }
-                }
-                },
-                {
-                "id": 3,
-                "img": "",
-                "faIcon": "fa-brands fa-youtube",
-                "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
-                "date": { "year": null, "month": null },
-                "locales": {
-                    "en": { "title": "Veritasium" },
-                    "de": { "title": "Veritasium" },
-                    "hr": { "title": "Veritasium" },
-                    "tr": { "title": "Veritasium" }
-                }
-                },
-                {
-                "id": 4,
-                "img": "",
-                "faIcon": "fa-brands fa-youtube",
-                "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
-                "date": { "year": null, "month": null },
-                "locales": {
-                    "en": { "title": "freeCodeCamp" },
-                    "de": { "title": "freeCodeCamp" },
-                    "hr": { "title": "freeCodeCamp" },
-                    "tr": { "title": "freeCodeCamp" }
-                }
-                },
-                {
-                "id": 5,
-                "img": "",
-                "faIcon": "fa-brands fa-youtube",
-                "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
-                "date": { "year": null, "month": null },
-                "locales": {
-                    "en": { "title": "MIT OpenCourseWare" },
-                    "de": { "title": "MIT OpenCourseWare" },
-                    "hr": { "title": "MIT OpenCourseWare" },
-                    "tr": { "title": "MIT OpenCourseWare" }
-                }
-                },
-                {
-                "id": 6,
-                "img": "",
-                "faIcon": "fa-brands fa-youtube",
-                "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
-                "date": { "year": null, "month": null },
-                "locales": {
-                    "en": { "title": "Fireship" },
-                    "de": { "title": "Fireship" },
-                    "hr": { "title": "Fireship" },
-                    "tr": { "title": "Fireship" }
-                }
-                }
-            ]
-        }
-
+{
+  "id": 1,
+  "component": "ArticleStack",
+  "locales": {
+    "en": {
+      "title": "Favourite {{educators / YouTubers}}",
+      "category_all": "All",
+      "category_practical": "Practical",
+      "category_theoretical": "Theoretical",
+      "category_fun": "Fun"
+    },
+    "de": {
+      "title": "Lieblings-{{Educators / YouTuber}}",
+      "category_all": "Alle",
+      "category_practical": "Praktisch",
+      "category_theoretical": "Theoretisch",
+      "category_fun": "Spaß"
+    },
+    "hr": {
+      "title": "Omiljeni {{edukatori / YouTuberi}}",
+      "category_all": "Sve",
+      "category_practical": "Praktično",
+      "category_theoretical": "Teorijski",
+      "category_fun": "Zabavno"
+    },
+    "tr": {
+      "title": "Favori {{eğitmenler / YouTuber'lar}}",
+      "category_all": "Tümü",
+      "category_practical": "Pratik",
+      "category_theoretical": "Teorik",
+      "category_fun": "Eğlence"
+    }
+  },
+  "settings": {
+    "categorize_by": ["category_practical", "category_theoretical", "category_fun"],
+    "order_items_by": "id",
+    "order_items_sort": "asc"
+  },
+  "items": [
+    {
+      "id": 1,
+      "categoryId": "category_fun",
+      "img": "public/images/yt_fav/Lyle Forever.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Lyle Forever" } }
+    },
+    {
+      "id": 2,
+      "categoryId": "category_fun",
+      "img": "public/images/yt_fav/Kill Tony.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Kill Tony" } }
+    },
+    {
+      "id": 3,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/History of Humankind.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#101820", "bgLight": "#EEF2F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "History of Humankind" } }
+    },
+    {
+      "id": 4,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/HubermanLab.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#0B1220", "bgLight": "#EDF2FF", "fill": "#7C4DFF", "fillLight": "#5E35B1" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "HubermanLab" } }
+    },
+    {
+      "id": 5,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/Tasting History.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#1C120B", "bgLight": "#F7EFE8", "fill": "#FFB74D", "fillLight": "#EF6C00" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Tasting History" } }
+    },
+    {
+      "id": 6,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/Great Books.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#0E1726", "bgLight": "#EEF3FA", "fill": "#64B5F6", "fillLight": "#1976D2" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Great Books" } }
+    },
+    {
+      "id": 7,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/Institute of Human Anatomy.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#220B16", "bgLight": "#FFEAF1", "fill": "#EC407A", "fillLight": "#C2185B" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Institute of Human Anatomy" } }
+    },
+    {
+      "id": 8,
+      "categoryId": "category_practical",
+      "img": "public/images/yt_fav/Garage Thinkering.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#101010", "bgLight": "#F2F2F2", "fill": "#BDBDBD", "fillLight": "#424242" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Garage Thinkering" } }
+    },
+    {
+      "id": 9,
+      "categoryId": "category_practical",
+      "img": "public/images/yt_fav/Good Woork.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#0B1A0E", "bgLight": "#EAF7EE", "fill": "#66BB6A", "fillLight": "#2E7D32" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Good Woork" } }
+    },
+    {
+      "id": 10,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/After Skool.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#0D1B2A", "bgLight": "#EAF2FF", "fill": "#4FC3F7", "fillLight": "#0288D1" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "After Skool" } }
+    },
+    {
+      "id": 11,
+      "categoryId": "category_practical",
+      "img": "public/images/yt_fav/Sabin Civil Engineering.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#1A140A", "bgLight": "#F7F1E5", "fill": "#FFD54F", "fillLight": "#F9A825" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Sabin Civil Engineering" } }
+    },
+    {
+      "id": 12,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/OTR Food & History.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#1E0E0B", "bgLight": "#FFF0EB", "fill": "#FF7043", "fillLight": "#E64A19" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "OTR Food & History" } }
+    },
+    {
+      "id": 13,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/The School of Life.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#141414", "bgLight": "#F4F4F4", "fill": "#E0E0E0", "fillLight": "#424242" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "The School of Life" } }
+    },
+    {
+      "id": 14,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/How Money Works.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#071A12", "bgLight": "#E7F6EC", "fill": "#34A853", "fillLight": "#1E7A3B" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "How Money Works" } }
+    },
+    {
+      "id": 15,
+      "categoryId": "category_fun",
+      "img": "public/images/yt_fav/PewDiePie.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "PewDiePie" } }
+    },
+    {
+      "id": 16,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/Predictive History.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#0E1726", "bgLight": "#EEF3FA", "fill": "#90CAF9", "fillLight": "#1976D2" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Predictive History" } }
+    },
+    {
+      "id": 17,
+      "categoryId": "category_practical",
+      "img": "public/images/yt_fav/SmarterEveryDay.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#0B1220", "bgLight": "#EDF2FF", "fill": "#64B5F6", "fillLight": "#1565C0" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "SmarterEveryDay" } }
+    },
+    {
+      "id": 18,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/Economics Explained.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#071A12", "bgLight": "#E7F6EC", "fill": "#66BB6A", "fillLight": "#2E7D32" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Economics Explained" } }
+    },
+    {
+      "id": 19,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/Sisyphus55.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#141414", "bgLight": "#F4F4F4", "fill": "#E0E0E0", "fillLight": "#424242" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Sisyphus_55" } }
+    },
+    {
+      "id": 20,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/Alex OConnor.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#141414", "bgLight": "#F4F4F4", "fill": "#BDBDBD", "fillLight": "#424242" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Alex O'Connor" } }
+    },
+    {
+      "id": 21,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/GeoHistory.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#0E1726", "bgLight": "#EEF3FA", "fill": "#64B5F6", "fillLight": "#1976D2" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "GeoHistory" } }
+    },
+    {
+      "id": 22,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/Lex Fridman.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#0D1117", "bgLight": "#EDF2F7", "fill": "#90CAF9", "fillLight": "#1565C0" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Lex Fridman" } }
+    },
+    {
+      "id": 23,
+      "categoryId": "category_fun",
+      "img": "public/images/yt_fav/Kvizoteka.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#1C120B", "bgLight": "#F7EFE8", "fill": "#FFB74D", "fillLight": "#EF6C00" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Kvizoteka" } }
+    },
+    {
+      "id": 24,
+      "categoryId": "category_practical",
+      "img": "public/images/yt_fav/TechLinked.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#0D1117", "bgLight": "#EDF2F7", "fill": "#4FC3F7", "fillLight": "#0288D1" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "TechLinked" } }
+    },
+    {
+      "id": 25,
+      "categoryId": "category_practical",
+      "img": "public/images/yt_fav/Finanzfluss.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#071A12", "bgLight": "#E7F6EC", "fill": "#2E7D32", "fillLight": "#1B5E20" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Finanzfluss" } }
+    },
+    {
+      "id": 26,
+      "categoryId": "category_practical",
+      "img": "public/images/yt_fav/Lohnt sich Das.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#071A12", "bgLight": "#E7F6EC", "fill": "#66BB6A", "fillLight": "#2E7D32" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Lohnt sich das?" } }
+    },
+    {
+      "id": 27,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/Kurzgesagt.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#FFD54F", "fillLight": "#F9A825" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Kurzgesagt – In a Nutshell" } }
+    },
+    {
+      "id": 28,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/Veritasium.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#0B1220", "bgLight": "#EDF2FF", "fill": "#FF5252", "fillLight": "#D32F2F" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Veritasium" } }
+    },
+    {
+      "id": 29,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/SciShow.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#0B1220", "bgLight": "#EDF2FF", "fill": "#64B5F6", "fillLight": "#1565C0" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "SciShow" } }
+    },
+    {
+      "id": 30,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/TLDR News Global.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "TLDR News Global" } }
+    },
+    {
+      "id": 31,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/Kings & Generals.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#1C120B", "bgLight": "#F7EFE8", "fill": "#FFB74D", "fillLight": "#EF6C00" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Kings & Generals" } }
+    },
+    {
+      "id": 32,
+      "categoryId": "category_fun",
+      "img": "public/images/yt_fav/Vsauce.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#0B1220", "bgLight": "#EDF2FF", "fill": "#8BC34A", "fillLight": "#558B2F" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Vsauce" } }
+    },
+    {
+      "id": 33,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/3Blue1Brown.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#0D1117", "bgLight": "#EDF2F7", "fill": "#90CAF9", "fillLight": "#1565C0" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "3Blue1Brown" } }
+    },
+    {
+      "id": 34,
+      "categoryId": "category_practical",
+      "img": "public/images/yt_fav/Fireship.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Fireship" } }
+    },
+    {
+      "id": 35,
+      "categoryId": "category_practical",
+      "img": "public/images/yt_fav/freeCodeCamp.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#0D1117", "bgLight": "#EDF2F7", "fill": "#E0E0E0", "fillLight": "#424242" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "freeCodeCamp.org" } }
+    },
+    {
+      "id": 36,
+      "categoryId": "category_practical",
+      "img": "public/images/yt_fav/Computerphile.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#0B1220", "bgLight": "#EDF2FF", "fill": "#64B5F6", "fillLight": "#1565C0" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Computerphile" } }
+    },
+    {
+      "id": 37,
+      "categoryId": "category_practical",
+      "img": "public/images/yt_fav/ElectroBOOM.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#2B0A0A", "bgLight": "#F7E7E7", "fill": "#FF7043", "fillLight": "#E64A19" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "ElectroBOOM" } }
+    },
+    {
+      "id": 38,
+      "categoryId": "category_practical",
+      "img": "public/images/yt_fav/Channel 5.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#4FC3F7", "fillLight": "#0288D1" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Channel 5 with Andrew Callaghan" } }
+    },
+    {
+      "id": 39,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/Numberphile.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#0D1117", "bgLight": "#EDF2F7", "fill": "#90CAF9", "fillLight": "#1565C0" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Numberphile" } }
+    },
+    {
+      "id": 40,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/MinutePhysics.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#0B1220", "bgLight": "#EDF2FF", "fill": "#FFD54F", "fillLight": "#F9A825" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "minutephysics" } }
+    },
+    {
+      "id": 41,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/Real Engineering.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#101010", "bgLight": "#F2F2F2", "fill": "#BDBDBD", "fillLight": "#424242" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Real Engineering" } }
+    },
+    {
+      "id": 42,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/RealLifeLore.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#0E1726", "bgLight": "#EEF3FA", "fill": "#64B5F6", "fillLight": "#1976D2" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "RealLifeLore" } }
+    },
+    {
+      "id": 43,
+      "categoryId": "category_theoretical",
+      "img": "public/images/yt_fav/ColdFusion.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#0D1117", "bgLight": "#EDF2F7", "fill": "#4FC3F7", "fillLight": "#0288D1" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "ColdFusion" } }
+    },
+    {
+      "id": 44,
+      "categoryId": "category_fun",
+      "img": "public/images/yt_fav/Internet Historian.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#141414", "bgLight": "#F4F4F4", "fill": "#E0E0E0", "fillLight": "#424242" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Internet Historian" } }
+    },
+    {
+      "id": 45,
+      "categoryId": "category_fun",
+      "img": "public/images/yt_fav/Casually Explained.jpg",
+      "faIcon": "",
+      "faIconColors": { "bg": "#141414", "bgLight": "#F4F4F4", "fill": "#E0E0E0", "fillLight": "#424242" },
+      "date": { "year": null, "month": null },
+      "locales": { "en": { "title": "Casually Explained" } }
+    }
+  ]
+}
     ]
 }

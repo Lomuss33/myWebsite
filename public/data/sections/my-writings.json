@@ -1,31 +1,210 @@
 {
   "title": {
-        "locales": {
+    "locales": {
+      "en": {
+        "title_short": "Writings & Notes",
+        "title_short_nav": "Writings",
+        "title_long_prefix": "Penned with ink, thought and rhythm",
+        "title_long": "Here are {{my words}}"
+      },
+      "de": {
+        "title_short": "Texte & Notizen",
+        "title_short_nav": "Texte",
+        "title_long_prefix": "Niedergeschrieben mit Tinte, Gedanken und Rhythmus",
+        "title_long": "Hier sind {{meine Worte}}"
+      },
+      "hr": {
+        "title_short": "Zapisi i bilješke",
+        "title_short_nav": "Zapisi",
+        "title_long_prefix": "Zapisano tintom, mišlju i ritmom",
+        "title_long": "Evo {{mojih riječi}}"
+      },
+      "tr": {
+        "title_short": "Yazılar ve Notlar",
+        "title_short_nav": "Yazılar",
+        "title_long_prefix": "Mürekkeple, düşünceyle ve ritimle yazıldı",
+        "title_long": "İşte {{benim kelimelerim}}"
+      }
+    }
+  },
+  "articles": [
+    {
+      "id": 1,
+      "component": "ArticleThread",
+      "locales": {
+        "en": { "title": "My {{Writings & Presentations}}" }
+      },
+      "settings": {
+        "max_rows_collapse_threshold": 3,
+        "order_items_by": "date",
+        "order_items_sort": "desc"
+      },
+      "items": [
+        {
+          "id": 1,
+          "date": { "year": 2026, "month": 11 },
+          "preview": {
+            "links": [
+              {
+                "href": "",
+                "tooltipString": "Open document (placeholder)",
+                "faIcon": "fa-solid fa-file-lines"
+              }
+            ],
+            "screenshots": ["images/writings/erp-implementation-challenges-cover.png"],
+            "screenshotsAspectRatio": "16:9"
+          },
+          "locales": {
             "en": {
-                "title_short": "Writings & Notes",
-                "title_short_nav": "Writings",
-                "title_long_prefix": "Penned with ink, thought and rhythm",
-                "title_long": "Here are {{my words}}"
+              "title": "ERP Implementation Challenges — IBU",
+              "country": "Skopje, North Macedonia",
+              "text": "Notes and practical learnings on real-world ERP rollouts: stakeholder alignment, process mapping, data migration, change management, and go-live risk control.",
+              "medium": "Paper / Report"
             },
             "de": {
-                "title_short": "Texte & Notizen",
-                "title_short_nav": "Texte",
-                "title_long_prefix": "Niedergeschrieben mit Tinte, Gedanken und Rhythmus",
-                "title_long": "Hier sind {{meine Worte}}"
+              "title": "Herausforderungen bei der ERP-Implementierung — IBU",
+              "country": "Skopje, Nordmazedonien",
+              "text": "Notizen und Praxis-Learnings zu ERP-Einführungen: Stakeholder-Alignment, Prozessaufnahme, Datenmigration, Change Management und Go-Live-Risikokontrolle.",
+              "medium": "Ausarbeitung / Bericht"
             },
             "hr": {
-                "title_short": "Zapisi i bilješke",
-                "title_short_nav": "Zapisi",
-                "title_long_prefix": "Zapisano tintom, mišlju i ritmom",
-                "title_long": "Evo {{mojih riječi}}"
+              "title": "Izazovi implementacije ERP-a — IBU",
+              "country": "Skopje, Sjeverna Makedonija",
+              "text": "Bilješke i praktična iskustva iz stvarnih ERP uvođenja: usklađivanje dionika, mapiranje procesa, migracija podataka, upravljanje promjenama i kontrola rizika pri puštanju u rad.",
+              "medium": "Rad / izvještaj"
             },
             "tr": {
-                "title_short": "Yazılar ve Notlar",
-                "title_short_nav": "Yazılar",
-                "title_long_prefix": "Mürekkeple, düşünceyle ve ritimle yazıldı",
-                "title_long": "İşte {{benim kelimelerim}}"
+              "title": "ERP Uygulama Zorlukları — IBU",
+              "country": "Üsküp, Kuzey Makedonya",
+              "text": "Gerçek ERP geçişlerinden notlar: paydaş uyumu, süreç çıkarımı, veri migrasyonu, değişim yönetimi ve canlıya geçiş risk kontrolü.",
+              "medium": "Rapor / çalışma"
             }
+          }
+        },
+        {
+          "id": 2,
+          "date": { "year": 2026, "month": 9 },
+          "preview": {
+            "links": [
+              {
+                "href": "",
+                "tooltipString": "Open slides (placeholder)",
+                "faIcon": "fa-solid fa-display"
+              }
+            ],
+            "screenshots": ["images/writings/os-systems-future-cover.png"],
+            "screenshotsAspectRatio": "16:9"
+          },
+          "locales": {
+            "en": {
+              "title": "IBU International Student Congress — OS Systems: The Future",
+              "country": "Skopje, North Macedonia",
+              "text": "Congress talk / written notes about where operating systems are heading: security-by-design, virtualization, cloud-native workloads, and the evolving developer experience.",
+              "medium": "Congress Talk / Slides"
+            },
+            "de": {
+              "title": "IBU International Student Congress — Betriebssysteme: Die Zukunft",
+              "country": "Skopje, Nordmazedonien",
+              "text": "Vortrag / Notizen darüber, wohin sich Betriebssysteme entwickeln: Security-by-Design, Virtualisierung, Cloud-native Workloads und die Developer Experience.",
+              "medium": "Kongressvortrag / Folien"
+            },
+            "hr": {
+              "title": "IBU International Student Congress — Operativni sustavi: budućnost",
+              "country": "Skopje, Sjeverna Makedonija",
+              "text": "Predavanje / bilješke o smjeru razvoja operativnih sustava: sigurnost po dizajnu, virtualizacija, cloud-native opterećenja i iskustvo programera.",
+              "medium": "Kongresno izlaganje / prezentacija"
+            },
+            "tr": {
+              "title": "IBU International Student Congress — İşletim Sistemleri: Gelecek",
+              "country": "Üsküp, Kuzey Makedonya",
+              "text": "İşletim sistemlerinin gidişatı üzerine sunum/notlar: tasarımla güvenlik, sanallaştırma, cloud-native iş yükleri ve geliştirici deneyimi.",
+              "medium": "Kongre sunumu / slayt"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "date": { "year": 2023, "month": 2 },
+          "preview": {
+            "links": [
+              {
+                "href": "",
+                "tooltipString": "Open report (placeholder)",
+                "faIcon": "fa-solid fa-file-pdf"
+              }
+            ],
+            "screenshots": ["images/writings/industry4-warehouse-automation-cover.png"],
+            "screenshotsAspectRatio": "16:9"
+          },
+          "locales": {
+            "en": {
+              "title": "Industry 4.0 — Warehouse Automation Reengineering (THM)",
+              "country": "Germany",
+              "text": "Reengineering concepts for a warehouse automation flow: process redesign, sensor/actor mapping, control logic, and performance/safety considerations.",
+              "medium": "University Project"
+            },
+            "de": {
+              "title": "Industrie 4.0 — Lagerautomatisierung Reengineering (THM)",
+              "country": "Deutschland",
+              "text": "Reengineering-Ansätze für Lagerautomatisierung: Prozess-Redesign, Sensor/Aktor-Zuordnung, Steuerlogik sowie Performance- und Sicherheitsaspekte.",
+              "medium": "Hochschulprojekt"
+            },
+            "hr": {
+              "title": "Industrija 4.0 — Reengineering automatizacije skladišta (THM)",
+              "country": "Njemačka",
+              "text": "Koncepti reengineeringa za tok automatizacije skladišta: redizajn procesa, mapiranje senzora/aktuatora, logika upravljanja te performanse i sigurnost.",
+              "medium": "Sveučilišni projekt"
+            },
+            "tr": {
+              "title": "Endüstri 4.0 — Depo Otomasyonu Yeniden Mühendislik (THM)",
+              "country": "Almanya",
+              "text": "Depo otomasyon akışı için yeniden mühendislik: süreç tasarımı, sensör/aktüatör eşlemesi, kontrol mantığı ve performans/güvenlik değerlendirmeleri.",
+              "medium": "Üniversite projesi"
+            }
+          }
+        },
+        {
+          "id": 4,
+          "date": { "year": 2017, "month": 3 },
+          "preview": {
+            "links": [
+              {
+                "href": "",
+                "tooltipString": "Open presentation (placeholder)",
+                "faIcon": "fa-solid fa-chalkboard-user"
+              }
+            ],
+            "screenshots": ["images/writings/what-is-light-cover.png"],
+            "screenshotsAspectRatio": "16:9"
+          },
+          "locales": {
+            "en": {
+              "title": "Graduation Presentation — What is Light?",
+              "country": "Germany",
+              "text": "A school graduation presentation explaining light basics: waves vs. particles, refraction, reflection, and everyday applications.",
+              "medium": "Presentation"
+            },
+            "de": {
+              "title": "Realschule Abschlusspräsentation — Was ist Licht?",
+              "country": "Deutschland",
+              "text": "Abschlusspräsentation zu den Grundlagen des Lichts: Welle vs. Teilchen, Brechung, Reflexion und Anwendungen im Alltag.",
+              "medium": "Präsentation"
+            },
+            "hr": {
+              "title": "Završna prezentacija — Što je svjetlost?",
+              "country": "Njemačka",
+              "text": "Školska završna prezentacija o osnovama svjetlosti: valovi vs. čestice, lom, refleksija i primjene u svakodnevici.",
+              "medium": "Prezentacija"
+            },
+            "tr": {
+              "title": "Mezuniyet Sunumu — Işık nedir?",
+              "country": "Almanya",
+              "text": "Işığın temellerini anlatan mezuniyet sunumu: dalga-parçacık ikiliği, kırılma, yansıma ve günlük kullanım alanları.",
+              "medium": "Sunum"
+            }
+          }
         }
-    },
-    "articles": []
+      ]
+    }
+  ]
 }

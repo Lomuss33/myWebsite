@@ -183,11 +183,11 @@ function PreloaderWindow({ title, subtitle, logoOffset, setDidLoadAllImages, sho
     return (
         <div className={`preloader-window ${hiddenClass}`}>
             <div className={`preloader-window-content`}>
+                <PreloaderWindowInfo title={title}/>Lovro Musić
                 <PacMan variant={PacMan.ColorVariants.LOADER}
                         hidden={isPacManHidden}/>
 
-                <PreloaderWindowInfo title={title}
-                                     subtitle={subtitle}
+                <PreloaderWindowInfo subtitle={subtitle}
                                      logoOffset={logoOffset}
                                      hidden={!showElements}
                                      setDidLoadLogo={setDidLoadLogo}/>

@@ -2,17 +2,17 @@
     "developerSettings": {
         "debugMode": false,
         "fakeEmailRequests": false,
-        "stayOnThePreloaderScreen": true,
+        "stayOnThePreloaderScreen": false,
         "version": "1.0.1"
     },
     "preloaderSettings": {
         "enabled": true,
         "title": "Lovro <b>Musić</b>",
-        "subtitle": "Hardware Engineer",
+        "subtitle": "The Giant Blue Signal Engineer",
         "logoOffset": {
-            "right": 12,
-            "top": -12,
-            "bottom": 10
+            "right": 0,
+            "top": 0,
+            "bottom": 50
         }
     },
     "templateSettings": {

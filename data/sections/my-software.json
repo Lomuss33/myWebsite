@@ -34,166 +34,472 @@
       "locales": {
         "en": {
           "category_all": "All",
-          "category_languages": "Languages",
-          "category_frameworks": "Frameworks",
-          "category_tools": "Tools"
+          "category_phone": "Phone",
+          "category_pc": "PC",
+          "category_cloud": "Cloud",
+          "category_igre": "Igre",
+          "category_life": "Life",
+          "category_career": "Career"
         },
         "de": {
           "category_all": "Alle",
-          "category_languages": "Sprachen",
-          "category_frameworks": "Frameworks",
-          "category_tools": "Werkzeuge"
+          "category_phone": "Handy",
+          "category_pc": "PC",
+          "category_cloud": "Cloud",
+          "category_igre": "Spiele",
+          "category_life": "Leben",
+          "category_career": "Karriere"
         },
         "hr": {
           "category_all": "Sve",
-          "category_languages": "Jezici",
-          "category_frameworks": "Okviri",
-          "category_tools": "Alati"
+          "category_phone": "Mobitel",
+          "category_pc": "PC",
+          "category_cloud": "Cloud",
+          "category_igre": "Igre",
+          "category_life": "Život",
+          "category_career": "Karijera"
         },
         "tr": {
           "category_all": "Tümü",
-          "category_languages": "Diller",
-          "category_frameworks": "Frameworkler",
-          "category_tools": "Araçlar"
+          "category_phone": "Telefon",
+          "category_pc": "PC",
+          "category_cloud": "Bulut",
+          "category_igre": "Oyun",
+          "category_life": "Hayat",
+          "category_career": "Kariyer"
         }
       },
       "settings": {
-        "categorize_by": ["category_languages", "category_frameworks"],
+        "categorize_by": [
+          "category_phone",
+          "category_pc",
+          "category_cloud",
+          "category_igre",
+          "category_life",
+          "category_career"
+        ],
         "order_items_by": "id",
         "order_items_sort": "asc"
       },
       "items": [
         {
           "id": 1,
-          "categoryId": "category_languages",
-          "faIcon": "fa-brands fa-html5",
-          "faIconColors": { "fill": "#e44d26" },
-          "locales": { "en": { "title": "HTML5" } }
-        },
-        {
-          "id": 2,
-          "categoryId": "category_languages",
-          "faIcon": "fa-brands fa-css3-alt",
-          "faIconColors": { "fill": "#264de4" },
-          "locales": { "en": { "title": "CSS3" } }
-        },
-        {
-          "id": 3,
-          "categoryId": "category_languages",
-          "faIcon": "fa-brands fa-js",
-          "faIconColors": { "fill": "#f7df1e" },
-          "locales": { "en": { "title": "JavaScript" } }
-        },
-        {
-          "id": 4,
-          "categoryId": "category_languages",
-          "img": "images/content/logo-typescript.png",
-          "locales": { "en": { "title": "TypeScript" } }
-        },
-        {
-          "id": 5,
-          "categoryId": "category_languages",
-          "faIcon": "fa-brands fa-python",
-          "faIconColors": { "fill": "#306998" },
-          "locales": { "en": { "title": "Python" } }
-        },
-        {
-          "id": 6,
-          "categoryId": "category_languages",
-          "faIcon": "fa-brands fa-php",
-          "faIconColors": { "fill": "#8892BF" },
-          "locales": { "en": { "title": "PHP" } }
-        },
-        {
-          "id": 7,
-          "categoryId": "category_languages",
-          "faIcon": "fa-solid fa-database",
-          "faIconColors": { "fill": "#f29111" },
-          "locales": { "en": { "title": "SQL" } }
-        },
-        {
-          "id": 8,
-          "categoryId": "category_languages",
-          "faIcon": "fa-solid fa-terminal",
-          "faIconColors": { "fill": "#6b7280" },
-          "locales": { "en": { "title": "Bash / Shell" } }
-        },
-
-        {
-          "id": 9,
-          "categoryId": "category_frameworks",
-          "faIcon": "fa-brands fa-react",
-          "faIconColors": { "fill": "#61dafb" },
-          "locales": { "en": { "title": "React" } }
-        },
-        {
-          "id": 10,
-          "categoryId": "category_frameworks",
-          "faIcon": "fa-brands fa-vuejs",
-          "faIconColors": { "fill": "#42b883" },
-          "locales": { "en": { "title": "Vue" } }
-        },
-        {
-          "id": 11,
-          "categoryId": "category_frameworks",
-          "img": "images/content/logo-nextjs.png",
-          "locales": { "en": { "title": "Next.js" } }
-        },
-        {
-          "id": 12,
-          "categoryId": "category_frameworks",
-          "faIcon": "fa-solid fa-wind",
-          "faIconColors": { "fill": "#38BDF8" },
-          "locales": { "en": { "title": "Tailwind CSS" } }
-        },
-        {
-          "id": 13,
-          "categoryId": "category_frameworks",
-          "faIcon": "fa-brands fa-node-js",
-          "faIconColors": { "fill": "#83CD29" },
-          "locales": { "en": { "title": "Node.js" } }
-        },
-        {
-          "id": 14,
-          "categoryId": "category_frameworks",
-          "faIcon": "fa-solid fa-server",
-          "faIconColors": { "fill": "#6b7280" },
-          "locales": { "en": { "title": "Express" } }
-        },
-
-        {
-          "id": 15,
-          "categoryId": "category_tools",
+          "categoryId": "category_pc",
           "faIcon": "fa-brands fa-git-alt",
-          "faIconColors": { "fill": "#f05033" },
+          "faIconColors": { "fill": "#F05032" },
           "locales": { "en": { "title": "Git" } }
         },
         {
-          "id": 16,
-          "categoryId": "category_tools",
+          "id": 2,
+          "categoryId": "category_pc",
           "faIcon": "fa-brands fa-github",
-          "faIconColors": { "fill": "#24292e" },
+          "faIconColors": { "fill": "#24292E", "fillLight": "#24292E" },
           "locales": { "en": { "title": "GitHub" } }
         },
         {
-          "id": 17,
-          "categoryId": "category_tools",
-          "img": "images/content/logo-vscode.png",
+          "id": 3,
+          "categoryId": "category_pc",
+          "img": "public/images/contant/logo-vscode.png",
           "locales": { "en": { "title": "VS Code" } }
         },
         {
+          "id": 4,
+          "categoryId": "category_pc",
+          "faIcon": "fa-solid fa-terminal",
+          "faIconColors": { "fill": "#6B7280" },
+          "locales": { "en": { "title": "Terminal (Bash/Zsh)" } }
+        },
+        {
+          "id": 5,
+          "categoryId": "category_pc",
+          "faIcon": "fa-brands fa-docker",
+          "faIconColors": { "fill": "#2496ED" },
+          "locales": { "en": { "title": "Docker" } }
+        },
+        {
+          "id": 6,
+          "categoryId": "category_pc",
+          "faIcon": "fa-solid fa-cube",
+          "faIconColors": { "fill": "#0DB7ED" },
+          "locales": { "en": { "title": "Docker Compose" } }
+        },
+        {
+          "id": 7,
+          "categoryId": "category_pc",
+          "faIcon": "fa-brands fa-linux",
+          "faIconColors": { "fill": "#FCC624" },
+          "locales": { "en": { "title": "Linux" } }
+        },
+        {
+          "id": 8,
+          "categoryId": "category_pc",
+          "faIcon": "fa-brands fa-windows",
+          "faIconColors": { "fill": "#0078D6" },
+          "locales": { "en": { "title": "Windows" } }
+        },
+        {
+          "id": 9,
+          "categoryId": "category_pc",
+          "faIcon": "fa-solid fa-network-wired",
+          "faIconColors": { "fill": "#1565C0" },
+          "locales": { "en": { "title": "Wireshark" } }
+        },
+        {
+          "id": 10,
+          "categoryId": "category_pc",
+          "faIcon": "fa-solid fa-shield-halved",
+          "faIconColors": { "fill": "#43A047" },
+          "locales": { "en": { "title": "Bitwarden" } }
+        },
+        {
+          "id": 11,
+          "categoryId": "category_pc",
+          "faIcon": "fa-solid fa-lock",
+          "faIconColors": { "fill": "#1F2937" },
+          "locales": { "en": { "title": "KeePassXC" } }
+        },
+        {
+          "id": 12,
+          "categoryId": "category_cloud",
+          "faIcon": "fa-brands fa-cloudflare",
+          "faIconColors": { "fill": "#F38020" },
+          "locales": { "en": { "title": "Cloudflare" } }
+        },
+        {
+          "id": 13,
+          "categoryId": "category_cloud",
+          "faIcon": "fa-solid fa-globe",
+          "faIconColors": { "fill": "#2563EB" },
+          "locales": { "en": { "title": "Nginx Proxy Manager" } }
+        },
+        {
+          "id": 14,
+          "categoryId": "category_cloud",
+          "faIcon": "fa-solid fa-server",
+          "faIconColors": { "fill": "#6B7280" },
+          "locales": { "en": { "title": "VPS (Linux Server)" } }
+        },
+        {
+          "id": 15,
+          "categoryId": "category_cloud",
+          "faIcon": "fa-solid fa-key",
+          "faIconColors": { "fill": "#0F172A" },
+          "locales": { "en": { "title": "SSH" } }
+        },
+        {
+          "id": 16,
+          "categoryId": "category_cloud",
+          "faIcon": "fa-solid fa-rotate",
+          "faIconColors": { "fill": "#10B981" },
+          "locales": { "en": { "title": "Uptime Kuma" } }
+        },
+        {
+          "id": 17,
+          "categoryId": "category_cloud",
+          "faIcon": "fa-solid fa-diagram-project",
+          "faIconColors": { "fill": "#8B5CF6" },
+          "locales": { "en": { "title": "Portainer" } }
+        },
+        {
           "id": 18,
-          "categoryId": "category_tools",
-          "faIcon": "fa-brands fa-npm",
-          "faIconColors": { "fill": "#cb0000" },
-          "locales": { "en": { "title": "npm" } }
+          "categoryId": "category_cloud",
+          "faIcon": "fa-solid fa-database",
+          "faIconColors": { "fill": "#F29111" },
+          "locales": { "en": { "title": "PostgreSQL" } }
         },
         {
           "id": 19,
-          "categoryId": "category_tools",
-          "faIcon": "fa-brands fa-docker",
-          "faIconColors": { "fill": "#0db7ed" },
-          "locales": { "en": { "title": "Docker" } }
+          "categoryId": "category_cloud",
+          "faIcon": "fa-solid fa-database",
+          "faIconColors": { "fill": "#4479A1" },
+          "locales": { "en": { "title": "MySQL/MariaDB" } }
+        },
+        {
+          "id": 20,
+          "categoryId": "category_cloud",
+          "faIcon": "fa-solid fa-robot",
+          "faIconColors": { "fill": "#00BCD4" },
+          "locales": { "en": { "title": "n8n" } }
+        },
+        {
+          "id": 21,
+          "categoryId": "category_cloud",
+          "faIcon": "fa-solid fa-plug",
+          "faIconColors": { "fill": "#22C55E" },
+          "locales": { "en": { "title": "Home Assistant (Cloud/Remote)" } }
+        },
+        {
+          "id": 22,
+          "categoryId": "category_phone",
+          "faIcon": "fa-brands fa-android",
+          "faIconColors": { "fill": "#3DDC84" },
+          "locales": { "en": { "title": "Android" } }
+        },
+        {
+          "id": 23,
+          "categoryId": "category_phone",
+          "faIcon": "fa-solid fa-shield-halved",
+          "faIconColors": { "fill": "#43A047" },
+          "locales": { "en": { "title": "Bitwarden (Mobile)" } }
+        },
+        {
+          "id": 24,
+          "categoryId": "category_phone",
+          "faIcon": "fa-solid fa-map-location-dot",
+          "faIconColors": { "fill": "#EA4335" },
+          "locales": { "en": { "title": "Google Maps" } }
+        },
+        {
+          "id": 25,
+          "categoryId": "category_phone",
+          "faIcon": "fa-solid fa-message",
+          "faIconColors": { "fill": "#25D366" },
+          "locales": { "en": { "title": "WhatsApp" } }
+        },
+        {
+          "id": 26,
+          "categoryId": "category_phone",
+          "faIcon": "fa-brands fa-telegram",
+          "faIconColors": { "fill": "#0088CC" },
+          "locales": { "en": { "title": "Telegram" } }
+        },
+        {
+          "id": 27,
+          "categoryId": "category_phone",
+          "faIcon": "fa-solid fa-qrcode",
+          "faIconColors": { "fill": "#111827" },
+          "locales": { "en": { "title": "2FA Authenticator" } }
+        },
+        {
+          "id": 28,
+          "categoryId": "category_phone",
+          "faIcon": "fa-solid fa-wifi",
+          "faIconColors": { "fill": "#2563EB" },
+          "locales": { "en": { "title": "Termux" } }
+        },
+        {
+          "id": 29,
+          "categoryId": "category_phone",
+          "faIcon": "fa-solid fa-bolt",
+          "faIconColors": { "fill": "#FF9800" },
+          "locales": { "en": { "title": "Tasker" } }
+        },
+        {
+          "id": 30,
+          "categoryId": "category_phone",
+          "faIcon": "fa-solid fa-toggle-on",
+          "faIconColors": { "fill": "#22C55E" },
+          "locales": { "en": { "title": "IFTTT" } }
+        },
+        {
+          "id": 31,
+          "categoryId": "category_phone",
+          "faIcon": "fa-solid fa-robot",
+          "faIconColors": { "fill": "#8B5CF6" },
+          "locales": { "en": { "title": "Automate" } }
+        },
+        {
+          "id": 32,
+          "categoryId": "category_life",
+          "faIcon": "fa-solid fa-list-check",
+          "faIconColors": { "fill": "#7C3AED" },
+          "locales": { "en": { "title": "Notion" } }
+        },
+        {
+          "id": 33,
+          "categoryId": "category_life",
+          "faIcon": "fa-solid fa-note-sticky",
+          "faIconColors": { "fill": "#F4B400" },
+          "locales": { "en": { "title": "Obsidian" } }
+        },
+        {
+          "id": 34,
+          "categoryId": "category_life",
+          "faIcon": "fa-solid fa-calendar-days",
+          "faIconColors": { "fill": "#4285F4" },
+          "locales": { "en": { "title": "Google Calendar" } }
+        },
+        {
+          "id": 35,
+          "categoryId": "category_life",
+          "faIcon": "fa-solid fa-dumbbell",
+          "faIconColors": { "fill": "#EF4444" },
+          "locales": { "en": { "title": "Strong (Workout Tracker)" } }
+        },
+        {
+          "id": 36,
+          "categoryId": "category_career",
+          "faIcon": "fa-brands fa-linkedin",
+          "faIconColors": { "fill": "#0A66C2" },
+          "locales": { "en": { "title": "LinkedIn" } }
+        },
+        {
+          "id": 37,
+          "categoryId": "category_career",
+          "faIcon": "fa-solid fa-file-lines",
+          "faIconColors": { "fill": "#374151" },
+          "locales": { "en": { "title": "Resume/CV (PDF Tooling)" } }
+        },
+        {
+          "id": 38,
+          "categoryId": "category_career",
+          "faIcon": "fa-solid fa-diagram-project",
+          "faIconColors": { "fill": "#10B981" },
+          "locales": { "en": { "title": "Jira" } }
+        },
+        {
+          "id": 39,
+          "categoryId": "category_career",
+          "faIcon": "fa-solid fa-people-group",
+          "faIconColors": { "fill": "#4F46E5" },
+          "locales": { "en": { "title": "Confluence" } }
+        },
+        {
+          "id": 40,
+          "categoryId": "category_career",
+          "faIcon": "fa-solid fa-comments",
+          "faIconColors": { "fill": "#0EA5E9" },
+          "locales": { "en": { "title": "Slack" } }
+        },
+        {
+          "id": 41,
+          "categoryId": "category_igre",
+          "faIcon": "fa-brands fa-steam",
+          "faIconColors": { "fill": "#171A21", "fillLight": "#171A21" },
+          "locales": { "en": { "title": "Steam" } }
+        },
+        {
+          "id": 42,
+          "categoryId": "category_igre",
+          "faIcon": "fa-brands fa-discord",
+          "faIconColors": { "fill": "#5865F2" },
+          "locales": { "en": { "title": "Discord" } }
+        },
+        {
+          "id": 43,
+          "categoryId": "category_igre",
+          "faIcon": "fa-solid fa-gamepad",
+          "faIconColors": { "fill": "#22C55E" },
+          "locales": { "en": { "title": "RetroArch" } }
+        },
+        {
+          "id": 44,
+          "categoryId": "category_igre",
+          "faIcon": "fa-solid fa-chess",
+          "faIconColors": { "fill": "#111827" },
+          "locales": { "en": { "title": "Chess.com" } }
+        },
+        {
+          "id": 45,
+          "categoryId": "category_cloud",
+          "faIcon": "fa-solid fa-chart-line",
+          "faIconColors": { "fill": "#22C55E" },
+          "locales": { "en": { "title": "Grafana" } }
+        },
+        {
+          "id": 46,
+          "categoryId": "category_cloud",
+          "faIcon": "fa-solid fa-fire",
+          "faIconColors": { "fill": "#F97316" },
+          "locales": { "en": { "title": "Prometheus" } }
+        },
+        {
+          "id": 47,
+          "categoryId": "category_cloud",
+          "faIcon": "fa-solid fa-inbox",
+          "faIconColors": { "fill": "#4B5563" },
+          "locales": { "en": { "title": "MQTT (Mosquitto)" } }
+        },
+        {
+          "id": 48,
+          "categoryId": "category_cloud",
+          "faIcon": "fa-solid fa-tower-broadcast",
+          "faIconColors": { "fill": "#06B6D4" },
+          "locales": { "en": { "title": "Node-RED" } }
+        },
+        {
+          "id": 49,
+          "categoryId": "category_cloud",
+          "faIcon": "fa-solid fa-house",
+          "faIconColors": { "fill": "#22C55E" },
+          "locales": { "en": { "title": "Zigbee2MQTT" } }
+        },
+        {
+          "id": 50,
+          "categoryId": "category_cloud",
+          "faIcon": "fa-solid fa-wifi",
+          "faIconColors": { "fill": "#2563EB" },
+          "locales": { "en": { "title": "Tailscale" } }
+        },
+        {
+          "id": 51,
+          "categoryId": "category_cloud",
+          "faIcon": "fa-solid fa-user-shield",
+          "faIconColors": { "fill": "#0EA5E9" },
+          "locales": { "en": { "title": "WireGuard" } }
+        },
+        {
+          "id": 52,
+          "categoryId": "category_cloud",
+          "faIcon": "fa-solid fa-layer-group",
+          "faIconColors": { "fill": "#7C3AED" },
+          "locales": { "en": { "title": "Proxmox" } }
+        },
+        {
+          "id": 53,
+          "categoryId": "category_cloud",
+          "faIcon": "fa-solid fa-box-archive",
+          "faIconColors": { "fill": "#64748B" },
+          "locales": { "en": { "title": "TrueNAS" } }
+        },
+        {
+          "id": 54,
+          "categoryId": "category_cloud",
+          "faIcon": "fa-solid fa-timeline",
+          "faIconColors": { "fill": "#10B981" },
+          "locales": { "en": { "title": "Ansible" } }
+        },
+        {
+          "id": 55,
+          "categoryId": "category_cloud",
+          "faIcon": "fa-solid fa-file-code",
+          "faIconColors": { "fill": "#6366F1" },
+          "locales": { "en": { "title": "Terraform" } }
+        },
+        {
+          "id": 56,
+          "categoryId": "category_pc",
+          "faIcon": "fa-solid fa-tower-cell",
+          "faIconColors": { "fill": "#22C55E" },
+          "locales": { "en": { "title": "Postman" } }
+        },
+        {
+          "id": 57,
+          "categoryId": "category_pc",
+          "faIcon": "fa-solid fa-code-merge",
+          "faIconColors": { "fill": "#F59E0B" },
+          "locales": { "en": { "title": "GitHub Actions" } }
+        },
+        {
+          "id": 58,
+          "categoryId": "category_pc",
+          "faIcon": "fa-solid fa-vial",
+          "faIconColors": { "fill": "#06B6D4" },
+          "locales": { "en": { "title": "Insomnia (REST Client)" } }
+        },
+        {
+          "id": 59,
+          "categoryId": "category_pc",
+          "faIcon": "fa-solid fa-bug",
+          "faIconColors": { "fill": "#EF4444" },
+          "locales": { "en": { "title": "Burp Suite" } }
+        },
+        {
+          "id": 60,
+          "categoryId": "category_phone",
+          "faIcon": "fa-solid fa-keyboard",
+          "faIconColors": { "fill": "#6B7280" },
+          "locales": { "en": { "title": "Gboard" } }
         }
       ]
     }

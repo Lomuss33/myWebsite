@@ -2,11 +2,11 @@
     "developerSettings": {
         "debugMode": false,
         "fakeEmailRequests": false,
-        "stayOnThePreloaderScreen": false,
+        "stayOnThePreloaderScreen": true,
         "version": "1.0.1"
     },
     "preloaderSettings": {
-        "enabled": false,
+        "enabled": true,
         "title": "Lovro <b>Musić</b>",
         "subtitle": "Hardware Engineer",
         "logoOffset": {

@@ -2,28 +2,28 @@
   "title": {
     "locales": {
       "en": {
-        "title_short": "Writings & Notes",
-        "title_short_nav": "Writings",
-        "title_long_prefix": "Penned with ink, thought and rhythm",
-        "title_long": "Here are {{my words}}"
+        "title_short": "Writing & Notes",
+        "title_short_nav": "Writing",
+        "title_long_prefix": "Articles, notes, and summaries",
+        "title_long": "{{My writing}}"
       },
       "de": {
         "title_short": "Texte & Notizen",
         "title_short_nav": "Texte",
-        "title_long_prefix": "Niedergeschrieben mit Tinte, Gedanken und Rhythmus",
-        "title_long": "Hier sind {{meine Worte}}"
+        "title_long_prefix": "Artikel, Notizen und Zusammenfassungen",
+        "title_long": "{{Meine Texte}}"
       },
       "hr": {
-        "title_short": "Zapisi i bilješke",
-        "title_short_nav": "Zapisi",
-        "title_long_prefix": "Zapisano tintom, mišlju i ritmom",
-        "title_long": "Evo {{mojih riječi}}"
+        "title_short": "Tekstovi i bilješke",
+        "title_short_nav": "Tekstovi",
+        "title_long_prefix": "Članci, bilješke i sažeci",
+        "title_long": "{{Moji tekstovi}}"
       },
       "tr": {
         "title_short": "Yazılar ve Notlar",
         "title_short_nav": "Yazılar",
-        "title_long_prefix": "Mürekkeple, düşünceyle ve ritimle yazıldı",
-        "title_long": "İşte {{benim kelimelerim}}"
+        "title_long_prefix": "Makaleler, notlar ve özetler",
+        "title_long": "{{Yazılarım}}"
       }
     }
   },
@@ -56,27 +56,27 @@
           },
           "locales": {
             "en": {
-              "title": "ERP Implementation Challenges — IBU",
+              "title": "ERP Implementation Challenges: Common Problems and Ways to Overcome Them — IBU",
               "country": "Skopje, North Macedonia",
-              "text": "Notes and practical learnings on real-world ERP rollouts: stakeholder alignment, process mapping, data migration, change management, and go-live risk control.",
+              "text": "A practical guide from the factory floor to the developer’s desk: stakeholder alignment, process mapping, data migration, change management, and go-live risk control.",
               "medium": "Paper / Report"
             },
             "de": {
-              "title": "Herausforderungen bei der ERP-Implementierung — IBU",
+              "title": "ERP-Implementierung: Häufige Probleme und Wege, sie zu überwinden — IBU",
               "country": "Skopje, Nordmazedonien",
-              "text": "Notizen und Praxis-Learnings zu ERP-Einführungen: Stakeholder-Alignment, Prozessaufnahme, Datenmigration, Change Management und Go-Live-Risikokontrolle.",
+              "text": "Ein Praxisleitfaden von der Fertigung bis zum Developer Desk: Stakeholder-Alignment, Prozessaufnahme/-mapping, Datenmigration, Change Management und Go-Live-Risikokontrolle.",
               "medium": "Ausarbeitung / Bericht"
             },
             "hr": {
-              "title": "Izazovi implementacije ERP-a — IBU",
+              "title": "Implementacija ERP-a: Uobičajeni problemi i načini kako ih prevladati — IBU",
               "country": "Skopje, Sjeverna Makedonija",
-              "text": "Bilješke i praktična iskustva iz stvarnih ERP uvođenja: usklađivanje dionika, mapiranje procesa, migracija podataka, upravljanje promjenama i kontrola rizika pri puštanju u rad.",
+              "text": "Praktični vodič od tvorničkog poda do developerskog stola: usklađivanje dionika, mapiranje procesa, migracija podataka, upravljanje promjenama i kontrola rizika pri puštanju u rad.",
               "medium": "Rad / izvještaj"
             },
             "tr": {
-              "title": "ERP Uygulama Zorlukları — IBU",
+              "title": "ERP Uygulama Zorlukları: Yaygın Sorunlar ve Üstesinden Gelme Yolları — IBU",
               "country": "Üsküp, Kuzey Makedonya",
-              "text": "Gerçek ERP geçişlerinden notlar: paydaş uyumu, süreç çıkarımı, veri migrasyonu, değişim yönetimi ve canlıya geçiş risk kontrolü.",
+              "text": "Fabrika sahasından geliştirici masasına pratik bir rehber: paydaş uyumu, süreç çıkarımı/haritalama, veri migrasyonu, değişim yönetimi ve canlıya geçiş risk kontrolü.",
               "medium": "Rapor / çalışma"
             }
           }
@@ -97,27 +97,27 @@
           },
           "locales": {
             "en": {
-              "title": "IBU International Student Congress — OS Systems: The Future",
+              "title": "Future of Sustainable Personal and Enterprise Cloud Operating Systems — IBU International Student Congress 2026",
               "country": "Skopje, North Macedonia",
-              "text": "Congress talk / written notes about where operating systems are heading: security-by-design, virtualization, cloud-native workloads, and the evolving developer experience.",
+              "text": "Congress talk / written notes from “The Future is now: AI, Sustainability, and Ethics in a Rapidly Evolving World” on the future of OS platforms: sustainable design, security-by-design, virtualization, cloud-native workloads, and a modern developer experience for personal and enterprise cloud operating systems.",
               "medium": "Congress Talk / Slides"
             },
             "de": {
-              "title": "IBU International Student Congress — Betriebssysteme: Die Zukunft",
+              "title": "Zukunft nachhaltiger personaler und unternehmensweiter Cloud-Betriebssysteme — IBU International Student Congress 2026",
               "country": "Skopje, Nordmazedonien",
-              "text": "Vortrag / Notizen darüber, wohin sich Betriebssysteme entwickeln: Security-by-Design, Virtualisierung, Cloud-native Workloads und die Developer Experience.",
+              "text": "Kongressvortrag / Notizen aus „The Future is now: AI, Sustainability, and Ethics in a Rapidly Evolving World“ zur Zukunft von OS-Plattformen: nachhaltiges Design, Security-by-Design, Virtualisierung, Cloud-native Workloads und moderne Developer Experience für persönliche und Enterprise-Cloud-Betriebssysteme.",
               "medium": "Kongressvortrag / Folien"
             },
             "hr": {
-              "title": "IBU International Student Congress — Operativni sustavi: budućnost",
+              "title": "Budućnost održivih osobnih i poslovnih cloud operativnih sustava — IBU International Student Congress 2026",
               "country": "Skopje, Sjeverna Makedonija",
-              "text": "Predavanje / bilješke o smjeru razvoja operativnih sustava: sigurnost po dizajnu, virtualizacija, cloud-native opterećenja i iskustvo programera.",
+              "text": "Kongresno izlaganje / bilješke s teme „The Future is now: AI, Sustainability, and Ethics in a Rapidly Evolving World“ o budućnosti OS platformi: održivi dizajn, sigurnost po dizajnu, virtualizacija, cloud-native opterećenja i moderno iskustvo programera za osobne i enterprise cloud operativne sustave.",
               "medium": "Kongresno izlaganje / prezentacija"
             },
             "tr": {
-              "title": "IBU International Student Congress — İşletim Sistemleri: Gelecek",
+              "title": "Sürdürülebilir Kişisel ve Kurumsal Bulut İşletim Sistemlerinin Geleceği — IBU International Student Congress 2026",
               "country": "Üsküp, Kuzey Makedonya",
-              "text": "İşletim sistemlerinin gidişatı üzerine sunum/notlar: tasarımla güvenlik, sanallaştırma, cloud-native iş yükleri ve geliştirici deneyimi.",
+              "text": "“The Future is now: AI, Sustainability, and Ethics in a Rapidly Evolving World” oturumundan kongre sunumu/notlar: OS platformlarının geleceği—sürdürülebilir tasarım, tasarımla güvenlik, sanallaştırma, bulut-yerel iş yükleri ve kişisel/kurumsal bulut işletim sistemleri için modern geliştirici deneyimi.",
               "medium": "Kongre sunumu / slayt"
             }
           }

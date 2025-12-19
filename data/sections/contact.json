@@ -16,7 +16,7 @@
       "hr": {
         "title_short": "Kontakt",
         "title_short_nav": "Kontakt",
-        "title_long_prefix": "Hajdemo se povezati",
+        "title_long_prefix": "Započnimo komunikaciju",
         "title_long": "Evo kako {{me možeš kontaktirati}}"
       },
       "tr": {
@@ -32,9 +32,9 @@
     "id": 1,
     "component": "ArticleContactForm",
     "settings": {
-        "email_js_public_key": "MZ1uehxJXFgXjGJMN",
+        "email_js_public_key": "j1Kq3rfeTdVXEZYWh",
         "email_js_service_id": "myWebsite",
-        "email_js_template_id": "template_yuaa1qm"
+        "email_js_template_id": "template_puj7mco"
     },
     "locales": {
         "en": {
@@ -154,10 +154,10 @@
           },
           "copyToClipboardButton": false,
           "locales": {
-            "en": { "title": "LinkedIn", "text": "Professional networking; add a note about your context." },
-            "de": { "title": "LinkedIn", "text": "Professionelles Networking; bitte mit kurzer Notiz zum Kontext." },
-            "hr": { "title": "LinkedIn", "text": "Profesionalno umrežavanje; dodaj kratku bilješku o kontekstu." },
-            "tr": { "title": "LinkedIn", "text": "Profesyonel bağlantı için; lütfen kısa bir not ekle." }
+            "en": { "title": "LinkedIn", "text": "Professional networking." },
+            "de": { "title": "LinkedIn", "text": "Professionelles Networking." },
+            "hr": { "title": "LinkedIn", "text": "Profesionalno umrežavanje." },
+            "tr": { "title": "LinkedIn", "text": "Profesyonel bağlantı için." }
           }
         },
         {

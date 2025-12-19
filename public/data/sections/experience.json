@@ -2,25 +2,25 @@
     "title": {
         "locales": {
             "en": {
-                "title_short": "Xp",
+                "title_short": "Experience",
                 "title_short_nav": "Experience",
                 "title_long_prefix": "A never-ending story of",
                 "title_long": "{{Building}} and {{Learning}}"
             },
             "de": {
-                "title_short": "Erf.",
+                "title_short": "Erfahrung",
                 "title_short_nav": "Erfahrung",
                 "title_long_prefix": "Eine niemals endende Geschichte von",
                 "title_long": "{{Bauen}} und {{Lernen}}"
             },
             "hr": {
-                "title_short": "Isk.",
+                "title_short": "Iskustvo",
                 "title_short_nav": "Iskustvo",
                 "title_long_prefix": "Nikad završna priča o",
                 "title_long": "{{Gradnji}} i {{učenju}}"
             },
             "tr": {
-                "title_short": "Den.",
+                "title_short": "Deneyim",
                 "title_short_nav": "Deneyim",
                 "title_long_prefix": "Sonsuz bir hikaye",
                 "title_long": "İnşa {{etmek}} ve {{öğrenmek}}"
@@ -452,11 +452,6 @@
                 "id": 1,
                 "img": "",
                 "faIcon": "fa-solid fa-tractor",
-                "faIconColors": {
-                    "bg": "#0B1A0E",
-                    "fill": "#2E7D32",
-                    "fillLight": "#1B5E20"
-                },
                 "locales": {
                     "en": {
                     "text": "<p>From my childhood through my teenage years, I worked on our family farm: {{milking}}, feeding livestock, field work, cleaning stalls, and basic repairs.</p><p>These years built [[discipline]], reliability, and a strong safety mindset—plus the ability to stay calm and focused during hard, early-morning work.</p>"
@@ -476,11 +471,6 @@
                 "id": 2,
                 "img": "",
                 "faIcon": "fa-solid fa-church",
-                "faIconColors": {
-                    "bg": "#150A1E",
-                    "fill": "#6A1B9A",
-                    "fillLight": "#4A148C"
-                },
                 "locales": {
                     "en": {
                     "text": "<p>Active church volunteering: teaching kids, delivering food to families, and helping with {{event organization}}.</p><p>I also prepare presentations and lead short teachings—building [[communication]], empathy, and logistics skills while coordinating volunteers.</p>"
@@ -500,11 +490,6 @@
                 "id": 3,
                 "img": "",
                 "faIcon": "fa-solid fa-chart-line",
-                "faIconColors": {
-                    "bg": "#071521",
-                    "fill": "#1565C0",
-                    "fillLight": "#0D47A1"
-                },
                 "locales": {
                     "en": {
                     "text": "<p>Self-directed stock trading experience with equities and ETFs: research, journaling trades, {{risk management}}, and basic strategy backtesting.</p><p>Comfortable analyzing earnings, trends, and macro headlines, while keeping a disciplined, [[non-advisory]] approach focused on learning and process.</p>"

@@ -46,9 +46,9 @@
             "preview": {
                 "links": [
                 {
-                    "href": "https://instagram.com/yourtattooinsta",
-                    "tooltipString": "See on Instagram",
-                    "faIcon": "fa-brands fa-instagram"
+                    "href": "https://de.pinterest.com/lovromusi/tattoo-favorites-collection/",
+                    "tooltipString": "See on Pinterest",
+                    "faIcon": "fa-brands fa-pinterest"
                 }
                 ],
                 "screenshots": [
@@ -71,7 +71,7 @@
             "preview": {
                 "links": [
                 {
-                    "href": "https://vsco.co/yourmacedoniaalbum",
+                    "href": "https://vsco.co/spaces/68e6950ebfa0c2c7ca4b7113",
                     "tooltipString": "Open Macedonia Album",
                     "faIcon": "fa-solid fa-images"
                 }
@@ -97,7 +97,7 @@
             "preview": {
                 "links": [
                 {
-                    "href": "https://vsco.co/yourgreecealbum",
+                    "href": "https://vsco.co/spaces/691c8b92ad6e9936213ab763",
                     "tooltipString": "Open Greece Album",
                     "faIcon": "fa-solid fa-images"
                 }
@@ -122,7 +122,7 @@
             "preview": {
                 "links": [
                 {
-                    "href": "https://vsco.co/yourbulgariaalbum",
+                    "href": "https://vsco.co/spaces/68ee331eff6d65bd5d1cc62e",
                     "tooltipString": "Open Bulgaria Album",
                     "faIcon": "fa-solid fa-images"
                 }

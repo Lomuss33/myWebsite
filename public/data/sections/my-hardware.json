@@ -188,7 +188,7 @@
         {
           "id": 4,
           "img": "",
-          "faIcon": "fa-solid fa-conveyor-belt",
+          "faIcon": "fa-solid fa-bridge",
           "faIconColors": {"bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#1976D2", "fillLight": "#1565C0"},
           "category": "category_automation",
           "preview": {
@@ -264,7 +264,7 @@
         {
           "id": 6,
           "img": "",
-          "faIcon": "fa-solid fa-car-wash",
+          "faIcon": "fa-solid fa-car-on",
           "faIconColors": {"bg": "#0A1A2C", "bgLight": "#E7EDF3", "fill": "#2196F3", "fillLight": "#1976D2"},
           "category": "category_automation",
           "preview": {
@@ -340,7 +340,7 @@
         {
           "id": 8,
           "img": "",
-          "faIcon": "fa-solid fa-blinds",
+          "faIcon": "fa-solid fa-house-user",
           "faIconColors": {"bg": "#2B170A", "bgLight": "#F6EDE7", "fill": "#FF9800", "fillLight": "#F57C00"},
           "category": "category_smart_home",
           "preview": {

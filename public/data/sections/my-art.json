@@ -42,31 +42,6 @@
         "items": [
             {
             "id": 1,
-            "date": { "year": 2023, "month": 10 },
-            "preview": {
-                "links": [
-                {
-                    "href": "https://de.pinterest.com/lovromusi/tattoo-favorites-collection/",
-                    "tooltipString": "See on Pinterest",
-                    "faIcon": "fa-brands fa-pinterest"
-                }
-                ],
-                "screenshots": [
-                "images/flags_large/tattoo-main.png"
-                ],
-                "screenshotsAspectRatio": "1:1"
-            },
-            "locales": {
-                "en": {
-                "title": "Tattoos — My Living Canvas",
-                "country": "Germany",
-                "text": "Personal comic, geometric, and life-story tattoos.",
-                "medium": "Tattoo"
-                }
-            }
-            },
-            {
-            "id": 2,
             "date": { "year": 2023, "month": 8 },
             "preview": {
                 "links": [
@@ -87,6 +62,31 @@
                 "country": "Macedonia",
                 "text": "Mountains, monasteries, city life and landscapes.",
                 "medium": "Photography"
+                }
+            }
+            },
+            {
+            "id": 2,
+            "date": { "year": 2019, "month": 12 },
+            "preview": {
+                "links": [
+                {
+                    "href": "https://de.pinterest.com/lovromusi/tattoo-favorites-collection/",
+                    "tooltipString": "See on Pinterest",
+                    "faIcon": "fa-brands fa-pinterest"
+                }
+                ],
+                "screenshots": [
+                "images/flags_large/tattoo-main.png"
+                ],
+                "screenshotsAspectRatio": "1:1"
+            },
+            "locales": {
+                "en": {
+                "title": "Tattoos — My Living Canvas",
+                "country": "Germany",
+                "text": "Personal comic, geometric, and life-story tattoos.",
+                "medium": "Tattoo"
                 }
             }
             },

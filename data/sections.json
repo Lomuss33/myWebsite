@@ -19,12 +19,6 @@
         "faIcon": "fa-solid fa-pen-to-square"
         },
         {
-        "id": "my-art",
-        "categoryId": "hobbys",
-        "jsonPath": "/data/sections/my-art.json",
-        "faIcon": "fa-solid fa-palette"
-        },
-        {
         "id": "my-hardware",
         "categoryId": "hobbys",
         "jsonPath": "/data/sections/my-hardware.json",
@@ -41,6 +35,12 @@
           "categoryId": "hobbys",
           "jsonPath": "/data/sections/my-writings.json",
           "faIcon": "fa-solid fa-pen-nib"
+        },
+                {
+        "id": "my-art",
+        "categoryId": "hobbys",
+        "jsonPath": "/data/sections/my-art.json",
+        "faIcon": "fa-solid fa-palette"
         },
         {
         "id": "contact",

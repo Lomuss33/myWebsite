@@ -123,10 +123,10 @@
           "link": { "href": null, "tooltipString": null },
           "copyToClipboardButton": false,
           "locales": {
-            "en": { "title": "Programming", "text": "C, C++, Python, Java, HTML, TypeScript; able to learn new languages and tools quickly." },
-            "de": { "title": "Programmierung", "text": "C, C++, Python, Java, HTML, TypeScript; lerne neue Sprachen und Werkzeuge sehr schnell." },
-            "hr": { "title": "Programiranje", "text": "C, C++, Python, Java, HTML, TypeScript; vrlo brzo učim nove jezike i alate." },
-            "tr": { "title": "Programlama", "text": "C, C++, Python, Java, HTML, TypeScript; yeni dilleri ve araçları hızlıca öğrenebilirim." }
+            "en": { "title": "Programming", "text": "C, C++, Python, Java, HTML, TypeScript... able to learn new languages and tools quickly." },
+            "de": { "title": "Programmierung", "text": "C, C++, Python, Java, HTML, TypeScript... lerne neue Sprachen und Werkzeuge sehr schnell." },
+            "hr": { "title": "Programiranje", "text": "C, C++, Python, Java, HTML, TypeScript... vrlo brzo učim nove jezike i alate." },
+            "tr": { "title": "Programlama", "text": "C, C++, Python, Java, HTML, TypeScript... yeni dilleri ve araçları hızlıca öğrenebilirim." }
           }
         },
         {

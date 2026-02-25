@@ -191,7 +191,7 @@
             "dateEnd": { "year": 2023, "month": 8 },
             "locales": {
                 "en": {
-                "title": "IT Support Technician (Level 2)",
+                "title": "IT Support Technician",
                 "province": "Frankfurt am Main, Hesse",
                 "country": "Germany",
                 "institution": "Tipwin Limited",
@@ -206,7 +206,7 @@
                 "tags": ["Part-time", "On-site", "Level 2 Support", "Infrastructure", "Retail IT"]
                 },
                 "de": {
-                "title": "IT Support Technician (Level 2)",
+                "title": "IT Support Technician",
                 "province": "Frankfurt am Main, Hessen",
                 "country": "Deutschland",
                 "institution": "Tipwin Limited",
@@ -236,7 +236,7 @@
                 "tags": ["Skraćeno radno vrijeme", "Na licu mjesta", "IT podrška (L2)", "Infrastruktura", "Retail IT"]
                 },
                 "tr": {
-                "title": "IT Destek Teknisyeni (Seviye 2)",
+                "title": "IT Destek Teknisyeni",
                 "province": "Frankfurt am Main, Hessen",
                 "country": "Almanya",
                 "institution": "Tipwin Limited",

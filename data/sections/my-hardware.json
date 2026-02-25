@@ -71,117 +71,45 @@
         "order_items_sort": "asc"
       },
       "items": [
-        {
+       {
           "id": 1,
           "img": "",
-          "faIcon": "fa-solid fa-hard-drive",
-          "faIconColors": {"bg": "#0D1117", "bgLight": "#EDF2F7", "fill": "#2962FF", "fillLight": "#1E88E5"},
+          "faIcon": "fa-solid fa-server",
+          "faIconColors": {
+            "bg": "#0D1117",
+            "bgLight": "#EDF2F7",
+            "fill": "#2962FF",
+            "fillLight": "#1E88E5"
+          },
           "category": "category_computing",
           "preview": {
             "links": [
-              {"href": "", "tooltipString": "details", "faIcon": "fa-solid fa-info-circle"}
+              { "href": "", "tooltipString": "architecture", "faIcon": "fa-solid fa-diagram-project" }
             ],
-            "screenshots": [
-            ],
+            "screenshots": [],
             "screenshotsAspectRatio": "16:9",
             "youtubeVideo": ""
           },
           "locales": {
             "en": {
-              "title": "Self-built NAS System",
-              "text": "Custom Network Attached Storage solution with RAID configuration, running TrueNAS for reliable data storage, backup, and media server capabilities.",
-              "tags": ["TrueNAS", "RAID", "Storage", "Self-built", "Server"]
+              "title": "Self-Built Proxmox Homelab Platform",
+              "text": "Enterprise-style homelab built on Proxmox VE, hosting virtualized services for monitoring, tunneling, backups, and internal infrastructure. Includes containerized services, secure remote access, metrics collection, alerting, and network segmentation — designed as a personal R&D playground for infrastructure engineering.",
+              "tags": ["Proxmox", "Homelab", "Virtualization", "Monitoring", "Tunneling", "Containers"]
             },
             "de": {
-              "title": "Selbstgebautes NAS-System",
-              "text": "Maßgeschneiderte Network Attached Storage-Lösung mit RAID-Konfiguration, auf der TrueNAS für zuverlässige Datenspeicherung, Backup und Media-Server-Funktionen läuft.",
-              "tags": ["TrueNAS", "RAID", "Speicher", "Selbstgebaut", "Server"]
+              "title": "Selbstgebaute Proxmox-Homelab-Plattform",
+              "text": "Enterprise-ähnliches Homelab auf Basis von Proxmox VE mit virtualisierten Diensten für Monitoring, Tunneling, Backups und interne Infrastruktur. Containerisierte Services, sicherer Fernzugriff, Metrik-Erfassung, Alarmierung und Netzwerksegmentierung als persönliches Infrastruktur-Labor.",
+              "tags": ["Proxmox", "Homelab", "Virtualisierung", "Monitoring", "Tunneling", "Container"]
             },
             "hr": {
-              "title": "Samostalno izgrađeni NAS sustav",
-              "text": "Prilagođeno mrežno spremište (NAS) s RAID konfiguracijom, pokretano TrueNAS-om za pouzdanu pohranu podataka, sigurnosne kopije i medijske poslužiteljske mogućnosti.",
-              "tags": ["TrueNAS", "RAID", "Pohrana", "Samostalna izrada", "Poslužitelj"]
+              "title": "Samostalno izgrađena Proxmox homelab platforma",
+              "text": "Napredno homelab okruženje temeljeno na Proxmox VE s virtualiziranim servisima za nadzor, tunneling, sigurnosne kopije i internu infrastrukturu. Sustav služi kao osobni R&D laboratorij za infrastrukturu i sustave.",
+              "tags": ["Proxmox", "Homelab", "Virtualizacija", "Monitoring", "Infrastruktura"]
             },
             "tr": {
-              "title": "Kendim Yaptığım NAS Sistemi",
-              "text": "RAID yapılandırması ile özel Ağa Bağlı Depolama çözümü, güvenilir veri depolama, yedekleme ve medya sunucusu yetenekleri için TrueNAS çalıştırıyor.",
-              "tags": ["TrueNAS", "RAID", "Depolama", "Kendi Yapımı", "Sunucu"]
-            }
-          }
-        },
-        {
-          "id": 22,
-          "img": "",
-          "faIcon": "fa-solid fa-gamepad",
-          "faIconColors": {"bg": "#240930", "bgLight": "#F3E7F7", "fill": "#9C27B0", "fillLight": "#7B1FA2"},
-          "category": "category_computing",
-          "preview": {
-            "links": [
-              {"href": "", "tooltipString": "specs", "faIcon": "fa-solid fa-microchip"}
-            ],
-            "screenshots": [
-            ],
-            "screenshotsAspectRatio": "16:9",
-            "youtubeVideo": ""
-          },
-          "locales": {
-            "en": {
-              "title": "Custom Gaming PC",
-              "text": "High-performance gaming rig with liquid cooling, RGB lighting, and carefully selected components for maximum gaming performance and reliability.",
-              "tags": ["Gaming", "Custom PC", "High-Performance", "Liquid Cooling"]
-            },
-            "de": {
-              "title": "Custom Gaming-PC",
-              "text": "Hochleistungs-Gaming-Rechner mit Flüssigkeitskühlung, RGB-Beleuchtung und sorgfältig ausgewählten Komponenten für maximale Gaming-Leistung und Zuverlässigkeit.",
-              "tags": ["Gaming", "Individueller PC", "Hochleistung", "Flüssigkeitskühlung"]
-            },
-            "hr": {
-              "title": "Prilagođeno gaming računalo",
-              "text": "Visoko performansno gaming računalo s vodenim hlađenjem, RGB osvjetljenjem i pažljivo odabranim komponentama za maksimalne gaming performanse i pouzdanost.",
-              "tags": ["Gaming", "Prilagođeno računalo", "Visoke performanse", "Vodeno hlađenje"]
-            },
-            "tr": {
-              "title": "Özel Oyun Bilgisayarı",
-              "text": "Sıvı soğutma, RGB aydınlatma ve maksimum oyun performansı ve güvenilirlik için özenle seçilmiş bileşenlere sahip yüksek performanslı oyun sistemi.",
-              "tags": ["Oyun", "Özel PC", "Yüksek Performans", "Sıvı Soğutma"]
-            }
-          }
-        },
-        {
-          "id": 3,
-          "img": "",
-          "faIcon": "fa-solid fa-mobile-screen",
-          "faIconColors": {"bg": "#0A2C1E", "bgLight": "#E6F2ED", "fill": "#00897B", "fillLight": "#00796B"},
-          "category": "category_computing",
-          "preview": {
-            "links": [
-              {"href": "", "tooltipString": "collection", "faIcon": "fa-solid fa-list"}
-            ],
-            "screenshots": [
-            ],
-            "screenshotsAspectRatio": "16:9",
-            "youtubeVideo": ""
-          },
-          "locales": {
-            "en": {
-              "title": "Smartphone Hall of Fame",
-              "text": "A curated collection of smartphones that have marked technological milestones, from the early days to cutting-edge devices, preserved and maintained in working condition.",
-              "tags": ["Smartphones", "Collection", "Tech History", "Mobile"]
-            },
-            "de": {
-              "title": "Smartphone-Ruhmeshalle",
-              "text": "Eine kuratierte Sammlung von Smartphones, die technologische Meilensteine markiert haben, von den Anfängen bis zu modernsten Geräten, konserviert und in funktionsfähigem Zustand gehalten.",
-              "tags": ["Smartphones", "Sammlung", "Technikgeschichte", "Mobil"]
-            },
-            "hr": {
-              "title": "Galerija slavnih pametnih telefona",
-              "text": "Kurirana kolekcija pametnih telefona koji su označili tehnološke prekretnice, od ranih dana do najsuvremenijih uređaja, očuvanih i održavanih u radnom stanju.",
-              "tags": ["Pametni telefoni", "Kolekcija", "Povijest tehnologije", "Mobilno"]
-            },
-            "tr": {
-              "title": "Akıllı Telefon Şöhretler Galerisi",
-              "text": "İlk günlerden en son teknoloji cihazlara kadar teknolojik kilometre taşlarını işaretleyen, korunan ve çalışır durumda tutulan özenle seçilmiş bir akıllı telefon koleksiyonu.",
-              "tags": ["Akıllı Telefonlar", "Koleksiyon", "Teknoloji Tarihi", "Mobil"]
+              "title": "Kendi Yaptığım Proxmox Homelab Platformu",
+              "text": "Proxmox VE tabanlı, izleme, tünelleme, yedekleme ve dahili servisler için sanallaştırılmış hizmetler barındıran kurumsal tarzda bir homelab. Altyapı mühendisliği için kişisel AR-GE ortamı olarak tasarlandı.",
+              "tags": ["Proxmox", "Homelab", "Sanallaştırma", "İzleme", "Altyapı"]
             }
           }
         },
@@ -223,117 +151,87 @@
             }
           }
         },
-        {
-          "id": 5,
+       {
+          "id": 4,
           "img": "",
-          "faIcon": "fa-solid fa-pizza-slice",
-          "faIconColors": {"bg": "#2B0A0A", "bgLight": "#F7E7E7", "fill": "#D32F2F", "fillLight": "#C62828"},
+          "faIcon": "fa-solid fa-industry",
+          "faIconColors": {
+            "bg": "#101A29",
+            "bgLight": "#ECF0F6",
+            "fill": "#1976D2",
+            "fillLight": "#1565C0"
+          },
           "category": "category_automation",
           "preview": {
             "links": [
-              {"href": "", "tooltipString": "schematics", "faIcon": "fa-solid fa-diagram-project"}
+              { "href": "", "tooltipString": "technical_details", "faIcon": "fa-solid fa-file-code" }
             ],
-            "screenshots": [
-            ],
+            "screenshots": [],
             "screenshotsAspectRatio": "16:9",
             "youtubeVideo": ""
           },
           "locales": {
             "en": {
-              "title": "S7 SPS Pizza Oven Control System",
-              "text": "Siemens S7 PLC-controlled commercial pizza oven with precise temperature regulation, multiple cooking zones, and automated workflow management.",
-              "tags": ["Siemens S7", "PLC", "Temperature Control", "Industrial Oven"]
+              "title": "Industrial PLC Automation Systems (Siemens S7)",
+              "text": "Industrial automation projects based on Siemens S7 PLCs, including a multi-zone commercial pizza oven with precise temperature regulation and a high-end automated car wash system. Both systems feature structured control logic, sensor-driven workflows, water and energy optimization, and industrial-grade reliability.",
+              "tags": ["Siemens S7", "PLC", "Industrial Automation", "Process Control"]
             },
             "de": {
-              "title": "S7 SPS Pizzaofen-Steuerungssystem",
-              "text": "Siemens S7 SPS-gesteuerter kommerzieller Pizzaofen mit präziser Temperaturregelung, mehreren Garzonen und automatisiertem Workflow-Management.",
-              "tags": ["Siemens S7", "SPS", "Temperaturregelung", "Industrieofen"]
+              "title": "Industrielle SPS-Automatisierungssysteme (Siemens S7)",
+              "text": "Industrieautomatisierungsprojekte auf Basis von Siemens S7 SPS, darunter ein kommerzieller Pizzaofen mit Mehrzonen-Temperaturregelung sowie eine vollautomatische Autowaschanlage. Fokus auf Prozesssteuerung, Sensorik und industrielle Zuverlässigkeit.",
+              "tags": ["Siemens S7", "SPS", "Industrieautomatisierung", "Prozesssteuerung"]
             },
             "hr": {
-              "title": "S7 SPS sustav upravljanja pizza pećnicom",
-              "text": "Komercijalna pizza pećnica kontrolirana Siemens S7 PLC-om s preciznom regulacijom temperature, više zona pečenja i automatiziranim upravljanjem radnim procesom.",
-              "tags": ["Siemens S7", "PLC", "Kontrola temperature", "Industrijska pećnica"]
+              "title": "Industrijski PLC automatizacijski sustavi (Siemens S7)",
+              "text": "Industrijski automatizacijski sustavi temeljeni na Siemens S7 PLC-u, uključujući komercijalnu pizza pećnicu i automatiziranu autopraonicu s više faza rada.",
+              "tags": ["Siemens S7", "PLC", "Industrijska automatizacija"]
             },
             "tr": {
-              "title": "S7 SPS Pizza Fırını Kontrol Sistemi",
-              "text": "Hassas sıcaklık düzenlemesi, çoklu pişirme bölgeleri ve otomatik iş akışı yönetimi ile Siemens S7 PLC kontrollü ticari pizza fırını.",
-              "tags": ["Siemens S7", "PLC", "Sıcaklık Kontrolü", "Endüstriyel Fırın"]
-            }
-          }
-        },
-        {
-          "id": 6,
-          "img": "",
-          "faIcon": "fa-solid fa-car-on",
-          "faIconColors": {"bg": "#0A1A2C", "bgLight": "#E7EDF3", "fill": "#2196F3", "fillLight": "#1976D2"},
-          "category": "category_automation",
-          "preview": {
-            "links": [
-              {"href": "", "tooltipString": "documentation", "faIcon": "fa-solid fa-file-lines"}
-            ],
-            "screenshots": [
-            ],
-            "screenshotsAspectRatio": "16:9",
-            "youtubeVideo": ""
-          },
-          "locales": {
-            "en": {
-              "title": "High-End Car Wash Automation",
-              "text": "S7 SPS controlled car wash system with multiple cleaning stages, water recycling, precise chemical dosing, and touchless drying technology.",
-              "tags": ["Car Wash", "Automation", "Siemens S7", "Industrial"]
-            },
-            "de": {
-              "title": "High-End Autowaschanlage-Automatisierung",
-              "text": "S7 SPS-gesteuerte Autowaschanlage mit mehreren Reinigungsstufen, Wasserrecycling, präziser Chemikaliendosierung und berührungsloser Trocknungstechnologie.",
-              "tags": ["Autowaschanlage", "Automatisierung", "Siemens S7", "Industriell"]
-            },
-            "hr": {
-              "title": "Automatizacija vrhunske autopraonice",
-              "text": "S7 SPS kontrolirani sustav za pranje automobila s više faza čišćenja, recikliranjem vode, preciznim doziranjem kemikalija i beskontaktnom tehnologijom sušenja.",
-              "tags": ["Autopraonica", "Automatizacija", "Siemens S7", "Industrijski"]
-            },
-            "tr": {
-              "title": "Üst Düzey Araba Yıkama Otomasyonu",
-              "text": "Birden fazla temizleme aşaması, su geri dönüşümü, hassas kimyasal dozajlama ve temassız kurutma teknolojisi ile S7 SPS kontrollü araba yıkama sistemi.",
-              "tags": ["Araba Yıkama", "Otomasyon", "Siemens S7", "Endüstriyel"]
+              "title": "Endüstriyel PLC Otomasyon Sistemleri (Siemens S7)",
+              "text": "Siemens S7 PLC tabanlı endüstriyel otomasyon projeleri; çok bölgeli ticari pizza fırını ve gelişmiş otomatik araç yıkama sistemi dahil.",
+              "tags": ["Siemens S7", "PLC", "Endüstriyel Otomasyon"]
             }
           }
         },
         {
           "id": 7,
           "img": "",
-          "faIcon": "fa-solid fa-lightbulb",
-          "faIconColors": {"bg": "#101A0A", "bgLight": "#E8F0E8", "fill": "#43A047", "fillLight": "#388E3C"},
+          "faIcon": "fa-solid fa-flag",
+          "faIconColors": {
+            "bg": "#101A0A",
+            "bgLight": "#E8F0E8",
+            "fill": "#43A047",
+            "fillLight": "#388E3C"
+          },
           "category": "category_smart_home",
           "preview": {
             "links": [
-              {"href": "", "tooltipString": "circuit_diagram", "faIcon": "fa-solid fa-sitemap"}
+              { "href": "", "tooltipString": "demo", "faIcon": "fa-solid fa-play" }
             ],
-            "screenshots": [
-            ],
+            "screenshots": [],
             "screenshotsAspectRatio": "16:9",
             "youtubeVideo": ""
           },
           "locales": {
             "en": {
-              "title": "Arduino Smart Lighting System",
-              "text": "Custom home lighting automation with Arduino-controlled LED strips, motion sensors, and app integration for scene control and scheduling.",
-              "tags": ["Arduino", "Home Automation", "LED", "Smart Lighting"]
+              "title": "Arduino Interactive Flag Frame",
+              "text": "Custom-built interactive flag display using Arduino, featuring backlit LED effects behind a glass pane and a mechanically animated flag in front. A single-button trigger starts a synchronized light-and-music show, while dual motors move the flag in a smooth circular swinging motion. Housed in an oversized enclosure to accommodate control electronics and power components.",
+              "tags": ["Arduino", "Electromechanics", "LED", "Motors", "Interactive Art"]
             },
             "de": {
-              "title": "Arduino Smart-Beleuchtungssystem",
-              "text": "Benutzerdefinierte Hausbeleuchtungsautomatisierung mit Arduino-gesteuerten LED-Streifen, Bewegungssensoren und App-Integration zur Szenensteuerung und Zeitplanung.",
-              "tags": ["Arduino", "Hausautomatisierung", "LED", "Intelligente Beleuchtung"]
+              "title": "Interaktiver Arduino-Flaggenrahmen",
+              "text": "Interaktive Flaggeninstallation mit Arduino, LED-Hintergrundbeleuchtung, Glasfront und motorisierter Flaggenbewegung. Ein Knopfdruck startet eine synchronisierte Licht- und Musikshow.",
+              "tags": ["Arduino", "Elektromechanik", "LED", "Motoren"]
             },
             "hr": {
-              "title": "Arduino sustav pametne rasvjete",
-              "text": "Prilagođena automatizacija kućne rasvjete s Arduino-kontroliranim LED trakama, senzorima pokreta i integriranom aplikacijom za kontrolu scena i planiranje.",
-              "tags": ["Arduino", "Kućna automatizacija", "LED", "Pametna rasvjeta"]
+              "title": "Interaktivni Arduino okvir sa zastavom",
+              "text": "Interaktivni sustav sa svjetlosnim efektima i pokretnom zastavom upravljanom Arduino mikrokontrolerom.",
+              "tags": ["Arduino", "Motori", "LED", "Interaktivno"]
             },
             "tr": {
-              "title": "Arduino Akıllı Aydınlatma Sistemi",
-              "text": "Arduino kontrollü LED şeritleri, hareket sensörleri ve sahne kontrolü ve programlama için uygulama entegrasyonu ile özel ev aydınlatma otomasyonu.",
-              "tags": ["Arduino", "Ev Otomasyonu", "LED", "Akıllı Aydınlatma"]
+              "title": "Arduino Etkileşimli Bayrak Çerçevesi",
+              "text": "Arduino kontrollü, LED arka aydınlatmalı ve motorlu bayrak hareketine sahip etkileşimli sergi sistemi.",
+              "tags": ["Arduino", "Motorlar", "LED", "Etkileşimli Sistem"]
             }
           }
         },
@@ -376,44 +274,6 @@
           }
         },
         {
-          "id": 9,
-          "img": "",
-          "faIcon": "fa-solid fa-laptop",
-          "faIconColors": {"bg": "#1A1A1A", "bgLight": "#F0F0F0", "fill": "#616161", "fillLight": "#424242"},
-          "category": "category_computing",
-          "preview": {
-            "links": [
-              {"href": "", "tooltipString": "specs", "faIcon": "fa-solid fa-microchip"}
-            ],
-            "screenshots": [
-            ],
-            "screenshotsAspectRatio": "16:9",
-            "youtubeVideo": ""
-          },
-          "locales": {
-            "en": {
-              "title": "Ghost Zombie Laptop",
-              "text": "Ultra-optimized laptop with hybrid Linux/Windows setup, specialized hardware tweaks, and performance modifications for extended life and maximum efficiency.",
-              "tags": ["Laptop", "Optimization", "Linux", "Hardware Mod"]
-            },
-            "de": {
-              "title": "Ghost-Zombie-Laptop",
-              "text": "Ultraoptimierter Laptop mit hybridem Linux/Windows-Setup, spezialisierten Hardware-Tweaks und Performance-Modifikationen für eine verlängerte Lebensdauer und maximale Effizienz.",
-              "tags": ["Laptop", "Optimierung", "Linux", "Hardware-Mod"]
-            },
-            "hr": {
-              "title": "Ghost Zombie laptop",
-              "text": "Ultra-optimizirani laptop s hibridnim Linux/Windows postavkama, specijaliziranim hardverskim prilagodbama i izmjenama performansi za produženi vijek trajanja i maksimalnu učinkovitost.",
-              "tags": ["Laptop", "Optimizacija", "Linux", "Hardverske modifikacije"]
-            },
-            "tr": {
-              "title": "Hayalet Zombi Laptop",
-              "text": "Uzatılmış ömür ve maksimum verimlilik için hibrit Linux/Windows kurulumu, özel donanım ayarları ve performans modifikasyonları ile ultra optimize edilmiş dizüstü bilgisayar.",
-              "tags": ["Dizüstü Bilgisayar", "Optimizasyon", "Linux", "Donanım Modu"]
-            }
-          }
-        },
-        {
           "id": 10,
           "img": "",
           "faIcon": "fa-solid fa-house-signal",
@@ -452,6 +312,44 @@
           }
         },
         {
+          "id": 22,
+          "img": "",
+          "faIcon": "fa-solid fa-gamepad",
+          "faIconColors": {"bg": "#240930", "bgLight": "#F3E7F7", "fill": "#9C27B0", "fillLight": "#7B1FA2"},
+          "category": "category_computing",
+          "preview": {
+            "links": [
+              {"href": "", "tooltipString": "specs", "faIcon": "fa-solid fa-microchip"}
+            ],
+            "screenshots": [
+            ],
+            "screenshotsAspectRatio": "16:9",
+            "youtubeVideo": ""
+          },
+          "locales": {
+            "en": {
+              "title": "Custom Gaming PC",
+              "text": "High-performance gaming rig with industrial cooling, RGB lighting, and carefully selected components for maximum gaming performance and reliability.",
+              "tags": ["Gaming", "Custom PC", "High-Performance", "Adwanced Cooling"]
+            },
+            "de": {
+              "title": "Custom Gaming-PC",
+              "text": "Hochleistungs-Gaming-Rechner mit Industriekühlung, RGB-Beleuchtung und sorgfältig ausgewählten Komponenten für maximale Gaming-Leistung und Zuverlässigkeit.",
+              "tags": ["Gaming", "Individueller PC", "Hochleistung", "Industriekühlung"]
+            },
+            "hr": {
+              "title": "Prilagođeno gaming računalo",
+              "text": "Visoko performansno gaming računalo s industrijskim hlađenjem, RGB osvjetljenjem i pažljivo odabranim komponentama za maksimalne gaming performanse i pouzdanost.",
+              "tags": ["Gaming", "Prilagođeno računalo", "Visoke performanse", "Industrijskim hlađenje"]
+            },
+            "tr": {
+              "title": "Özel Oyun Bilgisayarı",
+              "text": "Sıvı soğutma, RGB aydınlatma ve maksimum oyun performansı ve güvenilirlik için özenle seçilmiş bileşenlere sahip yüksek performanslı oyun sistemi.",
+              "tags": ["Oyun", "Özel PC", "Yüksek Performans", "Sıvı Soğutma"]
+            }
+          }
+        },
+        {
           "id": 11,
           "img": "",
           "faIcon": "fa-solid fa-bicycle",
@@ -469,97 +367,23 @@
           "locales": {
             "en": {
               "title": "Custom Electric Bicycle",
-              "text": "Modified bicycle with electric motor conversion, custom battery configuration, and digital display integration for commuting and trail riding.",
-              "tags": ["E-Bike", "Conversion", "Battery", "DIY Transport"]
+              "text": "Budget-focused electric bicycle built as a sustainable mobility solution for daily life in Giessen, combining an affordable frame with high-quality components such as Shimano for reliability and efficiency.",
+              "tags": ["E-Bike", "Sustainable Transport", "DIY", "Shimano"]
             },
             "de": {
               "title": "Custom-Elektrofahrrad",
-              "text": "Modifiziertes Fahrrad mit Elektromotorenumrüstung, individueller Batteriekonfiguration und digitaler Display-Integration für Pendeln und Trailfahren.",
-              "tags": ["E-Bike", "Umbau", "Akku", "DIY-Transport"]
+              "text": "Budgetorientiertes Elektrofahrrad als nachhaltige Mobilitätslösung für den Alltag in Gießen, kombiniert einen günstigen Rahmen mit hochwertigen Komponenten wie Shimano für Zuverlässigkeit und Effizienz.",
+              "tags": ["E-Bike", "Nachhaltige Mobilität", "DIY", "Shimano"]
             },
             "hr": {
               "title": "Prilagođeni električni bicikl",
-              "text": "Modificirani bicikl s konverzijom električnog motora, prilagođenom konfiguracijom baterije i integriranim digitalnim zaslonom za putovanje na posao i vožnju po stazama.",
-              "tags": ["E-bicikl", "Konverzija", "Baterija", "DIY prijevoz"]
+              "text": "Budžetski električni bicikl izrađen kao održivo prijevozno rješenje za svakodnevni život u Giessenu, kombinira pristupačan okvir s kvalitetnim komponentama poput Shimano dijelova.",
+              "tags": ["E-bicikl", "Održiva mobilnost", "DIY", "Shimano"]
             },
             "tr": {
               "title": "Özel Elektrikli Bisiklet",
-              "text": "İşe gidip gelme ve patika sürüşü için elektrikli motor dönüşümü, özel pil yapılandırması ve dijital ekran entegrasyonu ile modifiye edilmiş bisiklet.",
-              "tags": ["E-Bisiklet", "Dönüşüm", "Pil", "Kendin Yap Ulaşımı"]
-            }
-          }
-        },
-        {
-          "id": 12,
-          "img": "",
-          "faIcon": "fa-solid fa-car",
-          "faIconColors": { "bg": "#1A0A0A", "bgLight": "#F0E7E7", "fill": "#795548", "fillLight": "#5D4037" },
-          "category": "category_tools",
-          "preview": {
-            "links": [
-              { "href": "", "tooltipString": "details", "faIcon": "fa-solid fa-info-circle" }
-            ],
-            "screenshots": [],
-            "screenshotsAspectRatio": "16:9",
-            "youtubeVideo": ""
-          },
-          "locales": {
-            "en": {
-              "title": "Diesel Audi A3 Modifications",
-              "text": "Performance-optimized diesel Audi A3 with custom tuning, preventive maintenance upgrades, and efficiency tweaks for long-term reliability and solid fuel economy.",
-              "tags": ["Automotive", "Diesel", "Performance Tuning", "Audi"]
-            },
-            "de": {
-              "title": "Diesel Audi A3 Modifikationen",
-              "text": "Leistungsoptimierter Diesel-Audi A3 mit individuellem Tuning, vorbeugenden Wartungs-Upgrades und Effizienz-Anpassungen für hohe Zuverlässigkeit und guten Verbrauch.",
-              "tags": ["Automobil", "Diesel", "Performance-Tuning", "Audi"]
-            },
-            "hr": {
-              "title": "Modifikacije dizel Audija A3",
-              "text": "Performansno optimizirani dizel Audi A3 s prilagođenim tuningom, unaprijeđenim održavanjem i podešavanjima učinkovitosti za dugoročnu pouzdanost i dobru potrošnju goriva.",
-              "tags": ["Automobil", "Dizel", "Tuning performansi", "Audi"]
-            },
-            "tr": {
-              "title": "Dizel Audi A3 Modifikasyonları",
-              "text": "Uzun ömürlü güvenilirlik ve iyi yakıt ekonomisi için özel yazılım, bakım yükseltmeleri ve verimlilik ayarlarıyla optimize edilmiş dizel Audi A3.",
-              "tags": ["Otomotiv", "Dizel", "Performans Ayarı", "Audi"]
-            }
-          }
-        },
-        {
-          "id": 13,
-          "img": "",
-          "faIcon": "fa-solid fa-screwdriver-wrench",
-          "faIconColors": { "bg": "#071018", "bgLight": "#E8EDF1", "fill": "#FF9800", "fillLight": "#F57C00" },
-          "category": "category_tools",
-          "preview": {
-            "links": [
-              { "href": "", "tooltipString": "tool_wall", "faIcon": "fa-solid fa-toolbox" }
-            ],
-            "screenshots": [],
-            "screenshotsAspectRatio": "16:9",
-            "youtubeVideo": ""
-          },
-          "locales": {
-            "en": {
-              "title": "Power Tools Hall of Fame",
-              "text": "A battle-tested collection of Bosch, Parkside, and off-brand Chinese power tools – curated, repaired, and pushed to the limit in real DIY and construction projects.",
-              "tags": ["Power Tools", "Bosch", "Parkside", "DIY", "Workshop"]
-            },
-            "de": {
-              "title": "Power-Tool Ruhmeshalle",
-              "text": "Praxiserprobte Sammlung von Bosch-, Parkside- und chinesischen No-Name-Elektrowerkzeugen – ausgesucht, repariert und im harten DIY- und Baustelleneinsatz getestet.",
-              "tags": ["Elektrowerkzeuge", "Bosch", "Parkside", "DIY", "Werkstatt"]
-            },
-            "hr": {
-              "title": "Galerija slavnih električnih alata",
-              "text": "Kolekcija iskušanih Bosch, Parkside i kineskih off-brand električnih alata – pažljivo odabranih, popravljanih i guranih do kraja u pravim DIY i građevinskim projektima.",
-              "tags": ["Električni alati", "Bosch", "Parkside", "DIY", "Radionica"]
-            },
-            "tr": {
-              "title": "Elektrikli Aletler Şöhretler Galerisi",
-              "text": "Gerçek DIY ve inşaat projelerinde sınırlarına kadar zorlanmış Bosch, Parkside ve Çin menşeli yan marka elektrikli aletlerden oluşan özenle seçilmiş ve tamir edilmiş bir koleksiyon.",
-              "tags": ["Elektrikli Aletler", "Bosch", "Parkside", "DIY", "Atölye"]
+              "text": "Giessen’de günlük yaşam için sürdürülebilir bir ulaşım çözümü olarak tasarlanmış, uygun fiyatlı bir kadro ile Shimano gibi kaliteli bileşenleri birleştiren elektrikli bisiklet.",
+              "tags": ["E-Bisiklet", "Sürdürülebilir Ulaşım", "DIY", "Shimano"]
             }
           }
         }

@@ -475,7 +475,7 @@
                     "img": "/images/contant/aevo_logo.svg",
                     "faIcon": "",
                     "faIconColors": {"bg": "#000", "bgLight": "#000", "fill": "#FFF", "fillLight": "#FFF"},
-                    "date": {"year": 2026, "month": 3},
+                    "date": {"year": 2026, "month": 4},
                     "link": {"href": "https://www.frankfurt-main.ihk.de/aus-und-weiterbildung/weiterbildung/weiterbildungspruefungen/weiterbildungspruefungen-von-a-bis-z/a-z-liste/ausbildereignung-pruefung-5189130", "tooltipString": "open_website"},
                     "locales": {
                         "en": {
@@ -490,7 +490,7 @@
                     "img": "/images/contant/ccna.svg",
                     "faIcon": "",
                     "faIconColors": {"bg": "red", "bgLight": "red", "fill": "white", "fillLight": "white"},
-                    "date": {"year": 2025, "month": 12},
+                    "date": {"year": 2026, "month": 8},
                     "link": {"href": "", "tooltipString": ""},
                     "locales": {
                         "en": {

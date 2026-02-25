@@ -46,13 +46,16 @@
           "preview": {
             "links": [
               {
-                "href": "",
+                "href": "https://drive.google.com/file/d/1iAKAgkY7UZAmAEF-13pNZWZ6QZ12eP0Y/view?usp=sharing",
+                "tooltipString": "Open Powerpoint (placeholder)",
+                "faIcon": "fa-solid fa-chalkboard-user"
+              },              
+              {
+                "href": "https://drive.google.com/file/d/1hh0fdztupAyFoOIZO5jFnUTZKV3o4kKI/view?usp=sharing",
                 "tooltipString": "Open document (placeholder)",
                 "faIcon": "fa-solid fa-file-lines"
               }
-            ],
-            "screenshots": ["images/writings/erp-implementation-challenges-cover.png"],
-            "screenshotsAspectRatio": "16:9"
+            ]
           },
           "locales": {
             "en": {
@@ -87,13 +90,16 @@
           "preview": {
             "links": [
               {
-                "href": "",
-                "tooltipString": "Open slides (placeholder)",
-                "faIcon": "fa-solid fa-display"
+                "href": "https://drive.google.com/file/d/1QQycgtzpfkG-KAHkItSj8E6LEYEeqdIZ/view?usp=sharing",
+                "tooltipString": "Open document (placeholder)",
+                "faIcon": "fa-solid fa-file-lines"
+              },
+              {
+                "href": "https://drive.google.com/file/d/1KpaM0VpDcyUVG7im5lTWSl0n0nZTsv3r/view?usp=sharing",
+                "tooltipString": "Open Certificate (placeholder)",
+                "faIcon": "fa-solid fa-certificate"
               }
-            ],
-            "screenshots": ["images/writings/os-systems-future-cover.png"],
-            "screenshotsAspectRatio": "16:9"
+            ]
           },
           "locales": {
             "en": {
@@ -128,38 +134,36 @@
           "preview": {
             "links": [
               {
-                "href": "",
-                "tooltipString": "Open report (placeholder)",
-                "faIcon": "fa-solid fa-file-pdf"
+                "href": "https://drive.google.com/file/d/1QKoR7CLON23qP49AGDegZxiI-4pZUstB/view?usp=sharing",
+                "tooltipString": "Open poster (placeholder)",
+                "faIcon": "fa-solid fa-chalkboard-user"
               }
-            ],
-            "screenshots": ["images/writings/industry4-warehouse-automation-cover.png"],
-            "screenshotsAspectRatio": "16:9"
+            ]
           },
           "locales": {
             "en": {
-              "title": "Industry 4.0 — Warehouse Automation Reengineering (THM)",
+              "title": "The Environmental Impact of Computer Science (THM)",
               "country": "Germany",
-              "text": "Reengineering concepts for a warehouse automation flow: process redesign, sensor/actor mapping, control logic, and performance/safety considerations.",
-              "medium": "University Project"
+              "text": "The progressing global warming and continuously rising energy consumption highlight that digitalization, alongside its opportunities, also brings significant ecological challenges. Across the entire lifecycle — from raw material extraction to disposal — digital technologies generate greenhouse gas emissions, waste, and excess heat. The concept of Green Computing addresses these issues by promoting sustainable, energy-efficient, and socially responsible IT solutions.",
+              "medium": "University Poster"
             },
             "de": {
-              "title": "Industrie 4.0 — Lagerautomatisierung Reengineering (THM)",
+              "title": "Der Umwelteinfluss von Informatik (THM)",
               "country": "Deutschland",
-              "text": "Reengineering-Ansätze für Lagerautomatisierung: Prozess-Redesign, Sensor/Aktor-Zuordnung, Steuerlogik sowie Performance- und Sicherheitsaspekte.",
-              "medium": "Hochschulprojekt"
+              "text": "Die fortschreitende Erderwärmung und der stetig steigende globale Energieverbrauch verdeutlichen, dass die Digitalisierung neben ihren Chancen auch erhebliche ökologische Herausforderungen birgt. Über den gesamten Lebenszyklus – von der Rohstoffgewinnung bis zur Entsorgung – verursachen digitale Technologien relevante Mengen an Treibhausgasemissionen, Abfall und Abwärme. Die Philosophie des Green Computing setzt hier an und verfolgt nachhaltige, energieeffiziente sowie sozial verantwortliche IT-Lösungen.",
+              "medium": "Hochschulposter"
             },
             "hr": {
-              "title": "Industrija 4.0 — Reengineering automatizacije skladišta (THM)",
+              "title": "Utjecaj informatike na okoliš (THM)",
               "country": "Njemačka",
-              "text": "Koncepti reengineeringa za tok automatizacije skladišta: redizajn procesa, mapiranje senzora/aktuatora, logika upravljanja te performanse i sigurnost.",
-              "medium": "Sveučilišni projekt"
+              "text": "Globalno zagrijavanje i rastuća potrošnja energije pokazuju da digitalizacija, uz svoje prednosti, donosi i ozbiljne ekološke izazove. Tijekom cijelog životnog ciklusa digitalnih tehnologija nastaju emisije stakleničkih plinova, otpad i višak topline, zbog čega su održiva i energetski učinkovita IT rješenja sve važnija.",
+              "medium": "Sveučilišni poster"
             },
             "tr": {
-              "title": "Endüstri 4.0 — Depo Otomasyonu Yeniden Mühendislik (THM)",
+              "title": "Bilişimin Çevresel Etkisi (THM)",
               "country": "Almanya",
-              "text": "Depo otomasyon akışı için yeniden mühendislik: süreç tasarımı, sensör/aktüatör eşlemesi, kontrol mantığı ve performans/güvenlik değerlendirmeleri.",
-              "medium": "Üniversite projesi"
+              "text": "Küresel ısınma ve artan enerji tüketimi, dijitalleşmenin fırsatlarının yanında ciddi çevresel etkiler de yarattığını göstermektedir. Dijital teknolojiler, ham madde çıkarımından bertarafa kadar tüm yaşam döngüsü boyunca sera gazı emisyonları, atık ve atık ısı üretir. Yeşil Bilişim yaklaşımı, sürdürülebilir ve enerji verimli BT çözümlerini teşvik etmeyi amaçlar.",
+              "medium": "Üniversite Posteri"
             }
           }
         },
@@ -169,13 +173,11 @@
           "preview": {
             "links": [
               {
-                "href": "",
+                "href": "https://drive.google.com/file/d/1D0Gy6srJBADn1JcT8NdnmILq0BD6sxTY/view?usp=sharing",
                 "tooltipString": "Open presentation (placeholder)",
                 "faIcon": "fa-solid fa-chalkboard-user"
               }
-            ],
-            "screenshots": ["images/writings/what-is-light-cover.png"],
-            "screenshotsAspectRatio": "16:9"
+            ]
           },
           "locales": {
             "en": {

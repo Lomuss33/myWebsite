@@ -137,10 +137,10 @@
           "link": { "href": null, "tooltipString": null },
           "copyToClipboardButton": false,
           "locales": {
-            "en": { "title": "PLC programming & industrial automation", "text": "Experience with Siemens TIA Portal (S7) and practice with Yokogawa, Allen-Bradley, and Schneider PLC systems." },
-            "de": { "title": "SPS-Programmierung & Automatisierungstechnik", "text": "Erfahrung mit Siemens TIA Portal (S7) sowie Praxis mit Yokogawa-, Allen-Bradley- und Schneider-SPS-Systemen." },
-            "hr": { "title": "PLC programiranje i industrijska automatizacija", "text": "Iskustvo s Siemens TIA Portalom (S7) te praksa s Yokogawa, Allen-Bradley i Schneider PLC sustavima." },
-            "tr": { "title": "PLC programlama ve endüstriyel otomasyon", "text": "Siemens TIA Portal (S7) deneyimi ve Yokogawa, Allen-Bradley ve Schneider PLC sistemleriyle pratik." }
+            "en": { "title": "PLC programming & industrial automation", "text": "Experience with Siemens TIA Portal (S7) and practice with Janitza, Allen-Bradley, and Schneider PLC systems." },
+            "de": { "title": "SPS-Programmierung & Automatisierungstechnik", "text": "Erfahrung mit Siemens TIA Portal (S7) sowie Praxis mit Janitza-, Allen-Bradley- und Schneider-SPS-Systemen." },
+            "hr": { "title": "PLC programiranje i industrijska automatizacija", "text": "Iskustvo s Siemens TIA Portalom (S7) te praksa s Janitza, Allen-Bradley i Schneider PLC sustavima." },
+            "tr": { "title": "PLC programlama ve endüstriyel otomasyon", "text": "Siemens TIA Portal (S7) deneyimi ve Janitza, Allen-Bradley ve Schneider PLC sistemleriyle pratik." }
           }
         },
         {

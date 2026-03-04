@@ -293,7 +293,7 @@
             {
             "id": 1,
             "categoryId": "category_fun",
-            "img": "/images/yt_fav/Lyle Forever.webp",
+            "img": "/images/yt_fav/LyleForever.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
             "date": { "year": null, "month": null },
@@ -301,7 +301,7 @@
             {
             "id": 2,
             "categoryId": "category_fun",
-            "img": "/images/yt_fav/Kill Tony.webp",
+            "img": "/images/yt_fav/Kill_Tony.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
             "date": { "year": null, "month": null },
@@ -310,7 +310,7 @@
             {
             "id": 3,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/History of Humankind.webp",
+            "img": "/images/yt_fav/History_of_Humankind.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#101820", "bgLight": "#EEF2F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -328,7 +328,7 @@
             {
             "id": 5,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/Tasting History.webp",
+            "img": "/images/yt_fav/Tasting_History.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#1C120B", "bgLight": "#F7EFE8", "fill": "#FFB74D", "fillLight": "#EF6C00" },
             "date": { "year": null, "month": null },
@@ -337,7 +337,7 @@
             {
             "id": 6,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/Great Books.webp",
+            "img": "/images/yt_fav/Great_Books.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#0E1726", "bgLight": "#EEF3FA", "fill": "#64B5F6", "fillLight": "#1976D2" },
             "date": { "year": null, "month": null },
@@ -346,7 +346,7 @@
             {
             "id": 7,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/Institute of Human Anatomy.webp",
+            "img": "/images/yt_fav/Institute_of_Human_Anatomy.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#220B16", "bgLight": "#FFEAF1", "fill": "#EC407A", "fillLight": "#C2185B" },
             "date": { "year": null, "month": null },
@@ -355,7 +355,7 @@
             {
             "id": 8,
             "categoryId": "category_practical",
-            "img": "/images/yt_fav/Garage Thinkering.webp",
+            "img": "/images/yt_fav/Garage_Thinkering.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#101010", "bgLight": "#F2F2F2", "fill": "#BDBDBD", "fillLight": "#424242" },
             "date": { "year": null, "month": null },
@@ -364,7 +364,7 @@
             {
             "id": 9,
             "categoryId": "category_practical",
-            "img": "/images/yt_fav/Good Woork.webp",
+            "img": "/images/yt_fav/Good_Woork.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#0B1A0E", "bgLight": "#EAF7EE", "fill": "#66BB6A", "fillLight": "#2E7D32" },
             "date": { "year": null, "month": null },
@@ -373,7 +373,7 @@
             {
             "id": 10,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/After Skool.webp",
+            "img": "/images/yt_fav/After_Skool.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#0D1B2A", "bgLight": "#EAF2FF", "fill": "#4FC3F7", "fillLight": "#0288D1" },
             "date": { "year": null, "month": null },
@@ -382,7 +382,7 @@
             {
             "id": 11,
             "categoryId": "category_practical",
-            "img": "/images/yt_fav/Sabin Civil Engineering.webp",
+            "img": "/images/yt_fav/Sabin_Civil_Engineering.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#1A140A", "bgLight": "#F7F1E5", "fill": "#FFD54F", "fillLight": "#F9A825" },
             "date": { "year": null, "month": null },
@@ -391,7 +391,7 @@
             {
             "id": 12,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/OTR Food & History.webp",
+            "img": "/images/yt_fav/OTR Food_&_History.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#1E0E0B", "bgLight": "#FFF0EB", "fill": "#FF7043", "fillLight": "#E64A19" },
             "date": { "year": null, "month": null },
@@ -400,7 +400,7 @@
             {
             "id": 13,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/The School of Life.webp",
+            "img": "/images/yt_fav/The_School_of_Life.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#141414", "bgLight": "#F4F4F4", "fill": "#E0E0E0", "fillLight": "#424242" },
             "date": { "year": null, "month": null },
@@ -409,7 +409,7 @@
             {
             "id": 14,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/How Money Works.webp",
+            "img": "/images/yt_fav/How_Money_Works.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#071A12", "bgLight": "#E7F6EC", "fill": "#34A853", "fillLight": "#1E7A3B" },
             "date": { "year": null, "month": null },
@@ -427,7 +427,7 @@
             {
             "id": 16,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/Predictive History.webp",
+            "img": "/images/yt_fav/Predictive_History.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#0E1726", "bgLight": "#EEF3FA", "fill": "#90CAF9", "fillLight": "#1976D2" },
             "date": { "year": null, "month": null },
@@ -445,7 +445,7 @@
             {
             "id": 18,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/Economics Explained.webp",
+            "img": "/images/yt_fav/Economics_Explained.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#071A12", "bgLight": "#E7F6EC", "fill": "#66BB6A", "fillLight": "#2E7D32" },
             "date": { "year": null, "month": null },
@@ -463,7 +463,7 @@
             {
             "id": 20,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/Alex OConnor.webp",
+            "img": "/images/yt_fav/Alex_OConnor.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#141414", "bgLight": "#F4F4F4", "fill": "#BDBDBD", "fillLight": "#424242" },
             "date": { "year": null, "month": null },
@@ -481,7 +481,7 @@
             {
             "id": 22,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/Lex Fridman.webp",
+            "img": "/images/yt_fav/Lex_Fridman.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#0D1117", "bgLight": "#EDF2F7", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -517,7 +517,7 @@
             {
             "id": 26,
             "categoryId": "category_practical",
-            "img": "/images/yt_fav/Lohnt sich Das.webp",
+            "img": "/images/yt_fav/Lohnt_sich_Das.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#071A12", "bgLight": "#E7F6EC", "fill": "#66BB6A", "fillLight": "#2E7D32" },
             "date": { "year": null, "month": null },
@@ -553,7 +553,7 @@
             {
             "id": 30,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/TLDR News Global.webp",
+            "img": "/images/yt_fav/TLDR_News_Global.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -562,7 +562,7 @@
             {
             "id": 31,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/Kings & Generals.webp",
+            "img": "/images/yt_fav/Kings_&_Generals.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#1C120B", "bgLight": "#F7EFE8", "fill": "#FFB74D", "fillLight": "#EF6C00" },
             "date": { "year": null, "month": null },
@@ -625,7 +625,7 @@
             {
             "id": 38,
             "categoryId": "category_practical",
-            "img": "/images/yt_fav/Channel 5.webp",
+            "img": "/images/yt_fav/Channel_5.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#4FC3F7", "fillLight": "#0288D1" },
             "date": { "year": null, "month": null },
@@ -652,7 +652,7 @@
             {
             "id": 41,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/Real Engineering.webp",
+            "img": "/images/yt_fav/Real_Engineering.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#101010", "bgLight": "#F2F2F2", "fill": "#BDBDBD", "fillLight": "#424242" },
             "date": { "year": null, "month": null },
@@ -679,7 +679,7 @@
             {
             "id": 44,
             "categoryId": "category_fun",
-            "img": "/images/yt_fav/Internet Historian.webp",
+            "img": "/images/yt_fav/Internet_Historian.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#141414", "bgLight": "#F4F4F4", "fill": "#E0E0E0", "fillLight": "#424242" },
             "date": { "year": null, "month": null },
@@ -688,7 +688,7 @@
             {
             "id": 45,
             "categoryId": "category_fun",
-            "img": "/images/yt_fav/Casually Explained.webp",
+            "img": "/images/yt_fav/Casually_Explained.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#141414", "bgLight": "#F4F4F4", "fill": "#E0E0E0", "fillLight": "#424242" },
             "date": { "year": null, "month": null },
@@ -697,7 +697,7 @@
             {
             "id": 46,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/Centre Place.webp",
+            "img": "/images/yt_fav/Centre_Place.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -706,7 +706,7 @@
             {
             "id": 47,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/Johnny Harris.webp",
+            "img": "/images/yt_fav/Johnny_Harris.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -724,7 +724,7 @@
             {
             "id": 49,
             "categoryId": "category_fun",
-            "img": "/images/yt_fav/Sam O'Nella Academy.webp",
+            "img": "/images/yt_fav/Sam_O'Nella_Academy.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },
@@ -742,7 +742,7 @@
             {
             "id": 51,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/Hank Green.webp",
+            "img": "/images/yt_fav/Hank_Green.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -751,7 +751,7 @@
             {
             "id": 52,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/Gesithas Gewissa Anglo-Saxon Heritage.webp",
+            "img": "/images/yt_fav/Gesithas_Gewissa_Anglo-Saxon_Heritage.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -760,7 +760,7 @@
             {
             "id": 53,
             "categoryId": "category_fun",
-            "img": "/images/yt_fav/Theo Von.webp",
+            "img": "/images/yt_fav/Theo_Von.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },
@@ -769,7 +769,7 @@
             {
             "id": 54,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/History Matters.webp",
+            "img": "/images/yt_fav/History_Matters.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -787,7 +787,7 @@
             {
             "id": 56,
             "categoryId": "category_fun",
-            "img": "/images/yt_fav/Outdoor Boys.webp",
+            "img": "/images/yt_fav/Outdoor_Boys.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },
@@ -796,7 +796,7 @@
             {
             "id": 57,
             "categoryId": "category_practical",
-            "img": "/images/yt_fav/Linus tech Tips.webp",
+            "img": "/images/yt_fav/Linus_tech_Tips.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#0B1A0E", "bgLight": "#EAF7EE", "fill": "#66BB6A", "fillLight": "#2E7D32" },
             "date": { "year": null, "month": null },
@@ -805,7 +805,7 @@
             {
             "id": 58,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/Patrick Boyle.webp",
+            "img": "/images/yt_fav/Patrick_Boyle.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -823,7 +823,7 @@
             {
             "id": 60,
             "categoryId": "category_practical",
-            "img": "/images/yt_fav/jeremys IT lab.webp",
+            "img": "/images/yt_fav/jeremys_IT_lab.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#0B1A0E", "bgLight": "#EAF7EE", "fill": "#66BB6A", "fillLight": "#2E7D32" },
             "date": { "year": null, "month": null },
@@ -832,7 +832,7 @@
             {
             "id": 61,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/fig tree.webp",
+            "img": "/images/yt_fav/fig_tree.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -841,7 +841,7 @@
             {
             "id": 62,
             "categoryId": "category_fun",
-            "img": "/images/yt_fav/Mumbo Jumbo.webp",
+            "img": "/images/yt_fav/Mumbo_Jumbo.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },
@@ -850,7 +850,7 @@
             {
             "id": 63,
             "categoryId": "category_practical",
-            "img": "/images/yt_fav/PowerCert Animated Videos.webp",
+            "img": "/images/yt_fav/PowerCert_Animated_Videos.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#0B1A0E", "bgLight": "#EAF7EE", "fill": "#66BB6A", "fillLight": "#2E7D32" },
             "date": { "year": null, "month": null },
@@ -859,7 +859,7 @@
             {
             "id": 64,
             "categoryId": "category_fun",
-            "img": "/images/yt_fav/24 minuta sa Zoranom Kesićem.webp",
+            "img": "/images/yt_fav/24 minuta_sa_Zoranom_Kesićem.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },
@@ -895,7 +895,7 @@
             {
             "id": 68,
             "categoryId": "category_fun",
-            "img": "/images/yt_fav/Naša mala klinika.webp",
+            "img": "/images/yt_fav/Naša_mala_klinika.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },
@@ -913,7 +913,7 @@
             {
             "id": 70,
             "categoryId": "category_practical",
-            "img": "/images/yt_fav/David Bombal Tech.webp",
+            "img": "/images/yt_fav/David_Bombal_Tech.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#0B1A0E", "bgLight": "#EAF7EE", "fill": "#66BB6A", "fillLight": "#2E7D32" },
             "date": { "year": null, "month": null },
@@ -922,7 +922,7 @@
             {
             "id": 71,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/Soft White Underbelly.webp",
+            "img": "/images/yt_fav/Soft_White_Underbelly.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },

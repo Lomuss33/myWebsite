@@ -78,8 +78,14 @@
                 }
                 ],
                 "screenshots": [
-                "images/flags_large/tattoo-main.png"
-                ],
+                    "/images/personal_art/tattoo_design/cekic_vatra.webp",
+                    "/images/personal_art/tattoo_design/elixir_god.webp",
+                    "/images/personal_art/tattoo_design/ilir_2.webp",
+                    "/images/personal_art/tattoo_design/konj_linija_art.webp",
+                    "/images/personal_art/tattoo_design/mitski_lav.webp",
+                    "/images/personal_art/tattoo_design/vrijeme_box.webp",
+                    "/images/personal_art/tattoo_design/zid_alien.webp"
+                    ],
                 "screenshotsAspectRatio": "1:1"
             },
             "locales": {
@@ -93,7 +99,7 @@
             },
             {
             "id": 3,
-            "img": "images/flags_large/vsco-greece-cover.png",
+            "img": "images/flags_large/vsco-greece-cover.webp",
             "date": { "year": 2023, "month": 7 },
             "preview": {
                 "links": [
@@ -859,7 +865,7 @@
             {
             "id": 64,
             "categoryId": "category_fun",
-            "img": "/images/yt_fav/24_minuta_sa_Zoranom_Kesićem.webp",
+            "img": "/images/yt_fav/24_minuta_sa_Zoranom_Kesicem.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },
@@ -895,7 +901,7 @@
             {
             "id": 68,
             "categoryId": "category_fun",
-            "img": "/images/yt_fav/Naša_mala_klinika.webp",
+            "img": "/images/yt_fav/Nasa_mala_klinika.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },

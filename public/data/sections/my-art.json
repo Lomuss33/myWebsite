@@ -99,7 +99,6 @@
             },
             {
             "id": 3,
-            "img": "images/flags_large/vsco-greece-cover.webp",
             "date": { "year": 2023, "month": 7 },
             "preview": {
                 "links": [
@@ -865,7 +864,7 @@
             {
             "id": 64,
             "categoryId": "category_fun",
-            "img": "/images/yt_fav/24_minuta_sa_Zoranom_Kesicem.webp",
+            "img": "/images/yt_fav/24_minutasa_Zoranom_Kesicem.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },

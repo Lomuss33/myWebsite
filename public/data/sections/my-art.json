@@ -78,28 +78,13 @@
                 }
                 ],
                 "screenshots": [
-                    "images/personal_art/tattoo_design/brisnik_full_lines.webp",
-                    "images/personal_art/tattoo_design/chirho_orao.webp",
-                    "images/personal_art/tattoo_design/gavrilo_tattoo.webp",
-                    "images/personal_art/tattoo_design/ilir_3.webp",
-                    "images/personal_art/tattoo_design/kriz_patnja.webp",
-                    "images/personal_art/tattoo_design/ovca_jede_linija.webp",
-                    "images/personal_art/tattoo_design/vuk_linija_art.webp",
-                    "images/personal_art/tattoo_design/zito_baw.webp",
-                    "images/personal_art/tattoo_design/brisnik_rame.webp",
-                    "images/personal_art/tattoo_design/duck_baw.webp",
-                    "images/personal_art/tattoo_design/ilir_1.webp",
-                    "images/personal_art/tattoo_design/jelen_svemir.webp",
-                    "images/personal_art/tattoo_design/lines_baw.webp",
-                    "images/personal_art/tattoo_design/sljiva_baw.webp",
-                    "images/personal_art/tattoo_design/zaba_srednjak.webp",
-                    "images/personal_art/tattoo_design/cekic_vatra.webp",
-                    "images/personal_art/tattoo_design/elixir_god.webp",
-                    "images/personal_art/tattoo_design/ilir_2.webp",
-                    "images/personal_art/tattoo_design/konj_linija_art.webp",
-                    "images/personal_art/tattoo_design/mitski_lav.webp",
-                    "images/personal_art/tattoo_design/vrijeme_box.webp",
-                    "images/personal_art/tattoo_design/zid_alien.webp"
+                    "/images/personal_art/tattoo_design/cekic_vatra.webp",
+                    "/images/personal_art/tattoo_design/elixir_god.webp",
+                    "/images/personal_art/tattoo_design/ilir_2.webp",
+                    "/images/personal_art/tattoo_design/konj_linija_art.webp",
+                    "/images/personal_art/tattoo_design/mitski_lav.webp",
+                    "/images/personal_art/tattoo_design/vrijeme_box.webp",
+                    "/images/personal_art/tattoo_design/zid_alien.webp"
                     ],
                 "screenshotsAspectRatio": "1:1"
             },
@@ -880,7 +865,7 @@
             {
             "id": 64,
             "categoryId": "category_fun",
-            "img": "/images/yt_fav/24_minuta_sa_Zoranom_Kesićem.webp",
+            "img": "/images/yt_fav/24_minuta_sa_Zoranom_Kesicem.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },
@@ -916,7 +901,7 @@
             {
             "id": 68,
             "categoryId": "category_fun",
-            "img": "/images/yt_fav/Naša_mala_klinika.webp",
+            "img": "/images/yt_fav/Nasa_mala_klinika.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },

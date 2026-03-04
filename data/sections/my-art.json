@@ -391,7 +391,7 @@
             {
             "id": 12,
             "categoryId": "category_theoretical",
-            "img": "/images/yt_fav/OTR Food_&_History.webp",
+            "img": "/images/yt_fav/OTR_Food_&_History.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#1E0E0B", "bgLight": "#FFF0EB", "fill": "#FF7043", "fillLight": "#E64A19" },
             "date": { "year": null, "month": null },
@@ -859,7 +859,7 @@
             {
             "id": 64,
             "categoryId": "category_fun",
-            "img": "/images/yt_fav/24 minuta_sa_Zoranom_Kesićem.webp",
+            "img": "/images/yt_fav/24_minuta_sa_Zoranom_Kesićem.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },

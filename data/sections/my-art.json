@@ -52,8 +52,8 @@
                 }
                 ],
                 "screenshots": [
-                "public/images/personal_art/macedonia/mac_centar.jpg",
-                "public/images/personal_art/macedonia/mac_river.jpg"
+                "/images/personal_art/macedonia/mac_centar.jpg",
+                "/images/personal_art/macedonia/mac_river.jpg"
                 ],
                 "screenshotsAspectRatio": "16:9"
             },
@@ -104,7 +104,7 @@
                 }
                 ],
                 "screenshots": [
-                "public/images/personal_art/greece/gre_meteora.jpg"
+                "/images/personal_art/greece/gre_meteora.jpg"
                 ],
                 "screenshotsAspectRatio": "16:9"
             },
@@ -129,8 +129,8 @@
                 }
                 ],
                 "screenshots": [
-                "public/images/personal_art/bulgaria/bul_church.jpg",
-                "public/images/personal_art/bulgaria/bul_lion.jpg"
+                "/images/personal_art/bulgaria/bul_church.jpg",
+                "/images/personal_art/bulgaria/bul_lion.jpg"
                 ],
                 "screenshotsAspectRatio": "16:9"
             },
@@ -155,7 +155,7 @@
                 }
                 ],
                 "screenshots": [
-                "public/images/personal_art/serbia/srb_beograd.jpg"
+                "/images/personal_art/serbia/srb_beograd.jpg"
                 ],
                 "screenshotsAspectRatio": "16:9"
             },
@@ -180,7 +180,7 @@
                 }
                 ],
                 "screenshots": [
-                "public/images/personal_art/bosnia/bih_traktor.jpg"
+                "/images/personal_art/bosnia/bih_traktor.jpg"
                 ],
                 "screenshotsAspectRatio": "16:9"
             },
@@ -205,8 +205,8 @@
                 }
                 ],
                 "screenshots": [
-                "public/images/personal_art/croatia/cro_beach.jpg",
-                "public/images/personal_art/croatia/cro_split.jpg"
+                "/images/personal_art/croatia/cro_beach.jpg",
+                "/images/personal_art/croatia/cro_split.jpg"
                 ],
                 "screenshotsAspectRatio": "16:9"
             },
@@ -231,10 +231,10 @@
                 }
                 ],
                 "screenshots": [
-                "public/images/personal_art/germany/de_eppstein_cat.jpg",
-                "public/images/personal_art/germany/de_frankfurt.jpg",
-                "public/images/personal_art/germany/de_landschaft.jpg",
-                "public/images/personal_art/germany/de_view.jpg"
+                "/images/personal_art/germany/de_eppstein_cat.jpg",
+                "/images/personal_art/germany/de_frankfurt.jpg",
+                "/images/personal_art/germany/de_landschaft.jpg",
+                "/images/personal_art/germany/de_view.jpg"
 
 
                 ],
@@ -293,7 +293,7 @@
             {
             "id": 1,
             "categoryId": "category_fun",
-            "img": "public/images/yt_fav/Lyle Forever.jpg",
+            "img": "/images/yt_fav/Lyle Forever.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
             "date": { "year": null, "month": null },
@@ -301,7 +301,7 @@
             {
             "id": 2,
             "categoryId": "category_fun",
-            "img": "public/images/yt_fav/Kill Tony.jpg",
+            "img": "/images/yt_fav/Kill Tony.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
             "date": { "year": null, "month": null },
@@ -310,7 +310,7 @@
             {
             "id": 3,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/History of Humankind.jpg",
+            "img": "/images/yt_fav/History of Humankind.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#101820", "bgLight": "#EEF2F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -319,7 +319,7 @@
             {
             "id": 4,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/HubermanLab.jpg",
+            "img": "/images/yt_fav/HubermanLab.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0B1220", "bgLight": "#EDF2FF", "fill": "#7C4DFF", "fillLight": "#5E35B1" },
             "date": { "year": null, "month": null },
@@ -328,7 +328,7 @@
             {
             "id": 5,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/Tasting History.jpg",
+            "img": "/images/yt_fav/Tasting History.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#1C120B", "bgLight": "#F7EFE8", "fill": "#FFB74D", "fillLight": "#EF6C00" },
             "date": { "year": null, "month": null },
@@ -337,7 +337,7 @@
             {
             "id": 6,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/Great Books.jpg",
+            "img": "/images/yt_fav/Great Books.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0E1726", "bgLight": "#EEF3FA", "fill": "#64B5F6", "fillLight": "#1976D2" },
             "date": { "year": null, "month": null },
@@ -346,7 +346,7 @@
             {
             "id": 7,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/Institute of Human Anatomy.jpg",
+            "img": "/images/yt_fav/Institute of Human Anatomy.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#220B16", "bgLight": "#FFEAF1", "fill": "#EC407A", "fillLight": "#C2185B" },
             "date": { "year": null, "month": null },
@@ -355,7 +355,7 @@
             {
             "id": 8,
             "categoryId": "category_practical",
-            "img": "public/images/yt_fav/Garage Thinkering.jpg",
+            "img": "/images/yt_fav/Garage Thinkering.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#101010", "bgLight": "#F2F2F2", "fill": "#BDBDBD", "fillLight": "#424242" },
             "date": { "year": null, "month": null },
@@ -364,7 +364,7 @@
             {
             "id": 9,
             "categoryId": "category_practical",
-            "img": "public/images/yt_fav/Good Woork.jpg",
+            "img": "/images/yt_fav/Good Woork.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0B1A0E", "bgLight": "#EAF7EE", "fill": "#66BB6A", "fillLight": "#2E7D32" },
             "date": { "year": null, "month": null },
@@ -373,7 +373,7 @@
             {
             "id": 10,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/After Skool.jpg",
+            "img": "/images/yt_fav/After Skool.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0D1B2A", "bgLight": "#EAF2FF", "fill": "#4FC3F7", "fillLight": "#0288D1" },
             "date": { "year": null, "month": null },
@@ -382,7 +382,7 @@
             {
             "id": 11,
             "categoryId": "category_practical",
-            "img": "public/images/yt_fav/Sabin Civil Engineering.jpg",
+            "img": "/images/yt_fav/Sabin Civil Engineering.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#1A140A", "bgLight": "#F7F1E5", "fill": "#FFD54F", "fillLight": "#F9A825" },
             "date": { "year": null, "month": null },
@@ -391,7 +391,7 @@
             {
             "id": 12,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/OTR Food & History.jpg",
+            "img": "/images/yt_fav/OTR Food & History.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#1E0E0B", "bgLight": "#FFF0EB", "fill": "#FF7043", "fillLight": "#E64A19" },
             "date": { "year": null, "month": null },
@@ -400,7 +400,7 @@
             {
             "id": 13,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/The School of Life.jpg",
+            "img": "/images/yt_fav/The School of Life.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#141414", "bgLight": "#F4F4F4", "fill": "#E0E0E0", "fillLight": "#424242" },
             "date": { "year": null, "month": null },
@@ -409,7 +409,7 @@
             {
             "id": 14,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/How Money Works.jpg",
+            "img": "/images/yt_fav/How Money Works.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#071A12", "bgLight": "#E7F6EC", "fill": "#34A853", "fillLight": "#1E7A3B" },
             "date": { "year": null, "month": null },
@@ -418,7 +418,7 @@
             {
             "id": 15,
             "categoryId": "category_fun",
-            "img": "public/images/yt_fav/PewDiePie.jpg",
+            "img": "/images/yt_fav/PewDiePie.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },
@@ -427,7 +427,7 @@
             {
             "id": 16,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/Predictive History.jpg",
+            "img": "/images/yt_fav/Predictive History.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0E1726", "bgLight": "#EEF3FA", "fill": "#90CAF9", "fillLight": "#1976D2" },
             "date": { "year": null, "month": null },
@@ -436,7 +436,7 @@
             {
             "id": 17,
             "categoryId": "category_practical",
-            "img": "public/images/yt_fav/SmarterEveryDay.jpg",
+            "img": "/images/yt_fav/SmarterEveryDay.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0B1220", "bgLight": "#EDF2FF", "fill": "#64B5F6", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -445,7 +445,7 @@
             {
             "id": 18,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/Economics Explained.jpg",
+            "img": "/images/yt_fav/Economics Explained.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#071A12", "bgLight": "#E7F6EC", "fill": "#66BB6A", "fillLight": "#2E7D32" },
             "date": { "year": null, "month": null },
@@ -454,7 +454,7 @@
             {
             "id": 19,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/Sisyphus55.jpg",
+            "img": "/images/yt_fav/Sisyphus55.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#141414", "bgLight": "#F4F4F4", "fill": "#E0E0E0", "fillLight": "#424242" },
             "date": { "year": null, "month": null },
@@ -463,7 +463,7 @@
             {
             "id": 20,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/Alex OConnor.jpg",
+            "img": "/images/yt_fav/Alex OConnor.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#141414", "bgLight": "#F4F4F4", "fill": "#BDBDBD", "fillLight": "#424242" },
             "date": { "year": null, "month": null },
@@ -472,7 +472,7 @@
             {
             "id": 21,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/GeoHistory.jpg",
+            "img": "/images/yt_fav/GeoHistory.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0E1726", "bgLight": "#EEF3FA", "fill": "#64B5F6", "fillLight": "#1976D2" },
             "date": { "year": null, "month": null },
@@ -481,7 +481,7 @@
             {
             "id": 22,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/Lex Fridman.jpg",
+            "img": "/images/yt_fav/Lex Fridman.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0D1117", "bgLight": "#EDF2F7", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -490,7 +490,7 @@
             {
             "id": 23,
             "categoryId": "category_fun",
-            "img": "public/images/yt_fav/Kvizoteka.jpg",
+            "img": "/images/yt_fav/Kvizoteka.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#1C120B", "bgLight": "#F7EFE8", "fill": "#FFB74D", "fillLight": "#EF6C00" },
             "date": { "year": null, "month": null },
@@ -499,7 +499,7 @@
             {
             "id": 24,
             "categoryId": "category_practical",
-            "img": "public/images/yt_fav/TechLinked.jpg",
+            "img": "/images/yt_fav/TechLinked.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0D1117", "bgLight": "#EDF2F7", "fill": "#4FC3F7", "fillLight": "#0288D1" },
             "date": { "year": null, "month": null },
@@ -508,7 +508,7 @@
             {
             "id": 25,
             "categoryId": "category_practical",
-            "img": "public/images/yt_fav/Finanzfluss.jpg",
+            "img": "/images/yt_fav/Finanzfluss.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#071A12", "bgLight": "#E7F6EC", "fill": "#2E7D32", "fillLight": "#1B5E20" },
             "date": { "year": null, "month": null },
@@ -517,7 +517,7 @@
             {
             "id": 26,
             "categoryId": "category_practical",
-            "img": "public/images/yt_fav/Lohnt sich Das.jpg",
+            "img": "/images/yt_fav/Lohnt sich Das.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#071A12", "bgLight": "#E7F6EC", "fill": "#66BB6A", "fillLight": "#2E7D32" },
             "date": { "year": null, "month": null },
@@ -526,7 +526,7 @@
             {
             "id": 27,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/Kurzgesagt.jpg",
+            "img": "/images/yt_fav/Kurzgesagt.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#FFD54F", "fillLight": "#F9A825" },
             "date": { "year": null, "month": null },
@@ -535,7 +535,7 @@
             {
             "id": 28,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/Veritasium.jpg",
+            "img": "/images/yt_fav/Veritasium.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0B1220", "bgLight": "#EDF2FF", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },
@@ -544,7 +544,7 @@
             {
             "id": 29,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/SciShow.jpg",
+            "img": "/images/yt_fav/SciShow.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0B1220", "bgLight": "#EDF2FF", "fill": "#64B5F6", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -553,7 +553,7 @@
             {
             "id": 30,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/TLDR News Global.jpg",
+            "img": "/images/yt_fav/TLDR News Global.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -562,7 +562,7 @@
             {
             "id": 31,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/Kings & Generals.jpg",
+            "img": "/images/yt_fav/Kings & Generals.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#1C120B", "bgLight": "#F7EFE8", "fill": "#FFB74D", "fillLight": "#EF6C00" },
             "date": { "year": null, "month": null },
@@ -571,7 +571,7 @@
             {
             "id": 32,
             "categoryId": "category_fun",
-            "img": "public/images/yt_fav/Vsauce.jpg",
+            "img": "/images/yt_fav/Vsauce.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0B1220", "bgLight": "#EDF2FF", "fill": "#8BC34A", "fillLight": "#558B2F" },
             "date": { "year": null, "month": null },
@@ -580,7 +580,7 @@
             {
             "id": 33,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/3Blue1Brown.jpg",
+            "img": "/images/yt_fav/3Blue1Brown.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0D1117", "bgLight": "#EDF2F7", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -589,7 +589,7 @@
             {
             "id": 34,
             "categoryId": "category_practical",
-            "img": "public/images/yt_fav/Fireship.jpg",
+            "img": "/images/yt_fav/Fireship.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF0000", "fillLight": "#CC0000" },
             "date": { "year": null, "month": null },
@@ -598,7 +598,7 @@
             {
             "id": 35,
             "categoryId": "category_practical",
-            "img": "public/images/yt_fav/freeCodeCamp.jpg",
+            "img": "/images/yt_fav/freeCodeCamp.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0D1117", "bgLight": "#EDF2F7", "fill": "#E0E0E0", "fillLight": "#424242" },
             "date": { "year": null, "month": null },
@@ -607,7 +607,7 @@
             {
             "id": 36,
             "categoryId": "category_practical",
-            "img": "public/images/yt_fav/Computerphile.jpg",
+            "img": "/images/yt_fav/Computerphile.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0B1220", "bgLight": "#EDF2FF", "fill": "#64B5F6", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -616,7 +616,7 @@
             {
             "id": 37,
             "categoryId": "category_practical",
-            "img": "public/images/yt_fav/ElectroBOOM.jpg",
+            "img": "/images/yt_fav/ElectroBOOM.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A0A", "bgLight": "#F7E7E7", "fill": "#FF7043", "fillLight": "#E64A19" },
             "date": { "year": null, "month": null },
@@ -625,7 +625,7 @@
             {
             "id": 38,
             "categoryId": "category_practical",
-            "img": "public/images/yt_fav/Channel 5.jpg",
+            "img": "/images/yt_fav/Channel 5.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#4FC3F7", "fillLight": "#0288D1" },
             "date": { "year": null, "month": null },
@@ -634,7 +634,7 @@
             {
             "id": 39,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/Numberphile.jpg",
+            "img": "/images/yt_fav/Numberphile.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0D1117", "bgLight": "#EDF2F7", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -643,7 +643,7 @@
             {
             "id": 40,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/MinutePhysics.jpg",
+            "img": "/images/yt_fav/MinutePhysics.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0B1220", "bgLight": "#EDF2FF", "fill": "#FFD54F", "fillLight": "#F9A825" },
             "date": { "year": null, "month": null },
@@ -652,7 +652,7 @@
             {
             "id": 41,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/Real Engineering.jpg",
+            "img": "/images/yt_fav/Real Engineering.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#101010", "bgLight": "#F2F2F2", "fill": "#BDBDBD", "fillLight": "#424242" },
             "date": { "year": null, "month": null },
@@ -661,7 +661,7 @@
             {
             "id": 42,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/RealLifeLore.jpg",
+            "img": "/images/yt_fav/RealLifeLore.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0E1726", "bgLight": "#EEF3FA", "fill": "#64B5F6", "fillLight": "#1976D2" },
             "date": { "year": null, "month": null },
@@ -670,7 +670,7 @@
             {
             "id": 43,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/ColdFusion.jpg",
+            "img": "/images/yt_fav/ColdFusion.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0D1117", "bgLight": "#EDF2F7", "fill": "#4FC3F7", "fillLight": "#0288D1" },
             "date": { "year": null, "month": null },
@@ -679,7 +679,7 @@
             {
             "id": 44,
             "categoryId": "category_fun",
-            "img": "public/images/yt_fav/Internet Historian.jpg",
+            "img": "/images/yt_fav/Internet Historian.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#141414", "bgLight": "#F4F4F4", "fill": "#E0E0E0", "fillLight": "#424242" },
             "date": { "year": null, "month": null },
@@ -688,7 +688,7 @@
             {
             "id": 45,
             "categoryId": "category_fun",
-            "img": "public/images/yt_fav/Casually Explained.jpg",
+            "img": "/images/yt_fav/Casually Explained.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#141414", "bgLight": "#F4F4F4", "fill": "#E0E0E0", "fillLight": "#424242" },
             "date": { "year": null, "month": null },
@@ -697,7 +697,7 @@
             {
             "id": 46,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/Centre Place.jpg",
+            "img": "/images/yt_fav/Centre Place.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -706,7 +706,7 @@
             {
             "id": 47,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/Johnny Harris.jpg",
+            "img": "/images/yt_fav/Johnny Harris.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -715,7 +715,7 @@
             {
             "id": 48,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/UsefulCharts.jpg",
+            "img": "/images/yt_fav/UsefulCharts.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -724,7 +724,7 @@
             {
             "id": 49,
             "categoryId": "category_fun",
-            "img": "public/images/yt_fav/Sam O'Nella Academy.jpg",
+            "img": "/images/yt_fav/Sam O'Nella Academy.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },
@@ -733,7 +733,7 @@
             {
             "id": 50,
             "categoryId": "category_fun",
-            "img": "public/images/yt_fav/Druski.jpg",
+            "img": "/images/yt_fav/Druski.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },
@@ -742,7 +742,7 @@
             {
             "id": 51,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/Hank Green.jpg",
+            "img": "/images/yt_fav/Hank Green.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -751,7 +751,7 @@
             {
             "id": 52,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/Gesithas Gewissa Anglo-Saxon Heritage.jpg",
+            "img": "/images/yt_fav/Gesithas Gewissa Anglo-Saxon Heritage.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -760,7 +760,7 @@
             {
             "id": 53,
             "categoryId": "category_fun",
-            "img": "public/images/yt_fav/Theo Von.jpg",
+            "img": "/images/yt_fav/Theo Von.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },
@@ -769,7 +769,7 @@
             {
             "id": 54,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/History Matters.jpg",
+            "img": "/images/yt_fav/History Matters.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -778,7 +778,7 @@
             {
             "id": 55,
             "categoryId": "category_fun",
-            "img": "public/images/yt_fav/Oversimplified.jpg",
+            "img": "/images/yt_fav/Oversimplified.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },
@@ -787,7 +787,7 @@
             {
             "id": 56,
             "categoryId": "category_fun",
-            "img": "public/images/yt_fav/Outdoor Boys.jpg",
+            "img": "/images/yt_fav/Outdoor Boys.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },
@@ -796,7 +796,7 @@
             {
             "id": 57,
             "categoryId": "category_practical",
-            "img": "public/images/yt_fav/Linus tech Tips.jpg",
+            "img": "/images/yt_fav/Linus tech Tips.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0B1A0E", "bgLight": "#EAF7EE", "fill": "#66BB6A", "fillLight": "#2E7D32" },
             "date": { "year": null, "month": null },
@@ -805,7 +805,7 @@
             {
             "id": 58,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/Patrick Boyle.jpg",
+            "img": "/images/yt_fav/Patrick Boyle.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -814,7 +814,7 @@
             {
             "id": 59,
             "categoryId": "category_fun",
-            "img": "public/images/yt_fav/videogamedunkey.jpg",
+            "img": "/images/yt_fav/videogamedunkey.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },
@@ -823,7 +823,7 @@
             {
             "id": 60,
             "categoryId": "category_practical",
-            "img": "public/images/yt_fav/jeremys IT lab.jpg",
+            "img": "/images/yt_fav/jeremys IT lab.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0B1A0E", "bgLight": "#EAF7EE", "fill": "#66BB6A", "fillLight": "#2E7D32" },
             "date": { "year": null, "month": null },
@@ -832,7 +832,7 @@
             {
             "id": 61,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/fig tree.jpg",
+            "img": "/images/yt_fav/fig tree.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },
@@ -841,7 +841,7 @@
             {
             "id": 62,
             "categoryId": "category_fun",
-            "img": "public/images/yt_fav/Mumbo Jumbo.jpg",
+            "img": "/images/yt_fav/Mumbo Jumbo.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },
@@ -850,7 +850,7 @@
             {
             "id": 63,
             "categoryId": "category_practical",
-            "img": "public/images/yt_fav/PowerCert Animated Videos.jpg",
+            "img": "/images/yt_fav/PowerCert Animated Videos.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0B1A0E", "bgLight": "#EAF7EE", "fill": "#66BB6A", "fillLight": "#2E7D32" },
             "date": { "year": null, "month": null },
@@ -859,7 +859,7 @@
             {
             "id": 64,
             "categoryId": "category_fun",
-            "img": "public/images/yt_fav/24 minuta sa Zoranom Kesićem.jpg",
+            "img": "/images/yt_fav/24 minuta sa Zoranom Kesićem.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },
@@ -868,7 +868,7 @@
             {
             "id": 65,
             "categoryId": "category_practical",
-            "img": "public/images/yt_fav/ThePrimeTime.jpg",
+            "img": "/images/yt_fav/ThePrimeTime.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0B1A0E", "bgLight": "#EAF7EE", "fill": "#66BB6A", "fillLight": "#2E7D32" },
             "date": { "year": null, "month": null },
@@ -877,7 +877,7 @@
             {
             "id": 66,
             "categoryId": "category_fun",
-            "img": "public/images/yt_fav/Jubilee.jpg",
+            "img": "/images/yt_fav/Jubilee.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },
@@ -886,7 +886,7 @@
             {
             "id": 67,
             "categoryId": "category_practical",
-            "img": "public/images/yt_fav/NetworkChuck.jpg",
+            "img": "/images/yt_fav/NetworkChuck.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0B1A0E", "bgLight": "#EAF7EE", "fill": "#66BB6A", "fillLight": "#2E7D32" },
             "date": { "year": null, "month": null },
@@ -895,7 +895,7 @@
             {
             "id": 68,
             "categoryId": "category_fun",
-            "img": "public/images/yt_fav/Naša mala klinika.jpg",
+            "img": "/images/yt_fav/Naša mala klinika.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },
@@ -904,7 +904,7 @@
             {
             "id": 69,
             "categoryId": "category_fun",
-            "img": "public/images/yt_fav/Lud,zbunjen,normalan.jpg",
+            "img": "/images/yt_fav/Lud,zbunjen,normalan.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#2B0A12", "bgLight": "#FFE8ED", "fill": "#FF5252", "fillLight": "#D32F2F" },
             "date": { "year": null, "month": null },
@@ -913,7 +913,7 @@
             {
             "id": 70,
             "categoryId": "category_practical",
-            "img": "public/images/yt_fav/David Bombal Tech.jpg",
+            "img": "/images/yt_fav/David Bombal Tech.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#0B1A0E", "bgLight": "#EAF7EE", "fill": "#66BB6A", "fillLight": "#2E7D32" },
             "date": { "year": null, "month": null },
@@ -922,7 +922,7 @@
             {
             "id": 71,
             "categoryId": "category_theoretical",
-            "img": "public/images/yt_fav/Soft White Underbelly.jpg",
+            "img": "/images/yt_fav/Soft White Underbelly.jpg",
             "faIcon": "",
             "faIconColors": { "bg": "#101A29", "bgLight": "#ECF0F6", "fill": "#90CAF9", "fillLight": "#1565C0" },
             "date": { "year": null, "month": null },

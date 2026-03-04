@@ -52,7 +52,8 @@
                 }
                 ],
                 "screenshots": [
-                "images/flags_large/vsco-macedonia.png"
+                "public/images/personal_art/macedonia/mac_centar.jpg",
+                "public/images/personal_art/macedonia/mac_river.jpg"
                 ],
                 "screenshotsAspectRatio": "16:9"
             },
@@ -103,7 +104,7 @@
                 }
                 ],
                 "screenshots": [
-                "images/flags_large/vsco-greece-cover.png"
+                "public/images/personal_art/greece/gre_meteora.jpg"
                 ],
                 "screenshotsAspectRatio": "16:9"
             },
@@ -128,7 +129,8 @@
                 }
                 ],
                 "screenshots": [
-                "images/flags_large/vsco-bulgaria.png"
+                "public/images/personal_art/bulgaria/bul_church.jpg",
+                "public/images/personal_art/bulgaria/bul_lion.jpg"
                 ],
                 "screenshotsAspectRatio": "16:9"
             },
@@ -153,7 +155,7 @@
                 }
                 ],
                 "screenshots": [
-                "images/flags_large/vsco-serbia.png"
+                "public/images/personal_art/serbia/srb_beograd.jpg"
                 ],
                 "screenshotsAspectRatio": "16:9"
             },
@@ -178,7 +180,7 @@
                 }
                 ],
                 "screenshots": [
-                "images/flags_large/vsco-bosnia.png"
+                "public/images/personal_art/bosnia/bih_traktor.jpg"
                 ],
                 "screenshotsAspectRatio": "16:9"
             },
@@ -203,7 +205,8 @@
                 }
                 ],
                 "screenshots": [
-                "images/flags_large/vsco-croatia.png"
+                "public/images/personal_art/croatia/cro_beach.jpg",
+                "public/images/personal_art/croatia/cro_split.jpg"
                 ],
                 "screenshotsAspectRatio": "16:9"
             },
@@ -228,7 +231,12 @@
                 }
                 ],
                 "screenshots": [
-                "images/flags_large/vsco-germany.png"
+                "public/images/personal_art/germany/de_eppstein_cat.jpg",
+                "public/images/personal_art/germany/de_frankfurt.jpg",
+                "public/images/personal_art/germany/de_landschaft.jpg",
+                "public/images/personal_art/germany/de_view.jpg"
+
+
                 ],
                 "screenshotsAspectRatio": "16:9"
             },

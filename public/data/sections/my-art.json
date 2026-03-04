@@ -52,8 +52,8 @@
                 }
                 ],
                 "screenshots": [
-                "/images/personal_art/macedonia/mac_centar.webp",
-                "/images/personal_art/macedonia/mac_river.webp"
+                "/images/personal_art/mac_centar.webp",
+                "/images/personal_art/mac_river.webp"
                 ],
                 "screenshotsAspectRatio": "16:9"
             },
@@ -104,7 +104,7 @@
                 }
                 ],
                 "screenshots": [
-                "/images/personal_art/greece/gre_meteora.webp"
+                "/images/personal_art/gre_meteora.webp"
                 ],
                 "screenshotsAspectRatio": "16:9"
             },

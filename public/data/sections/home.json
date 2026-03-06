@@ -400,6 +400,463 @@
           }
         }
       ]
+    },
+    {
+        "id": 3,
+        "component": "ArticleStack",
+        "locales": {
+            "en": {
+                "title": "{{My Human}} Stack"
+            },
+            "de": {
+                "title": "Mein {{menschliches}} System"
+            },
+            "hr": {
+                "title": "Moj {{ljudski}} sustav"
+            },
+            "tr": {
+                "title": "{{İnsan}} Sistemim"
+            }
+        },
+        "settings": {
+            "order_items_by": "id",
+            "order_items_sort": "asc"
+        },
+        "items": [
+            {
+                "id": 1,
+                "img": "",
+                "faIcon": "fa-solid fa-ruler-vertical",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#0891B2",
+                    "fillLight": "#0284C7"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Height: 200 cm"},
+                    "de": {"title": "Größe: 200 cm"},
+                    "hr": {"title": "Visina: 200 cm"},
+                    "tr": {"title": "Boy: 200 cm"}
+                }
+            },
+            {
+                "id": 2,
+                "img": "",
+                "faIcon": "fa-solid fa-weight-scale",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#F59E0B",
+                    "fillLight": "#D97706"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Weight: 98 kg"},
+                    "de": {"title": "Gewicht: 98 kg"},
+                    "hr": {"title": "Težina: 98 kg"},
+                    "tr": {"title": "Kilo: 98 kg"}
+                }
+            },
+            {
+                "id": 3,
+                "img": "",
+                "faIcon": "fa-solid fa-bone",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#EF4444",
+                    "fillLight": "#DC2626"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Bones: 206"},
+                    "de": {"title": "Knochen: 206"},
+                    "hr": {"title": "Kosti: 206"},
+                    "tr": {"title": "Kemikler: 206"}
+                }
+            },
+            {
+                "id": 4,
+                "img": "",
+                "faIcon": "fa-solid fa-tint",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#06B6D4",
+                    "fillLight": "#0891B2"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Water Content: 61%"},
+                    "de": {"title": "Wassergehalt: 61%"},
+                    "hr": {"title": "Postotak vode: 61%"},
+                    "tr": {"title": "Su İçeriği: %61"}
+                }
+            },
+            {
+                "id": 5,
+                "img": "",
+                "faIcon": "fa-solid fa-heart-pulse",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#EF4444",
+                    "fillLight": "#DC2626"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Blood Volume: 5.5 L"},
+                    "de": {"title": "Blutvolumen: 5,5 L"},
+                    "hr": {"title": "Količina krvi: 5,5 L"},
+                    "tr": {"title": "Kan Hacmi: 5,5 L"}
+                }
+            },
+            {
+                "id": 6,
+                "img": "",
+                "faIcon": "fa-solid fa-hand",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#F59E0B",
+                    "fillLight": "#D97706"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Finger Count: 20/20"},
+                    "de": {"title": "Fingeranzahl: 20/20"},
+                    "hr": {"title": "Broj prstiju: 20/20"},
+                    "tr": {"title": "Parmak Sayısı: 20/20"}
+                }
+            },
+            {
+                "id": 7,
+                "img": "",
+                "faIcon": "fa-solid fa-eye",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#3B82F6",
+                    "fillLight": "#2563EB"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Eyesight: 20/23"},
+                    "de": {"title": "Sehkraft: 20/23"},
+                    "hr": {"title": "Vid: 20/23"},
+                    "tr": {"title": "Görme Keskinliği: 20/23"}
+                }
+            },
+            {
+                "id": 8,
+                "img": "",
+                "faIcon": "fa-solid fa-temperature-half",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#EF4444",
+                    "fillLight": "#DC2626"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Avg. Body Temp: 37°C"},
+                    "de": {"title": "Durchschnittliche Körpertemperatur: 37°C"},
+                    "hr": {"title": "Prosječna tjelesna temperatura: 37°C"},
+                    "tr": {"title": "Ortalama Vücut Isısı: 37°C"}
+                }
+            },
+            {
+                "id": 9,
+                "img": "",
+                "faIcon": "fa-solid fa-robot",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#10B981",
+                    "fillLight": "#059669"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Artificial Body Parts: 1"},
+                    "de": {"title": "Künstliche Körperteile: 1"},
+                    "hr": {"title": "Vještački dijelovi tijela: 1"},
+                    "tr": {"title": "Yapay Vücut Parçaları: 1"}
+                }
+            },
+            {
+                "id": 10,
+                "img": "",
+                "faIcon": "fa-solid fa-road",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#EF4444",
+                    "fillLight": "#DC2626"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Blood Vessels: 100,000 km"},
+                    "de": {"title": "Blutgefäße: 100.000 km"},
+                    "hr": {"title": "Krvne žile: 100.000 km"},
+                    "tr": {"title": "Kan Damarları: 100.000 km"}
+                }
+            },
+            {
+                "id": 11,
+                "img": "",
+                "faIcon": "fa-solid fa-brain",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#8B5CF6",
+                    "fillLight": "#7C3AED"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Brain’s Memory: 2.5 PB"},
+                    "de": {"title": "Gehirnspeicher: 2,5 PB"},
+                    "hr": {"title": "Memorija mozga: 2,5 PB"},
+                    "tr": {"title": "Beyin Hafızası: 2,5 PB"}
+                }
+            },
+            {
+                "id": 12,
+                "img": "",
+                "faIcon": "fa-solid fa-snowflake",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#06B6D4",
+                    "fillLight": "#0891B2"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Shedding Skin Cells: 45,000/min"},
+                    "de": {"title": "Hautzellenabstoßung: 45.000/Min."},
+                    "hr": {"title": "Gubljenje stanica kože: 45.000/min"},
+                    "tr": {"title": "Deri Hücreleri Dökülmesi: 45.000/dk"}
+                }
+            },
+            {
+                "id": 13,
+                "img": "",
+                "faIcon": "fa-solid fa-flask",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#EF4444",
+                    "fillLight": "#DC2626"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Stomach Acid: Hydrochloric Acid"},
+                    "de": {"title": "Magensäure: Salzsäure"},
+                    "hr": {"title": "Želučana kiselina: klorovodična kiselina"},
+                    "tr": {"title": "Mide Asidi: Hidroklorik Asit"}
+                }
+            },
+            {
+                "id": 14,
+                "img": "",
+                "faIcon": "fa-solid fa-dna",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#F59E0B",
+                    "fillLight": "#D97706"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "DNA: 60% Banana"},
+                    "de": {"title": "DNA: 60% Banane"},
+                    "hr": {"title": "DNA: 60% banana"},
+                    "tr": {"title": "DNA: %60 Muz"}
+                }
+            },
+            {
+                "id": 15,
+                "img": "",
+                "faIcon": "fa-solid fa-earth-europe",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#10B981",
+                    "fillLight": "#059669"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Ancestry: 96% Neretva River Basin"},
+                    "de": {"title": "Abstammung: 96% Neretva-Flussbecken"},
+                    "hr": {"title": "Podrijetlo: 96% porječje rijeke Neretve"},
+                    "tr": {"title": "Soy: %96 Neretva Nehri Havzası"}
+                }
+            },
+            {
+                "id": 16,
+                "img": "",
+                "faIcon": "fa-solid fa-wind",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#06B6D4",
+                    "fillLight": "#0891B2"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Sneeze Speed: 160 km/h"},
+                    "de": {"title": "Niesgeschwindigkeit: 160 km/h"},
+                    "hr": {"title": "Brzina kihanja: 160 km/h"},
+                    "tr": {"title": "Hapşırma Hızı: 160 km/s"}
+                }
+            },
+            {
+                "id": 17,
+                "img": "",
+                "faIcon": "fa-solid fa-bolt",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#F59E0B",
+                    "fillLight": "#D97706"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Nerve Speed: 431 km/h"},
+                    "de": {"title": "Nervengeschwindigkeit: 431 km/h"},
+                    "hr": {"title": "Brzina živaca: 431 km/h"},
+                    "tr": {"title": "Sinir Hızı: 431 km/s"}
+                }
+            },
+            {
+                "id": 18,
+                "img": "",
+                "faIcon": "fa-solid fa-magnet",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#8B5CF6",
+                    "fillLight": "#7C3AED"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Iron: 5.2 g"},
+                    "de": {"title": "Eisen: 5,2 g"},
+                    "hr": {"title": "Željezo: 5,2 g"},
+                    "tr": {"title": "Demir: 5,2 g"}
+                }
+            },
+            {
+                "id": 19,
+                "img": "",
+                "faIcon": "fa-solid fa-coins",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#F59E0B",
+                    "fillLight": "#D97706"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Gold: 0.4 g"},
+                    "de": {"title": "Gold: 0,4 g"},
+                    "hr": {"title": "Zlato: 0,4 g"},
+                    "tr": {"title": "Altın: 0,4 g"}
+                }
+            },
+            {
+                "id": 20,
+                "img": "",
+                "faIcon": "fa-solid fa-shield-virus",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#10B981",
+                    "fillLight": "#059669"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Immune System: +1 Billion Antibodies"},
+                    "de": {"title": "Immunsystem: +1 Milliarde Antikörper"},
+                    "hr": {"title": "Imunološki sustav: +1 milijarda antitijela"},
+                    "tr": {"title": "Bağışıklık Sistemi: +1 Milyar Antikor"}
+                }
+            },
+            {
+                "id": 21,
+                "img": "",
+                "faIcon": "fa-solid fa-sliders",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#8B5CF6",
+                    "fillLight": "#7C3AED"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Favorite Feature: Blaschko’s Lines"},
+                    "de": {"title": "Lieblingsmerkmal: Blaschko-Linien"},
+                    "hr": {"title": "Omiljena značajka: Blaschkoove linije"},
+                    "tr": {"title": "Favori Özellik: Blaschko Çizgileri"}
+                }
+            },
+            {
+                "id": 22,
+                "img": "",
+                "faIcon": "fa-solid fa-fire-flame-curved",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#EF4444",
+                    "fillLight": "#DC2626"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Idle Heat: 120 W"},
+                    "de": {"title": "Leerlaufwärme: 120 W"},
+                    "hr": {"title": "Toplina u mirovanju: 120 W"},
+                    "tr": {"title": "Boşta Isı: 120 W"}
+                }
+            },
+            {
+                "id": 23,
+                "img": "",
+                "faIcon": "fa-solid fa-arrows-rotate",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#06B6D4",
+                    "fillLight": "#0891B2"
+                },
+                "date": {"year": null, "month": null},
+                "locales": {
+                    "en": {"title": "Skin Cycle: 31 Days"},
+                    "de": {"title": "Hautzyklus: 31 Tage"},
+                    "hr": {"title": "Ciklus kože: 31 dan"},
+                    "tr": {"title": "Cilt Döngüsü: 31 Gün"}
+                }
+            },
+            {
+              "id": 24,
+              "img": "",
+              "faIcon": "fa-solid fa-bowl-food",
+              "faIconColors": {
+                  "bg": "#1E293B",
+                  "bgLight": "#F1F5F9",
+                  "fill": "#F59E0B",
+                  "fillLight": "#D97706"
+              },
+              "date": {"year": null, "month": null},
+              "locales": {
+                  "en": {"title": "Digestive Rhythm: 72-Hour Renewal"},
+                  "de": {"title": "Verdauungsrhythmus: 72-Stunden-Erneuerung"},
+                  "hr": {"title": "Ritam probave: 72-satna obnova"},
+                  "tr": {"title": "Sindirim Ritmi: 72 Saat Yenilenme"}
+              }
+          }
+        ]
     }
+
   ]
 }

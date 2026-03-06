@@ -2,7 +2,7 @@
     "categories": [
         {
             "id": "home",
-            "faIcon": "fa-regular fa-user",
+            "faIcon": "fa-solid fa-person-falling",
             "locales": {
                 "en": {
                     "title": "Home"
@@ -20,7 +20,7 @@
         },
         {
             "id": "history",
-            "faIcon": "fa-regular fa-clock",
+            "faIcon": "fa-solid fa-business-time",
             "locales": {
                 "en": {
                     "title": "History"
@@ -38,7 +38,7 @@
         },        
         {
             "id": "hobbys",
-            "faIcon": "fa-solid fa-bicycle",
+            "faIcon": "fa-solid fa-icons",
             "locales": {
                 "en": {
                     "title": "Hobbys"

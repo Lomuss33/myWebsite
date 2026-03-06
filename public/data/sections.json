@@ -16,13 +16,13 @@
         "id": "education",
         "categoryId": "history",
         "jsonPath": "/data/sections/education.json",
-        "faIcon": "fa-solid fa-pen-to-square"
+        "faIcon": "fa-solid fa-brain"
         },
         {
         "id": "my-hardware",
         "categoryId": "hobbys",
         "jsonPath": "/data/sections/my-hardware.json",
-        "faIcon": "fa-solid fa-screwdriver-wrench"
+        "faIcon": "fa-solid fa-microchip"
         },
         {
         "id": "my-software",

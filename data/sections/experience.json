@@ -44,7 +44,7 @@
         "items": [
             {
             "id": 1,
-            "img": "/images/contant/inlingua.svg",
+            "img": "/images/contant/inlingua.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF" },
             "dateStart": { "year": 2024, "month": 11 },
@@ -114,7 +114,7 @@
             },
             {
             "id": 2,
-            "img": "/images/contant/tci_gmbh_logo.svg",
+            "img": "/images/contant/tci_gmbh_logo.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF" },
             "dateStart": { "year": 2024, "month": 1 },
@@ -184,7 +184,7 @@
             },
             {
             "id": 3,
-            "img": "/images/contant/tipwinLogo.svg",
+            "img": "/images/contant/tipwinLogo.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF" },
             "dateStart": { "year": 2022, "month": 9 },
@@ -254,7 +254,7 @@
             },
             {
             "id": 4,
-            "img": "/images/contant/tueg_logo.svg",
+            "img": "/images/contant/tueg_logo.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF" },
             "dateStart": { "year": 2022, "month": 3 },
@@ -324,7 +324,7 @@
             },
             {
             "id": 5,
-            "img": "/images/contant/clariant.svg",
+            "img": "/images/contant/clariant.webp",
             "faIcon": "",
             "faIconColors": { "bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF" },
             "dateStart": { "year": 2018, "month": 9 },

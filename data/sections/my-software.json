@@ -1183,7 +1183,7 @@
         {
           "id": 3,
           "categoryId": "category_pc",
-          "img": "public/images/contant/logo-vscode.png",
+          "img": "public/images/contant/vscode.webp",
           "locales": { "en": { "title": "VS Code" } }
         },
         {

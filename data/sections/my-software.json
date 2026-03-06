@@ -376,6 +376,743 @@
       ]
     },
     {
+        "id": 1,
+        "component": "ArticleTestimonials",
+        "locales": {
+            "en": {
+                "title": "My {{Software Hall of Fame}}"
+            },
+            "de": {
+                "title": "Meine {{Software-Empfehlungen}}"
+            },
+            "hr": {
+                "title": "Moje {{preporuke softvera}}"
+            },
+            "tr": {
+                "title": "{{Yazılım Önerilerim}}"
+            }
+        },
+        "settings": {
+            "order_items_by": "id",
+            "order_items_sort": "asc"
+        },
+        "items": [
+            {
+                "id": 20,
+                "label": "Group Speed Dial",
+                "link": {"href": "https://github.com/fastaddons/GroupSpeedDial/wiki", "tooltipString": "open_website"},
+                "img": "/images/contant/groupspeedial.webp",
+                "faIcon": "fa-solid fa-th",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#0891B2",
+                    "fillLight": "#0284C7"
+                },
+                "locales": {
+                    "en": {
+                        "title": "Browser Homepage Organization",
+                        "text": "Group Speed Dial is a [[game-changer]] for organizing your browser homepage. It lets you group and access your favorite sites in a visually appealing way, saving you time and clutter. If you’re tired of messy bookmarks, this is the [[solution]] you’ve been waiting for!"
+                    },
+                    "de": {
+                        "title": "Browser-Startseite Organisation",
+                        "text": "Group Speed Dial ist ein [[Game-Changer]] für die Organisation Ihrer Browser-Startseite. Es ermöglicht Ihnen, Ihre Lieblingsseiten visuell ansprechend zu gruppieren und zuzugreifen, und spart Ihnen Zeit und Unordnung. Wenn Sie es leid sind, chaotische Lesezeichen zu haben, ist dies die [[Lösung]], auf die Sie gewartet haben!"
+                    },
+                    "hr": {
+                        "title": "Organizacija početne stranice preglednika",
+                        "text": "Group Speed Dial je [[promjena igre]] za organizaciju početne stranice vašeg preglednika. Omogućuje vam grupiranje i pristup vašim omiljenim stranicama na vizualno privlačan način, štedeći vam vrijeme i nered. Ako ste umorni od neurednih oznaka, ovo je [[rješenje]] na koje ste čekali!"
+                    },
+                    "tr": {
+                        "title": "Tarayıcı Ana Sayfası Organizasyonu",
+                        "text": "Group Speed Dial, tarayıcı ana sayfanızı organize etmek için bir [[oyun değiştirici]]. Sık kullanılan sitelerinizi görsel olarak çekici bir şekilde gruplandırmanıza ve erişmenize olanak tanır, size zaman ve karışıklık tasarrufu sağlar. Dağınık yer imlerinden bıktıysanız, bu beklediğiniz [[çözüm]]!"
+                    }
+                }
+            },
+            {
+                "id": 21,
+                "label": "Keepa",
+                "link": {"href": "https://keepa.com/#!", "tooltipString": "open_website"},
+                "img": "/images/contant/keepa.webp",
+                "faIcon": "fa-solid fa-chart-line",
+                "faIconColors": {
+                    "bg": "#1F2937",
+                    "bgLight": "#F3F4F6",
+                    "fill": "#F59E0B",
+                    "fillLight": "#D97706"
+                },
+                "locales": {
+                    "en": {
+                        "title": "Amazon Price & Buyer Power Tracker",
+                        "text": "Keepa is the ultimate extension for Amazon shoppers. It gives you [[buyer power]] by tracking price history, deals, and availability. If you want to make informed purchases and save money, Keepa is [[non-negotiable]]."
+                    },
+                    "de": {
+                        "title": "Amazon-Preis- und Käufermacht-Tracker",
+                        "text": "Keepa ist die ultimative Erweiterung für Amazon-Käufer. Es verleiht Ihnen [[Käufermacht]], indem es Preishistorien, Angebote und Verfügbarkeit verfolgt. Wenn Sie informierte Käufe tätigen und Geld sparen möchten, ist Keepa [[unverzichtbar]]."
+                    },
+                    "hr": {
+                        "title": "Praćenje cijena i moći kupca na Amazonu",
+                        "text": "Keepa je definitivni dodatak za kupce na Amazonu. Daje vam [[moć kupca]] praćenjem povijesti cijena, ponuda i dostupnosti. Ako želite donositi informirane odluke i uštedjeti novac, Keepa je [[neizostavan]]."
+                    },
+                    "tr": {
+                        "title": "Amazon Fiyat & Alıcı Gücü Takipçisi",
+                        "text": "Keepa, Amazon alışverişçileri için son derece kullanışlı bir eklenti. Fiyat geçmişini, indirimleri ve stok durumu takip ederek size [[alıcı gücü]] sağlar. Bilinçli alışveriş yapmak ve tasarruf etmek istiyorsanız, Keepa [[vazgeçilmez]]."
+                    }
+                }
+            },
+            {
+                "id": 22,
+                "label": "Nextcloud",
+                "link": {"href": "https://nextcloud.com/", "tooltipString": "open_website"},
+                "img": "/images/contant/nextcloud.webp",
+                "faIcon": "fa-solid fa-cloud",
+                "faIconColors": {
+                    "bg": "#06B6D4",
+                    "bgLight": "#ECFEFF",
+                    "fill": "#0891B2",
+                    "fillLight": "#0E7490"
+                },
+                "locales": {
+                    "en": {
+                        "title": "Self-Hosted Cloud Platform",
+                        "text": "Nextcloud is the [[future of self-hosted cloud solutions]]. It’s open-source, secure, and packed with features for file sharing, collaboration, and productivity. If you value privacy and control, Nextcloud is the [[platform]] you need."
+                    },
+                    "de": {
+                        "title": "Selbstgehostete Cloud-Plattform",
+                        "text": "Nextcloud ist die [[Zukunft der selbstgehosteten Cloud-Lösungen]]. Es ist Open-Source, sicher und voller Funktionen für Dateifreigabe, Zusammenarbeit und Produktivität. Wenn Sie Wert auf Privatsphäre und Kontrolle legen, ist Nextcloud die [[Plattform]], die Sie benötigen."
+                    },
+                    "hr": {
+                        "title": "Samostalno hostana cloud platforma",
+                        "text": "Nextcloud je [[budućnost samostalno hostanih cloud rješenja]]. Otvorenog je koda, siguran i pun funkcija za dijeljenje datoteka, suradnju i produktivnost. Ako cijenite privatnost i kontrolu, Nextcloud je [[platforma]] koja vam je potrebna."
+                    },
+                    "tr": {
+                        "title": "Kendi Barındırılan Bulut Platformu",
+                        "text": "Nextcloud, [[kendi barındırılan bulut çözümlerinin geleceği]]. Açık kaynak, güvenli ve dosya paylaşımı, işbirliği ve verimlilik için dolu özelliklerle dolu. Gizliliğe ve kontrole değer veriyorsanız, Nextcloud ihtiyacınız olan [[platform]]."
+                    }
+                }
+            },
+            {
+                "id": 23,
+                "label": "Wikipedia",
+                "link": {"href": "https://www.wikipedia.org/", "tooltipString": "open_website"},
+                "img": "/images/contant/wikipedia.webp",
+                "faIcon": "fa-solid fa-globe",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#000000",
+                    "fillLight": "#374151"
+                },
+                "locales": {
+                    "en": {
+                        "title": "Free Knowledge Encyclopedia",
+                        "text": "Wikipedia is the [[cornerstone of free knowledge]]. It’s the first place I go for reliable, in-depth information on almost any topic. If you’re curious about the world, Wikipedia is your [[go-to resource]]."
+                    },
+                    "de": {
+                        "title": "Freie Wissensenzklopädie",
+                        "text": "Wikipedia ist der [[Grundstein des freien Wissens]]. Es ist die erste Anlaufstelle für zuverlässige, tiefgehende Informationen zu fast jedem Thema. Wenn Sie neugierig auf die Welt sind, ist Wikipedia Ihre [[Anlaufstelle]]."
+                    },
+                    "hr": {
+                        "title": "Besplatna enciklopedija znanja",
+                        "text": "Wikipedia je [[temelj slobodnog znanja]]. Prvo mjesto na koje idem za pouzdane i detaljne informacije o gotovo bilo kojoj temi. Ako ste znatiželjni o svijetu, Wikipedia je vaš [[izvor]]."
+                    },
+                    "tr": {
+                        "title": "Ücretsiz Bilgi Ansiklopedisi",
+                        "text": "Wikipedia, [[ücretsiz bilginin temel taşı]]. Güvenilir ve derinlemesine bilgi için neredeyse her konuda ilk başvurduğum yer. Dünyaya meraklıysanız, Wikipedia sizin [[başvuru kaynağınız]]."
+                    }
+                }
+            },
+            {
+                "id": 1,
+                "label": "Joplin",
+                "link": {"href": "https://joplinapp.org/", "tooltipString": "open_website"},
+                "img": "/images/contant/joplin.webp",
+                "faIcon": "fa-solid fa-note-sticky",
+                "faIconColors": {
+                    "bg": "#0D1117",
+                    "bgLight": "#EDF2F7",
+                    "fill": "#2962FF",
+                    "fillLight": "#1E88E5"
+                },
+                "locales": {
+                    "en": {
+                        "title": "Note-Taking & Organization",
+                        "text": "Joplin is my [[daily driver]] for note-taking. Its open-source nature, Markdown support, and cross-platform sync make it a [[top-tier]] choice for anyone who values privacy and flexibility. I use it for everything from quick ideas to full project documentation—[[absolutely essential]] for my workflow."
+                    },
+                    "de": {
+                        "title": "Notizen & Organisation",
+                        "text": "Joplin ist mein [[täglicher Begleiter]] für Notizen. Open-Source, Markdown-Unterstützung und plattformübergreifende Synchronisation machen es zur [[ersten Wahl]] für alle, die Wert auf Privatsphäre und Flexibilität legen. Ich nutze es für alles, von schnellen Ideen bis zur vollständigen Projektdokumentation—[[absolut unverzichtbar]] für meinen Workflow."
+                    },
+                    "hr": {
+                        "title": "Bilježenje i organizacija",
+                        "text": "Joplin je moj [[svakodnevni alat]] za bilježenje. Njegova otvorena priroda, podrška za Markdown i sinkronizacija na svim platformama čine ga [[vrhunskim]] izborom za sve koji cijenimo privatnost i fleksibilnost. Koristim ga za sve, od brzih ideja do potpune dokumentacije projekata—[[apsolutno neophodan]] za moj radni tok."
+                    },
+                    "tr": {
+                        "title": "Not Alma & Organizasyon",
+                        "text": "Joplin, benim [[günlük sürücüm]] için not alma uygulaması. Açık kaynak doğası, Markdown desteği ve platformlar arası senkronizasyon, gizliliğe ve esnekliğe değer veren herkes için [[üst düzey]] bir seçim. Hızlı fikirlerden tam proje belgelerine kadar her şey için kullanıyorum—[[kesinlikle vazgeçilmez]] iş akışım için."
+                    }
+                }
+            },
+            {
+                "id": 2,
+                "label": "Mistral",
+                "link": {"href": "https://mistral.ai/", "tooltipString": "open_website"},
+                "img": "/images/contant/mistral.webp",
+                "faIcon": "fa-solid fa-robot",
+                "faIconColors": {
+                    "bg": "#101A29",
+                    "bgLight": "#ECF0F6",
+                    "fill": "#1976D2",
+                    "fillLight": "#1565C0"
+                },
+                "locales": {
+                    "en": {
+                        "title": "European AI for Students",
+                        "text": "Mistral is a [[game-changer]] for students and researchers in Europe. Its focus on privacy, multilingual support, and cutting-edge AI models makes it a [[standout]] choice. As a student, I appreciate its accessibility and the fact that it’s built with European values in mind—[[highly recommend]] for academic work!"
+                    },
+                    "de": {
+                        "title": "Europäische KI für Studierende",
+                        "text": "Mistral ist ein [[Game-Changer]] für Studierende und Forscher in Europa. Der Fokus auf Privatsphäre, mehrsprachige Unterstützung und moderne KI-Modelle macht es zu einer [[herausragenden]] Wahl. Als Student schätze ich die Zugänglichkeit und die Tatsache, dass es mit europäischen Werten entwickelt wurde—[[sehr zu empfehlen]] für akademische Arbeiten!"
+                    },
+                    "hr": {
+                        "title": "Europska umjetna inteligencija za studente",
+                        "text": "Mistral je [[promjena igre]] za studente i istraživače u Europi. Njegov fokus na privatnost, višejęzyčnu podršku i napredne AI modele čini ga [[istaknutim]] izborom. Kao student cijenim njegovu pristupačnost i činjenicu da je izgrađen s europskim vrijednostima na umu—[[toplo preporučam]] za akademske poslove!"
+                    },
+                    "tr": {
+                        "title": "Avrupalı Öğrenciler İçin Yapay Zeka",
+                        "text": "Mistral, Avrupa'daki öğrenciler ve araştırmacılar için bir [[oyun değiştirici]]. Gizlilik odaklı, çok dilli destek ve en son AI modelleri ile [[dikkat çeken]] bir seçim. Bir öğrenci olarak, erişilebilirliği ve Avrupa değerleri göz önünde bulundurularak inşa edilmesini takdir ediyorum—[[kesinlikle tavsiye ederim]] akademik çalışmalar için!"
+                    }
+                }
+            },
+            {
+                "id": 3,
+                "label": "DisplayFusion",
+                "link": {"href": "https://www.displayfusion.com/", "tooltipString": "open_website"},
+                "img": "/images/contant/displayfusion.webp",
+                "faIcon": "fa-solid fa-desktop",
+                "faIconColors": {
+                    "bg": "#1A1B2E",
+                    "bgLight": "#E8E8F0",
+                    "fill": "#7C3AED",
+                    "fillLight": "#6D28D9"
+                },
+                "locales": {
+                    "en": {
+                        "title": "Multi-Monitor Management",
+                        "text": "If you haven’t tried DisplayFusion, you’re missing out. This tool transforms multi-monitor setups into a [[seamless experience]]. The customization options are endless, and the documentation is so thorough that you’ll feel like a pro after just a few hours. [[Must-have]] for power users!"
+                    },
+                    "de": {
+                        "title": "Multi-Monitor-Verwaltung",
+                        "text": "Wenn Sie DisplayFusion noch nicht ausprobiert haben, verpassen Sie etwas. Dieses Tool verwandelt Multi-Monitor-Setups in ein [[nahtloses Erlebnis]]. Die Anpassungsmöglichkeiten sind endlos, und die Dokumentation ist so gründlich, dass Sie sich nach wenigen Stunden wie ein Profi fühlen. [[Ein Muss]] für Power-User!"
+                    },
+                    "hr": {
+                        "title": "Upravljanje više monitora",
+                        "text": "Ako niste probali DisplayFusion, propustate nešto. Ovaj alat pretvara postavljanje više monitora u [[besprijekorno iskustvo]]. Mogućnosti prilagodbe su beskrajne, a dokumentacija je toliko detaljna da ćete se nakon nekoliko sati osjećati kao profesionalac. [[Obavezno]] za napredne korisnike!"
+                    },
+                    "tr": {
+                        "title": "Çoklu Monitör Yönetimi",
+                        "text": "DisplayFusion'u denemediyseniz, büyük bir fırsatı kaçırıyorsunuz. Bu araç, çoklu monitör kurulumlarını [[sorunsuz bir deneyime]] dönüştürüyor. Özelleştirme seçenekleri sonsuz ve belgeler o kadar kapsamlı ki birkaç saat içinde kendinizi profesyonel hissedersiniz. [[Olmazsa olmaz]] güç kullanıcıları için!"
+                    }
+                }
+            },
+            {
+                "id": 4,
+                "label": "Foxit PDF Editor",
+                "link": {"href": "https://www.foxit.com/pdf-editor/", "tooltipString": "open_website"},
+                "img": "/images/contant/foxit.webp",
+                "faIcon": "fa-solid fa-file-pdf",
+                "faIconColors": {
+                    "bg": "#1F2937",
+                    "bgLight": "#F3F4F6",
+                    "fill": "#06B6D4",
+                    "fillLight": "#0891B2"
+                },
+                "locales": {
+                    "en": {
+                        "title": "PDF Editing & Management",
+                        "text": "Foxit is [[hands-down]] the best PDF editor I’ve ever used. It’s fast, feature-rich, and doesn’t bog down your system like some other tools. Whether you’re annotating, editing, or signing documents, Foxit makes it [[effortless]]. A [[must-have]] for anyone who works with PDFs regularly."
+                    },
+                    "de": {
+                        "title": "PDF-Bearbeitung & -Verwaltung",
+                        "text": "Foxit ist [[ohne Zweifel]] der beste PDF-Editor, den ich je benutzt habe. Es ist schnell, funktionsreich und belastet Ihr System nicht wie einige andere Tools. Egal, ob Sie annotieren, bearbeiten oder Dokumente unterschreiben—Foxit macht es [[mühelos]]. Ein [[Muss]] für alle, die regelmäßig mit PDFs arbeiten."
+                    },
+                    "hr": {
+                        "title": "Uređivanje i upravljanje PDF-ovima",
+                        "text": "Foxit je [[bez sumnje]] najbolji uređivač PDF-ova koji sam ikada koristio. Brz je, pun funkcija i ne usporava sustav kao neki drugi alati. Bilo da anotirate, uređujete ili potpisujete dokumente, Foxit čini sve [[bez napora]]. [[Obavezno]] za sve koji redovito rade s PDF-ovima."
+                    },
+                    "tr": {
+                        "title": "PDF Düzenleme & Yönetimi",
+                        "text": "Foxit, şimdiye kadar kullandığım [[en iyi]] PDF editörü. Hızlı, özellik dolu ve sisteminizi diğer bazı araçlar gibi yormuyor. Belgeleri işaretlerken, düzenlerken veya imzalarken Foxit her şeyi [[çabucak]] hallediyor. [[Olmazsa olmaz]] düzenli olarak PDF ile çalışan herkes için!"
+                    }
+                }
+            },
+            {
+                "id": 5,
+                "label": "FxSound",
+                "link": {"href": "https://www.fxsound.com/", "tooltipString": "open_website"},
+                "img": "/images/contant/fxsound.webp",
+                "faIcon": "fa-solid fa-volume-high",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#0891B2",
+                    "fillLight": "#0284C7"
+                },
+                "locales": {
+                    "en": {
+                        "title": "Audio Enhancement",
+                        "text": "FxSound is my [[weekly troublemaker]]—it sometimes acts up, but when it works, it’s [[pure magic]]. The audio enhancement is so simple and effective, and the fact that it’s free makes it a [[no-brainer]]. If you want to breathe new life into your speakers, give FxSound a try!"
+                    },
+                    "de": {
+                        "title": "Audio-Verbesserung",
+                        "text": "FxSound ist mein [[wöchentlicher Störenfried]]—manchmal spinnt es, aber wenn es funktioniert, ist es [[reine Magie]]. Die Audio-Verbesserung ist so einfach und effektiv, und die Tatsache, dass es kostenlos ist, macht es zu einer [[selbstverständlichen Wahl]]. Wenn Sie Ihren Lautsprechern neues Leben einhauchen möchten, probieren Sie FxSound aus!"
+                    },
+                    "hr": {
+                        "title": "Poboljšanje zvuka",
+                        "text": "FxSound je moj [[tjedni nemirnik]]—ponekad se pobuni, ali kada radi, to je [[čista magija]]. Poboljšanje zvuka je tako jednostavno i učinkovito, a činjenica da je besplatno čini [[lakoćom izbora]]. Ako želite udahnuti novi život svojim zvučnicima, isprobajte FxSound!"
+                    },
+                    "tr": {
+                        "title": "Ses Geliştirme",
+                        "text": "FxSound, benim [[haftalık baş belam]]—bazen sorun çıkarır, ama çalıştığında [[saf büyü]]. Ses geliştirme o kadar basit ve etkili ki, üstelik ücretsiz olması onu [[tereddütsüz]] bir seçim haline getiriyor. Hoparlörlerinize yeni bir hayat vermek istiyorsanız, FxSound'ı deneyin!"
+                    }
+                }
+            },
+            {
+                "id": 6,
+                "label": "Visual Studio Code",
+                "link": {"href": "https://code.visualstudio.com/", "tooltipString": "open_website"},
+                "img": "/images/contant/vscode.webp",
+                "faIcon": "fa-solid fa-code",
+                "faIconColors": {
+                    "bg": "#0D1117",
+                    "bgLight": "#EDF2F7",
+                    "fill": "#2962FF",
+                    "fillLight": "#1E88E5"
+                },
+                "locales": {
+                    "en": {
+                        "title": "Code Editor",
+                        "text": "VS Code is the [[Swiss Army knife]] of code editors. Its extensibility, built-in Git support, and vibrant community make it the [[go-to]] tool for developers worldwide. I can’t imagine coding without it—[[absolutely essential]] for any developer’s toolkit."
+                    },
+                    "de": {
+                        "title": "Code-Editor",
+                        "text": "VS Code ist das [[Taschenmesser]] der Code-Editoren. Seine Erweiterbarkeit, integrierte Git-Unterstützung und lebendige Community machen es zum [[Standard-Tool]] für Entwickler weltweit. Ich kann mir das Programmieren ohne VS Code nicht vorstellen—[[absolut unverzichtbar]] für die Werkzeugkiste jedes Entwicklers."
+                    },
+                    "hr": {
+                        "title": "Uređivač koda",
+                        "text": "VS Code je [[švicarski nož]] uređivača koda. Njegova proširivost, ugrađena Git podrška i živahna zajednica čine ga [[neizostavnim]] alatom za developere širom svijeta. Ne mogu zamisliti kodiranje bez njega—[[apsolutno neophodan]] za opremu svakog developera."
+                    },
+                    "tr": {
+                        "title": "Kod Editörü",
+                        "text": "VS Code, kod editörlerinin [[İsviçre çakısı]]. Genişletilebilirliği, yerleşik Git desteği ve canlı topluluğu, onu dünya çapındaki geliştiriciler için [[vazgeçilmez]] bir araç haline getiriyor. Onsuz kod yazmayı hayal edemiyorum—[[kesinlikle gerekli]] her geliştiricinin araç seti için."
+                    }
+                }
+            },
+            {
+                "id": 7,
+                "label": "Microsoft Edge",
+                "link": {"href": "https://www.microsoft.com/edge", "tooltipString": "open_website"},
+                "img": "/images/contant/edge.webp",
+                "faIcon": "fa-solid fa-globe",
+                "faIconColors": {
+                    "bg": "#111827",
+                    "bgLight": "#F9FAFB",
+                    "fill": "#F59E0B",
+                    "fillLight": "#D97706"
+                },
+                "locales": {
+                    "en": {
+                        "title": "Web Browser",
+                        "text": "I know it’s Microsoft, but Edge is [[packed with features]] that actually work. The vertical tabs, Collections, and built-in tools make browsing [[smooth and productive]]. It’s my default browser for both work and leisure—[[highly underrated]]!"
+                    },
+                    "de": {
+                        "title": "Web-Browser",
+                        "text": "Ich weiß, es ist Microsoft, aber Edge ist [[vollgepackt mit Funktionen]], die tatsächlich funktionieren. Die vertikalen Tabs, Collections und integrierten Tools machen das Browsen [[flüssig und produktiv]]. Es ist mein Standard-Browser für Arbeit und Freizeit—[[stark unterschätzt]]!"
+                    },
+                    "hr": {
+                        "title": "Web preglednik",
+                        "text": "Znam da je Microsoft, ali Edge je [[pun funkcija]] koje stvarno rade. Vertikalne kartice, Zbirke i ugrađeni alati čine pretraživanje [[glatkim i produktivnim]]. Moj je zadani preglednik za posao i slobodno vrijeme—[[vrlo potcijenjen]]!"
+                    },
+                    "tr": {
+                        "title": "Web Tarayıcısı",
+                        "text": "Microsoft olduğunu biliyorum, ama Edge gerçekten [[işe yarayan]] özelliklerle dolu. Dikey sekme, Koleksiyonlar ve yerleşik araçlar, tarama deneyimini [[pürüzsüz ve verimli]] hale getiriyor. Hem iş hem de boş zamanlar için varsayılan tarayıcım—[[çok hafikumlu]]!"
+                    }
+                }
+            },
+            {
+                "id": 8,
+                "label": "GitHub Desktop",
+                "link": {"href": "https://desktop.github.com/", "tooltipString": "open_website"},
+                "img": "/images/contant/github-desktop.webp",
+                "faIcon": "fa-brands fa-github",
+                "faIconColors": {
+                    "bg": "#1F2937",
+                    "bgLight": "#F3F4F6",
+                    "fill": "#10B981",
+                    "fillLight": "#059669"
+                },
+                "locales": {
+                    "en": {
+                        "title": "Git Client",
+                        "text": "Forget about Git commands—GitHub Desktop makes version control [[fun and intuitive]]. The visual interface is a lifesaver, especially for beginners or anyone who wants to avoid the command line. [[Game-changer]] for collaboration and project management!"
+                    },
+                    "de": {
+                        "title": "Git-Client",
+                        "text": "Vergessen Sie Git-Befehle—GitHub Desktop macht die Versionskontrolle [[spaßig und intuitiv]]. Die visuelle Oberfläche ist ein Lebensretter, besonders für Anfänger oder alle, die die Kommandozeile meiden möchten. Ein [[Game-Changer]] für Zusammenarbeit und Projektmanagement!"
+                    },
+                    "hr": {
+                        "title": "Git klijent",
+                        "text": "Zaboravite na Git naredbe—GitHub Desktop čini kontrolu verzija [[zabavnom i intuitivnom]]. Vizualni sučelje je spasitelj, posebno za početnike ili sve koji žele izbjeći komandnu liniju. [[Promjena igre]] za suradnju i upravljanje projektima!"
+                    },
+                    "tr": {
+                        "title": "Git İstemcisi",
+                        "text": "Git komutlarını unutun—GitHub Desktop, sürüm kontrolünü [[eğlenceli ve sezgisel]] hale getiriyor. Görsel arayüz, özellikle başlangıç seviyesindeki veya komut satırından kaçınmak isteyenler için bir kurtarıcı. [[Oyun değiştirici]] işbirliği ve proje yönetimi için!"
+                    }
+                }
+            },
+            {
+                "id": 9,
+                "label": "Thunderbird",
+                "link": {"href": "https://www.thunderbird.net/", "tooltipString": "open_website"},
+                "img": "/images/contant/thunderbird.webp",
+                "faIcon": "fa-solid fa-envelope",
+                "faIconColors": {
+                    "bg": "#1E3A8A",
+                    "bgLight": "#DBEAFE",
+                    "fill": "#3B82F6",
+                    "fillLight": "#2563EB"
+                },
+                "locales": {
+                    "en": {
+                        "title": "Email Client",
+                        "text": "Thunderbird needs [[no introduction]]—it’s the [[king]] of email clients. Open-source, customizable, and reliable, it’s been my go-to for years. If you value privacy and control over your emails, Thunderbird is the only choice."
+                    },
+                    "de": {
+                        "title": "E-Mail-Client",
+                        "text": "Thunderbird braucht [[keine Vorstellung]]—es ist der [[König]] der E-Mail-Clients. Open-Source, anpassbar und zuverlässig, es ist seit Jahren meine erste Wahl. Wenn Sie Wert auf Privatsphäre und Kontrolle über Ihre E-Mails legen, ist Thunderbird die einzige Wahl."
+                    },
+                    "hr": {
+                        "title": "Email klijent",
+                        "text": "Thunderbird ne treba [[nikakav uvod]]—to je [[kralj]] email klijenata. Otvorenog koda, prilagodljiv i pouzdan, moj je izbor već godina. Ako cijenite privatnost i kontrolu nad svojim emailovima, Thunderbird je jedini izbor."
+                    },
+                    "tr": {
+                        "title": "E-posta İstemcisi",
+                        "text": "Thunderbird'a [[tanıtım yapmaya]] gerek yok—o, e-posta istemcilerinin [[kralı]]. Açık kaynak, özelleştirilebilir ve güvenilir; yıllardır tercihim. E-postalarınız üzerinde gizlilik ve kontrolü önemseyenler için Thunderbird tek seçim."
+                    }
+                }
+            },
+            {
+                "id": 10,
+                "label": "Google Tasks",
+                "link": {"href": "https://tasks.google.com/", "tooltipString": "open_website"},
+                "img": "/images/contant/google-tasks.webp",
+                "faIcon": "fa-solid fa-list-check",
+                "faIconColors": {
+                    "bg": "#10B981",
+                    "bgLight": "#D1FAE5",
+                    "fill": "#065F46",
+                    "fillLight": "#047857"
+                },
+                "locales": {
+                    "en": {
+                        "title": "Task Management",
+                        "text": "After years of searching, I’ve found [[nothing better]] than Google Tasks. It’s simple, syncs perfectly with my calendar, and just works. If you want a no-frills, reliable task manager, this is it."
+                    },
+                    "de": {
+                        "title": "Aufgabenverwaltung",
+                        "text": "Nach Jahren der Suche habe ich [[nichts Besseres]] als Google Tasks gefunden. Es ist einfach, synchronisiert sich perfekt mit meinem Kalender und funktioniert einfach. Wenn Sie einen zuverlässigen, schlichten Aufgabenmanager suchen, ist dies die richtige Wahl."
+                    },
+                    "hr": {
+                        "title": "Upravljanje zadacima",
+                        "text": "Nakon godina pretraživanja, nisam pronašao [[ništa bolje]] od Google Zadataka. Jednostavan je, savršeno se sinkronizira s mojim kalendarom i jednostavno radi. Ako želite pouzdanog i jednostavnog upravljanja zadacima, ovo je to."
+                    },
+                    "tr": {
+                        "title": "Görev Yönetimi",
+                        "text": "Yıllarca aradıktan sonra, Google Görevler'den [[daha iyisini]] bulamadım. Basit, takvimimle mükemmel senkronize oluyor ve sadece çalışıyor. Sade ve güvenilir bir görev yöneticisi arıyorsanız, işte bu."
+                    }
+                }
+            },
+            {
+                "id": 11,
+                "label": "Wireshark",
+                "link": {"href": "https://www.wireshark.org/", "tooltipString": "open_website"},
+                "img": "/images/contant/wireshark.webp",
+                "faIcon": "fa-solid fa-network-wired",
+                "faIconColors": {
+                    "bg": "#1E40AF",
+                    "bgLight": "#DBEAFE",
+                    "fill": "#3B82F6",
+                    "fillLight": "#2563EB"
+                },
+                "locales": {
+                    "en": {
+                        "title": "Network Protocol Analyzer",
+                        "text": "Wireshark is a [[very fun tool]] that makes networking concepts [[so much clearer]]. Every time I use it, I learn something new about how data moves across networks. If you’re into IT or just curious, Wireshark is a [[must-learn]] tool."
+                    },
+                    "de": {
+                        "title": "Netzwerkprotokoll-Analysator",
+                        "text": "Wireshark ist ein [[sehr unterhaltsames Tool]], das Netzwerkkonzepte [[viel klarer]] macht. Jedes Mal, wenn ich es benutze, lerne ich etwas Neues darüber, wie Daten durch Netzwerke fließen. Wenn Sie sich für IT interessieren oder einfach neugierig sind, ist Wireshark ein [[Muss]]."
+                    },
+                    "hr": {
+                        "title": "Analizator mrežnih protokola",
+                        "text": "Wireshark je [[vrlo zabavan alat]] koji čini mrežne koncepte [[mnogo jasnijim]]. Svaki put kada ga koristim, naučim nešto novo o tome kako podaci putuju kroz mreže. Ako se bavite IT-om ili ste samo znatiželjni, Wireshark je [[obavezan]] alat."
+                    },
+                    "tr": {
+                        "title": "Ağ Protokolü Analizörü",
+                        "text": "Wireshark, ağ kavramlarını [[çok daha net]] hale getiren [[çok eğlenceli bir araç]]. Her kullandığımda, verilerin ağlar üzerinden nasıl hareket ettiği hakkında yeni bir şey öğreniyorum. Eğer BT ile ilgileniyorsanız veya sadece meraklıysanız, Wireshark [[mutlaka öğrenilmesi gereken]] bir araç."
+                    }
+                }
+            },
+            {
+                "id": 12,
+                "label": "Bitwarden",
+                "link": {"href": "https://bitwarden.com/", "tooltipString": "open_website"},
+                "img": "/images/contant/bitwarden.webp",
+                "faIcon": "fa-solid fa-lock",
+                "faIconColors": {
+                    "bg": "#0F172A",
+                    "bgLight": "#EFF6FF",
+                    "fill": "#3B82F6",
+                    "fillLight": "#1D4ED8"
+                },
+                "locales": {
+                    "en": {
+                        "title": "Password Manager",
+                        "text": "Bitwarden is a [[great start]] for anyone looking to secure their passwords. It’s open-source, easy to use, and integrates everywhere. While it may not be the [[best solution]] for everyone, it’s a solid, trustworthy option for most users."
+                    },
+                    "de": {
+                        "title": "Passwort-Manager",
+                        "text": "Bitwarden ist ein [[guter Einstieg]] für alle, die ihre Passwörter sichern möchten. Es ist Open-Source, einfach zu bedienen und überall integrierbar. Auch wenn es nicht die [[beste Lösung]] für jeden ist, ist es eine solide und vertrauenswürdige Option für die meisten Nutzer."
+                    },
+                    "hr": {
+                        "title": "Upravljanje lozinkama",
+                        "text": "Bitwarden je [[odličan početak]] za sve koji žele osigurati svoje lozinke. Otvorenog je koda, lako se koristi i integrira svuda. Iako možda nije [[najbolje rješenje]] za sve, čvrsta je i pouzdana opcija za većinu korisnika."
+                    },
+                    "tr": {
+                        "title": "Şifre Yöneticisi",
+                        "text": "Bitwarden, şifrelerini güvence altına almak isteyenler için [[harika bir başlangıç]]. Açık kaynak, kullanımı kolay ve her yerde entegre olabiliyor. Herkes için [[en iyi çözüm]] olmayabilir, ancak çoğu kullanıcı için güvenilir ve sağlam bir seçenek."
+                    }
+                }
+            },
+            {
+                "id": 13,
+                "label": "draw.io",
+                "link": {"href": "https://app.diagrams.net/", "tooltipString": "open_website"},
+                "img": "/images/contant/drawio.webp",
+                "faIcon": "fa-solid fa-diagram-project",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#0891B2",
+                    "fillLight": "#0284C7"
+                },
+                "locales": {
+                    "en": {
+                        "title": "Diagramming Tool",
+                        "text": "[[Top for brainstorming]] and creating beautiful diagrams. draw.io is free, web-based, and packed with features. Whether you’re mapping out a project or designing a flowchart, this tool makes it [[effortless and fun]]."
+                    },
+                    "de": {
+                        "title": "Diagramm-Tool",
+                        "text": "[[Spitze für Brainstorming]] und das Erstellen schöner Diagramme. draw.io ist kostenlos, webbasiert und voller Funktionen. Egal, ob Sie ein Projekt planen oder ein Flussdiagramm erstellen—dieses Tool macht es [[mühelos und unterhaltsam]]."
+                    },
+                    "hr": {
+                        "title": "Alat za dijagram",
+                        "text": "[[Najbolje za brainstorming]] i stvaranje lijepih dijagrama. draw.io je besplatan, web-baziran i pun funkcija. Bilo da mapirate projekt ili dizajnirate tokove, ovaj alat čini sve [[bez napora i zabavno]]."
+                    },
+                    "tr": {
+                        "title": "Diyagram Aracı",
+                        "text": "[[Beyin fırtınası için harika]] ve güzel diagramlar oluşturmak için mükemmel. draw.io ücretsiz, web tabanlı ve özelliklerle dolu. Proje haritalaması veya akış şeması tasarımı yapıyor olsanız da, bu araç her şeyi [[çabucak ve eğlenceli]] hale getiriyor."
+                    }
+                }
+            },
+            {
+                "id": 14,
+                "label": "Playnite",
+                "link": {"href": "https://playnite.link/", "tooltipString": "open_website"},
+                "img": "/images/contant/playnite.webp",
+                "faIcon": "fa-solid fa-gamepad",
+                "faIconColors": {
+                    "bg": "#1F2937",
+                    "bgLight": "#F3F4F6",
+                    "fill": "#8B5CF6",
+                    "fillLight": "#7C3AED"
+                },
+                "locales": {
+                    "en": {
+                        "title": "Game Library Manager",
+                        "text": "Playnite is the ultimate tool for [[gaming overview]]. It consolidates all your games from different platforms into one beautiful, customizable library. If you’re a gamer with a sprawling collection, Playnite is a [[lifesaver]]."
+                    },
+                    "de": {
+                        "title": "Spielbibliothek-Verwalter",
+                        "text": "Playnite ist das ultimative Tool für die [[Spielübersicht]]. Es fasst alle Ihre Spiele von verschiedenen Plattformen in einer schönen, anpassbaren Bibliothek zusammen. Wenn Sie ein Gamer mit einer großen Sammlung sind, ist Playnite ein [[Lebensretter]]."
+                    },
+                    "hr": {
+                        "title": "Upravljanje bibliotekom igara",
+                        "text": "Playnite je definitivni alat za [[pregled igara]]. Ujedinjuje sve vaše igre s različitih platformi u jednu lijepu, prilagodljivu biblioteku. Ako ste igrač s velikom kolekcijom, Playnite je [[spasitelj]]."
+                    },
+                    "tr": {
+                        "title": "Oyun Kütüphanesi Yöneticisi",
+                        "text": "Playnite, [[oyun genel bakışı]] için son derece kullanışlı bir araç. Farklı platformlardaki tüm oyunlarınızı tek, güzel ve özelleştirilebilir bir kütüphanede birleştirir. Eğer geniş bir oyun koleksiyonuna sahipseniz, Playnite bir [[kurtarıcı]]."
+                    }
+                }
+            },
+            {
+                "id": 15,
+                "label": "Proxmox",
+                "link": {"href": "https://www.proxmox.com/", "tooltipString": "open_website"},
+                "img": "/images/contant/proxmox.webp",
+                "faIcon": "fa-solid fa-server",
+                "faIconColors": {
+                    "bg": "#1E293B",
+                    "bgLight": "#F1F5F9",
+                    "fill": "#0891B2",
+                    "fillLight": "#0284C7"
+                },
+                "locales": {
+                    "en": {
+                        "title": "Home Server Virtualization",
+                        "text": "Proxmox is the [[go-to platform]] for anyone into home servers. Its powerful virtualization tools, ease of use, and community support make it a [[standout choice]] for self-hosting and R&D. If you’re serious about infrastructure, Proxmox is a [[must]]."
+                    },
+                    "de": {
+                        "title": "Heimserver-Virtualisierung",
+                        "text": "Proxmox ist die [[Anlaufstelle]] für alle, die sich für Heimserver interessieren. Seine leistungsstarken Virtualisierungstools, Benutzerfreundlichkeit und Community-Unterstützung machen es zur [[herausragenden Wahl]] für Self-Hosting und F&E. Wenn Sie es mit Infrastruktur ernst meinen, ist Proxmox ein [[Muss]]."
+                    },
+                    "hr": {
+                        "title": "Virtualizacija kućnog poslužitelja",
+                        "text": "Proxmox je [[prva platforma]] za sve koji se bave kućnim poslužiteljima. Njegovi moćni alati za virtualizaciju, jednostavnost korištenja i podrška zajednice čine ga [[istaknutim izborom]] za self-hosting i R&D. Ako ste ozbiljni oko infrastrukture, Proxmox je [[obavezan]]."
+                    },
+                    "tr": {
+                        "title": "Ev Sunucusu Sanallaştırma",
+                        "text": "Proxmox, ev sunucularıyla ilgilenenler için [[başvuru platformu]]. Güçlü sanallaştırma araçları, kullanım kolaylığı ve topluluk desteği, onu self-hosting ve AR-GE için [[öne çıkan bir seçim]] haline getiriyor. Eğer altyapıya ciddiyseniz, Proxmox bir [[olmazsa olmaz]]."
+                    }
+                }
+            },
+            {
+                "id": 16,
+                "label": "Windows Snipping Tool",
+                "link": {"href": "https://support.microsoft.com/en-us/windows/use-snipping-tool-to-capture-screenshots-5b093d1d-77a6-4d70-99b1-a811d1b7d1c5", "tooltipString": "open_website"},
+                "img": "/images/contant/snipping-tool.webp",
+                "faIcon": "fa-solid fa-scissors",
+                "faIconColors": {
+                    "bg": "#111827",
+                    "bgLight": "#F9FAFB",
+                    "fill": "#F59E0B",
+                    "fillLight": "#D97706"
+                },
+                "locales": {
+                    "en": {
+                        "title": "Screenshot Utility",
+                        "text": "The Windows Snipping Tool is my [[efficiency machine]]. Quick, reliable, and always there when I need it. It’s a small tool, but it saves me [[hours of time]] every week. If you’re not using it, you’re missing out!"
+                    },
+                    "de": {
+                        "title": "Screenshot-Tool",
+                        "text": "Das Windows Snipping Tool ist meine [[Effizienz-Maschine]]. Schnell, zuverlässig und immer da, wenn ich es brauche. Es ist ein kleines Tool, aber es spart mir [[Stunden pro Woche]]. Wenn Sie es nicht nutzen, verpassen Sie etwas!"
+                    },
+                    "hr": {
+                        "title": "Alat za snimanje zaslona",
+                        "text": "Windows alat Snipping Tool je moj [[stroj učinkovitosti]]. Brz je, pouzdan i uvijek tu kada mi zatreba. Mali je alat, ali mi štedi [[sate vremena]] svaki tjedan. Ako ga ne koristite, propustate nešto!"
+                    },
+                    "tr": {
+                        "title": "Ekran Görüntüsü Aracı",
+                        "text": "Windows Snipping Tool, benim [[verimlilik makinem]]. Hızlı, güvenilir ve her zaman ihtiyacım olduğunda orada. Küçük bir araç, ama her hafta bana [[saatler kazandırıyor]]. Kullanmıyorsanız, büyük bir fırsatı kaçırıyorsunuz!"
+                    }
+                }
+            },
+            {
+                "id": 17,
+                "label": "Tailscale",
+                "link": {"href": "https://tailscale.com/", "tooltipString": "open_website"},
+                "img": "/images/contant/tailscale.webp",
+                "faIcon": "fa-solid fa-network-wired",
+                "faIconColors": {
+                    "bg": "#06B6D4",
+                    "bgLight": "#ECFEFF",
+                    "fill": "#0891B2",
+                    "fillLight": "#0E7490"
+                },
+                "locales": {
+                    "en": {
+                        "title": "Zero Config VPN",
+                        "text": "Tailscale is a [[revelation]]. It’s so easy to set up and use that it feels like magic. If you need a secure, private network for your devices, [[learn about it]]—you won’t regret it. It’s changed how I think about networking."
+                    },
+                    "de": {
+                        "title": "Zero-Config-VPN",
+                        "text": "Tailscale ist eine [[Offenbarung]]. Es ist so einfach einzurichten und zu verwenden, dass es sich wie Magie anfühlt. Wenn Sie ein sicheres, privates Netzwerk für Ihre Geräte benötigen, [[informieren Sie sich]]—Sie werden es nicht bereuen. Es hat meine Sicht auf Netzwerke verändert."
+                    },
+                    "hr": {
+                        "title": "Zero Config VPN",
+                        "text": "Tailscale je [[otkrivenje]]. Tako je jednostavan za postaviti i koristiti da se čini kao magija. Ako vam je potreban siguran, privatni mrežni prostor za vaše uređaje, [[saznajte više]]—nećete požaliti. Promijenio je moj pogled na mreže."
+                    },
+                    "tr": {
+                        "title": "Sıfır Yapılandırma VPN",
+                        "text": "Tailscale bir [[vahiy]]. Kurulumu ve kullanımı o kadar kolay ki büyü gibi hissettiriyor. Cihazlarınız için güvenli, özel bir ağa ihtiyacınız varsa, [[hakkında bilgi edinin]]—pişman olmayacaksınız. Ağlara bakış açımı değiştirdi."
+                    }
+                }
+            },
+            {
+                "id": 18,
+                "label": "Google Maps",
+                "link": {"href": "https://www.google.com/maps", "tooltipString": "open_website"},
+                "img": "/images/contant/google-maps.webp",
+                "faIcon": "fa-solid fa-map",
+                "faIconColors": {
+                    "bg": "#10B981",
+                    "bgLight": "#D1FAE5",
+                    "fill": "#059669",
+                    "fillLight": "#047857"
+                },
+                "locales": {
+                    "en": {
+                        "title": "Navigation & Exploration",
+                        "text": "Google Maps is a [[life changer]]. Whether I’m navigating a new city or planning a road trip, it’s always reliable and packed with useful features. I can’t imagine life without it—[[absolutely essential]] for modern living."
+                    },
+                    "de": {
+                        "title": "Navigation & Erkundung",
+                        "text": "Google Maps ist ein [[Lebensveränderer]]. Egal, ob ich mich in einer neuen Stadt zurechtfinde oder eine Roadtrip plane, es ist immer zuverlässig und voller nützlicher Funktionen. Ich kann mir ein Leben ohne Google Maps nicht vorstellen—[[absolut unverzichtbar]] für das moderne Leben."
+                    },
+                    "hr": {
+                        "title": "Navigacija i istraživanje",
+                        "text": "Google Mape su [[promjena života]]. Bilo da se snalazim u novom gradu ili planiram putovanje, uvijek su pouzdane i pune korisnih funkcija. Ne mogu zamisliti život bez njih—[[apsolutno neophodno]] za moderni život."
+                    },
+                    "tr": {
+                        "title": "Navigasyon & Keşif",
+                        "text": "Google Haritalar bir [[hayat kurtarıcı]]. Yeni bir şehirde gezinirken veya yolculuk planlarken, her zaman güvenilir ve kullanışlı özelliklerle dolu. Onsuz bir hayatı hayal edemiyorum—[[modern yaşam için kesinlikle gerekli]]."
+                    }
+                }
+            },
+            {
+                "id": 19,
+                "label": "TradingView",
+                "link": {"href": "https://www.tradingview.com/", "tooltipString": "open_website"},
+                "img": "/images/contant/tradingview.webp",
+                "faIcon": "fa-solid fa-chart-line",
+                "faIconColors": {
+                    "bg": "#1E3A8A",
+                    "bgLight": "#DBEAFE",
+                    "fill": "#3B82F6",
+                    "fillLight": "#2563EB"
+                },
+                "locales": {
+                    "en": {
+                        "title": "Trading & Market Analysis",
+                        "text": "TradingView is [[the tool]] for trading. Its powerful charts, community insights, and real-time data make it indispensable for both beginners and pros. If you’re into trading or investing, this is the platform you need."
+                    },
+                    "de": {
+                        "title": "Handel & Marktanalyse",
+                        "text": "TradingView ist [[das Tool]] für den Handel. Seine leistungsstarken Charts, Community-Einblicke und Echtzeitdaten machen es für Anfänger und Profis gleichermaßen unverzichtbar. Wenn Sie sich für Handel oder Investitionen interessieren, ist dies die Plattform, die Sie benötigen."
+                    },
+                    "hr": {
+                        "title": "Trgovanje i analiza tržišta",
+                        "text": "TradingView je [[alat]] za trgovinu. Njegovi moćni grafovi, uvidi zajednice i podaci u realnom vremenu čine ga nezaobilaznim za početnike i profesionalce. Ako se bavite trgovinom ili investiranjem, ovo je platforma koja vam je potrebna."
+                    },
+                    "tr": {
+                        "title": "Ticaret & Piyasa Analizi",
+                        "text": "TradingView, ticaret için [[araç]]. Güçlü grafikler, topluluk içgörüleri ve gerçek zamanlı veriler, onu hem acemiler hem de profesyoneller için vazgeçilmez kılıyor. Eğer ticaret veya yatırımla ilgileniyorsanız, ihtiyacınız olan platform burası."
+                    }
+                }
+            }
+        ]
+    },
+    {
       "id": 1,
       "component": "ArticleStack",
       "locales": {

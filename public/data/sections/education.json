@@ -52,7 +52,7 @@
             "items": [
                 {
                     "id": 6,
-                    "img": "/images/contant/ibu_logo.svg",
+                    "img": "/images/contant/ibu_logo.webp",
                     "faIcon": "",
                     "faIconColors": { "bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF" },
                     "dateStart": { "year": 2025, "month": 10 },
@@ -114,7 +114,7 @@
                 },
                 {
                     "id": 1,
-                    "img": "/images/contant/provadis_logo.svg",
+                    "img": "/images/contant/provadis_logo.webp",
                     "faIcon": "",
                     "faIconColors": {"bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF"},
                     "dateStart": {"year": 2018, "month": 9},
@@ -184,7 +184,7 @@
                 },
                 {
                     "id": 2,
-                    "img": "/images/contant/thm_logo.svg", 
+                    "img": "/images/contant/thm_logo.webp", 
                     "faIcon": "",
                     "faIconColors": {"bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF"},
                     "dateStart": {"year": 2023, "month": 10},
@@ -250,7 +250,7 @@
                 },
                 {
                     "id": 3,
-                    "img": "/images/contant/bruehlwiesenschule_logo.svg",
+                    "img": "/images/contant/bruehlwiesenschule_logo.webp",
                     "faIcon": "",
                     "faIconColors": {"bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF"},
                     "dateStart": {"year": 2020, "month": 9},
@@ -316,7 +316,7 @@
                 },
                 {
                     "id": 4,
-                    "img": "/images/contant/eichendorfschule_logo.svg",
+                    "img": "/images/contant/eichendorfschule_logo.webp",
                     "faIcon": "",
                     "faIconColors": {"bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF"},
                     "dateStart": {"year": 2018, "month": 9},
@@ -382,7 +382,7 @@
                 },
                 {
                     "id": 5,
-                    "img": "/images/contant/tomislavgrad_logo.svg",
+                    "img": "/images/contant/tomislavgrad_logo.webp",
                     "faIcon": "",
                     "faIconColors": {"bg": "#000", "bgLight": "#FFF", "fill": "#FFF", "fillLight": "#FFF"},
                     "dateStart": {"year": 2007, "month": 1},
@@ -472,7 +472,7 @@
             "items": [
                 {
                     "id": 1,
-                    "img": "/images/contant/aevo_logo.svg",
+                    "img": "/images/contant/aevo_logo.webp",
                     "faIcon": "",
                     "faIconColors": {"bg": "#000", "bgLight": "#000", "fill": "#FFF", "fillLight": "#FFF"},
                     "date": {"year": 2026, "month": 4},
@@ -487,7 +487,7 @@
 
                 {
                     "id": 2,
-                    "img": "/images/contant/ccna.svg",
+                    "img": "/images/contant/ccna.webp",
                     "faIcon": "",
                     "faIconColors": {"bg": "red", "bgLight": "red", "fill": "white", "fillLight": "white"},
                     "date": {"year": 2026, "month": 8},

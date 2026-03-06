@@ -29,43 +29,7 @@
   },
   "articles": [
     {
-    "id": 1,
-    "component": "ArticleContactForm",
-    "settings": {
-        "email_js_public_key": "j1Kq3rfeTdVXEZYWh",
-        "email_js_service_id": "myWebsite",
-        "email_js_template_id": "template_puj7mco"
-    },
-    "locales": {
-        "en": {
-        "contact_thank_you_title": "{{Thanks}} for the contact!",
-        "contact_thank_you_body": "Your message has been received, and I'll be reaching out to you soon. I appreciate your time and look forward to connecting with you!",
-        "contact_thank_you_footer": "The reply will be sent to your email address: {{$email}}",
-        "title": "Send me a {{message}}"
-        },
-        "de": {
-        "contact_thank_you_title": "{{Danke}} für deine Nachricht!",
-        "contact_thank_you_body": "Deine Nachricht ist angekommen, und ich werde mich bald bei dir melden. Vielen Dank für deine Zeit – ich freue mich darauf, mit dir in Kontakt zu kommen!",
-        "contact_thank_you_footer": "Die Antwort wird an deine E-Mail-Adresse gesendet: {{$email}}",
-        "title": "Schreib mir eine {{Nachricht}}"
-        },
-        "hr": {
-        "contact_thank_you_title": "{{Hvala}} na javljanju!",
-        "contact_thank_you_body": "Tvoja poruka je zaprimljena i uskoro ću ti se javiti. Hvala ti na vremenu i veselim se našem daljnjem kontaktu!",
-        "contact_thank_you_footer": "Odgovor će biti poslan na tvoju e-mail adresu: {{$email}}",
-        "title": "Pošalji mi {{poruku}}"
-        },
-        "tr": {
-        "contact_thank_you_title": "Mesajın için {{teşekkürler}}!",
-        "contact_thank_you_body": "Mesajın ulaştı, en kısa zamanda sana geri döneceğim. Zaman ayırdığın için teşekkür ederim; seninle iletişim kurmak için sabırsızlanıyorum!",
-        "contact_thank_you_footer": "Cevap şu e-posta adresine gönderilecek: {{$email}}",
-        "title": "Bana bir {{mesaj}} gönder"
-        }
-    },
-    "items": null
-    },
-    {
-      "id": 2,
+      "id": 1,
       "component": "ArticleInfoList",
       "settings": {
         "order_items_by": "id",
@@ -202,6 +166,42 @@
           }
         }
       ]
+    },
+    {
+      "id": 2,
+      "component": "ArticleContactForm",
+      "settings": {
+          "email_js_public_key": "j1Kq3rfeTdVXEZYWh",
+          "email_js_service_id": "myWebsite",
+          "email_js_template_id": "template_puj7mco"
+      },
+      "locales": {
+          "en": {
+          "contact_thank_you_title": "{{Thanks}} for the contact!",
+          "contact_thank_you_body": "Your message has been received, and I'll be reaching out to you soon. I appreciate your time and look forward to connecting with you!",
+          "contact_thank_you_footer": "The reply will be sent to your email address: {{$email}}",
+          "title": "Send me a {{message}}"
+          },
+          "de": {
+          "contact_thank_you_title": "{{Danke}} für deine Nachricht!",
+          "contact_thank_you_body": "Deine Nachricht ist angekommen, und ich werde mich bald bei dir melden. Vielen Dank für deine Zeit – ich freue mich darauf, mit dir in Kontakt zu kommen!",
+          "contact_thank_you_footer": "Die Antwort wird an deine E-Mail-Adresse gesendet: {{$email}}",
+          "title": "Schreib mir eine {{Nachricht}}"
+          },
+          "hr": {
+          "contact_thank_you_title": "{{Hvala}} na javljanju!",
+          "contact_thank_you_body": "Tvoja poruka je zaprimljena i uskoro ću ti se javiti. Hvala ti na vremenu i veselim se našem daljnjem kontaktu!",
+          "contact_thank_you_footer": "Odgovor će biti poslan na tvoju e-mail adresu: {{$email}}",
+          "title": "Pošalji mi {{poruku}}"
+          },
+          "tr": {
+          "contact_thank_you_title": "Mesajın için {{teşekkürler}}!",
+          "contact_thank_you_body": "Mesajın ulaştı, en kısa zamanda sana geri döneceğim. Zaman ayırdığın için teşekkür ederim; seninle iletişim kurmak için sabırsızlanıyorum!",
+          "contact_thank_you_footer": "Cevap şu e-posta adresine gönderilecek: {{$email}}",
+          "title": "Bana bir {{mesaj}} gönder"
+          }
+      },
+      "items": null
     }
   ]
 }

@@ -29,6 +29,353 @@
   },
   "articles": [
     {
+      "id": 2,
+      "component": "ArticlePortfolio",
+      "locales": {
+        "en": {
+          "title": "My {{Software}} Projects",
+          "category_all": "All Projects",
+          "category_learning": "Learning & Education",
+          "category_robotics": "Robotics",
+          "category_games": "Games & Entertainment",
+          "category_tools": "Tools & Utilities",
+          "category_web": "Web & Design",
+          "category_personal": "Personal Projects"
+        },
+        "de": {
+          "title": "Meine {{Software}}-Projekte",
+          "category_all": "Alle Projekte",
+          "category_learning": "Lernen & Bildung",
+          "category_robotics": "Robotik",
+          "category_games": "Spiele & Unterhaltung",
+          "category_tools": "Werkzeuge & Dienstprogramme",
+          "category_web": "Web & Design",
+          "category_personal": "Persönliche Projekte"
+        },
+        "hr": {
+          "title": "Moji {{softverski}} projekti",
+          "category_all": "Svi projekti",
+          "category_learning": "Učenje & obrazovanje",
+          "category_robotics": "Robotika",
+          "category_games": "Igre & zabava",
+          "category_tools": "Alati & pomagala",
+          "category_web": "Web & dizajn",
+          "category_personal": "Osobni projekti"
+        },
+        "tr": {
+          "title": "{{Yazılım}} Projelerim",
+          "category_all": "Tüm Projeler",
+          "category_learning": "Öğrenme & Eğitim",
+          "category_robotics": "Robotik",
+          "category_games": "Oyunlar & Eğlence",
+          "category_tools": "Araçlar & Yardımcı Programlar",
+          "category_web": "Web & Tasarım",
+          "category_personal": "Kişisel Projeler"
+        }
+      },
+      "settings": {
+        "categorize_by": "category",
+        "order_items_by": "id",
+        "order_items_sort": "asc"
+      },
+      "items": [
+        {
+          "id": 1,
+          "img": "",
+          "faIcon": "fa-solid fa-graduation-cap",
+          "faIconColors": {
+            "bg": "#0D1117",
+            "bgLight": "#EDF2F7",
+            "fill": "#2962FF",
+            "fillLight": "#1E88E5"
+          },
+          "category": "category_learning",
+          "preview": {
+            "links": [
+              { "href": "https://github.com/Lomuss33/Projekt_Belot", "tooltipString": "GitHub", "faIcon": "fa-brands fa-github" }
+            ],
+            "screenshots": [],
+            "screenshotsAspectRatio": "16:9",
+            "youtubeVideo": ""
+          },
+          "locales": {
+            "en": {
+              "title": "Java Learning Project: Belot",
+              "text": "University project focused on learning Java programming by developing a Belot card game. Implemented core game logic, user interaction, and basic AI opponents.",
+              "tags": ["Java", "Learning", "Card Game", "University Project"]
+            },
+            "de": {
+              "title": "Java-Lernprojekt: Belot",
+              "text": "Universitätsprojekt zum Erlernen der Java-Programmierung durch die Entwicklung eines Belot-Kartenspiels. Implementierung der Spiel-Logik, Benutzerinteraktion und einfacher KI-Gegner.",
+              "tags": ["Java", "Lernen", "Kartenspiel", "Universitätsprojekt"]
+            },
+            "hr": {
+              "title": "Java projekt učenja: Belot",
+              "text": "Sveučilišni projekt usmjeren na učenje Java programiranja kroz razvoj igre Belot. Implementirana osnovna logika igre, interakcija s korisnikom i jednostavni AI protivnici.",
+              "tags": ["Java", "Učenje", "Kartaška igra", "Sveučilišni projekt"]
+            },
+            "tr": {
+              "title": "Java Öğrenme Projesi: Belot",
+              "text": "Belot kart oyunu geliştirerek Java programlama öğrenmeye odaklanan üniversite projesi. Temel oyun mantığı, kullanıcı etkileşimi ve basit AI rakipleri uygulandı.",
+              "tags": ["Java", "Öğrenme", "Kart Oyunu", "Üniversite Projesi"]
+            }
+          }
+        },
+        {
+          "id": 2,
+          "img": "",
+          "faIcon": "fa-solid fa-robot",
+          "faIconColors": {
+            "bg": "#101A29",
+            "bgLight": "#ECF0F6",
+            "fill": "#1976D2",
+            "fillLight": "#1565C0"
+          },
+          "category": "category_robotics",
+          "preview": {
+            "links": [
+              { "href": "https://github.com/Lomuss33/Pepper-Poker", "tooltipString": "GitHub", "faIcon": "fa-brands fa-github" }
+            ],
+            "screenshots": [],
+            "screenshotsAspectRatio": "16:9",
+            "youtubeVideo": ""
+          },
+          "locales": {
+            "en": {
+              "title": "Pepper & Nao Poker Game",
+              "text": "University project using Pepper and Nao robots to create an interactive poker game with animations and real-time card dealing on a monitor.",
+              "tags": ["Robotics", "Pepper", "Nao", "Poker", "University Project"]
+            },
+            "de": {
+              "title": "Pepper & Nao Pokerspiel",
+              "text": "Universitätsprojekt mit Pepper- und Nao-Robotern zur Erstellung eines interaktiven Pokerspiels mit Animationen und Echtzeit-Kartenverteilung auf einem Monitor.",
+              "tags": ["Robotik", "Pepper", "Nao", "Poker", "Universitätsprojekt"]
+            },
+            "hr": {
+              "title": "Poker igra s Pepper i Nao robotima",
+              "text": "Sveučilišni projekt korištenjem Pepper i Nao robota za stvaranje interaktivne poker igre s animacijama i dijeljenjem karata u realnom vremenu na monitoru.",
+              "tags": ["Robotika", "Pepper", "Nao", "Poker", "Sveučilišni projekt"]
+            },
+            "tr": {
+              "title": "Pepper & Nao Poker Oyunu",
+              "text": "Pepper ve Nao robotlarını kullanarak, animasyonlu ve gerçek zamanlı kart dağıtımının yapıldığı interaktif bir poker oyunu oluşturan üniversite projesi.",
+              "tags": ["Robotik", "Pepper", "Nao", "Poker", "Üniversite Projesi"]
+            }
+          }
+        },
+        {
+          "id": 3,
+          "img": "",
+          "faIcon": "fa-solid fa-gamepad",
+          "faIconColors": {
+            "bg": "#1A1B2E",
+            "bgLight": "#E8E8F0",
+            "fill": "#7C3AED",
+            "fillLight": "#6D28D9"
+          },
+          "category": "category_games",
+          "preview": {
+            "links": [
+              { "href": "https://github.com/Lomuss33/Projekt_SimonGame", "tooltipString": "GitHub", "faIcon": "fa-brands fa-github" }
+            ],
+            "screenshots": [],
+            "screenshotsAspectRatio": "16:9",
+            "youtubeVideo": ""
+          },
+          "locales": {
+            "en": {
+              "title": "Simon Game: Multiplayer & Database",
+              "text": "University project combining theoretical knowledge to create a multiplayer Simon Game with a physical and virtual server database for high scores and user management.",
+              "tags": ["Game", "Multiplayer", "Database", "University Project"]
+            },
+            "de": {
+              "title": "Simon-Spiel: Mehrspieler & Datenbank",
+              "text": "Universitätsprojekt zur Kombination von theoretischem Wissen für ein Mehrspieler-Simon-Spiel mit physischer und virtueller Server-Datenbank für Highscores und Benutzerverwaltung.",
+              "tags": ["Spiel", "Mehrspieler", "Datenbank", "Universitätsprojekt"]
+            },
+            "hr": {
+              "title": "Simon igra: Višeigrač & baza podataka",
+              "text": "Sveučilišni projekt kombiniranjem teorijskog znanja za stvaranje višeigračke Simon igre s fizičkom i virtualnom server bazom podataka za rezultate i upravljanje korisnicima.",
+              "tags": ["Igra", "Višeigrač", "Baza podataka", "Sveučilišni projekt"]
+            },
+            "tr": {
+              "title": "Simon Oyunu: Çoklu Oyuncu & Veritabanı",
+              "text": "Teorik bilgiyi birleştiren, fiziksel ve sanal sunucu veritabanı ile yüksek skorlar ve kullanıcı yönetimi için çoklu oyuncu Simon oyunu oluşturan üniversite projesi.",
+              "tags": ["Oyun", "Çoklu Oyuncu", "Veritabanı", "Üniversite Projesi"]
+            }
+          }
+        },
+        {
+          "id": 4,
+          "img": "",
+          "faIcon": "fa-solid fa-language",
+          "faIconColors": {
+            "bg": "#1F2937",
+            "bgLight": "#F3F4F6",
+            "fill": "#06B6D4",
+            "fillLight": "#0891B2"
+          },
+          "category": "category_tools",
+          "preview": {
+            "links": [
+              { "href": "https://github.com/Lomuss33/GermanCro", "tooltipString": "GitHub", "faIcon": "fa-brands fa-github" }
+            ],
+            "screenshots": [],
+            "screenshotsAspectRatio": "16:9",
+            "youtubeVideo": ""
+          },
+          "locales": {
+            "en": {
+              "title": "German Learning Tool",
+              "text": "Personal project for learning German through English and Croatian, featuring translation tools, quizzes, and interactive language exercises for effective and fun learning.",
+              "tags": ["Language Learning", "German", "Croatian", "English", "Personal Project"]
+            },
+            "de": {
+              "title": "Deutsch-Lernwerkzeug",
+              "text": "Persönliches Projekt zum Deutschlernen über Englisch und Kroatisch mit Übersetzungs-Tools, Quizzen und interaktiven Sprachübungen für effektives und unterhaltsames Lernen.",
+              "tags": ["Sprachlernen", "Deutsch", "Kroatisch", "Englisch", "Persönliches Projekt"]
+            },
+            "hr": {
+              "title": "Alat za učenje njemačkog",
+              "text": "Osobni projekt za učenje njemačkog kroz engleski i hrvatski, s alatima za prijevod, kvizovima i interaktivnim vježbama za učinkovito i zabavno učenje.",
+              "tags": ["Učenje jezika", "Njemački", "Hrvatski", "Engleski", "Osobni projekt"]
+            },
+            "tr": {
+              "title": "Almanca Öğrenme Aracı",
+              "text": "İngilizce ve Hırvatça aracılığıyla Almanca öğrenmeye yönelik kişisel proje. Çeviri araçları, testler ve etkileşimli dil alıştırmaları ile eğlenceli ve etkili öğrenme sunar.",
+              "tags": ["Dil Öğrenme", "Almanca", "Hırvatça", "İngilizce", "Kişisel Proje"]
+            }
+          }
+        },
+        {
+          "id": 5,
+          "img": "",
+          "faIcon": "fa-solid fa-home",
+          "faIconColors": {
+            "bg": "#111827",
+            "bgLight": "#F9FAFB",
+            "fill": "#F59E0B",
+            "fillLight": "#D97706"
+          },
+          "category": "category_web",
+          "preview": {
+            "links": [
+              { "href": "https://github.com/Lomuss33/VillaBagara", "tooltipString": "GitHub", "faIcon": "fa-brands fa-github" }
+            ],
+            "screenshots": [],
+            "screenshotsAspectRatio": "16:9",
+            "youtubeVideo": ""
+          },
+          "locales": {
+            "en": {
+              "title": "Villa Bagara: Renovation Project",
+              "text": "Website for the future renovation project of an ancestral home, designed as a mountain sports and retreat rental. Currently in the planning and building phase.",
+              "tags": ["Web Design", "Renovation", "Mountain Retreat", "Personal Project"]
+            },
+            "de": {
+              "title": "Villa Bagara: Renovierungsprojekt",
+              "text": "Website für das zukünftige Renovierungsprojekt eines Ahnenhauses, das als Bergsport- und Rückzugsort vermietet werden soll. Derzeit in der Planungs- und Bauphase.",
+              "tags": ["Webdesign", "Renovierung", "Berghütte", "Persönliches Projekt"]
+            },
+            "hr": {
+              "title": "Villa Bagara: Projekt obnove",
+              "text": "Web stranica za budući projekt obnove obiteljske kuće, namijenjena kao planinski sportski i odmarališni prostor. Trenutno u fazi planiranja i izgradnje.",
+              "tags": ["Web dizajn", "Obnova", "Planinski odmor", "Osobni projekt"]
+            },
+            "tr": {
+              "title": "Villa Bagara: Yenileme Projesi",
+              "text": "Atalarından kalan bir evin gelecekteki yenileme projesi için web sitesi. Dağ sporları ve dinlenme tesisi olarak tasarlandı. Şu anda planlama ve inşa aşamasında.",
+              "tags": ["Web Tasarım", "Yenileme", "Dağ Evi", "Kişisel Proje"]
+            }
+          }
+        },
+        {
+          "id": 6,
+          "img": "",
+          "faIcon": "fa-solid fa-file-pdf",
+          "faIconColors": {
+            "bg": "#0F172A",
+            "bgLight": "#F8FAFC",
+            "fill": "#EF4444",
+            "fillLight": "#DC2626"
+          },
+          "category": "category_personal",
+          "preview": {
+            "links": [
+              { "href": "https://github.com/Lomuss33/latex-lebenslauf", "tooltipString": "GitHub", "faIcon": "fa-brands fa-github" }
+            ],
+            "screenshots": [],
+            "screenshotsAspectRatio": "16:9",
+            "youtubeVideo": ""
+          },
+          "locales": {
+            "en": {
+              "title": "LaTeX CV",
+              "text": "Personal CV designed in LaTeX, featuring a beautiful, detail-packed yet concise format that respects the 15-second rule for quick readability.",
+              "tags": ["LaTeX", "CV", "Personal Project"]
+            },
+            "de": {
+              "title": "LaTeX-Lebenslauf",
+              "text": "Persönlicher Lebenslauf in LaTeX, mit einem schönen, detailreichen, aber prägnanten Format, das die 15-Sekunden-Regel für schnelle Lesbarkeit einhält.",
+              "tags": ["LaTeX", "Lebenslauf", "Persönliches Projekt"]
+            },
+            "hr": {
+              "title": "LaTeX životopis",
+              "text": "Osobni životopis dizajniran u LaTeX-u, s lijepim, detaljnim, ali sažetim formatom koji poštuje 15-sekundno pravilo za brzo čitanje.",
+              "tags": ["LaTeX", "Životopis", "Osobni projekt"]
+            },
+            "tr": {
+              "title": "LaTeX Özgeçmiş",
+              "text": "LaTeX ile tasarlanmış kişisel özgeçmiş. Güzel, detaylı ancak özlü bir formatta, hızlı okunabilirlik için 15 saniye kuralına uygun.",
+              "tags": ["LaTeX", "Özgeçmiş", "Kişisel Proje"]
+            }
+          }
+        },
+        {
+          "id": 7,
+          "img": "",
+          "faIcon": "fa-solid fa-project-diagram",
+          "faIconColors": {
+            "bg": "#1E293B",
+            "bgLight": "#F1F5F9",
+            "fill": "#0891B2",
+            "fillLight": "#0284C7"
+          },
+          "category": "category_web",
+          "preview": {
+            "links": [
+              { "href": "https://github.com/Lomuss33/HTML-FamilyTree", "tooltipString": "GitHub", "faIcon": "fa-brands fa-github" }
+            ],
+            "screenshots": [],
+            "screenshotsAspectRatio": "16:9",
+            "youtubeVideo": ""
+          },
+          "locales": {
+            "en": {
+              "title": "HTML Family Tree",
+              "text": "Informative and compact family tree built with pure HTML, designed to be visually clear and easy to navigate for family history exploration.",
+              "tags": ["HTML", "Family Tree", "Web Design", "Personal Project"]
+            },
+            "de": {
+              "title": "HTML-Stammbaum",
+              "text": "Informative und kompakte Familiengeschichte, erstellt mit reinem HTML, visuell klar und einfach zu navigieren für die Erforschung der Familiengeschichte.",
+              "tags": ["HTML", "Stammbaum", "Webdesign", "Persönliches Projekt"]
+            },
+            "hr": {
+              "title": "HTML obiteljsko stablo",
+              "text": "Informativno i kompaktno obiteljsko stablo izgrađeno čistim HTML-om, dizajnirano da bude vizualno jasno i lako za navigaciju za istraživanje obiteljske povijesti.",
+              "tags": ["HTML", "Obiteljsko stablo", "Web dizajn", "Osobni projekt"]
+            },
+            "tr": {
+              "title": "HTML Aile Ağacı",
+              "text": "Saf HTML ile oluşturulmuş, görsel olarak net ve gezinti kolaylığı sağlayan, aile tarihini keşfetmek için tasarlanmış bilgilendirici ve kompakt aile ağacı.",
+              "tags": ["HTML", "Aile Ağacı", "Web Tasarım", "Kişisel Proje"]
+            }
+          }
+        }
+      ]
+    },
+    {
       "id": 1,
       "component": "ArticleStack",
       "locales": {

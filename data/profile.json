@@ -16,8 +16,8 @@
                 "ERP Data Engineer",
                 "Industrial Automation Engineer"
             ],
-            "name_pronunciation_ipa": "",
-            "name_pronunciation_audio_url": ""
+            "name_pronunciation_ipa": "ˈlɔːvrɔ ˈmuːsɪch",
+            "name_pronunciation_audio_url": "/data/audio/lovro-music.mp3"
         },
         "de": {
             "localized_name": "Lovro Musić",
@@ -29,8 +29,8 @@
                 "ERP-Dateningenieur",
                 "Industrielle Automatisierungsingenieur"
             ],
-            "name_pronunciation_ipa": "",
-            "name_pronunciation_audio_url": ""
+            "name_pronunciation_ipa": "ˈlɔːvrɔ ˈmuːsɪch",
+            "name_pronunciation_audio_url": "/data/audio/lovro-music.mp3"
         },
         "hr": {
             "localized_name": "Lovro Musić",
@@ -42,8 +42,8 @@
                 "Inženjer ERP podataka",
                 "Inženjer za industrijsku automatizaciju"
             ],
-            "name_pronunciation_ipa": "",
-            "name_pronunciation_audio_url": ""
+            "name_pronunciation_ipa": "ˈlɔːvrɔ ˈmuːsɪch",
+            "name_pronunciation_audio_url": "/data/audio/lovro-music.mp3"
         },
         "tr": {
             "localized_name": "Lovro Musić",
@@ -55,8 +55,8 @@
                 "ERP Veri Mühendisi",
                 "Endüstriyel Otomasyon Mühendisi"
             ],
-            "name_pronunciation_ipa": "",
-            "name_pronunciation_audio_url": ""
+            "name_pronunciation_ipa": "ˈlɔːvrɔ ˈmuːsɪch",
+            "name_pronunciation_audio_url": "/data/audio/lovro-music.mp3"
         }
     }
 }

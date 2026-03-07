@@ -74,7 +74,14 @@
         }
       },
       "settings": {
-        "categorize_by": "category",
+        "categorize_by": [
+          "category_learning",
+          "category_robotics",
+          "category_games",
+          "category_tools",
+          "category_web",
+          "category_personal"
+        ],
         "order_items_by": "id",
         "order_items_sort": "asc"
       },
@@ -89,13 +96,18 @@
             "fill": "#2962FF",
             "fillLight": "#1E88E5"
           },
-          "category": "category_learning",
+          "categoryId": "category_learning",
           "preview": {
             "links": [
               {
                 "href": "https://github.com/Lomuss33/Projekt_Belot",
                 "tooltipString": "GitHub",
                 "faIcon": "fa-brands fa-github"
+              },
+              {
+                "href": "https://docs.google.com/document/d/REPLACE_WITH_GOOGLE_DOC_LINK_1/edit",
+                "tooltipString": "open_website",
+                "faIcon": "fa-solid fa-file-lines"
               }
             ],
             "screenshots": [],
@@ -155,13 +167,18 @@
             "fill": "#1976D2",
             "fillLight": "#1565C0"
           },
-          "category": "category_robotics",
+          "categoryId": "category_robotics",
           "preview": {
             "links": [
               {
                 "href": "https://github.com/Lomuss33/Pepper-Poker",
                 "tooltipString": "GitHub",
                 "faIcon": "fa-brands fa-github"
+              },
+              {
+                "href": "https://docs.google.com/document/d/REPLACE_WITH_GOOGLE_DOC_LINK_2/edit",
+                "tooltipString": "open_website",
+                "faIcon": "fa-solid fa-file-lines"
               }
             ],
             "screenshots": [],
@@ -225,13 +242,18 @@
             "fill": "#7C3AED",
             "fillLight": "#6D28D9"
           },
-          "category": "category_games",
+          "categoryId": "category_games",
           "preview": {
             "links": [
               {
                 "href": "https://github.com/Lomuss33/Projekt_SimonGame",
                 "tooltipString": "GitHub",
                 "faIcon": "fa-brands fa-github"
+              },
+              {
+                "href": "https://docs.google.com/document/d/REPLACE_WITH_GOOGLE_DOC_LINK_3/edit",
+                "tooltipString": "open_website",
+                "faIcon": "fa-solid fa-file-lines"
               }
             ],
             "screenshots": [],
@@ -291,13 +313,18 @@
             "fill": "#06B6D4",
             "fillLight": "#0891B2"
           },
-          "category": "category_tools",
+          "categoryId": "category_tools",
           "preview": {
             "links": [
               {
                 "href": "https://github.com/Lomuss33/GermanCro",
                 "tooltipString": "GitHub",
                 "faIcon": "fa-brands fa-github"
+              },
+              {
+                "href": "https://docs.google.com/document/d/REPLACE_WITH_GOOGLE_DOC_LINK_4/edit",
+                "tooltipString": "open_website",
+                "faIcon": "fa-solid fa-file-lines"
               }
             ],
             "screenshots": [],
@@ -361,13 +388,18 @@
             "fill": "#F59E0B",
             "fillLight": "#D97706"
           },
-          "category": "category_web",
+          "categoryId": "category_web",
           "preview": {
             "links": [
               {
                 "href": "https://github.com/Lomuss33/VillaBagara",
                 "tooltipString": "GitHub",
                 "faIcon": "fa-brands fa-github"
+              },
+              {
+                "href": "https://docs.google.com/document/d/REPLACE_WITH_GOOGLE_DOC_LINK_5/edit",
+                "tooltipString": "open_website",
+                "faIcon": "fa-solid fa-file-lines"
               }
             ],
             "screenshots": [],
@@ -427,13 +459,18 @@
             "fill": "#EF4444",
             "fillLight": "#DC2626"
           },
-          "category": "category_personal",
+          "categoryId": "category_personal",
           "preview": {
             "links": [
               {
                 "href": "https://github.com/Lomuss33/latex-lebenslauf",
                 "tooltipString": "GitHub",
                 "faIcon": "fa-brands fa-github"
+              },
+              {
+                "href": "https://docs.google.com/document/d/REPLACE_WITH_GOOGLE_DOC_LINK_6/edit",
+                "tooltipString": "open_website",
+                "faIcon": "fa-solid fa-file-lines"
               }
             ],
             "screenshots": [],
@@ -489,13 +526,18 @@
             "fill": "#0891B2",
             "fillLight": "#0284C7"
           },
-          "category": "category_web",
+          "categoryId": "category_web",
           "preview": {
             "links": [
               {
                 "href": "https://github.com/Lomuss33/HTML-FamilyTree",
                 "tooltipString": "GitHub",
                 "faIcon": "fa-brands fa-github"
+              },
+              {
+                "href": "https://docs.google.com/document/d/REPLACE_WITH_GOOGLE_DOC_LINK_7/edit",
+                "tooltipString": "open_website",
+                "faIcon": "fa-solid fa-file-lines"
               }
             ],
             "screenshots": [],

@@ -32,7 +32,9 @@
       "id": 1,
       "component": "ArticleThread",
       "locales": {
-        "en": { "title": "My {{Writings & Presentations}}" }
+        "en": {
+          "title": "My {{Writings & Presentations}}"
+        }
       },
       "settings": {
         "max_rows_collapse_threshold": 3,
@@ -42,14 +44,17 @@
       "items": [
         {
           "id": 1,
-          "date": { "year": 2026, "month": 11 },
+          "date": {
+            "year": 2026,
+            "month": 11
+          },
           "preview": {
             "links": [
               {
                 "href": "https://drive.google.com/file/d/1iAKAgkY7UZAmAEF-13pNZWZ6QZ12eP0Y/view?usp=sharing",
                 "tooltipString": "Open Powerpoint (placeholder)",
                 "faIcon": "fa-solid fa-chalkboard-user"
-              },              
+              },
               {
                 "href": "https://drive.google.com/file/d/1hh0fdztupAyFoOIZO5jFnUTZKV3o4kKI/view?usp=sharing",
                 "tooltipString": "Open document (placeholder)",
@@ -86,7 +91,10 @@
         },
         {
           "id": 2,
-          "date": { "year": 2026, "month": 9 },
+          "date": {
+            "year": 2026,
+            "month": 9
+          },
           "preview": {
             "links": [
               {
@@ -130,7 +138,10 @@
         },
         {
           "id": 3,
-          "date": { "year": 2023, "month": 2 },
+          "date": {
+            "year": 2023,
+            "month": 2
+          },
           "preview": {
             "links": [
               {
@@ -169,7 +180,10 @@
         },
         {
           "id": 4,
-          "date": { "year": 2017, "month": 3 },
+          "date": {
+            "year": 2017,
+            "month": 3
+          },
           "preview": {
             "links": [
               {

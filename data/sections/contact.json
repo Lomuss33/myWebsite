@@ -36,10 +36,18 @@
         "order_items_sort": "asc"
       },
       "locales": {
-        "en": { "title": "More ways to {{reach me}}:" },
-        "de": { "title": "Weitere Möglichkeiten, {{mich zu erreichen}}:" },
-        "hr": { "title": "Još načina kako me {{kontaktirati}}:" },
-        "tr": { "title": "Bana ulaşmanın {{diğer yolları}}:" }
+        "en": {
+          "title": "More ways to {{reach me}}:"
+        },
+        "de": {
+          "title": "Weitere Möglichkeiten, {{mich zu erreichen}}:"
+        },
+        "hr": {
+          "title": "Još načina kako me {{kontaktirati}}:"
+        },
+        "tr": {
+          "title": "Bana ulaşmanın {{diğer yolları}}:"
+        }
       },
       "items": [
         {
@@ -52,13 +60,28 @@
             "fillLight": "#1FA955"
           },
           "label": " Quick connect!",
-          "link": { "href": "https://wa.me/4917662236934", "tooltipString": "open_website" },
+          "link": {
+            "href": "https://wa.me/4917662236934",
+            "tooltipString": "open_website"
+          },
           "copyToClipboardButton": false,
           "locales": {
-            "en": { "title": "WhatsApp", "text": "Quick chat for scheduling and follow-ups." },
-            "de": { "title": "WhatsApp", "text": "Schneller Chat für Terminabsprachen und Follow-ups." },
-            "hr": { "title": "WhatsApp", "text": "Brzi chat za dogovore i praćenja." },
-            "tr": { "title": "WhatsApp", "text": "Hızlı sohbet; randevu ve kısa notlar için." }
+            "en": {
+              "title": "WhatsApp",
+              "text": "Quick chat for scheduling and follow-ups."
+            },
+            "de": {
+              "title": "WhatsApp",
+              "text": "Schneller Chat für Terminabsprachen und Follow-ups."
+            },
+            "hr": {
+              "title": "WhatsApp",
+              "text": "Brzi chat za dogovore i praćenja."
+            },
+            "tr": {
+              "title": "WhatsApp",
+              "text": "Hızlı sohbet; randevu ve kısa notlar için."
+            }
           }
         },
         {
@@ -71,13 +94,28 @@
             "fillLight": "#007BB5"
           },
           "label": " @lovromusic",
-          "link": { "href": "https://t.me/lovromusic", "tooltipString": "open_website" },
+          "link": {
+            "href": "https://t.me/lovromusic",
+            "tooltipString": "open_website"
+          },
           "copyToClipboardButton": true,
           "locales": {
-            "en": { "title": "Telegram", "text": "Preferred for technical links/files." },
-            "de": { "title": "Telegram", "text": "Bevorzugt für technische Links/Dateien." },
-            "hr": { "title": "Telegram", "text": "Preferiram za tehničke linkove/datoteke." },
-            "tr": { "title": "Telegram", "text": "Teknik bağlantılar/dosyalar için tercihim." }
+            "en": {
+              "title": "Telegram",
+              "text": "Preferred for technical links/files."
+            },
+            "de": {
+              "title": "Telegram",
+              "text": "Bevorzugt für technische Links/Dateien."
+            },
+            "hr": {
+              "title": "Telegram",
+              "text": "Preferiram za tehničke linkove/datoteke."
+            },
+            "tr": {
+              "title": "Telegram",
+              "text": "Teknik bağlantılar/dosyalar için tercihim."
+            }
           }
         },
         {
@@ -96,10 +134,22 @@
           },
           "copyToClipboardButton": false,
           "locales": {
-            "en": { "title": "Gmail", "text": "Compose in Gmail with my address pre-filled." },
-            "de": { "title": "Gmail", "text": "In Gmail verfassen – Adresse ist bereits vorausgefüllt." },
-            "hr": { "title": "Gmail", "text": "Napiši u Gmailu – moja adresa je već popunjena." },
-            "tr": { "title": "Gmail", "text": "Gmail'de hazır adresle yeni e‑posta oluştur." }
+            "en": {
+              "title": "Gmail",
+              "text": "Compose in Gmail with my address pre-filled."
+            },
+            "de": {
+              "title": "Gmail",
+              "text": "In Gmail verfassen – Adresse ist bereits vorausgefüllt."
+            },
+            "hr": {
+              "title": "Gmail",
+              "text": "Napiši u Gmailu – moja adresa je već popunjena."
+            },
+            "tr": {
+              "title": "Gmail",
+              "text": "Gmail'de hazır adresle yeni e‑posta oluştur."
+            }
           }
         },
         {
@@ -118,10 +168,22 @@
           },
           "copyToClipboardButton": false,
           "locales": {
-            "en": { "title": "LinkedIn", "text": "Professional networking." },
-            "de": { "title": "LinkedIn", "text": "Professionelles Networking." },
-            "hr": { "title": "LinkedIn", "text": "Profesionalno umrežavanje." },
-            "tr": { "title": "LinkedIn", "text": "Profesyonel bağlantı için." }
+            "en": {
+              "title": "LinkedIn",
+              "text": "Professional networking."
+            },
+            "de": {
+              "title": "LinkedIn",
+              "text": "Professionelles Networking."
+            },
+            "hr": {
+              "title": "LinkedIn",
+              "text": "Profesionalno umrežavanje."
+            },
+            "tr": {
+              "title": "LinkedIn",
+              "text": "Profesyonel bağlantı için."
+            }
           }
         },
         {
@@ -140,10 +202,22 @@
           },
           "copyToClipboardButton": true,
           "locales": {
-            "en": { "title": "Discord", "text": "DMs open; good for quick voice/chat." },
-            "de": { "title": "Discord", "text": "DMs offen; gut für schnellen Voice/Chat." },
-            "hr": { "title": "Discord", "text": "DM-ovi otvoreni; dobro za brzi voice/chat." },
-            "tr": { "title": "Discord", "text": "DM açık; hızlı sesli/sohbet için uygun." }
+            "en": {
+              "title": "Discord",
+              "text": "DMs open; good for quick voice/chat."
+            },
+            "de": {
+              "title": "Discord",
+              "text": "DMs offen; gut für schnellen Voice/Chat."
+            },
+            "hr": {
+              "title": "Discord",
+              "text": "DM-ovi otvoreni; dobro za brzi voice/chat."
+            },
+            "tr": {
+              "title": "Discord",
+              "text": "DM açık; hızlı sesli/sohbet için uygun."
+            }
           }
         },
         {
@@ -156,13 +230,28 @@
             "fillLight": "#C3324C"
           },
           "label": " @snopdan_dogovic",
-          "link": { "href": "https://instagram.com/your_username", "tooltipString": "open_website" },
+          "link": {
+            "href": "https://instagram.com/your_username",
+            "tooltipString": "open_website"
+          },
           "copyToClipboardButton": false,
           "locales": {
-            "en": { "title": "Instagram", "text": "Casual updates; feel free to say hi." },
-            "de": { "title": "Instagram", "text": "Lockere Updates; sag gerne Hallo." },
-            "hr": { "title": "Instagram", "text": "Ležerni updateovi; slobodno se javi." },
-            "tr": { "title": "Instagram", "text": "Günlük paylaşımlar; merhaba demekten çekinme." }
+            "en": {
+              "title": "Instagram",
+              "text": "Casual updates; feel free to say hi."
+            },
+            "de": {
+              "title": "Instagram",
+              "text": "Lockere Updates; sag gerne Hallo."
+            },
+            "hr": {
+              "title": "Instagram",
+              "text": "Ležerni updateovi; slobodno se javi."
+            },
+            "tr": {
+              "title": "Instagram",
+              "text": "Günlük paylaşımlar; merhaba demekten çekinme."
+            }
           }
         }
       ]
@@ -171,35 +260,35 @@
       "id": 2,
       "component": "ArticleContactForm",
       "settings": {
-          "email_js_public_key": "j1Kq3rfeTdVXEZYWh",
-          "email_js_service_id": "myWebsite",
-          "email_js_template_id": "template_puj7mco"
+        "email_js_public_key": "j1Kq3rfeTdVXEZYWh",
+        "email_js_service_id": "myWebsite",
+        "email_js_template_id": "template_puj7mco"
       },
       "locales": {
-          "en": {
+        "en": {
           "contact_thank_you_title": "{{Thanks}} for the contact!",
           "contact_thank_you_body": "Your message has been received, and I'll be reaching out to you soon. I appreciate your time and look forward to connecting with you!",
           "contact_thank_you_footer": "The reply will be sent to your email address: {{$email}}",
           "title": "Send me a {{message}}"
-          },
-          "de": {
+        },
+        "de": {
           "contact_thank_you_title": "{{Danke}} für deine Nachricht!",
           "contact_thank_you_body": "Deine Nachricht ist angekommen, und ich werde mich bald bei dir melden. Vielen Dank für deine Zeit – ich freue mich darauf, mit dir in Kontakt zu kommen!",
           "contact_thank_you_footer": "Die Antwort wird an deine E-Mail-Adresse gesendet: {{$email}}",
           "title": "Schreib mir eine {{Nachricht}}"
-          },
-          "hr": {
+        },
+        "hr": {
           "contact_thank_you_title": "{{Hvala}} na javljanju!",
           "contact_thank_you_body": "Tvoja poruka je zaprimljena i uskoro ću ti se javiti. Hvala ti na vremenu i veselim se našem daljnjem kontaktu!",
           "contact_thank_you_footer": "Odgovor će biti poslan na tvoju e-mail adresu: {{$email}}",
           "title": "Pošalji mi {{poruku}}"
-          },
-          "tr": {
+        },
+        "tr": {
           "contact_thank_you_title": "Mesajın için {{teşekkürler}}!",
           "contact_thank_you_body": "Mesajın ulaştı, en kısa zamanda sana geri döneceğim. Zaman ayırdığın için teşekkür ederim; seninle iletişim kurmak için sabırsızlanıyorum!",
           "contact_thank_you_footer": "Cevap şu e-posta adresine gönderilecek: {{$email}}",
           "title": "Bana bir {{mesaj}} gönder"
-          }
+        }
       },
       "items": null
     }

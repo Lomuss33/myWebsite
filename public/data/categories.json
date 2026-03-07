@@ -35,7 +35,7 @@
                     "title": "Geçmiş"
                 }
             }
-        },        
+        },
         {
             "id": "hobbys",
             "faIcon": "fa-solid fa-icons",
@@ -53,24 +53,24 @@
                     "title": "Hobiler"
                 }
             }
-        }, 
+        },
         {
-        "id": "contact",
-        "faIcon": "fa-solid fa-paper-plane",
-        "locales": {
-            "en": {
-            "title": "Contact"
-            },
-            "de": {
-            "title": "Kontakt"
-            },
-            "hr": {
-            "title": "Kontakt"
-            },
-            "tr": {
-            "title": "İletişim"
+            "id": "contact",
+            "faIcon": "fa-solid fa-paper-plane",
+            "locales": {
+                "en": {
+                    "title": "Contact"
+                },
+                "de": {
+                    "title": "Kontakt"
+                },
+                "hr": {
+                    "title": "Kontakt"
+                },
+                "tr": {
+                    "title": "İletişim"
+                }
             }
-        }
         }
     ]
 }

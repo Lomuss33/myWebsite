@@ -1,62 +1,23 @@
 {
-    "name": "Lovro Musić",
-    "profilePictureUrl": "images/contant/profil2.webp",
-    "resumePdfUrl": "",
-    "statusCircleVisible": true,
-    "statusCircleVariant": "available",
-    "statusCircleHoverMessage": "status_message_available_for_freelance",
-    "locales": {
-        "en": {
-            "localized_name": "Lovro Musić",
-            "localized_name_stylized": "<strong>Lovro {{Musić}}</strong>",
-            "status_message_available_for_freelance": "Available for hire!",
-            "roles": [
-                "Network Security Engineer",
-                "Embedded Systems Engineer",
-                "ERP Data Engineer",
-                "Industrial Automation Engineer"
-            ],
-            "name_pronunciation_ipa": "ˈlɔːvrɔ ˈmuːsɪch",
-            "name_pronunciation_audio_url": "/data/audio/lovro-music.mp3"
-        },
-        "de": {
-            "localized_name": "Lovro Musić",
-            "localized_name_stylized": "<strong>Lovro {{Musić}}</strong>",
-            "status_message_available_for_freelance": "Verfügbar zur Anstellung!",
-            "roles": [
-                "Netzwerksicherheitsingenieur",
-                "Embedded Systems Ingenieur",
-                "ERP-Dateningenieur",
-                "Industrielle Automatisierungsingenieur"
-            ],
-            "name_pronunciation_ipa": "ˈlɔːvrɔ ˈmuːsɪch",
-            "name_pronunciation_audio_url": "/data/audio/lovro-music.mp3"
-        },
-        "hr": {
-            "localized_name": "Lovro Musić",
-            "localized_name_stylized": "<strong>Lovro {{Musić}}</strong>",
-            "status_message_available_for_freelance": "Dostupan za angažman!",
-            "roles": [
-                "Inženjer za sigurnost mreže",
-                "Inženjer za ugrađene sustave",
-                "Inženjer ERP podataka",
-                "Inženjer za industrijsku automatizaciju"
-            ],
-            "name_pronunciation_ipa": "ˈlɔːvrɔ ˈmuːsɪch",
-            "name_pronunciation_audio_url": "/data/audio/lovro-music.mp3"
-        },
-        "tr": {
-            "localized_name": "Lovro Musić",
-            "localized_name_stylized": "<strong>Lovro {{Musić}}</strong>",
-            "status_message_available_for_freelance": "İş için uygun!",
-            "roles": [
-                "Ağ Güvenliği Mühendisi",
-                "Gömülü Sistemler Mühendisi",
-                "ERP Veri Mühendisi",
-                "Endüstriyel Otomasyon Mühendisi"
-            ],
-            "name_pronunciation_ipa": "ˈlɔːvrɔ ˈmuːsɪch",
-            "name_pronunciation_audio_url": "/data/audio/lovro-music.mp3"
-        }
+  "name": "Villa Bagara",
+  "profilePictureUrl": "images/villa_bagara/hero/hero_01_front-porch.png",
+  "resumePdfUrl": "",
+  "statusCircleVisible": true,
+  "statusCircleVariant": "available",
+  "statusCircleHoverMessage": "status_message_available_for_booking",
+  "locales": {
+    "en": {
+      "localized_name": "Villa Bagara",
+      "localized_name_stylized": "<strong>Villa {{Bagara}}</strong>",
+      "status_message_available_for_booking": "Available for booking!",
+      "roles": [
+        "Rustic Adventure Villa",
+        "Group Getaway and Party Base",
+        "Mountain Basecamp near Tomislavgrad",
+        "Routes, rentals, and supply support"
+      ],
+      "name_pronunciation_ipa": "",
+      "name_pronunciation_audio_url": ""
     }
+  }
 }

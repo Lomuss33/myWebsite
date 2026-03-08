@@ -6,9 +6,9 @@
         "version": "1.0.1"
     },
     "preloaderSettings": {
-        "enabled": false,
-        "title": "Villa <b>Bagara</b>",
-        "subtitle": "Isolation meets connection to earth",
+        "enabled": true,
+        "title": "Lovro <b>Musić</b>",
+        "subtitle": "The Giant Blue Signal Engineer",
         "logoOffset": {
             "right": 0,
             "top": 0,

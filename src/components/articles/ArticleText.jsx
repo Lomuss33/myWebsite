@@ -33,9 +33,10 @@ function ArticleText({ dataWrapper, id }) {
  */
 function ArticleTextItems({ dataWrapper, selectedItemCategoryId }) {
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
+    const keepImageRowClass = dataWrapper.settings.keepImageRow ? `article-text-items-keep-image-row` : ``
 
     return (
-        <div className={`article-text-items`}>
+        <div className={`article-text-items ${keepImageRowClass}`}>
             {filteredItems.map((itemWrapper, key) => (
                 <ArticleTextItem itemWrapper={itemWrapper} 
                                       key={key}/>

@@ -16,6 +16,88 @@ div.article-text-items {
     flex-direction: column;
 }
 
+div.article-text-items.article-text-items-keep-image-row {
+    div.article-text-item {
+        @include media-breakpoint-down(lg) {
+            flex-direction: column;
+            align-items: stretch;
+            &:not(:last-child) {
+                margin-bottom: 30px;
+            }
+        }
+
+        @include media-breakpoint-between(xl, xxl) {
+            flex-direction: row;
+        }
+    }
+
+    div.article-text-avatar-view-wrapper {
+        @include media-breakpoint-down(lg) {
+            display: block;
+            flex: 0 0 100%;
+            width: 100% !important;
+            max-width: none;
+            min-width: 100% !important;
+            min-height: 0;
+            height: auto;
+            margin: 0 0 16px;
+        }
+
+        @include media-breakpoint-between(xl, xxl) {
+            margin-left: calc(var(--spacing)/4);
+            margin-right: var(--spacing);
+        }
+    }
+
+    div.article-text-avatar-view {
+        @include media-breakpoint-down(lg) {
+            display: block;
+            width: 100% !important;
+            min-width: 100% !important;
+            max-width: none;
+            height: auto;
+            min-height: 0;
+            aspect-ratio: 16 / 9;
+            margin-bottom: 0;
+        }
+
+        @include media-breakpoint-between(xl, xxl) {
+            margin-bottom: 0;
+        }
+    }
+
+    div.article-text-excerpt {
+        @include media-breakpoint-down(lg) {
+            margin: 0;
+        }
+
+        @include media-breakpoint-between(xl, xxl) {
+            margin: 0 0 8px;
+        }
+    }
+
+    @include media-breakpoint-down(lg) {
+        div.avatar-view,
+        div.avatar-view-image-view,
+        div.image-view,
+        img.image-view-img {
+            display: block;
+            width: 100% !important;
+            min-width: 100% !important;
+            max-width: none;
+        }
+
+        div.image-view,
+        img.image-view-img {
+            height: 100% !important;
+        }
+
+        img.image-view-img {
+            object-fit: cover;
+        }
+    }
+}
+
 div.article-text-item {
     display: flex;
     align-items: center;

@@ -84,6 +84,7 @@ function ArticleSkillsItem({ itemWrapper }) {
             <div className={`article-skills-item-avatar-wrapper`}>
                 <AvatarView src={itemWrapper.img}
                             faIcon={itemWrapper.faIconWithFallback}
+                            iconText={itemWrapper.iconText}
                             style={itemWrapper.faIconStyle}
                             alt={itemWrapper.imageAlt}
                             className={`article-skills-item-avatar ${avatarViewClass}`}/>
@@ -104,6 +105,8 @@ function ArticleSkillsItemInfo({ itemWrapper }) {
     const location = useLocation()
 
     const percentage = itemWrapper.percentage
+    const titlePrefix = itemWrapper.label ? `${itemWrapper.id}.` : null
+    const titleMeta = itemWrapper.label
     const initialPercentage = location.getActiveSection()?.id === itemWrapper.articleWrapper.sectionId ?
         percentage :
         0
@@ -114,16 +117,15 @@ function ArticleSkillsItemInfo({ itemWrapper }) {
     const description = itemWrapper.locales.text
     const experienceTime = itemWrapper.dateStartDisplayAsExperienceTime
 
-    const displayLevel = utils.string.if(level, ` - ${level}`)
     const hasPercentage = utils.number.isValidNumber(percentage)
 
     const progressStyle = {
         width: `${utils.string.toDisplayPercentage(animationPercentage)}`,
-        opacity: percentage ? 0.25 + percentage/75 : 0
+        opacity: hasPercentage ? 0.25 + Math.max(percentage, 0)/75 : 0
     }
 
     let descriptionClass = `text-3`
-    if(percentage) descriptionClass = `text-2`
+    if(hasPercentage) descriptionClass = `text-2`
     if(!experienceTime) descriptionClass += ` mt-1`
 
     useEffect(() => {
@@ -134,17 +136,27 @@ function ArticleSkillsItemInfo({ itemWrapper }) {
         <div className={`article-skills-item-info`}>
             <div className={`article-skills-item-title text-5`}>
                 <div className={`article-skills-item-title-left-column`}>
+                    {titlePrefix && (
+                        <span className={`article-skills-item-title-prefix`}
+                              dangerouslySetInnerHTML={{__html: titlePrefix}}/>
+                    )}
+
                     <span className={`article-skills-item-title-main`}
                           dangerouslySetInnerHTML={{__html: itemWrapper.locales.title || itemWrapper.placeholder}}/>
 
-                    {displayLevel && (
+                    {titleMeta && (
+                        <span className={`article-skills-item-title-label text-4`}
+                              dangerouslySetInnerHTML={{__html: titleMeta}}/>
+                    )}
+
+                    {level && (
                         <span className={`article-skills-item-title-suffix text-5`}
-                              dangerouslySetInnerHTML={{__html: displayLevel}}/>
+                              dangerouslySetInnerHTML={{__html: level}}/>
                     )}
                 </div>
 
                 <div className={`article-skills-item-title-right-column`}>
-                    {percentage && (
+                    {hasPercentage && (
                         <NumberAnimation className={`article-skills-item-title-percentage text-3`}
                                          id={`article-skills-item-title-percentage-${itemWrapper.uniqueId}`}
                                          initialValue={initialPercentage}

@@ -99,20 +99,64 @@ div.article-skills-item-info {
 div.article-skills-item-title {
     display: flex;
     justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
     width: 100%;
     margin-bottom: 0;
 
+    div.article-skills-item-title-left-column {
+        display: flex;
+        align-items: baseline;
+        gap: 14px;
+        min-width: 0;
+        width: 100%;
+    }
+
+    span.article-skills-item-title-prefix {
+        flex: 0 0 3ch;
+        width: 3ch;
+        font-weight: bold;
+        color: var(--theme-texts-light);
+        text-align: right;
+
+        @include media-breakpoint-down(sm) {
+            flex-basis: 3ch;
+            width: 3ch;
+        }
+    }
+
     span.article-skills-item-title-main {
+        flex: 1 1 auto;
+        min-width: 0;
         font-weight: bold;
         color: var(--theme-texts-light);
     }
 
+    span.article-skills-item-title-label {
+        flex: 0 0 10ch;
+        width: 10ch;
+        color: var(--theme-texts-light-2);
+        text-align: right;
+        white-space: nowrap;
+
+        @include media-breakpoint-down(sm) {
+            flex-basis: 8ch;
+            width: 8ch;
+        }
+    }
+
     span.article-skills-item-title-suffix {
         color: var(--theme-texts-light-2);
+        white-space: nowrap;
     }
 
     span.article-skills-item-title-percentage {
         color: var(--theme-texts-light);
+    }
+
+    div.article-skills-item-title-right-column {
+        flex: 0 0 auto;
+        text-align: right;
     }
 }
 

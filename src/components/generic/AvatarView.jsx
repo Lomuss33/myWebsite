@@ -1,8 +1,8 @@
 import "./AvatarView.scss"
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import ImageView from "/src/components/generic/ImageView.jsx"
 
-function AvatarView({ src = "", alt = "", faIcon = "", className = "",  id = null, style = null }) {
+function AvatarView({ src = "", alt = "", faIcon = "", iconText = "", className = "",  id = null, style = null }) {
     return (
         <div className={`avatar-view ${className}`}
              id={id}
@@ -15,7 +15,11 @@ function AvatarView({ src = "", alt = "", faIcon = "", className = "",  id = nul
 
             {!src && (
                 <div className={`avatar-icon-view`}>
-                    <i className={`${faIcon}`}/>
+                    {iconText ? (
+                        <span className={`avatar-icon-text`}>{iconText}</span>
+                    ) : (
+                        <i className={`${faIcon}`}/>
+                    )}
                 </div>
             )}
         </div>

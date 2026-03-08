@@ -37,6 +37,7 @@ export default class ArticleItemDataWrapper {
         this.date = dateStart
 
         this.faIcon = rawData.faIcon
+        this.iconText = language.parseJsonText(rawData.iconText)
         this.faIconColors = this._parseColor(rawData.faIconColors, theme)
 
         this.img = language.parseJsonText(rawData.img)
@@ -49,7 +50,7 @@ export default class ArticleItemDataWrapper {
     }
 
     _parseNumber(rawNumber, min = -99999999999, max = 99999999999) {
-        if (!rawNumber) return undefined
+        if (rawNumber === undefined || rawNumber === null || rawNumber === "") return undefined
 
         const cast = Number(rawNumber)
         if(isNaN(cast) || cast === null) return undefined
@@ -212,7 +213,7 @@ export default class ArticleItemDataWrapper {
 
     listProps() {
         const props = []
-        const staticKeys = ["id", "label", "img", "faIcon", "faIconColors", "link", "dateStart", "dateEnd", "percentage"]
+        const staticKeys = ["id", "label", "img", "faIcon", "iconText", "faIconColors", "link", "dateStart", "dateEnd", "percentage"]
         for (const key of staticKeys)
             props.push(this._parsePropForListing(key, this[key]))
 

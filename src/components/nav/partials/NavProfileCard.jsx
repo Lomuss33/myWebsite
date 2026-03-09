@@ -1,5 +1,4 @@
 import "./NavProfileCard.scss"
-import React, {useEffect, useState} from 'react'
 import {Card} from "react-bootstrap"
 import {useLanguage} from "/src/providers/LanguageProvider.jsx"
 import {useNavigation} from "/src/providers/NavigationProvider.jsx"
@@ -23,9 +22,9 @@ function NavProfileCard({ profile, expanded }) {
         language.getTranslation(profile.locales, "localized_name", null) ||
         name
 
-    let roles = language.getTranslation(profile.locales, "roles", [])
-    if(utils.storage.getWindowVariable("suspendAnimations") && roles.length > 2)
-        roles = [roles[0]]
+    let loveSentences = language.getTranslation(profile.locales, "love_sentences", [])
+    if(utils.storage.getWindowVariable("suspendAnimations") && loveSentences.length > 2)
+        loveSentences = [loveSentences[0]]
 
     const profilePictureUrl = language.parseJsonText(profile.profilePictureUrl)
 
@@ -78,15 +77,17 @@ function NavProfileCard({ profile, expanded }) {
                     )}
                 </h1>
 
-                {roles?.length > 1 && (
-                    <TextTyper strings={roles}
+                {loveSentences?.length > 1 && (
+                    <TextTyper strings={loveSentences}
                                id={`role-typer`}
+                               randomOrder={true}
                                className={`nav-profile-card-role`}/>
                 )}
 
-                {roles?.length === 1 && (
-                    <div className={`nav-profile-card-role`}
-                         dangerouslySetInnerHTML={{__html: roles[0]}}/>
+                {loveSentences?.length === 1 && (
+                    <div className={`nav-profile-card-role`}>
+                        {loveSentences[0]}
+                    </div>
                 )}
             </div>
         </Card>

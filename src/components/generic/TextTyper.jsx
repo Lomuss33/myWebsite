@@ -4,13 +4,14 @@ import Animable from "/src/components/capabilities/Animable.jsx"
 import {useUtils} from "/src/hooks/utils.js"
 import {useNavigation} from "/src/providers/NavigationProvider.jsx"
 
-function TextTyper({ strings, id, typingSpeed = 0.03, deletingSpeed = 0, displayTime = 2, className = "" }) {
+function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.05, displayTime = 1, className = "", fixedPrefix = "", randomOrder = false }) {
     const utils = useUtils()
     const navigation = useNavigation()
 
     const [parsedStrings, setParsedStrings] = useState(null)
     const [currentText, setCurrentText] = useState("")
     const [targetWord, setTargetWord] = useState("")
+    const [randomQueue, setRandomQueue] = useState([])
     const [status, setStatus] = useState(TextTyper.Status.INITIALIZING)
     const [statusElapsed, setStatusElapsed] = useState(0)
     const [cursorVisible, setCursorVisible] = useState(false)
@@ -30,9 +31,55 @@ function TextTyper({ strings, id, typingSpeed = 0.03, deletingSpeed = 0, display
         setStatus(TextTyper.Status.INITIALIZING)
         setCurrentText("")
         setTargetWord(null)
+        setRandomQueue([])
         setStatusElapsed(0)
         setCursorVisible(false)
         setCursorElapsed(0)
+    }
+
+    const _shuffleStrings = (items) => {
+        const shuffled = [...items]
+
+        for(let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1))
+            const temp = shuffled[i]
+            shuffled[i] = shuffled[j]
+            shuffled[j] = temp
+        }
+
+        return shuffled
+    }
+
+    const _buildRandomQueue = (currentWord) => {
+        const candidates = parsedStrings.filter(string => string !== currentWord)
+        return _shuffleStrings(candidates)
+    }
+
+    const _getTypingDelay = () => {
+        if(!targetWord)
+            return typingSpeed
+
+        const totalLength = Math.max(targetWord.length - 1, 1)
+        const progress = Math.min(currentText.length / totalLength, 1)
+        const fastDelay = Math.max(typingSpeed * 0.18, 0.02)
+        const slowDelay = Math.max(typingSpeed, 0.09)
+        const curvedProgress = Math.pow(progress, 2.2)
+
+        return fastDelay + ((slowDelay - fastDelay) * curvedProgress)
+    }
+
+    const _getDeletingDelay = () => {
+        if(!targetWord)
+            return deletingSpeed
+
+        const deletedCount = targetWord.length - currentText.length
+        const totalLength = Math.max(targetWord.length - 1, 1)
+        const progress = Math.min(deletedCount / totalLength, 1)
+        const slowDelay = Math.max(deletingSpeed, 0.04)
+        const fastDelay = Math.max(deletingSpeed * 0.03, 0.003)
+        const curvedProgress = Math.pow(progress, 4.4)
+
+        return slowDelay - ((slowDelay - fastDelay) * curvedProgress)
     }
 
     const _update = (event) => {
@@ -52,7 +99,7 @@ function TextTyper({ strings, id, typingSpeed = 0.03, deletingSpeed = 0, display
         }
 
         if(navigation.isTransitioning()) {
-            if(targetWord.length > 0) _toggleCursor(0.2)
+            if(targetWord?.length > 0) _toggleCursor(0.2)
             else setCursorVisible(false)
             return
         }
@@ -64,19 +111,23 @@ function TextTyper({ strings, id, typingSpeed = 0.03, deletingSpeed = 0, display
 
     const _onStatusInitializing = (ticks) => {
         setTargetWord(parsedStrings[0])
-        setCursorVisible(false)
+        if(randomOrder)
+            setRandomQueue(_buildRandomQueue(parsedStrings[0]))
+        setCursorVisible(true)
         _nextStatus()
     }
 
     const _onStatusTyping = (ticks) => {
-        setCursorVisible(false)
-        if(statusElapsed <= typingSpeed)
+        setCursorVisible(true)
+
+        const currentDelay = _getTypingDelay()
+        if(statusElapsed <= currentDelay)
             return
 
         const nextChar = targetWord.charAt(currentText.length)
         setCurrentText(currentText + nextChar)
         setStatusElapsed(0)
-        if(currentText.length >= targetWord.length) {
+        if((currentText.length + 1) >= targetWord.length) {
             _nextStatus()
         }
     }
@@ -90,17 +141,31 @@ function TextTyper({ strings, id, typingSpeed = 0.03, deletingSpeed = 0, display
     }
 
     const _onStatusDeleting = () => {
-        if(statusElapsed <= deletingSpeed)
-            return
+        setCursorVisible(true)
 
-        setCursorVisible(false)
+        const currentDelay = _getDeletingDelay()
+        if(statusElapsed <= currentDelay)
+            return
 
         const currentTextSliced = currentText.slice(0, currentText.length - 1)
         setCurrentText(currentTextSliced)
+        setStatusElapsed(0)
         if(currentTextSliced.length <= 0) {
-            const targetWordIndex = parsedStrings.indexOf(targetWord)
-            const nextWordIndex = (targetWordIndex + 1) % parsedStrings.length
-            setTargetWord(parsedStrings[nextWordIndex])
+            if(randomOrder) {
+                let nextQueue = [...randomQueue]
+
+                if(nextQueue.length === 0)
+                    nextQueue = _buildRandomQueue(targetWord)
+
+                const nextWord = nextQueue[0] || parsedStrings[0]
+                setRandomQueue(nextQueue.slice(1))
+                setTargetWord(nextWord)
+            }
+            else {
+                const targetWordIndex = parsedStrings.indexOf(targetWord)
+                const nextWordIndex = (targetWordIndex + 1) % parsedStrings.length
+                setTargetWord(parsedStrings[nextWordIndex])
+            }
             _nextStatus()
         }
     }
@@ -132,12 +197,12 @@ function TextTyper({ strings, id, typingSpeed = 0.03, deletingSpeed = 0, display
                   onEnterFrame={_update}>
             <TextTyperSpan currentText={currentText}
                            cursorVisible={cursorVisible}
-                           status={status}/>
+                           fixedPrefix={fixedPrefix}/>
         </Animable>
     )
 }
 
-function TextTyperSpan({ currentText, cursorVisible, status }) {
+function TextTyperSpan({ currentText, cursorVisible, fixedPrefix }) {
     const visibleClass = cursorVisible ?
         `text-typer-span-cursor-visible` :
         ``
@@ -146,19 +211,18 @@ function TextTyperSpan({ currentText, cursorVisible, status }) {
         `text-typer-span-cursor-no-transition` :
         ``
 
-    const mainText = status === TextTyper.Status.SHOWING ?
-        currentText :
-        currentText.slice(0, -1)
-
-    const lastChar = status === TextTyper.Status.SHOWING ?
-        `` :
-        currentText.slice(-1)
-
     return (
         <span className={`text-typer-span`}>
-            {mainText}
-            {lastChar && <span className="opacity-50">{lastChar}</span>}
-            <span className={`text-typer-span-cursor ${visibleClass} ${transitionClass}`}>_</span>
+            {fixedPrefix && (
+                <span className={`text-typer-span-prefix`}>
+                    {fixedPrefix}
+                </span>
+            )}
+
+            <span className={`text-typer-span-dynamic`}>
+                {currentText}
+                <span className={`text-typer-span-cursor ${visibleClass} ${transitionClass}`}>_</span>
+            </span>
         </span>
     );
 }

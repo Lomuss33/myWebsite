@@ -1,7 +1,30 @@
 @import "/src/styles/extend.scss";
 
+div.text-typer {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    max-width: 100%;
+}
+
 span.text-typer-span {
     position: relative;
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    white-space: nowrap;
+    gap: 0.45ch;
+}
+
+span.text-typer-span-prefix {
+    flex: 0 0 auto;
+}
+
+span.text-typer-span-dynamic {
+    display: inline-block;
+    min-width: 8ch;
+    text-align: left;
 }
 
 span.text-typer-span-cursor {

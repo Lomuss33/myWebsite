@@ -36,6 +36,12 @@ div.nav-profile-card {
         margin-top: var(--info-margin-top);
         margin-bottom: 3px;
         user-select: none;
+        width: min(100%, 260px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
             margin-top: 14px;
             margin-bottom: 8px;
@@ -65,12 +71,14 @@ div.nav-profile-card {
     }
 
     div.nav-profile-card-role {
-        display: flex;
+        display: inline-flex;
         align-items: center;
         justify-content: center;
         color: var(--theme-secondary);
         font-size: 0.9rem;
         min-height: 25px;
+        width: 100%;
+        text-align: center;
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
             font-size: 0.95rem;
             min-height: 25px;

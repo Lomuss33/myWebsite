@@ -190,13 +190,14 @@ function PreloaderWindow({ title, subtitle, logoOffset, setDidLoadAllImages, sho
                 <PreloaderWindowInfo subtitle={subtitle}
                                      logoOffset={logoOffset}
                                      hidden={!showElements}
+                                     motionFrom={`top`}
                                      setDidLoadLogo={setDidLoadLogo}/>
             </div>
         </div>
     )
 }
 
-function PreloaderWindowInfo({ title, subtitle, logoOffset, hidden, setDidLoadLogo }) {
+function PreloaderWindowInfo({ title, subtitle, logoOffset, hidden, setDidLoadLogo, motionFrom = "bottom" }) {
     const utils = useUtils()
     const scheduler = useScheduler()
 
@@ -204,6 +205,10 @@ function PreloaderWindowInfo({ title, subtitle, logoOffset, hidden, setDidLoadLo
 
     const hiddenClass = isHidden ?
         `preloader-window-info-hidden` : ``
+
+    const motionClass = motionFrom === "top" ?
+        `preloader-window-info-motion-top` :
+        `preloader-window-info-motion-bottom`
 
     const [offsetTop, setOffsetTop] = useState(0)
     const [offsetRight, setOffsetRight] = useState(0)
@@ -258,7 +263,7 @@ function PreloaderWindowInfo({ title, subtitle, logoOffset, hidden, setDidLoadLo
     }
 
     return (
-        <div className={`preloader-window-info ${hiddenClass}`}>
+        <div className={`preloader-window-info ${motionClass} ${hiddenClass}`}>
             <div className={`preloader-window-info-title`}>
                 <Logo size={3}
                       className={`preloader-window-logo`}
@@ -269,10 +274,12 @@ function PreloaderWindowInfo({ title, subtitle, logoOffset, hidden, setDidLoadLo
                     dangerouslySetInnerHTML={{__html: title}}/>
             </div>
 
-            <div className={`preloader-window-info-developer text-4`}
-                 style={developerStyle}
-                 dangerouslySetInnerHTML={{__html: subtitle}}>
-            </div>
+            {subtitle && (
+                <div className={`preloader-window-info-developer text-4`}
+                     style={developerStyle}
+                     dangerouslySetInnerHTML={{__html: subtitle}}>
+                </div>
+            )}
         </div>
     )
 }

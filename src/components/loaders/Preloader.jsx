@@ -23,7 +23,6 @@ function Preloader({ children, preloaderSettings }) {
 
     const enabled = preloaderSettings?.enabled
     const title = preloaderSettings?.title || ""
-    const subtitle = preloaderSettings?.subtitle || ""
     const logoOffset = preloaderSettings?.logoOffset || {}
 
     const [state, setState] = useState(PreloaderState.NONE)
@@ -139,7 +138,6 @@ function Preloader({ children, preloaderSettings }) {
         <div className={`preloader-content-wrapper`}>
             {shouldShowPreloaderWindow && (
                 <PreloaderWindow title={title}
-                                 subtitle={subtitle}
                                  logoOffset={logoOffset}
                                  setDidLoadAllImages={setDidLoadAllImages}
                                  showElements={shouldShowContentElements}
@@ -153,7 +151,7 @@ function Preloader({ children, preloaderSettings }) {
     )
 }
 
-function PreloaderWindow({ title, subtitle, logoOffset, setDidLoadAllImages, showElements, isHiding }) {
+function PreloaderWindow({ title, logoOffset, setDidLoadAllImages, showElements, isHiding }) {
     const scheduler = useScheduler()
 
     const [didLoadLogo, setDidLoadLogo] = useState(false)
@@ -183,44 +181,45 @@ function PreloaderWindow({ title, subtitle, logoOffset, setDidLoadAllImages, sho
     return (
         <div className={`preloader-window ${hiddenClass}`}>
             <div className={`preloader-window-content`}>
-                <PreloaderWindowInfo title={title}/>
-                <PacMan variant={PacMan.ColorVariants.LOADER}
-                        hidden={isPacManHidden}/>
+                <PreloaderWindowTitle title={title}/>
 
-                <PreloaderWindowInfo subtitle={subtitle}
-                                     logoOffset={logoOffset}
+                <div className={`preloader-window-machine`}>
+                    <PreloaderWorker logoOffset={logoOffset}
                                      hidden={!showElements}
-                                     motionFrom={`top`}
                                      setDidLoadLogo={setDidLoadLogo}/>
+
+                    <PacMan variant={PacMan.ColorVariants.LOADER}
+                            hidden={isPacManHidden}/>
+                </div>
             </div>
         </div>
     )
 }
 
-function PreloaderWindowInfo({ title, subtitle, logoOffset, hidden, setDidLoadLogo, motionFrom = "bottom" }) {
+function PreloaderWindowTitle({ title }) {
+    return (
+        <div className={`preloader-window-title`}>
+            <h5 className={`lead-2 mb-0`}
+                dangerouslySetInnerHTML={{__html: title}}/>
+        </div>
+    )
+}
+
+function PreloaderWorker({ logoOffset, hidden, setDidLoadLogo }) {
     const utils = useUtils()
     const scheduler = useScheduler()
 
     const [isHidden, setIsHidden] = useState(true)
 
     const hiddenClass = isHidden ?
-        `preloader-window-info-hidden` : ``
-
-    const motionClass = motionFrom === "top" ?
-        `preloader-window-info-motion-top` :
-        `preloader-window-info-motion-bottom`
+        `preloader-window-worker-hidden` : ``
 
     const [offsetTop, setOffsetTop] = useState(0)
     const [offsetRight, setOffsetRight] = useState(0)
-    const [offsetBottom, setOffsetBottom] = useState(0)
 
     const logoStyle = {
         marginTop: `${offsetTop}px`,
         marginRight: `${offsetRight}px`,
-    }
-
-    const developerStyle = {
-        marginTop: `${offsetBottom}px`
     }
 
     useEffect(() => {
@@ -259,27 +258,14 @@ function PreloaderWindowInfo({ title, subtitle, logoOffset, hidden, setDidLoadLo
 
         setOffsetTop(logoOffset.top * scale)
         setOffsetRight(logoOffset.right * scale)
-        setOffsetBottom(logoOffset.bottom)
     }
 
     return (
-        <div className={`preloader-window-info ${motionClass} ${hiddenClass}`}>
-            <div className={`preloader-window-info-title`}>
-                <Logo size={3}
-                      className={`preloader-window-logo`}
-                      setDidLoad={setDidLoadLogo}
-                      style={logoStyle}/>
-
-                <h5 className={`lead-2 mb-0`}
-                    dangerouslySetInnerHTML={{__html: title}}/>
-            </div>
-
-            {subtitle && (
-                <div className={`preloader-window-info-developer text-4`}
-                     style={developerStyle}
-                     dangerouslySetInnerHTML={{__html: subtitle}}>
-                </div>
-            )}
+        <div className={`preloader-window-worker ${hiddenClass}`}>
+            <Logo size={3}
+                  className={`preloader-window-logo`}
+                  setDidLoad={setDidLoadLogo}
+                  style={logoStyle}/>
         </div>
     )
 }

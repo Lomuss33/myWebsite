@@ -67,6 +67,10 @@ export default class ArticleDataWrapper {
             // - ArticleText
             keepImageRow: Boolean(rawSettings["keepImageRow"]) || undefined,
 
+            // - ArticleFeature
+            featureImageAspectRatio: rawSettings["feature_image_aspect_ratio"] || undefined,
+            featureImageMobileAspectRatio: rawSettings["feature_image_mobile_aspect_ratio"] || undefined,
+
             // - ArticleSkills
             maxItemsPerRow: rawSettings["max_items_per_row"] || undefined,
             maxRowsCollapseThreshold: rawSettings["max_rows_collapse_threshold"] || undefined,

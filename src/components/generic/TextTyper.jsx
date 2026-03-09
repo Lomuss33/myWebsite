@@ -4,7 +4,7 @@ import Animable from "/src/components/capabilities/Animable.jsx"
 import {useUtils} from "/src/hooks/utils.js"
 import {useNavigation} from "/src/providers/NavigationProvider.jsx"
 
-function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.05, displayTime = 1, className = "", fixedPrefix = "", randomOrder = false }) {
+function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, displayTime = 1, className = "", fixedPrefix = "", randomOrder = false }) {
     const utils = useUtils()
     const navigation = useNavigation()
 
@@ -12,6 +12,7 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.05, disp
     const [currentText, setCurrentText] = useState("")
     const [targetWord, setTargetWord] = useState("")
     const [randomQueue, setRandomQueue] = useState([])
+    const [completedCycles, setCompletedCycles] = useState(0)
     const [status, setStatus] = useState(TextTyper.Status.INITIALIZING)
     const [statusElapsed, setStatusElapsed] = useState(0)
     const [cursorVisible, setCursorVisible] = useState(false)
@@ -32,6 +33,7 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.05, disp
         setCurrentText("")
         setTargetWord(null)
         setRandomQueue([])
+        setCompletedCycles(0)
         setStatusElapsed(0)
         setCursorVisible(false)
         setCursorElapsed(0)
@@ -55,6 +57,29 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.05, disp
         return _shuffleStrings(candidates)
     }
 
+    const _buildEasterEggString = () => {
+        const emojiPool = [
+            "🐣", "🥚", "🌷", "✨", "🎉", "🛠️", "💡", "🔌", "🖥️", "⌨️",
+            "🧠", "⚙️", "🔧", "📡", "💾", "🌍", "🚀", "🔥", "🎛️", "📟"
+        ]
+
+        const emojiCount = Math.floor(Math.random() * 8) + 3
+        const randomEmojis = Array.from({ length: emojiCount }, () => {
+            const randomIndex = Math.floor(Math.random() * emojiPool.length)
+            return emojiPool[randomIndex]
+        })
+
+        return ["🐰", ...randomEmojis].join(" ")
+    }
+
+    const _maybeCreateEasterEgg = (nextWord, nextCycleCount) => {
+        const isEligibleCycle = nextCycleCount >= 6 && (nextCycleCount - 6) % 20 === 0
+
+        if(isEligibleCycle && Math.random() < 0.05)
+            return _buildEasterEggString()
+        return nextWord
+    }
+
     const _getTypingDelay = () => {
         if(!targetWord)
             return typingSpeed
@@ -75,9 +100,9 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.05, disp
         const deletedCount = targetWord.length - currentText.length
         const totalLength = Math.max(targetWord.length - 1, 1)
         const progress = Math.min(deletedCount / totalLength, 1)
-        const slowDelay = Math.max(deletingSpeed, 0.04)
-        const fastDelay = Math.max(deletingSpeed * 0.03, 0.003)
-        const curvedProgress = Math.pow(progress, 4.4)
+        const slowDelay = Math.max(deletingSpeed, 0.011)
+        const fastDelay = Math.max(deletingSpeed * 0.015, 0.00075)
+        const curvedProgress = Math.pow(progress, 6)
 
         return slowDelay - ((slowDelay - fastDelay) * curvedProgress)
     }
@@ -127,9 +152,8 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.05, disp
         const nextChar = targetWord.charAt(currentText.length)
         setCurrentText(currentText + nextChar)
         setStatusElapsed(0)
-        if((currentText.length + 1) >= targetWord.length) {
+        if((currentText.length + 1) >= targetWord.length)
             _nextStatus()
-        }
     }
 
     const _onStatusShowing = () => {
@@ -151,6 +175,9 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.05, disp
         setCurrentText(currentTextSliced)
         setStatusElapsed(0)
         if(currentTextSliced.length <= 0) {
+            const nextCycleCount = completedCycles + 1
+            setCompletedCycles(nextCycleCount)
+
             if(randomOrder) {
                 let nextQueue = [...randomQueue]
 
@@ -159,12 +186,12 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.05, disp
 
                 const nextWord = nextQueue[0] || parsedStrings[0]
                 setRandomQueue(nextQueue.slice(1))
-                setTargetWord(nextWord)
+                setTargetWord(_maybeCreateEasterEgg(nextWord, nextCycleCount))
             }
             else {
                 const targetWordIndex = parsedStrings.indexOf(targetWord)
                 const nextWordIndex = (targetWordIndex + 1) % parsedStrings.length
-                setTargetWord(parsedStrings[nextWordIndex])
+                setTargetWord(_maybeCreateEasterEgg(parsedStrings[nextWordIndex], nextCycleCount))
             }
             _nextStatus()
         }

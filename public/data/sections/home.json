@@ -69,7 +69,7 @@
     },
     {
       "id": 2,
-      "component": "ArticleText",
+      "component": "ArticleFeature",
       "locales": {
         "en": {
           "title": "{{A little bit}} about me..."
@@ -86,12 +86,15 @@
       },
       "settings": {
         "order_items_by": "id",
-        "order_items_sort": "asc"
+        "order_items_sort": "asc",
+        "keepImageRow": true,
+        "feature_image_aspect_ratio": "1 / 1",
+        "feature_image_mobile_aspect_ratio": "1 / 1"
       },
       "items": [
         {
           "id": 1,
-          "img": "/images/contant/engineer.webp",
+          "img": "/images/private/LovroMusic2025.jpg",
           "faIcon": "",
           "faIconColors": {
             "bg": "",

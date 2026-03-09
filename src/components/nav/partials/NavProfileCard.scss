@@ -136,12 +136,12 @@ div.nav-profile-card {
 
         h1.nav-profile-card-name-with-audio-button {
             width: 100%;
-            display: flex;
-            flex-direction: column;
+            display: inline-flex;
+            flex-direction: row;
             align-items: flex-start;
             justify-content: flex-start;
             white-space: normal;
-            gap: 2px;
+            gap: 8px;
         }
 
         span.nav-profile-card-name-text {
@@ -161,7 +161,7 @@ div.nav-profile-card {
 
         h1.nav-profile-card-name-with-audio-button div.audio-button-wrapper-size-dynamic-for-nav-title {
             display: flex;
-            align-self: flex-start;
+            align-self: center;
         }
 
         h1.nav-profile-card-name-with-audio-button div.audio-button-wrapper-size-dynamic-for-nav-title button.audio-button {

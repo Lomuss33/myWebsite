@@ -307,6 +307,11 @@
                 "faIcon": "fa-brands fa-github"
               },
               {
+                "href": "https://lomuss33.github.io/GermanCro/",
+                "tooltipString": "open_website",
+                "faIcon": "fa-solid fa-globe"
+              },
+              {
                 "href": "https://docs.google.com/document/d/REPLACE_WITH_GOOGLE_DOC_LINK_4/edit",
                 "tooltipString": "open_website",
                 "faIcon": "fa-solid fa-file-lines"

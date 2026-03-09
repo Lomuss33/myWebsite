@@ -75,6 +75,10 @@ div.article-feature-items-section-about {
         @include media-breakpoint-down(lg) {
             width: 100%;
         }
+
+        @include media-breakpoint-down(md) {
+            order: 2;
+        }
     }
 
     div.article-feature-item-image {
@@ -84,6 +88,12 @@ div.article-feature-items-section-about {
         @include media-breakpoint-down(sm) {
             max-height: none;
             aspect-ratio: var(--article-feature-image-mobile-aspect-ratio, 1 / 1);
+        }
+    }
+
+    div.article-feature-item-content {
+        @include media-breakpoint-down(md) {
+            order: 1;
         }
     }
 }

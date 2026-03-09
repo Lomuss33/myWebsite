@@ -18,9 +18,10 @@ function NavProfileCard({ profile, expanded }) {
         `nav-profile-card-shrink`
 
     const name = profile.name
-    const stylizedName = language.getTranslation(profile.locales, "localized_name_stylized", null) ||
-        language.getTranslation(profile.locales, "localized_name", null) ||
-        name
+    const localizedName = language.getTranslation(profile.locales, "localized_name", null) || name
+    const nameParts = localizedName.trim().split(/\s+/)
+    const firstName = nameParts[0] || localizedName
+    const lastName = nameParts.slice(1).join(" ")
 
     let loveSentences = language.getTranslation(profile.locales, "love_sentences", [])
     if(utils.storage.getWindowVariable("suspendAnimations") && loveSentences.length > 2)
@@ -55,22 +56,34 @@ function NavProfileCard({ profile, expanded }) {
 
     return (
         <Card className={`nav-profile-card ${expandedClass}`}>
-            <ImageView src={profilePictureUrl}
-                       className={`nav-profile-card-avatar`}
-                       hideSpinner={true}
-                       alt={name}/>
+            <div className={`nav-profile-card-media`}>
+                <ImageView src={profilePictureUrl}
+                           className={`nav-profile-card-avatar`}
+                           hideSpinner={true}
+                           alt={name}/>
 
-            {statusCircleVisible && (
-                <StatusCircle className={`nav-profile-card-status-circle`}
-                              variant={statusCircleVariant}
-                              message={statusCircleHoverMessage}
-                              size={statusCircleSize} onClick={_onStatusBadgeClicked}/>
-            )}
+                {statusCircleVisible && (
+                    <StatusCircle className={`nav-profile-card-status-circle`}
+                                  variant={statusCircleVariant}
+                                  message={statusCircleHoverMessage}
+                                  size={statusCircleSize} onClick={_onStatusBadgeClicked}/>
+                )}
+            </div>
 
             <div className={`nav-profile-card-info`}>
                 <h1 className={`nav-profile-card-name ${navProfileCardNameClass}`}>
-                    <span className={`nav-profile-card-name-text`}
-                          dangerouslySetInnerHTML={{__html: stylizedName}}/>
+                    <span className={`nav-profile-card-name-text`}>
+                        <span className={`nav-profile-card-name-line nav-profile-card-name-line-first`}>
+                            {firstName}
+                        </span>
+
+                        {lastName && (
+                            <span className={`nav-profile-card-name-line nav-profile-card-name-line-last`}>
+                                {lastName}
+                            </span>
+                        )}
+                    </span>
+
                     {namePronunciationButtonVisible && (
                         <AudioButton url={namePronunciationAudioUrl}
                                      tooltip={namePronunciationIpa}

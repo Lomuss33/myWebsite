@@ -18,6 +18,11 @@ div.nav-profile-card {
     position: relative;
     margin: 15px;
 
+    &-media {
+        position: relative;
+        display: inline-flex;
+    }
+
     &-avatar {
         width: var(--avatar-size);
         height: var(--avatar-size);
@@ -29,7 +34,7 @@ div.nav-profile-card {
     &-status-circle {
         position: absolute;
         top: calc(var(--avatar-size) - var(--offset-status-circle));
-        left: calc(50% + var(--avatar-size)/2 - var(--offset-status-circle)*1.2);
+        left: calc(var(--avatar-size) - var(--offset-status-circle) * 1.2);
     }
 
     &-info {
@@ -68,6 +73,14 @@ div.nav-profile-card {
         display: inline;
     }
 
+    span.nav-profile-card-name-line {
+        display: inline;
+    }
+
+    span.nav-profile-card-name-line-last {
+        margin-left: 0.35rem;
+    }
+
     h1.nav-profile-card-name-with-audio-button {
         display: inline-flex;
         align-items: center;
@@ -95,6 +108,72 @@ div.nav-profile-card {
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
             font-size: 0.95rem;
             min-height: 25px;
+        }
+    }
+
+    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+        gap: 12px;
+
+        div.nav-profile-card-info {
+            margin-top: 0;
+            margin-bottom: 0;
+            width: auto;
+            max-width: min(190px, calc(100vw - var(--avatar-size) - 72px));
+            align-items: flex-start;
+            justify-content: center;
+            text-align: left;
+            flex: 1 1 auto;
+        }
+
+        h1.nav-profile-card-name {
+            text-align: left;
+            margin: 0;
+            line-height: 1.15rem !important;
+        }
+
+        h1.nav-profile-card-name-with-audio-button {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            white-space: normal;
+            gap: 2px;
+        }
+
+        span.nav-profile-card-name-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            line-height: 1.05;
+        }
+
+        span.nav-profile-card-name-line {
+            display: block;
+        }
+
+        span.nav-profile-card-name-line-last {
+            margin-left: 0;
+        }
+
+        h1.nav-profile-card-name-with-audio-button div.audio-button-wrapper-size-dynamic-for-nav-title {
+            display: flex;
+            align-self: flex-start;
+        }
+
+        h1.nav-profile-card-name-with-audio-button div.audio-button-wrapper-size-dynamic-for-nav-title button.audio-button {
+            margin-left: 0;
+            top: 0;
+        }
+
+        div.nav-profile-card-role {
+            justify-content: flex-start;
+            text-align: left;
+            min-height: 0;
+            margin-top: 6px;
         }
     }
 }

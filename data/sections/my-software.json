@@ -72,7 +72,7 @@
       },
       "items": [
         {
-          "id": 1,
+          "id": 4,
           "img": "",
           "faIcon": "fa-solid fa-graduation-cap",
           "faIconColors": {
@@ -85,9 +85,14 @@
           "preview": {
             "links": [
               {
-                "href": "https://github.com/Lomuss33/Projekt_Belot",
+                "href": "https://github.com/Lomuss33/AdioBella",
                 "tooltipString": "GitHub",
                 "faIcon": "fa-brands fa-github"
+              },
+              {
+                "href": "https://lomuss33.github.io/AdioBella/",
+                "tooltipString": "open_website",
+                "faIcon": "fa-solid fa-globe"
               },
               {
                 "href": "https://docs.google.com/document/d/REPLACE_WITH_GOOGLE_DOC_LINK_1/edit",
@@ -143,7 +148,7 @@
           }
         },
         {
-          "id": 2,
+          "id": 1,
           "img": "",
           "faIcon": "fa-solid fa-robot",
           "faIconColors": {
@@ -218,7 +223,7 @@
           }
         },
         {
-          "id": 3,
+          "id": 2,
           "img": "",
           "faIcon": "fa-solid fa-gamepad",
           "faIconColors": {
@@ -289,7 +294,7 @@
           }
         },
         {
-          "id": 4,
+          "id": 3,
           "img": "",
           "faIcon": "fa-solid fa-language",
           "faIconColors": {
@@ -323,7 +328,7 @@
           },
           "locales": {
             "en": {
-              "title": "German Learning Tool",
+              "title": "GermanCro - Language Learning Tool",
               "text": "Personal project for learning German through English and Croatian, featuring translation tools, quizzes, and interactive language exercises for effective and fun learning.",
               "tags": [
                 "Language Learning",
@@ -334,7 +339,7 @@
               ]
             },
             "de": {
-              "title": "Deutsch-Lernwerkzeug",
+              "title": "GermanCro - Language Learning Tool",
               "text": "Persönliches Projekt zum Deutschlernen über Englisch und Kroatisch mit Übersetzungs-Tools, Quizzen und interaktiven Sprachübungen für effektives und unterhaltsames Lernen.",
               "tags": [
                 "Sprachlernen",
@@ -345,7 +350,7 @@
               ]
             },
             "hr": {
-              "title": "Alat za učenje njemačkog",
+              "title": "GermanCro - Language Learning Tool",
               "text": "Osobni projekt za učenje njemačkog kroz engleski i hrvatski, s alatima za prijevod, kvizovima i interaktivnim vježbama za učinkovito i zabavno učenje.",
               "tags": [
                 "Učenje jezika",
@@ -356,7 +361,7 @@
               ]
             },
             "tr": {
-              "title": "Almanca Öğrenme Aracı",
+              "title": "GermanCro - Language Learning Tool",
               "text": "İngilizce ve Hırvatça aracılığıyla Almanca öğrenmeye yönelik kişisel proje. Çeviri araçları, testler ve etkileşimli dil alıştırmaları ile eğlenceli ve etkili öğrenme sunar.",
               "tags": [
                 "Dil Öğrenme",
@@ -369,7 +374,7 @@
           }
         },
         {
-          "id": 5,
+          "id": 6,
           "img": "",
           "faIcon": "fa-solid fa-home",
           "faIconColors": {
@@ -440,7 +445,7 @@
           }
         },
         {
-          "id": 6,
+          "id": 7,
           "img": "",
           "faIcon": "fa-solid fa-file-pdf",
           "faIconColors": {
@@ -507,7 +512,7 @@
           }
         },
         {
-          "id": 7,
+          "id": 5,
           "img": "",
           "faIcon": "fa-solid fa-project-diagram",
           "faIconColors": {
@@ -525,6 +530,11 @@
                 "faIcon": "fa-brands fa-github"
               },
               {
+                "href": "https://lomuss33.github.io/HTML-FamilyTree/",
+                "tooltipString": "open_website",
+                "faIcon": "fa-solid fa-globe"
+              },
+              {
                 "href": "https://docs.google.com/document/d/REPLACE_WITH_GOOGLE_DOC_LINK_7/edit",
                 "tooltipString": "open_website",
                 "faIcon": "fa-solid fa-file-lines"
@@ -537,7 +547,7 @@
           "locales": {
             "en": {
               "title": "HTML Family Tree",
-              "text": "Informative and compact family tree built with pure HTML, designed to be visually clear and easy to navigate for family history exploration.",
+              "text": "Interactive family tree project built in HTML and designed for clarity, making it easy to explore relatives, branches, and generations directly in the browser.",
               "tags": [
                 "HTML",
                 "Family Tree",
@@ -547,7 +557,7 @@
             },
             "de": {
               "title": "HTML-Stammbaum",
-              "text": "Informative und kompakte Familiengeschichte, erstellt mit reinem HTML, visuell klar und einfach zu navigieren für die Erforschung der Familiengeschichte.",
+              "text": "Interaktives Stammbaum-Projekt in HTML, klar gestaltet und direkt im Browser nutzbar, damit sich Verwandtschaftsbeziehungen, Linien und Generationen leicht erkunden lassen.",
               "tags": [
                 "HTML",
                 "Stammbaum",
@@ -557,7 +567,7 @@
             },
             "hr": {
               "title": "HTML obiteljsko stablo",
-              "text": "Informativno i kompaktno obiteljsko stablo izgrađeno čistim HTML-om, dizajnirano da bude vizualno jasno i lako za navigaciju za istraživanje obiteljske povijesti.",
+              "text": "Interaktivni projekt obiteljskog stabla izra?en u HTML-u i slo?en za jasni pregled, tako da se rodbinske veze, grane i generacije mogu lako istra?ivati izravno u pregledniku.",
               "tags": [
                 "HTML",
                 "Obiteljsko stablo",
@@ -567,7 +577,7 @@
             },
             "tr": {
               "title": "HTML Aile Ağacı",
-              "text": "Saf HTML ile oluşturulmuş, görsel olarak net ve gezinti kolaylığı sağlayan, aile tarihini keşfetmek için tasarlanmış bilgilendirici ve kompakt aile ağacı.",
+              "text": "HTML ile haz?rlanm?? ve netlik i?in tasarlanm?? etkile?imli aile a?ac? projesi; akrabalar?, dallar? ve ku?aklar? do?rudan taray?c?da kolayca ke?fetmeyi sa?lar.",
               "tags": [
                 "HTML",
                 "Aile Ağacı",

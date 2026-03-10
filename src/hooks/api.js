@@ -98,15 +98,20 @@ const analytics = {
      * @returns {Promise<void>}
      */
     reportVisit: async() => {
-        await fetch("https://admin.lovro-music.com/api/analytics/mock", {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                params: {
-                    url: utils.url.getRootLocation(),
-                    template_id: "react-portfolio"
-                }
+        try {
+            await fetch("https://admin.lovro-music.com/api/analytics/mock", {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    params: {
+                        url: utils.url.getRootLocation(),
+                        template_id: "react-portfolio"
+                    }
+                })
             })
-        })
+        }
+        catch (error) {
+            // Ignore analytics failures in the browser to avoid noisy console errors.
+        }
     }
 }

@@ -90,12 +90,15 @@ div.article-portfolio-item-title {
         color: var(--theme-primary);
         margin-bottom: 0;
         line-height: 1.15;
+        font-size: clamp(0.94rem, 0.91rem + 0.24vw, 1.08rem);
     }
 
     div.article-portfolio-item-title-category {
         color: var(--theme-texts-light-2);
         margin-top: 5px;
         margin-left: 8px;
+        font-size: clamp(0.78rem, 0.76rem + 0.1vw, 0.86rem);
+        line-height: 1.2;
     }
 }
 
@@ -108,6 +111,26 @@ div.article-portfolio-item-body {
     div.article-portfolio-item-body-description {
         margin-top: 12px;
         color: var(--theme-texts-light-1);
+        font-size: clamp(0.77rem, 0.75rem + 0.12vw, 0.85rem);
+        line-height: 1.45;
+    }
+}
+
+ul.article-portfolio-item-body-tags {
+    line-height: 1;
+}
+
+li.article-portfolio-item-body-tag {
+    font-size: clamp(0.62rem, 0.6rem + 0.08vw, 0.69rem) !important;
+    padding: 2px 6px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    line-height: 1.15;
+
+    @include media-breakpoint-down(md) {
+        padding: 2px 6px;
+        margin-right: 3px;
+        margin-bottom: 3px;
     }
 }
 

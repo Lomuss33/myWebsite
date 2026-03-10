@@ -127,7 +127,7 @@ function ArticlePortfolioItemBody({ itemWrapper }) {
             <Tags className={`article-portfolio-item-body-tags`}>
                 {itemWrapper.locales.tags && Boolean(itemWrapper.locales.tags.length) && itemWrapper.locales.tags.map((tag, key) => (
                     <Tag key={key}
-                         text={tag}
+                         text={tag.startsWith("#") ? tag : `#${tag}`}
                          variant={Tag.Variants.DARK}
                          className={`article-portfolio-item-body-tag text-1`}/>
                 ))}

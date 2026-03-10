@@ -65,12 +65,43 @@ const AppEssentialsWrapper = ({children}) => {
             const consoleMessageForDevelopers = response?.consoleMessageForDevelopers
             if(consoleMessageForDevelopers) {
                 const primaryColor = utils.css.getRootSCSSVariable('--bs-primary')
-                utils.log.info(consoleMessageForDevelopers.title, consoleMessageForDevelopers.items, primaryColor)
+                const languageId = _resolveConsoleLanguageId(response)
+                const resolvedItems = (consoleMessageForDevelopers.items || []).map(item => ({
+                    ...item,
+                    description: _resolveLocalizedConsoleField(item.description, languageId)
+                }))
+
+                utils.log.info(
+                    _resolveLocalizedConsoleField(consoleMessageForDevelopers.title, languageId),
+                    resolvedItems,
+                    primaryColor
+                )
             }
         })
 
-        api.analytics.reportVisit().then(() => {})
+        api.analytics.reportVisit().catch(() => {})
     }, [])
+
+    const _resolveConsoleLanguageId = (settings) => {
+        const supportedLanguages = settings?.supportedLanguages || []
+        const defaultLanguageId = settings?.templateSettings?.defaultLanguageId || "en"
+        const navigatorLanguage = navigator.language?.slice(0, 2)?.toLowerCase()
+
+        if(supportedLanguages.find(language => language.id === navigatorLanguage))
+            return navigatorLanguage
+
+        return defaultLanguageId
+    }
+
+    const _resolveLocalizedConsoleField = (field, languageId) => {
+        if(typeof field === "string")
+            return field
+
+        if(field && typeof field === "object")
+            return field[languageId] || field.en || Object.values(field)[0]
+
+        return ""
+    }
 
     const _applyDeveloperSettings = (settings) => {
         const developerSettings = settings?.developerSettings

@@ -16,6 +16,7 @@ function ViewportProvider({ children }) {
 
     const bootstrapBreakpoints = utils.css.BREAKPOINTS
     const tag = "viewport-provider"
+    const resizeTag = `${tag}-resize`
 
     const [scrollX, setScrollX] = useState(0)
     const [scrollY, setScrollY] = useState(0)
@@ -37,7 +38,7 @@ function ViewportProvider({ children }) {
         window.addEventListener('resize', _onResize)
 
         _onScroll()
-        _onResize()
+        _applyResize()
         setDidCreateListeners(true)
     }
 
@@ -46,6 +47,7 @@ function ViewportProvider({ children }) {
         window.removeEventListener('resize', _onResize)
 
         scheduler.clearAllWithTag(tag)
+        scheduler.clearAllWithTag(resizeTag)
         setDidCreateListeners(false)
     }
 
@@ -54,9 +56,16 @@ function ViewportProvider({ children }) {
         setScrollY(window.scrollY)
     }
 
-    const _onResize = () => {
+    const _applyResize = () => {
         setInnerWidth(window.innerWidth)
         setInnerHeight(window.innerHeight)
+    }
+
+    const _onResize = () => {
+        scheduler.clearAllWithTag(resizeTag)
+        scheduler.schedule(() => {
+            _applyResize()
+        }, 120, resizeTag)
     }
 
     const isBreakpoint = (breakpoint) => {

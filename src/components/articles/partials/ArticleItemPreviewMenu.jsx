@@ -1,8 +1,9 @@
 import "./ArticleItemPreviewMenu.scss"
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import Link from "/src/components/generic/Link.jsx"
 import {useLanguage} from "/src/providers/LanguageProvider.jsx"
 import CircularButton from "/src/components/buttons/CircularButton.jsx"
+import StandardButton from "/src/components/buttons/StandardButton.jsx"
 import {useUtils} from "/src/hooks/utils.js"
 
 /**
@@ -17,7 +18,10 @@ function ArticleItemPreviewMenu({ itemWrapper, className = "", spaceBetween }) {
 
     const hasScreenshotsOrVideo = itemWrapper.preview?.hasScreenshotsOrYoutubeVideo
     const hasLinks = itemWrapper.preview?.hasLinks
-    const links = itemWrapper.preview?.links
+    const links = itemWrapper.preview?.links || []
+    const orderedLinks = links.slice().sort((a, b) => {
+        return Number(a.isWebsiteAction) - Number(b.isWebsiteAction)
+    })
 
     const linksListClass = utils.string.if(
         hasScreenshotsOrVideo && spaceBetween,
@@ -31,7 +35,7 @@ function ArticleItemPreviewMenu({ itemWrapper, className = "", spaceBetween }) {
                     <ItemPreviewMenuGalleryButton itemWrapper={itemWrapper}/>
                     {hasLinks && !spaceBetween && (
                         <>
-                            {links.map((link, key) => (
+                            {orderedLinks.map((link, key) => (
                                 <ItemPreviewMenuCustomLinkButton link={link}
                                                                  key={key}/>
                             ))}
@@ -42,7 +46,7 @@ function ArticleItemPreviewMenu({ itemWrapper, className = "", spaceBetween }) {
 
             {hasLinks && spaceBetween && (
                 <div className={`article-item-preview-menu-button-list ${linksListClass}`}>
-                    {links.map((link, key) => (
+                    {orderedLinks.map((link, key) => (
                         <ItemPreviewMenuCustomLinkButton link={link}
                                                          key={key}/>
                     ))}
@@ -122,16 +126,39 @@ function ItemPreviewMenuCustomLinkButton({ link }) {
     const href = link.href
     const tooltip = link.tooltip
     const faIcon = link.faIcon
+    const isWebsiteAction = Boolean(link.isWebsiteAction)
+    const label = link.label || "visit Online"
+    const linkClassName = isWebsiteAction ?
+        `article-item-preview-menu-link article-item-preview-menu-link-website` :
+        `article-item-preview-menu-link`
 
     return (
         <Link href={href}
-              className={`article-item-preview-menu-link`}
+              className={linkClassName}
               tooltip={tooltip}>
-            <CircularButton variant={CircularButton.Variants.DARK}
-                            size={CircularButton.Sizes.EXTRA_EXTRA_LARGE}
-                            className={`article-item-preview-menu-circular-button`}
-                            tooltip={tooltip}
-                            faIcon={faIcon}/>
+            {isWebsiteAction ? (
+                <>
+                    <StandardButton variant={`dark`}
+                                    size={StandardButton.Size.LARGE}
+                                    className={`article-item-preview-menu-website-button`}
+                                    tooltip={tooltip}
+                                    label={label}
+                                    faIcon={faIcon}
+                                    displayIconAsSuffix={true}/>
+
+                    <CircularButton variant={CircularButton.Variants.DARK}
+                                    size={CircularButton.Sizes.EXTRA_EXTRA_LARGE}
+                                    className={`article-item-preview-menu-circular-button article-item-preview-menu-website-button-compact`}
+                                    tooltip={tooltip}
+                                    faIcon={faIcon}/>
+                </>
+            ) : (
+                <CircularButton variant={CircularButton.Variants.DARK}
+                                size={CircularButton.Sizes.EXTRA_EXTRA_LARGE}
+                                className={`article-item-preview-menu-circular-button`}
+                                tooltip={tooltip}
+                                faIcon={faIcon}/>
+            )}
         </Link>
     )
 }

@@ -8,11 +8,11 @@ div.article-stack-items {
     --padding: 15px 20px;
 
     @media (max-width: 1550px) {
-        --grid-template-columns: repeat(5, 1fr);
+        --grid-template-columns: repeat(4, 1fr);
     }
 
     @include media-breakpoint-down(xxl) {
-        --grid-template-columns: repeat(5, 1fr);
+        --grid-template-columns: repeat(4, 1fr);
         --avatar-size: 70px;
         --gap: 8px;
     }

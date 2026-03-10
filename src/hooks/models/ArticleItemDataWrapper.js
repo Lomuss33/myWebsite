@@ -19,7 +19,7 @@ export default class ArticleItemDataWrapper {
     constructor(articleDataWrapper, rawData, language, theme, id) {
         this._articleDataWrapper = articleDataWrapper
 
-        this.id = id
+        this.id = this._parseNumber(rawData.id, 1) || id
         this.categoryId = rawData.categoryId || rawData.category
         this.category = undefined
 
@@ -100,10 +100,13 @@ export default class ArticleItemDataWrapper {
             return undefined
 
         const tooltipString = rawLink["tooltipString"]
+        const faIcon = rawLink.faIcon || undefined
 
         return {
             href: rawLink.href,
-            faIcon: rawLink.faIcon || undefined,
+            faIcon: faIcon,
+            label: rawLink.label || null,
+            isWebsiteAction: Boolean(rawLink.isWebsiteAction) || Boolean(faIcon?.includes("fa-globe")),
             tooltip: tooltipString ?
                 language.getString(tooltipString) :
                 null

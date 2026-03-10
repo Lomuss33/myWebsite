@@ -1,38 +1,52 @@
 @import "/src/styles/extend.scss";
 
 div.article-portfolio-items {
-    --item-gap: 40px;
-    --padding: 25px 25px 25px;
-    --avatar-size: 95px;
-    --avatar-border-size: 6px;
-    --margin-top: 10px;
+    --item-gap: 28px;
+    --padding: 20px 20px 18px;
+    --avatar-size: 82px;
+    --avatar-border-size: 5px;
+    --margin-top: 8px;
+    --avatar-offset: 16px;
+    --content-right-offset: calc(var(--avatar-size) + var(--avatar-offset) + 10px);
 
     @include media-breakpoint-down(lg) {
-        --item-gap: 30px;
-        --avatar-size: 85px;
+        --item-gap: 22px;
+        --padding: 18px 18px 16px;
+        --avatar-size: 78px;
+        --avatar-offset: 14px;
+    }
+
+    @include media-breakpoint-down(md) {
+        --item-gap: 18px;
+        --padding: 16px 16px 15px;
+        --avatar-size: 74px;
+        --avatar-offset: 12px;
     }
 
     @include media-breakpoint-down(sm) {
-        --avatar-size: 80px;
+        --avatar-size: 70px;
         --margin-top: 5px;
+        --padding: 15px 14px 14px;
+        --avatar-offset: 10px;
     }
 }
 
 /** ---------------- BASE GRID ---------------- */
 div.article-portfolio-items {
     display: grid;
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(1, minmax(0, 1fr));
     gap: var(--item-gap);
+    width: 100%;
 }
 
 /** ---------- 2 ITEMS PER ROW ---------------- */
 div.article-portfolio-items-2-per-row, div.article-portfolio-items-3-per-row {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 /** ---------- 3 ITEMS PER ROW ---------------- */
 div.article-portfolio-items-3-per-row {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 div.article-portfolio-item {
@@ -41,6 +55,8 @@ div.article-portfolio-item {
     flex-direction: column;
     height: 100%;
     width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
 
     background-color: var(--theme-boards-background);
     border-radius: $standard-border-radius;
@@ -57,20 +73,23 @@ div.article-portfolio-item-avatar {
     font-size: calc(var(--avatar-size)/2.3);
 
     position: absolute;
-    top: calc(var(--avatar-size)*-0.13);
-    right: calc(var(--avatar-size)*-0.13);
+    top: var(--avatar-offset);
+    right: var(--avatar-offset);
 }
 
 div.article-portfolio-item-title {
     display: flex;
     flex-direction: column;
     align-items: start;
-    width: calc(100% - var(--avatar-size)*0.83);
+    width: 100%;
+    min-width: 0;
+    padding-right: var(--content-right-offset);
 
     h5 {
         font-weight: bold;
         color: var(--theme-primary);
         margin-bottom: 0;
+        line-height: 1.15;
     }
 
     div.article-portfolio-item-title-category {
@@ -83,6 +102,8 @@ div.article-portfolio-item-title {
 div.article-portfolio-item-body {
     margin-top: 12px;
     flex-grow: 1;
+    min-width: 0;
+    width: 100%;
 
     div.article-portfolio-item-body-description {
         margin-top: 12px;
@@ -92,4 +113,6 @@ div.article-portfolio-item-body {
 
 div.article-portfolio-item-footer {
     margin-top: 10px;
+    min-width: 0;
+    width: 100%;
 }

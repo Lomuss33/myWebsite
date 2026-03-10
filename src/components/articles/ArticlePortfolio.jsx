@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react'
 import Article from "/src/components/articles/base/Article.jsx"
 import Transitionable from "/src/components/capabilities/Transitionable.jsx"
 import {useViewport} from "/src/providers/ViewportProvider.jsx"
-import {useConstants} from "/src/hooks/constants.js"
 import AvatarView from "/src/components/generic/AvatarView.jsx"
 import {Tag, Tags} from "/src/components/generic/Tags.jsx"
 import ArticleItemPreviewMenu from "/src/components/articles/partials/ArticleItemPreviewMenu.jsx"
@@ -38,14 +37,15 @@ function ArticlePortfolio({ dataWrapper, id }) {
  * @constructor
  */
 function ArticlePortfolioItems({ dataWrapper, selectedItemCategoryId }) {
-    const constants = useConstants()
     const language = useLanguage()
     const viewport = useViewport()
 
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
-    const customBreakpoint = viewport.getCustomBreakpoint(constants.SWIPER_BREAKPOINTS_FOR_THREE_SLIDES)
-
-    const itemsPerRow = customBreakpoint?.slidesPerView || 1
+    const itemsPerRow = viewport.isBreakpoint("lg") ?
+        3 :
+        viewport.isBreakpoint("md") ?
+            2 :
+            1
     const itemsPerRowClass = `article-portfolio-items-${itemsPerRow}-per-row`
 
     const refreshFlag = dataWrapper.categories?.length ?

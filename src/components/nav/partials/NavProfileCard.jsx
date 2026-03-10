@@ -56,54 +56,64 @@ function NavProfileCard({ profile, expanded }) {
 
     return (
         <Card className={`nav-profile-card ${expandedClass}`}>
-            <div className={`nav-profile-card-media`}>
-                <ImageView src={profilePictureUrl}
-                           className={`nav-profile-card-avatar`}
-                           hideSpinner={true}
-                           alt={name}/>
+            <div className={`nav-profile-card-header`}>
+                <div className={`nav-profile-card-media`}>
+                    <ImageView src={profilePictureUrl}
+                               className={`nav-profile-card-avatar`}
+                               hideSpinner={true}
+                               alt={name}/>
 
-                {statusCircleVisible && (
-                    <StatusCircle className={`nav-profile-card-status-circle`}
-                                  variant={statusCircleVariant}
-                                  message={statusCircleHoverMessage}
-                                  size={statusCircleSize} onClick={_onStatusBadgeClicked}/>
-                )}
-            </div>
-
-            <div className={`nav-profile-card-info`}>
-                <h1 className={`nav-profile-card-name ${navProfileCardNameClass}`}>
-                    <span className={`nav-profile-card-name-text`}>
-                        <span className={`nav-profile-card-name-line nav-profile-card-name-line-first`}>
-                            {firstName}
-                        </span>
-
-                        {lastName && (
-                            <span className={`nav-profile-card-name-line nav-profile-card-name-line-last`}>
-                                {lastName}
-                            </span>
-                        )}
-                    </span>
-
-                    {namePronunciationButtonVisible && (
-                        <AudioButton url={namePronunciationAudioUrl}
-                                     tooltip={namePronunciationIpa}
-                                     size={AudioButton.Sizes.DYNAMIC_FOR_NAV_TITLE}/>
+                    {statusCircleVisible && (
+                        <StatusCircle className={`nav-profile-card-status-circle`}
+                                      variant={statusCircleVariant}
+                                      message={statusCircleHoverMessage}
+                                      size={statusCircleSize} onClick={_onStatusBadgeClicked}/>
                     )}
-                </h1>
+                </div>
 
-                {loveSentences?.length > 1 && (
-                    <TextTyper strings={loveSentences}
-                               id={`role-typer`}
-                               randomOrder={true}
-                               className={`nav-profile-card-role`}/>
-                )}
+                <div className={`nav-profile-card-info`}>
+                    <h1 className={`nav-profile-card-name ${navProfileCardNameClass}`}>
+                        <span className={`nav-profile-card-name-text`}>
+                            <span className={`nav-profile-card-name-line nav-profile-card-name-line-first`}>
+                                {firstName}
+                            </span>
 
-                {loveSentences?.length === 1 && (
-                    <div className={`nav-profile-card-role`}>
-                        {loveSentences[0]}
-                    </div>
-                )}
+                            <span className={`nav-profile-card-name-line-group`}>
+                                {lastName && (
+                                    <span className={`nav-profile-card-name-line nav-profile-card-name-line-last`}>
+                                        {lastName}
+                                    </span>
+                                )}
+
+                                {namePronunciationButtonVisible && (
+                                    <AudioButton url={namePronunciationAudioUrl}
+                                                 tooltip={namePronunciationIpa}
+                                                 size={AudioButton.Sizes.DYNAMIC_FOR_NAV_TITLE}/>
+                                )}
+                            </span>
+                        </span>
+                    </h1>
+                </div>
             </div>
+
+            {expanded && loveSentences?.length > 1 && (
+                <TextTyper strings={loveSentences}
+                           id={`role-typer`}
+                           randomOrder={true}
+                           className={`nav-profile-card-role`}/>
+            )}
+
+            {expanded && loveSentences?.length === 1 && (
+                <div className={`nav-profile-card-role`}>
+                    {loveSentences[0]}
+                </div>
+            )}
+
+            {!expanded && (
+                <div className={`nav-profile-card-compact-name`}>
+                    {localizedName}
+                </div>
+            )}
         </Card>
     )
 }

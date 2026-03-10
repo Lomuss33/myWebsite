@@ -18,6 +18,14 @@ div.nav-profile-card {
     position: relative;
     margin: 15px;
 
+    &-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: 100%;
+    }
+
     &-media {
         position: relative;
         display: inline-flex;
@@ -77,6 +85,11 @@ div.nav-profile-card {
         display: inline;
     }
 
+    span.nav-profile-card-name-line-group {
+        display: inline-flex;
+        align-items: center;
+    }
+
     span.nav-profile-card-name-line-last {
         margin-left: 0.35rem;
     }
@@ -103,56 +116,83 @@ div.nav-profile-card {
         color: var(--theme-secondary);
         font-size: 0.9rem;
         min-height: 25px;
-        width: 100%;
+        width: min(100%, 260px);
         text-align: center;
+        margin-top: 2px;
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
             font-size: 0.95rem;
             min-height: 25px;
         }
     }
 
+    div.nav-profile-card-compact-name {
+        display: none;
+        margin-top: 8px;
+        font-size: 0.8rem;
+        line-height: 1.1;
+        text-align: center;
+        color: var(--theme-texts-light);
+    }
+
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         align-items: center;
         justify-content: center;
-        flex-direction: row;
-        gap: 12px;
+        flex-direction: column;
+        gap: 8px;
+
+        div.nav-profile-card-header {
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: auto;
+            max-width: 100%;
+            margin: 0 auto;
+        }
 
         div.nav-profile-card-info {
             margin-top: 0;
             margin-bottom: 0;
             width: auto;
-            max-width: min(190px, calc(100vw - var(--avatar-size) - 72px));
+            max-width: min(220px, calc(100vw - var(--avatar-size) - 52px));
             align-items: flex-start;
             justify-content: center;
             text-align: left;
-            flex: 1 1 auto;
+            flex: 0 1 auto;
         }
 
         h1.nav-profile-card-name {
             text-align: left;
             margin: 0;
-            line-height: 1.15rem !important;
+            font-size: clamp(2.15rem, 7.2vw, 2.8rem) !important;
+            line-height: 0.98 !important;
         }
 
         h1.nav-profile-card-name-with-audio-button {
-            width: 100%;
-            display: inline-flex;
-            flex-direction: row;
+            width: auto;
+            display: flex;
+            flex-direction: column;
             align-items: flex-start;
             justify-content: flex-start;
             white-space: normal;
-            gap: 8px;
+            gap: 0;
         }
 
         span.nav-profile-card-name-text {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            line-height: 1.05;
+            line-height: 0.98;
         }
 
         span.nav-profile-card-name-line {
             display: block;
+        }
+
+        span.nav-profile-card-name-line-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
         span.nav-profile-card-name-line-last {
@@ -162,18 +202,22 @@ div.nav-profile-card {
         h1.nav-profile-card-name-with-audio-button div.audio-button-wrapper-size-dynamic-for-nav-title {
             display: flex;
             align-self: center;
+            margin-left: 0;
         }
 
         h1.nav-profile-card-name-with-audio-button div.audio-button-wrapper-size-dynamic-for-nav-title button.audio-button {
             margin-left: 0;
-            top: 0;
+            top: 1px;
+            font-size: 1.15rem;
+            min-width: 1.6rem;
         }
 
         div.nav-profile-card-role {
-            justify-content: flex-start;
-            text-align: left;
+            justify-content: center;
+            text-align: center;
             min-height: 0;
-            margin-top: 6px;
+            margin-top: 2px;
+            width: min(100%, 320px);
         }
     }
 }
@@ -189,5 +233,14 @@ div.nav-profile-card-shrink {
 
     div.nav-profile-card-info {
         display: none;
+    }
+
+    div.nav-profile-card-header {
+        width: auto;
+    }
+
+    div.nav-profile-card-compact-name {
+        display: block;
+        max-width: 84px;
     }
 }

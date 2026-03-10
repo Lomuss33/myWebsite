@@ -3,6 +3,16 @@
  * @description App general layout styles.
  */
 
+html {
+    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        font-size: 15px;
+    }
+
+    @media (max-width: 380px) {
+        font-size: 14px;
+    }
+}
+
 body {
     overflow-x: hidden!important;
     touch-action: manipulation;

@@ -4,7 +4,7 @@
  * @description This class is a wrapper for the article item data. It provides methods to parse and validate the data loaded from an article's list.
  */
 
-import {useUtils} from "/src/hooks/utils.js"
+import {useUtils} from "../utils.js"
 
 const utils = useUtils()
 

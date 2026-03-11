@@ -1,10 +1,10 @@
 import "./NavHeaderMobile.scss"
 import React, {useEffect, useState} from 'react'
 import {Card} from "react-bootstrap"
-import NavProfileCard from "/src/components/nav/partials/NavProfileCard.jsx"
-import NavToolLanguagePicker from "/src/components/nav/tools/NavToolLanguagePicker.jsx"
-import NavToolThemePicker from "/src/components/nav/tools/NavToolThemePicker.jsx"
-import NavLinkPills from "/src/components/nav/partials/NavLinkPills.jsx"
+import NavProfileCard from "./partials/NavProfileCard.jsx"
+import NavToolLanguagePicker from "./tools/NavToolLanguagePicker.jsx"
+import NavToolThemePicker from "./tools/NavToolThemePicker.jsx"
+import NavLinkPills from "./partials/NavLinkPills.jsx"
 
 function NavHeaderMobile({ profile, links }) {
     return (

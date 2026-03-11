@@ -1,13 +1,13 @@
 import "./NavSidebar.scss"
 import React, {useEffect, useState} from 'react'
 import {Card} from "react-bootstrap"
-import {useViewport} from "/src/providers/ViewportProvider.jsx"
-import {useConstants} from "/src/hooks/constants.js"
-import NavProfileCard from "/src/components/nav/partials/NavProfileCard.jsx"
-import NavLinkList from "/src/components/nav/partials/NavLinkList.jsx"
-import NavToolList from "/src/components/nav/partials/NavToolList.jsx"
-import NavToolShrinkToggle from "/src/components/nav/tools/NavToolShrinkToggle.jsx"
-import {useInput} from "/src/providers/InputProvider.jsx"
+import {useViewport} from "../../providers/ViewportProvider.jsx"
+import {useConstants} from "../../hooks/constants.js"
+import NavProfileCard from "./partials/NavProfileCard.jsx"
+import NavLinkList from "./partials/NavLinkList.jsx"
+import NavToolList from "./partials/NavToolList.jsx"
+import NavToolShrinkToggle from "./tools/NavToolShrinkToggle.jsx"
+import {useInput} from "../../providers/InputProvider.jsx"
 
 function NavSidebar({ profile, links }) {
     const constants = useConstants()

@@ -4,8 +4,8 @@
  * @description This class is a wrapper for the article data. It provides methods to parse and validate the data loaded from a section's JSON file.
  */
 
-import ArticleItemDataWrapper from "/src/hooks/models/ArticleItemDataWrapper.js"
-import {useUtils} from "/src/hooks/utils.js"
+import ArticleItemDataWrapper from "./ArticleItemDataWrapper.js"
+import {useUtils} from "../utils.js"
 
 const utils = useUtils()
 

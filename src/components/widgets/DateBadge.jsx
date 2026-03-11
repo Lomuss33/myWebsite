@@ -1,6 +1,6 @@
 import "./DateBadge.scss"
 import React, {useEffect, useState} from 'react'
-import InfoBadge from "/src/components/generic/InfoBadge.jsx"
+import InfoBadge from "../generic/InfoBadge.jsx"
 
 function DateBadge({ dateStart, dateEnd, variant = "default", className = "" }) {
     return (

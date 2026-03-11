@@ -1,7 +1,7 @@
 import "./LayoutSlideshow.scss"
 import React, {useEffect, useState} from 'react'
-import Section from "/src/components/sections/Section.jsx"
-import {useNavigation} from "/src/providers/NavigationProvider.jsx"
+import Section from "../sections/Section.jsx"
+import {useNavigation} from "../../providers/NavigationProvider.jsx"
 
 function LayoutSlideshow({ sections, currentSection, previousSection }) {
     const navigation = useNavigation()

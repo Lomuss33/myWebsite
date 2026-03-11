@@ -1,6 +1,6 @@
 import "./NotificationsLayer.scss"
 import React, {useEffect, useState} from 'react'
-import Notification from "/src/components/notifications/Notification.jsx"
+import Notification from "./Notification.jsx"
 
 function NotificationsLayer({ target, onNotificationDismissed = null }) {
     return (

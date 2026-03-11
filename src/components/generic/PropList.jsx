@@ -1,6 +1,6 @@
 import "./PropList.scss"
 import React, {useEffect, useState} from 'react'
-import {useViewport} from "/src/providers/ViewportProvider.jsx"
+import {useViewport} from "../../providers/ViewportProvider.jsx"
 
 function PropList({ children, className = ``, inlineBreakpoint = `xl` }) {
     const viewport = useViewport()

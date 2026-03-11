@@ -1,7 +1,7 @@
 import "./Textarea.scss"
 import React, {useEffect, useState} from 'react'
-import InputFieldWrapper from "/src/components/forms/base/InputFieldWrapper.jsx"
-import {useUtils} from "/src/hooks/utils.js"
+import InputFieldWrapper from "../base/InputFieldWrapper.jsx"
+import {useUtils} from "../../../hooks/utils.js"
 
 function TextArea({
    id,

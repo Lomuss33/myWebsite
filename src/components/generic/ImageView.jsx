@@ -1,8 +1,8 @@
 import "./ImageView.scss"
 import React, {useEffect, useState} from 'react'
-import {useConstants} from "/src/hooks/constants.js"
+import {useConstants} from "../../hooks/constants.js"
 import {Spinner} from "react-bootstrap"
-import {useUtils} from "/src/hooks/utils.js"
+import {useUtils} from "../../hooks/utils.js"
 
 function ImageView({ src, alt = "", className = "", id= null, hideSpinner = false, style = null, onStatus = null }) {
     const [loadStatus, setLoadStatus] = useState(ImageView.LoadStatus.LOADING)

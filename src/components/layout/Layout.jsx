@@ -1,8 +1,8 @@
 import "./Layout.scss"
 import React, {useEffect, useState} from 'react'
-import {useUtils} from "/src/hooks/utils.js"
-import LayoutAnimatedBackground from "/src/components/layout/LayoutAnimatedBackground.jsx"
-import LayoutStaticBackground from "/src/components/layout/LayoutStaticBackground.jsx"
+import {useUtils} from "../../hooks/utils.js"
+import LayoutAnimatedBackground from "./LayoutAnimatedBackground.jsx"
+import LayoutStaticBackground from "./LayoutStaticBackground.jsx"
 
 function Layout({ id, children, backgroundStyle }) {
     const utils = useUtils()

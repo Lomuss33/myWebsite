@@ -1,6 +1,6 @@
 import "./Balloon.scss"
 import React, {useEffect, useState} from 'react'
-import {useUtils} from "/src/hooks/utils.js"
+import {useUtils} from "../../hooks/utils.js"
 
 function Balloon({ children, className = "" }) {
     return (

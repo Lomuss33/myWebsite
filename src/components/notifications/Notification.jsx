@@ -1,6 +1,6 @@
 import "./Notification.scss"
 import React, {useEffect, useState} from 'react'
-import {useScheduler} from "/src/hooks/scheduler.js"
+import {useScheduler} from "../../hooks/scheduler.js"
 
 function Notification({ id, type, title, message, onDismiss }) {
     const scheduler = useScheduler()

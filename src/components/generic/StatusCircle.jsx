@@ -1,7 +1,7 @@
 import "./StatusCircle.scss"
 import React, {useEffect, useState} from 'react'
-import {useUtils} from "/src/hooks/utils.js"
-import HoverStaticTooltip from "/src/components/widgets/HoverStaticTooltip.jsx"
+import {useUtils} from "../../hooks/utils.js"
+import HoverStaticTooltip from "../widgets/HoverStaticTooltip.jsx"
 
 function StatusCircle({ variant, message, size = "status-circle-size-default", className = "", onClick = null }) {
     const utils = useUtils()

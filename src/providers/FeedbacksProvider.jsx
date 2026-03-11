@@ -5,16 +5,16 @@
  */
 
 import React, {createContext, useContext, useEffect, useState} from 'react'
-import {useUtils} from "/src/hooks/utils.js"
-import {useScheduler} from "/src/hooks/scheduler.js"
-import {useLanguage} from "/src/providers/LanguageProvider.jsx"
-import {useViewport} from "/src/providers/ViewportProvider.jsx"
-import ActivitySpinner from "/src/components/loaders/ActivitySpinner.jsx"
-import MouseLayer from "/src/components/mouse/MouseLayer.jsx"
-import NotificationsLayer from "/src/components/notifications/NotificationsLayer.jsx"
-import YoutubeVideoModal from "/src/components/modals/YoutubeVideoModal.jsx"
-import ConfirmationWindowModal from "/src/components/modals/ConfirmationWindowModal.jsx"
-import GalleryModal from "/src/components/modals/GalleryModal.jsx"
+import {useUtils} from "../hooks/utils.js"
+import {useScheduler} from "../hooks/scheduler.js"
+import {useLanguage} from "./LanguageProvider.jsx"
+import {useViewport} from "./ViewportProvider.jsx"
+import ActivitySpinner from "../components/loaders/ActivitySpinner.jsx"
+import MouseLayer from "../components/mouse/MouseLayer.jsx"
+import NotificationsLayer from "../components/notifications/NotificationsLayer.jsx"
+import YoutubeVideoModal from "../components/modals/YoutubeVideoModal.jsx"
+import ConfirmationWindowModal from "../components/modals/ConfirmationWindowModal.jsx"
+import GalleryModal from "../components/modals/GalleryModal.jsx"
 
 function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
     const scheduler = useScheduler()

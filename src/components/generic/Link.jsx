@@ -1,10 +1,10 @@
 import "./Link.scss"
 import React, {useEffect, useState} from 'react'
-import {useFeedbacks} from "/src/providers/FeedbacksProvider.jsx"
-import {useLanguage} from "/src/providers/LanguageProvider.jsx"
-import {useLocation} from "/src/providers/LocationProvider.jsx"
-import {useUtils} from "/src/hooks/utils.js"
-import {useScheduler} from "/src/hooks/scheduler.js"
+import {useFeedbacks} from "../../providers/FeedbacksProvider.jsx"
+import {useLanguage} from "../../providers/LanguageProvider.jsx"
+import {useLocation} from "../../providers/LocationProvider.jsx"
+import {useUtils} from "../../hooks/utils.js"
+import {useScheduler} from "../../hooks/scheduler.js"
 
 function Link({ id = null, className = "", href, children, tooltip = null, metadata = null, onClick = null, onClickTimeout = 0, onHoverStatus = null, intercept = false }) {
     const feedbacks = useFeedbacks()

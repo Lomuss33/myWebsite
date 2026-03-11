@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import {useLanguage} from "/src/providers/LanguageProvider.jsx"
-import OptionPickerButton from "/src/components/buttons/OptionPickerButton.jsx"
-import {useUtils} from "/src/hooks/utils.js"
+import {useLanguage} from "../../../providers/LanguageProvider.jsx"
+import OptionPickerButton from "../../buttons/OptionPickerButton.jsx"
+import {useUtils} from "../../../hooks/utils.js"
 
 function NavToolLanguagePicker() {
     const language = useLanguage()

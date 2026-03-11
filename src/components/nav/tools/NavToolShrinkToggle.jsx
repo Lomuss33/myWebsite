@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
-import {useLanguage} from "/src/providers/LanguageProvider.jsx"
-import CircularButton from "/src/components/buttons/CircularButton.jsx"
+import {useLanguage} from "../../../providers/LanguageProvider.jsx"
+import CircularButton from "../../buttons/CircularButton.jsx"
 
 function NavToolShrinkToggle({ expanded, setExpanded }) {
     const language = useLanguage()

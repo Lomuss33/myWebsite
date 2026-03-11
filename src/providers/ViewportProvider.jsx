@@ -5,9 +5,9 @@
  */
 
 import React, {createContext, useContext, useEffect, useState} from 'react'
-import {useUtils} from "/src/hooks/utils.js"
-import {useScheduler} from "/src/hooks/scheduler.js"
-import {useData} from "/src/providers/DataProvider.jsx"
+import {useUtils} from "../hooks/utils.js"
+import {useScheduler} from "../hooks/scheduler.js"
+import {useData} from "./DataProvider.jsx"
 
 function ViewportProvider({ children }) {
     const data = useData()

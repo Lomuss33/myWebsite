@@ -1,10 +1,10 @@
 import "./ModalWrapper.scss"
 import React, {useEffect, useState} from 'react'
 import Modal from 'bootstrap/js/src/modal'
-import CircularButton from "/src/components/buttons/CircularButton.jsx"
-import {useLanguage} from "/src/providers/LanguageProvider.jsx"
-import {useViewport} from "/src/providers/ViewportProvider.jsx"
-import {useUtils} from "/src/hooks/utils.js"
+import CircularButton from "../../buttons/CircularButton.jsx"
+import {useLanguage} from "../../../providers/LanguageProvider.jsx"
+import {useViewport} from "../../../providers/ViewportProvider.jsx"
+import {useUtils} from "../../../hooks/utils.js"
 
 function ModalWrapper({ children, id = "", shouldDismiss, onDismiss, className = "", dialogClassName = "" }) {
     const viewport = useViewport()

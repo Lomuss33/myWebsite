@@ -5,7 +5,7 @@
  */
 
 import React, {createContext, useContext, useEffect, useState} from 'react'
-import {useUtils} from "/src/hooks/utils.js"
+import {useUtils} from "../hooks/utils.js"
 
 function DataProvider({ children, settings }) {
     const utils = useUtils()

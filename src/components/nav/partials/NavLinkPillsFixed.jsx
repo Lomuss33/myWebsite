@@ -1,8 +1,8 @@
 import "./NavLinkPillsFixed.scss"
 import React, {useEffect, useState} from 'react'
-import NavLinkPills from "/src/components/nav/partials/NavLinkPills.jsx"
-import {useViewport} from "/src/providers/ViewportProvider.jsx"
-import {useNavigation} from "/src/providers/NavigationProvider.jsx"
+import NavLinkPills from "./NavLinkPills.jsx"
+import {useViewport} from "../../../providers/ViewportProvider.jsx"
+import {useNavigation} from "../../../providers/NavigationProvider.jsx"
 
 function NavLinkPillsFixed({ links, className = "" }) {
     const navigation = useNavigation()

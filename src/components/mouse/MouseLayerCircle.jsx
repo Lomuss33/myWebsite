@@ -1,6 +1,6 @@
 import "./MouseLayerCircle.scss"
 import React, {useEffect, useState} from 'react'
-import {useInput} from "/src/providers/InputProvider.jsx"
+import {useInput} from "../../providers/InputProvider.jsx"
 
 function MouseLayerCircle({ targetElementParameters, animationTicks, hidden, dt, onCircleChanged }) {
     const input = useInput()

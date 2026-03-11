@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import {useScheduler} from "/src/hooks/scheduler.js"
-import {useConstants} from "/src/hooks/constants.js"
-import {useNavigation} from "/src/providers/NavigationProvider.jsx"
+import {useScheduler} from "../../../hooks/scheduler.js"
+import {useConstants} from "../../../hooks/constants.js"
+import {useNavigation} from "../../../providers/NavigationProvider.jsx"
 
 function Nav({ links, itemComponent, id = null, className = "", tag, data = {} }) {
     const scheduler = useScheduler()

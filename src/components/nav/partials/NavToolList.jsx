@@ -1,14 +1,14 @@
 import "./NavToolList.scss"
 import React, {useEffect, useState} from 'react'
-import {useLanguage} from "/src/providers/LanguageProvider.jsx"
-import {useTheme} from "/src/providers/ThemeProvider.jsx"
-import {useFeedbacks} from "/src/providers/FeedbacksProvider.jsx"
-import {useData} from "/src/providers/DataProvider.jsx"
-import NavToolLanguagePicker from "/src/components/nav/tools/NavToolLanguagePicker.jsx"
-import NavToolThemePicker from "/src/components/nav/tools/NavToolThemePicker.jsx"
-import NavToolCursorToggle from "/src/components/nav/tools/NavToolCursorToggle.jsx"
-import NavToolSettings from "/src/components/nav/tools/NavToolSettings.jsx"
-import NavToolResumeDownloader from "/src/components/nav/tools/NavToolResumeDownloader.jsx"
+import {useLanguage} from "../../../providers/LanguageProvider.jsx"
+import {useTheme} from "../../../providers/ThemeProvider.jsx"
+import {useFeedbacks} from "../../../providers/FeedbacksProvider.jsx"
+import {useData} from "../../../providers/DataProvider.jsx"
+import NavToolLanguagePicker from "../tools/NavToolLanguagePicker.jsx"
+import NavToolThemePicker from "../tools/NavToolThemePicker.jsx"
+import NavToolCursorToggle from "../tools/NavToolCursorToggle.jsx"
+import NavToolSettings from "../tools/NavToolSettings.jsx"
+import NavToolResumeDownloader from "../tools/NavToolResumeDownloader.jsx"
 
 function NavToolList({ expanded }) {
     const language = useLanguage()

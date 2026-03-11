@@ -1,10 +1,10 @@
 import "./MouseLayer.scss"
 import React, {useEffect, useState} from 'react'
-import MouseLayerCircle from "/src/components/mouse/MouseLayerCircle.jsx"
-import MouseLayerTooltip from "/src/components/mouse/MouseLayerTooltip.jsx"
-import {useScheduler} from "/src/hooks/scheduler.js"
-import {useConstants} from "/src/hooks/constants.js"
-import {useInput} from "/src/providers/InputProvider.jsx"
+import MouseLayerCircle from "./MouseLayerCircle.jsx"
+import MouseLayerTooltip from "./MouseLayerTooltip.jsx"
+import {useScheduler} from "../../hooks/scheduler.js"
+import {useConstants} from "../../hooks/constants.js"
+import {useInput} from "../../providers/InputProvider.jsx"
 
 function MouseLayer({ active, isBlockedByOverlay, hidden }) {
     const input = useInput()

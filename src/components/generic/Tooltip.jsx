@@ -1,6 +1,6 @@
 import "./Tooltip.scss"
 import React, {useEffect, useState} from 'react'
-import {useScheduler} from "/src/hooks/scheduler.js"
+import {useScheduler} from "../../hooks/scheduler.js"
 
 function Tooltip({ id = null, className = "", label = "" }) {
     const scheduler = useScheduler()

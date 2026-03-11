@@ -1,6 +1,6 @@
 import "./Article.scss"
 import React, {useEffect, useState} from 'react'
-import CategoryFilter from "/src/components/generic/CategoryFilter.jsx"
+import CategoryFilter from "../../generic/CategoryFilter.jsx"
 
 /**
  * @param {*} children

@@ -1,7 +1,7 @@
 import "./NavLinkPills.scss"
 import React, {useEffect, useState} from 'react'
-import Nav from "/src/components/nav/base/Nav.jsx"
-import GestureAwareButton from "/src/components/buttons/GestureAwareButton.jsx"
+import Nav from "../base/Nav.jsx"
+import GestureAwareButton from "../../buttons/GestureAwareButton.jsx"
 
 function NavLinkPills({ links, id, className = "" }) {
     const visible = links.length >= 2

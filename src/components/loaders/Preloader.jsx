@@ -1,10 +1,10 @@
 import "./Preloader.scss"
 import React, {useEffect, useState} from 'react'
-import PacMan from "/src/components/widgets/PacMan.jsx"
-import Logo from "/src/components/widgets/Logo.jsx"
-import {useScheduler} from "/src/hooks/scheduler.js"
-import {useUtils} from "/src/hooks/utils.js"
-import {useConstants} from "/src/hooks/constants.js"
+import PacMan from "../widgets/PacMan.jsx"
+import Logo from "../widgets/Logo.jsx"
+import {useScheduler} from "../../hooks/scheduler.js"
+import {useUtils} from "../../hooks/utils.js"
+import {useConstants} from "../../hooks/constants.js"
 
 const PreloaderState = {
     NONE:               { id: 0, key: "none" },

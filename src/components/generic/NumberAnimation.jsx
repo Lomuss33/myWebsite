@@ -1,6 +1,6 @@
 import "./NumberAnimation.scss"
 import React, {useEffect, useState} from 'react'
-import {useScheduler} from "/src/hooks/scheduler.js"
+import {useScheduler} from "../../hooks/scheduler.js"
 
 function NumberAnimation({ targetValue, id, initialValue = 0, updateDelay = 10, format = `{n}`, className = "" }) {
     const scheduler = useScheduler()

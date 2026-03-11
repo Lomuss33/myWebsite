@@ -1,10 +1,10 @@
 import "./ArticleStack.scss"
 import React, {useEffect, useState} from 'react'
-import Article from "/src/components/articles/base/Article.jsx"
-import AvatarView from "/src/components/generic/AvatarView.jsx"
-import Transitionable from "/src/components/capabilities/Transitionable.jsx"
-import {useLanguage} from "/src/providers/LanguageProvider.jsx"
-import {useTheme} from "/src/providers/ThemeProvider.jsx"
+import Article from "./base/Article.jsx"
+import AvatarView from "../generic/AvatarView.jsx"
+import Transitionable from "../capabilities/Transitionable.jsx"
+import {useLanguage} from "../../providers/LanguageProvider.jsx"
+import {useTheme} from "../../providers/ThemeProvider.jsx"
 
 /**
  * @param {ArticleDataWrapper} dataWrapper

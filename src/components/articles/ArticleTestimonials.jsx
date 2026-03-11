@@ -1,12 +1,12 @@
 import "./ArticleTestimonials.scss"
 import React, {useEffect, useState} from 'react'
-import Article from "/src/components/articles/base/Article.jsx"
-import Swipeable from "/src/components/capabilities/Swipeable.jsx"
-import {Balloon, BalloonQuote} from "/src/components/generic/Balloon"
-import {useViewport} from "/src/providers/ViewportProvider.jsx"
-import Link from "/src/components/generic/Link.jsx"
-import AvatarView from "/src/components/generic/AvatarView.jsx"
-import {useConstants} from "/src/hooks/constants.js"
+import Article from "./base/Article.jsx"
+import Swipeable from "../capabilities/Swipeable.jsx"
+import {Balloon, BalloonQuote} from "../generic/Balloon"
+import {useViewport} from "../../providers/ViewportProvider.jsx"
+import Link from "../generic/Link.jsx"
+import AvatarView from "../generic/AvatarView.jsx"
+import {useConstants} from "../../hooks/constants.js"
 
 /**
  * @param {ArticleDataWrapper} dataWrapper

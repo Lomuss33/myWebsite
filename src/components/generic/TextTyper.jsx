@@ -1,8 +1,8 @@
 import "./TextTyper.scss"
 import React, {useEffect, useState} from 'react'
-import Animable from "/src/components/capabilities/Animable.jsx"
-import {useUtils} from "/src/hooks/utils.js"
-import {useNavigation} from "/src/providers/NavigationProvider.jsx"
+import Animable from "../capabilities/Animable.jsx"
+import {useUtils} from "../../hooks/utils.js"
+import {useNavigation} from "../../providers/NavigationProvider.jsx"
 
 function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, displayTime = 1, className = "", fixedPrefix = "", randomOrder = false }) {
     const utils = useUtils()

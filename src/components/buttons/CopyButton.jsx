@@ -1,10 +1,10 @@
 import "./CopyButton.scss"
 import React, {useEffect, useState} from "react"
-import {useViewport} from "/src/providers/ViewportProvider.jsx"
-import {useLanguage} from "/src/providers/LanguageProvider.jsx"
-import {useScheduler} from "/src/hooks/scheduler.js"
-import {useUtils} from "/src/hooks/utils.js"
-import HoverStaticTooltip from "/src/components/widgets/HoverStaticTooltip.jsx"
+import {useViewport} from "../../providers/ViewportProvider.jsx"
+import {useLanguage} from "../../providers/LanguageProvider.jsx"
+import {useScheduler} from "../../hooks/scheduler.js"
+import {useUtils} from "../../hooks/utils.js"
+import HoverStaticTooltip from "../widgets/HoverStaticTooltip.jsx"
 
 function CopyButton({ text = "", buttonClassName = "" }) {
     const viewport = useViewport()

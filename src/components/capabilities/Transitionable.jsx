@@ -1,6 +1,6 @@
 import "./Transitionable.scss"
 import React, {useEffect, useState} from 'react'
-import {useScheduler} from "/src/hooks/scheduler.js"
+import {useScheduler} from "../../hooks/scheduler.js"
 
 function Transitionable({ children, id, refreshFlag, delayBetweenItems = 100, className = "", animation = "transitionable-item-animation-pop" }) {
     const scheduler = useScheduler()

@@ -1,6 +1,6 @@
 import "./Logo.scss"
 import React, {useEffect, useState} from 'react'
-import {useUtils} from "/src/hooks/utils.js"
+import {useUtils} from "../../hooks/utils.js"
 
 function Logo({ className = "", style = {}, size, setDidLoad }) {
     const utils = useUtils()

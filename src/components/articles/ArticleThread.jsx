@@ -1,8 +1,8 @@
 import "./ArticleThread.scss"
 import React, {useEffect, useState} from 'react'
-import Article from "/src/components/articles/base/Article.jsx"
-import Collapsable from "/src/components/capabilities/Collapsable.jsx"
-import {ArticleItemInfoForTimelines, ArticleItemInfoForTimelinesBody, ArticleItemInfoForTimelinesHeader, ArticleItemInfoForTimelinesPreviewFooter} from "/src/components/articles/partials/ArticleItemInfoForTimelines"
+import Article from "./base/Article.jsx"
+import Collapsable from "../capabilities/Collapsable.jsx"
+import {ArticleItemInfoForTimelines, ArticleItemInfoForTimelinesBody, ArticleItemInfoForTimelinesHeader, ArticleItemInfoForTimelinesPreviewFooter} from "./partials/ArticleItemInfoForTimelines"
 
 /**
  * @param {ArticleDataWrapper} dataWrapper

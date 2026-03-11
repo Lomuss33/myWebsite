@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react'
-import {useLanguage} from "/src/providers/LanguageProvider.jsx"
-import OptionPickerButton from "/src/components/buttons/OptionPickerButton.jsx"
-import {useTheme} from "/src/providers/ThemeProvider.jsx"
-import {useFeedbacks} from "/src/providers/FeedbacksProvider.jsx"
-import {useData} from "/src/providers/DataProvider.jsx"
-import {useUtils} from "/src/hooks/utils.js"
+import {useLanguage} from "../../../providers/LanguageProvider.jsx"
+import OptionPickerButton from "../../buttons/OptionPickerButton.jsx"
+import {useTheme} from "../../../providers/ThemeProvider.jsx"
+import {useFeedbacks} from "../../../providers/FeedbacksProvider.jsx"
+import {useData} from "../../../providers/DataProvider.jsx"
+import {useUtils} from "../../../hooks/utils.js"
 
 function NavToolSettings({ options }) {
     const theme = useTheme()

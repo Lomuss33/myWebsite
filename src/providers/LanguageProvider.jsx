@@ -5,8 +5,8 @@
  */
 
 import React, {createContext, useContext, useEffect, useState} from 'react'
-import {useUtils} from "/src/hooks/utils.js"
-import {useConstants} from "/src/hooks/constants.js"
+import {useUtils} from "../hooks/utils.js"
+import {useConstants} from "../hooks/constants.js"
 
 function LanguageProvider({ children, supportedLanguages, defaultLanguageId, appStrings, selectedThemeId }) {
     const constants = useConstants()

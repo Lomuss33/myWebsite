@@ -1,6 +1,6 @@
 import "./MouseLayerTooltip.scss"
 import React, {useEffect, useState} from 'react'
-import Tooltip from "/src/components/generic/Tooltip.jsx"
+import Tooltip from "../generic/Tooltip.jsx"
 
 function MouseLayerTooltip({ x, y, offset, targetElementParameters, animationTicks }) {
     const [displayingLabel, setDisplayingLabel] = useState("")

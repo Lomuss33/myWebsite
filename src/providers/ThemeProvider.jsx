@@ -5,8 +5,8 @@
  */
 
 import React, {createContext, useContext, useEffect, useState} from 'react'
-import {useUtils} from "/src/hooks/utils.js"
-import ActivitySpinner from "/src/components/loaders/ActivitySpinner.jsx"
+import {useUtils} from "../hooks/utils.js"
+import ActivitySpinner from "../components/loaders/ActivitySpinner.jsx"
 
 function ThemeProvider({ children, supportedThemes, defaultThemeId, showSpinnerOnThemeChange, onThemeChanged }) {
     const utils = useUtils()

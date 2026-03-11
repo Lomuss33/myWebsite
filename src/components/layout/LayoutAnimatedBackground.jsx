@@ -1,7 +1,7 @@
 import "./LayoutAnimatedBackground.scss"
 import React, {useEffect, useState} from 'react'
-import {useUtils} from "/src/hooks/utils.js"
-import Animable from "/src/components/capabilities/Animable.jsx"
+import {useUtils} from "../../hooks/utils.js"
+import Animable from "../capabilities/Animable.jsx"
 
 const utils = useUtils()
 

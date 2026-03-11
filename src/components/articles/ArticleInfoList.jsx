@@ -1,10 +1,10 @@
 import "./ArticleInfoList.scss"
 import React, {useEffect, useState} from 'react'
-import Article from "/src/components/articles/base/Article.jsx"
-import AvatarView from "/src/components/generic/AvatarView.jsx"
-import Link from "/src/components/generic/Link.jsx"
-import {useViewport} from "/src/providers/ViewportProvider.jsx"
-import CopyButton from "/src/components/buttons/CopyButton.jsx"
+import Article from "./base/Article.jsx"
+import AvatarView from "../generic/AvatarView.jsx"
+import Link from "../generic/Link.jsx"
+import {useViewport} from "../../providers/ViewportProvider.jsx"
+import CopyButton from "../buttons/CopyButton.jsx"
 
 /**
  * @param {ArticleDataWrapper} dataWrapper

@@ -5,8 +5,8 @@
  */
 
 import emailjs from "@emailjs/browser"
-import {useConstants} from "/src/hooks/constants.js"
-import {useUtils} from "/src/hooks/utils.js"
+import {useConstants} from "./constants.js"
+import {useUtils} from "./utils.js"
 
 const constants = useConstants()
 const utils = useUtils()

@@ -1,7 +1,7 @@
 import "./ArticleFeature.scss"
 import React, {useState} from 'react'
-import Article from "/src/components/articles/base/Article.jsx"
-import ImageView from "/src/components/generic/ImageView.jsx"
+import Article from "./base/Article.jsx"
+import ImageView from "../generic/ImageView.jsx"
 
 function ArticleFeature({ dataWrapper, id }) {
     const [selectedItemCategoryId, setSelectedItemCategoryId] = useState(null)

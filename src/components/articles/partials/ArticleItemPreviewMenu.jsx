@@ -1,10 +1,10 @@
 import "./ArticleItemPreviewMenu.scss"
 import React from 'react'
-import Link from "/src/components/generic/Link.jsx"
-import {useLanguage} from "/src/providers/LanguageProvider.jsx"
-import CircularButton from "/src/components/buttons/CircularButton.jsx"
-import StandardButton from "/src/components/buttons/StandardButton.jsx"
-import {useUtils} from "/src/hooks/utils.js"
+import Link from "../../generic/Link.jsx"
+import {useLanguage} from "../../../providers/LanguageProvider.jsx"
+import CircularButton from "../../buttons/CircularButton.jsx"
+import StandardButton from "../../buttons/StandardButton.jsx"
+import {useUtils} from "../../../hooks/utils.js"
 
 /**
  * @param {ArticleItemDataWrapper} itemWrapper

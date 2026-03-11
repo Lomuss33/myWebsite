@@ -1,11 +1,11 @@
 import "./ArticleItemInfoForTimelines.scss"
 import React, {useEffect, useState} from 'react'
-import {useViewport} from "/src/providers/ViewportProvider.jsx"
-import DateBadge from "/src/components/widgets/DateBadge.jsx"
-import {PropList, PropListItem} from "/src/components/generic/PropList.jsx"
-import {Tags, Tag} from "/src/components/generic/Tags.jsx"
-import ArticleItemPreviewMenu from "/src/components/articles/partials/ArticleItemPreviewMenu.jsx"
-import {useLanguage} from "/src/providers/LanguageProvider.jsx"
+import {useViewport} from "../../../providers/ViewportProvider.jsx"
+import DateBadge from "../../widgets/DateBadge.jsx"
+import {PropList, PropListItem} from "../../generic/PropList.jsx"
+import {Tags, Tag} from "../../generic/Tags.jsx"
+import ArticleItemPreviewMenu from "./ArticleItemPreviewMenu.jsx"
+import {useLanguage} from "../../../providers/LanguageProvider.jsx"
 
 /**
  * @param {*} children

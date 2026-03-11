@@ -3,7 +3,7 @@
  * @date 2025-05-10
  */
 
-import {useConstants} from "/src/hooks/constants.js"
+import {useConstants} from "../constants.js"
 
 const constants = useConstants()
 

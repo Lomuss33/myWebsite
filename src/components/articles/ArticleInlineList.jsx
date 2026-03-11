@@ -1,8 +1,8 @@
 import "./ArticleInlineList.scss"
 import React, {useEffect, useState} from 'react'
-import Article from "/src/components/articles/base/Article.jsx"
-import Link from "/src/components/generic/Link.jsx"
-import {useViewport} from "/src/providers/ViewportProvider.jsx"
+import Article from "./base/Article.jsx"
+import Link from "../generic/Link.jsx"
+import {useViewport} from "../../providers/ViewportProvider.jsx"
 
 /**
  * @param {ArticleDataWrapper} dataWrapper

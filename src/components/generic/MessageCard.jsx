@@ -1,8 +1,8 @@
 import "./MessageCard.scss"
 import React, {useEffect, useState} from 'react'
 import {Card, CardBody} from "react-bootstrap"
-import AvatarView from "/src/components/generic/AvatarView.jsx"
-import Separator from "/src/components/generic/Separator.jsx"
+import AvatarView from "./AvatarView.jsx"
+import Separator from "./Separator.jsx"
 
 function MessageCard({ children, faIcon = "fa-solid fa-circle", title = null, body = null, footer = null, className = "" }) {
     return (

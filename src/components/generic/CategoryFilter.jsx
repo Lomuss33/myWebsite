@@ -1,7 +1,7 @@
 import "./CategoryFilter.scss"
 import React, {useEffect, useState} from 'react'
-import {useLanguage} from "/src/providers/LanguageProvider.jsx"
-import {useUtils} from "/src/hooks/utils.js"
+import {useLanguage} from "../../providers/LanguageProvider.jsx"
+import {useUtils} from "../../hooks/utils.js"
 
 function CategoryFilter({ categories, selectedCategoryId, setSelectedCategoryId, className = "" }) {
     const utils = useUtils()

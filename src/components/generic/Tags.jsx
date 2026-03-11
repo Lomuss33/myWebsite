@@ -1,6 +1,6 @@
 import "./Tags.scss"
 import React, {useEffect, useState} from 'react'
-import {useTheme} from "/src/providers/ThemeProvider.jsx"
+import {useTheme} from "../../providers/ThemeProvider.jsx"
 
 function Tags({ children, className = "" }) {
     return (

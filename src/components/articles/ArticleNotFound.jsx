@@ -1,6 +1,6 @@
 import "./ArticleNotFound.scss"
 import React, {useEffect, useState} from 'react'
-import Article from "/src/components/articles/base/Article.jsx"
+import Article from "./base/Article.jsx"
 import {Alert, Row, Col} from "react-bootstrap"
 
 /**

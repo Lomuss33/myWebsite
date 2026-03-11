@@ -1,8 +1,8 @@
 import "./RowForm.scss"
 import React, {useEffect, useState} from 'react'
 import {Alert, Row} from "react-bootstrap"
-import StandardButton from "/src/components/buttons/StandardButton.jsx"
-import {useTheme} from "/src/providers/ThemeProvider.jsx"
+import StandardButton from "../../buttons/StandardButton.jsx"
+import {useTheme} from "../../../providers/ThemeProvider.jsx"
 
 function RowForm({ children, id, className = "", onSubmit }) {
     const theme = useTheme()

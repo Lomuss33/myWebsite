@@ -43,7 +43,7 @@ if(!componentName.startsWith("Article")) {
 // Create files...
 const jsxContent = makeArticleComponent(componentName, slug)
 fileUtils.createFile(articlesDir, jsxPath, jsxContent)
-fileUtils.createFile(articlesDir, scssPath, `@import "/src/styles/extend.scss";`)
+fileUtils.createFile(articlesDir, scssPath, `@import "../../styles/extend.scss";`)
 logger.log(logger.LogTypes.SUCCESS, `Successfully created article: ${componentName}`)
 
 // Inject into SectionBody.jsx
@@ -51,7 +51,7 @@ const sectionBodyPath = path.resolve("src/components/sections/SectionBody.jsx")
 let sectionBodyContent = fs.readFileSync(sectionBodyPath, "utf8")
 
 // 1. Add import
-const importStatement = `import ${componentName} from "/src/components/articles/${componentName}.jsx"`
+const importStatement = `import ${componentName} from "../articles/${componentName}.jsx"`
 if (!sectionBodyContent.includes(importStatement)) {
     const importRegex = /import ArticleNotFound from .+?\n/
     sectionBodyContent = sectionBodyContent.replace(importRegex, match => `${match}${importStatement}\n`)

@@ -5,14 +5,14 @@
  */
 
 import React, {createContext, useContext, useEffect, useState} from 'react'
-import {useLocation} from "/src/providers/LocationProvider.jsx"
-import {useLanguage} from "/src/providers/LanguageProvider.jsx"
-import {useConstants} from "/src/hooks/constants.js"
-import {useScheduler} from "/src/hooks/scheduler.js"
-import {useFeedbacks} from "/src/providers/FeedbacksProvider.jsx"
-import {useViewport} from "/src/providers/ViewportProvider.jsx"
-import {useUtils} from "/src/hooks/utils.js"
-import {useLayout} from "/src/hooks/layout.js"
+import {useLocation} from "./LocationProvider.jsx"
+import {useLanguage} from "./LanguageProvider.jsx"
+import {useConstants} from "../hooks/constants.js"
+import {useScheduler} from "../hooks/scheduler.js"
+import {useFeedbacks} from "./FeedbacksProvider.jsx"
+import {useViewport} from "./ViewportProvider.jsx"
+import {useUtils} from "../hooks/utils.js"
+import {useLayout} from "../hooks/layout.js"
 
 function NavigationProvider({ children, sections, categories }) {
     const language = useLanguage()

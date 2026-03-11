@@ -1,8 +1,8 @@
 import "./AudioButton.scss"
 import React, {useEffect, useRef, useState} from 'react'
-import {useUtils} from "/src/hooks/utils.js"
-import {useFeedbacks} from "/src/providers/FeedbacksProvider.jsx"
-import HoverStaticTooltip from "/src/components/widgets/HoverStaticTooltip.jsx"
+import {useUtils} from "../../hooks/utils.js"
+import {useFeedbacks} from "../../providers/FeedbacksProvider.jsx"
+import HoverStaticTooltip from "../widgets/HoverStaticTooltip.jsx"
 
 function AudioButton({ url = "", tooltip = "", size = "", buttonClassName = "", tooltipClassName = "" }) {
     const feedbacks = useFeedbacks()

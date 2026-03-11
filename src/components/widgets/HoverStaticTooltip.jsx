@@ -1,10 +1,10 @@
 import "./HoverStaticTooltip.scss"
 import React, {useEffect, useState} from 'react'
-import Tooltip from "/src/components/generic/Tooltip.jsx"
-import {useViewport} from "/src/providers/ViewportProvider.jsx"
-import {useUtils} from "/src/hooks/utils.js"
-import {useInput} from "/src/providers/InputProvider.jsx"
-import {useNavigation} from "/src/providers/NavigationProvider.jsx"
+import Tooltip from "../generic/Tooltip.jsx"
+import {useViewport} from "../../providers/ViewportProvider.jsx"
+import {useUtils} from "../../hooks/utils.js"
+import {useInput} from "../../providers/InputProvider.jsx"
+import {useNavigation} from "../../providers/NavigationProvider.jsx"
 
 function HoverStaticTooltip({ id = "", targetId = "", label = "", className = "", onDesktopClick = null, forceResetFlag = null, forceVisible = false, toggleBehaviorOnTouchScreens = false }) {
     const viewport = useViewport()

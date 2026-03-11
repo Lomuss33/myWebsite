@@ -1,8 +1,8 @@
 import "./NavTabController.scss"
 import React, {useEffect, useState} from 'react'
-import {useViewport} from "/src/providers/ViewportProvider.jsx"
-import Nav from "/src/components/nav/base/Nav.jsx"
-import GestureAwareButton from "/src/components/buttons/GestureAwareButton.jsx"
+import {useViewport} from "../../providers/ViewportProvider.jsx"
+import Nav from "./base/Nav.jsx"
+import GestureAwareButton from "../buttons/GestureAwareButton.jsx"
 
 function NavTabController({ links }) {
     const viewport = useViewport()

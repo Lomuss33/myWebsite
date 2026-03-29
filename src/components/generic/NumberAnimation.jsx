@@ -11,7 +11,13 @@ function NumberAnimation({ targetValue, id, initialValue = 0, updateDelay = 10, 
     useEffect(() => {
         scheduler.clearAllWithTag(id)
 
-        const step = Math.floor((targetValue - currentValue) / updateDelay)
+        if(targetValue === currentValue) {
+            setCurrentValue(targetValue)
+            return
+        }
+
+        const direction = targetValue > currentValue ? 1 : -1
+        const step = Math.max(1, Math.ceil(Math.abs(targetValue - currentValue) / updateDelay))
 
         let value = currentValue
         let lastTickTime = new Date().getTime()
@@ -23,16 +29,21 @@ function NumberAnimation({ targetValue, id, initialValue = 0, updateDelay = 10, 
             lastTickTime = now
 
             const dt = elapsed / tickInterval
-            value += Math.round(step * dt)
+            value += direction * Math.max(1, Math.round(step * dt))
 
-            setCurrentValue(value)
+            const hasReachedTarget = direction > 0 ?
+                value >= targetValue :
+                value <= targetValue
 
-            if(value >= targetValue) {
+            if(hasReachedTarget) {
                 setCurrentValue(targetValue)
                 scheduler.clearAllWithTag(id)
+                return
             }
+
+            setCurrentValue(value)
         }, tickInterval, id)
-    }, [targetValue])
+    }, [currentValue, id, scheduler, targetValue, updateDelay])
 
     return (
         <span className={`number-animation ${className}`}

@@ -1,0 +1,53 @@
+div.pretext-interactive-text {
+    position: relative;
+    width: 100%;
+}
+
+div.pretext-interactive-text-content {
+    width: 100%;
+}
+
+div.pretext-interactive-text-paragraph {
+    width: 100%;
+}
+
+div.pretext-interactive-text-line {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    transform-origin: left center;
+    will-change: transform, opacity, filter;
+}
+
+span.pretext-interactive-text-fragment,
+a.pretext-interactive-text-fragment {
+    display: inline-flex;
+    align-items: center;
+    white-space: pre;
+}
+
+a.pretext-interactive-text-fragment {
+    text-decoration: none;
+}
+
+span.pretext-interactive-text-grapheme {
+    display: inline-block;
+    white-space: pre;
+    pointer-events: none;
+    will-change: transform;
+}
+
+div.pretext-interactive-text-measure {
+    position: absolute;
+    inset: 0 auto auto 0;
+    visibility: hidden;
+    pointer-events: none;
+    height: 0;
+    overflow: hidden;
+    white-space: pre;
+}
+
+span.pretext-interactive-text-measure-body {
+    display: inline;
+    padding: 0;
+}

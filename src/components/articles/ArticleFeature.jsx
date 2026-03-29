@@ -2,6 +2,7 @@ import "./ArticleFeature.scss"
 import React, {useState} from 'react'
 import Article from "./base/Article.jsx"
 import ImageView from "../generic/ImageView.jsx"
+import PretextInteractiveText from "../generic/PretextInteractiveText.jsx"
 
 function ArticleFeature({ dataWrapper, id }) {
     const [selectedItemCategoryId, setSelectedItemCategoryId] = useState(null)
@@ -46,6 +47,13 @@ function ArticleFeatureItems({ dataWrapper, selectedItemCategoryId }) {
 }
 
 function ArticleFeatureItem({ itemWrapper, imageStyle }) {
+    const isAboutIntro = itemWrapper.articleWrapper.sectionId === "about" && itemWrapper.id === 1
+    const isWritingIntro =
+        itemWrapper.articleWrapper.sectionId === "my-writings" &&
+        itemWrapper.articleWrapper.id === 2 &&
+        itemWrapper.id === 1
+    const html = itemWrapper.locales.text || itemWrapper.placeholder
+
     return (
         <div className={`article-feature-item`}>
             <div className={`article-feature-item-media`}>
@@ -62,8 +70,18 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
             </div>
 
             <div className={`article-feature-item-content`}>
-                <div className={`article-feature-item-text last-p-no-margin text-3`}
-                     dangerouslySetInnerHTML={{__html: itemWrapper.locales.text || itemWrapper.placeholder}}/>
+                <div className={`article-feature-item-text last-p-no-margin text-3`}>
+                    {isAboutIntro ? (
+                        <PretextInteractiveText html={html}
+                                                revealOnScroll={true}/>
+                    ) : isWritingIntro ? (
+                        <PretextInteractiveText html={html}
+                                                revealOnScroll={true}
+                                                terrainVariant={"detailed"}/>
+                    ) : (
+                        <div dangerouslySetInnerHTML={{__html: html}}/>
+                    )}
+                </div>
             </div>
         </div>
     )

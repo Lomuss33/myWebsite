@@ -1,24 +1,27 @@
 @import "../../../styles/extend.scss";
 
 div.article-timeline-item-info-for-timelines {
-    --content-padding: 25px 30px;
-    --date-badge-width: 220px;
+    --content-padding: 16px 18px;
+    --header-gap: 10px;
+    --meta-gap: 6px;
+    --date-badge-width: auto;
 
-    @include media-breakpoint-down(xl) {
-        --content-padding: 25px 30px;
+    @include media-breakpoint-down(lg) {
+        --content-padding: 14px 16px;
     }
 
     @include media-breakpoint-down(md) {
-        --content-padding: 20px 25px;
+        --content-padding: 13px 15px;
     }
 
     @include media-breakpoint-down(sm) {
-        --content-padding: 22px 28px 22px 28px;
+        --content-padding: 12px 14px;
+        --header-gap: 8px;
     }
 }
 
 div.article-timeline-item-info-for-timelines-date-badge-small {
-    --date-badge-width: 150px;
+    --date-badge-width: auto;
 }
 
 div.article-timeline-item-info-for-timelines {
@@ -36,66 +39,114 @@ div.article-timeline-item-info-for-timelines-header {
     display: flex;
     flex-direction: column;
     width: 100%;
+    gap: var(--meta-gap);
 }
 
 div.article-timeline-item-info-for-timelines-header-title {
-    display: flex;
-    justify-content: space-between;
     width: 100%;
-    position: relative;
+}
+
+div.article-timeline-item-info-for-timelines-header-main {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px 12px;
 
     h5 {
         font-weight: bold;
-        margin-bottom: 10px;
-        max-width: calc(100% - var(--date-badge-width)*1.15);
-        @include media-breakpoint-down(xl) {
-            max-width: 100%;
-            margin-bottom: 15px;
-        }
+        margin: 0;
+        min-width: 0;
+        flex: 1 1 260px;
+        line-height: 1.18;
     }
+}
 
-    div.article-timeline-item-info-for-timelines-header-date-badge {
-        position: absolute;
-        right: -4px;
-        top: -4px;
-        font-size: 13px;
-        min-width: var(--date-badge-width)!important;
+div.article-timeline-item-info-for-timelines-header-date-badge {
+    flex: 0 0 auto;
+    max-width: 100%;
+    min-width: 0!important;
+
+    div.date-badge {
+        width: auto!important;
+        padding: 4px 12px;
+        font-size: 12px;
+        white-space: nowrap;
+
+        i.fa-icon {
+            margin-right: 8px;
+        }
     }
 }
 
 ul.article-timeline-item-info-for-timelines-header-prop-list {
     color: var(--theme-texts-12);
+    row-gap: 4px;
+}
+
+div.article-timeline-item-content {
+    ul.article-timeline-item-info-for-timelines-header-prop-list {
+        li.prop-list-item {
+            margin-bottom: 2px;
+        }
+    }
+
+    ul.article-timeline-item-info-for-timelines-header-prop-list.prop-list-inline {
+        gap: 0;
+
+        li.prop-list-item {
+            margin-right: 0;
+        }
+    }
 }
 
 /** -------------- BODY -------------- **/
 div.article-timeline-item-info-for-timelines-body {
     display: flex;
     flex-direction: column;
-    margin-top: 18px;
+    margin-top: var(--header-gap);
     color: var(--theme-texts-light);
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-        margin-top: 12px;
+
+    div.article-timeline-item-info-for-timelines-body-text {
+        p {
+            margin-bottom: 0.45rem;
+        }
+    }
+
+    ul.article-timeline-item-info-for-timelines-body-list {
+        margin-top: 6px;
+
+        li.article-timeline-item-info-for-timelines-body-list-item {
+            margin-bottom: 4px;
+        }
+
+        li.article-timeline-item-info-for-timelines-body-list-item:last-child {
+            margin-bottom: 0;
+        }
     }
 }
 
 ul.article-timeline-item-info-for-timelines-body-list {
-    margin-top: 8px;
+    margin-top: 6px;
 }
 
 /** -------------- FOOTER -------------- **/
 div.article-timeline-item-info-for-timelines-tags-footer {
     display: flex;
     width: 100%;
-    margin-top: 22px;
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-        margin-top: 16px;
+    margin-top: 10px;
+
+    li.article-timeline-item-info-for-timelines-tags-footer-tag {
+        margin-right: 5px;
+        margin-bottom: 5px;
+        padding: 2px 8px;
     }
 }
 
 div.article-timeline-item-info-preview-footer {
-    margin-top: 16px;
+    margin-top: 12px;
 
     &-title {
-        margin-bottom: 8px;
+        margin-bottom: 6px;
     }
 }

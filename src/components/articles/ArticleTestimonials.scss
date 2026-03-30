@@ -1,9 +1,38 @@
 @import "../../styles/extend.scss";
 
+div.article-testimonials-items {
+    --testimonial-balloon-min-height: 170px;
+    --testimonial-balloon-padding: 1.4rem 1.3rem;
+    --testimonial-avatar-size: 92px;
+    --testimonial-avatar-border-size: 7px;
+
+    @include media-breakpoint-down(xl) {
+        --testimonial-balloon-min-height: 162px;
+        --testimonial-avatar-size: 88px;
+    }
+
+    @include media-breakpoint-down(md) {
+        --testimonial-balloon-min-height: 140px;
+        --testimonial-balloon-padding: 1.05rem 1.2rem;
+        --testimonial-avatar-size: 84px;
+        --testimonial-avatar-border-size: 6px;
+    }
+
+    @include media-breakpoint-down(sm) {
+        --testimonial-balloon-min-height: 132px;
+        --testimonial-avatar-size: 80px;
+    }
+}
+
 div.article-testimonials-item {
     display: flex;
     flex-direction: column;
     height: 100%;
+}
+
+div.article-testimonials-item-balloon {
+    min-height: var(--testimonial-balloon-min-height);
+    padding: var(--testimonial-balloon-padding);
 }
 
 div.article-testimonials-item-info {
@@ -16,11 +45,8 @@ div.article-testimonials-item-info {
 }
 
 div.article-testimonials-item-avatar {
-    --size: 100px;
-    --border-size: 7px;
-    @include media-breakpoint-down(xl) {--size: 95px}
-    @include media-breakpoint-down(md) {--border-size:6px; --size: 90px}
-    @include media-breakpoint-down(sm) {--size: 86px}
+    --size: var(--testimonial-avatar-size);
+    --border-size: var(--testimonial-avatar-border-size);
 
     width: var(--size);
     height: var(--size);

@@ -9,6 +9,7 @@ div.article-stack-items {
     --gap: 10px;
     --avatar-size: 75px;
     --padding: 15px 20px;
+    --card-height: auto;
 
     @container (max-width: 1180px) {
         --stack-columns: 4;
@@ -40,9 +41,23 @@ div.article-stack-items {
 
     display: grid;
     grid-template-columns: repeat(var(--stack-columns), minmax(0, 1fr));
+    grid-auto-rows: var(--card-height);
     row-gap: var(--gap);
     column-gap: var(--gap);
     width: 100%;
+}
+
+a.article-stack-item-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: inherit!important;
+    text-decoration: none!important;
+}
+
+div.article-stack-items > div.transitionable-item {
+    width: 100%;
+    min-width: 0;
 }
 
 div.article-stack-item {
@@ -55,6 +70,7 @@ div.article-stack-item {
     justify-content: center;
     flex-direction: column;
     width: 100%;
+    height: 100%;
     min-width: 0;
 }
 
@@ -68,11 +84,24 @@ div.article-stack-item-avatar {
 }
 
 div.article-stack-item-title {
-    font-size: calc(var(--avatar-size)*0.20);
     margin-top: 8px;
     text-align: center;
     color: var(--theme-texts-light);
     overflow-wrap: anywhere;
+    text-wrap: balance;
+}
+
+div.article-stack-item-title-prefix {
+    font-size: calc(var(--avatar-size)*0.16);
+    line-height: 1.15;
+    color: var(--theme-texts-light-3);
+}
+
+div.article-stack-item-title-main {
+    font-size: calc(var(--avatar-size)*0.22);
+    line-height: 1.18;
+    font-weight: 700;
+    color: var(--theme-texts-light);
 }
 
 div.article-stack-item-experience {
@@ -80,4 +109,150 @@ div.article-stack-item-experience {
     text-align: center;
     color: var(--theme-texts-light-3);
     overflow-wrap: anywhere;
+}
+
+article.article.article-stack-compact {
+    div.article-stack-items.article-stack-items-compact {
+        --stack-columns: 5;
+        --gap: 12px;
+        --avatar-size: 62px;
+        --padding: 12px 14px;
+        --card-height: 152px;
+
+        @container (max-width: 920px) {
+            --stack-columns: 4;
+            --avatar-size: 56px;
+            --card-height: 144px;
+        }
+
+        @container (max-width: 660px) {
+            --stack-columns: 3;
+            --gap: 10px;
+            --avatar-size: 52px;
+            --padding: 10px 11px;
+            --card-height: 132px;
+        }
+
+        @container (max-width: 460px) {
+            --stack-columns: 2;
+            --gap: 8px;
+            --avatar-size: 48px;
+            --padding: 9px 10px;
+            --card-height: 124px;
+        }
+
+        > div.transitionable-item {
+            height: 100%;
+            min-width: 0;
+        }
+    }
+
+    a.article-stack-item-link {
+        height: 100%;
+    }
+
+    div.article-stack-item.article-stack-item-compact {
+        padding: var(--padding);
+        justify-content: flex-start;
+    }
+
+    div.article-stack-item-compact div.article-stack-item-avatar {
+        font-size: calc(var(--avatar-size)*0.52);
+    }
+
+    div.article-stack-item-compact div.article-stack-item-title {
+        margin-top: 7px;
+        min-height: 3.45em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    div.article-stack-item-compact div.article-stack-item-title-prefix {
+        font-size: calc(var(--avatar-size)*0.135);
+        line-height: 1.05;
+        margin-bottom: 2px;
+    }
+
+    div.article-stack-item-compact div.article-stack-item-title-main {
+        font-size: calc(var(--avatar-size)*0.205);
+        line-height: 1.14;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        word-break: normal;
+        overflow-wrap: anywhere;
+        text-wrap: balance;
+    }
+
+    div.article-stack-item-compact div.article-stack-item-experience {
+        display: none;
+    }
+}
+
+article.article.article-stack-home {
+    div.article-stack-items.article-stack-items-home {
+        --stack-columns: 7;
+        --gap: 7px;
+        --avatar-size: 64px;
+        --padding: 10px 12px;
+
+        @container (max-width: 1180px) {
+            --stack-columns: 5;
+        }
+
+        @container (max-width: 980px) {
+            --avatar-size: 60px;
+            --gap: 6px;
+        }
+
+        @container (max-width: 840px) {
+            --stack-columns: 4;
+            --avatar-size: 56px;
+            --gap: 5px;
+        }
+
+        @container (max-width: 560px) {
+            --stack-columns: 3;
+            --avatar-size: 50px;
+            --gap: 4px;
+            --padding: 8px 9px;
+        }
+
+        @container (max-width: 420px) {
+            --avatar-size: 46px;
+            --padding: 7px 8px;
+            --gap: 4px;
+        }
+    }
+
+    div.article-stack-item.article-stack-item-home {
+        padding: var(--padding);
+    }
+
+    div.article-stack-item-home div.article-stack-item-avatar {
+        font-size: calc(var(--avatar-size)*0.54);
+    }
+
+    div.article-stack-item-home div.article-stack-item-title {
+        margin-top: 4px;
+    }
+
+    div.article-stack-item-home div.article-stack-item-title-prefix {
+        font-size: calc(var(--avatar-size)*0.14);
+        line-height: 1.1;
+        letter-spacing: 0.01em;
+    }
+
+    div.article-stack-item-home div.article-stack-item-title-main {
+        font-size: calc(var(--avatar-size)*0.20);
+        line-height: 1.12;
+    }
+
+    div.article-stack-item-home div.article-stack-item-experience {
+        font-size: calc(var(--avatar-size)*0.17);
+        line-height: 1.15;
+    }
 }

@@ -8,16 +8,35 @@ h4.article-title {
     display: flex;
     align-items: center;
     font-weight: bold;
+    gap: 0;
+    font-size: 1.20rem!important;
+    line-height: 1.15;
 
-    margin-bottom: 24px;
+    margin-bottom: 14px;
+
+    @include media-breakpoint-down(xl) {
+        font-size: 1.14rem!important;
+    }
+
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-        margin-bottom: 24px;
+        margin-bottom: 12px;
+        font-size: 1.06rem!important;
     }
 
     span.article-title-prefix {
         color: var(--theme-primary);
         user-select: none;
         pointer-events: none;
+        opacity: 0.85;
+        font-size: 1.08rem!important;
+        line-height: 1;
+        margin-left: 0!important;
+        margin-right: 8px!important;
+        padding-right: 0!important;
+
+        @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+            font-size: 0.98rem!important;
+        }
     }
 }
 
@@ -25,29 +44,29 @@ div.article-content {
     display: flex;
     flex-direction: column;
 
-    margin: 0 16px 0 16px;
+    margin: 0 12px;
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-        margin: 0 12px 0 12px;
+        margin: 0 10px;
     }
 }
 
 article.article-spacing-default {
-    margin-top: 40px;
+    margin-top: 28px;
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-        margin-top: 28px;
+        margin-top: 20px;
     }
 }
 
 article.article-spacing-small {
-    margin-top: 20px;
+    margin-top: 14px;
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-        margin-top: 15px;
+        margin-top: 10px;
     }
 }
 
 div.article-category-filter {
-    margin-bottom: 32px!important;
+    margin-bottom: 20px!important;
     @include media-breakpoint-down(lg) {
-        margin-bottom: 28px!important;
+        margin-bottom: 18px!important;
     }
 }

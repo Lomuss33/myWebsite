@@ -1,35 +1,32 @@
 @import "../../styles/extend.scss";
 
 ul.article-timeline-items {
-    --min-gap-between-items: 50px;
-    --avatar-size: 96px;
-    --avatar-border-width: 6px;
-    --gap-between-avatar-and-content: 30px;
-    --trailing-item-size-multiplier: 0.55;
-    --avatar-offset-merge-mode: 10px;
-
-    @include media-breakpoint-down(xxl) {
-        --avatar-size: 90px;
-    }
-
-    @include media-breakpoint-down(xl) {
-        --avatar-size: 85px;
-    }
+    --min-gap-between-items: 24px;
+    --avatar-size: 72px;
+    --avatar-border-width: 4px;
+    --timeline-line-width: 4px;
+    --gap-between-avatar-and-content: 16px;
+    --avatar-offset-merge-mode: 6px;
 
     @include media-breakpoint-down(lg) {
-        --avatar-size: 75px;
-        --gap-between-avatar-and-content: 25px;
+        --min-gap-between-items: 18px;
+        --avatar-size: 60px;
+        --avatar-border-width: 3px;
+        --timeline-line-width: 3px;
+        --gap-between-avatar-and-content: 12px;
     }
 
     @include media-breakpoint-down(md) {
-        --avatar-size: 65px;
-        --gap-between-avatar-and-content: 20px;
+        --avatar-size: 54px;
+        --gap-between-avatar-and-content: 10px;
     }
 
     @include media-breakpoint-down(sm) {
-        --avatar-size: 55px;
-        --avatar-border-width: 4px;
-        --gap-between-avatar-and-content: 0px;
+        --min-gap-between-items: 14px;
+        --avatar-size: 46px;
+        --avatar-border-width: 3px;
+        --timeline-line-width: 3px;
+        --gap-between-avatar-and-content: 10px;
     }
 }
 
@@ -38,37 +35,43 @@ ul.article-timeline-items {
     padding: 0;
     margin: 0;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--min-gap-between-items);
 }
 
 ul.article-timeline-items:before {
     position: absolute;
     content: "";
-    top: 0;
-    bottom: 0;
-    width: var(--avatar-border-width);
+    top: calc(var(--avatar-size)/2);
+    bottom: calc(var(--avatar-size)/2);
+    width: var(--timeline-line-width);
     background-color: var(--theme-timeline-line-color);
-    left: calc(var(--avatar-size)/2 - var(--avatar-border-width)/2);
+    left: calc(var(--avatar-size)/2 - var(--timeline-line-width)/2);
     z-index: 0;
 
     @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
-        height: calc(100% - var(--avatar-offset-merge-mode)*2);
+        top: calc(var(--avatar-size)/2 - var(--avatar-offset-merge-mode));
+        bottom: calc(var(--avatar-size)/2 - var(--avatar-offset-merge-mode));
     }
 }
 
 li.article-timeline-item {
     display: flex;
-    margin-bottom: var(--min-gap-between-items);
+    align-items: flex-start;
+    min-width: 0;
 }
 
 div.article-timeline-item-avatar {
     min-width: var(--avatar-size);
     width: var(--avatar-size);
     height: var(--avatar-size);
-    font-size: calc(var(--avatar-size)/2.2);
+    font-size: calc(var(--avatar-size)/2.35);
     border-radius: 100%;
     border: var(--avatar-border-width) solid var(--theme-timeline-line-color);
     overflow: hidden;
     z-index: 1;
+    flex-shrink: 0;
 
     div.avatar-view-image-view {
         border-radius: 100%;
@@ -81,33 +84,15 @@ div.article-timeline-item-avatar {
     }
 }
 
-li.article-timeline-item-trailing {
-    margin-bottom: 0;
-
-    div.article-timeline-item-avatar {
-        min-width: calc(var(--avatar-size)*var(--trailing-item-size-multiplier));
-        width: calc(var(--avatar-size)*var(--trailing-item-size-multiplier));
-        height: calc(var(--avatar-size)*var(--trailing-item-size-multiplier));
-        margin-left: calc(var(--avatar-size)*(1 - var(--trailing-item-size-multiplier))/2);
-    }
-
-    div.article-timeline-item-avatar {
-        background-color: var(--theme-timeline-line-color-accent);
-        left: 0!important;
-    }
-
-    div.article-timeline-item-content {
-        display: none;
-    }
-}
-
 div.article-timeline-item-content {
     margin-left: var(--gap-between-avatar-and-content)!important;
-    margin-top: calc(var(--gap-between-avatar-and-content)/2)!important;
+    margin-top: 0!important;
+    min-width: 0;
+    flex: 1 1 auto;
 
     @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
         position: relative;
-        margin-left: calc(var(--gap-between-avatar-and-content) - var(--avatar-size)/2 + var(--avatar-border-width)/2)!important;
+        margin-left: calc(var(--gap-between-avatar-and-content) - var(--avatar-size)/2 + var(--timeline-line-width)/2 + 3px)!important;
         margin-top: 0!important;
         border-top-left-radius: 0!important;
         border-bottom-left-radius: 0!important;

@@ -1,37 +1,60 @@
 @import "../../../styles/extend.scss";
 
+div.nav-link-list-shell {
+    --nav-link-target-height: 48px;
+    --nav-link-icon-width: 60px;
+    --nav-link-icon-size: 1.15rem;
+    --nav-link-font-size: 0.98rem;
+    --nav-link-padding-inline: 12px;
+    --nav-link-gap: 8px;
+    --nav-link-hover-scale: 1.08;
+
+    display: flex;
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
 nav.nav-link-list {
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    flex: 1 1 auto;
+    min-height: 0;
     width: 100%;
-
-    direction: rtl;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 a.nav-link {
     display: flex;
     align-items: center;
-
-    direction: ltr;
+    flex: 1 1 0;
+    min-height: 0;
     border-top: 1px solid var(--theme-standard-borders);
     transition: none!important;
-    min-height: 39px;
-
-    padding: 0 5px;
+    padding: 0 var(--nav-link-padding-inline);
+    gap: var(--nav-link-gap);
 
     i {
-        font-size: 1.15rem;
-        min-width: 60px;
+        font-size: var(--nav-link-icon-size);
+        min-width: var(--nav-link-icon-width);
+        width: var(--nav-link-icon-width);
         opacity: 0.3;
         text-align: center;
+        line-height: 1;
+        flex: 0 0 var(--nav-link-icon-width);
         transition: 0.2s scale ease-in-out;
     }
 
     span {
         opacity: 0.8;
+        flex: 1 1 auto;
+        min-width: 0;
+        font-size: var(--nav-link-font-size);
+        line-height: 1.08;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
 
@@ -41,7 +64,7 @@ a.nav-link:hover {
     i {
         color: var(--theme-primary);
         opacity: 0.9;
-        scale: 1.1;
+        scale: var(--nav-link-hover-scale);
     }
 
     span {
@@ -59,7 +82,7 @@ a.nav-link-active {
     i {
         color: var(--theme-texts-inv)!important;
         opacity: 0.9;
-        scale: 1.1!important;
+        scale: var(--nav-link-hover-scale)!important;
     }
 
     span {
@@ -68,8 +91,11 @@ a.nav-link-active {
     }
 }
 
-nav.nav-link-list-shrink {
+div.nav-link-list-shell.nav-link-list-shrink {
     a.nav-link {
+        justify-content: center;
+        padding: 0 var(--nav-link-padding-inline);
+
         span {
             display: none;
         }
@@ -78,6 +104,8 @@ nav.nav-link-list-shrink {
             user-select: none;
             pointer-events: none;
             width: 100%;
+            min-width: 0;
+            flex-basis: auto;
         }
     }
 }

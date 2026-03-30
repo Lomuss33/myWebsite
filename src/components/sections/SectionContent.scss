@@ -32,8 +32,8 @@ div.section-content-border-decoration-top-left {
 }
 
 div.section-content-elements-wrapper {
-    padding: 20px 0 0 0;
+    padding: 10px 0 0 0;
     @include media-breakpoint-down(lg) {
-        padding: 5px 0 0 0;
+        padding: 2px 0 0 0;
     }
 }

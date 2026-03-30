@@ -47,6 +47,12 @@ export default class ArticleItemDataWrapper {
         this.locales = this._parseLocales(rawData.locales, language)
         this.percentage = this._parseNumber(rawData.percentage, 0, 100)
         this.preview = this._parsePreview(rawData.preview, language)
+
+        const embeddedTitleLink = this._parseEmbeddedTitleLink(this.locales.title, language)
+        if(embeddedTitleLink) {
+            this.locales.title = embeddedTitleLink.title
+            this.link = this.link || embeddedTitleLink.link
+        }
     }
 
     _parseNumber(rawNumber, min = -99999999999, max = 99999999999) {
@@ -164,6 +170,29 @@ export default class ArticleItemDataWrapper {
             links: links,
             screenshots: screenshots,
             youtubeVideo: rawPreview.youtubeVideo
+        }
+    }
+
+    _parseEmbeddedTitleLink(title, language) {
+        if(!title)
+            return null
+
+        const match = String(title).trim().match(/^<a\b[^>]*href=['"]([^'"]+)['"][^>]*>([\s\S]+)<\/a>$/i)
+        if(!match)
+            return null
+
+        const href = match[1]?.trim()
+        const titleText = utils.string.stripHTMLTags(match[2]).trim()
+        if(!href || !titleText)
+            return null
+
+        return {
+            title: titleText,
+            link: this._parseLink({
+                href,
+                label: titleText,
+                tooltipString: "open_website"
+            }, language)
         }
     }
 

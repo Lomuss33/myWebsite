@@ -14,15 +14,18 @@ import CopyButton from "../buttons/CopyButton.jsx"
  */
 function ArticleInfoList({ dataWrapper, id }) {
     const [selectedItemCategoryId, setSelectedItemCategoryId] = useState(null)
+    const isHomeInfoList = dataWrapper.sectionId === "about"
+    const homeClass = isHomeInfoList ? `article-info-list-home` : ``
 
     return (
         <Article id={dataWrapper.uniqueId}
                  type={Article.Types.SPACING_DEFAULT}
                  dataWrapper={dataWrapper}
-                 className={`article-info-list`}
+                 className={`article-info-list ${homeClass}`}
                  selectedItemCategoryId={selectedItemCategoryId}
                  setSelectedItemCategoryId={setSelectedItemCategoryId}>
             <ArticleInfoListItems dataWrapper={dataWrapper}
+                                  isHomeInfoList={isHomeInfoList}
                                   selectedItemCategoryId={selectedItemCategoryId}/>
         </Article>
     )
@@ -34,18 +37,24 @@ function ArticleInfoList({ dataWrapper, id }) {
  * @return {JSX.Element}
  * @constructor
  */
-function ArticleInfoListItems({ dataWrapper, selectedItemCategoryId }) {
+function ArticleInfoListItems({ dataWrapper, selectedItemCategoryId, isHomeInfoList }) {
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
 
     const id = dataWrapper.uniqueId
     const shrinkClass = filteredItems.find(itemWrapper => itemWrapper.locales.text) ?
         `` :
         `article-info-list-items-shrink`
+    const homeClass = isHomeInfoList ? `article-info-list-items-home` : ``
 
     const viewport = useViewport()
 
     useEffect(() => {
-        const itemDivs = document.getElementById(id).querySelectorAll(`.article-info-list-item`)
+        const containerEl = document.getElementById(id)
+        const itemDivs = containerEl?.querySelectorAll(`.article-info-list-item`) || []
+        const maxEqualizedHeight = isHomeInfoList ? 105 : 120
+
+        if(!itemDivs.length)
+            return
 
         itemDivs.forEach(div => {
             div.style.height = 'auto'
@@ -58,18 +67,19 @@ function ArticleInfoListItems({ dataWrapper, selectedItemCategoryId }) {
             if (height > maxHeight) maxHeight = height
         })
 
-        if(maxHeight < 120) {
+        if(maxHeight < maxEqualizedHeight) {
             itemDivs.forEach(div => {
                 div.style.minHeight = `${maxHeight}px`
             })
         }
-    }, [dataWrapper?.id, viewport.innerWidth])
+    }, [dataWrapper?.id, viewport.innerWidth, isHomeInfoList])
 
     return (
-        <div className={`article-info-list-items ${shrinkClass}`}
+        <div className={`article-info-list-items ${shrinkClass} ${homeClass}`}
              id={id}>
             {filteredItems.map((itemWrapper, key) => (
                 <ArticleInfoListItem itemWrapper={itemWrapper}
+                                     isHomeInfoList={isHomeInfoList}
                                      key={key}/>
             ))}
         </div>
@@ -81,26 +91,27 @@ function ArticleInfoListItems({ dataWrapper, selectedItemCategoryId }) {
  * @return {JSX.Element}
  * @constructor
  */
-function ArticleInfoListItem({ itemWrapper}) {
+function ArticleInfoListItem({ itemWrapper, isHomeInfoList }) {
     const [linkHovered, setLinkHovered] = useState(false)
 
     const hoverClass = linkHovered ?
         `article-info-list-item-hovered` :
         ``
+    const homeClass = isHomeInfoList ? `article-info-list-item-home` : ``
 
     const baseTextSize = itemWrapper.locales.text ? 3 : 4
     const titleClass = `text-${baseTextSize + 1}`
     const textClass = `text-${baseTextSize}`
 
     return (
-        <div className={`article-info-list-item ${hoverClass}`}>
+        <div className={`article-info-list-item ${hoverClass} ${homeClass}`}>
             <AvatarView src={itemWrapper.img}
                         faIcon={itemWrapper.faIconWithFallback}
                         style={itemWrapper.faIconStyle}
                         alt={itemWrapper.imageAlt}
                         className={`article-info-list-item-avatar`}/>
 
-            <div className={`article-info-list-item-content`}>
+            <div className={`article-info-list-item-content ${homeClass}`}>
                 <div className={`article-info-list-item-info-title ${titleClass}`}
                      dangerouslySetInnerHTML={{__html: itemWrapper.locales.title || itemWrapper.placeholder}}/>
 

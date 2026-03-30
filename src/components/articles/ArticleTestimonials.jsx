@@ -6,7 +6,6 @@ import {Balloon, BalloonQuote} from "../generic/Balloon"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
 import Link from "../generic/Link.jsx"
 import AvatarView from "../generic/AvatarView.jsx"
-import {useConstants} from "../../hooks/constants.js"
 
 /**
  * @param {ArticleDataWrapper} dataWrapper
@@ -37,13 +36,11 @@ function ArticleTestimonials({ dataWrapper, id }) {
  * @constructor
  */
 function ArticleTestimonialsItems({ dataWrapper, selectedItemCategoryId }) {
-    const constants = useConstants()
-
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
 
     return (
         <Swipeable className={`article-testimonials-items`}
-                   breakpoints={constants.SWIPER_BREAKPOINTS_FOR_THREE_SLIDES}>
+                   spaceBetween={16}>
             {filteredItems.map((itemWrapper, key) => (
                 <ArticleTestimonialsItem itemWrapper={itemWrapper}
                                          key={key}/>
@@ -59,15 +56,24 @@ function ArticleTestimonialsItems({ dataWrapper, selectedItemCategoryId }) {
  */
 function ArticleTestimonialsItem({ itemWrapper }) {
     const viewport = useViewport()
+    const isMobileLayout = viewport.isMobileLayout()
 
-    const textClass = viewport.isMobileLayout() ?
+    const quoteTextClass = isMobileLayout ?
         `text-3` :
-        `text-2`
+        `text-1`
+
+    const nameTextClass = isMobileLayout ?
+        `text-5` :
+        `text-4`
+
+    const roleTextClass = isMobileLayout ?
+        `text-2` :
+        `text-1`
 
     return (
         <div className={`article-testimonials-item`}>
             <Balloon className={`article-testimonials-item-balloon`}>
-                <BalloonQuote className={`${textClass}`}
+                <BalloonQuote className={`${quoteTextClass}`}
                               text={itemWrapper.locales.text || itemWrapper.placeholder}/>
             </Balloon>
 
@@ -80,11 +86,11 @@ function ArticleTestimonialsItem({ itemWrapper }) {
 
                 <Link href={itemWrapper.link?.href}
                       tooltip={itemWrapper.link?.tooltip}
-                      className={`article-testimonials-item-name text-5`}>
+                      className={`article-testimonials-item-name ${nameTextClass}`}>
                     <span dangerouslySetInnerHTML={{__html: itemWrapper.locales.label || itemWrapper.label || "---"}}/>
                 </Link>
 
-                <div className={`article-testimonials-item-role text-2`}
+                <div className={`article-testimonials-item-role ${roleTextClass}`}
                      dangerouslySetInnerHTML={{__html: itemWrapper.locales.title || "---"}}/>
             </div>
         </div>

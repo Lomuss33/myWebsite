@@ -30,7 +30,7 @@
     "articles": [
         {
             "id": 1,
-            "component": "ArticleThread",
+            "component": "ArticleTimeline",
             "locales": {
                 "en": {
                     "title": "My {{Artworks & Travel Albums}}"
@@ -1285,7 +1285,7 @@
                     },
                     "locales": {
                         "en": {
-                            "title": "<a href='https://www.youtube.com/results?search_query=Centre+Place+YouTube'>Centre Place</a>"
+                            "title": "<a href='https://www.youtube.com/@centre-place'>Centre Place</a>"
                         }
                     }
                 },

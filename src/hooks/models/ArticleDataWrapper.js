@@ -66,10 +66,18 @@ export default class ArticleDataWrapper {
 
             // - ArticleText
             keepImageRow: Boolean(rawSettings["keepImageRow"]) || undefined,
+            textLayoutMode: rawSettings["text_layout_mode"] || "default",
 
             // - ArticleFeature
+            featureLayoutMode: rawSettings["feature_layout_mode"] || "default",
+            featureStackOrder: rawSettings["feature_stack_order"] || "media_text",
+            featureSplitMinWidth: rawSettings["feature_split_min_width"] || undefined,
+            featureSplitHeightTolerance: rawSettings["feature_split_height_tolerance"] || 0,
             featureImageAspectRatio: rawSettings["feature_image_aspect_ratio"] || undefined,
             featureImageMobileAspectRatio: rawSettings["feature_image_mobile_aspect_ratio"] || undefined,
+            featureImageViewportHeight: rawSettings["feature_image_viewport_height"] || undefined,
+            featureTextFitMinScale: rawSettings["feature_text_fit_min_scale"] || undefined,
+            featureTextFitMaxScale: rawSettings["feature_text_fit_max_scale"] || undefined,
 
             // - ArticleSkills
             maxItemsPerRow: rawSettings["max_items_per_row"] || undefined,

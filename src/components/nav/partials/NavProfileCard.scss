@@ -1,22 +1,23 @@
 @import "../../../styles/extend.scss";
 
 div.nav-profile-card {
-    --avatar-size: 140px;
-    --border-size: 6px;
-    --info-margin-top: 10px;
-    --offset-status-circle: 15px;
-    @media(min-height: 760px) {--avatar-size: 150px; --info-margin-top: 11px;}
-    @media(min-height: 800px) {--avatar-size: 155px}
-    @media(max-height: 690px) {--avatar-size: 130px}
-    @media(max-height: 650px) {--avatar-size: 120px}
+    --avatar-size: 128px;
+    --border-size: 5px;
+    --info-margin-top: 6px;
+    --offset-status-circle: 14px;
+    @media(min-height: 760px) {--avatar-size: 138px; --info-margin-top: 8px;}
+    @media(min-height: 800px) {--avatar-size: 144px}
+    @media(max-height: 690px) {--avatar-size: 118px}
+    @media(max-height: 650px) {--avatar-size: 110px}
 
     display: flex;
+    flex: 0 0 auto;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     background-color: transparent!important;
     position: relative;
-    margin: 15px;
+    margin: 10px 10px 8px;
 
     &-header {
         display: flex;
@@ -41,15 +42,15 @@ div.nav-profile-card {
 
     &-status-circle {
         position: absolute;
-        top: calc(var(--avatar-size) - var(--offset-status-circle));
-        left: calc(var(--avatar-size) - var(--offset-status-circle) * 1.2);
+        top: calc(var(--offset-status-circle) * -0.18);
+        left: calc(var(--avatar-size) - var(--offset-status-circle) * 1);
     }
 
     &-info {
         margin-top: var(--info-margin-top);
-        margin-bottom: 3px;
+        margin-bottom: 2px;
         user-select: none;
-        width: min(100%, 260px);
+        width: min(100%, 206px);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -64,11 +65,11 @@ div.nav-profile-card {
     h1.nav-profile-card-name {
         text-align: center;
 
-        margin-left: 10px;
-        margin-right: 10px;
-        margin-bottom: 4px;
-        font-size: 1.25rem!important;
-        line-height: 1.8rem!important;
+        margin-left: 8px;
+        margin-right: 8px;
+        margin-bottom: 2px;
+        font-size: 1.15rem!important;
+        line-height: 1.48rem!important;
 
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
             font-size: 1.35rem!important;
@@ -114,11 +115,11 @@ div.nav-profile-card {
         align-items: center;
         justify-content: center;
         color: var(--theme-secondary);
-        font-size: 0.9rem;
-        min-height: 25px;
-        width: min(100%, 260px);
+        font-size: 0.84rem;
+        min-height: 20px;
+        width: min(100%, 206px);
         text-align: center;
-        margin-top: 2px;
+        margin-top: 0;
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
             font-size: 0.95rem;
             min-height: 25px;
@@ -127,9 +128,10 @@ div.nav-profile-card {
 
     div.nav-profile-card-compact-name {
         display: none;
-        margin-top: 8px;
-        font-size: 0.8rem;
-        line-height: 1.1;
+        margin-top: 5px;
+        font-size: 0.76rem;
+        line-height: 1.05;
+        max-width: 68px;
         text-align: center;
         color: var(--theme-texts-light);
     }
@@ -223,9 +225,9 @@ div.nav-profile-card {
 }
 
 div.nav-profile-card-shrink {
-    --avatar-size: 80px;
+    --avatar-size: 72px;
     --border-size: 3px;
-    --offset-status-circle: 12px;
+    --offset-status-circle: 11px;
 
     div.nav-profile-card-avatar {
         border-radius: calc($standard-border-radius * 2)!important;
@@ -241,6 +243,6 @@ div.nav-profile-card-shrink {
 
     div.nav-profile-card-compact-name {
         display: block;
-        max-width: 84px;
+        max-width: 68px;
     }
 }

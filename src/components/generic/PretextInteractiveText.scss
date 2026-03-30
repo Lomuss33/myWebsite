@@ -1,10 +1,12 @@
 div.pretext-interactive-text {
     position: relative;
     width: 100%;
+    touch-action: manipulation;
 }
 
 div.pretext-interactive-text-content {
     width: 100%;
+    overflow: visible;
 }
 
 div.pretext-interactive-text-paragraph {
@@ -15,6 +17,7 @@ div.pretext-interactive-text-line {
     display: flex;
     align-items: center;
     width: 100%;
+    overflow: visible;
     transform-origin: left center;
     will-change: transform, opacity, filter;
 }
@@ -34,6 +37,8 @@ span.pretext-interactive-text-grapheme {
     display: inline-block;
     white-space: pre;
     pointer-events: none;
+    transform-origin: center center;
+    backface-visibility: hidden;
     will-change: transform;
 }
 

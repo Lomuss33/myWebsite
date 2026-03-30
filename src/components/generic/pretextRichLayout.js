@@ -232,6 +232,7 @@ function createPreparedParagraph(paragraph, paragraphIndex, font) {
             fullWidth: fullLine.width,
             endCursor: fullLine.end
         })
+
         return collection
     }, [])
 

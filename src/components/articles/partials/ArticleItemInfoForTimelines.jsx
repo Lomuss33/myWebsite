@@ -1,5 +1,5 @@
 import "./ArticleItemInfoForTimelines.scss"
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {useViewport} from "../../../providers/ViewportProvider.jsx"
 import DateBadge from "../../widgets/DateBadge.jsx"
 import {PropList, PropListItem} from "../../generic/PropList.jsx"
@@ -37,7 +37,7 @@ function ArticleItemInfoForTimelines({ children, itemWrapper, className = "", sm
 function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateInterval = false }) {
     const viewport = useViewport()
     const shouldShowDateBadge = viewport.isBreakpoint("xl")
-    const isSmallScreen =  !viewport.isBreakpoint("sm")
+    const isSmallScreen = !viewport.isBreakpoint("sm")
 
     const institution = itemWrapper.locales.institution
 
@@ -86,15 +86,17 @@ function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateIn
     return (
         <div className={`article-timeline-item-info-for-timelines-header ${className}`}>
             <div className={`article-timeline-item-info-for-timelines-header-title`}>
-                <h5 className={``}
-                    dangerouslySetInnerHTML={{__html: itemWrapper.locales.title || itemWrapper.placeholder}}/>
+                <div className={`article-timeline-item-info-for-timelines-header-main`}>
+                    <h5 className={``}
+                        dangerouslySetInnerHTML={{__html: itemWrapper.locales.title || itemWrapper.placeholder}}/>
 
-                {shouldShowDateBadge && (
-                    <DateBadge dateStart={itemWrapper.dateStartDisplay}
-                               dateEnd={dateInterval ? itemWrapper.dateEndDisplay : null}
-                               variant={DateBadge.Variants.DEFAULT}
-                               className={`article-timeline-item-info-for-timelines-header-date-badge`}/>
-                )}
+                    {shouldShowDateBadge && (
+                        <DateBadge dateStart={itemWrapper.dateStartDisplay}
+                                   dateEnd={dateInterval ? itemWrapper.dateEndDisplay : null}
+                                   variant={DateBadge.Variants.DEFAULT}
+                                   className={`article-timeline-item-info-for-timelines-header-date-badge`}/>
+                    )}
+                </div>
             </div>
 
             <PropList className={`article-timeline-item-info-for-timelines-header-prop-list text-1`}
@@ -103,7 +105,7 @@ function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateIn
                     <PropListItem key={key}
                                   faIcon={item.faIcon}
                                   type={item.type}
-                                  iconSpacing={isSmallScreen ? 25 : 30}
+                                  iconSpacing={isSmallScreen ? 22 : 24}
                                   value={item.value}/>
                 ))}
             </PropList>
@@ -122,7 +124,7 @@ function ArticleItemInfoForTimelinesBody({ itemWrapper, className = "" }) {
 
     return (
         <div className={`article-timeline-item-info-for-timelines-body ${className}`}>
-            <div className={`article-timeline-item-info-for-timelines-body-text ${textClass}`}
+            <div className={`article-timeline-item-info-for-timelines-body-text ${textClass} last-p-no-margin`}
                  dangerouslySetInnerHTML={{__html: itemWrapper.locales.text}}/>
 
             {itemWrapper.locales.list && itemWrapper.locales.list.length > 0 && (
@@ -145,17 +147,20 @@ function ArticleItemInfoForTimelinesBody({ itemWrapper, className = "" }) {
  * @constructor
  */
 function ArticleItemInfoForTimelinesTagsFooter({ itemWrapper, className = "" }) {
+    const tags = itemWrapper.locales.tags || []
+
+    if(tags.length === 0)
+        return <></>
+
     return (
         <div className={`article-timeline-item-info-for-timelines-tags-footer ${className}`}>
-            {itemWrapper.locales.tags && (
-                <Tags className={`article-timeline-item-info-for-timelines-tags-footer-tag-list`}>
-                    {itemWrapper.locales.tags.map((tag, key) => (
-                        <Tag key={key}
-                             text={tag}
-                             className={`article-timeline-item-info-for-timelines-tags-footer-tag text-1`}/>
-                    ))}
-                </Tags>
-            )}
+            <Tags className={`article-timeline-item-info-for-timelines-tags-footer-tag-list`}>
+                {tags.map((tag, key) => (
+                    <Tag key={key}
+                         text={tag}
+                         className={`article-timeline-item-info-for-timelines-tags-footer-tag text-1`}/>
+                ))}
+            </Tags>
         </div>
     )
 }

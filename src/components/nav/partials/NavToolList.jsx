@@ -1,5 +1,5 @@
 import "./NavToolList.scss"
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {useLanguage} from "../../../providers/LanguageProvider.jsx"
 import {useTheme} from "../../../providers/ThemeProvider.jsx"
 import {useFeedbacks} from "../../../providers/FeedbacksProvider.jsx"
@@ -7,8 +7,8 @@ import {useData} from "../../../providers/DataProvider.jsx"
 import NavToolLanguagePicker from "../tools/NavToolLanguagePicker.jsx"
 import NavToolThemePicker from "../tools/NavToolThemePicker.jsx"
 import NavToolCursorToggle from "../tools/NavToolCursorToggle.jsx"
-import NavToolSettings from "../tools/NavToolSettings.jsx"
 import NavToolResumeDownloader from "../tools/NavToolResumeDownloader.jsx"
+import NavToolSettings from "../tools/NavToolSettings.jsx"
 
 function NavToolList({ expanded }) {
     const language = useLanguage()
@@ -17,7 +17,6 @@ function NavToolList({ expanded }) {
     const data = useData()
 
     const profile = data.getProfile()
-    const maxWidgets = expanded ? 4 : 2
 
     const shrinkClass = expanded ?
         `` :
@@ -30,17 +29,20 @@ function NavToolList({ expanded }) {
         ...(profile.resumePdfUrl ? [NavToolSettings.Options.DOWNLOAD_RESUME] : []),
     ]
 
-    const visibleWidgets = widgets.length <= maxWidgets ?
+    const orderedWidgets = expanded ?
         widgets :
-        widgets.slice(0, maxWidgets - 1)
-
-    const groupedWidgets = widgets.length <= maxWidgets ?
-        [] :
-        widgets.slice(maxWidgets - 1)
+        [
+            ...widgets.filter(item =>
+                item !== NavToolSettings.Options.THEME &&
+                item !== "language"
+            ),
+            ...widgets.filter(item => item === NavToolSettings.Options.THEME),
+            ...widgets.filter(item => item === "language"),
+        ]
 
     return (
         <div className={`nav-tools ${shrinkClass}`}>
-            {visibleWidgets.map((item, key) => (
+            {orderedWidgets.map((item, key) => (
                 <div className={`nav-tools-item`}
                      key={key}>
                     {item === "language" && (<NavToolLanguagePicker/>)}
@@ -49,12 +51,6 @@ function NavToolList({ expanded }) {
                     {item === NavToolSettings.Options.DOWNLOAD_RESUME && (<NavToolResumeDownloader/>)}
                 </div>
             ))}
-
-            {groupedWidgets.length > 0 && (
-                <div className={`nav-tools-item`}>
-                    <NavToolSettings options={groupedWidgets}/>
-                </div>
-            )}
         </div>
     )
 }

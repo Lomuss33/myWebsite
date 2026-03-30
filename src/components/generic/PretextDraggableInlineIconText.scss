@@ -1,0 +1,99 @@
+@import "../../styles/extend.scss";
+
+div.pretext-draggable-inline-icon-text {
+    position: relative;
+    width: 100%;
+}
+
+div.pretext-draggable-inline-icon-text-canvas {
+    position: relative;
+    width: 100%;
+}
+
+div.pretext-draggable-inline-icon-text-lines {
+    position: relative;
+    width: 100%;
+    color: var(--theme-texts-light);
+}
+
+div.pretext-draggable-inline-icon-text-line {
+    position: absolute;
+    display: flex;
+    align-items: baseline;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+span.pretext-draggable-inline-icon-text-fragment,
+a.pretext-draggable-inline-icon-text-fragment {
+    display: inline-flex;
+    align-items: baseline;
+    white-space: pre;
+    pointer-events: auto;
+}
+
+a.pretext-draggable-inline-icon-text-fragment {
+    color: inherit;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.12em;
+}
+
+span.pretext-draggable-inline-icon-text-fragment-highlight,
+a.pretext-draggable-inline-icon-text-fragment-highlight {
+    color: var(--theme-primary);
+}
+
+button.pretext-draggable-inline-icon-text-handle {
+    position: absolute;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--pretext-draggable-inline-icon-text-icon-size);
+    min-height: var(--pretext-draggable-inline-icon-text-icon-size);
+    border: 0;
+    border-radius: 20px;
+    background-color: var(--theme-dark);
+    color: var(--theme-texts);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+    cursor: ew-resize;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+
+    &:focus-visible {
+        outline: 2px solid var(--theme-primary);
+        outline-offset: 3px;
+    }
+
+    &.is-dragging {
+        box-shadow: 0 16px 34px rgba(0, 0, 0, 0.24);
+    }
+}
+
+span.pretext-draggable-inline-icon-text-handle-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    font-size: calc(var(--pretext-draggable-inline-icon-text-icon-size) * 0.42);
+}
+
+div.pretext-draggable-inline-icon-text-measure {
+    position: absolute;
+    inset: 0 auto auto 0;
+    visibility: hidden;
+    pointer-events: none;
+    height: 0;
+    overflow: hidden;
+    white-space: pre;
+}
+
+span.pretext-draggable-inline-icon-text-measure-body,
+p.pretext-draggable-inline-icon-text-measure-paragraph,
+strong.pretext-draggable-inline-icon-text-measure-strong,
+em.pretext-draggable-inline-icon-text-measure-em,
+em.pretext-draggable-inline-icon-text-measure-strong-em {
+    display: inline;
+    padding: 0;
+}

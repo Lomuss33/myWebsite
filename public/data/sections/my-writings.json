@@ -30,7 +30,7 @@
   "articles": [
     {
       "id": 1,
-      "component": "ArticleThread",
+      "component": "ArticleTimeline",
       "locales": {
         "en": {
           "title": "My {{Writings & Presentations}}"
@@ -251,7 +251,13 @@
       "settings": {
         "order_items_by": "id",
         "order_items_sort": "asc",
-        "keepImageRow": true
+        "keepImageRow": true,
+        "feature_layout_mode": "equal_split_auto_stack",
+        "feature_stack_order": "text_media",
+        "feature_split_min_width": 760,
+        "feature_split_height_tolerance": 6,
+        "feature_image_aspect_ratio": "3 / 2",
+        "feature_image_mobile_aspect_ratio": "3 / 2"
       },
       "items": [
         {

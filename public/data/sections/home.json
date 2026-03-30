@@ -88,8 +88,11 @@
         "order_items_by": "id",
         "order_items_sort": "asc",
         "keepImageRow": true,
+        "feature_layout_mode": "equal_split_fixed_vh_image",
+        "feature_stack_order": "text_media",
         "feature_image_aspect_ratio": "1 / 1",
-        "feature_image_mobile_aspect_ratio": "1 / 1"
+        "feature_image_mobile_aspect_ratio": "1 / 1",
+        "feature_image_viewport_height": "30vw"
       },
       "items": [
         {
@@ -840,16 +843,16 @@
           },
           "locales": {
             "en": {
-              "title": "Height: 200 cm"
+              "title": "Height: 204 cm"
             },
             "de": {
-              "title": "Größe: 200 cm"
+              "title": "Größe: 204 cm"
             },
             "hr": {
-              "title": "Visina: 200 cm"
+              "title": "Visina: 204 cm"
             },
             "tr": {
-              "title": "Boy: 200 cm"
+              "title": "Boy: 204 cm"
             }
           }
         },

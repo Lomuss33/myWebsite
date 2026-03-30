@@ -26,10 +26,28 @@ button.section-fullscreen-toggle {
     top: 10px;
     right: 10px;
     z-index: $z-index-section-floating-items;
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    max-width: 20px;
+    min-height: 20px;
+    max-height: 20px;
+    font-size: 8px;
+
+    i {
+        scale: 0.75;
+    }
 
     @include media-breakpoint-down(lg) {
         top: 10px;
         left: 10px;
+        width: 18px;
+        height: 18px;
+        min-width: 18px;
+        max-width: 18px;
+        min-height: 18px;
+        max-height: 18px;
+        font-size: 7px;
     }
 }
 

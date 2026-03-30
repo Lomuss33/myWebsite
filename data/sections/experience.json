@@ -596,7 +596,8 @@
             },
             "settings": {
                 "order_items_by": "id",
-                "order_items_sort": "asc"
+                "order_items_sort": "asc",
+                "text_layout_mode": "draggable_inline_icon_flow"
             },
             "items": [
                 {

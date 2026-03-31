@@ -218,13 +218,13 @@ div.article-feature-item.article-feature-item-layout-fixed-vh-image {
 
 div.article-feature-item.article-feature-item-layout-fixed-vh-image.article-feature-item-home-style-intro {
     --article-feature-image-effective-size: min(var(--article-feature-image-viewport-height, 30vw), 300px);
-    --article-feature-about-intro-text-max-width: min(100%, clamp(640px, 42vw, 820px));
     width: 100%;
     max-width: min(100%, 1180px);
     margin-left: auto;
     margin-right: auto;
+    gap: clamp(20px, 2.4vw, 32px);
     grid-template-columns: minmax(220px, var(--article-feature-image-effective-size)) minmax(0, 1fr);
-    align-items: start;
+    align-items: center;
 
     div.article-feature-item-media {
         justify-content: flex-start;
@@ -240,27 +240,53 @@ div.article-feature-item.article-feature-item-layout-fixed-vh-image.article-feat
     }
 
     div.article-feature-item-content {
-        justify-content: flex-end;
+        justify-content: center;
+        align-items: center;
     }
 
     div.article-feature-item-text,
     div.article-feature-item-text-measure-square {
-        width: var(--article-feature-about-intro-text-max-width);
-        max-width: 100%;
-        margin-left: auto;
+        width: min(100%, 58ch);
+        max-width: min(100%, 58ch);
+        margin-left: 0;
+    }
+
+    div.article-feature-item-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: auto;
+
+        p {
+            margin-bottom: 0.85rem;
+        }
     }
 
     div.article-feature-item-text-measure-square {
-        inset: 0 0 auto auto;
+        inset: 0 auto auto 0;
+    }
+
+    @include media-breakpoint-down(md) {
+        max-width: 100%;
+        gap: 20px;
     }
 
     @include media-breakpoint-down(sm) {
         grid-template-columns: 1fr;
 
+        div.article-feature-item-media {
+            justify-content: center;
+        }
+
+        div.article-feature-item-content,
+        div.article-feature-item-text {
+            min-height: 0;
+        }
+
         div.article-feature-item-text,
         div.article-feature-item-text-measure-square {
             width: 100%;
-            margin-left: 0;
+            max-width: 100%;
         }
 
         div.article-feature-item-text-measure-square {

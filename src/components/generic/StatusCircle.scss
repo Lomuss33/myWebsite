@@ -2,6 +2,29 @@
 
 div.status-circle {
     cursor: help;
+    --status-circle-tooltip-offset-x: 12px;
+
+    div.status-circle-tooltip {
+        top: 50%;
+        left: calc(100% + var(--status-circle-tooltip-offset-x));
+        right: auto;
+        transform: translateY(-50%);
+        transform-origin: left center;
+        white-space: nowrap;
+        padding: 0.16rem 0.6rem;
+        font-size: 0.78rem;
+        line-height: 1.2;
+        border-width: 1px;
+
+        &::before {
+            top: 50%;
+            left: auto;
+            right: calc(100% + 1px);
+            margin-top: -5px;
+            margin-left: 0;
+            border-color: transparent var(--theme-standard-borders-accent-2) transparent transparent;
+        }
+    }
 }
 
 div.status-circle-body {
@@ -49,8 +72,8 @@ div.status-circle-size-small {
     }
 
     div.status-circle-tooltip {
-        width: 160px;
-        transform: translate(calc(-50% + 6px), calc(-100% - 10px));
+        width: auto;
+        min-width: 132px;
     }
 }
 
@@ -68,8 +91,8 @@ div.status-circle-size-default {
     }
 
     div.status-circle-tooltip {
-        width: 220px;
-        transform: translate(calc(-50% + 8px), calc(-100% - 10px));
+        width: auto;
+        min-width: 150px;
     }
 }
 

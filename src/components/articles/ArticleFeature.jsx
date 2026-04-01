@@ -1,6 +1,7 @@
 import "./ArticleFeature.scss"
 import React, {useEffect, useRef, useState} from 'react'
 import Article from "./base/Article.jsx"
+import IllustratedManuscript from "../generic/IllustratedManuscript.jsx"
 import ImageView from "../generic/ImageView.jsx"
 import PretextInteractiveText from "../generic/PretextInteractiveText.jsx"
 
@@ -51,6 +52,12 @@ function ArticleFeatureItems({ dataWrapper, selectedItemCategoryId }) {
 
     return (
         <div className={`article-feature-items ${sectionClass}`}>
+            {dataWrapper.settings.featureEmbed === "illustrated_manuscript" && (
+                <div className={`article-feature-embed article-feature-embed-illustrated-manuscript`}>
+                    <IllustratedManuscript/>
+                </div>
+            )}
+
             {filteredItems.map((itemWrapper, key) => (
                 <ArticleFeatureItem itemWrapper={itemWrapper}
                                     imageStyle={imageStyle}

@@ -78,6 +78,7 @@ export default class ArticleDataWrapper {
             featureImageViewportHeight: rawSettings["feature_image_viewport_height"] || undefined,
             featureTextFitMinScale: rawSettings["feature_text_fit_min_scale"] || undefined,
             featureTextFitMaxScale: rawSettings["feature_text_fit_max_scale"] || undefined,
+            featureEmbed: rawSettings["feature_embed"] || undefined,
 
             // - ArticleSkills
             maxItemsPerRow: rawSettings["max_items_per_row"] || undefined,

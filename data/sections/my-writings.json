@@ -253,17 +253,19 @@
         "order_items_sort": "asc",
         "keepImageRow": true,
         "feature_layout_mode": "equal_split_auto_stack",
-        "feature_stack_order": "text_media",
+        "feature_stack_order": "media_text",
         "feature_split_min_width": 760,
         "feature_split_height_tolerance": 6,
         "feature_embed": "illustrated_manuscript",
+        "feature_embed_position": "after_items",
+        "feature_interactive_item_ids": [2],
         "feature_image_aspect_ratio": "3 / 2",
         "feature_image_mobile_aspect_ratio": "3 / 2"
       },
       "items": [
         {
           "id": 1,
-          "img": "/images/contant/bookoverview.webp",
+          "img": "/images/writing/books/the-dragon-box/bookoverview.webp",
           "faIconColors": {
             "bg": "#0F172A",
             "bgLight": "#E2E8F0",
@@ -282,6 +284,25 @@
             },
             "tr": {
               "text": "<p>{{Bu proje, tarihî kurgu ve satirik dramadan oluşan altı kitaplık bir döngü olarak başlıyor.}} Merkezinde, Dinara dağlarının öte yanındaki sıradan insanın daha geniş tarihi yer alıyor. Hırvatistan, Bosna-Hersek, Karadağ ve Sırbistan boyunca hafızayı, ironiyi, acıyı ve yerel hayal dünyasını birbirine bağlamak istiyorum. Ana kitapların etrafında şarkılar, görseller, tarifler ve kısa rehberler gibi dağınık yardımcı materyaller de hayal ediyorum. Uzun vadeli dilek, Almanya'da geliştirilen ve Bosna-Hersek'te yayıma hazırlanan LaTeX tabanlı bir eser ortaya çıkarmak.</p>"
+            }
+          }
+        },
+        {
+          "id": 2,
+          "label": "Jeronim i Ante",
+          "img": "/images/writing/books/the-dragon-box/jeronim_i_ante.webp",
+          "locales": {
+            "en": {
+              "text": "<p>{{The candle between them trembles, its small flame illuminating not just their hands, but the weight of something being decided.}} One, wrapped in fur and earth, carries the wild hills with him; the other, pale-haired and sharp-eyed, bears a different fire&mdash;one of words, belief, and quiet defiance. Between them lies a stack of worn parchment, inked with lines that seem to whisper rather than speak. Their hands do not rest&mdash;one accuses, one explains, one hesitates, one almost reaches&mdash;as if the truth itself cannot sit still. Food cools beside them, untouched, as though even hunger has stepped aside for what is unfolding. At the edge, a traveler's bag lies half-open, its scrolls and herbs hinting that this meeting was never meant to be ordinary. And in that narrow pool of light, you begin to sense it&mdash;this is not a conversation, but the quiet beginning of something that will not stay hidden for long.</p>"
+            },
+            "de": {
+              "text": "<p>{{Jeronim i Ante}} steht unter The Dragon Box als eigene Illustration aus demselben Buchprojekt.</p>"
+            },
+            "hr": {
+              "text": "<p>{{Jeronim i Ante}} stoji ispod The Dragon Box kao zasebna ilustracija iz istog projekta knjige.</p>"
+            },
+            "tr": {
+              "text": "<p>{{Jeronim i Ante}} The Dragon Box altinda ayni kitap projesinin ayri bir ilustrasyonu olarak yer alir.</p>"
             }
           }
         }

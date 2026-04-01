@@ -83,25 +83,56 @@ function PretextDraggableInlineIconText({
 
     const iconSize = getIconSize(contentWidth)
     const horizontalPadding = 18
-    const verticalPadding = 0
+    const railGap = getRailGap(typography?.lineHeight)
     const trackMinX = iconSize / 2
     const trackMaxX = Math.max(trackMinX, contentWidth - iconSize / 2)
     const trackWidth = Math.max(1, trackMaxX - trackMinX)
     const iconCenterX = trackMinX + trackWidth * xRatio
 
-    const layout = useMemo(() => {
-        const obstacle = typography && contentWidth > 0 ? {
+    const splitIndex = useMemo(() => {
+        return findBalancedParagraphSplit(paragraphs, typography, contentWidth, iconCenterX, iconSize, horizontalPadding)
+    }, [contentWidth, horizontalPadding, iconCenterX, iconSize, paragraphs, typography])
+
+    const topParagraphs = useMemo(() => paragraphs.slice(0, splitIndex), [paragraphs, splitIndex])
+    const bottomParagraphs = useMemo(() => paragraphs.slice(splitIndex), [paragraphs, splitIndex])
+
+    const flowObstacle = useMemo(() => {
+        if (!typography || contentWidth <= 0) return null
+
+        return {
             left: Math.max(0, iconCenterX - iconSize / 2),
             top: 0,
             width: iconSize,
             height: 100000,
             horizontalPadding,
-            verticalPadding,
+            verticalPadding: 0,
             includeInHeight: false
-        } : null
+        }
+    }, [contentWidth, horizontalPadding, iconCenterX, iconSize, typography])
 
-        return layoutDraggableInlineParagraphs(paragraphs, typography, contentWidth, obstacle)
-    }, [contentWidth, iconCenterX, iconSize, paragraphs, typography])
+    const topLayout = useMemo(() => {
+        return layoutDraggableInlineParagraphs(topParagraphs, typography, contentWidth, flowObstacle)
+    }, [contentWidth, flowObstacle, topParagraphs, typography])
+
+    const bottomLayout = useMemo(() => {
+        return layoutDraggableInlineParagraphs(bottomParagraphs, typography, contentWidth, flowObstacle)
+    }, [bottomParagraphs, contentWidth, flowObstacle, typography])
+
+    const hasRenderableContent = topLayout.totalHeight > 0 || bottomLayout.totalHeight > 0
+    const totalHeight = hasRenderableContent ? topLayout.totalHeight + railGap + bottomLayout.totalHeight : 0
+    const railCenterY = hasRenderableContent ? topLayout.totalHeight + railGap / 2 : 0
+    const renderedLines = useMemo(() => {
+        const lowerOffset = topLayout.totalHeight + railGap
+
+        return [
+            ...topLayout.lines,
+            ...bottomLayout.lines.map(line => ({
+                ...line,
+                key: `lower-${line.key}`,
+                y: line.y + lowerOffset
+            }))
+        ]
+    }, [bottomLayout.lines, railGap, topLayout.lines, topLayout.totalHeight])
 
     const handlePointerDown = event => {
         if (!contentWidth) return
@@ -197,13 +228,21 @@ function PretextDraggableInlineIconText({
 
             <div ref={contentRef}
                  className={`pretext-draggable-inline-icon-text-canvas`}
-                 style={layout.totalHeight > 0 ? { minHeight: `${layout.totalHeight}px` } : undefined}>
+                 style={totalHeight > 0 ? { minHeight: `${totalHeight}px` } : undefined}>
+                {totalHeight > 0 && (
+                    <div className={`pretext-draggable-inline-icon-text-rail`}
+                         style={{ top: `${railCenterY}px` }}
+                         aria-hidden={true}>
+                        <span className={`pretext-draggable-inline-icon-text-rail-line`}/>
+                    </div>
+                )}
+
                 <button type={`button`}
                         className={`pretext-draggable-inline-icon-text-handle ${isDragging ? "is-dragging" : ""}`}
                         style={{
                             left: `${iconCenterX - iconSize / 2}px`,
                             top: `0px`,
-                            height: `${layout.totalHeight}px`,
+                            height: `${totalHeight}px`,
                             ...(iconStyle || {})
                         }}
                         aria-label={alt || "Draggable inline icon"}
@@ -225,7 +264,7 @@ function PretextDraggableInlineIconText({
                      style={typography ? {
                          lineHeight: `${typography.lineHeight}px`
                      } : undefined}>
-                    {layout.lines.map(line => (
+                    {renderedLines.map(line => (
                         <div key={line.key}
                              className={`pretext-draggable-inline-icon-text-line`}
                              style={{
@@ -299,6 +338,48 @@ function getIconSize(width) {
     if (width <= 576) return 64
     if (width <= 992) return 72
     return 84
+}
+
+function getRailGap(lineHeight = 0) {
+    return Math.max(8, Math.round(lineHeight * 0.45))
+}
+
+function findBalancedParagraphSplit(
+    paragraphs,
+    typography,
+    maxWidth,
+    iconCenterX,
+    iconSize,
+    horizontalPadding
+) {
+    if (!Array.isArray(paragraphs) || paragraphs.length <= 1) return paragraphs.length
+    if (!typography || maxWidth <= 0) return Math.ceil(paragraphs.length / 2)
+
+    const obstacle = {
+        left: Math.max(0, iconCenterX - iconSize / 2),
+        top: 0,
+        width: iconSize,
+        height: 100000,
+        horizontalPadding,
+        verticalPadding: 0,
+        includeInHeight: false
+    }
+
+    let bestIndex = 1
+    let bestScore = Number.POSITIVE_INFINITY
+
+    for (let index = 1; index < paragraphs.length; index++) {
+        const topHeight = layoutDraggableInlineParagraphs(paragraphs.slice(0, index), typography, maxWidth, obstacle).totalHeight
+        const bottomHeight = layoutDraggableInlineParagraphs(paragraphs.slice(index), typography, maxWidth, obstacle).totalHeight
+        const score = Math.abs(topHeight - bottomHeight)
+
+        if (score < bestScore) {
+            bestScore = score
+            bestIndex = index
+        }
+    }
+
+    return bestIndex
 }
 
 function clamp(value, min, max) {

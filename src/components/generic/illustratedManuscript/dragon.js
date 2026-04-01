@@ -107,6 +107,25 @@ function getSegmentWidth(index) {
         10
 }
 
+function normalizeAngle(angle) {
+    let normalizedAngle = angle
+
+    while (normalizedAngle > Math.PI) normalizedAngle -= Math.PI * 2
+    while (normalizedAngle < -Math.PI) normalizedAngle += Math.PI * 2
+
+    return normalizedAngle
+}
+
+function rotateAngleTowards(currentAngle, targetAngle, maxStep) {
+    const angleDifference = normalizeAngle(targetAngle - currentAngle)
+
+    if (Math.abs(angleDifference) <= maxStep) {
+        return currentAngle + angleDifference
+    }
+
+    return currentAngle + Math.sign(angleDifference) * maxStep
+}
+
 export function createDragon(startX, startY, scale = 1) {
     const segments = []
 
@@ -156,7 +175,15 @@ function getRestPose(startX, startY, scale) {
     return poses
 }
 
-export function updateDragon(dragon, time, mouseX, mouseY, idle = false, restX = 0, restY = 0) {
+export function updateDragon(dragon, time, mouseX, mouseY, options = {}) {
+    const {
+        idle = false,
+        restX = 0,
+        restY = 0,
+        desiredHeadAngle = null,
+        maxHeadTurn = 0.16
+    } = options
+
     if (time - dragon.lastStepTime < dragon.stepInterval) return false
 
     dragon.lastStepTime = time
@@ -173,9 +200,7 @@ export function updateDragon(dragon, time, mouseX, mouseY, idle = false, restX =
             segment.x += (target.x - segment.x) * lerp
             segment.y += (target.y - segment.y) * lerp
 
-            let angleDifference = target.angle - segment.angle
-            while (angleDifference > Math.PI) angleDifference -= Math.PI * 2
-            while (angleDifference < -Math.PI) angleDifference += Math.PI * 2
+            const angleDifference = normalizeAngle(target.angle - segment.angle)
             segment.angle += angleDifference * lerp
         }
 
@@ -191,8 +216,12 @@ export function updateDragon(dragon, time, mouseX, mouseY, idle = false, restX =
         const speed = Math.min(distance, Math.max(12, distance * 0.15))
         head.x += (deltaX / distance) * speed
         head.y += (deltaY / distance) * speed
-        head.angle = Math.atan2(deltaY, deltaX)
     }
+
+    const nextHeadAngle = desiredHeadAngle ?? Math.atan2(deltaY, deltaX)
+    head.angle = desiredHeadAngle === null ?
+        nextHeadAngle :
+        rotateAngleTowards(head.angle, nextHeadAngle, maxHeadTurn)
 
     const maxBend = 0.25
 
@@ -200,10 +229,7 @@ export function updateDragon(dragon, time, mouseX, mouseY, idle = false, restX =
         const previousSegment = dragon.segments[index - 1]
         const segment = dragon.segments[index]
         let angle = Math.atan2(previousSegment.y - segment.y, previousSegment.x - segment.x)
-        let difference = angle - previousSegment.angle
-
-        while (difference > Math.PI) difference -= Math.PI * 2
-        while (difference < -Math.PI) difference += Math.PI * 2
+        const difference = normalizeAngle(angle - previousSegment.angle)
 
         if (difference > maxBend) angle = previousSegment.angle + maxBend
         else if (difference < -maxBend) angle = previousSegment.angle - maxBend
@@ -253,6 +279,41 @@ export function getDragonExclusions(dragon, top, bottom, padding) {
     }
 
     return merged
+}
+
+export function getDragonInfluence(dragon, x, y) {
+    let deltaX = 0
+    let deltaY = 0
+    let totalWeight = 0
+
+    for (const segment of dragon.segments) {
+        const ex = x - segment.x
+        const ey = y - segment.y
+        const distance = Math.sqrt(ex * ex + ey * ey)
+        const effectRadius = segment.width * 0.55 + 24 * dragon.scale
+
+        if (distance > effectRadius || distance < 0.1) continue
+
+        const falloff = 1 - distance / effectRadius
+        const weight = falloff * falloff * 0.75
+        const normalX = ex / distance
+        const normalY = ey / distance
+
+        deltaX += normalX * weight
+        deltaY += normalY * weight
+        totalWeight += weight
+    }
+
+    if (totalWeight < 0.001) {
+        return { dx: 0, dy: 0, strength: 0 }
+    }
+
+    const magnitude = Math.sqrt(deltaX * deltaX + deltaY * deltaY)
+    return {
+        dx: magnitude > 0 ? deltaX / magnitude : 0,
+        dy: magnitude > 0 ? deltaY / magnitude : 0,
+        strength: Math.min(totalWeight, 0.9)
+    }
 }
 
 export function spawnFire(dragon, sprites) {

@@ -13,6 +13,7 @@ import {
     createDragon,
     drawDragon,
     drawFire,
+    getDragonExclusions,
     getFireInfluence,
     hasActiveFire,
     loadDragonSprites,
@@ -24,6 +25,8 @@ import {
 
 const MIN_LINE_WIDTH = 40
 const DRAGON_PATROL_HALF_CYCLE_MS = 5000
+const PATROL_SAMPLE_COUNT = 240
+const PATROL_LOOK_AHEAD_DISTANCE = 18
 const dropCapCache = new Map()
 const illustrationCache = new Map()
 
@@ -117,6 +120,68 @@ function getRestPosePositions(startX, startY, scale) {
     return poses
 }
 
+function normalizeAngle(angle) {
+    let normalizedAngle = angle
+
+    while (normalizedAngle > Math.PI) normalizedAngle -= Math.PI * 2
+    while (normalizedAngle < -Math.PI) normalizedAngle += Math.PI * 2
+
+    return normalizedAngle
+}
+
+function buildFigureEightPath(radiusX, radiusY, sampleCount = PATROL_SAMPLE_COUNT) {
+    const points = []
+    let totalLength = 0
+    let previousPoint = null
+
+    for (let index = 0; index <= sampleCount; index += 1) {
+        const progress = index / sampleCount
+        const theta = progress * Math.PI * 2
+        const x = Math.sin(theta) * radiusX * 0.88
+        const y = Math.sin(theta) * Math.cos(theta) * radiusY * 1.55
+        const point = { x, y, length: totalLength }
+
+        if (previousPoint) {
+            totalLength += Math.hypot(x - previousPoint.x, y - previousPoint.y)
+            point.length = totalLength
+        }
+
+        points.push(point)
+        previousPoint = point
+    }
+
+    return { points, totalLength }
+}
+
+function samplePathAtDistance(path, distance) {
+    if (!path?.points?.length || path.totalLength <= 0) {
+        return { x: 0, y: 0 }
+    }
+
+    const wrappedDistance = ((distance % path.totalLength) + path.totalLength) % path.totalLength
+
+    for (let index = 1; index < path.points.length; index += 1) {
+        const previousPoint = path.points[index - 1]
+        const nextPoint = path.points[index]
+
+        if (wrappedDistance > nextPoint.length) continue
+
+        const segmentLength = nextPoint.length - previousPoint.length
+        if (segmentLength <= 0.0001) {
+            return { x: nextPoint.x, y: nextPoint.y }
+        }
+
+        const segmentProgress = (wrappedDistance - previousPoint.length) / segmentLength
+        return {
+            x: previousPoint.x + (nextPoint.x - previousPoint.x) * segmentProgress,
+            y: previousPoint.y + (nextPoint.y - previousPoint.y) * segmentProgress
+        }
+    }
+
+    const firstPoint = path.points[0]
+    return { x: firstPoint.x, y: firstPoint.y }
+}
+
 function createIllustratedManuscript({
     canvas,
     assetBasePath = "/images/writing/manuscript",
@@ -149,6 +214,7 @@ function createIllustratedManuscript({
     let textDirty = true
     let textBottom = layout.margin
     let illustrationFrame = null
+    let patrolPath = null
 
     let dropCapImage = null
     let illustrationImage = null
@@ -355,7 +421,8 @@ function createIllustratedManuscript({
         if (!frame) {
             return {
                 x: layout.margin + 48 * scale,
-                y: layout.pageHeight - layout.margin - 36 * scale
+                y: layout.pageHeight - layout.margin - 36 * scale,
+                angle: 0
             }
         }
 
@@ -370,11 +437,29 @@ function createIllustratedManuscript({
         const centerY = frame.y + headInsetY + radiusY
         const elapsed = Math.max(0, time - patrolStartTime)
         const cycleDuration = DRAGON_PATROL_HALF_CYCLE_MS * 2
-        const theta = (elapsed % cycleDuration) / cycleDuration * Math.PI * 2
+        const progress = (elapsed % cycleDuration) / cycleDuration
+
+        if (
+            !patrolPath ||
+            patrolPath.radiusX !== radiusX ||
+            patrolPath.radiusY !== radiusY
+        ) {
+            patrolPath = {
+                radiusX,
+                radiusY,
+                path: buildFigureEightPath(radiusX, radiusY)
+            }
+        }
+
+        const path = patrolPath.path
+        const distance = path.totalLength * progress
+        const currentPoint = samplePathAtDistance(path, distance)
+        const nextPoint = samplePathAtDistance(path, distance + PATROL_LOOK_AHEAD_DISTANCE)
 
         return {
-            x: centerX + Math.sin(theta) * radiusX,
-            y: centerY + Math.sin(theta * 2) * radiusY
+            x: centerX + currentPoint.x,
+            y: centerY + currentPoint.y,
+            angle: normalizeAngle(Math.atan2(nextPoint.y - currentPoint.y, nextPoint.x - currentPoint.x))
         }
     }
 
@@ -451,7 +536,7 @@ function createIllustratedManuscript({
         return ranges.filter(range => range.right - range.left >= MIN_LINE_WIDTH)
     }
 
-    const layoutText = exclusions => {
+    const layoutText = (staticExclusions, offsetX = 0, offsetY = 0) => {
         textLines = []
         context.save()
         context.font = layout.font
@@ -467,7 +552,27 @@ function createIllustratedManuscript({
         let nextTextBottom = layout.margin
 
         while (y + layout.lineHeight <= maxTextBottom) {
-            const ranges = getAvailableRanges(y, layout.lineHeight, exclusions)
+            let ranges = getAvailableRanges(y, layout.lineHeight, staticExclusions)
+
+            if (dragon) {
+                const dragonExclusions = getDragonExclusions(
+                    dragon,
+                    offsetY + y,
+                    offsetY + y + layout.lineHeight,
+                    Math.max(2, layout.fontSize * 0.15)
+                )
+
+                for (const exclusion of dragonExclusions) {
+                    ranges = subtractRanges(
+                        ranges,
+                        exclusion.left - offsetX,
+                        exclusion.right - offsetX
+                    )
+                }
+
+                ranges = ranges.filter(range => range.right - range.left >= MIN_LINE_WIDTH)
+            }
+
             if (ranges.length === 0) {
                 y += layout.lineHeight
                 continue
@@ -574,7 +679,10 @@ function createIllustratedManuscript({
             x: offset.x + patrolTarget.x,
             y: offset.y + patrolTarget.y
         }
-        updateDragon(dragon, time, target.x, target.y)
+        const dragonMoved = updateDragon(dragon, time, target.x, target.y, shouldFollowPointer ? {} : {
+            desiredHeadAngle: patrolTarget.angle,
+            maxHeadTurn: 0.12
+        })
 
         if (pointerDown) {
             spawnFire(dragon, sprites)
@@ -593,8 +701,8 @@ function createIllustratedManuscript({
             height: dropCap.height
         }]
 
-        if (textDirty) {
-            layoutText(dropCapExclusions)
+        if (textDirty || dragonMoved) {
+            layoutText(dropCapExclusions, offset.x, offset.y)
         }
 
         if (!illustrationFrame) {
@@ -671,7 +779,7 @@ function createIllustratedManuscript({
             y: layout.margin - 4,
             width: getDropCap().width,
             height: getDropCap().height
-        }])
+        }], 0, 0)
         initializeDragon()
         ready = true
         onReady?.()

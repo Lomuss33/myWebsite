@@ -65,7 +65,8 @@
                         "month": 10
                     },
                     "dateEnd": {
-                        "now": true
+                        "year": 2026,
+                        "month": 2
                     },
                     "locales": {
                         "en": {
@@ -562,7 +563,7 @@
                     },
                     "date": {
                         "year": 2026,
-                        "month": 4
+                        "month": 5
                     },
                     "link": {
                         "href": "https://www.frankfurt-main.ihk.de/aus-und-weiterbildung/weiterbildung/weiterbildungspruefungen/weiterbildungspruefungen-von-a-bis-z/a-z-liste/ausbildereignung-pruefung-5189130",
@@ -570,7 +571,7 @@
                     },
                     "locales": {
                         "en": {
-                            "title": "{{AusbEignV}} Certification",
+                            "title": "{{AEVO}} Certification",
                             "text": "I hold the AEVO-Schein certification from IHK, which qualifies me as a certified instructor permitted to train apprentices in Germany."
                         }
                     }

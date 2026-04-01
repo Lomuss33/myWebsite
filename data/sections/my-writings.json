@@ -256,6 +256,7 @@
         "feature_stack_order": "text_media",
         "feature_split_min_width": 760,
         "feature_split_height_tolerance": 6,
+        "feature_embed": "illustrated_manuscript",
         "feature_image_aspect_ratio": "3 / 2",
         "feature_image_mobile_aspect_ratio": "3 / 2"
       },

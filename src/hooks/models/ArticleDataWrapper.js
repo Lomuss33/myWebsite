@@ -79,6 +79,12 @@ export default class ArticleDataWrapper {
             featureTextFitMinScale: rawSettings["feature_text_fit_min_scale"] || undefined,
             featureTextFitMaxScale: rawSettings["feature_text_fit_max_scale"] || undefined,
             featureEmbed: rawSettings["feature_embed"] || undefined,
+            featureEmbedPosition: rawSettings["feature_embed_position"] || undefined,
+            featureInteractiveItemIds: Array.isArray(rawSettings["feature_interactive_item_ids"]) ?
+                rawSettings["feature_interactive_item_ids"]
+                    .map(itemId => Number(itemId))
+                    .filter(itemId => Number.isFinite(itemId)) :
+                [],
 
             // - ArticleSkills
             maxItemsPerRow: rawSettings["max_items_per_row"] || undefined,

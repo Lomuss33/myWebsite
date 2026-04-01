@@ -1,7 +1,8 @@
 import { layoutNextLine, prepareWithSegments } from "@chenglou/pretext"
-import { STORY_TEXT } from "./story.js"
 import {
     BG_COLOR,
+    MANUSCRIPT_DRAGON_SCALE,
+    MANUSCRIPT_DROP_CAP_SCALE,
     MOUSE_IDLE_TIMEOUT,
     TEXT_COLOR,
     getPageOffset,
@@ -25,7 +26,9 @@ import {
 
 const MIN_LINE_WIDTH = 40
 const TEXT_EXCLUSION_PAD = 10
+const DRAGON_PATROL_HALF_CYCLE_MS = 5000
 const dropCapCache = new Map()
+const illustrationCache = new Map()
 
 function resolveAssetPath(path) {
     if (!path) return path
@@ -66,6 +69,22 @@ function loadDropCap(assetBasePath) {
     return dropCapPromise
 }
 
+function loadIllustration(illustrationSrc) {
+    if (!illustrationSrc) return Promise.resolve(null)
+
+    const resolvedSource = resolveAssetPath(illustrationSrc)
+    const cachedIllustration = illustrationCache.get(resolvedSource)
+    if (cachedIllustration) return cachedIllustration
+
+    const illustrationPromise = loadImage(illustrationSrc).catch(error => {
+        illustrationCache.delete(resolvedSource)
+        throw error
+    })
+
+    illustrationCache.set(resolvedSource, illustrationPromise)
+    return illustrationPromise
+}
+
 function subtractRanges(ranges, left, right) {
     const result = []
 
@@ -104,6 +123,8 @@ function getRestPosePositions(startX, startY, scale) {
 function createIllustratedManuscript({
     canvas,
     assetBasePath = "/images/writing/manuscript",
+    storyText = "",
+    illustrationSrc = null,
     onReady,
     onError
 }) {
@@ -112,7 +133,8 @@ function createIllustratedManuscript({
         return { destroy() {} }
     }
 
-    const storyContent = STORY_TEXT.slice(1)
+    const normalizedStoryText = typeof storyText === "string" ? storyText : ""
+    const storyContent = normalizedStoryText.length > 1 ? normalizedStoryText.slice(1) : normalizedStoryText
     const observedElement = canvas.parentElement || canvas
 
     let destroyed = false
@@ -129,14 +151,20 @@ function createIllustratedManuscript({
     let lastFontSize = 0
     let textLines = []
     let textDirty = true
+    let textBottom = layout.margin
+    let illustrationFrame = null
 
     let dropCapImage = null
+    let illustrationImage = null
     let sprites = null
     let dragon = null
 
     const mouse = { x: 0, y: 0 }
     let pointerDown = false
+    let pointerInside = false
+    let pointerTriggered = false
     let lastMouseMove = -Infinity
+    const patrolStartTime = performance.now()
 
     canvas.style.touchAction = "pan-y"
 
@@ -148,7 +176,7 @@ function createIllustratedManuscript({
         context.save()
         context.strokeStyle = "rgba(89, 58, 25, 0.18)"
         context.lineWidth = 1
-        context.strokeRect(10.5, 10.5, Math.max(0, viewportWidth - 21), Math.max(0, viewportHeight - 21))
+        context.strokeRect(0.5, 0.5, Math.max(0, viewportWidth - 1), Math.max(0, viewportHeight - 1))
         context.restore()
     }
 
@@ -181,16 +209,16 @@ function createIllustratedManuscript({
         }
 
         if (dragon) {
-            updateDragonScale(dragon, getPageScale(viewportWidth))
+            updateDragonScale(dragon, getPageScale(viewportWidth) * MANUSCRIPT_DRAGON_SCALE)
         }
 
         textDirty = true
     }
 
     const getDropCap = () => {
-        const height = layout.lineHeight * 7
+        const height = layout.lineHeight * 7 * MANUSCRIPT_DROP_CAP_SCALE
         const width = dropCapImage.naturalWidth * (height / dropCapImage.naturalHeight)
-        return { width: width + 12, height, drawWidth: width, drawHeight: height }
+        return { width: width + 12 * MANUSCRIPT_DROP_CAP_SCALE, height, drawWidth: width, drawHeight: height }
     }
 
     const drawDropCap = () => {
@@ -198,12 +226,83 @@ function createIllustratedManuscript({
         context.drawImage(dropCapImage, layout.margin, layout.margin, dropCap.drawWidth, dropCap.drawHeight)
     }
 
+    const getIllustrationSlot = () => {
+        if (!illustrationImage?.naturalWidth || !illustrationImage?.naturalHeight) {
+            return null
+        }
+
+        const imageAspectRatio = illustrationImage.naturalWidth / illustrationImage.naturalHeight
+        const gap = Math.max(8, Math.round(layout.lineHeight * 0.55))
+        const height = layout.pageWidth / imageAspectRatio
+
+        return {
+            x: 0,
+            width: layout.pageWidth,
+            gap,
+            height
+        }
+    }
+
+    const getIllustrationFrame = currentTextBottom => {
+        const slot = getIllustrationSlot()
+        if (!slot) {
+            return null
+        }
+
+        const maxImageY = layout.pageHeight - slot.height
+
+        return {
+            ...slot,
+            y: maxImageY
+        }
+    }
+
+    const drawIllustration = () => {
+        const frame = illustrationFrame
+        if (!frame) return null
+
+        context.drawImage(
+            illustrationImage,
+            frame.x,
+            frame.y,
+            frame.width,
+            frame.height
+        )
+
+        return frame
+    }
+
+    const getDragonPatrolTarget = time => {
+        const frame = illustrationFrame || getIllustrationFrame(textBottom)
+        const scale = (dragon?.scale || getPageScale(viewportWidth) * MANUSCRIPT_DRAGON_SCALE)
+
+        if (!frame) {
+            return {
+                x: layout.margin + 48 * scale,
+                y: layout.pageHeight - layout.margin - 36 * scale
+            }
+        }
+
+        const headInsetX = Math.max(28, 78 * scale)
+        const headInsetY = Math.max(14, 32 * scale)
+        const leftX = frame.x + headInsetX
+        const rightX = frame.x + frame.width - headInsetX
+        const elapsed = Math.max(0, time - patrolStartTime)
+        const cycleProgress = (elapsed % (DRAGON_PATROL_HALF_CYCLE_MS * 2)) / DRAGON_PATROL_HALF_CYCLE_MS
+        const progress = cycleProgress <= 1 ? cycleProgress : 2 - cycleProgress
+
+        return {
+            x: leftX + (rightX - leftX) * progress,
+            y: frame.y + headInsetY
+        }
+    }
+
     const initializeDragon = () => {
-        const scale = getPageScale(viewportWidth)
+        const scale = getPageScale(viewportWidth) * MANUSCRIPT_DRAGON_SCALE
         const offset = getPageOffset(layout, viewportWidth, viewportHeight)
-        const dropCap = getDropCap()
-        const dragonStartX = offset.x + layout.margin + dropCap.width * 0.8
-        const dragonStartY = offset.y + layout.margin - 70 * scale
+        const patrolTarget = getDragonPatrolTarget(patrolStartTime)
+        const dragonStartX = offset.x + patrolTarget.x
+        const dragonStartY = offset.y + patrolTarget.y
 
         dragon = createDragon(dragonStartX, dragonStartY, scale)
 
@@ -221,6 +320,8 @@ function createIllustratedManuscript({
         const rect = canvas.getBoundingClientRect()
         mouse.x = event.clientX - rect.left
         mouse.y = event.clientY - rect.top
+        pointerInside = true
+        pointerTriggered = true
         lastMouseMove = performance.now()
     }
 
@@ -250,8 +351,11 @@ function createIllustratedManuscript({
     }
 
     const handlePointerLeave = event => {
+        pointerInside = false
+
         if (event.pointerType === "mouse") {
             pointerDown = false
+            lastMouseMove = -Infinity
         }
     }
 
@@ -265,14 +369,19 @@ function createIllustratedManuscript({
 
         const top = y + offsetY
         const bottom = y + lineHeight + offsetY
-        const dragonRects = getDragonExclusions(dragon, top, bottom, TEXT_EXCLUSION_PAD)
-        for (const rect of dragonRects) {
-            ranges = subtractRanges(ranges, rect.left - offsetX, rect.right - offsetX)
+
+        if (dragon) {
+            const dragonRects = getDragonExclusions(dragon, top, bottom, TEXT_EXCLUSION_PAD)
+            for (const rect of dragonRects) {
+                ranges = subtractRanges(ranges, rect.left - offsetX, rect.right - offsetX)
+            }
         }
 
-        const fireRects = getFireExclusions(dragon, top, bottom, 6)
-        for (const rect of fireRects) {
-            ranges = subtractRanges(ranges, rect.left - offsetX, rect.right - offsetX)
+        if (dragon) {
+            const fireRects = getFireExclusions(dragon, top, bottom, 6)
+            for (const rect of fireRects) {
+                ranges = subtractRanges(ranges, rect.left - offsetX, rect.right - offsetX)
+            }
         }
 
         return ranges.filter(range => range.right - range.left >= MIN_LINE_WIDTH)
@@ -287,8 +396,13 @@ function createIllustratedManuscript({
         let y = layout.margin
         const ascent = layout.fontSize * 0.857
         const baselineOffset = (layout.lineHeight - ascent) / 2
+        const illustrationSlot = getIllustrationSlot()
+        const maxTextBottom = illustrationSlot ?
+            layout.pageHeight - illustrationSlot.height - illustrationSlot.gap :
+            layout.pageHeight - layout.margin
+        let nextTextBottom = layout.margin
 
-        while (y + layout.lineHeight <= layout.pageHeight - layout.margin) {
+        while (y + layout.lineHeight <= maxTextBottom) {
             const ranges = getAvailableRanges(y, layout.lineHeight, exclusions, offsetX, offsetY)
             if (ranges.length === 0) {
                 y += layout.lineHeight
@@ -311,6 +425,7 @@ function createIllustratedManuscript({
                     y: y + baselineOffset
                 })
                 cursor = line.end
+                nextTextBottom = y + layout.lineHeight
             }
 
             if (done) break
@@ -318,7 +433,11 @@ function createIllustratedManuscript({
         }
 
         context.restore()
+        textBottom = nextTextBottom
+        illustrationFrame = getIllustrationFrame(textBottom)
         textDirty = false
+
+        return false
     }
 
     const drawTextWithFireEffect = (text, x, y, offsetX, offsetY) => {
@@ -383,12 +502,15 @@ function createIllustratedManuscript({
 
         const offset = getPageOffset(layout, viewportWidth, viewportHeight)
         const dropCap = getDropCap()
-        const idle = time - lastMouseMove > MOUSE_IDLE_TIMEOUT
-        const scale = getPageScale(viewportWidth)
-        const restX = offset.x + layout.margin + dropCap.width * 0.8
-        const restY = offset.y + layout.margin - 70 * scale
-
-        const moved = updateDragon(dragon, time, mouse.x, mouse.y, idle, restX, restY)
+        const shouldFollowPointer =
+            pointerTriggered &&
+            (pointerInside || pointerDown || time - lastMouseMove <= MOUSE_IDLE_TIMEOUT)
+        const patrolTarget = getDragonPatrolTarget(time)
+        const target = shouldFollowPointer ? mouse : {
+            x: offset.x + patrolTarget.x,
+            y: offset.y + patrolTarget.y
+        }
+        const moved = updateDragon(dragon, time, target.x, target.y)
 
         if (pointerDown) {
             spawnFire(dragon, sprites)
@@ -415,12 +537,17 @@ function createIllustratedManuscript({
             layoutText(dropCapExclusions, offset.x, offset.y)
         }
 
+        if (!illustrationFrame) {
+            illustrationFrame = getIllustrationFrame(textBottom)
+        }
+
         context.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0)
         context.fillStyle = BG_COLOR
         context.fillRect(0, 0, viewportWidth, viewportHeight)
 
         context.save()
         context.translate(offset.x, offset.y)
+        drawIllustration()
         drawDropCap()
         drawText(offset.x, offset.y)
         context.restore()
@@ -462,9 +589,13 @@ function createIllustratedManuscript({
         canvas.addEventListener("pointerleave", handlePointerLeave)
 
         const fontsReady = document.fonts?.ready || Promise.resolve()
-        const [loadedSprites, loadedDropCap] = await Promise.all([
+        const [loadedSprites, loadedDropCap, loadedIllustration] = await Promise.all([
             loadDragonSprites(assetBasePath),
             loadDropCap(assetBasePath),
+            loadIllustration(illustrationSrc).catch(error => {
+                console.warn("IllustratedManuscript illustration", error)
+                return null
+            }),
             fontsReady
         ])
 
@@ -472,8 +603,15 @@ function createIllustratedManuscript({
 
         sprites = loadedSprites
         dropCapImage = loadedDropCap
+        illustrationImage = loadedIllustration
 
         updateLayoutState(true)
+        layoutText([{
+            x: layout.margin - 4,
+            y: layout.margin - 4,
+            width: getDropCap().width,
+            height: getDropCap().height
+        }], 0, 0)
         initializeDragon()
         ready = true
         onReady?.()

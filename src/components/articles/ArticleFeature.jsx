@@ -34,6 +34,14 @@ function ArticleFeature({ dataWrapper, id }) {
 
 function ArticleFeatureItems({ dataWrapper, selectedItemCategoryId }) {
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
+    const manuscriptSourceItem = filteredItems.find(item => item.id === 1) || filteredItems[0]
+    const shouldHideEmbeddedSourceItem = dataWrapper.settings.featureEmbed === "illustrated_manuscript"
+    const embedPosition = dataWrapper.settings.featureEmbedPosition === "after_items" ?
+        "after_items" :
+        "before_items"
+    const renderedItems = shouldHideEmbeddedSourceItem ?
+        filteredItems.filter(item => item !== manuscriptSourceItem) :
+        filteredItems
     const sectionClass = dataWrapper.sectionId ?
         `article-feature-items-section-${dataWrapper.sectionId}` :
         ``
@@ -50,19 +58,31 @@ function ArticleFeatureItems({ dataWrapper, selectedItemCategoryId }) {
         } : {})
     }
 
+    const renderEmbeddedFeature = () => {
+        if (dataWrapper.settings.featureEmbed !== "illustrated_manuscript") {
+            return null
+        }
+
+        return (
+            <div className={`article-feature-embed article-feature-embed-illustrated-manuscript`}>
+                <IllustratedManuscript storyHtml={manuscriptSourceItem?.locales?.text || ""}
+                                       imageSrc={manuscriptSourceItem?.img || null}
+                                       imageAlt={manuscriptSourceItem?.imageAlt || ""}/>
+            </div>
+        )
+    }
+
     return (
         <div className={`article-feature-items ${sectionClass}`}>
-            {dataWrapper.settings.featureEmbed === "illustrated_manuscript" && (
-                <div className={`article-feature-embed article-feature-embed-illustrated-manuscript`}>
-                    <IllustratedManuscript/>
-                </div>
-            )}
+            {embedPosition === "before_items" && renderEmbeddedFeature()}
 
-            {filteredItems.map((itemWrapper, key) => (
+            {renderedItems.map((itemWrapper, key) => (
                 <ArticleFeatureItem itemWrapper={itemWrapper}
                                     imageStyle={imageStyle}
                                     key={key}/>
             ))}
+
+            {embedPosition === "after_items" && renderEmbeddedFeature()}
         </div>
     )
 }
@@ -92,6 +112,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
     const isTextLedSplitLayout = featureLayoutMode === "equal_split_text_led"
     const isFixedViewportImageLayout = featureLayoutMode === "equal_split_fixed_vh_image"
     const isSquareFitLayout = featureLayoutMode === "equal_split_square_fit"
+    const isConfiguredInteractiveItem = articleSettings.featureInteractiveItemIds.includes(itemWrapper.id)
     const shouldFitTextToMediaHeight = isSquareFitLayout || (isFixedViewportImageLayout && isHomeStyleIntro)
     const defaultFitMaxScale = isHomeStyleIntro ? FEATURE_TEXT_ABOUT_INTRO_MAX_SCALE : FEATURE_TEXT_DEFAULT_MAX_SCALE
     const textFontSize = computeScaledFontSize(baseTypographyRef, textScale)
@@ -277,6 +298,16 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
         }
 
         if (isWritingIntro) {
+            return (
+                <PretextInteractiveText html={html}
+                                        revealOnScroll={true}
+                                        effectVariant={"wave"}
+                                        terrainVariant={"detailed"}
+                                        typographyVersion={typographyVersion}/>
+            )
+        }
+
+        if (isConfiguredInteractiveItem) {
             return (
                 <PretextInteractiveText html={html}
                                         revealOnScroll={true}

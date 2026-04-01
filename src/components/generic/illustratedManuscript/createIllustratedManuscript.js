@@ -13,8 +13,6 @@ import {
     createDragon,
     drawDragon,
     drawFire,
-    getDragonExclusions,
-    getFireExclusions,
     getFireInfluence,
     hasActiveFire,
     loadDragonSprites,
@@ -25,7 +23,6 @@ import {
 } from "./dragon.js"
 
 const MIN_LINE_WIDTH = 40
-const TEXT_EXCLUSION_PAD = 10
 const DRAGON_PATROL_HALF_CYCLE_MS = 5000
 const dropCapCache = new Map()
 const illustrationCache = new Map()
@@ -134,7 +131,7 @@ function createIllustratedManuscript({
     }
 
     const normalizedStoryText = typeof storyText === "string" ? storyText : ""
-    const storyContent = normalizedStoryText.length > 1 ? normalizedStoryText.slice(1) : normalizedStoryText
+    const storyContent = normalizedStoryText
     const observedElement = canvas.parentElement || canvas
 
     let destroyed = false
@@ -148,7 +145,6 @@ function createIllustratedManuscript({
     let devicePixelRatio = Math.ceil(window.devicePixelRatio || 1)
     let layout = getResponsiveLayout(viewportWidth, viewportHeight)
     let prepared = null
-    let lastFontSize = 0
     let textLines = []
     let textDirty = true
     let textBottom = layout.margin
@@ -203,9 +199,22 @@ function createIllustratedManuscript({
     const updateLayoutState = (forcePrepare = false) => {
         layout = getResponsiveLayout(viewportWidth, viewportHeight)
 
-        if (forcePrepare || !prepared || layout.fontSize !== lastFontSize) {
-            prepared = prepareWithSegments(storyContent, layout.font)
-            lastFontSize = layout.fontSize
+        if ((dropCapImage || illustrationImage) && viewportWidth > 1) {
+            const requiredHeight = getRequiredPageHeight(layout)
+            const currentHeight = observedElement.getBoundingClientRect().height || viewportHeight
+
+            if (Math.abs(requiredHeight - currentHeight) > 1) {
+                observedElement.style.height = `${Math.ceil(requiredHeight)}px`
+                measureCanvas()
+                layout = getResponsiveLayout(viewportWidth, viewportHeight)
+            }
+        }
+
+        if (forcePrepare || !prepared || prepared.font !== layout.font) {
+            prepared = {
+                font: layout.font,
+                segments: prepareWithSegments(storyContent, layout.font)
+            }
         }
 
         if (dragon) {
@@ -215,8 +224,12 @@ function createIllustratedManuscript({
         textDirty = true
     }
 
-    const getDropCap = () => {
-        const height = layout.lineHeight * 7 * MANUSCRIPT_DROP_CAP_SCALE
+    const getDropCap = (activeLayout = layout) => {
+        if (!dropCapImage?.naturalWidth || !dropCapImage?.naturalHeight) {
+            return { width: 0, height: 0, drawWidth: 0, drawHeight: 0 }
+        }
+
+        const height = activeLayout.lineHeight * 7 * MANUSCRIPT_DROP_CAP_SCALE
         const width = dropCapImage.naturalWidth * (height / dropCapImage.naturalHeight)
         return { width: width + 12 * MANUSCRIPT_DROP_CAP_SCALE, height, drawWidth: width, drawHeight: height }
     }
@@ -226,35 +239,98 @@ function createIllustratedManuscript({
         context.drawImage(dropCapImage, layout.margin, layout.margin, dropCap.drawWidth, dropCap.drawHeight)
     }
 
-    const getIllustrationSlot = () => {
+    const getIllustrationSlot = (activeLayout = layout) => {
         if (!illustrationImage?.naturalWidth || !illustrationImage?.naturalHeight) {
             return null
         }
 
         const imageAspectRatio = illustrationImage.naturalWidth / illustrationImage.naturalHeight
-        const gap = Math.max(8, Math.round(layout.lineHeight * 0.55))
-        const height = layout.pageWidth / imageAspectRatio
+        const gap = Math.max(4, Math.round(activeLayout.lineHeight * 0.2))
+        const height = activeLayout.pageWidth / imageAspectRatio
 
         return {
             x: 0,
-            width: layout.pageWidth,
+            width: activeLayout.pageWidth,
             gap,
             height
         }
     }
 
-    const getIllustrationFrame = currentTextBottom => {
-        const slot = getIllustrationSlot()
+    const getIllustrationFrame = (_currentTextBottom, activeLayout = layout) => {
+        const slot = getIllustrationSlot(activeLayout)
         if (!slot) {
             return null
         }
 
-        const maxImageY = layout.pageHeight - slot.height
+        const maxImageY = activeLayout.pageHeight - slot.height
 
         return {
             ...slot,
             y: maxImageY
         }
+    }
+
+    const getStaticDropCapExclusions = activeLayout => {
+        const dropCap = getDropCap(activeLayout)
+
+        return [{
+            x: activeLayout.margin - 4,
+            y: activeLayout.margin - 4,
+            width: dropCap.width,
+            height: dropCap.height
+        }]
+    }
+
+    const measureAllTextBottom = activeLayout => {
+        const activePrepared = prepareWithSegments(storyContent, activeLayout.font)
+        const exclusions = getStaticDropCapExclusions(activeLayout)
+        let cursor = { segmentIndex: 0, graphemeIndex: 0 }
+        let y = activeLayout.margin
+        let nextTextBottom = activeLayout.margin
+
+        while (true) {
+            let ranges = [{ left: activeLayout.margin, right: activeLayout.pageWidth - activeLayout.margin }]
+
+            for (const exclusion of exclusions) {
+                if (y + activeLayout.lineHeight <= exclusion.y || y >= exclusion.y + exclusion.height) continue
+                ranges = subtractRanges(ranges, exclusion.x, exclusion.x + exclusion.width)
+            }
+
+            ranges = ranges.filter(range => range.right - range.left >= MIN_LINE_WIDTH)
+            if (ranges.length === 0) {
+                y += activeLayout.lineHeight
+                continue
+            }
+
+            let finished = false
+
+            for (const range of ranges) {
+                const line = layoutNextLine(activePrepared, cursor, range.right - range.left)
+                if (line === null) {
+                    finished = true
+                    break
+                }
+
+                cursor = line.end
+                nextTextBottom = y + activeLayout.lineHeight
+            }
+
+            if (finished) break
+            y += activeLayout.lineHeight
+        }
+
+        return nextTextBottom
+    }
+
+    const getRequiredPageHeight = activeLayout => {
+        const illustrationSlot = getIllustrationSlot(activeLayout)
+        if (!illustrationSlot) return activeLayout.pageHeight
+
+        const textBottomNeeded = storyContent ? measureAllTextBottom(activeLayout) : activeLayout.margin
+        return Math.max(
+            activeLayout.pageHeight,
+            Math.ceil(textBottomNeeded + illustrationSlot.gap + illustrationSlot.height + 2)
+        )
     }
 
     const drawIllustration = () => {
@@ -283,17 +359,22 @@ function createIllustratedManuscript({
             }
         }
 
-        const headInsetX = Math.max(28, 78 * scale)
-        const headInsetY = Math.max(14, 32 * scale)
-        const leftX = frame.x + headInsetX
-        const rightX = frame.x + frame.width - headInsetX
+        const headInsetX = Math.max(30, 82 * scale)
+        const headInsetY = Math.max(14, 30 * scale)
+        const radiusX = Math.max(0, (frame.width - headInsetX * 2) / 2)
+        const radiusY = Math.min(
+            Math.max(10, 18 * scale),
+            Math.max(10, frame.height * 0.12)
+        )
+        const centerX = frame.x + frame.width / 2
+        const centerY = frame.y + headInsetY + radiusY
         const elapsed = Math.max(0, time - patrolStartTime)
-        const cycleProgress = (elapsed % (DRAGON_PATROL_HALF_CYCLE_MS * 2)) / DRAGON_PATROL_HALF_CYCLE_MS
-        const progress = cycleProgress <= 1 ? cycleProgress : 2 - cycleProgress
+        const cycleDuration = DRAGON_PATROL_HALF_CYCLE_MS * 2
+        const theta = (elapsed % cycleDuration) / cycleDuration * Math.PI * 2
 
         return {
-            x: leftX + (rightX - leftX) * progress,
-            y: frame.y + headInsetY
+            x: centerX + Math.sin(theta) * radiusX,
+            y: centerY + Math.sin(theta * 2) * radiusY
         }
     }
 
@@ -359,7 +440,7 @@ function createIllustratedManuscript({
         }
     }
 
-    const getAvailableRanges = (y, lineHeight, exclusions, offsetX, offsetY) => {
+    const getAvailableRanges = (y, lineHeight, exclusions) => {
         let ranges = [{ left: layout.margin, right: layout.pageWidth - layout.margin }]
 
         for (const exclusion of exclusions) {
@@ -367,27 +448,10 @@ function createIllustratedManuscript({
             ranges = subtractRanges(ranges, exclusion.x, exclusion.x + exclusion.width)
         }
 
-        const top = y + offsetY
-        const bottom = y + lineHeight + offsetY
-
-        if (dragon) {
-            const dragonRects = getDragonExclusions(dragon, top, bottom, TEXT_EXCLUSION_PAD)
-            for (const rect of dragonRects) {
-                ranges = subtractRanges(ranges, rect.left - offsetX, rect.right - offsetX)
-            }
-        }
-
-        if (dragon) {
-            const fireRects = getFireExclusions(dragon, top, bottom, 6)
-            for (const rect of fireRects) {
-                ranges = subtractRanges(ranges, rect.left - offsetX, rect.right - offsetX)
-            }
-        }
-
         return ranges.filter(range => range.right - range.left >= MIN_LINE_WIDTH)
     }
 
-    const layoutText = (exclusions, offsetX, offsetY) => {
+    const layoutText = exclusions => {
         textLines = []
         context.save()
         context.font = layout.font
@@ -403,7 +467,7 @@ function createIllustratedManuscript({
         let nextTextBottom = layout.margin
 
         while (y + layout.lineHeight <= maxTextBottom) {
-            const ranges = getAvailableRanges(y, layout.lineHeight, exclusions, offsetX, offsetY)
+            const ranges = getAvailableRanges(y, layout.lineHeight, exclusions)
             if (ranges.length === 0) {
                 y += layout.lineHeight
                 continue
@@ -413,7 +477,7 @@ function createIllustratedManuscript({
 
             for (const range of ranges) {
                 const width = range.right - range.left
-                const line = layoutNextLine(prepared, cursor, width)
+                const line = layoutNextLine(prepared.segments, cursor, width)
                 if (line === null) {
                     done = true
                     break
@@ -510,7 +574,7 @@ function createIllustratedManuscript({
             x: offset.x + patrolTarget.x,
             y: offset.y + patrolTarget.y
         }
-        const moved = updateDragon(dragon, time, target.x, target.y)
+        updateDragon(dragon, time, target.x, target.y)
 
         if (pointerDown) {
             spawnFire(dragon, sprites)
@@ -522,10 +586,6 @@ function createIllustratedManuscript({
         }
 
         hasFire = hasActiveFire(dragon)
-        if (moved || hasFire) {
-            textDirty = true
-        }
-
         const dropCapExclusions = [{
             x: layout.margin - 4,
             y: layout.margin - 4,
@@ -534,7 +594,7 @@ function createIllustratedManuscript({
         }]
 
         if (textDirty) {
-            layoutText(dropCapExclusions, offset.x, offset.y)
+            layoutText(dropCapExclusions)
         }
 
         if (!illustrationFrame) {
@@ -611,7 +671,7 @@ function createIllustratedManuscript({
             y: layout.margin - 4,
             width: getDropCap().width,
             height: getDropCap().height
-        }], 0, 0)
+        }])
         initializeDragon()
         ready = true
         onReady?.()

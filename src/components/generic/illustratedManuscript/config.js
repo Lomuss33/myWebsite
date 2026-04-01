@@ -7,7 +7,7 @@ export const TEXT_COLOR = "#2a1a0a"
 export const BG_COLOR = "#f4eee0"
 export const MANUSCRIPT_TEXT_SCALE = 0.58
 export const MANUSCRIPT_DROP_CAP_SCALE = 0.42
-export const MANUSCRIPT_DRAGON_SCALE = 0.35
+export const MANUSCRIPT_DRAGON_SCALE = 0.357
 export const MANUSCRIPT_ILLUSTRATION_SCALE = 0.56
 
 export const DRAGON_SEGMENT_COUNT = 20

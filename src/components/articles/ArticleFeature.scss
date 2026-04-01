@@ -393,6 +393,11 @@ div.article-feature-embed {
 div.article-feature-items.article-feature-items-section-my-writings {
     div.article-feature-embed.article-feature-embed-illustrated-manuscript {
         margin-bottom: clamp(6px, 1vw, 14px);
+
+        div.illustrated-manuscript {
+            max-width: 764px;
+            height: clamp(406px, 60.8vw, 671px);
+        }
     }
 
     div.article-feature-item {
@@ -437,6 +442,12 @@ div.article-feature-items.article-feature-items-section-my-writings {
     }
 
     @include media-breakpoint-down(lg) {
+        div.article-feature-embed.article-feature-embed-illustrated-manuscript {
+            div.illustrated-manuscript {
+                height: clamp(328px, 78vw, 546px);
+            }
+        }
+
         div.article-feature-item {
             grid-template-columns: 1fr;
             gap: 18px;

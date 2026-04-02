@@ -34,6 +34,15 @@
             "locales": {
                 "en": {
                     "title": "My {{Artworks & Travel Albums}}"
+                },
+                "de": {
+                    "title": "Meine {{Kunstwerke & Reisealben}}"
+                },
+                "hr": {
+                    "title": "Moji {{umjetnički radovi i putni albumi}}"
+                },
+                "tr": {
+                    "title": "{{Sanat çalışmalarım ve seyahat albümlerim}}"
                 }
             },
             "settings": {
@@ -68,6 +77,24 @@
                             "country": "Macedonia",
                             "text": "Mountains, monasteries, city life and landscapes.",
                             "medium": "Photography"
+                        },
+                        "de": {
+                            "title": "Mazedonien — VSCO-Album",
+                            "country": "Mazedonien",
+                            "text": "Berge, Klöster, Stadtleben und Landschaften.",
+                            "medium": "Fotografie"
+                        },
+                        "hr": {
+                            "title": "Makedonija — VSCO album",
+                            "country": "Makedonija",
+                            "text": "Planine, samostani, gradski život i krajolici.",
+                            "medium": "Fotografija"
+                        },
+                        "tr": {
+                            "title": "Makedonya — VSCO albümü",
+                            "country": "Makedonya",
+                            "text": "Dağlar, manastırlar, şehir hayatı ve manzaralar.",
+                            "medium": "Fotoğrafçılık"
                         }
                     }
                 },
@@ -102,6 +129,24 @@
                             "country": "Germany",
                             "text": "Personal comic, geometric, and life-story tattoos.",
                             "medium": "Tattoo"
+                        },
+                        "de": {
+                            "title": "Tätowierungen — Meine lebendige Leinwand",
+                            "country": "Deutschland",
+                            "text": "Persönliche Comic-, geometrische und lebensgeschichtliche Tattoos.",
+                            "medium": "Tätowierung"
+                        },
+                        "hr": {
+                            "title": "Tetovaže — moje živo platno",
+                            "country": "Njemačka",
+                            "text": "Osobne stripovske, geometrijske i životnom pričom nadahnute tetovaže.",
+                            "medium": "Tetovaža"
+                        },
+                        "tr": {
+                            "title": "Dövmeler — yaşayan tuvalim",
+                            "country": "Almanya",
+                            "text": "Kişisel, çizgi roman esintili, geometrik ve hayat hikâyesi taşıyan dövmeler.",
+                            "medium": "Dövme"
                         }
                     }
                 },
@@ -130,6 +175,24 @@
                             "country": "Greece",
                             "text": "Blue seas, islands, and sun-drenched villages.",
                             "medium": "Photography"
+                        },
+                        "de": {
+                            "title": "Griechenland — VSCO-Album",
+                            "country": "Griechenland",
+                            "text": "Blaue Meere, Inseln und sonnenverwöhnte Dörfer.",
+                            "medium": "Fotografie"
+                        },
+                        "hr": {
+                            "title": "Grčka — VSCO album",
+                            "country": "Grčka",
+                            "text": "Plava mora, otoci i suncem okupana sela.",
+                            "medium": "Fotografija"
+                        },
+                        "tr": {
+                            "title": "Yunanistan — VSCO albümü",
+                            "country": "Yunanistan",
+                            "text": "Mavi denizler, adalar ve güneşle yıkanmış köyler.",
+                            "medium": "Fotoğrafçılık"
                         }
                     }
                 },
@@ -159,6 +222,24 @@
                             "country": "Bulgaria",
                             "text": "Urban and Black Sea — contemporary and classic moments.",
                             "medium": "Photography"
+                        },
+                        "de": {
+                            "title": "Bulgarien — VSCO-Album",
+                            "country": "Bulgarien",
+                            "text": "Stadt und Schwarzes Meer — zeitgenössische und klassische Momente.",
+                            "medium": "Fotografie"
+                        },
+                        "hr": {
+                            "title": "Bugarska — VSCO album",
+                            "country": "Bugarska",
+                            "text": "Grad i Crno more — suvremeni i klasični trenuci.",
+                            "medium": "Fotografija"
+                        },
+                        "tr": {
+                            "title": "Bulgaristan — VSCO albümü",
+                            "country": "Bulgaristan",
+                            "text": "Şehir ve Karadeniz — modern ve klasik anlar.",
+                            "medium": "Fotoğrafçılık"
                         }
                     }
                 },
@@ -187,6 +268,24 @@
                             "country": "Serbia",
                             "text": "Belgrade, brutalism, neighborhoods, and night views.",
                             "medium": "Photography"
+                        },
+                        "de": {
+                            "title": "Serbien — VSCO-Album",
+                            "country": "Serbien",
+                            "text": "Belgrad, Brutalismus, Viertel und Nachtansichten.",
+                            "medium": "Fotografie"
+                        },
+                        "hr": {
+                            "title": "Srbija — VSCO album",
+                            "country": "Srbija",
+                            "text": "Beograd, brutalizam, kvartovi i noćni prizori.",
+                            "medium": "Fotografija"
+                        },
+                        "tr": {
+                            "title": "Sırbistan — VSCO albümü",
+                            "country": "Sırbistan",
+                            "text": "Belgrad, brutalist mimari, mahalleler ve gece manzaraları.",
+                            "medium": "Fotoğrafçılık"
                         }
                     }
                 },
@@ -215,6 +314,24 @@
                             "country": "Bosnia and Herzegovina",
                             "text": "Sarajevo, bridges and rivers—history and modern life.",
                             "medium": "Photography"
+                        },
+                        "de": {
+                            "title": "Bosnien — VSCO-Album",
+                            "country": "Bosnien und Herzegowina",
+                            "text": "Sarajevo, Brücken und Flüsse—Geschichte und modernes Leben.",
+                            "medium": "Fotografie"
+                        },
+                        "hr": {
+                            "title": "Bosna — VSCO album",
+                            "country": "Bosna i Hercegovina",
+                            "text": "Sarajevo, mostovi i rijeke—povijest i suvremeni život.",
+                            "medium": "Fotografija"
+                        },
+                        "tr": {
+                            "title": "Bosna — VSCO albümü",
+                            "country": "Bosna-Hersek",
+                            "text": "Saraybosna, köprüler ve nehirler—tarih ile modern yaşamın buluşması.",
+                            "medium": "Fotoğrafçılık"
                         }
                     }
                 },
@@ -244,6 +361,24 @@
                             "country": "Croatia",
                             "text": "Islands, Adriatic color, street moments from Split to Dubrovnik.",
                             "medium": "Photography"
+                        },
+                        "de": {
+                            "title": "Kroatien — VSCO-Album",
+                            "country": "Kroatien",
+                            "text": "Inseln, Adriatische Farben und Straßenszenen von Split bis Dubrovnik.",
+                            "medium": "Fotografie"
+                        },
+                        "hr": {
+                            "title": "Hrvatska — VSCO album",
+                            "country": "Hrvatska",
+                            "text": "Otoci, boje Jadrana i ulični trenuci od Splita do Dubrovnika.",
+                            "medium": "Fotografija"
+                        },
+                        "tr": {
+                            "title": "Hırvatistan — VSCO albümü",
+                            "country": "Hırvatistan",
+                            "text": "Adalar, Adriyatik renkleri ve Split’ten Dubrovnik’e uzanan sokak anları.",
+                            "medium": "Fotoğrafçılık"
                         }
                     }
                 },
@@ -275,6 +410,24 @@
                             "country": "Germany",
                             "text": "Urban Hessen, culture, skylines, and city parks.",
                             "medium": "Photography"
+                        },
+                        "de": {
+                            "title": "Deutschland — VSCO-Album",
+                            "country": "Deutschland",
+                            "text": "Urbanes Hessen, Kultur, Skylines und Stadtparks.",
+                            "medium": "Fotografie"
+                        },
+                        "hr": {
+                            "title": "Njemačka — VSCO album",
+                            "country": "Njemačka",
+                            "text": "Urbani Hessen, kultura, gradski horizonti i parkovi.",
+                            "medium": "Fotografija"
+                        },
+                        "tr": {
+                            "title": "Almanya — VSCO albümü",
+                            "country": "Almanya",
+                            "text": "Kentsel Hessen, kültür, gökdelen siluetleri ve şehir parkları.",
+                            "medium": "Fotoğrafçılık"
                         }
                     }
                 }
@@ -292,25 +445,25 @@
                     "category_fun": "Fun"
                 },
                 "de": {
-                    "title": "Lieblings-{{Educators / YouTuber}}",
+                    "title": "Favourite {{educators / YouTubers}}",
                     "category_all": "Alle",
                     "category_practical": "Praktisch",
                     "category_theoretical": "Theoretisch",
-                    "category_fun": "Spaß"
+                    "category_fun": "Unterhaltung"
                 },
                 "hr": {
-                    "title": "Omiljeni {{edukatori / YouTuberi}}",
+                    "title": "Favourite {{educators / YouTubers}}",
                     "category_all": "Sve",
-                    "category_practical": "Praktično",
+                    "category_practical": "Prakti?no",
                     "category_theoretical": "Teorijski",
-                    "category_fun": "Zabavno"
+                    "category_fun": "Zabava"
                 },
                 "tr": {
-                    "title": "Favori {{eğitmenler / YouTuber'lar}}",
-                    "category_all": "Tümü",
+                    "title": "Favourite {{educators / YouTubers}}",
+                    "category_all": "T?m?",
                     "category_practical": "Pratik",
                     "category_theoretical": "Teorik",
-                    "category_fun": "Eğlence"
+                    "category_fun": "E?lence"
                 }
             },
             "settings": {

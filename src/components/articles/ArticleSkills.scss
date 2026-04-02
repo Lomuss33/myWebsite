@@ -227,6 +227,30 @@ div.article-skills-item-description {
     color: var(--theme-texts-light-4);
 }
 
+article.article-skills-article-3-section-education {
+    --avatar-size: 34px;
+    --avatar-wrapper-width: 45px;
+
+    @include media-breakpoint-down(lg) {
+        --avatar-size: 32px;
+        --avatar-wrapper-width: 43px;
+    }
+
+    @include media-breakpoint-down(md) {
+        --avatar-size: 31px;
+        --avatar-wrapper-width: 42px;
+    }
+
+    @include media-breakpoint-down(sm) {
+        --avatar-size: 28px;
+        --avatar-wrapper-width: 39px;
+    }
+
+    div.article-skills-item-description {
+        color: var(--theme-texts-light);
+    }
+}
+
 div.article-skills-embed {
     width: 100%;
     display: flex;

@@ -18,12 +18,13 @@ import IllustratedManuscript from "../generic/IllustratedManuscript.jsx"
  */
 function ArticleSkills({ dataWrapper, id }) {
     const [selectedItemCategoryId, setSelectedItemCategoryId] = useState(null)
+    const articleClassName = `article-skills article-skills-${dataWrapper.uniqueId}`
 
     return (
         <Article id={dataWrapper.uniqueId}
                  type={Article.Types.SPACING_DEFAULT}
                  dataWrapper={dataWrapper}
-                 className={`article-skills`}
+                 className={articleClassName}
                  selectedItemCategoryId={selectedItemCategoryId}
                  setSelectedItemCategoryId={setSelectedItemCategoryId}>
             <ArticleSkillsItems dataWrapper={dataWrapper}

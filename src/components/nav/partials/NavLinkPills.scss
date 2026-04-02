@@ -22,7 +22,7 @@ a.nav-link-pills-link {
     outline: none;
 
     background-color: var(--theme-mobile-nav-background);
-    border-top: 3px solid var(--theme-mobile-nav-border);
+    border-bottom: 3px solid var(--theme-mobile-nav-border);
     color: var(--theme-mobile-nav);
 
     i {
@@ -57,7 +57,7 @@ a.nav-link-pills-link:hover {
 
 a.nav-link-pills-link-active {
     background-color: var(--theme-mobile-nav-selected-background)!important;
-    border-top-color: var(--theme-mobile-nav-selected-border);
+    border-bottom-color: var(--theme-mobile-nav-selected-border);
     user-select: none;
     pointer-events: none;
 

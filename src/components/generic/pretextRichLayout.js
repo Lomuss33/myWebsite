@@ -182,6 +182,14 @@ export function layoutInteractiveParagraphs(paragraphs, typography, maxWidth) {
     }
 }
 
+export function getFragmentGraphemes(fragment) {
+    if (!fragment) return []
+    if (fragment.graphemes) return fragment.graphemes
+
+    fragment.graphemes = measureGraphemes(fragment.text, fragment.font)
+    return fragment.graphemes
+}
+
 function createParagraph(block) {
     return { block, items: [] }
 }
@@ -325,7 +333,8 @@ function createFragment(item, leadingGap, start, end, text, width, font) {
         width,
         start,
         end,
-        graphemes: measureGraphemes(text, font)
+        font,
+        graphemes: null
     }
 }
 

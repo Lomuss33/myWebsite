@@ -2,6 +2,7 @@ import "./PretextInteractiveText.scss"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { motion, useInView, useReducedMotion } from "motion/react"
 import {
+    getFragmentGraphemes,
     layoutInteractiveParagraphs,
     parseInteractiveHtml,
     readTypographySnapshot
@@ -15,6 +16,11 @@ const RETURN_ROTATE_RATE = 18
 const RELEASE_DELAY_MAX = 0.022
 const TOUCH_TAP_MAX_MOVEMENT = 14
 const TOUCH_TAP_HOLD_MS = 900
+const TAP_RIPPLE_DURATION_MS = 420
+const TAP_RIPPLE_FADE_MS = 420
+const TAP_RIPPLE_SPEED_PX_PER_MS = 0.30
+const TAP_RIPPLE_BAND_PX = 28
+const WAVE_EFFECT_STRENGTH_MULTIPLIER = 2.4
 
 function PretextInteractiveText({
     html,
@@ -32,6 +38,7 @@ function PretextInteractiveText({
     const pointerFrameRef = useRef(null)
     const gravityFrameRef = useRef(null)
     const gravityLastFrameTimeRef = useRef(null)
+    const tapRippleFrameRef = useRef(null)
     const touchGestureRef = useRef(null)
     const touchTapTimeoutRef = useRef(null)
     const pendingPointerRef = useRef(createInactiveInteractionState())
@@ -47,10 +54,8 @@ function PretextInteractiveText({
     const [contentWidth, setContentWidth] = useState(0)
     const [typography, setTypography] = useState(null)
     const [pointerState, setPointerState] = useState(createInactiveInteractionState())
-    const [burstState, setBurstState] = useState(() => ({
-        token: 0,
-        ...createInactiveInteractionState()
-    }))
+    const [tapRippleState, setTapRippleState] = useState(createInactiveTapRippleState())
+    const [tapRippleNow, setTapRippleNow] = useState(0)
     const [revealCycle, setRevealCycle] = useState(0)
     const [, setFrameVersion] = useState(0)
 
@@ -75,8 +80,9 @@ function PretextInteractiveText({
     }, [contentWidth, layout.totalHeight])
 
     const visibleGraphemes = useMemo(() => {
+        if (effectVariant !== "gravitySweep") return []
         return collectVisibleGraphemes(layout.paragraphs, effectiveLineHeight)
-    }, [effectiveLineHeight, layout.paragraphs])
+    }, [effectVariant, effectiveLineHeight, layout.paragraphs])
 
     useEffect(() => {
         pointerStateRef.current = pointerState
@@ -143,6 +149,10 @@ function PretextInteractiveText({
 
             if (gravityFrameRef.current !== null) {
                 cancelAnimationFrame(gravityFrameRef.current)
+            }
+
+            if (tapRippleFrameRef.current !== null) {
+                cancelAnimationFrame(tapRippleFrameRef.current)
             }
 
             if (touchTapTimeoutRef.current !== null) {
@@ -224,6 +234,17 @@ function PretextInteractiveText({
         }
     }, [effectVariant, reduceMotion, pointerState, visibleGraphemes, contentSize, effectiveLineHeight])
 
+    useEffect(() => {
+        if (effectVariant === "wave" && !reduceMotion) return
+
+        stopTapRippleLoop()
+        setTapRippleState(currentRipple => {
+            return currentRipple.active ?
+                createInactiveTapRippleState(currentRipple.token) :
+                currentRipple
+        })
+    }, [effectVariant, reduceMotion])
+
     const schedulePointerUpdate = nextPointer => {
         pendingPointerRef.current = nextPointer
         pointerStateRef.current = nextPointer
@@ -243,6 +264,37 @@ function PretextInteractiveText({
         }
 
         schedulePointerUpdate(createInactiveInteractionState())
+    }
+
+    const stopTapRippleLoop = () => {
+        if (tapRippleFrameRef.current !== null) {
+            cancelAnimationFrame(tapRippleFrameRef.current)
+            tapRippleFrameRef.current = null
+        }
+    }
+
+    const startTapRippleLoop = nextRippleState => {
+        stopTapRippleLoop()
+
+        setTapRippleNow(nextRippleState.startedAt)
+
+        const stepTapRippleFrame = now => {
+            tapRippleFrameRef.current = null
+            setTapRippleNow(now)
+
+            if (now - nextRippleState.startedAt >= TAP_RIPPLE_DURATION_MS) {
+                setTapRippleState(currentRipple => {
+                    return currentRipple.token === nextRippleState.token ?
+                        createInactiveTapRippleState(nextRippleState.token) :
+                        currentRipple
+                })
+                return
+            }
+
+            tapRippleFrameRef.current = requestAnimationFrame(stepTapRippleFrame)
+        }
+
+        tapRippleFrameRef.current = requestAnimationFrame(stepTapRippleFrame)
     }
 
     const handlePointerMove = event => {
@@ -312,13 +364,6 @@ function PretextInteractiveText({
         const nextPointer = getRelativePointerPosition(event)
         const nextInteractionState = createActiveInteractionState(nextPointer)
         schedulePointerUpdate(nextInteractionState)
-
-        if (effectVariant !== "wave") return
-
-        setBurstState(currentBurst => ({
-            token: currentBurst.token + 1,
-            ...nextInteractionState
-        }))
     }
 
     const handlePointerUp = event => {
@@ -336,7 +381,6 @@ function PretextInteractiveText({
         touchGestureRef.current = null
 
         if (!activeGesture || activeGesture.pointerId !== event.pointerId) return
-        if (effectVariant !== "gravitySweep" || reduceMotion) return
 
         const nextPointer = getRelativePointerPosition(event)
         const tapDistance = getPointerTravelDistance(activeGesture, nextPointer)
@@ -344,6 +388,24 @@ function PretextInteractiveText({
             clearTouchTapPointer()
             return
         }
+
+        if (effectVariant === "wave") {
+            if (reduceMotion) return
+
+            const nextRippleState = {
+                active: true,
+                x: nextPointer.x,
+                y: nextPointer.y,
+                startedAt: performance.now(),
+                token: tapRippleState.token + 1
+            }
+
+            setTapRippleState(nextRippleState)
+            startTapRippleLoop(nextRippleState)
+            return
+        }
+
+        if (effectVariant !== "gravitySweep" || reduceMotion) return
 
         schedulePointerUpdate(createActiveInteractionState(nextPointer))
         scheduleGravityLoop()
@@ -427,9 +489,10 @@ function PretextInteractiveText({
                                                   lineHeight={effectiveLineHeight}
                                                   lineTop={lineTop}
                                                   lineIndex={globalLineIndex}
-                                                  burstState={burstState}
                                                   effectVariant={effectVariant}
                                                   gravityStates={gravityStatesRef.current}
+                                                  tapRippleNow={tapRippleNow}
+                                                  tapRippleState={tapRippleState}
                                                   terrain={terrain}
                                                   terrainVariant={terrainVariant}
                                                   contentSize={contentSize}
@@ -451,9 +514,10 @@ function AnimatedLine({
     lineHeight,
     lineTop,
     lineIndex,
-    burstState,
     effectVariant,
     gravityStates,
+    tapRippleNow,
+    tapRippleState,
     terrain,
     terrainVariant,
     contentSize,
@@ -463,6 +527,12 @@ function AnimatedLine({
 }) {
     const revealReady = revealCycle > 0
     const direction = lineIndex % 2 === 0 ? -1 : 1
+    // Desktop/mouse hover should stay on coarse pretext fragments for performance.
+    // Touch/pointer tapping should stay a simple short fragment animation.
+    const isWaveHovering =
+        effectVariant === "wave" &&
+        !reduceMotion &&
+        pointerState.active
 
     let fragmentOffsetX = 0
 
@@ -492,56 +562,88 @@ function AnimatedLine({
                 const fragmentLeft = fragmentOffsetX + fragment.leadingGap
                 fragmentOffsetX = fragmentLeft + fragment.width
 
-                const fragmentBody = fragment.graphemes.map((grapheme, graphemeIndex) => {
-                    const graphemeKey = `${fragment.key}-g-${graphemeIndex}`
-
-                    if (effectVariant === "gravitySweep") {
-                        const gravityState = gravityStates.get(graphemeKey)
-                        const gravityStyle = reduceMotion || !gravityState ?
-                            undefined :
-                            {
-                                transform: `translate3d(${gravityState.x}px, ${gravityState.y}px, 0) rotate(${gravityState.rotate}deg)`
-                            }
-
-                        return (
-                            <span key={graphemeKey}
-                                  className={`pretext-interactive-text-grapheme`}
-                                  style={gravityStyle}>
-                                {grapheme.text}
-                            </span>
-                        )
-                    }
-
-                    const positionX = fragmentLeft + grapheme.centerX
-                    const positionY = lineTop + lineHeight / 2
-                    const motionState = reduceMotion ?
-                        { x: 0, y: 0, rotate: 0, scale: 1 } :
-                        computeWaveHoverOffset(pointerState, positionX, positionY, terrain, contentSize, terrainVariant)
-
-                    const initialState = reduceMotion || burstState.token === 0 ?
-                        false :
-                        computeWaveBurstOffset(burstState, positionX, positionY, terrain, contentSize, terrainVariant)
-
-                    return (
-                        <motion.span key={`${graphemeKey}-${burstState.token}`}
-                                     className={`pretext-interactive-text-grapheme`}
-                                     initial={initialState}
-                                     animate={motionState}
-                                     transition={reduceMotion ? { duration: 0 } : {
-                                         type: "spring",
-                                         stiffness: Math.max(260, 410 - lineIndex * 9),
-                                         damping: 28 + (lineIndex % 3),
-                                         mass: 0.2 + (graphemeIndex % 4) * 0.03
-                                     }}>
-                            {grapheme.text}
-                        </motion.span>
-                    )
-                })
-
                 const commonProps = {
                     className: `pretext-interactive-text-fragment pretext-interactive-text-fragment-${fragment.kind}`,
                     style: fragment.leadingGap > 0 ? { marginLeft: `${fragment.leadingGap}px` } : null
                 }
+                if (effectVariant === "wave") {
+                    const waveSamplePoint = resolveWaveSamplePoint(
+                        pointerState,
+                        tapRippleState,
+                        fragmentLeft,
+                        lineTop,
+                        fragment.width,
+                        lineHeight
+                    )
+                    const fragmentMotionState = combineWaveOffsets(
+                        isWaveHovering ?
+                            computeWaveHoverOffset(
+                                pointerState,
+                                waveSamplePoint.x,
+                                waveSamplePoint.y,
+                                terrain,
+                                contentSize,
+                                terrainVariant
+                            ) :
+                            { x: 0, y: 0, rotate: 0, scale: 1 },
+                        computeWaveTapRippleOffset(
+                            tapRippleState,
+                            tapRippleNow,
+                            waveSamplePoint.x,
+                            waveSamplePoint.y,
+                            terrain,
+                            contentSize,
+                            terrainVariant
+                        )
+                    )
+                    const fragmentTransition = reduceMotion ? { duration: 0 } : {
+                        type: "spring",
+                        stiffness: Math.max(220, 340 - lineIndex * 8),
+                        damping: 26 + (lineIndex % 3),
+                        mass: 0.34
+                    }
+
+                    if (fragment.kind === "link") {
+                        return (
+                            <motion.a key={fragment.key}
+                                      href={fragment.href}
+                                      target={fragment.target}
+                                      rel={fragment.rel}
+                                      {...commonProps}
+                                      animate={fragmentMotionState}
+                                      transition={fragmentTransition}>
+                                {fragment.text}
+                            </motion.a>
+                        )
+                    }
+
+                    return (
+                        <motion.span key={fragment.key}
+                                     {...commonProps}
+                                     animate={fragmentMotionState}
+                                     transition={fragmentTransition}>
+                            {fragment.text}
+                        </motion.span>
+                    )
+                }
+
+                const fragmentBody = getFragmentGraphemes(fragment).map((grapheme, graphemeIndex) => {
+                    const graphemeKey = `${fragment.key}-g-${graphemeIndex}`
+                    const gravityState = gravityStates.get(graphemeKey)
+                    const gravityStyle = reduceMotion || !gravityState ?
+                        undefined :
+                        {
+                            transform: `translate3d(${gravityState.x}px, ${gravityState.y}px, 0) rotate(${gravityState.rotate}deg)`
+                        }
+
+                    return (
+                        <span key={graphemeKey}
+                              className={`pretext-interactive-text-grapheme`}
+                              style={gravityStyle}>
+                            {grapheme.text}
+                        </span>
+                    )
+                })
 
                 if (fragment.kind === "link") {
                     return (
@@ -583,8 +685,9 @@ function collectVisibleGraphemes(paragraphs, lineHeight) {
             line.fragments.forEach(fragment => {
                 const fragmentLeft = fragmentOffsetX + fragment.leadingGap
                 fragmentOffsetX = fragmentLeft + fragment.width
+                const fragmentGraphemes = getFragmentGraphemes(fragment)
 
-                fragment.graphemes.forEach((grapheme, graphemeIndex) => {
+                fragmentGraphemes.forEach((grapheme, graphemeIndex) => {
                     graphemes.push({
                         key: `${fragment.key}-g-${graphemeIndex}`,
                         baselineX: fragmentLeft + grapheme.centerX,
@@ -845,54 +948,106 @@ function computeWaveHoverOffset(pointerState, x, y, terrain, contentSize, terrai
     }
 
     const config = terrainVariant === "detailed" ? {
-        radius: 154,
-        influenceAmplitude: 0.84,
-        lateralAmplitude: 8.5,
-        verticalAmplitude: 12,
-        slopeAmplitude: 5,
-        scaleAmplitude: 0.021,
-        rotationAmplitude: 3.4,
-        falloffPower: 2.55
+        radius: 140,
+        influenceAmplitude: 0.62 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
+        lateralAmplitude: 5.2 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
+        verticalAmplitude: 7.4 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
+        slopeAmplitude: 3.2 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
+        scaleAmplitude: 0.012 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
+        rotationAmplitude: 2.1 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
+        falloffPower: 2.7
     } : {
         radius: 162,
-        influenceAmplitude: 0.96,
-        lateralAmplitude: 8,
-        verticalAmplitude: 12,
-        slopeAmplitude: 4.5,
-        scaleAmplitude: 0.018,
-        rotationAmplitude: 3.1,
+        influenceAmplitude: 0.96 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
+        lateralAmplitude: 8 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
+        verticalAmplitude: 12 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
+        slopeAmplitude: 4.5 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
+        scaleAmplitude: 0.018 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
+        rotationAmplitude: 3.1 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
         falloffPower: 2.3
     }
 
     return sampleWaveOffset(pointerState, x, y, terrain, contentSize, config)
 }
 
-function computeWaveBurstOffset(burstState, x, y, terrain, contentSize, terrainVariant) {
-    if (!burstState.token) {
+function computeWaveTapRippleOffset(tapRippleState, now, x, y, terrain, contentSize, terrainVariant) {
+    if (!tapRippleState.active || now <= tapRippleState.startedAt) {
+        return { x: 0, y: 0, rotate: 0, scale: 1 }
+    }
+
+    const age = now - tapRippleState.startedAt
+    if (age >= TAP_RIPPLE_DURATION_MS) {
+        return { x: 0, y: 0, rotate: 0, scale: 1 }
+    }
+
+    const progress = clamp(age / TAP_RIPPLE_DURATION_MS, 0, 1)
+    const decay = 1 - clamp(age / TAP_RIPPLE_FADE_MS, 0, 1)
+    const waveFront = age * TAP_RIPPLE_SPEED_PX_PER_MS
+    const distance = Math.hypot(x - tapRippleState.x, y - tapRippleState.y)
+    const ringInfluence = Math.exp(-((distance - waveFront) ** 2) / (2 * TAP_RIPPLE_BAND_PX ** 2))
+    const influence = ringInfluence * decay
+
+    if (influence < 0.0008) {
         return { x: 0, y: 0, rotate: 0, scale: 1 }
     }
 
     const config = terrainVariant === "detailed" ? {
-        radius: 196,
-        influenceAmplitude: 1.06,
-        lateralAmplitude: 12.5,
-        verticalAmplitude: 17,
-        slopeAmplitude: 7,
-        scaleAmplitude: 0.033,
-        rotationAmplitude: 5.2,
-        falloffPower: 2.45
+        lateralAmplitude: 9 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
+        verticalAmplitude: 12 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
+        slopeAmplitude: 5.5 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
+        scaleAmplitude: 0.022 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
+        rotationAmplitude: 3.8 * WAVE_EFFECT_STRENGTH_MULTIPLIER
     } : {
-        radius: 198,
-        influenceAmplitude: 1.18,
-        lateralAmplitude: 12,
-        verticalAmplitude: 16,
-        slopeAmplitude: 6,
-        scaleAmplitude: 0.03,
-        rotationAmplitude: 4.8,
-        falloffPower: 2.2
+        lateralAmplitude: 8.2 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
+        verticalAmplitude: 10.4 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
+        slopeAmplitude: 5 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
+        scaleAmplitude: 0.019 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
+        rotationAmplitude: 3.4 * WAVE_EFFECT_STRENGTH_MULTIPLIER
     }
 
-    return sampleWaveOffset(burstState, x, y, terrain, contentSize, config)
+    const normalizedPoint = normalizeTerrainPoint(x, y, contentSize)
+    const elevation = sampleWaveHeight(normalizedPoint.x, normalizedPoint.y, terrain)
+    const gradient = sampleWaveGradient(normalizedPoint.x, normalizedPoint.y, terrain)
+    const troughPull = elevation < 0 ? Math.abs(elevation) : 0
+    const xOffset = (gradient.x * config.lateralAmplitude - troughPull * gradient.x * 2.4) * influence
+    const yOffset = (-elevation * config.verticalAmplitude - gradient.y * config.slopeAmplitude) * influence
+
+    return {
+        x: xOffset,
+        y: yOffset,
+        rotate: clamp((gradient.x * 0.8 - gradient.y * 0.5 - elevation * 0.35) * config.rotationAmplitude * influence, -6, 6),
+        scale: 1 + elevation * config.scaleAmplitude * influence * (1 - progress * 0.2)
+    }
+}
+
+function combineWaveOffsets(hoverOffset, tapRippleOffset) {
+    return {
+        x: hoverOffset.x + tapRippleOffset.x,
+        y: hoverOffset.y + tapRippleOffset.y,
+        rotate: clamp(hoverOffset.rotate + tapRippleOffset.rotate, -6, 6),
+        scale: clamp(hoverOffset.scale + tapRippleOffset.scale - 1, 0.94, 1.08)
+    }
+}
+
+function resolveWaveSamplePoint(pointerState, tapRippleState, left, top, width, height) {
+    if (pointerState.active) {
+        return {
+            x: clamp(pointerState.x, left, left + width),
+            y: clamp(pointerState.y, top, top + height)
+        }
+    }
+
+    if (tapRippleState.active) {
+        return {
+            x: clamp(tapRippleState.x, left, left + width),
+            y: clamp(tapRippleState.y, top, top + height)
+        }
+    }
+
+    return {
+        x: left + width / 2,
+        y: top + height / 2
+    }
 }
 
 function sampleWaveOffset(interactionState, x, y, terrain, contentSize, config) {
@@ -968,6 +1123,16 @@ function createInactiveInteractionState() {
         active: false,
         x: 0,
         y: 0
+    }
+}
+
+function createInactiveTapRippleState(token = 0) {
+    return {
+        active: false,
+        x: 0,
+        y: 0,
+        startedAt: 0,
+        token
     }
 }
 
@@ -1060,28 +1225,14 @@ function clamp(value, min, max) {
 
 function getRelativePointerPosition(event) {
     const element = event.currentTarget
-    const offset = getDocumentOffset(element)
-    const pageX = event.pageX ?? event.clientX + window.scrollX
-    const pageY = event.pageY ?? event.clientY + window.scrollY
+    const rect = element.getBoundingClientRect()
+    const clientX = event.clientX ?? 0
+    const clientY = event.clientY ?? 0
 
     return {
-        x: pageX - offset.left,
-        y: pageY - offset.top
+        x: clientX - rect.left,
+        y: clientY - rect.top
     }
-}
-
-function getDocumentOffset(element) {
-    let left = 0
-    let top = 0
-    let current = element
-
-    while (current) {
-        left += current.offsetLeft - current.scrollLeft + current.clientLeft
-        top += current.offsetTop - current.scrollTop + current.clientTop
-        current = current.offsetParent
-    }
-
-    return { left, top }
 }
 
 export default PretextInteractiveText

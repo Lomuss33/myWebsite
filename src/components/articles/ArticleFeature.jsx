@@ -324,6 +324,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
 
     const itemClassName = [
         "article-feature-item",
+        `article-feature-item-id-${itemWrapper.id}`,
         isHomeStyleIntro ? "article-feature-item-home-style-intro" : "",
         isManagedSplitLayout ? "article-feature-item-layout-managed" : "",
         isTextLedSplitLayout ? "article-feature-item-layout-text-led" : "",

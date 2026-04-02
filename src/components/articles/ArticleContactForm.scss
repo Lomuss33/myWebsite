@@ -1,5 +1,23 @@
 @import "../../styles/extend.scss";
 
+article.article-contact-form {
+    --article-contact-form-placeholder-color: var(--theme-secondary-4);
+    --article-contact-form-placeholder-color: color-mix(in srgb, var(--theme-opacity-border-accent) 80%, var(--form-color) 20%);
+
+    input.form-input,
+    textarea.form-textarea {
+        &::-webkit-input-placeholder {
+            color: var(--article-contact-form-placeholder-color) !important;
+            opacity: 1;
+        }
+
+        &::placeholder {
+            color: var(--article-contact-form-placeholder-color) !important;
+            opacity: 1;
+        }
+    }
+}
+
 button.article-contact-form-reset-button {
     margin-top: 28px;
 }

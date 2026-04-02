@@ -461,6 +461,11 @@ div.article-feature-items.article-feature-items-section-my-writings {
             max-width: 54ch;
             font-size: clamp(0.84rem, 0.14vw + 0.81rem, 0.92rem);
             line-height: 1.48;
+
+            div.pretext-interactive-text {
+                box-sizing: border-box;
+                padding-right: clamp(10px, 0.9vw, 16px);
+            }
         }
     }
 
@@ -504,6 +509,10 @@ div.article-feature-items.article-feature-items-section-my-writings {
                 max-width: 100%;
                 font-size: 0.9rem;
                 line-height: 1.5;
+
+                div.pretext-interactive-text {
+                    padding-right: clamp(8px, 3vw, 14px);
+                }
             }
         }
     }

@@ -80,6 +80,12 @@ export default class ArticleDataWrapper {
             featureTextFitMaxScale: rawSettings["feature_text_fit_max_scale"] || undefined,
             featureEmbed: rawSettings["feature_embed"] || undefined,
             featureEmbedPosition: rawSettings["feature_embed_position"] || undefined,
+            featureEmbedSourceItemId: Number.isFinite(Number(rawSettings["feature_embed_source_item_id"])) ?
+                Number(rawSettings["feature_embed_source_item_id"]) :
+                undefined,
+            featureEmbedHideSourceItem: rawSettings["feature_embed_hide_source_item"] === undefined ?
+                true :
+                Boolean(rawSettings["feature_embed_hide_source_item"]),
             featureInteractiveItemIds: Array.isArray(rawSettings["feature_interactive_item_ids"]) ?
                 rawSettings["feature_interactive_item_ids"]
                     .map(itemId => Number(itemId))
@@ -89,7 +95,10 @@ export default class ArticleDataWrapper {
             // - ArticleSkills
             maxItemsPerRow: rawSettings["max_items_per_row"] || undefined,
             maxRowsCollapseThreshold: rawSettings["max_rows_collapse_threshold"] || undefined,
+            columnLayout: rawSettings["column_layout"] || undefined,
+            avatarImageMode: rawSettings["avatar_image_mode"] || undefined,
             roundIcons: Boolean(rawSettings["round_icons"]) || undefined,
+            showItemNumbers: Boolean(rawSettings["show_item_numbers"]) || undefined,
 
             // - ArticleContactForm
             emailJsPublicKey: rawSettings["email_js_public_key"] || undefined,

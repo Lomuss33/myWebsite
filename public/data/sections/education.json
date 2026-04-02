@@ -624,7 +624,9 @@
                 }
             },
             "settings": {
-                "max_items_per_row": 3,
+                "avatar_image_mode": "flag",
+                "column_layout": "responsive_balanced_two",
+                "max_items_per_row": 2,
                 "max_rows_collapse_threshold": 6,
                 "order_items_by": "percentage",
                 "order_items_sort": "desc",
@@ -757,6 +759,7 @@
                 {
                     "id": 4,
                     "img": "/images/flags/ma.png",
+                    "avatar_image_scale": 0.84,
                     "faIcon": "",
                     "faIconColors": {
                         "bg": "",

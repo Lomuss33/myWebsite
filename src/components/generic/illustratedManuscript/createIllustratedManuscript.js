@@ -27,6 +27,7 @@ const MIN_LINE_WIDTH = 40
 const DRAGON_PATROL_HALF_CYCLE_MS = 5000
 const PATROL_SAMPLE_COUNT = 240
 const PATROL_LOOK_AHEAD_DISTANCE = 18
+const RESERVED_TEXT_ROWS = 2
 const dropCapCache = new Map()
 const illustrationCache = new Map()
 
@@ -322,7 +323,7 @@ function createIllustratedManuscript({
         }
     }
 
-    const getIllustrationFrame = (_currentTextBottom, activeLayout = layout) => {
+    const getIllustrationFrame = (currentTextBottom, activeLayout = layout) => {
         const slot = getIllustrationSlot(activeLayout)
         if (!slot) {
             return null
@@ -392,11 +393,11 @@ function createIllustratedManuscript({
         const illustrationSlot = getIllustrationSlot(activeLayout)
         if (!illustrationSlot) return activeLayout.pageHeight
 
-        const textBottomNeeded = storyContent ? measureAllTextBottom(activeLayout) : activeLayout.margin
-        return Math.max(
-            activeLayout.pageHeight,
-            Math.ceil(textBottomNeeded + illustrationSlot.gap + illustrationSlot.height + 2)
-        )
+        const reservedTextHeight = activeLayout.lineHeight * RESERVED_TEXT_ROWS
+        const textBottomNeeded = storyContent ?
+            measureAllTextBottom(activeLayout) + reservedTextHeight :
+            activeLayout.margin + reservedTextHeight
+        return Math.ceil(textBottomNeeded + illustrationSlot.gap + illustrationSlot.height + 2)
     }
 
     const drawIllustration = () => {

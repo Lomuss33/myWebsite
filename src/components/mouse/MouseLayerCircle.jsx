@@ -22,7 +22,8 @@ function MouseLayerCircle({ targetElementParameters, animationTicks, hidden, dt,
     const isPositioned = currentX === input.mouseMoveStatus.clientX
         && currentY === input.mouseMoveStatus.clientY
 
-    const shouldFadeOut = stoppedFor > MAX_IDLE_TIME_IN_SECONDS && !targetElementParameters
+    const shouldPreserveCircle = Boolean(targetElementParameters?.preserveCircle)
+    const shouldFadeOut = stoppedFor > MAX_IDLE_TIME_IN_SECONDS && !targetElementParameters && !shouldPreserveCircle
 
     /** @listens animationTicks **/
     useEffect(() => {
@@ -33,7 +34,7 @@ function MouseLayerCircle({ targetElementParameters, animationTicks, hidden, dt,
         _updateStoppedFor()
         _updateTransform(circleDiv)
         _updateOpacity(circleDiv)
-        _setHighlighted(circleDiv, Boolean(targetElementParameters))
+        _setHighlighted(circleDiv, Boolean(targetElementParameters) && !shouldPreserveCircle)
         _detectFaIcon()
 
         onCircleChanged({
@@ -53,7 +54,7 @@ function MouseLayerCircle({ targetElementParameters, animationTicks, hidden, dt,
 
     const _updateTransform = (circleDiv) => {
         let targetScale = MIN_SCALE
-        if (targetElementParameters)
+        if (targetElementParameters && !shouldPreserveCircle)
             targetScale = MIN_SCALE + (MAX_SCALE - MIN_SCALE) / 2
         if (input.isClicked)
             targetScale = MAX_SCALE
@@ -71,7 +72,7 @@ function MouseLayerCircle({ targetElementParameters, animationTicks, hidden, dt,
         let targetOpacity = 0
         if(!shouldFadeOut)
             targetOpacity = MIN_OPACITY
-        if(targetElementParameters)
+        if(targetElementParameters && !shouldPreserveCircle)
             targetOpacity = (MAX_OPACITY - MIN_OPACITY)/2
         if(input.isClicked)
             targetOpacity += (MAX_OPACITY - MIN_OPACITY)/2

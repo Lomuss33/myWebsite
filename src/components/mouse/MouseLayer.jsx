@@ -80,6 +80,8 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
             return
 
         let parameters = null
+        if(input.lastMouseTarget.getAttribute("data-cursor-preserve"))
+            parameters = {type: "passive", preserveCircle: true}
         if(input.lastMouseTarget.matches("a"))
             parameters = {type: "link"}
         if(input.lastMouseTarget.matches("button"))

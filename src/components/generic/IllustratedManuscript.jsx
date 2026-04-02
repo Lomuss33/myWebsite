@@ -56,6 +56,7 @@ function IllustratedManuscript({
 
             <canvas ref={canvasRef}
                     className={`illustrated-manuscript-canvas`}
+                    data-cursor-preserve={`true`}
                     aria-label={canvasLabel}/>
         </div>
     )

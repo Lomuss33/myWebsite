@@ -1,12 +1,20 @@
 import "./TextTyper.scss"
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import Animable from "../capabilities/Animable.jsx"
 import {useUtils} from "../../hooks/utils.js"
 import {useNavigation} from "../../providers/NavigationProvider.jsx"
 
+const EMOJI_POOL = [
+    "\u{1F423}", "\u{1F97A}", "\u{1F337}", "\u2728", "\u{1F389}", "\u{1F6E0}\uFE0F", "\u{1F4A1}", "\u{1F50C}", "\u{1F5A5}\uFE0F", "\u2328\uFE0F",
+    "\u{1F9E0}", "\u2699\uFE0F", "\u{1F527}", "\u{1F4E1}", "\u{1F4BE}", "\u{1F30D}", "\u{1F680}", "\u{1F525}", "\u{1F39B}\uFE0F", "\u{1F4DF}"
+]
+const EASTER_EGG_PREFIX = "\u{1F430}"
+const EASTER_EGG_MEASURE_STRING = [EASTER_EGG_PREFIX, ...EMOJI_POOL.slice(0, 10)].join(" ")
+
 function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, displayTime = 1, className = "", fixedPrefix = "", randomOrder = false }) {
     const utils = useUtils()
     const navigation = useNavigation()
+    const dynamicSpanRef = useRef(null)
 
     const [parsedStrings, setParsedStrings] = useState(null)
     const [currentText, setCurrentText] = useState("")
@@ -17,6 +25,7 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, dis
     const [statusElapsed, setStatusElapsed] = useState(0)
     const [cursorVisible, setCursorVisible] = useState(false)
     const [cursorElapsed, setCursorElapsed] = useState(0)
+    const [dynamicWidth, setDynamicWidth] = useState(null)
 
     const animationId = `text-typer-` + (id || "default")
 
@@ -27,6 +36,39 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, dis
         _reset()
         setParsedStrings(strings.map(string => { return utils.string.stripHTMLTags(string) }))
     }, [strings])
+
+    useEffect(() => {
+        if(!parsedStrings?.length || !dynamicSpanRef.current) {
+            setDynamicWidth(null)
+            return
+        }
+
+        const computedStyles = window.getComputedStyle(dynamicSpanRef.current)
+        const measureElement = document.createElement("span")
+        const candidateStrings = [...parsedStrings, EASTER_EGG_MEASURE_STRING]
+
+        measureElement.style.position = "absolute"
+        measureElement.style.visibility = "hidden"
+        measureElement.style.pointerEvents = "none"
+        measureElement.style.whiteSpace = "nowrap"
+        measureElement.style.font = computedStyles.font
+        measureElement.style.fontKerning = computedStyles.fontKerning
+        measureElement.style.fontVariant = computedStyles.fontVariant
+        measureElement.style.fontFeatureSettings = computedStyles.fontFeatureSettings
+        measureElement.style.letterSpacing = computedStyles.letterSpacing
+        measureElement.style.textTransform = computedStyles.textTransform
+
+        document.body.appendChild(measureElement)
+
+        let nextWidth = 0
+        candidateStrings.forEach(candidateString => {
+            measureElement.textContent = `${candidateString}_`
+            nextWidth = Math.max(nextWidth, Math.ceil(measureElement.getBoundingClientRect().width))
+        })
+
+        measureElement.remove()
+        setDynamicWidth(nextWidth || null)
+    }, [parsedStrings])
 
     const _reset = () => {
         setStatus(TextTyper.Status.INITIALIZING)
@@ -58,18 +100,13 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, dis
     }
 
     const _buildEasterEggString = () => {
-        const emojiPool = [
-            "🐣", "🥚", "🌷", "✨", "🎉", "🛠️", "💡", "🔌", "🖥️", "⌨️",
-            "🧠", "⚙️", "🔧", "📡", "💾", "🌍", "🚀", "🔥", "🎛️", "📟"
-        ]
-
         const emojiCount = Math.floor(Math.random() * 8) + 3
         const randomEmojis = Array.from({ length: emojiCount }, () => {
-            const randomIndex = Math.floor(Math.random() * emojiPool.length)
-            return emojiPool[randomIndex]
+            const randomIndex = Math.floor(Math.random() * EMOJI_POOL.length)
+            return EMOJI_POOL[randomIndex]
         })
 
-        return ["🐰", ...randomEmojis].join(" ")
+        return [EASTER_EGG_PREFIX, ...randomEmojis].join(" ")
     }
 
     const _maybeCreateEasterEgg = (nextWord, nextCycleCount) => {
@@ -134,7 +171,7 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, dis
         if(handlerHook) handlerHook(event.ticks)
     }
 
-    const _onStatusInitializing = (ticks) => {
+    const _onStatusInitializing = () => {
         setTargetWord(parsedStrings[0])
         if(randomOrder)
             setRandomQueue(_buildRandomQueue(parsedStrings[0]))
@@ -142,7 +179,7 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, dis
         _nextStatus()
     }
 
-    const _onStatusTyping = (ticks) => {
+    const _onStatusTyping = () => {
         setCursorVisible(true)
 
         const currentDelay = _getTypingDelay()
@@ -224,12 +261,14 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, dis
                   onEnterFrame={_update}>
             <TextTyperSpan currentText={currentText}
                            cursorVisible={cursorVisible}
+                           dynamicWidth={dynamicWidth}
+                           dynamicSpanRef={dynamicSpanRef}
                            fixedPrefix={fixedPrefix}/>
         </Animable>
     )
 }
 
-function TextTyperSpan({ currentText, cursorVisible, fixedPrefix }) {
+function TextTyperSpan({ currentText, cursorVisible, dynamicWidth, dynamicSpanRef, fixedPrefix }) {
     const visibleClass = cursorVisible ?
         `text-typer-span-cursor-visible` :
         ``
@@ -237,6 +276,10 @@ function TextTyperSpan({ currentText, cursorVisible, fixedPrefix }) {
     const transitionClass = currentText.length === 0 ?
         `text-typer-span-cursor-no-transition` :
         ``
+
+    const dynamicStyle = dynamicWidth ?
+        { width: `min(100%, ${dynamicWidth}px)` } :
+        undefined
 
     return (
         <span className={`text-typer-span`}>
@@ -246,7 +289,9 @@ function TextTyperSpan({ currentText, cursorVisible, fixedPrefix }) {
                 </span>
             )}
 
-            <span className={`text-typer-span-dynamic`}>
+            <span ref={dynamicSpanRef}
+                  className={`text-typer-span-dynamic`}
+                  style={dynamicStyle}>
                 {currentText}
                 <span className={`text-typer-span-cursor ${visibleClass} ${transitionClass}`}>_</span>
             </span>

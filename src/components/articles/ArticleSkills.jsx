@@ -8,6 +8,7 @@ import {useConstants} from "../../hooks/constants.js"
 import AvatarView from "../generic/AvatarView.jsx"
 import {useLocation} from "../../providers/LocationProvider.jsx"
 import NumberAnimation from "../generic/NumberAnimation.jsx"
+import IllustratedManuscript from "../generic/IllustratedManuscript.jsx"
 
 /**
  * @param {ArticleDataWrapper} dataWrapper
@@ -43,6 +44,21 @@ function ArticleSkillsItems({ dataWrapper, selectedItemCategoryId }) {
     const viewport = useViewport()
 
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
+    const embedPosition = dataWrapper.settings.featureEmbedPosition === "before_items" ?
+        "before_items" :
+        "after_items"
+    const manuscriptSourceItem = dataWrapper.settings.featureEmbedSourceItemId ?
+        filteredItems.find(item => item.id === dataWrapper.settings.featureEmbedSourceItemId) || filteredItems[0] :
+        filteredItems[0]
+    const shouldRenderEmbeddedFeature =
+        dataWrapper.settings.featureEmbed === "illustrated_manuscript" &&
+        Boolean(manuscriptSourceItem)
+    const renderedItems = filteredItems.filter(itemWrapper => {
+        if (!shouldRenderEmbeddedFeature) return true
+        if (!dataWrapper.settings.featureEmbedHideSourceItem) return true
+
+        return itemWrapper !== manuscriptSourceItem
+    })
     const customBreakpoint = viewport.getCustomBreakpoint(constants.SWIPER_BREAKPOINTS_FOR_THREE_SLIDES)
     const customBreakpointId = customBreakpoint?.id
     const customBreakpointRowThreshold = customBreakpoint?.slidesPerView || 1
@@ -54,17 +70,68 @@ function ArticleSkillsItems({ dataWrapper, selectedItemCategoryId }) {
 
     const initialVisibleItemsCount = maxRowsCollapseThreshold ?
         maxItemsPerRow * maxRowsCollapseThreshold :
-        filteredItems.length
+        renderedItems.length
+    const sectionClass = dataWrapper.sectionId ?
+        `article-skills-items-section-${dataWrapper.sectionId}` :
+        ``
+
+    const renderEmbeddedFeature = () => {
+        if (!shouldRenderEmbeddedFeature) {
+            return null
+        }
+
+        return (
+            <div className={`article-skills-embed article-skills-embed-illustrated-manuscript`}>
+                <IllustratedManuscript storyHtml={manuscriptSourceItem?.locales?.text || ""}
+                                       imageSrc={manuscriptSourceItem?.img || null}
+                                       imageAlt={manuscriptSourceItem?.imageAlt || ""}/>
+            </div>
+        )
+    }
+
+    const renderSkillItem = (itemWrapper, key) => (
+        <ArticleSkillsItem itemWrapper={itemWrapper}
+                           key={key}/>
+    )
+
+    const renderResponsiveBalancedColumns = () => {
+        const columns = viewport.innerWidth >= 1050 ? 2 : 1
+        const columnItems = Array.from({ length: columns }, () => [])
+
+        renderedItems.forEach((itemWrapper, index) => {
+            columnItems[index % columns].push(itemWrapper)
+        })
+
+        return (
+            <div className={`article-skills-columns article-skills-columns-${columns}`}>
+                {embedPosition === "before_items" && renderEmbeddedFeature()}
+
+                {columnItems.map((items, columnIndex) => (
+                    <div className={`article-skills-column`}
+                         key={`column-${columnIndex}`}>
+                        {items.map((itemWrapper, itemIndex) => renderSkillItem(itemWrapper, `${columnIndex}-${itemIndex}`))}
+                    </div>
+                ))}
+
+                {embedPosition === "after_items" && renderEmbeddedFeature()}
+            </div>
+        )
+    }
+
+    if (dataWrapper.settings.columnLayout === "responsive_balanced_two") {
+        return renderResponsiveBalancedColumns()
+    }
 
     return (
-        <Collapsable className={`article-skills-items ${itemsPerRowClass}`}
+        <Collapsable className={`article-skills-items ${itemsPerRowClass} ${sectionClass}`.trim()}
                      id={dataWrapper.uniqueId}
                      breakpointId={customBreakpointId}
                      initialVisibleItems={initialVisibleItemsCount}>
-            {filteredItems.map((itemWrapper, key) => (
-                <ArticleSkillsItem itemWrapper={itemWrapper}
-                                   key={key}/>
-            ))}
+            {embedPosition === "before_items" && renderEmbeddedFeature()}
+
+            {renderedItems.map((itemWrapper, key) => renderSkillItem(itemWrapper, key))}
+
+            {embedPosition === "after_items" && renderEmbeddedFeature()}
         </Collapsable>
     )
 }
@@ -75,9 +142,19 @@ function ArticleSkillsItems({ dataWrapper, selectedItemCategoryId }) {
  * @constructor
  */
 function ArticleSkillsItem({ itemWrapper }) {
-    const avatarViewClass = itemWrapper.articleWrapper.settings.roundIcons ?
-        `article-skills-item-avatar-round` :
-        ``
+    const avatarClasses = []
+    const avatarStyle = {
+        ...(itemWrapper.faIconStyle || {}),
+        "--article-skills-avatar-image-scale": itemWrapper.avatarImageScale || 1
+    }
+
+    if (itemWrapper.articleWrapper.settings.roundIcons) {
+        avatarClasses.push(`article-skills-item-avatar-round`)
+    }
+
+    if (itemWrapper.articleWrapper.settings.avatarImageMode) {
+        avatarClasses.push(`article-skills-item-avatar-mode-${itemWrapper.articleWrapper.settings.avatarImageMode}`)
+    }
 
     return (
         <div className={`article-skills-item`}>
@@ -85,9 +162,9 @@ function ArticleSkillsItem({ itemWrapper }) {
                 <AvatarView src={itemWrapper.img}
                             faIcon={itemWrapper.faIconWithFallback}
                             iconText={itemWrapper.iconText}
-                            style={itemWrapper.faIconStyle}
+                            style={avatarStyle}
                             alt={itemWrapper.imageAlt}
-                            className={`article-skills-item-avatar ${avatarViewClass}`}/>
+                            className={`article-skills-item-avatar ${avatarClasses.join(` `)}`.trim()}/>
             </div>
 
             <ArticleSkillsItemInfo itemWrapper={itemWrapper}/>
@@ -105,7 +182,8 @@ function ArticleSkillsItemInfo({ itemWrapper }) {
     const location = useLocation()
 
     const percentage = itemWrapper.percentage
-    const titlePrefix = itemWrapper.label ? `${itemWrapper.id}.` : null
+    const shouldShowItemNumbers = Boolean(itemWrapper.articleWrapper.settings.showItemNumbers) || Boolean(itemWrapper.label)
+    const titlePrefix = shouldShowItemNumbers ? `${itemWrapper.id}.` : null
     const titleMeta = itemWrapper.label
     const initialPercentage = location.getActiveSection()?.id === itemWrapper.articleWrapper.sectionId ?
         percentage :

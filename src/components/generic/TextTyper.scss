@@ -24,6 +24,9 @@ span.text-typer-span-prefix {
 span.text-typer-span-dynamic {
     display: inline-block;
     min-width: 8ch;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
     text-align: left;
 }
 

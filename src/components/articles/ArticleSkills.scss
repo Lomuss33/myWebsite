@@ -30,15 +30,40 @@ div.article-skills-items {
     grid-template-columns: repeat(1, 1fr);
     column-gap: 0;
     row-gap: var(--item-gap);
+
+    > div.collapsable-item {
+        min-width: 0;
+        width: 100%;
+    }
+}
+
+div.article-skills-columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: var(--item-gap);
+
+    > div.article-skills-embed {
+        grid-column: 1 / -1;
+    }
+}
+
+div.article-skills-columns-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--item-gap);
+    align-items: start;
+}
+
+div.article-skills-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--item-gap);
+    min-width: 0;
 }
 
 /** ---------- 2 ITEMS PER ROW ---------------- */
 div.article-skills-items-2-per-row, div.article-skills-items-3-per-row {
     grid-template-columns: repeat(2, 1fr);
-
-    div.article-skills-item {
-        padding-right: var(--item-gap);
-    }
+    column-gap: var(--item-gap);
 }
 
 /** ---------- 3 ITEMS PER ROW ---------------- */
@@ -76,6 +101,31 @@ div.article-skills-item-avatar {
 
     border-radius: 8px;
     font-size: calc(var(--target-size)*0.7)!important;
+}
+
+div.article-skills-item-avatar.article-skills-item-avatar-mode-flag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    .avatar-view-image-view {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .avatar-view-image-view .image-view-img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: contain;
+        object-position: center;
+        transform: scale(var(--article-skills-avatar-image-scale, 1));
+        transform-origin: center center;
+    }
 }
 
 div.article-skills-item-avatar-round {
@@ -175,4 +225,28 @@ div.article-skills-item-experience {
 div.article-skills-item-description {
     margin-top: 2px;
     color: var(--theme-texts-light-4);
+}
+
+div.article-skills-embed {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    grid-column: 1 / -1;
+}
+
+div.article-skills-items.article-skills-items-section-my-writings {
+    div.article-skills-embed.article-skills-embed-illustrated-manuscript {
+        div.illustrated-manuscript {
+            max-width: 764px;
+            height: clamp(406px, 60.8vw, 671px);
+        }
+    }
+
+    @include media-breakpoint-down(lg) {
+        div.article-skills-embed.article-skills-embed-illustrated-manuscript {
+            div.illustrated-manuscript {
+                height: clamp(328px, 78vw, 546px);
+            }
+        }
+    }
 }

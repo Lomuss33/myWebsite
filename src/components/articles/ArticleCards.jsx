@@ -40,10 +40,21 @@ function ArticleCards({ dataWrapper, id }) {
 function ArticleCardsItems({ dataWrapper, selectedItemCategoryId }) {
     const constants = useConstants()
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
+    const slideCount = Math.max(1, filteredItems.length)
+    const breakpoints = Object.fromEntries(
+        Object.entries(constants.SWIPER_BREAKPOINTS_FOR_THREE_SLIDES).map(([breakpoint, value]) => ([
+            breakpoint,
+            {
+                ...value,
+                slidesPerView: Math.min(value.slidesPerView, slideCount)
+            }
+        ]))
+    )
 
     return (
         <Swipeable className={`article-cards-items`}
-                   breakpoints={constants.SWIPER_BREAKPOINTS_FOR_THREE_SLIDES}>
+                   breakpoints={breakpoints}
+                   slidesPerView={Math.min(3, slideCount)}>
             {filteredItems.map((itemWrapper, key) => (
                 <ArticleCardsItem itemWrapper={itemWrapper} 
                                       key={key}/>

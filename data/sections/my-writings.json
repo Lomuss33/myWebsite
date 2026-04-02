@@ -256,37 +256,11 @@
         "feature_stack_order": "media_text",
         "feature_split_min_width": 760,
         "feature_split_height_tolerance": 6,
-        "feature_embed": "illustrated_manuscript",
-        "feature_embed_position": "after_items",
         "feature_interactive_item_ids": [2],
         "feature_image_aspect_ratio": "3 / 2",
         "feature_image_mobile_aspect_ratio": "3 / 2"
       },
       "items": [
-        {
-          "id": 1,
-          "img": "/images/writing/books/the-dragon-box/bookoverview.webp",
-          "faIconColors": {
-            "bg": "#0F172A",
-            "bgLight": "#E2E8F0",
-            "fill": "#F59E0B",
-            "fillLight": "#D97706"
-          },
-          "locales": {
-            "en": {
-              "text": "<p>This is no light nor hurried book, but one akin to aged wine: within it dwell both bitterness and sweetness, memory and warning alike. Herein walks our man through the ages, from the shadow of first hearths unto the rising of new cities, bearing the same heart, the same hands, and the same burdens.</p><p>Within these leaves thou shalt find children beneath a mountain disputing of the egg and the hen, yet knowing not that they speak of the very beginning of all things. Thou shalt witness a merchant from afar, who brings not only wares but thought itself, and learn how a single word may weigh more than stone, yet be emptier than smoke. Thou shalt meet Bato and Mato, who strode through blood and betrayal against an empire, and thou shalt understand that it is not hardest to defeat an enemy, but to know the traitor.</p><p>In this book sits also the young Jerome, restless and divided, who in a tavern finds judgment upon himself and learns that knowledge without truth leadeth not unto salvation. Here shall women, through twenty years, behold how faith and power intertwine, and how beneath holy words there often lies a hunger for land and dominion. Here shalt thou hear of Mijat, who from child became outlaw, from outlaw a legend, and from legend a wound yet unhealed among his people.</p><p>And when the time of new lords and old songs cometh, thou shalt see that the world may change, yet man remaineth the same: between cup and bread, between curse and prayer. For this book speaketh not only of what hath been, but of what is, and of the same questions that pursue us as they pursued those before us.</p><p>Within it thou shalt find laughter and blood, wisdom and folly, and tales carried by whisper, by song, and by silence. Some shall make thee smile as a child, others shall keep thee wakeful as a watchman, and some shall cause thee to ask who thou art and whence thou camest.</p><p>This is a book of a people not easily broken, yet easily divided; a people who remember even when they forget; who sing even when song is far from them. This is a book of the Balkans as a road without end, where every stone beareth a story, and every story hath two sides.</p><p>If thou seekest truth, thou shalt find it between the lines. If thou seekest delight, thou shalt find it among the people. If thou seekest thyself, perchance thou shalt recognize thy own reflection in those long gone, who yet speak through these words.</p><p>Therefore take this book as thou wouldst take bread: with reverence, and in hunger. Read it slowly, as one walketh ancient roads. And forget not: not every tale is written to be understood &mdash; some are written to be remembered.</p>"
-            },
-            "de": {
-              "text": "<p>{{Dieses Projekt beginnt als sechsbändiger Zyklus aus historischer Fiktion und satirischem Drama.}} Im Zentrum steht die breitere Geschichte des einfachen Menschen auf der anderen Seite des Dinaragebirges. Ich möchte Erinnerung, Ironie, Schmerz und lokale Vorstellungswelten über Kroatien, Bosnien und Herzegowina, Montenegro und Serbien hinweg verbinden. Rund um die Hauptbücher stelle ich mir auch verstreutes Begleitmaterial wie Lieder, Bilder, Rezepte und kurze Leitfäden vor. Der langfristige Wunsch ist ein mit LaTeX gebautes Werk, das in Deutschland entwickelt und für eine Veröffentlichung in Bosnien und Herzegowina vorbereitet wird.</p>"
-            },
-            "hr": {
-              "text": "<p>{{Ovaj projekt počinje kao ciklus od šest knjiga povijesne fikcije i satirične drame.}} U središtu je šira povijest običnog čovjeka s druge strane Dinare. Želim povezati sjećanje, ironiju, bol i lokalni imaginarij kroz Hrvatsku, Bosnu i Hercegovinu, Crnu Goru i Srbiju. Oko glavnih knjiga zamišljam i rasuti popratni materijal poput pjesama, slika, recepata i kratkih vodiča. Dugoročna je želja djelo izrađeno u LaTeX-u, razvijano u Njemačkoj i pripremljeno za objavu u Bosni i Hercegovini.</p>"
-            },
-            "tr": {
-              "text": "<p>{{Bu proje, tarihî kurgu ve satirik dramadan oluşan altı kitaplık bir döngü olarak başlıyor.}} Merkezinde, Dinara dağlarının öte yanındaki sıradan insanın daha geniş tarihi yer alıyor. Hırvatistan, Bosna-Hersek, Karadağ ve Sırbistan boyunca hafızayı, ironiyi, acıyı ve yerel hayal dünyasını birbirine bağlamak istiyorum. Ana kitapların etrafında şarkılar, görseller, tarifler ve kısa rehberler gibi dağınık yardımcı materyaller de hayal ediyorum. Uzun vadeli dilek, Almanya'da geliştirilen ve Bosna-Hersek'te yayıma hazırlanan LaTeX tabanlı bir eser ortaya çıkarmak.</p>"
-            }
-          }
-        },
         {
           "id": 2,
           "label": "Jeronim i Ante",
@@ -296,13 +270,13 @@
               "text": "<p>{{The candle between them trembles, its small flame illuminating not just their hands, but the weight of something being decided.}} One, wrapped in fur and earth, carries the wild hills with him; the other, pale-haired and sharp-eyed, bears a different fire&mdash;one of words, belief, and quiet defiance. Between them lies a stack of worn parchment, inked with lines that seem to whisper rather than speak. Their hands do not rest&mdash;one accuses, one explains, one hesitates, one almost reaches&mdash;as if the truth itself cannot sit still. Food cools beside them, untouched, as though even hunger has stepped aside for what is unfolding. At the edge, a traveler's bag lies half-open, its scrolls and herbs hinting that this meeting was never meant to be ordinary. And in that narrow pool of light, you begin to sense it&mdash;this is not a conversation, but the quiet beginning of something that will not stay hidden for long.</p>"
             },
             "de": {
-              "text": "<p>{{Jeronim i Ante}} steht unter The Dragon Box als eigene Illustration aus demselben Buchprojekt.</p>"
+              "text": "<p>{{Die Kerze zwischen ihnen zittert, und ihre kleine Flamme beleuchtet nicht nur ihre Hände, sondern auch das Gewicht einer Entscheidung.}} Der eine, in Fell und Erde gehüllt, trägt die wilden Hügel mit sich; der andere, hellhaarig und scharfäugig, trägt ein anderes Feuer in sich&mdash;eines aus Worten, Glauben und stillem Trotz. Zwischen ihnen liegt ein Stapel abgenutzten Pergaments, beschrieben mit Zeilen, die eher zu flüstern als zu sprechen scheinen. Ihre Hände kommen nicht zur Ruhe&mdash;eine klagt an, eine erklärt, eine zögert, eine greift beinahe hinüber&mdash;als könne die Wahrheit selbst nicht stillsitzen. Das Essen kühlt neben ihnen aus, unberührt, als wäre selbst der Hunger beiseitegetreten für das, was sich hier entfaltet. Am Rand liegt ein halb geöffneter Reisebeutel, dessen Schriftrollen und Kräuter andeuten, dass dieses Treffen nie gewöhnlich sein sollte. Und in diesem schmalen Lichtkreis beginnst du es zu spüren&mdash;das ist kein Gespräch, sondern der stille Anfang von etwas, das nicht lange verborgen bleiben wird.</p>"
             },
             "hr": {
-              "text": "<p>{{Jeronim i Ante}} stoji ispod The Dragon Box kao zasebna ilustracija iz istog projekta knjige.</p>"
+              "text": "<p>{{Svijeća među njima podrhtava, a njezin mali plamen obasjava ne samo njihove ruke nego i težinu nečega o čemu se upravo odlučuje.}} Jedan, ogrnut krznom i zemljom, sa sobom nosi divlja brda; drugi, svijetle kose i oštra pogleda, nosi drukčiju vatru&mdash;vatru riječi, vjere i tihog prkosa. Između njih leži hrpa iznošenih pergamenata, ispisanih redcima koji kao da više šapuću nego govore. Njihove ruke ne miruju&mdash;jedna optužuje, jedna objašnjava, jedna oklijeva, jedna gotovo poseže&mdash;kao da ni sama istina ne može sjediti mirno. Hrana se pokraj njih hladi, netaknuta, kao da se i glad povukla pred onim što se upravo odvija. Na rubu leži napola otvorena putnička torba, a njezini svici i bilje nagovješćuju da ovaj susret nikada nije trebao biti običan. I u tom uskom krugu svjetlosti počinješ osjećati&mdash;ovo nije razgovor, nego tihi početak nečega što još dugo neće ostati skriveno.</p>"
             },
             "tr": {
-              "text": "<p>{{Jeronim i Ante}} The Dragon Box altinda ayni kitap projesinin ayri bir ilustrasyonu olarak yer alir.</p>"
+              "text": "<p>{{Aralarındaki mum titriyor; küçük alevi yalnızca ellerini değil, karara bağlanmak üzere olan bir şeyin ağırlığını da aydınlatıyor.}} Biri, kürke ve toprağa bürünmüş halde, vahşi tepeleri de beraberinde taşıyor; diğeri ise açık renk saçlı ve keskin bakışlı, bambaşka bir ateş taşıyor&mdash;sözlerin, inancın ve sessiz meydan okumanın ateşini. Aralarında, konuşmaktan çok fısıldıyor gibi görünen satırlarla yazılmış, yıpranmış parşömenlerden oluşan bir tomar duruyor. Elleri durulmuyor&mdash;biri suçluyor, biri açıklıyor, biri tereddüt ediyor, biri neredeyse uzanıyor&mdash;sanki hakikatin kendisi bile yerinde duramıyormuş gibi. Yanlarında duran yemek dokunulmadan soğuyor; sanki olan bitene yer açmak için açlığın kendisi bile geri çekilmiş. Kenarda, yarı açık bir yolcu çantası duruyor; içindeki tomarlar ve otlar, bu karşılaşmanın asla sıradan olmasının beklenmediğini hissettiriyor. Ve o dar ışık havuzunun içinde şunu sezmeye başlıyorsun&mdash;bu bir konuşma değil, uzun süre gizli kalmayacak bir şeyin sessiz başlangıcı.</p>"
             }
           }
         }
@@ -329,7 +303,11 @@
         "max_items_per_row": 1,
         "order_items_by": "id",
         "order_items_sort": "asc",
-        "round_icons": true
+        "round_icons": true,
+        "feature_embed": "illustrated_manuscript",
+        "feature_embed_position": "after_items",
+        "feature_embed_source_item_id": 7,
+        "feature_embed_hide_source_item": true
       },
       "items": [
         {
@@ -487,6 +465,30 @@
               "title": "Švabo otkrio Ramu"
             }
           }
+        },
+        {
+          "id": 7,
+          "img": "/images/writing/books/the-dragon-box/bookoverview.webp",
+          "faIconColors": {
+            "bg": "#0F172A",
+            "bgLight": "#E2E8F0",
+            "fill": "#F59E0B",
+            "fillLight": "#D97706"
+          },
+          "locales": {
+            "en": {
+              "text": "<p>This is no light nor hurried book, but one akin to aged wine: within it dwell both bitterness and sweetness, memory and warning alike. Herein walks our man through the ages, from the shadow of first hearths unto the rising of new cities, bearing the same heart, the same hands, and the same burdens.</p><p>Within these leaves thou shalt find children beneath a mountain disputing of the egg and the hen, yet knowing not that they speak of the very beginning of all things. Thou shalt witness a merchant from afar, who brings not only wares but thought itself, and learn how a single word may weigh more than stone, yet be emptier than smoke. Thou shalt meet Bato and Mato, who strode through blood and betrayal against an empire, and thou shalt understand that it is not hardest to defeat an enemy, but to know the traitor.</p><p>In this book sits also the young Jerome, restless and divided, who in a tavern finds judgment upon himself and learns that knowledge without truth leadeth not unto salvation. Here shall women, through twenty years, behold how faith and power intertwine, and how beneath holy words there often lies a hunger for land and dominion. Here shalt thou hear of Mijat, who from child became outlaw, from outlaw a legend, and from legend a wound yet unhealed among his people.</p><p>And when the time of new lords and old songs cometh, thou shalt see that the world may change, yet man remaineth the same: between cup and bread, between curse and prayer. For this book speaketh not only of what hath been, but of what is, and of the same questions that pursue us as they pursued those before us.</p><p>Within it thou shalt find laughter and blood, wisdom and folly, and tales carried by whisper, by song, and by silence. Some shall make thee smile as a child, others shall keep thee wakeful as a watchman, and some shall cause thee to ask who thou art and whence thou camest.</p><p>This is a book of a people not easily broken, yet easily divided; a people who remember even when they forget; who sing even when song is far from them. This is a book of the Balkans as a road without end, where every stone beareth a story, and every story hath two sides.</p><p>If thou seekest truth, thou shalt find it between the lines. If thou seekest delight, thou shalt find it among the people. If thou seekest thyself, perchance thou shalt recognize thy own reflection in those long gone, who yet speak through these words.</p><p>Therefore take this book as thou wouldst take bread: with reverence, and in hunger. Read it slowly, as one walketh ancient roads. And forget not: not every tale is written to be understood &mdash; some are written to be remembered.</p>"
+            },
+            "de": {
+              "text": "<p>Dies ist kein leichtes und kein hastig geschriebenes Buch, sondern eines, das altem Wein gleicht: In ihm wohnen Bitterkeit und Süße gleichermaßen, Erinnerung ebenso wie Warnung. Durch diese Seiten geht unser Mensch durch die Zeitalter, vom Schatten der ersten Feuerstellen bis zum Aufstieg neuer Städte, mit demselben Herzen, denselben Händen und denselben Lasten.</p><p>In diesen Blättern wirst du Kinder unter einem Berg finden, die über Henne und Ei streiten, ohne zu wissen, dass sie vom eigentlichen Anfang aller Dinge sprechen. Du wirst einen Händler aus der Ferne sehen, der nicht nur Waren, sondern auch Gedanken bringt, und du wirst lernen, dass ein einziges Wort schwerer wiegen kann als Stein und doch leerer sein als Rauch. Du wirst Bato und Mato begegnen, die sich durch Blut und Verrat gegen ein Reich stellten, und du wirst erkennen, dass es nicht am schwersten ist, den Feind zu besiegen, sondern den Verräter zu erkennen.</p><p>In diesem Buch sitzt auch der junge Hieronymus, unruhig und zerrissen, der in einer Schenke über sich selbst zu Gericht sitzt und lernt, dass Wissen ohne Wahrheit nicht zum Heil führt. Hier werden Frauen über zwanzig Jahre hinweg sehen, wie Glaube und Macht sich ineinander verschlingen und wie unter heiligen Worten oft ein Hunger nach Land und Herrschaft liegt. Hier wirst du auch von Mijat hören, der vom Kind zum Gesetzlosen wurde, vom Gesetzlosen zur Legende und von der Legende zu einer Wunde, die unter seinem Volk noch immer nicht verheilt ist.</p><p>Und wenn die Zeit neuer Herren und alter Lieder kommt, wirst du sehen, dass sich die Welt ändern mag und der Mensch doch derselbe bleibt: zwischen Becher und Brot, zwischen Fluch und Gebet. Denn dieses Buch spricht nicht nur von dem, was gewesen ist, sondern auch von dem, was ist, und von denselben Fragen, die uns verfolgen, wie sie jene vor uns verfolgten.</p><p>In ihm wirst du Lachen und Blut, Weisheit und Torheit finden, und Geschichten, die durch Flüstern, Gesang und Schweigen weitergetragen werden. Manche werden dich lächeln lassen wie ein Kind, andere werden dich wach halten wie einen Wächter, und manche werden dich fragen lassen, wer du bist und woher du kommst.</p><p>Dies ist ein Buch über ein Volk, das nicht leicht zu brechen und doch leicht zu spalten ist; ein Volk, das sich erinnert, selbst wenn es vergisst; das singt, selbst wenn ihm das Lied fern ist. Dies ist ein Buch über den Balkan als Straße ohne Ende, auf der jeder Stein eine Geschichte trägt und jede Geschichte zwei Seiten hat.</p><p>Wenn du Wahrheit suchst, wirst du sie zwischen den Zeilen finden. Wenn du Freude suchst, wirst du sie unter den Menschen finden. Wenn du dich selbst suchst, wirst du vielleicht dein eigenes Spiegelbild in jenen erkennen, die längst vergangen sind und doch durch diese Worte sprechen.</p><p>Darum nimm dieses Buch, wie du Brot nehmen würdest: mit Ehrfurcht und mit Hunger. Lies es langsam, wie einer alte Wege geht. Und vergiss nicht: Nicht jede Geschichte ist geschrieben, um verstanden zu werden &mdash; manche sind geschrieben, um erinnert zu werden.</p>"
+            },
+            "hr": {
+              "text": "<p>Ovo nije ni lagana ni na brzinu napisana knjiga, nego knjiga nalik starom vinu: u njoj prebivaju i gorčina i slast, i sjećanje i opomena. Kroz ove stranice naš čovjek hoda kroz vijekove, od sjene prvih ognjišta do uzdizanja novih gradova, noseći isto srce, iste ruke i iste terete.</p><p>Na ovim ćeš listovima naći djecu pod planinom kako raspravljaju o jajetu i kokoši, a da ni ne znaju da govore o samome početku svega. Vidjet ćeš trgovca iz daljine koji ne donosi samo robu nego i samu misao, i naučit ćeš kako jedna jedina riječ može težiti više od kamena, a opet biti praznija od dima. Susrest ćeš Bata i Matu, koji su kroz krv i izdaju ustali protiv carstva, i shvatit ćeš da nije najteže pobijediti neprijatelja, nego prepoznati izdajnika.</p><p>U ovoj knjizi sjedi i mladi Jeronim, nemiran i rastrgan, koji u krčmi sam sebi presuđuje i uči da znanje bez istine ne vodi spasenju. Ovdje će žene kroz dvadeset godina gledati kako se vjera i moć prepliću i kako se ispod svetih riječi često skriva glad za zemljom i vlašću. Ovdje ćeš čuti i o Mijatu, koji je od djeteta postao odmetnik, od odmetnika legenda, a od legende rana koja među njegovim narodom još nije zacijelila.</p><p>A kada dođe vrijeme novih gospodara i starih pjesama, vidjet ćeš da se svijet može mijenjati, a čovjek ipak ostaje isti: između čaše i kruha, između kletve i molitve. Jer ova knjiga ne govori samo o onome što je bilo, nego i o onome što jest, i o istim pitanjima koja progone nas kao što su progonila i one prije nas.</p><p>U njoj ćeš naći smijeh i krv, mudrost i ludost, i priče nošene šapatom, pjesmom i tišinom. Neke će te nasmijati kao dijete, druge će te držati budnim poput stražara, a neke će te natjerati da se zapitaš tko si i odakle dolaziš.</p><p>Ovo je knjiga o narodu koji nije lako slomiti, ali ga je lako podijeliti; narodu koji pamti čak i kad zaboravlja; koji pjeva čak i kad mu je pjesma daleko. Ovo je knjiga o Balkanu kao cesti bez kraja, gdje svaki kamen nosi priču, a svaka priča ima dvije strane.</p><p>Ako tražiš istinu, naći ćeš je između redaka. Ako tražiš radost, naći ćeš je među ljudima. Ako tražiš samoga sebe, možda ćeš prepoznati vlastiti odraz u onima koji su davno otišli, a ipak još govore kroz ove riječi.</p><p>Zato uzmi ovu knjigu kao što bi uzeo kruh: s poštovanjem i s glađu. Čitaj je polako, kao što se hoda starim putovima. I ne zaboravi: nije svaka priča napisana da bude shvaćena &mdash; neke su napisane da budu zapamćene.</p>"
+            },
+            "tr": {
+              "text": "<p>Bu ne hafif ne de aceleyle yazılmış bir kitaptır; daha çok yıllanmış şaraba benzer: içinde hem acılık hem tatlılık, hem hatıra hem de uyarı yaşar. Bu sayfalarda bizim insanımız, ilk ocakların gölgesinden yeni şehirlerin yükselişine kadar çağların içinden yürür; aynı yüreği, aynı elleri ve aynı yükleri taşır.</p><p>Bu yapraklarda, bir dağın altında yumurta ile tavuğu tartışan çocuklar bulacaksın; üstelik tüm bunların başlangıcından söz ettiklerini bilmeden. Yalnızca mal değil, düşüncenin kendisini de getiren uzak bir tüccara tanık olacaksın ve tek bir sözün taştan daha ağır gelip dumandan daha boş olabileceğini öğreneceksin. Kana ve ihanete rağmen bir imparatorluğa karşı yürüyen Bato ile Mato'yla karşılaşacaksın ve anlayacaksın ki en zor olan düşmanı yenmek değil, haini tanımaktır.</p><p>Bu kitapta huzursuz ve bölünmüş genç Jerome da vardır; bir handa kendi kendini yargılar ve hakikatsiz bilginin kurtuluşa götürmediğini öğrenir. Burada kadınlar, yirmi yıl boyunca, inanç ile iktidarın nasıl birbirine dolandığını ve kutsal sözlerin altında çoğu zaman toprak ve hükümranlık açlığının yattığını görecekler. Burada Mijat'ı da duyacaksın; çocukluktan eşkıyalığa, eşkıyalıktan efsaneye, efsaneden de kendi halkı arasında hâlâ kapanmamış bir yaraya dönüşen Mijat'ı.</p><p>Ve yeni efendilerin ve eski türkülerin zamanı geldiğinde, dünyanın değişebileceğini ama insanın yine de aynı kaldığını göreceksin: kâse ile ekmek arasında, beddua ile dua arasında. Çünkü bu kitap yalnızca olmuş olanı değil, olanı da anlatır; ve bizi kovalayan aynı soruları, bizden öncekileri nasıl kovaladıysa öyle anlatır.</p><p>Onun içinde kahkaha ve kan, bilgelik ve budalalık, fısıltıyla, türküyle ve sessizlikle taşınan hikâyeler bulacaksın. Bazıları seni bir çocuk gibi gülümsetecek, bazıları bir nöbetçi gibi uyanık tutacak, bazılarıysa sana kim olduğunu ve nereden geldiğini sorduracak.</p><p>Bu, kolay kolay kırılmayan ama kolayca bölünebilen bir halkın kitabıdır; unuttuğunda bile hatırlayan, türkü ondan uzak düştüğünde bile söyleyen bir halkın kitabı. Bu, her taşın bir hikâye taşıdığı ve her hikâyenin iki yüzü olduğu, sonu olmayan bir yol olarak Balkanların kitabıdır.</p><p>Eğer hakikati arıyorsan onu satırların arasında bulacaksın. Eğer sevinci arıyorsan onu insanların arasında bulacaksın. Eğer kendini arıyorsan, belki çoktan gitmiş ama bu sözler aracılığıyla hâlâ konuşan insanlarda kendi yansımana rastlayacaksın.</p><p>Bu yüzden bu kitabı ekmek alır gibi al: hürmetle ve açlıkla. Onu eski yollarda yürür gibi yavaş oku. Ve unutma: her hikâye anlaşılmak için yazılmaz &mdash; bazıları hatırlanmak için yazılır.</p>"
+            }
+          }
         }
       ]
     },
@@ -508,10 +510,11 @@
         }
       },
       "settings": {
-        "max_items_per_row": 2,
+        "max_items_per_row": 1,
         "order_items_by": "id",
         "order_items_sort": "asc",
-        "round_icons": true
+        "round_icons": true,
+        "show_item_numbers": true
       },
       "items": [
         {

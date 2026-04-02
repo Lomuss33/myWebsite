@@ -65,7 +65,8 @@
                         "month": 10
                     },
                     "dateEnd": {
-                        "now": true
+                        "year": 2026,
+                        "month": 2
                     },
                     "locales": {
                         "en": {
@@ -532,18 +533,18 @@
             "id": 2,
             "component": "ArticleCards",
             "locales": {
-                "en": {
-                    "title": "My {{Certifications}}"
-                },
-                "de": {
-                    "title": "Meine {{Zertifikate}}"
-                },
-                "hr": {
-                    "title": "Moji {{Certifikati}}"
-                },
-                "tr": {
-                    "title": "{{Sertifikalarım}}"
-                }
+              "en": {
+                "title": "My {{Certifications}}"
+              },
+              "de": {
+                "title": "Meine {{Zertifikate}}"
+              },
+              "hr": {
+                "title": "Moji {{Certifikati}}"
+              },
+              "tr": {
+                "title": "{{Sertifikalarım}}"
+              }
             },
             "settings": {
                 "order_items_by": "id",
@@ -562,17 +563,29 @@
                     },
                     "date": {
                         "year": 2026,
-                        "month": 4
+                        "month": 5
                     },
                     "link": {
                         "href": "https://www.frankfurt-main.ihk.de/aus-und-weiterbildung/weiterbildung/weiterbildungspruefungen/weiterbildungspruefungen-von-a-bis-z/a-z-liste/ausbildereignung-pruefung-5189130",
                         "tooltipString": "open_website"
                     },
                     "locales": {
-                        "en": {
-                            "title": "{{AusbEignV}} Certification",
-                            "text": "I hold the AEVO-Schein certification from IHK, which qualifies me as a certified instructor permitted to train apprentices in Germany."
-                        }
+                      "en": {
+                        "title": "{{AEVO}} Certification",
+                        "text": "I hold the AEVO-Schein certification from IHK, which qualifies me as a certified instructor permitted to train apprentices in Germany."
+                      },
+                      "de": {
+                        "title": "{{AEVO}}-Zertifikat",
+                        "text": "Ich habe den AEVO-Schein der IHK, der mich als zertifizierten Ausbilder qualifiziert und zur Ausbildung von Auszubildenden in Deutschland berechtigt."
+                      },
+                      "hr": {
+                        "title": "{{AEVO}} certifikat",
+                        "text": "Posjedujem IHK-ov AEVO-Schein certifikat koji me kvalificira kao ovlaštenog instruktora za osposobljavanje pripravnika u Njemačkoj."
+                      },
+                      "tr": {
+                        "title": "{{AEVO}} sertifikası",
+                        "text": "IHK tarafından verilen AEVO-Schein sertifikasına sahibim; bu belge beni Almanya’da çırak eğitimi verebilen sertifikalı bir eğitici olarak yetkilendirir."
+                      }
                     }
                 },
                 {
@@ -594,10 +607,22 @@
                         "tooltipString": ""
                     },
                     "locales": {
-                        "en": {
-                            "title": "{{CCNA}} Certification",
-                            "text": "I am a Cisco certified network associate (CCNA) skilled in foundational network infrastructure, security, and automation."
-                        }
+                      "en": {
+                        "title": "{{CCNA}} Certification",
+                        "text": "I am a Cisco certified network associate (CCNA) skilled in foundational network infrastructure, security, and automation."
+                      },
+                      "de": {
+                        "title": "{{CCNA}}-Zertifikat",
+                        "text": "Ich bin Cisco Certified Network Associate (CCNA) und verfüge über fundierte Kenntnisse in Netzwerkgrundlagen, Sicherheit und Automatisierung."
+                      },
+                      "hr": {
+                        "title": "{{CCNA}} certifikat",
+                        "text": "Nositelj sam Cisco CCNA certifikata s dobrim temeljima u mrežnoj infrastrukturi, sigurnosti i automatizaciji."
+                      },
+                      "tr": {
+                        "title": "{{CCNA}} sertifikası",
+                        "text": "Cisco Certified Network Associate (CCNA) sertifikasına sahibim; temel ağ altyapısı, güvenlik ve otomasyon konularında yetkinim."
+                      }
                     }
                 }
             ]
@@ -619,11 +644,13 @@
                     "title": "{{Diller}}"
                 },
                 "mk": {
-                    "title": "{{Јазици}}"
+                    "title": "{{\u0408\u0430\u0437\u0438\u0446\u0438}}"
                 }
             },
             "settings": {
-                "max_items_per_row": 3,
+                "avatar_image_mode": "flag",
+                "column_layout": "responsive_balanced_two",
+                "max_items_per_row": 2,
                 "max_rows_collapse_threshold": 6,
                 "order_items_by": "percentage",
                 "order_items_sort": "desc",
@@ -651,23 +678,23 @@
                         },
                         "de": {
                             "title": "Kroatisch",
-                            "text": "Muttersprache; ich kann mühelos im Alltag, zu technischen Themen und im Berufsleben kommunizieren.",
+                            "text": "Muttersprache; ich kann m\u00fchelos im Alltag, zu technischen Themen und im Berufsleben kommunizieren.",
                             "level": "Muttersprache / 100%"
                         },
                         "hr": {
                             "title": "Hrvatski",
-                            "text": "Maternji jezik; mogu se potpuno prirodno izražavati u svakodnevnim, stručnim i poslovnim situacijama.",
+                            "text": "Materinji jezik; mogu se potpuno prirodno izra\u017eavati u svakodnevnim, stru\u010dnim i poslovnim situacijama.",
                             "level": "Izvorni / 100%"
                         },
                         "tr": {
-                            "title": "Hırvatça",
-                            "text": "Anadil seviyesinde, günlük yaşamda ve teknik konularda çok akıcı iletişim kurabiliyorum.",
+                            "title": "H\u0131rvat\u00e7a",
+                            "text": "Anadil seviyesinde, g\u00fcnl\u00fck ya\u015famda ve teknik konularda \u00e7ok ak\u0131c\u0131 ileti\u015fim kurabiliyorum.",
                             "level": "Anadil / 100%"
                         },
                         "mk": {
-                            "title": "Хрватски",
-                            "text": "Мој мајчин јазик; течно зборувам во секојдневни, технички и професионални ситуации.",
-                            "level": "Мајчин / 100%"
+                            "title": "\u0425\u0440\u0432\u0430\u0442\u0441\u043a\u0438",
+                            "text": "\u041c\u043e\u0458 \u043c\u0430\u0458\u0447\u0438\u043d \u0458\u0430\u0437\u0438\u043a; \u0442\u0435\u0447\u043d\u043e \u0437\u0431\u043e\u0440\u0443\u0432\u0430\u043c \u0432\u043e \u0441\u0435\u043a\u043e\u0458\u0434\u043d\u0435\u0432\u043d\u0438, \u0442\u0435\u0445\u043d\u0438\u0447\u043a\u0438 \u0438 \u043f\u0440\u043e\u0444\u0435\u0441\u0438\u043e\u043d\u0430\u043b\u043d\u0438 \u0441\u0438\u0442\u0443\u0430\u0446\u0438\u0438.",
+                            "level": "\u041c\u0430\u0458\u0447\u0438\u043d / 100%"
                         }
                     }
                 },
@@ -692,22 +719,22 @@
                         },
                         "de": {
                             "title": "Englisch",
-                            "text": "Sehr gute Arbeitssprache; ich nutze Englisch täglich für technische Dokumentation, Lernen und professionelle Kommunikation.",
+                            "text": "Sehr gute Arbeitssprache; ich nutze Englisch t\u00e4glich f\u00fcr technische Dokumentation, Lernen und professionelle Kommunikation.",
                             "level": "C2 / 98%"
                         },
                         "hr": {
                             "title": "Engleski",
-                            "text": "Vrlo snažno radno znanje; svakodnevno koristim engleski za tehničku dokumentaciju, učenje i profesionalnu komunikaciju.",
+                            "text": "Vrlo sna\u017eno radno znanje; svakodnevno koristim engleski za tehni\u010dku dokumentaciju, u\u010denje i profesionalnu komunikaciju.",
                             "level": "C2 / 98%"
                         },
                         "tr": {
-                            "title": "İngilizce",
-                            "text": "İyi düzeyde, özellikle teknik dökümanlar ve günlük iletişim için rahatça kullanabiliyorum.",
-                            "level": "İleri / 98%"
+                            "title": "\u0130ngilizce",
+                            "text": "\u0130yi d\u00fczeyde, \u00f6zellikle teknik dok\u00fcmanlar ve g\u00fcnl\u00fck ileti\u015fim i\u00e7in rahat\u00e7a kullanabiliyorum.",
+                            "level": "\u0130leri / 98%"
                         },
                         "mk": {
-                            "title": "Англиски",
-                            "text": "Многу добро ниво за работа; го користам за документација, учење и професионална комуникација.",
+                            "title": "\u0410\u043d\u0433\u043b\u0438\u0441\u043a\u0438",
+                            "text": "\u041c\u043d\u043e\u0433\u0443 \u0434\u043e\u0431\u0440\u043e \u043d\u0438\u0432\u043e \u0437\u0430 \u0440\u0430\u0431\u043e\u0442\u0430; \u0433\u043e \u043a\u043e\u0440\u0438\u0441\u0442\u0430\u043c \u0437\u0430 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u0458\u0430, \u0443\u0447\u0435\u045a\u0435 \u0438 \u043f\u0440\u043e\u0444\u0435\u0441\u0438\u043e\u043d\u0430\u043b\u043d\u0430 \u043a\u043e\u043c\u0443\u043d\u0438\u043a\u0430\u0446\u0438\u0458\u0430.",
                             "level": "C2 / 98%"
                         }
                     }
@@ -737,25 +764,25 @@
                             "level": "C1-C2 / 95%"
                         },
                         "hr": {
-                            "title": "Njemački",
-                            "text": "Siguran u svakodnevnim i poslovnim situacijama; mogu raspravljati o tehničkim temama i dobro funkcionirati u njemačkim timovima.",
+                            "title": "Njema\u010dki",
+                            "text": "Siguran u svakodnevnim i poslovnim situacijama; mogu raspravljati o tehni\u010dkim temama i dobro funkcionirati u njema\u010dkim timovima.",
                             "level": "C1-C2 / 95%"
                         },
                         "tr": {
                             "title": "Almanca",
-                            "text": "Günlük hayat ve iş ortamında kendimi rahat ifade edebiliyorum.",
-                            "level": "Orta–ileri / 95%"
+                            "text": "G\u00fcnl\u00fck hayat ve i\u015f ortam\u0131nda kendimi rahat ifade edebiliyorum.",
+                            "level": "Orta-ileri / 95%"
                         },
                         "mk": {
-                            "title": "Германски",
-                            "text": "Добро ниво за секојдневна комуникација и работа, особено во технички средини.",
+                            "title": "\u0413\u0435\u0440\u043c\u0430\u043d\u0441\u043a\u0438",
+                            "text": "\u0414\u043e\u0431\u0440\u043e \u043d\u0438\u0432\u043e \u0437\u0430 \u0441\u0435\u043a\u043e\u0458\u0434\u043d\u0435\u0432\u043d\u0430 \u043a\u043e\u043c\u0443\u043d\u0438\u043a\u0430\u0446\u0438\u0458\u0430 \u0438 \u0440\u0430\u0431\u043e\u0442\u0430, \u043e\u0441\u043e\u0431\u0435\u043d\u043e \u0432\u043e \u0442\u0435\u0445\u043d\u0438\u0447\u043a\u0438 \u0441\u0440\u0435\u0434\u0438\u043d\u0438.",
                             "level": "C1-C2 / 95%"
                         }
                     }
                 },
                 {
                     "id": 4,
-                    "img": "/images/flags/ma.png",
+                    "img": "/images/flags/mk.png",
                     "faIcon": "",
                     "faIconColors": {
                         "bg": "",
@@ -774,7 +801,7 @@
                         },
                         "de": {
                             "title": "Mazedonisch",
-                            "text": "Grundkenntnisse in Verständnis und einfacher Kommunikation, besonders mit Sprechern aus der Region.",
+                            "text": "Grundkenntnisse in Verst\u00e4ndnis und einfacher Kommunikation, besonders mit Sprechern aus der Region.",
                             "level": "A2 / 40%"
                         },
                         "hr": {
@@ -784,12 +811,12 @@
                         },
                         "tr": {
                             "title": "Makedonca",
-                            "text": "Temel seviyede anlayabiliyorum, bölgede konuşulan dile biraz aşinayım.",
+                            "text": "Temel seviyede anlayabiliyorum, b\u00f6lgede konu\u015fulan dile biraz a\u015finay\u0131m.",
                             "level": "Temel / 40%"
                         },
                         "mk": {
-                            "title": "Македонски",
-                            "text": "Основно ниво на комуникација; разбирам едноставни реченици и изрази и постепено напредувам.",
+                            "title": "\u041c\u0430\u043a\u0435\u0434\u043e\u043d\u0441\u043a\u0438",
+                            "text": "\u041e\u0441\u043d\u043e\u0432\u043d\u043e \u043d\u0438\u0432\u043e \u043d\u0430 \u043a\u043e\u043c\u0443\u043d\u0438\u043a\u0430\u0446\u0438\u0458\u0430; \u0440\u0430\u0437\u0431\u0438\u0440\u0430\u043c \u0435\u0434\u043d\u043e\u0441\u0442\u0430\u0432\u043d\u0438 \u0440\u0435\u0447\u0435\u043d\u0438\u0446\u0438 \u0438 \u0438\u0437\u0440\u0430\u0437\u0438 \u0438 \u043f\u043e\u0441\u0442\u0435\u043f\u0435\u043d\u043e \u043d\u0430\u043f\u0440\u0435\u0434\u0443\u0432\u0430\u043c.",
                             "level": "A2 / 40%"
                         }
                     }
@@ -814,23 +841,23 @@
                             "level": "Beginner / 15%"
                         },
                         "de": {
-                            "title": "Türkisch",
-                            "text": "Sehr einfaches Niveau; ich verstehe einige häufige Ausdrücke und baue langsam Wortschatz auf.",
-                            "level": "Anfänger / 15%"
+                            "title": "T\u00fcrkisch",
+                            "text": "Sehr einfaches Niveau; ich verstehe einige h\u00e4ufige Ausdr\u00fccke und baue langsam Wortschatz auf.",
+                            "level": "Anf\u00e4nger / 15%"
                         },
                         "hr": {
                             "title": "Turski",
-                            "text": "Vrlo osnovna razina; razumijem nekoliko najčešćih fraza i polako učim nove riječi.",
-                            "level": "Početnik / 15%"
+                            "text": "Vrlo osnovna razina; razumijem nekoliko naj\u010de\u0161\u0107ih fraza i polako u\u010dim nove rije\u010di.",
+                            "level": "Po\u010detnik / 15%"
                         },
                         "tr": {
-                            "title": "Türkçe",
-                            "text": "Şimdilik sadece birkaç temel kelime ve ifade biliyorum, ama zamanla geliştirmek istiyorum.",
-                            "level": "Başlangıç / 15%"
+                            "title": "T\u00fcrk\u00e7e",
+                            "text": "\u015eimdilik sadece birka\u00e7 temel kelime ve ifade biliyorum, ama zamanla geli\u015ftirmek istiyorum.",
+                            "level": "Ba\u015flang\u0131\u00e7 / 15%"
                         },
                         "mk": {
-                            "title": "Турски",
-                            "text": "Многу основно ниво; знам неколку изрази и полека учам нови зборови.",
+                            "title": "\u0422\u0443\u0440\u0441\u043a\u0438",
+                            "text": "\u041c\u043d\u043e\u0433\u0443 \u043e\u0441\u043d\u043e\u0432\u043d\u043e \u043d\u0438\u0432\u043e; \u0437\u043d\u0430\u043c \u043d\u0435\u043a\u043e\u043b\u043a\u0443 \u0438\u0437\u0440\u0430\u0437\u0438 \u0438 \u043f\u043e\u043b\u0435\u043a\u0430 \u0443\u0447\u0430\u043c \u043d\u043e\u0432\u0438 \u0437\u0431\u043e\u0440\u043e\u0432\u0438.",
                             "level": "A1 / 15%"
                         }
                     }
@@ -856,23 +883,23 @@
                         },
                         "de": {
                             "title": "Chinesisch (Mandarin)",
-                            "text": "Ganz am Anfang; ich kenne nur ein paar grundlegende Wörter und Ausdrücke und möchte die Sprache nach und nach besser kennenlernen.",
-                            "level": "Anfänger / 1%"
+                            "text": "Ganz am Anfang; ich kenne nur ein paar grundlegende W\u00f6rter und Ausdr\u00fccke und m\u00f6chte die Sprache nach und nach besser kennenlernen.",
+                            "level": "Anf\u00e4nger / 1%"
                         },
                         "hr": {
                             "title": "Kineski (mandarinski)",
-                            "text": "Tek sam na početku; znam par osnovnih riječi i fraza i rado bih s vremenom više upoznao jezik.",
-                            "level": "Potpuni početnik / 1%"
+                            "text": "Tek sam na po\u010detku; znam par osnovnih rije\u010di i fraza i rado bih s vremenom vi\u0161e upoznao jezik.",
+                            "level": "Potpuni po\u010detnik / 1%"
                         },
                         "tr": {
-                            "title": "Çince (Mandarin)",
-                            "text": "Henüz en baştayım; sadece birkaç temel kelime biliyorum ve dili yavaş yavaş keşfetmek istiyorum.",
-                            "level": "Başlangıç / 1%"
+                            "title": "\u00c7ince (Mandarin)",
+                            "text": "Hen\u00fcz en ba\u015ftay\u0131m; sadece birka\u00e7 temel kelime biliyorum ve dili yava\u015f yava\u015f ke\u015ffetmek istiyorum.",
+                            "level": "Ba\u015flang\u0131\u00e7 / 1%"
                         },
                         "mk": {
-                            "title": "Кинески (Мандарин)",
-                            "text": "Само почетно ниво; знам неколку основни зборови и изрази и сакам со време подобро да го запознаам јазикот.",
-                            "level": "Почетник / 1%"
+                            "title": "\u041a\u0438\u043d\u0435\u0441\u043a\u0438 (\u041c\u0430\u043d\u0434\u0430\u0440\u0438\u043d)",
+                            "text": "\u0421\u0430\u043c\u043e \u043f\u043e\u0447\u0435\u0442\u043d\u043e \u043d\u0438\u0432\u043e; \u0437\u043d\u0430\u043c \u043d\u0435\u043a\u043e\u043b\u043a\u0443 \u043e\u0441\u043d\u043e\u0432\u043d\u0438 \u0437\u0431\u043e\u0440\u043e\u0432\u0438 \u0438 \u0438\u0437\u0440\u0430\u0437\u0438 \u0438 \u0441\u0430\u043a\u0430\u043c \u0441\u043e \u0432\u0440\u0435\u043c\u0435 \u043f\u043e\u0434\u043e\u0431\u0440\u043e \u0434\u0430 \u0433\u043e \u0437\u0430\u043f\u043e\u0437\u043d\u0430\u0430\u043c \u0458\u0430\u0437\u0438\u043a\u043e\u0442.",
+                            "level": "\u041f\u043e\u0447\u0435\u0442\u043d\u0438\u043a / 1%"
                         }
                     }
                 }

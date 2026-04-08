@@ -267,6 +267,25 @@ function layoutNextFragments(items, startItemIndex, startCursor, maxWidth) {
                 itemIndex += 1
                 continue
             }
+
+            // Word-safe wrapping:
+            // If a whole token doesn't fit and we already have content on this line,
+            // move it to the next line instead of splitting into characters.
+            if (fragments.length > 0) {
+                break
+            }
+
+            // If the next token is a full word that doesn't fit, don't split it into characters.
+            // We prefer letting the line overflow horizontally rather than cutting a word in half.
+            // Only do this when the word is longer than the entire line width.
+            if (fragments.length === 0 && leadingGap === 0 && item.fullText && item.fullWidth > safeWidth) {
+                fragments.push(createFragment(item, 0, LINE_START_CURSOR, item.endCursor, item.fullText, item.fullWidth))
+                lineWidth += item.fullWidth
+                remainingWidth = Math.max(0, safeWidth - lineWidth)
+                itemIndex += 1
+                cursor = null
+                continue
+            }
         }
 
         if (fragments.length > 0 && leadingGap >= remainingWidth) {
@@ -354,23 +373,11 @@ function createPreparedParagraph(paragraph, paragraphIndex, typography) {
 function splitRunIntoPieces(text) {
     if (!text) return []
 
-    const sentencePieces = splitIntoSentencePieces(text)
-    const pieces = []
-
-    sentencePieces.forEach(sentencePiece => {
-        const semanticLength = sentencePiece.replace(/\s+/g, " ").trim().length
-        if (semanticLength > 96) {
-            const clausePieces = splitIntoClausePieces(sentencePiece)
-            if (clausePieces.length > 1) {
-                pieces.push(...clausePieces)
-                return
-            }
-        }
-
-        pieces.push(sentencePiece)
-    })
-
-    return pieces
+    // Word-safe wrapping: we never want to split a word across line slots.
+    // By splitting runs into word tokens (with trailing whitespace), the layout
+    // engine can only wrap between words.
+    const tokens = text.match(/[^\s]+\s*/g)
+    return tokens?.length ? tokens : [text]
 }
 
 function splitIntoSentencePieces(text) {

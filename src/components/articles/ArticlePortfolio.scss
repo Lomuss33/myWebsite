@@ -3,15 +3,23 @@
 div.article-portfolio-items {
     --item-gap: 28px;
     --padding: 20px 20px 18px;
+    --padding-bottom: 18px;
     --avatar-size: 82px;
     --avatar-border-size: 5px;
     --margin-top: 8px;
     --avatar-offset: 16px;
     --content-right-offset: calc(var(--avatar-size) + var(--avatar-offset) + 10px);
+    --portfolio-action-size: calc(var(--avatar-size) / 2);
+    /*
+      Minimum comfortable card width so the visit-online pill + left actions
+      can coexist without overlap. The grid will reduce columns automatically.
+    */
+    --portfolio-card-min-width: 320px;
 
     @include media-breakpoint-down(lg) {
         --item-gap: 22px;
         --padding: 18px 18px 16px;
+        --padding-bottom: 16px;
         --avatar-size: 78px;
         --avatar-offset: 14px;
     }
@@ -19,6 +27,7 @@ div.article-portfolio-items {
     @include media-breakpoint-down(md) {
         --item-gap: 18px;
         --padding: 16px 16px 15px;
+        --padding-bottom: 15px;
         --avatar-size: 74px;
         --avatar-offset: 12px;
     }
@@ -27,7 +36,10 @@ div.article-portfolio-items {
         --avatar-size: 70px;
         --margin-top: 5px;
         --padding: 15px 14px 14px;
+        --padding-bottom: 14px;
         --avatar-offset: 10px;
+        /* On small screens, avoid moving docks to the top (keeps layout stable) */
+        --avoid-cap: 24px;
     }
 }
 
@@ -41,12 +53,12 @@ div.article-portfolio-items {
 
 /** ---------- 2 ITEMS PER ROW ---------------- */
 div.article-portfolio-items-2-per-row, div.article-portfolio-items-3-per-row {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--portfolio-card-min-width)), 1fr));
 }
 
 /** ---------- 3 ITEMS PER ROW ---------------- */
 div.article-portfolio-items-3-per-row {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--portfolio-card-min-width)), 1fr));
 }
 
 div.article-portfolio-item {
@@ -63,6 +75,44 @@ div.article-portfolio-item {
 
     padding: var(--padding);
     margin-top: var(--margin-top);
+
+    /* Allow responsive typography based on card width */
+    container-type: inline-size;
+
+    /* Reserve space so bottom-right avatar never overlaps content */
+    padding-bottom: calc(var(--padding-bottom) + var(--avatar-size) + var(--avatar-offset));
+
+}
+
+/* Dock wrappers are absolutely positioned and draggable */
+div.article-portfolio-item-draggable-dock {
+    position: absolute;
+    z-index: 3;
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+
+    /* Default placement comes from CSS (stable across transitions) */
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    transition: transform 220ms ease;
+
+    &.dock-dragging {
+        transition: none;
+        cursor: grabbing;
+        z-index: 5;
+    }
+}
+
+/* Stable default corners */
+div.article-portfolio-item-draggable-dock.article-portfolio-item-actions {
+    left: var(--avatar-offset);
+    bottom: var(--avatar-offset);
+}
+
+div.article-portfolio-item-draggable-dock.article-portfolio-item-avatar-dock {
+    right: var(--avatar-offset);
+    bottom: var(--avatar-offset);
 }
 
 div.article-portfolio-item-avatar {
@@ -71,10 +121,87 @@ div.article-portfolio-item-avatar {
     border: var(--avatar-border-size) solid var(--theme-boards-background);
     border-radius: 100%;
     font-size: calc(var(--avatar-size)/2.3);
+}
 
-    position: absolute;
-    top: var(--avatar-offset);
-    right: var(--avatar-offset);
+div.article-portfolio-item-avatar-dock {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+a.article-portfolio-item-avatar-link {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+        transform: translateY(-1px);
+    }
+}
+
+a.article-portfolio-item-visit-online-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+
+    /* No right padding so border sits flush on avatar edge */
+    padding: clamp(5px, 0.55rem, 7px) 0 clamp(5px, 0.55rem, 7px) clamp(10px, 1.2cqw, 12px);
+    border-radius: 999px;
+    background: var(--theme-boards-background);
+    border: 1px solid var(--theme-standard-borders);
+
+    &:hover {
+        border-color: var(--theme-primary);
+    }
+}
+
+span.article-portfolio-item-visit-online-label {
+    font-size: clamp(0.60rem, 2.1cqw, 0.72rem);
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1;
+    color: var(--theme-primary);
+    white-space: nowrap;
+    padding-right: clamp(8px, 1.2cqw, 10px);
+}
+
+/* When the avatar is part of the "visit online" pill, remove the thick buffer ring */
+a.article-portfolio-item-visit-online-button div.article-portfolio-item-avatar {
+    border-width: 0;
+}
+
+div.article-portfolio-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
+a.article-portfolio-item-action {
+    width: var(--portfolio-action-size);
+    height: var(--portfolio-action-size);
+    border-radius: 10px;
+    background: var(--theme-boards-background);
+    border: 1px solid var(--theme-standard-borders);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
+    color: var(--theme-texts-light-1);
+
+    i.fa-icon {
+        font-size: clamp(0.72rem, 1.7cqw, 0.9rem);
+        line-height: 1;
+    }
+
+    &:hover {
+        transform: translateY(-1px);
+        color: var(--theme-primary);
+    }
 }
 
 div.article-portfolio-item-title {
@@ -83,22 +210,64 @@ div.article-portfolio-item-title {
     align-items: start;
     width: 100%;
     min-width: 0;
-    padding-right: var(--content-right-offset);
+    padding-right: 0;
 
-    h5 {
+    h5.article-portfolio-item-title-main {
         font-weight: bold;
         color: var(--theme-primary);
         margin-bottom: 0;
-        line-height: 1.15;
-        font-size: clamp(0.94rem, 0.91rem + 0.24vw, 1.08rem);
+        line-height: 1.06;
+
+        /* Fallback (no container queries): keep it small */
+        font-size: 0.58rem;
+
+        /* Always fully visible */
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+
+        /* Modern wrapping for narrow cards and long tokens */
+        overflow-wrap: anywhere;
+        word-break: normal;
     }
 
     div.article-portfolio-item-title-category {
         color: var(--theme-texts-light-2);
-        margin-top: 5px;
-        margin-left: 8px;
-        font-size: clamp(0.78rem, 0.76rem + 0.1vw, 0.86rem);
-        line-height: 1.2;
+        margin-top: 6px;
+        margin-left: 0;
+
+        display: inline-flex;
+        align-items: center;
+
+        font-size: clamp(0.72rem, 1.35cqw, 0.86rem);
+        line-height: 1.25;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+    }
+}
+
+/* Container-query driven sizing: adapt to actual card width */
+@supports (container-type: inline-size) {
+    div.article-portfolio-item-title {
+        h5.article-portfolio-item-title-main {
+            /* Prefer smaller titles; allow tiny only when cards are narrow */
+            font-size: clamp(0.46rem, 2.45cqw, 0.60rem);
+        }
+    }
+}
+
+/* Extra tightening for the 3-per-row narrow cards (~227px) */
+@supports (container-type: inline-size) {
+    @container (max-width: 260px) {
+        div.article-portfolio-item-title h5.article-portfolio-item-title-main {
+            font-size: clamp(0.44rem, 2.30cqw, 0.56rem);
+        }
+    }
+
+    @container (max-width: 230px) {
+        div.article-portfolio-item-title h5.article-portfolio-item-title-main {
+            font-size: clamp(0.42rem, 2.15cqw, 0.52rem);
+        }
     }
 }
 
@@ -113,6 +282,17 @@ div.article-portfolio-item-body {
         color: var(--theme-texts-light-1);
         font-size: clamp(0.77rem, 0.75rem + 0.12vw, 0.85rem);
         line-height: 1.45;
+
+        /* Full word tokens only */
+        overflow-wrap: normal;
+        word-break: normal;
+        hyphens: none;
+
+        /* Controlled growth: clamp lines so card height doesn't jump */
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+        overflow: hidden;
     }
 }
 

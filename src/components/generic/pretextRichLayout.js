@@ -9,7 +9,7 @@ const graphemeWidthCache = new Map()
 
 /**
  * @param {String} html
- * @return {{ block: "root" | "p", items: Array<{ kind: "body" | "highlight" | "link", text: string, href?: string, target?: string, rel?: string }> }[]}
+ * @return {{ block: "root" | "p", items: Array<{ kind: "body" | "highlight" | "link", text: string, locked?: boolean, href?: string, target?: string, rel?: string }> }[]}
  */
 export function parseInteractiveHtml(html) {
     if (!html) return []
@@ -29,6 +29,7 @@ export function parseInteractiveHtml(html) {
         const canMerge =
             lastItem &&
             lastItem.kind === item.kind &&
+            Boolean(lastItem.locked) === Boolean(item.locked) &&
             lastItem.href === item.href &&
             lastItem.target === item.target &&
             lastItem.rel === item.rel
@@ -41,7 +42,7 @@ export function parseInteractiveHtml(html) {
         paragraph.items.push(item)
     }
 
-    const walkNode = (node, paragraph, kind = "body", linkMeta = null) => {
+    const walkNode = (node, paragraph, kind = "body", linkMeta = null, locked = false) => {
         if (!node) return
 
         if (node.nodeType === Node.TEXT_NODE) {
@@ -49,6 +50,7 @@ export function parseInteractiveHtml(html) {
             pushText(paragraph, {
                 kind,
                 text: node.textContent || "",
+                locked: locked || undefined,
                 ...(linkMeta || {})
             })
             return
@@ -77,6 +79,7 @@ export function parseInteractiveHtml(html) {
 
         let nextKind = kind
         let nextLinkMeta = linkMeta
+        let nextLocked = locked
 
         if (tagName === "a") {
             nextKind = "link"
@@ -91,8 +94,12 @@ export function parseInteractiveHtml(html) {
             nextLinkMeta = null
         }
 
+        if (element.classList.contains("pretext-lock") || element.dataset?.pretextLock != null) {
+            nextLocked = true
+        }
+
         Array.from(element.childNodes).forEach(child => {
-            walkNode(child, paragraph, nextKind, nextLinkMeta)
+            walkNode(child, paragraph, nextKind, nextLinkMeta, nextLocked)
         })
     }
 
@@ -139,7 +146,7 @@ export function readTypographySnapshot(elements) {
 }
 
 /**
- * @param {{ items: Array<{ kind: "body" | "highlight" | "link", text: string, href?: string, target?: string, rel?: string }> }[]} paragraphs
+ * @param {{ items: Array<{ kind: "body" | "highlight" | "link", text: string, locked?: boolean, href?: string, target?: string, rel?: string }> }[]} paragraphs
  * @param {{ font: string, lineHeight: number, paragraphGap: number }} typography
  * @param {number} maxWidth
  * @return {{ paragraphs: Array<{ key: string, lines: Array<any>, marginBottom: number }>, totalHeight: number }}
@@ -216,29 +223,36 @@ function createPreparedParagraph(paragraph, paragraphIndex, font) {
 
     const items = paragraph.items.reduce((collection, item, itemIndex) => {
         const rawText = item.text || ""
-        const hasLeadingWhitespace = /^\s/.test(rawText)
-        const hasTrailingWhitespace = /\s$/.test(rawText)
-        const trimmedText = rawText.trim()
-        const carryGap = pendingGap
+        // Word-safe tokenization (preserve trailing whitespace on tokens).
+        const pieces = rawText.match(/[^\s]+\s*/g) || []
+        if (pieces.length === 0) return collection
 
-        pendingGap = hasTrailingWhitespace ? collapsedSpaceWidth : 0
-        if (!trimmedText) return collection
+        pieces.forEach((rawPiece, pieceIndex) => {
+            const hasLeadingWhitespace = /^\s/.test(rawPiece)
+            const hasTrailingWhitespace = /\s$/.test(rawPiece)
+            const trimmedText = rawPiece.trim()
+            const carryGap = pendingGap
 
-        const prepared = prepareWithSegments(trimmedText, font)
-        const fullLine = layoutNextLine(prepared, LINE_START_CURSOR, UNBOUNDED_WIDTH)
-        if (!fullLine) return collection
+            pendingGap = hasTrailingWhitespace ? collapsedSpaceWidth : 0
+            if (!trimmedText) return
 
-        collection.push({
-            key: `paragraph-${paragraphIndex}-item-${itemIndex}`,
-            kind: item.kind,
-            href: item.href,
-            target: item.target,
-            rel: item.rel,
-            leadingGap: collection.length === 0 ? 0 : (carryGap > 0 || hasLeadingWhitespace ? collapsedSpaceWidth : 0),
-            prepared,
-            fullText: fullLine.text,
-            fullWidth: fullLine.width,
-            endCursor: fullLine.end
+            const prepared = prepareWithSegments(trimmedText, font)
+            const fullLine = layoutNextLine(prepared, LINE_START_CURSOR, UNBOUNDED_WIDTH)
+            if (!fullLine) return
+
+            collection.push({
+                key: `paragraph-${paragraphIndex}-item-${itemIndex}-piece-${pieceIndex}`,
+                kind: item.kind,
+                locked: item.locked,
+                href: item.href,
+                target: item.target,
+                rel: item.rel,
+                leadingGap: collection.length === 0 ? 0 : (carryGap > 0 || hasLeadingWhitespace ? collapsedSpaceWidth : 0),
+                prepared,
+                fullText: fullLine.text,
+                fullWidth: fullLine.width,
+                endCursor: fullLine.end
+            })
         })
 
         return collection
@@ -278,6 +292,26 @@ function layoutPreparedParagraph(paragraph, font, maxWidth) {
                     lineWidth += fullWidth
                     remainingWidth = Math.max(0, safeWidth - lineWidth)
                     itemIndex++
+                    continue
+                }
+
+                // Word-safe wrapping:
+                // If a whole token doesn't fit and we already have content on this line,
+                // move the whole token to the next line instead of splitting it.
+                if (fragments.length > 0) {
+                    break lineLoop
+                }
+
+                // If a whole token (word) doesn't fit, prefer overflowing as a whole word
+                // instead of splitting into graphemes.
+                // Only do this when the word is longer than the entire line width.
+                if (fragments.length === 0 && leadingGap === 0 && item.fullText && item.fullWidth > safeWidth) {
+                    const fragment = createFragment(item, 0, LINE_START_CURSOR, item.endCursor, item.fullText, item.fullWidth, font)
+                    fragments.push(fragment)
+                    lineWidth += item.fullWidth
+                    remainingWidth = Math.max(0, safeWidth - lineWidth)
+                    itemIndex++
+                    cursor = null
                     continue
                 }
             }
@@ -325,6 +359,7 @@ function createFragment(item, leadingGap, start, end, text, width, font) {
     return {
         key: `${item.key}-${createCursorKey(start, end)}`,
         kind: item.kind,
+        locked: item.locked,
         href: item.href,
         target: item.target,
         rel: item.rel,

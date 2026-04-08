@@ -31,6 +31,10 @@ const RESERVED_TEXT_ROWS = 2
 const dropCapCache = new Map()
 const illustrationCache = new Map()
 
+function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value))
+}
+
 function resolveAssetPath(path) {
     if (!path) return path
     if (/^https?:\/\//i.test(path)) return path
@@ -483,17 +487,44 @@ function createIllustratedManuscript({
         textDirty = true
     }
 
-    const updatePointerPosition = event => {
+    const updatePointerPositionFromClient = (clientX, clientY) => {
         const rect = canvas.getBoundingClientRect()
-        mouse.x = event.clientX - rect.left
-        mouse.y = event.clientY - rect.top
-        pointerInside = true
+        const localX = clientX - rect.left
+        const localY = clientY - rect.top
+
+        // Allow the dragon to follow left/right "behind" the canvas edges,
+        // but keep vertical tracking clamped to the manuscript height.
+        mouse.x = localX
+        mouse.y = clamp(localY, 0, viewportHeight)
+
+        // If the pointer is slightly above/below the canvas, keep the dragon in idle/patrol
+        // instead of snapping to the vertical edge.
+        const verticalGrace = Math.max(22, Math.round(viewportHeight * 0.035))
+        const isInsideY = localY >= 0 && localY <= viewportHeight
+        const isNearOutsideY =
+            (localY < 0 && localY >= -verticalGrace) ||
+            (localY > viewportHeight && localY <= viewportHeight + verticalGrace)
+
+        pointerInside = isInsideY
         pointerTriggered = true
-        lastMouseMove = performance.now()
+
+        if (isInsideY) {
+            lastMouseMove = performance.now()
+            return
+        }
+
+        if (isNearOutsideY) {
+            // Immediately drop back to idle/patrol.
+            lastMouseMove = -Infinity
+            return
+        }
+
+        // Far outside vertically: don't keep "active follow" running.
+        lastMouseMove = -Infinity
     }
 
     const handlePointerMove = event => {
-        updatePointerPosition(event)
+        updatePointerPositionFromClient(event.clientX, event.clientY)
 
         if (ready) {
             scheduleFrame()
@@ -502,7 +533,7 @@ function createIllustratedManuscript({
 
     const handlePointerDown = event => {
         pointerDown = true
-        updatePointerPosition(event)
+        updatePointerPositionFromClient(event.clientX, event.clientY)
 
         if (ready) {
             scheduleFrame()
@@ -518,11 +549,19 @@ function createIllustratedManuscript({
     }
 
     const handlePointerLeave = event => {
-        pointerInside = false
-
         if (event.pointerType === "mouse") {
             pointerDown = false
             lastMouseMove = -Infinity
+        }
+    }
+
+    const handleWindowPointerMove = event => {
+        if (!event || event.pointerType === "touch") return
+
+        updatePointerPositionFromClient(event.clientX ?? 0, event.clientY ?? 0)
+
+        if (ready) {
+            scheduleFrame()
         }
     }
 
@@ -676,7 +715,12 @@ function createIllustratedManuscript({
             pointerTriggered &&
             (pointerInside || pointerDown || time - lastMouseMove <= MOUSE_IDLE_TIMEOUT)
         const patrolTarget = getDragonPatrolTarget(time)
-        const target = shouldFollowPointer ? mouse : {
+        const scale = dragon?.scale || getPageScale(viewportWidth) * MANUSCRIPT_DRAGON_SCALE
+        const flyBehindMarginX = Math.max(18, 88 * scale)
+        const target = shouldFollowPointer ? {
+            x: offset.x + clamp(mouse.x, -flyBehindMarginX, viewportWidth + flyBehindMarginX),
+            y: offset.y + clamp(mouse.y, 0, viewportHeight)
+        } : {
             x: offset.x + patrolTarget.x,
             y: offset.y + patrolTarget.y
         }
@@ -756,6 +800,7 @@ function createIllustratedManuscript({
         canvas.addEventListener("pointerup", handlePointerUp)
         canvas.addEventListener("pointercancel", handlePointerCancel)
         canvas.addEventListener("pointerleave", handlePointerLeave)
+        window.addEventListener("pointermove", handleWindowPointerMove, { passive: true })
 
         const fontsReady = document.fonts?.ready || Promise.resolve()
         const [loadedSprites, loadedDropCap, loadedIllustration] = await Promise.all([
@@ -819,6 +864,7 @@ function createIllustratedManuscript({
             canvas.removeEventListener("pointerup", handlePointerUp)
             canvas.removeEventListener("pointercancel", handlePointerCancel)
             canvas.removeEventListener("pointerleave", handlePointerLeave)
+            window.removeEventListener("pointermove", handleWindowPointerMove)
         }
     }
 }

@@ -24,7 +24,8 @@ section.section {
 button.section-fullscreen-toggle {
     position: absolute;
     top: 10px;
-    right: 10px;
+    // Keep clear of the custom scrollbar hit-area on the right.
+    right: calc(10px + 26px);
     z-index: $z-index-section-floating-items;
     width: 20px;
     height: 20px;
@@ -56,6 +57,7 @@ section.section {
     &-will-hide {
         z-index: $z-index-section-inactive;
         transition: none;
+        -webkit-user-select: none;
         user-select: none;
         pointer-events: none;
     }
@@ -63,6 +65,7 @@ section.section {
     &-hiding {
         z-index: $z-index-section-inactive;
         transition: 0.6s opacity ease-in-out, 0.6s transform ease-in-out;
+        -webkit-user-select: none;
         user-select: none;
         pointer-events: none;
 
@@ -78,6 +81,7 @@ section.section {
     &-hidden {
         display: none;
         transition: none;
+        -webkit-user-select: none;
         user-select: none;
         pointer-events: none;
     }

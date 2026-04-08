@@ -100,7 +100,13 @@ function LanguageProvider({ children, supportedLanguages, defaultLanguageId, app
         if(typeof text !== 'string')
             return text
 
-        return text.replace(/\{\{(.*?)\}\}/g, `<span class="${constants.HTML_CLASSES.textHighlight}">$1</span>`)
+        return text.replace(/\{\{(.*?)\}\}/g, (match, value) => {
+            const raw = String(value ?? "")
+            const trimmed = raw.trim()
+            const shouldLockForPretext = trimmed.endsWith(":")
+            const extraClass = shouldLockForPretext ? " pretext-lock" : ""
+            return `<span class="${constants.HTML_CLASSES.textHighlight}${extraClass}">${raw}</span>`
+        })
             .replace(/\[\[(.*?)\]\]/g, '<strong>$1</strong>')
             .replace("{theme}", selectedThemeId || "default")
     }

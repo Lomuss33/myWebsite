@@ -4,7 +4,7 @@ import Article from "./base/Article.jsx"
 import AvatarView from "../generic/AvatarView.jsx"
 import StandardButton from "../buttons/StandardButton.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
-import {ArticleItemInfoForTimelines, ArticleItemInfoForTimelinesHeader, ArticleItemInfoForTimelinesTagsFooter, ArticleItemInfoForTimelinesBody, ArticleItemInfoForTimelinesPreviewFooter} from "./partials/ArticleItemInfoForTimelines.jsx"
+import {ArticleItemInfoForTimelines, ArticleItemInfoForTimelinesHeader, ArticleItemInfoForTimelinesBody, ArticleItemInfoForTimelinesPreviewFooter} from "./partials/ArticleItemInfoForTimelines.jsx"
 
 /**
  * @param {ArticleDataWrapper} dataWrapper
@@ -100,8 +100,6 @@ function ArticleTimelineItem({ itemWrapper }) {
                 <ArticleItemInfoForTimelinesBody itemWrapper={itemWrapper}/>
 
                 <ArticleItemInfoForTimelinesPreviewFooter itemWrapper={itemWrapper}/>
-
-                <ArticleItemInfoForTimelinesTagsFooter itemWrapper={itemWrapper}/>
             </ArticleItemInfoForTimelines>
         </li>
     )

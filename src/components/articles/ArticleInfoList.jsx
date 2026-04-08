@@ -105,11 +105,25 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList }) {
 
     return (
         <div className={`article-info-list-item ${hoverClass} ${homeClass}`}>
-            <AvatarView src={itemWrapper.img}
-                        faIcon={itemWrapper.faIconWithFallback}
-                        style={itemWrapper.faIconStyle}
-                        alt={itemWrapper.imageAlt}
-                        className={`article-info-list-item-avatar`}/>
+            {itemWrapper.link?.href ? (
+                <Link href={itemWrapper.link?.href || null}
+                      tooltip={itemWrapper.link?.tooltip}
+                      metadata={itemWrapper.link?.metadata}
+                      className={`article-info-list-item-avatar-link`}
+                      onHoverStatus={setLinkHovered}>
+                    <AvatarView src={itemWrapper.img}
+                                faIcon={itemWrapper.faIconWithFallback}
+                                style={itemWrapper.faIconStyle}
+                                alt={itemWrapper.imageAlt}
+                                className={`article-info-list-item-avatar`}/>
+                </Link>
+            ) : (
+                <AvatarView src={itemWrapper.img}
+                            faIcon={itemWrapper.faIconWithFallback}
+                            style={itemWrapper.faIconStyle}
+                            alt={itemWrapper.imageAlt}
+                            className={`article-info-list-item-avatar`}/>
+            )}
 
             <div className={`article-info-list-item-content ${homeClass}`}>
                 <div className={`article-info-list-item-info-title ${titleClass}`}

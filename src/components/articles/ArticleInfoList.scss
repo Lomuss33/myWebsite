@@ -48,12 +48,24 @@ div.article-info-list-item {
     padding: var(--padding);
     min-height: var(--min-height);
 
+    a.article-info-list-item-avatar-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        text-decoration: none!important;
+        color: inherit!important;
+        cursor: pointer;
+    }
+
     &-avatar {
-        min-width: calc(var(--avatar-size) * 1.2);
+        width: var(--avatar-size);
+        height: var(--avatar-size);
+        min-width: var(--avatar-size);
         font-size: calc(var(--avatar-size) / 2)!important;
         background-color: var(--theme-dark)!important;
         color: var(--theme-texts)!important;
-        border-radius: $standard-border-radius 0 0 $standard-border-radius;
+        border-radius: $standard-border-radius;
     }
 
     &-content {

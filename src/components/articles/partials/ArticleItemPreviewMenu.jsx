@@ -19,9 +19,17 @@ function ArticleItemPreviewMenu({ itemWrapper, className = "", spaceBetween }) {
     const hasScreenshotsOrVideo = itemWrapper.preview?.hasScreenshotsOrYoutubeVideo
     const hasLinks = itemWrapper.preview?.hasLinks
     const links = itemWrapper.preview?.links || []
+    const validLinks = links.filter(link => isNonEmptyHref(link?.href))
     const orderedLinks = links.slice().sort((a, b) => {
         return Number(a.isWebsiteAction) - Number(b.isWebsiteAction)
     })
+
+    const isGithubLink = (link) => String(link?.href || "").includes("github.com")
+    const isDocsLink = (link) => {
+        const href = String(link?.href || "")
+        const icon = String(link?.faIcon || "")
+        return icon.includes("fa-file") || href.includes("docs.google.com") || href.includes("readthedocs") || href.includes("/docs")
+    }
 
     const linksListClass = utils.string.if(
         hasScreenshotsOrVideo && spaceBetween,
@@ -35,7 +43,7 @@ function ArticleItemPreviewMenu({ itemWrapper, className = "", spaceBetween }) {
                     <ItemPreviewMenuGalleryButton itemWrapper={itemWrapper}/>
                     {hasLinks && !spaceBetween && (
                         <>
-                            {orderedLinks.map((link, key) => (
+                            {validLinks.map((link, key) => (
                                 <ItemPreviewMenuCustomLinkButton link={link}
                                                                  key={key}/>
                             ))}
@@ -46,10 +54,20 @@ function ArticleItemPreviewMenu({ itemWrapper, className = "", spaceBetween }) {
 
             {hasLinks && spaceBetween && (
                 <div className={`article-item-preview-menu-button-list ${linksListClass}`}>
-                    {orderedLinks.map((link, key) => (
-                        <ItemPreviewMenuCustomLinkButton link={link}
-                                                         key={key}/>
-                    ))}
+                    {validLinks
+                        // In portfolio cards, the website action is promoted into the avatar dock.
+                        // Keep it here in non-spaceBetween layouts (e.g. modal/compact menus).
+                        .filter(link => {
+                            if (!spaceBetween) return true
+                            if (link?.isWebsiteAction) return false
+                            // In portfolio cards, GitHub/Docs are shown as the small icons near the avatar.
+                            if (isGithubLink(link) || isDocsLink(link)) return false
+                            return true
+                        })
+                        .map((link, key) => (
+                            <ItemPreviewMenuCustomLinkButton link={link}
+                                                             key={key}/>
+                        ))}
                 </div>
             )}
         </div>
@@ -164,3 +182,7 @@ function ItemPreviewMenuCustomLinkButton({ link }) {
 }
 
 export default ArticleItemPreviewMenu
+
+function isNonEmptyHref(href) {
+    return typeof href === "string" && href.trim().length > 0
+}

@@ -213,7 +213,8 @@ export function updateDragon(dragon, time, mouseX, mouseY, options = {}) {
     const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY)
 
     if (distance > 4) {
-        const speed = Math.min(distance, Math.max(12, distance * 0.15))
+        // Follow the pointer a bit more lazily (requested: ~20% slower).
+        const speed = Math.min(distance, Math.max(12, distance * 0.15)) * 0.8
         head.x += (deltaX / distance) * speed
         head.y += (deltaY / distance) * speed
     }
@@ -323,11 +324,14 @@ export function spawnFire(dragon, sprites) {
     const mouthOffset = (headWidth ? headWidth * DRAGON_SPRITE_SCALE * 0.55 : 30) * scale
     const fireX = head.x + Math.cos(head.angle) * mouthOffset
     const fireY = head.y + Math.sin(head.angle) * mouthOffset
-    const count = 3 + Math.floor(Math.random() * 3)
+    // Requested: ~50% more flames.
+    const count = 5 + Math.floor(Math.random() * 4)
 
     for (let index = 0; index < count; index += 1) {
-        const spread = (Math.random() - 0.5) * 0.25
-        const speed = (35 + Math.random() * 20) * scale
+        // Requested: ~30% wider spray + ~50% faster flames.
+        const spread = (Math.random() - 0.5) * (0.25 * 1.3)
+        // Requested: -30% distance, +10% speed (relative to current tuning).
+        const speed = (35 + Math.random() * 20) * scale * 1.5 * 1.1
         const angle = head.angle + spread
 
         dragon.fire.push({
@@ -337,7 +341,8 @@ export function spawnFire(dragon, sprites) {
             vy: Math.sin(angle) * speed,
             size: (8 + Math.random() * 12) * scale,
             life: 1,
-            maxLife: 12 + Math.floor(Math.random() * 6),
+            // Reduce lifetime to shorten travel distance.
+            maxLife: 11 + Math.floor(Math.random() * 6),
             frame: 0,
             color: Math.floor(Math.random() * 3)
         })

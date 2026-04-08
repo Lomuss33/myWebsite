@@ -293,6 +293,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                 <PretextInteractiveText html={html}
                                         revealOnScroll={true}
                                         effectVariant={"gravitySweep"}
+                                        pointerScopeSelector={".layout-content"}
                                         typographyVersion={typographyVersion}/>
             )
         }
@@ -303,6 +304,8 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                                         revealOnScroll={true}
                                         effectVariant={"wave"}
                                         terrainVariant={"detailed"}
+                                        pointerScopeSelector={".layout-content"}
+                                        pointerScopeIgnoreX={true}
                                         typographyVersion={typographyVersion}/>
             )
         }
@@ -313,6 +316,8 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                                         revealOnScroll={true}
                                         effectVariant={"wave"}
                                         terrainVariant={"detailed"}
+                                        pointerScopeSelector={".layout-content"}
+                                        pointerScopeIgnoreX={true}
                                         typographyVersion={typographyVersion}/>
             )
         }

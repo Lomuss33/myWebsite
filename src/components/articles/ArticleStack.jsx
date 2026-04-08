@@ -17,6 +17,7 @@ function ArticleStack({ dataWrapper, id }) {
     const [selectedItemCategoryId, setSelectedItemCategoryId] = useState(null)
     const isHomeStack = dataWrapper.sectionId === "about"
     const isCompactStack = dataWrapper.sectionId === "my-art"
+    const isSoftwareStack = dataWrapper.sectionId === "my-software"
     const homeClass = isHomeStack ? `article-stack-home` : ``
     const compactClass = isCompactStack ? `article-stack-compact` : ``
 
@@ -26,7 +27,8 @@ function ArticleStack({ dataWrapper, id }) {
                  dataWrapper={dataWrapper}
                  className={`article-stack ${homeClass} ${compactClass}`}
                  selectedItemCategoryId={selectedItemCategoryId}
-                 setSelectedItemCategoryId={setSelectedItemCategoryId}>
+                 setSelectedItemCategoryId={setSelectedItemCategoryId}
+                 categoryFilterTitleStringKey={isSoftwareStack ? "software_hall_of_fame_title" : null}>
             <ArticleStackItems dataWrapper={dataWrapper}
                                isHomeStack={isHomeStack}
                                isCompactStack={isCompactStack}
@@ -92,11 +94,16 @@ function ArticleStackItem({ itemWrapper, isHomeStack, isCompactStack }) {
     const compactClass = isCompactStack ? `article-stack-item-compact` : ``
     const linkHref = itemWrapper.link?.href
     const linkTooltip = itemWrapper.link?.tooltip
+    const isSoftwareStack = itemWrapper?.articleWrapper?.sectionId === "my-software"
+    const emojiIconText = isSoftwareStack ?
+        (itemWrapper.iconText || _emojiForSoftwareStack(title, itemWrapper.categoryId)) :
+        itemWrapper.iconText
 
     const content = (
         <div className={`article-stack-item ${homeClass} ${compactClass}`}>
             <AvatarView src={itemWrapper.img}
                         faIcon={itemWrapper.faIconWithFallback}
+                        iconText={emojiIconText}
                         style={itemWrapper.faIconStyle}
                         alt={itemWrapper.imageAlt}
                         className={`article-stack-item-avatar`}/>
@@ -152,6 +159,103 @@ function _splitTitle(title) {
         prefix: normalizedTitle.slice(0, separatorIndex).trim(),
         value: normalizedTitle.slice(separatorIndex + 1).trim()
     }
+}
+
+function _emojiForSoftwareStack(rawTitle, categoryId) {
+    const title = String(rawTitle || "").trim()
+    const t = title.toLowerCase()
+
+    // ---- High-confidence exact/keyword picks (fun + accurate) ----
+    // Version control / dev
+    if (t === "git") return "🔧"
+    if (t.includes("github")) return "🐙"
+    if (t.includes("gitlab")) return "🦊"
+
+    // Editors / IDE
+    if (t.includes("vs code") || t.includes("vscode")) return "🧩"
+    if (t.includes("visual studio")) return "🟪"
+    if (t.includes("intellij")) return "🧠"
+    if (t.includes("pycharm")) return "🐍"
+
+    // Shell / terminal
+    if (t.includes("bash") || t.includes("zsh") || t.includes("terminal") || t.includes("powershell")) return "⌨️"
+
+    // Containers / orchestration
+    if (t.includes("docker")) return "🐳"
+    if (t.includes("kubernetes") || t === "k8s") return "☸️"
+    if (t.includes("helm")) return "⛵"
+
+    // OS
+    if (t.includes("linux")) return "🐧"
+    if (t.includes("windows")) return "🪟"
+    if (t.includes("android")) return "🤖"
+
+    // Browsers
+    if (t.includes("firefox")) return "🦊"
+    if (t.includes("chrome")) return "🌐"
+    if (t.includes("edge")) return "🌊"
+
+    // Networking & security tools
+    if (t.includes("wireshark")) return "🦈"
+    if (t.includes("tcpdump")) return "🕵️"
+    if (t.includes("ssh")) return "🔐"
+    if (t.includes("tailscale")) return "🪢"
+    if (t.includes("tailscale")) return "🪢"
+    if (t.includes("owasp") || t.includes("zap")) return "🕷️"
+
+    // Passwords / secrets
+    if (t.includes("bitwarden")) return "🔑"
+    if (t.includes("keepass")) return "🗝️"
+    if (t.includes("vault")) return "🔒"
+
+    // Web / infra / cloud
+    if (t.includes("cloudflare")) return "☁️"
+    if (t.includes("nginx")) return "🧱"
+    if (t.includes("proxy")) return "🛰️"
+    if (t.includes("vps") || t.includes("server")) return "🖥️"
+    if (t.includes("uptime")) return "⏱️"
+    if (t.includes("ssh")) return "🔐"
+
+    // Databases / data / messaging
+    if (t.includes("postgres")) return "🐘"
+    if (t.includes("mysql")) return "🐬"
+    if (t.includes("redis")) return "🧠"
+    if (t.includes("kafka")) return "📨"
+    if (t.includes("dbt")) return "🧱"
+
+    // Languages / frameworks
+    if (t.includes("typescript")) return "🟦"
+    if (t.includes("javascript")) return "🟨"
+    if (t.includes("react")) return "⚛️"
+    if (t.includes("next.js") || t === "nextjs" || t.includes("nextjs")) return "⬛"
+    if (t.includes("node")) return "🟩"
+    if (t.includes("rust")) return "🦀"
+    if (t === "go" || t.includes("golang")) return "🐹"
+    if (t.includes("python")) return "🐍"
+    if (t.includes("java")) return "☕"
+    if (t.includes("c#") || t.includes(".net")) return "🟪"
+
+    // ---- Smarter fallback: wider pool, deterministic but less repetitive ----
+    const fallbackPool = [
+        "🧰","🛠️","🔩","⚙️","🧪","🧠","📦","🗂️","🗄️","💾",
+        "🌐","📡","🛰️","🔌","🔋","🧱","🪛","🧷","📎","🧾",
+        "🔍","🧭","🗺️","📈","📉","🧮","🧬","🧫","🧯","🧲",
+        "🎛️","🎚️","🔔","🕰️","⏳","🪄","✨","⭐","💠","🔹",
+        "🧿","🔺","🔻","▪️","▫️","🔸","🪙","🧵","🪡","🧶"
+    ]
+    const index = _hashToIndex(`${categoryId || ""}::${title}`, fallbackPool.length)
+    return fallbackPool[index]
+}
+
+function _hashToIndex(input, modulo) {
+    const text = String(input || "")
+    let hash = 2166136261
+    for (let i = 0; i < text.length; i++) {
+        hash ^= text.charCodeAt(i)
+        hash = Math.imul(hash, 16777619)
+    }
+    const unsigned = hash >>> 0
+    return modulo ? (unsigned % modulo) : 0
 }
 
 export default ArticleStack

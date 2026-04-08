@@ -52,18 +52,18 @@ div.nav-tools-item {
 }
 
 div.nav-tools-shrink {
-    flex-direction: column;
+    flex-direction: row;
     padding: 0;
     gap: 0;
 
     div.nav-tools-item {
-        width: 100%;
+        width: auto;
         height: 38px;
         @media (max-height: 725px) { height: 35px; }
         @media (max-height: 690px) { height: 32px; }
 
         &:not(:first-child) {
-            border-top: 1px solid var(--theme-standard-borders);
+            border-left: 1px solid var(--theme-standard-borders);
         }
     }
 }

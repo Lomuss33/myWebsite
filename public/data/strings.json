@@ -54,7 +54,8 @@
             "subject": "Subject",
             "toggle_sidebar": "Toggle sidebar",
             "watch_video": "Watch Video",
-            "yes": "Yes"
+            "yes": "Yes",
+            "software_hall_of_fame_title": "My Software Hall of Fame"
         },
         "de": {
             "about_video": "Über Video",
@@ -110,7 +111,8 @@
             "subject": "Betreff",
             "toggle_sidebar": "Seitenleiste umschalten",
             "watch_video": "Video ansehen",
-            "yes": "Ja"
+            "yes": "Ja",
+            "software_hall_of_fame_title": "Meine Software‑Hall of Fame"
         },
         "hr": {
             "about_video": "Video O",
@@ -166,7 +168,8 @@
             "subject": "Predmet",
             "toggle_sidebar": "Prebaci bočnu traku",
             "watch_video": "Pogledaj video",
-            "yes": "Da"
+            "yes": "Da",
+            "software_hall_of_fame_title": "Moja softverska kuća slavnih"
         },
         "tr": {
             "about_video": "Hakkında Video",
@@ -222,7 +225,8 @@
             "subject": "Konu",
             "toggle_sidebar": "Kenar Çubuğunu Değiştir",
             "watch_video": "Videoyu İzle",
-            "yes": "Evet"
+            "yes": "Evet",
+            "software_hall_of_fame_title": "Yazılım Şöhretler Listem"
         }
     }
 }

@@ -53,9 +53,14 @@ body.body-no-scroll {
 
 /** ------------ SCROLLBAR STYLES ------------ **/
 .scrollbar-decorator {
-    ::-webkit-scrollbar { max-width: 4px; }
-    ::-webkit-scrollbar-track { -webkit-box-shadow: inset 0 0 4px var(--theme-scrollbar-track); }
+    /* Make scrollbar more visible (3x thicker than before) */
+    ::-webkit-scrollbar { width: 12px; height: 12px; }
+    ::-webkit-scrollbar-track { -webkit-box-shadow: inset 0 0 12px var(--theme-scrollbar-track); }
     ::-webkit-scrollbar-thumb { background-color: var(--theme-scrollbar-thumb)!important; }
+
+    /* Firefox */
+    scrollbar-width: auto;
+    scrollbar-color: var(--theme-scrollbar-thumb) var(--theme-scrollbar-track);
 }
 
 /** ------------ PLACEHOLDER STYLES ------------ **/

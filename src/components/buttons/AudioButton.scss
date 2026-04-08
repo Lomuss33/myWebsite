@@ -7,7 +7,7 @@ div.audio-button-wrapper {
 
 button.audio-button {
     background-color: transparent;
-    border: 0;
+    border: 1px solid rgba(255, 255, 255, 0.45);
     padding: 0;
     margin: 0;
     display: flex;
@@ -15,6 +15,9 @@ button.audio-button {
     justify-content: center;
     color: var(--theme-texts-light-4);
     outline: none;
+    border-radius: 999px;
+    width: 1.55rem;
+    height: 1.55rem;
 
     i {
         pointer-events: none;
@@ -22,6 +25,7 @@ button.audio-button {
 
     &:hover {
         color: var(--theme-texts-light-1);
+        border-color: rgba(255, 255, 255, 0.75);
     }
 }
 

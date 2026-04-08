@@ -29,7 +29,9 @@ function PretextInteractiveText({
     revealOnScroll = true,
     effectVariant = "wave",
     terrainVariant = "standard",
-    typographyVersion = 0
+    typographyVersion = 0,
+    pointerScopeSelector = null,
+    pointerScopeIgnoreX = false
 }) {
     const rootRef = useRef(null)
     const contentRef = useRef(null)
@@ -47,6 +49,7 @@ function PretextInteractiveText({
     const contentSizeRef = useRef({ width: 0, height: 0 })
     const lineHeightRef = useRef(0)
     const gravityStatesRef = useRef(new Map())
+    const lastGoodWidthRef = useRef(0)
 
     const reduceMotion = useReducedMotion()
     const isInView = useInView(rootRef, { amount: 0.3, once: false })
@@ -124,16 +127,78 @@ function PretextInteractiveText({
 
     useEffect(() => {
         const element = contentRef.current
-        if (!element) return
+        const rootElement = rootRef.current
+        if (!element || !rootElement) return
+
+        const resolveStableWidth = (measuredWidth = 0) => {
+            // Prefer layout widths (not affected by transforms during slide transitions).
+            const contentWidth =
+                element.clientWidth ||
+                element.offsetWidth ||
+                element.getBoundingClientRect?.().width ||
+                0
+            const rootWidth =
+                rootElement.clientWidth ||
+                rootElement.offsetWidth ||
+                rootElement.getBoundingClientRect?.().width ||
+                0
+            const parentWidth =
+                rootElement.parentElement?.clientWidth ||
+                rootElement.parentElement?.offsetWidth ||
+                rootElement.parentElement?.getBoundingClientRect?.().width ||
+                0
+
+            const best = Math.max(measuredWidth || 0, contentWidth, rootWidth, parentWidth)
+            return best
+        }
+
+        let rafHandle = null
+        let retryCount = 0
+        const MAX_RETRIES = 12
+        const MIN_STABLE_WIDTH = 120
+
+        const scheduleWidthRetry = () => {
+            if (rafHandle !== null) return
+            if (retryCount >= MAX_RETRIES) return
+
+            rafHandle = requestAnimationFrame(() => {
+                rafHandle = null
+                retryCount += 1
+                const nextWidth = resolveStableWidth(0)
+                if (nextWidth >= MIN_STABLE_WIDTH) {
+                    lastGoodWidthRef.current = nextWidth
+                    setContentWidth(nextWidth)
+                    return
+                }
+                scheduleWidthRetry()
+            })
+        }
 
         const observer = new ResizeObserver(entries => {
-            const nextWidth = entries[0]?.contentRect?.width || 0
-            setContentWidth(Math.max(0, nextWidth))
+            const measuredWidth = entries[0]?.contentRect?.width || 0
+            const nextWidth = resolveStableWidth(measuredWidth)
+
+            if (nextWidth >= MIN_STABLE_WIDTH) {
+                lastGoodWidthRef.current = nextWidth
+                setContentWidth(Math.max(0, nextWidth))
+                return
+            }
+
+            // During transitions/layout shifts we can observe a transient tiny width.
+            // Retry a few frames until layout stabilizes.
+            scheduleWidthRetry()
         })
 
         observer.observe(element)
+        observer.observe(rootElement)
+        // On html/lang changes, keep last good width and retry in case layout shifts.
+        if (lastGoodWidthRef.current >= MIN_STABLE_WIDTH) {
+            setContentWidth(lastGoodWidthRef.current)
+        }
+        scheduleWidthRetry()
+
         return () => observer.disconnect()
-    }, [])
+    }, [html, typographyVersion])
 
     useEffect(() => {
         if (!revealOnScroll || isInView) {
@@ -161,6 +226,82 @@ function PretextInteractiveText({
             }
         }
     }, [])
+
+    useEffect(() => {
+        if (!pointerScopeSelector) return
+
+        const rootElement = rootRef.current
+        if (!rootElement) return
+
+        const scopeElement =
+            rootElement.closest(pointerScopeSelector) ||
+            document.querySelector(pointerScopeSelector)
+
+        if (!scopeElement) return
+
+        const handleWindowPointerMove = event => {
+            if (!event || event.pointerType === "touch") return
+
+            const clientX = event.clientX ?? 0
+            const clientY = event.clientY ?? 0
+            const scopeRect = scopeElement.getBoundingClientRect()
+            const rootRect = rootElement.getBoundingClientRect()
+
+            // Keep interaction constrained vertically to this row.
+            const isWithinRow =
+                clientY >= rootRect.top &&
+                clientY <= rootRect.bottom
+
+            const isWithinScope =
+                clientY >= scopeRect.top &&
+                clientY <= scopeRect.bottom &&
+                (pointerScopeIgnoreX || (clientX >= scopeRect.left && clientX <= scopeRect.right))
+
+            if (!isWithinScope || !isWithinRow) {
+                schedulePointerUpdate(createInactiveInteractionState())
+                return
+            }
+
+            const withinHitboxX = clientX >= rootRect.left && clientX <= rootRect.right
+            const withinHitbox = withinHitboxX && isWithinRow
+
+            const viewportWidth = Math.max(window.innerWidth || 0, 1)
+            const normalizedViewportX = clamp(clientX / viewportWidth, 0, 1)
+
+            const localY = clientY - rootRect.top
+            let localX = normalizedViewportX * rootRect.width
+            let intensity = 1
+
+            if (pointerScopeIgnoreX) {
+                if (withinHitboxX) {
+                    // When you're actually over the text box, make it feel "right under" the mouse.
+                    localX = clamp(clientX - rootRect.left, 0, rootRect.width)
+                    intensity = 1.25
+                } else {
+                    // Outside the hitbox (but still in the same row): anchor to the nearest edge.
+                    localX = clientX < rootRect.left ? 0 : rootRect.width
+                    intensity = 0.7
+                }
+            }
+
+            const relative = {
+                x: localX,
+                y: localY,
+                intensity
+            }
+
+            schedulePointerUpdate(createActiveInteractionState(relative))
+
+            if (effectVariant === "gravitySweep" && !reduceMotion) {
+                scheduleGravityLoop()
+            }
+        }
+
+        window.addEventListener("pointermove", handleWindowPointerMove, { passive: true })
+        return () => {
+            window.removeEventListener("pointermove", handleWindowPointerMove)
+        }
+    }, [pointerScopeSelector, pointerScopeIgnoreX, effectVariant, reduceMotion])
 
     useEffect(() => {
         if (effectVariant !== "gravitySweep" || reduceMotion) {
@@ -683,6 +824,11 @@ function collectVisibleGraphemes(paragraphs, lineHeight) {
             let fragmentOffsetX = 0
 
             line.fragments.forEach(fragment => {
+                if (fragment.locked) {
+                    fragmentOffsetX = fragmentOffsetX + fragment.leadingGap + fragment.width
+                    return
+                }
+
                 const fragmentLeft = fragmentOffsetX + fragment.leadingGap
                 fragmentOffsetX = fragmentLeft + fragment.width
                 const fragmentGraphemes = getFragmentGraphemes(fragment)
@@ -947,23 +1093,25 @@ function computeWaveHoverOffset(pointerState, x, y, terrain, contentSize, terrai
         return { x: 0, y: 0, rotate: 0, scale: 1 }
     }
 
+    const intensity = clamp(pointerState.intensity ?? 1, 0.2, 2)
+
     const config = terrainVariant === "detailed" ? {
         radius: 140,
-        influenceAmplitude: 0.62 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
-        lateralAmplitude: 5.2 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
-        verticalAmplitude: 7.4 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
-        slopeAmplitude: 3.2 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
-        scaleAmplitude: 0.012 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
-        rotationAmplitude: 2.1 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
+        influenceAmplitude: 0.62 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
+        lateralAmplitude: 5.2 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
+        verticalAmplitude: 7.4 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
+        slopeAmplitude: 3.2 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
+        scaleAmplitude: 0.012 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
+        rotationAmplitude: 2.1 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
         falloffPower: 2.7
     } : {
         radius: 162,
-        influenceAmplitude: 0.96 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
-        lateralAmplitude: 8 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
-        verticalAmplitude: 12 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
-        slopeAmplitude: 4.5 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
-        scaleAmplitude: 0.018 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
-        rotationAmplitude: 3.1 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
+        influenceAmplitude: 0.96 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
+        lateralAmplitude: 8 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
+        verticalAmplitude: 12 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
+        slopeAmplitude: 4.5 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
+        scaleAmplitude: 0.018 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
+        rotationAmplitude: 3.1 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
         falloffPower: 2.3
     }
 
@@ -1122,7 +1270,8 @@ function createInactiveInteractionState() {
     return {
         active: false,
         x: 0,
-        y: 0
+        y: 0,
+        intensity: 1
     }
 }
 
@@ -1140,7 +1289,8 @@ function createActiveInteractionState(position) {
     return {
         active: true,
         x: position.x,
-        y: position.y
+        y: position.y,
+        intensity: clamp(position.intensity ?? 1, 0.2, 2)
     }
 }
 
@@ -1229,8 +1379,13 @@ function getRelativePointerPosition(event) {
     const clientX = event.clientX ?? 0
     const clientY = event.clientY ?? 0
 
+    // X should not depend on the element's horizontal position.
+    // Map viewport X proportionally into the element's local width.
+    const viewportWidth = Math.max(window.innerWidth || 0, 1)
+    const normalizedViewportX = clamp(clientX / viewportWidth, 0, 1)
+
     return {
-        x: clientX - rect.left,
+        x: normalizedViewportX * rect.width,
         y: clientY - rect.top
     }
 }

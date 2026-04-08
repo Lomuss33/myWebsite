@@ -11,14 +11,21 @@ div.scrollable {
     overflow-y: auto;
     position: relative;
     outline: none;
+
+    // Mobile/iOS scroll fixes.
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    touch-action: pan-y;
 }
 
 /** Plugin customization **/
 div.scrollable-with-plugin {
-    --scrollbar-width:32px;
-    --scrollbar-track-width: 4px;
+    // Slim but easy-to-grab scrollbar.
+    --scrollbar-width: 26px;
+    /* 3x thicker visible track/thumb */
+    --scrollbar-track-width: 12px;
     --scrollbar-track-offset: calc(var(--scrollbar-track-width) - var(--scrollbar-track-width));
-    --scrollbar-thumb-width:4px;
+    --scrollbar-thumb-width: 12px;
     --scrollbar-thumb-offset: calc(var(--scrollbar-width) - var(--scrollbar-thumb-width));
 
     .scrollbar-thumb-x, .scrollbar-track-x {
@@ -35,6 +42,12 @@ div.scrollable-with-plugin {
         width: var(--scrollbar-width);
         background-color: transparent;
         border-radius: 0;
+
+        // Make dragging feel reliable (bigger hit area than the visible thumb).
+        cursor: grab;
+        &:active {
+            cursor: grabbing;
+        }
     }
 
     &:before, .scrollbar-thumb-y:before {
@@ -45,14 +58,36 @@ div.scrollable-with-plugin {
     }
 
     &:before {
+        // Pretty + transparent track (avoid color-mix for broad support).
         background-color: var(--theme-scrollbar-track);
+        opacity: 0.55;
         width: var(--scrollbar-track-width);
         right: var(--scrollbar-track-offset);
+        border-radius: 999px;
     }
 
     .scrollbar-thumb-y:before {
+        // Small but noticeable thumb.
         background-color: var(--theme-scrollbar-thumb);
+        opacity: 0.78;
         width: var(--scrollbar-thumb-width);
         left: var(--scrollbar-thumb-offset);
+        border-radius: 999px;
+        transition: width 140ms ease, background-color 140ms ease, filter 140ms ease;
+    }
+
+    // On hover, make it slightly more visible/easier to grab.
+    &:hover {
+        --scrollbar-track-width: 13px;
+        --scrollbar-thumb-width: 14px;
+
+        &:before {
+            opacity: 0.75;
+        }
+
+        .scrollbar-thumb-y:before {
+            opacity: 0.92;
+            filter: brightness(1.05);
+        }
     }
 }

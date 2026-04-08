@@ -79,7 +79,10 @@ div.article-stack-item-avatar {
     height: var(--avatar-size);
     font-size: calc(var(--avatar-size)*0.7);
     border-radius: 100%;
-    background-color: transparent;
+    /* Ensure icon avatars never "disappear" against the card/background */
+    background-color: var(--theme-dark);
+    border: 1px solid var(--theme-standard-borders);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
     color: var(--theme-primary);
 }
 
@@ -196,7 +199,7 @@ article.article.article-stack-home {
     div.article-stack-items.article-stack-items-home {
         --stack-columns: 7;
         --gap: 7px;
-        --avatar-size: 64px;
+        --avatar-size: 56px;
         --padding: 10px 12px;
 
         @container (max-width: 1180px) {
@@ -204,19 +207,19 @@ article.article.article-stack-home {
         }
 
         @container (max-width: 980px) {
-            --avatar-size: 60px;
+            --avatar-size: 54px;
             --gap: 6px;
         }
 
         @container (max-width: 840px) {
             --stack-columns: 4;
-            --avatar-size: 56px;
+            --avatar-size: 52px;
             --gap: 5px;
         }
 
         @container (max-width: 560px) {
             --stack-columns: 3;
-            --avatar-size: 50px;
+            --avatar-size: 48px;
             --gap: 4px;
             --padding: 8px 9px;
         }
@@ -233,7 +236,7 @@ article.article.article-stack-home {
     }
 
     div.article-stack-item-home div.article-stack-item-avatar {
-        font-size: calc(var(--avatar-size)*0.54);
+        font-size: calc(var(--avatar-size)*0.42);
     }
 
     div.article-stack-item-home div.article-stack-item-title {
@@ -241,18 +244,20 @@ article.article.article-stack-home {
     }
 
     div.article-stack-item-home div.article-stack-item-title-prefix {
-        font-size: calc(var(--avatar-size)*0.14);
-        line-height: 1.1;
-        letter-spacing: 0.01em;
+        font-size: calc(var(--avatar-size)*0.19);
+        line-height: 1.12;
+        letter-spacing: 0.02em;
+        font-weight: 700;
+        color: var(--theme-primary);
     }
 
     div.article-stack-item-home div.article-stack-item-title-main {
-        font-size: calc(var(--avatar-size)*0.20);
-        line-height: 1.12;
+        font-size: calc(var(--avatar-size)*0.22);
+        line-height: 1.14;
     }
 
     div.article-stack-item-home div.article-stack-item-experience {
-        font-size: calc(var(--avatar-size)*0.17);
-        line-height: 1.15;
+        font-size: calc(var(--avatar-size)*0.18);
+        line-height: 1.22;
     }
 }

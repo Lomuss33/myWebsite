@@ -2,8 +2,64 @@
 
 button.standard-button {
     i, span {
+        -webkit-user-select: none;
         user-select: none;
         pointer-events: none;
+    }
+
+    transition:
+        transform 160ms cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 160ms cubic-bezier(0.16, 1, 0.3, 1),
+        filter 160ms cubic-bezier(0.16, 1, 0.3, 1);
+
+    will-change: transform, box-shadow;
+
+    &:hover {
+        transform: translate3d(0, -2px, 0);
+        filter: brightness(1.02);
+    }
+
+    &:active {
+        transform: translate3d(0, 0.5px, 0);
+        filter: brightness(0.98);
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--theme-primary-6);
+        outline-offset: 3px;
+    }
+}
+
+button.standard-button.btn-default-size,
+button.standard-button.standard-button-default-size {
+    --padding: 0.62rem 1.05rem;
+    --font-size: 0.95rem;
+
+    @include media-breakpoint-down(lg) {
+        --padding: 0.58rem 0.96rem;
+        --font-size: 0.92rem;
+    }
+
+    padding: var(--padding);
+    font-size: var(--font-size);
+    font-weight: 600;
+    border-radius: 999px!important;
+    letter-spacing: 0.015em;
+
+    box-shadow:
+        0 10px 22px rgba(0, 0, 0, 0.22),
+        0 2px 0 rgba(0, 0, 0, 0.18);
+
+    &:hover {
+        box-shadow:
+            0 14px 26px rgba(0, 0, 0, 0.24),
+            0 3px 0 rgba(0, 0, 0, 0.18);
+    }
+
+    &:active {
+        box-shadow:
+            0 6px 14px rgba(0, 0, 0, 0.22),
+            0 1px 0 rgba(0, 0, 0, 0.18);
     }
 }
 
@@ -28,4 +84,81 @@ button.standard-button-large-size {
     text-transform: uppercase;
     padding: var(--padding);
     font-size: var(--font-size);
+}
+
+button.standard-button.btn-contrast {
+    --std-btn-surface-top: var(--theme-boards-background-accent-inv);
+    --std-btn-surface-mid: var(--theme-boards-background-accent);
+    --std-btn-surface-bottom: var(--theme-boards-background);
+    --std-btn-border: var(--theme-standard-borders-8);
+    --std-btn-text: var(--theme-texts-inv);
+
+    // "Raised pill" feel (inspired by the reference).
+    background-image: linear-gradient(
+        to top,
+        var(--std-btn-surface-bottom) 0%,
+        var(--std-btn-surface-top) 80%,
+        var(--std-btn-surface-top) 100%
+    )!important;
+
+    border: 1px solid var(--std-btn-border)!important;
+    color: var(--std-btn-text)!important;
+    text-shadow: 0 1px rgba(255, 255, 255, 0.35);
+
+    box-shadow:
+        0 4px 3px 1px rgba(255, 255, 255, 0.06),
+        0 10px 16px rgba(0, 0, 0, 0.34),
+        0 -4px 4px rgba(0, 0, 0, 0.18),
+        0 -6px 4px rgba(255, 255, 255, 0.05),
+        inset 0 0 3px 0 rgba(0, 0, 0, 0.30);
+
+    &:hover:not([disabled]) {
+        box-shadow:
+            0 4px 3px 1px rgba(255, 255, 255, 0.08),
+            0 14px 22px rgba(0, 0, 0, 0.36),
+            0 -4px 4px rgba(0, 0, 0, 0.18),
+            0 -6px 4px rgba(255, 255, 255, 0.06),
+            inset 0 0 3px 3px rgba(0, 0, 0, 0.26);
+
+        > * {
+            transform: scale(0.975);
+        }
+    }
+
+    &:active:not([disabled]) {
+        box-shadow:
+            0 2px 2px rgba(0, 0, 0, 0.26),
+            0 6px 10px rgba(0, 0, 0, 0.30),
+            inset 0 0 5px 3px rgba(0, 0, 0, 0.32),
+            inset 0 0 30px rgba(0, 0, 0, 0.22);
+
+        > * {
+            transform: scale(0.95);
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        @keyframes standard-button-contrast-focus {
+            from {
+                box-shadow:
+                    0 4px 3px 1px rgba(255, 255, 255, 0.08),
+                    0 14px 22px rgba(0, 0, 0, 0.36),
+                    0 -4px 4px rgba(0, 0, 0, 0.18),
+                    0 -6px 4px rgba(255, 255, 255, 0.06),
+                    inset 0 0 10px 0 rgba(60, 120, 255, 0.55);
+            }
+            to {
+                box-shadow:
+                    0 4px 3px 1px rgba(255, 255, 255, 0.08),
+                    0 14px 22px rgba(0, 0, 0, 0.36),
+                    0 -4px 4px rgba(0, 0, 0, 0.18),
+                    0 -6px 4px rgba(255, 255, 255, 0.06),
+                    inset 0 0 3px 3px rgba(0, 0, 0, 0.26);
+            }
+        }
+
+        &:focus-visible:not(:active) {
+            animation: standard-button-contrast-focus 0.9s alternate infinite;
+        }
+    }
 }

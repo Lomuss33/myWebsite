@@ -2923,7 +2923,7 @@
           "categoryId": "category_pc",
           "faIcon": "fa-brands fa-rust",
           "faIconColors": {
-            "fill": "#000000"
+            "fill": "#DEA584"
           },
                     "locales": {
                       "en": {
@@ -2987,9 +2987,9 @@
         {
           "id": 67,
           "categoryId": "category_pc",
-          "faIcon": "fa-solid fa-n",
+          "faIcon": "fa-solid fa-layer-group",
           "faIconColors": {
-            "fill": "#000000"
+            "fill": "#FFFFFF"
           },
                     "locales": {
                       "en": {
@@ -3405,9 +3405,9 @@
         {
           "id": 86,
           "categoryId": "category_cloud",
-          "faIcon": "fa-solid fa-stream",
+          "faIcon": "fa-solid fa-diagram-project",
           "faIconColors": {
-            "fill": "#000000"
+            "fill": "#E5E7EB"
           },
                     "locales": {
                       "en": {
@@ -3669,9 +3669,9 @@
         {
           "id": 98,
           "categoryId": "category_cloud",
-          "faIcon": "fa-solid fa-vault",
+          "faIcon": "fa-solid fa-lock",
           "faIconColors": {
-            "fill": "#000000"
+            "fill": "#E5E7EB"
           },
                     "locales": {
                       "en": {
@@ -6309,9 +6309,9 @@
         {
           "id": 219,
           "categoryId": "category_cloud",
-          "faIcon": "fa-solid fa-folder-tree",
+          "faIcon": "fa-solid fa-network-wired",
           "faIconColors": {
-            "fill": "#000000"
+            "fill": "#E5E7EB"
           },
                     "locales": {
                       "en": {
@@ -6531,7 +6531,7 @@
           "categoryId": "category_pc",
           "faIcon": "fa-solid fa-user-secret",
           "faIconColors": {
-            "fill": "#000000"
+            "fill": "#E5E7EB"
           },
                     "locales": {
                       "en": {

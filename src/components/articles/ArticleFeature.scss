@@ -58,12 +58,15 @@ div.article-feature-item-text {
 
 div.article-feature-item-text-measure-square {
     position: absolute;
+    left: -99999px;
+    top: 0;
     visibility: hidden;
     pointer-events: none;
-    inset: 0 auto auto 0;
     width: 100%;
+    max-width: 100%;
+    user-select: none;
     overflow: hidden;
-    z-index: -1;
+    contain: layout style paint;
 }
 
 div.article-feature-item-text.article-feature-item-text-adaptive {

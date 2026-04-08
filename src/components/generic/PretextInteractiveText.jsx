@@ -623,9 +623,10 @@ function PretextInteractiveText({
                             {paragraph.lines.map((line, lineIndex) => {
                                 globalLineIndex += 1
                                 const lineTop = paragraphTop + lineIndex * effectiveLineHeight
+                                const lineRenderKey = `${paragraph.key}-${line.key}-${lineIndex}-${revealCycle}`
 
                                 return (
-                                    <AnimatedLine key={`${line.key}-${revealCycle}`}
+                                    <AnimatedLine key={lineRenderKey}
                                                   line={line}
                                                   lineHeight={effectiveLineHeight}
                                                   lineTop={lineTop}
@@ -704,8 +705,7 @@ function AnimatedLine({
                 fragmentOffsetX = fragmentLeft + fragment.width
 
                 const commonProps = {
-                    className: `pretext-interactive-text-fragment pretext-interactive-text-fragment-${fragment.kind}`,
-                    style: fragment.leadingGap > 0 ? { marginLeft: `${fragment.leadingGap}px` } : null
+                    className: `pretext-interactive-text-fragment pretext-interactive-text-fragment-${fragment.kind}`
                 }
                 if (effectVariant === "wave") {
                     const waveSamplePoint = resolveWaveSamplePoint(
@@ -743,9 +743,13 @@ function AnimatedLine({
                         damping: 26 + (lineIndex % 3),
                         mass: 0.34
                     }
+                    const spaceMotionProps = {
+                        animate: fragmentMotionState,
+                        transition: fragmentTransition
+                    }
 
                     if (fragment.kind === "link") {
-                        return (
+                        const fragmentElement = (
                             <motion.a key={fragment.key}
                                       href={fragment.href}
                                       target={fragment.target}
@@ -756,9 +760,11 @@ function AnimatedLine({
                                 {fragment.text}
                             </motion.a>
                         )
+
+                        return renderFragmentWithLeadingSpace(fragment, fragmentElement, "wave", spaceMotionProps)
                     }
 
-                    return (
+                    const fragmentElement = (
                         <motion.span key={fragment.key}
                                      {...commonProps}
                                      animate={fragmentMotionState}
@@ -766,6 +772,8 @@ function AnimatedLine({
                             {fragment.text}
                         </motion.span>
                     )
+
+                    return renderFragmentWithLeadingSpace(fragment, fragmentElement, "wave", spaceMotionProps)
                 }
 
                 const fragmentBody = getFragmentGraphemes(fragment).map((grapheme, graphemeIndex) => {
@@ -787,7 +795,7 @@ function AnimatedLine({
                 })
 
                 if (fragment.kind === "link") {
-                    return (
+                    const fragmentElement = (
                         <a key={fragment.key}
                            href={fragment.href}
                            target={fragment.target}
@@ -796,17 +804,49 @@ function AnimatedLine({
                             {fragmentBody}
                         </a>
                     )
+
+                    return renderFragmentWithLeadingSpace(fragment, fragmentElement)
                 }
 
-                return (
+                const fragmentElement = (
                     <span key={fragment.key}
                           {...commonProps}>
                         {fragmentBody}
                     </span>
                 )
+
+                return renderFragmentWithLeadingSpace(fragment, fragmentElement)
             })}
         </motion.div>
     )
+}
+
+function renderFragmentWithLeadingSpace(fragment, fragmentElement, mode = "default", motionProps = null) {
+    if (fragment.leadingGap <= 0) return fragmentElement
+
+    const spaceKey = `${fragment.key}-space`
+    const spaceClassName = `pretext-interactive-text-space`
+    const spaceText = " "
+
+    if (mode === "wave" && motionProps) {
+        return [
+            <motion.span key={spaceKey}
+                         className={spaceClassName}
+                         animate={motionProps.animate}
+                         transition={motionProps.transition}>
+                {spaceText}
+            </motion.span>,
+            fragmentElement
+        ]
+    }
+
+    return [
+        <span key={spaceKey}
+              className={spaceClassName}>
+            {spaceText}
+        </span>,
+        fragmentElement
+    ]
 }
 
 function collectVisibleGraphemes(paragraphs, lineHeight) {

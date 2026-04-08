@@ -18,6 +18,13 @@ div.scrollable {
     touch-action: pan-y;
 }
 
+div.scrollable.scrollable-mobile-native {
+    height: auto;
+    overflow: visible;
+    overscroll-behavior-y: auto;
+    touch-action: auto;
+}
+
 /** Plugin customization **/
 div.scrollable-with-plugin {
     // Slim but easy-to-grab scrollbar.

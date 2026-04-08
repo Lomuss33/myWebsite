@@ -14,23 +14,27 @@ div.pretext-interactive-text-paragraph {
 }
 
 div.pretext-interactive-text-line {
-    display: flex;
-    align-items: center;
+    display: block;
     width: 100%;
     overflow: visible;
+    white-space: nowrap;
     transform-origin: left center;
     will-change: transform, opacity, filter;
 }
 
 span.pretext-interactive-text-fragment,
 a.pretext-interactive-text-fragment {
-    display: inline-flex;
-    align-items: center;
+    display: inline-block;
     white-space: pre;
 }
 
 a.pretext-interactive-text-fragment {
     text-decoration: none;
+}
+
+span.pretext-interactive-text-space {
+    display: inline-block;
+    white-space: pre;
 }
 
 span.pretext-interactive-text-grapheme {
@@ -44,11 +48,15 @@ span.pretext-interactive-text-grapheme {
 
 div.pretext-interactive-text-measure {
     position: absolute;
-    inset: 0 auto auto 0;
+    left: -99999px;
+    top: 0;
     visibility: hidden;
     pointer-events: none;
-    height: 0;
+    user-select: none;
+    width: 1px;
+    height: 1px;
     overflow: hidden;
+    clip-path: inset(50%);
     white-space: pre;
 }
 

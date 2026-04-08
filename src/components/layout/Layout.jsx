@@ -1,13 +1,16 @@
 import "./Layout.scss"
 import React, {useEffect, useRef} from 'react'
 import {useUtils} from "../../hooks/utils.js"
+import {useViewport} from "../../providers/ViewportProvider.jsx"
 import LayoutAnimatedBackground from "./LayoutAnimatedBackground.jsx"
 import LayoutStaticBackground from "./LayoutStaticBackground.jsx"
 import Scrollbar from "smooth-scrollbar"
 
 function Layout({ id, children, backgroundStyle }) {
     const utils = useUtils()
+    const viewport = useViewport()
     const contentRef = useRef(null)
+    const isMobileLayout = viewport.isMobileLayout()
 
     const isAnimatedBackground = backgroundStyle === "animated"
     const isStaticBackground = backgroundStyle === "static"
@@ -21,6 +24,8 @@ function Layout({ id, children, backgroundStyle }) {
     }
 
     useEffect(() => {
+        if (isMobileLayout) return
+
         const layoutContent = contentRef.current
         if (!layoutContent) return
 
@@ -57,7 +62,7 @@ function Layout({ id, children, backgroundStyle }) {
         return () => {
             layoutContent.removeEventListener("wheel", handleWheel)
         }
-    }, [])
+    }, [isMobileLayout])
 
     return (
         <div id={id}

@@ -224,7 +224,7 @@ function createPreparedParagraph(paragraph, paragraphIndex, font) {
     const items = paragraph.items.reduce((collection, item, itemIndex) => {
         const rawText = item.text || ""
         // Word-safe tokenization (preserve trailing whitespace on tokens).
-        const pieces = rawText.match(/[^\s]+\s*/g) || []
+        const pieces = rawText.match(/\s*[^\s]+\s*/g) || []
         if (pieces.length === 0) return collection
 
         pieces.forEach((rawPiece, pieceIndex) => {
@@ -345,8 +345,9 @@ function layoutPreparedParagraph(paragraph, font, maxWidth) {
 
         const firstFragment = fragments[0]
         const lastFragment = fragments[fragments.length - 1]
+        const lineKey = fragments.map(fragment => fragment.key).join("__")
         lines.push({
-            key: createCursorKey(firstFragment.start, lastFragment.end),
+            key: lineKey || createCursorKey(firstFragment.start, lastFragment.end),
             width: lineWidth,
             fragments
         })

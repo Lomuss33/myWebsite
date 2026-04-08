@@ -88,7 +88,7 @@ div.article-portfolio-item {
 div.article-portfolio-item-draggable-dock {
     position: absolute;
     z-index: 3;
-    touch-action: none;
+    touch-action: pan-y;
     -webkit-user-select: none;
     user-select: none;
 

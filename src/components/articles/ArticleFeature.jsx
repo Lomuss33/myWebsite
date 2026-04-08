@@ -96,7 +96,10 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
     const resizeTimeoutRef = useRef(null)
     const baseTypographyRef = useRef(null)
     const [textScale, setTextScale] = useState(1)
-    const [isMobileView, setIsMobileView] = useState(false)
+    const [isMobileView, setIsMobileView] = useState(() => {
+        if (typeof window === "undefined" || !window.matchMedia) return false
+        return window.matchMedia(MOBILE_VIEW_MEDIA_QUERY).matches
+    })
 
     const isAboutIntro = itemWrapper.articleWrapper.sectionId === "about" && itemWrapper.id === 1
     const isWritingIntro =
@@ -356,7 +359,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
             </div>
 
             <div className={`article-feature-item-content`}>
-                {shouldFitTextToMediaHeight && !isTextLedSplitLayout && (
+                {shouldFitTextToMediaHeight && !isTextLedSplitLayout && !isMobileView && (
                     <div ref={squareMeasureRef}
                          className={`article-feature-item-text-measure-square last-p-no-margin text-3`}
                          aria-hidden={true}>

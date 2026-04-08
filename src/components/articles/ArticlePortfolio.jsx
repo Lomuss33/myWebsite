@@ -434,6 +434,7 @@ function DraggableDock({
     const onPointerDown = (e) => {
         // Only left click / primary touch.
         if (e.button !== undefined && e.button !== 0) return
+        if (e.pointerType === "touch") return
 
         const cardEl = cardRef.current
         const dockEl = dockRef.current
@@ -483,7 +484,10 @@ function DraggableDock({
         const dockEl = dockRef.current
         try {
             dockEl?.releasePointerCapture?.(e.pointerId)
-        } catch (_) {}
+        }
+        catch (_) {
+            // Ignore stale pointer capture state during touch/mouse cancellation.
+        }
 
         pointerIdRef.current = null
         dragStartRef.current = null

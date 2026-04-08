@@ -12,19 +12,23 @@ function Scrollable({ children, id, pluginEnabled, shouldResetScroll, setShouldR
     const utils = useUtils()
 
     const [plugin, setPlugin] = useState(null)
+    const isMobileLayout = viewport.isMobileLayout()
 
     const pluginEnabledClass = plugin ?
         `scrollable-with-plugin` :
         ``
+    const mobileNativeClass = isMobileLayout ?
+        `scrollable-mobile-native` :
+        ``
 
     /** @constructs **/
     useEffect(() => {
-        const supportsPlugin = !viewport.isMobileLayout() && !utils.device.isTouchDevice()
+        const supportsPlugin = !isMobileLayout && !utils.device.isTouchDevice()
         const shouldCreatePlugin = supportsPlugin && pluginEnabled
 
         if(shouldCreatePlugin) _createPlugin()
         else _deactivatePlugin()
-    }, [pluginEnabled, viewport.isMobileLayout()])
+    }, [pluginEnabled, isMobileLayout])
 
     useEffect(() => {
         if(!shouldResetScroll)
@@ -76,7 +80,7 @@ function Scrollable({ children, id, pluginEnabled, shouldResetScroll, setShouldR
 
     return (
         <div className={`scrollable-wrapper ${constants.HTML_CLASSES.scrollbarDecorator} ${className}`}>
-            <div className={`scrollable ${pluginEnabledClass}`}
+            <div className={`scrollable ${pluginEnabledClass} ${mobileNativeClass}`}
                  id={id}>
                 <div className={`scrollable-content`}>
                     {children}

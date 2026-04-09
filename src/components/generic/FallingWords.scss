@@ -1,0 +1,44 @@
+@import "../../styles/extend.scss";
+
+div.falling-words {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    contain: layout paint size;
+
+    // Keep page scrolling functional while allowing drag interactions.
+    touch-action: pan-y;
+
+    // Words are invisible until physics is initialized (prevents a flash at (0,0)).
+    &:not(.falling-words-ready) {
+        opacity: 0;
+    }
+}
+
+span.falling-word {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+
+    font-size: clamp(1.05rem, 0.95rem + 0.8vw, 1.75rem);
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+
+    color: var(--theme-primary);
+    text-shadow: 0 1px 0 color-mix(in srgb, var(--theme-background) 55%, transparent 45%);
+
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+}
+
+span.falling-word-highlighted {
+    font-weight: 900;
+    color: var(--theme-texts);
+    text-shadow: none;
+}

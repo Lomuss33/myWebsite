@@ -203,6 +203,13 @@ article.article-info-list-home {
             line-height: 1.28;
             word-break: break-word;
         }
+
+        @include media-breakpoint-down(sm) {
+            div.article-info-list-item-info-text {
+                font-size: 0.84em;
+                line-height: 1.25;
+            }
+        }
     }
 }
 

@@ -76,43 +76,7 @@ export function createThreeTunnelEngine(canvas, options = {}) {
         geometry = new THREE.BoxGeometry(24, 24, 78)
 
         // Environment map (procedural equirectangular gradient) for a reflective “deep tunnel” look
-        pmrem = new THREE.PMREMGenerator(renderer)
-        pmrem.compileEquirectangularShader()
-
-        const envCanvas = document.createElement("canvas")
-        envCanvas.width = 512
-        envCanvas.height = 256
-        const g = envCanvas.getContext("2d")
-        if(g) {
-            const grad = g.createLinearGradient(0, 0, 0, envCanvas.height)
-            grad.addColorStop(0, "#11214a")
-            grad.addColorStop(0.35, "#1c0536")
-            grad.addColorStop(0.72, "#06324b")
-            grad.addColorStop(1, "#020312")
-            g.fillStyle = grad
-            g.fillRect(0, 0, envCanvas.width, envCanvas.height)
-
-            for(let i = 0; i < 18; i++) {
-                const x = Math.floor((i / 18) * envCanvas.width)
-                const w = 28 + Math.floor(Math.random() * 60)
-                const hue = (i * 22 + 210) % 360
-                g.fillStyle = `hsla(${hue} 100% 62% / 0.18)`
-                g.fillRect(x, 0, w, envCanvas.height)
-            }
-
-            const bloom = g.createRadialGradient(380, 110, 10, 380, 110, 220)
-            bloom.addColorStop(0, "rgba(140, 220, 255, 0.32)")
-            bloom.addColorStop(1, "rgba(0, 0, 0, 0)")
-            g.fillStyle = bloom
-            g.fillRect(0, 0, envCanvas.width, envCanvas.height)
-        }
-
-        envSourceTexture = new THREE.CanvasTexture(envCanvas)
-        envSourceTexture.mapping = THREE.EquirectangularReflectionMapping
-        envSourceTexture.colorSpace = THREE.SRGBColorSpace
-        envSourceTexture.needsUpdate = true
-        envTexture = pmrem.fromEquirectangular(envSourceTexture).texture
-        scene.environment = envTexture
+        scene.environment = null
 
         for(let i = 0; i < ringCount; i++) {
             const ring = new THREE.Object3D()
@@ -122,15 +86,12 @@ export function createThreeTunnelEngine(canvas, options = {}) {
                 const hue = ((i / Math.max(1, ringCount - 1)) * 320 + (j / cubesPerRing) * 170) % 360
                 const color = new THREE.Color().setHSL(hue / 360, 1.0, 0.45)
 
-                const material = new THREE.MeshPhysicalMaterial({
+                const material = new THREE.MeshStandardMaterial({
                     color,
                     metalness: 1.0,
-                    roughness: 0.08,
-                    clearcoat: 1.0,
-                    clearcoatRoughness: 0.18,
+                    roughness: 0.12,
                     emissive: color.clone(),
-                    emissiveIntensity: 0.24,
-                    envMapIntensity: 2.4
+                    emissiveIntensity: 0.22
                 })
                 const cube = new THREE.Mesh(geometry, material)
                 cube.position.set(Math.cos(a) * tunnelRadius, Math.sin(a) * tunnelRadius, 0)

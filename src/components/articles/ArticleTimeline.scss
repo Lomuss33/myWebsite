@@ -128,6 +128,12 @@ article.article-timeline--my-art {
             --avatar-size: 96px;
             --gap-between-avatar-and-content: 12px;
         }
+
+        // On very small screens, the base "merge mode" shifts the card under the avatar.
+        // That works for small avatars, but for the "my art" timeline it can cover content.
+        @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+            --avatar-offset-merge-mode: 0px;
+        }
     }
 
     li.article-timeline-item {
@@ -136,5 +142,20 @@ article.article-timeline--my-art {
 
     div.article-timeline-item-avatar-wrapper {
         align-items: center;
+    }
+
+    div.article-timeline-item-avatar {
+        @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+            top: 0;
+            left: 0;
+        }
+    }
+
+    div.article-timeline-item-content {
+        @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+            margin-left: var(--gap-between-avatar-and-content)!important;
+            border-top-left-radius: $standard-border-radius!important;
+            border-bottom-left-radius: $standard-border-radius!important;
+        }
     }
 }

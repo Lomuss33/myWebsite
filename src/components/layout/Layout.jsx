@@ -4,6 +4,7 @@ import {useUtils} from "../../hooks/utils.js"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
 import LayoutAnimatedBackground from "./LayoutAnimatedBackground.jsx"
 import LayoutStaticBackground from "./LayoutStaticBackground.jsx"
+import LayoutSaltShaker from "./LayoutSaltShaker.jsx"
 import Scrollbar from "smooth-scrollbar"
 
 function Layout({ id, children, backgroundStyle }) {
@@ -70,6 +71,8 @@ function Layout({ id, children, backgroundStyle }) {
 
             {isAnimatedBackground && <LayoutAnimatedBackground/>}
             {isStaticBackground && <LayoutStaticBackground/>}
+
+            <LayoutSaltShaker/>
 
             <div ref={contentRef}
                  className={`layout-content`}>

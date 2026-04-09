@@ -37,3 +37,22 @@ div.section-content-elements-wrapper {
         padding: 2px 0 0 0;
     }
 }
+
+div.section-content-falling-words-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+
+    // Keep it off the scrollbar track a bit, and away from edges.
+    padding: 12px 16px 16px;
+
+    // Never create horizontal/vertical scroll by overflow, and never affect layout.
+    overflow: hidden;
+    max-width: 100%;
+    pointer-events: none;
+
+    // Keep the words interactive while not blocking underlying UI elsewhere.
+    div.falling-words, span.falling-word {
+        pointer-events: auto;
+    }
+}

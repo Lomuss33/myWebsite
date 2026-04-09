@@ -1,6 +1,7 @@
 @import "../../../styles/extend.scss";
 
 div.input-field-wrapper {
+    position: relative;
     border: 2px solid var(--form-border-color);
     border-radius: $standard-border-radius;
     overflow: hidden;

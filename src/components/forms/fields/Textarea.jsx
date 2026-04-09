@@ -2,6 +2,7 @@ import "./Textarea.scss"
 import React, {useEffect, useState} from 'react'
 import InputFieldWrapper from "../base/InputFieldWrapper.jsx"
 import {useUtils} from "../../../hooks/utils.js"
+import TextareaTunnelBackground from "./TextareaTunnelBackground.jsx"
 
 function TextArea({
    id,
@@ -18,10 +19,13 @@ function TextArea({
     const [isFocused, setIsFocused] = useState(false)
     const placeholderFull = `${placeholder}${utils.string.if(required, " *")}`
     const focusClass = utils.string.if(isFocused, "form-textarea-focused")
+    const tunnelClass = "form-textarea-has-tunnel"
 
     return (
         <InputFieldWrapper isFocused={isFocused}>
-            <textarea className={`form-control form-textarea ${focusClass} ${className}`}
+            <TextareaTunnelBackground enabled={true}/>
+
+            <textarea className={`form-control form-textarea ${tunnelClass} ${focusClass} ${className}`}
                       id={id}
                       name={name}
                       value={model}

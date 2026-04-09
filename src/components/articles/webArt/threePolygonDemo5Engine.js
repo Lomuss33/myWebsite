@@ -128,54 +128,15 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
         }
 
         // Environment map for shiny metallic reflections (procedural gradient)
-        pmrem = new THREE.PMREMGenerator(renderer)
-        pmrem.compileEquirectangularShader()
-
-        const envCanvas = document.createElement("canvas")
-        envCanvas.width = 512
-        envCanvas.height = 256
-        const g = envCanvas.getContext("2d")
-        if(g) {
-            const grad = g.createLinearGradient(0, 0, 0, envCanvas.height)
-            grad.addColorStop(0, "#10224e")
-            grad.addColorStop(0.38, "#1a0733")
-            grad.addColorStop(0.76, "#063446")
-            grad.addColorStop(1, "#04040d")
-            g.fillStyle = grad
-            g.fillRect(0, 0, envCanvas.width, envCanvas.height)
-
-            for(let i = 0; i < 16; i++) {
-                const x = Math.floor((i / 16) * envCanvas.width)
-                const w = 18 + Math.floor(Math.random() * 78)
-                const hue = (i * 26 + 180) % 360
-                g.fillStyle = `hsla(${hue} 100% 60% / 0.18)`
-                g.fillRect(x, 0, w, envCanvas.height)
-            }
-
-            const bloom = g.createRadialGradient(320, 120, 10, 320, 120, 230)
-            bloom.addColorStop(0, "rgba(200, 245, 255, 0.18)")
-            bloom.addColorStop(1, "rgba(0, 0, 0, 0)")
-            g.fillStyle = bloom
-            g.fillRect(0, 0, envCanvas.width, envCanvas.height)
-        }
-
-        envSourceTexture = new THREE.CanvasTexture(envCanvas)
-        envSourceTexture.mapping = THREE.EquirectangularReflectionMapping
-        envSourceTexture.colorSpace = THREE.SRGBColorSpace
-        envSourceTexture.needsUpdate = true
-        envTexture = pmrem.fromEquirectangular(envSourceTexture).texture
-        scene.environment = envTexture
+        scene.environment = null
 
         group = new THREE.Group()
         scene.add(group)
 
-        const baseMat = new THREE.MeshPhysicalMaterial({
+        const baseMat = new THREE.MeshStandardMaterial({
             color: 0x0a0b10,
             roughness: 0.10,
             metalness: 1.0,
-            clearcoat: 1.0,
-            clearcoatRoughness: 0.16,
-            envMapIntensity: 1.8,
             polygonOffset: true,
             polygonOffsetFactor: -1,
             polygonOffsetUnits: -1

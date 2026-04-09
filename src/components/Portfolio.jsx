@@ -14,6 +14,24 @@ function Portfolio() {
     const location = useLocation()
     const navigation = useNavigation()
 
+    useEffect(() => {
+        if(typeof window === "undefined") return
+        if(navigator?.connection?.saveData) return
+
+        const prefetch = () => {
+            void import("./articles/webArt/threeTunnelEngine.js")
+            void import("./articles/webArt/threePolygonDemo5Engine.js")
+        }
+
+        if("requestIdleCallback" in window) {
+            const id = window.requestIdleCallback(prefetch, { timeout: 2500 })
+            return () => window.cancelIdleCallback(id)
+        }
+
+        const id = window.setTimeout(prefetch, 1500)
+        return () => window.clearTimeout(id)
+    }, [])
+
     if(!data || !language || !location || !navigation) {
         window.location.reload()
         return

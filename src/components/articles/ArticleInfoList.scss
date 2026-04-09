@@ -42,6 +42,7 @@ div.article-info-list-items {
 
 div.article-info-list-item {
     display: flex;
+    align-items: stretch;
     overflow: hidden;
     background-color: var(--theme-boards-background);
     border-radius: $standard-border-radius;
@@ -52,7 +53,7 @@ div.article-info-list-item {
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 100%;
+        align-self: stretch;
         text-decoration: none!important;
         color: inherit!important;
         cursor: pointer;
@@ -60,8 +61,13 @@ div.article-info-list-item {
 
     &-avatar {
         width: var(--avatar-size);
-        height: var(--avatar-size);
+        height: auto;
+        min-height: var(--avatar-size);
         min-width: var(--avatar-size);
+        align-self: stretch;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-size: calc(var(--avatar-size) / 2)!important;
         background-color: var(--theme-dark)!important;
         color: var(--theme-texts)!important;
@@ -195,5 +201,33 @@ article.article-info-list-home {
             line-height: 1.28;
             word-break: break-word;
         }
+    }
+}
+
+/** ------------- CONTACT LAYOUT ------------------- **/
+article.article-info-list-contact {
+    div.article-info-list-items {
+        // Contact cards look best as a compact 2-column grid on desktop.
+        --grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        @include media-breakpoint-down(md) {
+            --grid-template-columns: repeat(1, minmax(0, 1fr));
+        }
+    }
+
+    div.article-info-list-item {
+        align-items: center;
+    }
+
+    a.article-info-list-item-avatar-link {
+        align-self: center;
+    }
+
+    div.article-info-list-item-avatar {
+        // Keep avatar boxes perfectly square instead of stretching with the card height.
+        height: var(--avatar-size);
+        min-height: var(--avatar-size);
+        max-height: var(--avatar-size);
+        align-self: center;
     }
 }

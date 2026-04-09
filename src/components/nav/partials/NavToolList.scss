@@ -1,21 +1,32 @@
 @import "../../../styles/extend.scss";
 
 div.nav-tools {
+    --nav-tools-height: var(--nav-link-target-height, 48px);
+
     display: flex;
     width: 100%;
+    height: var(--nav-tools-height);
     align-items: center;
     justify-content: space-between;
-    gap: 4px;
+    gap: 0;
     border-top: 1px solid var(--theme-standard-borders);
-    padding: 1px 8px 2px;
+    padding: 0 8px;
 
     div.btn-option-picker {
-        width: auto;
+        width: 100%;
+        height: 100%;
+
+        // React-Bootstrap wrapper needs to stretch so the toggle can fill the slot.
+        div.dropdown {
+            height: 100%;
+        }
     }
 
     button.btn-option-picker-toggle {
-        padding: 0.15rem 0.35rem;
-        min-height: 0;
+        width: 100%;
+        height: 100%;
+        padding: 0 0.35rem;
+        min-height: 100%;
 
         img, i.fa-icon {
             transition: 0.1s ease-in-out transform;
@@ -46,9 +57,11 @@ div.nav-tools-item {
     justify-content: center;
     flex: 1 1 0;
     min-width: 0;
-    height: 46px;
-    @media (max-height: 725px) { height: 41px; }
-    @media (max-height: 690px) { height: 37px; }
+    height: 100%;
+
+    &:not(:first-child) {
+        border-left: 1px solid var(--theme-standard-borders);
+    }
 }
 
 div.nav-tools-shrink {
@@ -58,12 +71,6 @@ div.nav-tools-shrink {
 
     div.nav-tools-item {
         width: auto;
-        height: 38px;
-        @media (max-height: 725px) { height: 35px; }
-        @media (max-height: 690px) { height: 32px; }
-
-        &:not(:first-child) {
-            border-left: 1px solid var(--theme-standard-borders);
-        }
+        height: 100%;
     }
 }

@@ -23,6 +23,67 @@ function LanguageProvider({ children, supportedLanguages, defaultLanguageId, app
 
     const [selectedLanguageId, setSelectedLanguageId] = useState(null)
 
+    const _normalizeLanguageTag = (tag) => {
+        if(!tag) return null
+        return String(tag).trim().toLowerCase().replaceAll('_', '-')
+    }
+
+    const _getNavigatorLanguageCandidates = () => {
+        // Prefer the full list when available (Chrome/Firefox), fall back to a single tag (Safari).
+        const rawTags = [
+            ...(Array.isArray(navigator.languages) ? navigator.languages : []),
+            navigator.language
+        ]
+            .map(_normalizeLanguageTag)
+            .filter(Boolean)
+
+        // Extract primary subtags: "de-DE" -> "de"
+        const primary = rawTags
+            .map(tag => tag.split('-')[0])
+            .filter(Boolean)
+
+        // Keep stable order, remove duplicates.
+        const ordered = []
+        for(const code of [...primary, ...rawTags]) {
+            if(!code) continue
+            if(!ordered.includes(code)) ordered.push(code)
+        }
+        return ordered
+    }
+
+    const _resolveAutoDetectedLanguageId = () => {
+        const defaultId = defaultLanguage?.id || allLanguages[0]?.id
+        if(!defaultId) return null
+
+        const candidates = _getNavigatorLanguageCandidates()
+
+        // 1) Direct match: if the browser language is explicitly supported, use it.
+        const direct = allLanguages.find(language => candidates.includes(language.id))
+        if(direct) return direct.id
+
+        // 2) Alias pools: map "similar/understandable" languages to supported ones.
+        // Note: these pools are intentionally opinionated per project requirement.
+        const aliasPools = {
+            // Ex-YU + nearby languages/regions that should default to Croatian.
+            hr: ["hr", "bs", "sr", "sh", "me", "mk", "sq", "sl"],
+            // German variants.
+            de: ["de", "lb", "gsw"],
+            // Turkish + closest common related locale.
+            tr: ["tr", "az"],
+            // English (kept mostly for completeness; direct match usually handles it).
+            en: ["en"]
+        }
+
+        for(const supported of allLanguages) {
+            const pool = aliasPools[supported.id]
+            if(!pool) continue
+            if(pool.some(code => candidates.includes(code)))
+                return supported.id
+        }
+
+        return defaultId
+    }
+
     /** @constructs **/
     useEffect(() => {
         if(allLanguages.length === 0) {
@@ -39,8 +100,8 @@ function LanguageProvider({ children, supportedLanguages, defaultLanguageId, app
         }
 
         // If no preferred language is found, use the default language.
-        const autoDetectedLanguage = allLanguages.find(language => navigator.language.includes(language['id'])) || defaultLanguage
-        setSelectedLanguageId(autoDetectedLanguage?.id || allLanguages[0].id)
+        const autoDetectedLanguageId = _resolveAutoDetectedLanguageId()
+        setSelectedLanguageId(autoDetectedLanguageId || defaultLanguage?.id || allLanguages[0].id)
     }, [])
 
     /** @listens selectedLanguageId **/

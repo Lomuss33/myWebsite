@@ -24,6 +24,13 @@ function NavLinkList({ links, expanded }) {
             container.style.setProperty(name, `${value}${unit}`)
         }
 
+        const _setSidebarVariable = (name, value, unit = "px") => {
+            const sidebarCard = container.closest(".nav-sidebar-card-wrapper")
+            if(!sidebarCard)
+                return
+            sidebarCard.style.setProperty(name, `${value}${unit}`)
+        }
+
         const _interpolate = (min, max, factor) => {
             return min + (max - min) * factor
         }
@@ -45,6 +52,7 @@ function NavLinkList({ links, expanded }) {
                 return
 
             const rawRowHeight = totalHeight / amountOfItems
+            _setSidebarVariable("--nav-link-target-height", rawRowHeight)
             const shrinkFactor = _clamp(
                 (baselineRowHeight - rawRowHeight) / Math.max(baselineRowHeight - minRowHeight, 1),
                 0,

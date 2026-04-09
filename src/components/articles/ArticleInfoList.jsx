@@ -15,17 +15,20 @@ import CopyButton from "../buttons/CopyButton.jsx"
 function ArticleInfoList({ dataWrapper, id }) {
     const [selectedItemCategoryId, setSelectedItemCategoryId] = useState(null)
     const isHomeInfoList = dataWrapper.sectionId === "about"
+    const isContactInfoList = dataWrapper.sectionId === "contact"
     const homeClass = isHomeInfoList ? `article-info-list-home` : ``
+    const contactClass = isContactInfoList ? `article-info-list-contact` : ``
 
     return (
         <Article id={dataWrapper.uniqueId}
                  type={Article.Types.SPACING_DEFAULT}
                  dataWrapper={dataWrapper}
-                 className={`article-info-list ${homeClass}`}
+                 className={`article-info-list ${homeClass} ${contactClass}`}
                  selectedItemCategoryId={selectedItemCategoryId}
                  setSelectedItemCategoryId={setSelectedItemCategoryId}>
             <ArticleInfoListItems dataWrapper={dataWrapper}
                                   isHomeInfoList={isHomeInfoList}
+                                  isContactInfoList={isContactInfoList}
                                   selectedItemCategoryId={selectedItemCategoryId}/>
         </Article>
     )
@@ -34,10 +37,11 @@ function ArticleInfoList({ dataWrapper, id }) {
 /**
  * @param {ArticleDataWrapper} dataWrapper
  * @param {String} selectedItemCategoryId
+ * @param {Boolean} isContactInfoList
  * @return {JSX.Element}
  * @constructor
  */
-function ArticleInfoListItems({ dataWrapper, selectedItemCategoryId, isHomeInfoList }) {
+function ArticleInfoListItems({ dataWrapper, selectedItemCategoryId, isHomeInfoList, isContactInfoList }) {
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
 
     const id = dataWrapper.uniqueId
@@ -52,6 +56,7 @@ function ArticleInfoListItems({ dataWrapper, selectedItemCategoryId, isHomeInfoL
         const containerEl = document.getElementById(id)
         const itemDivs = containerEl?.querySelectorAll(`.article-info-list-item`) || []
         const maxEqualizedHeight = isHomeInfoList ? 105 : 120
+        const shouldForceEqualize = isContactInfoList
 
         if(!itemDivs.length)
             return
@@ -67,12 +72,12 @@ function ArticleInfoListItems({ dataWrapper, selectedItemCategoryId, isHomeInfoL
             if (height > maxHeight) maxHeight = height
         })
 
-        if(maxHeight < maxEqualizedHeight) {
+        if(shouldForceEqualize || maxHeight < maxEqualizedHeight) {
             itemDivs.forEach(div => {
                 div.style.minHeight = `${maxHeight}px`
             })
         }
-    }, [dataWrapper?.id, viewport.innerWidth, isHomeInfoList])
+    }, [dataWrapper?.id, viewport.innerWidth, isHomeInfoList, isContactInfoList])
 
     return (
         <div className={`article-info-list-items ${shrinkClass} ${homeClass}`}

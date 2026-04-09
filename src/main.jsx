@@ -85,10 +85,46 @@ const AppEssentialsWrapper = ({children}) => {
     const _resolveConsoleLanguageId = (settings) => {
         const supportedLanguages = settings?.supportedLanguages || []
         const defaultLanguageId = settings?.templateSettings?.defaultLanguageId || "en"
-        const navigatorLanguage = navigator.language?.slice(0, 2)?.toLowerCase()
 
-        if(supportedLanguages.find(language => language.id === navigatorLanguage))
-            return navigatorLanguage
+        const normalize = (tag) => {
+            if(!tag) return null
+            return String(tag).trim().toLowerCase().replaceAll('_', '-')
+        }
+
+        const tags = [
+            ...(Array.isArray(navigator.languages) ? navigator.languages : []),
+            navigator.language
+        ]
+            .map(normalize)
+            .filter(Boolean)
+
+        const candidates = []
+        for(const tag of tags) {
+            const primary = tag.split('-')[0]
+            if(primary && !candidates.includes(primary)) candidates.push(primary)
+            if(!candidates.includes(tag)) candidates.push(tag)
+        }
+
+        const supportedIds = supportedLanguages.map(l => l.id)
+
+        // 1) Direct match.
+        const direct = supportedIds.find(id => candidates.includes(id))
+        if(direct) return direct
+
+        // 2) Alias pools (keep in sync with LanguageProvider.jsx).
+        const aliasPools = {
+            hr: ["hr", "bs", "sr", "sh", "me", "mk", "sq", "sl"],
+            de: ["de", "lb", "gsw"],
+            tr: ["tr", "az"],
+            en: ["en"]
+        }
+
+        for(const supportedId of supportedIds) {
+            const pool = aliasPools[supportedId]
+            if(!pool) continue
+            if(pool.some(code => candidates.includes(code)))
+                return supportedId
+        }
 
         return defaultLanguageId
     }

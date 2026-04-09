@@ -200,7 +200,7 @@ function ArticleContactFormContentFields({ onInput, didSubmit }) {
     const [subject, setSubject] = useState('')
     const [message, setMessage] = useState('')
 
-    const splitColClass = `col-12 col-xl-6`
+    const splitColClass = `col-12 col-md-6`
     const textClass = `text-4`
 
     useEffect(() => {

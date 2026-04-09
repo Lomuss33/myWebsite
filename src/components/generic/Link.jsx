@@ -6,7 +6,23 @@ import {useLocation} from "../../providers/LocationProvider.jsx"
 import {useUtils} from "../../hooks/utils.js"
 import {useScheduler} from "../../hooks/scheduler.js"
 
-function Link({ id = null, className = "", href, children, tooltip = null, metadata = null, onClick = null, onClickTimeout = 0, onHoverStatus = null, intercept = false }) {
+function Link({
+    id = null,
+    className = "",
+    href,
+    children,
+    tooltip = null,
+    metadata = null,
+    onClick = null,
+    onClickTimeout = 0,
+    onHoverStatus = null,
+    intercept = false,
+    onPointerDown = null,
+    onPointerUp = null,
+    onPointerCancel = null,
+    onMouseDown = null,
+    onMouseUp = null,
+}) {
     const feedbacks = useFeedbacks()
     const language = useLanguage()
     const location = useLocation()
@@ -101,6 +117,11 @@ function Link({ id = null, className = "", href, children, tooltip = null, metad
            onClick={_onClick}
            onMouseEnter={_onMouseEnter}
            onMouseLeave={_onMouseLeave}
+           onPointerDown={onPointerDown}
+           onPointerUp={onPointerUp}
+           onPointerCancel={onPointerCancel}
+           onMouseDown={onMouseDown}
+           onMouseUp={onMouseUp}
            data-tooltip={tooltip}
            draggable={false}>
             {children}

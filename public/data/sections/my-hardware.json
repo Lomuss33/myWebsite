@@ -605,6 +605,62 @@
           }
         }
       ]
+    },
+    {
+      "id": 2,
+      "component": "ArticleFeature",
+      "locales": {
+        "en": {
+          "title": "{{Wood Products Deutschland}} | Poster & Marketing"
+        },
+        "de": {
+          "title": "{{Wood Products Deutschland}} | Poster & Marketing"
+        },
+        "hr": {
+          "title": "{{Wood Products Deutschland}} | Poster & Marketing"
+        },
+        "tr": {
+          "title": "{{Wood Products Deutschland}} | Poster & Marketing"
+        }
+      },
+      "settings": {
+        "order_items_by": "id",
+        "order_items_sort": "asc",
+        "feature_layout_mode": "equal_split_fixed_vh_image",
+        "feature_stack_order": "text_media",
+        "feature_image_aspect_ratio": "707 / 1000",
+        "feature_image_mobile_aspect_ratio": "707 / 1000",
+        "feature_image_viewport_height": "clamp(320px, 52vh, 740px)",
+        "feature_text_fit_min_scale": 0.62,
+        "feature_text_fit_max_scale": 1,
+        "feature_interactive_item_ids": [
+          1
+        ]
+      },
+      "items": [
+        {
+          "id": 1,
+          "img": "/images/hardware/wood-products-deutschland.webp",
+          "locales": {
+            "en": {
+              "title": "Wood Products Deutschland",
+              "text": "<p>I designed a tall {{flyer/poster}} for {{Wood Products Deutschland}} — a wood shop concept focused on custom pieces and a warm, trustworthy craft vibe.</p><p>The layout goal was simple: make it feel like wood before you even read it. I built everything around a rich {{wood texture}} background, strong typographic hierarchy, and an easy-to-scan services list that works both from a distance (poster) and up close (flyer).</p><p>On the marketing side, I structured the message around one clear {{call-to-action}}: get in touch via WhatsApp, email, or a quick call, plus a social hook that points to Instagram for more examples and trust-building.</p><p>To keep the brand feeling consistent online, I brought the same mood into this website: highlighted phrases get a subtle animated wood grain, and the text reacts to your cursor. Under the hood it uses {{@chenglou/pretext}} to measure and lay out typography precisely, so the animation stays crisp, responsive, and readable.</p><p>Result: a clean, tactile asset that can be handed out, pinned up, or posted — and still matches the brand vibe when embedded online.</p><p>Social: <a href='https://www.instagram.com/wood_products_deutschland/' target='_blank' rel='noopener noreferrer'>Instagram</a></p>"
+            },
+            "de": {
+              "title": "Wood Products Deutschland",
+              "text": "<p>Ich habe ein hohes {{Flyer/Poster}} für {{Wood Products Deutschland}} gestaltet — ein kleines Holzshop-Konzept mit Fokus auf maßgefertigte Stücke und eine warme, vertrauenswürdige Handwerks-Atmosphäre.</p><p>Das Layout-Ziel war simpel: Es soll sich nach Holz anfühlen, bevor man überhaupt liest. Deshalb habe ich mit einer satten {{Holztextur}} als Hintergrund, klarer Typografie-Hierarchie und einer schnell erfassbaren Leistungs-Liste gearbeitet — gut sichtbar als Poster und gleichzeitig lesbar als Flyer.</p><p>Marketingseitig habe ich alles um eine eindeutige {{Handlungsaufforderung}} gebaut: Kontakt per WhatsApp, E-Mail oder kurzer Anruf — plus ein Social-Hinweis auf Instagram, um Beispiele zu zeigen und Vertrauen aufzubauen.</p><p>Damit es online genauso stimmig wirkt, habe ich das Thema in diese Website übertragen: Hervorgehobene Begriffe bekommen eine leicht animierte Holzmaserung, und der Text reagiert auf den Cursor. Technisch nutzt das {{@chenglou/pretext}}, um Typografie präzise zu messen und sauber zu layouten — so bleibt die Animation scharf, responsiv und gut lesbar.</p><p>Ergebnis: Ein klares, haptisch wirkendes Werbemittel zum Verteilen, Aufhängen oder Posten — und es passt auch eingebettet online perfekt zum Markenstil.</p><p>Social: <a href='https://www.instagram.com/wood_products_deutschland/' target='_blank' rel='noopener noreferrer'>Instagram</a></p>"
+            },
+            "hr": {
+              "title": "Wood Products Deutschland",
+              "text": "<p>I designed a tall {{flyer/poster}} for {{Wood Products Deutschland}} — a wood shop concept focused on custom pieces and a warm, trustworthy craft vibe.</p><p>The layout goal was simple: make it feel like wood before you even read it. I built everything around a rich {{wood texture}} background, strong typographic hierarchy, and an easy-to-scan services list that works both from a distance (poster) and up close (flyer).</p><p>On the marketing side, I structured the message around one clear {{call-to-action}}: get in touch via WhatsApp, email, or a quick call, plus a social hook that points to Instagram for more examples and trust-building.</p><p>To keep the brand feeling consistent online, I brought the same mood into this website: highlighted phrases get a subtle animated wood grain, and the text reacts to your cursor. Under the hood it uses {{@chenglou/pretext}} to measure and lay out typography precisely, so the animation stays crisp, responsive, and readable.</p><p>Result: a clean, tactile asset that can be handed out, pinned up, or posted — and still matches the brand vibe when embedded online.</p><p>Social: <a href='https://www.instagram.com/wood_products_deutschland/' target='_blank' rel='noopener noreferrer'>Instagram</a></p>"
+            },
+            "tr": {
+              "title": "Wood Products Deutschland",
+              "text": "<p>I designed a tall {{flyer/poster}} for {{Wood Products Deutschland}} — a wood shop concept focused on custom pieces and a warm, trustworthy craft vibe.</p><p>The layout goal was simple: make it feel like wood before you even read it. I built everything around a rich {{wood texture}} background, strong typographic hierarchy, and an easy-to-scan services list that works both from a distance (poster) and up close (flyer).</p><p>On the marketing side, I structured the message around one clear {{call-to-action}}: get in touch via WhatsApp, email, or a quick call, plus a social hook that points to Instagram for more examples and trust-building.</p><p>To keep the brand feeling consistent online, I brought the same mood into this website: highlighted phrases get a subtle animated wood grain, and the text reacts to your cursor. Under the hood it uses {{@chenglou/pretext}} to measure and lay out typography precisely, so the animation stays crisp, responsive, and readable.</p><p>Result: a clean, tactile asset that can be handed out, pinned up, or posted — and still matches the brand vibe when embedded online.</p><p>Social: <a href='https://www.instagram.com/wood_products_deutschland/' target='_blank' rel='noopener noreferrer'>Instagram</a></p>"
+            }
+          }
+        }
+      ]
     }
   ]
 }

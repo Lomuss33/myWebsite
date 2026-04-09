@@ -43,7 +43,9 @@ function Article({ children, id, type, dataWrapper, className = "", selectedItem
     }
 
     return (
-        <article className={`article ${type} ${className}`}>
+        <article id={id}
+                 data-article-id={id}
+                 className={`article ${type} ${className}`}>
             {(dataWrapper.locales.title && !forceHideTitle) && (
                 <ArticleTitle title={dataWrapper.locales.title}/>
             )}

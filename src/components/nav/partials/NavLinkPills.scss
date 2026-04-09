@@ -8,6 +8,8 @@ nav.nav-link-pills {
     width: 100%;
     height: var(--nav-pills-height);
     background-color: var(--theme-card-background);
+    border-top: 1px solid var(--theme-mobile-nav-separator);
+    border-bottom: 1px solid var(--theme-mobile-nav-separator);
 }
 
 a.nav-link-pills-link {
@@ -20,9 +22,9 @@ a.nav-link-pills-link {
     padding: 5px;
     border: 0;
     outline: none;
+    border-radius: 0;
 
     background-color: var(--theme-mobile-nav-background);
-    border-bottom: 3px solid var(--theme-mobile-nav-border);
     color: var(--theme-mobile-nav);
 
     i {
@@ -42,6 +44,10 @@ a.nav-link-pills-link {
     }
 }
 
+nav.nav-link-pills > a.nav-link-pills-link + a.nav-link-pills-link {
+    border-left: 1px solid var(--theme-mobile-nav-separator);
+}
+
 a.nav-link-pills-link:hover {
     background-color: var(--theme-mobile-nav-hover-background);
     color: var(--theme-mobile-nav-hover);
@@ -57,7 +63,6 @@ a.nav-link-pills-link:hover {
 
 a.nav-link-pills-link-active {
     background-color: var(--theme-mobile-nav-selected-background)!important;
-    border-bottom-color: var(--theme-mobile-nav-selected-border);
     user-select: none;
     pointer-events: none;
 

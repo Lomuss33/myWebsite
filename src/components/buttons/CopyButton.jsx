@@ -6,7 +6,7 @@ import {useScheduler} from "../../hooks/scheduler.js"
 import {useUtils} from "../../hooks/utils.js"
 import HoverStaticTooltip from "../widgets/HoverStaticTooltip.jsx"
 
-function CopyButton({ text = "", buttonClassName = "" }) {
+function CopyButton({ text = "", label = "", buttonClassName = "", variant = "icon" }) {
     const viewport = useViewport()
     const language = useLanguage()
     const scheduler = useScheduler()
@@ -20,6 +20,7 @@ function CopyButton({ text = "", buttonClassName = "" }) {
     const tooltipText = language.getString(didCopy ? "copied_to_clipboard" : "copy_to_clipboard")
     const faIcon = didCopy ? "fa-solid fa-check" : "fa-solid fa-copy"
     const isCopiedToClipboard = viewport.isCopiedToClipboard(text)
+    const displayLabel = (label || "").trim()
 
     useEffect(() => {
         if(!isCopiedToClipboard && didCopy) {
@@ -49,10 +50,14 @@ function CopyButton({ text = "", buttonClassName = "" }) {
                                 forceVisible={didCopy}
                                 targetId={uniqueId}/>
 
-            <button className={`copy-button`}
+            <button className={`copy-button copy-button-${variant}`}
                     id={uniqueId}
+                    type={`button`}
                     onClick={_onClick}>
                 <i className={`${faIcon}`}/>
+                {displayLabel && (
+                    <span className={`copy-button-label`}>{displayLabel}</span>
+                )}
             </button>
         </div>
     )

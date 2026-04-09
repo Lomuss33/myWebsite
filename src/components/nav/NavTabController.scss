@@ -15,6 +15,8 @@ nav.nav-tab-controller {
     transition: 0.1s height ease-out;
 
     background-color: var(--theme-card-background);
+    border-top: 1px solid var(--theme-mobile-nav-separator);
+    border-bottom: 1px solid var(--theme-mobile-nav-separator);
 
     @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
         display: none;
@@ -32,9 +34,9 @@ a.nav-tab-controller-link {
     transition: 0.1s padding-bottom ease-out;
     border: 0;
     outline: none!important;
+    border-radius: 0;
 
     background-color: var(--theme-mobile-nav-background);
-    border-top: 3px solid var(--theme-mobile-nav-border);
     color: var(--theme-mobile-nav);
 
     i {
@@ -65,7 +67,6 @@ a.nav-tab-controller-link:hover {
 
 a.nav-tab-controller-link-active {
     background-color: var(--theme-mobile-nav-selected-background)!important;
-    border-top-color: var(--theme-mobile-nav-selected-border);
 
     i {
         color: var(--theme-mobile-nav-selected)!important;
@@ -76,6 +77,10 @@ a.nav-tab-controller-link-active {
         color: var(--theme-mobile-nav-selected)!important;
         opacity: 1;
     }
+}
+
+nav.nav-tab-controller > a.nav-tab-controller-link + a.nav-tab-controller-link {
+    border-left: 1px solid var(--theme-mobile-nav-separator);
 }
 
 nav.nav-tab-controller-with-offset {

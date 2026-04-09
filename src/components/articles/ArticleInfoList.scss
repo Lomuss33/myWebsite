@@ -79,6 +79,7 @@ div.article-info-list-item {
         flex-direction: column;
         align-items: start;
         padding: var(--content-padding);
+        flex: 1 1 auto;
         min-width: 0;
     }
 
@@ -209,14 +210,50 @@ article.article-info-list-contact {
     div.article-info-list-items {
         // Contact cards look best as a compact 2-column grid on desktop.
         --grid-template-columns: repeat(2, minmax(0, 1fr));
+        --avatar-size: 92px;
+        --contact-card-extra: 58px;
+
+        @include media-breakpoint-down(lg) {
+            --avatar-size: 86px;
+            --contact-card-extra: 56px;
+        }
+
+        @include media-breakpoint-down(sm) {
+            --avatar-size: 78px;
+            --contact-card-extra: 54px;
+        }
 
         @include media-breakpoint-down(md) {
             --grid-template-columns: repeat(1, minmax(0, 1fr));
         }
+
+        --contact-card-border: color-mix(in srgb, var(--theme-primary) 35%, var(--theme-opacity-border-accent) 65%);
+        --contact-card-border-hover: color-mix(in srgb, var(--theme-secondary) 65%, var(--contact-card-border) 35%);
+        --contact-card-pressed-bg: color-mix(in srgb, var(--theme-primary) 12%, var(--theme-boards-background) 88%);
+        --contact-card-pressed-border: color-mix(in srgb, var(--theme-primary) 70%, var(--contact-card-border) 30%);
     }
 
     div.article-info-list-item {
+        display: grid;
+        grid-template-columns: var(--avatar-size) minmax(0, 1fr);
+        column-gap: 16px;
         align-items: center;
+        height: calc(var(--avatar-size) + var(--contact-card-extra));
+        min-height: calc(var(--avatar-size) + var(--contact-card-extra));
+        border: 1px solid var(--contact-card-border);
+        transition: 0.15s transform ease-out, 0.15s box-shadow ease-out, 0.15s border-color ease-out;
+
+        &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 26px color-mix(in srgb, var(--theme-secondary) 10%, transparent 90%);
+            border-color: var(--contact-card-border-hover);
+        }
+    }
+
+    div.article-info-list-item.article-info-list-item-pressed {
+        background-color: var(--contact-card-pressed-bg);
+        border-color: var(--contact-card-pressed-border);
+        transform: translateY(0);
     }
 
     a.article-info-list-item-avatar-link {
@@ -228,6 +265,54 @@ article.article-info-list-contact {
         height: var(--avatar-size);
         min-height: var(--avatar-size);
         max-height: var(--avatar-size);
-        align-self: center;
+        place-self: center;
+    }
+
+    div.article-info-list-item-info-text {
+        margin-bottom: 0;
+        word-break: break-word;
+    }
+
+    div.article-info-list-item-content {
+        align-items: flex-start;
+        text-align: left;
+        justify-content: center;
+        padding: 6px 16px 6px 0;
+
+        @include media-breakpoint-down(lg) {
+            padding: 6px 14px 6px 0;
+        }
+
+        @include media-breakpoint-down(sm) {
+            padding: 6px 12px 6px 0;
+        }
+    }
+
+    div.article-info-list-item-info-title {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-bottom: 2px;
+    }
+
+    div.article-info-list-item-info-text {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 10px;
+        min-width: 0;
+        line-height: 1.25;
+
+        > span {
+            flex: 1 1 auto;
+            min-width: 0;
+            white-space: normal;
+        }
+    }
+
+    div.copy-button-wrapper.article-info-list-item-inline-copy {
+        max-width: 100%;
+        flex: 0 0 auto;
     }
 }

@@ -5,6 +5,7 @@ div.input-field-wrapper {
     border-radius: $standard-border-radius;
     overflow: hidden;
     background-color: var(--theme-empty);
+    cursor: text;
 }
 
 div.input-field-wrapper-focused {
@@ -27,6 +28,7 @@ span.input-field-wrapper-attach {
     background-color: var(--form-attach-background-color);
     color: var(--form-attach-color);
     border: none;
+    cursor: text;
 }
 
 span.input-field-wrapper-attach-focused {

@@ -12,8 +12,11 @@ button.copy-button {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 6px;
     color: var(--theme-texts-light-4);
     outline: none;
+    cursor: pointer;
+    max-width: 100%;
 
     i {
         pointer-events: none;
@@ -21,6 +24,49 @@ button.copy-button {
 
     &:hover {
         color: var(--theme-texts-light-1);
+    }
+
+    &:focus-visible {
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme-primary) 35%, transparent 65%);
+    }
+}
+
+span.copy-button-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+button.copy-button.copy-button-pill {
+    background-color: color-mix(in srgb, var(--theme-boards-background) 70%, var(--theme-empty) 30%);
+    border: 1px solid var(--theme-opacity-border-accent);
+    padding: 6px 10px;
+    border-radius: 999px;
+    color: var(--theme-texts-light-2);
+
+    &:hover {
+        border-color: color-mix(in srgb, var(--theme-primary) 45%, var(--theme-opacity-border-accent) 55%);
+        background-color: color-mix(in srgb, var(--theme-primary) 10%, var(--theme-boards-background) 90%);
+    }
+}
+
+button.copy-button.copy-button-inline {
+    color: var(--theme-primary);
+    gap: 6px;
+
+    span.copy-button-label {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        text-decoration-color: color-mix(in srgb, var(--theme-primary) 40%, transparent 60%);
+    }
+
+    &:hover {
+        color: color-mix(in srgb, var(--theme-primary) 80%, var(--theme-texts-light-1) 20%);
+
+        span.copy-button-label {
+            text-decoration-color: color-mix(in srgb, var(--theme-primary) 75%, transparent 25%);
+        }
     }
 }
 

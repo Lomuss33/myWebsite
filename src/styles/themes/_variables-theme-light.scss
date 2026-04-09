@@ -60,6 +60,8 @@ $scrollbar-track: #000000;
 $scrollbar-thumb: #ffffff;
 
 [data-theme="light"] {
+    --theme-mobile-nav-separator: #000000;
+
     @include build-theme(
         // Theme Config...
         /** DARK MODE: **/                  false,

@@ -4,6 +4,31 @@ article.article-contact-form {
     --article-contact-form-placeholder-color: var(--theme-secondary-4);
     --article-contact-form-placeholder-color: color-mix(in srgb, var(--theme-opacity-border-accent) 80%, var(--form-color) 20%);
 
+    --contact-form-border: color-mix(in srgb, var(--theme-primary) 30%, var(--theme-opacity-border-accent) 70%);
+    --contact-form-border-hover: color-mix(in srgb, var(--theme-secondary) 70%, var(--contact-form-border) 30%);
+    --contact-form-border-focus: color-mix(in srgb, var(--theme-primary) 75%, var(--contact-form-border) 25%);
+
+    // Visually match the tighter spacing of the contact cards grid above.
+    div.row-form {
+        --bs-gutter-x: 10px;
+        --bs-gutter-y: 10px;
+    }
+
+    // Blue outline by default, yellow on hover, strong blue + full accent on focus (handled by existing focused styles).
+    div.input-field-wrapper {
+        border-color: var(--contact-form-border);
+        transition: 0.14s border-color ease-out, 0.14s box-shadow ease-out;
+
+        &:not(.input-field-wrapper-focused):hover {
+            border-color: var(--contact-form-border-hover);
+        }
+    }
+
+    div.input-field-wrapper-focused {
+        border-color: var(--contact-form-border-focus);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme-primary) 18%, transparent 82%);
+    }
+
     input.form-input,
     textarea.form-textarea {
         &::-webkit-input-placeholder {

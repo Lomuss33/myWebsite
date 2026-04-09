@@ -22,6 +22,14 @@ div.pretext-interactive-text-line {
     will-change: transform, opacity, filter;
 }
 
+div.pretext-interactive-text-line-wrap {
+    display: block;
+    width: 100%;
+    overflow: visible;
+    transform-origin: left center;
+    will-change: transform;
+}
+
 span.pretext-interactive-text-fragment,
 a.pretext-interactive-text-fragment {
     display: inline-block;

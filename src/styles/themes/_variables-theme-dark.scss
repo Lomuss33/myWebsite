@@ -58,6 +58,8 @@ $scrollbar-track: #101010;
 $scrollbar-thumb: #32343a;
 
 :root {
+    --theme-mobile-nav-separator: #ffffff;
+
     @include build-theme(
         // Theme Config...
         /** DARK MODE: **/                  true,

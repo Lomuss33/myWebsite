@@ -242,6 +242,10 @@ function PretextInteractiveText({
 
         const handleWindowPointerMove = event => {
             if (!event || event.pointerType === "touch") return
+            if (effectVariant === "planks" && !isInView) {
+                schedulePointerUpdate(createInactiveInteractionState())
+                return
+            }
 
             const clientX = event.clientX ?? 0
             const clientY = event.clientY ?? 0
@@ -266,14 +270,21 @@ function PretextInteractiveText({
             const isWithinHitboxY = !isAboveHitbox && !isBelowHitbox
             const withinHitbox = withinHitboxX && isWithinHitboxY
 
+            if (effectVariant === "planks" && isBelowHitbox) {
+                schedulePointerUpdate(createInactiveInteractionState())
+                return
+            }
+
             if (gravityZoneMode === "above_inside_below" && isBelowHitbox) {
                 schedulePointerUpdate(createInactiveInteractionState())
                 return
             }
 
             if (gravityZoneMode === "standard" && !isWithinHitboxY) {
-                schedulePointerUpdate(createInactiveInteractionState())
-                return
+                if (effectVariant !== "planks") {
+                    schedulePointerUpdate(createInactiveInteractionState())
+                    return
+                }
             }
 
             const localY =
@@ -319,7 +330,7 @@ function PretextInteractiveText({
         return () => {
             window.removeEventListener("pointermove", handleWindowPointerMove)
         }
-    }, [pointerScopeSelector, pointerScopeIgnoreX, effectVariant, reduceMotion, gravityZoneMode])
+    }, [pointerScopeSelector, pointerScopeIgnoreX, effectVariant, reduceMotion, gravityZoneMode, isInView])
 
     useEffect(() => {
         if (effectVariant !== "gravitySweep" || reduceMotion) {
@@ -601,10 +612,14 @@ function PretextInteractiveText({
 
     let paragraphOffsetY = 0
     let globalLineIndex = -1
+    const isPlanksVariant = effectVariant === "planks"
+    const planksEnabled = isPlanksVariant && pointerState.active && !reduceMotion
+    const planksAnimateAll = planksEnabled && (pointerState.y < 0 || pointerState.y > layout.totalHeight)
+    const planksPointerSign = planksEnabled ? (pointerState.x < contentWidth / 2 ? -1 : 1) : 1
 
     return (
         <div ref={rootRef}
-             className={`pretext-interactive-text ${className}`}
+             className={`pretext-interactive-text ${className} ${isPlanksVariant ? "pretext-interactive-text-variant-planks" : ""} ${planksEnabled ? "pretext-planks-engaged" : ""}`}
              onPointerMove={handlePointerMove}
              onPointerLeave={handlePointerLeave}
              onPointerDown={handlePointerDown}
@@ -642,23 +657,45 @@ function PretextInteractiveText({
                                 globalLineIndex += 1
                                 const lineTop = paragraphTop + lineIndex * effectiveLineHeight
                                 const lineRenderKey = `${paragraph.key}-${line.key}-${lineIndex}-${revealCycle}`
+                                const plankBaseDir = globalLineIndex % 2 === 0 ? 1 : -1
+                                const plankDir = plankBaseDir * planksPointerSign
+                                const plankSway = 7 + (globalLineIndex % 4) * 1.5
+                                const plankRotate = 0.26 + (globalLineIndex % 5) * 0.06
+                                const plankDuration = 1850 + (globalLineIndex % 6) * 120
+                                const isPlankActive = planksEnabled && (
+                                    planksAnimateAll ||
+                                    (lineTop + effectiveLineHeight > pointerState.y)
+                                )
+                                const lineWrapClassName = [
+                                    "pretext-interactive-text-line-wrap",
+                                    isPlankActive ? "pretext-plank-active" : ""
+                                ].filter(Boolean).join(" ")
 
                                 return (
-                                    <AnimatedLine key={lineRenderKey}
-                                                  line={line}
-                                                  lineHeight={effectiveLineHeight}
-                                                  lineTop={lineTop}
-                                                  lineIndex={globalLineIndex}
-                                                  effectVariant={effectVariant}
-                                                  gravityStates={gravityStatesRef.current}
-                                                  tapRippleNow={tapRippleNow}
-                                                  tapRippleState={tapRippleState}
-                                                  terrain={terrain}
-                                                  terrainVariant={terrainVariant}
-                                                  contentSize={contentSize}
-                                                  pointerState={pointerState}
-                                                  revealCycle={revealCycle}
-                                                  reduceMotion={reduceMotion}/>
+                                    <div key={lineRenderKey}
+                                         className={lineWrapClassName}
+                                         style={{
+                                             "--pretext-plank-index": globalLineIndex,
+                                             "--pretext-plank-dir": plankDir,
+                                             "--pretext-plank-sway": `${plankSway}px`,
+                                             "--pretext-plank-rotate": `${plankRotate}deg`,
+                                             "--pretext-plank-duration": `${plankDuration}ms`
+                                         }}>
+                                        <AnimatedLine line={line}
+                                                      lineHeight={effectiveLineHeight}
+                                                      lineTop={lineTop}
+                                                      lineIndex={globalLineIndex}
+                                                      effectVariant={effectVariant}
+                                                      gravityStates={gravityStatesRef.current}
+                                                      tapRippleNow={tapRippleNow}
+                                                      tapRippleState={tapRippleState}
+                                                      terrain={terrain}
+                                                      terrainVariant={terrainVariant}
+                                                      contentSize={contentSize}
+                                                      pointerState={pointerState}
+                                                      revealCycle={revealCycle}
+                                                      reduceMotion={reduceMotion}/>
+                                    </div>
                                 )
                             })}
                         </div>

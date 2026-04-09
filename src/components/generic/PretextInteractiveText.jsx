@@ -31,7 +31,8 @@ function PretextInteractiveText({
     terrainVariant = "standard",
     typographyVersion = 0,
     pointerScopeSelector = null,
-    pointerScopeIgnoreX = false
+    pointerScopeIgnoreX = false,
+    gravityZoneMode = "standard"
 }) {
     const rootRef = useRef(null)
     const contentRef = useRef(null)
@@ -247,30 +248,41 @@ function PretextInteractiveText({
             const scopeRect = scopeElement.getBoundingClientRect()
             const rootRect = rootElement.getBoundingClientRect()
 
-            // Keep interaction constrained vertically to this row.
-            const isWithinRow =
-                clientY >= rootRect.top &&
-                clientY <= rootRect.bottom
-
             const isWithinScope =
                 clientY >= scopeRect.top &&
                 clientY <= scopeRect.bottom &&
                 (pointerScopeIgnoreX || (clientX >= scopeRect.left && clientX <= scopeRect.right))
 
-            if (!isWithinScope || !isWithinRow) {
+            if (!isWithinScope) {
                 schedulePointerUpdate(createInactiveInteractionState())
                 return
             }
 
             const withinHitboxX = clientX >= rootRect.left && clientX <= rootRect.right
-            const withinHitbox = withinHitboxX && isWithinRow
-
             const viewportWidth = Math.max(window.innerWidth || 0, 1)
             const normalizedViewportX = clamp(clientX / viewportWidth, 0, 1)
+            const isAboveHitbox = clientY < rootRect.top
+            const isBelowHitbox = clientY > rootRect.bottom
+            const isWithinHitboxY = !isAboveHitbox && !isBelowHitbox
+            const withinHitbox = withinHitboxX && isWithinHitboxY
 
-            const localY = clientY - rootRect.top
+            if (gravityZoneMode === "above_inside_below" && isBelowHitbox) {
+                schedulePointerUpdate(createInactiveInteractionState())
+                return
+            }
+
+            if (gravityZoneMode === "standard" && !isWithinHitboxY) {
+                schedulePointerUpdate(createInactiveInteractionState())
+                return
+            }
+
+            const localY =
+                gravityZoneMode === "above_inside_below" && isAboveHitbox ?
+                    -Math.max(1, rootRect.height * 0.35) :
+                    clientY - rootRect.top
             let localX = normalizedViewportX * rootRect.width
             let intensity = 1
+            let mode = "inside"
 
             if (pointerScopeIgnoreX) {
                 if (withinHitboxX) {
@@ -284,10 +296,16 @@ function PretextInteractiveText({
                 }
             }
 
+            if (gravityZoneMode === "above_inside_below" && isAboveHitbox) {
+                mode = "above"
+                intensity = Math.max(intensity, 1.1)
+            }
+
             const relative = {
                 x: localX,
                 y: localY,
-                intensity
+                intensity,
+                mode
             }
 
             schedulePointerUpdate(createActiveInteractionState(relative))
@@ -301,7 +319,7 @@ function PretextInteractiveText({
         return () => {
             window.removeEventListener("pointermove", handleWindowPointerMove)
         }
-    }, [pointerScopeSelector, pointerScopeIgnoreX, effectVariant, reduceMotion])
+    }, [pointerScopeSelector, pointerScopeIgnoreX, effectVariant, reduceMotion, gravityZoneMode])
 
     useEffect(() => {
         if (effectVariant !== "gravitySweep" || reduceMotion) {
@@ -1020,8 +1038,11 @@ function buildGravityColumns(visibleGraphemes, pointerState, contentSize, lineHe
 
     if (!pointerState.active) return releasedLookup
 
+    const releaseEntireText = pointerState.mode === "above"
+    const releaseCutoffY = releaseEntireText ? Number.NEGATIVE_INFINITY : pointerState.y
+
     visibleGraphemes.forEach(grapheme => {
-        if (grapheme.releaseThresholdY < pointerState.y) return
+        if (grapheme.releaseThresholdY < releaseCutoffY) return
 
         const column = getGravityColumnIndex(grapheme.baselineX, lineHeight)
         if (!releasedByColumn.has(column)) {
@@ -1311,7 +1332,8 @@ function createInactiveInteractionState() {
         active: false,
         x: 0,
         y: 0,
-        intensity: 1
+        intensity: 1,
+        mode: "inside"
     }
 }
 
@@ -1330,7 +1352,8 @@ function createActiveInteractionState(position) {
         active: true,
         x: position.x,
         y: position.y,
-        intensity: clamp(position.intensity ?? 1, 0.2, 2)
+        intensity: clamp(position.intensity ?? 1, 0.2, 2),
+        mode: position.mode || "inside"
     }
 }
 

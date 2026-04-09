@@ -293,10 +293,12 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
     const renderVisibleBody = () => {
         if (isAboutIntro) {
             return (
-                <PretextInteractiveText html={html}
+                <PretextInteractiveText html={buildLockedIntroHtml(html)}
                                         revealOnScroll={true}
                                         effectVariant={"gravitySweep"}
                                         pointerScopeSelector={".layout-content"}
+                                        pointerScopeIgnoreX={true}
+                                        gravityZoneMode={"above_inside_below"}
                                         typographyVersion={typographyVersion}/>
             )
         }
@@ -478,6 +480,14 @@ function stripHtmlToText(html) {
     const parser = new DOMParser()
     const documentNode = parser.parseFromString(`<div>${html || ""}</div>`, "text/html")
     return documentNode.body.textContent || ""
+}
+
+function buildLockedIntroHtml(html) {
+    if (!html) return html
+
+    return html.replace(/^\{\{(.*?)\}\}\s*/, (_match, prefix) => {
+        return `<span class="pretext-lock">${prefix}</span> `
+    })
 }
 
 function buildCanvasFont(style) {

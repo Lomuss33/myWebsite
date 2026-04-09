@@ -20,7 +20,7 @@ function randomColorHsl() {
 function ringColorHsl(index, count) {
     const t = count <= 1 ? 0 : index / (count - 1)
     const hue = (210 + t * 310) % 360
-    return new THREE.Color().setHSL(hue / 360, 0.96, 0.56)
+    return new THREE.Color().setHSL(hue / 360, 0.88, 0.50)
 }
 
 function polygonPoints(n, x, y, s, r) {
@@ -97,10 +97,10 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
             alpha: false,
             powerPreference: "high-performance"
         })
-        renderer.setClearColor(0x05050a, 1)
+        renderer.setClearColor(0x070811, 1)
         renderer.outputColorSpace = THREE.SRGBColorSpace
         renderer.toneMapping = THREE.ACESFilmicToneMapping
-        renderer.toneMappingExposure = 1.18
+        renderer.toneMappingExposure = 1.10
 
         scene = new THREE.Scene()
 
@@ -108,7 +108,7 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
         camera.position.z = cameraZ
         scene.add(camera)
 
-        scene.add(new THREE.AmbientLight(0xffffff, 0.12))
+        scene.add(new THREE.AmbientLight(0xffffff, 0.16))
 
         const lightIntensity = 0.90
         const lightDistance = 340
@@ -186,11 +186,11 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
             const geo = polygonGeometry(nbVertexes, radius, objectThickness, objectDepth)
             const accent = ringColorHsl(i, nbObjects)
             const hue = (210 + (i / Math.max(1, nbObjects - 1)) * 310) % 360
-            const fill = new THREE.Color().setHSL(hue / 360, 0.92, 0.18)
+            const fill = new THREE.Color().setHSL(hue / 360, 0.78, 0.26)
             const mat = baseMat.clone()
             mat.color.copy(fill)
             mat.emissive = accent.clone()
-            mat.emissiveIntensity = 0.12
+            mat.emissiveIntensity = 0.07
 
             const mesh = new THREE.Mesh(geo, mat)
             mesh.position.z = -objectDepth * i
@@ -201,7 +201,7 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
             const edgeMat = new THREE.LineBasicMaterial({
                 color: accent,
                 transparent: true,
-                opacity: 0.92,
+                opacity: 0.68,
                 blending: THREE.AdditiveBlending,
                 depthWrite: false
             })

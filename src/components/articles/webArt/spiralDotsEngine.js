@@ -19,10 +19,22 @@ function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value))
 }
 
+function clampMs(value, fallback) {
+    const n = Number(value)
+    if(!Number.isFinite(n)) return fallback
+    return Math.max(0, Math.min(5000, n))
+}
+
+function smoothstep01(t) {
+    const x = clamp(t, 0, 1)
+    return x * x * (3 - 2 * x)
+}
+
 export function createSpiralDotsEngine(canvas, options = {}) {
     const seed = clampInt(options.seed, 1, 2147483647, 1)
     const reduceMotion = Boolean(options.reduceMotion)
     const dotsCount = clampInt(options.dotsCount, 40, 320, 160)
+    const introDurationMs = clampMs(options.introDurationMs, 900)
 
     const dotsSpeed = Number.isFinite(options.dotsSpeed) ? options.dotsSpeed : 10
     const dotsWobbleFactor = Number.isFinite(options.dotsWobbleFactor) ? options.dotsWobbleFactor : 0.90
@@ -43,6 +55,7 @@ export function createSpiralDotsEngine(canvas, options = {}) {
     let mouse = { x: -10000, y: -10000, active: false }
     let dots = []
     let hueShift = 0
+    let introStart = 0
 
     function rebuildDots() {
         const cx = maxx / 2
@@ -89,15 +102,21 @@ export function createSpiralDotsEngine(canvas, options = {}) {
         ctx.fillRect(0, 0, maxx, maxy)
     }
 
-    function draw() {
+    function draw(introFactor = 1, withTrails = true) {
         // Subtle fade for trails (keeps it clean without heavy pixel loops)
         ctx.globalCompositeOperation = "source-over"
-        ctx.fillStyle = "rgba(0,0,0,0.28)"
-        ctx.fillRect(0, 0, maxx, maxy)
+        if(withTrails) {
+            ctx.fillStyle = `rgba(0,0,0,${0.28 * clamp(introFactor, 0, 1)})`
+            ctx.fillRect(0, 0, maxx, maxy)
+        }
 
         const mx = mouse.x
         const my = mouse.y
         const mouseActive = mouse.active
+        const introAlpha = clamp(introFactor, 0, 1)
+        const introMotion = clamp(introFactor, 0, 1)
+        const effectiveDotsSpeed = dotsSpeed * (1 + (1 - introMotion) * 2.2)
+        const effectiveWobbleSpeed = dotsWobbleSpeed * (0.25 + 0.75 * introMotion)
 
         for(let i = 0; i < dots.length; i++) {
             const dot = dots[i]
@@ -112,22 +131,22 @@ export function createSpiralDotsEngine(canvas, options = {}) {
                 const targetPosX = dot.cx + dirX * dotsMaxEscapeRouteLength
                 const targetPosY = dot.cy + dirY * dotsMaxEscapeRouteLength
 
-                dot.x += (targetPosX - dot.x) / dotsSpeed
-                dot.y += (targetPosY - dot.y) / dotsSpeed
+                dot.x += (targetPosX - dot.x) / effectiveDotsSpeed
+                dot.y += (targetPosY - dot.y) / effectiveDotsSpeed
                 dot.active = 1
 
                 const rTarget = dot.r0 * 2
-                if(dot.r < rTarget) dot.r += (rTarget - dot.r) / (dotsSpeed * 2)
+                if(dot.r < rTarget) dot.r += (rTarget - dot.r) / (effectiveDotsSpeed * 2)
             }
             else {
-                dot.sx = dot.sx * dotsWobbleFactor + (dot.cx - dot.x) * dotsWobbleSpeed
-                dot.sy = dot.sy * dotsWobbleFactor + (dot.cy - dot.y) * dotsWobbleSpeed
+                dot.sx = dot.sx * dotsWobbleFactor + (dot.cx - dot.x) * effectiveWobbleSpeed
+                dot.sy = dot.sy * dotsWobbleFactor + (dot.cy - dot.y) * effectiveWobbleSpeed
 
                 dot.x = dot.x + dot.sx
                 dot.y = dot.y + dot.sy
                 dot.active = 0
 
-                if(dot.r > dot.r0) dot.r += (dot.r0 - dot.r) / dotsSpeed
+                if(dot.r > dot.r0) dot.r += (dot.r0 - dot.r) / effectiveDotsSpeed
             }
 
             dot.x = clamp(dot.x, -20, maxx + 20)
@@ -141,7 +160,8 @@ export function createSpiralDotsEngine(canvas, options = {}) {
             const dot = dots[i]
             const hue = (dot.hue + hueShift) % 360
 
-            const lineAlpha = dot.active ? 0.95 : 0.55
+            const lineAlphaBase = dot.active ? 0.95 : 0.55
+            const lineAlpha = lineAlphaBase * introAlpha
             ctx.strokeStyle = `hsla(${hue} 100% 60% / ${lineAlpha})`
             ctx.lineWidth = dot.active ? 1.25 : 0.9
             ctx.beginPath()
@@ -149,12 +169,12 @@ export function createSpiralDotsEngine(canvas, options = {}) {
             ctx.lineTo(dot.x, dot.y)
             ctx.stroke()
 
-            ctx.fillStyle = `hsla(${hue} 100% 62% / 0.85)`
+            ctx.fillStyle = `hsla(${hue} 100% 62% / ${0.85 * introAlpha})`
             ctx.beginPath()
             ctx.arc(dot.x, dot.y, dot.r, 0, Math.PI * 2)
             ctx.fill()
 
-            ctx.fillStyle = `hsla(${hue} 100% 50% / 0.22)`
+            ctx.fillStyle = `hsla(${hue} 100% 50% / ${0.22 * introAlpha})`
             ctx.beginPath()
             ctx.arc(dot.cx, dot.cy, Math.max(1, dot.r0 * 0.9), 0, Math.PI * 2)
             ctx.fill()
@@ -163,10 +183,12 @@ export function createSpiralDotsEngine(canvas, options = {}) {
         ctx.globalCompositeOperation = "source-over"
     }
 
-    function tick() {
+    function tick(now) {
         if(!running) return
-        hueShift = (hueShift + 0.6) % 360
-        draw()
+        const introT = introDurationMs > 0 ? ((now - introStart) / introDurationMs) : 1
+        const intro = smoothstep01(introT)
+        hueShift = (hueShift + (0.08 + 0.52 * intro)) % 360
+        draw(intro, true)
         rafId = requestAnimationFrame(tick)
     }
 
@@ -189,7 +211,7 @@ export function createSpiralDotsEngine(canvas, options = {}) {
         clear()
 
         if(reduceMotion) {
-            draw()
+            draw(1, false)
         }
     }
 
@@ -209,12 +231,15 @@ export function createSpiralDotsEngine(canvas, options = {}) {
         if(reduceMotion) {
             // Static render only (still reacts visually to last mouse if set)
             clear()
-            draw()
+            draw(1, false)
             return
         }
 
         if(running) return
+        introStart = performance.now()
         running = true
+        // Quick first paint so it doesn't "pop" in on the first RAF tick.
+        draw(0.12, false)
         rafId = requestAnimationFrame(tick)
     }
 
@@ -230,6 +255,11 @@ export function createSpiralDotsEngine(canvas, options = {}) {
         ctx = null
     }
 
+    function renderStatic() {
+        clear()
+        draw(1, false)
+    }
+
     return {
         start,
         stop,
@@ -237,7 +267,7 @@ export function createSpiralDotsEngine(canvas, options = {}) {
         setSize,
         setMouse,
         clearMouse,
-        rebuildDots
+        rebuildDots,
+        renderStatic
     }
 }
-

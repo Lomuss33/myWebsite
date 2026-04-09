@@ -12,16 +12,18 @@ import {useLanguage} from "../../../providers/LanguageProvider.jsx"
  * @param {ArticleItemDataWrapper} itemWrapper
  * @param {String} className
  * @param {Boolean} smallDateBadge
+ * @param {*} containerRef
  * @return {JSX.Element}
  * @constructor
  */
-function ArticleItemInfoForTimelines({ children, itemWrapper, className = "", smallDateBadge = false }) {
+function ArticleItemInfoForTimelines({ children, itemWrapper, className = "", smallDateBadge = false, containerRef = null }) {
     const dateBadgeClass = smallDateBadge ?
         `article-timeline-item-info-for-timelines-date-badge-small` :
         ``
 
     return (
-        <div className={`article-timeline-item-info-for-timelines ${className} ${dateBadgeClass}`}>
+        <div className={`article-timeline-item-info-for-timelines ${className} ${dateBadgeClass}`}
+             ref={containerRef}>
             {children}
         </div>
     )

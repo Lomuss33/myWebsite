@@ -11,6 +11,8 @@ div.article-portfolio-items {
     --content-right-offset: calc(var(--avatar-size) + var(--avatar-offset) + 10px);
     --portfolio-control-height: calc(var(--avatar-size) / 1.55);
     --portfolio-control-radius: 12px;
+    --portfolio-controls-gap: 10px;
+    --portfolio-controls-separation: 12px;
     /*
       Minimum comfortable card width so the visit-online pill + left actions
       can coexist without overlap. The grid will reduce columns automatically.
@@ -105,22 +107,42 @@ div.article-portfolio-item-draggable-dock {
     }
 }
 
-/* Single bottom controls bar (GitHub / Docs / Visit online) */
-div.article-portfolio-item-draggable-dock.article-portfolio-item-controls {
+/* Separate bottom docks */
+div.article-portfolio-item-draggable-dock.article-portfolio-item-actions {
     left: var(--avatar-offset);
+    bottom: var(--avatar-offset);
+
+    /* Allow a little "wiggle room" on drag */
+    width: auto;
+}
+
+div.article-portfolio-item-actions-grid {
+    display: flex;
+    align-items: stretch;
+    gap: var(--portfolio-controls-gap);
+}
+
+div.article-portfolio-item-draggable-dock.article-portfolio-item-visit-dock {
     right: var(--avatar-offset);
     bottom: var(--avatar-offset);
+
+    /*
+      Ensure the right dock never overlaps the left dock:
+      max width = full card width minus offsets minus left-dock width minus separation gap.
+
+      Left dock width = (#buttons * height) + (#gaps * gap).
+      Counts are set as CSS vars on the card via inline style.
+    */
+    max-width: calc(
+        100% - (var(--avatar-offset) * 2)
+        - (var(--portfolio-left-controls-count) * var(--portfolio-control-height))
+        - (var(--portfolio-left-controls-gap-count) * var(--portfolio-controls-gap))
+        - var(--portfolio-controls-separation)
+    );
 }
 
-div.article-portfolio-item-controls-grid {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(0, 1fr);
-    gap: 10px;
-    width: 100%;
-}
-
-a.article-portfolio-item-control-btn {
+a.article-portfolio-item-control-btn,
+div.article-portfolio-item-control-btn {
     height: var(--portfolio-control-height);
     border-radius: var(--portfolio-control-radius);
     background: color-mix(in srgb, var(--theme-boards-background) 70%, var(--theme-empty) 30%);
@@ -151,22 +173,37 @@ a.article-portfolio-item-control-btn {
     }
 }
 
+a.article-portfolio-item-control-btn-icon {
+    width: var(--portfolio-control-height);
+    padding: 0;
+}
+
 a.article-portfolio-item-control-btn-visit {
-    justify-content: space-between;
+    justify-content: flex-start;
     padding-left: 12px;
     padding-right: 6px;
+    min-width: 0;
+
+    div.article-portfolio-item-control-avatar {
+        margin-left: auto;
+    }
 }
 
 span.article-portfolio-item-control-btn-label {
-    font-size: clamp(0.62rem, 1.5cqw, 0.78rem);
+    font-size: clamp(0.70rem, 1.65cqw, 0.86rem);
     font-weight: 800;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     line-height: 1;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     color: var(--theme-primary);
+}
+
+i.article-portfolio-item-control-btn-external-icon {
+    font-size: 0.95em;
+    opacity: 0.9;
 }
 
 div.article-portfolio-item-control-avatar {
@@ -178,6 +215,24 @@ div.article-portfolio-item-control-avatar {
     // Keep it crisp (no big buffer ring like the old large avatar dock).
     border: 1px solid var(--theme-standard-borders);
     font-size: calc(var(--portfolio-control-height) / 2.25);
+}
+
+div.article-portfolio-item-control-btn-avatar-only {
+    cursor: default;
+    justify-content: flex-end;
+    height: var(--portfolio-control-height);
+    min-width: var(--portfolio-control-height);
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 0;
+
+    background: transparent;
+    border: 0;
+
+    &:hover {
+        transform: none;
+    }
 }
 
 div.article-portfolio-item-title {

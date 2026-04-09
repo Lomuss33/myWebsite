@@ -1,4 +1,5 @@
 import "./NavProfileCard.scss"
+import {useEffect, useRef} from "react"
 import {Card} from "react-bootstrap"
 import {useLanguage} from "../../../providers/LanguageProvider.jsx"
 import {useNavigation} from "../../../providers/NavigationProvider.jsx"
@@ -12,6 +13,8 @@ function NavProfileCard({ profile, expanded }) {
     const language = useLanguage()
     const navigation = useNavigation()
     const utils = useUtils()
+    const mediaRef = useRef(null)
+    const timeoutsRef = useRef({enter: null, reset: null, cleanup: null})
 
     const expandedClass = expanded ?
         `` :
@@ -54,10 +57,93 @@ function NavProfileCard({ profile, expanded }) {
         navigation.navigateToSectionWithId("contact")
     }
 
+    const _isMotionSuppressed = () => {
+        if(utils.storage.getWindowVariable("suspendAnimations"))
+            return true
+
+        if(typeof window === "undefined" || typeof window.matchMedia !== "function")
+            return false
+
+        return window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    }
+
+    const _clearTimeouts = () => {
+        const {enter, reset, cleanup} = timeoutsRef.current
+        if(enter) clearTimeout(enter)
+        if(reset) clearTimeout(reset)
+        if(cleanup) clearTimeout(cleanup)
+        timeoutsRef.current = {enter: null, reset: null, cleanup: null}
+    }
+
+    useEffect(() => {
+        return () => {
+            _clearTimeouts()
+        }
+    }, [])
+
+    const _onMediaPointerEnter = () => {
+        if(_isMotionSuppressed())
+            return
+
+        const el = mediaRef.current
+        if(!el)
+            return
+
+        _clearTimeouts()
+        el.classList.add("nav-profile-card-media-tilt-active")
+        el.classList.add("nav-profile-card-media-tilt-transition")
+        timeoutsRef.current.enter = setTimeout(() => {
+            el.classList.remove("nav-profile-card-media-tilt-transition")
+        }, 250)
+    }
+
+    const _onMediaPointerMove = (event) => {
+        const el = mediaRef.current
+        if(!el || !el.classList.contains("nav-profile-card-media-tilt-active"))
+            return
+
+        const rect = el.getBoundingClientRect()
+        if(!rect.width || !rect.height)
+            return
+
+        const x = Math.min(Math.max(event.clientX - rect.left, 0), rect.width)
+        const y = Math.min(Math.max(event.clientY - rect.top, 0), rect.height)
+        const middleX = rect.width / 2
+        const middleY = rect.height / 2
+
+        const rotationLimit = 6
+        const rotateX = (x - middleX) * (rotationLimit / middleX)
+        const rotateY = (middleY - y) * (rotationLimit / middleY)
+
+        el.style.transform = `perspective(900px) rotateX(${rotateY}deg) rotateY(${rotateX}deg)`
+    }
+
+    const _onMediaPointerLeave = () => {
+        const el = mediaRef.current
+        if(!el)
+            return
+
+        _clearTimeouts()
+        el.classList.add("nav-profile-card-media-tilt-transition")
+
+        timeoutsRef.current.reset = setTimeout(() => {
+            el.style.removeProperty("transform")
+        }, 250)
+
+        timeoutsRef.current.cleanup = setTimeout(() => {
+            el.classList.remove("nav-profile-card-media-tilt-transition")
+            el.classList.remove("nav-profile-card-media-tilt-active")
+        }, 500)
+    }
+
     return (
         <Card className={`nav-profile-card ${expandedClass}`}>
             <div className={`nav-profile-card-header`}>
-                <div className={`nav-profile-card-media`}>
+                <div className={`nav-profile-card-media`}
+                     ref={mediaRef}
+                     onPointerEnter={_onMediaPointerEnter}
+                     onPointerMove={_onMediaPointerMove}
+                     onPointerLeave={_onMediaPointerLeave}>
                     <ImageView src={profilePictureUrl}
                                className={`nav-profile-card-avatar`}
                                hideSpinner={true}

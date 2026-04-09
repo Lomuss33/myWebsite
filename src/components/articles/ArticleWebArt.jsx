@@ -186,7 +186,8 @@ function SpiralDotsTile({ itemWrapper, index }) {
             reduceMotion,
             dotsCount: 180,
             dotsMouseDistanceSensitivity: 115,
-            dotsMaxEscapeRouteLength: 120
+            dotsMaxEscapeRouteLength: 120,
+            introDurationMs: 950
         }
     }, [itemWrapper.id, reduceMotion])
 
@@ -195,25 +196,32 @@ function SpiralDotsTile({ itemWrapper, index }) {
         const canvas = canvasRef.current
         if(!tile || !canvas) return
 
-        const engine = createSpiralDotsEngine(canvas, config)
-        engineRef.current = engine
+        let engine = null
+        let ro = null
+        const raf = requestAnimationFrame(() => {
+            engine = createSpiralDotsEngine(canvas, config)
+            engineRef.current = engine
 
-        const updateSize = () => {
-            const rect = tile.getBoundingClientRect()
-            engine.setSize(rect.width, rect.height, window.devicePixelRatio || 1)
-        }
+            const updateSize = () => {
+                const rect = tile.getBoundingClientRect()
+                engine.setSize(rect.width, rect.height, window.devicePixelRatio || 1)
+            }
 
-        updateSize()
-
-        const ro = new ResizeObserver(() => {
             updateSize()
-            engine.rebuildDots()
+            engine.renderStatic?.()
+
+            ro = new ResizeObserver(() => {
+                updateSize()
+                engine.rebuildDots()
+                engine.renderStatic?.()
+            })
+            ro.observe(tile)
         })
-        ro.observe(tile)
 
         return () => {
-            ro.disconnect()
-            engine.destroy()
+            cancelAnimationFrame(raf)
+            ro?.disconnect()
+            engine?.destroy()
             engineRef.current = null
         }
     }, [config])

@@ -195,10 +195,16 @@ function ArticlePortfolioItem({ itemWrapper }) {
         if (!isNonEmptyHref(href)) return false
         return icon.includes("fa-file") || href.includes("docs.google.com") || href.includes("readthedocs") || href.includes("/docs")
     }) || null
+    const actionsCount = Number(Boolean(githubLink)) + Number(Boolean(docsLink))
+    const leftControlsGapCount = Math.max(0, actionsCount - 1)
 
     return (
         <div ref={cardRef}
              className={`article-portfolio-item`}
+             style={{
+                 "--portfolio-left-controls-count": actionsCount,
+                 "--portfolio-left-controls-gap-count": leftControlsGapCount
+             }}
              >
             <ArticlePortfolioItemTitle itemWrapper={itemWrapper}
                                        titleRef={titleRef}
@@ -210,45 +216,61 @@ function ArticlePortfolioItem({ itemWrapper }) {
             <ArticlePortfolioItemBody itemWrapper={itemWrapper}/>
             <ArticlePortfolioItemFooter itemWrapper={itemWrapper}/>
 
-            {(githubLink || docsLink || websiteLink) && (
+            {(githubLink || docsLink) && (
                 <DraggableDock cardRef={cardRef}
-                               draggable={false}
                                defaultSlot={"bl"}
-                               dockId={"controls"}
+                               dockId={"actions"}
                                returnDelayMs={3000}
-                               className={`article-portfolio-item-controls`}>
-                    <div className={`article-portfolio-item-controls-grid`}>
+                               className={`article-portfolio-item-actions`}>
+                    <div className={`article-portfolio-item-actions-grid`}>
                         {githubLink && (
                             <Link href={githubLink.href}
                                   tooltip={githubLink.tooltip || "GitHub"}
-                                  className={`article-portfolio-item-control-btn`}>
+                                  className={`article-portfolio-item-control-btn article-portfolio-item-control-btn-icon`}>
                                 <i className={`fa-icon ${githubLink.faIcon || "fa-brands fa-github"}`}/>
                             </Link>
                         )}
                         {docsLink && (
                             <Link href={docsLink.href}
                                   tooltip={docsLink.tooltip || "Docs"}
-                                  className={`article-portfolio-item-control-btn`}>
+                                  className={`article-portfolio-item-control-btn article-portfolio-item-control-btn-icon`}>
                                 <i className={`fa-icon ${docsLink.faIcon || "fa-solid fa-file-lines"}`}/>
-                            </Link>
-                        )}
-                        {websiteLink && (
-                            <Link href={websiteLink.href}
-                                  tooltip={websiteLink.tooltip || "Visit online"}
-                                  className={`article-portfolio-item-control-btn article-portfolio-item-control-btn-visit`}>
-                                <span className={`article-portfolio-item-control-btn-label`}>
-                                    {websiteLink.label || "VISIT ONLINE"}
-                                </span>
-                                <AvatarView src={itemWrapper.img}
-                                            faIcon={itemWrapper.faIcon}
-                                            style={itemWrapper.faIconStyle}
-                                            alt={itemWrapper.imageAlt}
-                                            className={`article-portfolio-item-control-avatar`}/>
                             </Link>
                         )}
                     </div>
                 </DraggableDock>
             )}
+
+            <DraggableDock cardRef={cardRef}
+                           defaultSlot={"br"}
+                           dockId={"visit"}
+                           returnDelayMs={3000}
+                           className={`article-portfolio-item-visit-dock`}>
+                {websiteLink ? (
+                    <Link href={websiteLink.href}
+                          tooltip={websiteLink.tooltip || "Visit online"}
+                          className={`article-portfolio-item-control-btn article-portfolio-item-control-btn-visit`}>
+                        <i className={`fa-solid fa-arrow-up-right-from-square article-portfolio-item-control-btn-external-icon`}/>
+                        <span className={`article-portfolio-item-control-btn-label`}>
+                            {websiteLink.label || "VISIT ONLINE"}
+                        </span>
+                        <AvatarView src={itemWrapper.img}
+                                    faIcon={itemWrapper.faIcon}
+                                    style={itemWrapper.faIconStyle}
+                                    alt={itemWrapper.imageAlt}
+                                    className={`article-portfolio-item-control-avatar`}/>
+                    </Link>
+                ) : (
+                    <div className={`article-portfolio-item-control-btn-avatar-only`}
+                         data-tooltip={`No public link`}>
+                        <AvatarView src={itemWrapper.img}
+                                    faIcon={itemWrapper.faIcon}
+                                    style={itemWrapper.faIconStyle}
+                                    alt={itemWrapper.imageAlt}
+                                    className={`article-portfolio-item-control-avatar`}/>
+                    </div>
+                )}
+            </DraggableDock>
         </div>
     )
 }
@@ -327,6 +349,8 @@ function DraggableDock({
 }) {
     const dockRef = useRef(null)
     const pointerIdRef = useRef(null)
+    const isCapturedRef = useRef(false)
+    const didDragRef = useRef(false)
     const returnTimeoutRef = useRef(null)
     const dragStartRef = useRef(null)
     const targetTransformRef = useRef(null) // {dx, dy}
@@ -434,8 +458,9 @@ function DraggableDock({
         clearReturnTimer()
         stopRaf()
 
+        didDragRef.current = false
+        isCapturedRef.current = false
         pointerIdRef.current = e.pointerId
-        dockEl.setPointerCapture?.(e.pointerId)
 
         const clamp = getClamp()
         if (!clamp) return
@@ -460,7 +485,20 @@ function DraggableDock({
         const dx = e.clientX - start.startClientX
         const dy = e.clientY - start.startClientY
         const movedEnough = Math.hypot(dx, dy) > 6
-        if (!dragging && movedEnough) setDragging(true)
+        if (!dragging && movedEnough) {
+            didDragRef.current = true
+            setDragging(true)
+
+            // Capture only once we know this is a drag (avoids breaking clicks on inner links).
+            const dockEl = dockRef.current
+            try {
+                dockEl?.setPointerCapture?.(e.pointerId)
+                isCapturedRef.current = true
+            }
+            catch (_) {
+                isCapturedRef.current = false
+            }
+        }
 
         const nextDx = clamp(start.startDx + dx, start.minDx, start.maxDx)
         const nextDy = clamp(start.startDy + dy, start.minDy, start.maxDy)
@@ -473,14 +511,17 @@ function DraggableDock({
         if (pointerIdRef.current === null || pointerIdRef.current !== e.pointerId) return
 
         const dockEl = dockRef.current
-        try {
-            dockEl?.releasePointerCapture?.(e.pointerId)
-        }
-        catch (_) {
-            // Ignore stale pointer capture state during touch/mouse cancellation.
+        if (isCapturedRef.current) {
+            try {
+                dockEl?.releasePointerCapture?.(e.pointerId)
+            }
+            catch (_) {
+                // Ignore stale pointer capture state during touch/mouse cancellation.
+            }
         }
 
         pointerIdRef.current = null
+        isCapturedRef.current = false
         dragStartRef.current = null
         stopRaf()
 
@@ -498,9 +539,20 @@ function DraggableDock({
 
         setDragging(false)
         scheduleReturn()
+
+        // If no click happens (released outside), don't block the next click.
+        setTimeout(() => { didDragRef.current = false }, 250)
     }
 
     const dockStyle = { transform: `translate3d(${Math.round(transform.dx)}px, ${Math.round(transform.dy)}px, 0)` }
+    const onClickCapture = (e) => {
+        if (!didDragRef.current)
+            return
+
+        e.preventDefault && e.preventDefault()
+        e.stopPropagation && e.stopPropagation()
+        didDragRef.current = false
+    }
 
     return (
         <div ref={dockRef}
@@ -509,7 +561,8 @@ function DraggableDock({
              onPointerDown={draggable ? onPointerDown : undefined}
              onPointerMove={draggable ? onPointerMove : undefined}
              onPointerUp={draggable ? onPointerUp : undefined}
-             onPointerCancel={draggable ? onPointerUp : undefined}>
+             onPointerCancel={draggable ? onPointerUp : undefined}
+             onClickCapture={draggable ? onClickCapture : undefined}>
             {children}
         </div>
     )

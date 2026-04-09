@@ -90,6 +90,7 @@ div.article-stack-item-title {
     margin-top: 8px;
     text-align: center;
     color: var(--theme-texts-light);
+    width: 100%;
     overflow-wrap: anywhere;
     text-wrap: balance;
 }
@@ -170,6 +171,7 @@ article.article.article-stack-compact {
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        width: 100%;
     }
 
     div.article-stack-item-compact div.article-stack-item-title-prefix {
@@ -179,15 +181,17 @@ article.article.article-stack-compact {
     }
 
     div.article-stack-item-compact div.article-stack-item-title-main {
-        font-size: calc(var(--avatar-size)*0.205);
-        line-height: 1.14;
+        font-size: clamp(13px, calc(var(--avatar-size)*0.25), 16px);
+        line-height: 1.12;
         display: -webkit-box;
+        line-clamp: 3;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
         word-break: normal;
         overflow-wrap: anywhere;
         text-wrap: balance;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.32);
     }
 
     div.article-stack-item-compact div.article-stack-item-experience {

@@ -27,6 +27,13 @@
       }
     }
   },
+  "wordPills": {
+    "locales": {
+      "en": {
+        "text": "developer with years of experience, I have developed a strong foundation in crafting innovative and efficient technology solutions. My passion for technology driven to push boundaries and make a positive impact in the industry. When I'm not coding, I enjoy exploring my creative side through art, music, and nature"
+      }
+    }
+  },
   "articles": [
     {
       "id": 1,

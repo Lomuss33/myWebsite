@@ -59,12 +59,12 @@
             "fill": "#25D366",
             "fillLight": "#1FA955"
           },
-          "label": " Quick connect!",
+          "label": "+49 176 62236934",
           "link": {
             "href": "https://wa.me/4917662236934",
             "tooltipString": "open_website"
           },
-          "copyToClipboardButton": false,
+          "copyToClipboardButton": true,
           "locales": {
             "en": {
               "title": "WhatsApp",
@@ -127,12 +127,12 @@
             "fill": "#EA4335",
             "fillLight": "#D33426"
           },
-          "label": " Open Gmail",
+          "label": "contact@lovro-music.de",
           "link": {
             "href": "https://mail.google.com/mail/?view=cm&to=contact@lovro-music.de&su=HelloFromMyWebsite&fs=1&tf=1",
             "tooltipString": "open_website"
           },
-          "copyToClipboardButton": false,
+          "copyToClipboardButton": true,
           "locales": {
             "en": {
               "title": "Gmail",
@@ -161,12 +161,12 @@
             "fill": "#0A66C2",
             "fillLight": "#0A57A5"
           },
-          "label": " Profile Page",
+          "label": "lovro-musić",
           "link": {
             "href": "https://www.linkedin.com/in/lovro-musi%C4%87/",
             "tooltipString": "open_website"
           },
-          "copyToClipboardButton": false,
+          "copyToClipboardButton": true,
           "locales": {
             "en": {
               "title": "LinkedIn",
@@ -234,7 +234,7 @@
             "href": "https://instagram.com/your_username",
             "tooltipString": "open_website"
           },
-          "copyToClipboardButton": false,
+          "copyToClipboardButton": true,
           "locales": {
             "en": {
               "title": "Instagram",

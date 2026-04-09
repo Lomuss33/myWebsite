@@ -15,6 +15,7 @@ import ArticleTestimonials from "../articles/ArticleTestimonials.jsx"
 import ArticleText from "../articles/ArticleText.jsx"
 import ArticleThread from "../articles/ArticleThread.jsx"
 import ArticleTimeline from "../articles/ArticleTimeline.jsx"
+import ArticleWebArt from "../articles/ArticleWebArt.jsx"
 
 function SectionBody({ section }) {
     const parser = useParser()
@@ -46,7 +47,8 @@ SectionBody.ARTICLES = {
     ArticleTestimonials,
     ArticleText,
     ArticleThread,
-    ArticleTimeline
+    ArticleTimeline,
+    ArticleWebArt
 }
 
 export default SectionBody

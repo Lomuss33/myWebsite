@@ -9,7 +9,8 @@ div.article-portfolio-items {
     --margin-top: 8px;
     --avatar-offset: 16px;
     --content-right-offset: calc(var(--avatar-size) + var(--avatar-offset) + 10px);
-    --portfolio-action-size: calc(var(--avatar-size) / 2);
+    --portfolio-control-height: calc(var(--avatar-size) / 1.55);
+    --portfolio-control-radius: 12px;
     /*
       Minimum comfortable card width so the visit-online pill + left actions
       can coexist without overlap. The grid will reduce columns automatically.
@@ -79,8 +80,8 @@ div.article-portfolio-item {
     /* Allow responsive typography based on card width */
     container-type: inline-size;
 
-    /* Reserve space so bottom-right avatar never overlaps content */
-    padding-bottom: calc(var(--padding-bottom) + var(--avatar-size) + var(--avatar-offset));
+    /* Reserve space for bottom controls bar (absolute) */
+    padding-bottom: calc(var(--padding-bottom) + var(--portfolio-control-height) + var(--avatar-offset));
 
 }
 
@@ -104,104 +105,79 @@ div.article-portfolio-item-draggable-dock {
     }
 }
 
-/* Stable default corners */
-div.article-portfolio-item-draggable-dock.article-portfolio-item-actions {
+/* Single bottom controls bar (GitHub / Docs / Visit online) */
+div.article-portfolio-item-draggable-dock.article-portfolio-item-controls {
     left: var(--avatar-offset);
-    bottom: var(--avatar-offset);
-}
-
-div.article-portfolio-item-draggable-dock.article-portfolio-item-avatar-dock {
     right: var(--avatar-offset);
     bottom: var(--avatar-offset);
 }
 
-div.article-portfolio-item-avatar {
-    width: var(--avatar-size);
-    height: var(--avatar-size);
-    border: var(--avatar-border-size) solid var(--theme-boards-background);
-    border-radius: 100%;
-    font-size: calc(var(--avatar-size)/2.3);
+div.article-portfolio-item-controls-grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: 10px;
+    width: 100%;
 }
 
-div.article-portfolio-item-avatar-dock {
-    display: flex;
-    align-items: flex-end;
-    gap: 8px;
-}
-
-a.article-portfolio-item-avatar-link {
-    position: relative;
-    display: inline-block;
-    text-decoration: none;
-    color: inherit;
-
-    &:hover {
-        transform: translateY(-1px);
-    }
-}
-
-a.article-portfolio-item-visit-online-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 0;
-
-    /* No right padding so border sits flush on avatar edge */
-    padding: clamp(5px, 0.55rem, 7px) 0 clamp(5px, 0.55rem, 7px) clamp(10px, 1.2cqw, 12px);
-    border-radius: 999px;
-    background: var(--theme-boards-background);
-    border: 1px solid var(--theme-standard-borders);
-
-    &:hover {
-        border-color: var(--theme-primary);
-    }
-}
-
-span.article-portfolio-item-visit-online-label {
-    font-size: clamp(0.60rem, 2.1cqw, 0.72rem);
-    font-weight: 800;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    line-height: 1;
-    color: var(--theme-primary);
-    white-space: nowrap;
-    padding-right: clamp(8px, 1.2cqw, 10px);
-}
-
-/* When the avatar is part of the "visit online" pill, remove the thick buffer ring */
-a.article-portfolio-item-visit-online-button div.article-portfolio-item-avatar {
-    border-width: 0;
-}
-
-div.article-portfolio-item-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-
-a.article-portfolio-item-action {
-    width: var(--portfolio-action-size);
-    height: var(--portfolio-action-size);
-    border-radius: 10px;
-    background: var(--theme-boards-background);
+a.article-portfolio-item-control-btn {
+    height: var(--portfolio-control-height);
+    border-radius: var(--portfolio-control-radius);
+    background: color-mix(in srgb, var(--theme-boards-background) 70%, var(--theme-empty) 30%);
     border: 1px solid var(--theme-standard-borders);
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 10px;
 
     text-decoration: none;
     color: var(--theme-texts-light-1);
+    min-width: 0;
 
     i.fa-icon {
-        font-size: clamp(0.72rem, 1.7cqw, 0.9rem);
+        font-size: clamp(0.8rem, 1.7cqw, 0.95rem);
         line-height: 1;
     }
 
     &:hover {
         transform: translateY(-1px);
+        border-color: var(--theme-primary);
         color: var(--theme-primary);
     }
+
+    &:focus-visible {
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme-primary) 22%, transparent 78%);
+    }
+}
+
+a.article-portfolio-item-control-btn-visit {
+    justify-content: space-between;
+    padding-left: 12px;
+    padding-right: 6px;
+}
+
+span.article-portfolio-item-control-btn-label {
+    font-size: clamp(0.62rem, 1.5cqw, 0.78rem);
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--theme-primary);
+}
+
+div.article-portfolio-item-control-avatar {
+    width: calc(var(--portfolio-control-height) - 10px);
+    height: calc(var(--portfolio-control-height) - 10px);
+    border-radius: 999px;
+    flex: 0 0 auto;
+
+    // Keep it crisp (no big buffer ring like the old large avatar dock).
+    border: 1px solid var(--theme-standard-borders);
+    font-size: calc(var(--portfolio-control-height) / 2.25);
 }
 
 div.article-portfolio-item-title {

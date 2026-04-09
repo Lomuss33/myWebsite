@@ -107,10 +107,6 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
         itemWrapper.articleWrapper.id === 2 &&
         itemWrapper.id === 1
     const isHomeStyleIntro = isAboutIntro || isWritingIntro
-    const isWoodPosterSpecial =
-        itemWrapper.articleWrapper.sectionId === "my-hardware" &&
-        itemWrapper.articleWrapper.id === 2 &&
-        itemWrapper.id === 1
     const articleSettings = itemWrapper.articleWrapper.settings
     const html = itemWrapper.locales.text || itemWrapper.placeholder
     const featureLayoutMode = articleSettings.featureLayoutMode
@@ -122,7 +118,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
     const isConfiguredInteractiveItem = articleSettings.featureInteractiveItemIds.includes(itemWrapper.id)
     const shouldFitTextToMediaHeight =
         isSquareFitLayout ||
-        (isFixedViewportImageLayout && (isHomeStyleIntro || isWoodPosterSpecial))
+        (isFixedViewportImageLayout && isHomeStyleIntro)
     const defaultFitMaxScale = isHomeStyleIntro ? FEATURE_TEXT_ABOUT_INTRO_MAX_SCALE : FEATURE_TEXT_DEFAULT_MAX_SCALE
     const textFontSize = computeScaledFontSize(baseTypographyRef, textScale)
     const textLineHeight = computeScaledLineHeight(baseTypographyRef, textScale)
@@ -322,12 +318,11 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
         }
 
         if (isConfiguredInteractiveItem) {
-            const interactiveVariant = isWoodPosterSpecial ? "planks" : "wave"
             return (
                 <PretextInteractiveText html={html}
                                         revealOnScroll={true}
-                                        effectVariant={interactiveVariant}
-                                        terrainVariant={interactiveVariant === "wave" ? "detailed" : "standard"}
+                                        effectVariant={"wave"}
+                                        terrainVariant={"detailed"}
                                         pointerScopeSelector={".layout-content"}
                                         pointerScopeIgnoreX={true}
                                         typographyVersion={typographyVersion}/>

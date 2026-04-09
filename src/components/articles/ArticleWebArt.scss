@@ -1,0 +1,130 @@
+@import "../../styles/extend.scss";
+
+div.article-web-art-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+
+    @include media-breakpoint-down(lg) {
+        gap: 14px;
+    }
+
+    // Keep 2 columns even on mobile.
+    @include media-breakpoint-down(sm) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+}
+
+ .article-web-art-tile {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border-radius: $standard-border-radius;
+    overflow: hidden;
+    border: 1px solid var(--theme-card-background-accent);
+    background-color: #000;
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+
+    transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+}
+
+.article-web-art-tile-clickable {
+    &:hover {
+        transform: translateY(-1px);
+        border-color: color-mix(in srgb, var(--theme-card-background-accent) 65%, var(--theme-primary) 35%);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    &:active {
+        transform: translateY(0);
+        box-shadow: none;
+    }
+
+    &:focus-visible {
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme-primary) 40%, transparent 60%);
+    }
+}
+
+.article-web-art-tile-hover-only {
+    cursor: crosshair;
+
+    &:hover {
+        border-color: color-mix(in srgb, var(--theme-card-background-accent) 55%, var(--theme-secondary) 45%);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.22);
+    }
+
+    &:focus-visible {
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme-secondary) 45%, transparent 55%);
+    }
+}
+
+canvas.article-web-art-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+div.article-web-art-tunnel-room-shade {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    // Room-like shading: 4 triangles meeting at the center (ceiling / floor / left wall / right wall).
+    // Gives a subtle “tunnel run” feeling while keeping the underlying 3D colors visible.
+    background-image:
+        conic-gradient(from 45deg at 50% 52%,
+            rgba(116, 217, 255, 0.18) 0deg 90deg,   // right wall
+            rgba(255, 198, 92, 0.14) 90deg 180deg,  // floor
+            rgba(92, 255, 202, 0.12) 180deg 270deg, // left wall
+            rgba(196, 140, 255, 0.12) 270deg 360deg // ceiling
+        ),
+        conic-gradient(from 45deg at 50% 52%,
+            rgba(255, 255, 255, 0.14) 0deg 0.9deg,
+            transparent 0.9deg 90deg,
+            rgba(255, 255, 255, 0.14) 90deg 90.9deg,
+            transparent 90.9deg 180deg,
+            rgba(255, 255, 255, 0.14) 180deg 180.9deg,
+            transparent 180.9deg 270deg,
+            rgba(255, 255, 255, 0.14) 270deg 270.9deg,
+            transparent 270.9deg 360deg
+        ),
+        radial-gradient(circle at 50% 52%,
+            rgba(255, 255, 255, 0.08) 0%,
+            rgba(0, 0, 0, 0.0) 55%,
+            rgba(0, 0, 0, 0.38) 100%
+        );
+
+    opacity: 0.75;
+    mix-blend-mode: overlay;
+
+    @media (prefers-reduced-motion: reduce) {
+        opacity: 0.6;
+    }
+}
+
+span.article-web-art-tile-label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    min-width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    background-color: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    backdrop-filter: blur(6px);
+}

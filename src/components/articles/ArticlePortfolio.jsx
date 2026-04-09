@@ -210,55 +210,45 @@ function ArticlePortfolioItem({ itemWrapper }) {
             <ArticlePortfolioItemBody itemWrapper={itemWrapper}/>
             <ArticlePortfolioItemFooter itemWrapper={itemWrapper}/>
 
-            {(githubLink || docsLink) && (
+            {(githubLink || docsLink || websiteLink) && (
                 <DraggableDock cardRef={cardRef}
+                               draggable={false}
                                defaultSlot={"bl"}
-                               dockId={"actions"}
+                               dockId={"controls"}
                                returnDelayMs={3000}
-                               className={`article-portfolio-item-actions`}>
-                    {githubLink && (
-                        <Link href={githubLink.href}
-                              tooltip={githubLink.tooltip || "GitHub"}
-                              className={`article-portfolio-item-action`}>
-                            <i className={`fa-icon ${githubLink.faIcon || "fa-brands fa-github"}`}/>
-                        </Link>
-                    )}
-                    {docsLink && (
-                        <Link href={docsLink.href}
-                              tooltip={docsLink.tooltip || "Docs"}
-                              className={`article-portfolio-item-action`}>
-                            <i className={`fa-icon ${docsLink.faIcon || "fa-solid fa-file-lines"}`}/>
-                        </Link>
-                    )}
+                               className={`article-portfolio-item-controls`}>
+                    <div className={`article-portfolio-item-controls-grid`}>
+                        {githubLink && (
+                            <Link href={githubLink.href}
+                                  tooltip={githubLink.tooltip || "GitHub"}
+                                  className={`article-portfolio-item-control-btn`}>
+                                <i className={`fa-icon ${githubLink.faIcon || "fa-brands fa-github"}`}/>
+                            </Link>
+                        )}
+                        {docsLink && (
+                            <Link href={docsLink.href}
+                                  tooltip={docsLink.tooltip || "Docs"}
+                                  className={`article-portfolio-item-control-btn`}>
+                                <i className={`fa-icon ${docsLink.faIcon || "fa-solid fa-file-lines"}`}/>
+                            </Link>
+                        )}
+                        {websiteLink && (
+                            <Link href={websiteLink.href}
+                                  tooltip={websiteLink.tooltip || "Visit online"}
+                                  className={`article-portfolio-item-control-btn article-portfolio-item-control-btn-visit`}>
+                                <span className={`article-portfolio-item-control-btn-label`}>
+                                    {websiteLink.label || "VISIT ONLINE"}
+                                </span>
+                                <AvatarView src={itemWrapper.img}
+                                            faIcon={itemWrapper.faIcon}
+                                            style={itemWrapper.faIconStyle}
+                                            alt={itemWrapper.imageAlt}
+                                            className={`article-portfolio-item-control-avatar`}/>
+                            </Link>
+                        )}
+                    </div>
                 </DraggableDock>
             )}
-
-            <DraggableDock cardRef={cardRef}
-                           defaultSlot={"br"}
-                           dockId={"avatar"}
-                           returnDelayMs={3000}
-                           className={`article-portfolio-item-avatar-dock`}>
-                {websiteLink ? (
-                    <Link href={websiteLink.href}
-                          tooltip={websiteLink.tooltip || "Visit online"}
-                          className={`article-portfolio-item-avatar-link article-portfolio-item-visit-online-button`}>
-                        <span className={`article-portfolio-item-visit-online-label`}>
-                            {websiteLink.label || "VISIT ONLINE"}
-                        </span>
-                        <AvatarView src={itemWrapper.img}
-                                    faIcon={itemWrapper.faIcon}
-                                    style={itemWrapper.faIconStyle}
-                                    alt={itemWrapper.imageAlt}
-                                    className={`article-portfolio-item-avatar`}/>
-                    </Link>
-                ) : (
-                    <AvatarView src={itemWrapper.img}
-                                faIcon={itemWrapper.faIcon}
-                                style={itemWrapper.faIconStyle}
-                                alt={itemWrapper.imageAlt}
-                                className={`article-portfolio-item-avatar`}/>
-                )}
-            </DraggableDock>
         </div>
     )
 }
@@ -332,6 +322,7 @@ function DraggableDock({
     dockId,
     className = "",
     returnDelayMs = 3000,
+    draggable = true,
     children
 }) {
     const dockRef = useRef(null)
@@ -515,10 +506,10 @@ function DraggableDock({
         <div ref={dockRef}
              className={`article-portfolio-item-draggable-dock ${dragging ? "dock-dragging" : ""} ${className}`}
              style={dockStyle}
-             onPointerDown={onPointerDown}
-             onPointerMove={onPointerMove}
-             onPointerUp={onPointerUp}
-             onPointerCancel={onPointerUp}>
+             onPointerDown={draggable ? onPointerDown : undefined}
+             onPointerMove={draggable ? onPointerMove : undefined}
+             onPointerUp={draggable ? onPointerUp : undefined}
+             onPointerCancel={draggable ? onPointerUp : undefined}>
             {children}
         </div>
     )

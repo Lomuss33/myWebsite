@@ -56,11 +56,14 @@ $empty: #ffffff;
 $borders: #000000;
 $borders-nav-mobile: #000000;
 $borders-nav-mobile-accent: #000000;
-$scrollbar-track: #000000;
-$scrollbar-thumb: #ffffff;
+$scrollbar-track: rgba(0, 0, 0, 0.12);
+$scrollbar-thumb: rgba(0, 0, 0, 0.38);
 
 [data-theme="light"] {
     --theme-mobile-nav-separator: #000000;
+    --theme-sidebar-nav-link-color: rgba(0, 0, 0, 0.985);
+    --theme-sidebar-nav-link-icon-opacity: 0.7;
+    --theme-sidebar-nav-link-text-opacity: 0.98;
 
     @include build-theme(
         // Theme Config...

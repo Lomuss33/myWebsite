@@ -579,6 +579,61 @@
         },
         {
             "id": 2,
+            "component": "ArticleFeature",
+            "locales": {
+                "en": {
+                    "title": "{{Wood Products Deutschland}} | {{First Side Hustle}}"
+                },
+                "de": {
+                    "title": "{{Wood Products Deutschland}} | {{Erster Side Hustle}}"
+                },
+                "hr": {
+                    "title": "{{Wood Products Deutschland}} | {{Prvi side hustle}}"
+                },
+                "tr": {
+                    "title": "{{Wood Products Deutschland}} | {{İlk side hustle}}"
+                }
+            },
+            "settings": {
+                "order_items_by": "id",
+                "order_items_sort": "asc",
+                "feature_layout_mode": "equal_split_auto_stack",
+                "feature_stack_order": "text_media",
+                "feature_split_min_width": 760,
+                "feature_split_height_tolerance": 6,
+                "feature_image_aspect_ratio": "707 / 1000",
+                "feature_image_mobile_aspect_ratio": "707 / 1000",
+                "feature_interactive_item_ids": [
+                    1
+                ]
+            },
+            "items": [
+                {
+                    "id": 1,
+                    "img": "/images/hardware/wood-products-deutschland.webp",
+                    "locales": {
+                        "en": {
+                            "title": "Wood Products Deutschland",
+                            "text": "<p>{{Wood Products Deutschland}} was my {{first side hustle}} &mdash; not big and not super serious, but it taught me real-world business fast.</p><p>I had a great guide: my friend, co-partner and {{B2B mentor}} {{Miloš Ristić}}. It started with {{simple tech automation}} help, then turned into a perfect {{gap-filling}} opportunity right when I began university.</p><p>The work was straightforward: a bit of {{cold calling}}, handling the phone/WhatsApp/email, quick customer support, and turning messy requests into clear offers (scope, materials, timelines). I also helped keep social media and messaging consistent so leads didn’t get lost.</p><p>Later it naturally {{faded out}} as new opportunities showed up. The takeaway stayed: if you work hard and stay consistent, {{money isn’t the issue}} &mdash; execution is.</p><p>Region focus: {{Hessen}} and the Rhein-Main orbit ({{Frankfurt}}, {{Mainz}}, {{Wiesbaden}}, {{Darmstadt}}, {{Offenbach}}, {{Main-Taunus-Kreis}}).</p><p>Social: <a href='https://www.instagram.com/wood_products_deutschland/' target='_blank' rel='noopener noreferrer'>Instagram</a></p>"
+                        },
+                        "de": {
+                            "title": "Wood Products Deutschland",
+                            "text": "<p>{{Wood Products Deutschland}} war mein {{erster Side Hustle}} &mdash; nichts Riesiges und nicht mega ernst, aber es hat mir in kurzer Zeit richtig viel Praxis beigebracht.</p><p>An meiner Seite: mein Freund, Co-Partner und {{B2B-Mentor}} {{Miloš Ristić}}. Es begann mit Hilfe bei {{einfacher Technik-Automatisierung}} und wurde dann zur perfekten {{Lückenfüller}}-Chance genau zu Beginn meiner Uni-Zeit.</p><p>Der Alltag war simpel und direkt: etwas {{Kaltakquise}}, Telefon/WhatsApp/E-Mail, schnelle Kundenkommunikation und aus chaotischen Anfragen klare Angebote machen (Umfang, Material, Zeitplan). Nebenbei Social Media und Ton konsistent halten, damit Leads nicht verschwinden.</p><p>Später ist das Projekt ganz natürlich {{ausgelaufen}}, als neue Chancen kamen. Die Lektion blieb: Wenn du konsequent arbeitest, {{ist Geld nicht das Problem}} &mdash; Umsetzung ist es.</p><p>Region-Fokus: {{Hessen}} und Rhein-Main ({{Frankfurt}}, {{Mainz}}, {{Wiesbaden}}, {{Darmstadt}}, {{Offenbach}}, {{Main-Taunus-Kreis}}).</p><p>Social: <a href='https://www.instagram.com/wood_products_deutschland/' target='_blank' rel='noopener noreferrer'>Instagram</a></p>"
+                        },
+                        "hr": {
+                            "title": "Wood Products Deutschland",
+                            "text": "<p>{{Wood Products Deutschland}} je bio moj {{prvi side hustle}} &mdash; ništa veliko i ništa preozbiljno, ali mi je brzo dao stvarno business iskustvo.</p><p>Uz mene je bio prijatelj, co-partner i {{B2B mentor}} {{Miloš Ristić}}. Krenulo je s {{jednostavnom tehničkom automatizacijom}}, a onda se pretvorilo u super {{popunjavanje rupe}} u poslu baš kad sam tek počinjao fakultet.</p><p>Posao je bio jednostavan: malo {{hladnih poziva}}, telefon/WhatsApp/e-mail, brza komunikacija s kupcima i pretvaranje nejasnih upita u jasne ponude (opseg, materijali, rokovi). Uz to držati social i poruke konzistentnima da leadovi ne propadnu.</p><p>Kasnije je sve prirodno {{izblijedjelo}} kad su došle druge prilike. Ali lekcija je ostala: ako radiš i držiš ritam, {{novac nije problem}} &mdash; izvedba je.</p><p>Fokus regije: {{Hessen}} i Rhein-Main ({{Frankfurt}}, {{Mainz}}, {{Wiesbaden}}, {{Darmstadt}}, {{Offenbach}}, {{Main-Taunus-Kreis}}).</p><p>Društvene mreže: <a href='https://www.instagram.com/wood_products_deutschland/' target='_blank' rel='noopener noreferrer'>Instagram</a></p>"
+                        },
+                        "tr": {
+                            "title": "Wood Products Deutschland",
+                            "text": "<p>{{Wood Products Deutschland}} benim {{ilk side hustle}} deneyimimdi &mdash; büyük bir şey değildi, çok ciddi değildi, ama bana hızlıca gerçek hayat iş deneyimi verdi.</p><p>Yanımda arkadaşım, co-partnerım ve {{B2B mentor}} {{Miloš Ristić}} vardı. {{Basit teknik otomasyon}} desteğiyle başladı, sonra üniversitenin ilk döneminde tam ihtiyaç olan bir {{boşluğu doldurma}} fırsatına dönüştü.</p><p>Günlük iş netti: biraz {{soğuk arama}}, telefon/WhatsApp/e-posta, hızlı müşteri iletişimi ve karışık istekleri net tekliflere çevirme (kapsam, malzeme, zaman). Bir yandan da sosyal medya ve mesaj tonunu tutarlı tutup leadlerin kaybolmamasını sağlamak.</p><p>Zamanla proje doğal olarak {{söndü}}; başka fırsatlar geldi. Ama ders kaldı: düzenli çalışan biri için {{para sorun değil}} &mdash; asıl konu uygulama.</p><p>Bölge odağı: {{Hessen}} ve Rhein-Main ({{Frankfurt}}, {{Mainz}}, {{Wiesbaden}}, {{Darmstadt}}, {{Offenbach}}, {{Main-Taunus-Kreis}}).</p><p>Sosyal: <a href='https://www.instagram.com/wood_products_deutschland/' target='_blank' rel='noopener noreferrer'>Instagram</a></p>"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "id": 3,
             "component": "ArticleText",
             "locales": {
                 "en": {

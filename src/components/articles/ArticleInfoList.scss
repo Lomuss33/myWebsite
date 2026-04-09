@@ -69,8 +69,9 @@ div.article-info-list-item {
         align-items: center;
         justify-content: center;
         font-size: calc(var(--avatar-size) / 2)!important;
-        background-color: var(--theme-dark)!important;
-        color: var(--theme-texts)!important;
+        // Defaults (can be overridden by inline style from data).
+        background-color: var(--theme-dark);
+        color: var(--theme-texts);
         border-radius: $standard-border-radius;
     }
 
@@ -100,8 +101,8 @@ div.article-info-list-item {
 /** ------------- HOVER ------------------- **/
 div.article-info-list-item-hovered {
     div.article-info-list-item-avatar {
-        background-color: var(--theme-primary)!important;
-        color: var(--theme-texts-inv)!important;
+        background-color: var(--theme-primary);
+        color: var(--theme-texts-inv);
         transition: 0.2s background-color ease-out, 0.2s background-color ease-out;
     }
 }
@@ -266,6 +267,22 @@ article.article-info-list-contact {
         min-height: var(--avatar-size);
         max-height: var(--avatar-size);
         place-self: center;
+        // Neutral, modern background tinted by the icon's currentColor (brand color),
+        // overriding the per-item pastel backgrounds from the JSON.
+        background-color: color-mix(in srgb, var(--theme-boards-background) 82%, currentColor 18%) !important;
+        border: 1px solid color-mix(in srgb, currentColor 35%, var(--contact-card-border) 65%);
+    }
+
+    div.article-info-list-item-hovered div.article-info-list-item-avatar {
+        background-color: color-mix(in srgb, var(--theme-boards-background) 74%, currentColor 26%) !important;
+        border-color: color-mix(in srgb, currentColor 45%, var(--contact-card-border) 55%);
+        color: currentColor !important;
+    }
+
+    div.article-info-list-item.article-info-list-item-pressed div.article-info-list-item-avatar {
+        background-color: color-mix(in srgb, var(--theme-boards-background) 66%, currentColor 34%) !important;
+        border-color: color-mix(in srgb, currentColor 60%, var(--contact-card-border) 40%);
+        color: currentColor !important;
     }
 
     div.article-info-list-item-info-text {

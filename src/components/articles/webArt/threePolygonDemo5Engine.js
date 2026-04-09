@@ -1,0 +1,343 @@
+import * as THREE from "three"
+
+function clampInt(value, min, max, fallback) {
+    const n = Number(value)
+    if(!Number.isFinite(n)) return fallback
+    return Math.max(min, Math.min(max, Math.floor(n)))
+}
+
+function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value))
+}
+
+function randomColorHsl() {
+    const h = Math.random() * 360
+    const s = 80 + Math.random() * 20
+    const l = 55 + Math.random() * 10
+    return new THREE.Color().setHSL(h / 360, s / 100, l / 100)
+}
+
+function ringColorHsl(index, count) {
+    const t = count <= 1 ? 0 : index / (count - 1)
+    const hue = (210 + t * 310) % 360
+    return new THREE.Color().setHSL(hue / 360, 0.96, 0.56)
+}
+
+function polygonPoints(n, x, y, s, r) {
+    const dt = (2 * Math.PI) / n
+    const points = []
+    for(let i = 0; i < n; i++) {
+        const t = Math.PI / 2 + r + i * dt
+        const px = x + Math.cos(t) * s
+        const py = y + Math.sin(t) * s
+        points.push([px, py])
+    }
+    return points
+}
+
+function polygonGeometry(n, s, thickness, depth) {
+    let points = polygonPoints(n, 0, 0, s + thickness, 0)
+    const shape = new THREE.Shape()
+    points.forEach((p, i) => {
+        if(i === 0) shape.moveTo(p[0], p[1])
+        else shape.lineTo(p[0], p[1])
+    })
+    shape.lineTo(points[0][0], points[0][1])
+
+    points = polygonPoints(n, 0, 0, s, 0)
+    const hole = new THREE.Path()
+    points.forEach((p, i) => {
+        if(i === 0) hole.moveTo(p[0], p[1])
+        else hole.lineTo(p[0], p[1])
+    })
+    hole.lineTo(points[0][0], points[0][1])
+    shape.holes.push(hole)
+
+    const extrudeSettings = { steps: 1, depth, bevelEnabled: false }
+    const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings)
+    geometry.translate(0, 0, -depth / 2)
+    return geometry
+}
+
+export function createThreePolygonDemo5Engine(canvas, options = {}) {
+    const reduceMotion = Boolean(options.reduceMotion)
+
+    // “Demo 5” config (kept semantically, scaled-to-fit in the tile)
+    const nbVertexes = 4
+    const nbObjects = clampInt(options.nbObjects, 10, 80, 25)
+    const objectMinRadius = 1
+    const objectRadiusCoef = 10
+    const objectThickness = 2
+    const objectDepth = 0.5
+    const rotationXDeg = 0
+    const rotationYDeg = 360
+    const rotationZDeg = 0
+    const animationDuration = Number.isFinite(options.animationDuration) ? options.animationDuration : 7
+    const animationDelay = Number.isFinite(options.animationDelay) ? options.animationDelay : 0.1
+    const cameraZ = Number.isFinite(options.cameraZ) ? options.cameraZ : 75
+
+    let renderer = null
+    let scene = null
+    let camera = null
+    let group = null
+    let width = 1
+    let height = 1
+    let running = false
+    let rafId = null
+    let startTime = 0
+    let stoppedAt = null
+    let pmrem = null
+    let envTexture = null
+    let envSourceTexture = null
+
+    function setup() {
+        renderer = new THREE.WebGLRenderer({
+            canvas,
+            antialias: true,
+            alpha: false,
+            powerPreference: "high-performance"
+        })
+        renderer.setClearColor(0x05050a, 1)
+        renderer.outputColorSpace = THREE.SRGBColorSpace
+        renderer.toneMapping = THREE.ACESFilmicToneMapping
+        renderer.toneMappingExposure = 1.18
+
+        scene = new THREE.Scene()
+
+        camera = new THREE.PerspectiveCamera(75, 1, 0.1, 2000)
+        camera.position.z = cameraZ
+        scene.add(camera)
+
+        scene.add(new THREE.AmbientLight(0xffffff, 0.12))
+
+        const lightIntensity = 0.90
+        const lightDistance = 340
+        const positions = [
+            [0, 70, 0],
+            [0, -70, 0],
+            [70, 0, 0],
+            [-70, 0, 0],
+            [0, 0, 70],
+            [0, 0, -70]
+        ]
+
+        for(const [x, y, z] of positions) {
+            const light = new THREE.PointLight(randomColorHsl(), lightIntensity, lightDistance)
+            light.position.set(x, y, z)
+            scene.add(light)
+        }
+
+        // Environment map for shiny metallic reflections (procedural gradient)
+        pmrem = new THREE.PMREMGenerator(renderer)
+        pmrem.compileEquirectangularShader()
+
+        const envCanvas = document.createElement("canvas")
+        envCanvas.width = 512
+        envCanvas.height = 256
+        const g = envCanvas.getContext("2d")
+        if(g) {
+            const grad = g.createLinearGradient(0, 0, 0, envCanvas.height)
+            grad.addColorStop(0, "#10224e")
+            grad.addColorStop(0.38, "#1a0733")
+            grad.addColorStop(0.76, "#063446")
+            grad.addColorStop(1, "#04040d")
+            g.fillStyle = grad
+            g.fillRect(0, 0, envCanvas.width, envCanvas.height)
+
+            for(let i = 0; i < 16; i++) {
+                const x = Math.floor((i / 16) * envCanvas.width)
+                const w = 18 + Math.floor(Math.random() * 78)
+                const hue = (i * 26 + 180) % 360
+                g.fillStyle = `hsla(${hue} 100% 60% / 0.18)`
+                g.fillRect(x, 0, w, envCanvas.height)
+            }
+
+            const bloom = g.createRadialGradient(320, 120, 10, 320, 120, 230)
+            bloom.addColorStop(0, "rgba(200, 245, 255, 0.18)")
+            bloom.addColorStop(1, "rgba(0, 0, 0, 0)")
+            g.fillStyle = bloom
+            g.fillRect(0, 0, envCanvas.width, envCanvas.height)
+        }
+
+        envSourceTexture = new THREE.CanvasTexture(envCanvas)
+        envSourceTexture.mapping = THREE.EquirectangularReflectionMapping
+        envSourceTexture.colorSpace = THREE.SRGBColorSpace
+        envSourceTexture.needsUpdate = true
+        envTexture = pmrem.fromEquirectangular(envSourceTexture).texture
+        scene.environment = envTexture
+
+        group = new THREE.Group()
+        scene.add(group)
+
+        const baseMat = new THREE.MeshPhysicalMaterial({
+            color: 0x0a0b10,
+            roughness: 0.10,
+            metalness: 1.0,
+            clearcoat: 1.0,
+            clearcoatRoughness: 0.16,
+            envMapIntensity: 1.8,
+            polygonOffset: true,
+            polygonOffsetFactor: -1,
+            polygonOffsetUnits: -1
+        })
+
+        for(let i = 0; i < nbObjects; i++) {
+            const radius = objectMinRadius + objectRadiusCoef * i
+            const geo = polygonGeometry(nbVertexes, radius, objectThickness, objectDepth)
+            const accent = ringColorHsl(i, nbObjects)
+            const hue = (210 + (i / Math.max(1, nbObjects - 1)) * 310) % 360
+            const fill = new THREE.Color().setHSL(hue / 360, 0.92, 0.18)
+            const mat = baseMat.clone()
+            mat.color.copy(fill)
+            mat.emissive = accent.clone()
+            mat.emissiveIntensity = 0.12
+
+            const mesh = new THREE.Mesh(geo, mat)
+            mesh.position.z = -objectDepth * i
+            mesh.userData = { index: i }
+
+            // Bright “strip” outline so the rings stand out against the dark background.
+            const edges = new THREE.EdgesGeometry(geo, 18)
+            const edgeMat = new THREE.LineBasicMaterial({
+                color: accent,
+                transparent: true,
+                opacity: 0.92,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            })
+            const lines = new THREE.LineSegments(edges, edgeMat)
+            mesh.add(lines)
+
+            group.add(mesh)
+        }
+
+        fitToView()
+    }
+
+    function fitToView() {
+        if(!group) return
+        group.scale.setScalar(1)
+        const box = new THREE.Box3().setFromObject(group)
+        const size = new THREE.Vector3()
+        box.getSize(size)
+
+        const maxSide = Math.max(size.x, size.y, 1e-6)
+        const viewFit = 0.82 * Math.min(width, height)
+        const scale = clamp(viewFit / maxSide, 0.12, 1.2)
+        group.scale.setScalar(scale)
+    }
+
+    function renderFrame() {
+        if(!renderer || !scene || !camera) return
+        renderer.render(scene, camera)
+    }
+
+    function tick(nowMs) {
+        if(!running) return
+
+        const t = (nowMs - startTime) / 1000
+        const ampX = (rotationXDeg * Math.PI) / 180
+        const ampY = (rotationYDeg * Math.PI) / 180
+        const ampZ = (rotationZDeg * Math.PI) / 180
+        const omega = (Math.PI * 2) / Math.max(0.1, animationDuration)
+
+        for(let i = 0; i < group.children.length; i++) {
+            const mesh = group.children[i]
+            const delay = i * animationDelay
+            const phase = (t - delay) * omega
+            const yoyo = 0.5 + 0.5 * Math.sin(phase) // 0..1
+
+            mesh.rotation.x = ampX * yoyo
+            mesh.rotation.y = ampY * yoyo
+            mesh.rotation.z = ampZ * yoyo
+        }
+
+        renderFrame()
+        rafId = requestAnimationFrame(tick)
+    }
+
+    function setSize(w, h, devicePixelRatio = 1) {
+        width = Math.max(1, Math.floor(w || 1))
+        height = Math.max(1, Math.floor(h || 1))
+        const dpr = clamp(Number(devicePixelRatio) || 1, 1, 2)
+
+        if(!renderer) setup()
+
+        renderer.setPixelRatio(dpr)
+        renderer.setSize(width, height, false)
+
+        camera.aspect = width / height
+        camera.updateProjectionMatrix()
+
+        // Re-fit scale on resize
+        fitToView()
+
+        if(reduceMotion) renderFrame()
+    }
+
+    function start() {
+        if(!renderer) setup()
+        if(reduceMotion) {
+            startTime = performance.now()
+            renderFrame()
+            return
+        }
+        if(running) return
+        running = true
+        const now = performance.now()
+        if(startTime === 0) startTime = now
+        if(stoppedAt != null) startTime += (now - stoppedAt)
+        stoppedAt = null
+        rafId = requestAnimationFrame(tick)
+    }
+
+    function stop() {
+        running = false
+        stoppedAt = performance.now()
+        if(rafId != null) cancelAnimationFrame(rafId)
+        rafId = null
+    }
+
+    function reset() {
+        if(!renderer) setup()
+        stop()
+        startTime = performance.now()
+        stoppedAt = null
+        for(let i = 0; i < group.children.length; i++) {
+            group.children[i].rotation.set(0, 0, 0)
+        }
+        renderFrame()
+    }
+
+    function destroy() {
+        stop()
+
+        group?.traverse((obj) => {
+            if(!obj) return
+            if(obj.geometry?.dispose) obj.geometry.dispose()
+            const material = obj.material
+            if(Array.isArray(material)) material.forEach((m) => m?.dispose?.())
+            else material?.dispose?.()
+        })
+        envTexture?.dispose?.()
+        envSourceTexture?.dispose?.()
+        pmrem?.dispose?.()
+        renderer?.dispose?.()
+
+        renderer = null
+        scene = null
+        camera = null
+        group = null
+        pmrem = null
+        envTexture = null
+        envSourceTexture = null
+    }
+
+    return {
+        start,
+        stop,
+        reset,
+        destroy,
+        setSize
+    }
+}

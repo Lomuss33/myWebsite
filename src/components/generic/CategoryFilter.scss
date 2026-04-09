@@ -2,9 +2,13 @@
 
 div.category-filter {
     margin: 0 auto;
-    text-align: center;
     width: 100%;
     max-width: 900px;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: stretch;
+    --category-filter-font-size: clamp(0.58rem, 1.6vw, 0.85rem);
 }
 
 button.category-filter-button {
@@ -29,6 +33,17 @@ button.category-filter-button {
     @include media-breakpoint-down(md) {
         border-width: 1px!important;
     }
+
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 0.42rem 0.55rem !important;
+    line-height: 1.1;
+    font-size: var(--category-filter-font-size) !important;
+    white-space: nowrap;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 button.category-filter-button:hover, button.category-filter-button:focus {
@@ -54,12 +69,14 @@ button.category-filter-button-selected {
 span.category-filter-button-label {
     user-select: none;
     pointer-events: none;
+    white-space: nowrap;
 }
 
 span.category-filter-button-count {
     margin-left: 4px;
     user-select: none;
     pointer-events: none;
+    white-space: nowrap;
     @include media-breakpoint-down(sm) {
         display: none;
     }

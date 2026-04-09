@@ -29,6 +29,32 @@
     },
     "articles": [
         {
+            "id": 0,
+            "component": "ArticleWebArt",
+            "locales": {
+                "en": {
+                    "title": "Here’s some fun {{web art}}"
+                },
+                "de": {
+                    "title": "Hier ist etwas {{Web-Kunst}} zum Spaß"
+                },
+                "hr": {
+                    "title": "Evo malo {{web umjetnosti}} za zabavu"
+                },
+                "tr": {
+                    "title": "İşte biraz {{web sanatı}}"
+                }
+            },
+            "items": [
+                { "id": 1 },
+                { "id": 2 },
+                { "id": 3 },
+                { "id": 4 },
+                { "id": 5 },
+                { "id": 6 }
+            ]
+        },
+        {
             "id": 1,
             "component": "ArticleTimeline",
             "locales": {

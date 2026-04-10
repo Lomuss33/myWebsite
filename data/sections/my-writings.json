@@ -941,6 +941,346 @@
         {
           "id": 62,
           "locales": { "en": { "title": "Semiology", "text": "" } }
+        },
+        {
+          "id": 63,
+          "locales": { "en": { "title": "Informationology", "text": "" } }
+        },
+        {
+          "id": 64,
+          "locales": { "en": { "title": "Signalology", "text": "" } }
+        },
+        {
+          "id": 65,
+          "locales": { "en": { "title": "Telemetryology", "text": "" } }
+        },
+        {
+          "id": 66,
+          "locales": { "en": { "title": "Controlology", "text": "" } }
+        },
+        {
+          "id": 67,
+          "locales": { "en": { "title": "Systemsology", "text": "" } }
+        },
+        {
+          "id": 68,
+          "locales": { "en": { "title": "Networkology", "text": "" } }
+        },
+        {
+          "id": 69,
+          "locales": { "en": { "title": "Computology", "text": "" } }
+        },
+        {
+          "id": 70,
+          "locales": { "en": { "title": "Softwareology", "text": "" } }
+        },
+        {
+          "id": 71,
+          "locales": { "en": { "title": "Hardwareology", "text": "" } }
+        },
+        {
+          "id": 72,
+          "locales": { "en": { "title": "Dataology", "text": "" } }
+        },
+        {
+          "id": 73,
+          "locales": { "en": { "title": "Algorithmology", "text": "" } }
+        },
+        {
+          "id": 74,
+          "locales": { "en": { "title": "Cybernetics", "text": "" } }
+        },
+        {
+          "id": 75,
+          "locales": { "en": { "title": "Electronics", "text": "" } }
+        },
+        {
+          "id": 76,
+          "locales": { "en": { "title": "Photonics", "text": "" } }
+        },
+        {
+          "id": 77,
+          "locales": { "en": { "title": "Acoustics", "text": "" } }
+        },
+        {
+          "id": 78,
+          "locales": { "en": { "title": "Robotics", "text": "" } }
+        },
+        {
+          "id": 79,
+          "locales": { "en": { "title": "Mechatronics", "text": "" } }
+        },
+        {
+          "id": 80,
+          "locales": { "en": { "title": "Nanotechnology", "text": "" } }
+        },
+        {
+          "id": 81,
+          "locales": { "en": { "title": "Philosophy", "text": "" } }
+        },
+        {
+          "id": 82,
+          "locales": { "en": { "title": "Metaphysics", "text": "" } }
+        },
+        {
+          "id": 83,
+          "locales": { "en": { "title": "Epistemology", "text": "" } }
+        },
+        {
+          "id": 84,
+          "locales": { "en": { "title": "Teleology", "text": "" } }
+        },
+        {
+          "id": 85,
+          "locales": { "en": { "title": "Axiology", "text": "" } }
+        },
+        {
+          "id": 86,
+          "locales": { "en": { "title": "Ethics", "text": "" } }
+        },
+        {
+          "id": 87,
+          "locales": { "en": { "title": "Logic", "text": "" } }
+        },
+        {
+          "id": 88,
+          "locales": { "en": { "title": "Hermeneutics", "text": "" } }
+        },
+        {
+          "id": 89,
+          "locales": { "en": { "title": "Phenomenology", "text": "" } }
+        },
+        {
+          "id": 90,
+          "locales": { "en": { "title": "Patrology", "text": "" } }
+        },
+        {
+          "id": 91,
+          "locales": { "en": { "title": "Hagiology", "text": "" } }
+        },
+        {
+          "id": 92,
+          "locales": { "en": { "title": "Ecclesiology", "text": "" } }
+        },
+        {
+          "id": 93,
+          "locales": { "en": { "title": "Christology", "text": "" } }
+        },
+        {
+          "id": 94,
+          "locales": { "en": { "title": "Soteriology", "text": "" } }
+        },
+        {
+          "id": 95,
+          "locales": { "en": { "title": "Pneumatology", "text": "" } }
+        },
+        {
+          "id": 96,
+          "locales": { "en": { "title": "Mariology", "text": "" } }
+        },
+        {
+          "id": 97,
+          "locales": { "en": { "title": "Angelology", "text": "" } }
+        },
+        {
+          "id": 98,
+          "locales": { "en": { "title": "Demonology", "text": "" } }
+        },
+        {
+          "id": 99,
+          "locales": { "en": { "title": "Mythology", "text": "" } }
+        },
+        {
+          "id": 100,
+          "locales": { "en": { "title": "Philology", "text": "" } }
+        },
+        {
+          "id": 101,
+          "locales": { "en": { "title": "Ethnology", "text": "" } }
+        },
+        {
+          "id": 102,
+          "locales": { "en": { "title": "Folklorology", "text": "" } }
+        },
+        {
+          "id": 103,
+          "locales": { "en": { "title": "Historiology", "text": "" } }
+        },
+        {
+          "id": 104,
+          "locales": { "en": { "title": "Archetypology", "text": "" } }
+        },
+        {
+          "id": 105,
+          "locales": { "en": { "title": "Mathematics", "text": "" } }
+        },
+        {
+          "id": 106,
+          "locales": { "en": { "title": "Statistics", "text": "" } }
+        },
+        {
+          "id": 107,
+          "locales": { "en": { "title": "Physics", "text": "" } }
+        },
+        {
+          "id": 108,
+          "locales": { "en": { "title": "Chemistry", "text": "" } }
+        },
+        {
+          "id": 109,
+          "locales": { "en": { "title": "Astronomy", "text": "" } }
+        },
+        {
+          "id": 110,
+          "locales": { "en": { "title": "Linguistics", "text": "" } }
+        },
+        {
+          "id": 111,
+          "locales": { "en": { "title": "Semiotics", "text": "" } }
+        },
+        {
+          "id": 112,
+          "locales": { "en": { "title": "Rhetoric", "text": "" } }
+        },
+        {
+          "id": 113,
+          "locales": { "en": { "title": "Jurisprudence", "text": "" } }
+        },
+        {
+          "id": 114,
+          "locales": { "en": { "title": "Economics", "text": "" } }
+        },
+        {
+          "id": 115,
+          "locales": { "en": { "title": "Demography", "text": "" } }
+        },
+        {
+          "id": 116,
+          "locales": { "en": { "title": "Geography", "text": "" } }
+        },
+        {
+          "id": 117,
+          "locales": { "en": { "title": "Cartography", "text": "" } }
+        },
+        {
+          "id": 118,
+          "locales": { "en": { "title": "Climatology", "text": "" } }
+        },
+        {
+          "id": 119,
+          "locales": { "en": { "title": "Mineralogy", "text": "" } }
+        },
+        {
+          "id": 120,
+          "locales": { "en": { "title": "Petrology", "text": "" } }
+        },
+        {
+          "id": 121,
+          "locales": { "en": { "title": "Glaciology", "text": "" } }
+        },
+        {
+          "id": 122,
+          "locales": { "en": { "title": "Biochemistry", "text": "" } }
+        },
+        {
+          "id": 123,
+          "locales": { "en": { "title": "Biophysics", "text": "" } }
+        },
+        {
+          "id": 124,
+          "locales": { "en": { "title": "Genetics", "text": "" } }
+        },
+        {
+          "id": 125,
+          "locales": { "en": { "title": "Genomics", "text": "" } }
+        },
+        {
+          "id": 126,
+          "locales": { "en": { "title": "Proteomics", "text": "" } }
+        },
+        {
+          "id": 127,
+          "locales": { "en": { "title": "Bioinformatics", "text": "" } }
+        },
+        {
+          "id": 128,
+          "locales": { "en": { "title": "Neuroscience", "text": "" } }
+        },
+        {
+          "id": 129,
+          "locales": { "en": { "title": "Informatics", "text": "" } }
+        },
+        {
+          "id": 130,
+          "locales": { "en": { "title": "Cryptography", "text": "" } }
+        },
+        {
+          "id": 131,
+          "locales": { "en": { "title": "Embryology", "text": "" } }
+        },
+        {
+          "id": 132,
+          "locales": { "en": { "title": "Ethology", "text": "" } }
+        },
+        {
+          "id": 133,
+          "locales": { "en": { "title": "Gerontology", "text": "" } }
+        },
+        {
+          "id": 134,
+          "locales": { "en": { "title": "Andrology", "text": "" } }
+        },
+        {
+          "id": 135,
+          "locales": { "en": { "title": "Gynecology", "text": "" } }
+        },
+        {
+          "id": 136,
+          "locales": { "en": { "title": "Obstetrics", "text": "" } }
+        },
+        {
+          "id": 137,
+          "locales": { "en": { "title": "Kinesiology", "text": "" } }
+        },
+        {
+          "id": 138,
+          "locales": { "en": { "title": "Ergonomics", "text": "" } }
+        },
+        {
+          "id": 139,
+          "locales": { "en": { "title": "Optics", "text": "" } }
+        },
+        {
+          "id": 140,
+          "locales": { "en": { "title": "Thermodynamics", "text": "" } }
+        },
+        {
+          "id": 141,
+          "locales": { "en": { "title": "Electromagnetism", "text": "" } }
+        },
+        {
+          "id": 142,
+          "locales": { "en": { "title": "Astrophysics", "text": "" } }
+        },
+        {
+          "id": 143,
+          "locales": { "en": { "title": "Geophysics", "text": "" } }
+        },
+        {
+          "id": 144,
+          "locales": { "en": { "title": "Paleoclimatology", "text": "" } }
+        },
+        {
+          "id": 145,
+          "locales": { "en": { "title": "Hydrogeology", "text": "" } }
+        },
+        {
+          "id": 146,
+          "locales": { "en": { "title": "Biogeography", "text": "" } }
+        },
+        {
+          "id": 147,
+          "locales": { "en": { "title": "Sociolinguistics", "text": "" } }
         }
       ]
     }

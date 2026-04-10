@@ -27,13 +27,6 @@
       }
     }
   },
-  "wordPills": {
-    "locales": {
-      "en": {
-        "text": "developer with years of experience, I have developed a strong foundation in crafting innovative and efficient technology solutions. My passion for technology driven to push boundaries and make a positive impact in the industry. When I'm not coding, I enjoy exploring my creative side through art, music, and nature"
-      }
-    }
-  },
   "articles": [
     {
       "id": 1,
@@ -673,6 +666,281 @@
               "title": "Resmî yasal uygunluk"
             }
           }
+        }
+      ]
+    }
+    ,
+    {
+      "id": 5,
+      "component": "ArticleFallingWords",
+      "locales": {
+        "en": {
+          "title": "Word {{stack}}"
+        },
+        "de": {
+          "title": "Wort-{{Stapel}}"
+        },
+        "hr": {
+          "title": "{{Stog}} riječi"
+        },
+        "tr": {
+          "title": "Kelime {{yığını}}"
+        }
+      },
+      "settings": {},
+      "items": [
+        {
+          "id": 1,
+          "locales": {
+            "en": {
+              "title": "Psychology",
+              "text": ""
+            }
+          }
+        },
+        {
+          "id": 2,
+          "locales": { "en": { "title": "Biology", "text": "" } }
+        },
+        {
+          "id": 3,
+          "locales": { "en": { "title": "Sociology", "text": "" } }
+        },
+        {
+          "id": 4,
+          "locales": { "en": { "title": "Theology", "text": "" } }
+        },
+        {
+          "id": 5,
+          "locales": { "en": { "title": "Anthropology", "text": "" } }
+        },
+        {
+          "id": 6,
+          "locales": { "en": { "title": "Ecology", "text": "" } }
+        },
+        {
+          "id": 7,
+          "locales": { "en": { "title": "Geology", "text": "" } }
+        },
+        {
+          "id": 8,
+          "locales": { "en": { "title": "Meteorology", "text": "" } }
+        },
+        {
+          "id": 9,
+          "locales": { "en": { "title": "Neurology", "text": "" } }
+        },
+        {
+          "id": 10,
+          "locales": { "en": { "title": "Oncology", "text": "" } }
+        },
+        {
+          "id": 11,
+          "locales": { "en": { "title": "Epidemiology", "text": "" } }
+        },
+        {
+          "id": 12,
+          "locales": { "en": { "title": "Archaeology", "text": "" } }
+        },
+        {
+          "id": 13,
+          "locales": { "en": { "title": "Etymology", "text": "" } }
+        },
+        {
+          "id": 14,
+          "locales": { "en": { "title": "Pharmacology", "text": "" } }
+        },
+        {
+          "id": 15,
+          "locales": { "en": { "title": "Cosmology", "text": "" } }
+        },
+        {
+          "id": 16,
+          "locales": { "en": { "title": "Astrology", "text": "" } }
+        },
+        {
+          "id": 17,
+          "locales": { "en": { "title": "Zoology", "text": "" } }
+        },
+        {
+          "id": 18,
+          "locales": { "en": { "title": "Botany", "text": "" } }
+        },
+        {
+          "id": 19,
+          "locales": { "en": { "title": "Criminology", "text": "" } }
+        },
+        {
+          "id": 20,
+          "locales": { "en": { "title": "Eschatology", "text": "" } }
+        },
+        {
+          "id": 21,
+          "locales": { "en": { "title": "Technology", "text": "" } }
+        },
+        {
+          "id": 22,
+          "locales": { "en": { "title": "Cryptology", "text": "" } }
+        },
+        {
+          "id": 23,
+          "locales": { "en": { "title": "Ontology", "text": "" } }
+        },
+        {
+          "id": 24,
+          "locales": { "en": { "title": "Terminology", "text": "" } }
+        },
+        {
+          "id": 25,
+          "locales": { "en": { "title": "Methodology", "text": "" } }
+        },
+        {
+          "id": 26,
+          "locales": { "en": { "title": "Topology", "text": "" } }
+        },
+        {
+          "id": 27,
+          "locales": { "en": { "title": "Chronology", "text": "" } }
+        },
+        {
+          "id": 28,
+          "locales": { "en": { "title": "Genealogy", "text": "" } }
+        },
+        {
+          "id": 29,
+          "locales": { "en": { "title": "Numerology", "text": "" } }
+        },
+        {
+          "id": 30,
+          "locales": { "en": { "title": "Symbology", "text": "" } }
+        },
+        {
+          "id": 31,
+          "locales": { "en": { "title": "Typology", "text": "" } }
+        },
+        {
+          "id": 32,
+          "locales": { "en": { "title": "Phraseology", "text": "" } }
+        },
+        {
+          "id": 33,
+          "locales": { "en": { "title": "Morphology", "text": "" } }
+        },
+        {
+          "id": 34,
+          "locales": { "en": { "title": "Phonology", "text": "" } }
+        },
+        {
+          "id": 35,
+          "locales": { "en": { "title": "Lexicology", "text": "" } }
+        },
+        {
+          "id": 36,
+          "locales": { "en": { "title": "Graphology", "text": "" } }
+        },
+        {
+          "id": 37,
+          "locales": { "en": { "title": "Radiology", "text": "" } }
+        },
+        {
+          "id": 38,
+          "locales": { "en": { "title": "Pathology", "text": "" } }
+        },
+        {
+          "id": 39,
+          "locales": { "en": { "title": "Cardiology", "text": "" } }
+        },
+        {
+          "id": 40,
+          "locales": { "en": { "title": "Dermatology", "text": "" } }
+        },
+        {
+          "id": 41,
+          "locales": { "en": { "title": "Endocrinology", "text": "" } }
+        },
+        {
+          "id": 42,
+          "locales": { "en": { "title": "Immunology", "text": "" } }
+        },
+        {
+          "id": 43,
+          "locales": { "en": { "title": "Microbiology", "text": "" } }
+        },
+        {
+          "id": 44,
+          "locales": { "en": { "title": "Virology", "text": "" } }
+        },
+        {
+          "id": 45,
+          "locales": { "en": { "title": "Paleontology", "text": "" } }
+        },
+        {
+          "id": 46,
+          "locales": { "en": { "title": "Oceanography", "text": "" } }
+        },
+        {
+          "id": 47,
+          "locales": { "en": { "title": "Hydrology", "text": "" } }
+        },
+        {
+          "id": 48,
+          "locales": { "en": { "title": "Seismology", "text": "" } }
+        },
+        {
+          "id": 49,
+          "locales": { "en": { "title": "Volcanology", "text": "" } }
+        },
+        {
+          "id": 50,
+          "locales": { "en": { "title": "Limnology", "text": "" } }
+        },
+        {
+          "id": 51,
+          "locales": { "en": { "title": "Ichthyology", "text": "" } }
+        },
+        {
+          "id": 52,
+          "locales": { "en": { "title": "Entomology", "text": "" } }
+        },
+        {
+          "id": 53,
+          "locales": { "en": { "title": "Mycology", "text": "" } }
+        },
+        {
+          "id": 54,
+          "locales": { "en": { "title": "Hematology", "text": "" } }
+        },
+        {
+          "id": 55,
+          "locales": { "en": { "title": "Nephrology", "text": "" } }
+        },
+        {
+          "id": 56,
+          "locales": { "en": { "title": "Urology", "text": "" } }
+        },
+        {
+          "id": 57,
+          "locales": { "en": { "title": "Rheumatology", "text": "" } }
+        },
+        {
+          "id": 58,
+          "locales": { "en": { "title": "Toxicology", "text": "" } }
+        },
+        {
+          "id": 59,
+          "locales": { "en": { "title": "Parasitology", "text": "" } }
+        },
+        {
+          "id": 60,
+          "locales": { "en": { "title": "Cytology", "text": "" } }
+        },
+        {
+          "id": 61,
+          "locales": { "en": { "title": "Histology", "text": "" } }
+        },
+        {
+          "id": 62,
+          "locales": { "en": { "title": "Semiology", "text": "" } }
         }
       ]
     }

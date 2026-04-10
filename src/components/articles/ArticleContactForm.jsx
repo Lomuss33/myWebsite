@@ -218,7 +218,7 @@ function ArticleContactFormContentFields({ onInput, didSubmit }) {
 
     return (
         <>
-            <RowFormGroup className={`${splitColClass}`}>
+            <RowFormGroup className={`${splitColClass} article-contact-form-left`}>
                 <RowFormGroupItem>
                     <Input id={`contact-form-name`}
                            name={`name`}
@@ -243,7 +243,7 @@ function ArticleContactFormContentFields({ onInput, didSubmit }) {
                            required={true}/>
                 </RowFormGroupItem>
 
-                <RowFormGroupItem>
+                <RowFormGroupItem className={`article-contact-form-subject`}>
                     <Input id={`contact-form-subject`}
                            name={`contact-message-subject`}
                            type={`text`}
@@ -256,7 +256,7 @@ function ArticleContactFormContentFields({ onInput, didSubmit }) {
                 </RowFormGroupItem>
             </RowFormGroup>
 
-            <RowFormGroup className={`${splitColClass}`}>
+            <RowFormGroup className={`${splitColClass} article-contact-form-right`}>
                 <RowFormGroupItem>
                     <Textarea id={`contact-form-textarea`}
                               name={`message`}

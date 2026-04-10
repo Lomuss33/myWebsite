@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Article from "./base/Article.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useNavigation} from "../../providers/NavigationProvider.jsx"
+import patronusSvgMarkup from "./webArt/patronus.svg?raw"
 
 function _scheduleIdleWork(work, { timeoutMs = 1200 } = {}) {
     if(typeof window === "undefined") {
@@ -285,6 +286,7 @@ function EmbroideryTile({ itemWrapper, index, activate, locked, onReady }) {
     const hoverRef = useRef(false)
     const visibleRef = useRef(true)
     const didReadyRef = useRef(false)
+    const isClickTile = Number(itemWrapper?.id) === 5
 
     const reduceMotion = useMemo(() => {
         if(typeof window === "undefined" || !window.matchMedia) return false
@@ -302,7 +304,7 @@ function EmbroideryTile({ itemWrapper, index, activate, locked, onReady }) {
         }
 
         return {
-            refreshDelay: 8000,
+            refreshDelay: isClickTile ? 0 : 8000,
             radiusMini,
             radiusMaxi,
             dHueStep,
@@ -310,7 +312,7 @@ function EmbroideryTile({ itemWrapper, index, activate, locked, onReady }) {
             seed: 1337 + id * 1009,
             reduceMotion
         }
-    }, [itemWrapper.id, index, reduceMotion])
+    }, [isClickTile, itemWrapper.id, index, reduceMotion])
 
     useEffect(() => {
         if(!activate) return
@@ -357,6 +359,11 @@ function EmbroideryTile({ itemWrapper, index, activate, locked, onReady }) {
                     io = new IntersectionObserver((entries) => {
                         for(const entry of entries) {
                             visibleRef.current = Boolean(entry.isIntersecting)
+                            if(isClickTile) {
+                                if(!visibleRef.current) engine.stop()
+                                continue
+                            }
+
                             if(visibleRef.current && hoverRef.current) engine.start()
                             else engine.stop()
                         }
@@ -390,6 +397,13 @@ function EmbroideryTile({ itemWrapper, index, activate, locked, onReady }) {
     }
 
     const _restart = () => {
+        if(isClickTile) {
+            engineRef.current?.stop?.()
+            engineRef.current?.reset?.()
+            engineRef.current?.start?.()
+            return
+        }
+
         engineRef.current?.reset()
         engineRef.current?.renderStatic?.()
         if(hoverRef.current && visibleRef.current) engineRef.current?.start()
@@ -409,15 +423,15 @@ function EmbroideryTile({ itemWrapper, index, activate, locked, onReady }) {
                 aria-label={`Web art tile ${index + 1}`}
                 disabled={locked}
                 onClick={locked ? undefined : _restart}
-                onMouseEnter={locked ? undefined : _start}
-                onMouseLeave={locked ? undefined : _stop}
-                onFocus={locked ? undefined : _start}
-                onBlur={locked ? undefined : _stop}
+                onMouseEnter={(locked || isClickTile) ? undefined : _start}
+                onMouseLeave={(locked || isClickTile) ? undefined : _stop}
+                onFocus={(locked || isClickTile) ? undefined : _start}
+                onBlur={(locked || isClickTile) ? undefined : _stop}
                 onKeyDown={locked ? undefined : onKeyDown}>
             <canvas ref={canvasRef}
                     className={`article-web-art-canvas`}/>
             <span className={`article-web-art-tile-label`}>
-                {Number.isFinite(Number(itemWrapper?.id)) ? Number(itemWrapper.id) : (index + 1)}
+                {isClickTile ? "Click" : (Number.isFinite(Number(itemWrapper?.id)) ? Number(itemWrapper.id) : (index + 1))}
             </span>
         </button>
     )
@@ -428,6 +442,8 @@ function SpiralDotsTile({ itemWrapper, index, activate, locked, onReady }) {
     const canvasRef = useRef(null)
     const engineRef = useRef(null)
     const didReadyRef = useRef(false)
+    const pointerIdRef = useRef(null)
+    const pointerActiveRef = useRef(false)
 
     const reduceMotion = useMemo(() => {
         if(typeof window === "undefined" || !window.matchMedia) return false
@@ -546,6 +562,34 @@ function SpiralDotsTile({ itemWrapper, index, activate, locked, onReady }) {
              role={"img"}
              tabIndex={locked ? -1 : 0}
              aria-label={`Spiral dots web art tile ${index + 1}`}
+             onPointerDown={locked ? undefined : (event) => {
+                 if(event.pointerType === "mouse") return
+                 const tile = tileRef.current
+                 if(!tile) return
+                 pointerActiveRef.current = true
+                 pointerIdRef.current = event.pointerId
+                try { tile.setPointerCapture(event.pointerId) } catch (e) { void e }
+                 _start()
+                 const pos = _mousePosFromEvent(event)
+                 engineRef.current?.setMouse(pos.x, pos.y)
+             }}
+             onPointerMove={locked ? undefined : (event) => {
+                 if(!pointerActiveRef.current) return
+                 if(pointerIdRef.current != null && event.pointerId !== pointerIdRef.current) return
+                 const pos = _mousePosFromEvent(event)
+                 engineRef.current?.setMouse(pos.x, pos.y)
+             }}
+             onPointerUp={locked ? undefined : (event) => {
+                 if(pointerIdRef.current != null && event.pointerId !== pointerIdRef.current) return
+                 pointerActiveRef.current = false
+                 pointerIdRef.current = null
+                 _stop()
+             }}
+             onPointerCancel={locked ? undefined : () => {
+                 pointerActiveRef.current = false
+                 pointerIdRef.current = null
+                 _stop()
+             }}
              onMouseEnter={locked ? undefined : onMouseEnter}
              onMouseLeave={locked ? undefined : onMouseLeave}
              onMouseMove={locked ? undefined : onMouseMove}
@@ -823,6 +867,7 @@ function ThreeTunnelTile({ itemWrapper, index, activate, locked, onReady }) {
     }
 
     const _restart = () => {
+        engineRef.current?.nextPalette?.()
         engineRef.current?.reset()
         if(hoverRef.current && visibleRef.current) engineRef.current?.start()
     }
@@ -873,10 +918,11 @@ function ThreePolygonDemo5Tile({ itemWrapper, index, activate, locked, onReady }
     const config = useMemo(() => {
         return {
             reduceMotion,
-            nbObjects: 18,
+            nbObjects: 14,
             animationDuration: 7,
             animationDelay: 0.1,
-            cameraZ: 75
+            cameraZ: 75,
+            fitFactor: 0.93
         }
     }, [reduceMotion])
 
@@ -1004,6 +1050,8 @@ function OrbitCirclesTile({ itemWrapper, index, activate, locked, onReady }) {
     const hoverRef = useRef(false)
     const visibleRef = useRef(true)
     const didReadyRef = useRef(false)
+    const recolorGroupIndexRef = useRef(0)
+    const recolorColorIndexRef = useRef(0)
 
     const reduceMotion = useMemo(() => {
         if(typeof window === "undefined" || !window.matchMedia) return false
@@ -1099,8 +1147,24 @@ function OrbitCirclesTile({ itemWrapper, index, activate, locked, onReady }) {
     }
 
     const _restart = () => {
-        engineRef.current?.reset()
-        if(hoverRef.current && visibleRef.current) engineRef.current?.start()
+        const engine = engineRef.current
+        if(!engine) return
+
+        const total = engine.getTotalCircles?.() || config.totalCircles || 22
+        const colors = ["#A8DA00", "#DD0F7E", "#009BBE", "#F2E205", "#8A2BFF", "#EE5A02"]
+        const groupSize = Math.max(3, Math.round(total / 5))
+        const groupCount = Math.max(1, Math.ceil(total / groupSize))
+
+        const color = colors[recolorColorIndexRef.current % colors.length]
+        const start = recolorGroupIndexRef.current * groupSize
+        for(let i = 0; i < groupSize; i++) {
+            engine.setCircleColor?.((start + i) % total, color)
+        }
+
+        recolorGroupIndexRef.current = (recolorGroupIndexRef.current + 1) % groupCount
+        recolorColorIndexRef.current = (recolorColorIndexRef.current + 1) % colors.length
+
+        if(hoverRef.current && visibleRef.current) engine.start?.()
     }
 
     const onKeyDown = (event) => {
@@ -1185,8 +1249,105 @@ function SendYourFunAnimationTile({ label, clickLabel }) {
 }
 
 function GoldfishTile() {
+    const tileRef = useRef(null)
+    const reduceMotion = useMemo(() => {
+        if(typeof window === "undefined" || !window.matchMedia) return false
+        return window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    }, [])
+
+    const holdRef = useRef(false)
+    const holdStartRef = useRef(0)
+    const pointerIdRef = useRef(null)
+    const rafRef = useRef(null)
+    const lastMultRef = useRef(1)
+
+    useEffect(() => {
+        const tile = tileRef.current
+        if(!tile) return
+
+        const setSpeed = (multiplier) => {
+            const mult = Math.max(1, Math.min(3, Number(multiplier) || 1))
+            if(Math.abs(mult - lastMultRef.current) < 0.02) return
+            lastMultRef.current = mult
+
+            const rotateMs = Math.round(10000 / mult)
+            const swimMs = Math.round(1000 / mult)
+            const rollMs = Math.round(1750 / mult)
+            const wiggleMs = Math.max(40, Math.round(200 / mult))
+
+            const wrapper = tile.querySelector(".fish-wrapper")
+            const parts = tile.querySelector(".fish-parts")
+            if(wrapper) wrapper.style.animationDuration = `${rotateMs}ms`
+            if(parts) parts.style.animationDuration = `${swimMs}ms`
+
+            const rollTargets = tile.querySelectorAll(".fish-top-fin, .fish-back-bottom-fin, .fish-front-bottom-fin")
+            for(const el of rollTargets) {
+                el.style.animationDuration = `${rollMs}ms`
+            }
+
+            const backFin = tile.querySelector(".fish-back-fin")
+            if(backFin) backFin.style.animationDuration = `${wiggleMs}ms`
+        }
+
+        const stopHold = () => {
+            holdRef.current = false
+            pointerIdRef.current = null
+            tile.classList.remove("article-web-art-tile-goldfish-held")
+            if(rafRef.current != null) cancelAnimationFrame(rafRef.current)
+            rafRef.current = null
+            setSpeed(1)
+        }
+
+        const tick = () => {
+            if(!holdRef.current) return
+            const t = performance.now() - holdStartRef.current
+            // Smooth ramp from 1x -> 3x (asymptotic).
+            const mult = 1 + 2 * (1 - Math.exp(-t / 850))
+            setSpeed(mult)
+            rafRef.current = requestAnimationFrame(tick)
+        }
+
+        const onPointerDown = (e) => {
+            if(reduceMotion) return
+            if(e.button != null && e.button !== 0) return
+            holdRef.current = true
+            holdStartRef.current = performance.now()
+            pointerIdRef.current = e.pointerId
+            tile.classList.add("article-web-art-tile-goldfish-held")
+
+            try { tile.setPointerCapture(e.pointerId) } catch (err) { void err }
+            if(rafRef.current == null) rafRef.current = requestAnimationFrame(tick)
+        }
+
+        const onPointerUp = () => {
+            stopHold()
+        }
+
+        const onPointerCancel = () => {
+            stopHold()
+        }
+
+        const onLostCapture = () => {
+            stopHold()
+        }
+
+        tile.addEventListener("pointerdown", onPointerDown)
+        tile.addEventListener("pointerup", onPointerUp)
+        tile.addEventListener("pointercancel", onPointerCancel)
+        tile.addEventListener("lostpointercapture", onLostCapture)
+
+        return () => {
+            tile.removeEventListener("pointerdown", onPointerDown)
+            tile.removeEventListener("pointerup", onPointerUp)
+            tile.removeEventListener("pointercancel", onPointerCancel)
+            tile.removeEventListener("lostpointercapture", onLostCapture)
+            stopHold()
+        }
+    }, [reduceMotion])
+
     return (
         <div className={`article-web-art-tile article-web-art-tile-goldfish`}
+             ref={tileRef}
              role={"img"}
              aria-label={`Goldfish animation tile`}>
             <div className={`fish-stage`}>
@@ -1205,6 +1366,9 @@ function GoldfishTile() {
                     </div>
                 </div>
             </div>
+            <span className={`article-web-art-tile-label`}>
+                Fish
+            </span>
         </div>
     )
 }
@@ -1212,6 +1376,8 @@ function GoldfishTile() {
 function PatronusTile() {
     const tileRef = useRef(null)
     const layerRefs = useRef([])
+    const progressRef = useRef(0)
+    const manualUntilRef = useRef(0)
 
     const reduceMotion = useMemo(() => {
         if(typeof window === "undefined" || !window.matchMedia) return false
@@ -1227,7 +1393,6 @@ function PatronusTile() {
 
         let hovered = false
         let rafId = null
-        let progress = 0
 
         const apply = (x, y) => {
             const tiltY = (x - 0.5) * 30
@@ -1246,32 +1411,40 @@ function PatronusTile() {
             const x = (e.clientX - rect.left) / Math.max(1, rect.width)
             const y = (e.clientY - rect.top) / Math.max(1, rect.height)
             hovered = true
+            manualUntilRef.current = performance.now() + 650
             apply(Math.max(0, Math.min(1, x)), Math.max(0, Math.min(1, y)))
+        }
+
+        const onEnter = () => {
+            hovered = true
+            if(reduceMotion) return
+            if(rafId != null) return
+            rafId = requestAnimationFrame(tick)
         }
 
         const onLeave = () => {
             hovered = false
+            if(rafId != null) cancelAnimationFrame(rafId)
+            rafId = null
         }
 
-        const animate = () => {
-            if(reduceMotion) return
-            if(hovered) {
-                rafId = requestAnimationFrame(animate)
-                return
+        const tick = () => {
+            if(!hovered) return
+            if(!reduceMotion && performance.now() >= manualUntilRef.current) {
+                progressRef.current += 0.008
+                const x = Math.sin(progressRef.current) * 0.5 + 0.5
+                apply(x, 0.5)
             }
-            progress += 0.008
-            const x = Math.sin(progress) * 0.5 + 0.5
-            const y = 0.5
-            apply(x, y)
-            rafId = requestAnimationFrame(animate)
+            rafId = requestAnimationFrame(tick)
         }
 
+        tile.addEventListener("mouseenter", onEnter)
         tile.addEventListener("mousemove", onMove)
         tile.addEventListener("mouseleave", onLeave)
-        if(!reduceMotion) rafId = requestAnimationFrame(animate)
-        else apply(0.5, 0.5)
+        apply(0.5, 0.5)
 
         return () => {
+            tile.removeEventListener("mouseenter", onEnter)
             tile.removeEventListener("mousemove", onMove)
             tile.removeEventListener("mouseleave", onLeave)
             if(rafId != null) cancelAnimationFrame(rafId)
@@ -1302,39 +1475,7 @@ function PatronusTile() {
                 <div className={`patronus-layer patronus-svg`}
                      ref={(el) => { layerRefs.current[3] = el }}
                      dangerouslySetInnerHTML={{
-                         __html: `
-<svg width="100%" height="100%" viewBox="0 0 750 500" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-  <filter id='inset-shadow'>
-    <feOffset dx='0' dy='0' />
-    <feGaussianBlur stdDeviation='5' result='offset-blur' />
-    <feComposite operator='out' in='SourceGraphic' in2='offset-blur' result='inverse' />
-    <feFlood flood-color='white' flood-opacity='1' result='color' />
-    <feComposite operator='in' in='color' in2='inverse' result='shadow' />
-    <feComposite operator='over' in='shadow' in2='SourceGraphic' />
-  </filter>
-  <filter id="noise">
-    <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="0" result="turbulence">
-      <animate attributeName="baseFrequency" from="0.02" to="0.06" dur="10s" repeatCount="indefinite" />
-    </feTurbulence>
-    <feColorMatrix in="turbulence" type="matrix" values="1 1 1 0 0 1 1 1 0 0 1 1 1 0 0 0 0 0 1 0" result="colorNoise" />
-    <feComposite operator="in" in2="SourceGraphic" in="colorNoise" result="monoNoise" />
-    <feBlend in="SourceGraphic" in2="monoNoise" mode="multiply" />
-  </filter>
-  <filter id="smokeFilter" x="0" y="0" width="100%" height="100%">
-    <feTurbulence id="turbulence" type="fractalNoise" baseFrequency="0.01" numOctaves="40">
-      <animate attributeName="baseFrequency" from="0.01" to="0.02" dur="10s" repeatCount="indefinite" />
-      <animate attributeName="seed" from="0" to="1" dur="30s" repeatCount="indefinite" />
-    </feTurbulence>
-    <feDisplacementMap in="SourceGraphic" scale="40" xChannelSelector="R" yChannelSelector="G" />
-  </filter>
-  <g id="effect" transform="matrix(1,0,0,1,15.1726,-41.0841)">
-    <path d="M290.42,254.479C284.663,262.21 282.91,269.7 283.625,276.208C281.596,275.964 278.379,275.392 275.894,274.076C271.974,272.001 268.285,269.233 264.826,258.396C264.434,274.66 279.987,279.918 284.679,281.135C284.944,281.954 285.237,282.757 285.577,283.529C286.856,286.428 288.896,289.231 291.175,291.778C288.414,293.007 279.352,296.209 272.205,289.062C270.392,296.768 287.962,301.355 294.473,295.156C297.436,297.965 300.405,300.267 302.409,301.744C305.542,304.053 309.077,307.361 310.876,309.093C310.281,309.488 309.685,309.893 309.083,310.38C309.083,310.38 303.214,305.164 296.366,307.12C301.257,318.206 307.779,315.271 309.083,320.162C310.387,325.053 309.735,326.685 307.779,331.902C305.823,337.119 303.54,362.878 315.604,378.203C327.669,393.528 340.059,397.441 339.733,405.919C339.407,414.397 342.017,452.873 339.082,458.09C336.147,463.307 333.212,470.481 333.212,470.481L343.32,469.502C343.32,469.502 343.646,464.937 345.603,462.002C347.559,459.067 348.212,455.482 348.212,450.917C348.212,446.352 350.168,429.069 351.146,421.243C352.124,413.417 357.016,402.331 357.016,402.331C357.016,402.331 362.886,455.807 360.603,459.068C358.321,462.329 354.082,470.155 354.082,470.155L365.82,469.829C365.82,469.829 363.864,465.262 365.82,462.002C367.777,458.741 367.45,455.155 367.124,452.547C366.798,449.938 369.081,406.245 372.015,400.376C389.297,404.615 399.078,400.376 399.078,400.376C399.078,400.376 407.555,412.767 413.424,414.397C419.293,416.027 411.469,452.874 410.164,457.439C408.86,462.004 404.294,468.852 404.294,468.852L416.36,469.178C416.36,469.178 414.077,456.136 416.36,450.919C418.642,445.702 429.403,413.746 429.077,410.812C428.751,407.877 428.098,404.942 429.403,405.921C430.707,406.899 442.12,417.66 443.098,424.508C444.076,431.355 446.033,458.418 445.706,460.701C445.38,462.984 443.098,469.833 443.098,469.833L454.836,468.201C454.836,468.201 453.858,436.573 450.923,428.096C447.988,419.618 449.293,408.205 447.989,405.596C446.685,402.988 439.511,396.791 437.881,388.639C436.251,380.487 437.881,366.466 436.577,359.618C444.729,365.487 448.968,362.554 448.968,362.554C448.968,362.554 442.12,347.555 435.273,343.316C428.426,339.077 409.186,337.119 399.078,339.076C388.97,341.033 374.622,343.641 367.775,341.685C360.928,339.728 342.994,342.337 339.408,335.164C335.821,327.99 331.582,321.796 335.495,319.513C339.408,317.23 348.864,313.317 349.19,306.143C338.103,306.143 332.233,310.056 332.233,310.056C332.233,310.056 331.673,309.621 330.839,309.079C332.642,307.343 336.165,304.049 339.291,301.746C341.295,300.269 344.264,297.966 347.228,295.158C353.738,301.357 371.309,296.77 369.496,289.064C362.349,296.211 353.287,293.009 350.526,291.78C352.806,289.233 354.845,286.43 356.124,283.531C356.465,282.759 356.757,281.956 357.022,281.137C361.713,279.92 377.267,274.662 376.875,258.398C373.417,269.235 369.727,272.002 365.807,274.078C363.321,275.394 360.104,275.966 358.076,276.21C358.791,269.702 357.038,262.211 351.281,254.48C356.844,267.196 355.47,276.887 351.959,283.895C350.494,282.549 347.735,279.505 346.901,275.001C345.259,279.015 347.949,285.767 349.599,287.84C348.52,289.369 347.363,290.724 346.211,291.91C344.614,290.389 340.713,285.991 339.983,278.69C339.061,269.467 339.523,264.855 334.22,261.166C337.909,268.314 337.448,274.079 337.217,279.151C337.024,283.394 342.106,291.589 343.79,294.183C342.134,295.606 340.62,296.662 339.523,297.364C336.42,299.35 333.281,302.049 331.016,304.138C333.609,298.416 336.108,288.908 330.07,280.072C331.787,291.661 330.904,302.047 326.498,306.963C323.49,305.923 319.53,305.397 315.17,306.927C310.792,301.997 309.918,291.633 311.631,280.072C305.593,288.908 308.092,298.416 310.685,304.138C308.42,302.049 305.281,299.35 302.178,297.364C301.081,296.662 299.567,295.606 297.911,294.183C299.595,291.589 304.677,283.394 304.484,279.151C304.253,274.079 303.792,268.313 307.481,261.166C302.178,264.855 302.641,269.467 301.718,278.69C300.988,285.991 297.087,290.389 295.49,291.91C294.338,290.724 293.181,289.369 292.102,287.84C293.753,285.766 296.443,279.015 294.8,275.001C293.966,279.505 291.208,282.55 289.742,283.895C286.23,276.886 284.856,267.195 290.42,254.479Z" style="stroke:rgba(122,166,203,1);fill-rule:nonzero; stroke-width: 1px; fill: rgba(122,166,203,0.2)" />
-  </g>
-  <g id="patronus" transform="matrix(1,0,0,1,15.1726,-41.0841)">
-    <path d="M290.42,254.479C284.663,262.21 282.91,269.7 283.625,276.208C281.596,275.964 278.379,275.392 275.894,274.076C271.974,272.001 268.285,269.233 264.826,258.396C264.434,274.66 279.987,279.918 284.679,281.135C284.944,281.954 285.237,282.757 285.577,283.529C286.856,286.428 288.896,289.231 291.175,291.778C288.414,293.007 279.352,296.209 272.205,289.062C270.392,296.768 287.962,301.355 294.473,295.156C297.436,297.965 300.405,300.267 302.409,301.744C305.542,304.053 309.077,307.361 310.876,309.093C310.281,309.488 309.685,309.893 309.083,310.38C309.083,310.38 303.214,305.164 296.366,307.12C301.257,318.206 307.779,315.271 309.083,320.162C310.387,325.053 309.735,326.685 307.779,331.902C305.823,337.119 303.54,362.878 315.604,378.203C327.669,393.528 340.059,397.441 339.733,405.919C339.407,414.397 342.017,452.873 339.082,458.09C336.147,463.307 333.212,470.481 333.212,470.481L343.32,469.502C343.32,469.502 343.646,464.937 345.603,462.002C347.559,459.067 348.212,455.482 348.212,450.917C348.212,446.352 350.168,429.069 351.146,421.243C352.124,413.417 357.016,402.331 357.016,402.331C357.016,402.331 362.886,455.807 360.603,459.068C358.321,462.329 354.082,470.155 354.082,470.155L365.82,469.829C365.82,469.829 363.864,465.262 365.82,462.002C367.777,458.741 367.45,455.155 367.124,452.547C366.798,449.938 369.081,406.245 372.015,400.376C389.297,404.615 399.078,400.376 399.078,400.376C399.078,400.376 407.555,412.767 413.424,414.397C419.293,416.027 411.469,452.874 410.164,457.439C408.86,462.004 404.294,468.852 404.294,468.852L416.36,469.178C416.36,469.178 414.077,456.136 416.36,450.919C418.642,445.702 429.403,413.746 429.077,410.812C428.751,407.877 428.098,404.942 429.403,405.921C430.707,406.899 442.12,417.66 443.098,424.508C444.076,431.355 446.033,458.418 445.706,460.701C445.38,462.984 443.098,469.833 443.098,469.833L454.836,468.201C454.836,468.201 453.858,436.573 450.923,428.096C447.988,419.618 449.293,408.205 447.989,405.596C446.685,402.988 439.511,396.791 437.881,388.639C436.251,380.487 437.881,366.466 436.577,359.618C444.729,365.487 448.968,362.554 448.968,362.554C448.968,362.554 442.12,347.555 435.273,343.316C428.426,339.077 409.186,337.119 399.078,339.076C388.97,341.033 374.622,343.641 367.775,341.685C360.928,339.728 342.994,342.337 339.408,335.164C335.821,327.99 331.582,321.796 335.495,319.513C339.408,317.23 348.864,313.317 349.19,306.143C338.103,306.143 332.233,310.056 332.233,310.056C332.233,310.056 331.673,309.621 330.839,309.079C332.642,307.343 336.165,304.049 339.291,301.746C341.295,300.269 344.264,297.966 347.228,295.158C353.738,301.357 371.309,296.77 369.496,289.064C362.349,296.211 353.287,293.009 350.526,291.78C352.806,289.233 354.845,286.43 356.124,283.531C356.465,282.759 356.757,281.956 357.022,281.137C361.713,279.92 377.267,274.662 376.875,258.398C373.417,269.235 369.727,272.002 365.807,274.078C363.321,275.394 360.104,275.966 358.076,276.21C358.791,269.702 357.038,262.211 351.281,254.48C356.844,267.196 355.47,276.887 351.959,283.895C350.494,282.549 347.735,279.505 346.901,275.001C345.259,279.015 347.949,285.767 349.599,287.84C348.52,289.369 347.363,290.724 346.211,291.91C344.614,290.389 340.713,285.991 339.983,278.69C339.061,269.467 339.523,264.855 334.22,261.166C337.909,268.314 337.448,274.079 337.217,279.151C337.024,283.394 342.106,291.589 343.79,294.183C342.134,295.606 340.62,296.662 339.523,297.364C336.42,299.35 333.281,302.049 331.016,304.138C333.609,298.416 336.108,288.908 330.07,280.072C331.787,291.661 330.904,302.047 326.498,306.963C323.49,305.923 319.53,305.397 315.17,306.927C310.792,301.997 309.918,291.633 311.631,280.072C305.593,288.908 308.092,298.416 310.685,304.138C308.42,302.049 305.281,299.35 302.178,297.364C301.081,296.662 299.567,295.606 297.911,294.183C299.595,291.589 304.677,283.394 304.484,279.151C304.253,274.079 303.792,268.313 307.481,261.166C302.178,264.855 302.641,269.467 301.718,278.69C300.988,285.991 297.087,290.389 295.49,291.91C294.338,290.724 293.181,289.369 292.102,287.84C293.753,285.766 296.443,279.015 294.8,275.001C293.966,279.505 291.208,282.55 289.742,283.895C286.23,276.886 284.856,267.195 290.42,254.479Z" style="fill:rgba(122,166,203,0.8);fill-rule:nonzero;" />
-  </g>
-</svg>
-                         `
+                         __html: patronusSvgMarkup
                      }}/>
                 <div className={`patronus-layer`}
                      ref={(el) => { layerRefs.current[4] = el }}>
@@ -1352,6 +1493,9 @@ function PatronusTile() {
                          src={"https://drive.google.com/thumbnail?id=1I7mg1tYxTI3EBpbNoRAXhzSua6n0XDDF&sz=w1000"}/>
                 </div>
             </div>
+            <span className={`article-web-art-tile-label`}>
+                Patronus
+            </span>
         </div>
     )
 }

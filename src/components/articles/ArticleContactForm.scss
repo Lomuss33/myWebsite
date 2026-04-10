@@ -41,6 +41,32 @@ article.article-contact-form {
             opacity: 1;
         }
     }
+
+    // When the message textarea is manually resized, keep the left column visually "in sync":
+    // Name + Email stay at the top; Subject is pushed down to match the textarea bottom.
+    div.row-form-group.article-contact-form-left {
+        height: 100%;
+
+        div.row-form-group-item {
+            height: auto;
+        }
+
+        div.row-form-group-item.article-contact-form-subject {
+            margin-top: auto;
+        }
+    }
+
+    // Let the message field wrapper control its own height (resizable).
+    div.row-form-group.article-contact-form-right {
+        div.row-form-group-item {
+            height: auto;
+            justify-content: stretch;
+        }
+
+        div.input-field-wrapper {
+            width: 100%;
+        }
+    }
 }
 
 button.article-contact-form-reset-button {

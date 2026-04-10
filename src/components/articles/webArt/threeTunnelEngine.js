@@ -25,6 +25,8 @@ export function createThreeTunnelEngine(canvas, options = {}) {
     let elements = null
     let light = null
     let light2 = null
+    let hemiLight = null
+    let ambientLight = null
     let geometry = null
     let running = false
     let rafId = null
@@ -35,6 +37,168 @@ export function createThreeTunnelEngine(canvas, options = {}) {
     let pmrem = null
     let envTexture = null
     let envSourceTexture = null
+    let paletteIndex = 0
+    let cubeMeshes = []
+
+    const palettes = [
+        {
+            name: "Aurora",
+            clearColor: 0x03111a,
+            fogColor: 0x021018,
+            fogNear: 240,
+            fogFar: 1300,
+            hemiSky: 0x9bf7ff,
+            hemiGround: 0x0c0c18,
+            hemiIntensity: 0.34,
+            ambientColor: 0xffffff,
+            ambientIntensity: 0.08,
+            light1: { color: 0xffffff, intensity: 2.8 },
+            light2: { color: 0x18ffb2, intensity: 1.7 },
+            exposure: 1.20,
+            cubeStops: [0x2bffb1, 0x00a3ff, 0xc300ff, 0xff3bc8],
+            emissiveIntensity: 0.24
+        },
+        {
+            name: "Sunset",
+            clearColor: 0x1a0310,
+            fogColor: 0x14020b,
+            fogNear: 230,
+            fogFar: 1250,
+            hemiSky: 0xffc8a6,
+            hemiGround: 0x190112,
+            hemiIntensity: 0.30,
+            ambientColor: 0xffffff,
+            ambientIntensity: 0.07,
+            light1: { color: 0xfff0e8, intensity: 2.6 },
+            light2: { color: 0xff5a2a, intensity: 2.0 },
+            exposure: 1.35,
+            cubeStops: [0xffb703, 0xff5d8f, 0x7b2cff, 0x00d4ff],
+            emissiveIntensity: 0.22
+        },
+        {
+            name: "Ice",
+            clearColor: 0x03050e,
+            fogColor: 0x040717,
+            fogNear: 260,
+            fogFar: 1500,
+            hemiSky: 0x96d9ff,
+            hemiGround: 0x05040a,
+            hemiIntensity: 0.38,
+            ambientColor: 0xffffff,
+            ambientIntensity: 0.09,
+            light1: { color: 0xe9fbff, intensity: 3.1 },
+            light2: { color: 0x2b7bff, intensity: 1.6 },
+            exposure: 1.10,
+            cubeStops: [0x00f5ff, 0x00a3ff, 0xffffff, 0x8a2bff],
+            emissiveIntensity: 0.20
+        },
+        {
+            name: "Lime",
+            clearColor: 0x030f06,
+            fogColor: 0x020a04,
+            fogNear: 230,
+            fogFar: 1200,
+            hemiSky: 0xcfff6b,
+            hemiGround: 0x070b05,
+            hemiIntensity: 0.28,
+            ambientColor: 0xffffff,
+            ambientIntensity: 0.06,
+            light1: { color: 0xf3ffe9, intensity: 2.5 },
+            light2: { color: 0xa8ff00, intensity: 2.0 },
+            exposure: 1.30,
+            cubeStops: [0xa8ff00, 0x00ff8f, 0x00d5ff, 0xffea00],
+            emissiveIntensity: 0.21
+        },
+        {
+            name: "Neon",
+            clearColor: 0x07000f,
+            fogColor: 0x05000a,
+            fogNear: 235,
+            fogFar: 1250,
+            hemiSky: 0xff7cff,
+            hemiGround: 0x060010,
+            hemiIntensity: 0.26,
+            ambientColor: 0xffffff,
+            ambientIntensity: 0.06,
+            light1: { color: 0xffffff, intensity: 2.7 },
+            light2: { color: 0x00d5ff, intensity: 2.1 },
+            exposure: 1.45,
+            cubeStops: [0xff00c8, 0x8f00ff, 0x00d5ff, 0x00ff8f],
+            emissiveIntensity: 0.24
+        }
+    ]
+
+    function _colorFromStops(stops, t01) {
+        const t = clamp(Number(t01) || 0, 0, 1)
+        const list = Array.isArray(stops) ? stops : []
+        if(list.length === 0) return new THREE.Color(0xffffff)
+        if(list.length === 1) return new THREE.Color(list[0])
+
+        const scaled = t * (list.length - 1)
+        const i0 = Math.floor(scaled)
+        const i1 = Math.min(list.length - 1, i0 + 1)
+        const lt = scaled - i0
+        const c0 = new THREE.Color(list[i0])
+        const c1 = new THREE.Color(list[i1])
+        return c0.lerp(c1, lt)
+    }
+
+    function applyPalette(index) {
+        if(!renderer) setup()
+        const idx = Math.max(0, Math.min(palettes.length - 1, Math.floor(Number(index) || 0)))
+        paletteIndex = idx
+        const p = palettes[paletteIndex]
+
+        renderer.setClearColor(p.clearColor, 1)
+        renderer.toneMappingExposure = p.exposure
+        if(scene?.fog) {
+            scene.fog.color = new THREE.Color(p.fogColor)
+            scene.fog.near = p.fogNear
+            scene.fog.far = p.fogFar
+        }
+
+        if(hemiLight) {
+            hemiLight.color = new THREE.Color(p.hemiSky)
+            hemiLight.groundColor = new THREE.Color(p.hemiGround)
+            hemiLight.intensity = p.hemiIntensity
+        }
+
+        if(ambientLight) {
+            ambientLight.color = new THREE.Color(p.ambientColor)
+            ambientLight.intensity = p.ambientIntensity
+        }
+
+        if(light) {
+            light.color = new THREE.Color(p.light1.color)
+            light.intensity = p.light1.intensity
+        }
+        if(light2) {
+            light2.color = new THREE.Color(p.light2.color)
+            light2.intensity = p.light2.intensity
+        }
+
+        for(const cube of cubeMeshes) {
+            const { mesh, ringIndex, cubeIndex } = cube
+            const tA = ringCount <= 1 ? 0 : (ringIndex / (ringCount - 1))
+            const tB = cubesPerRing <= 1 ? 0 : (cubeIndex / (cubesPerRing - 1))
+            const tMix = (tA * 0.78 + tB * 0.22) % 1
+            const color = _colorFromStops(p.cubeStops, tMix)
+            const mat = mesh.material
+            if(mat) {
+                mat.color.copy(color)
+                mat.emissive.copy(color)
+                mat.emissiveIntensity = p.emissiveIntensity
+                mat.needsUpdate = true
+            }
+        }
+
+        renderFrame()
+    }
+
+    function nextPalette() {
+        const next = (paletteIndex + 1) % palettes.length
+        applyPalette(next)
+    }
 
     function setup() {
         renderer = new THREE.WebGLRenderer({
@@ -56,11 +220,11 @@ export function createThreeTunnelEngine(canvas, options = {}) {
         camera.position.z = 70
         scene.add(camera)
 
-        const hemi = new THREE.HemisphereLight(0x9cc7ff, 0x100714, 0.40)
-        scene.add(hemi)
+        hemiLight = new THREE.HemisphereLight(0x9cc7ff, 0x100714, 0.40)
+        scene.add(hemiLight)
 
-        const ambient = new THREE.AmbientLight(0xffffff, 0.10)
-        scene.add(ambient)
+        ambientLight = new THREE.AmbientLight(0xffffff, 0.10)
+        scene.add(ambientLight)
 
         light = new THREE.PointLight(0xffffff, 3.0, 2400)
         light.position.set(0, 0, -260)
@@ -78,13 +242,14 @@ export function createThreeTunnelEngine(canvas, options = {}) {
         // Environment map (procedural equirectangular gradient) for a reflective “deep tunnel” look
         scene.environment = null
 
+        cubeMeshes = []
+
         for(let i = 0; i < ringCount; i++) {
             const ring = new THREE.Object3D()
 
             for(let j = 0; j < cubesPerRing; j++) {
                 const a = (Math.PI * 2 * j) / cubesPerRing
-                const hue = ((i / Math.max(1, ringCount - 1)) * 320 + (j / cubesPerRing) * 170) % 360
-                const color = new THREE.Color().setHSL(hue / 360, 1.0, 0.45)
+                const color = new THREE.Color(0xffffff)
 
                 const material = new THREE.MeshStandardMaterial({
                     color,
@@ -97,6 +262,8 @@ export function createThreeTunnelEngine(canvas, options = {}) {
                 cube.position.set(Math.cos(a) * tunnelRadius, Math.sin(a) * tunnelRadius, 0)
                 cube.rotation.z = a
                 ring.add(cube)
+
+                cubeMeshes.push({ mesh: cube, ringIndex: i, cubeIndex: j })
             }
 
             ring.position.z = -i * ringSpacing
@@ -104,6 +271,8 @@ export function createThreeTunnelEngine(canvas, options = {}) {
         }
 
         farthestZ = - (ringCount - 1) * ringSpacing
+
+        applyPalette(paletteIndex)
     }
 
     function renderFrame() {
@@ -207,16 +376,20 @@ export function createThreeTunnelEngine(canvas, options = {}) {
         elements = null
         light = null
         light2 = null
+        hemiLight = null
+        ambientLight = null
         geometry = null
         pmrem = null
         envTexture = null
         envSourceTexture = null
+        cubeMeshes = []
     }
 
     return {
         start,
         stop,
         reset,
+        nextPalette,
         destroy,
         setSize
     }

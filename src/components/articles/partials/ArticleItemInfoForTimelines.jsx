@@ -176,15 +176,12 @@ function ArticleItemInfoForTimelinesTagsFooter({ itemWrapper, className = "" }) 
 function ArticleItemInfoForTimelinesPreviewFooter({ itemWrapper, className = "" }) {
     const hasScreenshotsOrVideo = itemWrapper.preview?.hasScreenshotsOrYoutubeVideo
     const hasLinks = itemWrapper.preview?.hasLinks
-    const language = useLanguage()
 
     if(!hasScreenshotsOrVideo && !hasLinks)
         return <></>
 
     return (
         <div className={`article-timeline-item-info-preview-footer ${className}`}>
-            <div className={`article-timeline-item-info-preview-footer-title text-3`}
-                 dangerouslySetInnerHTML={{__html: language.getString("get_to_know_more")}}/>
             <ArticleItemPreviewMenu itemWrapper={itemWrapper}
                                     spaceBetween={false}/>
         </div>

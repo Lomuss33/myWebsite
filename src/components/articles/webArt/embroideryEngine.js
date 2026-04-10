@@ -16,7 +16,12 @@ function clampInt(value, min, max, fallback) {
 }
 
 export function createEmbroideryEngine(canvas, options = {}) {
-    const refreshDelay = clampInt(options.refreshDelay, 1000, 60000, 8000)
+    const refreshDelay = (() => {
+        const n = Number(options.refreshDelay)
+        if(!Number.isFinite(n)) return 8000
+        if(n <= 0) return 0
+        return clampInt(n, 1000, 60000, 8000)
+    })()
     const radiusMini = Number.isFinite(options.radiusMini) ? options.radiusMini : 0.003
     const radiusMaxi = Number.isFinite(options.radiusMaxi) ? options.radiusMaxi : 0.006
     const dHueStep = clampInt(options.dHueStep, 1, 10, 1)
@@ -263,6 +268,12 @@ export function createEmbroideryEngine(canvas, options = {}) {
                     break
             }
         } while((animState === 2 || animState === 3) && performance.now() < tEnd)
+
+        if(animState === 10 && refreshDelay <= 0) {
+            // End state: keep the final frame and stop the RAF loop.
+            stop()
+            return
+        }
 
         rafId = requestAnimationFrame(tick)
     }

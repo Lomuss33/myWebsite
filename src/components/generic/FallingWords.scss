@@ -7,12 +7,15 @@ div.falling-words {
     overflow: hidden;
     contain: layout paint size;
 
-    // Keep page scrolling functional while allowing drag interactions.
-    touch-action: pan-y;
+    // On touch devices, we want drag-first behavior inside this box.
+    touch-action: none;
 
-    // Words are invisible until physics is initialized (prevents a flash at (0,0)).
+    // Before physics is ready, show words in normal flow (so it's never "invisible").
     &:not(.falling-words-ready) {
-        opacity: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-content: flex-start;
     }
 }
 
@@ -20,12 +23,13 @@ span.falling-word {
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 1;
 
     cursor: grab;
     user-select: none;
     -webkit-user-select: none;
 
-    font-size: clamp(1.05rem, 0.95rem + 0.8vw, 1.75rem);
+    font-size: calc(clamp(1.05rem, 0.95rem + 0.8vw, 1.75rem) * var(--falling-word-font-scale, 1));
     line-height: 1.1;
     font-weight: 800;
     letter-spacing: 0.01em;
@@ -37,8 +41,73 @@ span.falling-word {
     transform: translate3d(0, 0, 0);
 }
 
+span.falling-word-selected {
+    z-index: 12;
+    filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.35));
+}
+
+div.falling-words:not(.falling-words-ready) {
+    span.falling-word {
+        position: relative;
+        top: auto;
+        left: auto;
+        cursor: default;
+        transform: none;
+        will-change: auto;
+    }
+}
+
 span.falling-word-highlighted {
     font-weight: 900;
     color: var(--theme-texts);
     text-shadow: none;
+}
+
+div.falling-words-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.32);
+    backdrop-filter: blur(1px);
+}
+
+div.falling-words-modal-card {
+    position: relative;
+    z-index: 15;
+    width: min(540px, calc(100% - 28px));
+    max-height: calc(100% - 28px);
+    overflow: auto;
+
+    border-radius: $standard-border-radius;
+    border: 1px solid color-mix(in srgb, var(--theme-primary) 35%, var(--theme-standard-borders) 65%);
+    background: color-mix(in srgb, var(--theme-boards-background) 92%, var(--theme-empty) 8%);
+
+    padding: 16px 14px;
+    text-align: center;
+}
+
+div.falling-words-modal-title {
+    color: var(--theme-primary);
+    font-weight: 900;
+    letter-spacing: 0.02em;
+    font-size: calc(1.15rem * var(--falling-word-font-scale, 1));
+    line-height: 1.05;
+}
+
+div.falling-words-modal-definition {
+    margin-top: 10px;
+    color: var(--theme-texts-light-1);
+    line-height: 1.35;
+}
+
+div.falling-words-modal-open {
+    span.falling-word {
+        cursor: default;
+        pointer-events: none;
+    }
 }

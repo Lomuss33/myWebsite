@@ -143,11 +143,25 @@ export function createOrbitCirclesEngine(canvas, options = {}) {
         ctx = null
     }
 
+    function setCircleColor(index, color) {
+        const i = Math.floor(Number(index))
+        if(!Number.isFinite(i)) return
+        if(i < 0 || i >= circles.length) return
+        circles[i].color = String(color || circles[i].color)
+        if(!running) renderStatic()
+    }
+
+    function getTotalCircles() {
+        return circles.length
+    }
+
     return {
         start,
         stop,
         renderStatic,
         reset,
+        setCircleColor,
+        getTotalCircles,
         destroy,
         setSize
     }

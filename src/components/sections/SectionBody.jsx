@@ -5,6 +5,7 @@ import ArticleCards from "../articles/ArticleCards.jsx"
 import ArticleContactForm from "../articles/ArticleContactForm.jsx"
 import ArticleFeature from "../articles/ArticleFeature.jsx"
 import ArticleFacts from "../articles/ArticleFacts.jsx"
+import ArticleFallingWords from "../articles/ArticleFallingWords.jsx"
 import ArticleInfoList from "../articles/ArticleInfoList.jsx"
 import ArticleInlineList from "../articles/ArticleInlineList.jsx"
 import ArticleNotFound from "../articles/ArticleNotFound.jsx"
@@ -38,6 +39,7 @@ SectionBody.ARTICLES = {
     ArticleContactForm,
     ArticleFeature,
     ArticleFacts,
+    ArticleFallingWords,
     ArticleInfoList,
     ArticleInlineList,
     ArticleNotFound,

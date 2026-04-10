@@ -9,6 +9,10 @@ div.input-field-wrapper {
     cursor: text;
 }
 
+div.input-field-wrapper-resizable {
+    resize: vertical;
+}
+
 div.input-field-wrapper-focused {
     border: 2px solid var(--form-focus-border-color);
     background-color: var(--form-focus-attach-background-color);

@@ -33,9 +33,6 @@ function TextareaTunnelBackground({ enabled = true, loadDelayMs = 1200 }) {
         let resizeObserver = null
         let onWindowResize = null
         let worldSizeTimeout = null
-        let onGlobalPointerMove = null
-        let rafId = 0
-        let lastPointer = null
         let intersectionObserver = null
         let idleHandle = null
         let didInit = false
@@ -51,7 +48,7 @@ function TextareaTunnelBackground({ enabled = true, loadDelayMs = 1200 }) {
                 return
 
             const TunnelComponent = mod?.default || mod
-            const app = TunnelComponent(canvasEl, {enablePointer: true})
+            const app = TunnelComponent(canvasEl, {enablePointer: false})
             appRef.current = app
 
             // High-contrast monochrome tunnel shading.
@@ -71,6 +68,58 @@ function TextareaTunnelBackground({ enabled = true, loadDelayMs = 1200 }) {
                 app.tunnel.uniforms.uSpeed.value = 0.6
             }
 
+            // Smooth "random" drift (no mouse tracking).
+            const radius = 2.5
+            let angleFrom = Math.random() * Math.PI * 2
+            let angleTo = Math.random() * Math.PI * 2
+            let segmentStart = performance.now()
+            let segmentDuration = 2500 + Math.random() * 2500
+
+            const lerpAngle = (a, b, t) => {
+                const tau = Math.PI * 2
+                let delta = (b - a) % tau
+                if(delta > Math.PI) delta -= tau
+                if(delta < -Math.PI) delta += tau
+                return a + delta * t
+            }
+
+            const smoothstep = (t) => t * t * (3 - 2 * t)
+
+            const prevOnBeforeRender = app.three?.onBeforeRender
+            if(app.three) {
+                app.three.onBeforeRender = (frame) => {
+                    const now = performance.now()
+                    const elapsed = now - segmentStart
+                    if(elapsed >= segmentDuration) {
+                        angleFrom = angleTo
+                        angleTo = Math.random() * Math.PI * 2
+                        segmentStart = now
+                        segmentDuration = 2500 + Math.random() * 2500
+                    }
+
+                    const rawT = Math.max(0, Math.min(1, (now - segmentStart) / segmentDuration))
+                    const t = smoothstep(rawT)
+                    const baseAngle = lerpAngle(angleFrom, angleTo, t)
+                    const wobble = 0.12 * Math.sin(now / 1300) + 0.06 * Math.sin(now / 700 + 1.7)
+                    const a = baseAngle + wobble
+                    const r = radius * (1 + 0.06 * Math.sin(now / 1800 + 0.9))
+
+                    if(appRef.current?.tunnelTarget) {
+                        appRef.current.tunnelTarget.x = Math.cos(a) * r
+                        appRef.current.tunnelTarget.y = Math.sin(a) * r
+                        appRef.current.tunnelTarget.z = 0
+                    }
+
+                    prevOnBeforeRender && prevOnBeforeRender(frame)
+
+                    // Add a tiny rotation drift too (keeps it "alive" without mouse input).
+                    if(appRef.current?.tunnel?.rotation) {
+                        appRef.current.tunnel.rotation.x = 0.14 * Math.sin(now / 1600) + 0.06 * Math.sin(now / 820 + 0.4)
+                        appRef.current.tunnel.rotation.y = 0.14 * Math.cos(now / 1700 + 0.7) + 0.06 * Math.sin(now / 760 + 1.1)
+                    }
+                }
+            }
+
             const parentEl = canvasEl.parentElement
             if(parentEl && "ResizeObserver" in window) {
                 resizeObserver = new ResizeObserver(() => {
@@ -82,53 +131,6 @@ function TextareaTunnelBackground({ enabled = true, loadDelayMs = 1200 }) {
                 onWindowResize = () => appRef.current?.three?.updateWorldSize?.()
                 window.addEventListener("resize", onWindowResize, {passive: true})
             }
-
-            // Make the tunnel react to the pointer anywhere on the screen, not just over the canvas.
-            // We map viewport pointer coords into the canvas rect so the internal handler "thinks"
-            // the canvas covers the whole screen.
-            onGlobalPointerMove = (e) => {
-                lastPointer = {x: e.clientX, y: e.clientY}
-                if(rafId)
-                    return
-
-                rafId = window.requestAnimationFrame(() => {
-                    rafId = 0
-                    if(!lastPointer)
-                        return
-
-                    const rect = canvasEl.getBoundingClientRect()
-                    const vw = window.innerWidth || 1
-                    const vh = window.innerHeight || 1
-                    const nx = Math.max(0, Math.min(1, lastPointer.x / vw))
-                    const ny = Math.max(0, Math.min(1, lastPointer.y / vh))
-                    const mappedX = rect.left + nx * rect.width
-                    const mappedY = rect.top + ny * rect.height
-
-                    try {
-                        canvasEl.dispatchEvent(new PointerEvent("pointermove", {
-                            clientX: mappedX,
-                            clientY: mappedY,
-                            pointerId: 1,
-                            pointerType: "mouse",
-                            isPrimary: true,
-                            bubbles: true,
-                        }))
-                    } catch {
-                        // Older browsers / environments without PointerEvent.
-                        try {
-                            canvasEl.dispatchEvent(new MouseEvent("mousemove", {
-                                clientX: mappedX,
-                                clientY: mappedY,
-                                bubbles: true,
-                            }))
-                        } catch {
-                            // Ignore: environment doesn't support synthetic mouse events.
-                        }
-                    }
-                })
-            }
-
-            window.addEventListener("pointermove", onGlobalPointerMove, {passive: true})
 
             appRef.current?.three?.updateWorldSize?.()
 
@@ -183,8 +185,6 @@ function TextareaTunnelBackground({ enabled = true, loadDelayMs = 1200 }) {
             if(resizeObserver) resizeObserver.disconnect()
             if(onWindowResize) window.removeEventListener("resize", onWindowResize)
             if(worldSizeTimeout) window.clearTimeout(worldSizeTimeout)
-            if(onGlobalPointerMove) window.removeEventListener("pointermove", onGlobalPointerMove)
-            if(rafId) window.cancelAnimationFrame(rafId)
             if(intersectionObserver) intersectionObserver.disconnect()
             if(loadTimer) window.clearTimeout(loadTimer)
             if(idleHandle && "cancelIdleCallback" in window) window.cancelIdleCallback(idleHandle)

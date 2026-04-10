@@ -38,3 +38,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+
+# Local dev scratch
+tmp/patronus/
+tmp/extract_patronus_svg.cjs

@@ -1,0 +1,23 @@
+@import "../../styles/extend.scss";
+
+article.article-falling-words {
+    div.article-falling-words-hint {
+        color: var(--theme-texts-light-4);
+        margin: 0 12px 10px;
+        @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+            margin: 0 10px 10px;
+        }
+    }
+
+    div.article-falling-words-stage {
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+
+        // Slightly softer framing so it reads like an "art" article.
+        border: 1px solid color-mix(in srgb, var(--theme-primary) 35%, var(--theme-standard-borders) 65%);
+        border-radius: $standard-border-radius;
+        background: color-mix(in srgb, var(--theme-boards-background) 92%, var(--theme-empty) 8%);
+        padding: 14px 12px;
+    }
+}

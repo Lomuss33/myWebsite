@@ -37,9 +37,18 @@ function ArticleTestimonials({ dataWrapper, id }) {
  */
 function ArticleTestimonialsItems({ dataWrapper, selectedItemCategoryId }) {
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
+    const slideCount = Math.max(1, filteredItems.length)
+
+    // Mobile + tight tablets: 2-up, wider views: 3-up (if enough items exist).
+    const breakpoints = {
+        0:    { id: "bp-0", slidesPerView: Math.min(2, slideCount) },
+        1050: { id: "bp-1", slidesPerView: Math.min(3, slideCount) }
+    }
 
     return (
         <Swipeable className={`article-testimonials-items`}
+                   breakpoints={breakpoints}
+                   slidesPerView={Math.min(3, slideCount)}
                    spaceBetween={16}>
             {filteredItems.map((itemWrapper, key) => (
                 <ArticleTestimonialsItem itemWrapper={itemWrapper}

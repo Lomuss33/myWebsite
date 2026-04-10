@@ -3,7 +3,13 @@ import React, {useEffect, useState} from 'react'
 import {InputGroup} from "react-bootstrap"
 import InputGroupText from "react-bootstrap/InputGroupText"
 
-function InputFieldWrapper({ children, isFocused = false, faIconPrefix = "" }) {
+function InputFieldWrapper({
+    children,
+    isFocused = false,
+    faIconPrefix = "",
+    wrapperClassName = "",
+    wrapperStyle = null,
+}) {
     const focusClass = isFocused ?
         "input-field-wrapper-focused" :
         ""
@@ -34,7 +40,8 @@ function InputFieldWrapper({ children, isFocused = false, faIconPrefix = "" }) {
     }
 
     return (
-        <InputGroup className={`input-field-wrapper ${focusClass}`}
+        <InputGroup className={`input-field-wrapper ${focusClass} ${wrapperClassName}`}
+                    style={wrapperStyle || undefined}
                     onPointerDown={_focusInnerField}
                     onMouseDown={_focusInnerField}
                     onTouchStart={_focusInnerField}

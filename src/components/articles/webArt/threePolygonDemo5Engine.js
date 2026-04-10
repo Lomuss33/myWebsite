@@ -61,6 +61,7 @@ function polygonGeometry(n, s, thickness, depth) {
 
 export function createThreePolygonDemo5Engine(canvas, options = {}) {
     const reduceMotion = Boolean(options.reduceMotion)
+    const fitFactor = Number.isFinite(options.fitFactor) ? clamp(options.fitFactor, 0.75, 1.05) : 0.82
 
     // “Demo 5” config (kept semantically, scaled-to-fit in the tile)
     const nbVertexes = 4
@@ -183,7 +184,7 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
         box.getSize(size)
 
         const maxSide = Math.max(size.x, size.y, 1e-6)
-        const viewFit = 0.82 * Math.min(width, height)
+        const viewFit = fitFactor * Math.min(width, height)
         const scale = clamp(viewFit / maxSide, 0.12, 1.2)
         group.scale.setScalar(scale)
     }

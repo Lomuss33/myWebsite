@@ -5,6 +5,8 @@ import AvatarView from "../generic/AvatarView.jsx"
 import StandardButton from "../buttons/StandardButton.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {ArticleItemInfoForTimelines, ArticleItemInfoForTimelinesHeader, ArticleItemInfoForTimelinesBody, ArticleItemInfoForTimelinesPreviewFooter} from "./partials/ArticleItemInfoForTimelines.jsx"
+import Link from "../generic/Link.jsx"
+import {useUtils} from "../../hooks/utils.js"
 
 /**
  * @param {ArticleDataWrapper} dataWrapper
@@ -176,11 +178,34 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
  * @constructor
  */
 function ArticleTimelineItem({ itemWrapper, itemIndex = 0, isMyArtTimeline = false, avatarColumnSizePx = null, onMyArtItemHeightChange = null }) {
+    const language = useLanguage()
+    const utils = useUtils()
+
     const avatarSrc = itemWrapper.img || itemWrapper.preview?.screenshots?.[0] || ""
     const avatarFaIcon = itemWrapper.faIcon || itemWrapper.preview?.links?.[0]?.faIcon || itemWrapper.faIconWithFallback
     const shouldShowDateInterval = Boolean(itemWrapper.dateEnd)
     const contentRef = useRef(null)
     const [myArtAvatarSizePx, setMyArtAvatarSizePx] = useState(null)
+
+    const screenshots = itemWrapper.preview?.screenshots || []
+    const screenshotsAspectRatio = itemWrapper.preview?.screenshotsAspectRatio
+    const canOpenGallery = Boolean(screenshots?.length)
+
+    const galleryMetadata = useMemo(() => {
+        if(!canOpenGallery)
+            return null
+
+        const splitTitle = utils.string.extractFirstPart(itemWrapper.locales?.title || "")
+        const title = splitTitle.length < 35 ?
+            splitTitle :
+            language.getString("get_to_know_more")
+
+        return {
+            title: title,
+            images: screenshots,
+            aspectRatio: screenshotsAspectRatio,
+        }
+    }, [canOpenGallery, itemWrapper.locales?.title, language, screenshots, screenshotsAspectRatio, utils])
 
     useLayoutEffect(() => {
         if(!isMyArtTimeline)
@@ -240,11 +265,24 @@ function ArticleTimelineItem({ itemWrapper, itemIndex = 0, isMyArtTimeline = fal
     return (
         <li className={`article-timeline-item`}>
             <div className={`article-timeline-item-avatar-wrapper`}>
-                <AvatarView src={avatarSrc}
-                            faIcon={avatarFaIcon}
-                            style={avatarStyle}
-                            alt={itemWrapper?.imageAlt}
-                            className={`article-timeline-item-avatar`}/>
+                {canOpenGallery ? (
+                    <Link href={"#gallery:open"}
+                          metadata={galleryMetadata}
+                          className={`article-timeline-item-avatar-link`}
+                          tooltip={language.getString("open_gallery")}>
+                        <AvatarView src={avatarSrc}
+                                    faIcon={avatarFaIcon}
+                                    style={avatarStyle}
+                                    alt={itemWrapper?.imageAlt}
+                                    className={`article-timeline-item-avatar article-timeline-item-avatar--button`}/>
+                    </Link>
+                ) : (
+                    <AvatarView src={avatarSrc}
+                                faIcon={avatarFaIcon}
+                                style={avatarStyle}
+                                alt={itemWrapper?.imageAlt}
+                                className={`article-timeline-item-avatar`}/>
+                )}
             </div>
 
             <ArticleItemInfoForTimelines className={`article-timeline-item-content`}

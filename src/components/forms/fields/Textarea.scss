@@ -16,6 +16,9 @@ textarea.form-textarea, textarea.form-textarea:focus {
 
     min-height: var(--min-height);
     padding: var(--padding);
+    resize: none;
+    height: 100%;
+    max-width: 100%;
 
     background-color: var(--form-background-color);
     color: var(--form-color);
@@ -37,7 +40,7 @@ canvas.form-textarea-tunnel-canvas {
     pointer-events: none;
     z-index: 0;
 
-    opacity: 0.41;
+    opacity: 0.43;
     filter: blur(0.35px) contrast(1.45);
     transform: scale(1.05);
 }
@@ -47,7 +50,7 @@ textarea.form-textarea-has-tunnel {
     z-index: 1;
 
     background-color: var(--form-background-color);
-    background-color: color-mix(in srgb, var(--form-background-color) 82%, transparent);
+    background-color: color-mix(in srgb, var(--form-background-color) 81%, transparent);
 }
 
 textarea.form-textarea-has-tunnel.form-textarea-focused {
@@ -56,6 +59,6 @@ textarea.form-textarea-has-tunnel.form-textarea-focused {
 
 div.input-field-wrapper-focused {
     canvas.form-textarea-tunnel-canvas {
-        opacity: 0.29;
+        opacity: 0.30;
     }
 }

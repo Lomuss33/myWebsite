@@ -87,7 +87,7 @@ div.article-timeline-item-avatar {
     overflow: hidden;
     z-index: 1;
     flex-shrink: 0;
-    transition: transform 0.16s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
 
     div.avatar-view-image-view {
         border-radius: 100%;
@@ -99,6 +99,8 @@ div.article-timeline-item-avatar {
         box-shadow:
             0 0 0 1px rgba(255, 255, 255, 0.10) inset,
             0 10px 24px rgba(0, 0, 0, 0.35);
+        // Keep the old look (already has its own elevation shadow).
+        --ff-filter: none;
     }
 
     @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
@@ -123,7 +125,7 @@ a.article-timeline-item-avatar-link:focus-visible div.article-timeline-item-avat
 @media (hover: hover) and (pointer: fine) {
     a.article-timeline-item-avatar-link:hover div.article-timeline-item-avatar--button {
         border-color: var(--theme-primary);
-        transform: translateY(-1px);
+        --ff-hover-y: -1px;
         box-shadow:
             0 0 0 4px color-mix(in srgb, var(--theme-primary) 10%, transparent),
             0 0 0 1px rgba(255, 255, 255, 0.12) inset,
@@ -132,7 +134,9 @@ a.article-timeline-item-avatar-link:focus-visible div.article-timeline-item-avat
 }
 
 a.article-timeline-item-avatar-link:active div.article-timeline-item-avatar--button {
-    transform: translateY(0) scale(0.985);
+    --ff-scale: 0.985;
+    --ff-hover-y: 0px;
+    --ff-hover-lift: 0px;
 }
 
 div.article-timeline-item-content {

@@ -41,7 +41,8 @@ function NavToolCursorToggle() {
                                     options={options}
                                     selectedOptionId={selectedOptionId}
                                     onOptionSelected={_onOptionSelected}
-                                    tooltipLabel={tooltipLabel}/>
+                                    tooltipLabel={tooltipLabel}
+                                    toggleCaption={language.getString("nav_tool_cursor")}/>
             )}
         </>
     )

@@ -1,0 +1,82 @@
+/**
+ * 3D Floating Frame hover effect
+ * - Apply `.floating-frame` to the element that should tilt + show highlight.
+ * - Use `.floating-frame--active` + `.floating-frame--transition` (toggled via JS) for animation states.
+ */
+
+.floating-frame {
+    --ff-rotation-limit: 6;
+    --ff-perspective: 900px;
+    --ff-hover-y: -1px;
+    --ff-hover-lift: 14px;
+    --ff-highlight-opacity: 0.12;
+    --ff-highlight-blur: 18px;
+
+    --ff-rx: 0deg;
+    --ff-ry: 0deg;
+    --ff-scale: 1;
+    --ff-translate-y: 0px;
+    --ff-lift: 0px;
+    --ff-hl-x: 50%;
+    --ff-hl-y: 50%;
+
+    position: relative;
+    transform-style: preserve-3d;
+    will-change: transform;
+    filter: var(--ff-filter, none);
+    transform:
+        perspective(var(--ff-perspective, 900px))
+        translate3d(0, var(--ff-translate-y, 0px), var(--ff-lift, 0px))
+        rotateX(var(--ff-ry, 0deg))
+        rotateY(var(--ff-rx, 0deg))
+        scale(var(--ff-scale, 1));
+}
+
+.floating-frame::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.125s ease;
+    border-radius: inherit;
+    background:
+        radial-gradient(
+            circle at var(--ff-hl-x, 50%) var(--ff-hl-y, 50%),
+            rgb(255 255 255 / var(--ff-highlight-opacity, 0.12)),
+            rgb(255 255 255 / 0) 42%
+        );
+    filter: blur(var(--ff-highlight-blur, 18px));
+}
+
+.floating-frame--transition {
+    transition:
+        transform 0.125s ease,
+        filter 0.125s ease;
+}
+
+.floating-frame--active {
+    --ff-translate-y: var(--ff-hover-y, -1px);
+    --ff-lift: var(--ff-hover-lift, 14px);
+    --ff-filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.18));
+}
+
+.floating-frame--active::after {
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .floating-frame {
+        transform: none;
+        filter: none;
+    }
+
+    .floating-frame::after {
+        opacity: 0 !important;
+        filter: none;
+    }
+
+    .floating-frame--transition {
+        transition: none !important;
+    }
+}

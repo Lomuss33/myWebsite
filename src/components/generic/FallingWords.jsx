@@ -13,6 +13,8 @@ function FallingWords({
     highlightPrefixes = DEFAULT_HIGHLIGHT_PREFIXES,
     definitionFallbackText = "Definition coming soon."
 }) {
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value))
+
     const containerRef = useRef(null)
     const wordRefs = useRef([])
     const rafRef = useRef(null)
@@ -22,6 +24,11 @@ function FallingWords({
     const mouseConstraintEnabledRef = useRef(false)
     const wordBodiesRef = useRef([])
     const selectedIndexRef = useRef(null)
+    const draggingIndexRef = useRef(null)
+    const redHoldIndicesRef = useRef(new Set())
+    const permanentRedIndicesRef = useRef(new Set())
+    const redHoldTimersRef = useRef(new Map())
+    const [, forceRedRerender] = useState(0)
     const dragStateRef = useRef({ isDown: false, moved: false, x: 0, y: 0, lastDragAt: 0 })
     const [layoutVersion, setLayoutVersion] = useState(0)
     const [isReady, setIsReady] = useState(false)
@@ -50,6 +57,49 @@ function FallingWords({
     }, [entries, text, splitRegex])
 
     const words = useMemo(() => effectiveEntries.map(entry => entry.word), [effectiveEntries])
+
+    const _bumpRed = () => forceRedRerender(v => v + 1)
+
+    const _clearRedHold = (index) => {
+        const timers = redHoldTimersRef.current
+        const existingTimer = timers.get(index)
+        if(existingTimer) clearTimeout(existingTimer)
+        timers.delete(index)
+
+        if(redHoldIndicesRef.current.delete(index)) {
+            _bumpRed()
+        }
+    }
+
+    const applyRedHold = (index, holdMs) => {
+        if(index === null || index === undefined) return
+        if(permanentRedIndicesRef.current.has(index)) return
+
+        const timers = redHoldTimersRef.current
+        const previous = timers.get(index)
+        if(previous) clearTimeout(previous)
+
+        redHoldIndicesRef.current.add(index)
+        _bumpRed()
+
+        const timeoutId = setTimeout(() => {
+            timers.delete(index)
+            if(redHoldIndicesRef.current.delete(index)) {
+                _bumpRed()
+            }
+        }, holdMs)
+        timers.set(index, timeoutId)
+    }
+
+    const applyPermanentRed = (index) => {
+        if(index === null || index === undefined) return
+
+        _clearRedHold(index)
+        if(permanentRedIndicesRef.current.has(index)) return
+
+        permanentRedIndicesRef.current.add(index)
+        _bumpRed()
+    }
 
     const isCoarsePointer = () => {
         if(typeof window === "undefined") return false
@@ -134,6 +184,7 @@ function FallingWords({
         const Body = Matter.Body
         const Mouse = Matter.Mouse
         const MouseConstraint = Matter.MouseConstraint
+        const Events = Matter.Events
 
         const engine = Engine.create({})
         engine.gravity.y = isCoarsePointer() ? 0.6 : 1
@@ -180,9 +231,22 @@ function FallingWords({
 
             const bodyWidth = el.offsetWidth || 10
             const bodyHeight = el.offsetHeight || 10
-            const startX = width * (0.35 + Math.random() * 0.3)
-            // Spawn within the visible stage so words are immediately visible.
-            const startY = Math.min(containerHeight * 0.25, 70) + (index % 6) * 14
+            const lanes = Math.max(7, Math.min(16, Math.floor(width / 120)))
+            const lane = index % lanes
+            const row = Math.floor(index / lanes)
+
+            const laneWidth = width / lanes
+            const xBase = (lane + 0.5) * laneWidth
+            const xJitter = (Math.random() - 0.5) * laneWidth * 0.7
+            const startX = clamp(
+                xBase + xJitter,
+                bodyWidth / 2 + 8,
+                width - bodyWidth / 2 - 8
+            )
+
+            // Spawn spread across the visible stage so it's not clustered in the middle.
+            const maxSpawnY = Math.min(containerHeight * 0.28, 120)
+            const startY = clamp(20 + row * 18 + (Math.random() - 0.5) * 10, 10, maxSpawnY)
 
             const body = Bodies.rectangle(startX, startY, bodyWidth, bodyHeight, {
                 friction: 0.18,
@@ -190,6 +254,9 @@ function FallingWords({
                 restitution: 0.2,
                 render: {visible: false}
             })
+
+            // Slight initial horizontal drift to spread stacks.
+            Body.setVelocity(body, { x: (Math.random() - 0.5) * 1.2, y: 0 })
 
             // Keep bodies from accumulating extreme rotations.
             Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.04)
@@ -209,6 +276,45 @@ function FallingWords({
         })
         mouseConstraintRef.current = mouseConstraint
         mouseConstraintEnabledRef.current = true
+
+        const onStartDrag = (event) => {
+            if(selectedIndexRef.current !== null) return
+            const body = event?.body
+            if(!body) return
+
+            const index = wordBodies.findIndex(entry => entry?.body === body)
+            if(index < 0) return
+
+            draggingIndexRef.current = index
+            const el = wordBodies[index]?.el
+            if(!el) return
+
+            // Cancel any active drag red-hold when the user starts dragging again.
+            _clearRedHold(index)
+
+            el.classList.add("falling-word-held")
+        }
+
+        const onEndDrag = () => {
+            const index = draggingIndexRef.current
+            if(index === null || index === undefined) return
+
+            draggingIndexRef.current = null
+            const el = wordBodies[index]?.el
+            if(!el) return
+
+            el.classList.remove("falling-word-held")
+
+            // After releasing a dragged word, show red for 4s, then fade back (CSS).
+            applyRedHold(index, 4000)
+        }
+
+        try {
+            Events.on(mouseConstraint, "startdrag", onStartDrag)
+            Events.on(mouseConstraint, "enddrag", onEndDrag)
+        } catch {
+            // no-op
+        }
 
         mouse.element.removeEventListener("mousewheel", mouse.mousewheel)
         mouse.element.removeEventListener("DOMMouseScroll", mouse.mousewheel)
@@ -254,11 +360,25 @@ function FallingWords({
             if(rafRef.current) cancelAnimationFrame(rafRef.current)
             rafRef.current = null
             try {
+                try {
+                    Events.off(mouseConstraint, "startdrag", onStartDrag)
+                    Events.off(mouseConstraint, "enddrag", onEndDrag)
+                } catch {
+                    // no-op
+                }
                 Matter.World.clear(engine.world, false)
                 Matter.Engine.clear(engine)
             } catch {
                 // no-op
             }
+
+            const timers = redHoldTimersRef.current
+            for(const timeoutId of timers.values()) {
+                clearTimeout(timeoutId)
+            }
+            timers.clear()
+            redHoldIndicesRef.current.clear()
+
             engineRef.current = null
             mouseConstraintRef.current = null
             mouseConstraintEnabledRef.current = false
@@ -336,6 +456,9 @@ function FallingWords({
             Matter.Body.setAngularVelocity(target.body, (Math.random() - 0.5) * 0.08)
         }
 
+        // After closing the definition popup, keep the word red until refresh.
+        applyPermanentRed(index)
+
         setSelectedIndex(null)
     }
 
@@ -383,6 +506,9 @@ function FallingWords({
                         aria-modal={true}
                         onClick={(e) => e.stopPropagation()}
                     >
+                        <div className={`falling-words-modal-title text-1`}>
+                            {effectiveEntries[selectedIndex]?.word || ""}
+                        </div>
                         <div className={`falling-words-modal-definition text-2`}>
                             {effectiveEntries[selectedIndex]?.definition || definitionFallbackText}
                         </div>
@@ -392,11 +518,13 @@ function FallingWords({
 
             {words.map((word, index) => {
                 const isHighlighted = (highlightPrefixes || []).some(prefix => word.startsWith(prefix))
+                const isRedPermanent = permanentRedIndicesRef.current.has(index)
+                const isRedHold = !isRedPermanent && redHoldIndicesRef.current.has(index)
                 return (
                     <span
                         key={`${word}-${index}`}
                         ref={(el) => { wordRefs.current[index] = el }}
-                        className={`falling-word ${isHighlighted ? "falling-word-highlighted" : ""} ${selectedIndex === index ? "falling-word-selected" : ""}`}
+                        className={`falling-word ${isHighlighted ? "falling-word-highlighted" : ""} ${selectedIndex === index ? "falling-word-selected" : ""} ${isRedHold ? "falling-word-red-hold" : ""} ${isRedPermanent ? "falling-word-red-permanent" : ""}`}
                         onClick={() => _selectWord(index)}
                     >
                         {word}

@@ -34,8 +34,10 @@ span.falling-word {
     font-weight: 800;
     letter-spacing: 0.01em;
 
-    color: var(--theme-primary);
+    --falling-word-color: var(--theme-primary);
+    color: var(--falling-word-color);
     text-shadow: 0 1px 0 color-mix(in srgb, var(--theme-background) 55%, transparent 45%);
+    transition: color 5s ease;
 
     will-change: transform;
     transform: translate3d(0, 0, 0);
@@ -43,7 +45,16 @@ span.falling-word {
 
 span.falling-word-selected {
     z-index: 12;
-    filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.42));
+    --falling-word-color: var(--theme-texts);
+    color: var(--falling-word-color);
+
+    text-shadow:
+        0 1px 0 color-mix(in srgb, var(--theme-background) 25%, transparent 75%),
+        0 14px 28px rgba(0, 0, 0, 0.35);
+
+    filter:
+        drop-shadow(0 10px 22px rgba(0, 0, 0, 0.42))
+        drop-shadow(0 0 18px color-mix(in srgb, var(--theme-primary) 45%, transparent 55%));
 }
 
 div.falling-words:not(.falling-words-ready) {
@@ -58,9 +69,26 @@ div.falling-words:not(.falling-words-ready) {
 }
 
 span.falling-word-highlighted {
+    --falling-word-color: var(--theme-texts);
     font-weight: 900;
-    color: var(--theme-texts);
+    color: var(--falling-word-color);
     text-shadow: none;
+}
+
+span.falling-word-held {
+    cursor: grabbing;
+}
+
+span.falling-word-red-hold {
+    color: #ff2b2b !important;
+    text-shadow: none !important;
+    transition: none !important;
+}
+
+span.falling-word-red-permanent {
+    color: #ff2b2b !important;
+    text-shadow: none !important;
+    transition: none !important;
 }
 
 div.falling-words-overlay {
@@ -72,8 +100,8 @@ div.falling-words-overlay {
     align-items: center;
     justify-content: center;
 
-    background: rgba(0, 0, 0, 0.32);
-    backdrop-filter: blur(1px);
+    background: rgba(0, 0, 0, 0.38);
+    backdrop-filter: blur(2px);
 }
 
 div.falling-words-modal-card {
@@ -85,10 +113,21 @@ div.falling-words-modal-card {
 
     border-radius: $standard-border-radius;
     border: 1px solid color-mix(in srgb, var(--theme-primary) 35%, var(--theme-standard-borders) 65%);
-    background: color-mix(in srgb, var(--theme-boards-background) 92%, var(--theme-empty) 8%);
+    background: color-mix(in srgb, var(--theme-boards-background) 96%, var(--theme-empty) 4%);
+
+    box-shadow:
+        0 28px 70px rgba(0, 0, 0, 0.38),
+        0 1px 0 color-mix(in srgb, var(--theme-background) 18%, transparent 82%);
 
     padding: 16px 14px;
     text-align: center;
+}
+
+div.falling-words-modal-title {
+    color: var(--theme-texts);
+    font-weight: 900;
+    letter-spacing: 0.01em;
+    margin-bottom: 10px;
 }
 
 div.falling-words-modal-definition {
@@ -100,5 +139,10 @@ div.falling-words-modal-open {
     span.falling-word {
         cursor: default;
         pointer-events: none;
+    }
+
+    // Avoid "double title" by hiding the selected token behind the modal title.
+    span.falling-word-selected {
+        opacity: 0;
     }
 }

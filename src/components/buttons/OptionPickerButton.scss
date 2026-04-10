@@ -8,6 +8,33 @@ div.btn-option-picker {
 }
 
 button.btn-option-picker-toggle {
+    span.btn-option-picker-toggle-row {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &.btn-option-picker-toggle-with-caption {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+    }
+
+    span.btn-option-picker-toggle-caption {
+        font-size: 0.68rem;
+        line-height: 1;
+        opacity: 0.85;
+        color: var(--theme-texts);
+        user-select: none;
+        pointer-events: none;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
     i.fa-icon {
         opacity: 0.3;
         color: var(--theme-texts);

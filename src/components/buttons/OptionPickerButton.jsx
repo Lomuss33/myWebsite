@@ -2,7 +2,7 @@ import "./OptionPickerButton.scss"
 import React, {useEffect, useState} from 'react'
 import {Dropdown} from "react-bootstrap"
 
-function OptionPickerButton({ mode, options, selectedOptionId, onOptionSelected, tooltipLabel, showSelectedOptionOnDropdown = false }) {
+function OptionPickerButton({ mode, options, selectedOptionId, onOptionSelected, tooltipLabel, showSelectedOptionOnDropdown = false, toggleCaption = null }) {
     const defaultOption = {
         id: "default",
         faIcon: "fa-solid fa-circle"
@@ -47,7 +47,8 @@ function OptionPickerButton({ mode, options, selectedOptionId, onOptionSelected,
                 <OptionPickerButtonToggle option={selectedOption}
                                           caretIcon={caretIcon}
                                           onClick={_onToggleClicked}
-                                          tooltipLabel={tooltipLabel}/>
+                                          tooltipLabel={tooltipLabel}
+                                          toggleCaption={toggleCaption}/>
 
                 {!buttonBehaviorEnabled && (
                     <OptionPickerButtonMenu availableOptions={availableOptions}
@@ -59,17 +60,27 @@ function OptionPickerButton({ mode, options, selectedOptionId, onOptionSelected,
     )
 }
 
-function OptionPickerButtonToggle({ option, caretIcon, onClick, tooltipLabel }) {
+function OptionPickerButtonToggle({ option, caretIcon, onClick, tooltipLabel, toggleCaption }) {
+    const captionClass = toggleCaption ? "btn-option-picker-toggle-with-caption" : ""
+
     return (
         <Dropdown.Toggle variant={`transparent`}
-                         className={`btn-option-picker-toggle`}
+                         className={`btn-option-picker-toggle ${captionClass}`}
                          onClickCapture={onClick}
                          data-tooltip={tooltipLabel}>
-            <OptionPickerButtonPickerIcon   option={option}
-                                            size={2}/>
+            <span className={`btn-option-picker-toggle-row`}>
+                <OptionPickerButtonPickerIcon option={option}
+                                              size={2}/>
 
-            {caretIcon && (
-                <i className={`fa-caret-icon ${caretIcon}`}/>
+                {caretIcon && (
+                    <i className={`fa-caret-icon ${caretIcon}`}/>
+                )}
+            </span>
+
+            {toggleCaption && (
+                <span className={`btn-option-picker-toggle-caption`}>
+                    {toggleCaption}
+                </span>
             )}
         </Dropdown.Toggle>
     )

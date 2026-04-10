@@ -32,10 +32,8 @@ div.nav-profile-card {
         display: inline-flex;
         transform-style: preserve-3d;
         will-change: transform;
-    }
-
-    &-media-tilt-transition {
-        transition: transform 0.125s ease;
+        border-radius: calc($standard-border-radius * 2);
+        border-top-right-radius: 0;
     }
 
     &-avatar {

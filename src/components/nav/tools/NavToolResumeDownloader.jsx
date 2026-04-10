@@ -40,7 +40,8 @@ function NavToolResumeDownloader() {
                             options={options}
                             selectedOptionId={id}
                             onOptionSelected={_onClick}
-                            tooltipLabel={tooltip}/>
+                            tooltipLabel={tooltip}
+                            toggleCaption={language.getString("nav_tool_resume")}/>
     )
 }
 

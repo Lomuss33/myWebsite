@@ -52,7 +52,7 @@ function ArticleFallingWords({ dataWrapper }) {
                     text={entries.length ? undefined : DEFAULT_WORDS}
                     splitRegex={/\s*,\s*/g}
                     height={360}
-                    fontScale={0.66}
+                    fontScale={0.6}
                     highlightPrefixes={[]}
                     definitionFallbackText={fallbackText}
                 />

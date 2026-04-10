@@ -1,10 +1,11 @@
 @import "../../styles/extend.scss";
 
 div.section-content {
-    --padding: 2rem 2rem 3rem;
-    @include media-breakpoint-down(xl) { --padding: 1.5rem 1.5rem 2.25rem; }
-    @include media-breakpoint-down(md) { --padding: 0.85rem 0.85rem 1.9rem; }
-    @media (max-width: 380px) { --padding: 0.65rem 0.65rem 1.1rem; }
+    /* Reduce horizontal whitespace to improve readability on wide layouts. */
+    --padding: 1.35rem 1.35rem 2.6rem;
+    @include media-breakpoint-down(xl) { --padding: 1.05rem 1.05rem 2.1rem; }
+    @include media-breakpoint-down(md) { --padding: 0.75rem 0.75rem 1.75rem; }
+    @media (max-width: 380px) { --padding: 0.6rem 0.6rem 1.05rem; }
 
     position: relative;
     width: 100%;

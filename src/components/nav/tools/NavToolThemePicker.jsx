@@ -37,6 +37,7 @@ function NavToolThemePicker() {
                                     selectedOptionId={selectedTheme?.id}
                                     onOptionSelected={_onOptionSelected}
                                     tooltipLabel={tooltipLabel}
+                                    toggleCaption={language.getString("nav_tool_theme")}
                                     showSelectedOptionOnDropdown={true}/>
             )}
         </>

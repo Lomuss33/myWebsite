@@ -606,5 +606,25 @@
         }
       ]
     }
+    ,
+    {
+      "id": 2,
+      "component": "ArticleDataProbe",
+      "locales": {
+        "en": {
+          "title": "You allowed me to see this"
+        },
+        "de": {
+          "title": "You allowed me to see this"
+        },
+        "hr": {
+          "title": "You allowed me to see this"
+        },
+        "tr": {
+          "title": "You allowed me to see this"
+        }
+      },
+      "settings": {}
+    }
   ]
 }

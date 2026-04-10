@@ -10,6 +10,7 @@ import ArticleInfoList from "../articles/ArticleInfoList.jsx"
 import ArticleInlineList from "../articles/ArticleInlineList.jsx"
 import ArticleNotFound from "../articles/ArticleNotFound.jsx"
 import ArticlePortfolio from "../articles/ArticlePortfolio.jsx"
+import ArticleDataProbe from "../articles/ArticleDataProbe.jsx"
 import ArticleStack from "../articles/ArticleStack.jsx"
 import ArticleSkills from "../articles/ArticleSkills.jsx"
 import ArticleTestimonials from "../articles/ArticleTestimonials.jsx"
@@ -37,6 +38,7 @@ function SectionBody({ section }) {
 SectionBody.ARTICLES = {
     ArticleCards,
     ArticleContactForm,
+    ArticleDataProbe,
     ArticleFeature,
     ArticleFacts,
     ArticleFallingWords,

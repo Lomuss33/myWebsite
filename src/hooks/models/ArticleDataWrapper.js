@@ -76,6 +76,9 @@ export default class ArticleDataWrapper {
             featureImageAspectRatio: rawSettings["feature_image_aspect_ratio"] || undefined,
             featureImageMobileAspectRatio: rawSettings["feature_image_mobile_aspect_ratio"] || undefined,
             featureImageViewportHeight: rawSettings["feature_image_viewport_height"] || undefined,
+            featureTextFitToMediaHeight: rawSettings["feature_text_fit_to_media_height"] === undefined ?
+                undefined :
+                Boolean(rawSettings["feature_text_fit_to_media_height"]),
             featureTextFitMinScale: rawSettings["feature_text_fit_min_scale"] || undefined,
             featureTextFitMaxScale: rawSettings["feature_text_fit_max_scale"] || undefined,
             featureEmbed: rawSettings["feature_embed"] || undefined,

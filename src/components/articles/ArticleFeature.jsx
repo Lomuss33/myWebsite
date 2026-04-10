@@ -4,6 +4,7 @@ import Article from "./base/Article.jsx"
 import IllustratedManuscript from "../generic/IllustratedManuscript.jsx"
 import ImageView from "../generic/ImageView.jsx"
 import PretextInteractiveText from "../generic/PretextInteractiveText.jsx"
+import {useFloatingFrame} from "../../hooks/floatingFrame.js"
 
 const FEATURE_TEXT_DEFAULT_MIN_SCALE = 0.74
 const FEATURE_TEXT_DEFAULT_MAX_SCALE = 1
@@ -101,6 +102,8 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
         return window.matchMedia(MOBILE_VIEW_MEDIA_QUERY).matches
     })
 
+    const floatingFrame = useFloatingFrame({targetSelector: ".article-feature-item-image"})
+
     const isAboutIntro = itemWrapper.articleWrapper.sectionId === "about" && itemWrapper.id === 1
     const isWritingIntro =
         itemWrapper.articleWrapper.sectionId === "my-writings" &&
@@ -118,7 +121,8 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
     const isConfiguredInteractiveItem = articleSettings.featureInteractiveItemIds.includes(itemWrapper.id)
     const shouldFitTextToMediaHeight =
         isSquareFitLayout ||
-        (isFixedViewportImageLayout && isHomeStyleIntro)
+        (isFixedViewportImageLayout && isHomeStyleIntro) ||
+        Boolean(articleSettings.featureTextFitToMediaHeight)
     const defaultFitMaxScale = isHomeStyleIntro ? FEATURE_TEXT_ABOUT_INTRO_MAX_SCALE : FEATURE_TEXT_DEFAULT_MAX_SCALE
     const textFontSize = computeScaledFontSize(baseTypographyRef, textScale)
     const textLineHeight = computeScaledLineHeight(baseTypographyRef, textScale)
@@ -349,15 +353,18 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
         <div ref={itemRef}
              className={itemClassName}>
             <div ref={mediaRef}
-                 className={`article-feature-item-media`}>
+                 className={`article-feature-item-media`}
+                 onPointerEnter={floatingFrame.onPointerEnter}
+                 onPointerMove={floatingFrame.onPointerMove}
+                 onPointerLeave={floatingFrame.onPointerLeave}>
                 {itemWrapper.img ? (
                     <ImageView src={itemWrapper.img}
                                alt={itemWrapper.imageAlt}
-                               className={`article-feature-item-image`}
+                               className={`article-feature-item-image floating-frame`}
                                style={imageStyle}
                                hideSpinner={true}/>
                 ) : (
-                    <div className={`article-feature-item-image article-feature-item-image-fallback`}
+                    <div className={`article-feature-item-image article-feature-item-image-fallback floating-frame`}
                          style={imageStyle}/>
                 )}
             </div>

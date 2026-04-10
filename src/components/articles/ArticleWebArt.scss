@@ -411,6 +411,9 @@ div.article-web-art-items-locked {
     perspective: 1000px;
     overflow: hidden;
     background-color: #c4d9e9;
+    --patronus-scene-shift-y: -6%;
+    --patronus-svg-shift-y: -3%;
+    touch-action: pan-y;
 
     @media (prefers-reduced-motion: reduce) {
         cursor: default;
@@ -466,7 +469,8 @@ div.article-web-art-items-locked {
 .patronus-layer:not(.patronus-bg):not(.patronus-svg) {
     img {
         // The original version was a tall phone card; scale in a bit so the forest reads well in a square tile.
-        transform: scale(1.18);
+        // Also nudge the scene down a bit so tree tops aren't cropped.
+        transform: translateY(var(--patronus-scene-shift-y)) scale(1.18);
         transform-origin: 50% 50%;
     }
 }
@@ -489,7 +493,7 @@ div.article-web-art-items-locked {
         margin: 0;
         mix-blend-mode: screen;
         pointer-events: none;
-        transform: scale(1.06);
+        transform: translateY(var(--patronus-svg-shift-y)) scale(1.06);
         transform-origin: 50% 55%;
     }
 

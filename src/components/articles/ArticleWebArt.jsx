@@ -1411,6 +1411,8 @@ function PatronusTile() {
         if(!layers.length) return
 
         let hovered = false
+        let touchActive = false
+        let touchPointerId = null
         let rafId = null
 
         const apply = (x, y) => {
@@ -1441,6 +1443,47 @@ function PatronusTile() {
             applyLimited(Math.max(0, Math.min(1, x)), Math.max(0, Math.min(1, y)))
         }
 
+        const _posFromPointer = (e) => {
+            const rect = tile.getBoundingClientRect()
+            const x = (e.clientX - rect.left) / Math.max(1, rect.width)
+            const y = (e.clientY - rect.top) / Math.max(1, rect.height)
+            return {
+                x: Math.max(0, Math.min(1, x)),
+                y: Math.max(0, Math.min(1, y))
+            }
+        }
+
+        const onPointerDown = (e) => {
+            if(e.pointerType === "mouse") return
+            touchActive = true
+            touchPointerId = e.pointerId
+            hovered = true
+            manualUntilRef.current = performance.now() + 900
+            const pos = _posFromPointer(e)
+            applyLimited(pos.x, pos.y)
+            if(reduceMotion) return
+            if(rafId != null) return
+            rafId = requestAnimationFrame(tick)
+        }
+
+        const onPointerMove = (e) => {
+            if(!touchActive) return
+            if(touchPointerId != null && e.pointerId !== touchPointerId) return
+            hovered = true
+            manualUntilRef.current = performance.now() + 900
+            const pos = _posFromPointer(e)
+            applyLimited(pos.x, pos.y)
+        }
+
+        const endTouch = (e) => {
+            if(touchPointerId != null && e?.pointerId != null && e.pointerId !== touchPointerId) return
+            touchActive = false
+            touchPointerId = null
+            hovered = false
+            if(rafId != null) cancelAnimationFrame(rafId)
+            rafId = null
+        }
+
         const onEnter = () => {
             hovered = true
             if(reduceMotion) return
@@ -1467,12 +1510,20 @@ function PatronusTile() {
         tile.addEventListener("mouseenter", onEnter)
         tile.addEventListener("mousemove", onMove)
         tile.addEventListener("mouseleave", onLeave)
+        tile.addEventListener("pointerdown", onPointerDown)
+        tile.addEventListener("pointermove", onPointerMove)
+        tile.addEventListener("pointerup", endTouch)
+        tile.addEventListener("pointercancel", endTouch)
         applyLimited(0.5, 0.5)
 
         return () => {
             tile.removeEventListener("mouseenter", onEnter)
             tile.removeEventListener("mousemove", onMove)
             tile.removeEventListener("mouseleave", onLeave)
+            tile.removeEventListener("pointerdown", onPointerDown)
+            tile.removeEventListener("pointermove", onPointerMove)
+            tile.removeEventListener("pointerup", endTouch)
+            tile.removeEventListener("pointercancel", endTouch)
             if(rafId != null) cancelAnimationFrame(rafId)
         }
     }, [reduceMotion])

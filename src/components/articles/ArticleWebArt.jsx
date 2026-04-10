@@ -1050,8 +1050,7 @@ function OrbitCirclesTile({ itemWrapper, index, activate, locked, onReady }) {
     const hoverRef = useRef(false)
     const visibleRef = useRef(true)
     const didReadyRef = useRef(false)
-    const recolorGroupIndexRef = useRef(0)
-    const recolorColorIndexRef = useRef(0)
+    const paletteIndexRef = useRef(0)
 
     const reduceMotion = useMemo(() => {
         if(typeof window === "undefined" || !window.matchMedia) return false
@@ -1150,19 +1149,17 @@ function OrbitCirclesTile({ itemWrapper, index, activate, locked, onReady }) {
         const engine = engineRef.current
         if(!engine) return
 
-        const total = engine.getTotalCircles?.() || config.totalCircles || 22
-        const colors = ["#A8DA00", "#DD0F7E", "#009BBE", "#F2E205", "#8A2BFF", "#EE5A02"]
-        const groupSize = Math.max(3, Math.round(total / 5))
-        const groupCount = Math.max(1, Math.ceil(total / groupSize))
+        const palettes = [
+            { palette: ["#A8DA00", "#76C700", "#D9FF6A"], bgColor: "#06130a" }, // green
+            { palette: ["#DD0F7E", "#FF4FAE", "#7B2CFF"], bgColor: "#200018" }, // pink/purple
+            { palette: ["#009BBE", "#00D5FF", "#2B7BFF"], bgColor: "#001018" }, // cyan/blue
+            { palette: ["#F2E205", "#FFB703", "#EE5A02"], bgColor: "#1a0f00" }, // yellow/orange
+            { palette: ["#8A2BFF", "#C300FF", "#FF00C8"], bgColor: "#07000f" }, // violet/neon
+        ]
 
-        const color = colors[recolorColorIndexRef.current % colors.length]
-        const start = recolorGroupIndexRef.current * groupSize
-        for(let i = 0; i < groupSize; i++) {
-            engine.setCircleColor?.((start + i) % total, color)
-        }
-
-        recolorGroupIndexRef.current = (recolorGroupIndexRef.current + 1) % groupCount
-        recolorColorIndexRef.current = (recolorColorIndexRef.current + 1) % colors.length
+        const next = palettes[paletteIndexRef.current % palettes.length]
+        paletteIndexRef.current = (paletteIndexRef.current + 1) % palettes.length
+        engine.setPalette?.(next.palette, next.bgColor)
 
         if(hoverRef.current && visibleRef.current) engine.start?.()
     }
@@ -1259,34 +1256,37 @@ function GoldfishTile() {
     const holdStartRef = useRef(0)
     const pointerIdRef = useRef(null)
     const rafRef = useRef(null)
-    const lastMultRef = useRef(1)
+    const rateRef = useRef(1)
+    const releaseRafRef = useRef(null)
 
     useEffect(() => {
         const tile = tileRef.current
         if(!tile) return
 
-        const setSpeed = (multiplier) => {
-            const mult = Math.max(1, Math.min(3, Number(multiplier) || 1))
-            if(Math.abs(mult - lastMultRef.current) < 0.02) return
-            lastMultRef.current = mult
+        const smoothstep01 = (t) => {
+            const x = Math.max(0, Math.min(1, t))
+            return x * x * (3 - 2 * x)
+        }
 
-            const rotateMs = Math.round(10000 / mult)
-            const swimMs = Math.round(1000 / mult)
-            const rollMs = Math.round(1750 / mult)
-            const wiggleMs = Math.max(40, Math.round(200 / mult))
-
-            const wrapper = tile.querySelector(".fish-wrapper")
-            const parts = tile.querySelector(".fish-parts")
-            if(wrapper) wrapper.style.animationDuration = `${rotateMs}ms`
-            if(parts) parts.style.animationDuration = `${swimMs}ms`
-
-            const rollTargets = tile.querySelectorAll(".fish-top-fin, .fish-back-bottom-fin, .fish-front-bottom-fin")
-            for(const el of rollTargets) {
-                el.style.animationDuration = `${rollMs}ms`
+        const collectAnimations = () => {
+            const nodes = tile.querySelectorAll(
+                ".fish-wrapper, .fish-parts, .fish-top-fin, .fish-back-bottom-fin, .fish-back-fin, .fish-front-bottom-fin"
+            )
+            const all = []
+            for(const node of nodes) {
+                const anims = node.getAnimations ? node.getAnimations() : []
+                for(const a of anims) all.push(a)
             }
+            return all
+        }
 
-            const backFin = tile.querySelector(".fish-back-fin")
-            if(backFin) backFin.style.animationDuration = `${wiggleMs}ms`
+        const setRate = (rate) => {
+            const r = Math.max(1, Math.min(3, Number(rate) || 1))
+            rateRef.current = r
+            const anims = collectAnimations()
+            for(const a of anims) {
+                a.playbackRate = r
+            }
         }
 
         const stopHold = () => {
@@ -1295,15 +1295,28 @@ function GoldfishTile() {
             tile.classList.remove("article-web-art-tile-goldfish-held")
             if(rafRef.current != null) cancelAnimationFrame(rafRef.current)
             rafRef.current = null
-            setSpeed(1)
+
+            const from = rateRef.current
+            const dur = 260
+            const start = performance.now()
+            if(releaseRafRef.current != null) cancelAnimationFrame(releaseRafRef.current)
+
+            const tickRelease = () => {
+                const t = (performance.now() - start) / dur
+                const k = smoothstep01(t)
+                setRate(from + (1 - from) * k)
+                if(t < 1) releaseRafRef.current = requestAnimationFrame(tickRelease)
+                else releaseRafRef.current = null
+            }
+            releaseRafRef.current = requestAnimationFrame(tickRelease)
         }
 
         const tick = () => {
             if(!holdRef.current) return
             const t = performance.now() - holdStartRef.current
-            // Smooth ramp from 1x -> 3x (asymptotic).
-            const mult = 1 + 2 * (1 - Math.exp(-t / 850))
-            setSpeed(mult)
+            // Smooth ramp from 1x -> 3x over ~5 seconds.
+            const mult = 1 + 2 * smoothstep01(t / 5000)
+            setRate(mult)
             rafRef.current = requestAnimationFrame(tick)
         }
 
@@ -1316,6 +1329,10 @@ function GoldfishTile() {
             tile.classList.add("article-web-art-tile-goldfish-held")
 
             try { tile.setPointerCapture(e.pointerId) } catch (err) { void err }
+            if(releaseRafRef.current != null) {
+                cancelAnimationFrame(releaseRafRef.current)
+                releaseRafRef.current = null
+            }
             if(rafRef.current == null) rafRef.current = requestAnimationFrame(tick)
         }
 
@@ -1342,6 +1359,8 @@ function GoldfishTile() {
             tile.removeEventListener("pointercancel", onPointerCancel)
             tile.removeEventListener("lostpointercapture", onLostCapture)
             stopHold()
+            if(releaseRafRef.current != null) cancelAnimationFrame(releaseRafRef.current)
+            releaseRafRef.current = null
         }
     }, [reduceMotion])
 
@@ -1406,13 +1425,20 @@ function PatronusTile() {
             }
         }
 
+        const applyLimited = (xRaw, yRaw) => {
+            // Vertical movement: reduce by ~30%. Horizontal movement: expand by ~10%.
+            const dx = Math.max(-0.55, Math.min(0.55, (xRaw - 0.5) * 1.10))
+            const dy = Math.max(-0.35, Math.min(0.35, (yRaw - 0.5) * 0.70))
+            apply(0.5 + dx, 0.5 + dy)
+        }
+
         const onMove = (e) => {
             const rect = tile.getBoundingClientRect()
             const x = (e.clientX - rect.left) / Math.max(1, rect.width)
             const y = (e.clientY - rect.top) / Math.max(1, rect.height)
             hovered = true
             manualUntilRef.current = performance.now() + 650
-            apply(Math.max(0, Math.min(1, x)), Math.max(0, Math.min(1, y)))
+            applyLimited(Math.max(0, Math.min(1, x)), Math.max(0, Math.min(1, y)))
         }
 
         const onEnter = () => {
@@ -1433,7 +1459,7 @@ function PatronusTile() {
             if(!reduceMotion && performance.now() >= manualUntilRef.current) {
                 progressRef.current += 0.008
                 const x = Math.sin(progressRef.current) * 0.5 + 0.5
-                apply(x, 0.5)
+                applyLimited(x, 0.5)
             }
             rafId = requestAnimationFrame(tick)
         }
@@ -1441,7 +1467,7 @@ function PatronusTile() {
         tile.addEventListener("mouseenter", onEnter)
         tile.addEventListener("mousemove", onMove)
         tile.addEventListener("mouseleave", onLeave)
-        apply(0.5, 0.5)
+        applyLimited(0.5, 0.5)
 
         return () => {
             tile.removeEventListener("mouseenter", onEnter)

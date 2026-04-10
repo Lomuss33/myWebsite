@@ -91,16 +91,7 @@ div.falling-words-modal-card {
     text-align: center;
 }
 
-div.falling-words-modal-title {
-    color: var(--theme-primary);
-    font-weight: 900;
-    letter-spacing: 0.02em;
-    font-size: calc(1.15rem * var(--falling-word-font-scale, 1));
-    line-height: 1.05;
-}
-
 div.falling-words-modal-definition {
-    margin-top: 10px;
     color: var(--theme-texts-light-1);
     line-height: 1.35;
 }

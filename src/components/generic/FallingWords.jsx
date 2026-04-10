@@ -383,15 +383,9 @@ function FallingWords({
                         aria-modal={true}
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <div className={`falling-words-modal-title`}>
-                            {effectiveEntries[selectedIndex]?.word || ""}
+                        <div className={`falling-words-modal-definition text-2`}>
+                            {effectiveEntries[selectedIndex]?.definition || definitionFallbackText}
                         </div>
-                        <div
-                            className={`falling-words-modal-definition text-2`}
-                            dangerouslySetInnerHTML={{
-                                __html: effectiveEntries[selectedIndex]?.definition || definitionFallbackText
-                            }}
-                        />
                     </div>
                 </div>
             )}

@@ -4,14 +4,14 @@ function clamp(value, min, max) {
 
 export function createOrbitCirclesEngine(canvas, options = {}) {
     const reduceMotion = Boolean(options.reduceMotion)
-    const palette = Array.isArray(options.palette) && options.palette.length > 0 ? options.palette : [
+    let palette = Array.isArray(options.palette) && options.palette.length > 0 ? options.palette : [
         "#DD0F7E",
         "#009BBE",
         "#A8DA00",
         "#F2E205",
         "#EE5A02"
     ]
-    const bgColor = options.bgColor || "#400036"
+    let bgColor = options.bgColor || "#400036"
     const timeScale = Number.isFinite(options.timeScale) ? options.timeScale : 0.0015
     const totalCircles = clamp(Number(options.totalCircles) || 25, 12, 48)
 
@@ -33,17 +33,14 @@ export function createOrbitCirclesEngine(canvas, options = {}) {
         const separation = length / totalCircles
 
         const list = []
-        let idxColor = 0
         for(let i = 0; i < totalCircles; i++) {
-            const color = palette[idxColor % palette.length]
+            const color = palette[i % Math.max(1, palette.length)]
             list.push({
                 index: i,
                 separation,
                 color,
                 radio: i * separation
             })
-            idxColor += 1
-            if(i % palette.length === 0) idxColor = 0
         }
         circles = list
     }
@@ -143,6 +140,17 @@ export function createOrbitCirclesEngine(canvas, options = {}) {
         ctx = null
     }
 
+    function setPalette(nextPalette, nextBgColor) {
+        if(Array.isArray(nextPalette) && nextPalette.length > 0) {
+            palette = nextPalette.slice(0)
+        }
+        if(typeof nextBgColor === "string" && nextBgColor.length > 0) {
+            bgColor = nextBgColor
+        }
+        setCircles()
+        if(!running) renderStatic()
+    }
+
     function setCircleColor(index, color) {
         const i = Math.floor(Number(index))
         if(!Number.isFinite(i)) return
@@ -160,6 +168,7 @@ export function createOrbitCirclesEngine(canvas, options = {}) {
         stop,
         renderStatic,
         reset,
+        setPalette,
         setCircleColor,
         getTotalCircles,
         destroy,

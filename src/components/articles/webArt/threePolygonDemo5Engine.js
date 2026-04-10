@@ -98,7 +98,7 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
             alpha: false,
             powerPreference: "high-performance"
         })
-        renderer.setClearColor(0x070811, 1)
+        renderer.setClearColor(0x02020a, 1)
         renderer.outputColorSpace = THREE.SRGBColorSpace
         renderer.toneMapping = THREE.ACESFilmicToneMapping
         renderer.toneMappingExposure = 1.10
@@ -109,9 +109,9 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
         camera.position.z = cameraZ
         scene.add(camera)
 
-        scene.add(new THREE.AmbientLight(0xffffff, 0.16))
+        scene.add(new THREE.AmbientLight(0xffffff, 0.22))
 
-        const lightIntensity = 0.90
+        const lightIntensity = 0.85
         const lightDistance = 340
         const positions = [
             [0, 70, 0],
@@ -123,7 +123,7 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
         ]
 
         for(const [x, y, z] of positions) {
-            const light = new THREE.PointLight(randomColorHsl(), lightIntensity, lightDistance)
+            const light = new THREE.PointLight(0xffffff, lightIntensity, lightDistance)
             light.position.set(x, y, z)
             scene.add(light)
         }
@@ -134,10 +134,13 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
         group = new THREE.Group()
         scene.add(group)
 
+        const accentColor = new THREE.Color().setHSL(195 / 360, 0.92, 0.62)
         const baseMat = new THREE.MeshStandardMaterial({
-            color: 0x0a0b10,
-            roughness: 0.10,
-            metalness: 1.0,
+            color: 0x060715,
+            emissive: accentColor.clone(),
+            emissiveIntensity: 0.04,
+            roughness: 0.22,
+            metalness: 0.88,
             polygonOffset: true,
             polygonOffsetFactor: -1,
             polygonOffsetUnits: -1
@@ -146,13 +149,7 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
         for(let i = 0; i < nbObjects; i++) {
             const radius = objectMinRadius + objectRadiusCoef * i
             const geo = polygonGeometry(nbVertexes, radius, objectThickness, objectDepth)
-            const accent = ringColorHsl(i, nbObjects)
-            const hue = (210 + (i / Math.max(1, nbObjects - 1)) * 310) % 360
-            const fill = new THREE.Color().setHSL(hue / 360, 0.78, 0.26)
             const mat = baseMat.clone()
-            mat.color.copy(fill)
-            mat.emissive = accent.clone()
-            mat.emissiveIntensity = 0.07
 
             const mesh = new THREE.Mesh(geo, mat)
             mesh.position.z = -objectDepth * i
@@ -161,10 +158,10 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
             // Bright “strip” outline so the rings stand out against the dark background.
             const edges = new THREE.EdgesGeometry(geo, 18)
             const edgeMat = new THREE.LineBasicMaterial({
-                color: accent,
+                color: accentColor,
                 transparent: true,
-                opacity: 0.68,
-                blending: THREE.AdditiveBlending,
+                opacity: 0.88,
+                blending: THREE.NormalBlending,
                 depthWrite: false
             })
             const lines = new THREE.LineSegments(edges, edgeMat)

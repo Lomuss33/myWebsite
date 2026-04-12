@@ -4,6 +4,8 @@
  * - Use `.floating-frame--active` + `.floating-frame--transition` (toggled via JS) for animation states.
  */
 
+@use "../extend" as *;
+
 .floating-frame {
     --ff-rotation-limit: 6;
     --ff-perspective: 900px;

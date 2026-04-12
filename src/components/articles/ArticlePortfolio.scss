@@ -1,4 +1,4 @@
-@import "../../styles/extend.scss";
+@use "../../styles/extend" as *;
 
 div.article-portfolio-items {
     --item-gap: 28px;

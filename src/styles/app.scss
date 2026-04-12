@@ -1,26 +1,9 @@
-// Base parameters...
-@import 'constants';
-
-// Importing plugins...
-@import 'bootstrap/scss/bootstrap';
-@import "swiper/swiper-bundle.css";
-
-// Importing core FontAwesome styling file...
-$fa-font-path: "@fortawesome/fontawesome-free/webfonts";
-@import "@fortawesome/fontawesome-free/scss/fontawesome.scss";
-// Our project needs Solid + Brands
-@import "@fortawesome/fontawesome-free/scss/solid.scss";
-@import "@fortawesome/fontawesome-free/scss/regular.scss";
-@import "@fortawesome/fontawesome-free/scss/brands.scss";
-
-// Importing PrimeIcons...
-@import "primeicons/primeicons.css";
-
-// Importing styles...
-@import "root-flags";
-@import "layout/page";
-@import "layout/typography";
-@import "layout/floating-frame";
-@import "customization/primitives-customization";
-@import "customization/bootstrap-customization";
-@import "customization/plugin-customization";
+@use "./theme-runtime";
+@use "./bootstrap-runtime";
+@use "./root-flags";
+@use "./layout/page";
+@use "./layout/typography";
+@use "./layout/floating-frame";
+@use "./customization/primitives-customization";
+@use "./customization/bootstrap-customization";
+@use "./customization/plugin-customization";

@@ -180,6 +180,13 @@ function LanguageProvider({ children, supportedLanguages, defaultLanguageId, app
         return getTranslation(locales, key)
     }
 
+    const getStringOrFallback = (key, fallback) => {
+        const value = getString(key)
+        if(typeof value === "string" && value.startsWith("locale:"))
+            return fallback
+        return value
+    }
+
     const getDateLocaleString = (date) => {
         if(!date) return `date.null`
         if(utils.date.isSameDay(date)) return `<strong>${getString("present")}</strong>`
@@ -217,6 +224,7 @@ function LanguageProvider({ children, supportedLanguages, defaultLanguageId, app
             getAvailableLanguages,
             getTranslation,
             getString,
+            getStringOrFallback,
             parseJsonText,
             getDateLocaleString,
             getExperienceTimeString
@@ -238,6 +246,7 @@ const LanguageContext = createContext(null)
  *    getAvailableLanguages: Function,
  *    getTranslation: Function,
  *    getString: Function,
+ *    getStringOrFallback: Function,
  *    parseJsonText: Function,
  *    getDateLocaleString: Function,
  *    getExperienceTimeString: Function,

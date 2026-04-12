@@ -1,4 +1,4 @@
-@import "../../styles/extend.scss";
+@use "../../styles/extend" as *;
 
 /**
  * Conveyor-belt preloader
@@ -12,13 +12,6 @@
 
 div.pacman-wrapper {
   --size: 100px;
-
-  @include media-breakpoint-down(xxl) { --size: 100px; }
-  @include media-breakpoint-down(xl)  { --size: 90px; }
-  @include media-breakpoint-down(lg)  { --size: 85px; }
-  @include media-breakpoint-down(md)  { --size: 80px; }
-  @include media-breakpoint-down(sm)  { --size: 70px; }
-
   /* Re-using your existing variable names, but for left->right travel */
   --animation-bean-start-position: calc(var(--size) * 0.22);
   --animation-bean-end-position:   calc(var(--size) * 1.10);
@@ -35,6 +28,12 @@ div.pacman-wrapper {
   --dot-color:  #ffffff;
 
   transition: 0.4s opacity ease-out, 0.4s transform ease-out, 0.4s scale ease-out;
+
+  @include media-breakpoint-down(xxl) { --size: 100px; }
+  @include media-breakpoint-down(xl)  { --size: 90px; }
+  @include media-breakpoint-down(lg)  { --size: 85px; }
+  @include media-breakpoint-down(md)  { --size: 80px; }
+  @include media-breakpoint-down(sm)  { --size: 70px; }
 }
 
 div.pacman {

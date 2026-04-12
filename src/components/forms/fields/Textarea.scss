@@ -1,18 +1,8 @@
-@import "../../../styles/extend.scss";
+@use "../../../styles/extend" as *;
 
 textarea.form-textarea, textarea.form-textarea:focus {
     --min-height: 200px;
     --padding: 1rem;
-    @include media-breakpoint-down(xl) {
-        --padding: 0.975rem;
-    }
-    @include media-breakpoint-down(lg) {
-        --padding: 0.9rem;
-    }
-    @include media-breakpoint-down(sm) {
-        --min-height: 150px;
-        --padding: 0.85rem;
-    }
 
     min-height: var(--min-height);
     padding: var(--padding);
@@ -25,6 +15,17 @@ textarea.form-textarea, textarea.form-textarea:focus {
     border: none;
     transition: none;
     box-shadow: none;
+
+    @include media-breakpoint-down(xl) {
+        --padding: 0.975rem;
+    }
+    @include media-breakpoint-down(lg) {
+        --padding: 0.9rem;
+    }
+    @include media-breakpoint-down(sm) {
+        --min-height: 150px;
+        --padding: 0.85rem;
+    }
 }
 
 textarea.form-textarea-focused {

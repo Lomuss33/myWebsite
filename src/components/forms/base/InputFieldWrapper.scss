@@ -1,4 +1,4 @@
-@import "../../../styles/extend.scss";
+@use "../../../styles/extend" as *;
 
 div.input-field-wrapper {
     position: relative;
@@ -25,15 +25,16 @@ span.input-field-wrapper-attach {
 
     min-width: 65px;
     font-size: 1.1rem;
-    @include media-breakpoint-down(sm) {
-        min-width: 55px;
-        font-size: 0.95rem;
-    }
 
     background-color: var(--form-attach-background-color);
     color: var(--form-attach-color);
     border: none;
     cursor: text;
+
+    @include media-breakpoint-down(sm) {
+        min-width: 55px;
+        font-size: 0.95rem;
+    }
 }
 
 span.input-field-wrapper-attach-focused {

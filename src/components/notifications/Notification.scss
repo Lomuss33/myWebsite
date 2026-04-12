@@ -1,4 +1,4 @@
-@import "../../styles/extend.scss";
+@use "../../styles/extend" as *;
 
 div.notification {
     pointer-events: auto;
@@ -6,14 +6,15 @@ div.notification {
 
     width: 400px;
     min-height: 120px;
-    @include media-breakpoint-down(lg) { width: 350px; }
-    @include media-breakpoint-down(sm) { width: 250px; min-height: 110px; }
 
     background-color: var(--theme-primary);
     color: var(--theme-texts-inv);
 
     border-radius: $standard-border-radius;
     transition: 0.2s transform ease-in;
+
+    @include media-breakpoint-down(lg) { width: 350px; }
+    @include media-breakpoint-down(sm) { width: 250px; min-height: 110px; }
 }
 
 div.notification-header {

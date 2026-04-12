@@ -1,4 +1,4 @@
-@import "../../styles/extend.scss";
+@use "../../styles/extend" as *;
 
 div.balloon {
     display: flex;
@@ -9,15 +9,16 @@ div.balloon {
 
     min-height: 150px;
     padding: 1.5rem;
-    @include media-breakpoint-down(md) {
-        padding: 1rem 1.5rem;
-        min-height: 120px;
-    }
 
     background-color: var(--theme-boards-background);
     color: var(--theme-texts-light);
     text-align: center;
     border-radius: $standard-border-radius;
+
+    @include media-breakpoint-down(md) {
+        padding: 1rem 1.5rem;
+        min-height: 120px;
+    }
 }
 
 div.balloon-triangle {

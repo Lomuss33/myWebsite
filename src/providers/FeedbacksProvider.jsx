@@ -15,6 +15,7 @@ import NotificationsLayer from "../components/notifications/NotificationsLayer.j
 import YoutubeVideoModal from "../components/modals/YoutubeVideoModal.jsx"
 import ConfirmationWindowModal from "../components/modals/ConfirmationWindowModal.jsx"
 import GalleryModal from "../components/modals/GalleryModal.jsx"
+import PhoneQrModal from "../components/modals/PhoneQrModal.jsx"
 
 function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
     const scheduler = useScheduler()
@@ -29,6 +30,7 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
     const [displayingNotification, setDisplayingNotification] = useState(null)
     const [displayingYoutubeVideo, setDisplayingYoutubeVideo] = useState(null)
     const [displayingGallery, setDisplayingGallery] = useState(null)
+    const [displayingPhoneQr, setDisplayingPhoneQr] = useState(null)
     const [pendingConfirmation, setPendingConfirmation] = useState(null)
 
     /** @listens canHaveAnimatedCursor|viewport.innerWidth **/
@@ -113,6 +115,14 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
         setDisplayingGallery(null)
     }
 
+    const displayPhoneQr = (target) => {
+        setDisplayingPhoneQr(target)
+    }
+
+    const closePhoneQr = () => {
+        setDisplayingPhoneQr(null)
+    }
+
     const showConfirmationDialog = (title, message, faIcon, onConfirm, confirmLabel, onCancel, cancelLabel) => {
         setPendingConfirmation({
             title: title,
@@ -130,6 +140,7 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
             isShowingActivitySpinner() ||
             displayingYoutubeVideo ||
             displayingGallery ||
+            displayingPhoneQr ||
             pendingConfirmation
         )
     }
@@ -155,6 +166,9 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
             displayGallery,
             closeGallery,
 
+            displayPhoneQr,
+            closePhoneQr,
+
             showConfirmationDialog,
             isBlockedByOverlay
         }}>
@@ -176,6 +190,9 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
 
             <GalleryModal target={displayingGallery}
                           onDismiss={closeGallery}/>
+
+            <PhoneQrModal target={displayingPhoneQr}
+                          onDismiss={closePhoneQr}/>
 
             {children}
         </FeedbacksContext.Provider>
@@ -203,6 +220,9 @@ const FeedbacksContext = createContext(null)
  *
  *    displayGallery: Function,
  *    closeGallery: Function,
+ *
+ *    displayPhoneQr: Function,
+ *    closePhoneQr: Function,
  *
  *    showConfirmationDialog: Function,
  *    isBlockedByOverlay: Function,

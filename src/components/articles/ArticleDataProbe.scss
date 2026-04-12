@@ -1,4 +1,4 @@
-@import "../../styles/extend.scss";
+@use "../../styles/extend" as *;
 
 article.article-data-probe {
     --probe-gap: 8px;

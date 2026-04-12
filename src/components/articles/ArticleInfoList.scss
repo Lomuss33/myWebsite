@@ -1,4 +1,4 @@
-@import "../../styles/extend.scss";
+@use "../../styles/extend" as *;
 
 div.article-info-list-items {
     --grid-row-gap: 10px;
@@ -8,6 +8,12 @@ div.article-info-list-items {
     --min-height: calc(var(--avatar-size) + 20px);
     --padding: 6px;
     --content-padding: 20px 25px;
+
+    display: grid;
+    grid-template-columns: var(--grid-template-columns);
+    row-gap: var(--grid-row-gap);
+    column-gap: var(--grid-column-gap);
+    width: 100%;
 
     @include media-breakpoint-down(xxl) {
         --avatar-size: 75px;
@@ -32,12 +38,6 @@ div.article-info-list-items {
         --padding: 4px;
         --content-padding: 8px 20px;
     }
-
-    display: grid;
-    grid-template-columns: var(--grid-template-columns);
-    row-gap: var(--grid-row-gap);
-    column-gap: var(--grid-column-gap);
-    width: 100%;
 }
 
 div.article-info-list-item {
@@ -220,6 +220,10 @@ article.article-info-list-contact {
         --grid-template-columns: repeat(2, minmax(0, 1fr));
         --avatar-size: 92px;
         --contact-card-extra: 58px;
+        --contact-card-border: color-mix(in srgb, var(--theme-primary) 35%, var(--theme-opacity-border-accent) 65%);
+        --contact-card-border-hover: color-mix(in srgb, var(--theme-secondary) 65%, var(--contact-card-border) 35%);
+        --contact-card-pressed-bg: color-mix(in srgb, var(--theme-primary) 12%, var(--theme-boards-background) 88%);
+        --contact-card-pressed-border: color-mix(in srgb, var(--theme-primary) 70%, var(--contact-card-border) 30%);
 
         @include media-breakpoint-down(lg) {
             --avatar-size: 86px;
@@ -234,11 +238,6 @@ article.article-info-list-contact {
         @include media-breakpoint-down(md) {
             --grid-template-columns: repeat(1, minmax(0, 1fr));
         }
-
-        --contact-card-border: color-mix(in srgb, var(--theme-primary) 35%, var(--theme-opacity-border-accent) 65%);
-        --contact-card-border-hover: color-mix(in srgb, var(--theme-secondary) 65%, var(--contact-card-border) 35%);
-        --contact-card-pressed-bg: color-mix(in srgb, var(--theme-primary) 12%, var(--theme-boards-background) 88%);
-        --contact-card-pressed-border: color-mix(in srgb, var(--theme-primary) 70%, var(--contact-card-border) 30%);
     }
 
     div.article-info-list-item {

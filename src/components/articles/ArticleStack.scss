@@ -1,4 +1,4 @@
-@import "../../styles/extend.scss";
+@use "../../styles/extend" as *;
 
 article.article.article-stack {
     container-type: inline-size;
@@ -10,6 +10,13 @@ div.article-stack-items {
     --avatar-size: 75px;
     --padding: 15px 20px;
     --card-height: auto;
+
+    display: grid;
+    grid-template-columns: repeat(var(--stack-columns), minmax(0, 1fr));
+    grid-auto-rows: var(--card-height);
+    row-gap: var(--gap);
+    column-gap: var(--gap);
+    width: 100%;
 
     @container (max-width: 1180px) {
         --stack-columns: 4;
@@ -38,13 +45,6 @@ div.article-stack-items {
         --padding: 15px 15px;
         --gap: 4px;
     }
-
-    display: grid;
-    grid-template-columns: repeat(var(--stack-columns), minmax(0, 1fr));
-    grid-auto-rows: var(--card-height);
-    row-gap: var(--gap);
-    column-gap: var(--gap);
-    width: 100%;
 }
 
 a.article-stack-item-link {

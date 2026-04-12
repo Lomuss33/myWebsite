@@ -3,9 +3,6 @@
  * @description Global presets for the template.
  */
 
-@import "themes/variables-theme-dark";
-@import "themes/variables-theme-light";
-
 /** Overriding Bootstrap's contrast ratio. **/
 $min-contrast-ratio: 1.5 !default;
 

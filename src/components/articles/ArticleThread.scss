@@ -1,4 +1,4 @@
-@import "../../styles/extend.scss";
+@use "../../styles/extend" as *;
 
 div.article-thread-items {
     --min-gap-between-items: 50px;
@@ -7,6 +7,8 @@ div.article-thread-items {
     --gap-between-circle-and-content: 30px;
     --trailing-item-size-multiplier: 0.8;
     --circle-margin-top: 10px;
+
+    position: relative;
 
     @include media-breakpoint-down(lg) {
         --circle-size: 30px;
@@ -19,8 +21,6 @@ div.article-thread-items {
         --gap-between-circle-and-content: 20px;
         --line-width: 4px;
     }
-
-    position: relative;
 }
 
 div.article-thread-items:before {

@@ -1,4 +1,4 @@
-@import "../../styles/extend.scss";
+@use "../../styles/extend" as *;
 
 table.article-not-found-item-table {
     border-radius: $standard-border-radius!important;

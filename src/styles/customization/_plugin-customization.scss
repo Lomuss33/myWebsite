@@ -3,6 +3,8 @@
  * @description This file contains the customization of other plugin styles.
  */
 
+@use "../extend" as *;
+
 span.swiper-pagination-bullet {
     width: 20px!important;
     height: 5px!important;

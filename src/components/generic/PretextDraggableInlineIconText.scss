@@ -1,4 +1,4 @@
-@import "../../styles/extend.scss";
+@use "../../styles/extend" as *;
 
 div.pretext-draggable-inline-icon-text {
     position: relative;

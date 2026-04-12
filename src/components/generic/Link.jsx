@@ -1,5 +1,5 @@
 import "./Link.scss"
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {useFeedbacks} from "../../providers/FeedbacksProvider.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useLocation} from "../../providers/LocationProvider.jsx"
@@ -42,13 +42,18 @@ function Link({
     }
 
     const _onClick = (e) => {
-        onClick && onClick()
+        onClick && onClick(e)
+
+        const hasHref = typeof href === "string" && href.length > 0
+        if(intercept || !hasHref) {
+            e.preventDefault()
+            return
+        }
+
         if(href.includes('mailto') || href.includes('tel:'))
             return
 
         e.preventDefault()
-        if(intercept)
-            return
 
         if(!onClickTimeout) {
             _open()
@@ -62,8 +67,13 @@ function Link({
     }
 
     const _open = () => {
+        if(!href)
+            return
+
         if(href.startsWith("#cat:"))
             location.goToCategoryWithId(href.replaceAll("#cat:", ""))
+        else if(href.startsWith("#phone-qr:open"))
+            _openPhoneQr()
         else if(href.startsWith("#gallery:open"))
             _openGalleryLink()
         else if(href.startsWith("#"))
@@ -91,6 +101,14 @@ function Link({
             metadata.aspectRatio || "1:1",
             metadata.title || language.getString("gallery")
         )
+    }
+
+    const _openPhoneQr = () => {
+        feedbacks.displayPhoneQr({
+            title: metadata?.modalTitle || language.getString("scan_to_call_title"),
+            phoneNumberDisplay: metadata?.phoneNumberDisplay || metadata?.phoneNumberRaw || "",
+            phoneNumberRaw: metadata?.phoneNumberRaw || ""
+        })
     }
 
     const _openExternalLink = () => {

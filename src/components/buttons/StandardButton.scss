@@ -1,4 +1,4 @@
-@import "../../styles/extend.scss";
+@use "../../styles/extend" as *;
 
 button.standard-button {
     i, span {
@@ -35,11 +35,6 @@ button.standard-button.standard-button-default-size {
     --padding: 0.62rem 1.05rem;
     --font-size: 0.95rem;
 
-    @include media-breakpoint-down(lg) {
-        --padding: 0.58rem 0.96rem;
-        --font-size: 0.92rem;
-    }
-
     padding: var(--padding);
     font-size: var(--font-size);
     font-weight: 600;
@@ -49,6 +44,11 @@ button.standard-button.standard-button-default-size {
     box-shadow:
         0 10px 22px rgba(0, 0, 0, 0.22),
         0 2px 0 rgba(0, 0, 0, 0.18);
+
+    @include media-breakpoint-down(lg) {
+        --padding: 0.58rem 0.96rem;
+        --font-size: 0.92rem;
+    }
 
     &:hover {
         box-shadow:
@@ -66,6 +66,13 @@ button.standard-button.standard-button-default-size {
 button.standard-button-large-size {
     --padding: 1rem 2.05rem;
     --font-size: 0.96rem;
+
+    border-radius: 4rem!important;
+    font-weight: 400;
+    text-transform: uppercase;
+    padding: var(--padding);
+    font-size: var(--font-size);
+
     @include media-breakpoint-down(xxl) {
         --padding: 0.92rem 1.8rem;
         --font-size: 0.92rem;
@@ -78,12 +85,6 @@ button.standard-button-large-size {
         --padding: 0.74rem 1.3rem;
         --font-size: 0.84rem;
     }
-
-    border-radius: 4rem!important;
-    font-weight: 400;
-    text-transform: uppercase;
-    padding: var(--padding);
-    font-size: var(--font-size);
 }
 
 button.standard-button.btn-contrast {

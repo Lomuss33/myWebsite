@@ -3,6 +3,8 @@
  * @description This file contains the customization of Bootstrap styles.
  */
 
+@use "../extend" as *;
+
 div.accordion {
     div.accordion-item {
         border: none;

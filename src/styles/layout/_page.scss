@@ -3,6 +3,8 @@
  * @description App general layout styles.
  */
 
+@use "../extend" as *;
+
 html {
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         font-size: 15px;

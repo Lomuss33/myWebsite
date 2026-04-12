@@ -1,4 +1,4 @@
-@import "../../styles/extend.scss";
+@use "../../styles/extend" as *;
 
 article.article-falling-words {
     div.article-falling-words-hint {

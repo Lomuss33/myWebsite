@@ -1,8 +1,9 @@
 import "./ArticleInlineList.scss"
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import Article from "./base/Article.jsx"
 import Link from "../generic/Link.jsx"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
+import {useUtils} from "../../hooks/utils.js"
 
 /**
  * @param {ArticleDataWrapper} dataWrapper
@@ -67,11 +68,21 @@ function ArticleInlineListItems({ dataWrapper, selectedItemCategoryId}) {
  * @constructor
  */
 function ArticleInlineListItem({ itemWrapper }) {
+    const viewport = useViewport()
+    const utils = useUtils()
+
+    const link = itemWrapper.link
+    const isPhoneQrAction = link?.action === "phone_qr"
+    const shouldDirectCall = isPhoneQrAction && utils.device.isTouchDevice() && viewport.isMobileLayout()
+    const href = isPhoneQrAction && !shouldDirectCall ?
+        `#phone-qr:open` :
+        link?.href || null
+
     return (
         <li className={`article-inline-list-item text-4`}>
-            <Link href={itemWrapper.link?.href || null}
-                  tooltip={itemWrapper.link?.tooltip}
-                  metadata={itemWrapper.link?.metadata}>
+            <Link href={href}
+                  tooltip={link?.tooltip}
+                  metadata={link?.metadata}>
                 <i className={`article-inline-list-item-icon ${itemWrapper.faIconWithFallback}`}
                    style={itemWrapper.faIconStyle}/>
 

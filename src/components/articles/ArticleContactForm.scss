@@ -1,4 +1,4 @@
-@import "../../styles/extend.scss";
+@use "../../styles/extend" as *;
 
 article.article-contact-form {
     --article-contact-form-placeholder-color: var(--theme-secondary-4);

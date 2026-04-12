@@ -51,8 +51,13 @@
           "id": 2,
           "label": "+49 176 62236934",
           "link": {
-            "href": "",
-            "tooltipString": ""
+            "href": "tel:+4917662236934",
+            "tooltipString": "call_me",
+            "action": "phone_qr",
+            "metadata": {
+              "phoneNumberDisplay": "+49 176 62236934",
+              "phoneNumberRaw": "+4917662236934"
+            }
           },
           "faIcon": "fa-regular fa-address-book"
         },

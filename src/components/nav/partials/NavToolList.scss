@@ -1,4 +1,4 @@
-@import "../../../styles/extend.scss";
+@use "../../../styles/extend" as *;
 
 div.nav-tools {
     --nav-tools-height: var(--nav-link-target-height, 48px);

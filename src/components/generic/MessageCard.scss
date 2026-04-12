@@ -1,8 +1,9 @@
-@import "../../styles/extend.scss";
+@use "../../styles/extend" as *;
 
 div.message-card {
     --avatar-size: 110px;
     --padding: 50px;
+    background-color: var(--theme-boards-background)!important;
 
     @include media-breakpoint-down(xxl) {
         --avatar-size: 100px;
@@ -20,8 +21,6 @@ div.message-card {
         --avatar-size: 75px;
         --padding: 30px;
     }
-
-    background-color: var(--theme-boards-background)!important;
 
     &-body {
         display: flex;

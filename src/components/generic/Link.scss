@@ -1,4 +1,4 @@
-@import "../../styles/extend.scss";
+@use "../../styles/extend" as *;
 
 a.link-no-href {
     color: var(--theme-texts)!important;

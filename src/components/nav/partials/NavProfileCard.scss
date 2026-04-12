@@ -1,14 +1,10 @@
-@import "../../../styles/extend.scss";
+@use "../../../styles/extend" as *;
 
 div.nav-profile-card {
     --avatar-size: 128px;
     --border-size: 5px;
     --info-margin-top: 6px;
     --offset-status-circle: 14px;
-    @media(min-height: 760px) {--avatar-size: 138px; --info-margin-top: 8px;}
-    @media(min-height: 800px) {--avatar-size: 144px}
-    @media(max-height: 690px) {--avatar-size: 118px}
-    @media(max-height: 650px) {--avatar-size: 110px}
 
     display: flex;
     flex: 0 0 auto;
@@ -18,6 +14,11 @@ div.nav-profile-card {
     background-color: transparent!important;
     position: relative;
     margin: 10px 10px 8px;
+
+    @media(min-height: 760px) {--avatar-size: 138px; --info-margin-top: 8px;}
+    @media(min-height: 800px) {--avatar-size: 144px}
+    @media(max-height: 690px) {--avatar-size: 118px}
+    @media(max-height: 650px) {--avatar-size: 110px}
 
     &-header {
         display: flex;

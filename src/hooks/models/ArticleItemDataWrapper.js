@@ -113,6 +113,8 @@ export default class ArticleItemDataWrapper {
             href: rawLink.href,
             faIcon: faIcon,
             label: rawLink.label || null,
+            action: rawLink.action || null,
+            metadata: rawLink.metadata || null,
             isWebsiteAction: Boolean(rawLink.isWebsiteAction) || Boolean(faIcon?.includes("fa-globe")),
             tooltip: tooltipString ?
                 language.getString(tooltipString) :

@@ -29,7 +29,7 @@
  * $scrollbar-thumb: The color of the scrollbar thumb.
  */
 
-@import "theme-variables-builder";
+@use "./theme-variables-builder" as theme;
 
 $primary: #f0c020;
 $secondary: #0088ba;
@@ -63,7 +63,7 @@ $scrollbar-thumb: #32343a;
     --theme-sidebar-nav-link-icon-opacity: 0.66;
     --theme-sidebar-nav-link-text-opacity: 0.95;
 
-    @include build-theme(
+    @include theme.build-theme(
         // Theme Config...
         /** DARK MODE: **/                  true,
 

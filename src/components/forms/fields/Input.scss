@@ -1,9 +1,13 @@
-@import "../../../styles/extend.scss";
+@use "../../../styles/extend" as *;
 
 /** ------------------ DIMENSIONS ----------------- **/
 input.form-input {
     --height: 65px;
     --padding: 1rem;
+
+    min-height: var(--height);
+    padding: var(--padding);
+
     @include media-breakpoint-down(xl) {
         --height: 60px;
         --padding: 0.975rem;
@@ -16,9 +20,6 @@ input.form-input {
         --height: 50px;
         --padding: 0.85rem;
     }
-
-    min-height: var(--height);
-    padding: var(--padding);
 }
 
 input.form-input, input.form-input:focus {

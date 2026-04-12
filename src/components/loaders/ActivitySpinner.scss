@@ -1,4 +1,4 @@
-@import "../../styles/extend.scss";
+@use "../../styles/extend" as *;
 
 #activity-spinner {
     position: fixed;
@@ -18,8 +18,6 @@
 
 .activity-spinner {
     --dimensions: 120px;
-    @include media-breakpoint-down(xl) {--dimensions: 100px;}
-    @include media-breakpoint-down(md) {--dimensions: 80px;}
 
     width: var(--dimensions);
     height: var(--dimensions);
@@ -28,6 +26,9 @@
     opacity: 0.75;
     color: white;
     margin-bottom: 20px;
+
+    @include media-breakpoint-down(xl) {--dimensions: 100px;}
+    @include media-breakpoint-down(md) {--dimensions: 80px;}
 }
 
 div.activity-spinner-message {

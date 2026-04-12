@@ -3,6 +3,8 @@
  * @description This file contains global flags and layout variables.
  */
 
+@use "./extend" as *;
+
 :root {
     --max-breakpoint-for-tabbed-interface: #{$max-breakpoint-for-tabbed-interface};
     --default-card-spacing: #{$default-card-spacing};

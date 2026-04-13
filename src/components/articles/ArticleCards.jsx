@@ -1,5 +1,5 @@
 import "./ArticleCards.scss"
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import Article from "./base/Article.jsx"
 import Swipeable from "../capabilities/Swipeable.jsx"
 import AvatarView from "../generic/AvatarView.jsx"
@@ -54,7 +54,8 @@ function ArticleCardsItems({ dataWrapper, selectedItemCategoryId }) {
     return (
         <Swipeable className={`article-cards-items`}
                    breakpoints={breakpoints}
-                   slidesPerView={Math.min(3, slideCount)}>
+                   slidesPerView={Math.min(3, slideCount)}
+                   loop={true}>
             {filteredItems.map((itemWrapper, key) => (
                 <ArticleCardsItem itemWrapper={itemWrapper} 
                                       key={key}/>

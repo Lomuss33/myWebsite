@@ -101,3 +101,15 @@ div.scrollable-with-plugin {
         }
     }
 }
+
+/**
+ * The smooth-scrollbar track/thumb live inside the scrollable container and can visually overlap content
+ * (showing up like a "right-side border" on wide layouts). Keep a right gutter equal to the hit-area width.
+ */
+div.scrollable.scrollable-with-plugin {
+    .scroll-content,
+    .scrollable-content {
+        padding-right: var(--scrollbar-width, 26px);
+        box-sizing: border-box;
+    }
+}

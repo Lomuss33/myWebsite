@@ -12,7 +12,7 @@
         "resume:clear": "node npm/npm-resume-clear.js"
     },
     "dependencies": {
-        "@chenglou/pretext": "^0.0.3",
+        "@chenglou/pretext": "^0.0.5",
         "@emailjs/browser": "^4.4.1",
         "@fortawesome/fontawesome-free": "^6.6.0",
         "bootstrap": "^5.3.8",
@@ -24,7 +24,7 @@
         "react-bootstrap": "^2.10.4",
         "react-dom": "^18.3.1",
         "smooth-scrollbar": "^8.8.4",
-        "swiper": "^11.1.14",
+        "swiper": "^12.1.3",
         "three": "^0.180.0"
     },
     "devDependencies": {

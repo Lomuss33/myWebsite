@@ -1,5 +1,5 @@
 import "./ArticleTestimonials.scss"
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import Article from "./base/Article.jsx"
 import Swipeable from "../capabilities/Swipeable.jsx"
 import {Balloon, BalloonQuote} from "../generic/Balloon"
@@ -49,7 +49,8 @@ function ArticleTestimonialsItems({ dataWrapper, selectedItemCategoryId }) {
         <Swipeable className={`article-testimonials-items`}
                    breakpoints={breakpoints}
                    slidesPerView={Math.min(3, slideCount)}
-                   spaceBetween={16}>
+                   spaceBetween={16}
+                   loop={true}>
             {filteredItems.map((itemWrapper, key) => (
                 <ArticleTestimonialsItem itemWrapper={itemWrapper}
                                          key={key}/>

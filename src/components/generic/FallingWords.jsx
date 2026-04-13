@@ -29,7 +29,16 @@ function FallingWords({
     const permanentRedIndicesRef = useRef(new Set())
     const redHoldTimersRef = useRef(new Map())
     const [, forceRedRerender] = useState(0)
-    const dragStateRef = useRef({ isDown: false, moved: false, x: 0, y: 0, lastDragAt: 0 })
+    const dragStateRef = useRef({
+        isDown: false,
+        moved: false,
+        x: 0,
+        y: 0,
+        lastDragAt: 0,
+        pointerType: null,
+        startedOnWord: false
+    })
+    const suppressNextClickUntilRef = useRef(0)
     const [layoutVersion, setLayoutVersion] = useState(0)
     const [isReady, setIsReady] = useState(false)
     const [selectedIndex, setSelectedIndex] = useState(null)
@@ -416,12 +425,23 @@ function FallingWords({
         return Date.now() - lastDragAt < 250
     }
 
-    const _selectWord = (index) => {
+    const _selectWord = (index, { ignoreDragGate = false } = {}) => {
         if(index == null) return
-        if(_shouldIgnoreClick()) return
+        if(!ignoreDragGate && _shouldIgnoreClick()) return
 
         const engine = engineRef.current
         if(!engine) return
+
+        // Disable dragging immediately so a quick second tap doesn't move the selected body.
+        const mouseConstraint = mouseConstraintRef.current
+        if(mouseConstraint && mouseConstraintEnabledRef.current) {
+            try {
+                Matter.World.remove(engine.world, mouseConstraint)
+                mouseConstraintEnabledRef.current = false
+            } catch {
+                // no-op
+            }
+        }
 
         const bodies = wordBodiesRef.current
         const target = bodies[index]
@@ -438,50 +458,88 @@ function FallingWords({
         Matter.Body.setAngle(target.body, 0)
         Matter.Body.setAngularVelocity(target.body, 0)
 
+        selectedIndexRef.current = index
         setSelectedIndex(index)
+    }
+
+    const onWordPointerUp = (event, index) => {
+        if(event.pointerType !== "touch") return
+
+        const dragState = dragStateRef.current
+        if(!dragState.isDown) return
+        if(dragState.moved) return
+
+        // On touch devices a tiny finger jitter often trips the drag gate and prevents the click
+        // from opening the modal. Handle "tap" via pointer events and suppress the synthesized click.
+        suppressNextClickUntilRef.current = Date.now() + 650
+        _selectWord(index, { ignoreDragGate: true })
+    }
+
+    const onOverlayPointerUp = (event) => {
+        if(event.pointerType !== "touch") return
+        _closeSelection()
     }
 
     const _closeSelection = () => {
         const index = selectedIndexRef.current
         if(index === null) return
 
-        const bodies = wordBodiesRef.current
-        const target = bodies[index]
-        const rect = containerRef.current?.getBoundingClientRect()
-        if(target && rect) {
-            const x = rect.width / 2 + (Math.random() - 0.5) * 40
-            const y = Math.min(70, rect.height * 0.18)
-            Matter.Body.setPosition(target.body, { x, y })
-            Matter.Body.setVelocity(target.body, { x: (Math.random() - 0.5) * 4, y: 6 })
-            Matter.Body.setAngularVelocity(target.body, (Math.random() - 0.5) * 0.08)
+        const engine = engineRef.current
+        if(engine) {
+            // Re-enable dragging immediately after closing.
+            const mouseConstraint = mouseConstraintRef.current
+            if(mouseConstraint && !mouseConstraintEnabledRef.current) {
+                try {
+                    Matter.World.add(engine.world, mouseConstraint)
+                    mouseConstraintEnabledRef.current = true
+                } catch {
+                    // no-op
+                }
+            }
         }
 
         // After closing the definition popup, keep the word red until refresh.
         applyPermanentRed(index)
 
+        selectedIndexRef.current = null
         setSelectedIndex(null)
     }
 
     const onPointerDown = (event) => {
+        const rawTarget = event.target
+        const targetEl =
+            (typeof Element !== "undefined" && rawTarget instanceof Element)
+                ? rawTarget
+                : rawTarget?.parentElement
+        const startedOnWord = Boolean(targetEl?.closest?.("span.falling-word"))
         dragStateRef.current.isDown = true
         dragStateRef.current.moved = false
         dragStateRef.current.x = event.clientX
         dragStateRef.current.y = event.clientY
+        dragStateRef.current.pointerType = event.pointerType || null
+        dragStateRef.current.startedOnWord = startedOnWord
     }
 
     const onPointerMove = (event) => {
-        if(!dragStateRef.current.isDown) return
-        const dx = event.clientX - dragStateRef.current.x
-        const dy = event.clientY - dragStateRef.current.y
-        if(Math.hypot(dx, dy) > 6) dragStateRef.current.moved = true
+        const dragState = dragStateRef.current
+        if(!dragState.isDown) return
+        if(!dragState.startedOnWord) return
+
+        const threshold = dragState.pointerType === "touch" ? 12 : 6
+        const dx = event.clientX - dragState.x
+        const dy = event.clientY - dragState.y
+        if(Math.hypot(dx, dy) > threshold) dragState.moved = true
     }
 
     const onPointerUp = () => {
-        if(dragStateRef.current.isDown && dragStateRef.current.moved) {
-            dragStateRef.current.lastDragAt = Date.now()
+        const dragState = dragStateRef.current
+        if(dragState.isDown && dragState.startedOnWord && dragState.moved) {
+            dragState.lastDragAt = Date.now()
         }
-        dragStateRef.current.isDown = false
-        dragStateRef.current.moved = false
+        dragState.isDown = false
+        dragState.moved = false
+        dragState.pointerType = null
+        dragState.startedOnWord = false
     }
 
     return (
@@ -499,12 +557,15 @@ function FallingWords({
             onPointerCancel={onPointerUp}
         >
             {selectedIndex !== null && (
-                <div className={`falling-words-overlay`} onClick={_closeSelection}>
+                <div
+                    className={`falling-words-overlay`}
+                    onPointerUp={onOverlayPointerUp}
+                    onClick={_closeSelection}
+                >
                     <div
                         className={`falling-words-modal-card`}
                         role={`dialog`}
                         aria-modal={true}
-                        onClick={(e) => e.stopPropagation()}
                     >
                         <div className={`falling-words-modal-title text-1`}>
                             {effectiveEntries[selectedIndex]?.word || ""}
@@ -525,7 +586,11 @@ function FallingWords({
                         key={`${word}-${index}`}
                         ref={(el) => { wordRefs.current[index] = el }}
                         className={`falling-word ${isHighlighted ? "falling-word-highlighted" : ""} ${selectedIndex === index ? "falling-word-selected" : ""} ${isRedHold ? "falling-word-red-hold" : ""} ${isRedPermanent ? "falling-word-red-permanent" : ""}`}
-                        onClick={() => _selectWord(index)}
+                        onPointerUp={(e) => onWordPointerUp(e, index)}
+                        onClick={() => {
+                            if(Date.now() < suppressNextClickUntilRef.current) return
+                            _selectWord(index)
+                        }}
                     >
                         {word}
                     </span>

@@ -1,13 +1,21 @@
 import "./LayoutSaltShaker.scss"
 import React, {useEffect, useRef, useState} from "react"
+import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useNavigation} from "../../providers/NavigationProvider.jsx"
+import HoverStaticTooltip from "../widgets/HoverStaticTooltip.jsx"
 
 function LayoutSaltShaker() {
+    const language = useLanguage()
     const navigation = useNavigation()
 
     const [isPaused, setIsPaused] = useState(false)
     const pauseTimeoutRef = useRef(null)
     const didInitTargetSectionRef = useRef(false)
+
+    const tooltipLabel = language?.getStringOrFallback?.(
+        "salt_shaker_grain_of_salt",
+        "Take it with a grain of salt."
+    )
 
     const pauseFor = (ms) => {
         setIsPaused(true)
@@ -47,7 +55,15 @@ function LayoutSaltShaker() {
     }, [navigation?.targetSection?.id])
 
     return (
-        <div className={`layout-salt-shaker ${isPaused ? "layout-salt-shaker-paused" : ""}`} aria-hidden="true">
+        <div id="layout-salt-shaker"
+             className={`layout-salt-shaker ${isPaused ? "layout-salt-shaker-paused" : ""}`}
+             aria-hidden="true">
+            <HoverStaticTooltip label={tooltipLabel}
+                               className={`layout-salt-shaker-tooltip text-center`}
+                               id={`layout-salt-shaker-tooltip`}
+                               targetId={`layout-salt-shaker`}
+                               forceResetFlag={`${navigation?.targetSection?.id || "none"}-${isPaused ? "paused" : "active"}`}
+                               toggleBehaviorOnTouchScreens={true}/>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 331 379"

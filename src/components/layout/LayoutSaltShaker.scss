@@ -10,8 +10,9 @@ div.layout-salt-shaker {
     height: auto;
 
     opacity: 0.95;
-    pointer-events: none;
+    pointer-events: auto;
     user-select: none;
+    cursor: help;
 
     filter: grayscale(1) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.12));
 }
@@ -20,6 +21,22 @@ div.layout-salt-shaker svg {
     display: block;
     width: 100%;
     height: auto;
+    pointer-events: none;
+}
+
+div.layout-salt-shaker div.layout-salt-shaker-tooltip {
+    right: 0;
+    left: auto;
+    bottom: calc(100% + 10px);
+    top: auto;
+    transform-origin: bottom right;
+    white-space: nowrap;
+    font-size: 0.78rem;
+
+    &::before {
+        left: auto;
+        right: 14px;
+    }
 }
 
 div.layout-salt-shaker.layout-salt-shaker-paused svg #layout-salt-shaker-saliere,

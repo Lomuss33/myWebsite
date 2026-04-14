@@ -4,7 +4,48 @@ import Article from "./base/Article.jsx"
 import StandardButton from "../buttons/StandardButton.jsx"
 import CopyButton from "../buttons/CopyButton.jsx"
 
-const HIDDEN_TEXT = "wow no, you have hidden this"
+const HIDDEN_TEXT = "No data returned. Access may be blocked, denied, or intentionally hidden."
+const PROBE_WHAT = {
+    secure_context: "Whether the page runs in a trusted browser mode that unlocks restricted web capabilities.",
+    user_agent: "The legacy browser identification string sent for compatibility with old sites and servers.",
+    ua_ch_basic: "A structured browser identity summary with brand, platform, and mobile hints.",
+    ua_ch_entropy: "A richer set of client hints that may expose architecture, bitness, model, and exact version info.",
+    languages: "Your preferred language list as reported by the browser.",
+    timezone: "The named region your system clock is configured to use.",
+    local_time: "The current date-time string generated from your device clock.",
+    referrer: "The page or site that led the browser here, if one was sent.",
+    do_not_track: "A browser privacy preference flag requesting reduced tracking.",
+    cookies: "Whether the browser currently allows small site data files for sessions and state.",
+    online: "The browser's basic guess about whether network access exists.",
+    screen: "The full size of the connected display in CSS pixels.",
+    viewport: "The usable page area inside the browser window right now.",
+    dpr: "The ratio between CSS pixels and physical screen pixels.",
+    touch_points: "How many simultaneous touch contacts the device reports it can handle.",
+    cpu_cores: "The number of logical processing threads the browser exposes.",
+    device_memory: "A coarse memory tier used by browsers for performance decisions.",
+    network_hints: "Approximate connection quality signals like speed class, latency, and data saver state.",
+    storage_estimate: "An estimate of browser-managed disk usage and remaining quota for this site.",
+    persistent_storage: "Whether site data is protected from automatic eviction when storage gets tight.",
+    battery: "Current power and charging information from the device battery subsystem.",
+    media_device_counts: "How many audio and video input/output devices the browser can enumerate.",
+    gpu_renderer: "The graphics adapter and driver identity exposed through WebGL.",
+    local_fingerprint: "A locally computed signature derived from several visible browser and device traits.",
+    geolocation: "Your physical position estimate derived from location services.",
+    notifications: "Permission to let the site show system-level alerts outside the page.",
+    clipboard_read: "The current text content sitting in the system copy buffer.",
+    camera_mic_labels: "The names of connected capture devices after access is granted.",
+    screen_share: "Metadata about the display, window, or tab you choose to share.",
+    bluetooth: "A chooser for nearby short-range wireless devices the browser can talk to.",
+    webusb: "A chooser for directly attached peripherals exposed over USB.",
+    webserial: "A chooser for hardware that communicates over serial ports.",
+    webhid: "A chooser for generic human-interface peripherals like controllers or input devices.",
+    file_picker: "The names and sizes of files you explicitly choose from your device.",
+    directory_picker: "The name of a folder you explicitly choose from your device.",
+    contacts: "Selected people entries from the device address book.",
+    midi: "Connected music input and output gear visible through the browser.",
+    public_ip_v4: "Your outward-facing network address on the older internet routing standard.",
+    public_ip_v6: "Your outward-facing network address on the newer internet routing standard.",
+}
 
 function ArticleDataProbe({ dataWrapper }) {
     const [unlocked, setUnlocked] = useState(false)
@@ -666,88 +707,174 @@ function ArticleDataProbe({ dataWrapper }) {
         setExpanded(prev => ({ ...prev, [id]: !prev?.[id] }))
     }
 
+    const autoCount = passiveProbes.length
+    const requestCount = requestProbes.length
+    const publicCount = publicIpProbes.length
+
     return (
         <Article id={dataWrapper.uniqueId}
                  type={Article.Types.SPACING_DEFAULT}
                  dataWrapper={dataWrapper}
                  className={`article-data-probe`}>
             <div className={`article-data-probe-intro`}>
-                <i className={`fa-solid fa-eye`}/>
-                <span>
-                    Local-only first block. Prompts happen only when you click. Public IP uses ipify only after your click.
-                </span>
+                <div className={`article-data-probe-intro-head`}>
+                    <div className={`article-data-probe-intro-icon`}>
+                        <i className={`fa-solid fa-radar`}/>
+                    </div>
+
+                    <div className={`article-data-probe-intro-copy`}>
+                        <div className={`article-data-probe-intro-kicker text-4`}>Browser hardware surface</div>
+                        <div className={`article-data-probe-intro-title`}>
+                            What this page can infer, request, or fetch about your environment
+                        </div>
+                        <div className={`article-data-probe-intro-text text-3`}>
+                            Automatic reads stay local to the browser. Permissioned probes run only after your click.
+                            Public IP checks call ipify only when explicitly triggered.
+                        </div>
+                    </div>
+                </div>
+
+                <div className={`article-data-probe-summary`}>
+                    <div className={`article-data-probe-summary-chip`}>
+                        <i className={`fa-solid fa-eye`}/>
+                        <span className={`article-data-probe-summary-value`}>{autoCount}</span>
+                        <span className={`article-data-probe-summary-label`}>Auto-visible signals</span>
+                    </div>
+
+                    <div className={`article-data-probe-summary-chip`}>
+                        <i className={`fa-solid fa-hand-pointer`}/>
+                        <span className={`article-data-probe-summary-value`}>{requestCount}</span>
+                        <span className={`article-data-probe-summary-label`}>Click-to-request probes</span>
+                    </div>
+
+                    <div className={`article-data-probe-summary-chip`}>
+                        <i className={`fa-solid fa-globe`}/>
+                        <span className={`article-data-probe-summary-value`}>{publicCount}</span>
+                        <span className={`article-data-probe-summary-label`}>External IP checks</span>
+                    </div>
+                </div>
             </div>
 
-            <div className={`article-data-probe-block-header`}>
-                <h5 className={`article-data-probe-block-title mb-0`}>
-                    <span className={`article-data-probe-block-title-prefix`}>|</span>
-                    Visible without asking
-                </h5>
-            </div>
-            <div className={`article-data-probe-grid`}>
-                {passiveProbes.map(p => (
-                    <ProbeItem key={p.id}
-                               probe={p}
-                               state={probeStates[p.id]}
-                               expanded={Boolean(expanded?.[p.id])}
-                               onToggleExpand={() => toggleExpanded(p.id)}/>
-                ))}
-            </div>
-
-            <div className={`article-data-probe-block-header mt-4`}>
-                <h5 className={`article-data-probe-block-title mb-0`}>
-                    <span className={`article-data-probe-block-title-prefix`}>|</span>
-                    Ask for more
-                </h5>
-
-                {!unlocked && (
-                    <StandardButton variant={`dark`}
-                                    className={`article-data-probe-unlock-btn`}
-                                    label={`Unlock`}
-                                    faIcon={`fa-solid fa-unlock`}
-                                    onClick={() => setUnlocked(true)}/>
-                )}
-            </div>
-
-            {unlocked && (
-                <div className={`article-data-probe-grid`}>
-                    {requestProbes.map(p => (
+            <ProbeSection
+                icon={`fa-solid fa-globe`}
+                eyebrow={`External lookup`}
+                title={`Public IP`}
+                description={`Shows the address that outside services see. Nothing is fetched until you click one of the buttons.`}
+                note={`Uses ipify on demand only.`}
+                count={publicCount}
+                accent={`accent-external`}>
+                <div className={`article-data-probe-grid article-data-probe-grid-compact`}>
+                    {publicIpProbes.map(p => (
                         <ProbeItem key={p.id}
                                    probe={p}
                                    state={probeStates[p.id]}
                                    showRequest={true}
-                                   requestLabel={`Request`}
-                                   onRequest={() => runRequestProbe(p)}
-                                   extraAction={p.extraAction ? () => runExtraAction(p) : null}
-                                   extraLabel={p.extraAction?.label}
-                                   extraIcon={p.extraAction?.icon}
-                                   extraState={probeStates[`${p.id}__extra`]}
+                                   requestLabel={p.buttonLabel}
+                                   onRequest={() => runPublicIp(p)}
+                                   thirdParty={true}
                                    expanded={Boolean(expanded?.[p.id])}
                                    onToggleExpand={() => toggleExpanded(p.id)}/>
                     ))}
                 </div>
-            )}
+            </ProbeSection>
 
-            <div className={`article-data-probe-block-header mt-4`}>
-                <h5 className={`article-data-probe-block-title mb-0`}>
-                    <span className={`article-data-probe-block-title-prefix`}>|</span>
-                    Public IP (third-party)
-                </h5>
-            </div>
-            <div className={`article-data-probe-grid`}>
-                {publicIpProbes.map(p => (
-                    <ProbeItem key={p.id}
-                               probe={p}
-                               state={probeStates[p.id]}
-                               showRequest={true}
-                               requestLabel={p.buttonLabel}
-                               onRequest={() => runPublicIp(p)}
-                               thirdParty={true}
-                               expanded={Boolean(expanded?.[p.id])}
-                               onToggleExpand={() => toggleExpanded(p.id)}/>
-                ))}
-            </div>
+            <ProbeSection
+                icon={`fa-solid fa-hand`}
+                eyebrow={`Permission gated`}
+                title={`Ask for more`}
+                description={`These checks stay dormant until you unlock the section and explicitly ask for each permission or hardware chooser.`}
+                note={unlocked ? `Unlocked. Each card still requires its own click.` : `Locked until you choose to unlock interaction.`}
+                count={requestCount}
+                accent={`accent-interactive`}
+                actions={!unlocked ? (
+                    <StandardButton variant={`dark`}
+                                    className={`article-data-probe-unlock-btn`}
+                                    label={`Unlock interactions`}
+                                    faIcon={`fa-solid fa-unlock`}
+                                    onClick={() => setUnlocked(true)}/>
+                ) : null}>
+                {unlocked && (
+                    <div className={`article-data-probe-grid`}>
+                        {requestProbes.map(p => (
+                            <ProbeItem key={p.id}
+                                       probe={p}
+                                       state={probeStates[p.id]}
+                                       showRequest={true}
+                                       requestLabel={`Request`}
+                                       onRequest={() => runRequestProbe(p)}
+                                       extraAction={p.extraAction ? () => runExtraAction(p) : null}
+                                       extraLabel={p.extraAction?.label}
+                                       extraIcon={p.extraAction?.icon}
+                                       extraState={probeStates[`${p.id}__extra`]}
+                                       expanded={Boolean(expanded?.[p.id])}
+                                       onToggleExpand={() => toggleExpanded(p.id)}/>
+                        ))}
+                    </div>
+                )}
+            </ProbeSection>
+
+            <ProbeSection
+                icon={`fa-solid fa-eye`}
+                eyebrow={`Passive reads`}
+                title={`Visible without asking`}
+                description={`These values are exposed by the browser immediately, without prompts, and are enough to describe a device surprisingly well.`}
+                note={`Read locally on load.`}
+                count={autoCount}
+                accent={`accent-passive`}>
+                <div className={`article-data-probe-grid`}>
+                    {passiveProbes.map(p => (
+                        <ProbeItem key={p.id}
+                                   probe={p}
+                                   state={probeStates[p.id]}
+                                   expanded={Boolean(expanded?.[p.id])}
+                                   onToggleExpand={() => toggleExpanded(p.id)}/>
+                    ))}
+                </div>
+            </ProbeSection>
         </Article>
+    )
+}
+
+function ProbeSection({ icon, eyebrow, title, description, note, count, accent, actions = null, children }) {
+    return (
+        <section className={`article-data-probe-block ${accent || ""}`}>
+            <div className={`article-data-probe-block-header`}>
+                <div className={`article-data-probe-block-lead`}>
+                    <div className={`article-data-probe-block-icon`}>
+                        <i className={icon}/>
+                    </div>
+
+                    <div className={`article-data-probe-block-copy`}>
+                        {eyebrow && (
+                            <div className={`article-data-probe-block-eyebrow text-4`}>{eyebrow}</div>
+                        )}
+
+                        <h5 className={`article-data-probe-block-title mb-0`}>{title}</h5>
+
+                        {description && (
+                            <div className={`article-data-probe-block-description text-3`}>{description}</div>
+                        )}
+
+                        {note && (
+                            <div className={`article-data-probe-block-note text-4`}>{note}</div>
+                        )}
+                    </div>
+                </div>
+
+                <div className={`article-data-probe-block-controls`}>
+                    <div className={`article-data-probe-block-count`}>
+                        <span className={`article-data-probe-block-count-value`}>{count}</span>
+                        <span className={`article-data-probe-block-count-label`}>signals</span>
+                    </div>
+
+                    {actions}
+                </div>
+            </div>
+
+            <div className={`article-data-probe-block-body`}>
+                {children}
+            </div>
+        </section>
     )
 }
 
@@ -767,18 +894,21 @@ function ProbeItem({
 }) {
     const status = state?.status || (showRequest ? "idle" : "pending")
     const value = state?.value || null
+    const whatText = probe?.what || PROBE_WHAT[probe?.id] || "Explanation unavailable."
 
     const badge = status === "ok" ? "AVAILABLE" :
-        (status === "pending" || status === "idle") ? "WAITING" :
+        status === "pending" ? "CHECKING" :
+            status === "idle" ? "READY" :
             status === "unsupported" ? "NOT SUPPORTED" :
                 "DENIED/HIDDEN"
     const badgeClass = status === "ok" ? "badge-ok" :
-        (status === "pending" || status === "idle") ? "badge-wait" :
+        status === "pending" ? "badge-wait" :
+            status === "idle" ? "badge-ready" :
             status === "unsupported" ? "badge-unsupported" :
                 "badge-hidden"
 
-    const fullText = getDisplayText(status, value)
-    const collapsedText = getCollapsedText(status, value)
+    const fullText = getDisplayText(status, value, { showRequest, thirdParty })
+    const collapsedText = getCollapsedText(status, value, { showRequest, thirdParty })
     const hasExtraDetails = Boolean(extraState?.status === "ok" && extraState?.value)
     const canExpand = Boolean(
         (status === "ok" && value && (String(value).length > 140 || String(value).includes("\n"))) ||
@@ -801,6 +931,10 @@ function ProbeItem({
             </div>
 
             <div className={`article-data-probe-item-meta text-3`}>
+                <div className={`article-data-probe-item-meta-row`}>
+                    <span className={`article-data-probe-item-meta-key`}>What</span>
+                    <span className={`article-data-probe-item-meta-value`}>{whatText}</span>
+                </div>
                 {probe?.how && (
                     <div className={`article-data-probe-item-meta-row`}>
                         <span className={`article-data-probe-item-meta-key`}>How</span>
@@ -932,14 +1066,22 @@ function getWebglRendererInfo() {
     }
 }
 
-function getDisplayText(status, value) {
+function getDisplayText(status, value, options = {}) {
+    const { showRequest = false, thirdParty = false } = options
     if (status === "ok" && value) return String(value)
-    if (status === "pending") return ""
-    if (status === "idle") return "Click Request to ask."
+    if (status === "pending") {
+        return showRequest ? "Request in progress..." : "Collecting locally exposed values..."
+    }
+    if (status === "idle") {
+        return thirdParty ?
+            "No external request has been sent yet. Use the button to fetch it deliberately." :
+            "Waiting for your click. Nothing is requested until you trigger it."
+    }
+    if (status === "unsupported") return "This browser or context does not expose this capability."
     return HIDDEN_TEXT
 }
 
-function getCollapsedText(status, value) {
+function getCollapsedText(status, value, options = {}) {
     if (status === "ok" && value) {
         const text = String(value)
         const lines = text.split("\n")
@@ -954,9 +1096,7 @@ function getCollapsedText(status, value) {
         }
         return joined
     }
-    if (status === "pending") return ""
-    if (status === "idle") return "Click Request to ask."
-    return HIDDEN_TEXT
+    return getDisplayText(status, value, options)
 }
 
 function truncateText(text, maxChars) {

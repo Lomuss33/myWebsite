@@ -885,15 +885,14 @@ function ProbeItem({
     const fullText = getDisplayText(status, value, { showRequest, thirdParty })
     const collapsedText = getCollapsedText(status, value, { showRequest, thirdParty })
     const hasExtraDetails = Boolean(extraState?.status === "ok" && extraState?.value)
-    const canExpand = Boolean(
-        (status === "ok" && value && (String(value).length > 140 || String(value).includes("\n"))) ||
-        hasExtraDetails
-    )
+    const hasCollapsedPreview = status === "ok" && fullText !== collapsedText
+    const canExpand = hasCollapsedPreview || hasExtraDetails
+    const isExpanded = canExpand && expanded
 
     const requestIcon = thirdParty ? "fa-solid fa-globe" : "fa-solid fa-wand-magic-sparkles"
 
     return (
-        <div className={`article-data-probe-item ${thirdParty ? "item-third-party" : ""} ${expanded ? "item-expanded" : ""}`}>
+        <div className={`article-data-probe-item ${thirdParty ? "item-third-party" : ""} ${isExpanded ? "item-expanded" : ""}`}>
             <div className={`article-data-probe-item-head`}>
                 <div className={`article-data-probe-item-icon`}>
                     <i className={`${probe.icon}`}/>
@@ -939,18 +938,18 @@ function ProbeItem({
                         {canExpand && onToggleExpand && (
                             <StandardButton variant={`contrast`}
                                             className={`article-data-probe-action-btn article-data-probe-expand-btn`}
-                                            label={expanded ? "Hide" : "More"}
-                                            faIcon={expanded ? "fa-solid fa-chevron-up" : "fa-solid fa-chevron-down"}
+                                            label={isExpanded ? "Hide" : "More"}
+                                            faIcon={isExpanded ? "fa-solid fa-chevron-up" : "fa-solid fa-chevron-down"}
                                             onClick={onToggleExpand}/>
                         )}
                     </div>
                 </div>
 
                 <pre className={`article-data-probe-item-value`}>
-                    {expanded ? fullText : collapsedText}
+                    {isExpanded ? fullText : collapsedText}
                 </pre>
 
-                {expanded && extraState?.status === "ok" && extraState?.value && (
+                {isExpanded && extraState?.status === "ok" && extraState?.value && (
                     <pre className={`article-data-probe-item-value article-data-probe-item-extra`}>{extraState.value}</pre>
                 )}
 

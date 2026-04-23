@@ -1,8 +1,21 @@
 import "./OptionPickerButton.scss"
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {Dropdown} from "react-bootstrap"
 
-function OptionPickerButton({ mode, options, selectedOptionId, onOptionSelected, tooltipLabel, showSelectedOptionOnDropdown = false, toggleCaption = null }) {
+function OptionPickerButton({
+    mode,
+    options,
+    selectedOptionId,
+    onOptionSelected,
+    tooltipLabel,
+    showSelectedOptionOnDropdown = false,
+    toggleCaption = null,
+    dropdownDrop = "down",
+    hideCaret = false,
+    dropdownClassName = "",
+    menuClassName = "",
+    compactMenu = false
+}) {
     const defaultOption = {
         id: "default",
         faIcon: "fa-solid fa-circle"
@@ -19,7 +32,7 @@ function OptionPickerButton({ mode, options, selectedOptionId, onOptionSelected,
     const buttonBehaviorEnabled = mode === OptionPickerButton.Modes.MODE_BUTTON ||
         (mode === OptionPickerButton.Modes.MODE_AUTO && options.length <= 2)
 
-    const caretIcon = !buttonBehaviorEnabled && selectedOption.img ?
+    const caretIcon = !buttonBehaviorEnabled && selectedOption.img && !hideCaret ?
         `fa-solid fa-caret-down` :
         null
 
@@ -43,7 +56,8 @@ function OptionPickerButton({ mode, options, selectedOptionId, onOptionSelected,
 
     return (
         <div className={`btn-option-picker`}>
-            <Dropdown>
+            <Dropdown drop={dropdownDrop}
+                      className={dropdownClassName}>
                 <OptionPickerButtonToggle option={selectedOption}
                                           caretIcon={caretIcon}
                                           onClick={_onToggleClicked}
@@ -53,7 +67,9 @@ function OptionPickerButton({ mode, options, selectedOptionId, onOptionSelected,
                 {!buttonBehaviorEnabled && (
                     <OptionPickerButtonMenu availableOptions={availableOptions}
                                             selectedOptionId={selectedOptionId}
-                                            onClick={_onDropdownOptionClicked}/>
+                                            onClick={_onDropdownOptionClicked}
+                                            menuClassName={menuClassName}
+                                            compactMenu={compactMenu}/>
                 )}
             </Dropdown>
         </div>
@@ -86,22 +102,25 @@ function OptionPickerButtonToggle({ option, caretIcon, onClick, tooltipLabel, to
     )
 }
 
-function OptionPickerButtonMenu({ availableOptions, selectedOptionId, onClick }) {
+function OptionPickerButtonMenu({ availableOptions, selectedOptionId, onClick, menuClassName, compactMenu }) {
     const hasSelectedOption = availableOptions.some(option => option.id === selectedOptionId)
     const borderClass = hasSelectedOption ? 'dropdown-item-no-border' : ''
+    const compactClass = compactMenu ? 'btn-option-picker-menu-item-compact' : ''
 
     return (
-        <Dropdown.Menu>
+        <Dropdown.Menu className={menuClassName}>
             {availableOptions.map((option, key) => (
                 <Dropdown.Item key={key}
-                               className={`btn-option-picker-menu-item ${borderClass} ${option.id === selectedOptionId ? 'btn-option-picker-menu-item-selected' : ''}`}
+                               className={`btn-option-picker-menu-item ${borderClass} ${compactClass} ${option.id === selectedOptionId ? 'btn-option-picker-menu-item-selected' : ''}`}
                                onClick={() => { onClick(option) }}>
                     <OptionPickerButtonPickerIcon   option={option}
                                                     size={1}/>
 
-                    <span className={`btn-option-picker-menu-item-label`}>
-                        {option.label}
-                    </span>
+                    {!compactMenu && (
+                        <span className={`btn-option-picker-menu-item-label`}>
+                            {option.label}
+                        </span>
+                    )}
                 </Dropdown.Item>
             ))}
         </Dropdown.Menu>

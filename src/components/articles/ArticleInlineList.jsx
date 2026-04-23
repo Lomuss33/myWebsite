@@ -36,13 +36,16 @@ function ArticleInlineList({ dataWrapper, id }) {
 function ArticleInlineListItems({ dataWrapper, selectedItemCategoryId}) {
     const viewport = useViewport()
 
-    const maxItems = viewport.getValueFromBreakpointHash({
+    const responsiveMaxItems = viewport.getValueFromBreakpointHash({
         xxl: 5,
         xl: 4,
         md: 3,
         sm: 2,
         default: 2
     })
+    const maxItems = Number.isFinite(Number(dataWrapper.settings.inlineListMaxItems)) ?
+        Number(dataWrapper.settings.inlineListMaxItems) :
+        responsiveMaxItems
 
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
     const slicedItems = filteredItems.slice(0, maxItems)

@@ -37,10 +37,6 @@ article.article-data-probe {
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 10px;
         margin-top: 16px;
-
-        @include media-breakpoint-down(md) {
-            grid-template-columns: 1fr;
-        }
     }
 
     div.article-data-probe-summary-chip {
@@ -162,15 +158,14 @@ article.article-data-probe {
     }
 
     div.article-data-probe-block-header {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: start;
         gap: 16px;
         margin-bottom: 14px;
 
         @include media-breakpoint-down(md) {
-            flex-direction: column;
-            align-items: stretch;
+            grid-template-columns: minmax(0, 1fr);
         }
     }
 
@@ -246,9 +241,13 @@ article.article-data-probe {
         justify-content: flex-end;
         gap: 10px;
         flex-wrap: wrap;
+        align-self: start;
+        min-width: min(100%, 240px);
 
         @include media-breakpoint-down(md) {
             justify-content: space-between;
+            min-width: 0;
+            width: 100%;
         }
     }
 

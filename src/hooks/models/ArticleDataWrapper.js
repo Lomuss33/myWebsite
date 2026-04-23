@@ -65,6 +65,7 @@ export default class ArticleDataWrapper {
 
             // - ArticleInlineList
             displayAsListIfWidthIsLowerThan: rawSettings["display_as_list_if_width_is_lower_than"] || undefined,
+            inlineListMaxItems: rawSettings["inline_list_max_items"] || undefined,
 
             // - ArticleText
             keepImageRow: Boolean(rawSettings["keepImageRow"]) || undefined,

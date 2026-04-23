@@ -10,7 +10,7 @@ import StatusCircle from "../../generic/StatusCircle.jsx"
 import TextTyper from "../../generic/TextTyper.jsx"
 import AudioButton from "../../buttons/AudioButton.jsx"
 
-function NavProfileCard({ profile, expanded, compactRail = false }) {
+function NavProfileCard({ profile, expanded, compactRail = false, mobileActionStack = null, showNameAudioButton = true }) {
     const language = useLanguage()
     const navigation = useNavigation()
     const utils = useUtils()
@@ -51,7 +51,7 @@ function NavProfileCard({ profile, expanded, compactRail = false }) {
 
     const namePronunciationIpa = language.getTranslation(safeProfile.locales, "name_pronunciation_ipa", null)
     const namePronunciationAudioUrl = language.getTranslation(safeProfile.locales, "name_pronunciation_audio_url", null)
-    const namePronunciationButtonVisible = namePronunciationIpa || namePronunciationAudioUrl
+    const namePronunciationButtonVisible = showNameAudioButton && (namePronunciationIpa || namePronunciationAudioUrl)
     const namePronunciationTooltipLabel = namePronunciationIpa ? `<span class="audio-button-tooltip-lines"><span class="audio-button-tooltip-line audio-button-tooltip-line-top">lǒːʋro  ˈmu.sit͡ɕ</span><span class="audio-button-tooltip-line audio-button-tooltip-line-bottom">LOHV-roh  muu-SEEch</span></span>` : ""
 
     const navProfileCardNameClass = namePronunciationButtonVisible ?
@@ -138,6 +138,12 @@ function NavProfileCard({ profile, expanded, compactRail = false }) {
                         )}
                     </h1>
                 </div>
+
+                {mobileActionStack && (
+                    <div className={`nav-profile-card-mobile-action-stack`}>
+                        {mobileActionStack}
+                    </div>
+                )}
             </div>
 
             {expanded && loveSentences?.length > 1 && (

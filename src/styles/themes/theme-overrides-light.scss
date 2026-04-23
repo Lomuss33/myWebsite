@@ -182,9 +182,9 @@
 }
 
 [data-theme="light"] article.article-info-list-home div.article-info-list-item.article-info-list-item-home {
-    border: 1px solid rgba(37, 99, 235, 0.14);
-    background: linear-gradient(180deg, #ffffff, #f6f9fd);
-    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    background: linear-gradient(180deg, #ffffff, #f8fafc);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
 }
 
 [data-theme="light"] article.article-info-list-home div.article-info-list-item-info-title {
@@ -196,9 +196,9 @@
 }
 
 [data-theme="light"] article.article-info-list-home div.article-info-list-item-avatar {
-    background-color: var(--theme-primary) !important;
-    border-color: var(--theme-primary);
-    color: var(--theme-texts-inv);
+    background-color: rgba(37, 99, 235, 0.08) !important;
+    border-color: rgba(37, 99, 235, 0.16);
+    color: #1d4ed8;
 }
 
 [data-theme="light"] article.article.article-stack-home div.article-stack-item.article-stack-item-home {

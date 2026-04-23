@@ -6,7 +6,8 @@ div.nav-link-pills-fixed-wrapper {
     left: 0;
     z-index: $z-index-nav-tabs;
     width: 100%;
-    padding: 0 var(--default-card-spacing);
+    padding: calc(var(--default-card-spacing) * 1.2) var(--default-card-spacing) 0;
+    backdrop-filter: blur(10px) saturate(125%);
 
     @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
         display: none;

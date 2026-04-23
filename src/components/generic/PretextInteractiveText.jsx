@@ -22,7 +22,7 @@ const TAP_RIPPLE_FADE_MS = 420
 const TAP_RIPPLE_SPEED_PX_PER_MS = 0.30
 const TAP_RIPPLE_BAND_PX = 28
 const WAVE_EFFECT_STRENGTH_MULTIPLIER = 2.4
-const GRAVITY_RELEASE_ROW_OFFSET = 0.5
+const GRAVITY_RELEASE_ROW_OFFSET = -0.12
 
 function PretextInteractiveText({
     html,
@@ -939,8 +939,8 @@ function collectVisibleGraphemes(paragraphs, lineHeight) {
                         key: `${fragment.key}-g-${graphemeIndex}`,
                         baselineX: fragmentLeft + grapheme.centerX,
                         baselineY: lineTop + lineHeight / 2,
-                        // Release slightly below the visual row so the split tracks the cursor line
-                        // instead of sitting above it.
+                        // Release slightly above the visual row so the fall starts before the
+                        // cursor reaches the lower half of the line.
                         releaseThresholdY: lineTop + lineHeight * GRAVITY_RELEASE_ROW_OFFSET
                     })
                 })

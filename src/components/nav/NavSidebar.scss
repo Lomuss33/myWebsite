@@ -20,6 +20,17 @@ nav.nav-sidebar {
 
         display: flex;
         flex-direction: column;
+        background:
+            linear-gradient(180deg,
+                color-mix(in srgb, var(--theme-card-background) 96%, var(--theme-primary) 4%) 0%,
+                var(--theme-card-background) 14%,
+                var(--theme-card-background-accent) 100%);
+        border: 1px solid var(--theme-standard-borders-accent);
+        box-shadow:
+            0 16px 36px rgba(15, 23, 42, 0.12),
+            0 2px 10px rgba(15, 23, 42, 0.08);
+        border-radius: calc($standard-border-radius * 1.8);
+        isolation: isolate;
 
         > div.nav-profile-card {
             flex: 0 0 auto;
@@ -40,6 +51,10 @@ nav.nav-sidebar {
         right: -14px;
         top: 44px;
         z-index: calc($z-index-sidebar + 1);
+        border-radius: 999px;
+        box-shadow:
+            0 10px 24px rgba(15, 23, 42, 0.18),
+            0 0 0 1px var(--theme-standard-borders-accent);
     }
 }
 

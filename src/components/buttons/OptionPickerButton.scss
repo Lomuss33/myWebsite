@@ -8,10 +8,17 @@ div.btn-option-picker {
 }
 
 button.btn-option-picker-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+
     span.btn-option-picker-toggle-row {
-        display: inline-flex;
+        display: flex;
         align-items: center;
         justify-content: center;
+        width: 100%;
+        height: 100%;
     }
 
     &.btn-option-picker-toggle-with-caption {
@@ -84,6 +91,14 @@ a.btn-option-picker-menu-item {
         font-size: 0.88rem;
         margin-top: 1px;
     }
+}
+
+a.btn-option-picker-menu-item-compact {
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    padding: 0;
 }
 
 a.btn-option-picker-menu-item-selected {

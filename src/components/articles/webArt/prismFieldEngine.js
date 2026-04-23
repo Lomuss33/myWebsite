@@ -229,8 +229,6 @@ export function createPrismFieldEngine(canvas, options = {}) {
 
         canvas.width = Math.floor(width * dpr)
         canvas.height = Math.floor(height * dpr)
-        canvas.style.width = `${width}px`
-        canvas.style.height = `${height}px`
 
         renderer.setPixelRatio(dpr)
         renderer.setSize(width, height, false)

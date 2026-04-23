@@ -115,8 +115,9 @@ article.article-info-list-home {
     }
 
     div.article-info-list-item-avatar {
-        background-color: color-mix(in srgb, var(--theme-boards-background) 82%, var(--theme-primary) 18%) !important;
-        border: 1px solid color-mix(in srgb, var(--theme-primary) 30%, var(--theme-standard-borders) 70%);
+        background-color: var(--theme-primary) !important;
+        border: 1px solid var(--theme-primary);
+        color: var(--theme-texts-inv) !important;
     }
 
     div.article-info-list-item-info-title {
@@ -128,8 +129,9 @@ article.article-info-list-home {
     }
 
     div.article-info-list-item-hovered div.article-info-list-item-avatar {
-        background-color: color-mix(in srgb, var(--theme-boards-background) 74%, var(--theme-primary) 26%) !important;
-        border-color: color-mix(in srgb, var(--theme-primary) 50%, var(--theme-standard-borders) 50%);
+        background-color: var(--theme-primary) !important;
+        border-color: var(--theme-primary);
+        color: var(--theme-texts-inv) !important;
     }
 }
 

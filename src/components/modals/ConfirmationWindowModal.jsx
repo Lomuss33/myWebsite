@@ -3,11 +3,9 @@ import React, {useEffect, useState} from 'react'
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {ModalWrapper, ModalWrapperBody, ModalWrapperTitle} from "./base/ModalWrapper"
 import StandardButton from "../buttons/StandardButton.jsx"
-import {useViewport} from "../../providers/ViewportProvider.jsx"
 
 function ConfirmationWindowModal({ target, onDismiss }) {
     const language = useLanguage()
-    const viewport = useViewport()
 
     const [shouldDismiss, setShouldDismiss] = useState(false)
 
@@ -19,7 +17,7 @@ function ConfirmationWindowModal({ target, onDismiss }) {
         return <></>
 
     const modalClass = shouldDismiss ? `` : `fade`
-    const modalDialogClass = viewport.isDesktopLayout() ? `` : `modal-dialog-centered`
+    const modalDialogClass = `modal-dialog-centered modal-dialog-scrollable`
 
     const title = target.title || ""
     const faIcon = target.faIcon || "fa-solid fa-question-mark"

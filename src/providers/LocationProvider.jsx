@@ -4,19 +4,29 @@
  * @description This provider acts as a router for the application, managing the active section and category based on the URL hash.
  */
 
-import React, {createContext, useContext, useEffect, useState} from 'react'
+import React, {createContext, useContext, useEffect, useRef, useState} from 'react'
 
 function LocationProvider({ children, sections, categories }) {
     const [activeSectionId, setActiveSectionId] = useState(null)
-    const [nextSectionId, setNextSectionId] = useState(null)
     const [visitHistoryByCategory, setVisitHistoryByCategory] = useState({})
     const [visitedSectionsCount, setVisitedSectionsCount] = useState(0)
+    const [hasResolvedInitialRoute, setHasResolvedInitialRoute] = useState(false)
+
+    const sectionsRef = useRef(sections)
+    const activeSectionIdRef = useRef(activeSectionId)
+    const hasResolvedInitialRouteRef = useRef(hasResolvedInitialRoute)
+
+    useEffect(() => {
+        sectionsRef.current = sections
+        activeSectionIdRef.current = activeSectionId
+        hasResolvedInitialRouteRef.current = hasResolvedInitialRoute
+    }, [sections, activeSectionId, hasResolvedInitialRoute])
 
     /** @constructs **/
     useEffect(() => {
         window.addEventListener('popstate', _onHashEvent)
         window.addEventListener('hashchange', _onHashEvent)
-        _onHashEvent()
+        _resolveCurrentSection(true)
 
         return () => {
             window.removeEventListener('popstate', _onHashEvent)
@@ -24,18 +34,10 @@ function LocationProvider({ children, sections, categories }) {
         }
     }, [])
 
-    /** @listens sections|categories **/
+    /** @listens sections|categories **/ 
     useEffect(() => {
-        _onHashEvent()
+        _resolveCurrentSection(true)
     }, [sections, categories])
-
-    /** @listens nextSectionId **/
-    useEffect(() => {
-        if(!nextSectionId)
-            return
-
-        _toNextSection()
-    }, [nextSectionId])
 
     const getActiveSection = () => {
         return sections.find(section => section.id === activeSectionId)
@@ -60,7 +62,7 @@ function LocationProvider({ children, sections, categories }) {
     }
 
     const goToSection = (section) => {
-        if(!section || activeSectionId === section.id)
+        if(!section || activeSectionIdRef.current === section.id)
             return
         window.location.hash = section.id
     }
@@ -90,27 +92,46 @@ function LocationProvider({ children, sections, categories }) {
     }
 
     const _onHashEvent = () => {
+        _resolveCurrentSection(false)
+    }
+
+    const _resolveCurrentSection = (isInitialResolve) => {
+        const currentSections = sectionsRef.current || []
+        if(currentSections.length === 0)
+            return
+
         const hash = window.location.hash.replace("#", "")
-        const targetSection = sections.find(section => section.id === hash)
-        if(targetSection) {
-            setNextSectionId(targetSection.id)
+        const targetSection = currentSections.find(section => section.id === hash)
+        const fallbackSection = currentSections[0]
+        const nextSection = targetSection || fallbackSection
+
+        if(!nextSection)
+            return
+
+        const nextSectionId = nextSection.id
+        const didChangeSection = activeSectionIdRef.current !== nextSectionId
+
+        if(!targetSection && fallbackSection) {
+            const nextUrl = `${window.location.pathname}${window.location.search}#${fallbackSection.id}`
+            if(window.location.hash !== `#${fallbackSection.id}`) {
+                window.history.replaceState({}, "", nextUrl)
+            }
         }
-        else {
-            _onInvalidSection()
+
+        if(!hasResolvedInitialRouteRef.current || didChangeSection || isInitialResolve) {
+            _setActiveSection(nextSectionId)
+            setHasResolvedInitialRoute(true)
         }
     }
 
-    const _onInvalidSection = () => {
-        const fallbackSection = sections[0]
-        if(fallbackSection) {
-            goToSection(fallbackSection)
-        }
-    }
+    const _setActiveSection = (sectionId) => {
+        if(!sectionId)
+            return
 
-    const _toNextSection = () => {
-        setActiveSectionId(nextSectionId)
+        activeSectionIdRef.current = sectionId
+        setActiveSectionId(sectionId)
 
-        const section = sections.find(section => section.id === nextSectionId)
+        const section = sectionsRef.current.find(section => section.id === sectionId)
         const category = section?.category
         setVisitedSectionsCount(prevState => prevState + 1)
 

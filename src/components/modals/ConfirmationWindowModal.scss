@@ -1,25 +1,51 @@
 @use "../../styles/extend" as *;
 
 #confirmation-window {
+    div.modal-dialog {
+        width: min(calc(100vw - 1rem), 30rem);
+        max-width: min(calc(100vw - 1rem), 30rem);
+        margin: 0.5rem auto;
+    }
+
     div.modal-content {
         background-color: var(--theme-card-background-accent);
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 24px 56px rgba(0, 0, 0, 0.32);
+        overflow: hidden;
     }
 
     div.modal-header {
         background-color: var(--theme-card-background);
         border: none!important;
+        padding: 0.9rem 1rem;
+        align-items: center;
     }
 
     div.modal-body {
         text-align: center;
-        padding: 20px 15px;
-        color: var(--theme-texts)
+        padding: 0.95rem 1rem 1rem;
+        color: var(--theme-texts);
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+    }
+
+    div.confirmation-window-message {
+        line-height: 1.45;
     }
 
     div.confirmation-window-menu {
         width: 100%;
-        margin-top: 20px;
+        margin-top: 0;
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
+        align-items: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    button.standard-button {
+        min-width: 8.5rem;
     }
 }

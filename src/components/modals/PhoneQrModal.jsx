@@ -1,14 +1,19 @@
 import "./PhoneQrModal.scss"
-import React, {useEffect, useMemo, useState} from "react"
+import React, {useEffect, useLayoutEffect, useMemo, useState} from "react"
 import QRCodeGenerator from "qrcode"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
+import {useViewport} from "../../providers/ViewportProvider.jsx"
 import {ModalWrapper, ModalWrapperBody, ModalWrapperTitle} from "./base/ModalWrapper"
 import StandardButton from "../buttons/StandardButton.jsx"
 
+const MAX_QR_SIZE = 320
+
 function PhoneQrModal({ target, onDismiss }) {
     const language = useLanguage()
+    const viewport = useViewport()
     const [shouldDismiss, setShouldDismiss] = useState(false)
-    const [qrDataUrl, setQrDataUrl] = useState("")
+    const [qrMarkup, setQrMarkup] = useState("")
+    const [qrSize, setQrSize] = useState(0)
 
     useEffect(() => {
         setShouldDismiss(false)
@@ -24,8 +29,15 @@ function PhoneQrModal({ target, onDismiss }) {
         return ""
     }, [target])
 
+    const title = target?.title || language.getStringOrFallback("scan_to_call_title", "Scan to Call")
+    const displayNumber = target?.phoneNumberDisplay || target?.phoneNumberRaw || ""
+    const okayLabel = language.getStringOrFallback("okay", "Okay")
+    const instruction = language.getStringOrFallback(
+        "scan_to_call_message",
+        "Scan this QR code with your phone camera to open the number in the dialer."
+    )
+
     useEffect(() => {
-        let cancelled = false
         if(!target) {
             document.body.classList.remove("phone-qr-backdrop-active")
             return
@@ -42,15 +54,15 @@ function PhoneQrModal({ target, onDismiss }) {
 
         const generateQr = async () => {
             if(!qrValue) {
-                setQrDataUrl("")
+                setQrMarkup("")
                 return
             }
 
             try {
-                const url = await QRCodeGenerator.toDataURL(qrValue, {
+                const svg = await QRCodeGenerator.toString(qrValue, {
+                    type: "svg",
                     errorCorrectionLevel: "Q",
                     margin: 4,
-                    width: 512,
                     color: {
                         dark: "#000000",
                         light: "#FFFFFF"
@@ -58,11 +70,11 @@ function PhoneQrModal({ target, onDismiss }) {
                 })
 
                 if(!cancelled)
-                    setQrDataUrl(url)
+                    setQrMarkup(svg)
             }
             catch (error) {
                 if(!cancelled)
-                    setQrDataUrl("")
+                    setQrMarkup("")
             }
         }
 
@@ -72,17 +84,54 @@ function PhoneQrModal({ target, onDismiss }) {
         }
     }, [qrValue])
 
+    useLayoutEffect(() => {
+        if(!target) {
+            setQrSize(0)
+            return
+        }
+
+        const modalRoot = document.getElementById("phone-qr-modal")
+        const modalBody = modalRoot?.querySelector(".phone-qr-modal-body")
+        const modalDialog = modalRoot?.querySelector(".modal-dialog")
+        const modalHeader = modalRoot?.querySelector(".modal-header")
+        const modalMessage = modalRoot?.querySelector(".phone-qr-modal-message")
+        const modalNumber = modalRoot?.querySelector(".phone-qr-modal-number")
+        const modalActions = modalRoot?.querySelector(".phone-qr-modal-actions")
+
+        if(!modalBody || !modalDialog)
+            return
+
+        const bodyStyles = window.getComputedStyle(modalBody)
+        const dialogStyles = window.getComputedStyle(modalDialog)
+
+        const bodyPaddingX = (parseFloat(bodyStyles.paddingLeft) || 0) + (parseFloat(bodyStyles.paddingRight) || 0)
+        const bodyPaddingY = (parseFloat(bodyStyles.paddingTop) || 0) + (parseFloat(bodyStyles.paddingBottom) || 0)
+        const bodyGap = parseFloat(bodyStyles.gap || bodyStyles.rowGap || "0") || 0
+        const dialogMarginY = (parseFloat(dialogStyles.marginTop) || 0) + (parseFloat(dialogStyles.marginBottom) || 0)
+
+        const chromeHeight =
+            (modalHeader?.getBoundingClientRect().height || 0) +
+            (modalMessage?.getBoundingClientRect().height || 0) +
+            (modalNumber?.getBoundingClientRect().height || 0) +
+            (modalActions?.getBoundingClientRect().height || 0) +
+            bodyPaddingY +
+            (bodyGap * 3)
+
+        const widthBudget = Math.max(0, modalBody.clientWidth - bodyPaddingX)
+        const heightBudget = Math.max(0, viewport.innerHeight - dialogMarginY - chromeHeight)
+        const nextSize = Math.floor(Math.min(widthBudget, heightBudget, MAX_QR_SIZE))
+
+        setQrSize(nextSize)
+    }, [target, viewport.innerWidth, viewport.innerHeight, instruction, displayNumber])
+
     if(!target)
         return <></>
 
     const modalClass = shouldDismiss ? `` : `fade`
-    const title = target.title || language.getStringOrFallback("scan_to_call_title", "Scan to Call")
-    const displayNumber = target.phoneNumberDisplay || target.phoneNumberRaw || ""
-    const okayLabel = language.getStringOrFallback("okay", "Okay")
-    const instruction = language.getStringOrFallback(
-        "scan_to_call_message",
-        "Scan this QR code with your phone camera to open the number in the dialer."
-    )
+    const qrCodeStyle = qrSize ? {
+        width: `${qrSize}px`,
+        height: `${qrSize}px`
+    } : undefined
 
     const _onClose = () => {
         setShouldDismiss(true)
@@ -91,7 +140,7 @@ function PhoneQrModal({ target, onDismiss }) {
     return (
         <ModalWrapper id={`phone-qr-modal`}
                       className={`modal-md ${modalClass}`}
-                      dialogClassName={`modal-dialog-centered`}
+                      dialogClassName={`modal-dialog-centered modal-dialog-scrollable`}
                       shouldDismiss={shouldDismiss}
                       onDismiss={onDismiss}>
             <ModalWrapperTitle title={title}
@@ -104,12 +153,13 @@ function PhoneQrModal({ target, onDismiss }) {
                     {instruction}
                 </p>
 
-                <div className={`phone-qr-modal-code`}>
-                    {qrDataUrl && (
-                        <img className={`phone-qr-modal-code-image`}
-                             src={qrDataUrl}
-                             alt={`QR code for ${displayNumber}`}
-                             draggable={false}/>
+                <div className={`phone-qr-modal-code`}
+                     style={qrCodeStyle}>
+                    {qrMarkup && (
+                        <div className={`phone-qr-modal-code-image`}
+                             role={`img`}
+                             aria-label={`QR code for ${displayNumber}`}
+                             dangerouslySetInnerHTML={{__html: qrMarkup}}/>
                     )}
                 </div>
 

@@ -88,8 +88,10 @@ const AppEssentialsWrapper = ({children}) => {
     const [settings, setSettings] = useState(() => createDefaultSettings())
 
     useEffect(() => {
-        if (window.location.pathname !== utils.file.BASE_URL)
-            window.history.pushState({}, '', utils.file.BASE_URL)
+        if (window.location.pathname !== utils.file.BASE_URL) {
+            const normalizedUrl = `${utils.file.BASE_URL}${window.location.search}${window.location.hash}`
+            window.history.replaceState({}, '', normalizedUrl)
+        }
 
         utils.file.loadJSON("/data/settings.json").then(response => {
             const resolvedSettings = response || createDefaultSettings()

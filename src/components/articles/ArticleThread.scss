@@ -17,9 +17,11 @@ div.article-thread-items {
     }
 
     @include media-breakpoint-down(sm) {
-        --circle-size: 28px;
-        --gap-between-circle-and-content: 20px;
-        --line-width: 4px;
+        --min-gap-between-items: 40px;
+        --circle-size: 26px;
+        --gap-between-circle-and-content: 16px;
+        --line-width: 3px;
+        --circle-margin-top: 8px;
     }
 }
 
@@ -69,6 +71,6 @@ div.article-thread-item-content {
     margin-left: var(--gap-between-circle-and-content)!important;
     padding: 22px 26px 24px!important;
     @include media-breakpoint-down(sm) {
-        padding: 20px 22px 24px!important;
+        padding: 18px 20px 22px!important;
     }
 }

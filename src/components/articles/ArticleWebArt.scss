@@ -2,37 +2,22 @@
 
 div.article-web-art-shell {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
     container-type: inline-size;
     container-name: web-art-shell;
 }
 
 div.article-web-art-stage {
     position: relative;
-    transition: opacity 520ms ease, transform 520ms ease, filter 520ms ease;
-}
-
-div.article-web-art-stage-covered {
-    opacity: 0;
-    pointer-events: none;
-    user-select: none;
-    transform: scale(1.01);
-    filter: blur(6px);
-}
-
-div.article-web-art-stage-revealing {
-    opacity: 1;
-    transform: none;
-    filter: none;
 }
 
 div.article-web-art-intro-cover {
-    position: absolute;
-    inset: 0;
-    z-index: 5;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
-    padding: clamp(28px, 5vw, 52px);
+    padding: 0;
     border-radius: $standard-border-radius;
     overflow: hidden;
     background:
@@ -41,62 +26,60 @@ div.article-web-art-intro-cover {
             color-mix(in srgb, var(--theme-card-background) 92%, white 8%) 0%,
             var(--theme-card-background) 58%,
             color-mix(in srgb, var(--theme-card-background) 90%, black 10%) 100%);
-    transition: opacity 560ms ease, transform 560ms ease, filter 560ms ease;
-}
-
-div.article-web-art-intro-cover-leaving {
-    opacity: 0;
-    transform: scale(1.018);
-    filter: blur(8px);
-    pointer-events: none;
+    border: 1px solid color-mix(in srgb, var(--theme-card-background-accent) 38%, transparent 62%);
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.10);
 }
 
 div.article-web-art-intro-cover-inner {
-    width: min(100%, 680px);
-    min-height: clamp(420px, 54vw, 760px);
+    width: 100%;
+    min-height: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
-    gap: clamp(18px, 3vw, 28px);
-    text-align: center;
-}
-
-p.article-web-art-intro-cover-title {
-    margin: 0;
-    max-width: 14ch;
-    color: color-mix(in srgb, var(--theme-text-color, #fff) 92%, transparent 8%);
-    font-size: clamp(1.8rem, 2vw + 1.15rem, 3.65rem);
-    line-height: 1.08;
-    font-weight: 300;
-    letter-spacing: -0.03em;
-    text-wrap: balance;
+    gap: 10px;
+    padding: 16px 18px;
 }
 
 div.article-web-art-intro-cover-actions {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     gap: 14px;
     flex-wrap: wrap;
 }
 
+p.article-web-art-intro-cover-title {
+    margin: 0;
+    flex: 1 1 16rem;
+    min-width: 0;
+    max-width: 32ch;
+    color: color-mix(in srgb, var(--theme-text-color, #fff) 92%, transparent 8%);
+    font-size: clamp(1.12rem, 0.9rem + 1vw, 1.72rem);
+    line-height: 1.15;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+}
+
 span.article-web-art-intro-cover-note {
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     text-transform: uppercase;
     letter-spacing: 0.16em;
     color: color-mix(in srgb, var(--theme-card-background-accent) 45%, var(--theme-text-color, #fff) 55%);
+    line-height: 1.35;
 }
 
 button.article-web-art-intro-cover-button {
+    flex: 0 0 auto;
     appearance: none;
     border: 1px solid color-mix(in srgb, var(--theme-card-background-accent) 70%, white 30%);
     background: color-mix(in srgb, var(--theme-card-background) 84%, white 16%);
     color: var(--theme-text-color, #fff);
     border-radius: 999px;
-    padding: 12px 24px;
-    min-width: 132px;
-    font-size: 0.98rem;
+    padding: 10px 18px;
+    min-width: 108px;
+    font-size: 0.92rem;
     font-weight: 700;
     letter-spacing: 0.02em;
     transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background-color 160ms ease;
@@ -110,7 +93,7 @@ button.article-web-art-intro-cover-button {
 
     &:active {
         transform: translateY(0);
-        box-shadow: none;
+        box-shadow: inset 0 0 0 1px var(--theme-card-background-accent);
     }
 
     &:focus-visible {
@@ -119,9 +102,12 @@ button.article-web-art-intro-cover-button {
     }
 }
 
-button.article-web-art-intro-cover-button-preparing {
-    cursor: progress;
-    min-width: 172px;
+div.article-web-art-intro-cover-hidden {
+    opacity: 0.94;
+}
+
+div.article-web-art-intro-cover-open {
+    opacity: 1;
 }
 
 div.article-web-art-items {
@@ -135,7 +121,7 @@ div.article-web-art-items {
     }
 }
 
- .article-web-art-tile {
+.article-web-art-tile {
     position: relative;
     display: block;
     width: 100%;
@@ -155,6 +141,13 @@ div.article-web-art-items {
     isolation: isolate;
 
     transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+}
+
+.article-web-art-tile-clickable,
+.article-web-art-tile-hover-only,
+.article-web-art-tile-cta {
+    border: 0;
+    box-shadow: inset 0 0 0 1px var(--theme-card-background-accent);
 }
 
 @container web-art-shell (max-width: 560px) {
@@ -375,7 +368,8 @@ div.article-web-art-items-locked {
     cursor: pointer;
 
     &:hover {
-        border-color: color-mix(in srgb, var(--theme-card-background-accent) 55%, var(--theme-primary) 45%);
+        box-shadow:
+            inset 0 0 0 1px color-mix(in srgb, var(--theme-card-background-accent) 55%, var(--theme-primary) 45%);
     }
 }
 
@@ -1007,8 +1001,9 @@ div.article-web-art-items-locked {
 .article-web-art-tile-clickable {
     &:hover {
         transform: translateY(-1px);
-        border-color: color-mix(in srgb, var(--theme-card-background-accent) 65%, var(--theme-primary) 35%);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+        box-shadow:
+            inset 0 0 0 1px color-mix(in srgb, var(--theme-card-background-accent) 65%, var(--theme-primary) 35%),
+            0 10px 20px rgba(0, 0, 0, 0.25);
     }
 
     &:active {
@@ -1017,7 +1012,9 @@ div.article-web-art-items-locked {
     }
 
     &:focus-visible {
-        box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme-primary) 40%, transparent 60%);
+        box-shadow:
+            inset 0 0 0 1px var(--theme-card-background-accent),
+            0 0 0 3px color-mix(in srgb, var(--theme-primary) 40%, transparent 60%);
     }
 }
 
@@ -1026,12 +1023,15 @@ div.article-web-art-items-locked {
     touch-action: pan-y;
 
     &:hover {
-        border-color: color-mix(in srgb, var(--theme-card-background-accent) 55%, var(--theme-secondary) 45%);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.22);
+        box-shadow:
+            inset 0 0 0 1px color-mix(in srgb, var(--theme-card-background-accent) 55%, var(--theme-secondary) 45%),
+            0 10px 20px rgba(0, 0, 0, 0.22);
     }
 
     &:focus-visible {
-        box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme-secondary) 45%, transparent 55%);
+        box-shadow:
+            inset 0 0 0 1px var(--theme-card-background-accent),
+            0 0 0 3px color-mix(in srgb, var(--theme-secondary) 45%, transparent 55%);
     }
 }
 

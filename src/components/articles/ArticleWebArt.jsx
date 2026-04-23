@@ -6,8 +6,6 @@ import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useNavigation} from "../../providers/NavigationProvider.jsx"
 import patronusSvgMarkup from "./webArt/patronus.svg?raw"
 
-const INTRO_COVER_DISMISS_MS = 560
-
 function _scheduleIdleWork(work, { timeoutMs = 1200 } = {}) {
     if(typeof window === "undefined") {
         work()
@@ -21,6 +19,21 @@ function _scheduleIdleWork(work, { timeoutMs = 1200 } = {}) {
 
     const id = window.setTimeout(() => work(), 0)
     return () => window.clearTimeout(id)
+}
+
+function _measureTileContentSize(element) {
+    if(!element) {
+        return { width: 1, height: 1 }
+    }
+
+    const width = Math.max(1, Math.round(element.clientWidth || element.getBoundingClientRect().width || 1))
+    const height = Math.max(1, Math.round(element.clientHeight || element.getBoundingClientRect().height || 1))
+    return { width, height }
+}
+
+function _syncTileEngineSize(tile, engine, devicePixelRatio = 1) {
+    const { width, height } = _measureTileContentSize(tile)
+    engine?.setSize?.(width, height, devicePixelRatio)
 }
 
 const MINESWEEPER_ROWS = 9
@@ -133,7 +146,6 @@ function ArticleWebArt({ dataWrapper, id }) {
     const ambientTardisReadyId = `${dataWrapper.uniqueId}-ambient-tardis`
     const [selectedItemCategoryId, setSelectedItemCategoryId] = useState(null)
     const [showIntroCover, setShowIntroCover] = useState(true)
-    const [isIntroCoverLeaving, setIsIntroCoverLeaving] = useState(false)
     const rawItems = useMemo(() => dataWrapper.orderedItems.slice(0, 6), [dataWrapper.orderedItems])
     const items = useMemo(() => {
         // Desired visual order: Poly, 5, 3D, Orbit, Hover, Wave
@@ -160,7 +172,6 @@ function ArticleWebArt({ dataWrapper, id }) {
     const [shouldMountTiles, setShouldMountTiles] = useState(false)
     const readySetRef = useRef(new Set())
     const readyTimeoutsRef = useRef(new Map())
-    const introCoverDismissTimeoutRef = useRef(null)
     const [readyCount, setReadyCount] = useState(0)
     const [activationIndex, setActivationIndex] = useState(-1)
     const trackedReadyIds = useMemo(() => {
@@ -178,7 +189,7 @@ function ArticleWebArt({ dataWrapper, id }) {
             ambientTardisReadyId
         ]
     }, [ambientHexReadyId, ambientJuliaReadyId, ambientMinesReadyId, ambientPlopReadyId, ambientPrismReadyId, ambientRingsReadyId, ambientRopeReadyId, ambientSoupReadyId, ambientTardisReadyId, ambientTraceReadyId, items])
-    const locked = showIntroCover || isIntroCoverLeaving
+    const locked = showIntroCover
     const selectedLanguageId = language.selectedLanguageId || "en"
 
     let submitTileLabel = language.getString("send_yours")
@@ -233,6 +244,8 @@ function ArticleWebArt({ dataWrapper, id }) {
         button: "Enter",
         preparing: "Preparing..."
     }
+    const introTitle = selectedLanguageId === "de" ? "Hier ist etwas Web-Kunst zum Spaß" : "Here is some web art for fun."
+    const introHideLabel = "hide"
 
     const onTileReady = useCallback((uniqueId) => {
         if(!uniqueId) return
@@ -248,37 +261,37 @@ function ArticleWebArt({ dataWrapper, id }) {
         setReadyCount(readySetRef.current.size)
     }, [])
 
-    const dismissIntroCover = useCallback(() => {
-        if(!showIntroCover || isIntroCoverLeaving) return
-
-        if(introCoverDismissTimeoutRef.current != null) {
-            window.clearTimeout(introCoverDismissTimeoutRef.current)
+    const resetArtState = useCallback(() => {
+        for(const timeoutId of readyTimeoutsRef.current.values()) {
+            window.clearTimeout(timeoutId)
         }
-
-        setIsIntroCoverLeaving(true)
-        introCoverDismissTimeoutRef.current = window.setTimeout(() => {
-            setShowIntroCover(false)
-            setIsIntroCoverLeaving(false)
-            introCoverDismissTimeoutRef.current = null
-        }, INTRO_COVER_DISMISS_MS)
-    }, [isIntroCoverLeaving, showIntroCover])
+        readyTimeoutsRef.current = new Map()
+        readySetRef.current = new Set()
+        setReadyCount(0)
+        setActivationIndex(-1)
+        setShouldMountTiles(false)
+    }, [])
 
     const onIntroEnter = useCallback(() => {
-        if(isIntroCoverLeaving) return
         feedbacks.showConfirmationDialog(
-            "Load all Web Art?",
-            "This section uses a batch of canvas and WebGL engines. Confirm to load them on demand.",
+            "Enter the web art?",
+            "The gallery loads its effects on demand. Confirm to continue.",
             "fa-solid fa-triangle-exclamation",
             () => {
+                setShowIntroCover(false)
                 setShouldMountTiles(true)
                 setActivationIndex(-1)
-                dismissIntroCover()
             },
-            "Load",
+            introCopy.button,
             null,
-            "Cancel"
+            language.getString("cancel")
         )
-    }, [dismissIntroCover, feedbacks, isIntroCoverLeaving])
+    }, [feedbacks, introCopy.button, language])
+
+    const onIntroHide = useCallback(() => {
+        resetArtState()
+        setShowIntroCover(true)
+    }, [resetArtState])
 
     const itemTiles = items.map((itemWrapper, index) => {
         if(!shouldMountTiles) {
@@ -374,23 +387,9 @@ function ArticleWebArt({ dataWrapper, id }) {
     ]
 
     useEffect(() => {
-        readySetRef.current = new Set()
-        for(const timeoutId of readyTimeoutsRef.current.values()) {
-            window.clearTimeout(timeoutId)
-        }
-        readyTimeoutsRef.current = new Map()
-        setReadyCount(0)
+        resetArtState()
         setShowIntroCover(true)
-        setIsIntroCoverLeaving(false)
-        setShouldMountTiles(false)
-        setActivationIndex(-1)
-        return () => {
-            if(introCoverDismissTimeoutRef.current != null) {
-                window.clearTimeout(introCoverDismissTimeoutRef.current)
-                introCoverDismissTimeoutRef.current = null
-            }
-        }
-    }, [dataWrapper.uniqueId])
+    }, [dataWrapper.uniqueId, resetArtState])
 
     useEffect(() => {
         if(!shouldMountTiles) return
@@ -432,15 +431,6 @@ function ArticleWebArt({ dataWrapper, id }) {
         }
     }, [shouldMountTiles, trackedReadyIds, onTileReady])
 
-    useEffect(() => {
-        return () => {
-            if(introCoverDismissTimeoutRef.current != null) {
-                window.clearTimeout(introCoverDismissTimeoutRef.current)
-                introCoverDismissTimeoutRef.current = null
-            }
-        }
-    }, [])
-
     return (
         <Article id={dataWrapper.uniqueId}
                  type={Article.Types.SPACING_DEFAULT}
@@ -449,33 +439,31 @@ function ArticleWebArt({ dataWrapper, id }) {
                  selectedItemCategoryId={selectedItemCategoryId}
                  setSelectedItemCategoryId={setSelectedItemCategoryId}>
             <div className={`article-web-art-shell`}>
-                <div className={`article-web-art-stage ${showIntroCover ? "article-web-art-stage-covered" : ""} ${isIntroCoverLeaving ? "article-web-art-stage-revealing" : ""}`}
-                     aria-hidden={showIntroCover}>
-                    <div className={`article-web-art-items ${locked ? "article-web-art-items-locked" : ""}`}
-                         ref={tilesWrapperRef}
-                         aria-busy={showIntroCover}>
-                        {itemTiles}
-                        <GoldfishTile />
-                        <PatronusTile />
-                        {ambientTiles}
-                        <SendYourFunAnimationTile label={submitTileLabel} clickLabel={clickTileLabel}/>
-                    </div>
-                </div>
+                <WebArtIntroCover title={introTitle}
+                                  note={introCopy.note}
+                                  buttonLabel={showIntroCover ? introCopy.button : introHideLabel}
+                                  hidden={showIntroCover}
+                                  onEnter={showIntroCover ? onIntroEnter : onIntroHide}/>
 
-                {showIntroCover && (
-                    <WebArtIntroCover title={introCopy.title}
-                                      note={introCopy.note}
-                                      buttonLabel={introCopy.button}
-                                      isPreparing={false}
-                                      leaving={isIntroCoverLeaving}
-                                      onEnter={onIntroEnter}/>
+                {!showIntroCover && (
+                    <div className={`article-web-art-stage`}>
+                        <div className={`article-web-art-items ${locked ? "article-web-art-items-locked" : ""}`}
+                             ref={tilesWrapperRef}
+                             aria-busy={showIntroCover}>
+                            {itemTiles}
+                            <GoldfishTile />
+                            <PatronusTile />
+                            {ambientTiles}
+                            <SendYourFunAnimationTile label={submitTileLabel} clickLabel={clickTileLabel}/>
+                        </div>
+                    </div>
                 )}
             </div>
         </Article>
     )
 }
 
-function WebArtIntroCover({ title, note, buttonLabel, isPreparing, leaving, onEnter }) {
+function WebArtIntroCover({ title, note, buttonLabel, hidden, onEnter }) {
     const onKeyDown = (event) => {
         if(event.key === "Enter" || event.key === " ") {
             event.preventDefault()
@@ -484,25 +472,25 @@ function WebArtIntroCover({ title, note, buttonLabel, isPreparing, leaving, onEn
     }
 
     return (
-        <div className={`article-web-art-intro-cover ${leaving ? "article-web-art-intro-cover-leaving" : ""}`}>
+        <div className={`article-web-art-intro-cover ${hidden ? "article-web-art-intro-cover-hidden" : "article-web-art-intro-cover-open"}`}>
             <div className={`article-web-art-intro-cover-inner`}>
-                <p className={`article-web-art-intro-cover-title`}>
-                    {title}
-                </p>
-
                 <div className={`article-web-art-intro-cover-actions`}>
-                    <span className={`article-web-art-intro-cover-note`}>
-                        {note}
-                    </span>
+                    <p className={`article-web-art-intro-cover-title`}>
+                        {title}
+                    </p>
 
                     <button type={"button"}
-                            className={`article-web-art-intro-cover-button ${isPreparing ? "article-web-art-intro-cover-button-preparing" : ""}`}
+                            className={`article-web-art-intro-cover-button`}
                             onClick={onEnter}
                             onKeyDown={onKeyDown}
-                            aria-busy={isPreparing}>
+                            aria-label={buttonLabel}>
                         {buttonLabel}
                     </button>
                 </div>
+
+                <span className={`article-web-art-intro-cover-note`}>
+                    {note}
+                </span>
             </div>
         </div>
     )
@@ -593,10 +581,7 @@ function EmbroideryTile({ itemWrapper, index, activate, locked, onReady }) {
                 engine = mod.createEmbroideryEngine(canvas, config)
                 engineRef.current = engine
 
-                const updateSize = () => {
-                    const rect = tile.getBoundingClientRect()
-                    engine.setSize(rect.width, rect.height, window.devicePixelRatio || 1)
-                }
+                const updateSize = () => _syncTileEngineSize(tile, engine, window.devicePixelRatio || 1)
 
                 updateSize()
                 engine.renderStatic?.()
@@ -741,10 +726,7 @@ function SpiralDotsTile({ itemWrapper, index, activate, locked, onReady }) {
                 engine = mod.createSpiralDotsEngine(canvas, config)
                 engineRef.current = engine
 
-                const updateSize = () => {
-                    const rect = tile.getBoundingClientRect()
-                    engine.setSize(rect.width, rect.height, window.devicePixelRatio || 1)
-                }
+                const updateSize = () => _syncTileEngineSize(tile, engine, window.devicePixelRatio || 1)
 
                 updateSize()
                 engine.renderStatic?.()
@@ -908,10 +890,7 @@ function GridWaveTile({ itemWrapper, index, activate, locked, onReady }) {
                 engine = mod.createGridWaveEngine(canvas, config)
                 engineRef.current = engine
 
-                const updateSize = () => {
-                    const rect = tile.getBoundingClientRect()
-                    engine.setSize(rect.width, rect.height, window.devicePixelRatio || 1)
-                }
+                const updateSize = () => _syncTileEngineSize(tile, engine, window.devicePixelRatio || 1)
 
                 updateSize()
                 engine.renderStatic?.()
@@ -1061,11 +1040,7 @@ function ThreeTunnelTile({ itemWrapper, index, activate, locked, onReady }) {
             engine = mod.createThreeTunnelEngine(canvas, config)
             engineRef.current = engine
 
-            const updateSize = () => {
-                const rect = tile.getBoundingClientRect()
-                const dpr = Math.min(1.5, window.devicePixelRatio || 1)
-                engine.setSize(rect.width, rect.height, dpr)
-            }
+            const updateSize = () => _syncTileEngineSize(tile, engine, Math.min(1.5, window.devicePixelRatio || 1))
 
             updateSize()
             engine.reset()
@@ -1210,11 +1185,7 @@ function ThreePolygonDemo5Tile({ itemWrapper, index, activate, locked, onReady }
             const engine = mod.createThreePolygonDemo5Engine(canvas, config)
             engineRef.current = engine
 
-            const updateSize = () => {
-                const rect = tile.getBoundingClientRect()
-                const dpr = Math.min(1.5, window.devicePixelRatio || 1)
-                engine.setSize(rect.width, rect.height, dpr)
-            }
+            const updateSize = () => _syncTileEngineSize(tile, engine, Math.min(1.5, window.devicePixelRatio || 1))
 
             updateSize()
             engine.reset()
@@ -1356,10 +1327,7 @@ function OrbitCirclesTile({ itemWrapper, index, activate, locked, onReady }) {
                 engine = mod.createOrbitCirclesEngine(canvas, config)
                 engineRef.current = engine
 
-                const updateSize = () => {
-                    const rect = tile.getBoundingClientRect()
-                    engine.setSize(rect.width, rect.height, window.devicePixelRatio || 1)
-                }
+                const updateSize = () => _syncTileEngineSize(tile, engine, window.devicePixelRatio || 1)
 
                 updateSize()
                 engine.reset()
@@ -1504,11 +1472,7 @@ function TortuosityTraceTile({ readyId, locked, onReady }) {
                 engine = mod.createTortuosityTraceEngine(canvas, config)
                 engineRef.current = engine
 
-                const updateSize = () => {
-                    const rect = tile.getBoundingClientRect()
-                    const dpr = Math.min(1.5, window.devicePixelRatio || 1)
-                    engine.setSize(rect.width, rect.height, dpr)
-                }
+                const updateSize = () => _syncTileEngineSize(tile, engine, Math.min(1.5, window.devicePixelRatio || 1))
 
                 updateSize()
                 engine.renderStatic?.()
@@ -1622,11 +1586,7 @@ function HexFlowBallsTile({ readyId, locked, onReady }) {
                 engine = mod.createHexFlowBallsEngine(canvas, config)
                 engineRef.current = engine
 
-                const updateSize = () => {
-                    const rect = tile.getBoundingClientRect()
-                    const dpr = Math.min(1.5, window.devicePixelRatio || 1)
-                    engine.setSize(rect.width, rect.height, dpr)
-                }
+                const updateSize = () => _syncTileEngineSize(tile, engine, Math.min(1.5, window.devicePixelRatio || 1))
 
                 updateSize()
                 engine.renderStatic?.()
@@ -1738,11 +1698,7 @@ function PixelPlopTile({ readyId, locked, onReady }) {
                 engine = mod.createPixelPlopEngine(canvas, config)
                 engineRef.current = engine
 
-                const updateSize = () => {
-                    const rect = tile.getBoundingClientRect()
-                    const dpr = Math.min(1.5, window.devicePixelRatio || 1)
-                    engine.setSize(rect.width, rect.height, dpr)
-                }
+                const updateSize = () => _syncTileEngineSize(tile, engine, Math.min(1.5, window.devicePixelRatio || 1))
 
                 updateSize()
                 engine.renderStatic?.()
@@ -1866,11 +1822,7 @@ function JuliaLinesTile({ readyId, locked, onReady }) {
                 engine = mod.createJuliaLinesEngine(canvas, config)
                 engineRef.current = engine
 
-                const updateSize = () => {
-                    const rect = tile.getBoundingClientRect()
-                    const dpr = Math.min(1.5, window.devicePixelRatio || 1)
-                    engine.setSize(rect.width, rect.height, dpr)
-                }
+                const updateSize = () => _syncTileEngineSize(tile, engine, Math.min(1.5, window.devicePixelRatio || 1))
 
                 updateSize()
                 engine.renderStatic?.()
@@ -2236,11 +2188,7 @@ function FallingRingsTile({ readyId, locked, onReady }) {
                 engine = mod.createFallingRingsEngine(canvas, config)
                 engineRef.current = engine
 
-                const updateSize = () => {
-                    const rect = tile.getBoundingClientRect()
-                    const dpr = Math.min(1.5, window.devicePixelRatio || 1)
-                    engine.setSize(rect.width, rect.height, dpr)
-                }
+                const updateSize = () => _syncTileEngineSize(tile, engine, Math.min(1.5, window.devicePixelRatio || 1))
 
                 updateSize()
                 engine.renderStatic?.()
@@ -2385,11 +2333,7 @@ function PrismFieldTile({ readyId, locked, onReady }) {
                 engine = mod.createPrismFieldEngine(canvas, config)
                 engineRef.current = engine
 
-                const updateSize = () => {
-                    const rect = tile.getBoundingClientRect()
-                    const dpr = Math.min(1.5, window.devicePixelRatio || 1)
-                    engine.setSize(rect.width, rect.height, dpr)
-                }
+                const updateSize = () => _syncTileEngineSize(tile, engine, Math.min(1.5, window.devicePixelRatio || 1))
 
                 updateSize()
                 engine.renderStatic?.()
@@ -2533,11 +2477,7 @@ function RopeLightTile({ readyId, locked, onReady }) {
                 engine = mod.createRopeLightEngine(canvas, config)
                 engineRef.current = engine
 
-                const updateSize = () => {
-                    const rect = tile.getBoundingClientRect()
-                    const dpr = Math.min(1.5, window.devicePixelRatio || 1)
-                    engine.setSize(rect.width, rect.height, dpr)
-                }
+                const updateSize = () => _syncTileEngineSize(tile, engine, Math.min(1.5, window.devicePixelRatio || 1))
 
                 updateSize()
                 engine.renderStatic?.()
@@ -2681,11 +2621,7 @@ function SoupShaderTile({ readyId, locked, onReady }) {
                 engine = mod.createSoupShaderEngine(canvas, config)
                 engineRef.current = engine
 
-                const updateSize = () => {
-                    const rect = tile.getBoundingClientRect()
-                    const dpr = Math.min(1.5, window.devicePixelRatio || 1)
-                    engine.setSize(rect.width, rect.height, dpr)
-                }
+                const updateSize = () => _syncTileEngineSize(tile, engine, Math.min(1.5, window.devicePixelRatio || 1))
 
                 updateSize()
                 engine.renderStatic?.()
@@ -2832,11 +2768,7 @@ function TardisTile({ readyId, locked, onReady }) {
                 engine = mod.createTardisWormholeEngine(canvas, config)
                 engineRef.current = engine
 
-                const updateSize = () => {
-                    const rect = tile.getBoundingClientRect()
-                    const dpr = Math.min(1.5, window.devicePixelRatio || 1)
-                    engine.setSize(rect.width, rect.height, dpr)
-                }
+                const updateSize = () => _syncTileEngineSize(tile, engine, Math.min(1.5, window.devicePixelRatio || 1))
 
                 updateSize()
                 engine.renderStatic?.()

@@ -222,6 +222,27 @@ function NavigationProvider({ children, sections, categories }) {
         navigateToSection(locationSection)
     }, [location.getActiveSection(), isAppReady])
 
+    /**
+     * Seed the first visible section directly once the app is ready.
+     * This keeps the screen from staying blank if the transition queue has not
+     * been started yet on the initial load.
+     */
+    useEffect(() => {
+        if(!isAppReady)
+            return
+
+        const locationSection = location.getActiveSection()
+        if(!locationSection)
+            return
+
+        if(targetSection || nextSection)
+            return
+
+        setTransitionEnabled(true)
+        setTargetSection(locationSection)
+        _updateLinks(locationSection, locationSection.category)
+    }, [isAppReady, location.getActiveSection(), targetSection, nextSection])
+
     /** @listens !nextSection && scheduledNextSection **/
     useEffect(() => {
         if(!nextSection && scheduledNextSection && transitionStatus === NavigationProvider.TransitionStatus.NONE) {

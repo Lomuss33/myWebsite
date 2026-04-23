@@ -234,8 +234,6 @@ export function createRopeLightEngine(canvas, options = {}) {
 
         canvas.width = Math.floor(width * dpr)
         canvas.height = Math.floor(height * dpr)
-        canvas.style.width = `${width}px`
-        canvas.style.height = `${height}px`
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
         ctx.fillStyle = "#191919"
         ctx.fillRect(0, 0, width, height)

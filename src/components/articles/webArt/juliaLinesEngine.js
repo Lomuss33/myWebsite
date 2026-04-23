@@ -196,8 +196,6 @@ export function createJuliaLinesEngine(canvas, options = {}) {
         maxy = h
         canvas.width = Math.floor(w * dpr)
         canvas.height = Math.floor(h * dpr)
-        canvas.style.width = `${w}px`
-        canvas.style.height = `${h}px`
 
         gl.viewport(0, 0, canvas.width, canvas.height)
         gl.uniform1f(widthHandle, canvas.width)

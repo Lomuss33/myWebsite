@@ -30,7 +30,16 @@ a.pretext-interactive-text-fragment {
 }
 
 a.pretext-interactive-text-fragment {
-    text-decoration: none;
+    position: relative;
+    z-index: 2;
+    color: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: currentColor;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.16em;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 span.pretext-interactive-text-space {

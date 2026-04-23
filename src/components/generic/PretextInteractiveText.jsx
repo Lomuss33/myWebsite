@@ -1,6 +1,7 @@
 import "./PretextInteractiveText.scss"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { motion, useInView, useReducedMotion } from "motion/react"
+import Link from "./Link.jsx"
 import {
     getFragmentGraphemes,
     layoutInteractiveParagraphs,
@@ -21,6 +22,7 @@ const TAP_RIPPLE_FADE_MS = 420
 const TAP_RIPPLE_SPEED_PX_PER_MS = 0.30
 const TAP_RIPPLE_BAND_PX = 28
 const WAVE_EFFECT_STRENGTH_MULTIPLIER = 2.4
+const GRAVITY_RELEASE_ROW_OFFSET = 0.5
 
 function PretextInteractiveText({
     html,
@@ -457,6 +459,11 @@ function PretextInteractiveText({
     }
 
     const handlePointerMove = event => {
+        if (shouldBypassGestureHandling(event)) {
+            schedulePointerUpdate(createInactiveInteractionState())
+            return
+        }
+
         if (event.pointerType === "touch") {
             const activeGesture = touchGestureRef.current
             if (activeGesture && activeGesture.pointerId === event.pointerId) {
@@ -493,6 +500,10 @@ function PretextInteractiveText({
     }
 
     const handlePointerDown = event => {
+        if (shouldBypassGestureHandling(event)) {
+            return
+        }
+
         if (event.pointerType === "touch") {
             const nextPointer = getRelativePointerPosition(event)
 
@@ -526,6 +537,10 @@ function PretextInteractiveText({
     }
 
     const handlePointerUp = event => {
+        if (shouldBypassGestureHandling(event)) {
+            return
+        }
+
         if (event.pointerType !== "touch") return
 
         if (event.currentTarget?.releasePointerCapture) {
@@ -580,6 +595,10 @@ function PretextInteractiveText({
     }
 
     const handlePointerCancel = event => {
+        if (shouldBypassGestureHandling(event)) {
+            return
+        }
+
         if (event.pointerType === "touch") {
             if (event.currentTarget?.releasePointerCapture) {
                 try {
@@ -659,7 +678,7 @@ function PretextInteractiveText({
                                                   pointerState={pointerState}
                                                   revealCycle={revealCycle}
                                                   reduceMotion={reduceMotion}/>
-                                )
+                            )
                             })}
                         </div>
                     )
@@ -766,15 +785,27 @@ function AnimatedLine({
                         transition: fragmentTransition
                     }
 
-                    if (fragment.kind === "link") {
+                if (fragment.kind === "link") {
+                    if (isInternalPretextHref(fragment.href)) {
                         const fragmentElement = (
-                            <motion.a key={fragment.key}
-                                      href={fragment.href}
-                                      target={fragment.target}
-                                      rel={fragment.rel}
-                                      {...commonProps}
-                                      animate={fragmentMotionState}
-                                      transition={fragmentTransition}>
+                            <Link key={fragment.key}
+                                  href={fragment.href}
+                                  className={commonProps.className}>
+                                {fragment.text}
+                            </Link>
+                        )
+
+                        return renderFragmentWithLeadingSpace(fragment, fragmentElement)
+                    }
+
+                    const fragmentElement = (
+                        <motion.a key={fragment.key}
+                                  href={fragment.href}
+                                  target={fragment.target}
+                                  rel={fragment.rel}
+                                  {...commonProps}
+                                  animate={fragmentMotionState}
+                                  transition={fragmentTransition}>
                                 {fragment.text}
                             </motion.a>
                         )
@@ -794,6 +825,32 @@ function AnimatedLine({
                     return renderFragmentWithLeadingSpace(fragment, fragmentElement, "wave", spaceMotionProps)
                 }
 
+                if (fragment.kind === "link") {
+                    if (isInternalPretextHref(fragment.href)) {
+                        const fragmentElement = (
+                            <Link key={fragment.key}
+                                  href={fragment.href}
+                                  className={commonProps.className}>
+                                {fragment.text}
+                            </Link>
+                        )
+
+                        return renderFragmentWithLeadingSpace(fragment, fragmentElement)
+                    }
+
+                    const fragmentElement = (
+                        <a key={fragment.key}
+                           href={fragment.href}
+                           target={fragment.target}
+                           rel={fragment.rel}
+                           {...commonProps}>
+                            {fragment.text}
+                        </a>
+                    )
+
+                    return renderFragmentWithLeadingSpace(fragment, fragmentElement)
+                }
+
                 const fragmentBody = getFragmentGraphemes(fragment).map((grapheme, graphemeIndex) => {
                     const graphemeKey = `${fragment.key}-g-${graphemeIndex}`
                     const gravityState = gravityStates.get(graphemeKey)
@@ -811,20 +868,6 @@ function AnimatedLine({
                         </span>
                     )
                 })
-
-                if (fragment.kind === "link") {
-                    const fragmentElement = (
-                        <a key={fragment.key}
-                           href={fragment.href}
-                           target={fragment.target}
-                           rel={fragment.rel}
-                           {...commonProps}>
-                            {fragmentBody}
-                        </a>
-                    )
-
-                    return renderFragmentWithLeadingSpace(fragment, fragmentElement)
-                }
 
                 const fragmentElement = (
                     <span key={fragment.key}
@@ -898,7 +941,7 @@ function collectVisibleGraphemes(paragraphs, lineHeight) {
                         baselineY: lineTop + lineHeight / 2,
                         // Release slightly below the visual row so the split tracks the cursor line
                         // instead of sitting above it.
-                        releaseThresholdY: lineTop + lineHeight * 1.15
+                        releaseThresholdY: lineTop + lineHeight * GRAVITY_RELEASE_ROW_OFFSET
                     })
                 })
             })
@@ -1411,6 +1454,17 @@ function createWaveProfile(variant = "standard") {
         rippleDecay: 1.15 + random() * 0.16,
         rippleAmplitude: 0.022 + random() * 0.01
     }
+}
+
+function shouldBypassGestureHandling(event) {
+    const target = event?.target
+    if (!(target instanceof Element)) return false
+
+    return Boolean(target.closest("a[href], button, [role='button']"))
+}
+
+function isInternalPretextHref(href) {
+    return typeof href === "string" && href.startsWith("#")
 }
 
 function hashStringToUnitFloat(value, salt) {

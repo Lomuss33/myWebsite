@@ -197,10 +197,11 @@ div.dropdown {
         border-radius: 20px;
         border: 2px solid var(--theme-standard-borders);
         background-color: var(--theme-pop-ups-background);
+        color: var(--theme-texts);
     }
 
     a.dropdown-item {
-        color: var(--theme-texts-2);
+        color: var(--theme-texts);
         height: 45px;
         display: flex;
         align-items: center;
@@ -249,12 +250,16 @@ div.modal {
         justify-content: start;
         align-items: start;
 
-        color: var(--theme-texts-5);
+        color: var(--theme-texts);
         border-top: 1px solid var(--theme-standard-borders);
         padding: 15px 20px 20px;
         @include media-breakpoint-down(lg) {
             padding: 10px 15px 15px;
         }
+    }
+
+    &-body {
+        color: var(--theme-texts);
     }
 }
 

@@ -6,7 +6,6 @@ import Collapsable from "../capabilities/Collapsable.jsx"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
 import {useConstants} from "../../hooks/constants.js"
 import AvatarView from "../generic/AvatarView.jsx"
-import {useLocation} from "../../providers/LocationProvider.jsx"
 import NumberAnimation from "../generic/NumberAnimation.jsx"
 import IllustratedManuscript from "../generic/IllustratedManuscript.jsx"
 
@@ -180,15 +179,12 @@ function ArticleSkillsItem({ itemWrapper }) {
  */
 function ArticleSkillsItemInfo({ itemWrapper }) {
     const utils = useUtils()
-    const location = useLocation()
 
     const percentage = itemWrapper.percentage
     const shouldShowItemNumbers = Boolean(itemWrapper.articleWrapper.settings.showItemNumbers) || Boolean(itemWrapper.label)
     const titlePrefix = shouldShowItemNumbers ? `${itemWrapper.id}.` : null
     const titleMeta = itemWrapper.label
-    const initialPercentage = location.getActiveSection()?.id === itemWrapper.articleWrapper.sectionId ?
-        percentage :
-        0
+    const initialPercentage = 0
 
     const [animationPercentage, setAnimationPercentage] = useState(initialPercentage)
 
@@ -208,8 +204,8 @@ function ArticleSkillsItemInfo({ itemWrapper }) {
     if(!experienceTime) descriptionClass += ` mt-1`
 
     useEffect(() => {
-        setAnimationPercentage(initialPercentage)
-    }, [location.getActiveSection()])
+        setAnimationPercentage(percentage)
+    }, [percentage])
 
     return (
         <div className={`article-skills-item-info`}>

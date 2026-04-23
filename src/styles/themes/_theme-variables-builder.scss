@@ -159,15 +159,17 @@ $theme-contrast-steps: (
     }
 
     @if($isDarkMode) {
+        --theme-texts-light-1: var(--theme-texts);
         --theme-texts-light: var(--theme-texts-5);
         --theme-texts-light-2: var(--theme-secondary);
         --theme-texts-light-3: #{color.adjust($theme-secondary, $lightness: -10%)};
         --theme-texts-light-4: #{color.adjust($theme-secondary, $lightness: -15%)};
     }
     @else {
+        --theme-texts-light-1: var(--theme-texts);
         --theme-texts-light: var(--theme-texts-5);
         --theme-texts-light-2: var(--theme-secondary);
-        --theme-texts-light-3: #{color.adjust($theme-secondary, $lightness: 5%)};
-        --theme-texts-light-4: #{color.adjust($theme-secondary, $lightness: 10%)};
+        --theme-texts-light-3: #{color.adjust($theme-secondary, $lightness: -6%)};
+        --theme-texts-light-4: #{color.adjust($theme-secondary, $lightness: -12%)};
     }
 }

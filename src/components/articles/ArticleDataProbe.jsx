@@ -766,7 +766,7 @@ function ArticleDataProbe({ dataWrapper }) {
                 count={requestCount}
                 accent={`accent-interactive`}
                 actions={!unlocked ? (
-                    <StandardButton variant={`dark`}
+                    <StandardButton variant={`contrast`}
                                     className={`article-data-probe-unlock-btn`}
                                     label={`Unlock interactions`}
                                     faIcon={`fa-solid fa-unlock`}
@@ -905,61 +905,72 @@ function ProbeItem({
                 </div>
             </div>
 
-            <div className={`article-data-probe-item-meta text-3`}>
-                <div className={`article-data-probe-item-meta-row`}>
-                    <span className={`article-data-probe-item-meta-key`}>What</span>
-                    <span className={`article-data-probe-item-meta-value`}>{whatText}</span>
+            <div className={`article-data-probe-item-body`}>
+                <div className={`article-data-probe-item-meta text-3`}>
+                    <div className={`article-data-probe-item-meta-row`}>
+                        <span className={`article-data-probe-item-meta-key`}>What</span>
+                        <span className={`article-data-probe-item-meta-value`}>{whatText}</span>
+                    </div>
+                    {probe?.how && (
+                        <div className={`article-data-probe-item-meta-row`}>
+                            <span className={`article-data-probe-item-meta-key`}>How</span>
+                            <span className={`article-data-probe-item-meta-value`}>{probe.how}</span>
+                        </div>
+                    )}
+                    {probe?.why && (
+                        <div className={`article-data-probe-item-meta-row`}>
+                            <span className={`article-data-probe-item-meta-key`}>Why</span>
+                            <span className={`article-data-probe-item-meta-value`}>{probe.why}</span>
+                        </div>
+                    )}
                 </div>
-                {probe?.how && (
-                    <div className={`article-data-probe-item-meta-row`}>
-                        <span className={`article-data-probe-item-meta-key`}>How</span>
-                        <span className={`article-data-probe-item-meta-value`}>{probe.how}</span>
+
+                <div className={`article-data-probe-item-value-toolbar`}>
+                    <div className={`article-data-probe-item-value-label`}>Details</div>
+
+                    <div className={`article-data-probe-item-value-actions`}>
+                        {(status === "ok" && value) && (
+                            <CopyButton text={value}
+                                        label={`Copy`}
+                                        variant={`pill`}
+                                        buttonClassName={`article-data-probe-item-copy`}/>
+                        )}
+
+                        {canExpand && onToggleExpand && (
+                            <StandardButton variant={`contrast`}
+                                            className={`article-data-probe-action-btn article-data-probe-expand-btn`}
+                                            label={expanded ? "Hide" : "More"}
+                                            faIcon={expanded ? "fa-solid fa-chevron-up" : "fa-solid fa-chevron-down"}
+                                            onClick={onToggleExpand}/>
+                        )}
                     </div>
-                )}
-                {probe?.why && (
-                    <div className={`article-data-probe-item-meta-row`}>
-                        <span className={`article-data-probe-item-meta-key`}>Why</span>
-                        <span className={`article-data-probe-item-meta-value`}>{probe.why}</span>
-                    </div>
-                )}
-            </div>
+                </div>
 
-            <pre className={`article-data-probe-item-value`}>
-                {expanded ? fullText : collapsedText}
-            </pre>
+                <pre className={`article-data-probe-item-value`}>
+                    {expanded ? fullText : collapsedText}
+                </pre>
 
-            {expanded && extraState?.status === "ok" && extraState?.value && (
-                <pre className={`article-data-probe-item-value article-data-probe-item-extra`}>{extraState.value}</pre>
-            )}
-
-            <div className={`article-data-probe-item-footer`}>
-                {(status === "ok" && value) && (
-                    <CopyButton text={value} label={`Copy`} variant={`pill`} />
+                {expanded && extraState?.status === "ok" && extraState?.value && (
+                    <pre className={`article-data-probe-item-value article-data-probe-item-extra`}>{extraState.value}</pre>
                 )}
 
-                {showRequest && onRequest && (
-                    <StandardButton variant={`dark`}
-                                    className={`article-data-probe-action-btn`}
-                                    label={requestLabel}
-                                    faIcon={requestIcon}
-                                    onClick={onRequest}/>
-                )}
+                <div className={`article-data-probe-item-footer`}>
+                    {showRequest && onRequest && (
+                        <StandardButton variant={`contrast`}
+                                        className={`article-data-probe-action-btn`}
+                                        label={requestLabel}
+                                        faIcon={requestIcon}
+                                        onClick={onRequest}/>
+                    )}
 
-                {showRequest && extraAction && extraLabel && (
-                    <StandardButton variant={`dark`}
-                                    className={`article-data-probe-action-btn`}
-                                    label={extraLabel}
-                                    faIcon={extraIcon || "fa-solid fa-bolt"}
-                                    onClick={extraAction}/>
-                )}
-
-                {canExpand && onToggleExpand && (
-                    <StandardButton variant={`dark`}
-                                    className={`article-data-probe-action-btn`}
-                                    label={expanded ? "Hide details" : "Show details"}
-                                    faIcon={expanded ? "fa-solid fa-chevron-up" : "fa-solid fa-chevron-down"}
-                                    onClick={onToggleExpand}/>
-                )}
+                    {showRequest && extraAction && extraLabel && (
+                        <StandardButton variant={`contrast`}
+                                        className={`article-data-probe-action-btn`}
+                                        label={extraLabel}
+                                        faIcon={extraIcon || "fa-solid fa-bolt"}
+                                        onClick={extraAction}/>
+                    )}
+                </div>
             </div>
         </div>
     )

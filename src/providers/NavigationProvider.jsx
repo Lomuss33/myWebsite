@@ -29,6 +29,7 @@ function NavigationProvider({ children, sections, categories }) {
     const [ignoreNextLocationEvent, setIgnoreNextLocationEvent] = useState(false)
     const [resettingScrollYTo, setResettingScrollYTo] = useState(null)
     const [shouldForceScrollToTopCount, setShouldForceScrollToTopCount] = useState(false)
+    const [isAppReady, setIsAppReady] = useState(false)
 
     const [targetSection, setTargetSection] = useState(null)
     const [previousSection, setPreviousSection] = useState(null)
@@ -44,6 +45,31 @@ function NavigationProvider({ children, sections, categories }) {
     useEffect(() => {
         _updateLinks(null, null)
     }, [])
+
+    /**
+     * Wait until the preloader has finished before starting the first section transition.
+     * The preloader adds the post-load body class when its exit animation is done.
+     */
+    useEffect(() => {
+        if(typeof document === "undefined" || !document.body) return
+
+        const syncAppReadyState = () => {
+            const bodyAfterLoadingClass = constants.HTML_CLASSES.bodyAfterLoading
+            setIsAppReady(document.body.classList.contains(bodyAfterLoadingClass))
+        }
+
+        syncAppReadyState()
+        if(document.body.classList.contains(constants.HTML_CLASSES.bodyAfterLoading))
+            return
+
+        const observer = new MutationObserver(syncAppReadyState)
+        observer.observe(document.body, {
+            attributes: true,
+            attributeFilter: ["class"]
+        })
+
+        return () => observer.disconnect()
+    }, [constants.HTML_CLASSES.bodyAfterLoading])
 
     /**
      * @listens sections|categories|language.getSelectedLanguage()
@@ -183,10 +209,18 @@ function NavigationProvider({ children, sections, categories }) {
             return
         }
 
+        if(!isAppReady && !targetSection) {
+            setTransitionEnabled(false)
+            return
+        }
+
         const locationSection = location.getActiveSection()
-        setTransitionEnabled(Boolean(targetSection))
+        if(!locationSection)
+            return
+
+        setTransitionEnabled(true)
         navigateToSection(locationSection)
-    }, [location.getActiveSection()])
+    }, [location.getActiveSection(), isAppReady])
 
     /** @listens !nextSection && scheduledNextSection **/
     useEffect(() => {

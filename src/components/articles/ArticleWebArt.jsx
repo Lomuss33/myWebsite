@@ -280,6 +280,99 @@ function ArticleWebArt({ dataWrapper, id }) {
         )
     }, [dismissIntroCover, feedbacks, isIntroCoverLeaving])
 
+    const itemTiles = items.map((itemWrapper, index) => {
+        if(!shouldMountTiles) {
+            return (
+                <div key={itemWrapper.uniqueId}
+                     className={`article-web-art-tile article-web-art-tile-placeholder`}
+                     aria-label={`Web art tile ${index + 1} loading`}/>
+            )
+        }
+
+        return (
+            <WebArtTile key={itemWrapper.uniqueId}
+                        itemWrapper={itemWrapper}
+                        index={index}
+                        locked={locked}
+                        activate={index <= activationIndex}
+                        onReady={onTileReady}/>
+        )
+    })
+
+    const ambientTiles = shouldMountTiles ? [
+        <TortuosityTraceTile key={"ambient-trace"}
+                             readyId={ambientTraceReadyId}
+                             locked={locked}
+                             onReady={onTileReady}/>,
+        <HexFlowBallsTile key={"ambient-hex"}
+                          readyId={ambientHexReadyId}
+                          locked={locked}
+                          onReady={onTileReady}/>,
+        <PixelPlopTile key={"ambient-plop"}
+                       readyId={ambientPlopReadyId}
+                       locked={locked}
+                       onReady={onTileReady}/>,
+        <JuliaLinesTile key={"ambient-julia"}
+                        readyId={ambientJuliaReadyId}
+                        locked={locked}
+                        onReady={onTileReady}/>,
+        <MinesweeperTile key={"ambient-mines"}
+                         readyId={ambientMinesReadyId}
+                         locked={locked}
+                         onReady={onTileReady}/>,
+        <FallingRingsTile key={"ambient-rings"}
+                          readyId={ambientRingsReadyId}
+                          locked={locked}
+                          onReady={onTileReady}/>,
+        <PrismFieldTile key={"ambient-prism"}
+                        readyId={ambientPrismReadyId}
+                        locked={locked}
+                        onReady={onTileReady}/>,
+        <RopeLightTile key={"ambient-rope"}
+                       readyId={ambientRopeReadyId}
+                       locked={locked}
+                       onReady={onTileReady}/>,
+        <SoupShaderTile key={"ambient-soup"}
+                        readyId={ambientSoupReadyId}
+                        locked={locked}
+                        onReady={onTileReady}/>,
+        <TardisTile key={"ambient-tardis"}
+                    readyId={ambientTardisReadyId}
+                    locked={locked}
+                    onReady={onTileReady}/>
+    ] : [
+        <div key={"ambient-trace"}
+             className={`article-web-art-tile article-web-art-tile-placeholder`}
+             aria-label={`Web art trace tile loading`}/>,
+        <div key={"ambient-hex"}
+             className={`article-web-art-tile article-web-art-tile-placeholder`}
+             aria-label={`Web art hex tile loading`}/>,
+        <div key={"ambient-plop"}
+             className={`article-web-art-tile article-web-art-tile-placeholder`}
+             aria-label={`Web art plop tile loading`}/>,
+        <div key={"ambient-julia"}
+             className={`article-web-art-tile article-web-art-tile-placeholder`}
+             aria-label={`Web art julia tile loading`}/>,
+        <div key={"ambient-mines"}
+             className={`article-web-art-tile article-web-art-tile-placeholder`}
+             aria-label={`Web art mines tile loading`}/>,
+        <div key={"ambient-rings"}
+             className={`article-web-art-tile article-web-art-tile-placeholder`}
+             aria-label={`Web art rings tile loading`}/>,
+        <div key={"ambient-prism"}
+             className={`article-web-art-tile article-web-art-tile-placeholder`}
+             aria-label={`Web art prism tile loading`}/>,
+        <div key={"ambient-rope"}
+             className={`article-web-art-tile article-web-art-tile-placeholder`}
+             aria-label={`Web art rope tile loading`}/>,
+        <div key={"ambient-soup"}
+             className={`article-web-art-tile article-web-art-tile-placeholder`}
+             aria-label={`Web art soup tile loading`}/>,
+        <div key={"ambient-tardis"}
+             className={`article-web-art-tile article-web-art-tile-placeholder`}
+             aria-label={`Web art tardis tile loading`}/>
+    ]
+
     useEffect(() => {
         readySetRef.current = new Set()
         for(const timeoutId of readyTimeoutsRef.current.values()) {
@@ -361,88 +454,11 @@ function ArticleWebArt({ dataWrapper, id }) {
                     <div className={`article-web-art-items ${locked ? "article-web-art-items-locked" : ""}`}
                          ref={tilesWrapperRef}
                          aria-busy={showIntroCover}>
-                        {!shouldMountTiles && (
-                            <>
-                                {items.map((itemWrapper, index) => (
-                                    <div key={itemWrapper.uniqueId}
-                                         className={`article-web-art-tile article-web-art-tile-placeholder`}
-                                         aria-label={`Web art tile ${index + 1} loading`}/>
-                                ))}
-
-                                <GoldfishTile />
-                                <PatronusTile />
-                                <div className={`article-web-art-tile article-web-art-tile-placeholder`}
-                                     aria-label={`Web art trace tile loading`}/>
-                                <div className={`article-web-art-tile article-web-art-tile-placeholder`}
-                                     aria-label={`Web art hex tile loading`}/>
-                                <div className={`article-web-art-tile article-web-art-tile-placeholder`}
-                                     aria-label={`Web art plop tile loading`}/>
-                                <div className={`article-web-art-tile article-web-art-tile-placeholder`}
-                                     aria-label={`Web art julia tile loading`}/>
-                                <div className={`article-web-art-tile article-web-art-tile-placeholder`}
-                                     aria-label={`Web art mines tile loading`}/>
-                                <div className={`article-web-art-tile article-web-art-tile-placeholder`}
-                                     aria-label={`Web art rings tile loading`}/>
-                                <div className={`article-web-art-tile article-web-art-tile-placeholder`}
-                                     aria-label={`Web art prism tile loading`}/>
-                                <div className={`article-web-art-tile article-web-art-tile-placeholder`}
-                                     aria-label={`Web art rope tile loading`}/>
-                                <div className={`article-web-art-tile article-web-art-tile-placeholder`}
-                                     aria-label={`Web art soup tile loading`}/>
-                                <div className={`article-web-art-tile article-web-art-tile-placeholder`}
-                                     aria-label={`Web art tardis tile loading`}/>
-                                <SendYourFunAnimationTile label={submitTileLabel} clickLabel={clickTileLabel}/>
-
-                            </>
-                        )}
-
-                        {shouldMountTiles && (
-                            <>
-                                {items.map((itemWrapper, index) => (
-                                    <WebArtTile itemWrapper={itemWrapper}
-                                                index={index}
-                                                locked={locked}
-                                                activate={index <= activationIndex}
-                                                onReady={onTileReady}
-                                                key={itemWrapper.uniqueId}/>
-                                ))}
-
-                                <GoldfishTile />
-                                <PatronusTile />
-                                <TortuosityTraceTile readyId={ambientTraceReadyId}
-                                                     locked={locked}
-                                                     onReady={onTileReady}/>
-                                <HexFlowBallsTile readyId={ambientHexReadyId}
-                                                  locked={locked}
-                                                  onReady={onTileReady}/>
-                                <PixelPlopTile readyId={ambientPlopReadyId}
-                                               locked={locked}
-                                               onReady={onTileReady}/>
-                                <JuliaLinesTile readyId={ambientJuliaReadyId}
-                                                locked={locked}
-                                                onReady={onTileReady}/>
-                                <MinesweeperTile readyId={ambientMinesReadyId}
-                                                 locked={locked}
-                                                 onReady={onTileReady}/>
-                                <FallingRingsTile readyId={ambientRingsReadyId}
-                                                  locked={locked}
-                                                  onReady={onTileReady}/>
-                                <PrismFieldTile readyId={ambientPrismReadyId}
-                                                locked={locked}
-                                                onReady={onTileReady}/>
-                                <RopeLightTile readyId={ambientRopeReadyId}
-                                               locked={locked}
-                                               onReady={onTileReady}/>
-                                <SoupShaderTile readyId={ambientSoupReadyId}
-                                                locked={locked}
-                                                onReady={onTileReady}/>
-                                <TardisTile readyId={ambientTardisReadyId}
-                                            locked={locked}
-                                            onReady={onTileReady}/>
-                                <SendYourFunAnimationTile label={submitTileLabel} clickLabel={clickTileLabel}/>
-
-                            </>
-                        )}
+                        {itemTiles}
+                        <GoldfishTile />
+                        <PatronusTile />
+                        {ambientTiles}
+                        <SendYourFunAnimationTile label={submitTileLabel} clickLabel={clickTileLabel}/>
                     </div>
                 </div>
 
@@ -1166,7 +1182,7 @@ function ThreePolygonDemo5Tile({ itemWrapper, index, activate, locked, onReady }
             animationDuration: 7,
             animationDelay: 0.1,
             cameraZ: 75,
-            fitFactor: 0.93
+            fitFactor: 1.04
         }
     }, [reduceMotion])
 

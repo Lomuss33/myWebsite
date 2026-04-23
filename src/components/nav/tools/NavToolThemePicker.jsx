@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {useLanguage} from "../../../providers/LanguageProvider.jsx"
 import {useTheme} from "../../../providers/ThemeProvider.jsx"
 import OptionPickerButton from "../../buttons/OptionPickerButton.jsx"
@@ -37,7 +37,6 @@ function NavToolThemePicker() {
                                     selectedOptionId={selectedTheme?.id}
                                     onOptionSelected={_onOptionSelected}
                                     tooltipLabel={tooltipLabel}
-                                    toggleCaption={language.getString("nav_tool_theme")}
                                     showSelectedOptionOnDropdown={true}/>
             )}
         </>

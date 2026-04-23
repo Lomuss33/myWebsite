@@ -19,10 +19,11 @@ function NavSidebar({ profile, links }) {
     const shouldUseCompactRail = viewport.isShortDesktopLayout()
     const shouldForceShrink = !viewport.isBreakpoint("lg") || shouldUseCompactRail
     const expanded = !shouldForceShrink && expandedOption
+    const railIsCompact = shouldUseCompactRail || !expanded
     const shrinkClass = expanded ?
         `` :
         `nav-sidebar-shrink`
-    const compactRailClass = shouldUseCompactRail ?
+    const compactRailClass = railIsCompact ?
         `nav-sidebar-short-rail` :
         ``
 
@@ -45,11 +46,11 @@ function NavSidebar({ profile, links }) {
 
                 <NavProfileCard profile={profile}
                                 expanded={expanded}
-                                compactRail={shouldUseCompactRail}/>
+                                compactRail={railIsCompact}/>
 
                 <NavLinkList links={links}
                              expanded={expanded}
-                             compactRail={shouldUseCompactRail}/>
+                             compactRail={railIsCompact}/>
 
                 <NavToolList expanded={expanded}/>
             </Card>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {useLanguage} from "../../../providers/LanguageProvider.jsx"
 import OptionPickerButton from "../../buttons/OptionPickerButton.jsx"
 import {useUtils} from "../../../hooks/utils.js"
@@ -33,8 +33,7 @@ function NavToolLanguagePicker() {
                                     options={options}
                                     selectedOptionId={selectedLanguage?.id}
                                     onOptionSelected={_onOptionSelected}
-                                    tooltipLabel={language.getString("select_language")}
-                                    toggleCaption={language.getString("nav_tool_language")}/>
+                                    tooltipLabel={language.getString("select_language")}/>
             )}
         </>
     )

@@ -148,7 +148,7 @@ function NavLinkList({ links, expanded, compactRail = false }) {
 
     return (
         <div ref={containerRef}
-             className={`nav-link-list-shell ${shrinkClass} ${compactRail ? "nav-link-list-compact-rail" : ""}`}>
+             className={`nav-link-list-shell ${shrinkClass}`}>
             <Nav links={links}
                  data={data}
                  tag={`nav-link-list`}

@@ -92,7 +92,11 @@ function ViewportProvider({ children }) {
     }
 
     const isShortDesktopLayout = () => {
-        return isBreakpoint("md") && innerHeight < 760
+        const expandedRailWidth = 224
+        const minimumScrollableWidthForExpandedRail = 820
+        const minimumViewportWidthForExpandedRail = expandedRailWidth + minimumScrollableWidthForExpandedRail
+
+        return innerWidth >= bootstrapBreakpoints.lg && innerWidth < minimumViewportWidthForExpandedRail
     }
 
     const getValueFromBreakpointHash = (hash) => {

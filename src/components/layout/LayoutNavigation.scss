@@ -5,6 +5,7 @@ div.layout-navigation-wrapper {
     $target-height-svh: calc(100svh - $default-card-spacing*2);
 
     display: flex;
+    align-items: stretch;
     height: $target-height;
     height: $target-height-svh;
     min-height: $target-height;
@@ -21,8 +22,11 @@ div.layout-navigation-wrapper {
 }
 
 div.layout-navigation-children-wrapper {
+    flex: 1 1 auto;
+    min-width: 0;
     width: 100%;
     min-height: 100%;
+    height: 100%;
     margin-left: var(--default-card-spacing);
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {

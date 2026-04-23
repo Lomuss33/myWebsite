@@ -15,6 +15,12 @@ html {
     }
 }
 
+html,
+body,
+#root {
+    min-height: 100%;
+}
+
 body {
     overflow-x: hidden!important;
     touch-action: manipulation;
@@ -23,6 +29,8 @@ body {
 
     @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
         position: fixed!important;
+        inset: 0;
+        height: 100dvh;
         overflow-y: hidden!important;
     }
 }

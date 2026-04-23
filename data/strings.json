@@ -69,8 +69,7 @@
             "copy_number": "Copy number",
             "toggle_sidebar": "Toggle sidebar",
             "watch_video": "Watch Video",
-            "yes": "Yes",
-            "software_hall_of_fame_title": "My Software Hall of Fame"
+            "yes": "Yes"
         },
         "de": {
             "about_video": "Über Video",
@@ -141,8 +140,7 @@
             "copy_number": "Nummer kopieren",
             "toggle_sidebar": "Seitenleiste umschalten",
             "watch_video": "Video ansehen",
-            "yes": "Ja",
-            "software_hall_of_fame_title": "Meine Software‑Hall of Fame"
+            "yes": "Ja"
         },
         "hr": {
             "about_video": "Video O",
@@ -213,8 +211,7 @@
             "copy_number": "Kopiraj broj",
             "toggle_sidebar": "Prebaci bočnu traku",
             "watch_video": "Pogledaj video",
-            "yes": "Da",
-            "software_hall_of_fame_title": "Moja softverska kuća slavnih"
+            "yes": "Da"
         },
         "tr": {
             "about_video": "Hakkında Video",
@@ -285,8 +282,7 @@
             "copy_number": "Numarayı kopyala",
             "toggle_sidebar": "Kenar Çubuğunu Değiştir",
             "watch_video": "Videoyu İzle",
-            "yes": "Evet",
-            "software_hall_of_fame_title": "Yazılım Şöhretler Listem"
+            "yes": "Evet"
         }
     }
 }

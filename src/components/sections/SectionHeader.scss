@@ -6,7 +6,7 @@ header.section-header {
     align-items: center;
     justify-content: center;
     width: 100%;
-    gap: 0.35rem;
+    gap: 0.2rem;
 }
 
 div.section-header-prefix {
@@ -27,27 +27,30 @@ div.section-header-prefix {
 }
 
 h2.section-header-title {
-    margin: 0 24px;
+    margin: 0 16px;
     text-align: center;
     font-weight: bold;
     font-size: 1.62rem!important;
-    line-height: 1.08;
+    line-height: 1.04;
+    text-wrap: balance;
 
     @include media-breakpoint-down(xl) {
-        font-size: 1.55rem!important;
+        font-size: 1.48rem!important;
     }
 
     @include media-breakpoint-down(lg) {
         color: var(--theme-primary);
-        margin-top: 4px;
-        font-size: 1.42rem!important;
+        margin-top: 2px;
+        font-size: 1.32rem!important;
     }
 
     @include media-breakpoint-down(md) {
-        font-size: 1.28rem!important;
+        margin: 0 10px;
+        font-size: 1.16rem!important;
     }
 
     @include media-breakpoint-down(sm) {
-        font-size: 1.18rem!important;
+        margin: 0 6px;
+        font-size: 1.06rem!important;
     }
 }

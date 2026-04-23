@@ -23,7 +23,7 @@ function Article({ children, id, type, dataWrapper, className = "", selectedItem
         if (dataWrapper.categories.length > 0 && !selectedItemCategoryId) {
             setSelectedItemCategoryId(loadedState || dataWrapper.categories[0].id)
         }
-    }, [null])
+    }, [dataWrapper.categories, id, selectedItemCategoryId, setSelectedItemCategoryId])
 
     useEffect(() => {
         if(!selectedItemCategoryId)

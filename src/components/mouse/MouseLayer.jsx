@@ -1,5 +1,5 @@
 import "./MouseLayer.scss"
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import MouseLayerCircle from "./MouseLayerCircle.jsx"
 import MouseLayerTooltip from "./MouseLayerTooltip.jsx"
 import {useScheduler} from "../../hooks/scheduler.js"
@@ -15,6 +15,7 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
     const [circleProperties, setCircleProperties] = useState(null)
     const [animationTicks, setAnimationTicks] = useState(0)
     const [dt, setDt] = useState(1)
+    const clickUpdateTimeoutRef = useRef(null)
 
     const hiddenClass = hidden ?
         `invisible` :
@@ -43,11 +44,22 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
         _updateMouseTargetParameters()
     }, [input.lastMouseTarget])
 
-    /** @listens input.isClicked **/
+    /** @listens input.isClicked **/ 
     useEffect(() => {
-        setTimeout(() => {
+        if(clickUpdateTimeoutRef.current !== null) {
+            clearTimeout(clickUpdateTimeoutRef.current)
+        }
+
+        clickUpdateTimeoutRef.current = setTimeout(() => {
             _updateMouseTargetParameters()
         }, 60)
+
+        return () => {
+            if(clickUpdateTimeoutRef.current !== null) {
+                clearTimeout(clickUpdateTimeoutRef.current)
+                clickUpdateTimeoutRef.current = null
+            }
+        }
     }, [input.isClicked])
 
     /** @listens isBlockedByOverlay **/

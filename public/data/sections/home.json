@@ -105,6 +105,7 @@
           "id": 1,
           "img": "/images/private/LovroMusic2025.jpg",
           "imgAlt": "/images/contant/profil_dog.webp",
+          "imgAltDefaultChance": 0.5,
           "faIcon": "",
           "faIconColors": {
             "bg": "",

@@ -10,8 +10,17 @@ export const _storageUtils = {
      * @return {Object}
      */
     getPreference: () => {
-        const raw = window.localStorage.getItem(_storageUtils.LOCAL_STORAGE_ID)
-        return JSON.parse(raw) || {}
+        try {
+            const raw = window.localStorage.getItem(_storageUtils.LOCAL_STORAGE_ID)
+            if(!raw)
+                return {}
+
+            const parsed = JSON.parse(raw)
+            return parsed && typeof parsed === "object" ? parsed : {}
+        }
+        catch {
+            return {}
+        }
     },
 
     /**

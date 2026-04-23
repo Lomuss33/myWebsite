@@ -4,7 +4,7 @@
  * @description This provider handles the theme management for the application, allowing users to switch between different themes.
  */
 
-import React, {createContext, useContext, useEffect, useState} from 'react'
+import React, {createContext, useContext, useEffect, useRef, useState} from 'react'
 import {useUtils} from "../hooks/utils.js"
 import ActivitySpinner from "../components/loaders/ActivitySpinner.jsx"
 
@@ -22,6 +22,7 @@ function ThemeProvider({ children, supportedThemes, defaultThemeId, showSpinnerO
 
     const [spinnerActivities, setSpinnerActivities] = useState([])
     const [selectedThemeId, setSelectedThemeId] = useState(null)
+    const themeChangeTimeoutsRef = useRef([])
 
     /** @constructs **/
     useEffect(() => {
@@ -50,6 +51,13 @@ function ThemeProvider({ children, supportedThemes, defaultThemeId, showSpinnerO
     }
 
     const setSelectedTheme = (theme) => {
+        const clearThemeChangeTimeouts = () => {
+            for(const timeoutId of themeChangeTimeoutsRef.current) {
+                clearTimeout(timeoutId)
+            }
+            themeChangeTimeoutsRef.current = []
+        }
+
         const _apply = () => {
             document.documentElement.setAttribute('data-theme', theme.id)
             onThemeChanged(theme.id)
@@ -58,14 +66,27 @@ function ThemeProvider({ children, supportedThemes, defaultThemeId, showSpinnerO
         setSelectedThemeId(theme.id)
         utils.storage.setPreferredTheme(theme.id)
         if(!showSpinnerOnThemeChange || !selectedThemeId) {
+            clearThemeChangeTimeouts()
             _apply()
             return
         }
 
         setSpinnerActivities([{id: "theme-change"}])
-        setTimeout(() => { _apply() }, 30)
-        setTimeout(() => { setSpinnerActivities([]) }, 300)
+        clearThemeChangeTimeouts()
+        themeChangeTimeoutsRef.current = [
+            setTimeout(() => { _apply() }, 30),
+            setTimeout(() => { setSpinnerActivities([]) }, 300)
+        ]
     }
+
+    useEffect(() => {
+        return () => {
+            for(const timeoutId of themeChangeTimeoutsRef.current) {
+                clearTimeout(timeoutId)
+            }
+            themeChangeTimeoutsRef.current = []
+        }
+    }, [])
 
     const getAvailableThemes = (excludeSelected) => {
         if(!allThemes)

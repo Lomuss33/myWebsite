@@ -19,7 +19,7 @@ function ModalWrapper({ children, id = "", shouldDismiss, onDismiss, className =
         const elModal = document.getElementById(id)
         setElModal(elModal)
         return () => { _destroy() }
-    }, [null])
+    }, [id])
 
     /** @listens elModal - Create Element **/
     useEffect(() => {
@@ -58,10 +58,7 @@ function ModalWrapper({ children, id = "", shouldDismiss, onDismiss, className =
 
         const bsModal = new Modal(elModal, config)
         elModal.addEventListener('hide.bs.modal', _onWillHide)
-        elModal.addEventListener('hidden.bs.modal', () => {
-            if(onDismiss)
-                onDismiss()
-        })
+        elModal.addEventListener('hidden.bs.modal', _onHidden)
         bsModal.show()
         setBsModal(bsModal)
     }
@@ -71,13 +68,21 @@ function ModalWrapper({ children, id = "", shouldDismiss, onDismiss, className =
             return
 
         elModal.removeEventListener('hide.bs.modal', _onWillHide)
+        elModal.removeEventListener('hidden.bs.modal', _onHidden)
         bsModal.hide()
+        bsModal.dispose()
+        setBsModal(null)
     }
 
     const _onWillHide = () => {
         if(!document.activeElement)
             return
         document.activeElement.blur()
+    }
+
+    const _onHidden = () => {
+        if(onDismiss)
+            onDismiss()
     }
 
     return (

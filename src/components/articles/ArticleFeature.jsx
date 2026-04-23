@@ -97,6 +97,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
     const resizeTimeoutRef = useRef(null)
     const baseTypographyRef = useRef(null)
     const [textScale, setTextScale] = useState(1)
+    const hasAlternateImage = Boolean(itemWrapper.img && itemWrapper.imgAlt)
     const [showAlternateImage, setShowAlternateImage] = useState(false)
     const [isMobileView, setIsMobileView] = useState(() => {
         if (typeof window === "undefined" || !window.matchMedia) return false
@@ -120,7 +121,6 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
     const isFixedViewportImageLayout = featureLayoutMode === "equal_split_fixed_vh_image"
     const isSquareFitLayout = featureLayoutMode === "equal_split_square_fit"
     const isConfiguredInteractiveItem = articleSettings.featureInteractiveItemIds.includes(itemWrapper.id)
-    const hasAlternateImage = Boolean(itemWrapper.img && itemWrapper.imgAlt)
     const shouldFitTextToMediaHeight =
         isSquareFitLayout ||
         (isFixedViewportImageLayout && isHomeStyleIntro) ||
@@ -131,6 +131,16 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
     const typographyVersion = shouldFitTextToMediaHeight && !isTextLedSplitLayout ?
         (isMobileView ? "square-fit-mobile" : Math.round(textScale * 1000)) :
         0
+
+    useEffect(() => {
+        setShowAlternateImage(
+            pickAlternateImageDefault({
+                hasAlternateImage,
+                alternateChance: itemWrapper.imgAltDefaultChance,
+                key: `article-feature:${itemWrapper.articleWrapper.sectionId}:${itemWrapper.articleWrapper.id}:${itemWrapper.id}`
+            })
+        )
+    }, [hasAlternateImage, itemWrapper.articleWrapper.sectionId, itemWrapper.articleWrapper.id, itemWrapper.id, itemWrapper.imgAltDefaultChance])
 
     useEffect(() => {
         if (!shouldFitTextToMediaHeight) {
@@ -441,6 +451,39 @@ function computeScaledLineHeight(baseTypographyRef, textScale) {
     const baseLineHeight = baseTypographyRef.current?.lineHeight || baseFontSize * 1.55
 
     return Math.max(baseFontSize * textScale * 1.2, baseLineHeight * textScale)
+}
+
+function pickAlternateImageDefault({ hasAlternateImage, alternateChance, key }) {
+    if (!hasAlternateImage) {
+        return false
+    }
+
+    return getPageLoadRandomValue(key) < normalizeDefaultChance(alternateChance)
+}
+
+function normalizeDefaultChance(value, fallback = 0) {
+    const numericValue = Number(value)
+    if (!Number.isFinite(numericValue)) {
+        return fallback
+    }
+
+    return clamp(numericValue, 0, 1)
+}
+
+function getPageLoadRandomValue(key) {
+    if (typeof window === "undefined") {
+        return Math.random()
+    }
+
+    const cacheKey = "__pageLoadRandomImageDefaults"
+    const scopedCache = window[cacheKey] || (window[cacheKey] = {})
+
+    if (typeof scopedCache[key] === "number") {
+        return scopedCache[key]
+    }
+
+    scopedCache[key] = Math.random()
+    return scopedCache[key]
 }
 
 function findBestFitScale({

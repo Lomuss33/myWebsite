@@ -17,7 +17,7 @@ export const _loggingUtils = {
      * @param {String} warningMessage
      */
     warn: (component, warningMessage) => {
-        if(!console || !console.log)
+        if(typeof console === "undefined" || !console.warn)
             return
         console.warn(`[${component}] ${warningMessage}`)
     },
@@ -43,7 +43,7 @@ export const _loggingUtils = {
      * @param {String} primaryColor
      */
     info: (title, items, primaryColor) => {
-        if(!console || !console.log)
+        if(typeof console === "undefined" || !console.log)
             return
 
         if(title) {

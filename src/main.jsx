@@ -4,7 +4,6 @@ import "@fortawesome/fontawesome-free/css/all.min.css"
 import "./styles/app.scss"
 import {StrictMode, useEffect, useState} from 'react'
 import {createRoot} from 'react-dom/client'
-import {useApi} from "./hooks/api.js"
 import {useConstants} from "./hooks/constants.js"
 import {useUtils} from "./hooks/utils.js"
 import Preloader from "./components/loaders/Preloader.jsx"
@@ -51,7 +50,7 @@ const createDefaultSettings = () => ({
 /** Initialization Script... **/
 let container = null
 
-document.addEventListener('DOMContentLoaded', function(event) {
+document.addEventListener('DOMContentLoaded', function() {
     if(container)
         return
 
@@ -81,7 +80,6 @@ const App = () => {
  * @constructor
  */
 const AppEssentialsWrapper = ({children}) => {
-    const api = useApi()
     const utils = useUtils()
     const constants = useConstants()
 
@@ -116,8 +114,6 @@ const AppEssentialsWrapper = ({children}) => {
         }).catch(() => {
             setSettings(createDefaultSettings())
         })
-
-        api.analytics.reportVisit().catch(() => {})
     }, [])
 
     const _resolveConsoleLanguageId = (settings) => {
@@ -186,11 +182,15 @@ const AppEssentialsWrapper = ({children}) => {
         if(constants.PRODUCTION_MODE)
             return settings
 
+        utils.storage.setWindowVariable("suspendAnimations", false)
+        utils.storage.setWindowVariable("fakeEmailRequests", false)
+        utils.storage.setWindowVariable("stayOnThePreloaderScreen", false)
+
         if(debugMode) {
             settings.preloaderSettings.enabled = stayOnThePreloaderScreen
             settings.templateSettings.backgroundStyle = "plain"
             utils.storage.setWindowVariable("suspendAnimations", true)
-            utils.log.warn("DataProvider", "Debug Mode is enabled, so transitions and animated content—such as the preloader screen, background animations, and role text typing—will be skipped. You can disable it manually on settings.json or by running the app on PROD_MODE, which disables it by default.")
+            utils.log.warn("DataProvider", "Debug Mode is enabled, so transitions and animated content such as the preloader screen, background animations, and role text typing will be skipped. You can disable it manually in settings.json or by running the app in PROD_MODE, which disables it by default.")
         }
 
         if(fakeEmailRequests) {

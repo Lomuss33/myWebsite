@@ -4,7 +4,7 @@
  * @description This provider manages the navigation between sections and categories in the application.
  */
 
-import React, {createContext, useContext, useEffect, useState} from 'react'
+import React, {createContext, useContext, useEffect, useRef, useState} from 'react'
 import {useLocation} from "./LocationProvider.jsx"
 import {useLanguage} from "./LanguageProvider.jsx"
 import {useConstants} from "../hooks/constants.js"
@@ -30,6 +30,7 @@ function NavigationProvider({ children, sections, categories }) {
     const [resettingScrollYTo, setResettingScrollYTo] = useState(null)
     const [shouldForceScrollToTopCount, setShouldForceScrollToTopCount] = useState(false)
     const [isAppReady, setIsAppReady] = useState(false)
+    const transitionEnabledRef = useRef(true)
 
     const [targetSection, setTargetSection] = useState(null)
     const [previousSection, setPreviousSection] = useState(null)
@@ -40,6 +41,11 @@ function NavigationProvider({ children, sections, categories }) {
     const [categoryLinks, setCategoryLinks] = useState([])
 
     const canTransitionToNextSection = nextSection && transitionStatus === NavigationProvider.TransitionStatus.NONE
+
+    const _setTransitionEnabled = (value) => {
+        transitionEnabledRef.current = value
+        setTransitionEnabled(value)
+    }
 
     /** @constructs **/
     useEffect(() => {
@@ -101,7 +107,7 @@ function NavigationProvider({ children, sections, categories }) {
         setTargetSection(nextSection)
         _updateLinks(nextSection, nextSection.category)
 
-        if(!transitionEnabled) {
+        if(!transitionEnabledRef.current) {
             setTransitionStatus(NavigationProvider.TransitionStatus.FINISHING)
             return
         }
@@ -209,16 +215,11 @@ function NavigationProvider({ children, sections, categories }) {
             return
         }
 
-        if(!isAppReady && !targetSection) {
-            setTransitionEnabled(false)
-            return
-        }
-
         const locationSection = location.getActiveSection()
         if(!locationSection)
             return
 
-        setTransitionEnabled(true)
+        _setTransitionEnabled(true)
         navigateToSection(locationSection)
     }, [location.getActiveSection(), isAppReady])
 
@@ -238,7 +239,7 @@ function NavigationProvider({ children, sections, categories }) {
         if(targetSection || nextSection)
             return
 
-        setTransitionEnabled(true)
+        _setTransitionEnabled(true)
         setTargetSection(locationSection)
         _updateLinks(locationSection, locationSection.category)
     }, [isAppReady, location.getActiveSection(), targetSection, nextSection])
@@ -271,7 +272,7 @@ function NavigationProvider({ children, sections, categories }) {
     }
 
     const navigateToSectionWithLink = (href) => {
-        setTransitionEnabled(true)
+        _setTransitionEnabled(true)
 
         if(href.startsWith("#cat:")) {
             const categoryId = href.replaceAll("#cat:", "")

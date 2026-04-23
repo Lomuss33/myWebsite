@@ -37,7 +37,7 @@ function Transitionable({ children, id, refreshFlag, delayBetweenItems = 100, cl
 
         scheduler.schedule(() => {
             setRenderingChildren(children)
-            setRefreshCount(refreshCount + 1)
+            setRefreshCount(prev => prev + 1)
         }, TRANSITIONABLE_REFRESH_DELAY, id)
     }
 
@@ -45,7 +45,7 @@ function Transitionable({ children, id, refreshFlag, delayBetweenItems = 100, cl
         scheduler.clearAllWithTag(id)
 
         setRenderingChildren(children)
-        setRefreshCount(refreshCount + 1)
+        setRefreshCount(prev => prev + 1)
     }
 
     return (

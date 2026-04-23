@@ -20,6 +20,7 @@ function AudioButton({ url = "", tooltip = "", tooltipLabel = "", size = "", but
     /** @listens url **/ 
     useEffect(() => {
         _reset()
+        return () => _releaseAudio()
     }, [url])
 
     const _onClick = () => {
@@ -36,25 +37,44 @@ function AudioButton({ url = "", tooltip = "", tooltipLabel = "", size = "", but
     }
 
     const _reset = () => {
-        audioRef.current?.pause()
+        _releaseAudio()
         setStatus(AudioButton.Status.NONE)
+    }
+
+    const _releaseAudio = () => {
+        if(audioRef.current) {
+            audioRef.current.onloadeddata = null
+            audioRef.current.onended = null
+            audioRef.current.onerror = null
+            audioRef.current.pause()
+            audioRef.current.removeAttribute("src")
+            audioRef.current.load()
+        }
         audioRef.current = null
     }
 
     const _loadAudio = () => {
+        _reset()
         setStatus(AudioButton.Status.LOADING)
         const resolvedPath = utils.file.resolvePath(url)
-        audioRef.current = new Audio(resolvedPath)
-        audioRef.current.addEventListener("loadeddata", () => {
+        const audio = new Audio(resolvedPath)
+        audio.onloadeddata = () => {
+            if(audioRef.current !== audio)
+                return
             _playAudio()
-        })
-        audioRef.current.addEventListener("ended", () => {
+        }
+        audio.onended = () => {
+            if(audioRef.current !== audio)
+                return
             _stopAudio()
-        })
-        audioRef.current.addEventListener("error", () => {
+        }
+        audio.onerror = () => {
+            if(audioRef.current !== audio)
+                return
             _reset()
             utils.log.warn("AudioButton", "Couldn't load audio from URL: " + resolvedPath)
-        })
+        }
+        audioRef.current = audio
     }
 
     const _playAudio = () => {

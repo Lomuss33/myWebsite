@@ -33,8 +33,7 @@ function Portfolio() {
     }, [])
 
     if(!data || !language || !location || !navigation) {
-        window.location.reload()
-        return
+        return null
     }
 
     const profile = data.getProfile()

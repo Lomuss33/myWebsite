@@ -1,5 +1,5 @@
 import "./LayoutImageCache.scss"
-import React from 'react'
+import React, {useEffect, useRef} from 'react'
 import {useUtils} from "../../hooks/utils.js"
 
 function LayoutImageCache({ profile, settings, sections }) {
@@ -48,16 +48,32 @@ function LayoutImageCache({ profile, settings, sections }) {
     return (
         <div className={`layout-image-cache`}>
             {filtered.map((src, key) => (
-                <img key={key}
-                     src={utils.file.resolvePath(src)}
-                     className={`cache-image`}
-                     alt={`Preloaded image ${key + 1}`}
-                     aria-hidden="true"
-                     loading="eager"
-                     fetchPriority="high"
-                     decoding="async"/>
+                <LayoutImageCacheImage key={key}
+                                       src={utils.file.resolvePath(src)}
+                                       index={key}/>
             ))}
         </div>
+    )
+}
+
+function LayoutImageCacheImage({ src, index }) {
+    const imageRef = useRef(null)
+
+    useEffect(() => {
+        if(!imageRef.current)
+            return
+
+        imageRef.current.setAttribute("fetchpriority", "high")
+    }, [])
+
+    return (
+        <img ref={imageRef}
+             src={src}
+             className={`cache-image`}
+             alt={`Preloaded image ${index + 1}`}
+             aria-hidden="true"
+             loading="eager"
+             decoding="async"/>
     )
 }
 

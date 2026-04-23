@@ -1,5 +1,5 @@
 import "./NavProfileCard.scss"
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import {Card} from "react-bootstrap"
 import {useFloatingFrame} from "../../../hooks/floatingFrame.js"
 import {useLanguage} from "../../../providers/LanguageProvider.jsx"
@@ -15,8 +15,9 @@ function NavProfileCard({ profile, expanded, compactRail = false, mobileActionSt
     const navigation = useNavigation()
     const utils = useUtils()
     const floatingFrame = useFloatingFrame()
-    const [showAlternateProfilePicture, setShowAlternateProfilePicture] = useState(false)
     const safeProfile = profile || {}
+    const alternateProfilePictureDefaultChance = normalizeDefaultChance(safeProfile.profilePictureAltDefaultChance)
+    const [showAlternateProfilePicture, setShowAlternateProfilePicture] = useState(false)
 
     const expandedClass = expanded ?
         `` :
@@ -60,6 +61,12 @@ function NavProfileCard({ profile, expanded, compactRail = false, mobileActionSt
 
     const secondaryProfilePictureUrl = language.parseJsonText(safeProfile.profilePictureAltUrl) || "images/contant/profil.webp"
 
+    useEffect(() => {
+        setShowAlternateProfilePicture(
+            getPageLoadRandomValue("nav-profile-card:avatar") < alternateProfilePictureDefaultChance
+        )
+    }, [safeProfile.profilePictureAltUrl, alternateProfilePictureDefaultChance])
+
     const _onStatusBadgeClicked = () => {
         navigation.navigateToSectionWithId("contact")
     }
@@ -94,7 +101,8 @@ function NavProfileCard({ profile, expanded, compactRail = false, mobileActionSt
                             <ImageView src={profilePictureUrl}
                                        className={`nav-profile-card-avatar`}
                                        hideSpinner={true}
-                                       alt={name}/>
+                                       alt={name}
+                                       loading={`eager`}/>
                         </div>
 
                         <div className={`nav-profile-card-avatar-face nav-profile-card-avatar-face-back`}>
@@ -102,6 +110,7 @@ function NavProfileCard({ profile, expanded, compactRail = false, mobileActionSt
                                        className={`nav-profile-card-avatar`}
                                        hideSpinner={true}
                                        alt={name}
+                                       loading={`eager`}
                                        fetchPriority={`low`}/>
                         </div>
                     </div>
@@ -169,3 +178,25 @@ function NavProfileCard({ profile, expanded, compactRail = false, mobileActionSt
 }
 
 export default NavProfileCard
+
+function normalizeDefaultChance(value, fallback = 0) {
+    const numericValue = Number(value)
+    if(!Number.isFinite(numericValue))
+        return fallback
+
+    return Math.min(1, Math.max(0, numericValue))
+}
+
+function getPageLoadRandomValue(key) {
+    if(typeof window === "undefined")
+        return Math.random()
+
+    const cacheKey = "__pageLoadRandomImageDefaults"
+    const scopedCache = window[cacheKey] || (window[cacheKey] = {})
+
+    if(typeof scopedCache[key] === "number")
+        return scopedCache[key]
+
+    scopedCache[key] = Math.random()
+    return scopedCache[key]
+}

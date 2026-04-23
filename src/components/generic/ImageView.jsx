@@ -1,5 +1,5 @@
 import "./ImageView.scss"
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {useConstants} from "../../hooks/constants.js"
 import {Spinner} from "react-bootstrap"
 import {useUtils} from "../../hooks/utils.js"
@@ -85,17 +85,30 @@ ImageView.LoadStatus = {
 function ImageViewContainer({ src, alt, visible, loadStatus, loading, decoding, fetchPriority, onLoad, onError }) {
     const constants = useConstants()
     const utils = useUtils()
+    const imageRef = useRef(null)
 
     const resolvedSrc = utils.file.resolvePath(src)
     const visibleClass = visible ? `visible` : `invisible`
 
+    useEffect(() => {
+        if(!imageRef.current)
+            return
+
+        if(fetchPriority && fetchPriority !== "auto") {
+            imageRef.current.setAttribute("fetchpriority", fetchPriority)
+        }
+        else {
+            imageRef.current.removeAttribute("fetchpriority")
+        }
+    }, [fetchPriority])
+
     return (
         <img className={`image-view-img ${visibleClass} ${constants.HTML_CLASSES.imageView} ${constants.HTML_CLASSES.imageView}-${loadStatus}`}
+             ref={imageRef}
              src={resolvedSrc}
              alt={alt}
              loading={loading}
              decoding={decoding}
-             fetchPriority={fetchPriority}
              onLoad={onLoad}
              onError={onError}/>
     )

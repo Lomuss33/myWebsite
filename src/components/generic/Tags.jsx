@@ -1,5 +1,5 @@
 import "./Tags.scss"
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {useTheme} from "../../providers/ThemeProvider.jsx"
 
 function Tags({ children, className = "" }) {
@@ -13,13 +13,25 @@ function Tags({ children, className = "" }) {
 function Tag({ text, variant = "tag-default", className = "" }) {
     const theme = useTheme()
     const [transitionClass, setTransitionClass] = useState(``)
+    const transitionTimeoutRef = useRef(null)
 
     useEffect(() => {
         setTransitionClass(`tag-no-transition`)
-        setTimeout(() => {
+        if(transitionTimeoutRef.current !== null) {
+            clearTimeout(transitionTimeoutRef.current)
+        }
+
+        transitionTimeoutRef.current = setTimeout(() => {
             setTransitionClass(``)
         }, 1000/30)
-    }, [theme.getSelectedTheme()])
+
+        return () => {
+            if(transitionTimeoutRef.current !== null) {
+                clearTimeout(transitionTimeoutRef.current)
+                transitionTimeoutRef.current = null
+            }
+        }
+    }, [theme.getSelectedTheme()?.id])
 
     return (
         <li className={`tag ${className} ${variant} ${transitionClass}`}

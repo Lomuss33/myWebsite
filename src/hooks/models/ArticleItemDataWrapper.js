@@ -52,6 +52,7 @@ export default class ArticleItemDataWrapper {
 
         this.img = language.parseJsonText(rawData.img)
         this.imgAlt = language.parseJsonText(rawData.imgAlt || rawData.img_alt)
+        this.imgAltDefaultChance = this._parseNumber(rawData.imgAltDefaultChance ?? rawData.img_alt_default_chance, 0, 1)
         this.avatarImageScale = this._parseNumber(rawData.avatar_image_scale, 0.5, 1) || 1
         this.label = rawData.label
         this.link = this._parseLink(rawData.link, language)

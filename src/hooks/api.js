@@ -84,34 +84,8 @@ export const useApi = () => {
         }
     }
 
-    const analytics = {
-        /**
-         * @description This method can be used to report a visit to an external analytics service.
-         * Here, you can integrate Google Analytics, Mixpanel, or your own custom analytics implementation.
-         * @returns {Promise<void>}
-         */
-        reportVisit: async() => {
-            try {
-                await fetch("https://admin.lovro-music.com/api/analytics/mock", {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        params: {
-                            url: utils.url.getRootLocation(),
-                            template_id: "react-portfolio"
-                        }
-                    })
-                })
-            }
-            catch (error) {
-                // Ignore analytics failures in the browser to avoid noisy console errors.
-            }
-        }
-    }
-
     return {
         validators,
-        handlers,
-        analytics
+        handlers
     }
 }

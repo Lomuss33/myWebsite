@@ -9,7 +9,7 @@ article.article-falling-words {
         }
     }
 
-    div.article-falling-words-stage {
+    div.falling-words.article-falling-words-stage {
         width: 100%;
         max-width: 100%;
         overflow: hidden;
@@ -18,6 +18,5 @@ article.article-falling-words {
         border: 1px solid color-mix(in srgb, var(--theme-primary) 35%, var(--theme-standard-borders) 65%);
         border-radius: $standard-border-radius;
         background: color-mix(in srgb, var(--theme-boards-background) 92%, var(--theme-empty) 8%);
-        padding: 14px 12px;
     }
 }

@@ -3,6 +3,7 @@ import React, {useMemo} from "react"
 import Article from "./base/Article.jsx"
 import FallingWords from "../generic/FallingWords.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
+import {useViewport} from "../../providers/ViewportProvider.jsx"
 import {FALLING_WORDS_I18N} from "../../data/fallingWordsI18n.js"
 
 const DEFAULT_WORDS =
@@ -10,6 +11,7 @@ const DEFAULT_WORDS =
 
 function ArticleFallingWords({ dataWrapper }) {
     const language = useLanguage()
+    const viewport = useViewport()
 
     const entries = useMemo(() => {
         const langId = language.selectedLanguageId || "en"
@@ -34,6 +36,8 @@ function ArticleFallingWords({ dataWrapper }) {
 
     const fallbackText = language.getString("definition_coming_soon")
     const hintText = language.getString("click_word_definition")
+    const stageHeight = Math.max(400, Math.min(560, Math.round(viewport.innerHeight * 0.34)))
+    const stageFontScale = 0.6
 
     return (
         <Article
@@ -46,17 +50,16 @@ function ArticleFallingWords({ dataWrapper }) {
                 {hintText}
             </div>
 
-            <div className={`article-falling-words-stage`}>
-                <FallingWords
-                    entries={entries.length ? entries : undefined}
-                    text={entries.length ? undefined : DEFAULT_WORDS}
-                    splitRegex={/\s*,\s*/g}
-                    height={360}
-                    fontScale={0.6}
-                    highlightPrefixes={[]}
-                    definitionFallbackText={fallbackText}
-                />
-            </div>
+            <FallingWords
+                entries={entries.length ? entries : undefined}
+                text={entries.length ? undefined : DEFAULT_WORDS}
+                splitRegex={/\s*,\s*/g}
+                height={stageHeight}
+                fontScale={stageFontScale}
+                highlightPrefixes={[]}
+                definitionFallbackText={fallbackText}
+                className={`article-falling-words-stage`}
+            />
         </Article>
     )
 }

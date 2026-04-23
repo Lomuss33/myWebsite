@@ -2,29 +2,22 @@ import "./AudioButton.scss"
 import React, {useEffect, useRef, useState} from 'react'
 import {useUtils} from "../../hooks/utils.js"
 import {useFeedbacks} from "../../providers/FeedbacksProvider.jsx"
-import HoverStaticTooltip from "../widgets/HoverStaticTooltip.jsx"
+import Tooltip from "../generic/Tooltip.jsx"
 
-function AudioButton({ url = "", tooltip = "", size = "", buttonClassName = "", tooltipClassName = "" }) {
+function AudioButton({ url = "", tooltip = "", tooltipLabel = "", size = "", buttonClassName = "", tooltipClassName = "" }) {
     const feedbacks = useFeedbacks()
     const utils = useUtils()
 
     const audioRef = useRef(null)
-    const [uniqueId, setUniqueId] = useState(utils.string.generateUniqueRandomString("audio-button-"))
+    const [uniqueId] = useState(utils.string.generateUniqueRandomString("audio-button-"))
     const [status, setStatus] = useState(AudioButton.Status.NONE)
-    const [playCount, setPlayCount] = useState(0)
+    const [isTooltipVisible, setIsTooltipVisible] = useState(false)
 
     const isMagicCursorEnabledAndActive = feedbacks.animatedCursorEnabled && feedbacks.animatedCursorActive
-    const shouldShowStaticTooltip = tooltip && !isMagicCursorEnabledAndActive
+    const tooltipHtml = tooltipLabel || tooltip
+    const shouldShowStaticTooltip = tooltipHtml && !isMagicCursorEnabledAndActive
 
-    const statusIconMap = {
-        [AudioButton.Status.LOADING]: "fa-solid fa-spinner pi-spin",
-        [AudioButton.Status.PLAYING]: "fa-solid fa-pause",
-        [AudioButton.Status.COMPLETED]: "fa-solid fa-volume-high",
-    }
-
-    const statusIcon = statusIconMap[status] || "fa-solid fa-volume-high"
-
-    /** @listens url **/
+    /** @listens url **/ 
     useEffect(() => {
         _reset()
     }, [url])
@@ -73,27 +66,53 @@ function AudioButton({ url = "", tooltip = "", size = "", buttonClassName = "", 
 
     const _stopAudio = () => {
         if(!audioRef.current) return
-        setPlayCount(prevCount => prevCount + 1)
         setStatus(AudioButton.Status.COMPLETED)
         audioRef.current.currentTime = 0
         audioRef.current?.pause()
     }
 
     return (
-        <div className={`audio-button-wrapper ${size}`}>
-            {shouldShowStaticTooltip && (
-                <HoverStaticTooltip label={tooltip}
-                                    className={`audio-button-tooltip text-center ${tooltipClassName}`}
-                                    id={uniqueId + "-tooltip"}
-                                    forceResetFlag={playCount}
-                                    targetId={uniqueId}/>
+        <div className={`audio-button-wrapper ${size}`}
+             onPointerEnter={() => setIsTooltipVisible(true)}
+             onPointerLeave={() => setIsTooltipVisible(false)}>
+            {shouldShowStaticTooltip && isTooltipVisible && (
+                <Tooltip label={tooltipHtml}
+                         id={uniqueId + "-tooltip"}
+                         className={`audio-button-tooltip text-center ${tooltipClassName}`}/>
             )}
 
-            <button className={`audio-button ${buttonClassName}`}
+            <button className={`audio-button playBut ${buttonClassName}`}
+                    type="button"
                     id={uniqueId}
-                    data-tooltip={tooltip}
+                    aria-pressed={status === AudioButton.Status.PLAYING}
                     onClick={_onClick}>
-                <i className={statusIcon}/>
+                <svg version="1.1"
+                     xmlns="http://www.w3.org/2000/svg"
+                     xmlnsXlink="http://www.w3.org/1999/xlink"
+                     x="0px"
+                     y="0px"
+                     viewBox="0 0 213.7 213.7"
+                     xmlSpace="preserve"
+                     aria-hidden="true">
+                    <polygon className="triangle"
+                             id="XMLID_18_"
+                             fill="none"
+                             strokeWidth="7"
+                             strokeLinecap="round"
+                             strokeLinejoin="round"
+                             strokeMiterlimit="10"
+                             points="73.5,62.5 148.5,105.8 73.5,149.1"/>
+                    <circle className="circle"
+                            id="XMLID_17_"
+                            fill="none"
+                            strokeWidth="7"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeMiterlimit="10"
+                            cx="106.8"
+                            cy="106.8"
+                            r="103.3"/>
+                </svg>
             </button>
         </div>
     )

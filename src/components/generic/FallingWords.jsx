@@ -11,7 +11,8 @@ function FallingWords({
     splitRegex = /\s+/g,
     fontScale = 1,
     highlightPrefixes = DEFAULT_HIGHLIGHT_PREFIXES,
-    definitionFallbackText = "Definition coming soon."
+    definitionFallbackText = "Definition coming soon.",
+    className = ""
 }) {
     const clamp = (value, min, max) => Math.min(max, Math.max(min, value))
 
@@ -137,6 +138,20 @@ function FallingWords({
     }, [])
 
     useEffect(() => {
+        if(typeof document === "undefined" || !document.fonts?.ready) return
+
+        let cancelled = false
+        document.fonts.ready.then(() => {
+            if(cancelled) return
+            setLayoutVersion(v => v + 1)
+        })
+
+        return () => {
+            cancelled = true
+        }
+    }, [effectiveEntries])
+
+    useEffect(() => {
         const container = containerRef.current
         if(!container || typeof ResizeObserver !== "function") return
 
@@ -178,9 +193,7 @@ function FallingWords({
             return
         }
 
-        const rect = container.getBoundingClientRect()
-        const width = Math.floor(rect.width)
-        const containerHeight = Math.floor(rect.height)
+        const { width, height: containerHeight } = _getContainerSize()
 
         if(width <= 0 || containerHeight <= 0) {
             cleanupRef.current = () => {}
@@ -243,19 +256,25 @@ function FallingWords({
             const lanes = Math.max(7, Math.min(16, Math.floor(width / 120)))
             const lane = index % lanes
             const row = Math.floor(index / lanes)
+            const rowCount = Math.max(1, Math.ceil(effectiveEntries.length / lanes))
 
             const laneWidth = width / lanes
             const xBase = (lane + 0.5) * laneWidth
-            const xJitter = (Math.random() - 0.5) * laneWidth * 0.7
+            const xJitter = (Math.random() - 0.5) * laneWidth * 0.65
             const startX = clamp(
                 xBase + xJitter,
                 bodyWidth / 2 + 8,
                 width - bodyWidth / 2 - 8
             )
 
-            // Spawn spread across the visible stage so it's not clustered in the middle.
-            const maxSpawnY = Math.min(containerHeight * 0.28, 120)
-            const startY = clamp(20 + row * 18 + (Math.random() - 0.5) * 10, 10, maxSpawnY)
+            // Spread the initial spawn vertically so the stage reads as a full play area.
+            const rowProgress = rowCount > 1 ? row / (rowCount - 1) : 0
+            const verticalBand = Math.max(containerHeight * 0.72, 180)
+            const startY = clamp(
+                18 + rowProgress * verticalBand + (Math.random() - 0.5) * 14,
+                10,
+                Math.max(10, containerHeight - bodyHeight - 12)
+            )
 
             const body = Bodies.rectangle(startX, startY, bodyWidth, bodyHeight, {
                 friction: 0.18,
@@ -268,7 +287,7 @@ function FallingWords({
             Body.setVelocity(body, { x: (Math.random() - 0.5) * 1.2, y: 0 })
 
             // Keep bodies from accumulating extreme rotations.
-            Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.04)
+            Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.035)
 
             return {body, el, bodyWidth, bodyHeight}
         })
@@ -425,6 +444,18 @@ function FallingWords({
         return Date.now() - lastDragAt < 250
     }
 
+    const _getContainerSize = () => {
+        const container = containerRef.current
+        if(!container) {
+            return { width: 0, height: 0 }
+        }
+
+        return {
+            width: Math.floor(container.clientWidth || container.getBoundingClientRect().width || 0),
+            height: Math.floor(container.clientHeight || container.getBoundingClientRect().height || 0)
+        }
+    }
+
     const _selectWord = (index, { ignoreDragGate = false } = {}) => {
         if(index == null) return
         if(!ignoreDragGate && _shouldIgnoreClick()) return
@@ -447,11 +478,11 @@ function FallingWords({
         const target = bodies[index]
         if(!target) return
 
-        const rect = containerRef.current?.getBoundingClientRect()
-        if(!rect) return
+        const { width, height } = _getContainerSize()
+        if(width <= 0 || height <= 0) return
 
-        const centerX = rect.width / 2
-        const centerY = rect.height * 0.35
+        const centerX = width / 2
+        const centerY = height * 0.35
 
         Matter.Body.setPosition(target.body, { x: centerX, y: centerY })
         Matter.Body.setVelocity(target.body, { x: 0, y: 0 })
@@ -545,7 +576,7 @@ function FallingWords({
     return (
         <div
             ref={containerRef}
-            className={`falling-words ${isReady ? "falling-words-ready" : ""} ${selectedIndex !== null ? "falling-words-modal-open" : ""}`}
+            className={`falling-words ${className} ${isReady ? "falling-words-ready" : ""} ${selectedIndex !== null ? "falling-words-modal-open" : ""}`}
             style={{
                 height: typeof height === "number" ? `${height}px` : String(height),
                 "--falling-word-font-scale": String(fontScale)

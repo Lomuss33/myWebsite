@@ -49,6 +49,7 @@ function NavProfileCard({ profile, expanded, compactRail = false }) {
     const namePronunciationIpa = language.getTranslation(profile.locales, "name_pronunciation_ipa", null)
     const namePronunciationAudioUrl = language.getTranslation(profile.locales, "name_pronunciation_audio_url", null)
     const namePronunciationButtonVisible = namePronunciationIpa || namePronunciationAudioUrl
+    const namePronunciationTooltipLabel = namePronunciationIpa ? `<span class="audio-button-tooltip-lines"><span class="audio-button-tooltip-line audio-button-tooltip-line-top">lǒːʋro  ˈmu.sit͡ɕ</span><span class="audio-button-tooltip-line audio-button-tooltip-line-bottom">LOHV-roh  muu-SEEch</span></span>` : ""
 
     const navProfileCardNameClass = namePronunciationButtonVisible ?
         `nav-profile-card-name-with-audio-button` :
@@ -116,20 +117,21 @@ function NavProfileCard({ profile, expanded, compactRail = false }) {
                                 {firstName}
                             </span>
 
-                            <span className={`nav-profile-card-name-line-group`}>
-                                {lastName && (
-                                    <span className={`nav-profile-card-name-line nav-profile-card-name-line-last`}>
-                                        {lastName}
-                                    </span>
-                                )}
-
-                                {namePronunciationButtonVisible && (
-                                    <AudioButton url={namePronunciationAudioUrl}
-                                                 tooltip={namePronunciationIpa}
-                                                 size={AudioButton.Sizes.DYNAMIC_FOR_NAV_TITLE}/>
-                                )}
-                            </span>
+                            {lastName && (
+                                <span className={`nav-profile-card-name-line nav-profile-card-name-line-last`}>
+                                    {lastName}
+                                </span>
+                            )}
                         </span>
+
+                        {namePronunciationButtonVisible && (
+                            <span className={`nav-profile-card-name-audio-button`}>
+                                <AudioButton url={namePronunciationAudioUrl}
+                                             tooltip={namePronunciationIpa}
+                                             tooltipLabel={namePronunciationTooltipLabel}
+                                             size={AudioButton.Sizes.DYNAMIC_FOR_NAV_TITLE}/>
+                            </span>
+                        )}
                     </h1>
                 </div>
             </div>

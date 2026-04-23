@@ -6,7 +6,17 @@ import {useUtils} from "../../hooks/utils.js"
 import {useInput} from "../../providers/InputProvider.jsx"
 import {useNavigation} from "../../providers/NavigationProvider.jsx"
 
-function HoverStaticTooltip({ id = "", targetId = "", label = "", className = "", onDesktopClick = null, forceResetFlag = null, forceVisible = false, toggleBehaviorOnTouchScreens = false }) {
+function HoverStaticTooltip({
+    id = "",
+    targetId = "",
+    label = "",
+    className = "",
+    onDesktopClick = null,
+    forceResetFlag = null,
+    forceVisible = false,
+    toggleBehaviorOnTouchScreens = false,
+    desktopClickShowsTooltip = true,
+}) {
     const viewport = useViewport()
     const input = useInput()
     const utils = useUtils()
@@ -74,7 +84,7 @@ function HoverStaticTooltip({ id = "", targetId = "", label = "", className = ""
         if(isTouchDevice && toggleBehaviorOnTouchScreens) {
             setVisible(visible => !visible)
         }
-        else {
+        else if(isTouchDevice || desktopClickShowsTooltip) {
             setVisible(true)
         }
     }

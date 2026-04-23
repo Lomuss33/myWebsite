@@ -2,70 +2,191 @@
 
 div.audio-button-wrapper {
     display: inline-flex;
+    align-items: center;
+    justify-content: center;
     height: 100%;
+    flex-shrink: 0;
+    position: relative;
 }
 
 button.audio-button {
-    background-color: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    padding: 0;
     margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
     color: var(--theme-texts-light-4);
     outline: none;
     border-radius: 999px;
-    width: 1.55rem;
-    height: 1.55rem;
-
-    i {
-        pointer-events: none;
-    }
+    width: 2.1rem;
+    height: 2.1rem;
+    position: relative;
+    transition:
+        transform 0.28s ease,
+        color 0.28s ease,
+        filter 0.28s ease;
+    cursor: pointer;
 
     &:hover {
         color: var(--theme-texts-light-1);
-        border-color: rgba(255, 255, 255, 0.75);
+        transform: translateY(-2px) scale(1.06);
+        filter: drop-shadow(0 0 0.45rem rgba(248, 170, 40, 0.28));
+    }
+
+    &:focus-visible {
+        outline: 2px solid rgba(248, 170, 40, 0.75);
+        outline-offset: 3px;
+    }
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+    }
+
+    .triangle,
+    .circle {
+        pointer-events: none;
+    }
+
+    .triangle {
+        transition:
+            stroke-dashoffset 0.7s ease-in-out,
+            stroke 0.28s ease,
+            opacity 0.28s ease,
+            transform 0.28s ease;
+        stroke-dasharray: 240;
+        stroke-dashoffset: 480;
+        stroke: currentColor;
+        transform: translateX(0);
+    }
+
+    .circle {
+        transition:
+            stroke-dashoffset 0.5s ease-in-out,
+            stroke 0.28s ease,
+            opacity 0.28s ease;
+        stroke: currentColor;
+        stroke-dasharray: 650;
+        stroke-dashoffset: 650;
+        opacity: 0.3;
+    }
+
+    &:hover .triangle {
+        stroke-dashoffset: 0;
+        opacity: 1;
+        stroke: #f8aa28;
+        animation: playBut-nudge 0.7s ease-in-out;
+    }
+
+    &:hover .circle {
+        stroke-dashoffset: 0;
+        opacity: 1;
+        stroke: #f8aa28;
     }
 }
 
 div.audio-button-tooltip {
-    font-size: 0.88rem;
-    line-height: 1.3rem;
-    font-family: $font-family-base;
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 0.6rem);
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.02rem;
+    font-size: 0.86rem;
+    line-height: 1.08;
+    font-family: "DejaVu Sans", "Noto Sans", "Segoe UI", Arial, sans-serif;
+    white-space: normal;
+    text-align: center;
+    width: max-content;
+    max-width: none;
+    padding: 0.28rem 0.85rem 0.32rem;
+
+    > span {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.02rem;
+        width: 100%;
+    }
+}
+
+span.audio-button-tooltip-lines {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.02rem;
+}
+
+span.audio-button-tooltip-line {
+    display: block;
+    white-space: pre;
+    line-height: 1.08;
+    font-weight: 400;
+}
+
+span.audio-button-tooltip-line-top {
+    font-size: 0.97rem;
+    letter-spacing: 0.04em;
+}
+
+span.audio-button-tooltip-line-bottom {
+    font-size: 0.9rem;
 }
 
 /** ---------------- SIZES ------------------ **/
 div.audio-button-wrapper-size-default {
     button.audio-button {
-        font-size: 1rem;
-        margin-left: 8px;
-        min-width: 1.3rem;
+        width: 2rem;
+        height: 2rem;
+        margin-left: 0.35rem;
     }
 
     div.audio-button-tooltip {
-        width: 150px;
-        transform: translate(calc(-50% + 1rem), calc(-100% - 0.5rem));
+        transform: translateX(-50%);
     }
 }
 
 div.audio-button-wrapper-size-dynamic-for-nav-title {
     button.audio-button {
-        font-size: 1rem;
-        position: relative;
-        min-width: 1.3rem;
-        margin-left: 9px;
+        width: 2.15rem;
+        height: 2.15rem;
+        margin-left: 0.4rem;
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-            margin-left: 10px;
-            top: -2px;
+            width: 2.05rem;
+            height: 2.05rem;
+            margin-left: 0.3rem;
         }
     }
 
     div.audio-button-tooltip {
         min-width: 180px;
-        transform: translate(calc(-50% + 1.2rem), calc(-100% - 0.6rem));
-        @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-            transform: translate(calc(-50% + 1.26rem), calc(-100% - 0.65rem));
-        }
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes playBut-nudge {
+    0% {
+        transform: translateX(0);
+    }
+    30% {
+        transform: translateX(-5px);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+    70% {
+        transform: translateX(-2px);
+    }
+    100% {
+        transform: translateX(-10px);
     }
 }

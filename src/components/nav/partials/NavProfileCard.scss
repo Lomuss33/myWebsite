@@ -117,6 +117,10 @@ div.nav-profile-card {
     }
 
     h1.nav-profile-card-name {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        align-items: center;
+        column-gap: 0.4rem;
         text-align: center;
 
         margin-left: 8px;
@@ -133,34 +137,35 @@ div.nav-profile-card {
     }
 
     span.nav-profile-card-name-text {
-        display: inline;
+        display: block;
+        grid-column: 2;
+        justify-self: center;
+        min-width: 0;
     }
 
     span.nav-profile-card-name-line {
         display: inline;
     }
 
-    span.nav-profile-card-name-line-group {
-        display: inline-flex;
-        align-items: center;
-    }
-
     span.nav-profile-card-name-line-last {
         margin-left: 0.35rem;
     }
 
-    h1.nav-profile-card-name-with-audio-button {
+    span.nav-profile-card-name-audio-button {
         display: inline-flex;
+        grid-column: 3;
+        justify-self: start;
         align-items: center;
-        justify-content: center;
-        gap: 0;
-        white-space: nowrap;
+        min-width: 0;
+    }
+
+    h1.nav-profile-card-name-with-audio-button {
+        width: 100%;
+        white-space: normal;
 
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
             margin-left: 10px;
             margin-right: 10px;
-            width: auto;
-            max-width: 100%;
         }
     }
 
@@ -169,13 +174,13 @@ div.nav-profile-card {
         align-items: center;
         justify-content: center;
         color: var(--theme-secondary);
-        font-size: 0.84rem;
+        font-size: 0.76rem;
         min-height: 20px;
         width: min(100%, 206px);
         text-align: center;
         margin-top: 0;
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-            font-size: 0.95rem;
+            font-size: 0.88rem;
             min-height: 25px;
         }
     }
@@ -211,61 +216,55 @@ div.nav-profile-card {
             margin-bottom: 0;
             width: auto;
             max-width: min(220px, calc(100vw - var(--avatar-size) - 52px));
-            align-items: flex-start;
+            align-items: center;
             justify-content: center;
-            text-align: left;
+            text-align: center;
             flex: 0 1 auto;
         }
 
         h1.nav-profile-card-name {
-            text-align: left;
+            text-align: center;
             margin: 0;
             font-size: clamp(2.45rem, 8.8vw, 3.35rem) !important;
             line-height: 0.94 !important;
         }
 
         h1.nav-profile-card-name-with-audio-button {
-            width: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: flex-start;
-            white-space: normal;
-            gap: 0;
+            width: 100%;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+            align-items: center;
+            column-gap: 0.3rem;
         }
 
         span.nav-profile-card-name-text {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
             line-height: 0.98;
+            grid-column: 2;
+            justify-self: center;
         }
 
         span.nav-profile-card-name-line {
             display: block;
         }
 
-        span.nav-profile-card-name-line-group {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
         span.nav-profile-card-name-line-last {
             margin-left: 0;
+        }
+
+        span.nav-profile-card-name-audio-button {
+            grid-column: 3;
+            justify-self: start;
+            display: inline-flex;
+            align-items: center;
         }
 
         h1.nav-profile-card-name-with-audio-button div.audio-button-wrapper-size-dynamic-for-nav-title {
             display: flex;
             align-self: center;
             margin-left: 0;
-        }
-
-        h1.nav-profile-card-name-with-audio-button div.audio-button-wrapper-size-dynamic-for-nav-title button.audio-button {
-            margin-left: 0;
-            top: 1px;
-            font-size: 1.15rem;
-            min-width: 1.6rem;
         }
 
         div.nav-profile-card-role {

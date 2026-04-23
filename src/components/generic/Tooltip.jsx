@@ -9,10 +9,10 @@ function Tooltip({ id = null, className = "", label = "" }) {
     const [isShowing, setIsShowing] = useState(false)
 
     const visibleClass = isShowing ? `` : `custom-tooltip-hidden`
+    const tag = id ? "tooltip-" + id : "custom-tooltip"
 
-    /** @listens label **/
+    /** @listens label **/ 
     useEffect(() => {
-        const tag = "tooltip-" + id || "custom-tooltip"
         scheduler.clearAllWithTag(tag)
         setIsShowing(false)
 
@@ -25,6 +25,10 @@ function Tooltip({ id = null, className = "", label = "" }) {
         scheduler.schedule(() => {
             setIsShowing(true)
         }, 100, tag)
+
+        return () => {
+            scheduler.clearAllWithTag(tag)
+        }
     }, [label])
 
     return (

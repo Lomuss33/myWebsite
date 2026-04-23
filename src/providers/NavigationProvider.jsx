@@ -10,7 +10,7 @@ import {useLanguage} from "./LanguageProvider.jsx"
 import {useConstants} from "../hooks/constants.js"
 import {useScheduler} from "../hooks/scheduler.js"
 import {useFeedbacks} from "./FeedbacksProvider.jsx"
-import {useViewport} from "./ViewportProvider.jsx"
+import {useViewport, getViewportScrollPosition} from "./ViewportProvider.jsx"
 import {useUtils} from "../hooks/utils.js"
 import {useLayout} from "../hooks/layout.js"
 
@@ -24,7 +24,6 @@ function NavigationProvider({ children, sections, categories }) {
     const utils = useUtils()
     const layout = useLayout()
 
-    const [didMount, setDidMount] = useState(false)
     const [transitionStatus, setTransitionStatus] = useState(NavigationProvider.TransitionStatus.NONE)
     const [transitionEnabled, setTransitionEnabled] = useState(true)
     const [ignoreNextLocationEvent, setIgnoreNextLocationEvent] = useState(false)
@@ -43,17 +42,15 @@ function NavigationProvider({ children, sections, categories }) {
 
     /** @constructs **/
     useEffect(() => {
-        setDidMount(true)
         _updateLinks(null, null)
-        return () => { setDidMount(false) }
-    }, [null])
+    }, [])
 
     /**
-     * @listens language.getSelectedLanguage()
+     * @listens sections|categories|language.getSelectedLanguage()
      */
     useEffect(() => {
         _updateLinks(targetSection, targetSection?.category)
-    }, [language.getSelectedLanguage()])
+    }, [sections, categories, language.getSelectedLanguage()?.id])
 
     /**
      * @listens viewport.getBreakpoint()
@@ -91,8 +88,8 @@ function NavigationProvider({ children, sections, categories }) {
     }
 
     const _adjustScrollBeforeTransition = () => {
-        const mobileNavData = layout.getMobileNavData(viewport.scrollY)
-        const didChangeCategory = targetSection?.category.id !== nextSection?.category.id
+        const mobileNavData = layout.getMobileNavData(getViewportScrollPosition().y)
+        const didChangeCategory = targetSection?.category?.id !== nextSection?.category?.id
 
         scheduler.clearAllWithTag("adjust-scroll-top")
 
@@ -120,7 +117,7 @@ function NavigationProvider({ children, sections, categories }) {
         let acc = 0
         scheduler.interval(() => {
             acc += 100
-            if(Math.abs(window.scrollY - initialScrollY) < 10 || acc === 1000) {
+            if(Math.abs(getViewportScrollPosition().y - initialScrollY) < 10 || acc === 1000) {
                 _startTransitionAfterScroll(initialScrollY)
             }
         }, 100, "adjust-scroll-top")
@@ -265,7 +262,7 @@ function NavigationProvider({ children, sections, categories }) {
 
     const forceScrollToTop = () => {
         if(viewport.isMobileLayout()) {
-            const mobileNavData = layout.getMobileNavData(window.scrollY)
+            const mobileNavData = layout.getMobileNavData(getViewportScrollPosition().y)
             if(mobileNavData.navHeaderElHeight) {
                 window.scrollTo({
                     top: mobileNavData.contentTop,
@@ -293,7 +290,7 @@ function NavigationProvider({ children, sections, categories }) {
             isTransitioning,
             forceScrollToTop
         }}>
-            {didMount && children}
+            {children}
         </NavigationContext.Provider>
     )
 }

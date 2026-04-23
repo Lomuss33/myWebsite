@@ -197,6 +197,45 @@ div.article-text-item.article-text-item-flow-card {
     }
 }
 
+article#article-3-section-experience {
+    div.article-text-item.article-text-item-flow-card {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(78, 163, 255, 0.20);
+        background:
+            linear-gradient(140deg, rgba(11, 18, 32, 0.96), rgba(5, 8, 16, 0.96));
+        box-shadow: 0 18px 42px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at top right, rgba(78, 163, 255, 0.12) 0%, transparent 55%),
+                radial-gradient(circle at bottom left, rgba(250, 204, 21, 0.06) 0%, transparent 42%);
+            pointer-events: none;
+        }
+    }
+
+    div.article-text-excerpt {
+        color: #e2e8f0;
+    }
+
+    div.article-text-avatar-view {
+        color: #4ea3ff;
+        background-color: rgba(78, 163, 255, 0.08);
+        border: 1px solid rgba(78, 163, 255, 0.24);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        div.article-text-item.article-text-item-flow-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(250, 204, 21, 0.36);
+            box-shadow: 0 22px 50px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+    }
+}
+
 div.article-text-items.article-text-items-mode-draggable_inline_icon_flow {
     div.article-text-item.article-text-item-flow-card {
         display: block;

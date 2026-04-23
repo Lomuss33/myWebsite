@@ -109,8 +109,8 @@ $theme-contrast-steps: (
         --theme-standard-borders-accent: #{color.adjust($theme-standard-borders, $lightness: 3%)};
         --theme-standard-borders-accent-2: #{color.adjust($theme-standard-borders, $lightness: 5%)};
 
-        --theme-timeline-line-color: #{color.adjust($theme-boards-background, $lightness: 2%)};
-        --theme-timeline-line-color-accent: #{color.adjust($theme-boards-background, $lightness: -5%)};
+        --theme-timeline-line-color: #{$theme-secondary};
+        --theme-timeline-line-color-accent: #{color.adjust($theme-secondary, $lightness: 8%)};
 
         --theme-opacity-border: #{rgba($theme-secondary, 0.15)};
         --theme-opacity-border-light: #{rgba($theme-secondary, 0.05)};
@@ -130,8 +130,8 @@ $theme-contrast-steps: (
         --theme-standard-borders-accent: #{$theme-section-background};
         --theme-standard-borders-accent-2: #{color.adjust($theme-standard-borders, $lightness: -1%)};
 
-        --theme-timeline-line-color: #{color.adjust($theme-boards-background, $lightness: -2%)};
-        --theme-timeline-line-color-accent: #{color.adjust($theme-boards-background, $lightness: 1%)};
+        --theme-timeline-line-color: #{$theme-secondary};
+        --theme-timeline-line-color-accent: #{color.adjust($theme-secondary, $lightness: -8%)};
 
         --theme-opacity-border: #{rgba(black, 0.15)};
         --theme-opacity-border-light: #{rgba(black, 0.05)};

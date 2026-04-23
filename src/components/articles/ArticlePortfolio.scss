@@ -87,33 +87,149 @@ div.article-portfolio-item {
 
 }
 
-/* Dock wrappers are absolutely positioned and draggable */
-div.article-portfolio-item-draggable-dock {
-    position: absolute;
-    z-index: 3;
-    touch-action: pan-y;
-    -webkit-user-select: none;
-    user-select: none;
+article#article-1-section-my-software {
+    div.article-portfolio-item {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(78, 163, 255, 0.18);
+        background:
+            linear-gradient(140deg, rgba(11, 18, 32, 0.96), rgba(5, 8, 16, 0.96));
+        box-shadow: 0 18px 44px rgba(0, 0, 0, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, filter 180ms ease;
 
-    /* Default placement comes from CSS (stable across transitions) */
-    transform: translate3d(0, 0, 0);
-    will-change: transform;
-    transition: transform 220ms ease;
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at top right, rgba(78, 163, 255, 0.12) 0%, transparent 56%),
+                radial-gradient(circle at bottom left, rgba(250, 204, 21, 0.06) 0%, transparent 40%);
+            pointer-events: none;
+        }
 
-    &.dock-dragging {
-        transition: none;
-        cursor: grabbing;
-        z-index: 5;
+        &:hover {
+            transform: translateY(-3px);
+            border-color: rgba(250, 204, 21, 0.36);
+            box-shadow: 0 24px 52px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            filter: saturate(1.03);
+        }
+    }
+
+    div.article-portfolio-item-title-main {
+        color: #f8fafc;
+    }
+
+    div.article-portfolio-item-title-category {
+        color: #93c5fd;
+    }
+
+    div.article-portfolio-item-body-description {
+        color: #cbd5e1;
+    }
+
+    a.article-portfolio-item-control-btn,
+    div.article-portfolio-item-control-btn {
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(6, 9, 16, 0.94));
+        color: #cbd5e1;
+        border-color: rgba(78, 163, 255, 0.18);
+
+        &:hover {
+            border-color: rgba(250, 204, 21, 0.36);
+            color: #f8fafc;
+        }
+    }
+
+    span.article-portfolio-item-control-btn-label {
+        color: #facc15;
+    }
+
+    div.article-portfolio-item-control-avatar {
+        border-color: rgba(78, 163, 255, 0.28);
+    }
+
+    ul.article-portfolio-item-body-tags {
+        margin-top: 10px;
+    }
+
+    li.article-portfolio-item-body-tag {
+        background: linear-gradient(180deg, rgba(78, 163, 255, 0.18), rgba(11, 18, 32, 0.96));
+        color: #e2e8f0;
+        border: 1px solid rgba(78, 163, 255, 0.18);
     }
 }
 
+article#article-1-section-my-hardware {
+    div.article-portfolio-item {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(56, 189, 248, 0.16);
+        background:
+            linear-gradient(140deg, rgba(9, 14, 22, 0.98), rgba(4, 7, 12, 0.98));
+        box-shadow: 0 18px 44px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at top right, rgba(56, 189, 248, 0.13) 0%, transparent 56%),
+                radial-gradient(circle at bottom left, rgba(245, 158, 11, 0.08) 0%, transparent 42%);
+            pointer-events: none;
+        }
+
+        &:hover {
+            transform: translateY(-3px);
+            border-color: rgba(245, 158, 11, 0.38);
+            box-shadow: 0 24px 52px rgba(0, 0, 0, 0.46), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            filter: saturate(1.03);
+        }
+    }
+
+    div.article-portfolio-item-title-main {
+        color: #f8fafc;
+    }
+
+    div.article-portfolio-item-title-category {
+        color: #7dd3fc;
+    }
+
+    div.article-portfolio-item-body-description {
+        color: #cbd5e1;
+    }
+
+    a.article-portfolio-item-control-btn,
+    div.article-portfolio-item-control-btn {
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(6, 9, 16, 0.95));
+        color: #d1d5db;
+        border-color: rgba(56, 189, 248, 0.18);
+
+        &:hover {
+            border-color: rgba(245, 158, 11, 0.36);
+            color: #f8fafc;
+        }
+    }
+
+    span.article-portfolio-item-control-btn-label {
+        color: #f59e0b;
+    }
+
+    div.article-portfolio-item-control-avatar {
+        border-color: rgba(56, 189, 248, 0.28);
+    }
+}
+
+/* Dock wrappers are absolutely positioned and static */
+div.article-portfolio-item-actions,
+div.article-portfolio-item-visit-dock {
+    position: absolute;
+    z-index: 3;
+}
+
 /* Separate bottom docks */
-div.article-portfolio-item-draggable-dock.article-portfolio-item-actions {
+div.article-portfolio-item-actions {
     left: var(--avatar-offset);
     bottom: var(--avatar-offset);
-
-    /* Allow a little "wiggle room" on drag */
-    width: auto;
 }
 
 div.article-portfolio-item-actions-grid {
@@ -122,7 +238,7 @@ div.article-portfolio-item-actions-grid {
     gap: var(--portfolio-controls-gap);
 }
 
-div.article-portfolio-item-draggable-dock.article-portfolio-item-visit-dock {
+div.article-portfolio-item-visit-dock {
     right: var(--avatar-offset);
     bottom: var(--avatar-offset);
 

@@ -41,7 +41,7 @@ function Portfolio() {
     const settings = data.getSettings()
     const sections = data.getSections()
 
-    const backgroundStyle = settings.templateSettings.backgroundStyle
+    const backgroundStyle = settings?.templateSettings?.backgroundStyle || "plain"
 
     const currentSection = navigation.targetSection
     const previousSection = navigation.previousSection

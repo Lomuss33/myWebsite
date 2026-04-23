@@ -18,6 +18,36 @@ import InputProvider from "./providers/InputProvider.jsx"
 import NavigationProvider from "./providers/NavigationProvider.jsx"
 import Portfolio from "./components/Portfolio.jsx"
 
+const createDefaultSettings = () => ({
+    developerSettings: {
+        debugMode: false,
+        fakeEmailRequests: false,
+        stayOnThePreloaderScreen: false,
+        version: ""
+    },
+    preloaderSettings: {
+        enabled: true,
+        title: "",
+        subtitle: "",
+        logoOffset: {
+            right: 0,
+            top: 0,
+            bottom: 0
+        }
+    },
+    templateSettings: {
+        animatedCursorEnabled: true,
+        backgroundStyle: "plain",
+        defaultLanguageId: "en",
+        defaultThemeId: "dark",
+        fullscreenEnabled: true,
+        showSpinnerOnThemeChange: false
+    },
+    supportedLanguages: [],
+    supportedThemes: [],
+    imagesToCache: []
+})
+
 /** Initialization Script... **/
 let container = null
 
@@ -55,20 +85,21 @@ const AppEssentialsWrapper = ({children}) => {
     const utils = useUtils()
     const constants = useConstants()
 
-    const [settings, setSettings] = useState()
+    const [settings, setSettings] = useState(() => createDefaultSettings())
 
     useEffect(() => {
         if (window.location.pathname !== utils.file.BASE_URL)
             window.history.pushState({}, '', utils.file.BASE_URL)
 
         utils.file.loadJSON("/data/settings.json").then(response => {
-            _applyDeveloperSettings(response)
-            setSettings(response)
+            const resolvedSettings = response || createDefaultSettings()
+            _applyDeveloperSettings(resolvedSettings)
+            setSettings(resolvedSettings)
 
-            const consoleMessageForDevelopers = response?.consoleMessageForDevelopers
+            const consoleMessageForDevelopers = resolvedSettings?.consoleMessageForDevelopers
             if(consoleMessageForDevelopers) {
                 const primaryColor = utils.css.getRootSCSSVariable('--bs-primary')
-                const languageId = _resolveConsoleLanguageId(response)
+                const languageId = _resolveConsoleLanguageId(resolvedSettings)
                 const resolvedItems = (consoleMessageForDevelopers.items || []).map(item => ({
                     ...item,
                     description: _resolveLocalizedConsoleField(item.description, languageId)
@@ -80,6 +111,8 @@ const AppEssentialsWrapper = ({children}) => {
                     primaryColor
                 )
             }
+        }).catch(() => {
+            setSettings(createDefaultSettings())
         })
 
         api.analytics.reportVisit().catch(() => {})
@@ -171,13 +204,11 @@ const AppEssentialsWrapper = ({children}) => {
 
     return (
         <StrictMode>
-            {settings && (
-                <Preloader preloaderSettings={settings["preloaderSettings"]}>
-                    <DataProvider settings={settings}>
-                        {children}
-                    </DataProvider>
-                </Preloader>
-            )}
+            <Preloader preloaderSettings={settings?.preloaderSettings}>
+                <DataProvider settings={settings}>
+                    {children}
+                </DataProvider>
+            </Preloader>
         </StrictMode>
     )
 }
@@ -193,17 +224,18 @@ const AppCapabilitiesWrapper = ({ children }) => {
 
     const [selectedThemeId, setSelectedThemeId] = useState(null)
 
-    const appSettings = data.getSettings()
+    const appSettings = data.getSettings() || {}
     const appStrings = data.getStrings()
     const appSections = data.getSections()
     const appCategories = data.getCategories()
 
-    const supportedLanguages = appSettings["supportedLanguages"]
-    const supportedThemes = appSettings["supportedThemes"]
-    const defaultLanguageId = appSettings["templateSettings"].defaultLanguageId
-    const defaultThemeId = appSettings["templateSettings"].defaultThemeId
-    const animatedCursorEnabled = appSettings["templateSettings"].animatedCursorEnabled
-    const showSpinnerOnThemeChange = appSettings["templateSettings"].showSpinnerOnThemeChange
+    const supportedLanguages = appSettings?.supportedLanguages || []
+    const supportedThemes = appSettings?.supportedThemes || []
+    const templateSettings = appSettings?.templateSettings || {}
+    const defaultLanguageId = templateSettings.defaultLanguageId || "en"
+    const defaultThemeId = templateSettings.defaultThemeId || "dark"
+    const animatedCursorEnabled = Boolean(templateSettings.animatedCursorEnabled)
+    const showSpinnerOnThemeChange = Boolean(templateSettings.showSpinnerOnThemeChange)
 
     return (
         <LanguageProvider supportedLanguages={supportedLanguages}

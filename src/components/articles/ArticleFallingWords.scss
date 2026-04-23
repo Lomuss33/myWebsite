@@ -20,3 +20,48 @@ article.article-falling-words {
         background: color-mix(in srgb, var(--theme-boards-background) 92%, var(--theme-empty) 8%);
     }
 }
+
+article#article-5-section-my-writings {
+    div.article-falling-words-hint {
+        color: #cbd5e1;
+    }
+
+    div.falling-words.article-falling-words-stage {
+        border: 1px solid rgba(56, 189, 248, 0.20);
+        border-radius: 18px;
+        background:
+            linear-gradient(180deg, rgba(11, 18, 32, 0.96), rgba(5, 7, 13, 0.96));
+        box-shadow: 0 20px 48px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    span.falling-word {
+        --falling-word-color: #7dd3fc;
+        color: var(--falling-word-color);
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.30);
+    }
+
+    span.falling-word-selected {
+        --falling-word-color: #f59e0b;
+        color: var(--falling-word-color);
+        filter:
+            drop-shadow(0 10px 22px rgba(0, 0, 0, 0.40))
+            drop-shadow(0 0 18px rgba(245, 158, 11, 0.28));
+    }
+
+    span.falling-word-highlighted {
+        --falling-word-color: #f8fafc;
+    }
+
+    div.falling-words-modal-card {
+        border-color: rgba(56, 189, 248, 0.26);
+        background: linear-gradient(180deg, rgba(11, 18, 32, 0.98), rgba(5, 7, 13, 0.98));
+    }
+
+    div.falling-words-modal-title {
+        color: #f8fafc;
+    }
+
+    div.falling-words-modal-definition {
+        color: #d1d5db;
+    }
+}

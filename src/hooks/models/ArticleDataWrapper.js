@@ -5,9 +5,11 @@
  */
 
 import ArticleItemDataWrapper from "./ArticleItemDataWrapper.js"
-import {useUtils} from "../utils.js"
+import {_loggingUtils} from "../utils/_logging-utils.js"
 
-const utils = useUtils()
+const utils = {
+    log: _loggingUtils
+}
 
 export default class ArticleDataWrapper {
     /** @const **/

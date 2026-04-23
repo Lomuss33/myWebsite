@@ -1,36 +1,49 @@
 import "./LayoutImageCache.scss"
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {useUtils} from "../../hooks/utils.js"
 
 function LayoutImageCache({ profile, settings, sections }) {
     const utils = useUtils()
 
-    const imagesToCache = [
-        profile.profileCardLogoUrl,
-        profile.profileCardLogoUrlLight,
-        profile.profilePictureUrl
-    ]
+    const imagesToCache = new Set([
+        profile?.profilePictureUrl
+    ])
 
-    const settingsImagesToCache = settings.imagesToCache || []
+    const settingsImagesToCache = settings?.imagesToCache || []
     for(const image of settingsImagesToCache) {
-        imagesToCache.push(image)
+        imagesToCache.add(image)
     }
 
-    for(const language of settings.supportedLanguages) {
-        imagesToCache.push(language.flagUrl)
+    for(const language of settings?.supportedLanguages || []) {
+        if(language?.flagUrl) {
+            imagesToCache.add(language.flagUrl)
+        }
     }
 
-    for(const section of sections) {
-        const articles = section.data?.articles || []
-        articles.forEach(article => {
-            const items = article.items || []
-            items.forEach(item => {
-                imagesToCache.push(item.img)
-            })
-        })
+    const heroSection = (sections || [])[0]
+    let heroImageCount = 0
+    for(const article of heroSection?.data?.articles || []) {
+        for(const item of article.items || []) {
+            if(item?.img) {
+                imagesToCache.add(item.img)
+                heroImageCount += 1
+            }
+
+            if(item?.imgAlt) {
+                imagesToCache.add(item.imgAlt)
+                heroImageCount += 1
+            }
+
+            if(heroImageCount >= 4)
+                break
+        }
+
+        if(heroImageCount >= 4)
+            break
     }
 
-    const filtered = imagesToCache.filter(image => image && !image.includes('{theme}'))
+    const filtered = Array.from(imagesToCache)
+        .filter(image => image && !image.includes('{theme}'))
 
     return (
         <div className={`layout-image-cache`}>
@@ -39,7 +52,10 @@ function LayoutImageCache({ profile, settings, sections }) {
                      src={utils.file.resolvePath(src)}
                      className={`cache-image`}
                      alt={`Preloaded image ${key + 1}`}
-                     aria-hidden="true"/>
+                     aria-hidden="true"
+                     loading="eager"
+                     fetchPriority="high"
+                     decoding="async"/>
             ))}
         </div>
     )

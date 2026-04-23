@@ -205,3 +205,140 @@ article.article-timeline--my-art {
         }
     }
 }
+
+article#article-1-section-my-writings {
+    ul.article-timeline-items {
+        --timeline-line-width: 4px;
+        --timeline-line-color: rgba(56, 189, 248, 0.48);
+        --avatar-size: 132px;
+        --gap-between-avatar-and-content: 18px;
+
+        @include media-breakpoint-down(lg) {
+            --avatar-size: 112px;
+            --gap-between-avatar-and-content: 16px;
+        }
+
+        @include media-breakpoint-down(md) {
+            --avatar-size: 96px;
+            --gap-between-avatar-and-content: 14px;
+        }
+
+        @include media-breakpoint-down(sm) {
+            --avatar-size: 82px;
+            --gap-between-avatar-and-content: 12px;
+        }
+    }
+
+    ul.article-timeline-items:before {
+        background: linear-gradient(180deg, rgba(56, 189, 248, 0.65), rgba(245, 158, 11, 0.45));
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.16);
+    }
+
+    div.article-timeline-item-avatar {
+        border-color: rgba(56, 189, 248, 0.52);
+        box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.08) inset,
+            0 12px 30px rgba(0, 0, 0, 0.38);
+    }
+
+    div.article-timeline-item-avatar.article-timeline-item-avatar--button {
+        border-color: rgba(245, 158, 11, 0.62);
+    }
+
+    a.article-timeline-item-avatar-link:hover div.article-timeline-item-avatar--button {
+        border-color: rgba(245, 158, 11, 0.82);
+        box-shadow:
+            0 0 0 4px rgba(56, 189, 248, 0.12),
+            0 0 0 1px rgba(255, 255, 255, 0.10) inset,
+            0 16px 34px rgba(0, 0, 0, 0.42);
+    }
+
+    a.article-timeline-item-avatar-link:focus-visible div.article-timeline-item-avatar--button {
+        border-color: rgba(56, 189, 248, 0.86);
+        box-shadow:
+            0 0 0 3px rgba(56, 189, 248, 0.22),
+            0 0 0 1px rgba(255, 255, 255, 0.10) inset,
+            0 16px 34px rgba(0, 0, 0, 0.42);
+    }
+}
+
+article#article-1-section-my-art {
+    ul.article-timeline-items {
+        --timeline-line-width: 4px;
+        --timeline-line-color: rgba(56, 189, 248, 0.48);
+        --avatar-size: 168px;
+        --gap-between-avatar-and-content: 18px;
+
+        @include media-breakpoint-down(lg) {
+            --avatar-size: 144px;
+            --gap-between-avatar-and-content: 16px;
+        }
+
+        @include media-breakpoint-down(md) {
+            --avatar-size: 120px;
+            --gap-between-avatar-and-content: 14px;
+        }
+
+        @include media-breakpoint-down(sm) {
+            --avatar-size: 96px;
+            --gap-between-avatar-and-content: 12px;
+        }
+
+        @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+            --avatar-offset-merge-mode: 0px;
+        }
+    }
+
+    ul.article-timeline-items:before {
+        background: linear-gradient(180deg, rgba(56, 189, 248, 0.65), rgba(245, 158, 11, 0.42));
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.16);
+    }
+
+    li.article-timeline-item {
+        align-items: stretch;
+    }
+
+    div.article-timeline-item-avatar-wrapper {
+        align-items: center;
+    }
+
+    div.article-timeline-item-avatar {
+        border-color: rgba(56, 189, 248, 0.52);
+        box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.08) inset,
+            0 12px 30px rgba(0, 0, 0, 0.38);
+
+        @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+            top: 0;
+            left: 0;
+        }
+    }
+
+    div.article-timeline-item-avatar.article-timeline-item-avatar--button {
+        border-color: rgba(245, 158, 11, 0.62);
+    }
+
+    a.article-timeline-item-avatar-link:hover div.article-timeline-item-avatar--button {
+        border-color: rgba(245, 158, 11, 0.82);
+        box-shadow:
+            0 0 0 4px rgba(56, 189, 248, 0.12),
+            0 0 0 1px rgba(255, 255, 255, 0.10) inset,
+            0 16px 34px rgba(0, 0, 0, 0.42);
+    }
+
+    a.article-timeline-item-avatar-link:focus-visible div.article-timeline-item-avatar--button {
+        border-color: rgba(56, 189, 248, 0.86);
+        box-shadow:
+            0 0 0 3px rgba(56, 189, 248, 0.22),
+            0 0 0 1px rgba(255, 255, 255, 0.10) inset,
+            0 16px 34px rgba(0, 0, 0, 0.42);
+    }
+
+    div.article-timeline-item-content {
+        @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+            margin-left: var(--gap-between-avatar-and-content)!important;
+            border-top-left-radius: $standard-border-radius!important;
+            border-bottom-left-radius: $standard-border-radius!important;
+        }
+    }
+}

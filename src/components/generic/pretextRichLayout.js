@@ -243,7 +243,7 @@ function createPreparedParagraph(paragraph, paragraphIndex, font) {
             collection.push({
                 key: `paragraph-${paragraphIndex}-item-${itemIndex}-piece-${pieceIndex}`,
                 kind: item.kind,
-                locked: item.locked,
+                locked: item.locked || item.kind === "link",
                 href: item.href,
                 target: item.target,
                 rel: item.rel,

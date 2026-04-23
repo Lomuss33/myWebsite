@@ -33,36 +33,36 @@
 
 @use "./theme-variables-builder" as theme;
 
-$primary: #ff9d00;
-$secondary: #0088ba;
-$dark: #ffdfba;
-$danger: #932626;
-$muted: #b3b2a9;
+$primary: #2563eb;
+$secondary: #0f766e;
+$dark: #0f172a;
+$danger: #dc2626;
+$muted: #64748b;
 
-$base-bg: #ff9d00;
-$base-bg-light: #f2ff00;
-$base-bg-dark: #ffffff;
+$base-bg: #f8fafc;
+$base-bg-light: #eef2ff;
+$base-bg-dark: #dbeafe;
 
-$texts: #000000;
-$texts-inverted: #0088ba;
+$texts: #0f172a;
+$texts-inverted: #ffffff;
 
-$base-container-bg: #ffeeb7;
-$base-container-bg-accent: #d8d8d8;
+$base-container-bg: #ffffff;
+$base-container-bg-accent: #f1f5f9;
 $base-popover-bg: #ffffff;
 $base-boards: #ffffff;
-$base-info-badges: #f7eed5;
-$empty: #ffffff;
+$base-info-badges: #eff6ff;
+$empty: #f8fafc;
 
-$borders: #000000;
-$borders-nav-mobile: #000000;
-$borders-nav-mobile-accent: #000000;
-$scrollbar-track: rgba(0, 0, 0, 0.12);
-$scrollbar-thumb: rgba(0, 0, 0, 0.38);
+$borders: #cbd5e1;
+$borders-nav-mobile: #cbd5e1;
+$borders-nav-mobile-accent: #94a3b8;
+$scrollbar-track: rgba(15, 23, 42, 0.08);
+$scrollbar-thumb: rgba(37, 99, 235, 0.30);
 
 [data-theme="light"] {
-    --theme-mobile-nav-separator: #000000;
-    --theme-sidebar-nav-link-color: rgba(0, 0, 0, 0.985);
-    --theme-sidebar-nav-link-icon-opacity: 0.7;
+    --theme-mobile-nav-separator: #d6dde8;
+    --theme-sidebar-nav-link-color: rgba(15, 23, 42, 0.985);
+    --theme-sidebar-nav-link-icon-opacity: 0.72;
     --theme-sidebar-nav-link-text-opacity: 0.98;
 
     @include theme.build-theme(

@@ -1,12 +1,13 @@
 import "./NavLinkPillsFixed.scss"
 import React, {useEffect, useState} from 'react'
 import NavLinkPills from "./NavLinkPills.jsx"
-import {useViewport} from "../../../providers/ViewportProvider.jsx"
+import {useViewport, useViewportScroll} from "../../../providers/ViewportProvider.jsx"
 import {useNavigation} from "../../../providers/NavigationProvider.jsx"
 
 function NavLinkPillsFixed({ links, className = "" }) {
     const navigation = useNavigation()
     const viewport = useViewport()
+    const scrollPosition = useViewportScroll()
 
     const [status, setStatus] = useState(NavLinkPillsFixed.Status.HIDDEN)
 
@@ -26,7 +27,7 @@ function NavLinkPillsFixed({ links, className = "" }) {
         else if(navToolsEndY < 0 && navToolsStartY < 0) setStatus(NavLinkPillsFixed.Status.SHOWN)
         else if(navToolsStartY < 0) setStatus(NavLinkPillsFixed.Status.HIDING)
         else setStatus(NavLinkPillsFixed.Status.HIDDEN)
-    }, [viewport.scrollY, navigation.nextSection, navigation.scheduledNextSection])
+    }, [scrollPosition.y, viewport.innerHeight, navigation.nextSection, navigation.scheduledNextSection])
 
     return (
         <div className={`nav-link-pills-fixed-wrapper nav-link-pills-fixed-wrapper-${status}`}>

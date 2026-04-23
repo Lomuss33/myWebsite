@@ -4,9 +4,19 @@
  * @description This class is a wrapper for the article item data. It provides methods to parse and validate the data loaded from an article's list.
  */
 
-import {useUtils} from "../utils.js"
+import {_arrayUtils} from "../utils/_array-utils.js"
+import {_jsonUtils} from "../utils/_json-utils.js"
+import {_loggingUtils} from "../utils/_logging-utils.js"
+import {_numberUtils} from "../utils/_number-utils.js"
+import {_stringUtils} from "../utils/_string-utils.js"
 
-const utils = useUtils()
+const utils = {
+    array: _arrayUtils,
+    json: _jsonUtils,
+    log: _loggingUtils,
+    number: _numberUtils,
+    string: _stringUtils
+}
 
 export default class ArticleItemDataWrapper {
     /**

@@ -25,18 +25,28 @@ function ThemeProvider({ children, supportedThemes, defaultThemeId, showSpinnerO
 
     /** @constructs **/
     useEffect(() => {
-        if(allThemes.length === 0) {
-            utils.log.throwError("ThemeProvider", "The app must support at least one theme. Make sure you filled the supportedThemes property in the settings.json file.")
+        if(allThemes.length === 0)
             return
-        }
+
+        // Once a valid theme is selected, do not keep re-applying defaults.
+        // Otherwise a manual toggle to "light" gets overwritten by this effect.
+        if(selectedThemeId && allThemes.some(theme => theme.id === selectedThemeId))
+            return
 
         const savedThemeId = utils.storage.getPreferredTheme()
         const savedTheme = allThemes.find(theme => theme.id === savedThemeId)
-        setSelectedTheme(savedTheme || defaultTheme)
-    }, [])
+        if(savedTheme) {
+            setSelectedTheme(savedTheme)
+            return
+        }
+
+        if(defaultTheme) {
+            setSelectedTheme(defaultTheme)
+        }
+    }, [supportedThemes, defaultThemeId, selectedThemeId])
 
     const getSelectedTheme = () => {
-        return allThemes.find(theme => theme.id === selectedThemeId)
+        return allThemes.find(theme => theme.id === selectedThemeId) || defaultTheme || null
     }
 
     const setSelectedTheme = (theme) => {
@@ -89,9 +99,7 @@ function ThemeProvider({ children, supportedThemes, defaultThemeId, showSpinnerO
             <ActivitySpinner activities={spinnerActivities}
                              defaultMessage={null}/>
 
-            {selectedThemeId && (
-                <>{children}</>
-            )}
+            {children}
         </ThemeContext.Provider>
     )
 }

@@ -22,13 +22,13 @@
 
 div.gallery-modal-vertical {
     div.gallery-modal-body {
-        background-color: black!important;
+        background-color: #050505!important;
     }
 }
 
 div.gallery-modal-loading {
     div.gallery-modal-body {
-        background-color: black!important;
+        background-color: #050505!important;
         color: white!important;
     }
 
@@ -49,7 +49,7 @@ div.gallery-modal-loading {
 #gallery-modal {
     div.gallery-swiper {
         padding: 0 0 var(--padding-bottom);
-        background: black;
+        background: #050505;
 
         div.swiper-slide {
             background: transparent;
@@ -165,7 +165,7 @@ div.gallery-modal-loading {
         display: flex;
         flex-direction: column;
         width: 100%;
-        background-color: black;
+        background-color: #050505;
         min-height: 100vh;
     }
 

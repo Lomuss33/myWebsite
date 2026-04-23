@@ -21,6 +21,261 @@ section.section {
     }
 }
 
+section#section-education {
+    --education-page-bg: #05070d;
+    --education-page-bg-2: #08111d;
+    --education-page-bg-3: #0d1422;
+    --education-accent-blue: #4ea3ff;
+    --education-accent-gold: #facc15;
+    --education-text-strong: #f8fafc;
+    --education-text-mid: #cbd5e1;
+    --education-text-soft: #94a3b8;
+
+    background:
+        radial-gradient(circle at top left, rgba(78, 163, 255, 0.18) 0%, transparent 32%),
+        radial-gradient(circle at top right, rgba(250, 204, 21, 0.12) 0%, transparent 28%),
+        radial-gradient(circle at bottom right, rgba(78, 163, 255, 0.10) 0%, transparent 26%),
+        linear-gradient(180deg, var(--education-page-bg) 0%, var(--education-page-bg-2) 44%, var(--education-page-bg-3) 100%);
+    color: var(--education-text-strong);
+}
+
+section#section-education div.section-content-border-decoration-top-left {
+    border-top-color: var(--education-accent-blue);
+    border-left-color: var(--education-accent-gold);
+    opacity: 0.7;
+}
+
+section#section-education h4.article-title {
+    color: var(--education-text-strong);
+}
+
+section#section-education h4.article-title span.article-title-prefix {
+    color: var(--education-accent-blue);
+}
+
+section#section-education div.article-content {
+    color: var(--education-text-strong);
+}
+
+section#section-about {
+    --about-page-bg: #05070d;
+    --about-page-bg-2: #0a1020;
+    --about-page-bg-3: #111827;
+    --about-accent-blue: #4ea3ff;
+    --about-accent-gold: #facc15;
+    --about-text-strong: #f8fafc;
+    --about-text-mid: #cbd5e1;
+    --about-text-soft: #94a3b8;
+
+    background:
+        radial-gradient(circle at top left, rgba(78, 163, 255, 0.18) 0%, transparent 32%),
+        radial-gradient(circle at top right, rgba(250, 204, 21, 0.10) 0%, transparent 28%),
+        radial-gradient(circle at bottom right, rgba(78, 163, 255, 0.08) 0%, transparent 26%),
+        linear-gradient(180deg, var(--about-page-bg) 0%, var(--about-page-bg-2) 46%, var(--about-page-bg-3) 100%);
+    color: var(--about-text-strong);
+}
+
+section#section-about div.section-content-border-decoration-top-left {
+    border-top-color: var(--about-accent-blue);
+    border-left-color: var(--about-accent-gold);
+    opacity: 0.7;
+}
+
+section#section-about h4.article-title {
+    color: var(--about-text-strong);
+}
+
+section#section-about h4.article-title span.article-title-prefix {
+    color: var(--about-accent-blue);
+}
+
+section#section-about div.article-content {
+    color: var(--about-text-strong);
+}
+
+section#section-experience {
+    --experience-page-bg: #04060b;
+    --experience-page-bg-2: #090f1b;
+    --experience-page-bg-3: #111827;
+    --experience-accent-blue: #4ea3ff;
+    --experience-accent-gold: #facc15;
+    --experience-text-strong: #f8fafc;
+    --experience-text-mid: #cbd5e1;
+    --experience-text-soft: #94a3b8;
+
+    background:
+        radial-gradient(circle at top left, rgba(78, 163, 255, 0.14) 0%, transparent 31%),
+        radial-gradient(circle at top right, rgba(250, 204, 21, 0.08) 0%, transparent 26%),
+        radial-gradient(circle at bottom left, rgba(78, 163, 255, 0.06) 0%, transparent 28%),
+        linear-gradient(180deg, var(--experience-page-bg) 0%, var(--experience-page-bg-2) 46%, var(--experience-page-bg-3) 100%);
+    color: var(--experience-text-strong);
+}
+
+section#section-experience div.section-content-border-decoration-top-left {
+    border-top-color: var(--experience-accent-blue);
+    border-left-color: var(--experience-accent-gold);
+    opacity: 0.7;
+}
+
+section#section-experience h4.article-title {
+    color: var(--experience-text-strong);
+}
+
+section#section-experience h4.article-title span.article-title-prefix {
+    color: var(--experience-accent-blue);
+}
+
+section#section-experience div.article-content {
+    color: var(--experience-text-strong);
+}
+
+section#section-my-software {
+    --software-page-bg: #04060b;
+    --software-page-bg-2: #0b1020;
+    --software-page-bg-3: #111827;
+    --software-accent-blue: #4ea3ff;
+    --software-accent-gold: #facc15;
+    --software-text-strong: #f8fafc;
+    --software-text-mid: #cbd5e1;
+    --software-text-soft: #94a3b8;
+
+    background:
+        radial-gradient(circle at top left, rgba(78, 163, 255, 0.16) 0%, transparent 32%),
+        radial-gradient(circle at top right, rgba(250, 204, 21, 0.10) 0%, transparent 26%),
+        radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.08) 0%, transparent 28%),
+        linear-gradient(180deg, var(--software-page-bg) 0%, var(--software-page-bg-2) 46%, var(--software-page-bg-3) 100%);
+    color: var(--software-text-strong);
+}
+
+section#section-my-software div.section-content-border-decoration-top-left {
+    border-top-color: var(--software-accent-blue);
+    border-left-color: var(--software-accent-gold);
+    opacity: 0.72;
+}
+
+section#section-my-software h4.article-title {
+    color: var(--software-text-strong);
+}
+
+section#section-my-software h4.article-title span.article-title-prefix {
+    color: var(--software-accent-blue);
+}
+
+section#section-my-software div.article-content {
+    color: var(--software-text-strong);
+}
+
+section#section-my-hardware {
+    --hardware-page-bg: #030407;
+    --hardware-page-bg-2: #08111d;
+    --hardware-page-bg-3: #121826;
+    --hardware-accent-blue: #38bdf8;
+    --hardware-accent-amber: #f59e0b;
+    --hardware-accent-red: #ef4444;
+    --hardware-text-strong: #f8fafc;
+    --hardware-text-mid: #d1d5db;
+    --hardware-text-soft: #94a3b8;
+
+    background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.16) 0%, transparent 32%),
+        radial-gradient(circle at top right, rgba(245, 158, 11, 0.10) 0%, transparent 28%),
+        radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.08) 0%, transparent 26%),
+        linear-gradient(180deg, var(--hardware-page-bg) 0%, var(--hardware-page-bg-2) 46%, var(--hardware-page-bg-3) 100%);
+    color: var(--hardware-text-strong);
+}
+
+section#section-my-hardware div.section-content-border-decoration-top-left {
+    border-top-color: var(--hardware-accent-blue);
+    border-left-color: var(--hardware-accent-amber);
+    opacity: 0.74;
+}
+
+section#section-my-hardware h4.article-title {
+    color: var(--hardware-text-strong);
+}
+
+section#section-my-hardware h4.article-title span.article-title-prefix {
+    color: var(--hardware-accent-blue);
+}
+
+section#section-my-hardware div.article-content {
+    color: var(--hardware-text-strong);
+}
+
+section#section-my-writings {
+    --writings-page-bg: #030406;
+    --writings-page-bg-2: #090f1a;
+    --writings-page-bg-3: #131a27;
+    --writings-accent-blue: #38bdf8;
+    --writings-accent-gold: #f59e0b;
+    --writings-accent-red: #ef4444;
+    --writings-text-strong: #f8fafc;
+    --writings-text-mid: #d1d5db;
+    --writings-text-soft: #94a3b8;
+
+    background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.16) 0%, transparent 32%),
+        radial-gradient(circle at top right, rgba(245, 158, 11, 0.12) 0%, transparent 28%),
+        radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.08) 0%, transparent 26%),
+        linear-gradient(180deg, var(--writings-page-bg) 0%, var(--writings-page-bg-2) 44%, var(--writings-page-bg-3) 100%);
+    color: var(--writings-text-strong);
+}
+
+section#section-my-writings div.section-content-border-decoration-top-left {
+    border-top-color: var(--writings-accent-blue);
+    border-left-color: var(--writings-accent-gold);
+    opacity: 0.74;
+}
+
+section#section-my-writings h4.article-title {
+    color: var(--writings-text-strong);
+}
+
+section#section-my-writings h4.article-title span.article-title-prefix {
+    color: var(--writings-accent-blue);
+}
+
+section#section-my-writings div.article-content {
+    color: var(--writings-text-strong);
+}
+
+section#section-my-art {
+    --art-page-bg: #030406;
+    --art-page-bg-2: #090f1a;
+    --art-page-bg-3: #121a28;
+    --art-accent-blue: #38bdf8;
+    --art-accent-amber: #f59e0b;
+    --art-accent-rose: #fb7185;
+    --art-text-strong: #f8fafc;
+    --art-text-mid: #d1d5db;
+    --art-text-soft: #94a3b8;
+
+    background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.18) 0%, transparent 30%),
+        radial-gradient(circle at top right, rgba(245, 158, 11, 0.12) 0%, transparent 28%),
+        radial-gradient(circle at bottom right, rgba(251, 113, 133, 0.08) 0%, transparent 26%),
+        linear-gradient(180deg, var(--art-page-bg) 0%, var(--art-page-bg-2) 46%, var(--art-page-bg-3) 100%);
+    color: var(--art-text-strong);
+}
+
+section#section-my-art div.section-content-border-decoration-top-left {
+    border-top-color: var(--art-accent-blue);
+    border-left-color: var(--art-accent-amber);
+    opacity: 0.74;
+}
+
+section#section-my-art h4.article-title {
+    color: var(--art-text-strong);
+}
+
+section#section-my-art h4.article-title span.article-title-prefix {
+    color: var(--art-accent-blue);
+}
+
+section#section-my-art div.article-content {
+    color: var(--art-text-strong);
+}
+
 button.section-fullscreen-toggle {
     position: absolute;
     top: 10px;

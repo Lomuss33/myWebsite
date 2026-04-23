@@ -3,10 +3,6 @@
  * @date 2025-05-10
  */
 
-import {useConstants} from "../constants.js"
-
-const constants = useConstants()
-
 export const _domUtils = {
     /**
      * @return {boolean}
@@ -84,10 +80,10 @@ export const _domUtils = {
      */
     setBodyScrollEnabled: (enabled) => {
         if(enabled) {
-            document.body.classList.remove(constants.HTML_CLASSES.bodyNoScroll)
+            document.body.classList.remove("body-no-scroll")
         }
         else {
-            document.body.classList.add(constants.HTML_CLASSES.bodyNoScroll)
+            document.body.classList.add("body-no-scroll")
         }
     }
 }

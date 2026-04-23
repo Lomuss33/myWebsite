@@ -5,6 +5,7 @@ div.preloader-window {
     z-index: $z-index-loader;
     background-color: $loader-background;
     color: $loader-contrast;
+    pointer-events: none;
 
     width: 100vw;
     height: 125vh;

@@ -10,79 +10,92 @@ import {useUtils} from "../hooks/utils.js"
 function DataProvider({ children, settings }) {
     const utils = useUtils()
 
-    const DataProviderStatus = {
-        STATUS_IDLE: "data_provider_status_idle",
-        STATUS_PREPARING_FOR_LOADING: "data_provider_status_preparing_for_loading",
-        STATUS_LOADING: "data_provider_status_loading",
-        STATUS_LOADED: "data_provider_status_loaded",
-        STATUS_EVALUATED: "data_provider_status_evaluated",
+    const defaultJsonData = {
+        strings: { locales: {} },
+        profile: {},
+        settings: settings || {
+            developerSettings: {},
+            preloaderSettings: {
+                enabled: true,
+                title: "",
+                subtitle: "",
+                logoOffset: {
+                    right: 0,
+                    top: 0,
+                    bottom: 0
+                }
+            },
+            templateSettings: {
+                animatedCursorEnabled: true,
+                backgroundStyle: "plain",
+                defaultLanguageId: "en",
+                defaultThemeId: "dark",
+                fullscreenEnabled: true,
+                showSpinnerOnThemeChange: false
+            },
+            supportedLanguages: [],
+            supportedThemes: [],
+            imagesToCache: []
+        },
+        sections: [],
+        categories: []
     }
 
-    const [status, setStatus] = useState(DataProviderStatus.STATUS_IDLE)
-    const [jsonData, setJsonData] = useState({})
+    const [jsonData, setJsonData] = useState(defaultJsonData)
+
+    useEffect(() => {
+        setJsonData(prev => ({
+            ...prev,
+            settings: settings || prev.settings || defaultJsonData.settings
+        }))
+    }, [settings])
 
     /** @constructs **/
     useEffect(() => {
-        if(status !== DataProviderStatus.STATUS_IDLE)
-            return
+        let didCancel = false
 
-        setStatus(DataProviderStatus.STATUS_PREPARING_FOR_LOADING)
-    }, [null])
+        const loadData = async () => {
+            const [jStrings, jProfile, jCategories, jSections] = await Promise.all([
+                utils.file.loadJSON("/data/strings.json"),
+                utils.file.loadJSON("/data/profile.json"),
+                utils.file.loadJSON("/data/categories.json"),
+                utils.file.loadJSON("/data/sections.json")
+            ])
 
-    /** @listens DataProviderStatus.STATUS_PREPARING_FOR_LOADING **/
-    useEffect(() => {
-        if(status !== DataProviderStatus.STATUS_PREPARING_FOR_LOADING)
-            return
+            if(didCancel)
+                return
 
-        setJsonData({})
+            const categories = jCategories?.categories || []
+            const sections = jSections?.sections || []
 
-        setStatus(DataProviderStatus.STATUS_LOADING)
-    }, [status === DataProviderStatus.STATUS_PREPARING_FOR_LOADING])
+            _bindCategoriesAndSections(categories, sections)
+            await _loadSectionsData(sections)
 
-    /** @listens DataProviderStatus.STATUS_LOADING **/
-    useEffect(() => {
-        if(status !== DataProviderStatus.STATUS_LOADING)
-            return
+            if(didCancel)
+                return
 
-        _loadData().then(response => {
-            setJsonData(response)
-            setStatus(DataProviderStatus.STATUS_LOADED)
+            setJsonData(prev => ({
+                ...prev,
+                strings: jStrings || { locales: {} },
+                profile: jProfile || {},
+                sections,
+                categories
+            }))
+
+            const validation = _validateData(categories)
+            if(!validation.success) {
+                utils.log.throwError("DataProvider", validation.message)
+            }
+        }
+
+        loadData().catch(error => {
+            utils.log.throwError("DataProvider", `Failed to load application data: ${error?.message || error}`)
         })
-    }, [status === DataProviderStatus.STATUS_LOADING])
 
-    /** @listens DataProviderStatus.STATUS_LOADED **/
-    useEffect(() => {
-        if(status !== DataProviderStatus.STATUS_LOADED)
-            return
-
-        const validation = _validateData()
-        if(!validation.success) {
-            utils.log.throwError("DataProvider", validation.message)
-            return
+        return () => {
+            didCancel = true
         }
-
-        setStatus(DataProviderStatus.STATUS_EVALUATED)
-    }, [status === DataProviderStatus.STATUS_LOADED])
-
-    const _loadData = async () => {
-        const jStrings = await utils.file.loadJSON("/data/strings.json")
-        const jProfile = await utils.file.loadJSON("/data/profile.json")
-        const jCategories = await utils.file.loadJSON("/data/categories.json")
-        const jSections = await utils.file.loadJSON("/data/sections.json")
-
-        const categories = jCategories.categories
-        const sections = jSections.sections
-        _bindCategoriesAndSections(categories, sections)
-        await _loadSectionsData(sections)
-
-        return {
-            strings: jStrings,
-            profile: jProfile,
-            settings: settings,
-            sections: sections,
-            categories: categories
-        }
-    }
+    }, [])
 
     const _bindCategoriesAndSections = (categories, sections) => {
         for(const category of categories) {
@@ -103,24 +116,26 @@ function DataProvider({ children, settings }) {
     }
 
     const _loadSectionsData = async (sections) => {
-        for(const section of sections) {
+        await Promise.all(sections.map(async section => {
             const sectionJsonPath = section.jsonPath
-            if(sectionJsonPath) {
-                let jSectionData = {}
+            if(!sectionJsonPath)
+                return
 
-                try {
-                    jSectionData = await utils.file.loadJSON(sectionJsonPath)
-                } catch (e) {
-                    jSectionData = {}
-                }
+            let jSectionData = {}
 
-                section.data = jSectionData
+            try {
+                jSectionData = await utils.file.loadJSON(sectionJsonPath)
             }
-        }
+            catch (e) {
+                jSectionData = {}
+            }
+
+            section.data = jSectionData || {}
+        }))
     }
 
-    const _validateData = () => {
-        const emptyCategories = jsonData.categories.filter(category => category.sections.length === 0)
+    const _validateData = (categories) => {
+        const emptyCategories = (categories || []).filter(category => category.sections.length === 0)
         const emptyCategoriesIds = emptyCategories.map(category => category.id)
         if(emptyCategories.length > 0) {
             return {
@@ -160,9 +175,7 @@ function DataProvider({ children, settings }) {
             getSections,
             getCategories
         }}>
-            {status === DataProviderStatus.STATUS_EVALUATED && (
-                <>{children}</>
-            )}
+            {children}
         </DataContext.Provider>
     )
 }

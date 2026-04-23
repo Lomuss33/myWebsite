@@ -1,151 +1,123 @@
 import "./LayoutAnimatedBackground.scss"
-import React, {useEffect, useState} from 'react'
-import {useUtils} from "../../hooks/utils.js"
+import React, {useEffect, useRef} from 'react'
 import Animable from "../capabilities/Animable.jsx"
 
-const utils = useUtils()
-
 function LayoutAnimatedBackground() {
-    const utils = useUtils()
+    const interactiveRef = useRef(null)
+    const pointerStateRef = useRef({
+        currentX: 0,
+        currentY: 0,
+        targetX: 0,
+        targetY: 0,
+        isInitialized: false
+    })
 
-    const canvas = document.getElementById(`layout-animated-background-canvas`)
-    const context = canvas?.getContext("2d")
-
-    const [circles, setCircles] = useState([])
-    const maxCircles = 24
-
-    const visibilityClass = utils.device.isAndroid() && !utils.device.isChromeAndroid() ?
-        `d-none` :
-        ``
-
-    /** @constructs **/
     useEffect(() => {
-        const circles = Array.from({ length: maxCircles }, () =>
-            new CircleData(window.innerWidth, window.innerHeight)
-        )
-
-        setCircles(circles)
-    }, [null])
-
-    const _step = (event) => {
-        for(const circle of circles) {
-            circle.update(event.currentTickElapsed/0.017)
-        }
-
-        _draw(circles)
-    }
-
-    const _draw = (updatedCircles) => {
-        if(!canvas || !context)
+        if(typeof window === "undefined")
             return
 
-        const backgroundColor = utils.css.getRootSCSSVariable("--theme-background")
-        const circleColorLight = utils.css.getRootSCSSVariable("--theme-background-contrast")
-        const circleColorDark = utils.css.getRootSCSSVariable("--theme-background-contrast-darken")
+        const setDefaultTarget = () => {
+            const width = window.innerWidth || 0
+            const height = window.innerHeight || 0
+            const state = pointerStateRef.current
 
-        const backgroundColorRgba = utils.css.hexToRgba(backgroundColor, 1)
+            if(!state.isInitialized) {
+                state.currentX = width * 0.5
+                state.currentY = height * 0.38
+            }
 
-        canvas.width = window.innerWidth
-        canvas.height = window.innerHeight
-        context.clearRect(0, 0, canvas.width, canvas.height)
+            state.targetX = width * 0.5
+            state.targetY = height * 0.38
+            state.isInitialized = true
+        }
 
-        context.fillStyle = backgroundColorRgba
-        context.fillRect(0, 0, canvas.width, canvas.height)
+        const handlePointerMove = event => {
+            const state = pointerStateRef.current
+            state.targetX = event.clientX
+            state.targetY = event.clientY
+        }
 
-        updatedCircles
-            .filter(circle => circle.color === "dark")
-            .forEach(circle => {
-                context.beginPath()
-                context.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2)
-                context.fillStyle = utils.css.hexToRgba(circleColorDark, circle.opacity/2)
-                context.fill()
-            })
+        const handlePointerLeave = () => {
+            setDefaultTarget()
+        }
 
-        updatedCircles
-            .filter(circle => circle.color !== "dark")
-            .forEach(circle => {
-                context.beginPath()
-                context.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2)
-                context.fillStyle = utils.css.hexToRgba(circleColorLight, circle.opacity/2)
-                context.fill()
-            })
+        setDefaultTarget()
+        window.addEventListener("pointermove", handlePointerMove, { passive: true })
+        window.addEventListener("pointerleave", handlePointerLeave, { passive: true })
+        window.addEventListener("blur", handlePointerLeave)
+        window.addEventListener("resize", setDefaultTarget, { passive: true })
+
+        return () => {
+            window.removeEventListener("pointermove", handlePointerMove)
+            window.removeEventListener("pointerleave", handlePointerLeave)
+            window.removeEventListener("blur", handlePointerLeave)
+            window.removeEventListener("resize", setDefaultTarget)
+        }
+    }, [])
+
+    const handleEnterFrame = () => {
+        const interactiveBubble = interactiveRef.current
+        if(!interactiveBubble || typeof window === "undefined")
+            return
+
+        const width = window.innerWidth || 0
+        const height = window.innerHeight || 0
+        const state = pointerStateRef.current
+
+        if(!state.isInitialized) {
+            state.targetX = width * 0.5
+            state.targetY = height * 0.38
+            state.currentX = state.targetX
+            state.currentY = state.targetY
+            state.isInitialized = true
+        }
+
+        state.currentX += (state.targetX - state.currentX) / 18
+        state.currentY += (state.targetY - state.currentY) / 18
+
+        interactiveBubble.style.transform = `translate3d(${Math.round(state.currentX)}px, ${Math.round(state.currentY)}px, 0)`
     }
 
     return (
-        <Animable className={`layout-animated-background ${visibilityClass}`}
+        <Animable className={`layout-animated-background`}
                   animationId={`layout-animated-background`}
-                  onEnterFrame={_step}>
-            <canvas id={`layout-animated-background-canvas`}/>
+                  onEnterFrame={handleEnterFrame}>
+            <svg className={`layout-animated-background__defs`}
+                 aria-hidden={`true`}
+                 focusable={`false`}
+                 xmlns={`http://www.w3.org/2000/svg`}>
+                <defs>
+                    <filter id={`layout-animated-background-goo`}>
+                        <feGaussianBlur in={`SourceGraphic`}
+                                        stdDeviation={`10`}
+                                        result={`blur`}/>
+                        <feColorMatrix in={`blur`}
+                                       mode={`matrix`}
+                                       values={`1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8`}
+                                       result={`goo`}/>
+                        <feBlend in={`SourceGraphic`}
+                                 in2={`goo`}/>
+                    </filter>
+                </defs>
+            </svg>
+
+            <div className={`layout-animated-background__scene`}>
+                <div className={`layout-animated-background__ambient`}/>
+
+                <div className={`layout-animated-background__gradients-container`}>
+                    <div className={`layout-animated-background__orb layout-animated-background__orb--1`}/>
+                    <div className={`layout-animated-background__orb layout-animated-background__orb--2`}/>
+                    <div className={`layout-animated-background__orb layout-animated-background__orb--3`}/>
+                    <div className={`layout-animated-background__orb layout-animated-background__orb--4`}/>
+                    <div className={`layout-animated-background__orb layout-animated-background__orb--5`}/>
+                    <div ref={interactiveRef}
+                         className={`layout-animated-background__interactive`}/>
+                </div>
+
+                <div className={`layout-animated-background__vignette`}/>
+            </div>
         </Animable>
     )
-}
-
-class CircleData {
-    constructor() {
-        this.reset()
-        this.didEnter = true
-    }
-
-    randomizeProps() {
-        const baseSize = Math.max(window.innerWidth, window.innerHeight)
-        this.radius = utils.number.random(baseSize/24, baseSize/8)
-        this.speedX = utils.number.random(3, 10, true)
-        this.speedY = utils.number.random(2, 5, true)
-        this.color = Math.random() > 0.5 ? "dark" : "light"
-        this.opacity = 0.1 + Math.random()*0.9
-    }
-
-    update(dt) {
-        this.x += this.speedX/2 * dt
-        this.y += this.speedY/2 * dt
-
-        const outOfBounds = this.isOutOfBounds()
-        if(!this.didEnter) {
-            this.didEnter = outOfBounds
-        }
-        else if(outOfBounds) {
-            this.reset()
-        }
-    }
-
-    isOutOfBounds() {
-        return (
-            this.x + this.radius*2 < 0 ||
-            this.x - this.radius*2 > window.innerWidth ||
-            this.y + this.radius*2 < 0 ||
-            this.y - this.radius*2 > window.innerHeight
-        )
-    }
-
-    reset() {
-        this.randomizeProps()
-
-        const direction = utils.number.random(0, 3)
-        switch (direction) {
-            case 0: // Left
-                this.x = -this.radius*2
-                this.y = utils.number.random(0, window.innerHeight)
-                this.speedX = Math.abs(this.speedX)
-                break
-            case 1: // Right
-                this.x = window.innerWidth + this.radius*2
-                this.y = utils.number.random(0, window.innerHeight)
-                this.speedX = -1* Math.abs(this.speedX)
-                break
-            case 2: // Top
-                this.x = utils.number.random(0, window.innerWidth)
-                this.y = -this.radius*2
-                this.speedY = Math.abs(this.speedY)
-                break
-            case 3: // Bottom
-                this.x = utils.number.random(0, window.innerWidth)
-                this.y = window.innerHeight + this.radius*2
-                this.speedY = -1*Math.abs(this.speedY)
-                break
-        }
-
-        this.didEnter = false
-    }
 }
 
 export default LayoutAnimatedBackground

@@ -2,6 +2,8 @@
 
 div.article-web-art-shell {
     position: relative;
+    container-type: inline-size;
+    container-name: web-art-shell;
 }
 
 div.article-web-art-stage {
@@ -124,18 +126,12 @@ button.article-web-art-intro-cover-button-preparing {
 
 div.article-web-art-items {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(clamp(168px, 24cqw, 220px), 1fr));
     gap: 16px;
     position: relative;
 
     @include media-breakpoint-down(lg) {
         gap: 14px;
-    }
-
-    // Keep 2 columns even on mobile.
-    @include media-breakpoint-down(sm) {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
     }
 }
 
@@ -153,8 +149,23 @@ div.article-web-art-items {
     user-select: none;
     -webkit-tap-highlight-color: transparent;
     outline: none;
+    content-visibility: auto;
+    contain-intrinsic-size: 220px 220px;
 
     transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+}
+
+@container web-art-shell (max-width: 560px) {
+    div.article-web-art-items {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+}
+
+@container web-art-shell (min-width: 920px) {
+    div.article-web-art-items {
+        gap: 18px;
+    }
 }
 
 div.article-web-art-items-locked {
@@ -1084,4 +1095,66 @@ span.article-web-art-tile-label {
     justify-content: center;
     pointer-events: none;
     backdrop-filter: blur(6px);
+}
+
+article#article-2-section-my-art {
+    div.article-web-art-shell {
+        border: 1px solid rgba(56, 189, 248, 0.18);
+        border-radius: 20px;
+        background:
+            linear-gradient(180deg, rgba(11, 18, 32, 0.94), rgba(5, 7, 13, 0.94));
+        box-shadow: 0 20px 48px rgba(0, 0, 0, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        overflow: hidden;
+    }
+
+    div.article-web-art-intro-cover {
+        background:
+            radial-gradient(circle at 50% 35%, rgba(56, 189, 248, 0.10), transparent 32%),
+            linear-gradient(180deg, rgba(11, 18, 32, 0.98) 0%, rgba(5, 7, 13, 0.98) 58%, rgba(3, 4, 6, 0.98) 100%);
+    }
+
+    p.article-web-art-intro-cover-title {
+        color: #f8fafc;
+        text-shadow: 0 16px 28px rgba(0, 0, 0, 0.28);
+    }
+
+    span.article-web-art-intro-cover-note {
+        color: #cbd5e1;
+    }
+
+    button.article-web-art-intro-cover-button {
+        border-color: rgba(56, 189, 248, 0.42);
+        background: linear-gradient(180deg, rgba(56, 189, 248, 0.18), rgba(14, 165, 233, 0.12));
+        color: #f8fafc;
+
+        &:hover {
+            border-color: rgba(245, 158, 11, 0.44);
+            background: linear-gradient(180deg, rgba(56, 189, 248, 0.26), rgba(245, 158, 11, 0.12));
+        }
+    }
+
+    div.article-web-art-items {
+        padding: 8px;
+    }
+
+    .article-web-art-tile {
+        border-color: rgba(56, 189, 248, 0.18);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+        transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease, filter 140ms ease;
+
+        &:hover {
+            border-color: rgba(245, 158, 11, 0.34);
+            box-shadow: 0 18px 36px rgba(0, 0, 0, 0.30);
+            filter: saturate(1.03);
+        }
+    }
+
+    .article-web-art-tile-placeholder,
+    .article-web-art-tile-spacer {
+        background-color: #0b1220;
+    }
+
+    .article-web-art-tile-cta-title {
+        color: #f8fafc;
+    }
 }

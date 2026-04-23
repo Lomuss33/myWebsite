@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react'
 import Modal from 'bootstrap/js/src/modal'
 import CircularButton from "../../buttons/CircularButton.jsx"
 import {useLanguage} from "../../../providers/LanguageProvider.jsx"
-import {useViewport} from "../../../providers/ViewportProvider.jsx"
+import {getViewportScrollPosition, useViewport} from "../../../providers/ViewportProvider.jsx"
 import {useUtils} from "../../../hooks/utils.js"
 
 function ModalWrapper({ children, id = "", shouldDismiss, onDismiss, className = "", dialogClassName = "" }) {
@@ -34,7 +34,7 @@ function ModalWrapper({ children, id = "", shouldDismiss, onDismiss, className =
             return
 
         if(!shouldDismiss) {
-            setSavedScrollY(viewport.scrollY)
+            setSavedScrollY(getViewportScrollPosition().y)
             utils.capabilities.scrollTo(0, false)
         }
         else {

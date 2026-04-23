@@ -716,42 +716,23 @@ function ArticleDataProbe({ dataWrapper }) {
                  type={Article.Types.SPACING_DEFAULT}
                  dataWrapper={dataWrapper}
                  className={`article-data-probe`}>
-            <div className={`article-data-probe-intro`}>
-                <div className={`article-data-probe-intro-head`}>
-                    <div className={`article-data-probe-intro-icon`}>
-                        <i className={`fa-solid fa-radar`}/>
-                    </div>
-
-                    <div className={`article-data-probe-intro-copy`}>
-                        <div className={`article-data-probe-intro-kicker text-4`}>Browser hardware surface</div>
-                        <div className={`article-data-probe-intro-title`}>
-                            What this page can infer, request, or fetch about your environment
-                        </div>
-                        <div className={`article-data-probe-intro-text text-3`}>
-                            Automatic reads stay local to the browser. Permissioned probes run only after your click.
-                            Public IP checks call ipify only when explicitly triggered.
-                        </div>
-                    </div>
+            <div className={`article-data-probe-summary`}>
+                <div className={`article-data-probe-summary-chip`}>
+                    <i className={`fa-solid fa-eye`}/>
+                    <span className={`article-data-probe-summary-value`}>{autoCount}</span>
+                    <span className={`article-data-probe-summary-label`}>Auto-visible signals</span>
                 </div>
 
-                <div className={`article-data-probe-summary`}>
-                    <div className={`article-data-probe-summary-chip`}>
-                        <i className={`fa-solid fa-eye`}/>
-                        <span className={`article-data-probe-summary-value`}>{autoCount}</span>
-                        <span className={`article-data-probe-summary-label`}>Auto-visible signals</span>
-                    </div>
+                <div className={`article-data-probe-summary-chip`}>
+                    <i className={`fa-solid fa-hand-pointer`}/>
+                    <span className={`article-data-probe-summary-value`}>{requestCount}</span>
+                    <span className={`article-data-probe-summary-label`}>Click-to-request probes</span>
+                </div>
 
-                    <div className={`article-data-probe-summary-chip`}>
-                        <i className={`fa-solid fa-hand-pointer`}/>
-                        <span className={`article-data-probe-summary-value`}>{requestCount}</span>
-                        <span className={`article-data-probe-summary-label`}>Click-to-request probes</span>
-                    </div>
-
-                    <div className={`article-data-probe-summary-chip`}>
-                        <i className={`fa-solid fa-globe`}/>
-                        <span className={`article-data-probe-summary-value`}>{publicCount}</span>
-                        <span className={`article-data-probe-summary-label`}>External IP checks</span>
-                    </div>
+                <div className={`article-data-probe-summary-chip`}>
+                    <i className={`fa-solid fa-globe`}/>
+                    <span className={`article-data-probe-summary-value`}>{publicCount}</span>
+                    <span className={`article-data-probe-summary-label`}>External IP checks</span>
                 </div>
             </div>
 
@@ -760,7 +741,6 @@ function ArticleDataProbe({ dataWrapper }) {
                 eyebrow={`External lookup`}
                 title={`Public IP`}
                 description={`Shows the address that outside services see. Nothing is fetched until you click one of the buttons.`}
-                note={`Uses ipify on demand only.`}
                 count={publicCount}
                 accent={`accent-external`}>
                 <div className={`article-data-probe-grid article-data-probe-grid-compact`}>
@@ -783,7 +763,6 @@ function ArticleDataProbe({ dataWrapper }) {
                 eyebrow={`Permission gated`}
                 title={`Ask for more`}
                 description={`These checks stay dormant until you unlock the section and explicitly ask for each permission or hardware chooser.`}
-                note={unlocked ? `Unlocked. Each card still requires its own click.` : `Locked until you choose to unlock interaction.`}
                 count={requestCount}
                 accent={`accent-interactive`}
                 actions={!unlocked ? (
@@ -818,7 +797,6 @@ function ArticleDataProbe({ dataWrapper }) {
                 eyebrow={`Passive reads`}
                 title={`Visible without asking`}
                 description={`These values are exposed by the browser immediately, without prompts, and are enough to describe a device surprisingly well.`}
-                note={`Read locally on load.`}
                 count={autoCount}
                 accent={`accent-passive`}>
                 <div className={`article-data-probe-grid`}>
@@ -835,7 +813,7 @@ function ArticleDataProbe({ dataWrapper }) {
     )
 }
 
-function ProbeSection({ icon, eyebrow, title, description, note, count, accent, actions = null, children }) {
+function ProbeSection({ icon, eyebrow, title, description, count, accent, actions = null, children }) {
     return (
         <section className={`article-data-probe-block ${accent || ""}`}>
             <div className={`article-data-probe-block-header`}>
@@ -855,9 +833,6 @@ function ProbeSection({ icon, eyebrow, title, description, note, count, accent, 
                             <div className={`article-data-probe-block-description text-3`}>{description}</div>
                         )}
 
-                        {note && (
-                            <div className={`article-data-probe-block-note text-4`}>{note}</div>
-                        )}
                     </div>
                 </div>
 

@@ -1,5 +1,5 @@
 import "./ArticlePortfolio.scss"
-import React, {useEffect, useMemo, useRef, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import Article from "./base/Article.jsx"
 import Transitionable from "../capabilities/Transitionable.jsx"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
@@ -217,11 +217,7 @@ function ArticlePortfolioItem({ itemWrapper }) {
             <ArticlePortfolioItemFooter itemWrapper={itemWrapper}/>
 
             {(githubLink || docsLink) && (
-                <DraggableDock cardRef={cardRef}
-                               defaultSlot={"bl"}
-                               dockId={"actions"}
-                               returnDelayMs={3000}
-                               className={`article-portfolio-item-actions`}>
+                <div className={`article-portfolio-item-actions`}>
                     <div className={`article-portfolio-item-actions-grid`}>
                         {githubLink && (
                             <Link href={githubLink.href}
@@ -238,14 +234,10 @@ function ArticlePortfolioItem({ itemWrapper }) {
                             </Link>
                         )}
                     </div>
-                </DraggableDock>
+                </div>
             )}
 
-            <DraggableDock cardRef={cardRef}
-                           defaultSlot={"br"}
-                           dockId={"visit"}
-                           returnDelayMs={3000}
-                           className={`article-portfolio-item-visit-dock`}>
+            <div className={`article-portfolio-item-visit-dock`}>
                 {websiteLink ? (
                     <Link href={websiteLink.href}
                           tooltip={websiteLink.tooltip || "Visit online"}
@@ -270,7 +262,7 @@ function ArticlePortfolioItem({ itemWrapper }) {
                                     className={`article-portfolio-item-control-avatar`}/>
                     </div>
                 )}
-            </DraggableDock>
+            </div>
         </div>
     )
 }
@@ -336,240 +328,6 @@ export default ArticlePortfolio
 
 function isNonEmptyHref(href) {
     return typeof href === "string" && href.trim().length > 0
-}
-
-function DraggableDock({
-    cardRef,
-    defaultSlot,
-    dockId,
-    className = "",
-    returnDelayMs = 3000,
-    draggable = true,
-    children
-}) {
-    const dockRef = useRef(null)
-    const pointerIdRef = useRef(null)
-    const isCapturedRef = useRef(false)
-    const didDragRef = useRef(false)
-    const returnTimeoutRef = useRef(null)
-    const dragStartRef = useRef(null)
-    const targetTransformRef = useRef(null) // {dx, dy}
-    const rafRef = useRef(null)
-    const [dragging, setDragging] = useState(false)
-    const [transform, setTransform] = useState({ dx: 0, dy: 0 })
-
-    const clearReturnTimer = () => {
-        if (returnTimeoutRef.current) {
-            clearTimeout(returnTimeoutRef.current)
-            returnTimeoutRef.current = null
-        }
-    }
-
-    const scheduleReturn = () => {
-        clearReturnTimer()
-        returnTimeoutRef.current = setTimeout(() => {
-            setTransform({ dx: 0, dy: 0 })
-        }, returnDelayMs)
-    }
-
-    useEffect(() => {
-        return () => {
-            clearReturnTimer()
-        }
-    }, [])
-
-    const getClamp = () => {
-        const cardEl = cardRef.current
-        const dockEl = dockRef.current
-        if (!cardEl || !dockEl) return null
-
-        const cardRect = cardEl.getBoundingClientRect()
-        const dockRect = dockEl.getBoundingClientRect()
-
-        // Default position in card coordinates (CSS anchors, no transform).
-        const baseX = dockEl.offsetLeft
-        const baseY = dockEl.offsetTop
-
-        const style = window.getComputedStyle(cardEl)
-        const padL = parseFloat(style.paddingLeft) || 0
-        const padR = parseFloat(style.paddingRight) || 0
-        const padT = parseFloat(style.paddingTop) || 0
-        const padB = parseFloat(style.paddingBottom) || 0
-        const offsetVar = parseFloat(style.getPropertyValue("--avatar-offset")) || 0
-        const inset = Math.max(offsetVar, Math.min(padL, padR, padT, padB))
-
-        const dockW = dockRect.width
-        const dockH = dockRect.height
-
-        const minX = inset
-        const minY = inset
-        const maxX = Math.max(minX, cardRect.width - inset - dockW)
-        const maxY = Math.max(minY, cardRect.height - inset - dockH)
-
-        return {
-            minDx: minX - baseX,
-            maxDx: maxX - baseX,
-            minDy: minY - baseY,
-            maxDy: maxY - baseY,
-        }
-    }
-
-    const stopRaf = () => {
-        if (rafRef.current !== null) {
-            cancelAnimationFrame(rafRef.current)
-            rafRef.current = null
-        }
-    }
-
-    const startDampedFollow = () => {
-        if (rafRef.current !== null) return
-
-        const step = () => {
-            const t = targetTransformRef.current
-            if (!t) {
-                rafRef.current = null
-                return
-            }
-
-            setTransform(current => {
-                const cur = current || t
-                const alpha = 0.22 // lower = heavier
-                return {
-                    dx: cur.dx + (t.dx - cur.dx) * alpha,
-                    dy: cur.dy + (t.dy - cur.dy) * alpha,
-                }
-            })
-
-            rafRef.current = requestAnimationFrame(step)
-        }
-
-        rafRef.current = requestAnimationFrame(step)
-    }
-
-    const onPointerDown = (e) => {
-        // Only left click / primary touch.
-        if (e.button !== undefined && e.button !== 0) return
-        if (e.pointerType === "touch") return
-
-        const cardEl = cardRef.current
-        const dockEl = dockRef.current
-        if (!cardEl || !dockEl) return
-
-        clearReturnTimer()
-        stopRaf()
-
-        didDragRef.current = false
-        isCapturedRef.current = false
-        pointerIdRef.current = e.pointerId
-
-        const clamp = getClamp()
-        if (!clamp) return
-
-        dragStartRef.current = {
-            startClientX: e.clientX,
-            startClientY: e.clientY,
-            startDx: transform.dx,
-            startDy: transform.dy,
-            ...clamp,
-        }
-
-        setDragging(false)
-        targetTransformRef.current = { dx: transform.dx, dy: transform.dy }
-    }
-
-    const onPointerMove = (e) => {
-        if (pointerIdRef.current === null || pointerIdRef.current !== e.pointerId) return
-        const start = dragStartRef.current
-        if (!start) return
-
-        const dx = e.clientX - start.startClientX
-        const dy = e.clientY - start.startClientY
-        const movedEnough = Math.hypot(dx, dy) > 6
-        if (!dragging && movedEnough) {
-            didDragRef.current = true
-            setDragging(true)
-
-            // Capture only once we know this is a drag (avoids breaking clicks on inner links).
-            const dockEl = dockRef.current
-            try {
-                dockEl?.setPointerCapture?.(e.pointerId)
-                isCapturedRef.current = true
-            }
-            catch (_) {
-                isCapturedRef.current = false
-            }
-        }
-
-        const nextDx = clamp(start.startDx + dx, start.minDx, start.maxDx)
-        const nextDy = clamp(start.startDy + dy, start.minDy, start.maxDy)
-
-        targetTransformRef.current = { dx: nextDx, dy: nextDy }
-        startDampedFollow()
-    }
-
-    const onPointerUp = (e) => {
-        if (pointerIdRef.current === null || pointerIdRef.current !== e.pointerId) return
-
-        const dockEl = dockRef.current
-        if (isCapturedRef.current) {
-            try {
-                dockEl?.releasePointerCapture?.(e.pointerId)
-            }
-            catch (_) {
-                // Ignore stale pointer capture state during touch/mouse cancellation.
-            }
-        }
-
-        pointerIdRef.current = null
-        isCapturedRef.current = false
-        dragStartRef.current = null
-        stopRaf()
-
-        // If it was a click (not a drag), keep default behavior.
-        if (!dragging) {
-            // Keep current transform; still return after delay.
-            scheduleReturn()
-            return
-        }
-
-        // Drop where user left it (no magnet/snapping).
-        if (targetTransformRef.current) {
-            setTransform(targetTransformRef.current)
-        }
-
-        setDragging(false)
-        scheduleReturn()
-
-        // If no click happens (released outside), don't block the next click.
-        setTimeout(() => { didDragRef.current = false }, 250)
-    }
-
-    const dockStyle = { transform: `translate3d(${Math.round(transform.dx)}px, ${Math.round(transform.dy)}px, 0)` }
-    const onClickCapture = (e) => {
-        if (!didDragRef.current)
-            return
-
-        e.preventDefault && e.preventDefault()
-        e.stopPropagation && e.stopPropagation()
-        didDragRef.current = false
-    }
-
-    return (
-        <div ref={dockRef}
-             className={`article-portfolio-item-draggable-dock ${dragging ? "dock-dragging" : ""} ${className}`}
-             style={dockStyle}
-             onPointerDown={draggable ? onPointerDown : undefined}
-             onPointerMove={draggable ? onPointerMove : undefined}
-             onPointerUp={draggable ? onPointerUp : undefined}
-             onPointerCancel={draggable ? onPointerUp : undefined}
-             onClickCapture={draggable ? onClickCapture : undefined}>
-            {children}
-        </div>
-    )
-}
-
-function clamp(value, min, max) {
-    return Math.min(max, Math.max(min, value))
 }
 
 function resolvePixelValue(value, fallback) {

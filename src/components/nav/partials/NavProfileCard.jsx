@@ -16,38 +16,41 @@ function NavProfileCard({ profile, expanded, compactRail = false }) {
     const utils = useUtils()
     const floatingFrame = useFloatingFrame()
     const [showAlternateProfilePicture, setShowAlternateProfilePicture] = useState(false)
+    const safeProfile = profile || {}
 
     const expandedClass = expanded ?
         `` :
         `nav-profile-card-shrink`
 
-    const name = profile.name
-    const localizedName = language.getTranslation(profile.locales, "localized_name", null) || name
-    const nameParts = localizedName.trim().split(/\s+/)
+    const name = safeProfile.name || "Profile"
+    const localizedName = language.getTranslation(safeProfile.locales, "localized_name", null) || name
+    const normalizedName = String(localizedName || "").trim()
+    const nameParts = normalizedName ? normalizedName.split(/\s+/) : [name]
     const firstName = nameParts[0] || localizedName
     const lastName = nameParts.slice(1).join(" ")
 
-    let loveSentences = language.getTranslation(profile.locales, "love_sentences", [])
+    let loveSentences = language.getTranslation(safeProfile.locales, "love_sentences", [])
+    if(!Array.isArray(loveSentences)) loveSentences = []
     if(utils.storage.getWindowVariable("suspendAnimations") && loveSentences.length > 2)
         loveSentences = [loveSentences[0]]
 
-    const profilePictureUrl = language.parseJsonText(profile.profilePictureUrl)
+    const profilePictureUrl = language.parseJsonText(safeProfile.profilePictureUrl)
 
-    const statusCircleVisible = Boolean(profile.statusCircleVisible)
+    const statusCircleVisible = Boolean(safeProfile.statusCircleVisible)
     const statusCircleVariant = statusCircleVisible ?
-        profile.statusCircleVariant :
+        safeProfile.statusCircleVariant :
         ""
 
     const statusCircleHoverMessage = statusCircleVisible ?
-        language.getTranslation(profile.locales, profile.statusCircleHoverMessage) :
+        language.getTranslation(safeProfile.locales, safeProfile.statusCircleHoverMessage) :
         null
 
     const statusCircleSize = expanded ?
         StatusCircle.Sizes.DEFAULT :
         StatusCircle.Sizes.SMALL
 
-    const namePronunciationIpa = language.getTranslation(profile.locales, "name_pronunciation_ipa", null)
-    const namePronunciationAudioUrl = language.getTranslation(profile.locales, "name_pronunciation_audio_url", null)
+    const namePronunciationIpa = language.getTranslation(safeProfile.locales, "name_pronunciation_ipa", null)
+    const namePronunciationAudioUrl = language.getTranslation(safeProfile.locales, "name_pronunciation_audio_url", null)
     const namePronunciationButtonVisible = namePronunciationIpa || namePronunciationAudioUrl
     const namePronunciationTooltipLabel = namePronunciationIpa ? `<span class="audio-button-tooltip-lines"><span class="audio-button-tooltip-line audio-button-tooltip-line-top">lǒːʋro  ˈmu.sit͡ɕ</span><span class="audio-button-tooltip-line audio-button-tooltip-line-bottom">LOHV-roh  muu-SEEch</span></span>` : ""
 
@@ -55,7 +58,7 @@ function NavProfileCard({ profile, expanded, compactRail = false }) {
         `nav-profile-card-name-with-audio-button` :
         ``
 
-    const secondaryProfilePictureUrl = language.parseJsonText(profile.profilePictureAltUrl) || "images/contant/profil.webp"
+    const secondaryProfilePictureUrl = language.parseJsonText(safeProfile.profilePictureAltUrl) || "images/contant/profil.webp"
 
     const _onStatusBadgeClicked = () => {
         navigation.navigateToSectionWithId("contact")
@@ -98,7 +101,8 @@ function NavProfileCard({ profile, expanded, compactRail = false }) {
                             <ImageView src={secondaryProfilePictureUrl}
                                        className={`nav-profile-card-avatar`}
                                        hideSpinner={true}
-                                       alt={name}/>
+                                       alt={name}
+                                       fetchPriority={`low`}/>
                         </div>
                     </div>
 

@@ -896,9 +896,9 @@ function collectVisibleGraphemes(paragraphs, lineHeight) {
                         key: `${fragment.key}-g-${graphemeIndex}`,
                         baselineX: fragmentLeft + grapheme.centerX,
                         baselineY: lineTop + lineHeight / 2,
-                        // Keep the whole row stable while the pointer is inside it.
-                        // Only release once the pointer has moved below the row's bottom edge.
-                        releaseThresholdY: lineTop + lineHeight
+                        // Release slightly below the visual row so the split tracks the cursor line
+                        // instead of sitting above it.
+                        releaseThresholdY: lineTop + lineHeight * 1.15
                     })
                 })
             })

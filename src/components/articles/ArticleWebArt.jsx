@@ -1,6 +1,7 @@
 import "./ArticleWebArt.scss"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Article from "./base/Article.jsx"
+import {useFeedbacks} from "../../providers/FeedbacksProvider.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useNavigation} from "../../providers/NavigationProvider.jsx"
 import patronusSvgMarkup from "./webArt/patronus.svg?raw"
@@ -20,18 +21,6 @@ function _scheduleIdleWork(work, { timeoutMs = 1200 } = {}) {
 
     const id = window.setTimeout(() => work(), 0)
     return () => window.clearTimeout(id)
-}
-
-function _shouldShowWebArtIntro(storageKey) {
-    if(typeof window === "undefined") return false
-
-    try {
-        return window.sessionStorage.getItem(storageKey) !== "1"
-    }
-    catch(err) {
-        void err
-        return true
-    }
 }
 
 const MINESWEEPER_ROWS = 9
@@ -131,7 +120,7 @@ function _isMinesweeperVictory(board, revealed, flagged) {
 
 function ArticleWebArt({ dataWrapper, id }) {
     const language = useLanguage()
-    const introCoverStorageKey = `article-web-art-intro:${dataWrapper.sectionId || dataWrapper.uniqueId}`
+    const feedbacks = useFeedbacks()
     const ambientTraceReadyId = `${dataWrapper.uniqueId}-ambient-trace`
     const ambientHexReadyId = `${dataWrapper.uniqueId}-ambient-hex`
     const ambientPlopReadyId = `${dataWrapper.uniqueId}-ambient-plop`
@@ -143,9 +132,8 @@ function ArticleWebArt({ dataWrapper, id }) {
     const ambientSoupReadyId = `${dataWrapper.uniqueId}-ambient-soup`
     const ambientTardisReadyId = `${dataWrapper.uniqueId}-ambient-tardis`
     const [selectedItemCategoryId, setSelectedItemCategoryId] = useState(null)
-    const [showIntroCover, setShowIntroCover] = useState(() => _shouldShowWebArtIntro(introCoverStorageKey))
+    const [showIntroCover, setShowIntroCover] = useState(true)
     const [isIntroCoverLeaving, setIsIntroCoverLeaving] = useState(false)
-    const [isIntroRevealQueued, setIsIntroRevealQueued] = useState(false)
     const rawItems = useMemo(() => dataWrapper.orderedItems.slice(0, 6), [dataWrapper.orderedItems])
     const items = useMemo(() => {
         // Desired visual order: Poly, 5, 3D, Orbit, Hover, Wave
@@ -169,7 +157,6 @@ function ArticleWebArt({ dataWrapper, id }) {
         return ordered
     }, [rawItems])
     const tilesWrapperRef = useRef(null)
-    const [gridCols, setGridCols] = useState(1)
     const [shouldMountTiles, setShouldMountTiles] = useState(false)
     const readySetRef = useRef(new Set())
     const readyTimeoutsRef = useRef(new Map())
@@ -191,7 +178,6 @@ function ArticleWebArt({ dataWrapper, id }) {
             ambientTardisReadyId
         ]
     }, [ambientHexReadyId, ambientJuliaReadyId, ambientMinesReadyId, ambientPlopReadyId, ambientPrismReadyId, ambientRingsReadyId, ambientRopeReadyId, ambientSoupReadyId, ambientTardisReadyId, ambientTraceReadyId, items])
-    const allReady = readyCount >= trackedReadyIds.length
     const locked = showIntroCover || isIntroCoverLeaving
     const selectedLanguageId = language.selectedLanguageId || "en"
 
@@ -216,13 +202,6 @@ function ArticleWebArt({ dataWrapper, id }) {
             tr: "Tıkla",
         }[langId] || "Click"
     }
-    const displayTileCount = items.length + 13 // + fish tile + patronus tile + trace tile + hex tile + plop tile + julia tile + mines tile + rings tile + prism tile + rope tile + soup tile + tardis tile + CTA tile
-    const spacerCount = useMemo(() => {
-        const cols = Math.max(1, Number(gridCols) || 1)
-        const remainder = displayTileCount % cols
-        if(remainder === 0) return 0
-        return cols - remainder
-    }, [displayTileCount, gridCols])
     const introCopy = {
         en: {
             title: "Doors of the world behind an amazing art gallery.",
@@ -272,13 +251,6 @@ function ArticleWebArt({ dataWrapper, id }) {
     const dismissIntroCover = useCallback(() => {
         if(!showIntroCover || isIntroCoverLeaving) return
 
-        try {
-            window.sessionStorage.setItem(introCoverStorageKey, "1")
-        }
-        catch(err) {
-            void err
-        }
-
         if(introCoverDismissTimeoutRef.current != null) {
             window.clearTimeout(introCoverDismissTimeoutRef.current)
         }
@@ -287,60 +259,26 @@ function ArticleWebArt({ dataWrapper, id }) {
         introCoverDismissTimeoutRef.current = window.setTimeout(() => {
             setShowIntroCover(false)
             setIsIntroCoverLeaving(false)
-            setIsIntroRevealQueued(false)
             introCoverDismissTimeoutRef.current = null
         }, INTRO_COVER_DISMISS_MS)
-    }, [introCoverStorageKey, isIntroCoverLeaving, showIntroCover])
+    }, [isIntroCoverLeaving, showIntroCover])
 
     const onIntroEnter = useCallback(() => {
         if(isIntroCoverLeaving) return
-        if(!allReady) {
-            setIsIntroRevealQueued(true)
-            return
-        }
-
-        dismissIntroCover()
-    }, [allReady, dismissIntroCover, isIntroCoverLeaving])
-
-    useEffect(() => {
-        const el = tilesWrapperRef.current
-        if(!el) return
-
-        const computeCols = () => {
-            const style = window.getComputedStyle(el)
-            const template = style.gridTemplateColumns || ""
-            const tokens = template.split(" ").map((t) => t.trim()).filter(Boolean)
-
-            // With repeat(auto-fit, ...), computed style can include collapsed tracks as 0px.
-            const cols = tokens
-                .map((t) => Number.parseFloat(t))
-                .filter((n) => Number.isFinite(n) && n > 1)
-                .length
-
-            setGridCols(cols || 1)
-        }
-
-        computeCols()
-        const ro = new ResizeObserver(() => {
-            computeCols()
-        })
-        ro.observe(el)
-
-        return () => {
-            ro.disconnect()
-        }
-    }, [])
-
-    useEffect(() => {
-        setShowIntroCover(_shouldShowWebArtIntro(introCoverStorageKey))
-        setIsIntroCoverLeaving(false)
-        setIsIntroRevealQueued(false)
-
-        if(introCoverDismissTimeoutRef.current != null) {
-            window.clearTimeout(introCoverDismissTimeoutRef.current)
-            introCoverDismissTimeoutRef.current = null
-        }
-    }, [introCoverStorageKey])
+        feedbacks.showConfirmationDialog(
+            "Load all Web Art?",
+            "This section uses a batch of canvas and WebGL engines. Confirm to load them on demand.",
+            "fa-solid fa-triangle-exclamation",
+            () => {
+                setShouldMountTiles(true)
+                setActivationIndex(-1)
+                dismissIntroCover()
+            },
+            "Load",
+            null,
+            "Cancel"
+        )
+    }, [dismissIntroCover, feedbacks, isIntroCoverLeaving])
 
     useEffect(() => {
         readySetRef.current = new Set()
@@ -349,49 +287,22 @@ function ArticleWebArt({ dataWrapper, id }) {
         }
         readyTimeoutsRef.current = new Map()
         setReadyCount(0)
+        setShowIntroCover(true)
+        setIsIntroCoverLeaving(false)
         setShouldMountTiles(false)
         setActivationIndex(-1)
-
-        const raf = requestAnimationFrame(() => {
-            setShouldMountTiles(true)
-        })
-
         return () => {
-            cancelAnimationFrame(raf)
+            if(introCoverDismissTimeoutRef.current != null) {
+                window.clearTimeout(introCoverDismissTimeoutRef.current)
+                introCoverDismissTimeoutRef.current = null
+            }
         }
     }, [dataWrapper.uniqueId])
 
     useEffect(() => {
         if(!shouldMountTiles) return
 
-        // Prefetch modules quickly so the heavy tiles don't feel "stuck" on network/parse.
-        const cancelPrefetch = _scheduleIdleWork(() => {
-            void import("./webArt/spiralDotsEngine.js")
-            void import("./webArt/gridWaveEngine.js")
-            void import("./webArt/embroideryEngine.js")
-            void import("./webArt/orbitCirclesEngine.js")
-            void import("./webArt/threeTunnelEngine.js")
-            void import("./webArt/threePolygonDemo5Engine.js")
-            void import("./webArt/tortuosityTraceEngine.js")
-            void import("./webArt/hexFlowBallsEngine.js")
-            void import("./webArt/pixelPlopEngine.js")
-            void import("./webArt/juliaLinesEngine.js")
-            void import("./webArt/fallingRingsEngine.js")
-            void import("./webArt/prismFieldEngine.js")
-            void import("./webArt/ropeLightEngine.js")
-            void import("./webArt/soupShaderEngine.js")
-            void import("./webArt/tardisWormholeEngine.js")
-        }, { timeoutMs: 250 })
-
-        // When the intro cover is visible, use the hidden time to warm everything up quickly.
-        if(showIntroCover && !isIntroCoverLeaving) {
-            setActivationIndex(items.length - 1)
-            return () => {
-                cancelPrefetch?.()
-            }
-        }
-
-        // Once visible, keep a stagger to avoid a single big long task in the revealed state.
+        // Reveal tiles gradually so activation work stays spread out.
         let canceled = false
         setActivationIndex(-1)
 
@@ -408,17 +319,9 @@ function ArticleWebArt({ dataWrapper, id }) {
 
         return () => {
             canceled = true
-            cancelPrefetch?.()
             cancelAnimationFrame(raf)
         }
-    }, [isIntroCoverLeaving, items.length, shouldMountTiles, showIntroCover])
-
-    useEffect(() => {
-        if(!showIntroCover || isIntroCoverLeaving) return
-        if(!isIntroRevealQueued || !allReady) return
-
-        dismissIntroCover()
-    }, [allReady, dismissIntroCover, isIntroCoverLeaving, isIntroRevealQueued, showIntroCover])
+    }, [shouldMountTiles, items.length])
 
     useEffect(() => {
         if(!shouldMountTiles) return
@@ -457,7 +360,7 @@ function ArticleWebArt({ dataWrapper, id }) {
                      aria-hidden={showIntroCover}>
                     <div className={`article-web-art-items ${locked ? "article-web-art-items-locked" : ""}`}
                          ref={tilesWrapperRef}
-                         aria-busy={showIntroCover && !allReady}>
+                         aria-busy={showIntroCover}>
                         {!shouldMountTiles && (
                             <>
                                 {items.map((itemWrapper, index) => (
@@ -490,11 +393,6 @@ function ArticleWebArt({ dataWrapper, id }) {
                                      aria-label={`Web art tardis tile loading`}/>
                                 <SendYourFunAnimationTile label={submitTileLabel} clickLabel={clickTileLabel}/>
 
-                                {new Array(spacerCount).fill(null).map((_, i) => (
-                                    <div key={`spacer-${i}`}
-                                         className={`article-web-art-tile article-web-art-tile-spacer`}
-                                         aria-hidden={true}/>
-                                ))}
                             </>
                         )}
 
@@ -543,11 +441,6 @@ function ArticleWebArt({ dataWrapper, id }) {
                                             onReady={onTileReady}/>
                                 <SendYourFunAnimationTile label={submitTileLabel} clickLabel={clickTileLabel}/>
 
-                                {new Array(spacerCount).fill(null).map((_, i) => (
-                                    <div key={`spacer-${i}`}
-                                         className={`article-web-art-tile article-web-art-tile-spacer`}
-                                         aria-hidden={true}/>
-                                ))}
                             </>
                         )}
                     </div>
@@ -556,8 +449,8 @@ function ArticleWebArt({ dataWrapper, id }) {
                 {showIntroCover && (
                     <WebArtIntroCover title={introCopy.title}
                                       note={introCopy.note}
-                                      buttonLabel={isIntroRevealQueued && !allReady ? introCopy.preparing : introCopy.button}
-                                      isPreparing={isIntroRevealQueued && !allReady}
+                                      buttonLabel={introCopy.button}
+                                      isPreparing={false}
                                       leaving={isIntroCoverLeaving}
                                       onEnter={onIntroEnter}/>
                 )}

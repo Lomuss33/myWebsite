@@ -1,42 +1,56 @@
 import "./Animable.scss"
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef} from 'react'
 
 function Animable({ children, animationId, onEnterFrame, className = "" }) {
-    const [ticks, setTicks] = useState(0)
-    const [lastTickTimeSpan, setLastTickTimeSpan] = useState(null)
-    const [totalElapsed, setTotalElapsed] = useState(0)
+    const animationFrameIdRef = useRef(null)
+    const ticksRef = useRef(0)
+    const lastTickTimeRef = useRef(null)
+    const totalElapsedRef = useRef(0)
+    const onEnterFrameRef = useRef(onEnterFrame)
+
+    useEffect(() => {
+        onEnterFrameRef.current = onEnterFrame
+    }, [onEnterFrame])
 
     /** @constructs **/
     useEffect(() => {
         window.ANIMATION_DATA = window.ANIMATION_DATA || {}
         window.ANIMATION_DATA[animationId] = window.ANIMATION_DATA[animationId] || {}
 
-        let animationFrameId
-        const animate = () => {
-            setTicks(prevState => prevState + 1)
-            animationFrameId = requestAnimationFrame(animate)
+        ticksRef.current = 0
+        lastTickTimeRef.current = null
+        totalElapsedRef.current = 0
+
+        const animate = (timespan) => {
+            const then = lastTickTimeRef.current ?? timespan
+            const dt = (timespan - then) / 1000
+
+            lastTickTimeRef.current = timespan
+            totalElapsedRef.current += dt
+            ticksRef.current += 1
+
+            const event = {
+                timespan,
+                ticks: ticksRef.current,
+                currentTickElapsed: dt,
+                totalElapsed: totalElapsedRef.current
+            }
+
+            window.ANIMATION_DATA[animationId].event = event
+            if(onEnterFrameRef.current)
+                onEnterFrameRef.current(event)
+
+            animationFrameIdRef.current = requestAnimationFrame(animate)
         }
 
-        animationFrameId = requestAnimationFrame(animate)
-        return () => cancelAnimationFrame(animationFrameId)
-    }, [null])
-
-    /** @listens ticks **/
-    useEffect(() => {
-        const now = new Date().getTime()
-        const then = lastTickTimeSpan || now
-        const dt = (now - then)/1000
-
-        setLastTickTimeSpan(now)
-        setTotalElapsed(prevState => prevState + dt)
-
-        window.ANIMATION_DATA[animationId].event = window.ANIMATION_DATA[animationId].event || {}
-        window.ANIMATION_DATA[animationId].event.timespan = now
-        window.ANIMATION_DATA[animationId].event.ticks = ticks
-        window.ANIMATION_DATA[animationId].event.currentTickElapsed = dt
-        window.ANIMATION_DATA[animationId].event.totalElapsed = totalElapsed
-        onEnterFrame && onEnterFrame(window.ANIMATION_DATA[animationId].event)
-    }, [ticks])
+        animationFrameIdRef.current = requestAnimationFrame(animate)
+        return () => {
+            if(animationFrameIdRef.current !== null) {
+                cancelAnimationFrame(animationFrameIdRef.current)
+                animationFrameIdRef.current = null
+            }
+        }
+    }, [animationId])
 
     return (
         <div className={className}>

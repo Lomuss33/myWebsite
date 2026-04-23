@@ -4,10 +4,40 @@
  * @description This provider tracks the viewport size and scroll position, and provides utility functions to manage breakpoints and layout constraints.
  */
 
-import React, {createContext, useContext, useEffect, useState} from 'react'
+import React, {createContext, useContext, useEffect, useRef, useState, useSyncExternalStore} from 'react'
 import {useUtils} from "../hooks/utils.js"
 import {useScheduler} from "../hooks/scheduler.js"
 import {useData} from "./DataProvider.jsx"
+
+const getScrollPositionSnapshot = () => {
+    if(typeof window === "undefined") {
+        return { x: 0, y: 0 }
+    }
+
+    return {
+        x: window.scrollX || 0,
+        y: window.scrollY || 0
+    }
+}
+
+const scrollStore = {
+    position: getScrollPositionSnapshot(),
+    listeners: new Set()
+}
+
+const subscribeToScrollStore = (listener) => {
+    scrollStore.listeners.add(listener)
+    return () => {
+        scrollStore.listeners.delete(listener)
+    }
+}
+
+const updateScrollStore = (nextPosition) => {
+    scrollStore.position = nextPosition
+    for(const listener of scrollStore.listeners) {
+        listener()
+    }
+}
 
 function ViewportProvider({ children }) {
     const data = useData()
@@ -18,11 +48,9 @@ function ViewportProvider({ children }) {
     const tag = "viewport-provider"
     const resizeTag = `${tag}-resize`
 
-    const [scrollX, setScrollX] = useState(0)
-    const [scrollY, setScrollY] = useState(0)
+    const scrollPositionRef = useRef(getScrollPositionSnapshot())
     const [innerWidth, setInnerWidth] = useState(window.innerWidth)
     const [innerHeight, setInnerHeight] = useState(window.innerHeight)
-    const [didCreateListeners, setDidCreateListeners] = useState(false)
     const [clipboardText, setClipboardText] = useState(null)
 
     useEffect(() => {
@@ -34,12 +62,11 @@ function ViewportProvider({ children }) {
     }, [])
 
     const _createListeners = () => {
-        window.addEventListener('scroll', _onScroll)
+        window.addEventListener('scroll', _onScroll, { passive: true })
         window.addEventListener('resize', _onResize)
 
         _onScroll()
         _applyResize()
-        setDidCreateListeners(true)
     }
 
     const _destroyListeners = () => {
@@ -48,12 +75,16 @@ function ViewportProvider({ children }) {
 
         scheduler.clearAllWithTag(tag)
         scheduler.clearAllWithTag(resizeTag)
-        setDidCreateListeners(false)
     }
 
     const _onScroll = () => {
-        setScrollX(window.scrollX)
-        setScrollY(window.scrollY)
+        const nextPosition = {
+            x: window.scrollX || 0,
+            y: window.scrollY || 0
+        }
+
+        scrollPositionRef.current = nextPosition
+        updateScrollStore(nextPosition)
     }
 
     const _applyResize = () => {
@@ -155,10 +186,8 @@ function ViewportProvider({ children }) {
         return clipboardText === text
     }
 
-    return (
+        return (
         <ViewportContext.Provider value={{
-            scrollX,
-            scrollY,
             innerWidth,
             innerHeight,
 
@@ -173,9 +202,7 @@ function ViewportProvider({ children }) {
             copyToClipboard,
             isCopiedToClipboard
         }}>
-            {didCreateListeners && (
-                <>{children}</>
-            )}
+            {children}
         </ViewportContext.Provider>
     )
 }
@@ -184,8 +211,6 @@ const ViewportContext = createContext(null)
 
 /**
  * @return {{
- *    scrollX: Number,
- *    scrollY: Number,
  *    innerWidth: Number,
  *    innerHeight: Number,
  *
@@ -202,5 +227,17 @@ const ViewportContext = createContext(null)
  * }}
  */
 export const useViewport = () => useContext(ViewportContext)
+
+export const useViewportScroll = () => {
+    return useSyncExternalStore(
+        subscribeToScrollStore,
+        () => scrollStore.position,
+        () => ({ x: 0, y: 0 })
+    )
+}
+
+export const getViewportScrollPosition = () => {
+    return scrollStore.position
+}
 
 export default ViewportProvider

@@ -86,10 +86,11 @@ function LanguageProvider({ children, supportedLanguages, defaultLanguageId, app
 
     /** @constructs **/
     useEffect(() => {
-        if(allLanguages.length === 0) {
-            utils.log.throwError("LanguageProvider", "The app must support at least one language. Make sure you filled the supportedLanguages property in the settings.json file.")
+        if(allLanguages.length === 0)
             return
-        }
+
+        if(selectedLanguageId && allLanguages.some(lang => lang.id === selectedLanguageId))
+            return
 
         // Load the preferred language from local storage.
         const savedLanguageId = utils.storage.getPreferredLanguage()
@@ -102,7 +103,7 @@ function LanguageProvider({ children, supportedLanguages, defaultLanguageId, app
         // If no preferred language is found, use the default language.
         const autoDetectedLanguageId = _resolveAutoDetectedLanguageId()
         setSelectedLanguageId(autoDetectedLanguageId || defaultLanguage?.id || allLanguages[0].id)
-    }, [])
+    }, [supportedLanguages, defaultLanguageId, selectedLanguageId])
 
     /** @listens selectedLanguageId **/
     useEffect(() => {
@@ -129,14 +130,20 @@ function LanguageProvider({ children, supportedLanguages, defaultLanguageId, app
     }
 
     const getTranslation = (locales, key, customFallback) => {
-        if(!selectedLanguageId || !locales)
+        if(!locales)
             return "locale:" + key
 
-        const selectedLanguageTranslation = _translate(locales[selectedLanguageId], key)
+        const selectedLanguageTranslation = selectedLanguageId ?
+            _translate(locales[selectedLanguageId], key) :
+            null
         if(selectedLanguageTranslation) return selectedLanguageTranslation
 
         const defaultLanguageTranslation = _translate(locales[defaultLanguageId], key)
         if(defaultLanguageTranslation) return defaultLanguageTranslation
+
+        const firstAvailableLocale = Object.values(locales)[0]
+        const firstAvailableTranslation = _translate(firstAvailableLocale, key)
+        if(firstAvailableTranslation) return firstAvailableTranslation
 
         return customFallback !== undefined ?
             parseJsonText(customFallback) :
@@ -229,9 +236,7 @@ function LanguageProvider({ children, supportedLanguages, defaultLanguageId, app
             getDateLocaleString,
             getExperienceTimeString
         }}>
-            {selectedLanguageId && (
-                <>{children}</>
-            )}
+            {children}
         </LanguageContext.Provider>
     )
 }

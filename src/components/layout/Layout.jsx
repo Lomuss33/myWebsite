@@ -16,6 +16,7 @@ function Layout({ id, children, backgroundStyle }) {
     const isAnimatedBackground = backgroundStyle === "animated"
     const isStaticBackground = backgroundStyle === "static"
     const isPlainBackground = backgroundStyle === "plain"
+    const shouldUseAnimatedBackground = isAnimatedBackground && !isMobileLayout && !isLowPowerOrReducedMotion()
 
     if(!isAnimatedBackground && !isStaticBackground && !isPlainBackground) {
         utils.log.warn(
@@ -69,7 +70,7 @@ function Layout({ id, children, backgroundStyle }) {
         <div id={id}
              className={`layout`}>
 
-            {isAnimatedBackground && <LayoutAnimatedBackground/>}
+            {shouldUseAnimatedBackground && <LayoutAnimatedBackground/>}
             {isStaticBackground && <LayoutStaticBackground/>}
 
             <LayoutSaltShaker/>
@@ -80,6 +81,17 @@ function Layout({ id, children, backgroundStyle }) {
             </div>
         </div>
     )
+}
+
+function isLowPowerOrReducedMotion() {
+    if(typeof window === "undefined") return true
+
+    const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches
+    const saveData = Boolean(navigator?.connection?.saveData)
+    const lowHardwareConcurrency = Number.isFinite(navigator?.hardwareConcurrency) && navigator.hardwareConcurrency > 0 && navigator.hardwareConcurrency <= 4
+    const lowDeviceMemory = Number.isFinite(navigator?.deviceMemory) && navigator.deviceMemory > 0 && navigator.deviceMemory <= 4
+
+    return Boolean(prefersReducedMotion || saveData || lowHardwareConcurrency || lowDeviceMemory)
 }
 
 export default Layout

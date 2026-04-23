@@ -26,12 +26,10 @@ function Preloader({ children, preloaderSettings }) {
     const logoOffset = preloaderSettings?.logoOffset || {}
 
     const [state, setState] = useState(PreloaderState.NONE)
-    const [didLoadAllImages, setDidLoadAllImages] = useState(false)
 
     const tag = "Preloader"
     const minDisplayTime = 1000
-    const shouldShowPreloaderWindow = state.id > PreloaderState.NONE.id && state.id < PreloaderState.HIDDEN.id
-    const shouldShowContent = state.id >= PreloaderState.SHOWN.id
+    const shouldShowPreloaderWindow = enabled && state.id < PreloaderState.HIDDEN.id
     const shouldShowContentElements = state.id >= PreloaderState.SHOWING.id
     const isHiding = state.id >= PreloaderState.HIDING.id
 
@@ -44,19 +42,8 @@ function Preloader({ children, preloaderSettings }) {
             return
         }
 
-        setState(PreloaderState.PREPARING)
-    }, [null])
-
-    /**
-     * @listens PreloaderState.PREPARING
-     */
-    useEffect(() => {
-        if(state !== PreloaderState.PREPARING || !didLoadAllImages)
-            return
-        utils.dom.setBodyScrollEnabled(false)
-        scheduler.clearAllWithTag(tag)
         setState(PreloaderState.SHOWING)
-    }, [state === PreloaderState.PREPARING, didLoadAllImages])
+    }, [enabled])
 
     /**
      * @listens PreloaderState.SHOWING
@@ -117,7 +104,6 @@ function Preloader({ children, preloaderSettings }) {
             return
 
         scheduler.clearAllWithTag(tag)
-        utils.dom.setBodyScrollEnabled(true)
         scheduler.schedule(() => {
             setState(PreloaderState.HIDDEN)
         }, 500, tag)
@@ -130,7 +116,6 @@ function Preloader({ children, preloaderSettings }) {
         if(state !== PreloaderState.HIDDEN)
             return
         scheduler.clearAllWithTag(tag)
-        utils.dom.setBodyScrollEnabled(true)
         document.body.classList.add(constants.HTML_CLASSES.bodyAfterLoading)
     }, [state === PreloaderState.HIDDEN])
 
@@ -139,32 +124,21 @@ function Preloader({ children, preloaderSettings }) {
             {shouldShowPreloaderWindow && (
                 <PreloaderWindow title={title}
                                  logoOffset={logoOffset}
-                                 setDidLoadAllImages={setDidLoadAllImages}
                                  showElements={shouldShowContentElements}
                                  isHiding={isHiding}/>
             )}
 
-            {shouldShowContent && (
-                <PreloaderContent>{children}</PreloaderContent>
-            )}
+            <PreloaderContent>{children}</PreloaderContent>
         </div>
     )
 }
 
-function PreloaderWindow({ title, logoOffset, setDidLoadAllImages, showElements, isHiding }) {
+function PreloaderWindow({ title, logoOffset, showElements, isHiding }) {
     const scheduler = useScheduler()
-
-    const [didLoadLogo, setDidLoadLogo] = useState(false)
-
     const [isPacManHidden, setIsPacManHidden] = useState(true)
 
     const hiddenClass = isHiding ?
         `preloader-window-hidden` : ``
-
-    useEffect(() => {
-        if(didLoadLogo)
-            setDidLoadAllImages(true)
-    }, [didLoadLogo])
 
     useEffect(() => {
         if(!showElements) {
@@ -185,8 +159,7 @@ function PreloaderWindow({ title, logoOffset, setDidLoadAllImages, showElements,
 
                 <div className={`preloader-window-machine`}>
                     <PreloaderWorker logoOffset={logoOffset}
-                                     hidden={!showElements}
-                                     setDidLoadLogo={setDidLoadLogo}/>
+                                     hidden={!showElements}/>
 
                     <PacMan variant={PacMan.ColorVariants.LOADER}
                             hidden={isPacManHidden}/>
@@ -205,7 +178,7 @@ function PreloaderWindowTitle({ title }) {
     )
 }
 
-function PreloaderWorker({ logoOffset, hidden, setDidLoadLogo }) {
+function PreloaderWorker({ logoOffset, hidden }) {
     const utils = useUtils()
     const scheduler = useScheduler()
 
@@ -264,7 +237,6 @@ function PreloaderWorker({ logoOffset, hidden, setDidLoadLogo }) {
         <div className={`preloader-window-worker ${hiddenClass}`}>
             <Logo size={3}
                   className={`preloader-window-logo`}
-                  setDidLoad={setDidLoadLogo}
                   style={logoStyle}/>
         </div>
     )

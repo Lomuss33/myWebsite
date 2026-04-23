@@ -7,7 +7,6 @@
 import React, {createContext, useContext, useEffect, useState} from 'react'
 
 function LocationProvider({ children, sections, categories }) {
-    const [didMount, setDidMount] = useState(false)
     const [activeSectionId, setActiveSectionId] = useState(null)
     const [nextSectionId, setNextSectionId] = useState(null)
     const [visitHistoryByCategory, setVisitHistoryByCategory] = useState({})
@@ -15,7 +14,6 @@ function LocationProvider({ children, sections, categories }) {
 
     /** @constructs **/
     useEffect(() => {
-        setDidMount(true)
         window.addEventListener('popstate', _onHashEvent)
         window.addEventListener('hashchange', _onHashEvent)
         _onHashEvent()
@@ -23,9 +21,13 @@ function LocationProvider({ children, sections, categories }) {
         return () => {
             window.removeEventListener('popstate', _onHashEvent)
             window.removeEventListener('hashchange', _onHashEvent)
-            setDidMount(false)
         }
     }, [])
+
+    /** @listens sections|categories **/
+    useEffect(() => {
+        _onHashEvent()
+    }, [sections, categories])
 
     /** @listens nextSectionId **/
     useEffect(() => {
@@ -133,7 +135,7 @@ function LocationProvider({ children, sections, categories }) {
             visitedSectionsCount,
             visitHistoryByCategory
         }}>
-            {didMount && children}
+            {children}
         </LocationContext.Provider>
     )
 }

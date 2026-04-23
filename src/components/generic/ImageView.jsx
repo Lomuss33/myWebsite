@@ -4,7 +4,18 @@ import {useConstants} from "../../hooks/constants.js"
 import {Spinner} from "react-bootstrap"
 import {useUtils} from "../../hooks/utils.js"
 
-function ImageView({ src, alt = "", className = "", id= null, hideSpinner = false, style = null, onStatus = null }) {
+function ImageView({
+    src,
+    alt = "",
+    className = "",
+    id = null,
+    hideSpinner = false,
+    style = null,
+    onStatus = null,
+    loading = "lazy",
+    decoding = "async",
+    fetchPriority = "auto"
+}) {
     const [loadStatus, setLoadStatus] = useState(ImageView.LoadStatus.LOADING)
     const [loadedSrc, setLoadedSrc] = useState(null)
     const [errorSrc, setErrorSrc] = useState(null)
@@ -52,6 +63,9 @@ function ImageView({ src, alt = "", className = "", id= null, hideSpinner = fals
                                 alt={alt}
                                 visible={containerVisible}
                                 loadStatus={loadStatus}
+                                loading={loading}
+                                decoding={decoding}
+                                fetchPriority={fetchPriority}
                                 onLoad={_onLoad}
                                 onError={_onError}/>
 
@@ -68,7 +82,7 @@ ImageView.LoadStatus = {
     ERROR: "error"
 }
 
-function ImageViewContainer({ src, alt, visible, loadStatus, onLoad, onError }) {
+function ImageViewContainer({ src, alt, visible, loadStatus, loading, decoding, fetchPriority, onLoad, onError }) {
     const constants = useConstants()
     const utils = useUtils()
 
@@ -79,6 +93,9 @@ function ImageViewContainer({ src, alt, visible, loadStatus, onLoad, onError }) 
         <img className={`image-view-img ${visibleClass} ${constants.HTML_CLASSES.imageView} ${constants.HTML_CLASSES.imageView}-${loadStatus}`}
              src={resolvedSrc}
              alt={alt}
+             loading={loading}
+             decoding={decoding}
+             fetchPriority={fetchPriority}
              onLoad={onLoad}
              onError={onError}/>
     )

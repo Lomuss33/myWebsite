@@ -392,7 +392,8 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                                 <ImageView src={itemWrapper.imgAlt}
                                            alt={itemWrapper.imageAlt}
                                            className={`article-feature-item-image-source`}
-                                           hideSpinner={true}/>
+                                           hideSpinner={true}
+                                           fetchPriority={`low`}/>
                             </div>
                         </div>
                     ) : (

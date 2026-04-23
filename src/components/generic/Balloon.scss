@@ -37,3 +37,12 @@ div.balloon-quote {
         white-space: nowrap;
     }
 }
+
+article#article-2-section-my-software,
+article#article-3-section-my-software,
+article#article-4-section-my-software {
+    div.balloon {
+        border: 1px solid rgba(78, 163, 255, 0.18);
+        border-radius: 16px;
+    }
+}

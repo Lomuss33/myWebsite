@@ -22,8 +22,6 @@ function InputProvider({ children }) {
     const [isClicked, setIsClicked] = useState(false)
     const [lastMouseTarget, setLastMouseTarget] = useState(null)
 
-    const [didCreateListeners, setDidCreateListeners] = useState(false)
-
     useEffect(() => {
         _createListeners()
         return () => _destroyListeners()
@@ -34,7 +32,6 @@ function InputProvider({ children }) {
         window.addEventListener("mousedown", _onMouseDown)
         window.addEventListener("mousemove", _onMouseMove)
         window.addEventListener("mouseup", _onMouseUp)
-        setDidCreateListeners(true)
     }
 
     const _destroyListeners = () => {
@@ -44,7 +41,6 @@ function InputProvider({ children }) {
         window.removeEventListener("mouseup", _onMouseUp)
 
         scheduler.clearAllWithTag(tag)
-        setDidCreateListeners(false)
     }
 
     const _onKeyDown = (event) => {
@@ -106,9 +102,7 @@ function InputProvider({ children }) {
             mouseUpStatus,
             isClicked,
         }}>
-            {didCreateListeners && (
-                <>{children}</>
-            )}
+            {children}
         </InputContext.Provider>
     )
 }

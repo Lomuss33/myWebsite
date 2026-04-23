@@ -24,7 +24,7 @@ function NavToolSettings({ options }) {
 
         displayOptions.push({
             id: NavToolSettings.Options.THEME,
-            faIcon: selectedTheme.icon,
+            faIcon: selectedTheme?.icon || "fa-solid fa-moon",
             label: language.getString("change_theme")
         })
     }

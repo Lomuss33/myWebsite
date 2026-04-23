@@ -16,11 +16,15 @@ function NavSidebar({ profile, links }) {
 
     const [expandedOption, setExpandedOption] = useState(true)
 
-    const shouldForceShrink = !viewport.isBreakpoint("lg")
+    const shouldUseCompactRail = viewport.isShortDesktopLayout()
+    const shouldForceShrink = !viewport.isBreakpoint("lg") || shouldUseCompactRail
     const expanded = !shouldForceShrink && expandedOption
     const shrinkClass = expanded ?
         `` :
         `nav-sidebar-shrink`
+    const compactRailClass = shouldUseCompactRail ?
+        `nav-sidebar-short-rail` :
+        ``
 
     useEffect(() => {
         if(shouldForceShrink)
@@ -29,10 +33,10 @@ function NavSidebar({ profile, links }) {
         const keyId = input.lastKeyPressed.id
         if(keyId === "ArrowLeft") setExpandedOption(false)
         else if(keyId === "ArrowRight") setExpandedOption(true)
-    }, [input.lastKeyPressed])
+    }, [input.lastKeyPressed, shouldForceShrink])
 
     return (
-        <nav className={`nav-sidebar ${constants.HTML_CLASSES.scrollbarDecorator} ${shrinkClass}`}>
+        <nav className={`nav-sidebar ${constants.HTML_CLASSES.scrollbarDecorator} ${shrinkClass} ${compactRailClass}`}>
             <Card className={`nav-sidebar-card-wrapper`}>
                 {!shouldForceShrink && (
                     <NavToolShrinkToggle expanded={expandedOption}
@@ -40,10 +44,12 @@ function NavSidebar({ profile, links }) {
                 )}
 
                 <NavProfileCard profile={profile}
-                                expanded={expanded}/>
+                                expanded={expanded}
+                                compactRail={shouldUseCompactRail}/>
 
                 <NavLinkList links={links}
-                             expanded={expanded}/>
+                             expanded={expanded}
+                             compactRail={shouldUseCompactRail}/>
 
                 <NavToolList expanded={expanded}/>
             </Card>

@@ -97,6 +97,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
     const resizeTimeoutRef = useRef(null)
     const baseTypographyRef = useRef(null)
     const [textScale, setTextScale] = useState(1)
+    const [showAlternateImage, setShowAlternateImage] = useState(false)
     const [isMobileView, setIsMobileView] = useState(() => {
         if (typeof window === "undefined" || !window.matchMedia) return false
         return window.matchMedia(MOBILE_VIEW_MEDIA_QUERY).matches
@@ -119,6 +120,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
     const isFixedViewportImageLayout = featureLayoutMode === "equal_split_fixed_vh_image"
     const isSquareFitLayout = featureLayoutMode === "equal_split_square_fit"
     const isConfiguredInteractiveItem = articleSettings.featureInteractiveItemIds.includes(itemWrapper.id)
+    const hasAlternateImage = Boolean(itemWrapper.img && itemWrapper.imgAlt)
     const shouldFitTextToMediaHeight =
         isSquareFitLayout ||
         (isFixedViewportImageLayout && isHomeStyleIntro) ||
@@ -349,6 +351,13 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
         (isManagedSplitLayout || isTextLedSplitLayout || isFixedViewportImageLayout || isSquareFitLayout) ? `article-feature-item-stack-${featureStackOrder}` : ""
     ].filter(Boolean).join(" ")
 
+    const onMediaClick = () => {
+        if(!hasAlternateImage)
+            return
+
+        setShowAlternateImage(current => !current)
+    }
+
     return (
         <div ref={itemRef}
              className={itemClassName}>
@@ -358,11 +367,41 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                  onPointerMove={floatingFrame.onPointerMove}
                  onPointerLeave={floatingFrame.onPointerLeave}>
                 {itemWrapper.img ? (
-                    <ImageView src={itemWrapper.img}
-                               alt={itemWrapper.imageAlt}
-                               className={`article-feature-item-image floating-frame`}
-                               style={imageStyle}
-                               hideSpinner={true}/>
+                    hasAlternateImage ? (
+                        <div className={`article-feature-item-image article-feature-item-image-switch floating-frame ${showAlternateImage ? "article-feature-item-image-switch-alt" : ""}`}
+                             style={imageStyle}
+                             onClick={onMediaClick}
+                             role="button"
+                             tabIndex={0}
+                             aria-pressed={showAlternateImage}
+                             aria-label={`Toggle feature image`}
+                             onKeyDown={(event) => {
+                                 if(event.key === "Enter" || event.key === " ") {
+                                     event.preventDefault()
+                                     onMediaClick()
+                                 }
+                             }}>
+                            <div className={`article-feature-item-image-face article-feature-item-image-face-front`}>
+                                <ImageView src={itemWrapper.img}
+                                           alt={itemWrapper.imageAlt}
+                                           className={`article-feature-item-image-source`}
+                                           hideSpinner={true}/>
+                            </div>
+
+                            <div className={`article-feature-item-image-face article-feature-item-image-face-back`}>
+                                <ImageView src={itemWrapper.imgAlt}
+                                           alt={itemWrapper.imageAlt}
+                                           className={`article-feature-item-image-source`}
+                                           hideSpinner={true}/>
+                            </div>
+                        </div>
+                    ) : (
+                        <ImageView src={itemWrapper.img}
+                                   alt={itemWrapper.imageAlt}
+                                   className={`article-feature-item-image floating-frame`}
+                                   style={imageStyle}
+                                   hideSpinner={true}/>
+                    )
                 ) : (
                     <div className={`article-feature-item-image article-feature-item-image-fallback floating-frame`}
                          style={imageStyle}/>

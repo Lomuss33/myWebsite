@@ -56,3 +56,21 @@ nav.nav-sidebar-shrink {
         right: -14px;
     }
 }
+
+nav.nav-sidebar-short-rail {
+    div.nav-sidebar-card-wrapper {
+        width: 108px;
+        min-width: 108px;
+    }
+
+    div.nav-profile-card-shrink {
+        --avatar-size: 66px;
+        --border-size: 3px;
+        --offset-status-circle: 10px;
+        margin: 8px 8px 4px;
+    }
+
+    div.nav-tools {
+        padding: 0 4px;
+    }
+}

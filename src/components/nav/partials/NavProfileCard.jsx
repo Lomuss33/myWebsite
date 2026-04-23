@@ -1,6 +1,7 @@
 import "./NavProfileCard.scss"
-import {useFloatingFrame} from "../../../hooks/floatingFrame.js"
+import React, {useState} from "react"
 import {Card} from "react-bootstrap"
+import {useFloatingFrame} from "../../../hooks/floatingFrame.js"
 import {useLanguage} from "../../../providers/LanguageProvider.jsx"
 import {useNavigation} from "../../../providers/NavigationProvider.jsx"
 import {useUtils} from "../../../hooks/utils.js"
@@ -9,11 +10,12 @@ import StatusCircle from "../../generic/StatusCircle.jsx"
 import TextTyper from "../../generic/TextTyper.jsx"
 import AudioButton from "../../buttons/AudioButton.jsx"
 
-function NavProfileCard({ profile, expanded }) {
+function NavProfileCard({ profile, expanded, compactRail = false }) {
     const language = useLanguage()
     const navigation = useNavigation()
     const utils = useUtils()
     const floatingFrame = useFloatingFrame()
+    const [showAlternateProfilePicture, setShowAlternateProfilePicture] = useState(false)
 
     const expandedClass = expanded ?
         `` :
@@ -52,8 +54,17 @@ function NavProfileCard({ profile, expanded }) {
         `nav-profile-card-name-with-audio-button` :
         ``
 
+    const secondaryProfilePictureUrl = language.parseJsonText(profile.profilePictureAltUrl) || "images/contant/profil.webp"
+
     const _onStatusBadgeClicked = () => {
         navigation.navigateToSectionWithId("contact")
+    }
+
+    const _onMediaClicked = (event) => {
+        if(event?.target?.closest?.(".status-circle"))
+            return
+
+        setShowAlternateProfilePicture((current) => !current)
     }
 
     return (
@@ -62,11 +73,33 @@ function NavProfileCard({ profile, expanded }) {
                 <div className={`nav-profile-card-media floating-frame`}
                      onPointerEnter={floatingFrame.onPointerEnter}
                      onPointerMove={floatingFrame.onPointerMove}
-                     onPointerLeave={floatingFrame.onPointerLeave}>
-                    <ImageView src={profilePictureUrl}
-                               className={`nav-profile-card-avatar`}
-                               hideSpinner={true}
-                               alt={name}/>
+                     onPointerLeave={floatingFrame.onPointerLeave}
+                     onClick={_onMediaClicked}
+                     role="button"
+                     tabIndex={0}
+                     onKeyDown={(event) => {
+                         if(event.key === "Enter" || event.key === " ") {
+                             event.preventDefault()
+                             _onMediaClicked(event)
+                         }
+                     }}
+                     aria-label={`Toggle profile picture`}
+                     aria-pressed={showAlternateProfilePicture}>
+                    <div className={`nav-profile-card-avatar-switch ${showAlternateProfilePicture ? "nav-profile-card-avatar-switch-secondary" : "nav-profile-card-avatar-switch-primary"}`}>
+                        <div className={`nav-profile-card-avatar-face nav-profile-card-avatar-face-front`}>
+                            <ImageView src={profilePictureUrl}
+                                       className={`nav-profile-card-avatar`}
+                                       hideSpinner={true}
+                                       alt={name}/>
+                        </div>
+
+                        <div className={`nav-profile-card-avatar-face nav-profile-card-avatar-face-back`}>
+                            <ImageView src={secondaryProfilePictureUrl}
+                                       className={`nav-profile-card-avatar`}
+                                       hideSpinner={true}
+                                       alt={name}/>
+                        </div>
+                    </div>
 
                     {statusCircleVisible && (
                         <StatusCircle className={`nav-profile-card-status-circle`}
@@ -114,7 +147,7 @@ function NavProfileCard({ profile, expanded }) {
                 </div>
             )}
 
-            {!expanded && (
+            {!expanded && !compactRail && (
                 <div className={`nav-profile-card-compact-name`}>
                     {localizedName}
                 </div>

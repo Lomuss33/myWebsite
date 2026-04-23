@@ -33,16 +33,65 @@ div.nav-profile-card {
         display: inline-flex;
         transform-style: preserve-3d;
         will-change: transform;
-        border-radius: calc($standard-border-radius * 2);
-        border-top-right-radius: 0;
+        cursor: pointer;
     }
 
-    &-avatar {
+    &-avatar-switch {
         width: var(--avatar-size);
         height: var(--avatar-size);
+        position: relative;
+        overflow: hidden;
         border: var(--border-size) solid var(--theme-card-background-accent);
         border-radius: calc($standard-border-radius * 2);
         border-top-right-radius: 0;
+        transform-style: preserve-3d;
+        will-change: transform;
+        transition: none;
+    }
+
+    &-avatar {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        border-radius: inherit;
+    }
+
+    &-avatar-face {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        transform-style: preserve-3d;
+        pointer-events: none;
+        transition:
+            opacity 0.28s ease,
+            transform 0.32s cubic-bezier(.2, .85, .25, 1),
+            filter 0.32s ease;
+    }
+
+    &-avatar-face-front {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+
+    &-avatar-face-back {
+        opacity: 0;
+        transform: scale(1.03) translateY(4px);
+    }
+
+    &-avatar-switch-secondary {
+        div.nav-profile-card-avatar-face-front {
+            opacity: 0;
+            transform: scale(0.97) translateY(-4px);
+            filter: blur(1px);
+        }
+
+        div.nav-profile-card-avatar-face-back {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            filter: blur(0);
+        }
     }
 
     &-status-circle {
@@ -234,7 +283,7 @@ div.nav-profile-card-shrink {
     --border-size: 3px;
     --offset-status-circle: 11px;
 
-    div.nav-profile-card-avatar {
+    div.nav-profile-card-avatar-switch {
         border-radius: calc($standard-border-radius * 2)!important;
     }
 

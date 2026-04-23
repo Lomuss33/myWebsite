@@ -91,6 +91,10 @@ function ViewportProvider({ children }) {
         return !isMobileLayout()
     }
 
+    const isShortDesktopLayout = () => {
+        return isBreakpoint("md") && innerHeight < 760
+    }
+
     const getValueFromBreakpointHash = (hash) => {
         for(let i in hash)
             if(isBreakpoint(i)) return hash[i]
@@ -158,6 +162,7 @@ function ViewportProvider({ children }) {
             getBreakpoint,
             isMobileLayout,
             isDesktopLayout,
+            isShortDesktopLayout,
             getValueFromBreakpointHash,
             getLayoutConstraints,
             getCustomBreakpoint,
@@ -184,6 +189,7 @@ const ViewportContext = createContext(null)
  *    getBreakpoint: Function,
  *    isMobileLayout: Function,
  *    isDesktopLayout: Function,
+ *    isShortDesktopLayout: Function,
  *    getValueFromBreakpointHash: Function,
  *    getLayoutConstraints: Function,
  *    getCustomBreakpoint: Function,

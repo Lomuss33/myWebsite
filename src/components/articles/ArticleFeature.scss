@@ -616,10 +616,21 @@ div.article-feature-items.article-feature-items-section-my-writings {
         align-items: center;
     }
 
+    @include media-breakpoint-up(xxl) {
+        div.article-feature-item {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: clamp(18px, 2vw, 30px);
+        }
+
+        div.article-feature-item-image {
+            width: min(100%, 540px);
+        }
+    }
+
     div.article-feature-item-media {
         display: flex;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: center;
         min-width: 0;
     }
 
@@ -643,6 +654,7 @@ div.article-feature-items.article-feature-items-section-my-writings {
 
     div.article-feature-item-text {
         max-width: 56ch;
+        margin-inline: auto;
         font-size: clamp(1.04rem, 0.42vw + 0.96rem, 1.16rem);
         line-height: 1.68;
 
@@ -657,7 +669,7 @@ div.article-feature-items.article-feature-items-section-my-writings {
         div.article-feature-item-content {
             align-items: flex-start;
             padding-top: clamp(2px, 0.28vw, 6px);
-            padding-right: clamp(12px, 1.4vw, 26px);
+            padding-inline: clamp(12px, 1.4vw, 26px);
             box-sizing: border-box;
         }
 
@@ -669,7 +681,7 @@ div.article-feature-items.article-feature-items-section-my-writings {
 
             div.pretext-interactive-text {
                 box-sizing: border-box;
-                padding-right: clamp(10px, 0.9vw, 16px);
+                padding-inline: clamp(10px, 0.9vw, 16px);
             }
         }
     }
@@ -707,7 +719,7 @@ div.article-feature-items.article-feature-items-section-my-writings {
         div.article-feature-item.article-feature-item-id-2 {
             div.article-feature-item-content {
                 padding-top: 0;
-                padding-right: 0;
+                padding-inline: 0;
             }
 
             div.article-feature-item-text {
@@ -716,7 +728,7 @@ div.article-feature-items.article-feature-items-section-my-writings {
                 line-height: 1.5;
 
                 div.pretext-interactive-text {
-                    padding-right: clamp(8px, 3vw, 14px);
+                    padding-inline: clamp(8px, 3vw, 14px);
                 }
             }
         }

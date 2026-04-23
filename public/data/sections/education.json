@@ -47,7 +47,8 @@
             },
             "settings": {
                 "order_items_by": "dateStart",
-                "order_items_sort": "desc"
+                "order_items_sort": "desc",
+                "max_rows_collapse_threshold": 3
             },
             "items": [
                 {
@@ -240,8 +241,8 @@
                     "locales": {
                         "en": {
                             "title": "Engineering Computer Science",
-                            "institution": "Technische Hochschule Mittelhessen - THM",
-                            "country": "Germany",
+                            "institution": "Technische Hochschule Mittelhessen",
+                            "country": "Gießen, Germany",
                             "text": "Currently pursuing a degree in Engineering Computer Science.",
                             "list": [
                                 "Now studying for 2 years and 2 months",
@@ -394,8 +395,8 @@
                     "locales": {
                         "en": {
                             "title": "Secondary School",
-                            "institution": "EichendorfSchule Kelkheim",
-                            "country": "Germany",
+                            "institution": "Eichendorffschule",
+                            "country": "Kelkheim, Germany",
                             "text": "Completed secondary education before vocational training.",
                             "list": [
                                 "General education",
@@ -471,12 +472,12 @@
                     "locales": {
                         "en": {
                             "title": "Primary School",
-                            "institution": "Tomislavgrad, Bosnia",
-                            "country": "Bosnia and Herzegovina",
-                            "text": "Completed primary education before moving to Germany.",
+                            "institution": "Osnovna škola fra Mijo Čuić",
+                            "country": "Tomislavgrad, Bosnia",
+                            "text": "Completed my primary education in Tomislavgrad, where curiosity, discipline, and character first took shape.",
                             "list": [
                                 "Basic education",
-                                "Foundation for further studies"
+                                "A strong foundation for everything that followed"
                             ],
                             "tags": [
                                 "Primary Education",
@@ -523,6 +524,89 @@
                             "tags": [
                                 "İlköğretim",
                                 "Temel Beceriler"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "id": 7,
+                    "faIcon": "fa-solid fa-seedling",
+                    "faIconColors": {
+                        "bg": "#0F172A",
+                        "bgLight": "#0F172A",
+                        "fill": "#F8FAFC",
+                        "fillLight": "#F8FAFC"
+                    },
+                    "dateStart": {
+                        "year": 2001,
+                        "month": 2
+                    },
+                    "dateEnd": {
+                        "now": true
+                    },
+                    "locales": {
+                        "en": {
+                            "title": "The Beginning",
+                            "institution": "Županijska bolnica fra Mihovil Sučić",
+                            "country": "Livno, Bosnia",
+                            "text": "Born in Livno, where my story began with curiosity, resilience, and a habit of learning from both the easy and the challenging parts of life.",
+                            "list": [
+                                "Feb 2001 - Present",
+                                "Where my story started",
+                                "Shaped by both challenge and opportunity"
+                            ],
+                            "tags": [
+                                "Born in Livno",
+                                "Personal Story",
+                                "Growth Mindset"
+                            ]
+                        },
+                        "de": {
+                            "title": "Der Anfang",
+                            "institution": "Županijska bolnica fra Mihovil Sučić",
+                            "country": "Livno, Bosnien",
+                            "text": "In Livno geboren, begann mein Weg mit Neugier, Widerstandskraft und der Gewohnheit, aus den einfachen wie aus den herausfordernden Seiten des Lebens zu lernen.",
+                            "list": [
+                                "Feb 2001 - heute",
+                                "Hier begann meine Geschichte",
+                                "Geprägt von Herausforderung und Chance"
+                            ],
+                            "tags": [
+                                "In Livno geboren",
+                                "Persönliche Geschichte",
+                                "Wachstumsdenken"
+                            ]
+                        },
+                        "hr": {
+                            "title": "Početak",
+                            "institution": "Županijska bolnica fra Mihovil Sučić",
+                            "country": "Livno, Bosna",
+                            "text": "Rođen u Livnu, gdje je moja priča počela znatiželjom, otpornošću i navikom da učim i iz jednostavnih i iz zahtjevnih strana života.",
+                            "list": [
+                                "Velj 2001 - danas",
+                                "Tu je moja priča krenula",
+                                "Oblikovan i izazovima i prilikama"
+                            ],
+                            "tags": [
+                                "Rođen u Livnu",
+                                "Osobna priča",
+                                "Rast i razvoj"
+                            ]
+                        },
+                        "tr": {
+                            "title": "Başlangıç",
+                            "institution": "Županijska bolnica fra Mihovil Sučić",
+                            "country": "Livno, Bosna",
+                            "text": "Livno'da başlayan hikayem; merak, dayanıklılık ve hayatın hem kolay hem de zor taraflarından öğrenme alışkanlığıyla şekillendi.",
+                            "list": [
+                                "Şub 2001 - bugün",
+                                "Hikayemin başladığı yer",
+                                "Hayatın zorlu ve akıcı yanlarıyla şekillenen bir yolculuk"
+                            ],
+                            "tags": [
+                                "Livno'da doğdum",
+                                "Kişisel hikaye",
+                                "Gelişim odaklı"
                             ]
                         }
                     }

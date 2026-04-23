@@ -4,16 +4,14 @@ import Article from "./base/Article.jsx"
 import AvatarView from "../generic/AvatarView.jsx"
 import Link from "../generic/Link.jsx"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
-import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import CopyButton from "../buttons/CopyButton.jsx"
 
 /**
  * @param {ArticleDataWrapper} dataWrapper
- * @param {Number} id
  * @return {JSX.Element}
  * @constructor
  */
-function ArticleInfoList({ dataWrapper, id }) {
+function ArticleInfoList({ dataWrapper }) {
     const [selectedItemCategoryId, setSelectedItemCategoryId] = useState(null)
     const isHomeInfoList = dataWrapper.sectionId === "about"
     const isContactInfoList = dataWrapper.sectionId === "contact"
@@ -84,7 +82,7 @@ function ArticleInfoListItems({ dataWrapper, selectedItemCategoryId, isHomeInfoL
 
     return (
         <div className={`article-info-list-items ${shrinkClass} ${homeClass}`}
-             id={id}>
+             id={dataWrapper.uniqueId}>
             {filteredItems.map((itemWrapper, key) => (
                 <ArticleInfoListItem itemWrapper={itemWrapper}
                                      isHomeInfoList={isHomeInfoList}
@@ -103,7 +101,6 @@ function ArticleInfoListItems({ dataWrapper, selectedItemCategoryId, isHomeInfoL
 function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList }) {
     const [linkHovered, setLinkHovered] = useState(false)
     const [isPressed, setIsPressed] = useState(false)
-    const language = useLanguage()
 
     const hoverClass = linkHovered ?
         `article-info-list-item-hovered` :
@@ -111,11 +108,14 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
     const homeClass = isHomeInfoList ? `article-info-list-item-home` : ``
     const pressedClass = isPressed ? `article-info-list-item-pressed` : ``
 
-    const baseTextSize = itemWrapper.locales.text ? 3 : 4
+    const baseTextSize = isHomeInfoList
+        ? (itemWrapper.locales.text ? 1 : 2)
+        : (itemWrapper.locales.text ? 3 : 4)
     const titleClass = `text-${baseTextSize + 1}`
     const textClass = `text-${baseTextSize}`
 
     const copyValue = (itemWrapper.label || itemWrapper.locales.text || itemWrapper.locales.title || "").trim()
+    const titleMarkup = itemWrapper.locales.title || itemWrapper.placeholder
 
     return (
         <div className={`article-info-list-item ${hoverClass} ${pressedClass} ${homeClass}`}>
@@ -146,8 +146,9 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
             )}
 
             <div className={`article-info-list-item-content ${homeClass}`}>
-                <div className={`article-info-list-item-info-title ${titleClass}`}
-                     dangerouslySetInnerHTML={{__html: itemWrapper.locales.title || itemWrapper.placeholder}}/>
+                <div className={`article-info-list-item-info-title ${titleClass}`}>
+                    {renderInfoListTitle(titleMarkup)}
+                </div>
 
                 <div className={`article-info-list-item-info-body`}>
                     {isContactInfoList ? (
@@ -186,6 +187,30 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
                 </div>
             </div>
         </div>
+    )
+}
+
+function renderInfoListTitle(titleMarkup) {
+    const title = `${titleMarkup || ``}`.replace(/&amp;/g, `&`).trim()
+
+    if (!title.includes(`&`)) {
+        return <span dangerouslySetInnerHTML={{__html: title}} />
+    }
+
+    const [leftSide, ...rest] = title.split(`&`)
+    const rightSide = rest.join(`&`).trim()
+    const mainSide = leftSide.trim()
+
+    return (
+        <span className={`article-info-list-item-info-title-split`}>
+            <span className={`article-info-list-item-info-title-main`}
+                  dangerouslySetInnerHTML={{__html: mainSide}}/>
+
+            <span className={`article-info-list-item-info-title-ampersand`} aria-hidden="true">&amp;</span>
+
+            <span className={`article-info-list-item-info-title-rest`}
+                  dangerouslySetInnerHTML={{__html: rightSide}}/>
+        </span>
     )
 }
 

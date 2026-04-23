@@ -2,6 +2,7 @@
     "name": "Lovro Musić",
     "profilePictureUrl": "images/contant/profilePix.JPG",
     "profilePictureAltUrl": "images/contant/profil.webp",
+    "profilePictureAltDefaultChance": 0.5,
     "resumePdfUrl": "",
     "statusCircleVisible": true,
     "statusCircleVariant": "available",

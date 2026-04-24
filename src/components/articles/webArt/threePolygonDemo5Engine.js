@@ -85,8 +85,11 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
     let height = 1
     let running = false
     let rafId = null
-    let startTime = 0
-    let stoppedAt = null
+    let simTime = 0
+    let lastFrameMs = 0
+    let boostEnergy = 0
+    let boostTail = 0
+    let held = false
     let pmrem = null
     let envTexture = null
     let envSourceTexture = null
@@ -194,11 +197,28 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
     function tick(nowMs) {
         if(!running) return
 
-        const t = (nowMs - startTime) / 1000
+        if(lastFrameMs <= 0) lastFrameMs = nowMs
+        const dt = Math.min(0.05, Math.max(0.001, (nowMs - lastFrameMs) / 1000))
+        lastFrameMs = nowMs
+
+        if(held) {
+            boostTail = Math.max(0, boostTail - dt * 2.8)
+            boostEnergy = Math.max(0, boostEnergy - dt * (1.6 + boostEnergy * 0.6))
+        }
+        else if(boostTail > 0) {
+            boostTail = Math.max(0, boostTail - dt)
+            boostEnergy = Math.max(0, boostEnergy - dt * 0.08)
+        }
+        else {
+            boostEnergy = Math.max(0, boostEnergy - dt * 0.45)
+        }
+
+        const t = simTime
         const ampX = (rotationXDeg * Math.PI) / 180
         const ampY = (rotationYDeg * Math.PI) / 180
         const ampZ = (rotationZDeg * Math.PI) / 180
-        const omega = (Math.PI * 2) / Math.max(0.1, animationDuration)
+        const currentDuration = animationDuration / Math.max(1, 1 + boostEnergy)
+        const omega = (Math.PI * 2) / Math.max(0.1, currentDuration)
 
         for(let i = 0; i < group.children.length; i++) {
             const mesh = group.children[i]
@@ -211,6 +231,7 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
             mesh.rotation.z = ampZ * yoyo
         }
 
+        simTime += dt
         renderFrame()
         rafId = requestAnimationFrame(tick)
     }
@@ -231,28 +252,26 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
         // Re-fit scale on resize
         fitToView()
 
+        lastFrameMs = 0
         if(reduceMotion) renderFrame()
     }
 
     function start() {
         if(!renderer) setup()
         if(reduceMotion) {
-            startTime = performance.now()
+            lastFrameMs = 0
             renderFrame()
             return
         }
         if(running) return
         running = true
-        const now = performance.now()
-        if(startTime === 0) startTime = now
-        if(stoppedAt != null) startTime += (now - stoppedAt)
-        stoppedAt = null
+        lastFrameMs = 0
         rafId = requestAnimationFrame(tick)
     }
 
     function stop() {
         running = false
-        stoppedAt = performance.now()
+        lastFrameMs = 0
         if(rafId != null) cancelAnimationFrame(rafId)
         rafId = null
     }
@@ -260,12 +279,25 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
     function reset() {
         if(!renderer) setup()
         stop()
-        startTime = performance.now()
-        stoppedAt = null
+        simTime = 0
+        boostEnergy = 0
+        boostTail = 0
+        held = false
         for(let i = 0; i < group.children.length; i++) {
             group.children[i].rotation.set(0, 0, 0)
         }
         renderFrame()
+    }
+
+    function boost() {
+        boostEnergy = clamp(boostEnergy + 0.45, 0, 4.0)
+        boostTail = clamp(boostTail + 0.9, 0, 5.5)
+        if(!running) renderFrame()
+    }
+
+    function setHeld(nextHeld) {
+        held = Boolean(nextHeld)
+        if(!running) renderFrame()
     }
 
     function destroy() {
@@ -297,6 +329,8 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
         stop,
         reset,
         destroy,
-        setSize
+        setSize,
+        boost,
+        setHeld
     }
 }

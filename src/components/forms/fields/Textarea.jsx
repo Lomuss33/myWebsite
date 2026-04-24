@@ -2,7 +2,6 @@ import "./Textarea.scss"
 import React, {useEffect, useState} from 'react'
 import InputFieldWrapper from "../base/InputFieldWrapper.jsx"
 import {useUtils} from "../../../hooks/utils.js"
-import TextareaTunnelBackground from "./TextareaTunnelBackground.jsx"
 
 function TextArea({
    id,
@@ -19,7 +18,6 @@ function TextArea({
     const [isFocused, setIsFocused] = useState(false)
     const placeholderFull = `${placeholder}${utils.string.if(required, " *")}`
     const focusClass = utils.string.if(isFocused, "form-textarea-focused")
-    const tunnelClass = "form-textarea-has-tunnel"
 
     // Prevent shrinking the resizable wrapper below its initial layout height
     // (keeps the border and inner field in sync, and avoids overlap with the left column).
@@ -55,9 +53,7 @@ function TextArea({
     return (
         <InputFieldWrapper isFocused={isFocused}
                           wrapperClassName={`input-field-wrapper-resizable`}>
-            <TextareaTunnelBackground enabled={true}/>
-
-            <textarea className={`form-control form-textarea ${tunnelClass} ${focusClass} ${className}`}
+            <textarea className={`form-control form-textarea ${focusClass} ${className}`}
                       id={id}
                       name={name}
                       value={model}

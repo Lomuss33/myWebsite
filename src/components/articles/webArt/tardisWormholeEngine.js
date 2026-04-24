@@ -316,8 +316,8 @@ export function createTardisWormholeEngine(canvas, options = {}) {
     let velY = 0
     let warpX = 0
     let warpY = 0
-    let speedTarget = 1
-    let speedCurrent = 1
+    let speedTarget = 0.7
+    let speedCurrent = 0.7
     let burstVal = 0
     let dragVelZ = 0
     let manualRotZ = 0
@@ -607,7 +607,7 @@ export function createTardisWormholeEngine(canvas, options = {}) {
         speedTarget = 3.5
         window.clearTimeout(boost.__timer)
         boost.__timer = window.setTimeout(() => {
-            speedTarget = 1.0
+            speedTarget = 0.7
         }, 600)
     }
 
@@ -615,7 +615,7 @@ export function createTardisWormholeEngine(canvas, options = {}) {
         speedTarget = -1.5
         window.clearTimeout(reverseBurst.__timer)
         reverseBurst.__timer = window.setTimeout(() => {
-            speedTarget = 1.0
+            speedTarget = 0.7
         }, 700)
     }
 
@@ -630,8 +630,8 @@ export function createTardisWormholeEngine(canvas, options = {}) {
     }
 
     function reset() {
-        speedTarget = 1.0
-        speedCurrent = 1.0
+        speedTarget = 0.7
+        speedCurrent = 0.7
         burstVal = 0
         velX = 0
         velY = 0

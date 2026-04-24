@@ -1,13 +1,11 @@
-import { layoutNextLine, prepareWithSegments } from "@chenglou/pretext"
+import {
+    layoutNextRichInlineLineRange,
+    materializeRichInlineLineRange,
+    prepareRichInline
+} from "@chenglou/pretext/rich-inline"
 
-const LINE_START_CURSOR = { segmentIndex: 0, graphemeIndex: 0 }
-const UNBOUNDED_WIDTH = 100000
-
-const collapsedSpaceWidthCache = new Map()
-const sentenceSegmenter =
-    typeof Intl !== "undefined" && Intl.Segmenter ?
-        new Intl.Segmenter(undefined, { granularity: "sentence" }) :
-        null
+const preparedParagraphCache = new Map()
+const PREPARED_PARAGRAPH_CACHE_LIMIT = 160
 
 export function parseDraggableInlineHtml(html) {
     if (!html) return []
@@ -146,10 +144,22 @@ export function readDraggableTypographySnapshot(elements) {
 
     return {
         fonts: {
-            body: bodyStyle.font || buildCanvasFont(bodyStyle),
-            strong: strongStyle.font || buildCanvasFont(strongStyle),
-            em: emStyle.font || buildCanvasFont(emStyle),
-            strongEm: strongEmStyle.font || buildCanvasFont(strongEmStyle)
+            body: {
+                font: bodyStyle.font || buildCanvasFont(bodyStyle),
+                letterSpacing: resolveLetterSpacing(bodyStyle.letterSpacing)
+            },
+            strong: {
+                font: strongStyle.font || buildCanvasFont(strongStyle),
+                letterSpacing: resolveLetterSpacing(strongStyle.letterSpacing)
+            },
+            em: {
+                font: emStyle.font || buildCanvasFont(emStyle),
+                letterSpacing: resolveLetterSpacing(emStyle.letterSpacing)
+            },
+            strongEm: {
+                font: strongEmStyle.font || buildCanvasFont(strongEmStyle),
+                letterSpacing: resolveLetterSpacing(strongEmStyle.letterSpacing)
+            }
         },
         lineHeight,
         paragraphGap
@@ -201,41 +211,48 @@ function layoutPreparedParagraph(paragraph, typography, maxWidth, obstacle, offs
     const lines = []
     const safeWidth = Math.max(1, maxWidth)
     let lineTop = offsetY
-    let itemIndex = 0
-    let cursor = null
+    let cursor = undefined
 
-    while (itemIndex < paragraph.items.length) {
+    while (true) {
         const bandTop = lineTop
         const bandBottom = lineTop + typography.lineHeight
         const slots = getTextLineSlots(safeWidth, bandTop, bandBottom, obstacle)
         let consumedOnBand = false
-        const previousItemIndex = itemIndex
-        const previousCursor = cursor
+        const startingCursorKey = createRichCursorKey(cursor)
 
         for (let slotIndex = 0; slotIndex < slots.length; slotIndex++) {
-            if (itemIndex >= paragraph.items.length) break
-
             const slot = slots[slotIndex]
-            const laidOut = layoutNextFragments(paragraph.items, itemIndex, cursor, slot.right - slot.left)
+            const slotWidth = slot.right - slot.left
+            const lineRange = layoutNextRichInlineLineRange(paragraph.prepared, slotWidth, cursor)
+            if (!lineRange) continue
 
-            itemIndex = laidOut.itemIndex
-            cursor = laidOut.cursor
-
-            if (laidOut.fragments.length === 0) continue
+            const line = materializeRichInlineLineRange(paragraph.prepared, lineRange)
+            if (line.fragments.length === 0) {
+                cursor = line.end
+                continue
+            }
 
             consumedOnBand = true
             lines.push({
                 key: `paragraph-${paragraphIndex}-band-${lines.length}`,
                 x: slot.left,
                 y: lineTop,
-                width: laidOut.width,
-                fragments: laidOut.fragments
+                width: line.width,
+                fragments: line.fragments.map(fragment => {
+                    const item = paragraph.items[fragment.itemIndex]
+                    return createFragment(item, fragment)
+                })
             })
+            cursor = line.end
         }
 
         lineTop += typography.lineHeight
 
-        if (!consumedOnBand && previousItemIndex === itemIndex && cursorsMatchNullable(previousCursor, cursor)) {
+        if (!consumedOnBand && startingCursorKey === createRichCursorKey(cursor)) {
+            break
+        }
+
+        if (!cursor) {
             break
         }
     }
@@ -246,157 +263,49 @@ function layoutPreparedParagraph(paragraph, typography, maxWidth, obstacle, offs
     }
 }
 
-function layoutNextFragments(items, startItemIndex, startCursor, maxWidth) {
-    const safeWidth = Math.max(1, maxWidth)
-    const fragments = []
-    let itemIndex = startItemIndex
-    let cursor = startCursor
-    let lineWidth = 0
-    let remainingWidth = safeWidth
-
-    while (itemIndex < items.length) {
-        const item = items[itemIndex]
-        const leadingGap = fragments.length === 0 ? 0 : item.leadingGap
-
-        if (cursor === null) {
-            const fullWidth = leadingGap + item.fullWidth
-            if (fullWidth <= remainingWidth) {
-                fragments.push(createFragment(item, leadingGap, LINE_START_CURSOR, item.endCursor, item.fullText, item.fullWidth))
-                lineWidth += fullWidth
-                remainingWidth = Math.max(0, safeWidth - lineWidth)
-                itemIndex += 1
-                continue
-            }
-
-            // Word-safe wrapping:
-            // If a whole token doesn't fit and we already have content on this line,
-            // move it to the next line instead of splitting into characters.
-            if (fragments.length > 0) {
-                break
-            }
-
-            // If the next token is a full word that doesn't fit, don't split it into characters.
-            // We prefer letting the line overflow horizontally rather than cutting a word in half.
-            // Only do this when the word is longer than the entire line width.
-            if (fragments.length === 0 && leadingGap === 0 && item.fullText && item.fullWidth > safeWidth) {
-                fragments.push(createFragment(item, 0, LINE_START_CURSOR, item.endCursor, item.fullText, item.fullWidth))
-                lineWidth += item.fullWidth
-                remainingWidth = Math.max(0, safeWidth - lineWidth)
-                itemIndex += 1
-                cursor = null
-                continue
-            }
-        }
-
-        if (fragments.length > 0 && leadingGap >= remainingWidth) {
-            break
-        }
-
-        const startCursorForItem = cursor || LINE_START_CURSOR
-        const line = layoutNextLine(item.prepared, startCursorForItem, Math.max(1, remainingWidth - leadingGap))
-
-        if (!line || cursorsMatch(startCursorForItem, line.end)) {
-            itemIndex += 1
-            cursor = null
-            continue
-        }
-
-        fragments.push(createFragment(item, leadingGap, startCursorForItem, line.end, line.text, line.width))
-        lineWidth += leadingGap + line.width
-        remainingWidth = Math.max(0, safeWidth - lineWidth)
-
-        if (cursorsMatch(line.end, item.endCursor)) {
-            itemIndex += 1
-            cursor = null
-            continue
-        }
-
-        cursor = line.end
-        break
-    }
-
-    return {
-        fragments,
-        width: lineWidth,
-        itemIndex,
-        cursor
-    }
-}
-
 function createPreparedParagraph(paragraph, paragraphIndex, typography) {
-    const collapsedSpaceWidth = measureCollapsedSpaceWidth(typography.fonts.body)
-    let pendingGap = 0
+    const items = paragraph.runs.map((run, runIndex) => {
+        const fontConfig = getFontForMarks(typography.fonts, run.marks)
 
-    const items = paragraph.runs.reduce((collection, run, runIndex) => {
-        const pieces = splitRunIntoPieces(run.text || "")
-
-        pieces.forEach((rawPiece, pieceIndex) => {
-            const hasLeadingWhitespace = /^\s/.test(rawPiece)
-            const hasTrailingWhitespace = /\s$/.test(rawPiece)
-            const trimmedText = rawPiece.trim()
-            const carryGap = pendingGap
-
-            pendingGap = hasTrailingWhitespace ? collapsedSpaceWidth : 0
-            if (!trimmedText) return
-
-            const font = getFontForMarks(typography.fonts, run.marks)
-            const prepared = prepareWithSegments(trimmedText, font)
-            const fullLine = layoutNextLine(prepared, LINE_START_CURSOR, UNBOUNDED_WIDTH)
-            if (!fullLine) return
-
-            collection.push({
-                key: `paragraph-${paragraphIndex}-run-${runIndex}-piece-${pieceIndex}`,
-                marks: run.marks,
-                href: run.href,
-                target: run.target,
-                rel: run.rel,
-                leadingGap: collection.length === 0 ? 0 : (carryGap > 0 || hasLeadingWhitespace ? collapsedSpaceWidth : 0),
-                prepared,
-                fullText: fullLine.text,
-                fullWidth: fullLine.width,
-                endCursor: fullLine.end
-            })
-        })
-
-        return collection
-    }, [])
+        return {
+            key: `paragraph-${paragraphIndex}-run-${runIndex}`,
+            marks: run.marks,
+            href: run.href,
+            target: run.target,
+            rel: run.rel,
+            text: run.text || "",
+            font: fontConfig.font,
+            letterSpacing: fontConfig.letterSpacing
+        }
+    })
 
     if (items.length === 0) return null
+
+    const cacheKey = createPreparedParagraphCacheKey(paragraph, typography)
+    const cachedPrepared = readCachedValue(preparedParagraphCache, cacheKey)
+    if (cachedPrepared) {
+        return {
+            key: `paragraph-${paragraphIndex}`,
+            block: paragraph.block,
+            items,
+            prepared: cachedPrepared
+        }
+    }
+
+    const prepared = prepareRichInline(items.map(item => ({
+        text: item.text,
+        font: item.font,
+        letterSpacing: item.letterSpacing
+    })))
+
+    writeCachedValue(preparedParagraphCache, cacheKey, prepared, PREPARED_PARAGRAPH_CACHE_LIMIT)
 
     return {
         key: `paragraph-${paragraphIndex}`,
         block: paragraph.block,
-        items
+        items,
+        prepared
     }
-}
-
-function splitRunIntoPieces(text) {
-    if (!text) return []
-
-    // Word-safe wrapping: we never want to split a word across line slots.
-    // By splitting runs into word tokens (with trailing whitespace), the layout
-    // engine can only wrap between words.
-    const tokens = text.match(/[^\s]+\s*/g)
-    return tokens?.length ? tokens : [text]
-}
-
-function splitIntoSentencePieces(text) {
-    if (!text) return []
-
-    if (sentenceSegmenter) {
-        const segments = Array.from(sentenceSegmenter.segment(text), segment => segment.segment)
-        if (segments.length > 0) return segments
-    }
-
-    const matches = text.match(/[^.!?]+(?:[.!?]+(?=\s|$))?\s*|[.!?]+\s*/g)
-    return matches?.length ? matches : [text]
-}
-
-function splitIntoClausePieces(text) {
-    if (!text) return []
-
-    const matches = text.match(/[^,;:—–]+(?:[,;:—–]+(?=\s|$)|[,;:—–]+)?\s*|[,;:—–]+\s*/g)
-    return matches?.length ? matches : [text]
 }
 
 function getFontForMarks(fonts, marks = {}) {
@@ -469,35 +378,17 @@ function carveTextLineSlots(base, blocked) {
     return slots.filter(slot => slot.right - slot.left >= 24)
 }
 
-function createFragment(item, leadingGap, start, end, text, width) {
+function createFragment(item, fragment) {
     return {
-        key: `${item.key}-${createCursorKey(start, end)}`,
+        key: `${item.key}-${createCursorKey(fragment.start, fragment.end)}`,
         href: item.href,
         target: item.target,
         rel: item.rel,
         marks: item.marks,
-        leadingGap,
-        text,
-        width
+        leadingGap: fragment.gapBefore,
+        text: fragment.text,
+        width: fragment.occupiedWidth
     }
-}
-
-function measureCollapsedSpaceWidth(font) {
-    const cached = collapsedSpaceWidthCache.get(font)
-    if (cached !== undefined) return cached
-
-    const joinedWidth = measureSingleLineWidth("A A", font)
-    const compactWidth = measureSingleLineWidth("AA", font)
-    const collapsedWidth = Math.max(0, joinedWidth - compactWidth)
-
-    collapsedSpaceWidthCache.set(font, collapsedWidth)
-    return collapsedWidth
-}
-
-function measureSingleLineWidth(text, font) {
-    const prepared = prepareWithSegments(text, font)
-    const line = layoutNextLine(prepared, LINE_START_CURSOR, UNBOUNDED_WIDTH)
-    return line?.width || 0
 }
 
 function createParagraph(block) {
@@ -541,16 +432,57 @@ function resolvePixelValue(value, fallback) {
     return Number.isFinite(parsed) ? parsed : fallback
 }
 
-function cursorsMatch(first, second) {
-    return first.segmentIndex === second.segmentIndex && first.graphemeIndex === second.graphemeIndex
-}
+function resolveLetterSpacing(value) {
+    if (value === "normal") return 0
 
-function cursorsMatchNullable(first, second) {
-    if (first === null && second === null) return true
-    if (first === null || second === null) return false
-    return cursorsMatch(first, second)
+    const parsed = parseFloat(value)
+    return Number.isFinite(parsed) ? parsed : 0
 }
 
 function createCursorKey(start, end) {
     return `${start.segmentIndex}:${start.graphemeIndex}-${end.segmentIndex}:${end.graphemeIndex}`
+}
+
+function createRichCursorKey(cursor) {
+    if (!cursor) return "null"
+    return `${cursor.itemIndex}:${cursor.segmentIndex}:${cursor.graphemeIndex}`
+}
+
+function createPreparedParagraphCacheKey(paragraph, typography) {
+    return JSON.stringify({
+        block: paragraph.block,
+        fonts: {
+            body: typography.fonts.body,
+            strong: typography.fonts.strong,
+            em: typography.fonts.em,
+            strongEm: typography.fonts.strongEm
+        },
+        runs: paragraph.runs.map(run => ({
+            href: run.href || "",
+            target: run.target || "",
+            rel: run.rel || "",
+            marks: run.marks,
+            text: run.text || ""
+        }))
+    })
+}
+
+function readCachedValue(cache, key) {
+    const cachedValue = cache.get(key)
+    if (cachedValue === undefined) return null
+
+    cache.delete(key)
+    cache.set(key, cachedValue)
+    return cachedValue
+}
+
+function writeCachedValue(cache, key, value, limit) {
+    cache.set(key, value)
+
+    if (cache.size <= limit) return
+
+    const oldestKey = cache.keys().next().value
+    if (oldestKey !== undefined) {
+        cache.delete(oldestKey)
+    }
 }

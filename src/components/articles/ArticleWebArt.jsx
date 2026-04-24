@@ -1,7 +1,6 @@
 import "./ArticleWebArt.scss"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Article from "./base/Article.jsx"
-import {useFeedbacks} from "../../providers/FeedbacksProvider.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useNavigation} from "../../providers/NavigationProvider.jsx"
 import patronusSvgMarkup from "./webArt/patronus.svg?raw"
@@ -49,6 +48,8 @@ const MINESWEEPER_COLORS = [
     "#000000",
     "#808080"
 ]
+
+const INITIAL_WEB_ART_ITEM_MOUNT_COUNT = 2
 
 function _createMinesweeperBoard(rows = MINESWEEPER_ROWS, cols = MINESWEEPER_COLS, mineCount = MINESWEEPER_MINES) {
     const total = rows * cols
@@ -131,9 +132,12 @@ function _isMinesweeperVictory(board, revealed, flagged) {
     return true
 }
 
+function _makePlaceholderAriaLabel(label) {
+    return `Web art ${String(label || "tile").toLowerCase()} tile loading`
+}
+
 function ArticleWebArt({ dataWrapper, id }) {
     const language = useLanguage()
-    const feedbacks = useFeedbacks()
     const ambientTraceReadyId = `${dataWrapper.uniqueId}-ambient-trace`
     const ambientHexReadyId = `${dataWrapper.uniqueId}-ambient-hex`
     const ambientPlopReadyId = `${dataWrapper.uniqueId}-ambient-plop`
@@ -174,21 +178,16 @@ function ArticleWebArt({ dataWrapper, id }) {
     const readyTimeoutsRef = useRef(new Map())
     const [readyCount, setReadyCount] = useState(0)
     const [activationIndex, setActivationIndex] = useState(-1)
+    const [openTileIds, setOpenTileIds] = useState(() => new Set())
+    const [mountedTileIds, setMountedTileIds] = useState(() => new Set())
+    const eagerItemTileIds = useMemo(() => {
+        return new Set(items.slice(0, INITIAL_WEB_ART_ITEM_MOUNT_COUNT).map((item) => item?.uniqueId).filter(Boolean))
+    }, [items])
     const trackedReadyIds = useMemo(() => {
-        return [
-            ...items.map((item) => item?.uniqueId).filter(Boolean),
-            ambientTraceReadyId,
-            ambientHexReadyId,
-            ambientPlopReadyId,
-            ambientJuliaReadyId,
-            ambientMinesReadyId,
-            ambientRingsReadyId,
-            ambientPrismReadyId,
-            ambientRopeReadyId,
-            ambientSoupReadyId,
-            ambientTardisReadyId
-        ]
-    }, [ambientHexReadyId, ambientJuliaReadyId, ambientMinesReadyId, ambientPlopReadyId, ambientPrismReadyId, ambientRingsReadyId, ambientRopeReadyId, ambientSoupReadyId, ambientTardisReadyId, ambientTraceReadyId, items])
+        return Array.from(mountedTileIds).filter((uniqueId) => {
+            return uniqueId !== "ambient-goldfish" && uniqueId !== "ambient-patronus"
+        })
+    }, [mountedTileIds])
     const locked = showIntroCover
     const selectedLanguageId = language.selectedLanguageId || "en"
 
@@ -261,6 +260,16 @@ function ArticleWebArt({ dataWrapper, id }) {
         setReadyCount(readySetRef.current.size)
     }, [])
 
+    const mountTile = useCallback((uniqueId) => {
+        if(!uniqueId) return
+        setMountedTileIds((current) => {
+            if(current.has(uniqueId)) return current
+            const next = new Set(current)
+            next.add(uniqueId)
+            return next
+        })
+    }, [])
+
     const resetArtState = useCallback(() => {
         for(const timeoutId of readyTimeoutsRef.current.values()) {
             window.clearTimeout(timeoutId)
@@ -270,28 +279,54 @@ function ArticleWebArt({ dataWrapper, id }) {
         setReadyCount(0)
         setActivationIndex(-1)
         setShouldMountTiles(false)
+        setOpenTileIds(new Set())
+        setMountedTileIds(new Set())
     }, [])
 
     const onIntroEnter = useCallback(() => {
-        feedbacks.showConfirmationDialog(
-            "Enter the web art?",
-            "The gallery loads its effects on demand. Confirm to continue.",
-            "fa-solid fa-triangle-exclamation",
-            () => {
-                setShowIntroCover(false)
-                setShouldMountTiles(true)
-                setActivationIndex(-1)
-            },
-            introCopy.button,
-            null,
-            language.getString("cancel")
-        )
-    }, [feedbacks, introCopy.button, language])
+        setShowIntroCover(false)
+        setShouldMountTiles(true)
+        setActivationIndex(items.length - 1)
+        setOpenTileIds(new Set())
+        setMountedTileIds(new Set(eagerItemTileIds))
+    }, [eagerItemTileIds, items.length])
+
+    const openTile = useCallback((uniqueId) => {
+        if(!uniqueId) return
+        mountTile(uniqueId)
+        setOpenTileIds((current) => {
+            if(current.has(uniqueId)) return current
+            const next = new Set(current)
+            next.add(uniqueId)
+            return next
+        })
+    }, [mountTile])
+
+    const closeTile = useCallback((uniqueId) => {
+        if(!uniqueId) return
+        setOpenTileIds((current) => {
+            if(!current.has(uniqueId)) return current
+            const next = new Set(current)
+            next.delete(uniqueId)
+            return next
+        })
+    }, [])
 
     const onIntroHide = useCallback(() => {
         resetArtState()
         setShowIntroCover(true)
     }, [resetArtState])
+
+    const getItemTileLabel = (itemWrapper, index) => {
+        const itemId = Number(itemWrapper?.id)
+        if(itemId === 1) return "Hover"
+        if(itemId === 2) return "Wave"
+        if(itemId === 3) return "3D"
+        if(itemId === 4) return "Poly"
+        if(itemId === 5) return "Click"
+        if(itemId === 6) return "Orbit"
+        return String(index + 1)
+    }
 
     const itemTiles = items.map((itemWrapper, index) => {
         if(!shouldMountTiles) {
@@ -302,58 +337,118 @@ function ArticleWebArt({ dataWrapper, id }) {
             )
         }
 
+        const tileId = itemWrapper.uniqueId
+        const isOpen = openTileIds.has(tileId)
+        const shouldRenderTile = mountedTileIds.has(tileId) || isOpen
         return (
-            <WebArtTile key={itemWrapper.uniqueId}
-                        itemWrapper={itemWrapper}
-                        index={index}
-                        locked={locked}
-                        activate={index <= activationIndex}
-                        onReady={onTileReady}/>
+            <GatedWebArtTile key={tileId}
+                             label={getItemTileLabel(itemWrapper, index)}
+                             isOpen={isOpen}
+                             onToggle={() => {
+                                 if(isOpen) closeTile(tileId)
+                                 else openTile(tileId)
+                             }}
+                             shouldRender={shouldRenderTile}>
+                {shouldRenderTile && (
+                    <WebArtTile itemWrapper={itemWrapper}
+                                index={index}
+                                locked={locked || !isOpen}
+                                activate={index <= activationIndex}
+                                onReady={onTileReady}/>
+                )}
+            </GatedWebArtTile>
         )
     })
 
     const ambientTiles = shouldMountTiles ? [
-        <TortuosityTraceTile key={"ambient-trace"}
-                             readyId={ambientTraceReadyId}
-                             locked={locked}
-                             onReady={onTileReady}/>,
-        <HexFlowBallsTile key={"ambient-hex"}
-                          readyId={ambientHexReadyId}
-                          locked={locked}
-                          onReady={onTileReady}/>,
-        <PixelPlopTile key={"ambient-plop"}
-                       readyId={ambientPlopReadyId}
-                       locked={locked}
-                       onReady={onTileReady}/>,
-        <JuliaLinesTile key={"ambient-julia"}
-                        readyId={ambientJuliaReadyId}
-                        locked={locked}
-                        onReady={onTileReady}/>,
-        <MinesweeperTile key={"ambient-mines"}
-                         readyId={ambientMinesReadyId}
-                         locked={locked}
-                         onReady={onTileReady}/>,
-        <FallingRingsTile key={"ambient-rings"}
-                          readyId={ambientRingsReadyId}
-                          locked={locked}
-                          onReady={onTileReady}/>,
-        <PrismFieldTile key={"ambient-prism"}
-                        readyId={ambientPrismReadyId}
-                        locked={locked}
-                        onReady={onTileReady}/>,
-        <RopeLightTile key={"ambient-rope"}
-                       readyId={ambientRopeReadyId}
-                       locked={locked}
-                       onReady={onTileReady}/>,
-        <SoupShaderTile key={"ambient-soup"}
-                        readyId={ambientSoupReadyId}
-                        locked={locked}
-                        onReady={onTileReady}/>,
-        <TardisTile key={"ambient-tardis"}
-                    readyId={ambientTardisReadyId}
-                    locked={locked}
-                    onReady={onTileReady}/>
-    ] : [
+        {
+            key: "ambient-trace",
+            tileId: ambientTraceReadyId,
+            label: "Trace",
+            render: (isOpen) => <TortuosityTraceTile readyId={ambientTraceReadyId} locked={locked || !isOpen} onReady={onTileReady}/>
+        },
+        {
+            key: "ambient-hex",
+            tileId: ambientHexReadyId,
+            label: "Hex",
+            render: (isOpen) => <HexFlowBallsTile readyId={ambientHexReadyId} locked={locked || !isOpen} onReady={onTileReady}/>
+        },
+        {
+            key: "ambient-plop",
+            tileId: ambientPlopReadyId,
+            label: "Plop",
+            render: (isOpen) => <PixelPlopTile readyId={ambientPlopReadyId} locked={locked || !isOpen} onReady={onTileReady}/>
+        },
+        {
+            key: "ambient-julia",
+            tileId: ambientJuliaReadyId,
+            label: "Julia",
+            render: (isOpen) => <JuliaLinesTile readyId={ambientJuliaReadyId} locked={locked || !isOpen} onReady={onTileReady}/>
+        },
+        {
+            key: "ambient-mines",
+            tileId: ambientMinesReadyId,
+            label: "Bomb",
+            render: (isOpen) => <MinesweeperTile readyId={ambientMinesReadyId} locked={locked || !isOpen} onReady={onTileReady}/>
+        },
+        {
+            key: "ambient-rings",
+            tileId: ambientRingsReadyId,
+            label: "Fall",
+            render: (isOpen) => <FallingRingsTile readyId={ambientRingsReadyId} locked={locked || !isOpen} onReady={onTileReady}/>
+        },
+        {
+            key: "ambient-prism",
+            tileId: ambientPrismReadyId,
+            label: "Prism",
+            render: (isOpen) => <PrismFieldTile readyId={ambientPrismReadyId} locked={locked || !isOpen} onReady={onTileReady}/>
+        },
+        {
+            key: "ambient-rope",
+            tileId: ambientRopeReadyId,
+            label: "Rope",
+            render: (isOpen) => <RopeLightTile readyId={ambientRopeReadyId} locked={locked || !isOpen} onReady={onTileReady}/>
+        },
+        {
+            key: "ambient-soup",
+            tileId: ambientSoupReadyId,
+            label: "Soup",
+            render: (isOpen) => <SoupShaderTile readyId={ambientSoupReadyId} locked={locked || !isOpen} onReady={onTileReady}/>
+        },
+        {
+            key: "ambient-tardis",
+            tileId: ambientTardisReadyId,
+            label: "Tardis",
+            render: (isOpen) => <TardisTile readyId={ambientTardisReadyId} locked={locked || !isOpen} onReady={onTileReady}/>
+        },
+        {
+            key: "ambient-goldfish",
+            tileId: "ambient-goldfish",
+            label: "Fish",
+            render: (isOpen) => <GoldfishTile locked={locked || !isOpen} />
+        },
+        {
+            key: "ambient-patronus",
+            tileId: "ambient-patronus",
+            label: "Patronus",
+            render: (isOpen) => <PatronusTile locked={locked || !isOpen} />
+        }
+    ].map(({ key, tileId, label, render }) => {
+        const isOpen = openTileIds.has(tileId)
+        const shouldRenderTile = mountedTileIds.has(tileId) || isOpen
+        return (
+            <GatedWebArtTile key={key}
+                             label={label}
+                             isOpen={isOpen}
+                             onToggle={() => {
+                                 if(isOpen) closeTile(tileId)
+                                 else openTile(tileId)
+                             }}
+                             shouldRender={shouldRenderTile}>
+                {shouldRenderTile && render(isOpen)}
+            </GatedWebArtTile>
+        )
+    }) : [
         <div key={"ambient-trace"}
              className={`article-web-art-tile article-web-art-tile-placeholder`}
              aria-label={`Web art trace tile loading`}/>,
@@ -394,26 +489,28 @@ function ArticleWebArt({ dataWrapper, id }) {
     useEffect(() => {
         if(!shouldMountTiles) return
 
-        // Reveal tiles gradually so activation work stays spread out.
-        let canceled = false
-        setActivationIndex(-1)
+        setActivationIndex(items.length - 1)
+    }, [shouldMountTiles, items.length])
 
-        const raf = requestAnimationFrame(() => {
-            if(canceled) return
-            let i = -1
-            const interval = window.setInterval(() => {
-                if(canceled) return
-                i += 1
-                setActivationIndex((prev) => Math.max(prev, i))
-                if(i >= items.length - 1) window.clearInterval(interval)
-            }, 220)
+    useEffect(() => {
+        if(!shouldMountTiles) return
+
+        const deferredItemIds = items
+            .map((item) => item?.uniqueId)
+            .filter((uniqueId) => uniqueId && !eagerItemTileIds.has(uniqueId))
+
+        const cancelers = deferredItemIds.map((uniqueId, index) => {
+            return _scheduleIdleWork(() => {
+                mountTile(uniqueId)
+            }, { timeoutMs: 400 + index * 180 })
         })
 
         return () => {
-            canceled = true
-            cancelAnimationFrame(raf)
+            for(const cancel of cancelers) {
+                cancel?.()
+            }
         }
-    }, [shouldMountTiles, items.length])
+    }, [eagerItemTileIds, items, mountTile, shouldMountTiles])
 
     useEffect(() => {
         if(!shouldMountTiles) return
@@ -442,7 +539,7 @@ function ArticleWebArt({ dataWrapper, id }) {
                 <WebArtIntroCover title={introTitle}
                                   note={introCopy.note}
                                   buttonLabel={showIntroCover ? introCopy.button : introHideLabel}
-                                  hidden={showIntroCover}
+                                  hidden={!showIntroCover}
                                   onEnter={showIntroCover ? onIntroEnter : onIntroHide}/>
 
                 {!showIntroCover && (
@@ -451,8 +548,6 @@ function ArticleWebArt({ dataWrapper, id }) {
                              ref={tilesWrapperRef}
                              aria-busy={showIntroCover}>
                             {itemTiles}
-                            <GoldfishTile />
-                            <PatronusTile />
                             {ambientTiles}
                             <SendYourFunAnimationTile label={submitTileLabel} clickLabel={clickTileLabel}/>
                         </div>
@@ -492,6 +587,24 @@ function WebArtIntroCover({ title, note, buttonLabel, hidden, onEnter }) {
                     {buttonLabel}
                 </button>
             </div>
+        </div>
+    )
+}
+
+function GatedWebArtTile({ label, isOpen, onToggle, shouldRender = true, children }) {
+    return (
+        <div className={`article-web-art-gated-tile ${isOpen ? "article-web-art-gated-tile-open" : "article-web-art-gated-tile-closed"}`}>
+            {shouldRender ? children : (
+                <div className={`article-web-art-tile article-web-art-tile-placeholder`}
+                     aria-label={_makePlaceholderAriaLabel(label)}/>
+            )}
+            <div className={`article-web-art-gated-tile-sheet`} aria-hidden={true}/>
+            <button type={"button"}
+                    className={`article-web-art-gated-tile-pill ${isOpen ? "article-web-art-gated-tile-pill-open" : "article-web-art-gated-tile-pill-closed"}`}
+                    onClick={onToggle}
+                    aria-label={`${isOpen ? "Hide" : "Show"} ${label}`}>
+                {label}
+            </button>
         </div>
     )
 }
@@ -625,6 +738,26 @@ function EmbroideryTile({ itemWrapper, index, activate, locked, onReady }) {
         }
     }, [activate, config, itemWrapper.uniqueId, onReady])
 
+    useEffect(() => {
+        const engine = engineRef.current
+        if(!engine) return
+        if(locked) {
+            engine.stop?.()
+            return
+        }
+        if(visibleRef.current) engine.start?.()
+    }, [locked])
+
+    useEffect(() => {
+        const engine = engineRef.current
+        if(!engine) return
+        if(locked) {
+            engine.stop?.()
+            return
+        }
+        if(visibleRef.current) engine.start?.()
+    }, [locked])
+
     const _start = () => {
         hoverRef.current = true
         if(visibleRef.current) engineRef.current?.start()
@@ -753,6 +886,17 @@ function SpiralDotsTile({ itemWrapper, index, activate, locked, onReady }) {
             engineRef.current = null
         }
     }, [activate, config, itemWrapper.uniqueId, onReady])
+
+    useEffect(() => {
+        const engine = engineRef.current
+        if(!engine) return
+        if(locked) {
+            engine.clearMouse?.()
+            engine.stop?.()
+            return
+        }
+        engine.start?.()
+    }, [locked])
 
     const _mousePosFromEvent = (event) => {
         const tile = tileRef.current
@@ -1090,6 +1234,17 @@ function ThreeTunnelTile({ itemWrapper, index, activate, locked, onReady }) {
         }
     }, [activate, config, itemWrapper.uniqueId, onReady])
 
+    useEffect(() => {
+        const engine = engineRef.current
+        if(!engine) return
+        if(locked) {
+            engine.setHeld?.(false)
+            engine.stop?.()
+            return
+        }
+        if(visibleRef.current) engine.start?.()
+    }, [locked])
+
     const _start = () => {
         hoverRef.current = true
         if(visibleRef.current) engineRef.current?.start()
@@ -1144,6 +1299,9 @@ function ThreePolygonDemo5Tile({ itemWrapper, index, activate, locked, onReady }
     const hoverRef = useRef(true)
     const visibleRef = useRef(true)
     const didReadyRef = useRef(false)
+    const pointerIdRef = useRef(null)
+    const holdTimerRef = useRef(null)
+    const holdActiveRef = useRef(false)
 
     const reduceMotion = useMemo(() => {
         if(typeof window === "undefined" || !window.matchMedia) return false
@@ -1153,13 +1311,13 @@ function ThreePolygonDemo5Tile({ itemWrapper, index, activate, locked, onReady }
     const config = useMemo(() => {
         return {
             reduceMotion,
-            nbObjects: 14,
+            nbObjects: 12,
             animationDuration: 7,
             animationDelay: 0.1,
             cameraZ: 75,
             fitFactor: 1.04
         }
-    }, [reduceMotion])
+    }, [reduceMotion, locked])
 
     useEffect(() => {
         if(!activate) return
@@ -1185,7 +1343,7 @@ function ThreePolygonDemo5Tile({ itemWrapper, index, activate, locked, onReady }
             const engine = mod.createThreePolygonDemo5Engine(canvas, config)
             engineRef.current = engine
 
-            const updateSize = () => _syncTileEngineSize(tile, engine, Math.min(1.5, window.devicePixelRatio || 1))
+            const updateSize = () => _syncTileEngineSize(tile, engine, Math.min(1.2, window.devicePixelRatio || 1))
 
             updateSize()
             engine.reset()
@@ -1226,19 +1384,20 @@ function ThreePolygonDemo5Tile({ itemWrapper, index, activate, locked, onReady }
         return () => {
             canceled = true
             cancelWork?.()
+            if(holdTimerRef.current != null) window.clearTimeout(holdTimerRef.current)
             cleanup?.()
         }
     }, [activate, config, itemWrapper.uniqueId, onReady])
 
-        const _restart = () => {
-            engineRef.current?.reset()
-            if(visibleRef.current) engineRef.current?.start()
-        }
+    const _boost = () => {
+        engineRef.current?.boost?.()
+        if(visibleRef.current) engineRef.current?.start()
+    }
 
     const onKeyDown = (event) => {
         if(event.key === "Enter" || event.key === " ") {
             event.preventDefault()
-            _restart()
+            _boost()
         }
     }
 
@@ -1248,13 +1407,65 @@ function ThreePolygonDemo5Tile({ itemWrapper, index, activate, locked, onReady }
                 className={`article-web-art-tile article-web-art-tile-clickable`}
                 aria-label={`Polygon demo 5 web art tile ${index + 1}`}
                 disabled={locked}
-                onClick={locked ? undefined : _restart}
                 onKeyDown={locked ? undefined : onKeyDown}
+                onPointerDown={locked ? undefined : (event) => {
+                    if(event.button != null && event.button !== 0) return
+                    pointerIdRef.current = event.pointerId
+                    holdActiveRef.current = false
+                    try { event.currentTarget.setPointerCapture(event.pointerId) } catch(err) { void err }
+                    if(visibleRef.current) engineRef.current?.start()
+                    if(holdTimerRef.current != null) window.clearTimeout(holdTimerRef.current)
+                    holdTimerRef.current = window.setTimeout(() => {
+                        if(pointerIdRef.current == null) return
+                        holdActiveRef.current = true
+                        engineRef.current?.setHeld?.(true)
+                    }, 140)
+                }}
+                onPointerUp={locked ? undefined : (event) => {
+                    if(pointerIdRef.current != null && event.pointerId !== pointerIdRef.current) return
+                    if(holdTimerRef.current != null) {
+                        window.clearTimeout(holdTimerRef.current)
+                        holdTimerRef.current = null
+                    }
+                    pointerIdRef.current = null
+                    if(holdActiveRef.current) {
+                        holdActiveRef.current = false
+                        engineRef.current?.setHeld?.(false)
+                    }
+                    else {
+                        _boost()
+                    }
+                }}
+                onPointerCancel={locked ? undefined : (() => {
+                    if(holdTimerRef.current != null) {
+                        window.clearTimeout(holdTimerRef.current)
+                        holdTimerRef.current = null
+                    }
+                    pointerIdRef.current = null
+                    holdActiveRef.current = false
+                    engineRef.current?.setHeld?.(false)
+                })}
+                onLostPointerCapture={locked ? undefined : (() => {
+                    if(holdTimerRef.current != null) {
+                        window.clearTimeout(holdTimerRef.current)
+                        holdTimerRef.current = null
+                    }
+                    pointerIdRef.current = null
+                    holdActiveRef.current = false
+                    engineRef.current?.setHeld?.(false)
+                })}
                 onMouseEnter={locked ? undefined : (() => {
                     hoverRef.current = true
                     if(visibleRef.current) engineRef.current?.start()
                 })}
                 onMouseLeave={locked ? undefined : (() => {
+                    if(holdTimerRef.current != null) {
+                        window.clearTimeout(holdTimerRef.current)
+                        holdTimerRef.current = null
+                    }
+                    pointerIdRef.current = null
+                    holdActiveRef.current = false
+                    engineRef.current?.setHeld?.(false)
                     hoverRef.current = true
                     if(visibleRef.current) engineRef.current?.start()
                     else engineRef.current?.stop()
@@ -1264,6 +1475,13 @@ function ThreePolygonDemo5Tile({ itemWrapper, index, activate, locked, onReady }
                     if(visibleRef.current) engineRef.current?.start()
                 })}
                 onBlur={locked ? undefined : (() => {
+                    if(holdTimerRef.current != null) {
+                        window.clearTimeout(holdTimerRef.current)
+                        holdTimerRef.current = null
+                    }
+                    pointerIdRef.current = null
+                    holdActiveRef.current = false
+                    engineRef.current?.setHeld?.(false)
                     hoverRef.current = true
                     if(visibleRef.current) engineRef.current?.start()
                     else engineRef.current?.stop()
@@ -1366,6 +1584,16 @@ function OrbitCirclesTile({ itemWrapper, index, activate, locked, onReady }) {
             engineRef.current = null
         }
     }, [activate, config, itemWrapper.uniqueId, onReady])
+
+    useEffect(() => {
+        const engine = engineRef.current
+        if(!engine) return
+        if(locked) {
+            engine.stop?.()
+            return
+        }
+        if(visibleRef.current) engine.start?.()
+    }, [locked])
 
     const _start = () => {
         hoverRef.current = true
@@ -1511,6 +1739,27 @@ function TortuosityTraceTile({ readyId, locked, onReady }) {
         }
     }, [config, onReady, readyId])
 
+    useEffect(() => {
+        const engine = engineRef.current
+        if(!engine) return
+        if(locked) {
+            engine.setHeld?.(false)
+            engine.stop?.()
+            return
+        }
+        engine.start?.()
+    }, [locked])
+
+    useEffect(() => {
+        const engine = engineRef.current
+        if(!engine) return
+        if(locked) {
+            engine.stop?.()
+            return
+        }
+        engine.start?.()
+    }, [locked])
+
     const reset = () => {
         engineRef.current?.reset?.()
         engineRef.current?.start?.()
@@ -1625,6 +1874,27 @@ function HexFlowBallsTile({ readyId, locked, onReady }) {
         }
     }, [config, onReady, readyId])
 
+    useEffect(() => {
+        const engine = engineRef.current
+        if(!engine) return
+        if(locked) {
+            engine.clearPointer?.()
+            engine.stop?.()
+            return
+        }
+        engine.start?.()
+    }, [locked])
+
+    useEffect(() => {
+        const engine = engineRef.current
+        if(!engine) return
+        if(locked) {
+            engine.stop?.()
+            return
+        }
+        engine.start?.()
+    }, [locked])
+
     const toggleGrid = () => {
         engineRef.current?.toggleGridContrast?.()
         engineRef.current?.start?.()
@@ -1736,6 +2006,27 @@ function PixelPlopTile({ readyId, locked, onReady }) {
             engineRef.current = null
         }
     }, [config, onReady, readyId])
+
+    useEffect(() => {
+        const engine = engineRef.current
+        if(!engine) return
+        if(locked) {
+            engine.clearPointer?.()
+            engine.stop?.()
+            return
+        }
+        engine.start?.()
+    }, [locked])
+
+    useEffect(() => {
+        const engine = engineRef.current
+        if(!engine) return
+        if(locked) {
+            engine.stop?.()
+            return
+        }
+        engine.start?.()
+    }, [locked])
 
     const seed = () => {
         engineRef.current?.seedBurst?.()
@@ -1862,6 +2153,29 @@ function JuliaLinesTile({ readyId, locked, onReady }) {
             engineRef.current = null
         }
     }, [config, onReady, readyId])
+
+    useEffect(() => {
+        const engine = engineRef.current
+        if(!engine) return
+        if(locked) {
+            engine.setHeld?.(false)
+            engine.clearPointer?.()
+            engine.stop?.()
+            return
+        }
+        engine.start?.()
+    }, [locked])
+
+    useEffect(() => {
+        const engine = engineRef.current
+        if(!engine) return
+        if(locked) {
+            engine.clearPointer?.()
+            engine.stop?.()
+            return
+        }
+        engine.start?.()
+    }, [locked])
 
     const pointerPosition = (event) => {
         const tile = tileRef.current
@@ -2807,6 +3121,20 @@ function TardisTile({ readyId, locked, onReady }) {
         }
     }, [ripples])
 
+    useEffect(() => {
+        const engine = engineRef.current
+        if(!engine) return
+        if(locked) {
+            setBoosting(false)
+            setCursorActive(false)
+            lastPointerRef.current = null
+            engine.clearPointer?.()
+            engine.stop?.()
+            return
+        }
+        engine.start?.()
+    }, [locked])
+
     const pointerPosition = (event) => {
         const tile = tileRef.current
         if(!tile) return { x: 0.5, y: 0.5, px: 0, py: 0, dx: 0, dy: 0 }
@@ -2988,7 +3316,7 @@ function SendYourFunAnimationTile({ label, clickLabel }) {
     )
 }
 
-function GoldfishTile() {
+function GoldfishTile({ locked = false }) {
     const tileRef = useRef(null)
     const reduceMotion = useMemo(() => {
         if(typeof window === "undefined" || !window.matchMedia) return false
@@ -3106,6 +3434,12 @@ function GoldfishTile() {
         }
     }, [reduceMotion])
 
+    useEffect(() => {
+        const tile = tileRef.current
+        if(!tile) return
+        tile.classList.toggle("article-web-art-tile-goldfish-locked", locked)
+    }, [locked])
+
     return (
         <div className={`article-web-art-tile article-web-art-tile-goldfish`}
              ref={tileRef}
@@ -3134,7 +3468,7 @@ function GoldfishTile() {
     )
 }
 
-function PatronusTile() {
+function PatronusTile({ locked = false }) {
     const tileRef = useRef(null)
     const layerRefs = useRef([])
     const progressRef = useRef(0)
@@ -3247,6 +3581,8 @@ function PatronusTile() {
             rafId = requestAnimationFrame(tick)
         }
 
+        hovered = !locked
+
         tile.addEventListener("mouseenter", onEnter)
         tile.addEventListener("mousemove", onMove)
         tile.addEventListener("mouseleave", onLeave)
@@ -3255,7 +3591,7 @@ function PatronusTile() {
         tile.addEventListener("pointerup", endTouch)
         tile.addEventListener("pointercancel", endTouch)
         applyLimited(0.5, 0.5)
-        if(!reduceMotion) {
+        if(!reduceMotion && !locked) {
             rafId = requestAnimationFrame(tick)
         }
 

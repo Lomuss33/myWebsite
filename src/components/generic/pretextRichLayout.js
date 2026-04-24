@@ -1,11 +1,13 @@
-import { layoutNextLine, prepareWithSegments } from "@chenglou/pretext"
+import {
+    layoutNextRichInlineLineRange,
+    materializeRichInlineLineRange,
+    prepareRichInline
+} from "@chenglou/pretext/rich-inline"
 
-const LINE_START_CURSOR = { segmentIndex: 0, graphemeIndex: 0 }
-const UNBOUNDED_WIDTH = 100000
 const graphemeSegmenter = new Intl.Segmenter(undefined, { granularity: "grapheme" })
-
-const collapsedSpaceWidthCache = new Map()
 const graphemeWidthCache = new Map()
+const preparedParagraphCache = new Map()
+const PREPARED_PARAGRAPH_CACHE_LIMIT = 160
 
 /**
  * @param {String} html
@@ -88,8 +90,7 @@ export function parseInteractiveHtml(html) {
                 target: element.getAttribute("target") || undefined,
                 rel: element.getAttribute("rel") || undefined
             }
-        }
-        else if (element.classList.contains("text-primary")) {
+        } else if (element.classList.contains("text-primary")) {
             nextKind = "highlight"
             nextLinkMeta = null
         }
@@ -123,7 +124,7 @@ export function parseInteractiveHtml(html) {
 
 /**
  * @param {{ body: HTMLElement | null, paragraph: HTMLElement | null }} elements
- * @return {{ font: string, lineHeight: number, paragraphGap: number } | null}
+ * @return {{ font: string, lineHeight: number, paragraphGap: number, letterSpacing: number } | null}
  */
 export function readTypographySnapshot(elements) {
     const bodyElement = elements?.body
@@ -141,13 +142,14 @@ export function readTypographySnapshot(elements) {
     return {
         font,
         lineHeight,
-        paragraphGap
+        paragraphGap,
+        letterSpacing: resolveLetterSpacing(bodyStyle.letterSpacing)
     }
 }
 
 /**
  * @param {{ items: Array<{ kind: "body" | "highlight" | "link", text: string, locked?: boolean, href?: string, target?: string, rel?: string }> }[]} paragraphs
- * @param {{ font: string, lineHeight: number, paragraphGap: number }} typography
+ * @param {{ font: string, lineHeight: number, paragraphGap: number, letterSpacing: number }} typography
  * @param {number} maxWidth
  * @return {{ paragraphs: Array<{ key: string, lines: Array<any>, marginBottom: number }>, totalHeight: number }}
  */
@@ -161,14 +163,14 @@ export function layoutInteractiveParagraphs(paragraphs, typography, maxWidth) {
 
     const preparedParagraphs = paragraphs
         .map((paragraph, paragraphIndex) => {
-            return createPreparedParagraph(paragraph, paragraphIndex, typography.font)
+            return createPreparedParagraph(paragraph, paragraphIndex, typography)
         })
         .filter(Boolean)
 
     let totalHeight = 0
 
     const laidOutParagraphs = preparedParagraphs.map((paragraph, paragraphIndex) => {
-        const lines = layoutPreparedParagraph(paragraph, typography.font, maxWidth)
+        const lines = layoutPreparedParagraph(paragraph, typography, maxWidth)
         const marginBottom =
             paragraph.block === "p" && paragraphIndex !== preparedParagraphs.length - 1 ?
                 typography.paragraphGap :
@@ -193,7 +195,7 @@ export function getFragmentGraphemes(fragment) {
     if (!fragment) return []
     if (fragment.graphemes) return fragment.graphemes
 
-    fragment.graphemes = measureGraphemes(fragment.text, fragment.font)
+    fragment.graphemes = measureGraphemes(fragment.text, fragment.font, fragment.letterSpacing)
     return fragment.graphemes
 }
 
@@ -217,188 +219,116 @@ function resolvePixelValue(value, fallback) {
     return Number.isFinite(parsed) ? parsed : fallback
 }
 
-function createPreparedParagraph(paragraph, paragraphIndex, font) {
-    const collapsedSpaceWidth = measureCollapsedSpaceWidth(font)
-    let pendingGap = 0
+function resolveLetterSpacing(value) {
+    if (value === "normal") return 0
 
-    const items = paragraph.items.reduce((collection, item, itemIndex) => {
-        const rawText = item.text || ""
-        // Word-safe tokenization (preserve trailing whitespace on tokens).
-        const pieces = rawText.match(/\s*[^\s]+\s*/g) || []
-        if (pieces.length === 0) return collection
+    const parsed = parseFloat(value)
+    return Number.isFinite(parsed) ? parsed : 0
+}
 
-        pieces.forEach((rawPiece, pieceIndex) => {
-            const hasLeadingWhitespace = /^\s/.test(rawPiece)
-            const hasTrailingWhitespace = /\s$/.test(rawPiece)
-            const trimmedText = rawPiece.trim()
-            const carryGap = pendingGap
-
-            pendingGap = hasTrailingWhitespace ? collapsedSpaceWidth : 0
-            if (!trimmedText) return
-
-            const prepared = prepareWithSegments(trimmedText, font)
-            const fullLine = layoutNextLine(prepared, LINE_START_CURSOR, UNBOUNDED_WIDTH)
-            if (!fullLine) return
-
-            collection.push({
-                key: `paragraph-${paragraphIndex}-item-${itemIndex}-piece-${pieceIndex}`,
-                kind: item.kind,
-                locked: item.locked || item.kind === "link",
-                href: item.href,
-                target: item.target,
-                rel: item.rel,
-                leadingGap: collection.length === 0 ? 0 : (carryGap > 0 || hasLeadingWhitespace ? collapsedSpaceWidth : 0),
-                prepared,
-                fullText: fullLine.text,
-                fullWidth: fullLine.width,
-                endCursor: fullLine.end
-            })
-        })
-
-        return collection
-    }, [])
+function createPreparedParagraph(paragraph, paragraphIndex, typography) {
+    const items = paragraph.items.map((item, itemIndex) => ({
+        key: `paragraph-${paragraphIndex}-item-${itemIndex}`,
+        kind: item.kind,
+        locked: item.locked || item.kind === "link",
+        href: item.href,
+        target: item.target,
+        rel: item.rel,
+        text: item.text || "",
+        font: typography.font,
+        letterSpacing: typography.letterSpacing
+    }))
 
     if (items.length === 0) return null
+
+    const cacheKey = createPreparedParagraphCacheKey(paragraph, typography)
+    const cachedPrepared = readCachedValue(preparedParagraphCache, cacheKey)
+    if (cachedPrepared) {
+        return {
+            key: `paragraph-${paragraphIndex}`,
+            block: paragraph.block,
+            items,
+            prepared: cachedPrepared
+        }
+    }
+
+    const prepared = prepareRichInline(items.map(item => ({
+        text: item.text,
+        font: item.font,
+        letterSpacing: item.letterSpacing,
+        break: item.locked ? "never" : "normal"
+    })))
+
+    writeCachedValue(preparedParagraphCache, cacheKey, prepared, PREPARED_PARAGRAPH_CACHE_LIMIT)
 
     return {
         key: `paragraph-${paragraphIndex}`,
         block: paragraph.block,
-        items
+        items,
+        prepared
     }
 }
 
-function layoutPreparedParagraph(paragraph, font, maxWidth) {
+function layoutPreparedParagraph(paragraph, typography, maxWidth) {
     const lines = []
     const safeWidth = Math.max(1, maxWidth)
+    let cursor = undefined
 
-    let itemIndex = 0
-    let cursor = null
+    while (true) {
+        const lineRange = layoutNextRichInlineLineRange(paragraph.prepared, safeWidth, cursor)
+        if (!lineRange) break
 
-    while (itemIndex < paragraph.items.length) {
-        const fragments = []
-        let lineWidth = 0
-        let remainingWidth = safeWidth
+        const line = materializeRichInlineLineRange(paragraph.prepared, lineRange)
+        const fragments = line.fragments.map(fragment => {
+            const item = paragraph.items[fragment.itemIndex]
+            return createFragment(item, fragment)
+        })
 
-        lineLoop:
-        while (itemIndex < paragraph.items.length) {
-            const item = paragraph.items[itemIndex]
-            const leadingGap = fragments.length === 0 ? 0 : item.leadingGap
-
-            if (cursor === null) {
-                const fullWidth = leadingGap + item.fullWidth
-                if (fullWidth <= remainingWidth) {
-                    const fragment = createFragment(item, leadingGap, LINE_START_CURSOR, item.endCursor, item.fullText, item.fullWidth, font)
-                    fragments.push(fragment)
-                    lineWidth += fullWidth
-                    remainingWidth = Math.max(0, safeWidth - lineWidth)
-                    itemIndex++
-                    continue
-                }
-
-                // Word-safe wrapping:
-                // If a whole token doesn't fit and we already have content on this line,
-                // move the whole token to the next line instead of splitting it.
-                if (fragments.length > 0) {
-                    break lineLoop
-                }
-
-                // If a whole token (word) doesn't fit, prefer overflowing as a whole word
-                // instead of splitting into graphemes.
-                // Only do this when the word is longer than the entire line width.
-                if (fragments.length === 0 && leadingGap === 0 && item.fullText && item.fullWidth > safeWidth) {
-                    const fragment = createFragment(item, 0, LINE_START_CURSOR, item.endCursor, item.fullText, item.fullWidth, font)
-                    fragments.push(fragment)
-                    lineWidth += item.fullWidth
-                    remainingWidth = Math.max(0, safeWidth - lineWidth)
-                    itemIndex++
-                    cursor = null
-                    continue
-                }
-            }
-
-            if (fragments.length > 0 && leadingGap >= remainingWidth) break lineLoop
-
-            const startCursor = cursor || LINE_START_CURSOR
-            const line = layoutNextLine(item.prepared, startCursor, Math.max(1, remainingWidth - leadingGap))
-            if (!line || cursorsMatch(startCursor, line.end)) {
-                itemIndex++
-                cursor = null
-                continue
-            }
-
-            const fragment = createFragment(item, leadingGap, startCursor, line.end, line.text, line.width, font)
-            fragments.push(fragment)
-            lineWidth += leadingGap + line.width
-            remainingWidth = Math.max(0, safeWidth - lineWidth)
-
-            if (cursorsMatch(line.end, item.endCursor)) {
-                itemIndex++
-                cursor = null
-                continue
-            }
-
+        if (fragments.length === 0) {
             cursor = line.end
-            break lineLoop
+            continue
         }
 
-        if (fragments.length === 0) break
-
-        const firstFragment = fragments[0]
-        const lastFragment = fragments[fragments.length - 1]
-        const lineKey = fragments.map(fragment => fragment.key).join("__")
         lines.push({
-            key: lineKey || createCursorKey(firstFragment.start, lastFragment.end),
-            width: lineWidth,
+            key: fragments.map(fragment => fragment.key).join("__"),
+            width: line.width,
             fragments
         })
+
+        cursor = line.end
     }
 
     return lines
 }
 
-function createFragment(item, leadingGap, start, end, text, width, font) {
+function createFragment(item, fragment) {
     return {
-        key: `${item.key}-${createCursorKey(start, end)}`,
+        key: `${item.key}-${createCursorKey(fragment.start, fragment.end)}`,
         kind: item.kind,
         locked: item.locked,
         href: item.href,
         target: item.target,
         rel: item.rel,
-        leadingGap,
-        text,
-        width,
-        start,
-        end,
-        font,
+        leadingGap: fragment.gapBefore,
+        text: fragment.text,
+        width: fragment.occupiedWidth,
+        start: fragment.start,
+        end: fragment.end,
+        font: item.font,
+        letterSpacing: item.letterSpacing,
         graphemes: null
     }
 }
 
-function measureCollapsedSpaceWidth(font) {
-    const cached = collapsedSpaceWidthCache.get(font)
-    if (cached !== undefined) return cached
-
-    const joinedWidth = measureSingleLineWidth("A A", font)
-    const compactWidth = measureSingleLineWidth("AA", font)
-    const collapsedWidth = Math.max(0, joinedWidth - compactWidth)
-
-    collapsedSpaceWidthCache.set(font, collapsedWidth)
-    return collapsedWidth
-}
-
-function measureSingleLineWidth(text, font) {
-    const prepared = prepareWithSegments(text, font)
-    const line = layoutNextLine(prepared, LINE_START_CURSOR, UNBOUNDED_WIDTH)
-    return line?.width || 0
-}
-
-function measureGraphemes(text, font) {
+function measureGraphemes(text, font, letterSpacing = 0) {
+    const rawSegments = Array.from(graphemeSegmenter.segment(text), segment => segment.segment)
     const graphemes = []
     let offsetX = 0
 
-    for (const segment of graphemeSegmenter.segment(text)) {
-        const grapheme = segment.segment
-        const width = measureGraphemeWidth(grapheme, font)
+    rawSegments.forEach((grapheme, index) => {
+        const width =
+            measureGraphemeWidth(grapheme, font) +
+            (index < rawSegments.length - 1 ? letterSpacing : 0)
 
         graphemes.push({
             text: grapheme,
@@ -407,7 +337,7 @@ function measureGraphemes(text, font) {
         })
 
         offsetX += width
-    }
+    })
 
     return graphemes
 }
@@ -434,10 +364,42 @@ function measureCanvas() {
     return measureCanvas.canvas
 }
 
-function cursorsMatch(first, second) {
-    return first.segmentIndex === second.segmentIndex && first.graphemeIndex === second.graphemeIndex
-}
-
 function createCursorKey(start, end) {
     return `${start.segmentIndex}:${start.graphemeIndex}-${end.segmentIndex}:${end.graphemeIndex}`
+}
+
+function createPreparedParagraphCacheKey(paragraph, typography) {
+    return JSON.stringify({
+        font: typography.font,
+        letterSpacing: typography.letterSpacing,
+        block: paragraph.block,
+        items: paragraph.items.map(item => ({
+            kind: item.kind,
+            locked: Boolean(item.locked),
+            href: item.href || "",
+            target: item.target || "",
+            rel: item.rel || "",
+            text: item.text || ""
+        }))
+    })
+}
+
+function readCachedValue(cache, key) {
+    const cachedValue = cache.get(key)
+    if (cachedValue === undefined) return null
+
+    cache.delete(key)
+    cache.set(key, cachedValue)
+    return cachedValue
+}
+
+function writeCachedValue(cache, key, value, limit) {
+    cache.set(key, value)
+
+    if (cache.size <= limit) return
+
+    const oldestKey = cache.keys().next().value
+    if (oldestKey !== undefined) {
+        cache.delete(oldestKey)
+    }
 }

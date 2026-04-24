@@ -4,6 +4,7 @@
  * @description This hook provides methods to parse and validate data loaded from JSON files.
  */
 
+import {useCallback} from "react"
 import {useViewport} from "../providers/ViewportProvider.jsx"
 import {useLanguage} from "../providers/LanguageProvider.jsx"
 import {useTheme} from "../providers/ThemeProvider.jsx"
@@ -18,7 +19,7 @@ export const useParser = () => {
      * @param {Object} section
      * @return {{prefix: String|null, title: String, navTitle: String}}
      */
-    const parseSectionTitle = (section) => {
+    const parseSectionTitle = useCallback((section) => {
         const isLgOrHigher = viewport.isBreakpoint("lg")
         const titleLocales = section.data?.title?.locales || {}
 
@@ -36,18 +37,18 @@ export const useParser = () => {
             navTitle:
                 language.getTranslation(titleLocales, "title_short_nav")
         }
-    }
+    }, [viewport, language])
 
     /**
      * @param {Object} section
      * @return {ArticleDataWrapper[]}
      */
-    const parseSectionArticles = (section) => {
+    const parseSectionArticles = useCallback((section) => {
         const articles = section.data?.articles || []
         return articles.map((article, key) => {
             return new ArticleDataWrapper(section, article, language, theme, key + 1)
         })
-    }
+    }, [language, theme])
 
     return {
         parseSectionTitle,

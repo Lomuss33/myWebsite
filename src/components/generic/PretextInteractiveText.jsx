@@ -1,5 +1,5 @@
 import "./PretextInteractiveText.scss"
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { motion, useInView, useReducedMotion } from "motion/react"
 import Link from "./Link.jsx"
 import {
@@ -54,7 +54,6 @@ function PretextInteractiveText({
     const visibleGraphemesRef = useRef([])
     const contentSizeRef = useRef({ width: 0, height: 0 })
     const lineHeightRef = useRef(0)
-    const gravityReleaseThresholdsRef = useRef([])
     const gravityStatesRef = useRef(new Map())
     const lastGoodWidthRef = useRef(0)
 
@@ -94,33 +93,6 @@ function PretextInteractiveText({
         return collectVisibleGraphemes(layout.paragraphs, effectiveLineHeight)
     }, [effectVariant, effectiveLineHeight, layout.paragraphs])
 
-    const refreshGravityReleaseThresholds = () => {
-        if (effectVariant !== "gravitySweep") {
-            gravityReleaseThresholdsRef.current = []
-            return
-        }
-
-        const contentElement = contentRef.current
-        if (!contentElement) {
-            gravityReleaseThresholdsRef.current = []
-            return
-        }
-
-        const contentRect = contentElement.getBoundingClientRect()
-        const lineElements = contentElement.querySelectorAll(".pretext-interactive-text-line")
-        const nextThresholds = []
-
-        lineElements.forEach((lineElement, index) => {
-            const rect = lineElement.getBoundingClientRect()
-            const localTop = rect.top - contentRect.top
-            const lineHeight = rect.height || lineHeightRef.current || 0
-
-            nextThresholds[index] = localTop + lineHeight * GRAVITY_RELEASE_ROW_OFFSET
-        })
-
-        gravityReleaseThresholdsRef.current = nextThresholds
-    }
-
     useEffect(() => {
         pointerStateRef.current = pointerState
     }, [pointerState])
@@ -136,27 +108,6 @@ function PretextInteractiveText({
     useEffect(() => {
         lineHeightRef.current = effectiveLineHeight
     }, [effectiveLineHeight])
-
-    useLayoutEffect(() => {
-        refreshGravityReleaseThresholds()
-
-        const contentElement = contentRef.current
-        if (effectVariant !== "gravitySweep" || !contentElement) {
-            return
-        }
-
-        if (typeof ResizeObserver === "undefined") {
-            return
-        }
-
-        const observer = new ResizeObserver(() => {
-            refreshGravityReleaseThresholds()
-        })
-
-        observer.observe(contentElement)
-
-        return () => observer.disconnect()
-    }, [effectVariant, contentWidth, layout.totalHeight, revealCycle, typographyVersion, html])
 
     useEffect(() => {
         const refreshTypography = () => {
@@ -423,7 +374,6 @@ function PretextInteractiveText({
         const previousTime = gravityLastFrameTimeRef.current ?? currentTime
         const dt = Math.min((currentTime - previousTime) / 1000, MAX_FRAME_DT)
         gravityLastFrameTimeRef.current = currentTime
-        refreshGravityReleaseThresholds()
 
         runGravityFrame(
             gravityStatesRef.current,
@@ -431,7 +381,6 @@ function PretextInteractiveText({
             pointerStateRef.current,
             contentSizeRef.current,
             lineHeightRef.current,
-            gravityReleaseThresholdsRef.current,
             dt
         )
 
@@ -1052,10 +1001,10 @@ function ensureGravityState(gravityStates, graphemeKey, baselineX, baselineY, li
     return nextState
 }
 
-function runGravityFrame(gravityStates, visibleGraphemes, pointerState, contentSize, lineHeight, releaseThresholds, dt) {
+function runGravityFrame(gravityStates, visibleGraphemes, pointerState, contentSize, lineHeight, dt) {
     if (!lineHeight || visibleGraphemes.length === 0) return
 
-    const releasedColumns = buildGravityColumns(visibleGraphemes, pointerState, contentSize, lineHeight, releaseThresholds)
+    const releasedColumns = buildGravityColumns(visibleGraphemes, pointerState, contentSize, lineHeight)
 
     visibleGraphemes.forEach(grapheme => {
         const gravityState = ensureGravityState(gravityStates, grapheme.key, grapheme.baselineX, grapheme.baselineY, lineHeight)
@@ -1144,7 +1093,7 @@ function runGravityFrame(gravityStates, visibleGraphemes, pointerState, contentS
     })
 }
 
-function buildGravityColumns(visibleGraphemes, pointerState, contentSize, lineHeight, releaseThresholds = []) {
+function buildGravityColumns(visibleGraphemes, pointerState, contentSize, lineHeight) {
     const releasedByColumn = new Map()
     const releasedLookup = new Map()
 
@@ -1154,9 +1103,7 @@ function buildGravityColumns(visibleGraphemes, pointerState, contentSize, lineHe
     const releaseCutoffY = releaseEntireText ? Number.NEGATIVE_INFINITY : pointerState.y
 
     visibleGraphemes.forEach(grapheme => {
-        const releaseThresholdY = releaseThresholds[grapheme.lineIndex] ?? grapheme.releaseThresholdY
-
-        if (releaseThresholdY < releaseCutoffY) return
+        if (grapheme.releaseThresholdY < releaseCutoffY) return
 
         const column = getGravityColumnIndex(grapheme.baselineX, lineHeight)
         if (!releasedByColumn.has(column)) {

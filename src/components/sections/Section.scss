@@ -351,21 +351,27 @@ section.section {
         -webkit-user-select: none;
         user-select: none;
         pointer-events: none;
+        will-change: opacity, transform;
     }
 
     &-hiding {
         z-index: $z-index-section-inactive;
-        transition: 0.6s opacity ease-in-out, 0.6s transform ease-in-out;
+        transition:
+            0.34s opacity cubic-bezier(0.4, 0, 1, 1),
+            0.34s transform cubic-bezier(0.2, 0, 0.1, 1);
         -webkit-user-select: none;
         user-select: none;
         pointer-events: none;
+        will-change: opacity, transform;
 
         opacity: 0;
-        transform: translateX(-40px) scale(0.8);
+        transform: translate3d(-24px, 0, 0) scale(0.975);
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
             width: calc(100% - 8px);
-            transition: 0.6s opacity ease-out, 0.4s transform ease-in-out;
-            transform: translateX(100vw);
+            transition:
+                0.26s opacity cubic-bezier(0.4, 0, 1, 1),
+                0.26s transform cubic-bezier(0.2, 0, 0.1, 1);
+            transform: translate3d(0, 32px, 0) scale(0.985);
         }
     }
 
@@ -380,23 +386,34 @@ section.section {
     &-will-show {
         z-index: $z-index-section-active;
         transition: none;
+        opacity: 0;
+        will-change: opacity, transform;
 
-        transform: translateX(100vw);
+        transform: translate3d(36px, 0, 0) scale(0.985);
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-            transform: translateY(100vh);
+            transform: translate3d(0, 36px, 0) scale(0.99);
         }
     }
 
     &-showing {
         z-index: $z-index-section-active;
-        transition: 0.5s transform ease-out;
+        opacity: 1;
+        transition:
+            0.38s opacity cubic-bezier(0.16, 1, 0.3, 1),
+            0.38s transform cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: opacity, transform;
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-            transition: 0.4s transform ease-out;
+            transition:
+                0.3s opacity cubic-bezier(0.16, 1, 0.3, 1),
+                0.3s transform cubic-bezier(0.16, 1, 0.3, 1);
         }
     }
 
     &-shown {
         z-index: $z-index-section-active;
         transition: none;
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+        will-change: auto;
     }
 }

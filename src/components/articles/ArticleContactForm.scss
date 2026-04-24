@@ -42,10 +42,10 @@ article.article-contact-form {
     --form-focus-background-color: var(--contact-form-surface-focus);
     --form-focus-color: var(--contact-form-text);
     --form-focus-border-color: var(--contact-form-border-focus);
-    --form-attach-background-color: color-mix(in srgb, #0b1220 84%, #4ea3ff 16%);
-    --form-attach-color: var(--theme-texts-light-2);
-    --form-focus-attach-background-color: color-mix(in srgb, #0b1220 84%, #4ea3ff 16%);
-    --form-focus-attach-color: var(--theme-texts-light-2);
+    --form-attach-background-color: color-mix(in srgb, #0b1220 92%, #1d4ed8 8%);
+    --form-attach-color: color-mix(in srgb, #dbeafe 76%, #94a3b8 24%);
+    --form-focus-attach-background-color: color-mix(in srgb, #0b1220 52%, #60a5fa 48%);
+    --form-focus-attach-color: #eff6ff;
 
     // Visually match the tighter spacing of the contact cards grid above.
     div.row-form {

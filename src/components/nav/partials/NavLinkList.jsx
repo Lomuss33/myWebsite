@@ -5,6 +5,7 @@ import GestureAwareButton from "../../buttons/GestureAwareButton.jsx"
 
 function NavLinkList({ links, expanded, compactRail = false }) {
     const containerRef = useRef(null)
+    const lastValuesRef = useRef({})
 
     const data = {expanded}
     const shrinkClass = expanded ?
@@ -27,14 +28,16 @@ function NavLinkList({ links, expanded, compactRail = false }) {
             : (expanded ? 64 : 54)
 
         const _setVariable = (name, value, unit = "px") => {
-            container.style.setProperty(name, `${value}${unit}`)
-        }
+            const normalizedValue = unit === "px"
+                ? Math.round(value)
+                : Number(value.toFixed(3))
+            const nextSerializedValue = `${normalizedValue}${unit}`
 
-        const _setSidebarVariable = (name, value, unit = "px") => {
-            const sidebarCard = container.closest(".nav-sidebar-card-wrapper")
-            if(!sidebarCard)
+            if(lastValuesRef.current[name] === nextSerializedValue)
                 return
-            sidebarCard.style.setProperty(name, `${value}${unit}`)
+
+            lastValuesRef.current[name] = nextSerializedValue
+            container.style.setProperty(name, nextSerializedValue)
         }
 
         const _interpolate = (min, max, factor) => {
@@ -58,7 +61,6 @@ function NavLinkList({ links, expanded, compactRail = false }) {
                 return
 
             const rawRowHeight = totalHeight / amountOfItems
-            _setSidebarVariable("--nav-link-target-height", rawRowHeight)
             const shrinkFactor = _clamp(
                 (baselineRowHeight - rawRowHeight) / Math.max(baselineRowHeight - minRowHeight, 1),
                 0,

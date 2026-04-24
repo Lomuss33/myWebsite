@@ -1,5 +1,6 @@
 import "./TextTyper.scss"
 import React, {useEffect, useRef, useState} from 'react'
+import { measureNaturalWidth, prepareWithSegments } from "@chenglou/pretext"
 import Animable from "../capabilities/Animable.jsx"
 import {useUtils} from "../../hooks/utils.js"
 import {useNavigation} from "../../providers/NavigationProvider.jsx"
@@ -10,6 +11,8 @@ const EMOJI_POOL = [
 ]
 const EASTER_EGG_PREFIX = "\u{1F430}"
 const EASTER_EGG_MEASURE_STRING = [EASTER_EGG_PREFIX, ...EMOJI_POOL.slice(0, 10)].join(" ")
+const textWidthCache = new Map()
+const TEXT_WIDTH_CACHE_LIMIT = 200
 
 function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, displayTime = 1, className = "", fixedPrefix = "", randomOrder = false }) {
     const utils = useUtils()
@@ -44,29 +47,26 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, dis
         }
 
         const computedStyles = window.getComputedStyle(dynamicSpanRef.current)
-        const measureElement = document.createElement("span")
         const candidateStrings = [...parsedStrings, EASTER_EGG_MEASURE_STRING]
-
-        measureElement.style.position = "absolute"
-        measureElement.style.visibility = "hidden"
-        measureElement.style.pointerEvents = "none"
-        measureElement.style.whiteSpace = "nowrap"
-        measureElement.style.font = computedStyles.font
-        measureElement.style.fontKerning = computedStyles.fontKerning
-        measureElement.style.fontVariant = computedStyles.fontVariant
-        measureElement.style.fontFeatureSettings = computedStyles.fontFeatureSettings
-        measureElement.style.letterSpacing = computedStyles.letterSpacing
-        measureElement.style.textTransform = computedStyles.textTransform
-
-        document.body.appendChild(measureElement)
+        const font = computedStyles.font || buildCanvasFont(computedStyles)
+        const letterSpacing = resolveLetterSpacing(computedStyles.letterSpacing)
+        const textTransform = computedStyles.textTransform
 
         let nextWidth = 0
         candidateStrings.forEach(candidateString => {
-            measureElement.textContent = `${candidateString}_`
-            nextWidth = Math.max(nextWidth, Math.ceil(measureElement.getBoundingClientRect().width))
+            const measuredText = applyTextTransform(`${candidateString}_`, textTransform)
+            const cacheKey = `${font}::${letterSpacing}::${measuredText}`
+            let measuredWidth = textWidthCache.get(cacheKey)
+
+            if(measuredWidth === undefined) {
+                const prepared = prepareWithSegments(measuredText, font, { letterSpacing })
+                measuredWidth = Math.ceil(measureNaturalWidth(prepared))
+                writeCachedValue(textWidthCache, cacheKey, measuredWidth, TEXT_WIDTH_CACHE_LIMIT)
+            }
+
+            nextWidth = Math.max(nextWidth, measuredWidth)
         })
 
-        measureElement.remove()
         setDynamicWidth(nextWidth || null)
     }, [parsedStrings])
 
@@ -304,6 +304,52 @@ TextTyper.Status = {
     TYPING: "typing",
     SHOWING: "showing",
     DELETING: "deleting"
+}
+
+function buildCanvasFont(style) {
+    const fontStyle = style.fontStyle || "normal"
+    const fontVariant = style.fontVariant || "normal"
+    const fontWeight = style.fontWeight || "400"
+    const fontStretch = style.fontStretch && style.fontStretch !== "normal" ? `${style.fontStretch} ` : ""
+    const fontSize = style.fontSize || "16px"
+    const fontFamily = style.fontFamily || "sans-serif"
+
+    return `${fontStyle} ${fontVariant} ${fontWeight} ${fontStretch}${fontSize} ${fontFamily}`.trim()
+}
+
+function resolveLetterSpacing(value) {
+    if(value === "normal") return 0
+
+    const parsed = parseFloat(value)
+    return Number.isFinite(parsed) ? parsed : 0
+}
+
+function applyTextTransform(text, textTransform) {
+    if(!text || !textTransform || textTransform === "none")
+        return text
+
+    if(textTransform === "uppercase")
+        return text.toLocaleUpperCase()
+
+    if(textTransform === "lowercase")
+        return text.toLocaleLowerCase()
+
+    if(textTransform === "capitalize") {
+        return text.replace(/\b(\p{L})/gu, character => character.toLocaleUpperCase())
+    }
+
+    return text
+}
+
+function writeCachedValue(cache, key, value, limit) {
+    cache.set(key, value)
+
+    if(cache.size <= limit)
+        return
+
+    const oldestKey = cache.keys().next().value
+    if(oldestKey !== undefined)
+        cache.delete(oldestKey)
 }
 
 export default TextTyper

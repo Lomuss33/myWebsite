@@ -156,7 +156,7 @@ export function createSoupShaderEngine(canvas, options = {}) {
         }
 
         const easedHoldMix = holdMix * holdMix * (3 - 2 * holdMix)
-        const ambientSpeed = 0.05 * (1 + mouseX * 5)
+        const ambientSpeed = 0.07 * (1 + mouseX * 5)
         const heldSpeed = 0.003 + mouseX * 0.004
         const speed = ambientSpeed + (heldSpeed - ambientSpeed) * easedHoldMix
         timeValue += reduceMotion ? speed * 0.15 : speed

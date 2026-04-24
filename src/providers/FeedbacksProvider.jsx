@@ -4,7 +4,7 @@
  * @description This provider is responsible for managing feedbacks, modals and UI interactions.
  */
 
-import React, {createContext, useContext, useEffect, useState} from 'react'
+import React, {createContext, useContext, useEffect, useRef, useState} from 'react'
 import {useUtils} from "../hooks/utils.js"
 import {useScheduler} from "../hooks/scheduler.js"
 import {useLanguage} from "./LanguageProvider.jsx"
@@ -32,6 +32,7 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
     const [displayingGallery, setDisplayingGallery] = useState(null)
     const [displayingPhoneQr, setDisplayingPhoneQr] = useState(null)
     const [pendingConfirmation, setPendingConfirmation] = useState(null)
+    const confirmationIdRef = useRef(0)
 
     /** @listens canHaveAnimatedCursor|viewport.innerWidth **/
     useEffect(() => {
@@ -124,7 +125,9 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
     }
 
     const showConfirmationDialog = (title, message, faIcon, onConfirm, confirmLabel, onCancel, cancelLabel) => {
+        const confirmationId = ++confirmationIdRef.current
         setPendingConfirmation({
+            id: confirmationId,
             title: title,
             message: message,
             faIcon: faIcon,
@@ -186,7 +189,13 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
                                onDismiss={closeYoutubeVideo}/>
 
             <ConfirmationWindowModal target={pendingConfirmation}
-                                     onDismiss={() => {setPendingConfirmation(null)}}/>
+                                     onDismiss={(dismissedTarget) => {
+                                         setPendingConfirmation((current) => {
+                                             if(!current) return null
+                                             if(dismissedTarget?.id !== current.id) return current
+                                             return null
+                                         })
+                                     }}/>
 
             <GalleryModal target={displayingGallery}
                           onDismiss={closeGallery}/>

@@ -40,12 +40,16 @@ function ConfirmationWindowModal({ target, onDismiss }) {
         setShouldDismiss(true)
     }
 
+    const _onDismiss = () => {
+        onDismiss?.(target)
+    }
+
     return (
         <ModalWrapper id={`confirmation-window`}
                       className={`modal-md ${modalClass}`}
                       dialogClassName={modalDialogClass}
                       shouldDismiss={shouldDismiss}
-                      onDismiss={onDismiss}>
+                      onDismiss={_onDismiss}>
             <ModalWrapperTitle title={title}
                                faIcon={faIcon}
                                tooltip={language.getString("cancel")}

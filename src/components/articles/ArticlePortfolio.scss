@@ -358,6 +358,7 @@ div.article-portfolio-item-title {
     width: 100%;
     min-width: 0;
     padding-right: 0;
+    min-height: calc(3 * 1.06em + 28px);
 
     h5.article-portfolio-item-title-main {
         font-weight: bold;
@@ -376,6 +377,10 @@ div.article-portfolio-item-title {
         /* Modern wrapping for narrow cards and long tokens */
         overflow-wrap: anywhere;
         word-break: normal;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
     }
 
     div.article-portfolio-item-title-category {

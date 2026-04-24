@@ -66,7 +66,6 @@ function SectionRenderer({ section, status, shouldResetScroll, setShouldResetScr
 
             <Scrollable id={`scrollable-${section.id}`}
                         className={`section-scrollable`}
-                        pluginEnabled={status !== Section.Status.HIDDEN}
                         shouldResetScroll={shouldResetScroll}
                         setShouldResetScroll={setShouldResetScroll}>
                 <SectionContent section={section}/>
@@ -89,7 +88,7 @@ function SectionTransitionManager({ section, visible, shouldTransition, status, 
             if(visible) _tweenIn()
             else _tweenOut()
         }
-    }, [visible])
+    }, [visible, shouldTransition])
 
     const _hideInstantly = () => {
         scheduler.clearAllWithTag(schedulerTag)
@@ -104,15 +103,15 @@ function SectionTransitionManager({ section, visible, shouldTransition, status, 
     const _tweenOut = () => {
         scheduler.clearAllWithTag(schedulerTag)
         setStatus(Section.Status.WILL_HIDE)
-        scheduler.schedule(() => { setStatus(Section.Status.HIDING) }, 50, schedulerTag)
-        scheduler.schedule(() => { setStatus(Section.Status.HIDDEN) }, 950, schedulerTag)
+        scheduler.schedule(() => { setStatus(Section.Status.HIDING) }, 0, schedulerTag)
+        scheduler.schedule(() => { setStatus(Section.Status.HIDDEN) }, 420, schedulerTag)
     }
 
     const _tweenIn = () => {
         scheduler.clearAllWithTag(schedulerTag)
         setStatus(Section.Status.WILL_SHOW)
-        scheduler.schedule(() => { setStatus(Section.Status.SHOWING) }, 250, schedulerTag)
-        scheduler.schedule(() => { setStatus(Section.Status.SHOWN) }, 750, schedulerTag)
+        scheduler.schedule(() => { setStatus(Section.Status.SHOWING) }, 0, schedulerTag)
+        scheduler.schedule(() => { setStatus(Section.Status.SHOWN) }, 420, schedulerTag)
     }
 }
 

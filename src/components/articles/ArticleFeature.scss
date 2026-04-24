@@ -82,30 +82,16 @@ article#article-2-section-about {
 
 article#article-2-section-experience {
     div.article-feature-item {
-        max-width: min(1200px, 100%);
-        margin-inline: auto;
+        max-width: none;
+        margin-inline: 0;
         grid-template-columns: minmax(280px, 2fr) minmax(360px, 3fr);
-        gap: clamp(20px, 3vw, 44px);
+        gap: clamp(18px, 2vw, 28px);
         align-items: start;
-        position: relative;
-        isolation: isolate;
-        overflow: hidden;
-        padding: 16px;
-        border: 1px solid rgba(78, 163, 255, 0.20);
-        border-radius: 18px;
-        background:
-            linear-gradient(140deg, rgba(11, 18, 32, 0.96), rgba(5, 8, 16, 0.96));
-        box-shadow: 0 20px 48px rgba(0, 0, 0, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-
-        &::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(circle at top right, rgba(78, 163, 255, 0.12) 0%, transparent 56%),
-                radial-gradient(circle at bottom left, rgba(250, 204, 21, 0.06) 0%, transparent 42%);
-            pointer-events: none;
-        }
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: none;
+        box-shadow: none;
     }
 
     div.article-feature-item-media {
@@ -114,6 +100,7 @@ article#article-2-section-experience {
         justify-content: flex-end;
         min-width: 0;
         z-index: 1;
+        background: transparent;
     }
 
     div.article-feature-item-image {
@@ -124,8 +111,8 @@ article#article-2-section-experience {
         background-color: transparent;
         border-radius: 0;
         overflow: hidden;
-        border: 1px solid rgba(78, 163, 255, 0.24);
-        box-shadow: 0 16px 34px rgba(0, 0, 0, 0.34);
+        border: 0;
+        box-shadow: none;
 
         img.image-view-img {
             display: block;
@@ -140,6 +127,7 @@ article#article-2-section-experience {
     div.article-feature-item-content {
         align-items: flex-start;
         z-index: 1;
+        background: transparent;
     }
 
     div.article-feature-item-text,
@@ -151,6 +139,7 @@ article#article-2-section-experience {
     div.article-feature-item-text {
         max-width: 62ch;
         color: #e2e8f0;
+        background: transparent;
 
         p {
             margin-bottom: 0.85rem;
@@ -159,6 +148,15 @@ article#article-2-section-experience {
 
     div.article-feature-item-text-measure-square {
         max-width: 62ch;
+        background: transparent;
+    }
+
+    div.image-view,
+    div.pretext-interactive-text,
+    div.pretext-interactive-text-content,
+    div.pretext-interactive-text-paragraph,
+    div.pretext-interactive-text-line {
+        background: transparent !important;
     }
 
     span.pretext-interactive-text-fragment-highlight,
@@ -480,12 +478,21 @@ div.article-feature-item.article-feature-item-layout-fixed-vh-image {
 div.article-feature-item.article-feature-item-layout-fixed-vh-image.article-feature-item-home-style-intro {
     --article-feature-image-effective-size: min(var(--article-feature-image-viewport-height, 30vw), 300px);
     width: 100%;
-    max-width: min(100%, 1180px);
-    margin-left: auto;
-    margin-right: auto;
-    gap: clamp(12px, 1.4vw, 20px);
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    gap: clamp(16px, 1.8vw, 28px);
     grid-template-columns: minmax(220px, var(--article-feature-image-effective-size)) minmax(0, 1fr);
     align-items: center;
+    justify-content: start;
+
+    &::before {
+        content: none;
+    }
 
     div.article-feature-item-media {
         align-items: center;
@@ -508,8 +515,8 @@ div.article-feature-item.article-feature-item-layout-fixed-vh-image.article-feat
 
     div.article-feature-item-text,
     div.article-feature-item-text-measure-square {
-        width: min(100%, 58ch);
-        max-width: min(100%, 58ch);
+        width: 100%;
+        max-width: none;
         margin-left: 0;
     }
 
@@ -540,15 +547,16 @@ div.article-feature-item.article-feature-item-layout-fixed-vh-image.article-feat
     }
 
     @include media-breakpoint-up(xxl) {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-        gap: clamp(24px, 3vw, 48px);
+        --article-feature-image-effective-size: min(var(--article-feature-image-viewport-height, 30vw), 360px);
+        gap: clamp(18px, 1.8vw, 28px);
+        grid-template-columns: fit-content(var(--article-feature-image-effective-size)) minmax(0, 1fr);
 
         div.article-feature-item-media {
             justify-content: center;
         }
 
         div.article-feature-item-image {
-            width: min(100%, var(--article-feature-image-effective-size));
+            width: var(--article-feature-image-effective-size);
         }
     }
 
@@ -684,30 +692,11 @@ div.article-feature-embed {
 
 div.article-feature-items.article-feature-items-section-my-writings {
     div.article-feature-item {
-        position: relative;
-        isolation: isolate;
-        overflow: hidden;
-        padding: 16px;
-        border: 1px solid rgba(56, 189, 248, 0.18);
-        border-radius: 18px;
-        background:
-            linear-gradient(140deg, rgba(11, 18, 32, 0.96), rgba(5, 7, 13, 0.96));
-        box-shadow: 0 20px 48px rgba(0, 0, 0, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-
-        &::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(circle at top right, rgba(56, 189, 248, 0.12) 0%, transparent 56%),
-                radial-gradient(circle at bottom left, rgba(245, 158, 11, 0.06) 0%, transparent 42%);
-            pointer-events: none;
-        }
-    }
-
-    div.article-feature-item > * {
-        position: relative;
-        z-index: 1;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: none;
+        box-shadow: none;
     }
 
     div.article-feature-embed.article-feature-embed-illustrated-manuscript {
@@ -721,14 +710,14 @@ div.article-feature-items.article-feature-items-section-my-writings {
 
     div.article-feature-item {
         grid-template-columns: minmax(280px, 0.82fr) minmax(360px, 1.18fr);
-        gap: clamp(20px, 3vw, 44px);
+        gap: clamp(18px, 2vw, 28px);
         align-items: center;
     }
 
     @include media-breakpoint-up(xxl) {
         div.article-feature-item {
             grid-template-columns: minmax(280px, 0.82fr) minmax(360px, 1.18fr);
-            gap: clamp(18px, 2vw, 30px);
+            gap: clamp(18px, 2vw, 28px);
         }
 
         div.article-feature-item-image {
@@ -759,14 +748,16 @@ div.article-feature-items.article-feature-items-section-my-writings {
 
     div.article-feature-item-content {
         align-items: center;
+        background: transparent;
     }
 
     div.article-feature-item-text {
-        max-width: 56ch;
-        margin-inline: auto;
+        max-width: none;
+        margin-inline: 0;
         font-size: clamp(1.04rem, 0.42vw + 0.96rem, 1.16rem);
         line-height: 1.68;
         color: #e2e8f0;
+        background: transparent;
 
         p {
             margin-bottom: 0.85rem;
@@ -779,26 +770,43 @@ div.article-feature-items.article-feature-items-section-my-writings {
     }
 
     div.article-feature-item.article-feature-item-id-2 {
-        align-items: start;
+        align-items: center;
 
         div.article-feature-item-content {
-            align-items: flex-start;
-            padding-top: clamp(2px, 0.28vw, 6px);
-            padding-inline: clamp(12px, 1.4vw, 26px);
+            align-items: center;
+            justify-content: center;
+            min-height: 100%;
+            padding-inline: 0;
             box-sizing: border-box;
+            background: transparent;
         }
 
         div.article-feature-item-text {
             width: 100%;
-            max-width: 54ch;
-            font-size: clamp(0.84rem, 0.14vw + 0.81rem, 0.92rem);
-            line-height: 1.48;
+            max-width: none;
+            font-size: clamp(0.92rem, 0.18vw + 0.88rem, 1rem);
+            line-height: 1.58;
+            background: transparent;
 
             div.pretext-interactive-text {
                 box-sizing: border-box;
-                padding-inline: clamp(10px, 0.9vw, 16px);
+                width: 100%;
+                padding-inline: 0;
+                background: transparent;
             }
         }
+    }
+
+    div.article-feature-item-content,
+    div.article-feature-item-text,
+    div.pretext-interactive-text,
+    div.pretext-interactive-text-content,
+    div.pretext-interactive-text-paragraph,
+    div.pretext-interactive-text-line,
+    div.article-feature-item-media,
+    div.article-feature-item-image,
+    div.image-view {
+        background-color: transparent !important;
     }
 
     span.pretext-interactive-text-fragment-highlight,

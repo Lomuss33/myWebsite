@@ -51,6 +51,7 @@ function ArticleDataProbe({ dataWrapper }) {
     const [unlocked, setUnlocked] = useState(false)
     const [probeStates, setProbeStates] = useState({})
     const [expanded, setExpanded] = useState({})
+    const [passiveInitReady, setPassiveInitReady] = useState(false)
     const didInitRef = useRef(false)
 
     const passiveProbes = useMemo(() => ([
@@ -647,7 +648,30 @@ function ArticleDataProbe({ dataWrapper }) {
     ]), [])
 
     useEffect(() => {
-        if (didInitRef.current) return
+        if(passiveInitReady)
+            return
+
+        let timeoutId = null
+        let idleId = null
+        const trigger = () => setPassiveInitReady(true)
+
+        if(typeof window !== "undefined" && "requestIdleCallback" in window) {
+            idleId = window.requestIdleCallback(trigger, { timeout: 700 })
+        }
+        else {
+            timeoutId = window.setTimeout(trigger, 220)
+        }
+
+        return () => {
+            if(timeoutId !== null) window.clearTimeout(timeoutId)
+            if(idleId !== null && typeof window !== "undefined" && "cancelIdleCallback" in window) {
+                window.cancelIdleCallback(idleId)
+            }
+        }
+    }, [passiveInitReady])
+
+    useEffect(() => {
+        if (!passiveInitReady || didInitRef.current) return
         didInitRef.current = true
         const init = {}
         for (const p of passiveProbes) init[p.id] = { status: "pending", value: null }
@@ -659,7 +683,7 @@ function ArticleDataProbe({ dataWrapper }) {
             }
             return runProbe(p.id, p.run, true)
         }))
-    }, [passiveProbes])
+    }, [passiveInitReady, passiveProbes])
 
     const runProbe = async (id, fn, markPending = true) => {
         if (markPending) setProbeStates(prev => ({ ...prev, [id]: { status: "pending", value: null } }))
@@ -719,9 +743,9 @@ function ArticleDataProbe({ dataWrapper }) {
             <div className={`article-data-probe-summary`}>
                 <div className={`article-data-probe-summary-chip`}>
                     <i className={`fa-solid fa-eye`}/>
-                    <span className={`article-data-probe-summary-value`}>{autoCount}</span>
-                    <span className={`article-data-probe-summary-label`}>Auto-visible signals</span>
-                </div>
+                        <span className={`article-data-probe-summary-value`}>{autoCount}</span>
+                        <span className={`article-data-probe-summary-label`}>Auto-visible signals</span>
+                    </div>
 
                 <div className={`article-data-probe-summary-chip`}>
                     <i className={`fa-solid fa-hand-pointer`}/>
@@ -799,6 +823,11 @@ function ArticleDataProbe({ dataWrapper }) {
                 description={`These values are exposed by the browser immediately, without prompts, and are enough to describe a device surprisingly well.`}
                 count={autoCount}
                 accent={`accent-passive`}>
+                {!passiveInitReady && (
+                    <div className={`article-data-probe-block-description text-3 mb-3`}>
+                        Passive probes are queued until the browser is idle so this section does not stall page transitions.
+                    </div>
+                )}
                 <div className={`article-data-probe-grid`}>
                     {passiveProbes.map(p => (
                         <ProbeItem key={p.id}

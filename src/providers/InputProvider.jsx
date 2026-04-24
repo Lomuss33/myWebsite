@@ -17,7 +17,6 @@ function InputProvider({ children }) {
     const [lastKeyPressed, setLastKeyPressed] = useState({id: null, count: -1})
 
     const [mouseDownStatus, setMouseDownStatus] = useState({clientX: null, clientY: null, count: -1})
-    const [mouseMoveStatus, setMouseMoveStatus] = useState({clientX: null, clientY: null, count: -1})
     const [mouseUpStatus, setMouseUpStatus] = useState({clientX: null, clientY: null, count: -1})
     const [isClicked, setIsClicked] = useState(false)
     const [lastMouseTarget, setLastMouseTarget] = useState(null)
@@ -30,14 +29,12 @@ function InputProvider({ children }) {
     const _createListeners = () => {
         window.addEventListener('keydown', _onKeyDown)
         window.addEventListener("mousedown", _onMouseDown)
-        window.addEventListener("mousemove", _onMouseMove)
         window.addEventListener("mouseup", _onMouseUp)
     }
 
     const _destroyListeners = () => {
         window.removeEventListener('keydown', _onKeyDown)
         window.removeEventListener("mousedown", _onMouseDown)
-        window.removeEventListener("mousemove", _onMouseMove)
         window.removeEventListener("mouseup", _onMouseUp)
 
         scheduler.clearAllWithTag(tag)
@@ -58,11 +55,6 @@ function InputProvider({ children }) {
 
         setIsClicked(true)
         setMouseDownStatus(_generateMouseEventBundle(e))
-        setLastMouseTarget(e.target)
-    }
-
-    const _onMouseMove = (e) => {
-        setMouseMoveStatus(_generateMouseEventBundle(e))
         setLastMouseTarget(e.target)
     }
 
@@ -98,7 +90,6 @@ function InputProvider({ children }) {
 
             lastMouseTarget,
             mouseDownStatus,
-            mouseMoveStatus,
             mouseUpStatus,
             isClicked,
         }}>
@@ -115,7 +106,6 @@ const InputContext = createContext(null)
  *
  *    lastMouseTarget: Element,
  *    mouseDownStatus: {clientX: Number, clientY: Number},
- *    mouseMoveStatus: {clientX: Number, clientY: Number},
  *    mouseUpStatus: {clientX: Number, clientY: Number},
  *    isClicked: {Boolean}
  * }}

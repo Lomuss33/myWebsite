@@ -25,6 +25,8 @@ export default class ArticleDataWrapper {
     constructor(section, rawData, language, theme, id) {
         this._items = this._parseItems(rawData, language, theme)
         this._section = section
+        this._orderedItems = null
+        this._filteredItemsByCategory = new Map()
 
         this.id = id
         this.component = rawData.component
@@ -195,8 +197,11 @@ export default class ArticleDataWrapper {
     }
 
     get orderedItems() {
+        if(this._orderedItems)
+            return this._orderedItems
+
         const { orderItemsBy, orderItemsSort } = this.settings
-        return this._items.slice().sort((a, b) => {
+        this._orderedItems = this._items.slice().sort((a, b) => {
             const aValue = a[orderItemsBy]
             const bValue = b[orderItemsBy]
 
@@ -204,15 +209,22 @@ export default class ArticleDataWrapper {
             if (aValue > bValue) return orderItemsSort === "asc" ? 1 : -1
             return 0
         })
+
+        return this._orderedItems
     }
 
     getOrderedItemsFilteredBy(categoryId) {
         if(!categoryId || categoryId === "category_all")
             return this.orderedItems
 
-        return this.orderedItems.filter(item => {
+        if(this._filteredItemsByCategory.has(categoryId))
+            return this._filteredItemsByCategory.get(categoryId)
+
+        const filteredItems = this.orderedItems.filter(item => {
             return item.categoryId === categoryId
         })
+        this._filteredItemsByCategory.set(categoryId, filteredItems)
+        return filteredItems
     }
 
     _evaluate() {

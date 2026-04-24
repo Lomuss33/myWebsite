@@ -39,6 +39,13 @@ function NavigationProvider({ children, sections, categories }) {
 
     const [sectionLinks, setSectionLinks] = useState([])
     const [categoryLinks, setCategoryLinks] = useState([])
+    const targetSectionRef = useRef(null)
+    const previousSectionRef = useRef(null)
+    const nextSectionRef = useRef(null)
+    const scheduledNextSectionRef = useRef(null)
+    const transitionStatusRef = useRef(NavigationProvider.TransitionStatus.NONE)
+    const resettingScrollYToRef = useRef(null)
+    const scrollWaitRafRef = useRef(null)
 
     const canTransitionToNextSection = nextSection && transitionStatus === NavigationProvider.TransitionStatus.NONE
 
@@ -46,6 +53,45 @@ function NavigationProvider({ children, sections, categories }) {
         transitionEnabledRef.current = value
         setTransitionEnabled(value)
     }
+
+    const _setTargetSectionState = (value) => {
+        targetSectionRef.current = value
+        setTargetSection(value)
+    }
+
+    const _setPreviousSectionState = (value) => {
+        previousSectionRef.current = value
+        setPreviousSection(value)
+    }
+
+    const _setNextSectionState = (value) => {
+        nextSectionRef.current = value
+        setNextSection(value)
+    }
+
+    const _setScheduledNextSectionState = (value) => {
+        scheduledNextSectionRef.current = value
+        setScheduledNextSection(value)
+    }
+
+    const _setTransitionStatusState = (value) => {
+        transitionStatusRef.current = value
+        setTransitionStatus(value)
+    }
+
+    const _setResettingScrollYToState = (value) => {
+        resettingScrollYToRef.current = value
+        setResettingScrollYTo(value)
+    }
+
+    useEffect(() => {
+        targetSectionRef.current = targetSection
+        previousSectionRef.current = previousSection
+        nextSectionRef.current = nextSection
+        scheduledNextSectionRef.current = scheduledNextSection
+        transitionStatusRef.current = transitionStatus
+        resettingScrollYToRef.current = resettingScrollYTo
+    }, [targetSection, previousSection, nextSection, scheduledNextSection, transitionStatus, resettingScrollYTo])
 
     /** @constructs **/
     useEffect(() => {
@@ -103,27 +149,37 @@ function NavigationProvider({ children, sections, categories }) {
     }, [canTransitionToNextSection])
 
     const _startTransition = () => {
-        setPreviousSection(targetSection)
-        setTargetSection(nextSection)
-        _updateLinks(nextSection, nextSection.category)
+        const currentTargetSection = targetSectionRef.current
+        const currentNextSection = nextSectionRef.current
+        if(!currentNextSection)
+            return
+
+        _setPreviousSectionState(currentTargetSection)
+        _setTargetSectionState(currentNextSection)
+        _updateLinks(currentNextSection, currentNextSection.category)
 
         if(!transitionEnabledRef.current) {
-            setTransitionStatus(NavigationProvider.TransitionStatus.FINISHING)
+            _setTransitionStatusState(NavigationProvider.TransitionStatus.FINISHING)
             return
         }
 
-        setTransitionStatus(NavigationProvider.TransitionStatus.RUNNING)
+        _setTransitionStatusState(NavigationProvider.TransitionStatus.RUNNING)
         scheduler.clearAllWithTag("transition-to-next-section")
         scheduler.schedule(() => {
-            setTransitionStatus(NavigationProvider.TransitionStatus.FINISHING)
+            _setTransitionStatusState(NavigationProvider.TransitionStatus.FINISHING)
         }, constants.SECTION_TRANSITION_TOTAL_TIME, "transition-to-next-section")
     }
 
     const _adjustScrollBeforeTransition = () => {
-        const mobileNavData = layout.getMobileNavData(getViewportScrollPosition().y)
-        const didChangeCategory = targetSection?.category?.id !== nextSection?.category?.id
+        const currentTargetSection = targetSectionRef.current
+        const currentNextSection = nextSectionRef.current
+        if(!currentNextSection)
+            return
 
-        scheduler.clearAllWithTag("adjust-scroll-top")
+        const mobileNavData = layout.getMobileNavData(getViewportScrollPosition().y)
+        const didChangeCategory = currentTargetSection?.category?.id !== currentNextSection?.category?.id
+
+        _clearPendingScrollWait()
 
         if(!mobileNavData.isHeaderHidden) {
             if(didChangeCategory)
@@ -132,34 +188,49 @@ function NavigationProvider({ children, sections, categories }) {
             return
         }
 
-        if(nextSection?.category?.sections?.length <= 1) {
+        if(currentNextSection?.category?.sections?.length <= 1) {
             utils.capabilities.scrollTo(0, false)
             _scheduleTransitionStart(0)
             return
         }
 
-        _updateLinks(nextSection, nextSection?.category)
+        _updateLinks(currentNextSection, currentNextSection?.category)
         utils.capabilities.scrollTo(mobileNavData.contentTop, false)
         _scheduleTransitionStart(mobileNavData.contentTop)
     }
 
     const _scheduleTransitionStart = (initialScrollY) => {
-        setResettingScrollYTo(initialScrollY)
+        _clearPendingScrollWait()
+        _setResettingScrollYToState(initialScrollY)
 
-        let acc = 0
-        scheduler.interval(() => {
-            acc += 100
-            if(Math.abs(getViewportScrollPosition().y - initialScrollY) < 10 || acc === 1000) {
+        const startedAt = performance.now()
+        const waitForScroll = () => {
+            const elapsed = performance.now() - startedAt
+            const distance = Math.abs(getViewportScrollPosition().y - initialScrollY)
+            if(distance < 10 || elapsed >= 1000) {
                 _startTransitionAfterScroll(initialScrollY)
+                return
             }
-        }, 100, "adjust-scroll-top")
+
+            scrollWaitRafRef.current = requestAnimationFrame(waitForScroll)
+        }
+
+        scrollWaitRafRef.current = requestAnimationFrame(waitForScroll)
     }
 
     const _startTransitionAfterScroll = (initialScrollY) => {
-        scheduler.clearAllWithTag("adjust-scroll-top")
+        _clearPendingScrollWait()
         utils.capabilities.scrollTo(initialScrollY, true)
-        setResettingScrollYTo(null)
+        _setResettingScrollYToState(null)
         _startTransition()
+    }
+
+    const _clearPendingScrollWait = () => {
+        scheduler.clearAllWithTag("adjust-scroll-top")
+        if(scrollWaitRafRef.current !== null) {
+            cancelAnimationFrame(scrollWaitRafRef.current)
+            scrollWaitRafRef.current = null
+        }
     }
 
     /**
@@ -175,24 +246,27 @@ function NavigationProvider({ children, sections, categories }) {
     }, [transitionStatus])
 
     const _finishTransition = () => {
-        if(!scheduledNextSection) {
-            setNextSection(null)
-            setScheduledNextSection(null)
+        const currentScheduledSection = scheduledNextSectionRef.current
+        const currentTargetSection = targetSectionRef.current
+
+        if(!currentScheduledSection) {
+            _setNextSectionState(null)
+            _setScheduledNextSectionState(null)
 
             setIgnoreNextLocationEvent(true)
-            location.goToSection(targetSection)
+            location.goToSection(currentTargetSection)
 
             scheduler.clearAllWithTag("set-ignore-next-location-event")
             scheduler.schedule(() => {
                 setIgnoreNextLocationEvent(false)
             }, 100, "set-ignore-next-location-event")
-            setTransitionStatus(NavigationProvider.TransitionStatus.NONE)
+            _setTransitionStatusState(NavigationProvider.TransitionStatus.NONE)
             return
         }
 
-        setTransitionStatus(NavigationProvider.TransitionStatus.NONE)
-        setNextSection(scheduledNextSection)
-        setScheduledNextSection(null)
+        _setTransitionStatusState(NavigationProvider.TransitionStatus.NONE)
+        _setNextSectionState(currentScheduledSection)
+        _setScheduledNextSectionState(null)
     }
 
     /** @listens scheduledNextSection **/
@@ -221,7 +295,7 @@ function NavigationProvider({ children, sections, categories }) {
 
         _setTransitionEnabled(true)
         navigateToSection(locationSection)
-    }, [location.getActiveSection(), isAppReady])
+    }, [location.getActiveSection()?.id, isAppReady])
 
     /**
      * Seed the first visible section directly once the app is ready.
@@ -240,28 +314,49 @@ function NavigationProvider({ children, sections, categories }) {
             return
 
         _setTransitionEnabled(true)
-        setTargetSection(locationSection)
+        _setTargetSectionState(locationSection)
         _updateLinks(locationSection, locationSection.category)
-    }, [isAppReady, location.getActiveSection(), targetSection, nextSection])
+    }, [isAppReady, location.getActiveSection()?.id, targetSection?.id, nextSection?.id])
 
     /** @listens !nextSection && scheduledNextSection **/
     useEffect(() => {
         if(!nextSection && scheduledNextSection && transitionStatus === NavigationProvider.TransitionStatus.NONE) {
-            setNextSection(scheduledNextSection)
-            setScheduledNextSection(null)
+            _setNextSectionState(scheduledNextSection)
+            _setScheduledNextSectionState(null)
         }
-    }, [!nextSection && scheduledNextSection && transitionStatus === NavigationProvider.TransitionStatus.NONE])
+    }, [Boolean(!nextSection && scheduledNextSection && transitionStatus === NavigationProvider.TransitionStatus.NONE)])
+
+    useEffect(() => {
+        return () => {
+            _clearPendingScrollWait()
+        }
+    }, [])
 
     const navigateToSection = (section) => {
-        if(!nextSection) {
-            if(targetSection !== section) setNextSection(section)
+        if(!section)
+            return
+
+        const targetSectionId = targetSectionRef.current?.id || null
+        const nextSectionId = nextSectionRef.current?.id || null
+        const scheduledNextSectionId = scheduledNextSectionRef.current?.id || null
+        const requestedSectionId = section.id
+
+        if(transitionStatusRef.current === NavigationProvider.TransitionStatus.NONE && !nextSectionId) {
+            if(targetSectionId !== requestedSectionId) _setNextSectionState(section)
             else forceScrollToTop()
+            return
         }
 
-        else if(section !== nextSection) {
-            setScheduledNextSection(section)
-            if(resettingScrollYTo) {
-                _startTransitionAfterScroll(resettingScrollYTo)
+        if(nextSectionId === requestedSectionId || scheduledNextSectionId === requestedSectionId)
+            return
+
+        if(targetSectionId === requestedSectionId && transitionStatusRef.current !== NavigationProvider.TransitionStatus.NONE) {
+            _setScheduledNextSectionState(section)
+        }
+        else {
+            _setScheduledNextSectionState(section)
+            if(resettingScrollYToRef.current !== null) {
+                _startTransitionAfterScroll(resettingScrollYToRef.current)
             }
         }
     }

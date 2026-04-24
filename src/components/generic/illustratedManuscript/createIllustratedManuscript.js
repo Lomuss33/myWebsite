@@ -1,4 +1,8 @@
-import { layoutNextLine, prepareWithSegments } from "@chenglou/pretext"
+import {
+    layoutNextLineRange,
+    materializeLineRange,
+    prepareWithSegments
+} from "@chenglou/pretext"
 import {
     BG_COLOR,
     MANUSCRIPT_DRAGON_SCALE,
@@ -30,6 +34,8 @@ const PATROL_LOOK_AHEAD_DISTANCE = 18
 const RESERVED_TEXT_ROWS = 2
 const dropCapCache = new Map()
 const illustrationCache = new Map()
+const graphemeSegmenter = new Intl.Segmenter(undefined, { granularity: "grapheme" })
+const graphemeWidthCache = new Map()
 
 function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value))
@@ -132,6 +138,50 @@ function normalizeAngle(angle) {
     while (normalizedAngle < -Math.PI) normalizedAngle += Math.PI * 2
 
     return normalizedAngle
+}
+
+function getPreparedSegments(story, font, cachedPrepared = null) {
+    if (cachedPrepared && cachedPrepared.font === font) {
+        return cachedPrepared
+    }
+
+    return {
+        font,
+        segments: prepareWithSegments(story, font)
+    }
+}
+
+function measureGraphemeWidth(context, font, grapheme) {
+    const cacheKey = `${font}::${grapheme}`
+    const cachedWidth = graphemeWidthCache.get(cacheKey)
+    if (cachedWidth !== undefined) return cachedWidth
+
+    const previousFont = context.font
+    context.font = font
+    const width = context.measureText(grapheme).width
+    context.font = previousFont
+    graphemeWidthCache.set(cacheKey, width)
+    return width
+}
+
+function buildLineCharacters(context, font, text) {
+    const characters = []
+    let offsetX = 0
+
+    for (const part of graphemeSegmenter.segment(text)) {
+        const grapheme = part.segment
+        const width = measureGraphemeWidth(context, font, grapheme)
+
+        characters.push({
+            text: grapheme,
+            x: offsetX,
+            width
+        })
+
+        offsetX += width
+    }
+
+    return characters
 }
 
 function buildFigureEightPath(radiusX, radiusY, sampleCount = PATROL_SAMPLE_COUNT) {
@@ -282,10 +332,7 @@ function createIllustratedManuscript({
         }
 
         if (forcePrepare || !prepared || prepared.font !== layout.font) {
-            prepared = {
-                font: layout.font,
-                segments: prepareWithSegments(storyContent, layout.font)
-            }
+            prepared = getPreparedSegments(storyContent, layout.font, prepared)
         }
 
         if (dragon) {
@@ -353,7 +400,7 @@ function createIllustratedManuscript({
     }
 
     const measureAllTextBottom = activeLayout => {
-        const activePrepared = prepareWithSegments(storyContent, activeLayout.font)
+        const activePrepared = getPreparedSegments(storyContent, activeLayout.font)
         const exclusions = getStaticDropCapExclusions(activeLayout)
         let cursor = { segmentIndex: 0, graphemeIndex: 0 }
         let y = activeLayout.margin
@@ -376,13 +423,13 @@ function createIllustratedManuscript({
             let finished = false
 
             for (const range of ranges) {
-                const line = layoutNextLine(activePrepared, cursor, range.right - range.left)
-                if (line === null) {
+                const lineRange = layoutNextLineRange(activePrepared.segments, cursor, range.right - range.left)
+                if (lineRange === null) {
                     finished = true
                     break
                 }
 
-                cursor = line.end
+                cursor = lineRange.end
                 nextTextBottom = y + activeLayout.lineHeight
             }
 
@@ -622,16 +669,19 @@ function createIllustratedManuscript({
 
             for (const range of ranges) {
                 const width = range.right - range.left
-                const line = layoutNextLine(prepared.segments, cursor, width)
-                if (line === null) {
+                const lineRange = layoutNextLineRange(prepared.segments, cursor, width)
+                if (lineRange === null) {
                     done = true
                     break
                 }
 
+                const line = materializeLineRange(prepared.segments, lineRange)
+
                 textLines.push({
                     text: line.text,
                     x: range.left,
-                    y: y + baselineOffset
+                    y: y + baselineOffset,
+                    characters: buildLineCharacters(context, layout.font, line.text)
                 })
                 cursor = line.end
                 nextTextBottom = y + layout.lineHeight
@@ -649,34 +699,33 @@ function createIllustratedManuscript({
         return false
     }
 
-    const drawTextWithFireEffect = (text, x, y, offsetX, offsetY) => {
+    const drawTextWithFireEffect = (line, offsetX, offsetY) => {
         const halfAscent = layout.fontSize * 0.857 / 2
-        let startX = x
+        const baselineY = line.y
 
-        for (const character of text) {
-            const characterWidth = context.measureText(character).width
-            const influence = getFireInfluence(dragon, startX + characterWidth / 2 + offsetX, y + halfAscent + offsetY)
+        for (const character of line.characters) {
+            const drawX = line.x + character.x
+            const centerX = drawX + character.width / 2
+            const influence = getFireInfluence(dragon, centerX + offsetX, baselineY + halfAscent + offsetY)
 
             if (influence.strength < 0.01) {
                 context.fillStyle = TEXT_COLOR
                 context.globalAlpha = 1
-                context.fillText(character, startX, y)
+                context.fillText(character.text, drawX, baselineY)
             } else {
                 const strength = influence.strength
 
                 context.save()
                 context.translate(
-                    startX + characterWidth / 2 + influence.dx * strength * 45,
-                    y + halfAscent + influence.dy * strength * 45
+                    centerX + influence.dx * strength * 45,
+                    baselineY + halfAscent + influence.dy * strength * 45
                 )
                 context.rotate(strength * (influence.dx > 0 ? 1 : -1) * 1.2)
                 context.globalAlpha = Math.max(0, 1 - strength * 0.8)
                 context.fillStyle = `rgb(${Math.round(42 + strength * 200)},${Math.round(26 + strength * 80)},10)`
-                context.fillText(character, -characterWidth / 2, -halfAscent)
+                context.fillText(character.text, -character.width / 2, -halfAscent)
                 context.restore()
             }
-
-            startX += characterWidth
         }
 
         context.globalAlpha = 1
@@ -695,7 +744,7 @@ function createIllustratedManuscript({
             }
         } else {
             for (const line of textLines) {
-                drawTextWithFireEffect(line.text, line.x, line.y, offsetX, offsetY)
+                drawTextWithFireEffect(line, offsetX, offsetY)
             }
         }
 

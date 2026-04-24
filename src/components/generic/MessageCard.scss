@@ -1,5 +1,31 @@
 @use "../../styles/extend" as *;
 
+@keyframes message-card-wrapper-enter {
+    0% {
+        opacity: 0.86;
+        transform: translateY(12px) scale(0.992);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(-1px) scale(1.004);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes message-card-piece-enter {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 div.message-card {
     --avatar-size: 110px;
     --padding: 50px;
@@ -36,8 +62,9 @@ div.message-card {
         height: var(--avatar-size);
         font-size: calc(var(--avatar-size) / 2.3);
         border-radius: 100%;
-        background-color: var(--theme-primary);
-        color: var(--theme-texts-inv);
+        background-color: rgba(17, 29, 49, 0.94);
+        color: #bfdbfe;
+        border: 1px solid rgba(78, 163, 255, 0.28);
         margin-bottom: 20px;
     }
 
@@ -53,10 +80,54 @@ div.message-card {
 
     p.message-card-body, p.message-card-footer {
         margin-bottom: 0;
-        color: var(--theme-secondary);
+        color: var(--theme-texts-light-2);
     }
 
     div.message-card-footer-wrapper {
         width: 100%;
+    }
+}
+
+div.message-card-wrapper {
+    will-change: opacity, transform, filter;
+}
+
+div.message-card-wrapper.message-card-wrapper-loading {
+    opacity: 0.86;
+    transform: translateY(12px) scale(0.992);
+}
+
+div.message-card-wrapper.message-card-wrapper-loaded {
+    animation: message-card-wrapper-enter 680ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+div.message-card-wrapper.message-card-wrapper-loaded div.message-card-avatar-wrapper,
+div.message-card-wrapper.message-card-wrapper-loaded div.message-card-title-wrapper,
+div.message-card-wrapper.message-card-wrapper-loaded div.message-card-footer-wrapper {
+    animation: message-card-piece-enter 520ms cubic-bezier(0.2, 0.85, 0.2, 1) both;
+}
+
+div.message-card-wrapper.message-card-wrapper-loaded div.message-card-avatar-wrapper {
+    animation-delay: 90ms;
+}
+
+div.message-card-wrapper.message-card-wrapper-loaded div.message-card-title-wrapper {
+    animation-delay: 150ms;
+}
+
+div.message-card-wrapper.message-card-wrapper-loaded div.message-card-footer-wrapper {
+    animation-delay: 210ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    div.message-card-wrapper,
+    div.message-card-wrapper.message-card-wrapper-loaded,
+    div.message-card-wrapper.message-card-wrapper-loaded div.message-card-avatar-wrapper,
+    div.message-card-wrapper.message-card-wrapper-loaded div.message-card-title-wrapper,
+    div.message-card-wrapper.message-card-wrapper-loaded div.message-card-footer-wrapper {
+        animation: none !important;
+        transition: none !important;
+        opacity: 1 !important;
+        transform: none !important;
     }
 }

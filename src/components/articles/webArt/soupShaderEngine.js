@@ -108,7 +108,9 @@ export function createSoupShaderEngine(canvas, options = {}) {
     let mouseX = 0.5
     let mouseY = 0.5
     let timeValue = 2001.0
-    let complex = false
+    let held = false
+    let holdMix = 0
+    let lastFrameMs = 0
 
     function setup() {
         renderer = new THREE.WebGLRenderer({
@@ -130,7 +132,7 @@ export function createSoupShaderEngine(canvas, options = {}) {
                 u_time: { value: timeValue },
                 u_resolution: { value: new THREE.Vector2(1, 1) },
                 u_mouse: { value: new THREE.Vector2(0, 0) },
-                u_complex: { value: complex }
+                u_complex: { value: false }
             },
             vertexShader: VERTEX_SHADER_SOURCE,
             fragmentShader: FRAGMENT_SHADER_SOURCE
@@ -140,19 +142,33 @@ export function createSoupShaderEngine(canvas, options = {}) {
         scene.add(mesh)
     }
 
-    function renderFrame() {
+    function renderFrame(nowMs = performance.now()) {
         if(!renderer) setup()
-        const speed = 0.05 * (1 + mouseX * 5)
+        if(lastFrameMs <= 0) lastFrameMs = nowMs
+        const dt = Math.min(50, Math.max(0, nowMs - lastFrameMs))
+        lastFrameMs = nowMs
+
+        if(held) {
+            holdMix = Math.min(1, holdMix + dt / 2400)
+        }
+        else {
+            holdMix = Math.max(0, holdMix - dt / 1800)
+        }
+
+        const easedHoldMix = holdMix * holdMix * (3 - 2 * holdMix)
+        const ambientSpeed = 0.05 * (1 + mouseX * 5)
+        const heldSpeed = 0.003 + mouseX * 0.004
+        const speed = ambientSpeed + (heldSpeed - ambientSpeed) * easedHoldMix
         timeValue += reduceMotion ? speed * 0.15 : speed
         material.uniforms.u_time.value = timeValue
         material.uniforms.u_mouse.value.set(mouseX, mouseY)
-        material.uniforms.u_complex.value = complex
+        material.uniforms.u_complex.value = false
         renderer.render(scene, camera)
     }
 
     function tick() {
         if(!running) return
-        renderFrame()
+        renderFrame(performance.now())
         rafId = requestAnimationFrame(tick)
     }
 
@@ -176,14 +192,16 @@ export function createSoupShaderEngine(canvas, options = {}) {
         mouseY = 0.5
     }
 
-    function toggleComplex() {
-        complex = !complex
-        renderFrame()
+    function setHeld(nextHeld) {
+        held = Boolean(nextHeld)
+        if(!running) renderFrame(performance.now())
     }
 
     function reset() {
         timeValue = 2001.0
-        complex = false
+        held = false
+        holdMix = 0
+        lastFrameMs = 0
         mouseX = 0.5
         mouseY = 0.5
         renderFrame()
@@ -231,6 +249,6 @@ export function createSoupShaderEngine(canvas, options = {}) {
         setSize,
         setPointer,
         clearPointer,
-        toggleComplex
+        setHeld
     }
 }

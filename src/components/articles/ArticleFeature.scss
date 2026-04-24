@@ -514,6 +514,17 @@ div.article-feature-item.article-feature-item-layout-fixed-vh-image.article-feat
         p {
             margin-bottom: 0.85rem;
         }
+
+        a.pretext-interactive-text-fragment.pretext-interactive-text-fragment-link {
+            color: var(--theme-primary);
+            font-weight: 700;
+            text-decoration-thickness: 0.12em;
+            text-underline-offset: 0.18em;
+
+            &:hover {
+                color: var(--theme-links-hover);
+            }
+        }
     }
 
     div.article-feature-item-text-measure-square {

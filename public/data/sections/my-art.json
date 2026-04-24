@@ -471,16 +471,16 @@
                     "category_fun": "Fun"
                 },
                 "de": {
-                    "title": "Favourite {{educators / YouTubers}}",
+                    "title": "Lieblings-{{Educators / YouTuber}}",
                     "category_all": "Alle",
                     "category_practical": "Praktisch",
                     "category_theoretical": "Theoretisch",
-                    "category_fun": "Unterhaltung"
+                    "category_fun": "Spaß"
                 },
                 "hr": {
-                    "title": "Favourite {{educators / YouTubers}}",
+                    "title": "Omiljeni {{edukatori / YouTuberi}}",
                     "category_all": "Sve",
-                    "category_practical": "Prakti?no",
+                    "category_practical": "Praktično",
                     "category_theoretical": "Teorijski",
                     "category_fun": "Zabava"
                 },

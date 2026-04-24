@@ -106,8 +106,7 @@ function CategoryFilterButton({ category, isSelected, onClick, className = "" })
     return (
         <button type={"button"}
                 className={`category-filter-button ${className} ${selectedClassName} btn text-2`}
-                onMouseDown={onClick}
-                onTouchStart={onClick}
+                onClick={onClick}
                 data-tooltip={tooltip}>
             <span className={`category-filter-button-label`}>{category.label}</span>
             <span className={`category-filter-button-count`}>({category.count})</span>

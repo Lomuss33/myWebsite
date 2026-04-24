@@ -568,11 +568,16 @@
 [data-theme="light"] article#article-2-section-my-hardware section.article-data-probe-block,
 [data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-item,
 [data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-block-count,
-[data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-item-meta,
 [data-theme="light"] article#article-2-section-my-hardware pre.article-data-probe-item-value {
     background: linear-gradient(180deg, #ffffff, #f6f9fd);
     border-color: rgba(37, 99, 235, 0.14);
     box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-item-meta {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
 }
 
 [data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-summary-chip,
@@ -639,9 +644,13 @@
 }
 
 [data-theme="light"] article#article-2-section-my-art button.article-web-art-intro-cover-button {
-    border-color: rgba(37, 99, 235, 0.16);
-    background: linear-gradient(180deg, #ffffff, #f6f9fd);
+    border-color: rgba(37, 99, 235, 0.42);
+    background: linear-gradient(180deg, #fefefe 0%, #dbeafe 48%, #bfdbfe 100%);
     color: #0f172a;
+    box-shadow:
+        0 14px 24px rgba(37, 99, 235, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9),
+        inset 0 -1px 0 rgba(29, 78, 216, 0.12);
 }
 
 [data-theme="light"] article#article-2-section-my-art .article-web-art-tile {
@@ -1074,12 +1083,18 @@
 [data-theme="light"] article#article-2-section-my-hardware section.article-data-probe-block,
 [data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-item,
 [data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-block-count,
-[data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-item-meta,
 [data-theme="light"] article#article-2-section-my-hardware pre.article-data-probe-item-value {
     background: linear-gradient(180deg, #ffffff, #f6f9fd);
     border-color: rgba(37, 99, 235, 0.14);
     color: #0f172a;
     box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-item-meta {
+    background: transparent;
+    border-color: transparent;
+    color: #64748b;
+    box-shadow: none;
 }
 
 [data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-summary-chip i,
@@ -1127,9 +1142,13 @@
 }
 
 [data-theme="light"] article#article-2-section-my-art button.article-web-art-intro-cover-button {
-    border-color: rgba(37, 99, 235, 0.14);
-    background: linear-gradient(180deg, #ffffff, #f6f9fd);
+    border-color: rgba(37, 99, 235, 0.42);
+    background: linear-gradient(180deg, #fefefe 0%, #dbeafe 48%, #bfdbfe 100%);
     color: #0f172a;
+    box-shadow:
+        0 14px 24px rgba(37, 99, 235, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9),
+        inset 0 -1px 0 rgba(29, 78, 216, 0.12);
 }
 
 [data-theme="light"] article#article-2-section-my-art .article-web-art-tile {

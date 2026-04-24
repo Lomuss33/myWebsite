@@ -276,6 +276,42 @@ section#section-my-art div.article-content {
     color: var(--art-text-strong);
 }
 
+section#section-contact {
+    --contact-page-bg: #04060b;
+    --contact-page-bg-2: #08111d;
+    --contact-page-bg-3: #0f172a;
+    --contact-accent-blue: #4ea3ff;
+    --contact-accent-gold: #facc15;
+    --contact-text-strong: #f8fafc;
+    --contact-text-mid: #cbd5e1;
+    --contact-text-soft: #94a3b8;
+
+    background:
+        radial-gradient(circle at top left, rgba(78, 163, 255, 0.16) 0%, transparent 31%),
+        radial-gradient(circle at top right, rgba(250, 204, 21, 0.07) 0%, transparent 24%),
+        radial-gradient(circle at bottom right, rgba(78, 163, 255, 0.08) 0%, transparent 26%),
+        linear-gradient(180deg, var(--contact-page-bg) 0%, var(--contact-page-bg-2) 46%, var(--contact-page-bg-3) 100%);
+    color: var(--contact-text-strong);
+}
+
+section#section-contact div.section-content-border-decoration-top-left {
+    border-top-color: var(--contact-accent-blue);
+    border-left-color: var(--contact-accent-gold);
+    opacity: 0.65;
+}
+
+section#section-contact h4.article-title {
+    color: var(--contact-text-strong);
+}
+
+section#section-contact h4.article-title span.article-title-prefix {
+    color: var(--contact-accent-blue);
+}
+
+section#section-contact div.article-content {
+    color: var(--contact-text-strong);
+}
+
 button.section-fullscreen-toggle {
     position: absolute;
     top: 10px;

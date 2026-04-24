@@ -34,6 +34,12 @@ nav.nav-sidebar {
 
         > div.nav-profile-card {
             flex: 0 0 auto;
+            margin: 0;
+            padding: 16px 12px 12px;
+            border-top-left-radius: inherit;
+            border-top-right-radius: inherit;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
         }
 
         > div.nav-link-list-shell {
@@ -82,7 +88,8 @@ nav.nav-sidebar-short-rail {
         --avatar-size: 66px;
         --border-size: 3px;
         --offset-status-circle: 10px;
-        margin: 8px 8px 4px;
+        margin: 0;
+        padding: 12px 8px 10px;
     }
 
     div.nav-tools {

@@ -186,8 +186,8 @@ export function createPixelPlopEngine(canvas, options = {}) {
     }
 
     function burstAt(px, py) {
-        const x = clampInt(Math.floor((Number(px) || 0) / step), 0, nbx - 1, 0)
-        const y = clampInt(Math.floor((Number(py) || 0) / step), 0, nby - 1, 0)
+        const x = clampInt(Math.round(((Number(px) || 0) - (step - side) / 2 - side / 2) / step), 0, nbx - 1, 0)
+        const y = clampInt(Math.round(((Number(py) || 0) - (step - side) / 2 - side / 2) / step), 0, nby - 1, 0)
         enqueueBurst(x, y)
     }
 

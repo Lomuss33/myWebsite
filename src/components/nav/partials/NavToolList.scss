@@ -10,6 +10,9 @@ div.nav-tools {
     justify-content: space-between;
     gap: 0;
     border-top: 1px solid var(--theme-nav-divider);
+    border-bottom-left-radius: calc($standard-border-radius * 1.8);
+    border-bottom-right-radius: calc($standard-border-radius * 1.8);
+    overflow: visible;
     padding: 4px 8px 5px;
     background:
         linear-gradient(180deg,
@@ -18,20 +21,36 @@ div.nav-tools {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
     div.btn-option-picker {
+        display: flex;
+        flex: 1 1 auto;
         width: 100%;
         height: 100%;
+        align-self: stretch;
 
         // React-Bootstrap wrapper needs to stretch so the toggle can fill the slot.
-        div.dropdown {
+        div.dropdown,
+        div.dropup {
+            display: flex;
+            width: 100%;
             height: 100%;
+            min-width: 0;
+            position: relative;
+            align-items: stretch;
         }
     }
 
+    div.dropdown-menu {
+        z-index: $z-index-pop-over;
+    }
+
     button.btn-option-picker-toggle {
+        display: flex;
+        flex: 1 1 auto;
         width: 100%;
         height: 100%;
         padding: 0 0.5rem;
         min-height: 100%;
+        min-width: 0;
         border-radius: 999px;
         transition:
             transform 0.18s ease,
@@ -40,6 +59,20 @@ div.nav-tools {
 
         img, i.fa-icon {
             transition: 0.1s ease-in-out transform;
+        }
+
+        i.fa-icon,
+        i.fa-caret-icon,
+        span.btn-option-picker-toggle-caption {
+            color: var(--theme-nav-text);
+        }
+
+        i.fa-icon {
+            opacity: 0.84;
+        }
+
+        i.fa-caret-icon {
+            opacity: 0.72;
         }
 
         i.fa-caret-icon {
@@ -56,6 +89,40 @@ div.nav-tools {
         }
     }
 
+    span.btn-option-picker-toggle-row {
+        flex: 1 1 auto;
+        width: 100%;
+        height: 100%;
+    }
+
+    button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption) {
+        border-radius: 0;
+        box-shadow: none;
+        outline: none;
+        border: 0;
+        background-color: transparent;
+
+        &:hover,
+        &:focus,
+        &:focus-visible,
+        &:active {
+            box-shadow: none;
+            background-color: transparent;
+        }
+    }
+
+    div.dropdown.show > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption),
+    div.dropup.show > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption),
+    div.dropdown > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption).show,
+    div.dropup > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption).show,
+    div.dropdown > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):not(.show):active,
+    div.dropup > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):not(.show):active {
+        box-shadow: none;
+        outline: none;
+        border: 0;
+        background-color: transparent;
+    }
+
     div.btn-option-picker-icon-size-2 {
         font-size: 19px;
         width: 20px;
@@ -69,10 +136,49 @@ div.nav-tools-item {
     flex: 1 1 0;
     min-width: 0;
     height: 100%;
-    padding: 0 2px;
+    padding: 0;
+    overflow: visible;
 
     &:not(:first-child) {
         border-left: 1px solid var(--theme-nav-divider);
+    }
+}
+
+div.nav-tools-item-language {
+    div.btn-option-picker,
+    div.dropdown,
+    div.dropup,
+    button.btn-option-picker-toggle,
+    span.btn-option-picker-toggle-row {
+        width: 100% !important;
+        height: 100% !important;
+        min-width: 100%;
+    }
+
+    div.dropdown,
+    div.dropup,
+    button.btn-option-picker-toggle {
+        display: flex;
+        flex: 1 1 auto;
+        align-items: stretch;
+        justify-content: center;
+    }
+
+    span.btn-option-picker-toggle-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1 1 auto;
+    }
+
+    i.fa-caret-icon {
+        display: none !important;
+    }
+
+    button.dropdown-toggle::after,
+    button.btn-option-picker-toggle::after {
+        display: none !important;
+        content: none !important;
     }
 }
 

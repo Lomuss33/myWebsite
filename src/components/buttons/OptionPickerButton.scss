@@ -12,6 +12,8 @@ button.btn-option-picker-toggle {
     align-items: center;
     justify-content: center;
     padding: 0;
+    overflow: hidden;
+    border-radius: inherit;
 
     span.btn-option-picker-toggle-row {
         display: flex;

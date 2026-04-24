@@ -36,15 +36,17 @@ class Vector {
 }
 
 class Dot {
-    constructor(x, y, lightImg) {
+    constructor(x, y, lightImg, hue, glowPhase = Math.random() * Math.PI * 2, lightSize = 15) {
         this.pos = new Vector(x, y)
         this.oldPos = new Vector(x, y)
-        this.friction = 0.97
-        this.gravity = new Vector(0, 0.6)
+        this.friction = 0.982
+        this.gravity = new Vector(0, 0.52)
         this.mass = 1
         this.pinned = false
         this.lightImg = lightImg
-        this.lightSize = 15
+        this.lightSize = lightSize
+        this.hue = hue
+        this.glowPhase = glowPhase
     }
 
     update(pointer) {
@@ -57,32 +59,46 @@ class Dot {
         const dist = Math.max(0.001, Math.sqrt(offset.x * offset.x + offset.y * offset.y))
         const force = Math.max((pointer.radius - dist) / pointer.radius, 0)
 
-        if(force > 0.6) {
-            this.pos.setXY(pointer.pos.x, pointer.pos.y)
-            return
-        }
-
         this.pos.add(vel)
         if(force > 0) {
-            this.pos.x += (offset.x / dist) * force
-            this.pos.y += (offset.y / dist) * force
+            const pull = 1.35 + pointer.energy * 0.85
+            this.pos.x += (offset.x / dist) * force * pull
+            this.pos.y += (offset.y / dist) * force * pull
+            if(force > 0.82) {
+                this.pos.x += (pointer.pos.x - this.pos.x) * 0.18
+                this.pos.y += (pointer.pos.y - this.pos.y) * 0.18
+            }
         }
     }
 
-    drawLight(ctx) {
-        if(!this.lightImg?.complete) return
-        ctx.drawImage(
-            this.lightImg,
-            this.pos.x - this.lightSize / 2,
-            this.pos.y - this.lightSize / 2,
-            this.lightSize,
-            this.lightSize
-        )
+    drawLight(ctx, nowSec, intensity = 1) {
+        const twinkle = 0.8 + 0.2 * Math.sin(nowSec * 2.2 + this.glowPhase)
+        const glow = this.lightSize * (0.72 + intensity * 0.12) * twinkle
+        const gradient = ctx.createRadialGradient(this.pos.x, this.pos.y, 0, this.pos.x, this.pos.y, glow)
+        gradient.addColorStop(0, `hsla(${this.hue} 100% 92% / ${0.46 * intensity})`)
+        gradient.addColorStop(0.42, `hsla(${this.hue} 92% 74% / ${0.16 * intensity})`)
+        gradient.addColorStop(1, `hsla(${this.hue} 88% 62% / 0)`)
+        ctx.fillStyle = gradient
+        ctx.beginPath()
+        ctx.arc(this.pos.x, this.pos.y, glow, 0, Math.PI * 2)
+        ctx.fill()
+
+        if(this.lightImg?.complete) {
+            ctx.drawImage(
+                this.lightImg,
+                this.pos.x - this.lightSize / 2,
+                this.pos.y - this.lightSize / 2,
+                this.lightSize,
+                this.lightSize
+            )
+        }
     }
 
     draw(ctx) {
-        ctx.fillStyle = "#aaa"
-        ctx.fillRect(this.pos.x - this.mass, this.pos.y - this.mass, this.mass * 2, this.mass * 2)
+        ctx.fillStyle = "rgba(34, 37, 44, 0.92)"
+        ctx.beginPath()
+        ctx.arc(this.pos.x, this.pos.y, this.mass * 1.35, 0, Math.PI * 2)
+        ctx.fill()
     }
 }
 
@@ -114,25 +130,20 @@ class Stick {
             this.endPoint.pos.y -= offsetY * m2
         }
     }
-
-    draw(ctx) {
-        ctx.beginPath()
-        ctx.strokeStyle = "#999"
-        ctx.moveTo(this.startPoint.pos.x, this.startPoint.pos.y)
-        ctx.lineTo(this.endPoint.pos.x, this.endPoint.pos.y)
-        ctx.stroke()
-        ctx.closePath()
-    }
 }
 
 class Rope {
     constructor(config) {
         this.x = config.x
+        this.baseX = config.x
         this.y = config.y
         this.segments = config.segments || 10
         this.gap = config.gap || 15
         this.lightImg = config.lightImg
-        this.iterations = 10
+        this.iterations = config.iterations || 12
+        this.hue = config.hue || 32
+        this.swayPhase = config.swayPhase || 0
+        this.swayAmp = config.swayAmp || 0
         this.dots = []
         this.sticks = []
         this.create()
@@ -144,24 +155,66 @@ class Rope {
 
     create() {
         for(let i = 0; i < this.segments; i++) {
-            this.dots.push(new Dot(this.x, this.y + i * this.gap, this.lightImg))
+            this.dots.push(new Dot(
+                this.x,
+                this.y + i * this.gap,
+                this.lightImg,
+                (this.hue + i * 9) % 360,
+                this.swayPhase + i * 0.37,
+                13 + Math.min(10, i * 0.75)
+            ))
         }
         for(let i = 0; i < this.segments - 1; i++) {
             this.sticks.push(new Stick(this.dots[i], this.dots[i + 1]))
         }
     }
 
-    update(pointer) {
+    update(pointer, nowSec) {
+        const lead = this.dots[0]
+        if(lead?.pinned) {
+            const sway = Math.sin(nowSec * 1.3 + this.swayPhase) * this.swayAmp
+            lead.pos.setXY(this.baseX + sway, this.y)
+            lead.oldPos.setXY(this.baseX + sway, this.y)
+        }
+
         for(const dot of this.dots) dot.update(pointer)
         for(let i = 0; i < this.iterations; i++) {
             for(const stick of this.sticks) stick.update()
         }
     }
 
-    draw(ctx) {
-        for(const dot of this.dots) dot.draw(ctx)
-        for(const stick of this.sticks) stick.draw(ctx)
-        this.dots[this.dots.length - 1]?.drawLight(ctx)
+    draw(ctx, nowSec, pointer) {
+        ctx.save()
+        ctx.lineCap = "round"
+        for(let i = 0; i < this.sticks.length; i++) {
+            const stick = this.sticks[i]
+            const gradient = ctx.createLinearGradient(
+                stick.startPoint.pos.x,
+                stick.startPoint.pos.y,
+                stick.endPoint.pos.x,
+                stick.endPoint.pos.y
+            )
+            gradient.addColorStop(0, "rgba(78, 70, 58, 0.88)")
+            gradient.addColorStop(1, "rgba(55, 48, 40, 0.72)")
+            ctx.strokeStyle = gradient
+            ctx.shadowColor = "rgba(255, 214, 153, 0.06)"
+            ctx.shadowBlur = 2
+            ctx.lineWidth = 1.1 + i * 0.08
+            ctx.beginPath()
+            ctx.moveTo(stick.startPoint.pos.x, stick.startPoint.pos.y)
+            ctx.lineTo(stick.endPoint.pos.x, stick.endPoint.pos.y)
+            ctx.stroke()
+        }
+        ctx.restore()
+
+        for(let i = 0; i < this.dots.length; i++) {
+            const dot = this.dots[i]
+            if(i > 0 && i < this.dots.length - 1 && i % 2 !== 0) continue
+            dot.draw(ctx)
+            dot.drawLight(ctx, nowSec, 0.55 + pointer.energy * 0.18)
+        }
+
+        this.dots[this.dots.length - 1]?.drawLight(ctx, nowSec, 0.7 + pointer.energy * 0.25)
     }
 }
 
@@ -182,7 +235,8 @@ export function createRopeLightEngine(canvas, options = {}) {
     let ropes = []
     const pointer = {
         pos: new Vector(-1000, -1000),
-        radius: 40
+        radius: 52,
+        energy: 0
     }
 
     const lightImg = new Image()
@@ -190,16 +244,21 @@ export function createRopeLightEngine(canvas, options = {}) {
 
     function createRopes() {
         ropes = []
-        const total = Math.max(10, Math.round(width * 0.06))
-        for(let i = 0; i < total + 1; i++) {
-            const x = randomNumBetween(width * 0.3, width * 0.7)
+        const total = Math.max(12, Math.round(width * 0.075))
+        for(let i = 0; i < total; i++) {
+            const spread = total <= 1 ? 0.5 : i / (total - 1)
+            const x = width * (0.14 + spread * 0.72) + randomNumBetween(-width * 0.035, width * 0.035)
             const y = 0
-            const gap = randomNumBetween(height * 0.05, height * 0.08)
+            const gap = randomNumBetween(height * 0.043, height * 0.078)
             const rope = new Rope({
                 x,
                 y,
                 gap,
-                segments: 10,
+                segments: Math.round(randomNumBetween(9, 15)),
+                iterations: 12,
+                hue: randomNumBetween(36, 48),
+                swayPhase: randomNumBetween(0, Math.PI * 2),
+                swayAmp: randomNumBetween(width * 0.004, width * 0.018),
                 lightImg
             })
             rope.pin(0)
@@ -207,12 +266,18 @@ export function createRopeLightEngine(canvas, options = {}) {
         }
     }
 
-    function renderFrame() {
-        ctx.clearRect(0, 0, width, height)
+    function renderFrame(nowMs = performance.now()) {
+        const nowSec = nowMs * 0.001
+        pointer.energy += (1 - pointer.energy) * 0.16
+        pointer.radius += ((52 + pointer.energy * 34) - pointer.radius) * 0.14
+
+        ctx.fillStyle = "rgba(9, 11, 20, 0.36)"
+        ctx.fillRect(0, 0, width, height)
         for(const rope of ropes) {
-            rope.update(pointer)
-            rope.draw(ctx)
+            rope.update(pointer, nowSec)
+            rope.draw(ctx, nowSec, pointer)
         }
+        pointer.energy *= 0.92
     }
 
     function tick(nowMs) {
@@ -222,7 +287,7 @@ export function createRopeLightEngine(canvas, options = {}) {
         const delta = nowMs - then
         if(delta >= interval) {
             then = nowMs - (delta % interval)
-            renderFrame()
+            renderFrame(nowMs)
         }
         rafId = requestAnimationFrame(tick)
     }
@@ -235,7 +300,7 @@ export function createRopeLightEngine(canvas, options = {}) {
         canvas.width = Math.floor(width * dpr)
         canvas.height = Math.floor(height * dpr)
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-        ctx.fillStyle = "#191919"
+        ctx.fillStyle = "#090b14"
         ctx.fillRect(0, 0, width, height)
         createRopes()
         renderFrame()
@@ -243,10 +308,12 @@ export function createRopeLightEngine(canvas, options = {}) {
 
     function setPointer(x, y) {
         pointer.pos.setXY(x * width, y * height)
+        pointer.energy = Math.min(1, pointer.energy + 0.34)
     }
 
     function clearPointer() {
         pointer.pos.setXY(-1000, -1000)
+        pointer.energy = 0
     }
 
     function reset() {

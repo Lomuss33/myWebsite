@@ -32,20 +32,20 @@ function NavToolList({ expanded }) {
     const orderedWidgets = expanded ?
         widgets :
         [
+            ...widgets.filter(item => item === "language"),
             ...widgets.filter(item =>
                 item !== NavToolSettings.Options.THEME &&
                 item !== "language"
             ),
             ...widgets.filter(item => item === NavToolSettings.Options.THEME),
-            ...widgets.filter(item => item === "language"),
         ]
 
     return (
         <div className={`nav-tools ${shrinkClass}`}>
             {orderedWidgets.map((item, key) => (
-                <div className={`nav-tools-item`}
+                <div className={`nav-tools-item ${item === "language" ? "nav-tools-item-language" : ""}`}
                      key={key}>
-                    {item === "language" && (<NavToolLanguagePicker/>)}
+                    {item === "language" && (<NavToolLanguagePicker dropdownDrop={"up"} hideCaret={true}/>)}
                     {item === NavToolSettings.Options.THEME && (<NavToolThemePicker/>)}
                     {item === NavToolSettings.Options.CURSOR && (<NavToolCursorToggle/>)}
                     {item === NavToolSettings.Options.DOWNLOAD_RESUME && (<NavToolResumeDownloader/>)}

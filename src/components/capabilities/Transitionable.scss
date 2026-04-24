@@ -3,6 +3,7 @@
 div.transitionable-wrapper {
     width: 100%;
     min-height: 0;
+    overflow-anchor: none;
 }
 
 div.transitionable-item {

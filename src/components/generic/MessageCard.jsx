@@ -5,8 +5,16 @@ import AvatarView from "./AvatarView.jsx"
 import Separator from "./Separator.jsx"
 
 function MessageCard({ children, faIcon = "fa-solid fa-circle", title = null, body = null, footer = null, className = "" }) {
+    const [isMounted, setIsMounted] = useState(false)
+
+    useEffect(() => {
+        const frame = requestAnimationFrame(() => setIsMounted(true))
+
+        return () => cancelAnimationFrame(frame)
+    }, [])
+
     return (
-        <div className={`message-card-wrapper ${className}`}>
+        <div className={`message-card-wrapper ${isMounted ? "message-card-wrapper-loaded" : "message-card-wrapper-loading"} ${className}`}>
             <Card className={`message-card`}>
                 <CardBody className={`message-card-body`}>
                     {children}

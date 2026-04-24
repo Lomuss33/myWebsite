@@ -117,10 +117,14 @@ export function createPrismFieldEngine(canvas, options = {}) {
         group = new THREE.Group()
         scene.add(group)
 
-        const nx = Math.max(8, Math.round(width / 20))
-        const ny = Math.max(8, Math.round(height / 15))
         const dx = Math.cos(Math.PI / 6) * objectRadius * 2
         const dy = objectRadius * 1.5
+        const visibleHeight = 2 * Math.tan((camera.fov * Math.PI / 180) / 2) * Math.abs(camera.position.z)
+        const visibleWidth = visibleHeight * camera.aspect
+        const nx = Math.max(12, Math.ceil(visibleWidth / dx) + 6)
+        const ny = Math.max(12, Math.ceil(visibleHeight / dy) + 8)
+        const originX = -((nx - 1) * dx) / 2
+        const originY = -((ny - 1) * dy) / 2
 
         for(let j = 0; j < ny; j++) {
             for(let i = 0; i < nx; i++) {
@@ -136,8 +140,8 @@ export function createPrismFieldEngine(canvas, options = {}) {
                         metalness: 0.92
                     })
                 )
-                mesh.position.x = (-nx / 2 + i) * dx + ((j % 2) * dx) / 2
-                mesh.position.y = (-ny / 2 + j) * dy
+                mesh.position.x = originX + i * dx + ((j % 2) * dx) / 2
+                mesh.position.y = originY + j * dy
                 mesh.position.z = -200 - Math.random() * 50
                 mesh.rotation.x = (Math.random() * 2 - 1) * Math.PI * 2
                 mesh.rotation.y = (Math.random() * 2 - 1) * Math.PI * 2

@@ -1,7 +1,6 @@
 import React from 'react'
 import {Dropdown} from "react-bootstrap"
 import {useLanguage} from "../../../providers/LanguageProvider.jsx"
-import OptionPickerButton from "../../buttons/OptionPickerButton.jsx"
 import {useUtils} from "../../../hooks/utils.js"
 
 function NavToolLanguagePicker({
@@ -70,16 +69,42 @@ function NavToolLanguagePicker({
     return (
         <>
             {supportsMultipleLanguages && (
-                <OptionPickerButton mode={OptionPickerButton.Modes.MODE_DROPDOWN}
-                                    options={options}
-                                    selectedOptionId={selectedLanguage?.id}
-                                    onOptionSelected={_onOptionSelected}
-                                    dropdownDrop={dropdownDrop}
-                                    hideCaret={hideCaret}
-                                    dropdownClassName={dropdownClassName}
-                                    menuClassName={menuClassName}
-                                    compactMenu={compactMenu}
-                                    tooltipLabel={language.getString("select_language")}/>
+                <Dropdown drop={dropdownDrop}
+                          className={dropdownClassName}>
+                    <Dropdown.Toggle variant={`transparent`}
+                                     className={`btn-option-picker-toggle nav-tool-language-toggle`}
+                                     data-tooltip={language.getString("select_language")}>
+                        <span className={`btn-option-picker-toggle-row`}>
+                            <div className={`btn-option-picker-icon btn-option-picker-icon-size-2`}>
+                                <img src={utils.file.resolvePath(selectedLanguage?.flagUrl)}
+                                     alt={selectedLanguage?.name}
+                                     className={`img`}/>
+                            </div>
+                        </span>
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu className={menuClassName}>
+                        {options
+                            .filter(option => option.id !== selectedLanguage?.id)
+                            .map((option, key) => (
+                                <Dropdown.Item key={key}
+                                               className={`btn-option-picker-menu-item ${compactMenu ? "btn-option-picker-menu-item-compact" : ""}`}
+                                               onClick={() => { _onOptionSelected(option.id) }}>
+                                    <div className={`btn-option-picker-icon btn-option-picker-icon-size-1`}>
+                                        <img src={option.img}
+                                             alt={option.label}
+                                             className={`img`}/>
+                                    </div>
+
+                                    {!compactMenu && (
+                                        <span className={`btn-option-picker-menu-item-label`}>
+                                            {option.label}
+                                        </span>
+                                    )}
+                                </Dropdown.Item>
+                            ))}
+                    </Dropdown.Menu>
+                </Dropdown>
             )}
         </>
     )

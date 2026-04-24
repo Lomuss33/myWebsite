@@ -33,12 +33,8 @@ function Transitionable({ children, id, refreshFlag, delayBetweenItems = 100, cl
 
     const _refreshWithTransition = () => {
         scheduler.clearAllWithTag(id)
-        setRenderingChildren([])
-
-        scheduler.schedule(() => {
-            setRenderingChildren(children)
-            setRefreshCount(prev => prev + 1)
-        }, TRANSITIONABLE_REFRESH_DELAY, id)
+        setRenderingChildren(children)
+        setRefreshCount(prev => prev + 1)
     }
 
     const _refreshWithoutTransition = () => {
@@ -91,7 +87,7 @@ function TransitionableItem({ children, id, index, animation, transitionsEnabled
         setIsVisible(false)
         scheduler.schedule(() => {
             setIsVisible(true)
-        }, TRANSITIONABLE_REFRESH_DELAY + 30 + delayBetweenItems*index, id)
+        }, 30 + delayBetweenItems*index, id)
     }
 
     const _showWithoutTransition = () => {
@@ -105,7 +101,5 @@ function TransitionableItem({ children, id, index, animation, transitionsEnabled
         </div>
     )
 }
-
-const TRANSITIONABLE_REFRESH_DELAY = 50
 
 export default Transitionable

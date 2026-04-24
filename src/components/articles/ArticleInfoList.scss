@@ -311,15 +311,35 @@ article.article-info-list-home {
 
 /** ------------- CONTACT LAYOUT ------------------- **/
 article.article-info-list-contact {
+    --contact-card-surface: linear-gradient(140deg, rgba(11, 18, 32, 0.98), rgba(15, 23, 42, 0.98));
+    --contact-card-surface-hover: linear-gradient(140deg, rgba(15, 23, 42, 0.99), rgba(8, 14, 26, 0.99));
+    --contact-card-surface-pressed: linear-gradient(140deg, rgba(8, 14, 26, 0.99), rgba(5, 8, 16, 0.99));
+    --contact-card-border: rgba(78, 163, 255, 0.16);
+    --contact-card-border-hover: rgba(78, 163, 255, 0.26);
+    --contact-card-pressed-border: rgba(78, 163, 255, 0.38);
+    --contact-card-shadow: 0 16px 36px rgba(0, 0, 0, 0.30);
+    --contact-card-text-strong: var(--theme-texts);
+    --contact-card-text: #d1d5db;
+    --contact-card-text-soft: #94a3b8;
+
+    [data-theme="light"] & {
+        --contact-card-surface: color-mix(in srgb, var(--theme-card-background) 92%, var(--theme-primary) 8%);
+        --contact-card-surface-hover: color-mix(in srgb, var(--theme-card-background) 86%, var(--theme-primary) 14%);
+        --contact-card-surface-pressed: color-mix(in srgb, var(--theme-card-background) 82%, var(--theme-secondary) 18%);
+        --contact-card-border: color-mix(in srgb, var(--theme-standard-borders) 68%, var(--theme-primary) 32%);
+        --contact-card-border-hover: color-mix(in srgb, var(--theme-secondary) 40%, var(--contact-card-border) 60%);
+        --contact-card-pressed-border: color-mix(in srgb, var(--theme-primary) 80%, var(--contact-card-border) 20%);
+        --contact-card-shadow: 0 12px 26px rgba(15, 23, 42, 0.10);
+        --contact-card-text-strong: var(--theme-texts);
+        --contact-card-text: color-mix(in srgb, var(--theme-texts) 76%, var(--theme-secondary) 24%);
+        --contact-card-text-soft: color-mix(in srgb, var(--theme-texts) 62%, var(--theme-secondary) 38%);
+    }
+
     div.article-info-list-items {
         // Contact cards look best as a compact 2-column grid on desktop.
         --grid-template-columns: repeat(2, minmax(0, 1fr));
         --avatar-size: 92px;
         --contact-card-extra: 58px;
-        --contact-card-border: color-mix(in srgb, var(--theme-primary) 35%, var(--theme-opacity-border-accent) 65%);
-        --contact-card-border-hover: color-mix(in srgb, var(--theme-secondary) 65%, var(--contact-card-border) 35%);
-        --contact-card-pressed-bg: color-mix(in srgb, var(--theme-primary) 12%, var(--theme-boards-background) 88%);
-        --contact-card-pressed-border: color-mix(in srgb, var(--theme-primary) 70%, var(--contact-card-border) 30%);
 
         @include media-breakpoint-down(lg) {
             --avatar-size: 86px;
@@ -344,17 +364,23 @@ article.article-info-list-contact {
         height: calc(var(--avatar-size) + var(--contact-card-extra));
         min-height: calc(var(--avatar-size) + var(--contact-card-extra));
         border: 1px solid var(--contact-card-border);
+        background:
+            var(--contact-card-surface);
+        box-shadow: var(--contact-card-shadow);
         transition: 0.15s transform ease-out, 0.15s box-shadow ease-out, 0.15s border-color ease-out;
 
         &:hover {
             transform: translateY(-1px);
-            box-shadow: 0 10px 26px color-mix(in srgb, var(--theme-secondary) 10%, transparent 90%);
+            background: var(--contact-card-surface-hover);
+            box-shadow:
+                0 20px 38px rgba(0, 0, 0, 0.36),
+                0 0 0 1px color-mix(in srgb, var(--contact-card-border-hover) 45%, transparent 55%);
             border-color: var(--contact-card-border-hover);
         }
     }
 
     div.article-info-list-item.article-info-list-item-pressed {
-        background-color: var(--contact-card-pressed-bg);
+        background: var(--contact-card-surface-pressed);
         border-color: var(--contact-card-pressed-border);
         transform: translateY(0);
     }
@@ -369,27 +395,26 @@ article.article-info-list-contact {
         min-height: var(--avatar-size);
         max-height: var(--avatar-size);
         place-self: center;
-        // Neutral, modern background tinted by the icon's currentColor (brand color),
-        // overriding the per-item pastel backgrounds from the JSON.
-        background-color: color-mix(in srgb, var(--theme-boards-background) 82%, currentColor 18%) !important;
-        border: 1px solid color-mix(in srgb, currentColor 35%, var(--contact-card-border) 65%);
+        background-color: rgba(15, 23, 42, 0.86) !important;
+        border: 1px solid color-mix(in srgb, currentColor 26%, var(--contact-card-border) 74%);
     }
 
     div.article-info-list-item-hovered div.article-info-list-item-avatar {
-        background-color: color-mix(in srgb, var(--theme-boards-background) 74%, currentColor 26%) !important;
-        border-color: color-mix(in srgb, currentColor 45%, var(--contact-card-border) 55%);
+        background-color: rgba(17, 29, 49, 0.90) !important;
+        border-color: color-mix(in srgb, currentColor 36%, var(--contact-card-border) 64%);
         color: currentColor !important;
     }
 
     div.article-info-list-item.article-info-list-item-pressed div.article-info-list-item-avatar {
-        background-color: color-mix(in srgb, var(--theme-boards-background) 66%, currentColor 34%) !important;
-        border-color: color-mix(in srgb, currentColor 60%, var(--contact-card-border) 40%);
+        background-color: rgba(8, 14, 26, 0.98) !important;
+        border-color: color-mix(in srgb, currentColor 48%, var(--contact-card-border) 52%);
         color: currentColor !important;
     }
 
     div.article-info-list-item-info-text {
         margin-bottom: 0;
         word-break: break-word;
+        color: var(--contact-card-text)!important;
     }
 
     div.article-info-list-item-content {
@@ -413,6 +438,7 @@ article.article-info-list-contact {
         text-overflow: ellipsis;
         white-space: nowrap;
         margin-bottom: 2px;
+        color: var(--contact-card-text-strong)!important;
     }
 
     div.article-info-list-item-info-text {

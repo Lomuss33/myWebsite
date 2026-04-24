@@ -1,6 +1,5 @@
 import "./NavHeaderMobile.scss"
 import React from 'react'
-import {Card} from "react-bootstrap"
 import NavProfileCard from "./partials/NavProfileCard.jsx"
 import NavToolLanguagePicker from "./tools/NavToolLanguagePicker.jsx"
 import NavToolThemePicker from "./tools/NavToolThemePicker.jsx"
@@ -18,11 +17,8 @@ function NavHeaderMobile({ profile, links }) {
 
     const mobileActionStack = (
         <>
-            <div className={`nav-profile-card-mobile-action nav-profile-card-mobile-action-language`}>
-                <NavToolLanguagePicker dropdownDrop={"up"}
-                                       mobileTubeMenu={true}
-                                       dropdownClassName={`nav-profile-card-mobile-language-dropdown`}
-                                       menuClassName={`nav-profile-card-mobile-language-menu`}/>
+            <div className={`nav-profile-card-mobile-action nav-profile-card-mobile-action-theme`}>
+                <NavToolThemePicker/>
             </div>
 
             {namePronunciationButtonVisible && (
@@ -34,15 +30,18 @@ function NavHeaderMobile({ profile, links }) {
                 </div>
             )}
 
-            <div className={`nav-profile-card-mobile-action nav-profile-card-mobile-action-theme`}>
-                <NavToolThemePicker/>
+            <div className={`nav-profile-card-mobile-action nav-profile-card-mobile-action-language`}>
+                <NavToolLanguagePicker dropdownDrop={"start"}
+                                       mobileTubeMenu={true}
+                                       dropdownClassName={`nav-profile-card-mobile-language-dropdown`}
+                                       menuClassName={`nav-profile-card-mobile-language-menu`}/>
             </div>
         </>
     )
 
     return (
         <nav className={`nav-header-mobile`}>
-            <Card className={`nav-header-mobile-card-wrapper`}>
+            <div className={`nav-header-mobile-card-wrapper`}>
                 <NavProfileCard profile={profile}
                                 expanded={true}
                                 mobileActionStack={mobileActionStack}
@@ -50,7 +49,7 @@ function NavHeaderMobile({ profile, links }) {
 
                 <NavLinkPills id={`nav-link-pills-menu`}
                               links={links}/>
-            </Card>
+            </div>
         </nav>
     )
 }

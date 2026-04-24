@@ -529,18 +529,20 @@ export function createTardisWormholeEngine(canvas, options = {}) {
         camera.position.z = 50 - zBoost + Math.sin(t * 0.22) * 4.0
         camera.lookAt(0, 0, 0)
 
-        tunnelMat.uniforms.uTime.value = t
+        const colorTime = t * 1.85 + Math.max(0, speedCurrent - 1.0) * 0.75
+
+        tunnelMat.uniforms.uTime.value = colorTime
         tunnelMat.uniforms.uSpeed.value = Math.max(0.1, speedCurrent)
         tunnelMat.uniforms.uWarpX.value = warpX
         tunnelMat.uniforms.uWarpY.value = warpY
         tunnelMat.uniforms.uBurst.value = burstVal
 
-        pMat.uniforms.uTime.value = t
+        pMat.uniforms.uTime.value = t * 1.25
         pMat.uniforms.uSpeed.value = Math.max(0.1, speedCurrent)
 
         if(tunnelMesh) tunnelMesh.rotation.z = t * 0.04 * speedCurrent
         for(let i = 0; i < allUniforms.length; i++) {
-            allUniforms[i].uniforms.uTime.value = t + i * 0.15
+            allUniforms[i].uniforms.uTime.value = colorTime + i * 0.3
         }
 
         dragVelZ *= 0.92

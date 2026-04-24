@@ -142,6 +142,8 @@ div.nav-profile-card {
         align-items: center;
         column-gap: 0.4rem;
         text-align: center;
+        color: var(--theme-nav-text);
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.18);
 
         margin-left: 8px;
         margin-right: 8px;
@@ -305,6 +307,8 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-dropdown button.dropdown-toggle::after,
+        div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-dropdown button.dropdown-toggle::before,
+        div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-dropdown button.btn-option-picker-toggle::before,
         div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-dropdown button.btn-option-picker-toggle::after {
             display: none !important;
             content: none !important;
@@ -312,8 +316,10 @@ div.nav-profile-card {
 
         div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-dropdown div.dropdown-menu.nav-profile-card-mobile-language-menu {
             position: absolute;
-            inset: auto auto calc(100% + 0.45rem) 50%;
-            transform: translateX(-50%);
+            top: 50%;
+            right: calc(100% + 0.45rem);
+            left: auto;
+            transform: translateY(-50%);
             min-width: 0;
             width: 2.9rem;
             margin-left: 0;
@@ -386,6 +392,18 @@ div.nav-profile-card {
             width: 100%;
             height: 100%;
             font-size: 1.2rem;
+        }
+
+        div.nav-profile-card-mobile-action-theme button.btn-option-picker-toggle i.fa-icon,
+        div.nav-profile-card-mobile-action-theme button.btn-option-picker-toggle i.fa-caret-icon {
+            color: var(--theme-nav-text);
+            opacity: 0.9;
+        }
+
+        div.nav-profile-card-mobile-action-theme button.btn-option-picker-toggle:hover i.fa-icon,
+        div.nav-profile-card-mobile-action-theme button.btn-option-picker-toggle:hover i.fa-caret-icon {
+            color: var(--theme-primary);
+            opacity: 1;
         }
 
         div.nav-profile-card-mobile-action-theme i.fa-caret-icon {

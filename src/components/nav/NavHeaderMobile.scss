@@ -9,9 +9,13 @@ nav.nav-header-mobile {
     }
 
     div.nav-header-mobile-card-wrapper {
+        width: calc(100% + var(--default-card-spacing) * 2);
+        margin-top: calc(-1 * var(--default-card-spacing));
+        margin-left: calc(-1 * var(--default-card-spacing));
+        margin-right: calc(-1 * var(--default-card-spacing));
         padding-top: 8px;
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
+        overflow: hidden;
+        border-radius: 0;
         background:
             linear-gradient(180deg,
                 color-mix(in srgb, var(--theme-nav-surface) 94%, white 6%) 0%,
@@ -21,5 +25,15 @@ nav.nav-header-mobile {
         box-shadow:
             0 16px 32px rgba(2, 6, 23, 0.24),
             0 3px 12px rgba(2, 6, 23, 0.16);
+    }
+
+    div.nav-header-mobile-card-wrapper > div.nav-profile-card {
+        margin: 0;
+        padding-top: 12px;
+        padding-left: 10px;
+        padding-right: 10px;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
     }
 }

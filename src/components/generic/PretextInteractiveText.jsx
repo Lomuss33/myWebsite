@@ -22,7 +22,9 @@ const TAP_RIPPLE_FADE_MS = 420
 const TAP_RIPPLE_SPEED_PX_PER_MS = 0.30
 const TAP_RIPPLE_BAND_PX = 28
 const WAVE_EFFECT_STRENGTH_MULTIPLIER = 2.4
-const GRAVITY_RELEASE_ROW_OFFSET = 0
+// Align the release divider with the middle of the visible text row.
+const GRAVITY_RELEASE_ROW_OFFSET = 0.5
+const GRAVITY_ABOVE_LATCH_MS = 180
 
 function PretextInteractiveText({
     html,
@@ -46,6 +48,7 @@ function PretextInteractiveText({
     const tapRippleFrameRef = useRef(null)
     const touchGestureRef = useRef(null)
     const touchTapTimeoutRef = useRef(null)
+    const gravityAboveLatchUntilRef = useRef(0)
     const pendingPointerRef = useRef(createInactiveInteractionState())
     const pointerStateRef = useRef(createInactiveInteractionState())
     const visibleGraphemesRef = useRef([])
@@ -247,6 +250,7 @@ function PretextInteractiveText({
 
             const clientX = event.clientX ?? 0
             const clientY = event.clientY ?? 0
+            const now = performance.now()
             const scopeRect = scopeElement.getBoundingClientRect()
             const rootRect = rootElement.getBoundingClientRect()
 
@@ -268,7 +272,15 @@ function PretextInteractiveText({
             const isWithinHitboxY = !isAboveHitbox && !isBelowHitbox
             const withinHitbox = withinHitboxX && isWithinHitboxY
 
+            if (gravityZoneMode === "above_inside_below" && isAboveHitbox) {
+                gravityAboveLatchUntilRef.current = now + GRAVITY_ABOVE_LATCH_MS
+            }
+
+            const isLatchedAbove = gravityZoneMode === "above_inside_below" && now <= gravityAboveLatchUntilRef.current
+            const shouldUseAboveMode = gravityZoneMode === "above_inside_below" && (isAboveHitbox || isLatchedAbove)
+
             if (gravityZoneMode === "above_inside_below" && isBelowHitbox) {
+                gravityAboveLatchUntilRef.current = 0
                 schedulePointerUpdate(createInactiveInteractionState())
                 return
             }
@@ -279,7 +291,7 @@ function PretextInteractiveText({
             }
 
             const localY =
-                gravityZoneMode === "above_inside_below" && isAboveHitbox ?
+                shouldUseAboveMode ?
                     -Math.max(1, rootRect.height * 0.35) :
                     clientY - rootRect.top
             let localX = normalizedViewportX * rootRect.width
@@ -298,7 +310,7 @@ function PretextInteractiveText({
                 }
             }
 
-            if (gravityZoneMode === "above_inside_below" && isAboveHitbox) {
+            if (shouldUseAboveMode) {
                 mode = "above"
                 intensity = Math.max(intensity, 1.1)
             }
@@ -490,6 +502,7 @@ function PretextInteractiveText({
         }
 
         touchGestureRef.current = null
+        gravityAboveLatchUntilRef.current = 0
 
         if (touchTapTimeoutRef.current !== null) {
             clearTimeout(touchTapTimeoutRef.current)

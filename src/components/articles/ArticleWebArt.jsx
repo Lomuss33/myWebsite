@@ -479,18 +479,18 @@ function WebArtIntroCover({ title, note, buttonLabel, hidden, onEnter }) {
                         {title}
                     </p>
 
-                    <button type={"button"}
-                            className={`article-web-art-intro-cover-button`}
-                            onClick={onEnter}
-                            onKeyDown={onKeyDown}
-                            aria-label={buttonLabel}>
-                        {buttonLabel}
-                    </button>
+                    <span className={`article-web-art-intro-cover-note`}>
+                        {note}
+                    </span>
                 </div>
 
-                <span className={`article-web-art-intro-cover-note`}>
-                    {note}
-                </span>
+                <button type={"button"}
+                        className={`article-web-art-intro-cover-button`}
+                        onClick={onEnter}
+                        onKeyDown={onKeyDown}
+                        aria-label={buttonLabel}>
+                    {buttonLabel}
+                </button>
             </div>
         </div>
     )
@@ -1767,7 +1767,10 @@ function PixelPlopTile({ readyId, locked, onReady }) {
                 className={`article-web-art-tile article-web-art-tile-clickable`}
                 aria-label={`Pixel plop web art tile`}
                 disabled={locked}
-                onClick={locked ? undefined : burstAtEvent}
+                onPointerDown={locked ? undefined : ((event) => {
+                    if(event.button != null && event.button !== 0) return
+                    burstAtEvent(event)
+                })}
                 onKeyDown={locked ? undefined : onKeyDown}>
             <canvas ref={canvasRef}
                     className={`article-web-art-canvas`}/>
@@ -2033,8 +2036,6 @@ function MinesweeperTile({ readyId, locked, onReady }) {
     }
 
     const minesLeft = board.mineCount - flagged.size
-    const safeCells = board.rows * board.cols - board.mineCount
-    const revealedSafeCount = [...revealed].filter((index) => !board.mines.has(index)).length
     const timerText = `${String(Math.floor(elapsedSeconds / 60)).padStart(2, "0")}:${String(elapsedSeconds % 60).padStart(2, "0")}`
 
     let mood = "🤔"
@@ -2132,10 +2133,6 @@ function MinesweeperTile({ readyId, locked, onReady }) {
                     <div className={`article-web-art-minesweeper-timer`}>
                         {timerText}
                     </div>
-                </div>
-
-                <div className={`article-web-art-minesweeper-footer`}>
-                    {revealedSafeCount}/{safeCells}
                 </div>
 
                 <span className={`article-web-art-tile-label`}>
@@ -2669,22 +2666,18 @@ function SoupShaderTile({ readyId, locked, onReady }) {
         }
     }
 
-    const toggleMode = () => {
-        engineRef.current?.toggleComplex?.()
-        engineRef.current?.start?.()
-    }
-
     return (
         <button type={"button"}
                 ref={tileRef}
                 className={`article-web-art-tile article-web-art-tile-clickable`}
                 aria-label={`Soup shader web art tile`}
                 disabled={locked}
-                onClick={locked ? undefined : toggleMode}
                 onPointerDown={locked ? undefined : (event) => {
                     pointerIdRef.current = event.pointerId
+                    try { event.currentTarget.setPointerCapture(event.pointerId) } catch(err) { void err }
                     const pos = pointerPosition(event)
                     engineRef.current?.setPointer?.(pos.x, pos.y)
+                    engineRef.current?.setHeld?.(true)
                 }}
                 onPointerMove={locked ? undefined : (event) => {
                     if(pointerIdRef.current != null && event.pointerId !== pointerIdRef.current) return
@@ -2694,9 +2687,11 @@ function SoupShaderTile({ readyId, locked, onReady }) {
                 onPointerUp={locked ? undefined : (event) => {
                     if(pointerIdRef.current != null && event.pointerId !== pointerIdRef.current) return
                     pointerIdRef.current = null
+                    engineRef.current?.setHeld?.(false)
                 }}
                 onPointerCancel={locked ? undefined : (() => {
                     pointerIdRef.current = null
+                    engineRef.current?.setHeld?.(false)
                 })}
                 onMouseMove={locked ? undefined : (event) => {
                     const pos = pointerPosition(event)
@@ -2704,17 +2699,13 @@ function SoupShaderTile({ readyId, locked, onReady }) {
                 }}
                 onMouseLeave={locked ? undefined : (() => {
                     pointerIdRef.current = null
+                    engineRef.current?.setHeld?.(false)
                     engineRef.current?.clearPointer?.()
                 })}
                 onBlur={locked ? undefined : (() => {
                     pointerIdRef.current = null
+                    engineRef.current?.setHeld?.(false)
                     engineRef.current?.clearPointer?.()
-                })}
-                onKeyDown={locked ? undefined : ((event) => {
-                    if(event.key === "Enter" || event.key === " ") {
-                        event.preventDefault()
-                        toggleMode()
-                    }
                 })}>
             <canvas ref={canvasRef}
                     className={`article-web-art-canvas`}/>
@@ -3033,7 +3024,7 @@ function GoldfishTile() {
         }
 
         const setRate = (rate) => {
-            const r = Math.max(1, Math.min(3, Number(rate) || 1))
+            const r = Math.max(1, Math.min(5.2, Number(rate) || 1))
             rateRef.current = r
             const anims = collectAnimations()
             for(const a of anims) {
@@ -3049,7 +3040,7 @@ function GoldfishTile() {
             rafRef.current = null
 
             const from = rateRef.current
-            const dur = 260
+            const dur = 360
             const start = performance.now()
             if(releaseRafRef.current != null) cancelAnimationFrame(releaseRafRef.current)
 
@@ -3066,8 +3057,7 @@ function GoldfishTile() {
         const tick = () => {
             if(!holdRef.current) return
             const t = performance.now() - holdStartRef.current
-            // Smooth ramp from 1x -> 3x over ~5 seconds.
-            const mult = 1 + 2 * smoothstep01(t / 5000)
+            const mult = 1.2 + 4.0 * smoothstep01(t / 2400)
             setRate(mult)
             rafRef.current = requestAnimationFrame(tick)
         }

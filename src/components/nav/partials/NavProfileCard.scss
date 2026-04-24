@@ -12,11 +12,12 @@ div.nav-profile-card {
     justify-content: center;
     flex-direction: column;
     background:
-        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.07), transparent 54%),
+        radial-gradient(circle at 50% 0%,
+            rgba(56, 189, 248, 0.08),
+            transparent 56%),
         linear-gradient(180deg,
-            rgba(255, 255, 255, 0.03) 0%,
-            transparent 18%,
-            transparent 100%);
+            color-mix(in srgb, var(--theme-nav-surface) 96%, white 4%) 0%,
+            color-mix(in srgb, var(--theme-nav-surface) 92%, black 8%) 100%);
     border-bottom: 1px solid var(--theme-nav-divider);
     position: relative;
     margin: 10px 10px 8px;
@@ -43,13 +44,17 @@ div.nav-profile-card {
         transform-style: preserve-3d;
         will-change: transform;
         cursor: pointer;
+        --ff-highlight-opacity: 0.02;
+        --ff-highlight-blur: 8px;
+        --ff-hover-y: -0.25px;
+        --ff-hover-lift: 4px;
         transition:
             transform 0.24s ease,
             filter 0.24s ease;
 
         &:hover {
             transform: translateY(-1px);
-            filter: saturate(1.05);
+            filter: saturate(1.01);
         }
     }
 
@@ -65,8 +70,8 @@ div.nav-profile-card {
         will-change: transform;
         transition: none;
         box-shadow:
-            0 10px 24px rgba(15, 23, 42, 0.18),
-            inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            0 12px 26px rgba(2, 6, 23, 0.24),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
 
     &-avatar {
@@ -124,44 +129,51 @@ div.nav-profile-card {
         margin-top: var(--info-margin-top);
         margin-bottom: 2px;
         user-select: none;
-        width: min(100%, 206px);
+        width: 100%;
+        max-width: none;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: center;
         flex-direction: column;
-        text-align: center;
+        text-align: left;
+        padding: 0 2px 0 0;
+        box-sizing: border-box;
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
             margin-top: 14px;
             margin-bottom: 8px;
+            align-items: center;
+            text-align: center;
         }
     }
 
     h1.nav-profile-card-name {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        display: inline-flex;
         align-items: center;
-        column-gap: 0.4rem;
-        text-align: center;
+        justify-content: flex-start;
+        gap: 0.28rem;
+        text-align: left;
         color: var(--theme-nav-text);
         text-shadow: 0 1px 1px rgba(0, 0, 0, 0.18);
 
-        margin-left: 8px;
-        margin-right: 8px;
+        margin-left: 0;
+        margin-right: 0;
         margin-bottom: 2px;
         font-size: 1.15rem!important;
         line-height: 1.48rem!important;
+        width: fit-content;
+        max-width: 100%;
 
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
             font-size: 1.35rem!important;
             margin-bottom: 7px;
             line-height: 1.55rem!important;
+            justify-content: center;
         }
     }
 
     span.nav-profile-card-name-text {
-        display: block;
-        grid-column: 2;
-        justify-self: center;
+        display: inline-flex;
+        align-items: center;
         min-width: 0;
     }
 
@@ -175,8 +187,6 @@ div.nav-profile-card {
 
     span.nav-profile-card-name-audio-button {
         display: inline-flex;
-        grid-column: 3;
-        justify-self: start;
         align-items: center;
         min-width: 0;
     }
@@ -185,6 +195,20 @@ div.nav-profile-card {
         width: 100%;
         white-space: normal;
 
+        div.audio-button-wrapper-size-dynamic-for-nav-title {
+            margin-left: 0;
+            margin-right: 0.08rem;
+        }
+
+        button.audio-button {
+            color: color-mix(in srgb, var(--theme-nav-text) 84%, var(--theme-primary) 16%);
+        }
+
+        button.audio-button:hover {
+            color: var(--theme-primary);
+            filter: drop-shadow(0 0 0.32rem color-mix(in srgb, var(--theme-primary) 32%, transparent 68%));
+        }
+
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
             margin-left: 10px;
             margin-right: 10px;
@@ -192,20 +216,39 @@ div.nav-profile-card {
     }
 
     div.nav-profile-card-role {
-        display: inline-flex;
+        display: flex;
         align-items: center;
         justify-content: center;
         color: var(--theme-nav-text);
         font-size: 0.76rem;
         min-height: 20px;
-        width: min(100%, 206px);
+        align-self: stretch;
+        width: calc(100% + 20px);
+        max-width: none;
         text-align: center;
         margin-top: 0;
-        padding: 4px 10px;
-        border-radius: 999px;
+        margin-left: -10px;
+        margin-right: -10px;
+        padding: 4px 14px;
+        border-radius: 0;
         background: color-mix(in srgb, var(--theme-nav-surface-accent) 78%, white 22%);
-        border: 1px solid var(--theme-nav-divider);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        border-top: 1px solid var(--theme-nav-divider);
+        border-bottom: 1px solid var(--theme-nav-divider);
+        border-left: 0;
+        border-right: 0;
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.04),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+
+        span.text-typer-span {
+            width: 100%;
+            justify-content: center;
+        }
+
+        span.text-typer-span-dynamic {
+            text-align: center;
+        }
+
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
             font-size: 0.88rem;
             min-height: 25px;
@@ -467,7 +510,16 @@ div.nav-profile-card {
         h1.nav-profile-card-name-with-audio-button div.audio-button-wrapper-size-dynamic-for-nav-title {
             display: flex;
             align-self: center;
-            margin-left: 0;
+            margin-left: 0.08rem;
+        }
+
+        h1.nav-profile-card-name-with-audio-button button.audio-button {
+            color: color-mix(in srgb, var(--theme-nav-text) 82%, var(--theme-primary) 18%);
+        }
+
+        h1.nav-profile-card-name-with-audio-button button.audio-button:hover {
+            color: var(--theme-primary);
+            filter: drop-shadow(0 0 0.32rem color-mix(in srgb, var(--theme-primary) 36%, transparent 64%));
         }
 
         div.nav-profile-card-role {
@@ -475,7 +527,7 @@ div.nav-profile-card {
             text-align: center;
             min-height: 0;
             margin-top: 2px;
-            width: min(100%, 320px);
+            width: calc(100% + 20px);
         }
     }
 }

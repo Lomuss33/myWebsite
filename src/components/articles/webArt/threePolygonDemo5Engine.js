@@ -10,17 +10,33 @@ function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value))
 }
 
-function randomColorHsl() {
-    const h = Math.random() * 360
-    const s = 80 + Math.random() * 20
-    const l = 55 + Math.random() * 10
-    return new THREE.Color().setHSL(h / 360, s / 100, l / 100)
+function ringColorHsl(index, count, time = 0) {
+    const t = count <= 1 ? 0 : index / (count - 1)
+    const swirl = time * 0.12
+    const waveA = Math.sin((t * 8.0 + swirl) * Math.PI * 2)
+    const waveB = Math.sin((t * 3.5 - swirl * 1.6) * Math.PI * 2)
+    const hue = (290 + t * 210 + waveA * 48 + waveB * 26 + time * 34) % 360
+    const saturation = clamp(0.72 + 0.16 * Math.sin((t * 5.0 + time * 0.28) * Math.PI * 2), 0.62, 0.94)
+    const lightness = clamp(0.42 + 0.14 * Math.cos((t * 7.0 - time * 0.2) * Math.PI * 2), 0.32, 0.62)
+    return new THREE.Color().setHSL(((hue % 360) + 360) % 360 / 360, saturation, lightness)
 }
 
-function ringColorHsl(index, count) {
-    const t = count <= 1 ? 0 : index / (count - 1)
-    const hue = (210 + t * 310) % 360
-    return new THREE.Color().setHSL(hue / 360, 0.88, 0.50)
+function applyRingPalette(mesh, index, count, time) {
+    if(!mesh?.material) return
+
+    const baseColor = ringColorHsl(index, count, time)
+    const edgeColor = ringColorHsl(index + 0.8, count, time + 0.65)
+    const material = mesh.material
+
+    material.color.copy(baseColor).multiplyScalar(0.28)
+    material.emissive.copy(baseColor)
+    material.emissiveIntensity = 0.14 + 0.08 * Math.sin(time * 1.8 + index * 0.42)
+
+    const lines = mesh.userData?.lines
+    if(lines?.material?.color) {
+        lines.material.color.copy(edgeColor)
+        lines.material.opacity = 0.74 + 0.16 * Math.sin(time * 1.5 + index * 0.35)
+    }
 }
 
 function polygonPoints(n, x, y, s, r) {
@@ -137,10 +153,9 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
         group = new THREE.Group()
         scene.add(group)
 
-        const accentColor = new THREE.Color().setHSL(195 / 360, 0.92, 0.62)
         const baseMat = new THREE.MeshStandardMaterial({
             color: 0x060715,
-            emissive: accentColor.clone(),
+            emissive: new THREE.Color(0x44ccff),
             emissiveIntensity: 0.04,
             roughness: 0.22,
             metalness: 0.88,
@@ -161,14 +176,16 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
             // Bright “strip” outline so the rings stand out against the dark background.
             const edges = new THREE.EdgesGeometry(geo, 18)
             const edgeMat = new THREE.LineBasicMaterial({
-                color: accentColor,
+                color: 0xffffff,
                 transparent: true,
                 opacity: 0.88,
                 blending: THREE.NormalBlending,
                 depthWrite: false
             })
             const lines = new THREE.LineSegments(edges, edgeMat)
+            mesh.userData.lines = lines
             mesh.add(lines)
+            applyRingPalette(mesh, i, nbObjects, 0)
 
             group.add(mesh)
         }
@@ -229,6 +246,7 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
             mesh.rotation.x = ampX * yoyo
             mesh.rotation.y = ampY * yoyo
             mesh.rotation.z = ampZ * yoyo
+            applyRingPalette(mesh, i, group.children.length, t + i * 0.08)
         }
 
         simTime += dt
@@ -285,6 +303,7 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
         held = false
         for(let i = 0; i < group.children.length; i++) {
             group.children[i].rotation.set(0, 0, 0)
+            applyRingPalette(group.children[i], i, group.children.length, 0)
         }
         renderFrame()
     }

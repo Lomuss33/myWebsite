@@ -125,6 +125,15 @@ function NavProfileCard({ profile, expanded, compactRail = false, mobileActionSt
 
                 <div className={`nav-profile-card-info`}>
                     <h1 className={`nav-profile-card-name ${navProfileCardNameClass}`}>
+                        {namePronunciationButtonVisible && (
+                            <span className={`nav-profile-card-name-audio-button`}>
+                                <AudioButton url={namePronunciationAudioUrl}
+                                             tooltip={namePronunciationIpa}
+                                             tooltipLabel={namePronunciationTooltipLabel}
+                                             size={AudioButton.Sizes.DYNAMIC_FOR_NAV_TITLE}/>
+                            </span>
+                        )}
+
                         <span className={`nav-profile-card-name-text`}>
                             <span className={`nav-profile-card-name-line nav-profile-card-name-line-first`}>
                                 {firstName}
@@ -136,15 +145,6 @@ function NavProfileCard({ profile, expanded, compactRail = false, mobileActionSt
                                 </span>
                             )}
                         </span>
-
-                        {namePronunciationButtonVisible && (
-                            <span className={`nav-profile-card-name-audio-button`}>
-                                <AudioButton url={namePronunciationAudioUrl}
-                                             tooltip={namePronunciationIpa}
-                                             tooltipLabel={namePronunciationTooltipLabel}
-                                             size={AudioButton.Sizes.DYNAMIC_FOR_NAV_TITLE}/>
-                            </span>
-                        )}
                     </h1>
                 </div>
 

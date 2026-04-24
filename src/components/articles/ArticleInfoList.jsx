@@ -1,5 +1,5 @@
 import "./ArticleInfoList.scss"
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import Article from "./base/Article.jsx"
 import AvatarView from "../generic/AvatarView.jsx"
 import Link from "../generic/Link.jsx"
@@ -101,12 +101,17 @@ function ArticleInfoListItems({ dataWrapper, selectedItemCategoryId, isHomeInfoL
 function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList }) {
     const [linkHovered, setLinkHovered] = useState(false)
     const [isPressed, setIsPressed] = useState(false)
+    const [isBubbleOpen, setIsBubbleOpen] = useState(false)
+    const [isBubblePinned, setIsBubblePinned] = useState(false)
+    const bubbleRef = useRef(null)
+    const bubbleToggleRef = useRef(null)
 
     const hoverClass = linkHovered ?
         `article-info-list-item-hovered` :
         ``
     const homeClass = isHomeInfoList ? `article-info-list-item-home` : ``
     const pressedClass = isPressed ? `article-info-list-item-pressed` : ``
+    const bubbleClass = isBubbleOpen ? `article-info-list-item-avatar-bubble-open` : ``
 
     const baseTextSize = isHomeInfoList
         ? (itemWrapper.locales.text ? 1 : 2)
@@ -116,34 +121,117 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
 
     const copyValue = (itemWrapper.label || itemWrapper.locales.text || itemWrapper.locales.title || "").trim()
     const titleMarkup = itemWrapper.locales.title || itemWrapper.placeholder
+    const proofBubbleMarkup = itemWrapper.locales.proofBubble || null
+    const hasProofBubble = Boolean(isHomeInfoList && proofBubbleMarkup)
+
+    useEffect(() => {
+        if (!hasProofBubble || !isBubblePinned)
+            return
+
+        const handlePointerDown = (event) => {
+            const target = event.target
+
+            if (bubbleRef.current?.contains(target) || bubbleToggleRef.current?.contains(target))
+                return
+
+            setIsBubblePinned(false)
+            setIsBubbleOpen(false)
+        }
+
+        const handleKeyDown = (event) => {
+            if (event.key !== "Escape")
+                return
+
+            setIsBubblePinned(false)
+            setIsBubbleOpen(false)
+        }
+
+        document.addEventListener("pointerdown", handlePointerDown)
+        document.addEventListener("keydown", handleKeyDown)
+
+        return () => {
+            document.removeEventListener("pointerdown", handlePointerDown)
+            document.removeEventListener("keydown", handleKeyDown)
+        }
+    }, [hasProofBubble, isBubblePinned])
+
+    const handleBubbleMouseEnter = () => {
+        setLinkHovered(true)
+
+        if (!hasProofBubble)
+            return
+
+        setIsBubbleOpen(true)
+    }
+
+    const handleBubbleMouseLeave = () => {
+        setLinkHovered(false)
+
+        if (!hasProofBubble || isBubblePinned)
+            return
+
+        setIsBubbleOpen(false)
+    }
+
+    const handleBubbleToggle = (event) => {
+        if (!hasProofBubble)
+            return
+
+        event.preventDefault()
+        event.stopPropagation()
+
+        setIsBubblePinned((currentState) => {
+            const nextState = !currentState
+            setIsBubbleOpen(nextState)
+            return nextState
+        })
+    }
 
     return (
         <div className={`article-info-list-item ${hoverClass} ${pressedClass} ${homeClass}`}>
-            {itemWrapper.link?.href ? (
-                <Link href={itemWrapper.link?.href || null}
-                      tooltip={itemWrapper.link?.tooltip}
-                      metadata={itemWrapper.link?.metadata}
-                      className={`article-info-list-item-avatar-link`}
-                      onPointerDown={() => setIsPressed(true)}
-                      onPointerUp={() => setIsPressed(false)}
-                      onPointerCancel={() => setIsPressed(false)}
-                      onMouseDown={() => setIsPressed(true)}
-                      onMouseUp={() => setIsPressed(false)}
-                      onClick={() => setIsPressed(false)}
-                      onHoverStatus={setLinkHovered}>
+            <div className={`article-info-list-item-avatar-shell ${bubbleClass}`}
+                 onMouseEnter={handleBubbleMouseEnter}
+                 onMouseLeave={handleBubbleMouseLeave}>
+                {itemWrapper.link?.href ? (
+                    <Link href={itemWrapper.link?.href || null}
+                          tooltip={itemWrapper.link?.tooltip}
+                          metadata={itemWrapper.link?.metadata}
+                          className={`article-info-list-item-avatar-link`}
+                          onPointerDown={() => setIsPressed(true)}
+                          onPointerUp={() => setIsPressed(false)}
+                          onPointerCancel={() => setIsPressed(false)}
+                          onMouseDown={() => setIsPressed(true)}
+                          onMouseUp={() => setIsPressed(false)}
+                          onClick={() => setIsPressed(false)}
+                          onHoverStatus={setLinkHovered}>
+                        <AvatarView src={itemWrapper.img}
+                                    faIcon={itemWrapper.faIconWithFallback}
+                                    style={itemWrapper.faIconStyle}
+                                    alt={itemWrapper.imageAlt}
+                                    className={`article-info-list-item-avatar`}/>
+                    </Link>
+                ) : hasProofBubble ? (
+                    <button type="button"
+                            className={`article-info-list-item-avatar-button`}
+                            aria-expanded={isBubbleOpen}
+                            aria-label={`Show proof of work for ${itemWrapper.locales.title || itemWrapper.placeholder}`}
+                            onClick={handleBubbleToggle}
+                            ref={bubbleToggleRef}>
+                        <AvatarView src={itemWrapper.img}
+                                    faIcon={itemWrapper.faIconWithFallback}
+                                    style={itemWrapper.faIconStyle}
+                                    alt={itemWrapper.imageAlt}
+                                    className={`article-info-list-item-avatar`}/>
+                    </button>
+                ) : (
                     <AvatarView src={itemWrapper.img}
                                 faIcon={itemWrapper.faIconWithFallback}
                                 style={itemWrapper.faIconStyle}
                                 alt={itemWrapper.imageAlt}
                                 className={`article-info-list-item-avatar`}/>
-                </Link>
-            ) : (
-                <AvatarView src={itemWrapper.img}
-                            faIcon={itemWrapper.faIconWithFallback}
-                            style={itemWrapper.faIconStyle}
-                            alt={itemWrapper.imageAlt}
-                            className={`article-info-list-item-avatar`}/>
-            )}
+                )}
+
+            </div>
 
             <div className={`article-info-list-item-content ${homeClass}`}>
                 <div className={`article-info-list-item-info-title ${titleClass}`}>
@@ -151,6 +239,16 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
                 </div>
 
                 <div className={`article-info-list-item-info-body`}>
+                    {hasProofBubble && (
+                        <div className={`article-info-list-item-text-bubble ${bubbleClass}`}
+                             role="note"
+                             aria-hidden={!isBubbleOpen}
+                             ref={bubbleRef}>
+                            <div className={`article-info-list-item-text-bubble-inner`}
+                                 dangerouslySetInnerHTML={{__html: proofBubbleMarkup}}/>
+                        </div>
+                    )}
+
                     {isContactInfoList ? (
                         <div className={`article-info-list-item-info-text ${textClass}`}>
                             <span dangerouslySetInnerHTML={{__html: itemWrapper.locales.text}}/>

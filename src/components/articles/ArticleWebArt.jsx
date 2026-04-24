@@ -4,6 +4,7 @@ import Article from "./base/Article.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useNavigation} from "../../providers/NavigationProvider.jsx"
 import patronusSvgMarkup from "./webArt/patronus.svg?raw"
+import sendYoursHexLoopSource from "./webArt/sendYoursHexLoopEngine.js?raw"
 
 function _scheduleIdleWork(work, { timeoutMs = 1200 } = {}) {
     if(typeof window === "undefined") {
@@ -136,6 +137,74 @@ function _makePlaceholderAriaLabel(label) {
     return `Web art ${String(label || "tile").toLowerCase()} tile loading`
 }
 
+function _buildSendYoursHexLoopSrcDoc({ seed, reduceMotion }) {
+    const engineSource = JSON.stringify(
+        sendYoursHexLoopSource.split("</script>").join("<\\/script>")
+    )
+    const safeSeed = JSON.stringify(seed)
+    const motionFlag = reduceMotion ? "true" : "false"
+
+    return `<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            overflow: hidden;
+            background: #000;
+        }
+
+        body {
+            position: relative;
+        }
+
+        canvas {
+            position: absolute;
+            inset: 0;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<script type="module">
+const moduleSource = ${engineSource}
+const moduleUrl = URL.createObjectURL(new Blob([moduleSource], { type: "text/javascript" }))
+const { createHexLoopRenderer } = await import(moduleUrl)
+URL.revokeObjectURL(moduleUrl)
+
+const canvas = document.createElement("canvas")
+canvas.style.position = "absolute"
+canvas.style.inset = "0"
+canvas.style.width = "100%"
+canvas.style.height = "100%"
+document.body.appendChild(canvas)
+
+const renderer = createHexLoopRenderer(canvas, {
+    reduceMotion: ${motionFlag},
+    seed: ${safeSeed}
+})
+
+const render = () => renderer.render()
+render()
+
+document.addEventListener("click", () => {
+    render()
+})
+
+window.addEventListener("resize", () => {
+    render()
+}, { passive: true })
+</script>
+</body>
+</html>`
+}
+
 function ArticleWebArt({ dataWrapper, id }) {
     const language = useLanguage()
     const ambientTraceReadyId = `${dataWrapper.uniqueId}-ambient-trace`
@@ -180,9 +249,36 @@ function ArticleWebArt({ dataWrapper, id }) {
     const [activationIndex, setActivationIndex] = useState(-1)
     const [openTileIds, setOpenTileIds] = useState(() => new Set())
     const [mountedTileIds, setMountedTileIds] = useState(() => new Set())
-    const eagerItemTileIds = useMemo(() => {
-        return new Set(items.slice(0, INITIAL_WEB_ART_ITEM_MOUNT_COUNT).map((item) => item?.uniqueId).filter(Boolean))
-    }, [items])
+    const allTileIds = useMemo(() => {
+        const ids = items.map((item) => item?.uniqueId).filter(Boolean)
+        ids.push(
+            ambientTraceReadyId,
+            ambientHexReadyId,
+            ambientPlopReadyId,
+            ambientJuliaReadyId,
+            ambientMinesReadyId,
+            ambientPrismReadyId,
+            ambientRingsReadyId,
+            ambientRopeReadyId,
+            ambientSoupReadyId,
+            ambientTardisReadyId,
+            "ambient-goldfish",
+            "ambient-patronus"
+        )
+        return new Set(ids)
+    }, [
+        ambientHexReadyId,
+        ambientJuliaReadyId,
+        ambientMinesReadyId,
+        ambientPlopReadyId,
+        ambientPrismReadyId,
+        ambientRingsReadyId,
+        ambientRopeReadyId,
+        ambientSoupReadyId,
+        ambientTardisReadyId,
+        ambientTraceReadyId,
+        items
+    ])
     const trackedReadyIds = useMemo(() => {
         return Array.from(mountedTileIds).filter((uniqueId) => {
             return uniqueId !== "ambient-goldfish" && uniqueId !== "ambient-patronus"
@@ -216,6 +312,7 @@ function ArticleWebArt({ dataWrapper, id }) {
         en: {
             title: "Doors of the world behind an amazing art gallery.",
             note: "At your own risk",
+            revealNote: "At your own risk click on the card to reveal it!",
             button: "Enter",
             preparing: "Preparing..."
         },
@@ -243,7 +340,13 @@ function ArticleWebArt({ dataWrapper, id }) {
         button: "Enter",
         preparing: "Preparing..."
     }
-    const introTitle = selectedLanguageId === "de" ? "Hier ist etwas Web-Kunst zum Spaß" : "Here is some web art for fun."
+    const introRevealHint = selectedLanguageId === "de"
+        ? "Auf eigenes Risiko klicke auf die Karte, um sie zu öffnen!"
+        : selectedLanguageId === "hr"
+            ? "Na vlastiti rizik klikni karticu da je otkriješ!"
+            : selectedLanguageId === "tr"
+                ? "Tüm risk size ait, göstermek için karta tıklayın!"
+                : "At your own risk click on the card to reveal it!"
     const introHideLabel = "hide"
 
     const onTileReady = useCallback((uniqueId) => {
@@ -288,8 +391,8 @@ function ArticleWebArt({ dataWrapper, id }) {
         setShouldMountTiles(true)
         setActivationIndex(items.length - 1)
         setOpenTileIds(new Set())
-        setMountedTileIds(new Set(eagerItemTileIds))
-    }, [eagerItemTileIds, items.length])
+        setMountedTileIds(new Set())
+    }, [items.length])
 
     const openTile = useCallback((uniqueId) => {
         if(!uniqueId) return
@@ -310,7 +413,26 @@ function ArticleWebArt({ dataWrapper, id }) {
             next.delete(uniqueId)
             return next
         })
+        setMountedTileIds((current) => {
+            if(!current.has(uniqueId)) return current
+            const next = new Set(current)
+            next.delete(uniqueId)
+            return next
+        })
     }, [])
+
+    const areAllArtTilesOpen = allTileIds.size > 0 && openTileIds.size >= allTileIds.size
+
+    const toggleAllArtTiles = useCallback(() => {
+        if(allTileIds.size > 0 && openTileIds.size >= allTileIds.size) {
+            setOpenTileIds(new Set())
+            setMountedTileIds(new Set())
+            return
+        }
+
+        setMountedTileIds(new Set(allTileIds))
+        setOpenTileIds(new Set(allTileIds))
+    }, [allTileIds, openTileIds.size])
 
     const onIntroHide = useCallback(() => {
         resetArtState()
@@ -495,26 +617,6 @@ function ArticleWebArt({ dataWrapper, id }) {
     useEffect(() => {
         if(!shouldMountTiles) return
 
-        const deferredItemIds = items
-            .map((item) => item?.uniqueId)
-            .filter((uniqueId) => uniqueId && !eagerItemTileIds.has(uniqueId))
-
-        const cancelers = deferredItemIds.map((uniqueId, index) => {
-            return _scheduleIdleWork(() => {
-                mountTile(uniqueId)
-            }, { timeoutMs: 400 + index * 180 })
-        })
-
-        return () => {
-            for(const cancel of cancelers) {
-                cancel?.()
-            }
-        }
-    }, [eagerItemTileIds, items, mountTile, shouldMountTiles])
-
-    useEffect(() => {
-        if(!shouldMountTiles) return
-
         // Safety timeouts so a single WebGL hiccup can't keep everything locked forever.
         for(const uid of trackedReadyIds) {
             if(!uid) continue
@@ -536,20 +638,22 @@ function ArticleWebArt({ dataWrapper, id }) {
                  selectedItemCategoryId={selectedItemCategoryId}
                  setSelectedItemCategoryId={setSelectedItemCategoryId}>
             <div className={`article-web-art-shell`}>
-                <WebArtIntroCover title={introTitle}
-                                  note={introCopy.note}
+                <WebArtIntroCover note={showIntroCover ? introCopy.note : introRevealHint}
                                   buttonLabel={showIntroCover ? introCopy.button : introHideLabel}
                                   hidden={!showIntroCover}
-                                  onEnter={showIntroCover ? onIntroEnter : onIntroHide}/>
+                                  onEnter={showIntroCover ? onIntroEnter : onIntroHide}
+                                  secondaryButtonLabel={!showIntroCover ? "promaja" : null}
+                                  onSecondaryAction={!showIntroCover ? toggleAllArtTiles : null}
+                                  secondaryPressed={areAllArtTilesOpen}/>
 
                 {!showIntroCover && (
                     <div className={`article-web-art-stage`}>
                         <div className={`article-web-art-items ${locked ? "article-web-art-items-locked" : ""}`}
                              ref={tilesWrapperRef}
                              aria-busy={showIntroCover}>
+                            <SendYourFunAnimationTile label={submitTileLabel} clickLabel={clickTileLabel}/>
                             {itemTiles}
                             {ambientTiles}
-                            <SendYourFunAnimationTile label={submitTileLabel} clickLabel={clickTileLabel}/>
                         </div>
                     </div>
                 )}
@@ -558,7 +662,7 @@ function ArticleWebArt({ dataWrapper, id }) {
     )
 }
 
-function WebArtIntroCover({ title, note, buttonLabel, hidden, onEnter }) {
+function WebArtIntroCover({ note, buttonLabel, hidden, onEnter, secondaryButtonLabel = null, onSecondaryAction = null, secondaryPressed = false }) {
     const onKeyDown = (event) => {
         if(event.key === "Enter" || event.key === " ") {
             event.preventDefault()
@@ -570,22 +674,30 @@ function WebArtIntroCover({ title, note, buttonLabel, hidden, onEnter }) {
         <div className={`article-web-art-intro-cover ${hidden ? "article-web-art-intro-cover-hidden" : "article-web-art-intro-cover-open"}`}>
             <div className={`article-web-art-intro-cover-inner`}>
                 <div className={`article-web-art-intro-cover-actions`}>
-                    <p className={`article-web-art-intro-cover-title`}>
-                        {title}
-                    </p>
-
-                    <span className={`article-web-art-intro-cover-note`}>
+                    <span className={`article-web-art-intro-cover-note ${hidden ? "article-web-art-intro-cover-note-compact" : "article-web-art-intro-cover-note-expanded"}`}>
                         {note}
                     </span>
                 </div>
 
-                <button type={"button"}
-                        className={`article-web-art-intro-cover-button`}
-                        onClick={onEnter}
-                        onKeyDown={onKeyDown}
-                        aria-label={buttonLabel}>
-                    {buttonLabel}
-                </button>
+                <div className={`article-web-art-intro-cover-buttons`}>
+                    {secondaryButtonLabel ? (
+                        <button type={"button"}
+                                className={`article-web-art-intro-cover-button article-web-art-intro-cover-button-secondary ${secondaryPressed ? "article-web-art-intro-cover-button-secondary-active" : ""}`}
+                                onClick={onSecondaryAction || undefined}
+                                aria-pressed={secondaryPressed}
+                                aria-label={secondaryButtonLabel}>
+                            {secondaryButtonLabel}
+                        </button>
+                    ) : null}
+
+                    <button type={"button"}
+                            className={`article-web-art-intro-cover-button`}
+                            onClick={onEnter}
+                            onKeyDown={onKeyDown}
+                            aria-label={buttonLabel}>
+                        {buttonLabel}
+                    </button>
+                </div>
             </div>
         </div>
     )
@@ -3265,54 +3377,106 @@ function TardisTile({ readyId, locked, onReady }) {
 
 function SendYourFunAnimationTile({ label, clickLabel }) {
     const navigation = useNavigation()
+    const tileRef = useRef(null)
+    const [previewOpen, setPreviewOpen] = useState(false)
+    const [previewSeed, setPreviewSeed] = useState(0)
 
     const reduceMotion = useMemo(() => {
         if(typeof window === "undefined" || !window.matchMedia) return false
         return window.matchMedia("(prefers-reduced-motion: reduce)").matches
     }, [])
 
-    const onClick = () => {
+    const openPreview = useCallback(() => {
+        setPreviewSeed(Date.now())
+        setPreviewOpen(true)
+    }, [])
+
+    const goToContact = useCallback(() => {
         navigation.navigateToSectionWithId("contact")
-    }
+    }, [navigation])
 
     const onKeyDown = (event) => {
         if(event.key === "Enter" || event.key === " ") {
             event.preventDefault()
-            onClick()
+            openPreview()
         }
     }
 
+    const iframeSrcDoc = useMemo(() => {
+        if(!previewOpen) return ""
+        return _buildSendYoursHexLoopSrcDoc({
+            seed: `${previewSeed || Date.now()}:${label}`,
+            reduceMotion
+        })
+    }, [label, previewOpen, previewSeed, reduceMotion])
+
     return (
-        <button type={"button"}
-                className={`article-web-art-tile article-web-art-tile-clickable article-web-art-tile-cta`}
-                aria-label={label}
-                onClick={onClick}
-                onKeyDown={onKeyDown}>
-            <div className={`loader ${reduceMotion ? "loader-reduce-motion" : ""}`}
+        <div ref={tileRef}
+             role={"button"}
+             tabIndex={0}
+            className={`article-web-art-tile article-web-art-tile-clickable article-web-art-tile-cta ${previewOpen ? "article-web-art-tile-cta-open" : "article-web-art-tile-cta-closed"}`}
+            aria-label={previewOpen ? "Kontakt preview" : label}
+            aria-pressed={previewOpen}
+            onClick={openPreview}
+            onKeyDown={onKeyDown}>
+            <div className={`article-web-art-tile-cta-preview ${previewOpen ? "article-web-art-tile-cta-preview-visible" : ""}`}
                  aria-hidden={true}>
-                <div className={`loader-inner`}>
-                    <div className={`loader-line-wrap`}>
-                        <div className={`loader-line`}/>
-                    </div>
-                    <div className={`loader-line-wrap`}>
-                        <div className={`loader-line`}/>
-                    </div>
-                    <div className={`loader-line-wrap`}>
-                        <div className={`loader-line`}/>
-                    </div>
-                    <div className={`loader-line-wrap`}>
-                        <div className={`loader-line`}/>
-                    </div>
-                    <div className={`loader-line-wrap`}>
-                        <div className={`loader-line`}/>
+                {previewOpen && (
+                    <iframe key={`${previewSeed}-${label}`}
+                            className={`article-web-art-tile-cta-preview-frame`}
+                            title={"Send yours preview"}
+                            srcDoc={iframeSrcDoc}
+                            sandbox={"allow-scripts"}/>
+                )}
+                <div className={`article-web-art-tile-cta-preview-vignette`}/>
+            </div>
+
+            {!previewOpen && (
+                <div className={`loader ${reduceMotion ? "loader-reduce-motion" : ""}`}
+                     aria-hidden={true}>
+                    <div className={`loader-inner`}>
+                        <div className={`loader-line-wrap`}>
+                            <div className={`loader-line`}/>
+                        </div>
+                        <div className={`loader-line-wrap`}>
+                            <div className={`loader-line`}/>
+                        </div>
+                        <div className={`loader-line-wrap`}>
+                            <div className={`loader-line`}/>
+                        </div>
+                        <div className={`loader-line-wrap`}>
+                            <div className={`loader-line`}/>
+                        </div>
+                        <div className={`loader-line-wrap`}>
+                            <div className={`loader-line`}/>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className={`article-web-art-tile-cta-content`}>
+            )}
+
+            <div className={`article-web-art-tile-cta-content ${previewOpen ? "article-web-art-tile-cta-content-hidden" : ""}`}>
                 <div className={`article-web-art-tile-cta-title article-web-art-tile-cta-title-top`}>{label}</div>
                 <div className={`article-web-art-tile-cta-title article-web-art-tile-cta-title-bottom`}>{clickLabel}</div>
             </div>
-        </button>
+
+            {previewOpen && (
+                <button type={"button"}
+                        className={`article-web-art-tile-cta-contact-pill`}
+                        onClick={(event) => {
+                            event.stopPropagation()
+                            goToContact()
+                        }}
+                        onKeyDown={(event) => {
+                            if(event.key === "Enter" || event.key === " ") {
+                                event.preventDefault()
+                                event.stopPropagation()
+                                goToContact()
+                            }
+                        }}>
+                    Kontakt
+                </button>
+            )}
+        </div>
     )
 }
 

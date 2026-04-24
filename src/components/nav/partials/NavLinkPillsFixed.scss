@@ -1,13 +1,17 @@
 @use "../../../styles/extend" as *;
 
 div.nav-link-pills-fixed-wrapper {
+    --nav-link-pills-fixed-top-offset: 0px;
+    --nav-link-pills-fixed-hide-offset: calc(-1 * (var(--nav-pills-height) + 2px));
+
     position: fixed;
-    top: 0;
-    left: 0;
+    inset: 0 0 auto 0;
     z-index: $z-index-nav-tabs;
-    width: 100%;
-    padding: calc(var(--default-card-spacing) * 1.2) var(--default-card-spacing) 0;
+    width: auto;
+    padding: var(--nav-link-pills-fixed-top-offset) 0 0;
     backdrop-filter: blur(10px) saturate(125%);
+    overflow: clip;
+    contain: paint;
 
     @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
         display: none;
@@ -21,17 +25,15 @@ div.nav-link-pills-fixed-wrapper-shown {
 }
 
 div.nav-link-pills-fixed-wrapper-hiding {
-    --offset: calc(-1 * var(--nav-pills-height));
-
     transition: 0.1s ease-out transform;
-    transform: translateY(var(--offset));
+    transform: translateY(var(--nav-link-pills-fixed-hide-offset));
     visibility: visible;
+    pointer-events: none;
 }
 
 div.nav-link-pills-fixed-wrapper-hidden {
-    --offset: calc(-1.5 * var(--nav-pills-height));
-
     transition: none;
-    transform: translateY(var(--offset));
+    transform: translateY(var(--nav-link-pills-fixed-hide-offset));
     visibility: hidden;
+    pointer-events: none;
 }

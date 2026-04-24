@@ -60,9 +60,17 @@ $scrollbar-track: rgba(15, 23, 42, 0.08);
 $scrollbar-thumb: rgba(37, 99, 235, 0.30);
 
 [data-theme="light"] {
-    --theme-mobile-nav-separator: #d6dde8;
-    --theme-sidebar-nav-link-color: rgba(15, 23, 42, 0.985);
-    --theme-sidebar-nav-link-icon-opacity: 0.72;
+    --theme-nav-surface: #0f172a;
+    --theme-nav-surface-accent: #111d31;
+    --theme-nav-surface-raised: #17263f;
+    --theme-nav-border: rgba(148, 163, 184, 0.32);
+    --theme-nav-divider: rgba(148, 163, 184, 0.20);
+    --theme-nav-text: rgba(248, 250, 252, 0.98);
+    --theme-nav-text-muted: rgba(226, 232, 240, 0.74);
+    --theme-nav-selected-ink: #ffffff;
+    --theme-mobile-nav-separator: rgba(148, 163, 184, 0.26);
+    --theme-sidebar-nav-link-color: var(--theme-nav-text);
+    --theme-sidebar-nav-link-icon-opacity: 0.76;
     --theme-sidebar-nav-link-text-opacity: 0.98;
 
     @include theme.build-theme(

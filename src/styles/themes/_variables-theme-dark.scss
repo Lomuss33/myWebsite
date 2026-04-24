@@ -58,10 +58,18 @@ $scrollbar-track: #090909;
 $scrollbar-thumb: #24272c;
 
 :root {
-    --theme-mobile-nav-separator: #ffffff;
-    --theme-sidebar-nav-link-color: rgba(255, 255, 255, 0.985);
-    --theme-sidebar-nav-link-icon-opacity: 0.66;
-    --theme-sidebar-nav-link-text-opacity: 0.95;
+    --theme-nav-surface: #070b16;
+    --theme-nav-surface-accent: #0d1526;
+    --theme-nav-surface-raised: #162238;
+    --theme-nav-border: rgba(255, 255, 255, 0.10);
+    --theme-nav-divider: rgba(255, 255, 255, 0.08);
+    --theme-nav-text: rgba(255, 255, 255, 0.985);
+    --theme-nav-text-muted: rgba(255, 255, 255, 0.72);
+    --theme-nav-selected-ink: #0b1220;
+    --theme-mobile-nav-separator: rgba(255, 255, 255, 0.12);
+    --theme-sidebar-nav-link-color: var(--theme-nav-text);
+    --theme-sidebar-nav-link-icon-opacity: 0.7;
+    --theme-sidebar-nav-link-text-opacity: 0.96;
 
     @include theme.build-theme(
         // Theme Config...

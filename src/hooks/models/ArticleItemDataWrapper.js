@@ -55,6 +55,7 @@ export default class ArticleItemDataWrapper {
         this.imgAltDefaultChance = this._parseNumber(rawData.imgAltDefaultChance ?? rawData.img_alt_default_chance, 0, 1)
         this.avatarImageScale = this._parseNumber(rawData.avatar_image_scale, 0.5, 1) || 1
         this.label = rawData.label
+        this.shortLabel = rawData.shortLabel || rawData.short_label || null
         this.link = this._parseLink(rawData.link, language)
         this.copyToClipboardButton = rawData.copyToClipboardButton || false
         this.locales = this._parseLocales(rawData.locales, language)
@@ -260,7 +261,7 @@ export default class ArticleItemDataWrapper {
 
     listProps() {
         const props = []
-        const staticKeys = ["id", "label", "img", "faIcon", "iconText", "faIconColors", "link", "dateStart", "dateEnd", "percentage"]
+        const staticKeys = ["id", "label", "shortLabel", "img", "faIcon", "iconText", "faIconColors", "link", "dateStart", "dateEnd", "percentage"]
         for (const key of staticKeys)
             props.push(this._parsePropForListing(key, this[key]))
 

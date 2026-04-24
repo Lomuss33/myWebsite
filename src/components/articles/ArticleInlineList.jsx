@@ -80,6 +80,10 @@ function ArticleInlineListItem({ itemWrapper }) {
     const href = isPhoneQrAction && !shouldDirectCall ?
         `#phone-qr:open` :
         link?.href || null
+    const shouldUseShortLabel = viewport.innerWidth <= 420
+    const label = shouldUseShortLabel && itemWrapper.shortLabel ?
+        itemWrapper.shortLabel :
+        itemWrapper.locales.label || itemWrapper.label || itemWrapper.placeholder
 
     return (
         <li className={`article-inline-list-item text-4`}>
@@ -90,7 +94,7 @@ function ArticleInlineListItem({ itemWrapper }) {
                    style={itemWrapper.faIconStyle}/>
 
                 <span className={`article-inline-list-item-label`}
-                      dangerouslySetInnerHTML={{__html: itemWrapper.locales.label || itemWrapper.label || itemWrapper.placeholder}}/>
+                      dangerouslySetInnerHTML={{__html: label}}/>
             </Link>
         </li>
     )

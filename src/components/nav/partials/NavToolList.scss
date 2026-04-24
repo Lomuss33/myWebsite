@@ -9,12 +9,12 @@ div.nav-tools {
     align-items: center;
     justify-content: space-between;
     gap: 0;
-    border-top: 1px solid var(--theme-standard-borders);
+    border-top: 1px solid var(--theme-nav-divider);
     padding: 4px 8px 5px;
     background:
         linear-gradient(180deg,
-            rgba(255, 255, 255, 0.03) 0%,
-            rgba(255, 255, 255, 0.01) 100%);
+            color-mix(in srgb, var(--theme-nav-surface-accent) 92%, white 8%) 0%,
+            var(--theme-nav-surface-accent) 100%);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
     div.btn-option-picker {
@@ -49,7 +49,7 @@ div.nav-tools {
         }
 
         &:hover {
-            box-shadow: inset 0 0 0 1px var(--theme-standard-borders-5);
+            box-shadow: inset 0 0 0 1px var(--theme-nav-divider);
             img, i.fa-icon {
                 transform: scale(1.05);
             }
@@ -72,7 +72,7 @@ div.nav-tools-item {
     padding: 0 2px;
 
     &:not(:first-child) {
-        border-left: 1px solid var(--theme-standard-borders);
+        border-left: 1px solid var(--theme-nav-divider);
     }
 }
 

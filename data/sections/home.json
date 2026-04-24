@@ -172,19 +172,23 @@
           "locales": {
             "en": {
               "title": "Programming",
-              "text": "C, C++, Python, Java, HTML, TypeScript... able to learn new languages and tools quickly."
+              "text": "C, C++, Python, Java, HTML, TypeScript... able to learn new languages and tools quickly.",
+              "proofBubble": "This website is part of the proof. I started professionally with PLCs in 2018, and today I can grow into almost any language fast; Java, C, Python, JavaScript, HTML, and Go already feel like home."
             },
             "de": {
               "title": "Programmierung",
-              "text": "C, C++, Python, Java, HTML, TypeScript... lerne neue Sprachen und Werkzeuge sehr schnell."
+              "text": "C, C++, Python, Java, HTML, TypeScript... lerne neue Sprachen und Werkzeuge sehr schnell.",
+              "proofBubble": "Diese Website ist schon ein Teil des Beweises. Beruflich habe ich 2018 mit SPS angefangen, und heute kann ich mich schnell in fast jede Sprache einarbeiten; Java, C, Python, JavaScript, HTML und Go fuehlen sich bereits wie zuhause an."
             },
             "hr": {
               "title": "Programiranje",
-              "text": "C, C++, Python, Java, HTML, TypeScript... vrlo brzo učim nove jezike i alate."
+              "text": "C, C++, Python, Java, HTML, TypeScript... vrlo brzo učim nove jezike i alate.",
+              "proofBubble": "I ova stranica je dio dokaza. Profesionalno sam krenuo sa SPS-om 2018., a danas se mogu brzo razviti u gotovo svakom jeziku; Java, C, Python, JavaScript, HTML i Go vec mi se osjecaju kao dom."
             },
             "tr": {
               "title": "Programlama",
-              "text": "C, C++, Python, Java, HTML, TypeScript... yeni dilleri ve araçları hızlıca öğrenebilirim."
+              "text": "C, C++, Python, Java, HTML, TypeScript... yeni dilleri ve araçları hızlıca öğrenebilirim.",
+              "proofBubble": "Bu web sitesi bile bunun bir kaniti. Profesyonel olarak 2018'de PLC ile basladim; bugun dogru egitimle neredeyse her dile hizla uyum saglayabiliyorum. Java, C, Python, JavaScript, HTML ve Go artik bana yabanci degil."
             }
           }
         },
@@ -206,19 +210,23 @@
           "locales": {
             "en": {
               "title": "PLC programming & industrial automation",
-              "text": "Experience with Siemens TIA Portal (S7) and practice with Janitza, Allen-Bradley, and Schneider PLC systems."
+              "text": "Experience with Siemens TIA Portal (S7) and practice with Janitza, Allen-Bradley, and Schneider PLC systems.",
+              "proofBubble": "Siemens was the opening chapter. Later, as a Pruftechniker, I tested all kinds of PLC worlds and would gladly jump back into automation."
             },
             "de": {
               "title": "SPS-Programmierung & Automatisierungstechnik",
-              "text": "Erfahrung mit Siemens TIA Portal (S7) sowie Praxis mit Janitza-, Allen-Bradley- und Schneider-SPS-Systemen."
+              "text": "Erfahrung mit Siemens TIA Portal (S7) sowie Praxis mit Janitza-, Allen-Bradley- und Schneider-SPS-Systemen.",
+              "proofBubble": "Siemens war das erste Kapitel. Spaeter habe ich als Pruftechniker die verschiedensten SPS-Welten getestet und wuerde jederzeit gern wieder in die Automation einsteigen."
             },
             "hr": {
               "title": "PLC programiranje i industrijska automatizacija",
-              "text": "Iskustvo s Siemens TIA Portalom (S7) te praksa s Janitza, Allen-Bradley i Schneider PLC sustavima."
+              "text": "Iskustvo s Siemens TIA Portalom (S7) te praksa s Janitza, Allen-Bradley i Schneider PLC sustavima.",
+              "proofBubble": "Siemens je bio prvo poglavlje. Kasnije sam kao Pruftechniker testirao svakakve PLC svjetove i rado bih se opet vratio automatizaciji."
             },
             "tr": {
               "title": "PLC programlama ve endüstriyel otomasyon",
-              "text": "Siemens TIA Portal (S7) deneyimi ve Janitza, Allen-Bradley ve Schneider PLC sistemleriyle pratik."
+              "text": "Siemens TIA Portal (S7) deneyimi ve Janitza, Allen-Bradley ve Schneider PLC sistemleriyle pratik.",
+              "proofBubble": "Siemens ilk bolumdu. Sonra, bir Pruftechniker olarak, farkli PLC dunyalarini test ettim ve otomasyona memnuniyetle geri donerim."
             }
           }
         },
@@ -240,19 +248,23 @@
           "locales": {
             "en": {
               "title": "Electrical installation & maintenance",
-              "text": "Hands-on experience with industrial and residential electrical systems, including installation, troubleshooting, and safety."
+              "text": "Hands-on experience with industrial and residential electrical systems, including installation, troubleshooting, and safety.",
+              "proofBubble": "I started wiring things as a teenager during my Ausbildung and never really stopped. A day without thinking about cables is suspicious."
             },
             "de": {
               "title": "Elektroinstallation & Wartung",
-              "text": "Praktische Erfahrung mit industriellen und privaten Elektroanlagen, inklusive Installation, Fehlersuche und Sicherheit."
+              "text": "Praktische Erfahrung mit industriellen und privaten Elektroanlagen, inklusive Installation, Fehlersuche und Sicherheit.",
+              "proofBubble": "Als Teenager hat das waehrend meiner Ausbildung angefangen und eigentlich nie mehr aufgehoert. Ein Tag ohne an Kabel zu denken ist schon verdaechtig."
             },
             "hr": {
               "title": "Elektroinstalacije i održavanje",
-              "text": "Praktično iskustvo s industrijskim i kućnim električnim instalacijama, uključujući montažu, dijagnostiku i sigurnost."
+              "text": "Praktično iskustvo s industrijskim i kućnim električnim instalacijama, uključujući montažu, dijagnostiku i sigurnost.",
+              "proofBubble": "Poceo sam spajati stvari jos kao tinejdzer tijekom Ausbildunga i zapravo nikad nisam stao. Dan bez razmisljanja o kabelima djeluje sumnjivo."
             },
             "tr": {
               "title": "Elektrik tesisatı ve bakım",
-              "text": "Endüstriyel ve ev tipi elektrik sistemlerinde kurulum, arıza giderme ve güvenlik konularında pratik deneyim."
+              "text": "Endüstriyel ve ev tipi elektrik sistemlerinde kurulum, arıza giderme ve güvenlik konularında pratik deneyim.",
+              "proofBubble": "Tesisat islerine daha gencken, Ausbildung sirasinda basladim ve aslinda hic birakmadim. Kablolari dusunmeden gecen bir gun biraz supheli geliyor."
             }
           }
         },
@@ -274,19 +286,23 @@
           "locales": {
             "en": {
               "title": "IT & networking (Level 2)",
-              "text": "Skills in network configuration, troubleshooting, hardware/software setup, and user support."
+              "text": "Skills in network configuration, troubleshooting, hardware/software setup, and user support.",
+              "proofBubble": "Some of it started professionally before university, but the real lab was at home. Routers, setups, fixes, repeats."
             },
             "de": {
               "title": "IT & Netzwerke (Level 2)",
-              "text": "Fähigkeiten in Netzwerkkonfiguration, Fehlersuche, Hardware/Software-Einrichtung und Benutzersupport."
+              "text": "Fähigkeiten in Netzwerkkonfiguration, Fehlersuche, Hardware/Software-Einrichtung und Benutzersupport.",
+              "proofBubble": "Ein Teil davon begann schon beruflich vor dem Studium, aber das eigentliche Labor war zuhause. Router, Setups, Fehler beheben, nochmal von vorn."
             },
             "hr": {
               "title": "IT i mreže (razina 2)",
-              "text": "Vještine u konfiguraciji mreža, rješavanju problema, postavljanju hardvera/softvera i korisničkoj podršci."
+              "text": "Vještine u konfiguraciji mreža, rješavanju problema, postavljanju hardvera/softvera i korisničkoj podršci.",
+              "proofBubble": "Dio toga poceo je profesionalno jos prije faksa, ali pravi laboratorij bio je kod kuce. Ruteri, postavke, popravci, ponovo."
             },
             "tr": {
               "title": "BT ve ağlar (Seviye 2)",
-              "text": "Ağ yapılandırma, sorun giderme, donanım/yazılım kurulumu ve kullanıcı desteği becerileri."
+              "text": "Ağ yapılandırma, sorun giderme, donanım/yazılım kurulumu ve kullanıcı desteği becerileri.",
+              "proofBubble": "Bunun bir kismi universiteden once profesyonel olarak basladi ama asil laboratuvar evdeydi. Routerlar, kurulumlar, duzeltmeler, tekrar."
             }
           }
         },
@@ -308,19 +324,23 @@
           "locales": {
             "en": {
               "title": "Machine learning & deep learning",
-              "text": "Understanding of core ML/DL concepts, model training workflows, and practical use of modern frameworks."
+              "text": "Understanding of core ML/DL concepts, model training workflows, and practical use of modern frameworks.",
+              "proofBubble": "Still one of those fields that makes you pause and grin. What a world to be curious in."
             },
             "de": {
               "title": "Machine Learning & Deep Learning",
-              "text": "Verständnis zentraler ML/DL-Konzepte, Trainings-Workflows und praktischer Einsatz moderner Frameworks."
+              "text": "Verständnis zentraler ML/DL-Konzepte, Trainings-Workflows und praktischer Einsatz moderner Frameworks.",
+              "proofBubble": "Das ist immer noch so ein Feld, bei dem man kurz stehen bleibt und grinst. Schon verrueckt, in was fuer einer Welt wir leben."
             },
             "hr": {
               "title": "Strojno učenje i duboko učenje",
-              "text": "Razumijevanje osnovnih ML/DL koncepata, procesa treniranja modela i praktične primjene modernih okvira."
+              "text": "Razumijevanje osnovnih ML/DL koncepata, procesa treniranja modela i praktične primjene modernih okvira.",
+              "proofBubble": "To je i dalje jedno od onih podrucja zbog kojih zastanes i nasmijes se. Kakvo vrijeme za biti znatizeljan."
             },
             "tr": {
               "title": "Makine öğrenimi ve derin öğrenme",
-              "text": "Temel ML/DL kavramlarına, model eğitimi süreçlerine ve modern çerçevelerin pratik kullanımına hakimiyet."
+              "text": "Temel ML/DL kavramlarına, model eğitimi süreçlerine ve modern çerçevelerin pratik kullanımına hakimiyet.",
+              "proofBubble": "Insani durdurup gulumseten alanlardan biri olmaya devam ediyor. Merakli olmak icin ne tuhaf ve guzel bir cagda yasiyoruz."
             }
           }
         },
@@ -342,19 +362,23 @@
           "locales": {
             "en": {
               "title": "Science background",
-              "text": "Deep understanding of chemistry, physics, and biology with a focus on real-world applications."
+              "text": "Deep understanding of chemistry, physics, and biology with a focus on real-world applications.",
+              "proofBubble": "Science is how I like to meet reality: observe carefully, test honestly, learn something worth keeping."
             },
             "de": {
               "title": "Wissenschaftlicher Hintergrund",
-              "text": "Tiefes Verständnis von Chemie, Physik und Biologie mit Schwerpunkt auf praktischen Anwendungen."
+              "text": "Tiefes Verständnis von Chemie, Physik und Biologie mit Schwerpunkt auf praktischen Anwendungen.",
+              "proofBubble": "So begegne ich der Wirklichkeit am liebsten: sauber beobachten, ehrlich pruefen und etwas lernen, das es wert ist zu behalten."
             },
             "hr": {
               "title": "Znanstvena podloga",
-              "text": "Duboko razumijevanje kemije, fizike i biologije s naglaskom na stvarne primjene."
+              "text": "Duboko razumijevanje kemije, fizike i biologije s naglaskom na stvarne primjene.",
+              "proofBubble": "Tako najradije upoznajem stvarnost: pazljivo promatram, posteno provjerim i naucim nesto sto vrijedi zadrzati."
             },
             "tr": {
               "title": "Bilimsel altyapı",
-              "text": "Kimya, fizik ve biyoloji alanlarında derin anlayış ve gerçek hayat uygulamalarına odak."
+              "text": "Kimya, fizik ve biyoloji alanlarında derin anlayış ve gerçek hayat uygulamalarına odak.",
+              "proofBubble": "Bilim, gercekle tanismayi sevdigim yoldur: dikkatle gozlemle, durustce test et, saklamaya deger bir sey ogren."
             }
           }
         },
@@ -376,19 +400,23 @@
           "locales": {
             "en": {
               "title": "Data analysis & Microsoft tools",
-              "text": "Advanced Excel (formulas, PivotTables, Power Query), Power BI (DAX, dashboards), and strong proficiency with Word, PowerPoint, Teams, and SharePoint."
+              "text": "Advanced Excel (formulas, PivotTables, Power Query), Power BI (DAX, dashboards), and strong proficiency with Word, PowerPoint, Teams, and SharePoint.",
+              "proofBubble": "I did not just use Word, Excel, and Access; I taught other people how to use them. Nothing clarifies a tool like explaining it."
             },
             "de": {
               "title": "Datenanalyse & Microsoft‑Werkzeuge",
-              "text": "Fortgeschritten in Excel (Formeln, PivotTables, Power Query), Power BI (DAX, Dashboards) sowie sicher in Word, PowerPoint, Teams und SharePoint."
+              "text": "Fortgeschritten in Excel (Formeln, PivotTables, Power Query), Power BI (DAX, Dashboards) sowie sicher in Word, PowerPoint, Teams und SharePoint.",
+              "proofBubble": "Ich habe Word, Excel und Access nicht nur selbst genutzt, sondern anderen auch beigebracht. Nichts klaert ein Werkzeug besser, als es zu erklaeren."
             },
             "hr": {
               "title": "Analiza podataka i Microsoft alati",
-              "text": "Napredno poznavanje Excela (formule, pivot tablice, Power Query), Power BI‑ja (DAX, nadzorne ploče) te snažno poznavanje Worda, PowerPointa, Teamsa i SharePointa."
+              "text": "Napredno poznavanje Excela (formule, pivot tablice, Power Query), Power BI‑ja (DAX, nadzorne ploče) te snažno poznavanje Worda, PowerPointa, Teamsa i SharePointa.",
+              "proofBubble": "Word, Excel i Access nisam samo koristio nego i poducavao druge kako ih koristiti. Nista ne razjasni alat kao kad ga moras objasniti."
             },
             "tr": {
               "title": "Veri analizi ve Microsoft araçları",
-              "text": "İleri seviye Excel (formüller, PivotTable, Power Query), Power BI (DAX, panolar) ve Word, PowerPoint, Teams, SharePoint’te güçlü yetkinlik."
+              "text": "İleri seviye Excel (formüller, PivotTable, Power Query), Power BI (DAX, panolar) ve Word, PowerPoint, Teams, SharePoint’te güçlü yetkinlik.",
+              "proofBubble": "Word, Excel ve Accessi sadece kullanmadim; baskalarina da ogrettim. Bir araci anlatmak kadar netlestiren az sey vardir."
             }
           }
         }
@@ -434,19 +462,23 @@
           "locales": {
             "en": {
               "title": "Communication & social skills",
-              "text": "Strong interpersonal skills and clear communication with both technical and non-technical people."
+              "text": "Strong interpersonal skills and clear communication with both technical and non-technical people.",
+              "proofBubble": "Well, you are still reading, so that helps my case. I like making technical things sound human."
             },
             "de": {
               "title": "Kommunikation & soziale Fähigkeiten",
-              "text": "Ausgeprägte zwischenmenschliche Fähigkeiten und klare Kommunikation mit technischen und nicht-technischen Personen."
+              "text": "Ausgeprägte zwischenmenschliche Fähigkeiten und klare Kommunikation mit technischen und nicht-technischen Personen.",
+              "proofBubble": "Naja, du liest das hier immer noch, das hilft meinem Fall schon. Ich mag es, technische Dinge menschlich klingen zu lassen."
             },
             "hr": {
               "title": "Komunikacija i društvene vještine",
-              "text": "Snažne međuljudske vještine i jasna komunikacija s tehničkim i netehničkim osobama."
+              "text": "Snažne međuljudske vještine i jasna komunikacija s tehničkim i netehničkim osobama.",
+              "proofBubble": "Pa, jos uvijek citas ovo, sto mi vec ide u prilog. Volim da tehnicke stvari zvuce ljudski."
             },
             "tr": {
               "title": "İletişim ve sosyal beceriler",
-              "text": "Güçlü kişilerarası beceriler ve teknik/teknik olmayan kişilerle açık iletişim."
+              "text": "Güçlü kişilerarası beceriler ve teknik/teknik olmayan kişilerle açık iletişim.",
+              "proofBubble": "Hala bunlari okuyorsun, bu bile benim lehime. Teknik seyleri insanca anlatmayi seviyorum."
             }
           }
         },
@@ -468,19 +500,23 @@
           "locales": {
             "en": {
               "title": "Teamwork & collaboration",
-              "text": "Comfortable working in diverse teams and contributing actively to shared goals."
+              "text": "Comfortable working in diverse teams and contributing actively to shared goals.",
+              "proofBubble": "The final proof usually lives in shared results, not slogans. Build something with me and we can test that one properly."
             },
             "de": {
               "title": "Teamarbeit & Zusammenarbeit",
-              "text": "Arbeitet gerne in vielfältigen Teams und trägt aktiv zu gemeinsamen Zielen bei."
+              "text": "Arbeitet gerne in vielfältigen Teams und trägt aktiv zu gemeinsamen Zielen bei.",
+              "proofBubble": "Der eigentliche Beweis steckt meist im gemeinsamen Ergebnis, nicht im Slogan. Bau etwas mit mir, dann testen wir das ordentlich."
             },
             "hr": {
               "title": "Timski rad i suradnja",
-              "text": "Ugodno mi je raditi u raznolikim timovima i aktivno doprinositi zajedničkim ciljevima."
+              "text": "Ugodno mi je raditi u raznolikim timovima i aktivno doprinositi zajedničkim ciljevima.",
+              "proofBubble": "Pravi dokaz obicno zivi u zajednickom rezultatu, a ne u sloganu. Napravi nesto sa mnom pa cemo to posteno testirati."
             },
             "tr": {
               "title": "Takım çalışması ve işbirliği",
-              "text": "Farklı ekiplerle çalışmayı seviyorum ve ortak hedeflere aktif olarak katkı sağlıyorum."
+              "text": "Farklı ekiplerle çalışmayı seviyorum ve ortak hedeflere aktif olarak katkı sağlıyorum.",
+              "proofBubble": "Pravi dokaz obicno zivi u zajednickom rezultatu, ne u sloganu. Napravi nesto sa mnom pa to mozemo posteno testirati."
             }
           }
         },
@@ -502,19 +538,23 @@
           "locales": {
             "en": {
               "title": "Teaching & knowledge sharing",
-              "text": "Able to explain complex topics simply and support others in learning."
+              "text": "Able to explain complex topics simply and support others in learning.",
+              "proofBubble": "A, B, C, D... and then the fun starts. I enjoy turning confusion into a clean first step."
             },
             "de": {
               "title": "Lehren & Wissensweitergabe",
-              "text": "Kann komplexe Themen einfach erklären und andere beim Lernen unterstützen."
+              "text": "Kann komplexe Themen einfach erklären und andere beim Lernen unterstützen.",
+              "proofBubble": "A, B, C, D... und dann faengt der Spass an. Ich mag es, Verwirrung in einen klaren ersten Schritt zu verwandeln."
             },
             "hr": {
               "title": "Podučavanje i dijeljenje znanja",
-              "text": "Mogu jednostavno objasniti složene teme i pomoći drugima u učenju."
+              "text": "Mogu jednostavno objasniti složene teme i pomoći drugima u učenju.",
+              "proofBubble": "A, B, C, D... i onda pocinje zabavni dio. Volim pretvoriti zbrku u cist prvi korak."
             },
             "tr": {
               "title": "Öğretme ve bilgi paylaşımı",
-              "text": "Karmaşık konuları basitçe açıklayabiliyor ve başkalarının öğrenmesine destek olabiliyorum."
+              "text": "Karmaşık konuları basitçe açıklayabiliyor ve başkalarının öğrenmesine destek olabiliyorum.",
+              "proofBubble": "A, B, C, D... ve sonra eglenceli kisim baslar. Karmasayi net bir ilk adima cevirmeyi seviyorum."
             }
           }
         },
@@ -536,19 +576,23 @@
           "locales": {
             "en": {
               "title": "Problem solving & analytical thinking",
-              "text": "Systematic approach to diagnosing issues, finding root causes, and implementing practical solutions."
+              "text": "Systematic approach to diagnosing issues, finding root causes, and implementing practical solutions.",
+              "proofBubble": "Back home I earned a reputation for finding the needle in the haystack. Usually after everyone else declared the haystack innocent."
             },
             "de": {
               "title": "Problemlösung & analytisches Denken",
-              "text": "Systematischer Ansatz zur Fehlersuche, Ursachenanalyse und Umsetzung praktischer Lösungen."
+              "text": "Systematischer Ansatz zur Fehlersuche, Ursachenanalyse und Umsetzung praktischer Lösungen.",
+              "proofBubble": "Zuhause war ich irgendwann der Typ, der die Nadel im Heuhaufen findet. Meist nachdem alle anderen den Heuhaufen fuer unschuldig erklaert hatten."
             },
             "hr": {
               "title": "Rješavanje problema i analitičko razmišljanje",
-              "text": "Sustavan pristup dijagnostici problema, pronalaženju uzroka i primjeni praktičnih rješenja."
+              "text": "Sustavan pristup dijagnostici problema, pronalaženju uzroka i primjeni praktičnih rješenja.",
+              "proofBubble": "Kod kuce sam postao poznat kao onaj koji nade iglu u plastu sijena. Obicno nakon sto svi drugi proglase sijeno nevinim."
             },
             "tr": {
               "title": "Problem çözme ve analitik düşünme",
-              "text": "Sorunları teşhis etme, kök neden bulma ve pratik çözümler uygulamada sistematik yaklaşım."
+              "text": "Sorunları teşhis etme, kök neden bulma ve pratik çözümler uygulamada sistematik yaklaşım.",
+              "proofBubble": "Memlekette samanlikta ignayi bulan kisi olarak tanindim. Genelde herkes samanligin sucsuz olduguna karar verdikten sonra."
             }
           }
         },
@@ -570,19 +614,23 @@
           "locales": {
             "en": {
               "title": "Adaptability & fast learning",
-              "text": "Able to quickly pick up new tools, technologies, and processes in changing environments."
+              "text": "Able to quickly pick up new tools, technologies, and processes in changing environments.",
+              "proofBubble": "2 + 2 is 4, 4 - 1 is 3, quick maths. New tools, new places, new rules; I adjust fast and keep moving."
             },
             "de": {
               "title": "Anpassungsfähigkeit & schnelles Lernen",
-              "text": "Kann neue Werkzeuge, Technologien und Prozesse in wechselnden Umgebungen schnell erlernen."
+              "text": "Kann neue Werkzeuge, Technologien und Prozesse in wechselnden Umgebungen schnell erlernen.",
+              "proofBubble": "2 plus 2 ist 4, 4 minus 1 ist 3, quick maths. Neue Werkzeuge, neue Orte, neue Regeln; ich passe mich schnell an und mache weiter."
             },
             "hr": {
               "title": "Prilagodljivost i brzo učenje",
-              "text": "Brzo usvajam nove alate, tehnologije i procese u promjenjivim okruženjima."
+              "text": "Brzo usvajam nove alate, tehnologije i procese u promjenjivim okruženjima.",
+              "proofBubble": "2 plus 2 je 4, 4 minus 1 je 3, quick maths. Novi alati, nova mjesta, nova pravila; brzo se prilagodim i nastavim dalje."
             },
             "tr": {
               "title": "Uyum sağlama ve hızlı öğrenme",
-              "text": "Değişen ortamlarda yeni araçları, teknolojileri ve süreçleri hızla öğrenebilirim."
+              "text": "Değişen ortamlarda yeni araçları, teknolojileri ve süreçleri hızla öğrenebilirim.",
+              "proofBubble": "2 arti 2, 4 eder; 4 eksi 1, 3 eder, quick maths. Yeni araclar, yeni yerler, yeni kurallar; hizla uyum saglar ve devam ederim."
             }
           }
         },
@@ -604,19 +652,23 @@
           "locales": {
             "en": {
               "title": "Writing & documentation",
-              "text": "Academic and professional writing; clear technical documentation, reports, and presentations; familiar with academic conventions and versioned documents."
+              "text": "Academic and professional writing; clear technical documentation, reports, and presentations; familiar with academic conventions and versioned documents.",
+              "proofBubble": "Cogito, ergo sum. If I understand it well, I can usually write it clearly."
             },
             "de": {
               "title": "Schreiben & Dokumentation",
-              "text": "Akademisches und berufliches Schreiben; klare technische Dokumentation, Berichte und Präsentationen; vertraut mit akademischen Standards und versionierten Dokumenten."
+              "text": "Akademisches und berufliches Schreiben; klare technische Dokumentation, Berichte und Präsentationen; vertraut mit akademischen Standards und versionierten Dokumenten.",
+              "proofBubble": "Cogito, ergo sum. Wenn ich etwas wirklich verstanden habe, kann ich es meistens auch klar aufschreiben."
             },
             "hr": {
               "title": "Pisanje i dokumentacija",
-              "text": "Akademsko i profesionalno pisanje; jasna tehnička dokumentacija, izvještaji i prezentacije; upoznat s akademskim standardima i verzioniranim dokumentima."
+              "text": "Akademsko i profesionalno pisanje; jasna tehnička dokumentacija, izvještaji i prezentacije; upoznat s akademskim standardima i verzioniranim dokumentima.",
+              "proofBubble": "Cogito, ergo sum. Ako nesto zaista razumijem, obicno to mogu i jasno napisati."
             },
             "tr": {
               "title": "Yazım ve dokümantasyon",
-              "text": "Akademik ve profesyonel yazım; net teknik dokümantasyon, rapor ve sunumlar; akademik normlara ve sürümlü belgelere aşina."
+              "text": "Akademik ve profesyonel yazım; net teknik dokümantasyon, rapor ve sunumlar; akademik normlara ve sürümlü belgelere aşina.",
+              "proofBubble": "Cogito, ergo sum. Bir seyi gercekten anladiysam, onu genelde acik ve temiz bir sekilde yazabilirim."
             }
           }
         },
@@ -638,19 +690,23 @@
           "locales": {
             "en": {
               "title": "Intercultural communication & languages",
-              "text": "Comfortable working across cultures; international study and volunteering experience; languages: Croatian (native), English (advanced), German (upper‑intermediate), basic Macedonian and Turkish."
+              "text": "Comfortable working across cultures; international study and volunteering experience; languages: Croatian (native), English (advanced), German (upper‑intermediate), basic Macedonian and Turkish.",
+              "proofBubble": "Croatian roots, born in Bosnia, living in Germany, and typing into the English internet. I learned early that context changes everything."
             },
             "de": {
               "title": "Interkulturelle Kommunikation & Sprachen",
-              "text": "Sicher im interkulturellen Umfeld; internationale Studien‑ und Ehrenamtserfahrung; Sprachen: Kroatisch (Muttersprache), Englisch (fortgeschritten), Deutsch (obere Mittelstufe), Grundkenntnisse in Mazedonisch und Türkisch."
+              "text": "Sicher im interkulturellen Umfeld; internationale Studien‑ und Ehrenamtserfahrung; Sprachen: Kroatisch (Muttersprache), Englisch (fortgeschritten), Deutsch (obere Mittelstufe), Grundkenntnisse in Mazedonisch und Türkisch.",
+              "proofBubble": "Kroatische Wurzeln, in Bosnien geboren, in Deutschland lebend und im englischen Internet unterwegs. So lernt man frueh, dass Kontext alles veraendert."
             },
             "hr": {
               "title": "Međukulturalna komunikacija i jezici",
-              "text": "Ugodan rad u različitim kulturama; međunarodno iskustvo studiranja i volontiranja; jezici: hrvatski (izvorni), engleski (napredno), njemački (viša srednja razina), osnovno makedonski i turski."
+              "text": "Ugodan rad u različitim kulturama; međunarodno iskustvo studiranja i volontiranja; jezici: hrvatski (izvorni), engleski (napredno), njemački (viša srednja razina), osnovno makedonski i turski.",
+              "proofBubble": "Hrvatski korijeni, roden u Bosni, zivim u Njemackoj i sjedim na engleskom internetu. Rano sam naucio da kontekst mijenja sve."
             },
             "tr": {
               "title": "Kültürler arası iletişim ve diller",
-              "text": "Farklı kültürlerle çalışmada rahatim; uluslararası öğrenim ve gönüllülük deneyimi; diller: Hırvatça (anadil), İngilizce (ileri), Almanca (üst‑orta), temel Makedonca ve Türkçe."
+              "text": "Farklı kültürlerle çalışmada rahatim; uluslararası öğrenim ve gönüllülük deneyimi; diller: Hırvatça (anadil), İngilizce (ileri), Almanca (üst‑orta), temel Makedonca ve Türkçe.",
+              "proofBubble": "Hirvat kokenleri, Bosnada dogdum, Almanyada yasiyorum ve Ingilizce internette oturuyorum. Baglamin her seyi degistirdigini erken ogrendim."
             }
           }
         },
@@ -672,19 +728,23 @@
           "locales": {
             "en": {
               "title": "Positive attitude & calm presence",
-              "text": "Consistently calm, respectful, and solution‑oriented; positive team presence, even under pressure."
+              "text": "Consistently calm, respectful, and solution‑oriented; positive team presence, even under pressure.",
+              "proofBubble": "One body, one soul, and preferably one constructive mood in the room. Calm energy scales better than drama."
             },
             "de": {
               "title": "Positive Haltung & ruhige Ausstrahlung",
-              "text": "Durchgehend ruhig, respektvoll und lösungsorientiert; positive Teampräsenz, auch unter Druck."
+              "text": "Durchgehend ruhig, respektvoll und lösungsorientiert; positive Teampräsenz, auch unter Druck.",
+              "proofBubble": "Ein Koerper, eine Seele und am besten eine konstruktive Stimmung im Raum. Ruhige Energie skaliert einfach besser als Drama."
             },
             "hr": {
               "title": "Pozitivan stav i smirena prisutnost",
-              "text": "Dosljedno miran, pun poštovanja i usmjeren na rješenja; pozitivan utjecaj u timu, čak i pod pritiskom."
+              "text": "Dosljedno miran, pun poštovanja i usmjeren na rješenja; pozitivan utjecaj u timu, čak i pod pritiskom.",
+              "proofBubble": "Jedno tijelo, jedna dusa i po mogucnosti jedna konstruktivna atmosfera u prostoriji. Mirna energija skalira bolje od drame."
             },
             "tr": {
               "title": "Pozitif tutum ve sakin duruş",
-              "text": "Sürekli sakin, saygılı ve çözüm odaklı; baskı altında bile takıma olumlu etki."
+              "text": "Sürekli sakin, saygılı ve çözüm odaklı; baskı altında bile takıma olumlu etki.",
+              "proofBubble": "Tek beden, tek ruh ve tercihen odada tek yapici enerji. Sakin enerji, dramadan daha iyi olceklenir."
             }
           }
         }
@@ -730,19 +790,23 @@
           "locales": {
             "en": {
               "title": "Driving license (B, 7 years)",
-              "text": "Category B driving license with 7 years of experience and readiness for regular business travel."
+              "text": "Category B driving license with 7 years of experience and readiness for regular business travel.",
+              "proofBubble": "Come on, do not ask a Yugo if it can go. License since 18, still rolling."
             },
             "de": {
               "title": "Führerschein (Klasse B, 7 Jahre)",
-              "text": "Führerschein der Klasse B mit 7 Jahren Fahrpraxis und Bereitschaft für regelmäßige Dienstreisen."
+              "text": "Führerschein der Klasse B mit 7 Jahren Fahrpraxis und Bereitschaft für regelmäßige Dienstreisen.",
+              "proofBubble": "Komm schon, frag keinen Yugo, ob er fahren kann. Fuehrerschein seit 18, laeuft immer noch."
             },
             "hr": {
               "title": "Vozačka dozvola (B, 7 godina)",
-              "text": "Vozačka dozvola B kategorije sa 7 godina iskustva i spremnošću za poslovna putovanja."
+              "text": "Vozačka dozvola B kategorije sa 7 godina iskustva i spremnošću za poslovna putovanja.",
+              "proofBubble": "Ma daj, ne pitaj Yuga zna li ici. Vozacka od osamnaeste, jos uvijek ide."
             },
             "tr": {
               "title": "Sürücü belgesi (B, 7 yıl)",
-              "text": "7 yıllık deneyime sahip B sınıfı sürücü belgesi ve düzenli iş seyahatlerine hazır."
+              "text": "7 yıllık deneyime sahip B sınıfı sürücü belgesi ve düzenli iş seyahatlerine hazır.",
+              "proofBubble": "Hadi ama, bir Yugoya gidip gitmedigini sorma. Ehliyet 18 yasindan beri bende, hala yoldayim."
             }
           }
         },
@@ -764,19 +828,23 @@
           "locales": {
             "en": {
               "title": "Safety & responsibility mindset",
-              "text": "Used to working safely in electrical and industrial environments with strong sense of responsibility."
+              "text": "Used to working safely in electrical and industrial environments with strong sense of responsibility.",
+              "proofBubble": "Living around horned cows and climbing pipes in the chemical industry tends to sharpen your safety instincts. Responsibility stops being theoretical very quickly."
             },
             "de": {
               "title": "Sicherheits- & Verantwortungsbewusstsein",
-              "text": "Gewohnt sicher in Elektro- und Industrieumgebungen zu arbeiten, mit hohem Verantwortungsgefühl."
+              "text": "Gewohnt sicher in Elektro- und Industrieumgebungen zu arbeiten, mit hohem Verantwortungsgefühl.",
+              "proofBubble": "Wer zwischen gehoernten Kuehen lebt und in der Chemieindustrie auf Rohren herumklettert, entwickelt ziemlich schnell einen echten Sicherheitsinstinkt. Verantwortung bleibt dann nichts Theoretisches."
             },
             "hr": {
               "title": "Sigurnost i odgovornost",
-              "text": "Naviknut raditi sigurno u elektro i industrijskim okruženjima, s jakim osjećajem odgovornosti."
+              "text": "Naviknut raditi sigurno u elektro i industrijskim okruženjima, s jakim osjećajem odgovornosti.",
+              "proofBubble": "Kad zivis oko rogatinja i penjes se po cijevima u kemijskoj industriji, sigurnosni instinkt se izbrusi vrlo brzo. Odgovornost tada vise nije teorija."
             },
             "tr": {
               "title": "Güvenlik ve sorumluluk bilinci",
-              "text": "Elektrik ve endüstriyel ortamlarda güvenli çalışmaya ve yüksek sorumluluk bilincine alışkın."
+              "text": "Elektrik ve endüstriyel ortamlarda güvenli çalışmaya ve yüksek sorumluluk bilincine alışkın.",
+              "proofBubble": "Boynuzlu ineklerin etrafinda yasamak ve kimya endustrisinde borulara tirmanmak guvenlik icgudusunu keskinlestiriyor. Sorumluluk cok hizli sekilde teoriden cikar."
             }
           }
         },
@@ -798,19 +866,23 @@
           "locales": {
             "en": {
               "title": "Work ethic & reliability",
-              "text": "Motivated, dependable, and committed to delivering high-quality work."
+              "text": "Motivated, dependable, and committed to delivering high-quality work.",
+              "proofBubble": "To live is to serve: first God, then self, then others. That order keeps the work honest."
             },
             "de": {
               "title": "Arbeitsmoral & Zuverlässigkeit",
-              "text": "Motiviert, zuverlässig und engagiert, qualitativ hochwertige Arbeit zu liefern."
+              "text": "Motiviert, zuverlässig und engagiert, qualitativ hochwertige Arbeit zu liefern.",
+              "proofBubble": "Zu leben heisst zu dienen: erst Gott, dann man selbst, dann die anderen. Diese Reihenfolge haelt die Arbeit ehrlich."
             },
             "hr": {
               "title": "Radna etika i pouzdanost",
-              "text": "Motiviran, pouzdan i posvećen isporuci kvalitetnog rada."
+              "text": "Motiviran, pouzdan i posvećen isporuci kvalitetnog rada.",
+              "proofBubble": "Zivjeti znaci sluziti: prvo Bogu, zatim sebi, pa drugima. Taj red drzi rad postenim."
             },
             "tr": {
               "title": "Çalışma disiplini ve güvenilirlik",
-              "text": "Motivasyonu yüksek, güvenilir ve kaliteli iş çıkarmaya odaklı."
+              "text": "Motivasyonu yüksek, güvenilir ve kaliteli iş çıkarmaya odaklı.",
+              "proofBubble": "Yasamak hizmet etmektir: once Tanri, sonra insanin kendisi, sonra baskalari. Bu sira isi durust tutar."
             }
           }
         }

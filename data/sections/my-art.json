@@ -468,35 +468,45 @@
                     "category_all": "All",
                     "category_practical": "Practical",
                     "category_theoretical": "Theoretical",
-                    "category_fun": "Fun"
+                    "category_fun": "Fun",
+                    "category_croatian": "Croatian",
+                    "category_german": "German"
                 },
                 "de": {
                     "title": "Lieblings-{{Educators / YouTuber}}",
                     "category_all": "Alle",
                     "category_practical": "Praktisch",
                     "category_theoretical": "Theoretisch",
-                    "category_fun": "Spaß"
+                    "category_fun": "Spaß",
+                    "category_croatian": "Kroatisch",
+                    "category_german": "Deutsch"
                 },
                 "hr": {
                     "title": "Omiljeni {{edukatori / YouTuberi}}",
                     "category_all": "Sve",
                     "category_practical": "Praktično",
                     "category_theoretical": "Teorijski",
-                    "category_fun": "Zabava"
+                    "category_fun": "Zabava",
+                    "category_croatian": "Hrvatski",
+                    "category_german": "Njemački"
                 },
                 "tr": {
-                    "title": "Favourite {{educators / YouTubers}}",
-                    "category_all": "T?m?",
+                    "title": "Favori {{eğitmenler / YouTuberlar}}",
+                    "category_all": "Tümü",
                     "category_practical": "Pratik",
                     "category_theoretical": "Teorik",
-                    "category_fun": "E?lence"
+                    "category_fun": "Eğlence",
+                    "category_croatian": "Hırvatça",
+                    "category_german": "Almanca"
                 }
             },
             "settings": {
                 "categorize_by": [
                     "category_practical",
                     "category_theoretical",
-                    "category_fun"
+                    "category_fun",
+                    "category_croatian",
+                    "category_german"
                 ],
                 "order_items_by": "id",
                 "order_items_sort": "asc"
@@ -966,7 +976,7 @@
                 },
                 {
                     "id": 23,
-                    "categoryId": "category_fun",
+                    "categoryId": "category_croatian",
                     "img": "/images/yt_fav/Kvizoteka.webp",
                     "faIcon": "",
                     "faIconColors": {
@@ -1008,7 +1018,7 @@
                 },
                 {
                     "id": 25,
-                    "categoryId": "category_practical",
+                    "categoryId": "category_german",
                     "img": "/images/yt_fav/Finanzfluss.webp",
                     "faIcon": "",
                     "faIconColors": {
@@ -1029,7 +1039,7 @@
                 },
                 {
                     "id": 26,
-                    "categoryId": "category_practical",
+                    "categoryId": "category_german",
                     "img": "/images/yt_fav/Lohnt_sich_Das.webp",
                     "faIcon": "",
                     "faIconColors": {
@@ -1050,7 +1060,7 @@
                 },
                 {
                     "id": 27,
-                    "categoryId": "category_theoretical",
+                    "categoryId": "category_german",
                     "img": "/images/yt_fav/Kurzgesagt.webp",
                     "faIcon": "",
                     "faIconColors": {
@@ -1911,7 +1921,7 @@
                 },
                 {
                     "id": 68,
-                    "categoryId": "category_fun",
+                    "categoryId": "category_croatian",
                     "img": "/images/yt_fav/Nasa_mala_klinika.webp",
                     "faIcon": "",
                     "faIconColors": {
@@ -1932,7 +1942,7 @@
                 },
                 {
                     "id": 69,
-                    "categoryId": "category_fun",
+                    "categoryId": "category_croatian",
                     "img": "/images/yt_fav/Lud,zbunjen,normalan.webp",
                     "faIcon": "",
                     "faIconColors": {

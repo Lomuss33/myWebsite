@@ -311,7 +311,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
     const renderVisibleBody = () => {
         if (isAboutIntro) {
             return (
-                <PretextInteractiveText html={buildLockedIntroHtml(html)}
+                <PretextInteractiveText html={html}
                                         revealOnScroll={true}
                                         effectVariant={"gravitySweep"}
                                         pointerScopeSelector={".layout-content"}
@@ -572,14 +572,6 @@ function stripHtmlToText(html) {
     const parser = new DOMParser()
     const documentNode = parser.parseFromString(`<div>${html || ""}</div>`, "text/html")
     return documentNode.body.textContent || ""
-}
-
-function buildLockedIntroHtml(html) {
-    if (!html) return html
-
-    return html.replace(/^\{\{(.*?)\}\}\s*/, (_match, prefix) => {
-        return `<span class="pretext-lock">${prefix}</span> `
-    })
 }
 
 function buildCanvasFont(style) {

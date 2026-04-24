@@ -6,6 +6,8 @@ import {useUtils} from "../../hooks/utils.js"
 function CategoryFilter({ categories, selectedCategoryId, setSelectedCategoryId, className = "" }) {
     const utils = useUtils()
     const containerRef = useRef(null)
+    const categoryCount = categories.length || 1
+    const compactColumnCount = Math.max(2, Math.ceil(categoryCount / 2))
 
     const [lastCategorySelectTime, setLastCategorySelectTime] = useState(0)
 
@@ -83,7 +85,13 @@ function CategoryFilter({ categories, selectedCategoryId, setSelectedCategoryId,
     }
 
     return (
-        <div ref={containerRef} className={`category-filter ${className}`}>
+        <div
+            ref={containerRef}
+            className={`category-filter ${className}`}
+            style={{
+                "--category-filter-columns": categoryCount,
+                "--category-filter-compact-columns": compactColumnCount
+            }}>
             {categories.map((category, key) => (
                 <CategoryFilterButton key={key}
                                       category={category}

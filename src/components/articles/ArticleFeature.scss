@@ -157,6 +157,10 @@ article#article-2-section-experience {
         }
     }
 
+    div.article-feature-item-text-measure-square {
+        max-width: 62ch;
+    }
+
     span.pretext-interactive-text-fragment-highlight,
     span.pretext-interactive-text-fragment-highlight span.pretext-interactive-text-grapheme {
         background-image:
@@ -213,6 +217,10 @@ article#article-2-section-experience {
         }
 
         div.article-feature-item-text {
+            max-width: 100%;
+        }
+
+        div.article-feature-item-text-measure-square {
             max-width: 100%;
         }
     }

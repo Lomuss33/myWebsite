@@ -24,7 +24,12 @@ export const _fileUtils = {
         const resolvedPath = _fileUtils.resolvePath(path)
 
         try {
-            const response = await fetch(resolvedPath)
+            const response = await fetch(resolvedPath, {
+                cache: "no-store",
+                headers: {
+                    "Cache-Control": "no-cache"
+                }
+            })
             const contentType = response.headers.get("content-type") || ""
 
             if (!response.ok || !contentType.includes("application/json")) {

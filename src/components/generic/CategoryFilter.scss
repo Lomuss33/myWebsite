@@ -3,12 +3,17 @@
 div.category-filter {
     margin: 0 auto;
     width: 100%;
-    max-width: 900px;
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: center;
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: repeat(var(--category-filter-columns, 1), minmax(0, 1fr));
     align-items: stretch;
+    gap: 0;
     --category-filter-font-size: clamp(0.58rem, 1.6vw, 0.85rem);
+
+    @include media-breakpoint-down(lg) {
+        grid-template-columns: repeat(var(--category-filter-compact-columns, 2), minmax(0, 1fr));
+        gap: 6px;
+    }
 }
 
 button.category-filter-button {
@@ -19,8 +24,10 @@ button.category-filter-button {
     transition: none;
     border: 2px solid var(--theme-card-background)!important;
 
-    flex: 1 1 0;
+    font-family: Tahoma, "Segoe UI", "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji" !important;
+    width: 100%;
     min-width: 0;
+    max-width: 100%;
     padding: 0.42rem 0.55rem !important;
     line-height: 1.1;
     font-size: var(--category-filter-font-size) !important;
@@ -31,6 +38,7 @@ button.category-filter-button {
     justify-content: center;
 
     border-radius: 0!important;
+
     &:first-child {
         border-top-left-radius: $standard-border-radius!important;
         border-bottom-left-radius: $standard-border-radius!important;
@@ -40,8 +48,13 @@ button.category-filter-button {
         border-top-right-radius: $standard-border-radius!important;
         border-bottom-right-radius: $standard-border-radius!important;
     }
+
     @include media-breakpoint-down(md) {
         border-width: 1px!important;
+    }
+
+    @include media-breakpoint-down(lg) {
+        border-radius: $standard-border-radius!important;
     }
 }
 
@@ -183,12 +196,14 @@ article#article-3-section-my-art {
 }
 
 span.category-filter-button-label {
+    font-family: inherit;
     user-select: none;
     pointer-events: none;
     white-space: nowrap;
 }
 
 span.category-filter-button-count {
+    font-family: inherit;
     margin-left: 4px;
     user-select: none;
     pointer-events: none;

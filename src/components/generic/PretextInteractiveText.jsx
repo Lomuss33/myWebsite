@@ -1,5 +1,5 @@
 import "./PretextInteractiveText.scss"
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { motion, useInView, useReducedMotion } from "motion/react"
 import Link from "./Link.jsx"
 import {
@@ -22,8 +22,8 @@ const TAP_RIPPLE_FADE_MS = 420
 const TAP_RIPPLE_SPEED_PX_PER_MS = 0.30
 const TAP_RIPPLE_BAND_PX = 28
 const WAVE_EFFECT_STRENGTH_MULTIPLIER = 2.4
-// Align the release divider with the middle of the visible text row.
-const GRAVITY_RELEASE_ROW_OFFSET = 0.5
+// Bias the release divider slightly above center so it matches the visible glyph area.
+const GRAVITY_RELEASE_ROW_OFFSET = 0.38
 const GRAVITY_ABOVE_LATCH_MS = 180
 
 function PretextInteractiveText({
@@ -54,6 +54,7 @@ function PretextInteractiveText({
     const visibleGraphemesRef = useRef([])
     const contentSizeRef = useRef({ width: 0, height: 0 })
     const lineHeightRef = useRef(0)
+    const gravityReleaseThresholdsRef = useRef([])
     const gravityStatesRef = useRef(new Map())
     const lastGoodWidthRef = useRef(0)
 
@@ -93,6 +94,33 @@ function PretextInteractiveText({
         return collectVisibleGraphemes(layout.paragraphs, effectiveLineHeight)
     }, [effectVariant, effectiveLineHeight, layout.paragraphs])
 
+    const refreshGravityReleaseThresholds = () => {
+        if (effectVariant !== "gravitySweep") {
+            gravityReleaseThresholdsRef.current = []
+            return
+        }
+
+        const contentElement = contentRef.current
+        if (!contentElement) {
+            gravityReleaseThresholdsRef.current = []
+            return
+        }
+
+        const contentRect = contentElement.getBoundingClientRect()
+        const lineElements = contentElement.querySelectorAll(".pretext-interactive-text-line")
+        const nextThresholds = []
+
+        lineElements.forEach((lineElement, index) => {
+            const rect = lineElement.getBoundingClientRect()
+            const localTop = rect.top - contentRect.top
+            const lineHeight = rect.height || lineHeightRef.current || 0
+
+            nextThresholds[index] = localTop + lineHeight * GRAVITY_RELEASE_ROW_OFFSET
+        })
+
+        gravityReleaseThresholdsRef.current = nextThresholds
+    }
+
     useEffect(() => {
         pointerStateRef.current = pointerState
     }, [pointerState])
@@ -108,6 +136,27 @@ function PretextInteractiveText({
     useEffect(() => {
         lineHeightRef.current = effectiveLineHeight
     }, [effectiveLineHeight])
+
+    useLayoutEffect(() => {
+        refreshGravityReleaseThresholds()
+
+        const contentElement = contentRef.current
+        if (effectVariant !== "gravitySweep" || !contentElement) {
+            return
+        }
+
+        if (typeof ResizeObserver === "undefined") {
+            return
+        }
+
+        const observer = new ResizeObserver(() => {
+            refreshGravityReleaseThresholds()
+        })
+
+        observer.observe(contentElement)
+
+        return () => observer.disconnect()
+    }, [effectVariant, contentWidth, layout.totalHeight, revealCycle, typographyVersion, html])
 
     useEffect(() => {
         const refreshTypography = () => {
@@ -252,7 +301,8 @@ function PretextInteractiveText({
             const clientY = event.clientY ?? 0
             const now = performance.now()
             const scopeRect = scopeElement.getBoundingClientRect()
-            const rootRect = rootElement.getBoundingClientRect()
+            const hitboxElement = contentRef.current || rootElement
+            const hitboxRect = hitboxElement.getBoundingClientRect()
 
             const isWithinScope =
                 clientY >= scopeRect.top &&
@@ -264,11 +314,11 @@ function PretextInteractiveText({
                 return
             }
 
-            const withinHitboxX = clientX >= rootRect.left && clientX <= rootRect.right
+            const withinHitboxX = clientX >= hitboxRect.left && clientX <= hitboxRect.right
             const viewportWidth = Math.max(window.innerWidth || 0, 1)
             const normalizedViewportX = clamp(clientX / viewportWidth, 0, 1)
-            const isAboveHitbox = clientY < rootRect.top
-            const isBelowHitbox = clientY > rootRect.bottom
+            const isAboveHitbox = clientY < hitboxRect.top
+            const isBelowHitbox = clientY > hitboxRect.bottom
             const isWithinHitboxY = !isAboveHitbox && !isBelowHitbox
             const withinHitbox = withinHitboxX && isWithinHitboxY
 
@@ -292,20 +342,20 @@ function PretextInteractiveText({
 
             const localY =
                 shouldUseAboveMode ?
-                    -Math.max(1, rootRect.height * 0.35) :
-                    clientY - rootRect.top
-            let localX = normalizedViewportX * rootRect.width
+                    -Math.max(1, hitboxRect.height * 0.35) :
+                    clientY - hitboxRect.top
+            let localX = normalizedViewportX * hitboxRect.width
             let intensity = 1
             let mode = "inside"
 
             if (pointerScopeIgnoreX) {
                 if (withinHitboxX) {
                     // When you're actually over the text box, make it feel "right under" the mouse.
-                    localX = clamp(clientX - rootRect.left, 0, rootRect.width)
+                    localX = clamp(clientX - hitboxRect.left, 0, hitboxRect.width)
                     intensity = 1.25
                 } else {
                     // Outside the hitbox (but still in the same row): anchor to the nearest edge.
-                    localX = clientX < rootRect.left ? 0 : rootRect.width
+                    localX = clientX < hitboxRect.left ? 0 : hitboxRect.width
                     intensity = 0.7
                 }
             }
@@ -373,6 +423,7 @@ function PretextInteractiveText({
         const previousTime = gravityLastFrameTimeRef.current ?? currentTime
         const dt = Math.min((currentTime - previousTime) / 1000, MAX_FRAME_DT)
         gravityLastFrameTimeRef.current = currentTime
+        refreshGravityReleaseThresholds()
 
         runGravityFrame(
             gravityStatesRef.current,
@@ -380,6 +431,7 @@ function PretextInteractiveText({
             pointerStateRef.current,
             contentSizeRef.current,
             lineHeightRef.current,
+            gravityReleaseThresholdsRef.current,
             dt
         )
 
@@ -479,7 +531,7 @@ function PretextInteractiveText({
         if (event.pointerType === "touch") {
             const activeGesture = touchGestureRef.current
             if (activeGesture && activeGesture.pointerId === event.pointerId) {
-                const nextPointer = getRelativePointerPosition(event)
+                const nextPointer = getRelativePointerPosition(event, contentRef.current || event.currentTarget)
                 activeGesture.lastX = nextPointer.x
                 activeGesture.lastY = nextPointer.y
                 activeGesture.moved = activeGesture.moved || getPointerTravelDistance(activeGesture, nextPointer) > TOUCH_TAP_MAX_MOVEMENT
@@ -488,7 +540,7 @@ function PretextInteractiveText({
             return
         }
 
-        const nextPointer = getRelativePointerPosition(event)
+        const nextPointer = getRelativePointerPosition(event, contentRef.current || event.currentTarget)
         schedulePointerUpdate(createActiveInteractionState(nextPointer))
 
         if (effectVariant === "gravitySweep" && !reduceMotion) {
@@ -518,7 +570,7 @@ function PretextInteractiveText({
         }
 
         if (event.pointerType === "touch") {
-            const nextPointer = getRelativePointerPosition(event)
+            const nextPointer = getRelativePointerPosition(event, contentRef.current || event.currentTarget)
 
             if (event.currentTarget?.setPointerCapture) {
                 try {
@@ -544,7 +596,7 @@ function PretextInteractiveText({
             return
         }
 
-        const nextPointer = getRelativePointerPosition(event)
+        const nextPointer = getRelativePointerPosition(event, contentRef.current || event.currentTarget)
         const nextInteractionState = createActiveInteractionState(nextPointer)
         schedulePointerUpdate(nextInteractionState)
     }
@@ -569,7 +621,7 @@ function PretextInteractiveText({
 
         if (!activeGesture || activeGesture.pointerId !== event.pointerId) return
 
-        const nextPointer = getRelativePointerPosition(event)
+        const nextPointer = getRelativePointerPosition(event, contentRef.current || event.currentTarget)
         const tapDistance = getPointerTravelDistance(activeGesture, nextPointer)
         if (activeGesture.moved || tapDistance > TOUCH_TAP_MAX_MOVEMENT) {
             clearTouchTapPointer()
@@ -928,12 +980,14 @@ function collectVisibleGraphemes(paragraphs, lineHeight) {
 
     const graphemes = []
     let paragraphOffsetY = 0
+    let globalLineIndex = -1
 
     paragraphs.forEach(paragraph => {
         const paragraphTop = paragraphOffsetY
         paragraphOffsetY += paragraph.lines.length * lineHeight + paragraph.marginBottom
 
         paragraph.lines.forEach((line, lineIndex) => {
+            globalLineIndex += 1
             const lineTop = paragraphTop + lineIndex * lineHeight
             let fragmentOffsetX = 0
 
@@ -950,6 +1004,7 @@ function collectVisibleGraphemes(paragraphs, lineHeight) {
                 fragmentGraphemes.forEach((grapheme, graphemeIndex) => {
                     graphemes.push({
                         key: `${fragment.key}-g-${graphemeIndex}`,
+                        lineIndex: globalLineIndex,
                         baselineX: fragmentLeft + grapheme.centerX,
                         baselineY: lineTop + lineHeight / 2,
                         // Release when the pointer reaches the top edge of the row.
@@ -997,10 +1052,10 @@ function ensureGravityState(gravityStates, graphemeKey, baselineX, baselineY, li
     return nextState
 }
 
-function runGravityFrame(gravityStates, visibleGraphemes, pointerState, contentSize, lineHeight, dt) {
+function runGravityFrame(gravityStates, visibleGraphemes, pointerState, contentSize, lineHeight, releaseThresholds, dt) {
     if (!lineHeight || visibleGraphemes.length === 0) return
 
-    const releasedColumns = buildGravityColumns(visibleGraphemes, pointerState, contentSize, lineHeight)
+    const releasedColumns = buildGravityColumns(visibleGraphemes, pointerState, contentSize, lineHeight, releaseThresholds)
 
     visibleGraphemes.forEach(grapheme => {
         const gravityState = ensureGravityState(gravityStates, grapheme.key, grapheme.baselineX, grapheme.baselineY, lineHeight)
@@ -1089,7 +1144,7 @@ function runGravityFrame(gravityStates, visibleGraphemes, pointerState, contentS
     })
 }
 
-function buildGravityColumns(visibleGraphemes, pointerState, contentSize, lineHeight) {
+function buildGravityColumns(visibleGraphemes, pointerState, contentSize, lineHeight, releaseThresholds = []) {
     const releasedByColumn = new Map()
     const releasedLookup = new Map()
 
@@ -1099,7 +1154,9 @@ function buildGravityColumns(visibleGraphemes, pointerState, contentSize, lineHe
     const releaseCutoffY = releaseEntireText ? Number.NEGATIVE_INFINITY : pointerState.y
 
     visibleGraphemes.forEach(grapheme => {
-        if (grapheme.releaseThresholdY < releaseCutoffY) return
+        const releaseThresholdY = releaseThresholds[grapheme.lineIndex] ?? grapheme.releaseThresholdY
+
+        if (releaseThresholdY < releaseCutoffY) return
 
         const column = getGravityColumnIndex(grapheme.baselineX, lineHeight)
         if (!releasedByColumn.has(column)) {
@@ -1504,8 +1561,8 @@ function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value))
 }
 
-function getRelativePointerPosition(event) {
-    const element = event.currentTarget
+function getRelativePointerPosition(event, elementOverride = null) {
+    const element = elementOverride || event.currentTarget
     const rect = element.getBoundingClientRect()
     const clientX = event.clientX ?? 0
     const clientY = event.clientY ?? 0

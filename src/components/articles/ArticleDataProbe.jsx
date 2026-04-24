@@ -928,6 +928,22 @@ function ProbeItem({
                     <div className={`article-data-probe-item-value-label`}>Details</div>
 
                     <div className={`article-data-probe-item-value-actions`}>
+                        {showRequest && onRequest && (
+                            <StandardButton variant={`contrast`}
+                                            className={`article-data-probe-action-btn`}
+                                            label={requestLabel}
+                                            faIcon={requestIcon}
+                                            onClick={onRequest}/>
+                        )}
+
+                        {showRequest && extraAction && extraLabel && (
+                            <StandardButton variant={`contrast`}
+                                            className={`article-data-probe-action-btn`}
+                                            label={extraLabel}
+                                            faIcon={extraIcon || "fa-solid fa-bolt"}
+                                            onClick={extraAction}/>
+                        )}
+
                         {(status === "ok" && value) && (
                             <CopyButton text={value}
                                         label={`Copy`}
@@ -952,24 +968,6 @@ function ProbeItem({
                 {isExpanded && extraState?.status === "ok" && extraState?.value && (
                     <pre className={`article-data-probe-item-value article-data-probe-item-extra`}>{extraState.value}</pre>
                 )}
-
-                <div className={`article-data-probe-item-footer`}>
-                    {showRequest && onRequest && (
-                        <StandardButton variant={`contrast`}
-                                        className={`article-data-probe-action-btn`}
-                                        label={requestLabel}
-                                        faIcon={requestIcon}
-                                        onClick={onRequest}/>
-                    )}
-
-                    {showRequest && extraAction && extraLabel && (
-                        <StandardButton variant={`contrast`}
-                                        className={`article-data-probe-action-btn`}
-                                        label={extraLabel}
-                                        faIcon={extraIcon || "fa-solid fa-bolt"}
-                                        onClick={extraAction}/>
-                    )}
-                </div>
             </div>
         </div>
     )

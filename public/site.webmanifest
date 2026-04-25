@@ -1,0 +1,16 @@
+{
+    "name": "Lovro Music Portfolio",
+    "short_name": "Lovro Music",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#090909",
+    "theme_color": "#090909",
+    "icons": [
+        {
+            "src": "/images/svg/fav.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        }
+    ]
+}

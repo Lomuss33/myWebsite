@@ -58,13 +58,19 @@ function LayoutImageCache({ profile, settings, sections }) {
 
 function LayoutImageCacheImage({ src, index }) {
     const imageRef = useRef(null)
+    const fetchPriority = index === 0 ? "high" : "auto"
 
     useEffect(() => {
         if(!imageRef.current)
             return
 
-        imageRef.current.setAttribute("fetchpriority", "high")
-    }, [])
+        if(fetchPriority !== "auto") {
+            imageRef.current.setAttribute("fetchpriority", fetchPriority)
+        }
+        else {
+            imageRef.current.removeAttribute("fetchpriority")
+        }
+    }, [fetchPriority])
 
     return (
         <img ref={imageRef}

@@ -249,6 +249,7 @@ function ArticleWebArt({ dataWrapper, id }) {
     const [activationIndex, setActivationIndex] = useState(-1)
     const [openTileIds, setOpenTileIds] = useState(() => new Set())
     const [mountedTileIds, setMountedTileIds] = useState(() => new Set())
+    const [sendYoursPreviewOpen, setSendYoursPreviewOpen] = useState(false)
     const allTileIds = useMemo(() => {
         const ids = items.map((item) => item?.uniqueId).filter(Boolean)
         ids.push(
@@ -384,6 +385,7 @@ function ArticleWebArt({ dataWrapper, id }) {
         setShouldMountTiles(false)
         setOpenTileIds(new Set())
         setMountedTileIds(new Set())
+        setSendYoursPreviewOpen(false)
     }, [])
 
     const onIntroEnter = useCallback(() => {
@@ -392,6 +394,7 @@ function ArticleWebArt({ dataWrapper, id }) {
         setActivationIndex(items.length - 1)
         setOpenTileIds(new Set())
         setMountedTileIds(new Set())
+        setSendYoursPreviewOpen(false)
     }, [items.length])
 
     const openTile = useCallback((uniqueId) => {
@@ -427,11 +430,13 @@ function ArticleWebArt({ dataWrapper, id }) {
         if(allTileIds.size > 0 && openTileIds.size >= allTileIds.size) {
             setOpenTileIds(new Set())
             setMountedTileIds(new Set())
+            setSendYoursPreviewOpen(false)
             return
         }
 
         setMountedTileIds(new Set(allTileIds))
         setOpenTileIds(new Set(allTileIds))
+        setSendYoursPreviewOpen(true)
     }, [allTileIds, openTileIds.size])
 
     const onIntroHide = useCallback(() => {
@@ -651,7 +656,9 @@ function ArticleWebArt({ dataWrapper, id }) {
                         <div className={`article-web-art-items ${locked ? "article-web-art-items-locked" : ""}`}
                              ref={tilesWrapperRef}
                              aria-busy={showIntroCover}>
-                            <SendYourFunAnimationTile label={submitTileLabel} clickLabel={clickTileLabel}/>
+                            <SendYourFunAnimationTile label={submitTileLabel}
+                                                      clickLabel={clickTileLabel}
+                                                      previewRequested={sendYoursPreviewOpen}/>
                             {itemTiles}
                             {ambientTiles}
                         </div>
@@ -3375,7 +3382,7 @@ function TardisTile({ readyId, locked, onReady }) {
     )
 }
 
-function SendYourFunAnimationTile({ label, clickLabel }) {
+function SendYourFunAnimationTile({ label, clickLabel, previewRequested = false }) {
     const navigation = useNavigation()
     const tileRef = useRef(null)
     const [previewOpen, setPreviewOpen] = useState(false)
@@ -3409,6 +3416,16 @@ function SendYourFunAnimationTile({ label, clickLabel }) {
             reduceMotion
         })
     }, [label, previewOpen, previewSeed, reduceMotion])
+
+    useEffect(() => {
+        if(previewRequested) {
+            setPreviewSeed(Date.now())
+            setPreviewOpen(true)
+            return
+        }
+
+        setPreviewOpen(false)
+    }, [previewRequested])
 
     return (
         <div ref={tileRef}

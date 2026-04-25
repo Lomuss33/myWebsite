@@ -196,9 +196,33 @@
 }
 
 [data-theme="light"] article.article-info-list-home div.article-info-list-item-avatar {
-    background-color: rgba(37, 99, 235, 0.08) !important;
-    border-color: rgba(37, 99, 235, 0.16);
-    color: #1d4ed8;
+    background:
+        linear-gradient(180deg,
+            rgba(248, 250, 252, 0.98) 0%,
+            rgba(226, 232, 240, 0.98) 100%) !important;
+    border-color: rgba(148, 163, 184, 0.28);
+    color: #1e3a8a;
+    --ff-highlight-opacity: 0.045;
+    --ff-highlight-blur: 11px;
+}
+
+[data-theme="light"] article.article-info-list-home div.article-info-list-item-avatar::after {
+    background:
+        radial-gradient(
+            circle at var(--ff-hl-x, 50%) var(--ff-hl-y, 50%),
+            rgb(59 130 246 / 0.12),
+            rgb(59 130 246 / 0) 42%
+        );
+    mix-blend-mode: screen;
+    opacity: 0.85;
+}
+
+[data-theme="light"] article.article-info-list-home div.article-info-list-item-avatar .avatar-icon-view {
+    color: #1e40af;
+    text-shadow:
+        0 1px 1px rgba(255, 255, 255, 0.55),
+        0 0 2px rgba(255, 255, 255, 0.24),
+        0 0 1px rgba(59, 130, 246, 0.12);
 }
 
 [data-theme="light"] article.article.article-stack-home div.article-stack-item.article-stack-item-home {

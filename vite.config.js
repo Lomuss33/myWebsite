@@ -10,10 +10,25 @@ export default defineConfig({
             output: {
                 manualChunks(id) {
                     if (id.includes('node_modules')) {
-                        // Split the swiper plugin library into a separate chunk to avoid a large chunk size on index.js
+                        if (id.includes('three'))
+                            return 'three';
+
                         if (id.includes('swiper'))
                             return 'swiper';
-                        return;
+
+                        if (id.includes('/react/') || id.includes('/react-dom/') || id.includes('/scheduler/'))
+                            return 'react-vendor';
+
+                        if (id.includes('@fortawesome') || id.includes('primeicons'))
+                            return 'icons';
+
+                        if (id.includes('bootstrap') || id.includes('react-bootstrap'))
+                            return 'bootstrap';
+
+                        if (id.includes('motion'))
+                            return 'motion';
+
+                        return 'vendor';
                     }
                 }
             }

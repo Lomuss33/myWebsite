@@ -4,6 +4,8 @@
  */
 
 export const _fileUtils = {
+    _jsonRequestCache: new Map(),
+
     /**
      * @string
      */
@@ -18,17 +20,19 @@ export const _fileUtils = {
 
     /**
      * @param {String} path
+     * @param {RequestCache} cacheMode
      * @return {Promise<any>}
      */
-    loadJSON: async (path) => {
+    loadJSON: async (path, cacheMode = "default") => {
         const resolvedPath = _fileUtils.resolvePath(path)
+        const cacheKey = `${cacheMode}:${resolvedPath}`
 
-        try {
+        if(_fileUtils._jsonRequestCache.has(cacheKey))
+            return _fileUtils._jsonRequestCache.get(cacheKey)
+
+        const request = (async () => {
             const response = await fetch(resolvedPath, {
-                cache: "no-store",
-                headers: {
-                    "Cache-Control": "no-cache"
-                }
+                cache: cacheMode
             })
             const contentType = response.headers.get("content-type") || ""
 
@@ -37,11 +41,14 @@ export const _fileUtils = {
             }
 
             return await response.json()
-        }
-        catch (error) {
+        })().catch(error => {
+            _fileUtils._jsonRequestCache.delete(cacheKey)
             console.error(`Failed to load JSON from ${resolvedPath}:`, error)
             return null
-        }
+        })
+
+        _fileUtils._jsonRequestCache.set(cacheKey, request)
+        return request
     },
 
     /**

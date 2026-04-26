@@ -1,5 +1,5 @@
 import "./PretextInteractiveText.scss"
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { motion, useInView, useReducedMotion } from "motion/react"
 import Link from "./Link.jsx"
 import {
@@ -22,8 +22,8 @@ const TAP_RIPPLE_FADE_MS = 420
 const TAP_RIPPLE_SPEED_PX_PER_MS = 0.30
 const TAP_RIPPLE_BAND_PX = 28
 const WAVE_EFFECT_STRENGTH_MULTIPLIER = 2.4
-// Bias the release divider slightly above center so it matches the visible glyph area.
-const GRAVITY_RELEASE_ROW_OFFSET = 0.38
+// Trigger slightly above the row top so the text starts falling before the cursor touches the line.
+const GRAVITY_RELEASE_ROW_OFFSET = -0.08
 const GRAVITY_ABOVE_LATCH_MS = 180
 
 function PretextInteractiveText({
@@ -54,6 +54,7 @@ function PretextInteractiveText({
     const visibleGraphemesRef = useRef([])
     const contentSizeRef = useRef({ width: 0, height: 0 })
     const lineHeightRef = useRef(0)
+    const gravityReleaseThresholdsRef = useRef([])
     const gravityStatesRef = useRef(new Map())
     const lastGoodWidthRef = useRef(0)
 
@@ -108,6 +109,51 @@ function PretextInteractiveText({
     useEffect(() => {
         lineHeightRef.current = effectiveLineHeight
     }, [effectiveLineHeight])
+
+    const refreshGravityReleaseThresholds = () => {
+        if (effectVariant !== "gravitySweep") {
+            gravityReleaseThresholdsRef.current = []
+            return
+        }
+
+        const contentElement = contentRef.current
+        if (!contentElement) {
+            gravityReleaseThresholdsRef.current = []
+            return
+        }
+
+        const contentScaleY = getElementScaleY(contentElement)
+        const lineElements = contentElement.querySelectorAll(".pretext-interactive-text-line")
+        const nextThresholds = []
+
+        lineElements.forEach((lineElement, index) => {
+            const localTop = getRelativeOffsetTop(lineElement, contentElement)
+            const localHeight = lineElement.offsetHeight || lineHeightRef.current || 0
+
+            nextThresholds[index] = (localTop + localHeight * GRAVITY_RELEASE_ROW_OFFSET) * contentScaleY
+        })
+
+        gravityReleaseThresholdsRef.current = nextThresholds
+    }
+
+    useLayoutEffect(() => {
+        refreshGravityReleaseThresholds()
+
+        const contentElement = contentRef.current
+        if (!contentElement || effectVariant !== "gravitySweep") return
+
+        if (typeof ResizeObserver === "undefined") {
+            return
+        }
+
+        const observer = new ResizeObserver(() => {
+            refreshGravityReleaseThresholds()
+        })
+
+        observer.observe(contentElement)
+
+        return () => observer.disconnect()
+    }, [effectVariant, contentWidth, layout.totalHeight, revealCycle, typographyVersion, html])
 
     useEffect(() => {
         const refreshTypography = () => {
@@ -374,6 +420,7 @@ function PretextInteractiveText({
         const previousTime = gravityLastFrameTimeRef.current ?? currentTime
         const dt = Math.min((currentTime - previousTime) / 1000, MAX_FRAME_DT)
         gravityLastFrameTimeRef.current = currentTime
+        refreshGravityReleaseThresholds()
 
         runGravityFrame(
             gravityStatesRef.current,
@@ -381,6 +428,7 @@ function PretextInteractiveText({
             pointerStateRef.current,
             contentSizeRef.current,
             lineHeightRef.current,
+            gravityReleaseThresholdsRef.current,
             dt
         )
 
@@ -720,6 +768,7 @@ function AnimatedLine({
 }) {
     const revealReady = revealCycle > 0
     const direction = lineIndex % 2 === 0 ? -1 : 1
+    const isGravitySweep = effectVariant === "gravitySweep"
     // Desktop/mouse hover should stay on coarse pretext fragments for performance.
     // Touch/pointer tapping should stay a simple short fragment animation.
     const isWaveHovering =
@@ -728,29 +777,44 @@ function AnimatedLine({
         pointerState.active
 
     let fragmentOffsetX = 0
+    const initialState =
+        reduceMotion || !revealReady ? false :
+        isGravitySweep ? { opacity: 0 } :
+        {
+            opacity: 0,
+            x: direction * 18,
+            y: 12 + (lineIndex % 3) * 4,
+            rotate: direction * 1.5,
+            filter: "blur(5px)"
+        }
+    const animateState = isGravitySweep ? {
+        opacity: 1
+    } : {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        rotate: 0,
+        filter: "blur(0px)"
+    }
+    const transitionState =
+        reduceMotion ? { duration: 0 } :
+        isGravitySweep ? {
+            delay: lineIndex * 0.03,
+            duration: 0.18,
+            ease: "easeOut"
+        } :
+        {
+            delay: lineIndex * 0.055,
+            duration: 0.5 + (lineIndex % 4) * 0.03,
+            ease: [0.16, 1, 0.3, 1]
+        }
 
     return (
         <motion.div className={`pretext-interactive-text-line`}
                     style={{ height: `${lineHeight}px` }}
-                    initial={reduceMotion || !revealReady ? false : {
-                        opacity: 0,
-                        x: direction * 18,
-                        y: 12 + (lineIndex % 3) * 4,
-                        rotate: direction * 1.5,
-                        filter: "blur(5px)"
-                    }}
-                    animate={{
-                        opacity: 1,
-                        x: 0,
-                        y: 0,
-                        rotate: 0,
-                        filter: "blur(0px)"
-                    }}
-                    transition={reduceMotion ? { duration: 0 } : {
-                        delay: lineIndex * 0.055,
-                        duration: 0.5 + (lineIndex % 4) * 0.03,
-                        ease: [0.16, 1, 0.3, 1]
-                    }}>
+                    initial={initialState}
+                    animate={animateState}
+                    transition={transitionState}>
             {line.fragments.map(fragment => {
                 const fragmentLeft = fragmentOffsetX + fragment.leadingGap
                 fragmentOffsetX = fragmentLeft + fragment.width
@@ -1001,10 +1065,10 @@ function ensureGravityState(gravityStates, graphemeKey, baselineX, baselineY, li
     return nextState
 }
 
-function runGravityFrame(gravityStates, visibleGraphemes, pointerState, contentSize, lineHeight, dt) {
+function runGravityFrame(gravityStates, visibleGraphemes, pointerState, contentSize, lineHeight, releaseThresholds, dt) {
     if (!lineHeight || visibleGraphemes.length === 0) return
 
-    const releasedColumns = buildGravityColumns(visibleGraphemes, pointerState, contentSize, lineHeight)
+    const releasedColumns = buildGravityColumns(visibleGraphemes, pointerState, contentSize, lineHeight, releaseThresholds)
 
     visibleGraphemes.forEach(grapheme => {
         const gravityState = ensureGravityState(gravityStates, grapheme.key, grapheme.baselineX, grapheme.baselineY, lineHeight)
@@ -1093,7 +1157,7 @@ function runGravityFrame(gravityStates, visibleGraphemes, pointerState, contentS
     })
 }
 
-function buildGravityColumns(visibleGraphemes, pointerState, contentSize, lineHeight) {
+function buildGravityColumns(visibleGraphemes, pointerState, contentSize, lineHeight, releaseThresholds = []) {
     const releasedByColumn = new Map()
     const releasedLookup = new Map()
 
@@ -1103,7 +1167,9 @@ function buildGravityColumns(visibleGraphemes, pointerState, contentSize, lineHe
     const releaseCutoffY = releaseEntireText ? Number.NEGATIVE_INFINITY : pointerState.y
 
     visibleGraphemes.forEach(grapheme => {
-        if (grapheme.releaseThresholdY < releaseCutoffY) return
+        const releaseThresholdY = releaseThresholds[grapheme.lineIndex] ?? grapheme.releaseThresholdY
+
+        if (releaseThresholdY < releaseCutoffY) return
 
         const column = getGravityColumnIndex(grapheme.baselineX, lineHeight)
         if (!releasedByColumn.has(column)) {
@@ -1506,6 +1572,27 @@ function createPrng(seed) {
 
 function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value))
+}
+
+function getElementScaleY(element) {
+    const rectHeight = element.getBoundingClientRect?.().height || 0
+    const layoutHeight = element.offsetHeight || 0
+
+    if (!rectHeight || !layoutHeight) return 1
+
+    return rectHeight / layoutHeight
+}
+
+function getRelativeOffsetTop(element, ancestor) {
+    let top = 0
+    let current = element
+
+    while (current && current !== ancestor) {
+        top += current.offsetTop || 0
+        current = current.offsetParent
+    }
+
+    return top
 }
 
 function getRelativePointerPosition(event, elementOverride = null) {

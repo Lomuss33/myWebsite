@@ -54,6 +54,7 @@ function PretextInteractiveText({
     const visibleGraphemesRef = useRef([])
     const contentSizeRef = useRef({ width: 0, height: 0 })
     const lineHeightRef = useRef(0)
+    const lineMetricsRef = useRef([])
     const gravityReleaseThresholdsRef = useRef([])
     const gravityStatesRef = useRef(new Map())
     const lastGoodWidthRef = useRef(0)
@@ -110,50 +111,53 @@ function PretextInteractiveText({
         lineHeightRef.current = effectiveLineHeight
     }, [effectiveLineHeight])
 
-    const refreshGravityReleaseThresholds = () => {
-        if (effectVariant !== "gravitySweep") {
-            gravityReleaseThresholdsRef.current = []
-            return
-        }
-
+    const refreshLineMetrics = () => {
         const contentElement = contentRef.current
         if (!contentElement) {
+            lineMetricsRef.current = []
             gravityReleaseThresholdsRef.current = []
             return
         }
 
         const contentScaleY = getElementScaleY(contentElement)
         const lineElements = contentElement.querySelectorAll(".pretext-interactive-text-line")
-        const nextThresholds = []
+        const nextMetrics = []
 
         lineElements.forEach((lineElement, index) => {
             const localTop = getRelativeOffsetTop(lineElement, contentElement)
             const localHeight = lineElement.offsetHeight || lineHeightRef.current || 0
+            const visualTop = localTop * contentScaleY
+            const visualHeight = localHeight * contentScaleY
 
-            nextThresholds[index] = (localTop + localHeight * GRAVITY_RELEASE_ROW_OFFSET) * contentScaleY
+            nextMetrics[index] = {
+                top: visualTop,
+                height: visualHeight,
+                thresholdY: visualTop + visualHeight * GRAVITY_RELEASE_ROW_OFFSET
+            }
         })
 
-        gravityReleaseThresholdsRef.current = nextThresholds
+        lineMetricsRef.current = nextMetrics
+        gravityReleaseThresholdsRef.current = nextMetrics.map(metric => metric.thresholdY)
     }
 
     useLayoutEffect(() => {
-        refreshGravityReleaseThresholds()
+        refreshLineMetrics()
 
         const contentElement = contentRef.current
-        if (!contentElement || effectVariant !== "gravitySweep") return
+        if (!contentElement) return
 
         if (typeof ResizeObserver === "undefined") {
             return
         }
 
         const observer = new ResizeObserver(() => {
-            refreshGravityReleaseThresholds()
+            refreshLineMetrics()
         })
 
         observer.observe(contentElement)
 
         return () => observer.disconnect()
-    }, [effectVariant, contentWidth, layout.totalHeight, revealCycle, typographyVersion, html])
+    }, [contentWidth, layout.totalHeight, revealCycle, typographyVersion, html])
 
     useEffect(() => {
         const refreshTypography = () => {
@@ -420,7 +424,6 @@ function PretextInteractiveText({
         const previousTime = gravityLastFrameTimeRef.current ?? currentTime
         const dt = Math.min((currentTime - previousTime) / 1000, MAX_FRAME_DT)
         gravityLastFrameTimeRef.current = currentTime
-        refreshGravityReleaseThresholds()
 
         runGravityFrame(
             gravityStatesRef.current,
@@ -722,13 +725,17 @@ function PretextInteractiveText({
                             {paragraph.lines.map((line, lineIndex) => {
                                 globalLineIndex += 1
                                 const lineTop = paragraphTop + lineIndex * effectiveLineHeight
+                                const measuredLine = lineMetricsRef.current[globalLineIndex]
+                                const interactionLineTop = measuredLine?.top ?? lineTop
+                                const interactionLineHeight = measuredLine?.height ?? effectiveLineHeight
                                 const lineRenderKey = `${paragraph.key}-${line.key}-${lineIndex}-${revealCycle}`
 
                                 return (
                                     <AnimatedLine key={lineRenderKey}
                                                   line={line}
                                                   lineHeight={effectiveLineHeight}
-                                                  lineTop={lineTop}
+                                                  interactionLineTop={interactionLineTop}
+                                                  interactionLineHeight={interactionLineHeight}
                                                   lineIndex={globalLineIndex}
                                                   effectVariant={effectVariant}
                                                   gravityStates={gravityStatesRef.current}
@@ -753,7 +760,8 @@ function PretextInteractiveText({
 function AnimatedLine({
     line,
     lineHeight,
-    lineTop,
+    interactionLineTop,
+    interactionLineHeight,
     lineIndex,
     effectVariant,
     gravityStates,
@@ -827,9 +835,9 @@ function AnimatedLine({
                         pointerState,
                         tapRippleState,
                         fragmentLeft,
-                        lineTop,
+                        interactionLineTop,
                         fragment.width,
-                        lineHeight
+                        interactionLineHeight
                     )
                     const fragmentMotionState = combineWaveOffsets(
                         isWaveHovering ?

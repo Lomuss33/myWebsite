@@ -106,7 +106,8 @@ function AudioButton({ url = "", tooltip = "", tooltipLabel = "", size = "", but
                     id={uniqueId}
                     aria-pressed={status === AudioButton.Status.PLAYING}
                     onClick={_onClick}>
-                <svg version="1.1"
+                <svg className="audio-button-icon"
+                     version="1.1"
                      xmlns="http://www.w3.org/2000/svg"
                      xmlnsXlink="http://www.w3.org/1999/xlink"
                      x="0px"

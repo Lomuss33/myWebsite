@@ -225,6 +225,13 @@
         0 0 1px rgba(59, 130, 246, 0.12);
 }
 
+[data-theme="light"] article.article-info-list-home div.article-info-list-item-text-bubble-inner {
+    background: linear-gradient(180deg, #ffffff, #f8fafc);
+    border-color: rgba(148, 163, 184, 0.24);
+    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.10);
+    color: #0f172a;
+}
+
 [data-theme="light"] article.article.article-stack-home div.article-stack-item.article-stack-item-home {
     border: 1px solid rgba(37, 99, 235, 0.14);
     background: linear-gradient(180deg, #ffffff, #f6f9fd);

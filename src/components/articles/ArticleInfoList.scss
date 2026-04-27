@@ -155,6 +155,11 @@ div.article-info-list-item {
         text-wrap: balance;
     }
 
+    div.article-info-list-item-text-bubble-copy {
+        width: 100%;
+        max-width: 100%;
+    }
+
     div.article-info-list-item-avatar-bubble-open.article-info-list-item-text-bubble {
         opacity: 1;
         transform: translateX(0) scale(1);
@@ -255,6 +260,14 @@ article.article-info-list-home {
         --min-height: calc(var(--avatar-size) + 10px);
         --padding: 4px;
         --content-padding: 10px 12px;
+        --proof-bubble-bleed-left: 12px;
+        --proof-bubble-bleed-right: 12px;
+        --proof-bubble-bleed-top: 2px;
+        --proof-bubble-bleed-bottom: 10px;
+        --proof-bubble-padding-x: 10px;
+        --proof-bubble-padding-y: 8px;
+        --proof-bubble-font-size: 0.78rem;
+        --proof-bubble-line-height: 1.30;
 
         @include media-breakpoint-down(xxl) {
             --grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -264,18 +277,33 @@ article.article-info-list-home {
             --grid-template-columns: repeat(2, minmax(0, 1fr));
             --avatar-size: 60px;
             --content-padding: 11px 13px;
+            --proof-bubble-bleed-left: 11px;
+            --proof-bubble-bleed-right: 11px;
+            --proof-bubble-bleed-bottom: 9px;
+            --proof-bubble-font-size: 0.74rem;
+            --proof-bubble-line-height: 1.26;
         }
 
         @include media-breakpoint-down(lg) {
             --grid-template-columns: repeat(2, minmax(0, 1fr));
             --avatar-size: 58px;
             --content-padding: 10px 12px;
+            --proof-bubble-bleed-left: 11px;
+            --proof-bubble-bleed-right: 11px;
+            --proof-bubble-bleed-bottom: 9px;
+            --proof-bubble-font-size: 0.74rem;
+            --proof-bubble-line-height: 1.26;
         }
 
         @include media-breakpoint-down(md) {
             --grid-template-columns: repeat(2, minmax(0, 1fr));
             --avatar-size: 56px;
             --content-padding: 10px 12px;
+            --proof-bubble-bleed-left: 10px;
+            --proof-bubble-bleed-right: 10px;
+            --proof-bubble-bleed-bottom: 8px;
+            --proof-bubble-font-size: 0.72rem;
+            --proof-bubble-line-height: 1.24;
         }
 
         @include media-breakpoint-down(sm) {
@@ -283,6 +311,14 @@ article.article-info-list-home {
             --avatar-size: 50px;
             --padding: 3px;
             --content-padding: 8px 10px;
+            --proof-bubble-bleed-left: 10px;
+            --proof-bubble-bleed-right: 10px;
+            --proof-bubble-bleed-top: 1px;
+            --proof-bubble-bleed-bottom: 8px;
+            --proof-bubble-padding-x: 8px;
+            --proof-bubble-padding-y: 6px;
+            --proof-bubble-font-size: 0.70rem;
+            --proof-bubble-line-height: 1.20;
         }
     }
 
@@ -365,6 +401,36 @@ article.article-info-list-home {
             align-items: stretch;
             flex: 1 1 auto;
             min-width: 0;
+            overflow: visible;
+        }
+
+        div.article-info-list-item-text-bubble {
+            top: calc(-1 * var(--proof-bubble-bleed-top));
+            right: calc(-1 * var(--proof-bubble-bleed-right));
+            bottom: calc(-1 * var(--proof-bubble-bleed-bottom));
+            left: calc(-1 * var(--proof-bubble-bleed-left));
+            transform: translateX(-6px) scale(0.985);
+        }
+
+        div.article-info-list-item-text-bubble-inner {
+            box-sizing: border-box;
+            display: block;
+            height: 100%;
+            min-height: 0;
+            padding: var(--proof-bubble-padding-y) var(--proof-bubble-padding-x);
+            font-size: var(--proof-bubble-font-size);
+            line-height: var(--proof-bubble-line-height);
+            letter-spacing: 0;
+            overflow: hidden;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            word-break: normal;
+            text-wrap: pretty;
+        }
+
+        div.article-info-list-item-text-bubble-copy {
+            display: block;
+            width: 100%;
         }
 
         div.article-info-list-item-info-text {
@@ -378,12 +444,6 @@ article.article-info-list-home {
         }
 
         @include media-breakpoint-down(sm) {
-            div.article-info-list-item-text-bubble-inner {
-                padding: 0.05rem 0.12rem;
-                font-size: clamp(0.54rem, 0.5rem + 0.1vw, 0.68rem);
-                line-height: 1.14;
-            }
-
             div.article-info-list-item-info-title {
                 font-size: 0.77rem;
                 line-height: 1.06;

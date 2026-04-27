@@ -11,7 +11,7 @@ const PREPARED_PARAGRAPH_CACHE_LIMIT = 160
 
 /**
  * @param {String} html
- * @return {{ block: "root" | "p", items: Array<{ kind: "body" | "highlight" | "link", text: string, locked?: boolean, href?: string, target?: string, rel?: string }> }[]}
+ * @return {{ block: "root" | "p", items: Array<{ kind: "body" | "link", text: string, locked?: boolean, href?: string, target?: string, rel?: string }> }[]}
  */
 export function parseInteractiveHtml(html) {
     if (!html) return []
@@ -90,9 +90,6 @@ export function parseInteractiveHtml(html) {
                 target: element.getAttribute("target") || undefined,
                 rel: element.getAttribute("rel") || undefined
             }
-        } else if (element.classList.contains("text-primary")) {
-            nextKind = "highlight"
-            nextLinkMeta = null
         }
 
         if (element.classList.contains("pretext-lock") || element.dataset?.pretextLock != null) {
@@ -148,7 +145,7 @@ export function readTypographySnapshot(elements) {
 }
 
 /**
- * @param {{ items: Array<{ kind: "body" | "highlight" | "link", text: string, locked?: boolean, href?: string, target?: string, rel?: string }> }[]} paragraphs
+ * @param {{ items: Array<{ kind: "body" | "link", text: string, locked?: boolean, href?: string, target?: string, rel?: string }> }[]} paragraphs
  * @param {{ font: string, lineHeight: number, paragraphGap: number, letterSpacing: number }} typography
  * @param {number} maxWidth
  * @return {{ paragraphs: Array<{ key: string, lines: Array<any>, marginBottom: number }>, totalHeight: number }}

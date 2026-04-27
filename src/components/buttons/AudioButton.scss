@@ -47,6 +47,11 @@ button.audio-button {
         overflow: visible;
     }
 
+    svg.audio-button-icon {
+        width: 60%;
+        height: 60%;
+    }
+
     .triangle,
     .circle {
         pointer-events: none;
@@ -91,9 +96,10 @@ button.audio-button {
 
 div.audio-button-tooltip {
     position: absolute;
-    left: 50%;
-    bottom: calc(100% + 0.6rem);
-    transform: translateX(-50%);
+    left: calc(100% + 0.7rem);
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -107,6 +113,14 @@ div.audio-button-tooltip {
     width: max-content;
     max-width: none;
     padding: 0.28rem 0.85rem 0.32rem;
+
+    &::before {
+        top: 50%;
+        left: -11px;
+        margin-left: 0;
+        transform: translateY(-50%);
+        border-color: transparent var(--theme-standard-borders-accent-2) transparent transparent;
+    }
 
     > span {
         display: flex;
@@ -149,10 +163,6 @@ div.audio-button-wrapper-size-default {
         height: 2rem;
         margin-left: 0.35rem;
     }
-
-    div.audio-button-tooltip {
-        transform: translateX(-50%);
-    }
 }
 
 div.audio-button-wrapper-size-dynamic-for-nav-title {
@@ -169,7 +179,6 @@ div.audio-button-wrapper-size-dynamic-for-nav-title {
 
     div.audio-button-tooltip {
         min-width: 180px;
-        transform: translateX(-50%);
     }
 }
 

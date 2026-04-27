@@ -1,10 +1,122 @@
 import "./ArticleInfoList.scss"
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react'
 import Article from "./base/Article.jsx"
 import AvatarView from "../generic/AvatarView.jsx"
 import Link from "../generic/Link.jsx"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
+import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import CopyButton from "../buttons/CopyButton.jsx"
+
+const PROOF_BUBBLE_DEFAULTS = {
+    desktop: {
+        fontSize: 0.78,
+        paddingX: 10,
+        paddingY: 8,
+        lineHeight: 1.30
+    },
+    compact: {
+        fontSize: 0.74,
+        paddingX: 10,
+        paddingY: 8,
+        lineHeight: 1.26
+    },
+    tablet: {
+        fontSize: 0.72,
+        paddingX: 10,
+        paddingY: 8,
+        lineHeight: 1.24
+    },
+    mobile: {
+        fontSize: 0.70,
+        paddingX: 8,
+        paddingY: 6,
+        lineHeight: 1.20
+    }
+}
+
+const PROOF_BUBBLE_FLOORS = {
+    desktop: {
+        fontSize: 0.64,
+        paddingX: 6,
+        paddingY: 4,
+        lineHeight: 1.14
+    },
+    tablet: {
+        fontSize: 0.60,
+        paddingX: 6,
+        paddingY: 4,
+        lineHeight: 1.12
+    },
+    mobile: {
+        fontSize: 0.56,
+        paddingX: 5,
+        paddingY: 4,
+        lineHeight: 1.10
+    }
+}
+
+const PROOF_BUBBLE_FIT_VARIABLES = [
+    "--proof-bubble-font-size",
+    "--proof-bubble-padding-x",
+    "--proof-bubble-padding-y",
+    "--proof-bubble-line-height"
+]
+
+const roundToStep = (value, precision = 2) => {
+    const multiplier = 10 ** precision
+    return Math.round(value * multiplier) / multiplier
+}
+
+const getProofBubbleDefaults = (innerWidth) => {
+    if(innerWidth < 576)
+        return { ...PROOF_BUBBLE_DEFAULTS.mobile }
+    if(innerWidth < 768)
+        return { ...PROOF_BUBBLE_DEFAULTS.tablet }
+    if(innerWidth < 1200)
+        return { ...PROOF_BUBBLE_DEFAULTS.compact }
+    return { ...PROOF_BUBBLE_DEFAULTS.desktop }
+}
+
+const getProofBubbleFloors = (innerWidth) => {
+    if(innerWidth < 576)
+        return { ...PROOF_BUBBLE_FLOORS.mobile }
+    if(innerWidth < 992)
+        return { ...PROOF_BUBBLE_FLOORS.tablet }
+    return { ...PROOF_BUBBLE_FLOORS.desktop }
+}
+
+const clearProofBubbleFitVariables = (element) => {
+    if(!element)
+        return
+
+    PROOF_BUBBLE_FIT_VARIABLES.forEach(variableName => {
+        element.style.removeProperty(variableName)
+    })
+}
+
+const applyProofBubbleFitVariables = (element, fitValues) => {
+    if(!element)
+        return
+
+    element.style.setProperty("--proof-bubble-font-size", `${roundToStep(fitValues.fontSize)}rem`)
+    element.style.setProperty("--proof-bubble-padding-x", `${Math.round(fitValues.paddingX)}px`)
+    element.style.setProperty("--proof-bubble-padding-y", `${Math.round(fitValues.paddingY)}px`)
+    element.style.setProperty("--proof-bubble-line-height", `${roundToStep(fitValues.lineHeight)}`)
+}
+
+const getProofBubbleAvailableBox = (element) => {
+    if(!element)
+        return { width: 0, height: 0 }
+
+    const computedStyles = window.getComputedStyle(element)
+    const horizontalPadding = parseFloat(computedStyles.paddingLeft || 0) + parseFloat(computedStyles.paddingRight || 0)
+    const verticalPadding = parseFloat(computedStyles.paddingTop || 0) + parseFloat(computedStyles.paddingBottom || 0)
+
+    return {
+        width: Math.max(0, element.clientWidth - horizontalPadding),
+        height: Math.max(0, element.clientHeight - verticalPadding)
+    }
+}
 
 /**
  * @param {ArticleDataWrapper} dataWrapper
@@ -99,12 +211,16 @@ function ArticleInfoListItems({ dataWrapper, selectedItemCategoryId, isHomeInfoL
  * @constructor
  */
 function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList }) {
+    const language = useLanguage()
+    const viewport = useViewport()
     const [linkHovered, setLinkHovered] = useState(false)
     const [isPressed, setIsPressed] = useState(false)
     const [isBubbleOpen, setIsBubbleOpen] = useState(false)
     const [isBubblePinned, setIsBubblePinned] = useState(false)
     const bubbleRef = useRef(null)
     const bubbleToggleRef = useRef(null)
+    const bubbleInnerRef = useRef(null)
+    const bubbleCopyRef = useRef(null)
 
     const hoverClass = linkHovered ?
         `article-info-list-item-hovered` :
@@ -123,6 +239,106 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
     const titleMarkup = itemWrapper.locales.title || itemWrapper.placeholder
     const proofBubbleMarkup = itemWrapper.locales.proofBubble || null
     const hasProofBubble = Boolean(isHomeInfoList && proofBubbleMarkup)
+
+    useEffect(() => {
+        if(isBubbleOpen)
+            return
+
+        clearProofBubbleFitVariables(bubbleInnerRef.current)
+    }, [isBubbleOpen, proofBubbleMarkup])
+
+    useLayoutEffect(() => {
+        if(!isHomeInfoList || !hasProofBubble || !isBubbleOpen)
+            return
+
+        let frameId = 0
+
+        const fitProofBubbleText = () => {
+            const bubbleInnerEl = bubbleInnerRef.current
+            const bubbleCopyEl = bubbleCopyRef.current
+
+            if(!bubbleInnerEl || !bubbleCopyEl)
+                return
+
+            const defaultFitValues = getProofBubbleDefaults(viewport.innerWidth || window.innerWidth)
+            const floorFitValues = getProofBubbleFloors(viewport.innerWidth || window.innerWidth)
+            const fitValues = { ...defaultFitValues }
+
+            const doesOverflow = () => {
+                const availableBox = getProofBubbleAvailableBox(bubbleInnerEl)
+                if(!availableBox.width || !availableBox.height)
+                    return false
+
+                return bubbleCopyEl.scrollHeight > availableBox.height + 0.5 ||
+                    bubbleCopyEl.scrollWidth > availableBox.width + 0.5
+            }
+
+            const applyCurrentFitValues = () => {
+                applyProofBubbleFitVariables(bubbleInnerEl, fitValues)
+            }
+
+            applyCurrentFitValues()
+
+            while(doesOverflow() && fitValues.fontSize > floorFitValues.fontSize + 0.001) {
+                fitValues.fontSize = Math.max(
+                    floorFitValues.fontSize,
+                    roundToStep(fitValues.fontSize - 0.02)
+                )
+                applyCurrentFitValues()
+            }
+
+            while(
+                doesOverflow() &&
+                (
+                    fitValues.paddingX > floorFitValues.paddingX ||
+                    fitValues.paddingY > floorFitValues.paddingY
+                )
+            ) {
+                if(fitValues.paddingX > floorFitValues.paddingX)
+                    fitValues.paddingX = Math.max(floorFitValues.paddingX, fitValues.paddingX - 1)
+                if(fitValues.paddingY > floorFitValues.paddingY)
+                    fitValues.paddingY = Math.max(floorFitValues.paddingY, fitValues.paddingY - 1)
+
+                applyCurrentFitValues()
+            }
+
+            while(doesOverflow() && fitValues.lineHeight > floorFitValues.lineHeight + 0.001) {
+                fitValues.lineHeight = Math.max(
+                    floorFitValues.lineHeight,
+                    roundToStep(fitValues.lineHeight - 0.02)
+                )
+                applyCurrentFitValues()
+            }
+
+            if(import.meta.env.DEV && doesOverflow()) {
+                const availableBox = getProofBubbleAvailableBox(bubbleInnerEl)
+                console.warn("ArticleInfoList proof bubble could not fit content", {
+                    itemTitle: itemWrapper.locales.title || itemWrapper.placeholder || itemWrapper.id,
+                    languageId: language.selectedLanguageId || language.getSelectedLanguage()?.id || "unknown",
+                    bubbleWidth: availableBox.width,
+                    bubbleHeight: availableBox.height,
+                    contentWidth: bubbleCopyEl.scrollWidth,
+                    contentHeight: bubbleCopyEl.scrollHeight,
+                })
+            }
+        }
+
+        frameId = window.requestAnimationFrame(fitProofBubbleText)
+
+        return () => {
+            window.cancelAnimationFrame(frameId)
+        }
+    }, [
+        hasProofBubble,
+        isBubbleOpen,
+        isHomeInfoList,
+        itemWrapper.id,
+        itemWrapper.locales.title,
+        itemWrapper.placeholder,
+        language,
+        proofBubbleMarkup,
+        viewport.innerWidth
+    ])
 
     useEffect(() => {
         if (!hasProofBubble || !isBubblePinned)
@@ -245,7 +461,11 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
                              aria-hidden={!isBubbleOpen}
                              ref={bubbleRef}>
                             <div className={`article-info-list-item-text-bubble-inner`}
-                                 dangerouslySetInnerHTML={{__html: proofBubbleMarkup}}/>
+                                 ref={bubbleInnerRef}>
+                                <div className={`article-info-list-item-text-bubble-copy`}
+                                     ref={bubbleCopyRef}
+                                     dangerouslySetInnerHTML={{__html: proofBubbleMarkup}}/>
+                            </div>
                         </div>
                     )}
 

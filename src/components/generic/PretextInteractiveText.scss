@@ -28,14 +28,14 @@ span.pretext-interactive-text-fragment,
 a.pretext-interactive-text-fragment {
     display: inline-block;
     white-space: pre;
-    color: #fff;
+    color: currentColor;
 }
 
 span.pretext-interactive-text-fragment-highlight,
 a.pretext-interactive-text-fragment-highlight,
 span.pretext-interactive-text-fragment-body,
 a.pretext-interactive-text-fragment-body {
-    color: #fff;
+    color: currentColor;
 }
 
 a.pretext-interactive-text-fragment {

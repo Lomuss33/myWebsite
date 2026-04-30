@@ -51,6 +51,14 @@ const MINESWEEPER_COLORS = [
 ]
 
 const INITIAL_WEB_ART_ITEM_MOUNT_COUNT = 2
+const PATRONUS_LAYER_SRCS = [
+    "/images/web_art/patronus/bg.png",
+    "/images/web_art/patronus/layer-1.png",
+    "/images/web_art/patronus/layer-2.png",
+    "/images/web_art/patronus/layer-4.png",
+    "/images/web_art/patronus/layer-5.png",
+    "/images/web_art/patronus/layer-6.png"
+]
 
 function _createMinesweeperBoard(rows = MINESWEEPER_ROWS, cols = MINESWEEPER_COLS, mineCount = MINESWEEPER_MINES) {
     const total = rows * cols
@@ -2724,6 +2732,7 @@ function PrismFieldTile({ readyId, locked, onReady }) {
     const engineRef = useRef(null)
     const didReadyRef = useRef(false)
     const pointerIdRef = useRef(null)
+    const pointerTypeRef = useRef("mouse")
 
     const reduceMotion = useMemo(() => {
         if(typeof window === "undefined" || !window.matchMedia) return false
@@ -2735,7 +2744,14 @@ function PrismFieldTile({ readyId, locked, onReady }) {
             reduceMotion,
             objectRadius: 2.5,
             objectDepth: 1,
-            lookAtZ: 40
+            lookAtZ: 40,
+            pointerInfluence: 1,
+            pointerDepth: 18,
+            pointerSmoothing: 0.22,
+            interactionRadiusRatio: 0.15,
+            interactionLift: 7.5,
+            interactionScale: 0.26,
+            interactionEmissiveBoost: 1.25
         }
     }, [reduceMotion])
 
@@ -2811,20 +2827,16 @@ function PrismFieldTile({ readyId, locked, onReady }) {
         }
     }
 
-    const reset = () => {
-        engineRef.current?.reset?.()
-        engineRef.current?.start?.()
-    }
-
     return (
         <button type={"button"}
                 ref={tileRef}
                 className={`article-web-art-tile article-web-art-tile-clickable`}
                 aria-label={`Prism field web art tile`}
                 disabled={locked}
-                onClick={locked ? undefined : reset}
                 onPointerDown={locked ? undefined : (event) => {
                     pointerIdRef.current = event.pointerId
+                    pointerTypeRef.current = event.pointerType || "mouse"
+                    try { event.currentTarget.setPointerCapture(event.pointerId) } catch(err) { void err }
                     const pos = pointerPosition(event)
                     engineRef.current?.setPointer?.(pos.x, pos.y)
                 }}
@@ -2836,11 +2848,15 @@ function PrismFieldTile({ readyId, locked, onReady }) {
                 onPointerUp={locked ? undefined : (event) => {
                     if(pointerIdRef.current != null && event.pointerId !== pointerIdRef.current) return
                     pointerIdRef.current = null
-                    engineRef.current?.clearPointer?.()
+                    if((event.pointerType || pointerTypeRef.current) === "mouse") {
+                        engineRef.current?.clearPointer?.()
+                    }
                 }}
                 onPointerCancel={locked ? undefined : (() => {
                     pointerIdRef.current = null
-                    engineRef.current?.clearPointer?.()
+                    if(pointerTypeRef.current === "mouse") {
+                        engineRef.current?.clearPointer?.()
+                    }
                 })}
                 onMouseMove={locked ? undefined : (event) => {
                     const pos = pointerPosition(event)
@@ -2852,12 +2868,14 @@ function PrismFieldTile({ readyId, locked, onReady }) {
                 })}
                 onBlur={locked ? undefined : (() => {
                     pointerIdRef.current = null
+                    pointerTypeRef.current = "mouse"
                     engineRef.current?.clearPointer?.()
                 })}
                 onKeyDown={locked ? undefined : ((event) => {
                     if(event.key === "Enter" || event.key === " ") {
                         event.preventDefault()
-                        reset()
+                        engineRef.current?.reset?.()
+                        engineRef.current?.start?.()
                     }
                 })}>
             <canvas ref={canvasRef}
@@ -3654,6 +3672,7 @@ function PatronusTile({ locked = false }) {
     const layerRefs = useRef([])
     const progressRef = useRef(0)
     const manualUntilRef = useRef(0)
+    const sceneLayerSrcs = PATRONUS_LAYER_SRCS
 
     const reduceMotion = useMemo(() => {
         if(typeof window === "undefined" || !window.matchMedia) return false
@@ -3797,17 +3816,17 @@ function PatronusTile({ locked = false }) {
                 <div className={`patronus-layer patronus-bg`}
                      ref={(el) => { layerRefs.current[0] = el }}>
                     <img alt={""}
-                         src={"https://drive.google.com/thumbnail?id=1gjk_fcB6iho1oHmzY-10eSKIE9TpQisx&sz=w1000"}/>
+                         src={sceneLayerSrcs[0]}/>
                 </div>
                 <div className={`patronus-layer`}
                      ref={(el) => { layerRefs.current[1] = el }}>
                     <img alt={""}
-                         src={"https://drive.google.com/thumbnail?id=1TK9pzfnoR_AHoyGopthRaQZsQWjbwMHH&sz=w1000"}/>
+                         src={sceneLayerSrcs[1]}/>
                 </div>
                 <div className={`patronus-layer`}
                      ref={(el) => { layerRefs.current[2] = el }}>
                     <img alt={""}
-                         src={"https://drive.google.com/thumbnail?id=1yKj48wNNwg17-JecguxMASwDNvp65tCb&sz=w1000"}/>
+                         src={sceneLayerSrcs[2]}/>
                 </div>
                 <div className={`patronus-layer patronus-svg`}
                      ref={(el) => { layerRefs.current[3] = el }}
@@ -3817,17 +3836,17 @@ function PatronusTile({ locked = false }) {
                 <div className={`patronus-layer`}
                      ref={(el) => { layerRefs.current[4] = el }}>
                     <img alt={""}
-                         src={"https://drive.google.com/thumbnail?id=1jkpUucNkaQOPCLClpZKMdTdEzAYEszsn&sz=w1000"}/>
+                         src={sceneLayerSrcs[3]}/>
                 </div>
                 <div className={`patronus-layer`}
                      ref={(el) => { layerRefs.current[5] = el }}>
                     <img alt={""}
-                         src={"https://drive.google.com/thumbnail?id=1G58IxzEgQnnWnd1vAdRmtQHfWpvb1Ipt&sz=w1000"}/>
+                         src={sceneLayerSrcs[4]}/>
                 </div>
                 <div className={`patronus-layer`}
                      ref={(el) => { layerRefs.current[6] = el }}>
                     <img alt={""}
-                         src={"https://drive.google.com/thumbnail?id=1I7mg1tYxTI3EBpbNoRAXhzSua6n0XDDF&sz=w1000"}/>
+                         src={sceneLayerSrcs[5]}/>
                 </div>
             </div>
             <span className={`article-web-art-tile-label`}>

@@ -14,6 +14,13 @@ export function createPrismFieldEngine(canvas, options = {}) {
     const objectRadius = Number.isFinite(options.objectRadius) ? options.objectRadius : 2.5
     const objectDepth = Number.isFinite(options.objectDepth) ? options.objectDepth : 1
     const lookAtZ = Number.isFinite(options.lookAtZ) ? options.lookAtZ : 40
+    const pointerInfluence = Number.isFinite(options.pointerInfluence) ? options.pointerInfluence : 1
+    const pointerDepth = Number.isFinite(options.pointerDepth) ? options.pointerDepth : 18
+    const pointerSmoothing = Number.isFinite(options.pointerSmoothing) ? options.pointerSmoothing : 0.22
+    const interactionRadiusRatio = Number.isFinite(options.interactionRadiusRatio) ? options.interactionRadiusRatio : 0.15
+    const interactionLift = Number.isFinite(options.interactionLift) ? options.interactionLift : 7.5
+    const interactionScale = Number.isFinite(options.interactionScale) ? options.interactionScale : 0.26
+    const interactionEmissiveBoost = Number.isFinite(options.interactionEmissiveBoost) ? options.interactionEmissiveBoost : 1.25
 
     let renderer = null
     let scene = null
@@ -27,12 +34,17 @@ export function createPrismFieldEngine(canvas, options = {}) {
     let mouseWorld = new THREE.Vector3(0, 0, lookAtZ)
     let mouseNdc = new THREE.Vector2()
     let mouseActive = false
+    let reactiveTarget = new THREE.Vector3(0, 0, pointerDepth)
+    let reactiveCurrent = new THREE.Vector3(0, 0, pointerDepth)
+    let interactionRadius = 1
     let running = false
     let rafId = null
     let width = 1
     let height = 1
     let lastFrameMs = 0
     let sceneSeed = 0
+    const baseQuaternion = new THREE.Quaternion()
+    const lookHelper = new THREE.Object3D()
 
     const cornerColors = {
         topLeft: new THREE.Color(0x00f6ff),
@@ -121,6 +133,10 @@ export function createPrismFieldEngine(canvas, options = {}) {
         const dy = objectRadius * 1.5
         const visibleHeight = 2 * Math.tan((camera.fov * Math.PI / 180) / 2) * Math.abs(camera.position.z)
         const visibleWidth = visibleHeight * camera.aspect
+        interactionRadius = Math.max(
+            objectRadius * 2.5,
+            Math.min(visibleWidth, visibleHeight) * interactionRadiusRatio
+        )
         const nx = Math.max(12, Math.ceil(visibleWidth / dx) + 6)
         const ny = Math.max(12, Math.ceil(visibleHeight / dy) + 8)
         const originX = -((nx - 1) * dx) / 2
@@ -198,9 +214,17 @@ export function createPrismFieldEngine(canvas, options = {}) {
         }
 
         updatePointerWorld()
-        const reactiveTarget = mouseActive
-            ? new THREE.Vector3(mouseWorld.x * 2.8, mouseWorld.y * 2.8, 2)
-            : new THREE.Vector3(0, 0, 10000)
+        if(mouseActive) {
+            reactiveTarget.set(
+                mouseWorld.x * pointerInfluence,
+                mouseWorld.y * pointerInfluence,
+                pointerDepth
+            )
+        }
+        else {
+            reactiveTarget.set(0, 0, pointerDepth)
+        }
+        reactiveCurrent.lerp(reactiveTarget, 1 - Math.pow(1 - pointerSmoothing, dt * 60))
 
         for(const mesh of meshes) {
             const data = mesh.userData
@@ -213,7 +237,25 @@ export function createPrismFieldEngine(canvas, options = {}) {
                 mesh.rotation.z = data.startRotation.z * (1 - t)
             }
             else if(!reduceMotion) {
-                mesh.lookAt(reactiveTarget)
+                const dx = reactiveCurrent.x - mesh.position.x
+                const dy = reactiveCurrent.y - mesh.position.y
+                const distance = Math.sqrt(dx * dx + dy * dy)
+                const influence = mouseActive
+                    ? easeOutCubic(clamp(1 - distance / interactionRadius, 0, 1))
+                    : 0
+                const pulse = 0.9 + 0.1 * Math.sin(time * 8 + (mesh.position.x + mesh.position.y) * 0.18)
+
+                lookHelper.position.copy(mesh.position)
+                lookHelper.lookAt(reactiveCurrent)
+
+                mesh.quaternion.copy(baseQuaternion)
+                if(influence > 0.001) {
+                    mesh.quaternion.slerp(lookHelper.quaternion, influence)
+                }
+
+                mesh.position.z = interactionLift * influence * pulse
+                mesh.scale.setScalar(1 + interactionScale * influence)
+                mesh.material.emissive.copy(data.baseColor).multiplyScalar(0.65 + influence * interactionEmissiveBoost)
             }
         }
 

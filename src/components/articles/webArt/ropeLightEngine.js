@@ -222,6 +222,8 @@ function randomNumBetween(min, max) {
     return Math.random() * (max - min) + min
 }
 
+const ROPE_TOTAL = 5
+
 export function createRopeLightEngine(canvas, options = {}) {
     const reduceMotion = Boolean(options.reduceMotion)
     let ctx = canvas.getContext("2d", { alpha: false })
@@ -244,21 +246,21 @@ export function createRopeLightEngine(canvas, options = {}) {
 
     function createRopes() {
         ropes = []
-        const total = Math.max(12, Math.round(width * 0.075))
+        const total = ROPE_TOTAL
         for(let i = 0; i < total; i++) {
             const spread = total <= 1 ? 0.5 : i / (total - 1)
-            const x = width * (0.14 + spread * 0.72) + randomNumBetween(-width * 0.035, width * 0.035)
+            const x = width * (0.16 + spread * 0.68) + randomNumBetween(-width * 0.018, width * 0.018)
             const y = 0
-            const gap = randomNumBetween(height * 0.043, height * 0.078)
+            const gap = randomNumBetween(height * 0.05, height * 0.07)
             const rope = new Rope({
                 x,
                 y,
                 gap,
-                segments: Math.round(randomNumBetween(9, 15)),
-                iterations: 12,
+                segments: Math.round(randomNumBetween(9, 12)),
+                iterations: 16,
                 hue: randomNumBetween(36, 48),
                 swayPhase: randomNumBetween(0, Math.PI * 2),
-                swayAmp: randomNumBetween(width * 0.004, width * 0.018),
+                swayAmp: randomNumBetween(width * 0.003, width * 0.01),
                 lightImg
             })
             rope.pin(0)

@@ -1,63 +1,82 @@
 import "./GalleryModal.scss"
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {ModalWrapper, ModalWrapperTitle, ModalWrapperBody} from "./base/ModalWrapper"
 import { Swiper, SwiperSlide } from 'swiper/react'
 import {Navigation, Pagination} from "swiper/modules"
 import {useUtils} from "../../hooks/utils.js"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
-import {useScheduler} from "../../hooks/scheduler.js"
 import {Spinner} from "react-bootstrap"
 
 function GalleryModal({ target, onDismiss }) {
     const utils = useUtils()
     const viewport = useViewport()
-    const scheduler = useScheduler()
-
-    const tag = "gallery-modal"
-    const images = target?.images
+    const images = target?.images || []
     const type = target?.type
     const title = target?.title
     const isMobile = !viewport.isBreakpoint("lg")
 
-    const [didLoadAllImages, setDidLoadAllImages] = useState(false)
+    const [activeIndex, setActiveIndex] = useState(0)
+    const [didLoadInitialImages, setDidLoadInitialImages] = useState(false)
+    const [loadedImages, setLoadedImages] = useState({})
     const [shouldDismiss, setShouldDismiss] = useState(false)
+    const parameterOptions = [
+        { id: "9:16",   suffix: "portrait",     direction: "horizontal" },
+        { id: "16:9",   suffix: "landscape",    direction: isMobile ? "vertical" : "horizontal" },
+        { id: "1:1",    suffix: "default",      direction: isMobile ? "vertical" : "horizontal" },
+    ]
+    const fallbackParameters = parameterOptions.find(item => item.id === "1:1")
+    const parameters = target ?
+        utils.array.withId(parameterOptions, type, "default") || fallbackParameters :
+        fallbackParameters
 
-    const modalCustomClass = !didLoadAllImages ? `gallery-modal-loading` : ``
+    const initialReadyIndices = _getInitialReadyIndices(parameters.direction, images.length)
+    const shouldShowSpinner = images.length > 0 && !didLoadInitialImages
+    const modalCustomClass = shouldShowSpinner ? `gallery-modal-loading` : ``
 
     useEffect(() => {
-        setDidLoadAllImages(false)
-        if(!images || !images.length) {
-            scheduler.clearAllWithTag(tag)
-            return
-        }
-
-        scheduler.clearAllWithTag(tag)
-        scheduler.interval(() => {
-            const isReady = utils.dom.didLoadImagesWithQuerySelector(".swiper-image")
-            if(!isReady)
-                return
-
-            scheduler.clearAllWithTag(tag)
-            setDidLoadAllImages(true)
-        }, 500, tag)
-    }, [images])
+        setActiveIndex(0)
+        setDidLoadInitialImages(false)
+        setLoadedImages({})
+    }, [target])
 
     useEffect(() => {
         setShouldDismiss(false)
     }, [target])
 
+    useEffect(() => {
+        if(didLoadInitialImages)
+            return
+
+        if(!initialReadyIndices.length) {
+            setDidLoadInitialImages(true)
+            return
+        }
+
+        const didLoadEveryInitialImage = initialReadyIndices.every(index => loadedImages[index])
+        if(didLoadEveryInitialImage) {
+            setDidLoadInitialImages(true)
+        }
+    }, [didLoadInitialImages, initialReadyIndices, loadedImages])
+
     if(!target)
         return <></>
 
-    const parameters = utils.array.withId([
-        { id: "9:16",   suffix: "portrait",     direction: "horizontal" },
-        { id: "16:9",   suffix: "landscape",    direction: isMobile ? "vertical" : "horizontal" },
-        { id: "1:1",    suffix: "default",      direction: isMobile ? "vertical" : "horizontal" },
-    ], type, "default")
-
-    const visibilityClassName = didLoadAllImages ?
+    const visibilityClassName = didLoadInitialImages ?
         `visible` :
         `invisible`
+
+    const _onImageReady = (index) => {
+        setLoadedImages(previousState => {
+            if(previousState[index]) {
+                return previousState
+            }
+
+            return {
+                ...previousState,
+                [index]: true
+            }
+        })
+    }
 
     const _onClose = () => {
         setShouldDismiss(true)
@@ -77,15 +96,19 @@ function GalleryModal({ target, onDismiss }) {
                 {parameters.direction === "horizontal" && (
                     <GalleryModalSwiper className={visibilityClassName}
                                         images={images}
-                                        type={parameters.suffix}/>
+                                        type={parameters.suffix}
+                                        activeIndex={activeIndex}
+                                        onActiveIndexChange={setActiveIndex}
+                                        onImageReady={_onImageReady}/>
                 )}
 
                 {parameters.direction === "vertical" && (
                     <GalleryModalImageStack className={visibilityClassName}
-                                            images={images}/>
+                                            images={images}
+                                            onImageReady={_onImageReady}/>
                 )}
 
-                {!didLoadAllImages && (
+                {shouldShowSpinner && (
                     <GalleryModalSpinner/>
                 )}
             </ModalWrapperBody>
@@ -93,7 +116,7 @@ function GalleryModal({ target, onDismiss }) {
     )
 }
 
-function GalleryModalSwiper({ className, images, type }) {
+function GalleryModalSwiper({ className, images, type, activeIndex, onActiveIndexChange, onImageReady }) {
     const utils = useUtils()
 
     return (
@@ -103,20 +126,27 @@ function GalleryModalSwiper({ className, images, type }) {
                 pagination={{ clickable: true }}
                 navigation={true}
                 modules={[Pagination, Navigation]}
+                onSlideChange={swiper => onActiveIndexChange(swiper.activeIndex)}
                 className={`gallery-swiper gallery-swiper-${type} ${className}`}>
-            {images.map((image, key) => (
-                <SwiperSlide key={key}
-                             className={`gallery-swiper-slide`}>
-                    <img className={`swiper-image`}
-                         alt={`img-` + key}
-                         src={utils.file.resolvePath(image)}/>
-                </SwiperSlide>
-            ))}
+            {images.map((image, key) => {
+                const shouldPrioritize = Math.abs(key - activeIndex) <= 1
+
+                return (
+                    <SwiperSlide key={key}
+                                 className={`gallery-swiper-slide`}>
+                        <GalleryModalImage className={`swiper-image`}
+                                           alt={`img-` + key}
+                                           src={utils.file.resolvePath(image)}
+                                           shouldPrioritize={shouldPrioritize}
+                                           onReady={() => onImageReady(key)}/>
+                    </SwiperSlide>
+                )
+            })}
         </Swiper>
     )
 }
 
-function GalleryModalImageStack({ className, images }) {
+function GalleryModalImageStack({ className, images, onImageReady }) {
     const utils = useUtils()
 
     return (
@@ -124,12 +154,53 @@ function GalleryModalImageStack({ className, images }) {
             {images.map((image, key) => (
                 <div key={key}
                      className={`gallery-modal-image-stack-item`}>
-                    <img className={`swiper-image`}
-                         alt={`img-` + key}
-                         src={utils.file.resolvePath(image)}/>
+                    <GalleryModalImage className={`swiper-image`}
+                                       alt={`img-` + key}
+                                       src={utils.file.resolvePath(image)}
+                                       shouldPrioritize={key === 0}
+                                       onReady={() => onImageReady(key)}/>
                 </div>
             ))}
         </div>
+    )
+}
+
+function GalleryModalImage({ className, alt, src, shouldPrioritize, onReady }) {
+    const imageRef = useRef(null)
+    const onReadyRef = useRef(onReady)
+    const didNotifyReadyRef = useRef(false)
+
+    useEffect(() => {
+        onReadyRef.current = onReady
+    }, [onReady])
+
+    useEffect(() => {
+        didNotifyReadyRef.current = false
+
+        if(imageRef.current?.complete) {
+            didNotifyReadyRef.current = true
+            onReadyRef.current?.()
+        }
+    }, [src])
+
+    const _onReady = () => {
+        if(didNotifyReadyRef.current)
+            return
+
+        didNotifyReadyRef.current = true
+        onReadyRef.current?.()
+    }
+
+    return (
+        <img ref={imageRef}
+             className={className}
+             alt={alt}
+             src={src}
+             loading={shouldPrioritize ? "eager" : "lazy"}
+             decoding={`async`}
+             fetchPriority={shouldPrioritize ? "high" : "auto"}
+             onLoad={_onReady}
+             onError={_onReady}/>
     )
 }
 
@@ -142,3 +213,13 @@ function GalleryModalSpinner() {
 }
 
 export default GalleryModal
+
+function _getInitialReadyIndices(direction, imageCount) {
+    if(imageCount <= 0)
+        return []
+
+    if(direction === "horizontal")
+        return imageCount === 1 ? [0] : [0, 1]
+
+    return [0]
+}

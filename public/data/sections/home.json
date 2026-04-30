@@ -615,22 +615,22 @@
             "en": {
               "title": "Adaptability & fast learning",
               "text": "Able to quickly pick up new tools, technologies, and processes in changing environments.",
-              "proofBubble": "2 + 2 is 4, 4 - 1 is 3, quick maths. New tools, new places, new rules; I adjust fast and keep moving."
+              "proofBubble": "2 + 2 is 4, - 1 that's 3, quick maths. New tools, new places, new rules; I adjust fast and keep moving."
             },
             "de": {
               "title": "Anpassungsfähigkeit & schnelles Lernen",
               "text": "Kann neue Werkzeuge, Technologien und Prozesse in wechselnden Umgebungen schnell erlernen.",
-              "proofBubble": "2 plus 2 ist 4, 4 minus 1 ist 3, quick maths. Neue Werkzeuge, neue Orte, neue Regeln; ich passe mich schnell an und mache weiter."
+              "proofBubble": "2 plus 2 ist 4, minus 1 ist 3, quick maths. Neue Werkzeuge, neue Orte, neue Regeln; ich passe mich schnell an und mache weiter."
             },
             "hr": {
               "title": "Prilagodljivost i brzo učenje",
               "text": "Brzo usvajam nove alate, tehnologije i procese u promjenjivim okruženjima.",
-              "proofBubble": "2 plus 2 je 4, 4 minus 1 je 3, quick maths. Novi alati, nova mjesta, nova pravila; brzo se prilagodim i nastavim dalje."
+              "proofBubble": "2 plus 2 je 4, minus 1 je 3, quick maths. Novi alati, nova mjesta, nova pravila; brzo se prilagodim i nastavim dalje."
             },
             "tr": {
               "title": "Uyum sağlama ve hızlı öğrenme",
               "text": "Değişen ortamlarda yeni araçları, teknolojileri ve süreçleri hızla öğrenebilirim.",
-              "proofBubble": "2 arti 2, 4 eder; 4 eksi 1, 3 eder, quick maths. Yeni araclar, yeni yerler, yeni kurallar; hizla uyum saglar ve devam ederim."
+              "proofBubble": "2 arti 2, 4 eder; eksi 1, 3 eder, quick maths. Yeni araclar, yeni yerler, yeni kurallar; hizla uyum saglar ve devam ederim."
             }
           }
         },

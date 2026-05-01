@@ -262,7 +262,8 @@
       "settings": {
         "email_js_public_key": "j1Kq3rfeTdVXEZYWh",
         "email_js_service_id": "myWebsite",
-        "email_js_template_id": "template_puj7mco"
+        "email_js_template_id": "template_puj7mco",
+        "email_js_resume_template_id": "template_resume_required"
       },
       "locales": {
         "en": {

@@ -2,10 +2,10 @@ import React from 'react'
 import {Dropdown} from "react-bootstrap"
 import {useLanguage} from "../../../providers/LanguageProvider.jsx"
 import {useUtils} from "../../../hooks/utils.js"
+import MobileTubeMenu from "./MobileTubeMenu.jsx"
 
 function NavToolLanguagePicker({
     dropdownDrop = "down",
-    hideCaret = true,
     dropdownClassName = "",
     menuClassName = "",
     compactMenu = false,
@@ -37,32 +37,36 @@ function NavToolLanguagePicker({
         const mobileOptions = availableLanguages.filter(lang => lang.id !== selectedLanguage?.id)
 
         return (
-            <Dropdown drop={dropdownDrop}
-                      className={dropdownClassName}>
-                <Dropdown.Toggle variant={`transparent`}
-                                 className={`btn-option-picker-toggle`}
-                                 data-tooltip={language.getString("select_language")}>
-                    <span className={`btn-option-picker-toggle-row`}>
-                        <div className={`btn-option-picker-icon btn-option-picker-icon-size-2`}>
-                            <img src={utils.file.resolvePath(selectedLanguage?.flagUrl)}
-                                 alt={selectedLanguage?.name}
-                                 className={`img`}/>
-                        </div>
-                    </span>
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu className={menuClassName}>
-                    {mobileOptions.map((lang) => (
-                        <button key={lang.id}
-                                type={`button`}
-                                className={`nav-profile-card-mobile-language-item`}
-                                onClick={() => { _onOptionSelected(lang.id) }}>
-                            <img src={utils.file.resolvePath(lang.flagUrl)}
-                                 alt={lang.name}/>
-                        </button>
-                    ))}
-                </Dropdown.Menu>
-            </Dropdown>
+            <MobileTubeMenu className={dropdownClassName}
+                            menuClassName={menuClassName}
+                            tooltipLabel={language.getString("select_language")}
+                            ariaLabel={language.getString("select_language")}
+                            toggleContent={(
+                                <div className={`btn-option-picker-icon btn-option-picker-icon-size-2`}>
+                                    <img src={utils.file.resolvePath(selectedLanguage?.flagUrl)}
+                                         alt={selectedLanguage?.name}
+                                         className={`img`}/>
+                                </div>
+                            )}>
+                {({ closeMenu }) => (
+                    <>
+                        {mobileOptions.map((lang) => (
+                            <button key={lang.id}
+                                    type={`button`}
+                                    role={`menuitem`}
+                                    className={`nav-profile-card-mobile-language-item`}
+                                    aria-label={lang.name}
+                                    onClick={() => {
+                                        _onOptionSelected(lang.id)
+                                        closeMenu()
+                                    }}>
+                                <img src={utils.file.resolvePath(lang.flagUrl)}
+                                     alt={lang.name}/>
+                            </button>
+                        ))}
+                    </>
+                )}
+            </MobileTubeMenu>
         )
     }
 

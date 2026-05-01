@@ -270,43 +270,71 @@ div.nav-profile-card {
     }
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        --avatar-size: clamp(4.65rem, 20vw, 6rem);
+        --mobile-action-size: clamp(2.3rem, 9.2vw, 2.7rem);
+        --mobile-stack-gap: clamp(0.36rem, 1.7vw, 0.5rem);
+        --mobile-header-gap: clamp(0.5rem, 2.6vw, 0.9rem);
+        --mobile-title-left-space: calc(var(--avatar-size) + var(--mobile-header-gap));
+        --mobile-title-right-space: clamp(0.2rem, 1.8vw, 0.55rem);
+        --mobile-title-safe-gutter: max(var(--mobile-title-left-space), var(--mobile-title-right-space));
+        --mobile-title-safe-width: calc(100% - (var(--mobile-title-safe-gutter) * 2));
+
         align-items: center;
         justify-content: center;
         flex-direction: column;
         gap: 8px;
 
         div.nav-profile-card-header {
+            position: relative;
+            isolation: isolate;
             flex-direction: row;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
+            justify-content: flex-start;
+            gap: var(--mobile-header-gap);
             width: 100%;
             max-width: 100%;
             margin: 0;
+            min-height: var(--avatar-size);
+            z-index: 3;
+        }
+
+        div.nav-profile-card-header.nav-profile-card-header-has-mobile-before-info {
+            --mobile-title-left-space: calc(var(--avatar-size) + var(--mobile-action-size) + var(--mobile-header-gap) * 2);
+        }
+
+        div.nav-profile-card-header.nav-profile-card-header-has-mobile-after-info {
+            --mobile-title-right-space: calc(var(--mobile-action-size) + var(--mobile-header-gap));
+        }
+
+        div.nav-profile-card-media {
+            flex: 0 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         div.nav-profile-card-mobile-action-stack {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            grid-template-areas:
-                "audio theme"
-                "resume language";
+            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 0.42rem;
-            width: calc(2 * 2.45rem + 0.42rem);
-            flex: 0 0 auto;
+            gap: var(--mobile-stack-gap);
+            width: var(--mobile-action-size);
+            flex: 0 0 var(--mobile-action-size);
             min-width: 0;
+            position: relative;
+            z-index: 4;
         }
 
         div.nav-profile-card-mobile-action-stack > div.nav-profile-card-mobile-action {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 2.45rem;
-            height: 2.45rem;
+            width: var(--mobile-action-size);
+            height: var(--mobile-action-size);
             flex: 0 0 auto;
             overflow: visible;
+            position: relative;
+            z-index: 1;
             border-radius: 999px;
             background:
                 linear-gradient(180deg,
@@ -318,20 +346,17 @@ div.nav-profile-card {
                 inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
-        div.nav-profile-card-mobile-action-audio {
-            grid-area: audio;
+        div.nav-profile-card-mobile-action-stack > div.nav-profile-card-mobile-action:has(.show) {
+            z-index: calc($z-index-dialogs + 2);
         }
 
-        div.nav-profile-card-mobile-action-theme {
-            grid-area: theme;
+        div.nav-profile-card-mobile-action-stack-middle,
+        div.nav-profile-card-mobile-action-stack-right {
+            margin: 0;
         }
 
-        div.nav-profile-card-mobile-action-resume {
-            grid-area: resume;
-        }
-
-        div.nav-profile-card-mobile-action-language {
-            grid-area: language;
+        div.nav-profile-card-mobile-action-stack-right {
+            margin-left: auto;
         }
 
         div.nav-profile-card-mobile-action-stack div.btn-option-picker {
@@ -361,55 +386,108 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-dropdown,
-        div.nav-profile-card-mobile-action-resume div.dropdown,
-        div.nav-profile-card-mobile-action-resume div.dropup {
+        div.nav-profile-card-mobile-action-resume div.nav-profile-card-mobile-resume-dropdown {
             position: relative;
             width: 100%;
             height: 100%;
+            isolation: isolate;
+            z-index: $z-index-pop-over;
         }
 
-        div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-dropdown button.btn-option-picker-toggle {
+        div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-dropdown button.btn-option-picker-toggle,
+        div.nav-profile-card-mobile-action-resume div.nav-profile-card-mobile-resume-dropdown button.btn-option-picker-toggle {
             width: 100%;
             height: 100%;
             padding: 0;
             padding-right: 0 !important;
             border-radius: 999px;
             background-image: none;
+            transition:
+                transform 0.18s ease,
+                box-shadow 0.18s ease,
+                background-color 0.18s ease;
         }
 
-        div.nav-profile-card-mobile-action-resume div.dropdown-menu {
-            z-index: 9999;
+        div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-dropdown button.btn-option-picker-toggle.show,
+        div.nav-profile-card-mobile-action-resume div.nav-profile-card-mobile-resume-dropdown button.btn-option-picker-toggle.show {
+            background-color: color-mix(in srgb, var(--theme-primary) 10%, transparent 90%);
+            box-shadow:
+                inset 0 0 0 1px color-mix(in srgb, var(--theme-primary) 24%, var(--theme-nav-divider) 76%),
+                0 10px 24px rgba(15, 23, 42, 0.18);
         }
 
-        div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-dropdown div.dropdown-menu.nav-profile-card-mobile-language-menu {
+        div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-menu,
+        div.nav-profile-card-mobile-action-resume div.nav-profile-card-mobile-resume-menu {
             position: absolute;
+            display: flex;
             top: 50%;
-            right: calc(100% + 0.45rem);
-            left: auto;
-            transform: translateY(-50%);
+            transform: translate3d(0, -50%, 0) scale(0.92);
             min-width: 0;
-            width: 2.9rem;
             margin-left: 0;
-            padding: 0.35rem 0;
+            padding: 0.32rem 0;
             border-radius: 999px;
-            border-width: 1px;
-            display: none;
+            border: 1px solid color-mix(in srgb, var(--theme-nav-divider) 88%, white 12%);
+            background:
+                linear-gradient(180deg,
+                    color-mix(in srgb, var(--theme-nav-surface) 96%, white 4%) 0%,
+                    color-mix(in srgb, var(--theme-nav-surface-accent) 94%, black 6%) 100%);
+            overflow: hidden;
             flex-direction: column;
             align-items: center;
-            gap: 0.35rem;
-            z-index: 9999;
+            gap: var(--mobile-stack-gap);
+            z-index: calc($z-index-dialogs + 1);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            will-change: transform, opacity;
+            transition:
+                opacity 0.18s ease,
+                transform 0.18s ease,
+                visibility 0.18s step-end;
             box-shadow:
-                0 16px 34px rgba(15, 23, 42, 0.24),
+                0 20px 40px rgba(15, 23, 42, 0.28),
+                0 8px 18px rgba(15, 23, 42, 0.16),
                 inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(14px) saturate(1.08);
         }
 
-        div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-dropdown div.dropdown-menu.nav-profile-card-mobile-language-menu.show {
-            display: flex;
+        div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-menu {
+            width: calc(var(--mobile-action-size) + 0.45rem);
         }
 
-        div.nav-profile-card-mobile-action-language button.nav-profile-card-mobile-language-item {
-            width: 2.1rem;
-            height: 2.1rem;
+        div.nav-profile-card-mobile-action-resume div.nav-profile-card-mobile-resume-menu {
+            left: calc(100% + var(--mobile-header-gap));
+            right: auto;
+            width: clamp(9.5rem, 38vw, 11.75rem);
+            padding: 0.34rem;
+            border-radius: 1rem;
+            align-items: stretch;
+            gap: 0.22rem;
+            transform-origin: left center;
+        }
+
+        div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-menu {
+            right: calc(100% + var(--mobile-header-gap));
+            left: auto;
+            transform-origin: right center;
+        }
+
+        div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-dropdown.show div.nav-profile-card-mobile-language-menu,
+        div.nav-profile-card-mobile-action-resume div.nav-profile-card-mobile-resume-dropdown.show div.nav-profile-card-mobile-resume-menu {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translate3d(0, -50%, 0) scale(1);
+            transition:
+                opacity 0.18s ease,
+                transform 0.18s ease,
+                visibility 0s linear;
+        }
+
+        div.nav-profile-card-mobile-action-language button.nav-profile-card-mobile-language-item,
+        div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item {
+            width: calc(var(--mobile-action-size) - 0.35rem);
+            height: calc(var(--mobile-action-size) - 0.35rem);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -419,17 +497,84 @@ div.nav-profile-card {
             border-radius: 999px;
             flex: 0 0 auto;
             cursor: pointer;
+            color: var(--theme-nav-text);
+            transition:
+                background-color 0.18s ease,
+                transform 0.18s ease,
+                color 0.18s ease;
+            touch-action: manipulation;
         }
 
-        div.nav-profile-card-mobile-action-language button.nav-profile-card-mobile-language-item:hover {
+        div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item {
+            width: 100%;
+            height: auto;
+            min-height: 2.4rem;
+            justify-content: flex-start;
+            gap: 0.6rem;
+            padding: 0.52rem 0.72rem;
+            border-radius: 0.8rem;
+        }
+
+        div.nav-profile-card-mobile-action-language button.nav-profile-card-mobile-language-item:hover,
+        div.nav-profile-card-mobile-action-language button.nav-profile-card-mobile-language-item:focus-visible,
+        div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item:hover,
+        div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item:focus-visible {
             background: color-mix(in srgb, var(--theme-primary) 14%, transparent 86%);
+            outline: none;
+            transform: scale(1.03);
+        }
+
+        div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item .btn-option-picker-icon {
+            width: 1.15rem;
+            height: 1.15rem;
+            flex: 0 0 1.15rem;
+            font-size: 1rem;
+        }
+
+        div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item i.fa-icon {
+            opacity: 0.88;
+            color: var(--theme-nav-text);
+            transition: color 0.18s ease, opacity 0.18s ease, transform 0.18s ease;
+        }
+
+        span.nav-profile-card-mobile-resume-item-label {
+            display: block;
+            min-width: 0;
+            font-size: 0.72rem;
+            line-height: 1.1;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            color: var(--theme-nav-text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color 0.18s ease;
         }
 
         div.nav-profile-card-mobile-action-language button.nav-profile-card-mobile-language-item img {
-            width: 1.5rem;
-            height: 1.5rem;
+            width: calc(var(--mobile-action-size) - 0.85rem);
+            height: calc(var(--mobile-action-size) - 0.85rem);
             object-fit: cover;
             border-radius: 999px;
+            transition: transform 0.18s ease;
+        }
+
+        div.nav-profile-card-mobile-action-language button.nav-profile-card-mobile-language-item:hover img,
+        div.nav-profile-card-mobile-action-language button.nav-profile-card-mobile-language-item:focus-visible img,
+        div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item:hover i.fa-icon,
+        div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item:focus-visible i.fa-icon {
+            transform: scale(1.04);
+        }
+
+        div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item:hover i.fa-icon,
+        div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item:focus-visible i.fa-icon {
+            color: var(--theme-primary);
+            opacity: 1;
+        }
+
+        div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item:hover span.nav-profile-card-mobile-resume-item-label,
+        div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item:focus-visible span.nav-profile-card-mobile-resume-item-label {
+            color: var(--theme-primary);
         }
 
         div.nav-profile-card-mobile-action-language div.btn-option-picker-icon-size-2 {
@@ -439,8 +584,8 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-mobile-action-language div.btn-option-picker-icon-size-2 img {
-            width: 1.35rem;
-            height: 1.35rem;
+            width: calc(var(--mobile-action-size) - 0.95rem);
+            height: calc(var(--mobile-action-size) - 0.95rem);
             object-fit: cover;
         }
 
@@ -450,8 +595,8 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-mobile-action-stack button.audio-button {
-            width: 2.05rem;
-            height: 2.05rem;
+            width: calc(var(--mobile-action-size) - 0.4rem);
+            height: calc(var(--mobile-action-size) - 0.4rem);
             margin-left: 0;
             color: var(--theme-nav-text);
         }
@@ -496,22 +641,30 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-info {
-            margin-top: 0;
-            margin-bottom: 0;
-            width: max-content;
-            max-width: none;
-            align-items: center;
-            justify-content: center;
+            position: absolute;
+            inset: 0;
+            margin: 0;
+            width: 100%;
+            max-width: 100%;
             text-align: center;
-            flex: 0 0 auto;
             min-width: 0;
+            pointer-events: none;
+            z-index: 0;
         }
 
         h1.nav-profile-card-name {
+            position: absolute;
+            top: 50%;
+            left: 50%;
             text-align: center;
             margin: 0;
-            font-size: clamp(2.45rem, 8.8vw, 3.35rem) !important;
-            line-height: 0.94 !important;
+            width: max-content;
+            max-width: max(0px, var(--mobile-title-safe-width));
+            font-size: clamp(1.95rem, 7.8vw, 3.05rem) !important;
+            line-height: 0.92 !important;
+            letter-spacing: -0.03em;
+            text-wrap: balance;
+            transform: translate(-50%, -50%);
         }
 
         h1.nav-profile-card-name-with-audio-button {
@@ -529,6 +682,8 @@ div.nav-profile-card {
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: max-content;
+            max-width: 100%;
             line-height: 0.94;
             flex: 0 1 auto;
             min-width: 0;
@@ -536,6 +691,7 @@ div.nav-profile-card {
 
         span.nav-profile-card-name-line {
             display: block;
+            max-width: 100%;
         }
 
         span.nav-profile-card-name-line-last {
@@ -565,11 +721,34 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-role {
+            position: relative;
+            z-index: 1;
             justify-content: center;
             text-align: center;
             min-height: 0;
             margin-top: 2px;
             width: calc(100% + 20px);
+            transition:
+                opacity 0.18s ease,
+                filter 0.18s ease,
+                transform 0.18s ease;
+        }
+
+        div.nav-profile-card:has(div.nav-profile-card-mobile-language-dropdown.show) div.nav-profile-card-role,
+        div.nav-profile-card:has(div.nav-profile-card-mobile-resume-dropdown.show) div.nav-profile-card-role {
+            opacity: 0.18;
+            filter: blur(1.6px);
+            transform: translateY(2px);
+            pointer-events: none;
+        }
+
+        @media(max-width: 360px) {
+            --mobile-action-size: clamp(2.15rem, 9vw, 2.45rem);
+            --mobile-header-gap: clamp(0.35rem, 2vw, 0.6rem);
+
+            h1.nav-profile-card-name {
+                font-size: clamp(1.72rem, 8.8vw, 2.3rem) !important;
+            }
         }
     }
 }

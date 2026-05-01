@@ -20,7 +20,8 @@ const GUIDE_LABELS = {
 const APP_READY_TIMEOUT_MS = 10000
 const DOCUMENT_COMPLETE_TIMEOUT_MS = 10000
 const INITIAL_SHOW_DELAY_MS = 1100
-const INACTIVITY_REPLAY_MS = 15000
+const INACTIVITY_REPLAY_START_MS = 5000
+const INACTIVITY_REPLAY_STEP_MS = 5000
 
 const INITIAL_MOVEMENT_THRESHOLD_PX = 28
 const DISMISS_MOVEMENT_THRESHOLD_PX = 90
@@ -63,12 +64,14 @@ function createController() {
         isVisible: false,
         isAnimating: false,
         hasAttemptedInitialShow: false,
+        hasShownGuideAtLeastOnce: false,
         initialMovementDistance: 0,
         dismissMovementDistance: 0,
         lastPointerPosition: null,
         lastInteractionAt: performance.now(),
         inactivityReplayTimeoutId: null,
         initialShowTimeoutId: null,
+        nextInactivityReplayMs: INACTIVITY_REPLAY_START_MS,
     }
 }
 
@@ -253,6 +256,7 @@ function scheduleInactivityReplay(state) {
     if(state.destroyed || !state.isHomeActive || state.isVisible || state.isAnimating)
         return
 
+    const replayDelayMs = state.nextInactivityReplayMs
     clearTrackedTimeout(state, state.inactivityReplayTimeoutId)
     state.inactivityReplayTimeoutId = trackTimeout(state, async () => {
         state.inactivityReplayTimeoutId = null
@@ -263,7 +267,7 @@ function scheduleInactivityReplay(state) {
         await showGuide(state)
         if(!state.isVisible)
             scheduleInactivityReplay(state)
-    }, INACTIVITY_REPLAY_MS)
+    }, replayDelayMs)
 }
 
 function handleMouseMove(state, event) {
@@ -367,6 +371,12 @@ async function showGuide(state) {
     state.dismissMovementDistance = 0
     clearTrackedTimeout(state, state.inactivityReplayTimeoutId)
     state.inactivityReplayTimeoutId = null
+
+    if(state.hasShownGuideAtLeastOnce) {
+        state.nextInactivityReplayMs += INACTIVITY_REPLAY_STEP_MS
+    }
+
+    state.hasShownGuideAtLeastOnce = true
 }
 
 function hideGuide(state, { immediate = false } = {}) {

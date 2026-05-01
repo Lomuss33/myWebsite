@@ -10,7 +10,15 @@ import StatusCircle from "../../generic/StatusCircle.jsx"
 import TextTyper from "../../generic/TextTyper.jsx"
 import AudioButton from "../../buttons/AudioButton.jsx"
 
-function NavProfileCard({ profile, expanded, compactRail = false, mobileActionStack = null, showNameAudioButton = true }) {
+function NavProfileCard({
+    profile,
+    expanded,
+    compactRail = false,
+    mobileActionStack = null,
+    mobileActionStackBeforeInfo = null,
+    mobileActionStackAfterInfo = null,
+    showNameAudioButton = true
+}) {
     const language = useLanguage()
     const navigation = useNavigation()
     const utils = useUtils()
@@ -58,6 +66,13 @@ function NavProfileCard({ profile, expanded, compactRail = false, mobileActionSt
     const navProfileCardNameClass = namePronunciationButtonVisible ?
         `nav-profile-card-name-with-audio-button` :
         ``
+    const hasMobileActionStackBeforeInfo = Boolean(mobileActionStackBeforeInfo)
+    const hasMobileActionStackAfterInfo = Boolean(mobileActionStackAfterInfo || mobileActionStack)
+    const navProfileCardHeaderClass = [
+        `nav-profile-card-header`,
+        hasMobileActionStackBeforeInfo ? `nav-profile-card-header-has-mobile-before-info` : ``,
+        hasMobileActionStackAfterInfo ? `nav-profile-card-header-has-mobile-after-info` : ``
+    ].filter(Boolean).join(` `)
 
     const secondaryProfilePictureUrl = language.parseJsonText(safeProfile.profilePictureAltUrl) || "images/contant/profil.webp"
 
@@ -80,7 +95,13 @@ function NavProfileCard({ profile, expanded, compactRail = false, mobileActionSt
 
     return (
         <Card className={`nav-profile-card ${expandedClass}`}>
-            <div className={`nav-profile-card-header`}>
+            <div className={navProfileCardHeaderClass}>
+                {mobileActionStackBeforeInfo && (
+                    <div className={`nav-profile-card-mobile-action-stack nav-profile-card-mobile-action-stack-middle`}>
+                        {mobileActionStackBeforeInfo}
+                    </div>
+                )}
+
                 <div className={`nav-profile-card-media floating-frame`}
                      onPointerEnter={floatingFrame.onPointerEnter}
                      onPointerMove={floatingFrame.onPointerMove}
@@ -148,9 +169,9 @@ function NavProfileCard({ profile, expanded, compactRail = false, mobileActionSt
                     </h1>
                 </div>
 
-                {mobileActionStack && (
-                    <div className={`nav-profile-card-mobile-action-stack`}>
-                        {mobileActionStack}
+                {(mobileActionStackAfterInfo || mobileActionStack) && (
+                    <div className={`nav-profile-card-mobile-action-stack nav-profile-card-mobile-action-stack-right`}>
+                        {mobileActionStackAfterInfo || mobileActionStack}
                     </div>
                 )}
             </div>

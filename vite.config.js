@@ -1,10 +1,35 @@
+import fs from 'node:fs'
+import path from 'node:path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+
+const GENERATED_DIR = path.resolve(process.cwd(), 'public/generated')
+
+const readGeneratedFragment = (fileName) => {
+    const filePath = path.join(GENERATED_DIR, fileName)
+
+    if(!fs.existsSync(filePath))
+        return ''
+
+    return fs.readFileSync(filePath, 'utf8')
+}
+
+const machineCvHtmlPlugin = () => ({
+    name: 'machine-cv-html-injection',
+    transformIndexHtml(html) {
+        return html
+            .replace('<!-- MACHINE_CV_HEAD -->', readGeneratedFragment('machine-cv-head.html'))
+            .replace('<!-- MACHINE_CV_BODY -->', readGeneratedFragment('machine-cv-body.html'))
+    }
+})
 
 // https://vitejs.dev/config/
 export default defineConfig({
     base: '/',
-    plugins: [react()],
+    plugins: [
+        react(),
+        machineCvHtmlPlugin()
+    ],
     build: {
         rollupOptions: {
             output: {

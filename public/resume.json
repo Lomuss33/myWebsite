@@ -1,0 +1,683 @@
+{
+    "name": "Lovro Musić",
+    "alternate_name": "Lovro Music",
+    "job_title": "Engineering Computer Science Student | Automation & IT Professional",
+    "job_title_de": "Student der Ingenieurinformatik | Automatisierungs- und IT-Fachkraft",
+    "summary": "Engineering Computer Science student with hands-on experience in industrial automation, IT support, hardware production, and technical writing. Currently studying at THM after an Erasmus+ semester at IBU and building a portfolio across software, hardware, and infrastructure projects.",
+    "summary_de": "Student der Ingenieurinformatik mit Praxiserfahrung in Industrieautomatisierung, IT-Support, Hardwareproduktion und technischer Dokumentation. Aktuell Studium an der THM nach einem Erasmus+-Semester an der IBU sowie ein Portfolio aus Software-, Hardware- und Infrastrukturprojekten.",
+    "website": "https://lovro-music.de/",
+    "cv_url": "https://lovro-music.de/cv/",
+    "pdf_url": "https://lovro-music.de/resume.pdf",
+    "same_as": [
+        "https://lovro-music.de/",
+        "https://www.linkedin.com/in/lovro-musi%C4%87/",
+        "https://github.com/Lomuss33"
+    ],
+    "contact": {
+        "email": "contact@lovro-music.de",
+        "telephone": "+49 176 62236934",
+        "street_address": "Marburger Str. 81",
+        "postal_code": "35396",
+        "address_locality": "Gießen",
+        "address_country": "Germany",
+        "linkedin": "https://www.linkedin.com/in/lovro-musi%C4%87/",
+        "github": "https://github.com/Lomuss33",
+        "website": "https://lovro-music.de/"
+    },
+    "education": [
+        {
+            "id": "erasmus-ibu-2025",
+            "title": "Erasmus+ Exchange Semester",
+            "title_de": "Erasmus+ Auslandssemester",
+            "institution": "International Balkan University (IBU)",
+            "location": "Skopje, North Macedonia",
+            "start_date": "2025-10",
+            "end_date": "2026-02",
+            "ongoing": false,
+            "summary": "One-semester Erasmus+ exchange with selected coursework in computer engineering and industrial engineering contexts.",
+            "summary_de": "Einsemestriger Erasmus+-Austausch mit ausgewählten Lehrveranstaltungen aus Informatik und industriellen Ingenieurwissenschaften.",
+            "bullets": [
+                "Selected courses in computer engineering and industrial engineering",
+                "Cross-cultural teamwork and technical presentations",
+                "Research contribution for the International Student Congress 2025"
+            ],
+            "bullets_de": [
+                "Ausgewählte Kurse in Informatik und industriellen Ingenieurwissenschaften",
+                "Interkulturelle Teamarbeit und technische Präsentationen",
+                "Recherchebeitrag für den International Student Congress 2025"
+            ]
+        },
+        {
+            "id": "thm-bsc-2023",
+            "title": "Engineering Computer Science (B.Sc.)",
+            "title_de": "Ingenieurinformatik (B.Sc.)",
+            "institution": "Technische Hochschule Mittelhessen (THM)",
+            "location": "Gießen, Germany",
+            "start_date": "2023-10",
+            "end_date": null,
+            "ongoing": true,
+            "summary": "Ongoing degree program combining electrical engineering and computer science foundations with an industrial systems focus.",
+            "summary_de": "Laufendes Studium mit Grundlagen aus Elektrotechnik und Informatik sowie Fokus auf industrielle Systeme.",
+            "bullets": [
+                "Focus areas: network architecture, embedded design, and Industry 4.0",
+                "Foundation building across electrical engineering and computer science",
+                "Planned thesis topic to be defined"
+            ],
+            "bullets_de": [
+                "Schwerpunkte: Netzwerkarchitektur, Embedded Design und Industrie 4.0",
+                "Fundamentaufbau in Elektrotechnik und Informatik",
+                "Geplante Abschlussarbeit: Thema noch offen"
+            ]
+        },
+        {
+            "id": "fachhochschulreife-2022",
+            "title": "Advanced Technical College Entrance Qualification (Electrical Engineering Focus)",
+            "title_de": "Fachhochschulreife (Schwerpunkt Elektrotechnik)",
+            "institution": "Brühlwiesenschule Hofheim am Taunus",
+            "location": "Hofheim am Taunus, Germany",
+            "start_date": "2022-09",
+            "end_date": "2023-06",
+            "ongoing": false,
+            "summary": "Completed the technical college entrance qualification while working, with an electrical engineering focus.",
+            "summary_de": "Berufsbegleitend abgeschlossene Fachhochschulreife mit Schwerpunkt Elektrotechnik.",
+            "bullets": [
+                "Completed alongside professional work",
+                "Qualified for university admission in Germany"
+            ],
+            "bullets_de": [
+                "Berufsbegleitend absolviert",
+                "Hochschulzugangsberechtigung für Deutschland erworben"
+            ]
+        },
+        {
+            "id": "provadis-apprenticeship-2018",
+            "title": "Apprenticeship — Electronic Technician for Automation Technology",
+            "title_de": "Ausbildung — Elektroniker für Automatisierungstechnik",
+            "institution": "Provadis Professionals GmbH",
+            "location": "Frankfurt am Main, Germany",
+            "start_date": "2018-09",
+            "end_date": "2022-02",
+            "ongoing": false,
+            "summary": "Completed a multi-site apprenticeship in automation technology in cooperation with Clariant AG.",
+            "summary_de": "Abgeschlossene Ausbildung in Automatisierungstechnik in Kooperation mit der Clariant AG an mehreren Standorten.",
+            "bullets": [
+                "Preventive and corrective maintenance of industrial systems",
+                "Automation basics: PLCs, sensors, and actuators",
+                "Electrical troubleshooting, installation, and commissioning support",
+                "Safety procedures, documentation, and technical coordination"
+            ],
+            "bullets_de": [
+                "Präventive und korrektive Wartung industrieller Systeme",
+                "Grundlagen der Automatisierungstechnik: SPS, Sensoren und Aktoren",
+                "Elektrische Fehlerbehebung, Installation und Inbetriebnahmeunterstützung",
+                "Sicherheitsverfahren, Dokumentation und technische Koordination"
+            ]
+        }
+    ],
+    "experience": [
+        {
+            "id": "inlingua-2024",
+            "title": "Office 365 Project Developer",
+            "title_de": "Office 365 Projektentwickler",
+            "institution": "inlingua",
+            "location": "Remote / Osnabrück, Germany",
+            "start_date": "2024-11",
+            "end_date": "2025-07",
+            "ongoing": false,
+            "summary": "Created didactically structured Microsoft 365 guides and owned the technical project flow in an interdisciplinary environment.",
+            "summary_de": "Erstellte didaktisch strukturierte Microsoft-365-Anleitungen und verantwortete den technischen Projektablauf in einem interdisziplinären Umfeld.",
+            "bullets": [
+                "Created structured guidance for Microsoft 365 workflows",
+                "Took technical project responsibility across disciplines",
+                "Continuously improved outputs through stakeholder feedback loops"
+            ],
+            "bullets_de": [
+                "Erstellung strukturierter Anleitungen für Microsoft-365-Arbeitsabläufe",
+                "Technische Projektverantwortung in einem interdisziplinären Umfeld",
+                "Kontinuierliche Optimierung durch iterative Feedbackschleifen mit Stakeholdern"
+            ]
+        },
+        {
+            "id": "tci-2024",
+            "title": "Working Student — Computer Production",
+            "title_de": "Werkstudent — Computerproduktion",
+            "institution": "TCI – Gesellschaft für technische Informatik GmbH",
+            "location": "Heuchelheim, Germany",
+            "start_date": "2024-01",
+            "end_date": "2024-10",
+            "ongoing": false,
+            "summary": "Built, configured, and tested complex hardware solutions for industrial and commercial use.",
+            "summary_de": "Montierte, konfigurierte und testete komplexe Hardwarelösungen für industrielle und gewerbliche Einsätze.",
+            "bullets": [
+                "Assembled industrial PCs, servers, and smart displays",
+                "Installed operating systems, imaging, and customer-specific base setups",
+                "Performed hardware testing, functional checks, and quality assurance"
+            ],
+            "bullets_de": [
+                "Montage von Industrie-PCs, Servern und Smart-Displays",
+                "Einrichtung von Betriebssystemen, Imaging und kundenspezifischen Grundkonfigurationen",
+                "Hardwaretests, Funktionsprüfung und Qualitätssicherung"
+            ]
+        },
+        {
+            "id": "tipwin-2022",
+            "title": "IT Support Technician",
+            "title_de": "IT-Support Techniker",
+            "institution": "Tipwin Limited",
+            "location": "Frankfurt am Main, Germany",
+            "start_date": "2022-09",
+            "end_date": "2023-08",
+            "ongoing": false,
+            "summary": "Maintained decentralized infrastructure and delivered 2nd-level support across multiple locations.",
+            "summary_de": "Wartete dezentrale Infrastrukturen und leistete 2nd-Level-Support an mehreren Standorten.",
+            "bullets": [
+                "Administered and maintained decentralized networks and peripheral systems",
+                "Diagnosed and resolved complex system faults in second-level support",
+                "Provided on-site and VoIP technical support across locations",
+                "Documented handovers and improved support processes"
+            ],
+            "bullets_de": [
+                "Administration und Wartung dezentraler Netzwerkstrukturen sowie Peripheriesysteme",
+                "Analyse und Behebung komplexer Systemfehler im 2nd-Level-Support",
+                "Vor-Ort- und VoIP-Techniksupport an mehreren Standorten",
+                "Dokumentation, Übergaben und Verbesserung der Supportprozesse"
+            ]
+        },
+        {
+            "id": "tueg-2022",
+            "title": "Test Technician — Plant Safety (TÜV)",
+            "title_de": "Prüftechniker — Anlagensicherheit (TÜV)",
+            "institution": "TUEG Schillings GmbH",
+            "location": "Kerpen, Germany",
+            "start_date": "2022-03",
+            "end_date": "2022-08",
+            "ongoing": false,
+            "summary": "Supported TÜV certification work for industrial plants with testing, compliance documentation, and on-site coordination.",
+            "summary_de": "Unterstützte TÜV-Zertifizierungen von Industrieanlagen durch Prüfungen, Compliance-Dokumentation und Vor-Ort-Koordination.",
+            "bullets": [
+                "Supported TÜV certification of industrial equipment",
+                "Prepared compliance documentation and technical reports",
+                "Coordinated with customers and inspection teams on site"
+            ],
+            "bullets_de": [
+                "Unterstützung der TÜV-Zertifizierung von Industrieanlagen",
+                "Compliance-Dokumentation und technische Berichterstattung",
+                "Vor-Ort-Koordination mit Kunden und Inspektionsteams"
+            ]
+        }
+    ],
+    "projects": [
+        {
+            "id": "software-4",
+            "type": "software",
+            "title": "Java Learning Project: Belot",
+            "title_de": "Java-Lernprojekt: Belot",
+            "summary": "University project focused on learning Java programming by developing a Belot card game. Implemented core game logic, user interaction, and basic AI opponents.",
+            "summary_de": "Universitätsprojekt zum Erlernen der Java-Programmierung durch die Entwicklung eines Belot-Kartenspiels. Implementierung der Spiel-Logik, Benutzerinteraktion und einfacher KI-Gegner.",
+            "start_date": null,
+            "end_date": null,
+            "date": null,
+            "tags": [
+                "Java",
+                "Learning",
+                "Card Game",
+                "University Project"
+            ],
+            "url": "https://lomuss33.github.io/AdioBella/",
+            "github_url": "https://github.com/Lomuss33/AdioBella",
+            "source_path": "public/data/sections/my-software.json"
+        },
+        {
+            "id": "software-1",
+            "type": "software",
+            "title": "Pepper & Nao Poker Game",
+            "title_de": "Pepper & Nao Pokerspiel",
+            "summary": "University project using Pepper and Nao robots to create an interactive poker game with animations and real-time card dealing on a monitor.",
+            "summary_de": "Universitätsprojekt mit Pepper- und Nao-Robotern zur Erstellung eines interaktiven Pokerspiels mit Animationen und Echtzeit-Kartenverteilung auf einem Monitor.",
+            "start_date": null,
+            "end_date": null,
+            "date": null,
+            "tags": [
+                "Robotics",
+                "Pepper",
+                "Nao",
+                "Poker",
+                "University Project"
+            ],
+            "url": "",
+            "github_url": "https://github.com/Lomuss33/Pepper-Poker",
+            "source_path": "public/data/sections/my-software.json"
+        },
+        {
+            "id": "software-2",
+            "type": "software",
+            "title": "Simon Game: Multiplayer & Database",
+            "title_de": "Simon-Spiel: Mehrspieler & Datenbank",
+            "summary": "University project combining theoretical knowledge to create a multiplayer Simon Game with a physical and virtual server database for high scores and user management.",
+            "summary_de": "Universitätsprojekt zur Kombination von theoretischem Wissen für ein Mehrspieler-Simon-Spiel mit physischer und virtueller Server-Datenbank für Highscores und Benutzerverwaltung.",
+            "start_date": null,
+            "end_date": null,
+            "date": null,
+            "tags": [
+                "Game",
+                "Multiplayer",
+                "Database",
+                "University Project"
+            ],
+            "url": "",
+            "github_url": "https://github.com/Lomuss33/Projekt_SimonGame",
+            "source_path": "public/data/sections/my-software.json"
+        },
+        {
+            "id": "software-3",
+            "type": "software",
+            "title": "GermanCro - Language Learning Tool",
+            "title_de": "GermanCro - Language Learning Tool",
+            "summary": "Personal project for learning German through English and Croatian, featuring translation tools, quizzes, and interactive language exercises for effective and fun learning.",
+            "summary_de": "Persönliches Projekt zum Deutschlernen über Englisch und Kroatisch mit Übersetzungs-Tools, Quizzen und interaktiven Sprachübungen für effektives und unterhaltsames Lernen.",
+            "start_date": null,
+            "end_date": null,
+            "date": null,
+            "tags": [
+                "Language Learning",
+                "German",
+                "Croatian",
+                "English",
+                "Personal Project"
+            ],
+            "url": "https://lomuss33.github.io/GermanCro/",
+            "github_url": "https://github.com/Lomuss33/GermanCro",
+            "source_path": "public/data/sections/my-software.json"
+        },
+        {
+            "id": "software-6",
+            "type": "software",
+            "title": "Villa Bagara: Renovation Project",
+            "title_de": "Villa Bagara: Renovierungsprojekt",
+            "summary": "Website for the future renovation project of an ancestral home, designed as a mountain sports and retreat rental. Currently in the planning and building phase.",
+            "summary_de": "Website für das zukünftige Renovierungsprojekt eines Ahnenhauses, das als Bergsport- und Rückzugsort vermietet werden soll. Derzeit in der Planungs- und Bauphase.",
+            "start_date": null,
+            "end_date": null,
+            "date": null,
+            "tags": [
+                "Web Design",
+                "Renovation",
+                "Mountain Retreat",
+                "Personal Project"
+            ],
+            "url": "",
+            "github_url": "https://github.com/Lomuss33/VillaBagara",
+            "source_path": "public/data/sections/my-software.json"
+        },
+        {
+            "id": "software-7",
+            "type": "software",
+            "title": "LaTeX CV",
+            "title_de": "LaTeX-Lebenslauf",
+            "summary": "Personal CV designed in LaTeX, featuring a beautiful, detail-packed yet concise format that respects the 15-second rule for quick readability.",
+            "summary_de": "Persönlicher Lebenslauf in LaTeX, mit einem schönen, detailreichen, aber prägnanten Format, das die 15-Sekunden-Regel für schnelle Lesbarkeit einhält.",
+            "start_date": null,
+            "end_date": null,
+            "date": null,
+            "tags": [
+                "LaTeX",
+                "CV",
+                "Personal Project"
+            ],
+            "url": "",
+            "github_url": "https://github.com/Lomuss33/latex-lebenslauf",
+            "source_path": "public/data/sections/my-software.json"
+        },
+        {
+            "id": "software-5",
+            "type": "software",
+            "title": "HTML Family Tree",
+            "title_de": "HTML-Stammbaum",
+            "summary": "Interactive family tree project built in HTML and designed for clarity, making it easy to explore relatives, branches, and generations directly in the browser.",
+            "summary_de": "Interaktives Stammbaum-Projekt in HTML, klar gestaltet und direkt im Browser nutzbar, damit sich Verwandtschaftsbeziehungen, Linien und Generationen leicht erkunden lassen.",
+            "start_date": null,
+            "end_date": null,
+            "date": null,
+            "tags": [
+                "HTML",
+                "Family Tree",
+                "Web Design",
+                "Personal Project"
+            ],
+            "url": "https://lomuss33.github.io/HTML-FamilyTree/",
+            "github_url": "https://github.com/Lomuss33/HTML-FamilyTree",
+            "source_path": "public/data/sections/my-software.json"
+        },
+        {
+            "id": "hardware-1",
+            "type": "hardware",
+            "title": "Self-Built Proxmox Homelab Platform",
+            "title_de": "Selbstgebaute Proxmox-Homelab-Plattform",
+            "summary": "Enterprise-style homelab built on Proxmox VE, hosting virtualized services for monitoring, tunneling, backups, and internal infrastructure. Includes containerized services, secure remote access, metrics collection, alerting, and network…",
+            "summary_de": "Enterprise-ähnliches Homelab auf Basis von Proxmox VE mit virtualisierten Diensten für Monitoring, Tunneling, Backups und interne Infrastruktur. Containerisierte Services, sicherer Fernzugriff, Metrik-Erfassung, Alarmierung und…",
+            "start_date": null,
+            "end_date": null,
+            "date": null,
+            "tags": [
+                "Proxmox",
+                "Homelab",
+                "Virtualization",
+                "Monitoring",
+                "Tunneling",
+                "Containers"
+            ],
+            "url": "",
+            "github_url": "",
+            "source_path": "public/data/sections/my-hardware.json"
+        },
+        {
+            "id": "hardware-4",
+            "type": "hardware",
+            "title": "VPS Advanced Material Sorting System",
+            "title_de": "VPS Fortgeschrittenes Materialsortierungssystem",
+            "summary": "Industrial conveyor belt automation project using Verbindungsprogrammierte Steuerung (VPS) for precise sorting of materials with optical recognition and mechanical separation.",
+            "summary_de": "Industrielles Förderbandautomatisierungsprojekt mit Verbindungsprogrammierter Steuerung (VPS) für präzise Materialsortierung mit optischer Erkennung und mechanischer Trennung.",
+            "start_date": null,
+            "end_date": null,
+            "date": null,
+            "tags": [
+                "Industrial Automation",
+                "VPS",
+                "Material Sorting",
+                "Conveyor Belt"
+            ],
+            "url": "",
+            "github_url": "",
+            "source_path": "public/data/sections/my-hardware.json"
+        },
+        {
+            "id": "hardware-5",
+            "type": "hardware",
+            "title": "Industrial PLC Automation Systems (Siemens S7)",
+            "title_de": "Industrielle SPS-Automatisierungssysteme (Siemens S7)",
+            "summary": "Industrial automation projects based on Siemens S7 PLCs, including a multi-zone commercial pizza oven with precise temperature regulation and a high-end automated car wash system. Both systems feature structured control logic,…",
+            "summary_de": "Industrieautomatisierungsprojekte auf Basis von Siemens S7 SPS, darunter ein kommerzieller Pizzaofen mit Mehrzonen-Temperaturregelung sowie eine vollautomatische Autowaschanlage. Fokus auf Prozesssteuerung, Sensorik und industrielle…",
+            "start_date": null,
+            "end_date": null,
+            "date": null,
+            "tags": [
+                "Siemens S7",
+                "PLC",
+                "Industrial Automation",
+                "Process Control"
+            ],
+            "url": "",
+            "github_url": "",
+            "source_path": "public/data/sections/my-hardware.json"
+        },
+        {
+            "id": "hardware-7",
+            "type": "hardware",
+            "title": "Arduino Interactive Flag Frame",
+            "title_de": "Interaktiver Arduino-Flaggenrahmen",
+            "summary": "Custom-built interactive flag display using Arduino, featuring backlit LED effects behind a glass pane and a mechanically animated flag in front. A single-button trigger starts a synchronized light-and-music show, while dual motors move…",
+            "summary_de": "Interaktive Flaggeninstallation mit Arduino, LED-Hintergrundbeleuchtung, Glasfront und motorisierter Flaggenbewegung. Ein Knopfdruck startet eine synchronisierte Licht- und Musikshow.",
+            "start_date": null,
+            "end_date": null,
+            "date": null,
+            "tags": [
+                "Arduino",
+                "Electromechanics",
+                "LED",
+                "Motors",
+                "Interactive Art"
+            ],
+            "url": "",
+            "github_url": "",
+            "source_path": "public/data/sections/my-hardware.json"
+        },
+        {
+            "id": "hardware-8",
+            "type": "hardware",
+            "title": "Automated Curtains System",
+            "title_de": "Automatisiertes Vorhangsystem",
+            "summary": "Arduino-powered motorized curtain controllers with light sensors, timer functionality, and integration with home assistant for voice and app control.",
+            "summary_de": "Arduino-betriebene motorisierte Vorhangsteuerungen mit Lichtsensoren, Timer-Funktionalität und Integration mit Home Assistant für Sprach- und App-Steuerung.",
+            "start_date": null,
+            "end_date": null,
+            "date": null,
+            "tags": [
+                "Home Automation",
+                "Arduino",
+                "Motorized Curtains",
+                "IoT"
+            ],
+            "url": "",
+            "github_url": "",
+            "source_path": "public/data/sections/my-hardware.json"
+        },
+        {
+            "id": "hardware-10",
+            "type": "hardware",
+            "title": "Tri-Location Smart Home System",
+            "title_de": "Tri-Standort Smart-Home-System",
+            "summary": "Integrated smart home ecosystem spanning three locations (Tomislavgrad, Kelkheim, Giessen) with synchronized controls, remote monitoring, and automated routines.",
+            "summary_de": "Integriertes Smart-Home-Ökosystem an drei Standorten (Tomislavgrad, Kelkheim, Giessen) mit synchronisierten Steuerungen, Fernüberwachung und automatisierten Routinen.",
+            "start_date": null,
+            "end_date": null,
+            "date": null,
+            "tags": [
+                "Smart Home",
+                "Multi-Location",
+                "Home Assistant",
+                "IoT"
+            ],
+            "url": "",
+            "github_url": "",
+            "source_path": "public/data/sections/my-hardware.json"
+        },
+        {
+            "id": "hardware-22",
+            "type": "hardware",
+            "title": "Custom Gaming PC",
+            "title_de": "Custom Gaming-PC",
+            "summary": "High-performance gaming rig with industrial cooling, RGB lighting, and carefully selected components for maximum gaming performance and reliability.",
+            "summary_de": "Hochleistungs-Gaming-Rechner mit Industriekühlung, RGB-Beleuchtung und sorgfältig ausgewählten Komponenten für maximale Gaming-Leistung und Zuverlässigkeit.",
+            "start_date": null,
+            "end_date": null,
+            "date": null,
+            "tags": [
+                "Gaming",
+                "Custom PC",
+                "High-Performance",
+                "Adwanced Cooling"
+            ],
+            "url": "",
+            "github_url": "",
+            "source_path": "public/data/sections/my-hardware.json"
+        },
+        {
+            "id": "hardware-11",
+            "type": "hardware",
+            "title": "Custom Electric Bicycle",
+            "title_de": "Custom-Elektrofahrrad",
+            "summary": "Budget-focused electric bicycle built as a sustainable mobility solution for daily life in Giessen, combining an affordable frame with high-quality components such as Shimano for reliability and efficiency.",
+            "summary_de": "Budgetorientiertes Elektrofahrrad als nachhaltige Mobilitätslösung für den Alltag in Gießen, kombiniert einen günstigen Rahmen mit hochwertigen Komponenten wie Shimano für Zuverlässigkeit und Effizienz.",
+            "start_date": null,
+            "end_date": null,
+            "date": null,
+            "tags": [
+                "E-Bike",
+                "Sustainable Transport",
+                "DIY",
+                "Shimano"
+            ],
+            "url": "",
+            "github_url": "",
+            "source_path": "public/data/sections/my-hardware.json"
+        },
+        {
+            "id": "publication-1",
+            "type": "publication",
+            "title": "ERP Implementation Challenges: Common Problems and Ways to Overcome Them — IBU",
+            "title_de": "ERP-Implementierung: Häufige Probleme und Wege, sie zu überwinden — IBU",
+            "summary": "A practical guide from the factory floor to the developer's desk: stakeholder alignment, process mapping, data migration, change management, and go-live risk control.",
+            "summary_de": "Ein Praxisleitfaden von der Fertigung bis zum Developer Desk: Stakeholder-Alignment, Prozessaufnahme/-mapping, Datenmigration, Change Management und Go-Live-Risikokontrolle.",
+            "start_date": null,
+            "end_date": null,
+            "date": "2026-11",
+            "tags": [
+                "Paper / Report"
+            ],
+            "url": "https://drive.google.com/file/d/1iAKAgkY7UZAmAEF-13pNZWZ6QZ12eP0Y/view?usp=sharing",
+            "github_url": "",
+            "source_path": "public/data/sections/my-writings.json"
+        },
+        {
+            "id": "publication-2",
+            "type": "publication",
+            "title": "Future of Sustainable Personal and Enterprise Cloud Operating Systems — IBU International Student Congress 2026",
+            "title_de": "Zukunft nachhaltiger personaler und unternehmensweiter Cloud-Betriebssysteme — IBU International Student Congress 2026",
+            "summary": "Congress talk / written notes from “The Future is now: AI, Sustainability, and Ethics in a Rapidly Evolving World” on the future of OS platforms: sustainable design, security-by-design, virtualization, cloud-native workloads, and a modern…",
+            "summary_de": "Kongressvortrag / Notizen aus „The Future is now: AI, Sustainability, and Ethics in a Rapidly Evolving World“ zur Zukunft von OS-Plattformen: nachhaltiges Design, Security-by-Design, Virtualisierung, Cloud-native Workloads und moderne…",
+            "start_date": null,
+            "end_date": null,
+            "date": "2026-09",
+            "tags": [
+                "Congress Talk / Slides"
+            ],
+            "url": "https://drive.google.com/file/d/1QQycgtzpfkG-KAHkItSj8E6LEYEeqdIZ/view?usp=sharing",
+            "github_url": "",
+            "source_path": "public/data/sections/my-writings.json"
+        },
+        {
+            "id": "publication-3",
+            "type": "publication",
+            "title": "The Environmental Impact of Computer Science (THM)",
+            "title_de": "Der Umwelteinfluss von Informatik (THM)",
+            "summary": "The progressing global warming and continuously rising energy consumption highlight that digitalization, alongside its opportunities, also brings significant ecological challenges. Across the entire lifecycle — from raw material extraction…",
+            "summary_de": "Die fortschreitende Erderwärmung und der stetig steigende globale Energieverbrauch verdeutlichen, dass die Digitalisierung neben ihren Chancen auch erhebliche ökologische Herausforderungen birgt. Über den gesamten Lebenszyklus — von der…",
+            "start_date": null,
+            "end_date": null,
+            "date": "2023-02",
+            "tags": [
+                "University Poster"
+            ],
+            "url": "https://drive.google.com/file/d/1QKoR7CLON23qP49AGDegZxiI-4pZUstB/view?usp=sharing",
+            "github_url": "",
+            "source_path": "public/data/sections/my-writings.json"
+        },
+        {
+            "id": "publication-4",
+            "type": "publication",
+            "title": "Graduation Presentation — What is Light?",
+            "title_de": "Realschule Abschlusspräsentation — Was ist Licht?",
+            "summary": "A school graduation presentation explaining light basics: waves vs. particles, refraction, reflection, and everyday applications.",
+            "summary_de": "Abschlusspräsentation zu den Grundlagen des Lichts: Welle vs. Teilchen, Brechung, Reflexion und Anwendungen im Alltag.",
+            "start_date": null,
+            "end_date": null,
+            "date": "2017-03",
+            "tags": [
+                "Presentation"
+            ],
+            "url": "https://drive.google.com/file/d/1D0Gy6srJBADn1JcT8NdnmILq0BD6sxTY/view?usp=sharing",
+            "github_url": "",
+            "source_path": "public/data/sections/my-writings.json"
+        }
+    ],
+    "skills": [
+        {
+            "category": "Programming Languages",
+            "category_de": "Programmiersprachen",
+            "items": [
+                "Java",
+                "C",
+                "C++",
+                "Python",
+                "Bash",
+                "TypeScript",
+                "LaTeX"
+            ]
+        },
+        {
+            "category": "Software & Web",
+            "category_de": "Software & Web",
+            "items": [
+                "React",
+                "Node.js",
+                "Docker",
+                "MySQL",
+                "Microsoft 365",
+                "Technical Writing",
+                "Hardware Imaging",
+                "Quality Assurance"
+            ]
+        },
+        {
+            "category": "Systems & Infrastructure",
+            "category_de": "Systeme & Infrastruktur",
+            "items": [
+                "Linux",
+                "Windows",
+                "Cisco",
+                "Networking",
+                "VoIP Support",
+                "Google Workspace",
+                "Server Assembly",
+                "Smart Displays"
+            ]
+        },
+        {
+            "category": "Automation & Industrial Systems",
+            "category_de": "Automatisierung & Industriesysteme",
+            "items": [
+                "TIA Portal",
+                "Beckhoff TwinCAT",
+                "GRAFCET",
+                "MQTT",
+                "PLC Programming",
+                "Embedded Design",
+                "Industry 4.0",
+                "Industrial Automation"
+            ]
+        }
+    ],
+    "languages": [
+        {
+            "language": "German",
+            "language_de": "Deutsch",
+            "level": "C2"
+        },
+        {
+            "language": "English",
+            "language_de": "Englisch",
+            "level": "C2"
+        },
+        {
+            "language": "Croatian",
+            "language_de": "Kroatisch",
+            "level": "Native"
+        }
+    ],
+    "certifications": [
+        {
+            "name": "AEVO Certification",
+            "status": "completed",
+            "status_label": "Completed",
+            "target_date": "2026-04",
+            "issuer": "IHK",
+            "url": "https://www.frankfurt-main.ihk.de/aus-und-weiterbildung/weiterbildung/weiterbildungspruefungen/weiterbildungspruefungen-von-a-bis-z/a-z-liste/ausbildereignung-pruefung-5189130"
+        },
+        {
+            "name": "CCNA Certification",
+            "status": "in_preparation",
+            "status_label": "In preparation",
+            "target_date": "2026-06",
+            "issuer": "Cisco",
+            "url": ""
+        }
+    ],
+    "interests": [
+        "Hiking",
+        "Basketball",
+        "Chess",
+        "Homelab",
+        "Restoration"
+    ],
+    "driver_license": "Class B"
+}

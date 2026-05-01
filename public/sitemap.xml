@@ -5,12 +5,30 @@
 >
     <url>
         <loc>https://lovro-music.de/</loc>
-        <lastmod>2026-04-25</lastmod>
+        <lastmod>2026-05-01</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
         <image:image>
             <image:loc>https://lovro-music.de/images/contant/profilePix.webp</image:loc>
-            <image:title>Lovro Music</image:title>
+            <image:title>Lovro Musić</image:title>
         </image:image>
+    </url>
+    <url>
+        <loc>https://lovro-music.de/cv/</loc>
+        <lastmod>2026-05-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://lovro-music.de/resume.json</loc>
+        <lastmod>2026-05-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://lovro-music.de/resume.pdf</loc>
+        <lastmod>2026-05-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
     </url>
 </urlset>

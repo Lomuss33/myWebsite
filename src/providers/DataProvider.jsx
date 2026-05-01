@@ -167,13 +167,37 @@ function DataProvider({ children, settings }) {
         return jsonData?.categories || []
     }
 
+    const getResumeEmailConfig = () => {
+        const sections = jsonData?.sections || []
+        const contactSection = sections.find(section => section?.id === "contact")
+        const articles = contactSection?.data?.articles
+        const contactFormArticle = Array.isArray(articles) ?
+            articles.find(article => article?.component === "ArticleContactForm") :
+            null
+
+        const settings = contactFormArticle?.settings || {}
+        const publicKey = settings?.email_js_public_key
+        const serviceId = settings?.email_js_service_id
+        const templateId = settings?.email_js_resume_template_id
+
+        if(!publicKey || !serviceId || !templateId)
+            return null
+
+        return {
+            publicKey,
+            serviceId,
+            templateId
+        }
+    }
+
     return (
         <DataContext.Provider value={{
             getProfile,
             getSettings,
             getStrings,
             getSections,
-            getCategories
+            getCategories,
+            getResumeEmailConfig
         }}>
             {children}
         </DataContext.Provider>
@@ -187,7 +211,8 @@ const DataContext = createContext(null)
  *    getSettings: Function,
  *    getStrings: Function,
  *    getSections: Function,
- *    getCategories: Function
+ *    getCategories: Function,
+ *    getResumeEmailConfig: Function
  * }}
  */
 export const useData = () => useContext(DataContext)

@@ -24,9 +24,16 @@ export const _urlUtils = {
 
     /**
      * @param {String} url
+     * @param {String} target
      */
-    open: (url) => {
-        window.open(url, "_blank")
+    open: (url, target = "_blank") => {
+        const features = target === "_blank" ? "noopener,noreferrer" : undefined
+        const targetWindow = window.open(url, target, features)
+
+        if(targetWindow && target === "_blank")
+            targetWindow.opener = null
+
+        return targetWindow
     },
 
     /**

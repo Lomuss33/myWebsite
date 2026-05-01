@@ -15,7 +15,49 @@ export const _fileUtils = {
      * @param {String} url
      */
     download: (url) => {
-        window.open(_fileUtils.resolvePath(url), "_blank")
+        const resolvedUrl = _fileUtils.resolvePath(url)
+        if(!resolvedUrl)
+            return
+
+        const anchor = document.createElement("a")
+        anchor.href = resolvedUrl
+        anchor.download = resolvedUrl.split("/").pop()?.split("?")[0] || ""
+        anchor.rel = "noopener"
+        anchor.style.display = "none"
+        document.body?.appendChild(anchor)
+        anchor.click()
+        anchor.remove()
+    },
+
+    /**
+     * @param {String} url
+     * @param {String} target
+     */
+    open: (url, target = "_blank") => {
+        const resolvedUrl = _fileUtils.resolvePath(url)
+        if(!resolvedUrl)
+            return
+
+        const anchor = document.createElement("a")
+        anchor.href = resolvedUrl
+        anchor.target = target
+        anchor.rel = "noopener noreferrer"
+        anchor.style.display = "none"
+        document.body?.appendChild(anchor)
+        anchor.click()
+        anchor.remove()
+    },
+
+    /**
+     * @param {String} path
+     * @return {String|null}
+     */
+    toAbsoluteUrl: (path) => {
+        const resolvedPath = _fileUtils.resolvePath(path)
+        if(!resolvedPath)
+            return null
+
+        return new URL(resolvedPath, window.location.origin).toString()
     },
 
     /**

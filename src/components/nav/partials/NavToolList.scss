@@ -182,6 +182,18 @@ div.nav-tools-item-language {
     }
 }
 
+div.nav-tools-item-resume {
+    i.fa-caret-icon {
+        display: none !important;
+    }
+
+    button.dropdown-toggle::after,
+    button.btn-option-picker-toggle::after {
+        display: none !important;
+        content: none !important;
+    }
+}
+
 div.nav-tools-shrink {
     flex-direction: row;
     padding: 0;
@@ -194,5 +206,16 @@ div.nav-tools-shrink {
     div.nav-tools-item {
         width: auto;
         height: 100%;
+    }
+
+    div.nav-tools-item-language {
+        button.btn-option-picker-toggle.nav-tool-language-toggle {
+            padding-inline: 0;
+        }
+
+        div.btn-option-picker-icon.btn-option-picker-icon-size-2 {
+            width: min(calc(100% - 8px), calc(var(--nav-tools-height) - 16px));
+            max-width: 100%;
+        }
     }
 }

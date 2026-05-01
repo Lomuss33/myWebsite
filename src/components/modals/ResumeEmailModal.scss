@@ -1,0 +1,57 @@
+@use "../../styles/extend" as *;
+
+#resume-email-modal {
+    div.modal-dialog {
+        width: min(calc(100vw - 1rem), 31rem);
+        max-width: min(calc(100vw - 1rem), 31rem);
+        margin: 0.5rem auto;
+    }
+
+    div.modal-content {
+        background-color: var(--theme-card-background-accent);
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 24px 56px rgba(0, 0, 0, 0.32);
+        overflow: hidden;
+    }
+
+    div.modal-header {
+        background-color: var(--theme-card-background);
+        border: none !important;
+        padding: 0.9rem 1rem;
+        align-items: center;
+    }
+
+    div.resume-email-modal-body {
+        padding: 1rem;
+        color: var(--theme-texts);
+    }
+
+    form.resume-email-modal-form {
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+    }
+
+    div.resume-email-modal-field {
+        width: 100%;
+    }
+
+    div.resume-email-modal-field div.input-group {
+        width: 100%;
+    }
+
+    div.resume-email-modal-actions {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        margin-top: 0.1rem;
+    }
+
+    button.standard-button {
+        min-width: 8.5rem;
+    }
+}

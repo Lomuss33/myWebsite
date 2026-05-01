@@ -45,6 +45,38 @@ export const useApi = () => {
                     custom_source_name: "React Portfolio"
                 }
             }
+        },
+
+        /**
+         * @param {String} recipientEmail
+         * @param {String} resumePdfUrlAbsolute
+         * @param {String} resumeCvUrlAbsolute
+         */
+        validateResumeEmailRequest: (recipientEmail, resumePdfUrlAbsolute, resumeCvUrlAbsolute) => {
+            const validations = [
+                { errorCode: constants.ErrorCodes.VALIDATION_EMPTY_FIELDS,  errorCondition: !recipientEmail || !resumePdfUrlAbsolute || !resumeCvUrlAbsolute },
+                { errorCode: constants.ErrorCodes.VALIDATION_EMAIL,         errorCondition: !utils.validation.validateEmail(recipientEmail) }
+            ]
+
+            const error = validations.find(validation => validation.errorCondition)
+            return {
+                success: !error,
+                errorCode: error?.errorCode,
+                bundle: {
+                    to_email: recipientEmail,
+                    recipient_email: recipientEmail,
+                    name: "Lovro Musi\u0107",
+                    from_name: "Lovro Musi\u0107",
+                    from_email: "contact@lovro-music.de",
+                    reply_to: "contact@lovro-music.de",
+                    custom_subject: "Lovro Musi\u0107 - Resume",
+                    resume_pdf_url: resumePdfUrlAbsolute,
+                    resume_cv_url: resumeCvUrlAbsolute,
+                    message: `Resume PDF: ${resumePdfUrlAbsolute}\nCV page: ${resumeCvUrlAbsolute}`,
+                    custom_source: utils.url.getAbsoluteLocation(),
+                    custom_source_name: "React Portfolio"
+                }
+            }
         }
     }
 

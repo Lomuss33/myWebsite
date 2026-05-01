@@ -16,6 +16,7 @@ import YoutubeVideoModal from "../components/modals/YoutubeVideoModal.jsx"
 import ConfirmationWindowModal from "../components/modals/ConfirmationWindowModal.jsx"
 import GalleryModal from "../components/modals/GalleryModal.jsx"
 import PhoneQrModal from "../components/modals/PhoneQrModal.jsx"
+import ResumeEmailModal from "../components/modals/ResumeEmailModal.jsx"
 
 function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
     const scheduler = useScheduler()
@@ -31,6 +32,7 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
     const [displayingYoutubeVideo, setDisplayingYoutubeVideo] = useState(null)
     const [displayingGallery, setDisplayingGallery] = useState(null)
     const [displayingPhoneQr, setDisplayingPhoneQr] = useState(null)
+    const [displayingResumeEmail, setDisplayingResumeEmail] = useState(null)
     const [pendingConfirmation, setPendingConfirmation] = useState(null)
     const confirmationIdRef = useRef(0)
 
@@ -124,6 +126,14 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
         setDisplayingPhoneQr(null)
     }
 
+    const displayResumeEmail = (target) => {
+        setDisplayingResumeEmail(target)
+    }
+
+    const closeResumeEmail = () => {
+        setDisplayingResumeEmail(null)
+    }
+
     const showConfirmationDialog = (title, message, faIcon, onConfirm, confirmLabel, onCancel, cancelLabel) => {
         const confirmationId = ++confirmationIdRef.current
         setPendingConfirmation({
@@ -144,6 +154,7 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
             displayingYoutubeVideo ||
             displayingGallery ||
             displayingPhoneQr ||
+            displayingResumeEmail ||
             pendingConfirmation
         )
     }
@@ -171,6 +182,9 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
 
             displayPhoneQr,
             closePhoneQr,
+
+            displayResumeEmail,
+            closeResumeEmail,
 
             showConfirmationDialog,
             isBlockedByOverlay
@@ -203,6 +217,9 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
             <PhoneQrModal target={displayingPhoneQr}
                           onDismiss={closePhoneQr}/>
 
+            <ResumeEmailModal target={displayingResumeEmail}
+                              onDismiss={closeResumeEmail}/>
+
             {children}
         </FeedbacksContext.Provider>
     )
@@ -232,6 +249,9 @@ const FeedbacksContext = createContext(null)
  *
  *    displayPhoneQr: Function,
  *    closePhoneQr: Function,
+ *
+ *    displayResumeEmail: Function,
+ *    closeResumeEmail: Function,
  *
  *    showConfirmationDialog: Function,
  *    isBlockedByOverlay: Function,

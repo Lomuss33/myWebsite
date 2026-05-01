@@ -29,21 +29,19 @@ function NavToolList({ expanded }) {
         ...(profile.resumePdfUrl ? [NavToolSettings.Options.DOWNLOAD_RESUME] : []),
     ]
 
-    const orderedWidgets = expanded ?
-        widgets :
-        [
-            ...widgets.filter(item => item === "language"),
-            ...widgets.filter(item =>
-                item !== NavToolSettings.Options.THEME &&
-                item !== "language"
-            ),
-            ...widgets.filter(item => item === NavToolSettings.Options.THEME),
-        ]
+    const orderedWidgets = [
+        ...widgets.filter(item => item === "language"),
+        ...widgets.filter(item =>
+            item !== NavToolSettings.Options.THEME &&
+            item !== "language"
+        ),
+        ...widgets.filter(item => item === NavToolSettings.Options.THEME),
+    ]
 
     return (
         <div className={`nav-tools ${shrinkClass}`}>
             {orderedWidgets.map((item, key) => (
-                <div className={`nav-tools-item ${item === "language" ? "nav-tools-item-language" : ""}`}
+                <div className={`nav-tools-item ${item === "language" ? "nav-tools-item-language" : ""} ${item === NavToolSettings.Options.DOWNLOAD_RESUME ? "nav-tools-item-resume" : ""}`}
                      key={key}>
                     {item === "language" && (<NavToolLanguagePicker dropdownDrop={"up"} hideCaret={true}/>)}
                     {item === NavToolSettings.Options.THEME && (<NavToolThemePicker/>)}

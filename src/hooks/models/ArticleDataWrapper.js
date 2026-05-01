@@ -112,6 +112,7 @@ export default class ArticleDataWrapper {
             emailJsPublicKey: rawSettings["email_js_public_key"] || undefined,
             emailJsServiceId: rawSettings["email_js_service_id"] || undefined,
             emailJsTemplateId: rawSettings["email_js_template_id"] || undefined,
+            emailJsResumeTemplateId: rawSettings["email_js_resume_template_id"] || undefined,
         }
     }
 

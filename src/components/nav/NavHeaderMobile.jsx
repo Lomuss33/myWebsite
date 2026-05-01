@@ -3,6 +3,7 @@ import React from 'react'
 import NavProfileCard from "./partials/NavProfileCard.jsx"
 import NavToolLanguagePicker from "./tools/NavToolLanguagePicker.jsx"
 import NavToolThemePicker from "./tools/NavToolThemePicker.jsx"
+import NavToolResumeDownloader from "./tools/NavToolResumeDownloader.jsx"
 import NavLinkPills from "./partials/NavLinkPills.jsx"
 import AudioButton from "../buttons/AudioButton.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
@@ -14,6 +15,7 @@ function NavHeaderMobile({ profile, links }) {
     const namePronunciationIpa = language.getTranslation(safeProfile.locales, "name_pronunciation_ipa", null)
     const namePronunciationAudioUrl = language.getTranslation(safeProfile.locales, "name_pronunciation_audio_url", null)
     const namePronunciationButtonVisible = Boolean(namePronunciationIpa || namePronunciationAudioUrl)
+    const resumeButtonVisible = Boolean(safeProfile.resumePdfUrl)
 
     const mobileActionStack = (
         <>
@@ -27,6 +29,12 @@ function NavHeaderMobile({ profile, links }) {
                                  tooltip={namePronunciationIpa}
                                  tooltipLabel={namePronunciationIpa}
                                  size={AudioButton.Sizes.DEFAULT}/>
+                </div>
+            )}
+
+            {resumeButtonVisible && (
+                <div className={`nav-profile-card-mobile-action nav-profile-card-mobile-action-resume`}>
+                    <NavToolResumeDownloader/>
                 </div>
             )}
 

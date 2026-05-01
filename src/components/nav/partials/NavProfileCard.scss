@@ -286,12 +286,15 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-mobile-action-stack {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-areas:
+                "audio theme"
+                "resume language";
             align-items: center;
             justify-content: center;
             gap: 0.42rem;
-            width: max-content;
+            width: calc(2 * 2.45rem + 0.42rem);
             flex: 0 0 auto;
             min-width: 0;
         }
@@ -315,6 +318,22 @@ div.nav-profile-card {
                 inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
+        div.nav-profile-card-mobile-action-audio {
+            grid-area: audio;
+        }
+
+        div.nav-profile-card-mobile-action-theme {
+            grid-area: theme;
+        }
+
+        div.nav-profile-card-mobile-action-resume {
+            grid-area: resume;
+        }
+
+        div.nav-profile-card-mobile-action-language {
+            grid-area: language;
+        }
+
         div.nav-profile-card-mobile-action-stack div.btn-option-picker {
             width: 100%;
             height: 100%;
@@ -332,12 +351,21 @@ div.nav-profile-card {
             height: 100%;
         }
 
-        div.nav-profile-card-mobile-action-language i.fa-caret-icon {
+        div.nav-profile-card-mobile-action-stack button.dropdown-toggle::after,
+        div.nav-profile-card-mobile-action-stack button.dropdown-toggle::before,
+        div.nav-profile-card-mobile-action-stack button.btn-option-picker-toggle::before,
+        div.nav-profile-card-mobile-action-stack button.btn-option-picker-toggle::after,
+        div.nav-profile-card-mobile-action-stack i.fa-caret-icon {
             display: none;
+            content: none !important;
         }
 
-        div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-dropdown {
+        div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-dropdown,
+        div.nav-profile-card-mobile-action-resume div.dropdown,
+        div.nav-profile-card-mobile-action-resume div.dropup {
             position: relative;
+            width: 100%;
+            height: 100%;
         }
 
         div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-dropdown button.btn-option-picker-toggle {
@@ -349,12 +377,8 @@ div.nav-profile-card {
             background-image: none;
         }
 
-        div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-dropdown button.dropdown-toggle::after,
-        div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-dropdown button.dropdown-toggle::before,
-        div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-dropdown button.btn-option-picker-toggle::before,
-        div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-dropdown button.btn-option-picker-toggle::after {
-            display: none !important;
-            content: none !important;
+        div.nav-profile-card-mobile-action-resume div.dropdown-menu {
+            z-index: 9999;
         }
 
         div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-dropdown div.dropdown-menu.nav-profile-card-mobile-language-menu {
@@ -429,6 +453,12 @@ div.nav-profile-card {
             width: 2.05rem;
             height: 2.05rem;
             margin-left: 0;
+            color: var(--theme-nav-text);
+        }
+
+        div.nav-profile-card-mobile-action-stack button.audio-button .triangle,
+        div.nav-profile-card-mobile-action-stack button.audio-button .circle {
+            opacity: 0.9;
         }
 
         div.nav-profile-card-mobile-action-theme div.btn-option-picker-icon-size-2 {
@@ -449,8 +479,20 @@ div.nav-profile-card {
             opacity: 1;
         }
 
-        div.nav-profile-card-mobile-action-theme i.fa-caret-icon {
-            display: none;
+        div.nav-profile-card-mobile-action-resume div.btn-option-picker-icon-size-2 {
+            width: 100%;
+            height: 100%;
+            font-size: 1.16rem;
+        }
+
+        div.nav-profile-card-mobile-action-resume button.btn-option-picker-toggle i.fa-icon {
+            color: var(--theme-nav-text);
+            opacity: 0.9;
+        }
+
+        div.nav-profile-card-mobile-action-resume button.btn-option-picker-toggle:hover i.fa-icon {
+            color: var(--theme-primary);
+            opacity: 1;
         }
 
         div.nav-profile-card-info {

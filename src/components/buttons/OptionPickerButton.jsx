@@ -1,5 +1,5 @@
 import "./OptionPickerButton.scss"
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {Dropdown} from "react-bootstrap"
 
 function OptionPickerButton({
@@ -16,6 +16,8 @@ function OptionPickerButton({
     menuClassName = "",
     compactMenu = false
 }) {
+    const [dropdownVisible, setDropdownVisible] = useState(false)
+
     const defaultOption = {
         id: "default",
         faIcon: "fa-solid fa-circle"
@@ -36,6 +38,10 @@ function OptionPickerButton({
         `fa-solid fa-caret-down` :
         null
 
+    useEffect(() => {
+        setDropdownVisible(false)
+    }, [buttonBehaviorEnabled, selectedOptionId, availableOptions.length])
+
     const _onToggleClicked = () => {
         if(!buttonBehaviorEnabled)
             return
@@ -51,39 +57,56 @@ function OptionPickerButton({
     const _onDropdownOptionClicked = (option) => {
         if(!option || !option.id)
             return
+
+        setDropdownVisible(false)
+
+        if(document.activeElement instanceof HTMLElement)
+            document.activeElement.blur()
+
         onOptionSelected(option.id)
+    }
+
+    if(buttonBehaviorEnabled) {
+        return (
+            <div className={`btn-option-picker`}>
+                <OptionPickerButtonToggle option={selectedOption}
+                                          caretIcon={caretIcon}
+                                          onClick={_onToggleClicked}
+                                          tooltipLabel={tooltipLabel}
+                                          toggleCaption={toggleCaption}
+                                          dropdownToggle={false}/>
+            </div>
+        )
     }
 
     return (
         <div className={`btn-option-picker`}>
             <Dropdown drop={dropdownDrop}
-                      className={dropdownClassName}>
+                      className={dropdownClassName}
+                      show={dropdownVisible}
+                      onToggle={(nextShow) => {
+                          setDropdownVisible(nextShow)
+                      }}>
                 <OptionPickerButtonToggle option={selectedOption}
                                           caretIcon={caretIcon}
-                                          onClick={_onToggleClicked}
                                           tooltipLabel={tooltipLabel}
-                                          toggleCaption={toggleCaption}/>
+                                          toggleCaption={toggleCaption}
+                                          dropdownToggle={true}/>
 
-                {!buttonBehaviorEnabled && (
-                    <OptionPickerButtonMenu availableOptions={availableOptions}
-                                            selectedOptionId={selectedOptionId}
-                                            onClick={_onDropdownOptionClicked}
-                                            menuClassName={menuClassName}
-                                            compactMenu={compactMenu}/>
-                )}
+                <OptionPickerButtonMenu availableOptions={availableOptions}
+                                        selectedOptionId={selectedOptionId}
+                                        onClick={_onDropdownOptionClicked}
+                                        menuClassName={menuClassName}
+                                        compactMenu={compactMenu}/>
             </Dropdown>
         </div>
     )
 }
 
-function OptionPickerButtonToggle({ option, caretIcon, onClick, tooltipLabel, toggleCaption }) {
+function OptionPickerButtonToggle({ option, caretIcon, onClick, tooltipLabel, toggleCaption, dropdownToggle }) {
     const captionClass = toggleCaption ? "btn-option-picker-toggle-with-caption" : ""
-
-    return (
-        <Dropdown.Toggle variant={`transparent`}
-                         className={`btn-option-picker-toggle ${captionClass}`}
-                         onClickCapture={onClick}
-                         data-tooltip={tooltipLabel}>
+    const toggleContent = (
+        <>
             <span className={`btn-option-picker-toggle-row`}>
                 <OptionPickerButtonPickerIcon option={option}
                                               size={2}/>
@@ -98,6 +121,25 @@ function OptionPickerButtonToggle({ option, caretIcon, onClick, tooltipLabel, to
                     {toggleCaption}
                 </span>
             )}
+        </>
+    )
+
+    if(!dropdownToggle) {
+        return (
+            <button type={`button`}
+                    className={`btn-option-picker-toggle btn btn-transparent ${captionClass}`}
+                    onClick={onClick}
+                    data-tooltip={tooltipLabel}>
+                {toggleContent}
+            </button>
+        )
+    }
+
+    return (
+        <Dropdown.Toggle variant={`transparent`}
+                         className={`btn-option-picker-toggle ${captionClass}`}
+                         data-tooltip={tooltipLabel}>
+            {toggleContent}
         </Dropdown.Toggle>
     )
 }
@@ -111,8 +153,14 @@ function OptionPickerButtonMenu({ availableOptions, selectedOptionId, onClick, m
         <Dropdown.Menu className={menuClassName}>
             {availableOptions.map((option, key) => (
                 <Dropdown.Item key={key}
+                               as={`button`}
+                               type={`button`}
                                className={`btn-option-picker-menu-item ${borderClass} ${compactClass} ${option.id === selectedOptionId ? 'btn-option-picker-menu-item-selected' : ''}`}
-                               onClick={() => { onClick(option) }}>
+                               onClick={(e) => {
+                                   e.preventDefault && e.preventDefault()
+                                   e.stopPropagation && e.stopPropagation()
+                                   onClick(option)
+                               }}>
                     <OptionPickerButtonPickerIcon   option={option}
                                                     size={1}/>
 

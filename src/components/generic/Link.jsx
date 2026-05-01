@@ -121,7 +121,7 @@ function Link({
             language.getString("open_link"),
             text,
             "fa-solid fa-arrow-up-right-from-square",
-            () => { window.open(href, "blank") },
+            () => { utils.url.open(href) },
             language.getString("proceed"),
             null,
             language.getString("cancel"),

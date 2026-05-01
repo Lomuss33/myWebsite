@@ -647,7 +647,7 @@
                     },
                     "date": {
                         "year": 2026,
-                        "month": 5
+                        "month": 4
                     },
                     "link": {
                         "href": "https://www.frankfurt-main.ihk.de/aus-und-weiterbildung/weiterbildung/weiterbildungspruefungen/weiterbildungspruefungen-von-a-bis-z/a-z-liste/ausbildereignung-pruefung-5189130",
@@ -656,19 +656,19 @@
                     "locales": {
                       "en": {
                         "title": "{{AEVO}} Certification",
-                        "text": "I hold the AEVO-Schein certification from IHK, which qualifies me as a certified instructor permitted to train apprentices in Germany."
+                        "text": "Completed the IHK AEVO qualification in April 2026, authorizing me as a certified instructor to train apprentices in Germany."
                       },
                       "de": {
                         "title": "{{AEVO}}-Zertifikat",
-                        "text": "Ich habe den AEVO-Schein der IHK, der mich als zertifizierten Ausbilder qualifiziert und zur Ausbildung von Auszubildenden in Deutschland berechtigt."
+                        "text": "Die IHK-AEVO-Qualifikation habe ich im April 2026 abgeschlossen. Sie berechtigt mich als zertifizierten Ausbilder zur Ausbildung von Auszubildenden in Deutschland."
                       },
                       "hr": {
                         "title": "{{AEVO}} certifikat",
-                        "text": "Posjedujem IHK-ov AEVO-Schein certifikat koji me kvalificira kao ovlaštenog instruktora za osposobljavanje pripravnika u Njemačkoj."
+                        "text": "IHK-ovu AEVO kvalifikaciju završio sam u travnju 2026., čime sam stekao ovlaštenje za stručno osposobljavanje pripravnika u Njemačkoj."
                       },
                       "tr": {
                         "title": "{{AEVO}} sertifikası",
-                        "text": "IHK tarafından verilen AEVO-Schein sertifikasına sahibim; bu belge beni Almanya’da çırak eğitimi verebilen sertifikalı bir eğitici olarak yetkilendirir."
+                        "text": "IHK AEVO yeterliliğini Nisan 2026'da tamamladım; bu belge Almanya’da çırak eğitimi verebilen sertifikalı bir eğitici olmamı sağlar."
                       }
                     }
                 },
@@ -684,7 +684,7 @@
                     },
                     "date": {
                         "year": 2026,
-                        "month": 8
+                        "month": 6
                     },
                     "link": {
                         "href": "",
@@ -692,20 +692,20 @@
                     },
                     "locales": {
                       "en": {
-                        "title": "{{CCNA}} Certification",
-                        "text": "I am a Cisco certified network associate (CCNA) skilled in foundational network infrastructure, security, and automation."
+                        "title": "{{CCNA}} Certification (in preparation)",
+                        "text": "Preparing for the Cisco CCNA exam with a target date of June 2026, focused on network fundamentals, security, and automation."
                       },
                       "de": {
-                        "title": "{{CCNA}}-Zertifikat",
-                        "text": "Ich bin Cisco Certified Network Associate (CCNA) und verfüge über fundierte Kenntnisse in Netzwerkgrundlagen, Sicherheit und Automatisierung."
+                        "title": "{{CCNA}}-Zertifikat (in Vorbereitung)",
+                        "text": "Vorbereitung auf die Cisco-CCNA-Prüfung mit geplantem Termin im Juni 2026; Schwerpunkt auf Netzwerkgrundlagen, Sicherheit und Automatisierung."
                       },
                       "hr": {
-                        "title": "{{CCNA}} certifikat",
-                        "text": "Nositelj sam Cisco CCNA certifikata s dobrim temeljima u mrežnoj infrastrukturi, sigurnosti i automatizaciji."
+                        "title": "{{CCNA}} certifikat (u pripremi)",
+                        "text": "Pripremam se za Cisco CCNA ispit s planiranim rokom u lipnju 2026., s fokusom na mrežne osnove, sigurnost i automatizaciju."
                       },
                       "tr": {
-                        "title": "{{CCNA}} sertifikası",
-                        "text": "Cisco Certified Network Associate (CCNA) sertifikasına sahibim; temel ağ altyapısı, güvenlik ve otomasyon konularında yetkinim."
+                        "title": "{{CCNA}} sertifikası (hazırlık aşamasında)",
+                        "text": "Haziran 2026 hedefli Cisco CCNA sınavına hazırlanıyorum; odak alanlarım ağ temelleri, güvenlik ve otomasyon."
                       }
                     }
                 }

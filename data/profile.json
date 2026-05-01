@@ -3,7 +3,7 @@
     "profilePictureUrl": "images/contant/profilePix.webp",
     "profilePictureAltUrl": "images/contant/profil.webp",
     "profilePictureAltDefaultChance": 0.5,
-    "resumePdfUrl": "",
+    "resumePdfUrl": "/resume.pdf",
     "statusCircleVisible": true,
     "statusCircleVariant": "available",
     "statusCircleHoverMessage": "status_message_available_for_freelance",

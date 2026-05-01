@@ -1,0 +1,328 @@
+{
+    "name": "Lovro Musić",
+    "alternateName": "Lovro Music",
+    "jobTitle": "Engineering Computer Science Student | Automation & IT Professional",
+    "jobTitleDe": "Student der Ingenieurinformatik | Automatisierungs- und IT-Fachkraft",
+    "description": "Engineering Computer Science student with hands-on experience in industrial automation, IT support, hardware production, and technical writing. Currently studying at THM after an Erasmus+ semester at IBU and building a portfolio across software, hardware, and infrastructure projects.",
+    "descriptionDe": "Student der Ingenieurinformatik mit Praxiserfahrung in Industrieautomatisierung, IT-Support, Hardwareproduktion und technischer Dokumentation. Aktuell Studium an der THM nach einem Erasmus+-Semester an der IBU sowie ein Portfolio aus Software-, Hardware- und Infrastrukturprojekten.",
+    "url": "https://lovro-music.de/",
+    "cvUrl": "https://lovro-music.de/cv/",
+    "sameAs": [
+        "https://lovro-music.de/",
+        "https://www.linkedin.com/in/lovro-musi%C4%87/",
+        "https://github.com/Lomuss33"
+    ],
+    "contact": {
+        "email": "contact@lovro-music.de",
+        "telephone": "+49 176 62236934",
+        "streetAddress": "Marburger Str. 81",
+        "postalCode": "35396",
+        "addressLocality": "Gießen",
+        "addressCountry": "Germany",
+        "linkedin": "https://www.linkedin.com/in/lovro-musi%C4%87/",
+        "github": "https://github.com/Lomuss33",
+        "website": "https://lovro-music.de/"
+    },
+    "skills": [
+        {
+            "category": "Programming Languages",
+            "categoryDe": "Programmiersprachen",
+            "items": [
+                "Java",
+                "C",
+                "C++",
+                "Python",
+                "Bash",
+                "TypeScript",
+                "LaTeX"
+            ]
+        },
+        {
+            "category": "Software & Web",
+            "categoryDe": "Software & Web",
+            "items": [
+                "React",
+                "Node.js",
+                "Docker",
+                "MySQL",
+                "Microsoft 365",
+                "Technical Writing",
+                "Hardware Imaging",
+                "Quality Assurance"
+            ]
+        },
+        {
+            "category": "Systems & Infrastructure",
+            "categoryDe": "Systeme & Infrastruktur",
+            "items": [
+                "Linux",
+                "Windows",
+                "Cisco",
+                "Networking",
+                "VoIP Support",
+                "Google Workspace",
+                "Server Assembly",
+                "Smart Displays"
+            ]
+        },
+        {
+            "category": "Automation & Industrial Systems",
+            "categoryDe": "Automatisierung & Industriesysteme",
+            "items": [
+                "TIA Portal",
+                "Beckhoff TwinCAT",
+                "GRAFCET",
+                "MQTT",
+                "PLC Programming",
+                "Embedded Design",
+                "Industry 4.0",
+                "Industrial Automation"
+            ]
+        }
+    ],
+    "languages": [
+        {
+            "language": "German",
+            "languageDe": "Deutsch",
+            "level": "C2"
+        },
+        {
+            "language": "English",
+            "languageDe": "Englisch",
+            "level": "C2"
+        },
+        {
+            "language": "Croatian",
+            "languageDe": "Kroatisch",
+            "level": "Native"
+        }
+    ],
+    "education": [
+        {
+            "id": "erasmus-ibu-2025",
+            "title": "Erasmus+ Exchange Semester",
+            "titleDe": "Erasmus+ Auslandssemester",
+            "institution": "International Balkan University (IBU)",
+            "location": "Skopje, North Macedonia",
+            "startDate": "2025-10",
+            "endDate": "2026-02",
+            "ongoing": false,
+            "summary": "One-semester Erasmus+ exchange with selected coursework in computer engineering and industrial engineering contexts.",
+            "summaryDe": "Einsemestriger Erasmus+-Austausch mit ausgewählten Lehrveranstaltungen aus Informatik und industriellen Ingenieurwissenschaften.",
+            "bullets": [
+                "Selected courses in computer engineering and industrial engineering",
+                "Cross-cultural teamwork and technical presentations",
+                "Research contribution for the International Student Congress 2025"
+            ],
+            "bulletsDe": [
+                "Ausgewählte Kurse in Informatik und industriellen Ingenieurwissenschaften",
+                "Interkulturelle Teamarbeit und technische Präsentationen",
+                "Recherchebeitrag für den International Student Congress 2025"
+            ]
+        },
+        {
+            "id": "thm-bsc-2023",
+            "title": "Engineering Computer Science (B.Sc.)",
+            "titleDe": "Ingenieurinformatik (B.Sc.)",
+            "institution": "Technische Hochschule Mittelhessen (THM)",
+            "location": "Gießen, Germany",
+            "startDate": "2023-10",
+            "endDate": null,
+            "ongoing": true,
+            "summary": "Ongoing degree program combining electrical engineering and computer science foundations with an industrial systems focus.",
+            "summaryDe": "Laufendes Studium mit Grundlagen aus Elektrotechnik und Informatik sowie Fokus auf industrielle Systeme.",
+            "bullets": [
+                "Focus areas: network architecture, embedded design, and Industry 4.0",
+                "Foundation building across electrical engineering and computer science",
+                "Planned thesis topic to be defined"
+            ],
+            "bulletsDe": [
+                "Schwerpunkte: Netzwerkarchitektur, Embedded Design und Industrie 4.0",
+                "Fundamentaufbau in Elektrotechnik und Informatik",
+                "Geplante Abschlussarbeit: Thema noch offen"
+            ]
+        },
+        {
+            "id": "fachhochschulreife-2022",
+            "title": "Advanced Technical College Entrance Qualification (Electrical Engineering Focus)",
+            "titleDe": "Fachhochschulreife (Schwerpunkt Elektrotechnik)",
+            "institution": "Brühlwiesenschule Hofheim am Taunus",
+            "location": "Hofheim am Taunus, Germany",
+            "startDate": "2022-09",
+            "endDate": "2023-06",
+            "ongoing": false,
+            "summary": "Completed the technical college entrance qualification while working, with an electrical engineering focus.",
+            "summaryDe": "Berufsbegleitend abgeschlossene Fachhochschulreife mit Schwerpunkt Elektrotechnik.",
+            "bullets": [
+                "Completed alongside professional work",
+                "Qualified for university admission in Germany"
+            ],
+            "bulletsDe": [
+                "Berufsbegleitend absolviert",
+                "Hochschulzugangsberechtigung für Deutschland erworben"
+            ]
+        },
+        {
+            "id": "provadis-apprenticeship-2018",
+            "title": "Apprenticeship — Electronic Technician for Automation Technology",
+            "titleDe": "Ausbildung — Elektroniker für Automatisierungstechnik",
+            "institution": "Provadis Professionals GmbH",
+            "location": "Frankfurt am Main, Germany",
+            "startDate": "2018-09",
+            "endDate": "2022-02",
+            "ongoing": false,
+            "summary": "Completed a multi-site apprenticeship in automation technology in cooperation with Clariant AG.",
+            "summaryDe": "Abgeschlossene Ausbildung in Automatisierungstechnik in Kooperation mit der Clariant AG an mehreren Standorten.",
+            "bullets": [
+                "Preventive and corrective maintenance of industrial systems",
+                "Automation basics: PLCs, sensors, and actuators",
+                "Electrical troubleshooting, installation, and commissioning support",
+                "Safety procedures, documentation, and technical coordination"
+            ],
+            "bulletsDe": [
+                "Präventive und korrektive Wartung industrieller Systeme",
+                "Grundlagen der Automatisierungstechnik: SPS, Sensoren und Aktoren",
+                "Elektrische Fehlerbehebung, Installation und Inbetriebnahmeunterstützung",
+                "Sicherheitsverfahren, Dokumentation und technische Koordination"
+            ]
+        }
+    ],
+    "experience": [
+        {
+            "id": "inlingua-2024",
+            "title": "Office 365 Project Developer",
+            "titleDe": "Office 365 Projektentwickler",
+            "institution": "inlingua",
+            "location": "Remote / Osnabrück, Germany",
+            "startDate": "2024-11",
+            "endDate": "2025-07",
+            "ongoing": false,
+            "summary": "Created didactically structured Microsoft 365 guides and owned the technical project flow in an interdisciplinary environment.",
+            "summaryDe": "Erstellte didaktisch strukturierte Microsoft-365-Anleitungen und verantwortete den technischen Projektablauf in einem interdisziplinären Umfeld.",
+            "bullets": [
+                "Created structured guidance for Microsoft 365 workflows",
+                "Took technical project responsibility across disciplines",
+                "Continuously improved outputs through stakeholder feedback loops"
+            ],
+            "bulletsDe": [
+                "Erstellung strukturierter Anleitungen für Microsoft-365-Arbeitsabläufe",
+                "Technische Projektverantwortung in einem interdisziplinären Umfeld",
+                "Kontinuierliche Optimierung durch iterative Feedbackschleifen mit Stakeholdern"
+            ]
+        },
+        {
+            "id": "tci-2024",
+            "title": "Working Student — Computer Production",
+            "titleDe": "Werkstudent — Computerproduktion",
+            "institution": "TCI – Gesellschaft für technische Informatik GmbH",
+            "location": "Heuchelheim, Germany",
+            "startDate": "2024-01",
+            "endDate": "2024-10",
+            "ongoing": false,
+            "summary": "Built, configured, and tested complex hardware solutions for industrial and commercial use.",
+            "summaryDe": "Montierte, konfigurierte und testete komplexe Hardwarelösungen für industrielle und gewerbliche Einsätze.",
+            "bullets": [
+                "Assembled industrial PCs, servers, and smart displays",
+                "Installed operating systems, imaging, and customer-specific base setups",
+                "Performed hardware testing, functional checks, and quality assurance"
+            ],
+            "bulletsDe": [
+                "Montage von Industrie-PCs, Servern und Smart-Displays",
+                "Einrichtung von Betriebssystemen, Imaging und kundenspezifischen Grundkonfigurationen",
+                "Hardwaretests, Funktionsprüfung und Qualitätssicherung"
+            ]
+        },
+        {
+            "id": "tipwin-2022",
+            "title": "IT Support Technician",
+            "titleDe": "IT-Support Techniker",
+            "institution": "Tipwin Limited",
+            "location": "Frankfurt am Main, Germany",
+            "startDate": "2022-09",
+            "endDate": "2023-08",
+            "ongoing": false,
+            "summary": "Maintained decentralized infrastructure and delivered 2nd-level support across multiple locations.",
+            "summaryDe": "Wartete dezentrale Infrastrukturen und leistete 2nd-Level-Support an mehreren Standorten.",
+            "bullets": [
+                "Administered and maintained decentralized networks and peripheral systems",
+                "Diagnosed and resolved complex system faults in second-level support",
+                "Provided on-site and VoIP technical support across locations",
+                "Documented handovers and improved support processes"
+            ],
+            "bulletsDe": [
+                "Administration und Wartung dezentraler Netzwerkstrukturen sowie Peripheriesysteme",
+                "Analyse und Behebung komplexer Systemfehler im 2nd-Level-Support",
+                "Vor-Ort- und VoIP-Techniksupport an mehreren Standorten",
+                "Dokumentation, Übergaben und Verbesserung der Supportprozesse"
+            ]
+        },
+        {
+            "id": "tueg-2022",
+            "title": "Test Technician — Plant Safety (TÜV)",
+            "titleDe": "Prüftechniker — Anlagensicherheit (TÜV)",
+            "institution": "TUEG Schillings GmbH",
+            "location": "Kerpen, Germany",
+            "startDate": "2022-03",
+            "endDate": "2022-08",
+            "ongoing": false,
+            "summary": "Supported TÜV certification work for industrial plants with testing, compliance documentation, and on-site coordination.",
+            "summaryDe": "Unterstützte TÜV-Zertifizierungen von Industrieanlagen durch Prüfungen, Compliance-Dokumentation und Vor-Ort-Koordination.",
+            "bullets": [
+                "Supported TÜV certification of industrial equipment",
+                "Prepared compliance documentation and technical reports",
+                "Coordinated with customers and inspection teams on site"
+            ],
+            "bulletsDe": [
+                "Unterstützung der TÜV-Zertifizierung von Industrieanlagen",
+                "Compliance-Dokumentation und technische Berichterstattung",
+                "Vor-Ort-Koordination mit Kunden und Inspektionsteams"
+            ]
+        }
+    ],
+    "certifications": [
+        {
+            "name": "AEVO Certification",
+            "status": "completed",
+            "statusLabel": "Completed",
+            "targetDate": "2026-04",
+            "issuer": "IHK",
+            "url": "https://www.frankfurt-main.ihk.de/aus-und-weiterbildung/weiterbildung/weiterbildungspruefungen/weiterbildungspruefungen-von-a-bis-z/a-z-liste/ausbildereignung-pruefung-5189130"
+        },
+        {
+            "name": "CCNA Certification",
+            "status": "in_preparation",
+            "statusLabel": "In preparation",
+            "targetDate": "2026-06",
+            "issuer": "Cisco",
+            "url": ""
+        }
+    ],
+    "interests": [
+        "Hiking",
+        "Basketball",
+        "Chess",
+        "Homelab",
+        "Restoration"
+    ],
+    "driverLicense": "Class B",
+    "projectSources": [
+        {
+            "type": "software",
+            "path": "public/data/sections/my-software.json",
+            "component": "ArticlePortfolio",
+            "articleId": 1
+        },
+        {
+            "type": "hardware",
+            "path": "public/data/sections/my-hardware.json",
+            "component": "ArticlePortfolio",
+            "articleId": 1
+        },
+        {
+            "type": "publication",
+            "path": "public/data/sections/my-writings.json",
+            "component": "ArticleTimeline",
+            "articleId": 1
+        }
+    ]
+}

@@ -3,6 +3,13 @@ import React, {useEffect, useRef} from 'react'
 
 const POINTER_EASING = 18
 const POINTER_SETTLE_DISTANCE = 0.5
+const WORM_SEGMENTS = Array.from({ length: 14 }, (_, index) => ({
+    id: index,
+    left: 8 + index * 5.8,
+    top: 70 + (index % 2 === 0 ? 0 : 3.2),
+    delay: index * 0.18,
+    duration: 7.2 + (index % 4) * 0.5
+}))
 
 function LayoutAnimatedBackground() {
     const interactiveRef = useRef(null)
@@ -139,6 +146,31 @@ function LayoutAnimatedBackground() {
                     <div className={`layout-animated-background__orb layout-animated-background__orb--5`}/>
                     <div ref={interactiveRef}
                          className={`layout-animated-background__interactive`}/>
+                </div>
+
+                <div className={`layout-animated-background__snow layout-animated-background__snow--back`}/>
+                <div className={`layout-animated-background__snow layout-animated-background__snow--front`}/>
+                <div className={`layout-animated-background__block-rain`}/>
+
+                <div className={`layout-animated-background__worm`}
+                     aria-hidden={true}>
+                    {WORM_SEGMENTS.map(segment => (
+                        <span key={segment.id}
+                              className={`layout-animated-background__worm-segment`}
+                              style={{
+                                  left: `${segment.left}%`,
+                                  top: `${segment.top}%`,
+                                  animationDelay: `${segment.delay}s`,
+                                  animationDuration: `${segment.duration}s`
+                              }}/>
+                    ))}
+                </div>
+
+                <div className={`layout-animated-background__mountains`}
+                     aria-hidden={true}>
+                    <div className={`layout-animated-background__mountain layout-animated-background__mountain--far`}/>
+                    <div className={`layout-animated-background__mountain layout-animated-background__mountain--mid`}/>
+                    <div className={`layout-animated-background__mountain layout-animated-background__mountain--near`}/>
                 </div>
 
                 <div className={`layout-animated-background__vignette`}/>

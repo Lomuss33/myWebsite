@@ -72,6 +72,23 @@ $scrollbar-thumb: rgba(0, 136, 186, 0.24);
     --theme-sidebar-nav-link-color: var(--theme-nav-text);
     --theme-sidebar-nav-link-icon-opacity: 0.72;
     --theme-sidebar-nav-link-text-opacity: 0.98;
+    --theme-shell-backdrop: rgba(255, 255, 255, 0.58);
+    --theme-shell-backdrop-strong: rgba(255, 255, 255, 0.88);
+    --theme-shell-shadow: rgba(15, 23, 42, 0.14);
+    --theme-shell-glow-a: rgba(14, 165, 233, 0.16);
+    --theme-shell-glow-b: rgba(192, 132, 252, 0.14);
+    --theme-shell-glow-c: rgba(251, 191, 36, 0.14);
+    --theme-background-sky-top: #f7fbff;
+    --theme-background-sky-middle: #edf4fb;
+    --theme-background-sky-bottom: #dde9f6;
+    --theme-background-mountain-far: rgba(148, 169, 191, 0.28);
+    --theme-background-mountain-mid: rgba(125, 147, 171, 0.34);
+    --theme-background-mountain-near: rgba(226, 236, 246, 0.92);
+    --theme-background-snow: rgba(255, 255, 255, 0.92);
+    --theme-background-rain: rgba(125, 147, 171, 0.18);
+    --theme-background-worm-head: rgba(168, 85, 247, 0.22);
+    --theme-background-worm-tail: rgba(148, 163, 184, 0.10);
+    --theme-background-vignette: rgba(15, 23, 42, 0.05);
 
     @include theme.build-theme(
         // Theme Config...

@@ -22,18 +22,19 @@ nav.nav-sidebar {
         flex-direction: column;
         background:
             radial-gradient(circle at 14% 10%,
-                rgba(255, 255, 255, 0.88),
+                color-mix(in srgb, var(--theme-shell-backdrop-strong) 52%, white 48%),
                 transparent 32%),
             radial-gradient(circle at 82% 4%,
-                rgba(184, 216, 244, 0.52),
+                color-mix(in srgb, var(--theme-shell-glow-a) 64%, transparent),
                 transparent 34%),
             linear-gradient(180deg,
-                color-mix(in srgb, var(--theme-nav-surface) 82%, white 18%) 0%,
+                color-mix(in srgb, var(--theme-nav-surface) 78%, var(--theme-shell-backdrop-strong) 22%) 0%,
                 var(--theme-nav-surface) 40%,
-                color-mix(in srgb, var(--theme-nav-surface-accent) 96%, #d9e8f6 4%) 100%);
+                color-mix(in srgb, var(--theme-nav-surface-accent) 86%, var(--theme-shell-backdrop) 14%) 100%);
         border: 1px solid var(--theme-nav-border);
+        backdrop-filter: blur(18px) saturate(1.05);
         box-shadow:
-            0 20px 44px rgba(15, 23, 42, 0.10),
+            0 22px 46px var(--theme-shell-shadow),
             0 6px 18px rgba(15, 23, 42, 0.06),
             inset 0 1px 0 rgba(255, 255, 255, 0.82);
         border-radius: calc($standard-border-radius * 1.8);

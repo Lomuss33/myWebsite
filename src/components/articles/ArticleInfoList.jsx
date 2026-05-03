@@ -9,49 +9,49 @@ import CopyButton from "../buttons/CopyButton.jsx"
 
 const PROOF_BUBBLE_DEFAULTS = {
     desktop: {
-        fontSize: 0.78,
-        paddingX: 10,
-        paddingY: 8,
-        lineHeight: 1.30
+        fontSize: 0.98,
+        paddingX: 14,
+        paddingY: 12,
+        lineHeight: 1.42
     },
     compact: {
-        fontSize: 0.74,
-        paddingX: 10,
-        paddingY: 8,
-        lineHeight: 1.26
+        fontSize: 0.92,
+        paddingX: 13,
+        paddingY: 11,
+        lineHeight: 1.38
     },
     tablet: {
-        fontSize: 0.72,
-        paddingX: 10,
-        paddingY: 8,
-        lineHeight: 1.24
+        fontSize: 0.88,
+        paddingX: 12,
+        paddingY: 10,
+        lineHeight: 1.34
     },
     mobile: {
-        fontSize: 0.70,
-        paddingX: 8,
-        paddingY: 6,
-        lineHeight: 1.20
+        fontSize: 0.82,
+        paddingX: 10,
+        paddingY: 8,
+        lineHeight: 1.3
     }
 }
 
 const PROOF_BUBBLE_FLOORS = {
     desktop: {
-        fontSize: 0.64,
-        paddingX: 6,
-        paddingY: 4,
-        lineHeight: 1.14
+        fontSize: 0.82,
+        paddingX: 10,
+        paddingY: 8,
+        lineHeight: 1.28
     },
     tablet: {
-        fontSize: 0.60,
-        paddingX: 6,
-        paddingY: 4,
-        lineHeight: 1.12
+        fontSize: 0.74,
+        paddingX: 8,
+        paddingY: 6,
+        lineHeight: 1.22
     },
     mobile: {
-        fontSize: 0.56,
-        paddingX: 5,
-        paddingY: 4,
-        lineHeight: 1.10
+        fontSize: 0.68,
+        paddingX: 7,
+        paddingY: 6,
+        lineHeight: 1.18
     }
 }
 
@@ -166,7 +166,7 @@ function ArticleInfoListItems({ dataWrapper, selectedItemCategoryId, isHomeInfoL
     useEffect(() => {
         const containerEl = document.getElementById(id)
         const itemDivs = containerEl?.querySelectorAll(`.article-info-list-item`) || []
-        const maxEqualizedHeight = isHomeInfoList ? 105 : 120
+        const maxEqualizedHeight = isHomeInfoList ? 148 : 120
 
         if(!itemDivs.length)
             return

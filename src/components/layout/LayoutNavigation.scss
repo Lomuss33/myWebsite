@@ -5,6 +5,8 @@ div.layout-navigation-wrapper {
     $target-height-svh: calc(100svh - $default-card-spacing*2);
 
     display: flex;
+    position: relative;
+    isolation: isolate;
     align-items: stretch;
     height: $target-height;
     height: $target-height-svh;
@@ -13,12 +15,37 @@ div.layout-navigation-wrapper {
     max-height: $target-height;
     max-height: $target-height-svh;
 
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: calc(#{$standard-border-radius} * 1.4);
+        background:
+            radial-gradient(circle at 12% 14%, var(--theme-shell-glow-a), transparent 20%),
+            radial-gradient(circle at 84% 12%, var(--theme-shell-glow-b), transparent 22%),
+            linear-gradient(180deg, var(--theme-shell-backdrop) 0%, transparent 64%);
+        filter: blur(18px);
+        opacity: 0.95;
+        z-index: 0;
+    }
+
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         min-width: 0;
         height: auto;
         max-height: inherit;
         flex-direction: column;
+
+        &::before {
+            inset: 0 0 $nav-tabs-height 0;
+            border-radius: 0;
+        }
     }
+}
+
+div.layout-navigation-wrapper > nav,
+div.layout-navigation-children-wrapper {
+    position: relative;
+    z-index: 1;
 }
 
 div.layout-navigation-children-wrapper {
@@ -28,11 +55,13 @@ div.layout-navigation-children-wrapper {
     min-height: 100%;
     height: 100%;
     margin-left: var(--default-card-spacing);
+    border-radius: calc(#{$standard-border-radius} * 1.15);
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         margin-left: 0;
         margin-top: calc(var(--default-card-spacing) - 1px);
         margin-bottom: $nav-tabs-height;
+        border-radius: 0;
     }
 }
 

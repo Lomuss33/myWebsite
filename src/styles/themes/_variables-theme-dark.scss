@@ -70,6 +70,23 @@ $scrollbar-thumb: #24272c;
     --theme-sidebar-nav-link-color: var(--theme-nav-text);
     --theme-sidebar-nav-link-icon-opacity: 0.7;
     --theme-sidebar-nav-link-text-opacity: 0.96;
+    --theme-shell-backdrop: rgba(5, 10, 18, 0.54);
+    --theme-shell-backdrop-strong: rgba(7, 12, 20, 0.84);
+    --theme-shell-shadow: rgba(0, 0, 0, 0.34);
+    --theme-shell-glow-a: rgba(78, 163, 255, 0.24);
+    --theme-shell-glow-b: rgba(168, 85, 247, 0.18);
+    --theme-shell-glow-c: rgba(250, 204, 21, 0.12);
+    --theme-background-sky-top: #020611;
+    --theme-background-sky-middle: #071427;
+    --theme-background-sky-bottom: #11071f;
+    --theme-background-mountain-far: rgba(105, 132, 170, 0.22);
+    --theme-background-mountain-mid: rgba(55, 83, 124, 0.32);
+    --theme-background-mountain-near: rgba(18, 30, 48, 0.82);
+    --theme-background-snow: rgba(241, 245, 249, 0.76);
+    --theme-background-rain: rgba(167, 139, 250, 0.18);
+    --theme-background-worm-head: rgba(216, 180, 255, 0.36);
+    --theme-background-worm-tail: rgba(124, 58, 237, 0.10);
+    --theme-background-vignette: rgba(0, 0, 0, 0.18);
 
     @include theme.build-theme(
         // Theme Config...

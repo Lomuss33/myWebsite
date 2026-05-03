@@ -1,8 +1,8 @@
 import "./ImageView.scss"
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useRef} from 'react'
 import {useConstants} from "../../hooks/constants.js"
 import {Spinner} from "react-bootstrap"
-import {useUtils} from "../../hooks/utils.js"
+import {IMAGE_LIFECYCLE_STATUS, useImageStatus} from "../../hooks/useImageStatus.js"
 
 function ImageView({
     src,
@@ -14,60 +14,41 @@ function ImageView({
     onStatus = null,
     loading = "lazy",
     decoding = "async",
-    fetchPriority = "auto"
+    fetchPriority = "auto",
+    sizes = null
 }) {
-    const [loadStatus, setLoadStatus] = useState(ImageView.LoadStatus.LOADING)
-    const [loadedSrc, setLoadedSrc] = useState(null)
-    const [errorSrc, setErrorSrc] = useState(null)
+    const imageStatus = useImageStatus(src)
+    const loadStatus = imageStatus.status
 
-    /** @listens src **/
-    useEffect(() => {
-        if(src && src.length > 0) setLoadStatus(ImageView.LoadStatus.LOADING)
-        else setLoadStatus(ImageView.LoadStatus.ERROR)
-    }, [src])
-
-    /** @listens loadedSrc|errorSrc **/
-    useEffect(() => {
-        if(loadedSrc && src === loadedSrc)
-            setLoadStatus(ImageView.LoadStatus.LOADED)
-        else if(errorSrc && src === errorSrc)
-            setLoadStatus(ImageView.LoadStatus.ERROR)
-        else if(src && src.length > 0)
-            setLoadStatus(ImageView.LoadStatus.LOADING)
-    }, [loadedSrc, errorSrc])
-
-    /** @listens loadStatus **/
     useEffect(() => {
         onStatus && onStatus(loadStatus)
-    }, [loadStatus])
+    }, [loadStatus, onStatus])
 
     const spinnerVisible = loadStatus === ImageView.LoadStatus.LOADING && !hideSpinner
     const containerVisible = loadStatus === ImageView.LoadStatus.LOADED
-    const errorVisible = loadStatus === ImageView.LoadStatus.ERROR
-
-    const _onLoad = () => {
-        setLoadedSrc(src)
-        setErrorSrc(null)
-    }
-
-    const _onError = () => {
-        setLoadedSrc(null)
-        setErrorSrc(src)
-    }
+    const errorVisible =
+        loadStatus === ImageView.LoadStatus.ERROR ||
+        loadStatus === ImageView.LoadStatus.IDLE
 
     return (
         <div className={`image-view ${className}`}
              id={id}
              style={style}>
-            <ImageViewContainer src={src}
+            <ImageViewContainer resolvedSrc={imageStatus.resolvedSrc}
+                                resolvedSrcSet={imageStatus.normalizedSource.srcSet}
+                                sizes={sizes || imageStatus.normalizedSource.sizes}
+                                width={imageStatus.normalizedSource.width}
+                                height={imageStatus.normalizedSource.height}
                                 alt={alt}
                                 visible={containerVisible}
                                 loadStatus={loadStatus}
+                                canRenderImg={imageStatus.canRenderImg}
                                 loading={loading}
                                 decoding={decoding}
                                 fetchPriority={fetchPriority}
-                                onLoad={_onLoad}
-                                onError={_onError}/>
+                                syncFromElement={imageStatus.syncFromElement}
+                                onLoad={() => imageStatus.setLoaded(imageStatus.resolvedSrc)}
+                                onError={() => imageStatus.setError(imageStatus.resolvedSrc)}/>
 
             <ImageViewSpinner visible={spinnerVisible}/>
             <ImageViewError visible={errorVisible}
@@ -77,18 +58,16 @@ function ImageView({
 }
 
 ImageView.LoadStatus = {
-    LOADING: "loading",
-    LOADED: "loaded",
-    ERROR: "error"
+    IDLE: IMAGE_LIFECYCLE_STATUS.IDLE,
+    LOADING: IMAGE_LIFECYCLE_STATUS.LOADING,
+    LOADED: IMAGE_LIFECYCLE_STATUS.LOADED,
+    ERROR: IMAGE_LIFECYCLE_STATUS.ERROR
 }
 
-function ImageViewContainer({ src, alt, visible, loadStatus, loading, decoding, fetchPriority, onLoad, onError }) {
+function ImageViewContainer({ resolvedSrc, resolvedSrcSet, sizes, width, height, alt, visible, loadStatus, canRenderImg, loading, decoding, fetchPriority, syncFromElement, onLoad, onError }) {
     const constants = useConstants()
-    const utils = useUtils()
     const imageRef = useRef(null)
-
-    const resolvedSrc = utils.file.resolvePath(src)
-    const visibleClass = visible ? `visible` : `invisible`
+    const visibilityClass = visible ? `image-view-img-visible` : `image-view-img-hidden`
 
     useEffect(() => {
         if(!imageRef.current)
@@ -100,13 +79,24 @@ function ImageViewContainer({ src, alt, visible, loadStatus, loading, decoding, 
         else {
             imageRef.current.removeAttribute("fetchpriority")
         }
-    }, [fetchPriority])
+    }, [fetchPriority, resolvedSrc])
+
+    useEffect(() => {
+        syncFromElement(imageRef.current)
+    }, [resolvedSrc, syncFromElement])
+
+    if(!canRenderImg || !resolvedSrc)
+        return <></>
 
     return (
-        <img className={`image-view-img ${visibleClass} ${constants.HTML_CLASSES.imageView} ${constants.HTML_CLASSES.imageView}-${loadStatus}`}
+        <img className={`image-view-img ${visibilityClass} ${constants.HTML_CLASSES.imageView} ${constants.HTML_CLASSES.imageView}-${loadStatus}`}
              ref={imageRef}
              src={resolvedSrc}
+             srcSet={resolvedSrcSet || undefined}
+             sizes={sizes || undefined}
              alt={alt}
+             width={width || undefined}
+             height={height || undefined}
              loading={loading}
              decoding={decoding}
              onLoad={onLoad}
@@ -130,13 +120,80 @@ function ImageViewError({ visible, hideIcon }) {
         return <></>
 
     return (
-        <div className={`image-view-error-wrapper`}>
-            {!hideIcon && (
-                <i className={`fa-solid fa-eye-slash`}/>
-            )}
+        <div className={`image-view-error-wrapper`}
+             aria-hidden={true}>
+            <div className={`image-view-error-content ${hideIcon ? "image-view-error-content-subtle" : ""}`}>
+                <i className={`fa-regular fa-image image-view-error-icon`}/>
+                {!hideIcon && (
+                    <span className={`image-view-error-label`}>Image unavailable</span>
+                )}
+            </div>
         </div>
     )
 
+}
+
+export function BaseImage({
+    src,
+    alt = "",
+    className = "",
+    loading = "lazy",
+    decoding = "async",
+    fetchPriority = "auto",
+    sizes = null,
+    onStatus = null,
+    renderError = null,
+    renderLoading = null
+}) {
+    const imageStatus = useImageStatus(src)
+    const imageRef = useRef(null)
+
+    useEffect(() => {
+        onStatus && onStatus(imageStatus.status)
+    }, [imageStatus.status, onStatus])
+
+    useEffect(() => {
+        if(!imageRef.current)
+            return
+
+        if(fetchPriority && fetchPriority !== "auto") {
+            imageRef.current.setAttribute("fetchpriority", fetchPriority)
+        }
+        else {
+            imageRef.current.removeAttribute("fetchpriority")
+        }
+    }, [fetchPriority, imageStatus.resolvedSrc])
+
+    useEffect(() => {
+        imageStatus.syncFromElement(imageRef.current)
+    }, [imageStatus.resolvedSrc, imageStatus.syncFromElement])
+
+    const loadingVisible = imageStatus.status === IMAGE_LIFECYCLE_STATUS.LOADING
+    const errorVisible =
+        imageStatus.status === IMAGE_LIFECYCLE_STATUS.ERROR ||
+        imageStatus.status === IMAGE_LIFECYCLE_STATUS.IDLE
+
+    return (
+        <div className={`image-frame ${className}`}>
+            {imageStatus.canRenderImg && imageStatus.resolvedSrc && (
+                <img ref={imageRef}
+                     className={`image-frame-img ${loadingVisible || errorVisible ? "image-frame-img-hidden" : "image-frame-img-visible"}`}
+                     src={imageStatus.resolvedSrc}
+                     srcSet={imageStatus.normalizedSource.srcSet || undefined}
+                     sizes={sizes || imageStatus.normalizedSource.sizes || undefined}
+                     alt={alt}
+                     width={imageStatus.normalizedSource.width || undefined}
+                     height={imageStatus.normalizedSource.height || undefined}
+                     loading={loading}
+                     decoding={decoding}
+                     onLoad={() => imageStatus.setLoaded(imageStatus.resolvedSrc)}
+                     onError={() => imageStatus.setError(imageStatus.resolvedSrc)}/>
+            )}
+
+            {loadingVisible && renderLoading?.()}
+            {errorVisible && renderError?.(imageStatus.status)}
+        </div>
+    )
 }
 
 export default ImageView

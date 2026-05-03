@@ -128,6 +128,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
     const defaultFitMaxScale = isHomeStyleIntro ? FEATURE_TEXT_ABOUT_INTRO_MAX_SCALE : FEATURE_TEXT_DEFAULT_MAX_SCALE
     const textFontSize = computeScaledFontSize(baseTypographyRef, textScale)
     const textLineHeight = computeScaledLineHeight(baseTypographyRef, textScale)
+    const imageSizes = getFeatureImageSizes(itemWrapper.articleWrapper.sectionId, featureLayoutMode, isHomeStyleIntro)
     const typographyVersion = shouldFitTextToMediaHeight && !isTextLedSplitLayout ?
         (isMobileView ? "square-fit-mobile" : Math.round(textScale * 1000)) :
         0
@@ -395,7 +396,8 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                                 <ImageView src={itemWrapper.img}
                                            alt={itemWrapper.imageAlt}
                                            className={`article-feature-item-image-source`}
-                                           hideSpinner={true}/>
+                                           hideSpinner={true}
+                                           sizes={imageSizes}/>
                             </div>
 
                             <div className={`article-feature-item-image-face article-feature-item-image-face-back`}>
@@ -403,7 +405,8 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                                            alt={itemWrapper.imageAlt}
                                            className={`article-feature-item-image-source`}
                                            hideSpinner={true}
-                                           fetchPriority={`low`}/>
+                                           fetchPriority={`low`}
+                                           sizes={imageSizes}/>
                             </div>
                         </div>
                     ) : (
@@ -411,7 +414,8 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                                    alt={itemWrapper.imageAlt}
                                    className={`article-feature-item-image floating-frame`}
                                    style={imageStyle}
-                                   hideSpinner={true}/>
+                                   hideSpinner={true}
+                                   sizes={imageSizes}/>
                     )
                 ) : (
                     <div className={`article-feature-item-image article-feature-item-image-fallback floating-frame`}
@@ -592,6 +596,22 @@ function resolvePixelValue(value, fallback) {
 
 function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value))
+}
+
+function getFeatureImageSizes(sectionId, featureLayoutMode, isHomeStyleIntro) {
+    if(sectionId === "experience")
+        return "(max-width: 991.98px) calc(100vw - 48px), 420px"
+
+    if(sectionId === "my-writings")
+        return "(max-width: 991.98px) calc(100vw - 48px), 560px"
+
+    if(isHomeStyleIntro || featureLayoutMode === "equal_split_fixed_vh_image")
+        return "(max-width: 575.98px) calc(100vw - 32px), (max-width: 991.98px) 640px, 42vw"
+
+    if(featureLayoutMode === "equal_split_text_led" || featureLayoutMode === "equal_split_auto_stack" || featureLayoutMode === "equal_split_square_fit")
+        return "(max-width: 575.98px) calc(100vw - 32px), (max-width: 991.98px) 640px, 50vw"
+
+    return "(max-width: 575.98px) calc(100vw - 32px), (max-width: 991.98px) 640px, 48vw"
 }
 
 export default ArticleFeature

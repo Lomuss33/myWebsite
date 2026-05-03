@@ -10,6 +10,7 @@ import {_dateUtils} from "./utils/_date-utils.js"
 import {_deviceUtils} from "./utils/_device-utils.js"
 import {_domUtils} from "./utils/_dom-utils.js"
 import {_fileUtils} from "./utils/_file-utils.js"
+import {_imageUtils} from "./utils/_image-utils.js"
 import {_jsonUtils} from "./utils/_json-utils.js"
 import {_loggingUtils} from "./utils/_logging-utils.js"
 import {_numberUtils} from "./utils/_number-utils.js"
@@ -26,6 +27,7 @@ export const useUtils = () => {
     const device = _deviceUtils
     const dom = _domUtils
     const file = _fileUtils
+    const image = _imageUtils
     const json = _jsonUtils
     const log = _loggingUtils
     const number = _numberUtils
@@ -42,6 +44,7 @@ export const useUtils = () => {
         device,
         dom,
         file,
+        image,
         json,
         log,
         number,

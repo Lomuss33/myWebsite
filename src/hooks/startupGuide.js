@@ -4,16 +4,16 @@ const HOME_SECTION_SELECTOR = "section#section-about.section-shown"
 const STORAGE_PREFERENCES_KEY = "storage-preferences"
 
 const GUIDE_HINT_LABELS = {
-    en: "hover + click around",
-    de: "hovern + alles klicken",
-    hr: "predji + klikni sve",
-    tr: "uzerine gel + tikla",
+    en: "Hover and click around",
+    de: "Bewegen und herumklicken",
+    hr: "Prelazi i klikaj okolo",
+    tr: "Uzerinde gezin ve tiklayin",
 }
 
 const GUIDE_LABELS = {
-    en: "please touch it",
+    en: "Tap here",
     de: "bitte berühre es",
-    hr: "molim te dotakni to",
+    hr: "Dodirni ovdje",
     tr: "lütfen dokun",
 }
 

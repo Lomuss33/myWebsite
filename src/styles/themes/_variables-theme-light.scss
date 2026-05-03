@@ -33,44 +33,44 @@
 
 @use "./theme-variables-builder" as theme;
 
-$primary: #2563eb;
-$secondary: #475569;
+$primary: #f0b429;
+$secondary: #0088ba;
 $dark: #0f172a;
 $danger: #dc2626;
 $muted: #64748b;
 
-$base-bg: #f8fafc;
-$base-bg-light: #eef2ff;
-$base-bg-dark: #dbeafe;
+$base-bg: #f4f7fb;
+$base-bg-light: #ffffff;
+$base-bg-dark: #dbe7f3;
 
-$texts: #0f172a;
+$texts: #102033;
 $texts-inverted: #ffffff;
 
-$base-container-bg: #ffffff;
-$base-container-bg-accent: #f1f5f9;
+$base-container-bg: #fbfdff;
+$base-container-bg-accent: #edf3f8;
 $base-popover-bg: #ffffff;
 $base-boards: #ffffff;
-$base-info-badges: #eff6ff;
-$empty: #f8fafc;
+$base-info-badges: #edf6ff;
+$empty: #f7fbff;
 
-$borders: #cbd5e1;
-$borders-nav-mobile: #cbd5e1;
-$borders-nav-mobile-accent: #94a3b8;
+$borders: #c8d6e5;
+$borders-nav-mobile: #c8d6e5;
+$borders-nav-mobile-accent: #94a9bf;
 $scrollbar-track: rgba(15, 23, 42, 0.08);
-$scrollbar-thumb: rgba(37, 99, 235, 0.30);
+$scrollbar-thumb: rgba(0, 136, 186, 0.24);
 
 [data-theme="light"] {
-    --theme-nav-surface: #0f172a;
-    --theme-nav-surface-accent: #111d31;
-    --theme-nav-surface-raised: #17263f;
-    --theme-nav-border: rgba(148, 163, 184, 0.32);
-    --theme-nav-divider: rgba(148, 163, 184, 0.20);
-    --theme-nav-text: rgba(248, 250, 252, 0.98);
-    --theme-nav-text-muted: rgba(226, 232, 240, 0.74);
+    --theme-nav-surface: #f5f9fd;
+    --theme-nav-surface-accent: #ebf2f8;
+    --theme-nav-surface-raised: #dde9f4;
+    --theme-nav-border: rgba(148, 169, 191, 0.34);
+    --theme-nav-divider: rgba(148, 169, 191, 0.18);
+    --theme-nav-text: rgba(16, 32, 51, 0.98);
+    --theme-nav-text-muted: rgba(83, 101, 122, 0.72);
     --theme-nav-selected-ink: #ffffff;
-    --theme-mobile-nav-separator: rgba(148, 163, 184, 0.26);
+    --theme-mobile-nav-separator: rgba(148, 169, 191, 0.24);
     --theme-sidebar-nav-link-color: var(--theme-nav-text);
-    --theme-sidebar-nav-link-icon-opacity: 0.76;
+    --theme-sidebar-nav-link-icon-opacity: 0.72;
     --theme-sidebar-nav-link-text-opacity: 0.98;
 
     @include theme.build-theme(

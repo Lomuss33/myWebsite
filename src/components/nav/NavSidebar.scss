@@ -21,18 +21,21 @@ nav.nav-sidebar {
         display: flex;
         flex-direction: column;
         background:
-            radial-gradient(circle at 50% 0%,
-                rgba(56, 189, 248, 0.08),
+            radial-gradient(circle at 14% 10%,
+                rgba(255, 255, 255, 0.88),
+                transparent 32%),
+            radial-gradient(circle at 82% 4%,
+                rgba(184, 216, 244, 0.52),
                 transparent 34%),
             linear-gradient(180deg,
-                color-mix(in srgb, var(--theme-nav-surface) 98%, white 2%) 0%,
-                color-mix(in srgb, var(--theme-nav-surface) 94%, black 6%) 46%,
-                color-mix(in srgb, var(--theme-nav-surface-accent) 94%, black 6%) 100%);
+                color-mix(in srgb, var(--theme-nav-surface) 82%, white 18%) 0%,
+                var(--theme-nav-surface) 40%,
+                color-mix(in srgb, var(--theme-nav-surface-accent) 96%, #d9e8f6 4%) 100%);
         border: 1px solid var(--theme-nav-border);
         box-shadow:
-            0 18px 40px rgba(2, 6, 23, 0.32),
-            0 4px 14px rgba(2, 6, 23, 0.18),
-            inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            0 20px 44px rgba(15, 23, 42, 0.10),
+            0 6px 18px rgba(15, 23, 42, 0.06),
+            inset 0 1px 0 rgba(255, 255, 255, 0.82);
         border-radius: calc($standard-border-radius * 1.8);
         isolation: isolate;
 
@@ -63,7 +66,7 @@ nav.nav-sidebar {
         z-index: calc($z-index-sidebar + 1);
         border-radius: 999px;
         box-shadow:
-            0 10px 24px rgba(2, 6, 23, 0.28),
+            0 10px 24px rgba(15, 23, 42, 0.10),
             0 0 0 1px var(--theme-nav-divider);
     }
 }

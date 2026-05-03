@@ -9,6 +9,7 @@
         "prebuild": "node npm/generate-machine-cv.js",
         "build": "vite build",
         "cv:generate": "node npm/generate-machine-cv.js",
+        "images:generate": "node npm/generate-responsive-images.js",
         "lint": "eslint .",
         "preview": "vite preview",
         "resume:make:article": "node npm/npm-resume-new-article.js",
@@ -41,6 +42,7 @@
         "eslint-plugin-react-refresh": "^0.4.9",
         "globals": "^15.9.0",
         "sass-embedded": "^1.78.0",
+        "sharp": "^0.34.5",
         "vite": "^6.3.5"
     }
 }

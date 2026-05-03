@@ -3,7 +3,7 @@ import React from 'react'
 import ImageView from "./ImageView.jsx"
 import {useFloatingFrame} from "../../hooks/floatingFrame.js"
 
-function AvatarView({ src = "", alt = "", faIcon = "", iconText = "", className = "",  id = null, style = null }) {
+function AvatarView({ src = "", alt = "", faIcon = "", iconText = "", className = "",  id = null, style = null, sizes = null }) {
     const floatingFrame = useFloatingFrame()
 
     return (
@@ -16,7 +16,8 @@ function AvatarView({ src = "", alt = "", faIcon = "", iconText = "", className 
             {src && (
                 <ImageView src={src}
                            alt={alt}
-                           className={`avatar-view-image-view`}/>
+                           className={`avatar-view-image-view`}
+                           sizes={sizes}/>
             )}
 
             {!src && (

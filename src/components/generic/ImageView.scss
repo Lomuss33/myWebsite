@@ -1,5 +1,14 @@
 @use "../../styles/extend" as *;
 
+@keyframes image-surface-sheen {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
 div.image-view {
     display: flex;
     align-items: center;
@@ -7,17 +16,32 @@ div.image-view {
     position: relative;
     overflow: hidden;
     user-select: none;
-    pointer-events: none;
 }
 
 img.image-view-img {
     width: 100%;
     height: 100%;
+    display: block;
+    transition: opacity 0.18s ease;
+}
+
+img.image-view-img.image-view-img-hidden {
+    opacity: 0;
+}
+
+img.image-view-img.image-view-img-visible {
+    opacity: 1;
 }
 
 div.image-view-spinner-wrapper, div.image-view-error-wrapper {
     position: absolute;
-    background-color: var(--theme-dark);
+    background:
+        linear-gradient(115deg,
+            color-mix(in srgb, var(--theme-dark) 92%, white 8%) 0%,
+            color-mix(in srgb, var(--theme-dark) 86%, white 14%) 18%,
+            color-mix(in srgb, var(--theme-dark) 92%, white 8%) 36%,
+            var(--theme-dark) 100%);
+    background-size: 220% 100%;
     color: var(--theme-texts);
     width: 100%;
     height: 100%;
@@ -26,10 +50,57 @@ div.image-view-spinner-wrapper, div.image-view-error-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
+    pointer-events: none;
+}
+
+div.image-view-spinner-wrapper {
+    animation: image-surface-sheen 1.8s linear infinite;
 }
 
 div.image-view-error-wrapper {
-    font-size: 30px;
     color: var(--theme-texts);
-    i { opacity: 0.3; }
+}
+
+div.image-view-error-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    opacity: 0.76;
+}
+
+div.image-view-error-content.image-view-error-content-subtle {
+    gap: 0;
+    opacity: 0.48;
+}
+
+i.image-view-error-icon {
+    font-size: 28px;
+}
+
+span.image-view-error-label {
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+}
+
+div.image-frame {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+img.image-frame-img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    transition: opacity 0.18s ease;
+}
+
+img.image-frame-img.image-frame-img-hidden {
+    opacity: 0;
+}
+
+img.image-frame-img.image-frame-img-visible {
+    opacity: 1;
 }

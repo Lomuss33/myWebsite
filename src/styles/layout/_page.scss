@@ -95,23 +95,18 @@ div.startup-guide-overlay-label {
     pointer-events: none;
     user-select: none;
     text-align: center;
-    text-transform: lowercase;
     white-space: nowrap;
-    line-height: 1;
-    font-weight: 900;
-    font-size: clamp(0.92rem, 0.7vw + 0.62rem, 1.15rem);
-    letter-spacing: 0.08em;
+    line-height: 1.1;
+    font-weight: 700;
+    font-size: clamp(0.92rem, 0.52vw + 0.72rem, 1.05rem);
+    letter-spacing: 0.01em;
     border-radius: 999px;
-    background: rgba(5, 10, 18, 0.16);
+    background: rgba(255, 255, 255, 0.96);
     box-shadow:
-        0 0 0 1px rgba(255, 255, 255, 0.12),
-        0 10px 28px rgba(0, 0, 0, 0.22);
-    backdrop-filter: blur(3px);
-    color: #050505;
-    -webkit-text-stroke: 1.4px #ffffff;
-    text-shadow:
-        0 0 1px rgba(255, 255, 255, 0.98),
-        0 0 5px rgba(255, 255, 255, 0.42);
+        0 0 0 1px rgba(15, 23, 42, 0.12),
+        0 10px 28px rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(8px);
+    color: #0f172a;
 }
 
 @supports ((-webkit-mask-image: radial-gradient(circle, transparent, black)) or (mask-image: radial-gradient(circle, transparent, black))) {

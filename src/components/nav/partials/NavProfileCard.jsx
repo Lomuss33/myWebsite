@@ -10,6 +10,8 @@ import StatusCircle from "../../generic/StatusCircle.jsx"
 import TextTyper from "../../generic/TextTyper.jsx"
 import AudioButton from "../../buttons/AudioButton.jsx"
 
+const PROFILE_AVATAR_SIZES = "(max-width: 991.98px) 96px, 144px"
+
 function NavProfileCard({
     profile,
     expanded,
@@ -123,7 +125,8 @@ function NavProfileCard({
                                        className={`nav-profile-card-avatar`}
                                        hideSpinner={true}
                                        alt={name}
-                                       loading={`eager`}/>
+                                       loading={`eager`}
+                                       sizes={PROFILE_AVATAR_SIZES}/>
                         </div>
 
                         <div className={`nav-profile-card-avatar-face nav-profile-card-avatar-face-back`}>
@@ -132,7 +135,8 @@ function NavProfileCard({
                                        hideSpinner={true}
                                        alt={name}
                                        loading={`eager`}
-                                       fetchPriority={`low`}/>
+                                       fetchPriority={`low`}
+                                       sizes={PROFILE_AVATAR_SIZES}/>
                         </div>
                     </div>
 

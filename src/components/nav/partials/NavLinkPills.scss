@@ -8,15 +8,18 @@ nav.nav-link-pills {
     width: 100%;
     height: var(--nav-pills-height);
     background:
+        radial-gradient(circle at 20% -10%,
+            rgba(255, 255, 255, 0.9),
+            transparent 34%),
         linear-gradient(180deg,
-            color-mix(in srgb, var(--theme-nav-surface) 95%, white 5%) 0%,
+            color-mix(in srgb, var(--theme-nav-surface) 84%, white 16%) 0%,
             var(--theme-nav-surface) 58%,
-            var(--theme-nav-surface-accent) 100%);
+            color-mix(in srgb, var(--theme-nav-surface-accent) 96%, #d9e8f6 4%) 100%);
     border-top: 1px solid var(--theme-nav-border);
     border-bottom: 1px solid var(--theme-nav-border);
     box-shadow:
-        0 10px 24px rgba(2, 6, 23, 0.22),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        0 10px 24px rgba(15, 23, 42, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.72);
     overflow: hidden;
     border-radius: 0;
 }
@@ -41,21 +44,21 @@ a.nav-link-pills-link {
 
     background:
         linear-gradient(180deg,
-            color-mix(in srgb, var(--theme-nav-surface-accent) 96%, white 4%) 0%,
+            color-mix(in srgb, var(--theme-nav-surface-accent) 90%, white 10%) 0%,
             var(--theme-nav-surface-accent) 100%);
     color: var(--theme-nav-text);
 
     i {
         margin-right: 9px;
         font-size: 1.1rem;
-        opacity: 0.45;
+        opacity: 0.56;
     }
 
     span {
         font-size: 0.95rem;
         font-weight: 600;
         letter-spacing: 0.01em;
-        opacity: 0.7;
+        opacity: 0.8;
     }
 
     @include media-breakpoint-down(sm) {
@@ -79,9 +82,14 @@ nav.nav-link-pills > a.nav-link-pills-link + a.nav-link-pills-link {
 }
 
 a.nav-link-pills-link:hover {
-    background-color: var(--theme-nav-surface-raised);
+    background:
+        linear-gradient(180deg,
+            color-mix(in srgb, var(--theme-nav-surface-raised) 76%, white 24%) 0%,
+            var(--theme-nav-surface-raised) 100%);
     color: var(--theme-nav-text);
-    box-shadow: inset 0 0 0 1px var(--theme-nav-divider);
+    box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--theme-primary) 18%, var(--theme-nav-divider) 82%),
+        0 8px 16px rgba(15, 23, 42, 0.05);
     transform: translateY(-1px);
 
     i {
@@ -96,13 +104,14 @@ a.nav-link-pills-link:hover {
 a.nav-link-pills-link-active {
     background:
         linear-gradient(180deg,
-            color-mix(in srgb, var(--theme-primary) 92%, white 8%) 0%,
-            var(--theme-primary) 100%)!important;
+            color-mix(in srgb, var(--theme-primary) 62%, white 38%) 0%,
+            color-mix(in srgb, var(--theme-primary) 92%, #ffb56d 8%) 100%)!important;
     user-select: none;
     pointer-events: none;
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.14),
-        inset 0 -2px 0 color-mix(in srgb, var(--theme-primary) 78%, transparent 22%);
+        inset 0 1px 0 rgba(255, 255, 255, 0.36),
+        inset 0 -2px 0 color-mix(in srgb, var(--theme-primary) 78%, transparent 22%),
+        0 10px 18px rgba(240, 180, 41, 0.18);
 
     i {
         color: var(--theme-nav-selected-ink)!important;
@@ -119,6 +128,6 @@ a.nav-link-pills-link::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 48%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 54%);
     pointer-events: none;
 }

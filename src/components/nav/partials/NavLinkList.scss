@@ -16,7 +16,7 @@ div.nav-link-list-shell {
     overflow: hidden;
     background:
         linear-gradient(180deg,
-            color-mix(in srgb, var(--theme-nav-surface) 96%, white 4%) 0%,
+            color-mix(in srgb, var(--theme-nav-surface) 88%, white 12%) 0%,
             var(--theme-nav-surface) 100%);
 }
 
@@ -35,7 +35,7 @@ a.nav-link {
     align-items: center;
     flex: 1 1 0;
     min-height: 0;
-    border-top: 1px solid var(--theme-standard-borders);
+    border-top: 1px solid var(--theme-nav-divider);
     transition:
         background-color 0.18s ease,
         color 0.18s ease,
@@ -81,8 +81,13 @@ a.nav-link {
 }
 
 a.nav-link:hover {
-    background-color: var(--theme-nav-surface-accent);
-    box-shadow: inset 0 0 0 1px var(--theme-nav-divider);
+    background:
+        linear-gradient(90deg,
+            color-mix(in srgb, var(--theme-nav-surface-raised) 78%, white 22%) 0%,
+            var(--theme-nav-surface-raised) 100%);
+    box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--theme-primary) 16%, var(--theme-nav-divider) 84%),
+        0 8px 18px rgba(15, 23, 42, 0.05);
 
     i {
         color: var(--theme-primary);
@@ -103,14 +108,15 @@ a.nav-link:hover {
 a.nav-link-active {
     background:
         linear-gradient(90deg,
-            color-mix(in srgb, var(--theme-primary) 92%, transparent 8%) 0%,
-            var(--theme-primary) 100%)!important;
+            color-mix(in srgb, var(--theme-primary) 66%, white 34%) 0%,
+            color-mix(in srgb, var(--theme-primary) 88%, #ffb56d 12%) 100%)!important;
     border-top-color: var(--theme-primary);
     user-select: none;
     pointer-events: none;
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.12),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+        inset 0 1px 0 rgba(255, 255, 255, 0.34),
+        inset 0 -1px 0 rgba(15, 23, 42, 0.08),
+        0 10px 24px rgba(240, 180, 41, 0.18);
 
     i {
         color: var(--theme-nav-selected-ink)!important;
@@ -124,8 +130,8 @@ a.nav-link-active {
     }
 
     &::before {
-        background: rgba(255, 255, 255, 0.34);
-        box-shadow: 0 0 12px rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.52);
+        box-shadow: 0 0 14px rgba(255, 255, 255, 0.22);
     }
 }
 

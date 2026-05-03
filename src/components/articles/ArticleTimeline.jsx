@@ -261,6 +261,9 @@ function ArticleTimelineItem({ itemWrapper, itemIndex = 0, isMyArtTimeline = fal
             fontSize: `${Math.round(myArtAvatarSizePx / 2.35)}px`
         }
     }, [itemWrapper?.faIconStyle, isMyArtTimeline, myArtAvatarSizePx])
+    const avatarSizes = isMyArtTimeline ?
+        "(max-width: 575.98px) 88px, (max-width: 767.98px) 120px, (max-width: 991.98px) 144px, 168px" :
+        "(max-width: 575.98px) 42px, (max-width: 767.98px) 54px, (max-width: 991.98px) 60px, 72px"
 
     return (
         <li className={`article-timeline-item`}>
@@ -271,16 +274,18 @@ function ArticleTimelineItem({ itemWrapper, itemIndex = 0, isMyArtTimeline = fal
                           className={`article-timeline-item-avatar-link`}
                           tooltip={language.getString("open_gallery")}>
                         <AvatarView src={avatarSrc}
-                                    faIcon={avatarFaIcon}
-                                    style={avatarStyle}
-                                    alt={itemWrapper?.imageAlt}
-                                    className={`article-timeline-item-avatar article-timeline-item-avatar--button`}/>
+                                     faIcon={avatarFaIcon}
+                                     style={avatarStyle}
+                                     alt={itemWrapper?.imageAlt}
+                                     sizes={avatarSizes}
+                                     className={`article-timeline-item-avatar article-timeline-item-avatar--button`}/>
                     </Link>
                 ) : (
                     <AvatarView src={avatarSrc}
                                 faIcon={avatarFaIcon}
                                 style={avatarStyle}
                                 alt={itemWrapper?.imageAlt}
+                                sizes={avatarSizes}
                                 className={`article-timeline-item-avatar`}/>
                 )}
             </div>

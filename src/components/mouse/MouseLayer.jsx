@@ -37,8 +37,8 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
         targetElementParameters: null
     })
 
-    const _cancelAnimationLoop = () => {
-        if(animationFrameIdRef.current !== null) {
+    const cancelAnimationLoop = () => {
+        if (animationFrameIdRef.current !== null) {
             cancelAnimationFrame(animationFrameIdRef.current)
             animationFrameIdRef.current = null
         }
@@ -46,22 +46,42 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
         lastAnimationTimeRef.current = null
     }
 
-    const _ensureAnimationLoop = () => {
-        if(typeof window === "undefined" || !active || animationFrameIdRef.current !== null)
+    const ensureAnimationLoop = () => {
+        if (typeof window === "undefined" || !active || animationFrameIdRef.current !== null) {
             return
+        }
 
         lastAnimationTimeRef.current = null
-        animationFrameIdRef.current = requestAnimationFrame(_animate)
+        animationFrameIdRef.current = requestAnimationFrame(animate)
     }
 
-    const _animate = (timespan) => {
-        const dt = lastAnimationTimeRef.current === null ?
-            1 :
-            Math.max(0.25, Math.min(3, (timespan - lastAnimationTimeRef.current) / 17))
+    const setDefaultTarget = () => {
+        const width = window.innerWidth || 0
+        const height = window.innerHeight || 0
+        const state = stateRef.current
+
+        if (!state.isInitialized) {
+            state.currentX = width * 0.5
+            state.currentY = height * 0.38
+        }
+
+        state.targetX = width * 0.5
+        state.targetY = height * 0.38
+        state.isInitialized = true
+    }
+
+    const updateTargetParameters = (parameters) => {
+        stateRef.current.targetElementParameters = parameters
+    }
+
+    const animate = (timespan) => {
+        const dt = lastAnimationTimeRef.current === null
+            ? 1
+            : Math.max(0.25, Math.min(3, (timespan - lastAnimationTimeRef.current) / 17))
 
         lastAnimationTimeRef.current = timespan
 
-        const shouldContinueAnimating = _updateVisualState({
+        const shouldContinueAnimating = updateVisualState({
             circle: circleRef.current,
             icon: iconRef.current,
             tooltip: tooltipRef.current,
@@ -70,8 +90,8 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
             dt
         })
 
-        if(shouldContinueAnimating) {
-            animationFrameIdRef.current = requestAnimationFrame(_animate)
+        if (shouldContinueAnimating) {
+            animationFrameIdRef.current = requestAnimationFrame(animate)
             return
         }
 
@@ -83,69 +103,59 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
         animationPropsRef.current.hidden = hidden
         animationPropsRef.current.isBlockedByOverlay = isBlockedByOverlay
 
-        if(active) {
-            _ensureAnimationLoop()
+        if (active) {
+            ensureAnimationLoop()
             return
         }
 
-        _cancelAnimationLoop()
+        cancelAnimationLoop()
     }, [active, hidden, isBlockedByOverlay])
 
     useEffect(() => {
         return () => {
-            _cancelAnimationLoop()
+            cancelAnimationLoop()
         }
     }, [])
 
     useEffect(() => {
-        if(typeof window === "undefined" || !active)
+        if (typeof window === "undefined" || !active) {
             return
-
-        const setDefaultTarget = () => {
-            const width = window.innerWidth || 0
-            const height = window.innerHeight || 0
-            const state = stateRef.current
-
-            if(!state.isInitialized) {
-                state.currentX = width * 0.5
-                state.currentY = height * 0.38
-            }
-
-            state.targetX = width * 0.5
-            state.targetY = height * 0.38
-            state.isInitialized = true
-
-            _ensureAnimationLoop()
-        }
-
-        const updateTargetFromElement = (element) => {
-            stateRef.current.targetElementParameters = _generateMouseTargetParameters(element, constants)
         }
 
         const handlePointerMove = (event) => {
             const state = stateRef.current
             state.targetX = event.clientX
             state.targetY = event.clientY
-            updateTargetFromElement(event.target)
-            _ensureAnimationLoop()
+            updateTargetParameters(resolveMouseTargetParameters({
+                event,
+                constants
+            }))
+            ensureAnimationLoop()
         }
 
         const handlePointerDown = (event) => {
-            if(event.button !== 0)
+            if (event.button !== 0) {
                 return
+            }
 
             stateRef.current.isClicked = true
-            updateTargetFromElement(event.target)
-            _ensureAnimationLoop()
+            updateTargetParameters(resolveMouseTargetParameters({
+                event,
+                constants
+            }))
+            ensureAnimationLoop()
         }
 
         const handlePointerUp = (event) => {
             const state = stateRef.current
             state.isClicked = false
-            updateTargetFromElement(event.target)
-            _ensureAnimationLoop()
+            updateTargetParameters(resolveMouseTargetParameters({
+                event,
+                constants
+            }))
+            ensureAnimationLoop()
 
-            if(deferredTargetUpdateRef.current !== null) {
+            if (deferredTargetUpdateRef.current !== null) {
                 window.clearTimeout(deferredTargetUpdateRef.current)
             }
 
@@ -153,19 +163,24 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
                 deferredTargetUpdateRef.current = null
 
                 const hoveredElement = document.elementFromPoint(event.clientX, event.clientY)
-                updateTargetFromElement(hoveredElement)
-                _ensureAnimationLoop()
+                updateTargetParameters(resolveMouseTargetParameters({
+                    target: hoveredElement,
+                    constants
+                }))
+                ensureAnimationLoop()
             }, 60)
         }
 
         const handlePointerLeave = () => {
             stateRef.current.isClicked = false
-            stateRef.current.targetElementParameters = null
+            updateTargetParameters(null)
             setDefaultTarget()
-            _ensureAnimationLoop()
+            ensureAnimationLoop()
         }
 
         setDefaultTarget()
+        ensureAnimationLoop()
+
         window.addEventListener("pointermove", handlePointerMove, { passive: true })
         window.addEventListener("pointerdown", handlePointerDown, { passive: true })
         window.addEventListener("pointerup", handlePointerUp, { passive: true })
@@ -174,7 +189,7 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
         window.addEventListener("resize", setDefaultTarget, { passive: true })
 
         return () => {
-            if(deferredTargetUpdateRef.current !== null) {
+            if (deferredTargetUpdateRef.current !== null) {
                 window.clearTimeout(deferredTargetUpdateRef.current)
                 deferredTargetUpdateRef.current = null
             }
@@ -188,7 +203,7 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
         }
     }, [active, constants])
 
-    if(!active) {
+    if (!active) {
         return null
     }
 
@@ -199,7 +214,7 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
             <div ref={circleRef}
                  className={`mouse-layer-circle`}
                  id={`mouse-layer-circle`}
-                 style={{opacity: 0}}>
+                 style={{ opacity: 0 }}>
                 <i ref={iconRef}
                    className={`mouse-layer-circle-fa-icon mouse-layer-circle-fa-icon-hidden fa-solid fa-circle`}/>
             </div>
@@ -212,25 +227,22 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
         </div>
     )
 
-    function _updateVisualState({ circle, icon, tooltip, hidden, isBlockedByOverlay, dt }) {
-        if(!circle || !icon || !tooltip)
+    function updateVisualState({ circle, icon, tooltip, hidden, isBlockedByOverlay, dt }) {
+        if (!circle || !icon || !tooltip) {
             return false
+        }
 
         const state = stateRef.current
         const params = isBlockedByOverlay ? null : state.targetElementParameters
 
-        if(!state.isInitialized) {
-            const width = window.innerWidth || 0
-            const height = window.innerHeight || 0
-            state.currentX = width * 0.5
-            state.currentY = height * 0.38
-            state.targetX = state.currentX
-            state.targetY = state.currentY
-            state.isInitialized = true
+        if (!state.isInitialized) {
+            setDefaultTarget()
+            state.currentX = state.targetX
+            state.currentY = state.targetY
         }
 
-        state.currentX = _tweenNumber(state.currentX, state.targetX, 0.15 * dt, 1)
-        state.currentY = _tweenNumber(state.currentY, state.targetY, 0.15 * dt, 1)
+        state.currentX = tweenNumber(state.currentX, state.targetX, 0.15 * dt, 1)
+        state.currentY = tweenNumber(state.currentY, state.targetY, 0.15 * dt, 1)
 
         const isPositioned =
             Math.abs(state.currentX - state.targetX) <= 0.75 &&
@@ -244,30 +256,36 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
         const shouldFadeOut = state.stoppedFor > MAX_IDLE_TIME_IN_SECONDS && !params && !shouldPreserveCircle
 
         let targetScale = MIN_SCALE
-        if(params && !shouldPreserveCircle)
+        if (params && !shouldPreserveCircle) {
             targetScale = MIN_SCALE + (MAX_SCALE - MIN_SCALE) / 2
-        if(state.isClicked)
+        }
+        if (state.isClicked) {
             targetScale = MAX_SCALE
-        if(hidden)
+        }
+        if (hidden) {
             targetScale = 0
+        }
 
         let targetOpacity = shouldFadeOut ? 0 : MIN_OPACITY
-        if(params && !shouldPreserveCircle)
+        if (params && !shouldPreserveCircle) {
             targetOpacity = (MAX_OPACITY - MIN_OPACITY) / 2
-        if(state.isClicked)
+        }
+        if (state.isClicked) {
             targetOpacity += (MAX_OPACITY - MIN_OPACITY) / 2
-        if(hidden)
+        }
+        if (hidden) {
             targetOpacity = 0
+        }
 
-        state.currentScale = _tweenNumber(state.currentScale, targetScale, 0.2, 0.1)
-        state.currentOpacity = _tweenNumber(state.currentOpacity, targetOpacity, 0.2, 0.025)
+        state.currentScale = tweenNumber(state.currentScale, targetScale, 0.2, 0.1)
+        state.currentOpacity = tweenNumber(state.currentOpacity, targetOpacity, 0.2, 0.025)
 
         circle.style.transform = `translate3d(${state.currentX - CIRCLE_SIZE_IN_PIXELS / 2}px, ${state.currentY - CIRCLE_SIZE_IN_PIXELS / 2}px, 0) scale(${state.currentScale / 3})`
         circle.style.opacity = state.currentOpacity.toString()
         circle.classList.toggle('mouse-layer-circle-highlight', Boolean(params) && !shouldPreserveCircle)
 
         const faIcon = params?.faIcon || null
-        if(faIcon !== state.currentFaIcon) {
+        if (faIcon !== state.currentFaIcon) {
             state.currentFaIcon = faIcon
             icon.className = `mouse-layer-circle-fa-icon ${faIcon ? "" : "mouse-layer-circle-fa-icon-hidden"} ${faIcon || "fa-solid fa-circle"}`
         }
@@ -276,13 +294,13 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
             ? ""
             : (params?.dataTooltip || "")
 
-        if(nextLabel !== state.tooltipLabel) {
+        if (nextLabel !== state.tooltipLabel) {
             state.tooltipLabel = nextLabel
             tooltip.querySelector("span").innerHTML = nextLabel
             tooltip.classList.toggle("custom-tooltip-hidden", !nextLabel)
         }
 
-        if(nextLabel) {
+        if (nextLabel) {
             const tooltipBounds = tooltip.getBoundingClientRect()
             const targetX = state.currentX - tooltipBounds.width / 2
             const targetY = state.currentY - tooltipBounds.height - (CIRCLE_SIZE_IN_PIXELS * state.currentScale / 3) / 2 - 5
@@ -301,41 +319,79 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
     }
 }
 
-function _tweenNumber(currentValue, targetValue, multiplier, diffBreakpoint) {
+function tweenNumber(currentValue, targetValue, multiplier, diffBreakpoint) {
     const diff = targetValue - currentValue
-    if(Math.abs(diff) > diffBreakpoint) {
+    if (Math.abs(diff) > diffBreakpoint) {
         return currentValue + diff * multiplier
     }
 
     return targetValue
 }
 
-function _generateMouseTargetParameters(target, constants) {
-    if(!(target instanceof Element))
+function resolveMouseTargetParameters({ event = null, target = null, constants }) {
+    const path = getElementPath(event, target)
+    if (!path.length) {
         return null
-
-    let parameters = null
-    if(target.getAttribute("data-cursor-preserve"))
-        parameters = {type: "passive", preserveCircle: true}
-    if(target.matches("a"))
-        parameters = {type: "link"}
-    if(target.matches("button"))
-        parameters = {type: "button"}
-    if(target.getAttribute("data-tooltip"))
-        parameters = {type: "custom"}
-
-    const trackableTarget = constants.TRACKABLE_CLASSES.find(item => {
-        return target.classList.contains(item.name)
-    })
-
-    parameters = parameters || trackableTarget
-    if(!parameters)
-        return null
-
-    return {
-        ...parameters,
-        dataTooltip: target.getAttribute('data-tooltip') || null
     }
+
+    // Resolve against ancestor elements instead of the raw event target so nested
+    // icons/spans inside one control do not make the cursor flicker between states.
+    const explicitTarget = path.find((element) =>
+        element.hasAttribute("data-tooltip") || element.hasAttribute("data-cursor-preserve")
+    )
+    if (explicitTarget) {
+        return {
+            type: explicitTarget.hasAttribute("data-cursor-preserve") ? "passive" : "custom",
+            preserveCircle: explicitTarget.hasAttribute("data-cursor-preserve"),
+            dataTooltip: explicitTarget.getAttribute("data-tooltip") || null
+        }
+    }
+
+    const semanticTarget = path.find((element) => element.matches("button, a"))
+    if (semanticTarget) {
+        return {
+            type: semanticTarget.matches("button") ? "button" : "link",
+            dataTooltip: semanticTarget.getAttribute("data-tooltip") || null
+        }
+    }
+
+    for (const element of path) {
+        const trackableTarget = constants.TRACKABLE_CLASSES.find((item) => element.classList.contains(item.name))
+        if (trackableTarget) {
+            return {
+                ...trackableTarget,
+                faIcon: trackableTarget.faIcon || trackableTarget.icon || null,
+                dataTooltip: element.getAttribute("data-tooltip") || null
+            }
+        }
+    }
+
+    return null
+}
+
+function getElementPath(event, target) {
+    if (event?.composedPath) {
+        return event.composedPath().filter((item) => item instanceof Element)
+    }
+
+    const seedTarget = target instanceof Element
+        ? target
+        : event?.target instanceof Element
+            ? event.target
+            : null
+
+    if (!seedTarget) {
+        return []
+    }
+
+    const path = []
+    let currentElement = seedTarget
+    while (currentElement) {
+        path.push(currentElement)
+        currentElement = currentElement.parentElement
+    }
+
+    return path
 }
 
 export default MouseLayer

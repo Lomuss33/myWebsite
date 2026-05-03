@@ -2,11 +2,13 @@ import "./LayoutSaltShaker.scss"
 import React, {useEffect, useRef, useState} from "react"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useNavigation} from "../../providers/NavigationProvider.jsx"
+import {useFeedbacks} from "../../providers/FeedbacksProvider.jsx"
 import HoverStaticTooltip from "../widgets/HoverStaticTooltip.jsx"
 
 function LayoutSaltShaker() {
     const language = useLanguage()
     const navigation = useNavigation()
+    const feedbacks = useFeedbacks()
 
     const [isPaused, setIsPaused] = useState(false)
     const pauseTimeoutRef = useRef(null)
@@ -15,6 +17,12 @@ function LayoutSaltShaker() {
     const tooltipLabel = language?.getStringOrFallback?.(
         "salt_shaker_grain_of_salt",
         "Take it with a grain of salt."
+    )
+    const isInteractiveDesktop = Boolean(feedbacks?.animatedCursorEnabled)
+    const isCursorActive = feedbacks?.animatedCursorActive ?? true
+    const cursorActionLabel = language?.getStringOrFallback?.(
+        isCursorActive ? "deactivate_magic_cursor" : "activate_magic_cursor",
+        isCursorActive ? "Deactivate Magic Cursor" : "Activate Magic Cursor"
     )
 
     const pauseFor = (ms) => {
@@ -54,14 +62,46 @@ function LayoutSaltShaker() {
         pauseFor(1000)
     }, [navigation?.targetSection?.id])
 
+    const handleDesktopClick = () => {
+        if (!isInteractiveDesktop) {
+            return
+        }
+
+        feedbacks.toggleAnimatedCursorActive(true)
+    }
+
+    const handleKeyDown = (event) => {
+        if (!isInteractiveDesktop) {
+            return
+        }
+
+        if (event.key !== "Enter" && event.key !== " " && event.key !== "Spacebar") {
+            return
+        }
+
+        event.preventDefault()
+        feedbacks.toggleAnimatedCursorActive(true)
+    }
+
+    const stateClass = !isInteractiveDesktop || isCursorActive
+        ? "layout-salt-shaker-cursor-on"
+        : "layout-salt-shaker-cursor-off"
+    const interactiveClass = isInteractiveDesktop ? "layout-salt-shaker-interactive" : ""
+    const pausedClass = isPaused ? "layout-salt-shaker-paused" : ""
+
     return (
         <div id="layout-salt-shaker"
-             className={`layout-salt-shaker ${isPaused ? "layout-salt-shaker-paused" : ""}`}
-             aria-hidden="true">
+             className={`layout-salt-shaker ${stateClass} ${interactiveClass} ${pausedClass}`.trim()}
+             role={isInteractiveDesktop ? "button" : undefined}
+             tabIndex={isInteractiveDesktop ? 0 : undefined}
+             aria-label={isInteractiveDesktop ? cursorActionLabel : tooltipLabel}
+             aria-pressed={isInteractiveDesktop ? isCursorActive : undefined}
+             onKeyDown={handleKeyDown}>
             <HoverStaticTooltip label={tooltipLabel}
                                className={`layout-salt-shaker-tooltip text-center`}
                                id={`layout-salt-shaker-tooltip`}
                                targetId={`layout-salt-shaker`}
+                               onDesktopClick={isInteractiveDesktop ? handleDesktopClick : null}
                                forceResetFlag={`${navigation?.targetSection?.id || "none"}-${isPaused ? "paused" : "active"}`}
                                toggleBehaviorOnTouchScreens={true}/>
             <svg
@@ -72,21 +112,21 @@ function LayoutSaltShaker() {
                 height="379"
                 focusable="false">
                 <style>{`
-                    .st0{opacity:0.5;fill:#F5F5F5;}
-                    .st1{clip-path:url(#layout-salt-shaker-svgid-2);fill:#EAEAEA;stroke:#EAEAEA;stroke-width:4;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:1,6;}
-                    .st2{clip-path:url(#layout-salt-shaker-svgid-2);fill:#FFFFFF;}
+                    .st0{opacity:0.5;fill:var(--layout-salt-shaker-glass-base, #F5F5F5);transition:fill 0.22s ease, stroke 0.22s ease, opacity 0.22s ease;}
+                    .st1{clip-path:url(#layout-salt-shaker-svgid-2);fill:var(--layout-salt-shaker-top-fill, #EAEAEA);stroke:var(--layout-salt-shaker-top-fill, #EAEAEA);stroke-width:4;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:1,6;transition:fill 0.22s ease, stroke 0.22s ease, opacity 0.22s ease;}
+                    .st2{clip-path:url(#layout-salt-shaker-svgid-2);fill:var(--layout-salt-shaker-surface-fill, #FFFFFF);transition:fill 0.22s ease, stroke 0.22s ease, opacity 0.22s ease;}
                     .st3{clip-path:url(#layout-salt-shaker-svgid-2);}
-                    .st4{fill:none;stroke:#FFFFFF;stroke-width:4;stroke-linecap:round;stroke-miterlimit:10;}
-                    .st5{fill:none;stroke:#FFFFFF;stroke-width:4;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:1.003,6.0182;}
-                    .st6{fill:#FFFFFF;}
-                    .st7{opacity:0.4;fill:#EAEAEA;}
-                    .st8{fill:none;stroke:#C9C9C9;stroke-width:6;stroke-linejoin:round;stroke-miterlimit:10;}
-                    .st9{fill:none;stroke:#C9C9C9;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
-                    .st10{fill:#C9C9C9;}
-                    .st11{fill:#B5B5B5;}
-                    .st12{fill:#939393;}
-                    .st13{clip-path:url(#layout-salt-shaker-svgid-4);fill:none;stroke:#B5B5B5;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
-                    .st14{fill:#FFFFFF;stroke:#D3D3D3;stroke-miterlimit:10;}
+                    .st4{fill:none;stroke:var(--layout-salt-shaker-surface-stroke, #FFFFFF);stroke-width:4;stroke-linecap:round;stroke-miterlimit:10;transition:fill 0.22s ease, stroke 0.22s ease, opacity 0.22s ease;}
+                    .st5{fill:none;stroke:var(--layout-salt-shaker-surface-stroke, #FFFFFF);stroke-width:4;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:1.003,6.0182;transition:fill 0.22s ease, stroke 0.22s ease, opacity 0.22s ease;}
+                    .st6{fill:var(--layout-salt-shaker-surface-stroke, #FFFFFF);transition:fill 0.22s ease, stroke 0.22s ease, opacity 0.22s ease;}
+                    .st7{opacity:0.4;fill:var(--layout-salt-shaker-top-fill, #EAEAEA);transition:fill 0.22s ease, stroke 0.22s ease, opacity 0.22s ease;}
+                    .st8{fill:none;stroke:var(--layout-salt-shaker-outline, #C9C9C9);stroke-width:6;stroke-linejoin:round;stroke-miterlimit:10;transition:fill 0.22s ease, stroke 0.22s ease, opacity 0.22s ease;}
+                    .st9{fill:none;stroke:var(--layout-salt-shaker-outline, #C9C9C9);stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;transition:fill 0.22s ease, stroke 0.22s ease, opacity 0.22s ease;}
+                    .st10{fill:var(--layout-salt-shaker-outline, #C9C9C9);transition:fill 0.22s ease, stroke 0.22s ease, opacity 0.22s ease;}
+                    .st11{fill:var(--layout-salt-shaker-shadow, #B5B5B5);transition:fill 0.22s ease, stroke 0.22s ease, opacity 0.22s ease;}
+                    .st12{fill:var(--layout-salt-shaker-shadow-deep, #939393);transition:fill 0.22s ease, stroke 0.22s ease, opacity 0.22s ease;}
+                    .st13{clip-path:url(#layout-salt-shaker-svgid-4);fill:none;stroke:var(--layout-salt-shaker-shadow, #B5B5B5);stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;transition:fill 0.22s ease, stroke 0.22s ease, opacity 0.22s ease;}
+                    .st14{fill:var(--layout-salt-shaker-grain-fill, #FFFFFF);stroke:var(--layout-salt-shaker-grain-stroke, #D3D3D3);stroke-miterlimit:10;transition:fill 0.22s ease, stroke 0.22s ease, opacity 0.22s ease;}
 
                     @keyframes layout-salt-shaker-upanddown{
                         0%{transform:rotate(0deg);}

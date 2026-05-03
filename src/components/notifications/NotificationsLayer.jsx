@@ -11,6 +11,8 @@ function NotificationsLayer({ target, onNotificationDismissed = null }) {
                                   type={target.type}
                                   title={target.title}
                                   message={target.message}
+                                  compact={target.compact}
+                                  durationMs={target.durationMs}
                                   onDismiss={onNotificationDismissed}/>
                 </div>
             )}

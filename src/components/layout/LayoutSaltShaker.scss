@@ -1,6 +1,16 @@
 @use "../../styles/extend" as *;
 
 div.layout-salt-shaker {
+    --layout-salt-shaker-glass-base: #f5f5f5;
+    --layout-salt-shaker-top-fill: #eaeaea;
+    --layout-salt-shaker-surface-fill: #ffffff;
+    --layout-salt-shaker-surface-stroke: #ffffff;
+    --layout-salt-shaker-outline: #c9c9c9;
+    --layout-salt-shaker-shadow: #b5b5b5;
+    --layout-salt-shaker-shadow-deep: #939393;
+    --layout-salt-shaker-grain-fill: #ffffff;
+    --layout-salt-shaker-grain-stroke: #d3d3d3;
+
     position: fixed;
     right: var(--default-card-spacing);
     bottom: var(--default-card-spacing);
@@ -14,7 +24,40 @@ div.layout-salt-shaker {
     user-select: none;
     cursor: help;
 
-    filter: grayscale(1) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.12));
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.12));
+    transition:
+        transform 0.18s ease,
+        filter 0.18s ease,
+        opacity 0.18s ease;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+div.layout-salt-shaker.layout-salt-shaker-interactive {
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+        transform: translateY(-1px);
+        filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.18));
+    }
+
+    &:focus-visible {
+        border-radius: 999px;
+        box-shadow:
+            0 0 0 3px color-mix(in srgb, var(--theme-primary) 45%, transparent),
+            0 0 0 1px color-mix(in srgb, var(--theme-primary) 85%, white 15%);
+    }
+}
+
+div.layout-salt-shaker.layout-salt-shaker-cursor-off {
+    --layout-salt-shaker-top-fill: #6a4128;
+    --layout-salt-shaker-surface-fill: #5e3a22;
+    --layout-salt-shaker-surface-stroke: #2f1b10;
+    --layout-salt-shaker-grain-fill: #342016;
+    --layout-salt-shaker-grain-stroke: #140d09;
 }
 
 div.layout-salt-shaker svg {

@@ -50,10 +50,11 @@ This file explains the visible clickable controls in the website and what each o
 - Switches between the configured themes, usually dark and light mode.
 - Theme changes affect colors, icons, and any theme-aware image/text placeholders.
 
-### Magic cursor toggle
+### Magic cursor shaker
 
-- Turns the animated cursor effect on or off.
-- This option only appears on devices/layouts where the custom cursor is supported.
+- On supported desktop layouts, clicking the salt shaker turns the animated cursor effect on or off.
+- The shaker keeps its tooltip and also shows the current cursor state visually.
+- On touch or unsupported layouts, the shaker stays informational and does not enable the custom cursor.
 
 ### Resume download
 

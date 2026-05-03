@@ -78,15 +78,20 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
         displayNotification(
             language.getString("magic_cursor"),
             language.getString(newValue ? "activate_magic_cursor_message" : "deactivate_magic_cursor_message"),
-            "default"
+            "default",
+            {
+                compact: true,
+                durationMs: 2200
+            }
         )
     }
 
-    const displayNotification = (title, message, type) => {
+    const displayNotification = (title, message, type, options = {}) => {
         setDisplayingNotification({
             type: type,
             title: title,
-            message: message
+            message: message,
+            ...options
         })
     }
 

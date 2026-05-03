@@ -2,18 +2,15 @@ import "./NavToolList.scss"
 import React from 'react'
 import {useLanguage} from "../../../providers/LanguageProvider.jsx"
 import {useTheme} from "../../../providers/ThemeProvider.jsx"
-import {useFeedbacks} from "../../../providers/FeedbacksProvider.jsx"
 import {useData} from "../../../providers/DataProvider.jsx"
 import NavToolLanguagePicker from "../tools/NavToolLanguagePicker.jsx"
 import NavToolThemePicker from "../tools/NavToolThemePicker.jsx"
-import NavToolCursorToggle from "../tools/NavToolCursorToggle.jsx"
 import NavToolResumeDownloader from "../tools/NavToolResumeDownloader.jsx"
 import NavToolSettings from "../tools/NavToolSettings.jsx"
 
 function NavToolList({ expanded }) {
     const language = useLanguage()
     const theme = useTheme()
-    const feedbacks = useFeedbacks()
     const data = useData()
 
     const profile = data.getProfile()
@@ -25,7 +22,6 @@ function NavToolList({ expanded }) {
     const widgets = [
         ...(language.supportsMultipleLanguages ? ["language"] : []),
         ...(theme.supportsMultipleThemes ? [NavToolSettings.Options.THEME] : []),
-        ...(feedbacks.animatedCursorEnabled ? [NavToolSettings.Options.CURSOR] : []),
         ...(profile.resumePdfUrl ? [NavToolSettings.Options.DOWNLOAD_RESUME] : []),
     ]
 
@@ -45,7 +41,6 @@ function NavToolList({ expanded }) {
                      key={key}>
                     {item === "language" && (<NavToolLanguagePicker dropdownDrop={"up"}/>)}
                     {item === NavToolSettings.Options.THEME && (<NavToolThemePicker/>)}
-                    {item === NavToolSettings.Options.CURSOR && (<NavToolCursorToggle/>)}
                     {item === NavToolSettings.Options.DOWNLOAD_RESUME && (<NavToolResumeDownloader/>)}
                 </div>
             ))}

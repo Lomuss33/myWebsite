@@ -200,6 +200,12 @@ article.article.article-stack-compact {
 }
 
 article.article.article-stack-home {
+    div.collapsable {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
     div.article-stack-items.article-stack-items-home {
         /* Home/About stack: readable but not overly spaced-out. */
         --stack-columns: 3;

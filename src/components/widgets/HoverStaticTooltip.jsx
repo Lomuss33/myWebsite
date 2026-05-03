@@ -43,7 +43,7 @@ function HoverStaticTooltip({
             targetEl.removeEventListener("mouseleave", _onTargetMouseLeave)
             targetEl.removeEventListener("click", _onTargetClick)
         }
-    }, [null, targetId])
+    }, [targetId, isTouchDevice, onDesktopClick, toggleBehaviorOnTouchScreens, desktopClickShowsTooltip])
 
     /** @listens viewport.innerWidth **/
     useEffect(() => {

@@ -2,7 +2,11 @@ import "./Notification.scss"
 import React, {useEffect, useState} from 'react'
 import {useScheduler} from "../../hooks/scheduler.js"
 
-function Notification({ id, type, title, message, onDismiss }) {
+const DEFAULT_HIDE_DELAY_MS = 4000
+const DEFAULT_DISMISS_DELAY_MS = 4400
+const COMPACT_EXTRA_DISMISS_BUFFER_MS = 300
+
+function Notification({ id, type, title, message, compact = false, durationMs = DEFAULT_HIDE_DELAY_MS, onDismiss }) {
     const scheduler = useScheduler()
 
     const [transitionStatus, setTransitionStatus] = useState("hidden")
@@ -34,15 +38,18 @@ function Notification({ id, type, title, message, onDismiss }) {
     }
 
     const _show = () => {
+        const hideDelayMs = Math.max(900, durationMs)
+        const dismissDelayMs = hideDelayMs + (compact ? COMPACT_EXTRA_DISMISS_BUFFER_MS : DEFAULT_DISMISS_DELAY_MS - DEFAULT_HIDE_DELAY_MS)
+
         scheduler.clearAllWithTag(tag)
         scheduler.schedule(() => {_updateDisplayingData()}, 30, tag)
         scheduler.schedule(() => {setTransitionStatus("shown")}, 60, tag)
-        scheduler.schedule(() => {setTransitionStatus("hiding")}, 4000, tag)
-        scheduler.schedule(() => {onDismiss && onDismiss()}, 4400, tag)
+        scheduler.schedule(() => {setTransitionStatus("hiding")}, hideDelayMs, tag)
+        scheduler.schedule(() => {onDismiss && onDismiss()}, dismissDelayMs, tag)
     }
 
     return (
-        <div className={`notification notification-${transitionStatus} ${typeMetadata.class}`}>
+        <div className={`notification notification-${transitionStatus} ${typeMetadata.class} ${compact ? "notification-compact" : ""}`}>
             <div className={`notification-header`}>
                 <div className={`notification-title text-4`}>
                     <i className={`${typeMetadata.faIcon} ${typeMetadata.faIconClass} me-2`}/>

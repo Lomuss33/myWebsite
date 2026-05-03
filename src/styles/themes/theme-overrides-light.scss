@@ -491,37 +491,6 @@
     color: #0f172a;
 }
 
-[data-theme="light"] article#article-1-section-my-software div.category-filter,
-[data-theme="light"] article#article-1-section-my-hardware div.category-filter,
-[data-theme="light"] article#article-3-section-my-art div.category-filter {
-    background: linear-gradient(180deg, #ffffff, #f6f9fd);
-    border: 1px solid rgba(37, 99, 235, 0.14);
-    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
-}
-
-[data-theme="light"] article#article-1-section-my-software button.category-filter-button,
-[data-theme="light"] article#article-1-section-my-hardware button.category-filter-button,
-[data-theme="light"] article#article-3-section-my-art button.category-filter-button {
-    background: linear-gradient(180deg, #ffffff, #f6f9fd);
-    color: #0f172a;
-    border-color: rgba(37, 99, 235, 0.14) !important;
-}
-
-[data-theme="light"] article#article-1-section-my-software button.category-filter-button:hover,
-[data-theme="light"] article#article-1-section-my-hardware button.category-filter-button:hover,
-[data-theme="light"] article#article-3-section-my-art button.category-filter-button:hover {
-    border-color: rgba(245, 158, 11, 0.28) !important;
-    color: #0f172a;
-}
-
-[data-theme="light"] article#article-1-section-my-software button.category-filter-button-selected,
-[data-theme="light"] article#article-1-section-my-hardware button.category-filter-button-selected,
-[data-theme="light"] article#article-3-section-my-art button.category-filter-button-selected {
-    background: linear-gradient(180deg, #2563eb, #0f766e) !important;
-    color: #ffffff !important;
-    border-color: rgba(37, 99, 235, 0.34) !important;
-}
-
 [data-theme="light"] article#article-1-section-my-software div.article-portfolio-item,
 [data-theme="light"] article#article-1-section-my-hardware div.article-portfolio-item {
     position: relative;
@@ -588,7 +557,10 @@
 
 [data-theme="light"] article#article-2-section-my-software a.article-testimonials-item-name,
 [data-theme="light"] article#article-3-section-my-software a.article-testimonials-item-name,
-[data-theme="light"] article#article-4-section-my-software a.article-testimonials-item-name,
+[data-theme="light"] article#article-4-section-my-software a.article-testimonials-item-name {
+    color: #1d4ed8;
+}
+
 [data-theme="light"] article#article-2-section-my-software div.article-testimonials-item-role,
 [data-theme="light"] article#article-3-section-my-software div.article-testimonials-item-role,
 [data-theme="light"] article#article-4-section-my-software div.article-testimonials-item-role {
@@ -735,10 +707,6 @@
     color: #2563eb;
 }
 
-[data-theme="light"] article#article-3-section-my-art button.category-filter-button {
-    color: #0f172a;
-}
-
 [data-theme="light"] section#section-about {
     background:
         radial-gradient(circle at top left, rgba(37, 99, 235, 0.08) 0%, transparent 30%),
@@ -797,47 +765,6 @@
 [data-theme="light"] section#section-my-writings div.section-content-border-decoration-top-left,
 [data-theme="light"] section#section-my-art div.section-content-border-decoration-top-left {
     opacity: 0.45;
-}
-
-[data-theme="light"] article#article-1-section-my-software div.category-filter,
-[data-theme="light"] article#article-1-section-my-hardware div.category-filter,
-[data-theme="light"] article#article-3-section-my-art div.category-filter {
-    background: linear-gradient(180deg, #ffffff, #f8fbff);
-    border: 1px solid rgba(37, 99, 235, 0.12);
-    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.07);
-}
-
-[data-theme="light"] article#article-1-section-my-software button.category-filter-button,
-[data-theme="light"] article#article-1-section-my-hardware button.category-filter-button,
-[data-theme="light"] article#article-3-section-my-art button.category-filter-button {
-    background: linear-gradient(180deg, #ffffff, #f8fbff);
-    color: #0f172a;
-    border-color: rgba(37, 99, 235, 0.12) !important;
-}
-
-[data-theme="light"] article#article-1-section-my-software button.category-filter-button:hover,
-[data-theme="light"] article#article-1-section-my-hardware button.category-filter-button:hover,
-[data-theme="light"] article#article-3-section-my-art button.category-filter-button:hover {
-    border-color: rgba(245, 158, 11, 0.26) !important;
-    color: #0f172a;
-}
-
-[data-theme="light"] article#article-1-section-my-software button.category-filter-button-selected {
-    background: linear-gradient(180deg, #2563eb, #f97316) !important;
-    color: #ffffff !important;
-    border-color: rgba(37, 99, 235, 0.30) !important;
-}
-
-[data-theme="light"] article#article-1-section-my-hardware button.category-filter-button-selected {
-    background: linear-gradient(180deg, #06b6d4, #f59e0b) !important;
-    color: #ffffff !important;
-    border-color: rgba(6, 182, 212, 0.30) !important;
-}
-
-[data-theme="light"] article#article-3-section-my-art button.category-filter-button-selected {
-    background: linear-gradient(180deg, #0ea5e9, #fb7185) !important;
-    color: #ffffff !important;
-    border-color: rgba(14, 165, 233, 0.30) !important;
 }
 
 [data-theme="light"] article#article-1-section-my-software div.article-portfolio-item-title-category {

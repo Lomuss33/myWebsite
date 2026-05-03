@@ -81,12 +81,19 @@ article#article-2-section-about {
 }
 
 article#article-2-section-experience {
+    div.article-feature-items.article-feature-items-section-experience {
+        display: grid;
+        justify-items: center;
+    }
+
     div.article-feature-item {
-        max-width: none;
-        margin-inline: 0;
-        grid-template-columns: minmax(280px, 2fr) minmax(360px, 3fr);
-        gap: clamp(18px, 2vw, 28px);
-        align-items: start;
+        width: min(100%, 1040px);
+        max-width: 1040px;
+        margin-inline: auto;
+        grid-template-columns: minmax(240px, 0.88fr) minmax(0, 1.12fr);
+        gap: clamp(24px, 3vw, 42px);
+        align-items: stretch;
+        justify-content: center;
         padding: 0;
         border: 0;
         border-radius: 0;
@@ -105,7 +112,7 @@ article#article-2-section-experience {
 
     div.article-feature-item-image {
         width: 100%;
-        max-width: 520px;
+        max-width: 420px;
         height: auto;
         aspect-ratio: var(--article-feature-image-aspect-ratio, 707 / 1000);
         background-color: transparent;
@@ -125,19 +132,25 @@ article#article-2-section-experience {
     }
 
     div.article-feature-item-content {
-        align-items: flex-start;
+        width: 100%;
+        min-height: 100%;
+        justify-content: center;
+        align-items: center;
+        justify-self: stretch;
         z-index: 1;
         background: transparent;
     }
 
     div.article-feature-item-text,
     div.article-feature-item-text-measure-square {
-        font-size: clamp(0.92rem, 0.18vw + 0.88rem, 1.02rem);
-        line-height: 1.56;
+        width: 100%;
+        font-size: clamp(1rem, 0.22vw + 0.96rem, 1.12rem);
+        line-height: 1.62;
     }
 
     div.article-feature-item-text {
-        max-width: 62ch;
+        max-width: 54ch;
+        margin-inline: auto;
         color: #e2e8f0;
         background: transparent;
 
@@ -147,7 +160,7 @@ article#article-2-section-experience {
     }
 
     div.article-feature-item-text-measure-square {
-        max-width: 62ch;
+        max-width: 54ch;
         background: transparent;
     }
 
@@ -192,7 +205,13 @@ article#article-2-section-experience {
     }
 
     @include media-breakpoint-down(lg) {
+        div.article-feature-items.article-feature-items-section-experience {
+            display: flex;
+        }
+
         div.article-feature-item {
+            width: 100%;
+            max-width: none;
             grid-template-columns: 1fr;
             gap: 18px;
             align-items: stretch;
@@ -211,11 +230,16 @@ article#article-2-section-experience {
         }
 
         div.article-feature-item-content {
+            width: 100%;
+            max-width: 100%;
+            justify-content: flex-start;
             align-items: flex-start;
+            justify-self: auto;
         }
 
         div.article-feature-item-text {
             max-width: 100%;
+            margin-inline: 0;
         }
 
         div.article-feature-item-text-measure-square {

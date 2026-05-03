@@ -1,6 +1,9 @@
 @use "../../styles/extend" as *;
 
 div.balloon {
+    --balloon-padding: 1.5rem;
+    --balloon-padding-mobile: 1rem 1.5rem;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -8,7 +11,7 @@ div.balloon {
     flex-grow: 1;
 
     min-height: 150px;
-    padding: 1.5rem;
+    padding: var(--balloon-padding);
 
     background-color: var(--theme-boards-background);
     color: var(--theme-texts-light);
@@ -16,7 +19,7 @@ div.balloon {
     border-radius: $standard-border-radius;
 
     @include media-breakpoint-down(md) {
-        padding: 1rem 1.5rem;
+        padding: var(--balloon-padding-mobile);
         min-height: 120px;
     }
 }

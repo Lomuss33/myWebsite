@@ -355,10 +355,11 @@ div.article-portfolio-item-title {
     display: flex;
     flex-direction: column;
     align-items: start;
+    gap: 6px;
     width: 100%;
     min-width: 0;
     padding-right: 0;
-    min-height: calc(3 * 1.06em + 28px);
+    min-height: 0;
 
     h5.article-portfolio-item-title-main {
         font-weight: bold;
@@ -385,7 +386,7 @@ div.article-portfolio-item-title {
 
     div.article-portfolio-item-title-category {
         color: var(--theme-texts-light-2);
-        margin-top: 6px;
+        margin-top: 0;
         margin-left: 0;
 
         display: inline-flex;
@@ -444,13 +445,13 @@ div.article-portfolio-item-title {
 }
 
 div.article-portfolio-item-body {
-    margin-top: 12px;
+    margin-top: 10px;
     flex-grow: 1;
     min-width: 0;
     width: 100%;
 
     div.article-portfolio-item-body-description {
-        margin-top: 12px;
+        margin-top: 0;
         color: var(--theme-texts-light-1);
         font-size: clamp(0.77rem, 0.75rem + 0.12vw, 0.85rem);
         line-height: 1.45;

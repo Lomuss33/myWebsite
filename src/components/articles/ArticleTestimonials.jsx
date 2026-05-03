@@ -69,16 +69,16 @@ function ArticleTestimonialsItem({ itemWrapper }) {
     const isMobileLayout = viewport.isMobileLayout()
 
     const quoteTextClass = isMobileLayout ?
-        `text-3` :
-        `text-1`
-
-    const nameTextClass = isMobileLayout ?
         `text-5` :
         `text-4`
 
+    const nameTextClass = isMobileLayout ?
+        `lead` :
+        `text-5`
+
     const roleTextClass = isMobileLayout ?
-        `text-2` :
-        `text-1`
+        `text-4` :
+        `text-3`
 
     return (
         <div className={`article-testimonials-item`}>

@@ -603,7 +603,7 @@
                 "feature_split_height_tolerance": 6,
                 "feature_image_aspect_ratio": "707 / 1000",
                 "feature_image_mobile_aspect_ratio": "707 / 1000",
-                "feature_text_fit_to_media_height": true,
+                "feature_text_fit_to_media_height": false,
                 "feature_text_fit_min_scale": 0.78,
                 "feature_text_fit_max_scale": 1,
                 "feature_interactive_item_ids": [

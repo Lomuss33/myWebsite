@@ -1,10 +1,14 @@
 @use "../../../styles/extend" as *;
 
 div.article-timeline-item-info-for-timelines {
-    --content-padding: 16px 18px;
-    --header-gap: 10px;
-    --meta-gap: 6px;
+    --content-padding: clamp(0.9rem, 0.82rem + 0.3vw, 1.15rem) clamp(0.95rem, 0.86rem + 0.45vw, 1.3rem);
+    --header-gap: clamp(0.55rem, 0.46rem + 0.28vw, 0.8rem);
+    --meta-gap: clamp(0.35rem, 0.28rem + 0.18vw, 0.5rem);
     --date-badge-width: auto;
+    --timeline-title-size: clamp(1.08rem, 0.98rem + 0.46vw, 1.4rem);
+    --timeline-meta-size: clamp(0.84rem, 0.79rem + 0.18vw, 0.96rem);
+    --timeline-body-size: clamp(0.98rem, 0.92rem + 0.22vw, 1.1rem);
+    --timeline-badge-size: clamp(0.8rem, 0.76rem + 0.16vw, 0.9rem);
     --card-accent: color-mix(in srgb, var(--theme-primary) 72%, var(--theme-secondary) 28%);
     --card-accent-soft: color-mix(in srgb, var(--card-accent) 14%, transparent 86%);
     --card-surface-top: color-mix(in srgb, var(--theme-boards-background) 86%, var(--card-accent) 14%);
@@ -14,16 +18,15 @@ div.article-timeline-item-info-for-timelines {
     --card-shadow-hover: 0 22px 48px color-mix(in srgb, var(--card-accent) 18%, transparent 82%);
 
     @include media-breakpoint-down(lg) {
-        --content-padding: 14px 16px;
+        --content-padding: clamp(0.85rem, 0.8rem + 0.18vw, 1rem) clamp(0.9rem, 0.84rem + 0.24vw, 1.1rem);
     }
 
     @include media-breakpoint-down(md) {
-        --content-padding: 13px 15px;
+        --content-padding: 0.85rem 0.95rem;
     }
 
     @include media-breakpoint-down(sm) {
-        --content-padding: 12px 14px;
-        --header-gap: 8px;
+        --content-padding: 0.8rem 0.9rem;
     }
 }
 
@@ -330,14 +333,17 @@ div.article-timeline-item-info-for-timelines-header-main {
     align-items: flex-start;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 8px 12px;
+    gap: clamp(0.45rem, 0.36rem + 0.22vw, 0.65rem) clamp(0.6rem, 0.48rem + 0.42vw, 0.9rem);
 
     h5 {
+        font-size: var(--timeline-title-size) !important;
         font-weight: bold;
         margin: 0;
         min-width: 0;
         flex: 1 1 260px;
-        line-height: 1.18;
+        line-height: 1.24;
+        overflow-wrap: break-word;
+        text-wrap: balance;
     }
 }
 
@@ -377,7 +383,6 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
     div.date-badge {
         width: auto!important;
         padding: 4px 12px;
-        font-size: 12px;
         white-space: nowrap;
         color: var(--card-text-strong);
         background: linear-gradient(180deg, rgba(11, 18, 32, 0.94), rgba(5, 8, 16, 0.94));
@@ -395,7 +400,6 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
     div.date-badge {
         width: auto!important;
         padding: 4px 12px;
-        font-size: 12px;
         white-space: nowrap;
         color: var(--card-text-strong);
         background: linear-gradient(180deg, rgba(11, 18, 32, 0.94), rgba(5, 7, 13, 0.94));
@@ -413,7 +417,6 @@ article#article-1-section-my-art div.article-timeline-item-info-for-timelines-he
     div.date-badge {
         width: auto!important;
         padding: 4px 12px;
-        font-size: 12px;
         white-space: nowrap;
         color: var(--card-text-strong);
         background: linear-gradient(180deg, rgba(11, 18, 32, 0.94), rgba(5, 7, 13, 0.94));
@@ -446,8 +449,9 @@ div.article-timeline-item-info-for-timelines-header-date-badge {
 
     div.date-badge {
         width: auto!important;
-        padding: 4px 12px;
-        font-size: 12px;
+        padding: clamp(0.2rem, 0.16rem + 0.15vw, 0.3rem) clamp(0.55rem, 0.48rem + 0.35vw, 0.75rem);
+        font-size: var(--timeline-badge-size) !important;
+        line-height: 1.2;
         white-space: nowrap;
         color: var(--card-text-strong);
         background: linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(6, 9, 16, 0.94));
@@ -457,27 +461,51 @@ div.article-timeline-item-info-for-timelines-header-date-badge {
         i.fa-icon {
             margin-right: 8px;
             color: var(--card-accent-2);
+            font-size: 0.95em !important;
         }
     }
 }
 
 ul.article-timeline-item-info-for-timelines-header-prop-list {
     color: var(--card-text-mid);
-    row-gap: 4px;
+    font-size: var(--timeline-meta-size) !important;
+    line-height: 1.5;
+    row-gap: clamp(0.22rem, 0.16rem + 0.14vw, 0.38rem);
+
+    li.prop-list-item {
+        font-size: inherit !important;
+        line-height: inherit;
+    }
+
+    li.prop-list-item > span,
+    li.prop-list-item > i.fa-icon {
+        font-size: inherit !important;
+        line-height: inherit;
+    }
+
+    .prop-list-separator {
+        font-size: 0.9em !important;
+        margin-inline: clamp(0.24rem, 0.18rem + 0.2vw, 0.45rem) !important;
+        padding-inline: 0 !important;
+    }
 }
 
 div.article-timeline-item-content {
     ul.article-timeline-item-info-for-timelines-header-prop-list {
         li.prop-list-item {
-            margin-bottom: 2px;
+            margin-bottom: 0;
         }
     }
 
     ul.article-timeline-item-info-for-timelines-header-prop-list.prop-list-inline {
-        gap: 0;
+        gap: clamp(0.3rem, 0.22rem + 0.24vw, 0.5rem);
 
         li.prop-list-item {
             margin-right: 0;
+        }
+
+        li.prop-list-item::after {
+            margin-left: clamp(0.34rem, 0.26rem + 0.28vw, 0.6rem);
         }
     }
 }
@@ -488,20 +516,27 @@ div.article-timeline-item-info-for-timelines-body {
     flex-direction: column;
     margin-top: var(--header-gap);
     color: var(--card-text-mid);
+    font-size: var(--timeline-body-size);
+    line-height: 1.68;
 
     div.article-timeline-item-info-for-timelines-body-text {
         color: var(--card-text-mid);
+        font-size: inherit;
+        line-height: inherit;
+        overflow-wrap: break-word;
 
         p {
-            margin-bottom: 0.45rem;
+            margin-bottom: clamp(0.45rem, 0.36rem + 0.18vw, 0.62rem);
         }
     }
 
     ul.article-timeline-item-info-for-timelines-body-list {
-        margin-top: 6px;
+        margin-top: clamp(0.4rem, 0.3rem + 0.18vw, 0.55rem);
+        font-size: inherit;
+        line-height: inherit;
 
         li.article-timeline-item-info-for-timelines-body-list-item {
-            margin-bottom: 4px;
+            margin-bottom: clamp(0.3rem, 0.22rem + 0.14vw, 0.45rem);
         }
 
         li.article-timeline-item-info-for-timelines-body-list-item:last-child {
@@ -617,7 +652,7 @@ ul.article-timeline-item-info-for-timelines-body-list {
 div.article-timeline-item-info-for-timelines-tags-footer {
     display: flex;
     width: 100%;
-    margin-top: 10px;
+    margin-top: clamp(0.6rem, 0.5rem + 0.24vw, 0.8rem);
 
     li.article-timeline-item-info-for-timelines-tags-footer-tag {
         margin-right: 5px;
@@ -627,7 +662,7 @@ div.article-timeline-item-info-for-timelines-tags-footer {
 }
 
 div.article-timeline-item-info-preview-footer {
-    margin-top: 12px;
+    margin-top: clamp(0.7rem, 0.58rem + 0.28vw, 0.95rem);
 
     display: flex;
     justify-content: flex-end;

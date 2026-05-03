@@ -2,24 +2,26 @@
 
 div.article-testimonials-items {
     --testimonial-balloon-min-height: 170px;
-    --testimonial-balloon-padding: 1.4rem 1.3rem;
+    --testimonial-balloon-padding: 1.05rem 1rem;
+    --testimonial-balloon-padding-mobile: 0.9rem 0.9rem;
     --testimonial-avatar-size: 92px;
     --testimonial-avatar-border-size: 7px;
 
     @include media-breakpoint-down(xl) {
-        --testimonial-balloon-min-height: 162px;
+        --testimonial-balloon-min-height: 156px;
         --testimonial-avatar-size: 88px;
     }
 
     @include media-breakpoint-down(md) {
-        --testimonial-balloon-min-height: 140px;
-        --testimonial-balloon-padding: 1.05rem 1.2rem;
+        --testimonial-balloon-min-height: 132px;
+        --testimonial-balloon-padding: 0.9rem 0.95rem;
+        --testimonial-balloon-padding-mobile: 0.85rem 0.85rem;
         --testimonial-avatar-size: 84px;
         --testimonial-avatar-border-size: 6px;
     }
 
     @include media-breakpoint-down(sm) {
-        --testimonial-balloon-min-height: 132px;
+        --testimonial-balloon-min-height: 126px;
         --testimonial-avatar-size: 80px;
     }
 }
@@ -31,8 +33,10 @@ div.article-testimonials-item {
 }
 
 div.article-testimonials-item-balloon {
+    --balloon-padding: var(--testimonial-balloon-padding);
+    --balloon-padding-mobile: var(--testimonial-balloon-padding-mobile);
+
     min-height: var(--testimonial-balloon-min-height);
-    padding: var(--testimonial-balloon-padding);
 }
 
 div.article-testimonials-item-info {
@@ -60,6 +64,12 @@ div.article-testimonials-item-avatar {
 div.article-testimonials-item-role {
     margin-top: 2px;
     color: var(--theme-muted);
+}
+
+a.article-testimonials-item-name {
+    font-size: calc(1em + 0.06rem);
+    font-weight: 600;
+    letter-spacing: 0.01em;
 }
 
 article#article-2-section-my-software,
@@ -99,7 +109,8 @@ article#article-4-section-my-software {
     }
 
     a.article-testimonials-item-name {
-        color: #f8fafc;
+        color: #dbeafe;
+        text-shadow: 0 0 14px rgba(78, 163, 255, 0.10);
     }
 
     div.article-testimonials-item-role {

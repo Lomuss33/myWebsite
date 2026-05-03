@@ -9,18 +9,18 @@ h4.article-title {
     align-items: center;
     font-weight: bold;
     gap: 0;
-    font-size: 1.20rem!important;
-    line-height: 1.15;
+    font-size: clamp(1.06rem, 0.98rem + 0.42vw, 1.34rem)!important;
+    line-height: 1.18;
 
     margin-bottom: 10px;
 
     @include media-breakpoint-down(xl) {
-        font-size: 1.14rem!important;
+        font-size: clamp(1.04rem, 0.98rem + 0.34vw, 1.24rem)!important;
     }
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         margin-bottom: 8px;
-        font-size: 1.06rem!important;
+        font-size: clamp(1rem, 0.94rem + 0.28vw, 1.12rem)!important;
     }
 
     span.article-title-prefix {
@@ -28,14 +28,14 @@ h4.article-title {
         user-select: none;
         pointer-events: none;
         opacity: 0.85;
-        font-size: 1.08rem!important;
+        font-size: clamp(0.98rem, 0.92rem + 0.26vw, 1.12rem)!important;
         line-height: 1;
         margin-left: 0!important;
         margin-right: 8px!important;
         padding-right: 0!important;
 
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-            font-size: 0.98rem!important;
+            font-size: clamp(0.92rem, 0.88rem + 0.18vw, 1rem)!important;
         }
     }
 }

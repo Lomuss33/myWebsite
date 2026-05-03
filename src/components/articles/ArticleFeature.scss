@@ -518,6 +518,8 @@ div.article-feature-item.article-feature-item-layout-fixed-vh-image.article-feat
         width: 100%;
         max-width: none;
         margin-left: 0;
+        font-size: clamp(0.98rem, 0.9rem + 0.3vw, 1.12rem);
+        line-height: 1.62;
     }
 
     div.article-feature-item-text {
@@ -587,6 +589,12 @@ div.article-feature-item.article-feature-item-layout-fixed-vh-image.article-feat
         div.article-feature-item-text-measure-square {
             width: 100%;
             max-width: 100%;
+        }
+
+        div.article-feature-item-text,
+        div.article-feature-item-text-measure-square {
+            font-size: clamp(1rem, 0.96rem + 0.22vw, 1.06rem);
+            line-height: 1.58;
         }
 
         div.article-feature-item-text-measure-square {

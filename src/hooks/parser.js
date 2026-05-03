@@ -22,15 +22,16 @@ export const useParser = () => {
     const parseSectionTitle = useCallback((section) => {
         const isLgOrHigher = viewport.isBreakpoint("lg")
         const titleLocales = section.data?.title?.locales || {}
+        const isHomeSection = section?.id === "about"
 
         return {
             title:
-                isLgOrHigher ?
+                isHomeSection || isLgOrHigher ?
                 language.getTranslation(titleLocales, "title_long") :
                 language.getTranslation(titleLocales, "title_short"),
 
             prefix:
-                isLgOrHigher ?
+                (isHomeSection || isLgOrHigher) ?
                 language.getTranslation(titleLocales, "title_long_prefix") :
                 null,
 

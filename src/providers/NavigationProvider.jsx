@@ -134,6 +134,9 @@ function NavigationProvider({ children, sections, categories }) {
      * @listens viewport.getBreakpoint()
      */
     useEffect(() => {
+        if(viewport.isMobileLayout())
+            return
+
         utils.capabilities.scrollTo(0, true)
     }, [viewport.getBreakpoint()])
 
@@ -171,32 +174,8 @@ function NavigationProvider({ children, sections, categories }) {
     }
 
     const _adjustScrollBeforeTransition = () => {
-        const currentTargetSection = targetSectionRef.current
-        const currentNextSection = nextSectionRef.current
-        if(!currentNextSection)
-            return
-
-        const mobileNavData = layout.getMobileNavData(getViewportScrollPosition().y)
-        const didChangeCategory = currentTargetSection?.category?.id !== currentNextSection?.category?.id
-
         _clearPendingScrollWait()
-
-        if(!mobileNavData.isHeaderHidden) {
-            if(didChangeCategory)
-                utils.capabilities.scrollTo(0, false)
-            _startTransition()
-            return
-        }
-
-        if(currentNextSection?.category?.sections?.length <= 1) {
-            utils.capabilities.scrollTo(0, false)
-            _scheduleTransitionStart(0)
-            return
-        }
-
-        _updateLinks(currentNextSection, currentNextSection?.category)
-        utils.capabilities.scrollTo(mobileNavData.contentTop, false)
-        _scheduleTransitionStart(mobileNavData.contentTop)
+        _startTransition()
     }
 
     const _scheduleTransitionStart = (initialScrollY) => {
@@ -284,6 +263,9 @@ function NavigationProvider({ children, sections, categories }) {
 
     /** @listens location.getActiveSection() **/
     useEffect(() => {
+        if(!isAppReady)
+            return
+
         if(ignoreNextLocationEvent) {
             setIgnoreNextLocationEvent(false)
             return
@@ -291,6 +273,16 @@ function NavigationProvider({ children, sections, categories }) {
 
         const locationSection = location.getActiveSection()
         if(!locationSection)
+            return
+
+        // Let the dedicated initial seeding effect paint the first mobile section
+        // without going through the transition/scroll adjustment pipeline.
+        const isInitialNavigationBootstrap =
+            !targetSectionRef.current &&
+            !nextSectionRef.current &&
+            !previousSectionRef.current
+
+        if(isInitialNavigationBootstrap)
             return
 
         _setTransitionEnabled(true)
@@ -412,16 +404,6 @@ function NavigationProvider({ children, sections, categories }) {
     }
 
     const forceScrollToTop = () => {
-        if(viewport.isMobileLayout()) {
-            const mobileNavData = layout.getMobileNavData(getViewportScrollPosition().y)
-            if(mobileNavData.navHeaderElHeight) {
-                window.scrollTo({
-                    top: mobileNavData.contentTop,
-                    behavior: "smooth"
-                })
-            }
-        }
-
         setShouldForceScrollToTopCount(prev => prev + 1)
     }
 

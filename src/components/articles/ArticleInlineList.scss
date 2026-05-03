@@ -38,12 +38,12 @@ article#article-1-section-about {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 10px;
+        gap: 12px;
 
         @include media-breakpoint-down(sm) {
             flex-wrap: nowrap;
             align-items: stretch;
-            gap: 8px;
+            gap: 9px;
         }
     }
 
@@ -53,7 +53,7 @@ article#article-1-section-about {
         white-space: normal;
         display: inline-flex;
         align-items: center;
-        padding: 10px 14px;
+        padding: 12px 18px;
         border-radius: 999px;
         background: linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(6, 9, 16, 0.94));
         border: 1px solid rgba(78, 163, 255, 0.28);
@@ -64,7 +64,7 @@ article#article-1-section-about {
             flex: 1 1 0;
             min-width: 0;
             justify-content: center;
-            padding: 10px 8px;
+            padding: 11px 9px;
         }
 
         &:not(:last-child)::after {
@@ -81,12 +81,15 @@ article#article-1-section-about {
         a {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 11px;
+            font-size: clamp(0.92rem, 0.84rem + 0.24vw, 1.08rem);
+            line-height: 1.2;
 
             @include media-breakpoint-down(sm) {
                 width: 100%;
                 min-width: 0;
                 justify-content: center;
+                font-size: clamp(0.84rem, 0.8rem + 0.2vw, 0.94rem);
             }
         }
     }
@@ -101,6 +104,7 @@ article#article-1-section-about {
     span.article-inline-list-item-label {
         color: var(--theme-texts-light);
         font-weight: 700;
+        letter-spacing: -0.01em;
 
         @include media-breakpoint-down(sm) {
             min-width: 0;
@@ -117,17 +121,17 @@ article#article-1-section-about {
 
     @media (max-width: 420px) {
         li.article-inline-list-item {
-            padding: 8px 6px;
-            min-height: 52px;
+            padding: 9px 7px;
+            min-height: 56px;
         }
 
         li.article-inline-list-item a {
-            gap: 6px;
+            gap: 7px;
         }
 
         i.article-inline-list-item-icon {
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
         }
     }
 }
@@ -142,8 +146,9 @@ i.article-inline-list-item-icon {
     align-items: center;
     justify-content: center;
 
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
+    font-size: 0.96rem;
     @include media-breakpoint-down(sm) {
         margin: 0 calc($item-padding - 3px)
     }

@@ -194,6 +194,94 @@ div.nav-tools-item-resume {
     }
 }
 
+// Wide-screen sidebar popups (Language + Resume).
+//
+// We want a single, uniform popup shape regardless of which button opens it
+// or whether the rail is in shrink mode:
+//   • Left edge: anchored to the rail's left content edge so the box visually
+//     starts inside the rail's left border (matches the rail outline).
+//   • Right edge: extends past the rail into the page content area so the
+//     menu items never get cut off — even in short-rail mode where the rail
+//     is only ~108px wide.
+//
+// We have to override Bootstrap/Popper's inline positioning. The trick:
+// make `.nav-tools` the positioning ancestor, and force the per-button
+// `dropup`/`dropdown` wrappers to `position: static` so the menu anchors to
+// the row instead of to its own button. Then override left/top/bottom/
+// transform with !important to defeat Popper's runtime styles.
+nav.nav-sidebar div.nav-tools {
+    position: relative;
+
+    div.nav-tools-item-resume,
+    div.nav-tools-item-language {
+        div.dropup,
+        div.dropdown {
+            position: static !important;
+        }
+    }
+
+    div.dropdown-menu.nav-tools-popup-menu {
+        position: absolute !important;
+        inset: auto !important;
+        bottom: calc(100% + 8px) !important;
+        top: auto !important;
+        left: -8px !important;     // back out of nav-tools' 8px horizontal padding
+        right: auto !important;
+        transform: none !important;
+        margin: 0 !important;
+
+        width: max-content;
+        min-width: calc(100% + 160px); // rail width + extension past the right edge
+        max-width: min(420px, 80vw);
+        z-index: $z-index-pop-over;
+
+        // The dropdown-menu styles in _bootstrap-customization.scss are scoped
+        // to a `div.dropdown` ancestor and don't reach our `.dropup` wrappers,
+        // so re-apply the project's pop-up look here.
+        padding: 0;
+        overflow: hidden;
+        border-radius: 20px;
+        border: 2px solid var(--theme-standard-borders);
+        background-color: var(--theme-pop-ups-background);
+        color: var(--theme-texts);
+        box-shadow: 0 18px 40px var(--theme-shell-shadow);
+
+        a.dropdown-item,
+        button.dropdown-item {
+            color: var(--theme-texts);
+            height: 45px;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            padding-inline: 14px;
+
+            &:not(:last-child) {
+                border-bottom: 1px solid var(--theme-standard-borders-5);
+            }
+
+            &:hover, &:focus {
+                background-color: var(--theme-primary);
+                color: var(--theme-texts-inv);
+                i.fa-icon {
+                    opacity: 0.8;
+                }
+            }
+        }
+
+        a.dropdown-item-no-border,
+        button.dropdown-item-no-border {
+            border-bottom: 0 !important;
+        }
+    }
+}
+
+// In short-rail (shrink) mode the rail is narrower (~108px), so push the
+// popup further right to make sure menu labels still have room to breathe.
+nav.nav-sidebar-shrink div.nav-tools div.dropdown-menu.nav-tools-popup-menu,
+nav.nav-sidebar-short-rail div.nav-tools div.dropdown-menu.nav-tools-popup-menu {
+    min-width: 280px;
+}
+
 div.nav-tools-shrink {
     flex-direction: row;
     padding: 0;

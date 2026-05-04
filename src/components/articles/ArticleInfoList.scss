@@ -260,10 +260,10 @@ article.article-info-list-home {
         --min-height: calc(var(--avatar-size) + 34px);
         --padding: 5px;
         --content-padding: 14px 16px;
-        --proof-bubble-bleed-left: 14px;
-        --proof-bubble-bleed-right: 14px;
+        --proof-bubble-bleed-left: 8px;
+        --proof-bubble-bleed-right: 25px;
         --proof-bubble-bleed-top: 4px;
-        --proof-bubble-bleed-bottom: 14px;
+        --proof-bubble-bleed-bottom: 20px;
         --proof-bubble-padding-x: 14px;
         --proof-bubble-padding-y: 12px;
         --proof-bubble-font-size: clamp(0.96rem, 0.88rem + 0.18vw, 1.08rem);
@@ -277,9 +277,10 @@ article.article-info-list-home {
             --grid-template-columns: repeat(2, minmax(0, 1fr));
             --avatar-size: 68px;
             --content-padding: 13px 15px;
-            --proof-bubble-bleed-left: 13px;
-            --proof-bubble-bleed-right: 13px;
-            --proof-bubble-bleed-bottom: 13px;
+            --proof-bubble-bleed-left: 7px;
+            --proof-bubble-bleed-right: 24px;
+            --proof-bubble-bleed-top: 4px;
+            --proof-bubble-bleed-bottom: 19px;
             --proof-bubble-font-size: clamp(0.92rem, 0.85rem + 0.16vw, 1.02rem);
             --proof-bubble-line-height: 1.4;
         }
@@ -288,9 +289,10 @@ article.article-info-list-home {
             --grid-template-columns: repeat(2, minmax(0, 1fr));
             --avatar-size: 64px;
             --content-padding: 12px 14px;
-            --proof-bubble-bleed-left: 12px;
-            --proof-bubble-bleed-right: 12px;
-            --proof-bubble-bleed-bottom: 12px;
+            --proof-bubble-bleed-left: 6px;
+            --proof-bubble-bleed-right: 23px;
+            --proof-bubble-bleed-top: 4px;
+            --proof-bubble-bleed-bottom: 18px;
             --proof-bubble-font-size: clamp(0.88rem, 0.82rem + 0.14vw, 0.98rem);
             --proof-bubble-line-height: 1.38;
         }
@@ -299,9 +301,10 @@ article.article-info-list-home {
             --grid-template-columns: repeat(2, minmax(0, 1fr));
             --avatar-size: 60px;
             --content-padding: 11px 13px;
-            --proof-bubble-bleed-left: 11px;
-            --proof-bubble-bleed-right: 11px;
-            --proof-bubble-bleed-bottom: 11px;
+            --proof-bubble-bleed-left: 5px;
+            --proof-bubble-bleed-right: 22px;
+            --proof-bubble-bleed-top: 4px;
+            --proof-bubble-bleed-bottom: 17px;
             --proof-bubble-font-size: clamp(0.84rem, 0.8rem + 0.12vw, 0.92rem);
             --proof-bubble-line-height: 1.34;
         }
@@ -311,10 +314,10 @@ article.article-info-list-home {
             --avatar-size: 54px;
             --padding: 4px;
             --content-padding: 10px 11px;
-            --proof-bubble-bleed-left: 10px;
-            --proof-bubble-bleed-right: 10px;
+            --proof-bubble-bleed-left: 3px;
+            --proof-bubble-bleed-right: 19px;
             --proof-bubble-bleed-top: 2px;
-            --proof-bubble-bleed-bottom: 10px;
+            --proof-bubble-bleed-bottom: 15px;
             --proof-bubble-padding-x: 10px;
             --proof-bubble-padding-y: 8px;
             --proof-bubble-font-size: clamp(0.8rem, 0.77rem + 0.1vw, 0.88rem);
@@ -408,6 +411,10 @@ article.article-info-list-home {
         }
 
         div.article-info-list-item-text-bubble {
+            // Anchored to info-body (which already sits below the title and its
+            // underline, so the popup naturally clears them). Negative offsets
+            // extend the popup sideways and downward to reach the card's outer
+            // edges, leaving a small gap from the avatar on the left.
             top: calc(-1 * var(--proof-bubble-bleed-top));
             right: calc(-1 * var(--proof-bubble-bleed-right));
             bottom: calc(-1 * var(--proof-bubble-bleed-bottom));
@@ -416,6 +423,9 @@ article.article-info-list-home {
         }
 
         div.article-info-list-item-text-bubble-inner {
+            // Right corners match the card's border-radius for a seamless
+            // edge against the pill; left side stays straight (avatar side).
+            border-radius: 0 $standard-border-radius $standard-border-radius 0;
             box-sizing: border-box;
             display: block;
             height: 100%;

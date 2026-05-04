@@ -26,10 +26,12 @@ function NavToolList({ expanded }) {
     ]
 
     const orderedWidgets = [
+        ...widgets.filter(item => item === NavToolSettings.Options.DOWNLOAD_RESUME),
         ...widgets.filter(item => item === "language"),
         ...widgets.filter(item =>
             item !== NavToolSettings.Options.THEME &&
-            item !== "language"
+            item !== "language" &&
+            item !== NavToolSettings.Options.DOWNLOAD_RESUME
         ),
         ...widgets.filter(item => item === NavToolSettings.Options.THEME),
     ]
@@ -39,9 +41,10 @@ function NavToolList({ expanded }) {
             {orderedWidgets.map((item, key) => (
                 <div className={`nav-tools-item ${item === "language" ? "nav-tools-item-language" : ""} ${item === NavToolSettings.Options.DOWNLOAD_RESUME ? "nav-tools-item-resume" : ""}`}
                      key={key}>
-                    {item === "language" && (<NavToolLanguagePicker dropdownDrop={"up"}/>)}
+                    {item === "language" && (<NavToolLanguagePicker dropdownDrop={"up"}
+                                                                    menuClassName={"nav-tools-popup-menu"}/>)}
                     {item === NavToolSettings.Options.THEME && (<NavToolThemePicker/>)}
-                    {item === NavToolSettings.Options.DOWNLOAD_RESUME && (<NavToolResumeDownloader/>)}
+                    {item === NavToolSettings.Options.DOWNLOAD_RESUME && (<NavToolResumeDownloader menuClassName={"nav-tools-popup-menu"}/>)}
                 </div>
             ))}
         </div>

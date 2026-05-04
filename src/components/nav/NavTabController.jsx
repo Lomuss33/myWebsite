@@ -1,21 +1,17 @@
 import "./NavTabController.scss"
-import React, {useEffect, useState} from 'react'
-import {useViewport} from "../../providers/ViewportProvider.jsx"
+import React from 'react'
 import Nav from "./base/Nav.jsx"
 import GestureAwareButton from "../buttons/GestureAwareButton.jsx"
 
 function NavTabController({ links }) {
-    const viewport = useViewport()
-
-    const shouldAddFooterOffset = viewport.getLayoutConstraints()?.shouldAddFooterOffset
-    const offsetClass = shouldAddFooterOffset ? `nav-tab-controller-with-offset` : ``
-
     return (
-        <Nav links={links}
-             data={null}
-             tag={`nav-tab-controller`}
-             className={`nav-tab-controller ${offsetClass}`}
-             itemComponent={NavTabControllerLink}/>
+        <div className={`nav-tab-controller-wrapper`}>
+            <Nav links={links}
+                 data={null}
+                 tag={`nav-tab-controller`}
+                 className={`nav-tab-controller`}
+                 itemComponent={NavTabControllerLink}/>
+        </div>
     )
 }
 

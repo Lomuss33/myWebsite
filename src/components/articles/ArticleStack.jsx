@@ -15,6 +15,33 @@ const HOME_STACK_BREAKPOINTS = {
     980: { id: "home-stack-bp-980", columns: 3 }
 }
 
+const HOME_STACK_POPUP_COPY = {
+    1: "Built with a tall frame, long reach, and a natural advantage for seeing the bigger picture. Useful in life, teamwork, and for changing light bulbs without negotiations.",
+    2: "A solid operating weight for carrying momentum, staying grounded, and generally looking like the hardware edition of a software engineer.",
+    3: "All major structural components accounted for. The chassis is complete, reliable, and still proudly running the original factory configuration.",
+    4: "Hydrated enough to keep the system running smoothly, the thoughts flowing, and the debugging patience at healthy professional levels.",
+    5: "A generous internal delivery network keeping every subsystem supplied. Quiet logistics, strong uptime, no complaints from operations.",
+    6: "Full manual input capacity still available. Excellent for typing, wiring, fixing, building, and making ambitious ideas look surprisingly manageable.",
+    7: "Close enough to sharp for catching details, spotting patterns, and noticing the tiny thing that somehow broke the whole nice-looking system.",
+    8: "Thermally stable, comfortably warm, and still operating well within recommended human specifications. No dramatic overheating under normal workloads.",
+    9: "A subtle reminder that upgrades are real, resilience is stylish, and good engineering sometimes becomes very personal.",
+    10: "An absurd amount of internal cabling, honestly. Respect to the original biological design team for shipping that kind of routing at scale.",
+    11: "Plenty of theoretical storage, with the usual premium human indexing system: brilliant associations, selective recall, and occasional mystery retrieval.",
+    12: "Continuous silent background maintenance. The body really believes in agile iteration, fast refresh cycles, and shipping updates without fanfare.",
+    13: "A surprisingly industrial internal chemistry setup. Proof that even the polite version of me includes at least one highly committed processing plant.",
+    14: "A fun reminder that nature loves remix culture. Under the polished professional exterior there is still a very collaborative biological codebase.",
+    15: "Strong roots, clear current, and a deep sense of place. A lot of the calm, grit, and humor started there and still travels with me.",
+    16: "Rarely deployed, highly kinetic, and absolutely not to be underestimated. Some systems only reveal their full performance in edge cases.",
+    17: "Fast internal signaling helps with reactions, decisions, and those satisfying moments when the solution appears before the panic fully loads.",
+    18: "Not enough to build a bridge, but enough to keep the red-team logistics moving. Small quantity, critical function, classic engineering elegance.",
+    19: "Officially precious in trace amounts. Just enough sparkle to support the legend without becoming financially unreasonable.",
+    20: "A serious in-house defense department working around the clock. Quiet, disciplined, and very committed to protecting the main mission.",
+    21: "One of those beautifully strange details that makes biology feel like art direction with a lab budget. Hidden structure, excellent taste.",
+    22: "Even at rest the machine is generating useful energy. Efficient? Debatable. Alive, motivated, and definitely online? Very much yes.",
+    23: "A disciplined monthly renewal schedule. The body clearly understands maintenance windows, lifecycle management, and the value of steady refresh.",
+    24: "An impressive internal processing timeline converting ordinary food into continued ambition. Slow magic, solid throughput, excellent long-term output."
+}
+
 const HOME_STACK_BUBBLE_DEFAULTS = {
     desktop: {
         fontSize: 1.02,
@@ -220,6 +247,7 @@ function ArticleStackItem({ itemWrapper, isHomeStack, isCompactStack }) {
     const linkTooltip = itemWrapper.link?.tooltip
     const emojiIconText = itemWrapper.iconText
     const bubbleMarkup = itemWrapper.locales.proofBubble ||
+        (isHomeStack ? HOME_STACK_POPUP_COPY[itemWrapper.id] : null) ||
         itemWrapper.locales.text ||
         "Placeholder text for this item."
     const isHomeBubbleEnabled = Boolean(isHomeStack && bubbleMarkup)
@@ -428,7 +456,6 @@ function ArticleStackItem({ itemWrapper, isHomeStack, isCompactStack }) {
                 </div>
 
                 <div className={`article-stack-item-home-content-body ${bubbleClass}`.trim()}>
-                    {defaultBodyContent}
                     {popupBody}
                 </div>
             </div>

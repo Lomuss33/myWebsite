@@ -1,5 +1,5 @@
 import "./LayoutNavigation.scss"
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import NavSidebar from "../nav/NavSidebar.jsx"
 import NavTabController from "../nav/NavTabController.jsx"
 import NavHeaderMobile from "../nav/NavHeaderMobile.jsx"
@@ -12,9 +12,6 @@ function LayoutNavigation({ children, profile = null, sectionLinks = [], categor
     const isMobileLayout = viewport.isMobileLayout()
     const targetCategoryId = categoryLinks.find(link => link.active)?.id
     const currentCategorySectionLinks = sectionLinks.filter(link => link.categoryId === targetCategoryId)
-
-    const shouldAddFooterOffset = viewport.getLayoutConstraints()?.shouldAddFooterOffset
-    const offsetClass = shouldAddFooterOffset ? `layout-navigation-children-wrapper-with-offset` : ``
 
     return (
         <div className={`layout-navigation-wrapper`}>
@@ -31,7 +28,7 @@ function LayoutNavigation({ children, profile = null, sectionLinks = [], categor
                 </>
             )}
 
-            <div className={`layout-navigation-children-wrapper ${offsetClass}`}>
+            <div className={`layout-navigation-children-wrapper`}>
                 {children}
             </div>
 

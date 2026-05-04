@@ -153,15 +153,35 @@ function ArticleInfoList({ dataWrapper }) {
  * @constructor
  */
 function ArticleInfoListItems({ dataWrapper, selectedItemCategoryId, isHomeInfoList, isContactInfoList }) {
+    const language = useLanguage()
+    const [expanded, setExpanded] = useState(false)
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
+    const shouldCollapseHomeSkills = isHomeInfoList && filteredItems.length > 4
+    const visibleItems = shouldCollapseHomeSkills && !expanded ?
+        filteredItems.slice(0, 4) :
+        filteredItems
 
     const id = dataWrapper.uniqueId
     const shrinkClass = filteredItems.find(itemWrapper => itemWrapper.locales.text) ?
         `` :
         `article-info-list-items-shrink`
     const homeClass = isHomeInfoList ? `article-info-list-items-home` : ``
+    const collapsedClass = shouldCollapseHomeSkills && !expanded ? `article-info-list-items-collapsed` : ``
+    const expandedClass = shouldCollapseHomeSkills && expanded ? `article-info-list-items-expanded` : ``
 
     const viewport = useViewport()
+
+    const selectedLanguageId = language?.selectedLanguageId || language?.getSelectedLanguage?.()?.id || "en"
+    const showMoreLabel = ({
+        de: "Mehr anzeigen",
+        hr: "Prikaži više",
+        tr: "Daha fazla göster"
+    })[selectedLanguageId] || "Show more"
+    const showLessLabel = ({
+        de: "Weniger anzeigen",
+        hr: "Prikaži manje",
+        tr: "Daha az göster"
+    })[selectedLanguageId] || "Show less"
 
     useEffect(() => {
         const containerEl = document.getElementById(id)
@@ -193,15 +213,28 @@ function ArticleInfoListItems({ dataWrapper, selectedItemCategoryId, isHomeInfoL
     }, [dataWrapper?.id, viewport.innerWidth, isHomeInfoList, isContactInfoList])
 
     return (
-        <div className={`article-info-list-items ${shrinkClass} ${homeClass}`}
-             id={dataWrapper.uniqueId}>
-            {filteredItems.map((itemWrapper, key) => (
-                <ArticleInfoListItem itemWrapper={itemWrapper}
-                                     isHomeInfoList={isHomeInfoList}
-                                     isContactInfoList={isContactInfoList}
-                                     key={key}/>
-            ))}
-        </div>
+        <>
+            <div className={`article-info-list-items ${shrinkClass} ${homeClass} ${collapsedClass} ${expandedClass}`}
+                 id={dataWrapper.uniqueId}>
+                {visibleItems.map((itemWrapper, key) => (
+                    <ArticleInfoListItem itemWrapper={itemWrapper}
+                                         isHomeInfoList={isHomeInfoList}
+                                         isContactInfoList={isContactInfoList}
+                                         key={key}/>
+                ))}
+            </div>
+
+            {shouldCollapseHomeSkills && (
+                <div className={`article-info-list-toggle-row`}>
+                    <button type="button"
+                            className={`article-info-list-toggle-button`}
+                            aria-expanded={expanded}
+                            onClick={() => setExpanded(currentState => !currentState)}>
+                        {expanded ? showLessLabel : showMoreLabel}
+                    </button>
+                </div>
+            )}
+        </>
     )
 }
 

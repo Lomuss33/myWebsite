@@ -1,17 +1,28 @@
 @use "../../styles/extend" as *;
 
-nav.nav-tab-controller {
+div.nav-tab-controller-wrapper {
+    --nav-tab-safe-area-bottom: env(safe-area-inset-bottom, 0px);
+
     position: fixed;
     z-index: $z-index-nav-tabs;
-    height: $nav-tabs-height;
     inset: auto 0 0 0;
     width: auto;
+    padding-bottom: var(--nav-tab-safe-area-bottom);
+    box-sizing: border-box;
+    overflow: clip;
 
+    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+        display: none;
+    }
+}
+
+nav.nav-tab-controller {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    transition: 0.1s height ease-out;
 
+    width: 100%;
+    min-height: $nav-tabs-height;
     background:
         radial-gradient(circle at 24% -18%,
             rgba(255, 255, 255, 0.92),
@@ -27,10 +38,6 @@ nav.nav-tab-controller {
         inset 0 1px 0 rgba(255, 255, 255, 0.74);
     overflow: hidden;
     border-radius: 0;
-
-    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
-        display: none;
-    }
 }
 
 a.nav-tab-controller-link {
@@ -114,11 +121,4 @@ a.nav-tab-controller-link-active {
 
 nav.nav-tab-controller > a.nav-tab-controller-link + a.nav-tab-controller-link {
     border-left: 1px solid var(--theme-nav-divider);
-}
-
-nav.nav-tab-controller-with-offset {
-    height: $nav-tabs-height-with-offset;
-    a.nav-tab-controller-link {
-        padding-bottom: 12px;
-    }
 }

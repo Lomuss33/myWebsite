@@ -49,6 +49,8 @@ div.layout-navigation-children-wrapper {
 }
 
 div.layout-navigation-children-wrapper {
+    --mobile-nav-safe-area-bottom: env(safe-area-inset-bottom, 0px);
+
     flex: 1 1 auto;
     min-width: 0;
     width: 100%;
@@ -60,13 +62,7 @@ div.layout-navigation-children-wrapper {
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         margin-left: 0;
         margin-top: calc(var(--default-card-spacing) - 1px);
-        margin-bottom: $nav-tabs-height;
+        margin-bottom: calc(#{$nav-tabs-height} + var(--mobile-nav-safe-area-bottom));
         border-radius: 0;
-    }
-}
-
-div.layout-navigation-children-wrapper-with-offset {
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-        margin-bottom: $nav-tabs-height-with-offset;
     }
 }

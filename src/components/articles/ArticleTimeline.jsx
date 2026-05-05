@@ -370,6 +370,12 @@ function ArticleTimelineItem({
     const screenshots = itemWrapper.preview?.screenshots || []
     const screenshotsAspectRatio = itemWrapper.preview?.screenshotsAspectRatio
     const canOpenGallery = Boolean(screenshots?.length)
+    const previewLinks = itemWrapper.preview?.links || []
+    const primaryPreviewLink = previewLinks.find(link => isNonEmptyHref(link?.href) && link?.faIcon === avatarFaIcon) ||
+        previewLinks.find(link => isNonEmptyHref(link?.href)) ||
+        null
+    const isWritingsTimeline = Boolean(itemWrapper?.articleWrapper?.uniqueId?.includes("section-my-writings"))
+    const shouldUsePreviewLinkAvatar = isWritingsTimeline && !canOpenGallery && Boolean(primaryPreviewLink)
 
     const galleryMetadata = useMemo(() => {
         if(!canOpenGallery)
@@ -460,6 +466,7 @@ function ArticleTimelineItem({
         "article-timeline-item-content article-timeline-item-content--experience" :
         "article-timeline-item-content"
     const overlayActionLabel = itemWrapper?.imageAlt || itemWrapper.locales?.title || language.getString("get_to_know_more")
+    const avatarActionLabel = primaryPreviewLink?.tooltip || overlayActionLabel
 
     const _onGalleryAvatarClick = () => {
         if(!shouldInterceptGalleryTap)
@@ -485,8 +492,21 @@ function ArticleTimelineItem({
                           metadata={galleryMetadata}
                           className={avatarLinkClass}
                           tooltip={language.getString("open_gallery")}
+                          ariaLabel={overlayActionLabel}
                           intercept={shouldInterceptGalleryTap}
                           onClick={_onGalleryAvatarClick}>
+                        <AvatarView src={avatarSrc}
+                                     faIcon={avatarFaIcon}
+                                     style={avatarStyle}
+                                     alt={itemWrapper?.imageAlt}
+                                     sizes={avatarSizes}
+                                     className={`article-timeline-item-avatar article-timeline-item-avatar--button ${isExperienceTimeline ? "article-timeline-item-avatar--experience" : ""}`.trim()}/>
+                    </Link>
+                ) : shouldUsePreviewLinkAvatar ? (
+                    <Link href={primaryPreviewLink.href}
+                          className={avatarLinkClass}
+                          tooltip={avatarActionLabel}
+                          ariaLabel={avatarActionLabel}>
                         <AvatarView src={avatarSrc}
                                      faIcon={avatarFaIcon}
                                      style={avatarStyle}
@@ -524,3 +544,7 @@ function ArticleTimelineItem({
 }
 
 export default ArticleTimeline
+
+function isNonEmptyHref(href) {
+    return typeof href === "string" && href.trim().length > 0
+}

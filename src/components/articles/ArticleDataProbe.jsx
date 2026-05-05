@@ -408,7 +408,7 @@ function ArticleDataProbe({ dataWrapper }) {
                     if (!("Notification" in window)) return null
                     if (Notification.permission !== "granted") return null
                     try {
-                        new Notification("You allowed me to see this", { body: "Triggered by your click." })
+                        new Notification("Permission granted", { body: "Triggered by your click." })
                         return "sent"
                     }
                     catch (_) {

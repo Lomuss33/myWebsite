@@ -49,6 +49,22 @@ export default class ArticleDataWrapper {
             contactThankYouTitle: language.getTranslation(rawLocales, "contact_thank_you_title", undefined),
             contactThankYouBody: language.getTranslation(rawLocales, "contact_thank_you_body", undefined),
             contactThankYouFooter: language.getTranslation(rawLocales, "contact_thank_you_footer", undefined),
+            complaintTitle: language.getTranslation(rawLocales, "complaint_title", undefined),
+            complaintIntro: language.getTranslation(rawLocales, "complaint_intro", undefined),
+            complaintNote: language.getTranslation(rawLocales, "complaint_note", undefined),
+            complaintDestinationLabel: language.getTranslation(rawLocales, "complaint_destination_label", undefined),
+            complaintNowhereLabel: language.getTranslation(rawLocales, "complaint_nowhere_label", undefined),
+            complaintYouWhereLabel: language.getTranslation(rawLocales, "complaint_you_where_label", undefined),
+            complaintKnjigaLabel: language.getTranslation(rawLocales, "complaint_knjiga_label", undefined),
+            complaintAnzeigeLabel: language.getTranslation(rawLocales, "complaint_anzeige_label", undefined),
+            complaintNowhereTip: language.getTranslation(rawLocales, "complaint_nowhere_tip", undefined),
+            complaintYouWhereTip: language.getTranslation(rawLocales, "complaint_you_where_tip", undefined),
+            complaintAnzeigeTip: language.getTranslation(rawLocales, "complaint_anzeige_tip", undefined),
+            complaintEmailLabel: language.getTranslation(rawLocales, "complaint_email_label", undefined),
+            complaintSentTitle: language.getTranslation(rawLocales, "complaint_sent_title", undefined),
+            complaintSentBody: language.getTranslation(rawLocales, "complaint_sent_body", undefined),
+            complaintPopupTitle: language.getTranslation(rawLocales, "complaint_popup_title", undefined),
+            complaintPopupBody: language.getTranslation(rawLocales, "complaint_popup_body", undefined),
             title: language.getTranslation(rawLocales, "title", null),
         }
     }
@@ -112,6 +128,7 @@ export default class ArticleDataWrapper {
             emailJsPublicKey: rawSettings["email_js_public_key"] || undefined,
             emailJsServiceId: rawSettings["email_js_service_id"] || undefined,
             emailJsTemplateId: rawSettings["email_js_template_id"] || undefined,
+            emailJsComplaintTemplateId: rawSettings["email_js_complaint_template_id"] || undefined,
             emailJsResumeTemplateId: rawSettings["email_js_resume_template_id"] || undefined,
         }
     }

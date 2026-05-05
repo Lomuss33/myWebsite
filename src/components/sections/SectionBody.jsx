@@ -4,6 +4,7 @@ import {useParser} from "../../hooks/parser.js"
 import ArticleNotFound from "../articles/ArticleNotFound.jsx"
 
 function _loadArticleCards() { return import("../articles/ArticleCards.jsx") }
+function _loadArticleComplaintForm() { return import("../articles/ArticleComplaintForm.jsx") }
 function _loadArticleContactForm() { return import("../articles/ArticleContactForm.jsx") }
 function _loadArticleDataProbe() { return import("../articles/ArticleDataProbe.jsx") }
 function _loadArticleFeature() { return import("../articles/ArticleFeature.jsx") }
@@ -115,6 +116,7 @@ function SectionBody({ section }) {
 
 SectionBody.ARTICLE_LOADERS = {
     ArticleCards: _loadArticleCards,
+    ArticleComplaintForm: _loadArticleComplaintForm,
     ArticleContactForm: _loadArticleContactForm,
     ArticleDataProbe: _loadArticleDataProbe,
     ArticleFeature: _loadArticleFeature,
@@ -134,6 +136,7 @@ SectionBody.ARTICLE_LOADERS = {
 
 SectionBody.ARTICLES = {
     ArticleCards: lazy(_loadArticleCards),
+    ArticleComplaintForm: lazy(_loadArticleComplaintForm),
     ArticleContactForm: lazy(_loadArticleContactForm),
     ArticleDataProbe: lazy(_loadArticleDataProbe),
     ArticleFeature: lazy(_loadArticleFeature),

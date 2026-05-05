@@ -4,7 +4,7 @@ import NavProfileCard from "./partials/NavProfileCard.jsx"
 import NavToolLanguagePicker from "./tools/NavToolLanguagePicker.jsx"
 import NavToolThemePicker from "./tools/NavToolThemePicker.jsx"
 import NavToolResumeDownloader from "./tools/NavToolResumeDownloader.jsx"
-import NavLinkPills from "./partials/NavLinkPills.jsx"
+import NavLinkPillsFixed from "./partials/NavLinkPillsFixed.jsx"
 import AudioButton from "../buttons/AudioButton.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useTheme} from "../../providers/ThemeProvider.jsx"
@@ -63,14 +63,14 @@ function NavHeaderMobile({ profile, links }) {
     return (
         <nav className={`nav-header-mobile`}>
             <div className={`nav-header-mobile-card-wrapper`}>
+                <NavLinkPillsFixed id={`nav-link-pills-menu`}
+                                   links={links}/>
+
                 <NavProfileCard profile={profile}
                                 expanded={true}
                                 mobileActionStackBeforeInfo={mobileActionStackBeforeInfo}
                                 mobileActionStackAfterInfo={mobileActionStackAfterInfo}
                                 showNameAudioButton={false}/>
-
-                <NavLinkPills id={`nav-link-pills-menu`}
-                              links={links}/>
             </div>
         </nav>
     )

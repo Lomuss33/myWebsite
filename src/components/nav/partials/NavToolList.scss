@@ -1,12 +1,12 @@
 @use "../../../styles/extend" as *;
 
 div.nav-tools {
-    --nav-tools-height: var(--nav-link-target-height, clamp(38px, 4.8vh, 52px));
+    --nav-tools-height: var(--nav-link-target-height, 48px);
 
     display: flex;
     width: 100%;
     height: var(--nav-tools-height);
-    min-height: var(--nav-tools-height);
+    min-height: 44px;
     max-height: var(--nav-tools-height);
     align-items: center;
     justify-content: space-between;
@@ -160,6 +160,7 @@ div.nav-tools-item {
     flex: 1 1 0;
     min-width: 0;
     height: 100%;
+    min-height: 44px;
     padding: 0;
     overflow: visible;
     position: relative;
@@ -403,6 +404,8 @@ div.nav-tools-shrink {
     flex-direction: row;
     padding: 0;
     gap: 0;
+    height: var(--nav-tools-height);
+    min-height: 44px;
 
     span.btn-option-picker-toggle-caption {
         display: none;
@@ -411,6 +414,7 @@ div.nav-tools-shrink {
     div.nav-tools-item {
         width: auto;
         height: 100%;
+        min-height: 44px;
         padding-inline: 0;
     }
 

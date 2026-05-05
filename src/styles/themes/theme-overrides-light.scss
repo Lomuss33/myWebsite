@@ -427,6 +427,189 @@
     color: #0f172a;
 }
 
+[data-theme="light"] article#article-4-section-my-writings span.article-skills-item-title-prefix {
+    display: none;
+}
+
+[data-theme="light"] article#article-3-section-my-writings,
+[data-theme="light"] article#article-4-section-my-writings {
+    position: relative;
+    isolation: isolate;
+}
+
+[data-theme="light"] article#article-3-section-my-writings h4.article-title,
+[data-theme="light"] article#article-4-section-my-writings h4.article-title {
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+}
+
+[data-theme="light"] article#article-3-section-my-writings h4.article-title span.article-title-prefix,
+[data-theme="light"] article#article-4-section-my-writings h4.article-title span.article-title-prefix {
+    display: inline;
+    margin-right: 8px !important;
+    border: 0;
+    border-radius: 0;
+    width: auto;
+    height: auto;
+    background: none;
+    color: #475569;
+    box-shadow: none;
+}
+
+[data-theme="light"] article#article-3-section-my-writings {
+    --writings-skill-accent: #2563eb;
+    --writings-skill-accent-2: #f59e0b;
+
+    span.article-skills-item-title-prefix {
+        padding: 0;
+        margin-right: 6px;
+        border-radius: 0;
+        background: none;
+        color: #475569;
+        font-size: 0.92em;
+        letter-spacing: 0.02em;
+        box-shadow: none;
+    }
+}
+
+[data-theme="light"] article#article-4-section-my-writings {
+    --writings-skill-accent: #dc2626;
+    --writings-skill-accent-2: #7f1d1d;
+}
+
+[data-theme="light"] article#article-3-section-my-writings div.article-skills-item,
+[data-theme="light"] article#article-4-section-my-writings div.article-skills-item {
+    position: relative;
+    overflow: hidden;
+    padding: 15px 16px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(37, 99, 235, 0.14);
+    background: linear-gradient(180deg, #ffffff, #f7fafc);
+    box-shadow:
+        0 16px 36px rgba(15, 23, 42, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.82);
+}
+
+[data-theme="light"] article#article-3-section-my-writings div.article-skills-item::before,
+[data-theme="light"] article#article-4-section-my-writings div.article-skills-item::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at top right, rgba(37, 99, 235, 0.10) 0%, transparent 54%),
+        radial-gradient(circle at bottom left, rgba(245, 158, 11, 0.08) 0%, transparent 40%),
+        repeating-linear-gradient(
+            135deg,
+            rgba(15, 23, 42, 0.025) 0px,
+            rgba(15, 23, 42, 0.025) 1px,
+            transparent 1px,
+            transparent 12px
+        );
+    pointer-events: none;
+}
+
+[data-theme="light"] article#article-3-section-my-writings div.article-skills-item::after,
+[data-theme="light"] article#article-4-section-my-writings div.article-skills-item::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--writings-skill-accent), var(--writings-skill-accent-2));
+    opacity: 0.92;
+    pointer-events: none;
+}
+
+[data-theme="light"] article#article-3-section-my-writings div.article-skills-item-avatar,
+[data-theme="light"] article#article-4-section-my-writings div.article-skills-item-avatar {
+    border: 1px solid rgba(37, 99, 235, 0.18);
+    box-shadow:
+        0 12px 26px rgba(15, 23, 42, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.72);
+    color: #0f172a;
+}
+
+[data-theme="light"] article#article-3-section-my-writings span.article-skills-item-title-prefix,
+[data-theme="light"] article#article-4-section-my-writings span.article-skills-item-title-prefix {
+    padding: 0;
+    margin-right: 6px;
+    border-radius: 0;
+    background: none;
+    color: #475569;
+    font-size: 0.92em;
+    letter-spacing: 0.02em;
+    box-shadow: none;
+}
+
+[data-theme="light"] article#article-3-section-my-writings span.article-skills-item-title-main,
+[data-theme="light"] article#article-4-section-my-writings span.article-skills-item-title-main {
+    color: #0f172a;
+}
+
+[data-theme="light"] article#article-3-section-my-writings span.article-skills-item-title-label,
+[data-theme="light"] article#article-4-section-my-writings span.article-skills-item-title-label {
+    color: #475569;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+[data-theme="light"] article#article-3-section-my-writings span.article-skills-item-title-suffix,
+[data-theme="light"] article#article-4-section-my-writings span.article-skills-item-title-suffix {
+    color: var(--writings-skill-accent-2);
+}
+
+[data-theme="light"] article#article-3-section-my-writings span.article-skills-item-title-percentage,
+[data-theme="light"] article#article-4-section-my-writings span.article-skills-item-title-percentage {
+    color: #0f172a;
+}
+
+[data-theme="light"] article#article-3-section-my-writings div.article-skills-item-description,
+[data-theme="light"] article#article-4-section-my-writings div.article-skills-item-description {
+    color: #475569;
+    line-height: 1.58;
+}
+
+[data-theme="light"] article#article-3-section-my-writings div.article-skills-item-progress,
+[data-theme="light"] article#article-4-section-my-writings div.article-skills-item-progress {
+    margin-top: 8px;
+    height: 56px;
+    overflow: hidden;
+    background-color: #ffffff;
+    border: 0;
+    border-radius: 16px;
+}
+
+[data-theme="light"] article#article-3-section-my-writings div.article-skills-item-progress .progress-bar,
+[data-theme="light"] article#article-4-section-my-writings div.article-skills-item-progress .progress-bar {
+    border-radius: inherit;
+    background-image: linear-gradient(90deg, #000000 0%, #000000 100%);
+    box-shadow: none;
+}
+
+[data-theme="light"] article#article-3-section-my-writings div.article-skills-embed.article-skills-embed-illustrated-manuscript {
+    margin: 2px 0 16px;
+}
+
+[data-theme="light"] article#article-3-section-my-writings div.article-skills-embed.article-skills-embed-illustrated-manuscript div.illustrated-manuscript {
+    max-width: 780px;
+    height: clamp(420px, 61vw, 684px);
+    border-radius: 22px;
+    border: 1px solid rgba(37, 99, 235, 0.14);
+    box-shadow:
+        0 22px 46px rgba(15, 23, 42, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.84);
+}
+
+[data-theme="light"] article#article-3-section-my-writings div.article-skills-item:hover,
+[data-theme="light"] article#article-4-section-my-writings div.article-skills-item:hover,
+[data-theme="light"] article#article-3-section-my-writings div.article-skills-item:focus-within,
+[data-theme="light"] article#article-4-section-my-writings div.article-skills-item:focus-within {
+    transform: translateY(-2px);
+    border-color: rgba(15, 23, 42, 0.22);
+    box-shadow:
+        0 22px 46px rgba(15, 23, 42, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.84);
+}
+
 [data-theme="light"] article#article-5-section-my-writings div.falling-words.article-falling-words-stage {
     border: 1px solid rgba(37, 99, 235, 0.14);
     background: linear-gradient(180deg, #ffffff, #f7f9fd);

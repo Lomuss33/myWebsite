@@ -13,6 +13,7 @@ function Link({
     children,
     tooltip = null,
     metadata = null,
+    ariaLabel = null,
     onClick = null,
     onClickTimeout = 0,
     onHoverStatus = null,
@@ -132,6 +133,7 @@ function Link({
         <a href={href}
            id={id}
            className={`${className} ${hrefClass}`}
+           aria-label={ariaLabel || undefined}
            onClick={_onClick}
            onMouseEnter={_onMouseEnter}
            onMouseLeave={_onMouseLeave}

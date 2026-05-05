@@ -4,7 +4,6 @@ import NavSidebar from "../nav/NavSidebar.jsx"
 import NavTabController from "../nav/NavTabController.jsx"
 import NavHeaderMobile from "../nav/NavHeaderMobile.jsx"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
-import NavLinkPillsFixed from "../nav/partials/NavLinkPillsFixed.jsx"
 
 function LayoutNavigation({ children, profile = null, sectionLinks = [], categoryLinks = [] }) {
     const viewport = useViewport()
@@ -22,7 +21,6 @@ function LayoutNavigation({ children, profile = null, sectionLinks = [], categor
 
             {isMobileLayout && (
                 <>
-                    <NavLinkPillsFixed links={currentCategorySectionLinks}/>
                     <NavHeaderMobile profile={profile}
                                      links={currentCategorySectionLinks}/>
                 </>

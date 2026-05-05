@@ -1,0 +1,25 @@
+@use "../../styles/extend" as *;
+
+img.medieval-cursor-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: $z-index-animated-cursor + 1;
+    pointer-events: none;
+    user-select: none;
+    width: 32px;
+    height: 32px;
+    opacity: 0;
+    visibility: hidden;
+    image-rendering: auto;
+    will-change: transform;
+
+    &-active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        display: none;
+    }
+}

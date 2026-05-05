@@ -541,19 +541,15 @@ article.article-info-list-contact {
     }
 
     div.article-info-list-items {
-        // Contact cards look best as a compact 2-column grid on desktop.
         --grid-template-columns: repeat(2, minmax(0, 1fr));
-        --avatar-size: 92px;
-        --contact-card-extra: 58px;
+        --avatar-size: 72px;
 
         @include media-breakpoint-down(lg) {
-            --avatar-size: 86px;
-            --contact-card-extra: 56px;
+            --avatar-size: 66px;
         }
 
         @include media-breakpoint-down(sm) {
-            --avatar-size: 78px;
-            --contact-card-extra: 54px;
+            --avatar-size: 60px;
         }
 
         @include media-breakpoint-down(md) {
@@ -564,15 +560,18 @@ article.article-info-list-contact {
     div.article-info-list-item {
         display: grid;
         grid-template-columns: var(--avatar-size) minmax(0, 1fr);
-        column-gap: 16px;
+        column-gap: 18px;
         align-items: center;
-        height: calc(var(--avatar-size) + var(--contact-card-extra));
-        min-height: calc(var(--avatar-size) + var(--contact-card-extra));
+        padding: 18px 20px 18px 16px;
         border: 1px solid var(--contact-card-border);
-        background:
-            var(--contact-card-surface);
+        background: var(--contact-card-surface);
         box-shadow: var(--contact-card-shadow);
         transition: 0.15s transform ease-out, 0.15s box-shadow ease-out, 0.15s border-color ease-out;
+
+        @include media-breakpoint-down(sm) {
+            padding: 14px 14px 14px 12px;
+            column-gap: 14px;
+        }
 
         &:hover {
             transform: translateY(-1px);
@@ -595,7 +594,6 @@ article.article-info-list-contact {
     }
 
     div.article-info-list-item-avatar {
-        // Keep avatar boxes perfectly square instead of stretching with the card height.
         height: var(--avatar-size);
         min-height: var(--avatar-size);
         max-height: var(--avatar-size);
@@ -626,15 +624,7 @@ article.article-info-list-contact {
         align-items: flex-start;
         text-align: left;
         justify-content: center;
-        padding: 6px 16px 6px 0;
-
-        @include media-breakpoint-down(lg) {
-            padding: 6px 14px 6px 0;
-        }
-
-        @include media-breakpoint-down(sm) {
-            padding: 6px 12px 6px 0;
-        }
+        padding: 0;
     }
 
     div.article-info-list-item-info-title {
@@ -642,7 +632,9 @@ article.article-info-list-contact {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        margin-bottom: 2px;
+        margin-bottom: 4px;
+        font-size: clamp(1.05rem, 0.95rem + 0.3vw, 1.2rem);
+        font-weight: 700;
         color: var(--contact-card-text-strong)!important;
     }
 
@@ -652,12 +644,17 @@ article.article-info-list-contact {
         align-items: baseline;
         gap: 10px;
         min-width: 0;
-        line-height: 1.25;
+        font-size: clamp(0.92rem, 0.85rem + 0.2vw, 1.02rem);
+        line-height: 1.4;
 
         > span {
             flex: 1 1 auto;
             min-width: 0;
             white-space: normal;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
     }
 

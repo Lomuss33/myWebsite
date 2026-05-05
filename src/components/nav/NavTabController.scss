@@ -10,6 +10,8 @@ div.nav-tab-controller-wrapper {
     padding-bottom: var(--nav-tab-safe-area-bottom);
     box-sizing: border-box;
     overflow: clip;
+    touch-action: none;
+    overscroll-behavior: none;
 
     @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
         display: none;
@@ -37,7 +39,7 @@ nav.nav-tab-controller {
     border-radius: 0;
 }
 
-a.nav-tab-controller-link {
+button.nav-tab-controller-link {
     position: relative;
     width: 100%;
     height: 100%;
@@ -57,6 +59,10 @@ a.nav-tab-controller-link {
     border: 0;
     outline: none!important;
     border-radius: 0;
+    appearance: none;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 
     background: transparent;
     color: var(--theme-nav-text);
@@ -78,24 +84,26 @@ a.nav-tab-controller-link {
     }
 }
 
-a.nav-tab-controller-link:hover {
-    background: color-mix(in srgb, var(--theme-nav-surface-raised) 72%, transparent 28%);
-    color: var(--theme-nav-text);
-    box-shadow:
-        inset 0 0 0 1px color-mix(in srgb, var(--theme-primary) 18%, var(--theme-nav-divider) 82%),
-        inset 0 1px 0 rgba(255, 255, 255, 0.14);
-    transform: translateY(-1px);
+@media (hover: hover) and (pointer: fine) {
+    button.nav-tab-controller-link:hover {
+        background: color-mix(in srgb, var(--theme-nav-surface-raised) 72%, transparent 28%);
+        color: var(--theme-nav-text);
+        box-shadow:
+            inset 0 0 0 1px color-mix(in srgb, var(--theme-primary) 18%, var(--theme-nav-divider) 82%),
+            inset 0 1px 0 rgba(255, 255, 255, 0.14);
+        transform: translateY(-1px);
 
-    i {
-        opacity: 1;
-    }
+        i {
+            opacity: 1;
+        }
 
-    span {
-        opacity: 0.8;
+        span {
+            opacity: 0.8;
+        }
     }
 }
 
-a.nav-tab-controller-link-active {
+button.nav-tab-controller-link-active {
     background:
         linear-gradient(180deg,
             color-mix(in srgb, var(--theme-primary) 62%, white 38%) 0%,
@@ -118,6 +126,6 @@ a.nav-tab-controller-link-active {
     }
 }
 
-nav.nav-tab-controller > a.nav-tab-controller-link + a.nav-tab-controller-link {
+nav.nav-tab-controller > button.nav-tab-controller-link + button.nav-tab-controller-link {
     box-shadow: inset 1px 0 0 var(--theme-nav-divider);
 }

@@ -807,6 +807,14 @@ article#article-2-section-my-hardware {
     --probe-shadow-strong: 0 26px 56px rgba(0, 0, 0, 0.44);
     --probe-inset: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 
+    h4.article-title {
+        margin-bottom: 4px;
+    }
+
+    div.article-content {
+        margin: 0 4px;
+    }
+
     div.article-data-probe-summary-chip,
     section.article-data-probe-block,
     div.article-data-probe-item,
@@ -838,6 +846,76 @@ article#article-2-section-my-hardware {
     div.article-data-probe-block-icon,
     div.article-data-probe-item-icon {
         box-shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
+    }
+
+    div.article-data-probe-summary {
+        margin-top: 4px;
+    }
+
+    section.article-data-probe-block:first-of-type {
+        margin-top: 8px;
+    }
+
+    div.article-data-probe-summary-chip {
+        padding: 10px 12px;
+        gap: 8px;
+    }
+
+    div.article-data-probe-block {
+        padding: 12px;
+    }
+
+    div.article-data-probe-block-header {
+        gap: 12px;
+        margin-bottom: 10px;
+    }
+
+    div.article-data-probe-block-lead {
+        gap: 10px;
+    }
+
+    div.article-data-probe-block-description {
+        margin-top: 4px;
+    }
+
+    div.article-data-probe-block-count {
+        padding: 9px 10px;
+        min-width: 88px;
+    }
+
+    div.article-data-probe-grid {
+        gap: 10px;
+    }
+
+    div.article-data-probe-item {
+        padding: 12px;
+    }
+
+    div.article-data-probe-item-head {
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    div.article-data-probe-item-body {
+        gap: 10px;
+    }
+
+    div.article-data-probe-item-meta {
+        row-gap: 8px;
+    }
+
+    div.article-data-probe-item-meta-row + div.article-data-probe-item-meta-row {
+        padding-top: 7px;
+    }
+
+    div.article-data-probe-item-value-toolbar {
+        margin-top: 0;
+        padding-top: 8px;
+        gap: 10px;
+    }
+
+    pre.article-data-probe-item-value {
+        padding: 12px 13px;
     }
 
     div.article-data-probe-item-badge.badge-hidden {

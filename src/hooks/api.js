@@ -77,6 +77,37 @@ export const useApi = () => {
                     custom_source_name: "React Portfolio"
                 }
             }
+        },
+
+        /**
+         * @param {String} message
+         * @param {String} recipientEmail
+         */
+        validateComplaintRequest: (message, recipientEmail = "trash@lovro-music.de") => {
+            const trimmedMessage = String(message || "").trim()
+
+            const validations = [
+                { errorCode: constants.ErrorCodes.VALIDATION_EMPTY_FIELDS, errorCondition: !trimmedMessage },
+                { errorCode: constants.ErrorCodes.VALIDATION_MESSAGE_SPAM, errorCondition: utils.validation.isSpam(trimmedMessage) }
+            ]
+
+            const error = validations.find(validation => validation.errorCondition)
+            return {
+                success: !error,
+                errorCode: error?.errorCode,
+                bundle: {
+                    to_email: recipientEmail,
+                    recipient_email: recipientEmail,
+                    name: "Anonymous Complaint",
+                    from_name: "Anonymous Complaint",
+                    from_email: "anonymous@lovro-music.de",
+                    reply_to: "anonymous@lovro-music.de",
+                    custom_subject: "Website complaint",
+                    message: trimmedMessage,
+                    custom_source: utils.url.getAbsoluteLocation(),
+                    custom_source_name: "Complaint Desk"
+                }
+            }
         }
     }
 

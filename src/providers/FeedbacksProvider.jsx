@@ -11,6 +11,7 @@ import {useLanguage} from "./LanguageProvider.jsx"
 import {useViewport} from "./ViewportProvider.jsx"
 import ActivitySpinner from "../components/loaders/ActivitySpinner.jsx"
 import MouseLayer from "../components/mouse/MouseLayer.jsx"
+import MedievalCursorLayer from "../components/mouse/MedievalCursorLayer.jsx"
 import NotificationsLayer from "../components/notifications/NotificationsLayer.jsx"
 import YoutubeVideoModal from "../components/modals/YoutubeVideoModal.jsx"
 import ConfirmationWindowModal from "../components/modals/ConfirmationWindowModal.jsx"
@@ -74,6 +75,27 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
         }
 
         document.documentElement.setAttribute("data-cursor-mode", cursorMode)
+
+        if(cursorMode === CURSOR_MODES.MEDIEVAL) {
+            const cursorFiles = [
+                "/medieval-style-cursor/Medieval-Arming sword normal.cur",
+                "/medieval-style-cursor/Medieval-Arming sword helmet help select.cur",
+                "/medieval-style-cursor/Medieval-Arming sword blacksmith work in background.cur",
+                "/medieval-style-cursor/Medieval-Maltese cross precision select.cur",
+                "/medieval-style-cursor/Medieval-Quill pen.cur",
+                "/medieval-style-cursor/Medieval-Shield unavailable.cur",
+                "/medieval-style-cursor/Medieval-Arrow veritical resize.cur",
+                "/medieval-style-cursor/Medieval-Arrow horizontal resize.cur",
+                "/medieval-style-cursor/Medieval-Arrow diagonal resize 1.cur",
+                "/medieval-style-cursor/Medieval-Arrow diagonal resize 2.cur",
+                "/medieval-style-cursor/Medieval-Greek cross move.cur",
+                "/medieval-style-cursor/Medieval-Gauntlet link select.cur",
+            ]
+            cursorFiles.forEach(src => {
+                const img = new Image()
+                img.src = src
+            })
+        }
     }, [animatedCursorEnabled, cursorMode])
 
     const setActivitySpinnerVisible = (visible, activityId, message) => {
@@ -245,6 +267,8 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
             <MouseLayer active={animatedCursorEnabled && cursorMode === CURSOR_MODES.MAGIC}
                         hidden={animatedCursorLocked}
                         isBlockedByOverlay={isBlockedByOverlay()}/>
+
+            <MedievalCursorLayer active={animatedCursorEnabled && cursorMode === CURSOR_MODES.MEDIEVAL}/>
 
             <NotificationsLayer target={displayingNotification}
                                 onNotificationDismissed={killNotification}/>

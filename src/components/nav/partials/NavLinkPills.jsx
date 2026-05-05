@@ -1,5 +1,5 @@
 import "./NavLinkPills.scss"
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import Nav from "../base/Nav.jsx"
 import GestureAwareButton from "../../buttons/GestureAwareButton.jsx"
 
@@ -17,13 +17,14 @@ function NavLinkPills({ links, id, className = "" }) {
     )
 }
 
-function NavLinkPillsLink({ link, active, data, onClick, onClickTimeout }) {
+function NavLinkPillsLink({ link, active, onClick }) {
     const activeClass = active ?
         `nav-link-pills-link-active` :
         ``
 
     return (
         <GestureAwareButton className={`nav-link-pills-link ${activeClass}`}
+                            ariaPressed={active}
                             onClick={onClick}>
             <i className={`${link.faIcon}`}/>
             <span dangerouslySetInnerHTML={{__html: link.label}}/>

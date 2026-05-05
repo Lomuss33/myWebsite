@@ -1,47 +1,41 @@
 import "./NavLinkPillsFixed.scss"
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef} from 'react'
 import NavLinkPills from "./NavLinkPills.jsx"
-import {useViewport, useViewportScroll} from "../../../providers/ViewportProvider.jsx"
-import {useNavigation} from "../../../providers/NavigationProvider.jsx"
 
-function NavLinkPillsFixed({ links, className = "" }) {
-    const navigation = useNavigation()
-    const viewport = useViewport()
-    const scrollPosition = useViewportScroll()
-
-    const [status, setStatus] = useState(NavLinkPillsFixed.Status.HIDDEN)
+function NavLinkPillsFixed({ links, className = "", id = "nav-link-pills-fixed" }) {
+    const wrapperRef = useRef(null)
+    const shouldShow = links.length >= 2
 
     useEffect(() => {
-        const navToolsEl = document.querySelector("#nav-link-pills-menu")
-        const navToolsElRect = navToolsEl?.getBoundingClientRect()
+        const wrapperEl = wrapperRef.current
+        const layoutWrapperEl = wrapperEl?.closest(".layout-navigation-wrapper")
 
-        if(!navToolsElRect || viewport.innerHeight < 400) {
-            setStatus(NavLinkPillsFixed.Status.HIDDEN)
+        if(!wrapperEl || !layoutWrapperEl)
             return
+
+        const syncHeight = () => {
+            layoutWrapperEl.style.setProperty("--nav-link-pills-fixed-height", `${Math.round(wrapperEl.getBoundingClientRect().height)}px`)
         }
 
-        const navToolsStartY = navToolsElRect.y
-        const navToolsEndY = navToolsElRect.y + navToolsElRect.height
+        syncHeight()
 
-        if(navigation.nextSection || navigation.scheduledNextSection) setStatus(NavLinkPillsFixed.Status.HIDING)
-        else if(navToolsEndY < 0 && navToolsStartY < 0) setStatus(NavLinkPillsFixed.Status.SHOWN)
-        else if(navToolsStartY < 0) setStatus(NavLinkPillsFixed.Status.HIDING)
-        else setStatus(NavLinkPillsFixed.Status.HIDDEN)
-    }, [scrollPosition.y, viewport.innerHeight, navigation.nextSection, navigation.scheduledNextSection])
+        const resizeObserver = new ResizeObserver(syncHeight)
+        resizeObserver.observe(wrapperEl)
+
+        return () => {
+            resizeObserver.disconnect()
+            layoutWrapperEl.style.removeProperty("--nav-link-pills-fixed-height")
+        }
+    }, [])
 
     return (
-        <div className={`nav-link-pills-fixed-wrapper nav-link-pills-fixed-wrapper-${status}`}>
-            <NavLinkPills id={"nav-link-pills-fixed"}
+        <div ref={wrapperRef}
+             className={`nav-link-pills-fixed-wrapper nav-link-pills-fixed-wrapper-${shouldShow ? "shown" : "hidden"}`}>
+            <NavLinkPills id={id}
                           className={className}
                           links={links}/>
         </div>
     )
-}
-
-NavLinkPillsFixed.Status = {
-    SHOWN: "shown",
-    HIDING: "hiding",
-    HIDDEN: "hidden"
 }
 
 export default NavLinkPillsFixed

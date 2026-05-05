@@ -15,13 +15,14 @@ function NavTabController({ links }) {
     )
 }
 
-function NavTabControllerLink({ link, active, data, onClick, onClickTimeout }) {
+function NavTabControllerLink({ link, active, onClick }) {
     const activeClass = active ?
         `nav-tab-controller-link-active` :
         ``
 
     return (
         <GestureAwareButton className={`nav-tab-controller-link ${activeClass}`}
+                            ariaPressed={active}
                             onClick={onClick}>
             <i className={`${link.faIcon}`}/>
             <span dangerouslySetInnerHTML={{__html: link.label}}/>

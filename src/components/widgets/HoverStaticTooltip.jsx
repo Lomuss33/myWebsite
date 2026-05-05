@@ -16,12 +16,15 @@ function HoverStaticTooltip({
     forceVisible = false,
     toggleBehaviorOnTouchScreens = false,
     desktopClickShowsTooltip = true,
+    forceTouchBehavior = null,
 }) {
     const viewport = useViewport()
     const input = useInput()
     const utils = useUtils()
     const navigation = useNavigation()
-    const isTouchDevice = utils.device.isTouchDevice()
+    const shouldUseTouchBehavior = typeof forceTouchBehavior === "boolean"
+        ? forceTouchBehavior
+        : !utils.device.canHoverWithFinePointer()
 
     const [visible, setVisible] = useState(false)
 
@@ -43,7 +46,7 @@ function HoverStaticTooltip({
             targetEl.removeEventListener("mouseleave", _onTargetMouseLeave)
             targetEl.removeEventListener("click", _onTargetClick)
         }
-    }, [targetId, isTouchDevice, onDesktopClick, toggleBehaviorOnTouchScreens, desktopClickShowsTooltip])
+    }, [targetId, shouldUseTouchBehavior, onDesktopClick, toggleBehaviorOnTouchScreens, desktopClickShowsTooltip])
 
     /** @listens viewport.innerWidth **/
     useEffect(() => {
@@ -52,7 +55,7 @@ function HoverStaticTooltip({
 
     /** @listens navigation.targetSection **/
     useEffect(() => {
-        if(!isTouchDevice || !toggleBehaviorOnTouchScreens)
+        if(!shouldUseTouchBehavior || !toggleBehaviorOnTouchScreens)
             return
         setVisible(false)
     }, [navigation.targetSection])
@@ -66,25 +69,25 @@ function HoverStaticTooltip({
     }, [input.mouseUpStatus])
 
     const _onTargetMouseEnter = () => {
-        if(isTouchDevice)
+        if(shouldUseTouchBehavior)
             return
         setVisible(true)
     }
 
     const _onTargetMouseLeave = () => {
-        if(isTouchDevice)
+        if(shouldUseTouchBehavior)
             return
         setVisible(false)
     }
 
     const _onTargetClick = () => {
-        if(!isTouchDevice && onDesktopClick)
+        if(!shouldUseTouchBehavior && onDesktopClick)
             onDesktopClick()
 
-        if(isTouchDevice && toggleBehaviorOnTouchScreens) {
+        if(shouldUseTouchBehavior && toggleBehaviorOnTouchScreens) {
             setVisible(visible => !visible)
         }
-        else if(isTouchDevice || desktopClickShowsTooltip) {
+        else if(shouldUseTouchBehavior || desktopClickShowsTooltip) {
             setVisible(true)
         }
     }

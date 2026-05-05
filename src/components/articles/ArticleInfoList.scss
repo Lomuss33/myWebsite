@@ -151,7 +151,7 @@ div.article-info-list-item {
 
     div.article-info-list-item-text-bubble-inner {
         height: 100%;
-        border-radius: 12px;
+        border-radius: 0;
         padding: 0.08rem 0.15rem;
         background: linear-gradient(145deg, rgba(10, 18, 32, 0.98), rgba(18, 28, 48, 0.98));
         border: 1px solid rgba(148, 163, 184, 0.22);
@@ -273,7 +273,9 @@ article.article-info-list-home {
         --avatar-size: 72px;
         --min-height: calc(var(--avatar-size) + 34px);
         --padding: 5px;
-        --content-padding: 14px 16px;
+        --content-padding-inline-start: 14px;
+        --content-padding-inline-end: 16px;
+        --content-padding-block: 14px;
         --proof-bubble-bleed-left: 8px;
         --proof-bubble-bleed-right: 25px;
         --proof-bubble-bleed-top: 4px;
@@ -297,7 +299,9 @@ article.article-info-list-home {
         @include media-breakpoint-down(xl) {
             --grid-template-columns: repeat(2, minmax(0, 1fr));
             --avatar-size: 68px;
-            --content-padding: 13px 15px;
+            --content-padding-inline-start: 13px;
+            --content-padding-inline-end: 15px;
+            --content-padding-block: 13px;
             --proof-bubble-bleed-left: 7px;
             --proof-bubble-bleed-right: 24px;
             --proof-bubble-bleed-top: 4px;
@@ -309,7 +313,9 @@ article.article-info-list-home {
         @include media-breakpoint-down(lg) {
             --grid-template-columns: repeat(2, minmax(0, 1fr));
             --avatar-size: 64px;
-            --content-padding: 12px 14px;
+            --content-padding-inline-start: 12px;
+            --content-padding-inline-end: 14px;
+            --content-padding-block: 12px;
             --proof-bubble-bleed-left: 6px;
             --proof-bubble-bleed-right: 23px;
             --proof-bubble-bleed-top: 4px;
@@ -321,7 +327,9 @@ article.article-info-list-home {
         @include media-breakpoint-down(md) {
             --grid-template-columns: repeat(2, minmax(0, 1fr));
             --avatar-size: 60px;
-            --content-padding: 11px 13px;
+            --content-padding-inline-start: 11px;
+            --content-padding-inline-end: 13px;
+            --content-padding-block: 11px;
             --proof-bubble-bleed-left: 5px;
             --proof-bubble-bleed-right: 22px;
             --proof-bubble-bleed-top: 4px;
@@ -334,7 +342,9 @@ article.article-info-list-home {
             --grid-template-columns: repeat(2, minmax(0, 1fr));
             --avatar-size: 54px;
             --padding: 4px;
-            --content-padding: 10px 11px;
+            --content-padding-inline-start: 10px;
+            --content-padding-inline-end: 11px;
+            --content-padding-block: 10px;
             --proof-bubble-bleed-left: 3px;
             --proof-bubble-bleed-right: 19px;
             --proof-bubble-bleed-top: 2px;
@@ -439,16 +449,14 @@ article.article-info-list-home {
             // extend the popup sideways and downward to reach the card's outer
             // edges, leaving a small gap from the avatar on the left.
             top: calc(-1 * var(--proof-bubble-bleed-top));
-            right: calc(-1 * var(--proof-bubble-bleed-right));
+            right: calc(-1 * (var(--proof-bubble-bleed-right) + var(--content-padding-inline-end)));
             bottom: calc(-1 * var(--proof-bubble-bleed-bottom));
             left: calc(-1 * var(--proof-bubble-bleed-left));
             transform: translateX(-6px) scale(0.985);
         }
 
         div.article-info-list-item-text-bubble-inner {
-            // Right corners match the card's border-radius for a seamless
-            // edge against the pill; left side stays straight (avatar side).
-            border-radius: 0 $standard-border-radius $standard-border-radius 0;
+            border-radius: 0;
             box-sizing: border-box;
             display: block;
             height: 100%;

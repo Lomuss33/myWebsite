@@ -2,7 +2,6 @@
 
 div.nav-tools {
     --nav-tools-height: var(--nav-link-target-height, clamp(38px, 4.8vh, 52px));
-    --nav-tools-button-radius: 15px;
 
     display: flex;
     width: 100%;
@@ -16,10 +15,10 @@ div.nav-tools {
     border-bottom-left-radius: calc($standard-border-radius * 1.8);
     border-bottom-right-radius: calc($standard-border-radius * 1.8);
     overflow: visible;
-    padding: 3px 6px;
+    padding: 0;
     background:
         linear-gradient(180deg,
-            color-mix(in srgb, var(--theme-nav-surface-accent) 88%, white 12%) 0%,
+            color-mix(in srgb, var(--theme-nav-surface-accent) 94%, white 6%) 0%,
             var(--theme-nav-surface-accent) 100%);
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.08),
@@ -53,19 +52,14 @@ div.nav-tools {
         flex: 1 1 auto;
         width: 100%;
         height: 100%;
-        padding: 0 0.4rem;
+        padding: 0 0.5rem;
         min-height: 100%;
         min-width: 0;
         border: 0;
         outline: none;
-        border-radius: var(--nav-tools-button-radius);
-        background:
-            linear-gradient(180deg,
-                color-mix(in srgb, var(--theme-nav-surface-raised) 78%, white 22%) 0%,
-                color-mix(in srgb, var(--theme-nav-surface-accent) 96%, var(--theme-nav-surface) 4%) 100%);
-        box-shadow:
-            inset 0 0 0 1px color-mix(in srgb, var(--theme-nav-divider) 84%, white 16%),
-            inset 0 1px 0 rgba(255, 255, 255, 0.10);
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
         transition:
             transform 0.18s ease,
             box-shadow 0.18s ease,
@@ -97,14 +91,14 @@ div.nav-tools {
         }
 
         &:hover {
-            transform: translateY(-1px);
+            transform: none;
             background:
                 linear-gradient(180deg,
-                    color-mix(in srgb, var(--theme-nav-surface-raised) 72%, white 28%) 0%,
-                    color-mix(in srgb, var(--theme-nav-surface-raised) 94%, var(--theme-nav-surface-accent) 6%) 100%);
+                    color-mix(in srgb, var(--theme-nav-surface-raised) 24%, transparent 76%) 0%,
+                    color-mix(in srgb, var(--theme-primary) 8%, transparent 92%) 100%);
             box-shadow:
-                inset 0 0 0 1px color-mix(in srgb, var(--theme-primary) 18%, var(--theme-nav-divider) 82%),
-                0 8px 16px rgba(15, 23, 42, 0.10);
+                inset 0 1px 0 rgba(255, 255, 255, 0.12),
+                inset 0 -2px 0 color-mix(in srgb, var(--theme-primary) 30%, transparent 70%);
 
             i.fa-icon,
             i.fa-caret-icon,
@@ -125,7 +119,7 @@ div.nav-tools {
     }
 
     button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption) {
-        border-radius: var(--nav-tools-button-radius);
+        border-radius: 0;
     }
 
     div.dropdown.show > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption),
@@ -135,15 +129,15 @@ div.nav-tools {
     button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):focus-visible,
     div.dropdown > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):not(.show):active,
     div.dropup > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):not(.show):active {
-        transform: translateY(-1px);
+        transform: none;
         box-shadow:
-            inset 0 0 0 1px color-mix(in srgb, var(--theme-primary) 28%, var(--theme-nav-divider) 72%),
-            inset 0 1px 0 rgba(255, 255, 255, 0.18),
-            0 10px 20px rgba(15, 23, 42, 0.14);
+            inset 0 1px 0 rgba(255, 255, 255, 0.16),
+            inset 0 -3px 0 color-mix(in srgb, var(--theme-primary) 58%, transparent 42%),
+            inset 0 0 0 1px color-mix(in srgb, var(--theme-primary) 14%, transparent 86%);
         background:
             linear-gradient(180deg,
-                color-mix(in srgb, var(--theme-primary) 10%, white 90%) 0%,
-                color-mix(in srgb, var(--theme-nav-surface-raised) 78%, var(--theme-primary) 22%) 100%);
+                color-mix(in srgb, var(--theme-primary) 12%, transparent 88%) 0%,
+                color-mix(in srgb, var(--theme-primary) 10%, var(--theme-nav-surface-raised) 90%) 100%);
 
         i.fa-icon,
         i.fa-caret-icon,
@@ -166,11 +160,23 @@ div.nav-tools-item {
     flex: 1 1 0;
     min-width: 0;
     height: 100%;
-    padding: 0 2px;
+    padding: 0;
     overflow: visible;
+    position: relative;
 
     &:not(:first-child) {
-        border-left: 1px solid color-mix(in srgb, var(--theme-nav-divider) 86%, transparent 14%);
+        border-left: 0;
+    }
+
+    &:not(:first-child)::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 9px;
+        bottom: 9px;
+        width: 1px;
+        background: color-mix(in srgb, var(--theme-nav-divider) 78%, transparent 22%);
+        pointer-events: none;
     }
 }
 
@@ -210,6 +216,7 @@ div.nav-tools-item-language {
         display: none !important;
         content: none !important;
     }
+
 }
 
 div.nav-tools-item-resume {
@@ -255,7 +262,7 @@ nav.nav-sidebar div.nav-tools {
         inset: auto !important;
         bottom: calc(100% + 8px) !important;
         top: auto !important;
-        left: -8px !important;     // back out of nav-tools' 8px horizontal padding
+        left: 0 !important;
         right: auto !important;
         transform: none !important;
         margin: 0 !important;
@@ -265,35 +272,81 @@ nav.nav-sidebar div.nav-tools {
         max-width: min(420px, 80vw);
         z-index: $z-index-pop-over;
 
-        // The dropdown-menu styles in _bootstrap-customization.scss are scoped
-        // to a `div.dropdown` ancestor and don't reach our `.dropup` wrappers,
-        // so re-apply the project's pop-up look here.
-        padding: 0;
+        // Re-apply popup styling here because these menus anchor to a static
+        // wrapper instead of the default Bootstrap dropdown container.
+        padding: 8px;
         overflow: hidden;
-        border-radius: 20px;
-        border: 2px solid var(--theme-standard-borders);
-        background-color: var(--theme-pop-ups-background);
+        border-radius: 16px;
+        border: 1px solid color-mix(in srgb, var(--theme-standard-borders) 82%, white 18%);
+        background: color-mix(in srgb, var(--theme-pop-ups-background) 94%, white 6%);
         color: var(--theme-texts);
-        box-shadow: 0 18px 40px var(--theme-shell-shadow);
+        backdrop-filter: blur(14px) saturate(1.02);
+        box-shadow:
+            0 18px 40px rgba(15, 23, 42, 0.14),
+            0 4px 14px rgba(15, 23, 42, 0.08);
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: 20px;
+            bottom: -6px;
+            width: 12px;
+            height: 12px;
+            border-right: 1px solid color-mix(in srgb, var(--theme-standard-borders) 82%, white 18%);
+            border-bottom: 1px solid color-mix(in srgb, var(--theme-standard-borders) 82%, white 18%);
+            background: color-mix(in srgb, var(--theme-pop-ups-background) 94%, white 6%);
+            transform: rotate(45deg);
+            pointer-events: none;
+        }
 
         a.dropdown-item,
         button.dropdown-item {
+            position: relative;
             color: var(--theme-texts);
-            height: 45px;
+            min-height: 44px;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
-            padding-inline: 14px;
+            gap: 10px;
+            font-size: 0.89rem;
+            font-weight: 500;
+            margin: 0;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: transparent;
+            transition:
+                background 0.16s ease,
+                color 0.16s ease;
+
+            div.btn-option-picker-icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 28px;
+                min-width: 28px;
+                height: 28px;
+                border-radius: 8px;
+                background: color-mix(in srgb, var(--theme-primary) 9%, transparent 91%);
+
+                i.fa-icon {
+                    color: color-mix(in srgb, var(--theme-texts) 80%, var(--theme-primary) 20%);
+                    opacity: 1;
+                }
+            }
+
+            span.btn-option-picker-menu-item-label {
+                letter-spacing: 0;
+            }
 
             &:not(:last-child) {
-                border-bottom: 1px solid var(--theme-standard-borders-5);
+                margin-bottom: 2px;
             }
 
             &:hover, &:focus {
-                background-color: var(--theme-primary);
-                color: var(--theme-texts-inv);
-                i.fa-icon {
-                    opacity: 0.8;
+                background: color-mix(in srgb, var(--theme-primary) 10%, transparent 90%);
+                color: var(--theme-texts);
+
+                div.btn-option-picker-icon {
+                    background: color-mix(in srgb, var(--theme-primary) 16%, transparent 84%);
                 }
             }
         }
@@ -301,6 +354,38 @@ nav.nav-sidebar div.nav-tools {
         a.dropdown-item-no-border,
         button.dropdown-item-no-border {
             border-bottom: 0 !important;
+        }
+    }
+
+    div.nav-tools-item-language div.dropdown-menu.nav-tools-popup-menu {
+        a.dropdown-item,
+        button.dropdown-item {
+            background: transparent;
+
+            div.btn-option-picker-icon {
+                width: auto;
+                min-width: 0;
+                height: auto;
+                border-radius: 0;
+                background: transparent !important;
+                box-shadow: none;
+            }
+
+            img {
+                width: 24px;
+                height: 24px;
+                border-radius: 999px;
+                transition: transform 0.14s ease;
+            }
+
+            &:hover,
+            &:focus {
+                background: color-mix(in srgb, var(--theme-links) 10%, transparent 90%);
+
+                img {
+                    transform: scale(1.1);
+                }
+            }
         }
     }
 }
@@ -314,7 +399,7 @@ nav.nav-sidebar-short-rail div.nav-tools div.dropdown-menu.nav-tools-popup-menu 
 
 div.nav-tools-shrink {
     flex-direction: row;
-    padding: 2px 3px;
+    padding: 0;
     gap: 0;
 
     span.btn-option-picker-toggle-caption {
@@ -324,7 +409,7 @@ div.nav-tools-shrink {
     div.nav-tools-item {
         width: auto;
         height: 100%;
-        padding-inline: 1px;
+        padding-inline: 0;
     }
 
     div.nav-tools-item-language {
@@ -335,6 +420,187 @@ div.nav-tools-shrink {
         div.btn-option-picker-icon.btn-option-picker-icon-size-2 {
             width: min(calc(100% - 8px), calc(var(--nav-tools-height) - 16px));
             max-width: 100%;
+        }
+    }
+}
+
+[data-theme="dark"] div.nav-tools {
+    background:
+        linear-gradient(180deg,
+            color-mix(in srgb, var(--theme-nav-surface-accent) 92%, white 8%) 0%,
+            color-mix(in srgb, var(--theme-nav-surface-accent) 96%, black 4%) 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.04),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.24);
+
+    button.btn-option-picker-toggle {
+        i.fa-icon,
+        i.fa-caret-icon,
+        span.btn-option-picker-toggle-caption {
+            color: color-mix(in srgb, var(--theme-nav-text) 84%, var(--theme-primary) 16%);
+        }
+
+        &:hover {
+            background:
+                linear-gradient(180deg,
+                    color-mix(in srgb, var(--theme-primary) 12%, transparent 88%) 0%,
+                    color-mix(in srgb, var(--theme-nav-surface-raised) 78%, var(--theme-primary) 22%) 100%);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                inset 0 -2px 0 color-mix(in srgb, var(--theme-primary) 42%, transparent 58%);
+
+            i.fa-icon,
+            i.fa-caret-icon,
+            span.btn-option-picker-toggle-caption {
+                color: color-mix(in srgb, var(--theme-primary) 74%, white 26%);
+            }
+        }
+    }
+
+    div.dropdown.show > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption),
+    div.dropup.show > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption),
+    div.dropdown > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption).show,
+    div.dropup > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption).show,
+    button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):focus-visible,
+    div.dropdown > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):not(.show):active,
+    div.dropup > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):not(.show):active {
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            inset 0 -3px 0 color-mix(in srgb, var(--theme-primary) 56%, transparent 44%),
+            inset 0 0 0 1px color-mix(in srgb, var(--theme-primary) 24%, transparent 76%);
+        background:
+            linear-gradient(180deg,
+                color-mix(in srgb, var(--theme-primary) 16%, transparent 84%) 0%,
+                color-mix(in srgb, var(--theme-nav-surface-raised) 72%, var(--theme-primary) 28%) 100%);
+
+        i.fa-icon,
+        i.fa-caret-icon,
+        span.btn-option-picker-toggle-caption {
+            color: color-mix(in srgb, var(--theme-primary) 78%, white 22%);
+        }
+    }
+
+    div.nav-tools-item-language,
+    div.nav-tools-item-resume {
+        button.btn-option-picker-toggle:hover {
+            background:
+                linear-gradient(180deg,
+                    color-mix(in srgb, var(--theme-secondary) 12%, transparent 88%) 0%,
+                    color-mix(in srgb, var(--theme-nav-surface-raised) 78%, var(--theme-secondary) 22%) 100%);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                inset 0 -2px 0 color-mix(in srgb, var(--theme-secondary) 42%, transparent 58%);
+
+            i.fa-icon,
+            i.fa-caret-icon,
+            span.btn-option-picker-toggle-caption {
+                color: color-mix(in srgb, var(--theme-secondary) 72%, white 28%);
+            }
+        }
+
+        div.dropdown.show > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption),
+        div.dropup.show > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption),
+        div.dropdown > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption).show,
+        div.dropup > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption).show,
+        button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):focus-visible,
+        div.dropdown > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):not(.show):active,
+        div.dropup > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):not(.show):active {
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                inset 0 -3px 0 color-mix(in srgb, var(--theme-secondary) 56%, transparent 44%),
+                inset 0 0 0 1px color-mix(in srgb, var(--theme-secondary) 24%, transparent 76%);
+            background:
+                linear-gradient(180deg,
+                    color-mix(in srgb, var(--theme-secondary) 16%, transparent 84%) 0%,
+                    color-mix(in srgb, var(--theme-nav-surface-raised) 72%, var(--theme-secondary) 28%) 100%);
+
+            i.fa-icon,
+            i.fa-caret-icon,
+            span.btn-option-picker-toggle-caption {
+                color: color-mix(in srgb, var(--theme-secondary) 78%, white 22%);
+            }
+        }
+    }
+}
+
+[data-theme="dark"] nav.nav-sidebar div.nav-tools div.dropdown-menu.nav-tools-popup-menu {
+    border-color: color-mix(in srgb, var(--theme-nav-divider) 68%, white 32%);
+    background: color-mix(in srgb, var(--theme-nav-surface-raised) 78%, black 22%);
+    box-shadow:
+        0 22px 44px rgba(2, 6, 23, 0.48),
+        0 8px 18px rgba(2, 6, 23, 0.32),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+    &::before {
+        border-right-color: color-mix(in srgb, var(--theme-nav-divider) 68%, white 32%);
+        border-bottom-color: color-mix(in srgb, var(--theme-nav-divider) 68%, white 32%);
+        background: color-mix(in srgb, var(--theme-nav-surface-raised) 78%, black 22%);
+    }
+
+    a.dropdown-item,
+    button.dropdown-item {
+        color: color-mix(in srgb, var(--theme-nav-text) 92%, white 8%);
+
+        div.btn-option-picker-icon {
+            background: color-mix(in srgb, var(--theme-secondary) 16%, transparent 84%);
+
+            i.fa-icon {
+                color: color-mix(in srgb, var(--theme-secondary) 68%, white 32%);
+            }
+        }
+
+        &:hover,
+        &:focus {
+            background: color-mix(in srgb, var(--theme-secondary) 16%, var(--theme-nav-surface-raised) 84%);
+            color: var(--theme-nav-text);
+
+            div.btn-option-picker-icon {
+                background: color-mix(in srgb, var(--theme-secondary) 22%, transparent 78%);
+            }
+        }
+    }
+
+}
+
+[data-theme="dark"] nav.nav-sidebar div.nav-tools div.nav-tools-item-language div.dropdown-menu.nav-tools-popup-menu {
+    a.dropdown-item,
+    button.dropdown-item {
+        div.btn-option-picker-icon {
+            background: transparent !important;
+        }
+
+        &:hover,
+        &:focus {
+            background: color-mix(in srgb, var(--theme-secondary) 16%, var(--theme-nav-surface-raised) 84%);
+        }
+    }
+}
+
+[data-theme="dark"] nav.nav-sidebar div.nav-tools div.nav-tools-item-resume div.dropdown-menu.nav-tools-popup-menu {
+    a.dropdown-item,
+    button.dropdown-item {
+        div.btn-option-picker-icon {
+            width: 24px;
+            min-width: 24px;
+            height: 24px;
+            border-radius: 999px;
+            background: transparent !important;
+            box-shadow: none;
+
+            i.fa-icon {
+                font-size: 1.12rem;
+                line-height: 1;
+                color: color-mix(in srgb, var(--theme-secondary) 74%, white 26%);
+                transition: transform 0.14s ease, color 0.14s ease;
+            }
+        }
+
+        &:hover,
+        &:focus {
+            div.btn-option-picker-icon i.fa-icon {
+                transform: scale(1.1);
+                color: color-mix(in srgb, var(--theme-secondary) 84%, white 16%);
+            }
         }
     }
 }

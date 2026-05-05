@@ -7,55 +7,205 @@ div.category-filter {
     display: grid;
     grid-template-columns: repeat(var(--category-filter-columns, 1), minmax(0, 1fr));
     align-items: stretch;
-    gap: 0;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 18px;
     --category-filter-font-size: clamp(0.58rem, 1.6vw, 0.85rem);
+
+    /* Section accents (override per section). */
+    --category-filter-accent-1: #60a5fa;
+    --category-filter-accent-2: #2563eb;
+    --category-filter-accent-3: #1d4ed8;
+    --category-filter-hover-accent: var(--category-filter-accent-1);
+
+    /* Dark-mode neutral base — tinted by accent via color-mix below. */
+    --category-filter-rail-bg-top: #131c30;
+    --category-filter-rail-bg-bottom: #0a1222;
+    --category-filter-button-bg-top: #18233c;
+    --category-filter-button-bg-bottom: #0c1426;
+    --category-filter-text-idle: #c5d2e3;
+    --category-filter-text-hover: color-mix(in srgb, var(--category-filter-hover-accent) 30%, #ffffff);
+    --category-filter-text-selected: #f8fafc;
+    --category-filter-neutral-border: rgba(148, 163, 184, 0.20);
+    --category-filter-rail-tint-strength: 8%;
+    --category-filter-button-tint-strength: 10%;
+    --category-filter-hover-fill-top: 48%;
+    --category-filter-hover-fill-bottom: 28%;
+
+    /* Derived surfaces. */
+    --category-filter-rail-surface: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--category-filter-accent-1) var(--category-filter-rail-tint-strength), var(--category-filter-rail-bg-top)),
+        var(--category-filter-rail-bg-bottom)
+    );
+    --category-filter-rail-border: color-mix(in srgb, var(--category-filter-accent-1) 20%, var(--category-filter-neutral-border));
+    --category-filter-rail-shadow:
+        0 16px 34px rgba(2, 6, 23, 0.30),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+    --category-filter-button-surface: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--category-filter-accent-1) var(--category-filter-button-tint-strength), var(--category-filter-button-bg-top)),
+        var(--category-filter-button-bg-bottom)
+    );
+    --category-filter-button-surface-hover: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--category-filter-hover-accent) var(--category-filter-hover-fill-top), var(--category-filter-button-bg-top)),
+        color-mix(in srgb, var(--category-filter-hover-accent) var(--category-filter-hover-fill-bottom), var(--category-filter-button-bg-bottom))
+    );
+    --category-filter-button-surface-selected: linear-gradient(
+        135deg,
+        var(--category-filter-accent-1) 0%,
+        var(--category-filter-accent-2) 58%,
+        var(--category-filter-accent-3) 100%
+    );
+
+    --category-filter-button-text: var(--category-filter-text-idle);
+    --category-filter-button-text-hover: var(--category-filter-text-hover);
+    --category-filter-button-text-selected: var(--category-filter-text-selected);
+
+    --category-filter-button-border: color-mix(in srgb, var(--category-filter-accent-1) 22%, var(--category-filter-neutral-border));
+    --category-filter-button-border-hover: color-mix(in srgb, var(--category-filter-hover-accent) 90%, white 10%);
+    --category-filter-button-border-selected: color-mix(in srgb, var(--category-filter-accent-1) 76%, white 24%);
+
+    --category-filter-button-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    --category-filter-button-shadow-hover:
+        0 14px 28px color-mix(in srgb, var(--category-filter-hover-accent) 32%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--category-filter-hover-accent) 60%, transparent),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    --category-filter-button-shadow-selected:
+        0 18px 32px color-mix(in srgb, var(--category-filter-accent-2) 28%, transparent),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+
+    --category-filter-button-highlight: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0) 50%);
+    --category-filter-button-highlight-hover: linear-gradient(180deg, rgba(255, 255, 255, 0.20), rgba(255, 255, 255, 0) 58%);
+    --category-filter-button-highlight-selected: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 52%);
+    --category-filter-button-count-opacity: 0.62;
+    --category-filter-button-count-opacity-hover: 0.86;
+    --category-filter-button-count-opacity-selected: 0.96;
+
+    background: var(--category-filter-rail-surface);
+    border: 1px solid var(--category-filter-rail-border);
+    box-shadow: var(--category-filter-rail-shadow);
 
     @include media-breakpoint-down(lg) {
         grid-template-columns: repeat(var(--category-filter-compact-columns, 2), minmax(0, 1fr));
         gap: 6px;
+        padding: 5px;
     }
+}
+
+[data-theme="light"] div.category-filter {
+    /* Flat, unmistakably-light surfaces. No vertical bg gradient on rail or
+       buttons (gradients were reading as a dark band at the bottom). */
+    --category-filter-rail-bg-top: #ffffff;
+    --category-filter-rail-bg-bottom: #ffffff;
+    --category-filter-button-bg-top: #ffffff;
+    --category-filter-button-bg-bottom: #ffffff;
+    --category-filter-text-idle: #475569;
+    --category-filter-text-hover: color-mix(in srgb, var(--category-filter-hover-accent) 25%, #0b1324);
+    --category-filter-text-selected: #ffffff;
+    --category-filter-rail-tint-strength: 0%;
+    --category-filter-button-tint-strength: 0%;
+    --category-filter-hover-fill-top: 30%;
+    --category-filter-hover-fill-bottom: 55%;
+
+    /* Override derived surfaces with flat fills, so accent tints come from
+       hover/selected states only — never from idle or "depth" gradients. */
+    --category-filter-rail-surface: color-mix(in srgb, var(--category-filter-accent-1) 4%, #ffffff);
+    --category-filter-rail-border: color-mix(in srgb, var(--category-filter-accent-2) 18%, #e2e8f0);
+    --category-filter-rail-shadow: none;
+
+    --category-filter-button-surface: #ffffff;
+    --category-filter-button-surface-hover: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--category-filter-hover-accent) 30%, #ffffff),
+        color-mix(in srgb, var(--category-filter-hover-accent) 55%, #ffffff)
+    );
+    --category-filter-button-border: color-mix(in srgb, var(--category-filter-accent-2) 16%, #e2e8f0);
+    --category-filter-button-border-hover: color-mix(in srgb, var(--category-filter-hover-accent) 95%, #0b1324 5%);
+    --category-filter-button-border-selected: color-mix(in srgb, var(--category-filter-accent-2) 60%, white 40%);
+
+    /* Idle = clean. Hover = strong accent fill + ring + warm glow. */
+    --category-filter-button-shadow: none;
+    --category-filter-button-shadow-hover:
+        0 0 0 1px color-mix(in srgb, var(--category-filter-hover-accent) 80%, transparent),
+        0 12px 24px color-mix(in srgb, var(--category-filter-hover-accent) 40%, transparent),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    --category-filter-button-shadow-selected:
+        0 0 0 1px color-mix(in srgb, var(--category-filter-accent-1) 36%, transparent),
+        0 6px 16px color-mix(in srgb, var(--category-filter-accent-2) 16%, transparent);
+
+    /* Disable the white-fade highlight pseudo in light mode entirely.
+       On a white bg a white fade is invisible at top, but the transparent
+       half lets the bg show through and was reading as a midline shadow. */
+    --category-filter-button-highlight: none;
+    --category-filter-button-highlight-hover: none;
+    --category-filter-button-highlight-selected: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 55%);
+    --category-filter-button-count-opacity: 0.7;
+    --category-filter-button-count-opacity-hover: 0.95;
 }
 
 button.category-filter-button {
     outline: none !important;
-    box-shadow: none !important;
-    background-color: var(--theme-boards-background);
-    color: var(--theme-texts-light-1);
-    transition: none;
-    border: 2px solid var(--theme-card-background)!important;
+    box-shadow: var(--category-filter-button-shadow) !important;
+    background: var(--category-filter-button-surface);
+    color: var(--category-filter-button-text);
+    border: 1px solid var(--category-filter-button-border) !important;
+    transition:
+        transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1),
+        background 180ms cubic-bezier(0.16, 1, 0.3, 1),
+        color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+        filter 180ms cubic-bezier(0.16, 1, 0.3, 1);
 
-    font-family: Tahoma, "Segoe UI", "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji" !important;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    font-family: inherit !important;
+    font-weight: 650;
+    letter-spacing: 0.01em;
     width: 100%;
     min-width: 0;
     max-width: 100%;
-    min-height: 3rem;
-    padding: 0.62rem 0.8rem !important;
-    line-height: 1.15;
+    min-height: 3.1rem;
+    padding: 0.72rem 0.9rem !important;
+    line-height: 1.12;
     font-size: var(--category-filter-font-size) !important;
     white-space: nowrap;
     text-align: center;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    border-radius: 14px !important;
+    filter: saturate(0.94);
 
-    border-radius: 0!important;
-
-    &:first-child {
-        border-top-left-radius: $standard-border-radius!important;
-        border-bottom-left-radius: $standard-border-radius!important;
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--category-filter-button-highlight);
+        opacity: 0.82;
+        pointer-events: none;
+        transition: opacity 180ms cubic-bezier(0.16, 1, 0.3, 1), background 180ms cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: -1;
     }
 
-    &:last-child {
-        border-top-right-radius: $standard-border-radius!important;
-        border-bottom-right-radius: $standard-border-radius!important;
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+        pointer-events: none;
     }
 
     @include media-breakpoint-down(md) {
-        border-width: 1px!important;
-    }
-
-    @include media-breakpoint-down(lg) {
-        border-radius: $standard-border-radius!important;
+        min-height: 2.9rem;
+        padding: 0.68rem 0.78rem !important;
     }
 }
 
@@ -65,19 +215,60 @@ div.category-filter > button.category-filter-button:last-child:nth-child(odd) {
     }
 }
 
-button.category-filter-button:hover, button.category-filter-button:focus {
-    background-color: var(--theme-links-hover);
-    color: var(--theme-texts-inv);
+button.category-filter-button:hover,
+button.category-filter-button:focus-visible {
+    background: var(--category-filter-button-surface-hover);
+    color: var(--category-filter-button-text-hover);
+    border-color: var(--category-filter-button-border-hover) !important;
+    box-shadow: var(--category-filter-button-shadow-hover) !important;
+    transform: translateY(-2px) scale(1.015);
+    filter: saturate(1.08) brightness(1.04);
+
+    &::before {
+        background: var(--category-filter-button-highlight-hover);
+        opacity: 1;
+    }
 }
 
-button.category-filter-no-hover-effects {
-    background-color: var(--theme-boards-background)!important;
-    color: var(--theme-texts-light-1)!important;
+button.category-filter-button:focus-visible {
+    box-shadow:
+        var(--category-filter-button-shadow-hover),
+        0 0 0 3px color-mix(in srgb, var(--category-filter-accent-1) 26%, transparent) !important;
 }
 
-button.category-filter-button:active, button.category-filter-button-selected {
-    background-color: var(--theme-primary)!important;
-    color: var(--theme-texts-inv)!important;
+button.category-filter-button:active:not(.category-filter-button-selected) {
+    transform: translateY(0);
+    filter: saturate(1) brightness(0.98);
+}
+
+button.category-filter-button.category-filter-no-hover-effects:not(.category-filter-button-selected):hover {
+    background: var(--category-filter-button-surface);
+    color: var(--category-filter-button-text);
+    border-color: var(--category-filter-button-border) !important;
+    box-shadow: var(--category-filter-button-shadow) !important;
+    transform: none;
+    filter: saturate(0.94);
+
+    &::before {
+        background: var(--category-filter-button-highlight);
+        opacity: 0.82;
+    }
+}
+
+button.category-filter-button-selected,
+button.category-filter-button-selected:hover,
+button.category-filter-button-selected:focus-visible {
+    background: var(--category-filter-button-surface-selected) !important;
+    color: var(--category-filter-button-text-selected) !important;
+    border-color: var(--category-filter-button-border-selected) !important;
+    box-shadow: var(--category-filter-button-shadow-selected) !important;
+    transform: translateY(-1px);
+    filter: saturate(1.08) brightness(1.03);
+
+    &::before {
+        background: var(--category-filter-button-highlight-selected);
+        opacity: 1;
+    }
 }
 
 button.category-filter-button-selected {
@@ -85,245 +276,110 @@ button.category-filter-button-selected {
     pointer-events: none;
 }
 
-article#article-1-section-my-software {
-    div.category-filter {
-        padding: 4px;
-        border-radius: 16px;
-        background: linear-gradient(180deg, rgba(11, 18, 32, 0.92), rgba(5, 8, 16, 0.92));
-        border: 1px solid rgba(78, 163, 255, 0.18);
-        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-    }
-
-    button.category-filter-button {
-        background: linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(6, 9, 16, 0.94));
-        color: #cbd5e1;
-        border: 1px solid rgba(78, 163, 255, 0.18)!important;
-        transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease, color 160ms ease;
-
-        &:hover,
-        &:focus {
-            transform: translateY(-1px);
-            background: linear-gradient(180deg, rgba(20, 31, 54, 0.96), rgba(8, 11, 18, 0.96));
-            color: #f8fafc;
-            border-color: rgba(250, 204, 21, 0.34)!important;
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
-        }
-    }
-
-    button.category-filter-button-selected {
-        background: linear-gradient(180deg, rgba(78, 163, 255, 0.92), rgba(37, 99, 235, 0.94))!important;
-        color: #f8fafc!important;
-        border-color: rgba(78, 163, 255, 0.72)!important;
-        box-shadow: 0 12px 28px rgba(78, 163, 255, 0.22);
-    }
-
-    button.category-filter-no-hover-effects {
-        background: linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(6, 9, 16, 0.94))!important;
-        color: #cbd5e1!important;
-    }
-
-    [data-theme="light"] & {
-        div.category-filter {
-            background: linear-gradient(180deg, #ffffff, #f8fbff);
-            border: 1px solid rgba(37, 99, 235, 0.12);
-            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.07);
-        }
-
-        button.category-filter-button {
-            background: linear-gradient(180deg, #ffffff, #f8fbff);
-            color: #0f172a;
-            border-color: rgba(37, 99, 235, 0.12) !important;
-
-            &:hover,
-            &:focus {
-                background: linear-gradient(180deg, #fefefe, #eef6ff);
-                color: #0f172a;
-                border-color: rgba(245, 158, 11, 0.26) !important;
-                box-shadow: none;
-            }
-        }
-
-        button.category-filter-button-selected {
-            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 48%, #f97316 100%)!important;
-            color: #ffffff!important;
-            border-color: rgba(37, 99, 235, 0.34)!important;
-            box-shadow:
-                inset 0 1px 0 rgba(255, 255, 255, 0.24),
-                0 10px 22px rgba(37, 99, 235, 0.18),
-                0 4px 12px rgba(249, 115, 22, 0.14);
-        }
-
-        button.category-filter-no-hover-effects {
-            background: linear-gradient(180deg, #ffffff, #f8fbff)!important;
-            color: #0f172a!important;
-        }
-    }
+/* ───── Software ───── */
+article#article-1-section-my-software div.category-filter {
+    --category-filter-accent-1: #60a5fa;
+    --category-filter-accent-2: #2563eb;
+    --category-filter-accent-3: #1d4ed8;
+    --category-filter-hover-accent: #f59e0b;
+    --category-filter-rail-bg-top: #121d34;
+    --category-filter-rail-bg-bottom: #08111f;
+    --category-filter-button-bg-top: #182843;
+    --category-filter-button-bg-bottom: #0a1326;
 }
 
-article#article-1-section-my-hardware {
-    div.category-filter {
-        padding: 4px;
-        border-radius: 16px;
-        background: linear-gradient(180deg, rgba(10, 14, 22, 0.94), rgba(4, 7, 12, 0.94));
-        border: 1px solid rgba(56, 189, 248, 0.18);
-        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-    }
-
-    button.category-filter-button {
-        background: linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(6, 9, 16, 0.94));
-        color: #d1d5db;
-        border: 1px solid rgba(56, 189, 248, 0.18)!important;
-        transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease, color 160ms ease;
-
-        &:hover,
-        &:focus {
-            transform: translateY(-1px);
-            background: linear-gradient(180deg, rgba(19, 29, 48, 0.96), rgba(7, 11, 18, 0.96));
-            color: #f8fafc;
-            border-color: rgba(245, 158, 11, 0.34)!important;
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
-        }
-    }
-
-    button.category-filter-button-selected {
-        background: linear-gradient(180deg, rgba(56, 189, 248, 0.92), rgba(14, 165, 233, 0.94))!important;
-        color: #f8fafc!important;
-        border-color: rgba(56, 189, 248, 0.72)!important;
-        box-shadow: 0 12px 28px rgba(56, 189, 248, 0.22);
-    }
-
-    button.category-filter-no-hover-effects {
-        background: linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(6, 9, 16, 0.94))!important;
-        color: #d1d5db!important;
-    }
-
-    [data-theme="light"] & {
-        div.category-filter {
-            background: linear-gradient(180deg, #ffffff, #f8fbff);
-            border: 1px solid rgba(37, 99, 235, 0.12);
-            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.07);
-        }
-
-        button.category-filter-button {
-            background: linear-gradient(180deg, #ffffff, #f8fbff);
-            color: #0f172a;
-            border-color: rgba(37, 99, 235, 0.12) !important;
-
-            &:hover,
-            &:focus {
-                background: linear-gradient(180deg, #fefefe, #eef6ff);
-                color: #0f172a;
-                border-color: rgba(245, 158, 11, 0.26) !important;
-                box-shadow: none;
-            }
-        }
-
-        button.category-filter-button-selected {
-            background: linear-gradient(135deg, #06b6d4 0%, #14b8a6 42%, #f59e0b 100%)!important;
-            color: #ffffff!important;
-            border-color: rgba(6, 182, 212, 0.34)!important;
-            box-shadow:
-                inset 0 1px 0 rgba(255, 255, 255, 0.24),
-                0 10px 22px rgba(6, 182, 212, 0.16),
-                0 4px 12px rgba(245, 158, 11, 0.16);
-        }
-
-        button.category-filter-no-hover-effects {
-            background: linear-gradient(180deg, #ffffff, #f8fbff)!important;
-            color: #0f172a!important;
-        }
-    }
+[data-theme="light"] article#article-1-section-my-software div.category-filter {
+    --category-filter-accent-1: #3b82f6;
+    --category-filter-accent-2: #1d4ed8;
+    --category-filter-accent-3: #1e40af;
+    --category-filter-hover-accent: #f97316;
 }
 
-article#article-3-section-my-art {
-    div.category-filter {
-        padding: 4px;
-        border-radius: 16px;
-        background: linear-gradient(180deg, rgba(10, 14, 22, 0.94), rgba(4, 7, 12, 0.94));
-        border: 1px solid rgba(56, 189, 248, 0.18);
-        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-    }
+/* ───── Hardware ───── */
+article#article-1-section-my-hardware div.category-filter {
+    --category-filter-accent-1: #67e8f9;
+    --category-filter-accent-2: #0891b2;
+    --category-filter-accent-3: #0e7490;
+    --category-filter-hover-accent: #f59e0b;
+    --category-filter-rail-bg-top: #0d1c28;
+    --category-filter-rail-bg-bottom: #050d15;
+    --category-filter-button-bg-top: #112a3a;
+    --category-filter-button-bg-bottom: #07131c;
+}
 
-    button.category-filter-button {
-        background: linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(6, 9, 16, 0.94));
-        color: #d1d5db;
-        border: 1px solid rgba(56, 189, 248, 0.18)!important;
-        transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease, color 160ms ease;
+[data-theme="light"] article#article-1-section-my-hardware div.category-filter {
+    --category-filter-accent-1: #06b6d4;
+    --category-filter-accent-2: #0891b2;
+    --category-filter-accent-3: #0e7490;
+    --category-filter-hover-accent: #f59e0b;
+}
 
-        &:hover,
-        &:focus {
-            transform: translateY(-1px);
-            background: linear-gradient(180deg, rgba(19, 29, 48, 0.96), rgba(7, 11, 18, 0.96));
-            color: #f8fafc;
-            border-color: rgba(245, 158, 11, 0.34)!important;
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
-        }
-    }
+/* ───── Art ───── */
+article#article-3-section-my-art div.category-filter {
+    --category-filter-accent-1: #38bdf8;
+    --category-filter-accent-2: #8b5cf6;
+    --category-filter-accent-3: #ec4899;
+    --category-filter-hover-accent: #fb7185;
+    --category-filter-rail-bg-top: #131127;
+    --category-filter-rail-bg-bottom: #07060f;
+    --category-filter-button-bg-top: #1a1838;
+    --category-filter-button-bg-bottom: #0a0917;
+}
 
-    button.category-filter-button-selected {
-        background: linear-gradient(180deg, rgba(56, 189, 248, 0.92), rgba(14, 165, 233, 0.94))!important;
-        color: #f8fafc!important;
-        border-color: rgba(56, 189, 248, 0.72)!important;
-        box-shadow: 0 12px 28px rgba(56, 189, 248, 0.22);
-    }
+[data-theme="light"] article#article-3-section-my-art div.category-filter {
+    --category-filter-accent-1: #0ea5e9;
+    --category-filter-accent-2: #8b5cf6;
+    --category-filter-accent-3: #ec4899;
+    --category-filter-hover-accent: #fb7185;
+}
 
-    button.category-filter-no-hover-effects {
-        background: linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(6, 9, 16, 0.94))!important;
-        color: #d1d5db!important;
-    }
+[data-theme="light"] button.category-filter-button {
+    filter: none;
+}
 
-    [data-theme="light"] & {
-        div.category-filter {
-            background: linear-gradient(180deg, #ffffff, #f8fbff);
-            border: 1px solid rgba(37, 99, 235, 0.12);
-            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.07);
-        }
+[data-theme="light"] button.category-filter-button::before,
+[data-theme="light"] button.category-filter-button::after {
+    display: none;
+}
 
-        button.category-filter-button {
-            background: linear-gradient(180deg, #ffffff, #f8fbff);
-            color: #0f172a;
-            border-color: rgba(37, 99, 235, 0.12) !important;
+[data-theme="light"] button.category-filter-button-selected,
+[data-theme="light"] button.category-filter-button-selected:hover,
+[data-theme="light"] button.category-filter-button-selected:focus-visible {
+    filter: saturate(1.05) brightness(1.02);
+}
 
-            &:hover,
-            &:focus {
-                background: linear-gradient(180deg, #fefefe, #eef6ff);
-                color: #0f172a;
-                border-color: rgba(245, 158, 11, 0.26) !important;
-                box-shadow: none;
-            }
-        }
+[data-theme="light"] button.category-filter-button:hover,
+[data-theme="light"] button.category-filter-button:focus-visible {
+    filter: saturate(1.1) brightness(1.02);
+}
 
-        button.category-filter-button-selected {
-            background: linear-gradient(135deg, #0ea5e9 0%, #8b5cf6 44%, #fb7185 100%)!important;
-            color: #ffffff!important;
-            border-color: rgba(14, 165, 233, 0.34)!important;
-            box-shadow:
-                inset 0 1px 0 rgba(255, 255, 255, 0.24),
-                0 10px 22px rgba(14, 165, 233, 0.16),
-                0 4px 12px rgba(251, 113, 133, 0.16);
-        }
-
-        button.category-filter-no-hover-effects {
-            background: linear-gradient(180deg, #ffffff, #f8fbff)!important;
-            color: #0f172a!important;
-        }
-    }
+span.category-filter-button-label,
+span.category-filter-button-count {
+    font-family: inherit;
+    user-select: none;
+    pointer-events: none;
+    white-space: nowrap;
 }
 
 span.category-filter-button-label {
-    font-family: inherit;
-    user-select: none;
-    pointer-events: none;
-    white-space: nowrap;
+    text-wrap: nowrap;
 }
 
 span.category-filter-button-count {
-    font-family: inherit;
-    margin-left: 4px;
-    user-select: none;
-    pointer-events: none;
-    white-space: nowrap;
+    margin-left: 6px;
+    opacity: var(--category-filter-button-count-opacity);
+    transition: opacity 180ms cubic-bezier(0.16, 1, 0.3, 1);
+
     @include media-breakpoint-down(sm) {
         display: none;
     }
+}
+
+button.category-filter-button:hover span.category-filter-button-count,
+button.category-filter-button:focus-visible span.category-filter-button-count {
+    opacity: var(--category-filter-button-count-opacity-hover);
+}
+
+button.category-filter-button-selected span.category-filter-button-count {
+    opacity: var(--category-filter-button-count-opacity-selected);
 }

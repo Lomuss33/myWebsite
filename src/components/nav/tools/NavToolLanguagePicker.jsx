@@ -9,7 +9,8 @@ function NavToolLanguagePicker({
     dropdownClassName = "",
     menuClassName = "",
     compactMenu = false,
-    mobileTubeMenu = false
+    mobileTubeMenu = false,
+    showTooltip = true
 }) {
     const language = useLanguage()
     const utils = useUtils()
@@ -77,7 +78,7 @@ function NavToolLanguagePicker({
                           className={dropdownClassName}>
                     <Dropdown.Toggle variant={`transparent`}
                                      className={`btn-option-picker-toggle nav-tool-language-toggle`}
-                                     data-tooltip={language.getString("select_language")}>
+                                     data-tooltip={showTooltip ? language.getString("select_language") : null}>
                         <span className={`btn-option-picker-toggle-row`}>
                             <div className={`btn-option-picker-icon btn-option-picker-icon-size-2`}>
                                 <img src={utils.file.resolvePath(selectedLanguage?.flagUrl)}

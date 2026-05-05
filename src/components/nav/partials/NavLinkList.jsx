@@ -17,6 +17,7 @@ function NavLinkList({ links, expanded, compactRail = false }) {
         if(!container)
             return
         const railCard = container.closest(".nav-sidebar-card-wrapper")
+        const navTools = railCard?.querySelector(".nav-tools")
 
         const minRowHeight = compactRail
             ? (expanded ? 26 : 24)
@@ -65,20 +66,23 @@ function NavLinkList({ links, expanded, compactRail = false }) {
             if(!totalHeight || !amountOfItems)
                 return
 
-            const rawRowHeight = totalHeight / amountOfItems
+            const currentToolsHeight = navTools?.clientHeight || 0
+            const sharedRowHeight = currentToolsHeight > 0 ?
+                (totalHeight + currentToolsHeight) / (amountOfItems + 1) :
+                totalHeight / amountOfItems
             const shrinkFactor = _clamp(
-                (baselineRowHeight - rawRowHeight) / Math.max(baselineRowHeight - minRowHeight, 1),
+                (baselineRowHeight - sharedRowHeight) / Math.max(baselineRowHeight - minRowHeight, 1),
                 0,
                 1
             )
             const growFactor = _clamp(
-                (rawRowHeight - baselineRowHeight) / Math.max(upscaleCeiling - baselineRowHeight, 1),
+                (sharedRowHeight - baselineRowHeight) / Math.max(upscaleCeiling - baselineRowHeight, 1),
                 0,
                 1
             )
 
-            _setVariable("--nav-link-target-height", rawRowHeight)
-            _setVariable("--nav-link-target-height", rawRowHeight, "px", railCard, "rail-card")
+            _setVariable("--nav-link-target-height", sharedRowHeight)
+            _setVariable("--nav-link-target-height", sharedRowHeight, "px", railCard, "rail-card")
             _setVariable(
                 "--nav-link-icon-width",
                 _getAdaptiveValue(

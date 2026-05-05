@@ -113,20 +113,24 @@ function LayoutSaltShaker() {
     const pausedClass = (isPaused || isIdlePaused) ? "layout-salt-shaker-paused" : ""
 
     return (
-        <button id="layout-salt-shaker"
-                type="button"
-                className={`layout-salt-shaker ${stateClass} ${interactiveClass} ${pausedClass}`.trim()}
-                aria-label={isInteractiveDesktop ? cursorActionLabel : tooltipLabel}
-                aria-pressed={isInteractiveDesktop ? isCursorActive : undefined}
-                onClick={handleDesktopClick}>
+        <div className={`layout-salt-shaker-wrapper ${pausedClass}`.trim()}>
             <HoverStaticTooltip label={tooltipLabel}
                                className={`layout-salt-shaker-tooltip text-center`}
                                id={`layout-salt-shaker-tooltip`}
                                targetId={`layout-salt-shaker`}
                                forceResetFlag={`${navigation?.targetSection?.id || "none"}-${isPaused ? "paused" : "active"}`}
-                               toggleBehaviorOnTouchScreens={true}/>
-            <SaltShakerSvg/>
-        </button>
+                               toggleBehaviorOnTouchScreens={!isInteractiveDesktop}
+                               desktopClickShowsTooltip={false}
+                               forceTouchBehavior={!isInteractiveDesktop}/>
+            <button id="layout-salt-shaker"
+                    type="button"
+                    className={`layout-salt-shaker ${stateClass} ${interactiveClass}`.trim()}
+                    aria-label={isInteractiveDesktop ? cursorActionLabel : tooltipLabel}
+                    aria-pressed={isInteractiveDesktop ? isCursorActive : undefined}
+                    onClick={handleDesktopClick}>
+                <SaltShakerSvg/>
+            </button>
+        </div>
     )
 }
 

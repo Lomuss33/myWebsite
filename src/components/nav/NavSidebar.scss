@@ -5,6 +5,10 @@ nav.nav-sidebar {
 
     display: flex;
     min-height: 0;
+    height: calc(100% + var(--default-card-spacing) * 2);
+    margin-top: calc(-1 * var(--default-card-spacing));
+    margin-bottom: calc(-1 * var(--default-card-spacing));
+    margin-left: calc(-1 * var(--default-card-spacing));
     z-index: $z-index-sidebar;
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         display: none;
@@ -37,7 +41,7 @@ nav.nav-sidebar {
             0 22px 46px var(--theme-shell-shadow),
             0 6px 18px rgba(15, 23, 42, 0.06),
             inset 0 1px 0 rgba(255, 255, 255, 0.82);
-        border-radius: calc($standard-border-radius * 1.8);
+        border-radius: 0;
         isolation: isolate;
 
         > div.nav-profile-card {

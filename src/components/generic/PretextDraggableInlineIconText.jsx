@@ -23,6 +23,8 @@ function PretextDraggableInlineIconText({
     const emMeasureRef = useRef(null)
     const strongEmMeasureRef = useRef(null)
     const dragStateRef = useRef(null)
+    const xRatioRef = useRef(clamp(initialXRatio, 0, 1))
+    const frameRef = useRef(0)
 
     const [contentWidth, setContentWidth] = useState(0)
     const [typography, setTypography] = useState(null)
@@ -34,8 +36,14 @@ function PretextDraggableInlineIconText({
     }, [html])
 
     useEffect(() => {
-        setXRatio(clamp(initialXRatio, 0, 1))
+        const nextRatio = clamp(initialXRatio, 0, 1)
+        xRatioRef.current = nextRatio
+        setXRatio(nextRatio)
     }, [initialXRatio, html])
+
+    useEffect(() => {
+        xRatioRef.current = xRatio
+    }, [xRatio])
 
     useEffect(() => {
         const refreshTypography = () => {
@@ -78,103 +86,116 @@ function PretextDraggableInlineIconText({
     useEffect(() => {
         return () => {
             dragStateRef.current = null
+            if (frameRef.current) {
+                cancelAnimationFrame(frameRef.current)
+                frameRef.current = 0
+            }
         }
     }, [])
 
     const iconSize = getIconSize(contentWidth)
-    const horizontalPadding = 18
-    const railGap = getRailGap(typography?.lineHeight)
-    const trackMinX = iconSize / 2
-    const trackMaxX = Math.max(trackMinX, contentWidth - iconSize / 2)
+    const obstacleWidth = getObstacleWidth(typography?.lineHeight, iconSize)
+    const obstaclePadding = getObstaclePadding(typography?.lineHeight, contentWidth)
+    const minimumSlotWidth = getMinimumSlotWidth(typography?.lineHeight, contentWidth)
+    const spineWidth = getSpineWidth(obstacleWidth)
+    const trackInset = Math.max(iconSize / 2, obstacleWidth / 2 + obstaclePadding + 18)
+    const trackMinX = trackInset
+    const trackMaxX = Math.max(trackMinX, contentWidth - trackInset)
     const trackWidth = Math.max(1, trackMaxX - trackMinX)
     const iconCenterX = trackMinX + trackWidth * xRatio
+    const railZoneHeight = getRailZoneHeight(typography?.lineHeight)
 
-    const splitIndex = useMemo(() => {
-        return findBalancedParagraphSplit(paragraphs, typography, contentWidth, iconCenterX, iconSize, horizontalPadding)
-    }, [contentWidth, horizontalPadding, iconCenterX, iconSize, paragraphs, typography])
+    useEffect(() => {
+        if (!isDragging) return
 
-    const topParagraphs = useMemo(() => paragraphs.slice(0, splitIndex), [paragraphs, splitIndex])
-    const bottomParagraphs = useMemo(() => paragraphs.slice(splitIndex), [paragraphs, splitIndex])
+        const handlePointerMove = event => {
+            const dragState = dragStateRef.current
+            if (!dragState || dragState.pointerId !== event.pointerId) return
+
+            if (dragState.mode === "track") {
+                scheduleRatioUpdate(getRatioFromClientX(event.clientX, contentRef.current, trackMinX, trackWidth))
+                return
+            }
+
+            const nextRatio = dragState.startRatio + (event.clientX - dragState.startClientX) / trackWidth
+            scheduleRatioUpdate(clamp(nextRatio, 0, 1))
+        }
+
+        const finishPointerDrag = event => {
+            const dragState = dragStateRef.current
+            if (!dragState || dragState.pointerId !== event.pointerId) return
+
+            releasePointerCapture(dragState)
+            dragStateRef.current = null
+            setIsDragging(false)
+        }
+
+        window.addEventListener("pointermove", handlePointerMove)
+        window.addEventListener("pointerup", finishPointerDrag)
+        window.addEventListener("pointercancel", finishPointerDrag)
+
+        return () => {
+            window.removeEventListener("pointermove", handlePointerMove)
+            window.removeEventListener("pointerup", finishPointerDrag)
+            window.removeEventListener("pointercancel", finishPointerDrag)
+        }
+    }, [isDragging, trackMinX, trackWidth])
 
     const flowObstacle = useMemo(() => {
         if (!typography || contentWidth <= 0) return null
 
         return {
-            left: Math.max(0, iconCenterX - iconSize / 2),
+            left: Math.max(0, iconCenterX - obstacleWidth / 2),
             top: 0,
-            width: iconSize,
+            width: obstacleWidth,
             height: 100000,
-            horizontalPadding,
+            horizontalPadding: obstaclePadding,
+            minimumSlotWidth,
             verticalPadding: 0,
             includeInHeight: false
         }
-    }, [contentWidth, horizontalPadding, iconCenterX, iconSize, typography])
+    }, [contentWidth, iconCenterX, minimumSlotWidth, obstaclePadding, obstacleWidth, typography])
 
-    const topLayout = useMemo(() => {
-        return layoutDraggableInlineParagraphs(topParagraphs, typography, contentWidth, flowObstacle)
-    }, [contentWidth, flowObstacle, topParagraphs, typography])
+    const textLayout = useMemo(() => {
+        return layoutDraggableInlineParagraphs(paragraphs, typography, contentWidth, flowObstacle)
+    }, [contentWidth, flowObstacle, paragraphs, typography])
 
-    const bottomLayout = useMemo(() => {
-        return layoutDraggableInlineParagraphs(bottomParagraphs, typography, contentWidth, flowObstacle)
-    }, [bottomParagraphs, contentWidth, flowObstacle, typography])
+    const hasRenderableContent = textLayout.totalHeight > 0
+    const textOffsetY = hasRenderableContent ? railZoneHeight : 0
+    const totalHeight = hasRenderableContent ? railZoneHeight + textLayout.totalHeight : 0
+    const railCenterY = hasRenderableContent ? railZoneHeight / 2 : 0
 
-    const hasRenderableContent = topLayout.totalHeight > 0 || bottomLayout.totalHeight > 0
-    const totalHeight = hasRenderableContent ? topLayout.totalHeight + railGap + bottomLayout.totalHeight : 0
-    const railCenterY = hasRenderableContent ? topLayout.totalHeight + railGap / 2 : 0
-    const renderedLines = useMemo(() => {
-        const lowerOffset = topLayout.totalHeight + railGap
-
-        return [
-            ...topLayout.lines,
-            ...bottomLayout.lines.map(line => ({
-                ...line,
-                key: `lower-${line.key}`,
-                y: line.y + lowerOffset
-            }))
-        ]
-    }, [bottomLayout.lines, railGap, topLayout.lines, topLayout.totalHeight])
-
-    const handlePointerDown = event => {
+    const handleHandlePointerDown = event => {
         if (!contentWidth) return
 
+        event.preventDefault()
+
         dragStateRef.current = {
+            captureTarget: event.currentTarget,
             pointerId: event.pointerId,
+            mode: "handle",
             startClientX: event.clientX,
-            startRatio: xRatio
+            startRatio: xRatioRef.current
         }
+        capturePointer(event)
         setIsDragging(true)
-
-        if (event.currentTarget?.setPointerCapture) {
-            try {
-                event.currentTarget.setPointerCapture(event.pointerId)
-            } catch {
-                // Ignore capture failures.
-            }
-        }
     }
 
-    const handlePointerMove = event => {
-        const dragState = dragStateRef.current
-        if (!dragState || dragState.pointerId !== event.pointerId) return
+    const handleTrackPointerDown = event => {
+        if (!contentWidth) return
 
-        const nextRatio = dragState.startRatio + (event.clientX - dragState.startClientX) / trackWidth
-        setXRatio(clamp(nextRatio, 0, 1))
-    }
+        event.preventDefault()
 
-    const finishDrag = event => {
-        const dragState = dragStateRef.current
-        if (!dragState || dragState.pointerId !== event.pointerId) return
-
-        dragStateRef.current = null
-        setIsDragging(false)
-
-        if (event.currentTarget?.releasePointerCapture) {
-            try {
-                event.currentTarget.releasePointerCapture(event.pointerId)
-            } catch {
-                // Ignore release failures.
-            }
+        const nextRatio = getRatioFromClientX(event.clientX, contentRef.current, trackMinX, trackWidth)
+        xRatioRef.current = nextRatio
+        setXRatio(nextRatio)
+        dragStateRef.current = {
+            captureTarget: event.currentTarget,
+            pointerId: event.pointerId,
+            mode: "track"
         }
+        capturePointer(event)
+        setIsDragging(true)
     }
 
     const handleKeyDown = event => {
@@ -196,7 +217,7 @@ function PretextDraggableInlineIconText({
     }
 
     return (
-        <div className={`pretext-draggable-inline-icon-text ${className}`}
+        <div className={`pretext-draggable-inline-icon-text ${isDragging ? "is-dragging" : ""} ${className}`}
              style={{
                  "--pretext-draggable-inline-icon-text-icon-size": `${iconSize}px`
              }}>
@@ -230,45 +251,61 @@ function PretextDraggableInlineIconText({
                  className={`pretext-draggable-inline-icon-text-canvas`}
                  style={totalHeight > 0 ? { minHeight: `${totalHeight}px` } : undefined}>
                 {totalHeight > 0 && (
-                    <div className={`pretext-draggable-inline-icon-text-rail`}
+                    <div className={`pretext-draggable-inline-icon-text-spine`}
+                         style={{
+                             left: `${iconCenterX - spineWidth / 2}px`,
+                             width: `${spineWidth}px`,
+                             height: `${totalHeight}px`
+                         }}
+                         aria-hidden={true}/>
+                )}
+
+                {totalHeight > 0 && (
+                    <div className={`pretext-draggable-inline-icon-text-rail-hit-area`}
                          style={{ top: `${railCenterY}px` }}
-                         aria-hidden={true}>
-                        <span className={`pretext-draggable-inline-icon-text-rail-line`}/>
+                         onPointerDown={handleTrackPointerDown}>
+                        <div className={`pretext-draggable-inline-icon-text-rail`}
+                             aria-hidden={true}>
+                            <span className={`pretext-draggable-inline-icon-text-rail-line`}/>
+                            <span className={`pretext-draggable-inline-icon-text-rail-progress`}
+                                  style={{ width: `${iconCenterX}px` }}/>
+                            <span className={`pretext-draggable-inline-icon-text-rail-dot pretext-draggable-inline-icon-text-rail-dot-start`}/>
+                            <span className={`pretext-draggable-inline-icon-text-rail-dot pretext-draggable-inline-icon-text-rail-dot-end`}/>
+                        </div>
                     </div>
                 )}
 
-                <button type={`button`}
-                        className={`pretext-draggable-inline-icon-text-handle ${isDragging ? "is-dragging" : ""}`}
-                        style={{
-                            left: `${iconCenterX - iconSize / 2}px`,
-                            top: `0px`,
-                            height: `${totalHeight}px`,
-                            ...(iconStyle || {})
-                        }}
-                        aria-label={alt || "Draggable inline icon"}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                        aria-valuenow={Math.round(xRatio * 100)}
-                        role={`slider`}
-                        onPointerDown={handlePointerDown}
-                        onPointerMove={handlePointerMove}
-                        onPointerUp={finishDrag}
-                        onPointerCancel={finishDrag}
-                        onKeyDown={handleKeyDown}>
-                    <span className={`pretext-draggable-inline-icon-text-handle-icon`}>
-                        <i className={faIcon}/>
-                    </span>
-                </button>
+                {totalHeight > 0 && (
+                    <button type={`button`}
+                            className={`pretext-draggable-inline-icon-text-handle ${isDragging ? "is-dragging" : ""}`}
+                            style={{
+                                left: `${iconCenterX - iconSize / 2}px`,
+                                top: `${Math.max(0, railCenterY - iconSize / 2)}px`,
+                                ...(iconStyle || {})
+                            }}
+                            aria-label={alt || "Draggable inline icon"}
+                            aria-orientation={`horizontal`}
+                            aria-valuemin={0}
+                            aria-valuemax={100}
+                            aria-valuenow={Math.round(xRatio * 100)}
+                            role={`slider`}
+                            onPointerDown={handleHandlePointerDown}
+                            onKeyDown={handleKeyDown}>
+                        <span className={`pretext-draggable-inline-icon-text-handle-icon`}>
+                            <i className={faIcon}/>
+                        </span>
+                    </button>
+                )}
 
-                <div className={`pretext-draggable-inline-icon-text-lines text-3`}
+                <div className={`pretext-draggable-inline-icon-text-lines ${isDragging ? "is-dragging" : ""} text-3`}
                      style={typography ? {
                          lineHeight: `${typography.lineHeight}px`
                      } : undefined}>
-                    {renderedLines.map(line => (
+                    {textLayout.lines.map(line => (
                         <div key={line.key}
                              className={`pretext-draggable-inline-icon-text-line`}
                              style={{
-                                 top: `${line.y}px`,
+                                 top: `${line.y + textOffsetY}px`,
                                  left: `${line.x}px`,
                                  height: `${typography?.lineHeight || 0}px`
                              }}>
@@ -282,6 +319,21 @@ function PretextDraggableInlineIconText({
             </div>
         </div>
     )
+
+    function scheduleRatioUpdate(nextRatio) {
+        const clampedRatio = clamp(nextRatio, 0, 1)
+        xRatioRef.current = clampedRatio
+
+        if (frameRef.current) return
+
+        frameRef.current = requestAnimationFrame(() => {
+            frameRef.current = 0
+            setXRatio(currentRatio => {
+                if (Math.abs(currentRatio - xRatioRef.current) < 0.0005) return currentRatio
+                return xRatioRef.current
+            })
+        })
+    }
 }
 
 function FlowFragment({ fragment }) {
@@ -335,55 +387,68 @@ function renderMarkedText(fragment) {
 }
 
 function getIconSize(width) {
-    if (width <= 576) return 64
-    if (width <= 992) return 72
+    if (width <= 576) return 66
+    if (width <= 992) return 74
     return 84
 }
 
-function getRailGap(lineHeight = 0) {
-    return Math.max(8, Math.round(lineHeight * 0.45))
+function getRailZoneHeight(lineHeight = 0) {
+    return Math.max(34, Math.round(lineHeight * 1.22))
 }
 
-function findBalancedParagraphSplit(
-    paragraphs,
-    typography,
-    maxWidth,
-    iconCenterX,
-    iconSize,
-    horizontalPadding
-) {
-    if (!Array.isArray(paragraphs) || paragraphs.length <= 1) return paragraphs.length
-    if (!typography || maxWidth <= 0) return Math.ceil(paragraphs.length / 2)
+function getObstacleWidth(lineHeight = 0, iconSize = 0) {
+    const lineBasedWidth = lineHeight > 0 ? Math.round(lineHeight * 0.52) : 18
+    const iconBasedWidth = iconSize > 0 ? Math.round(iconSize * 0.22) : 18
+    return Math.max(16, Math.min(24, Math.max(lineBasedWidth, iconBasedWidth)))
+}
 
-    const obstacle = {
-        left: Math.max(0, iconCenterX - iconSize / 2),
-        top: 0,
-        width: iconSize,
-        height: 100000,
-        horizontalPadding,
-        verticalPadding: 0,
-        includeInHeight: false
-    }
+function getObstaclePadding(lineHeight = 0, contentWidth = 0) {
+    const lineBasedPadding = lineHeight > 0 ? Math.round(lineHeight * 0.28) : 10
+    if (contentWidth <= 576) return Math.max(8, lineBasedPadding - 1)
+    if (contentWidth <= 992) return Math.max(10, lineBasedPadding)
+    return Math.max(12, lineBasedPadding)
+}
 
-    let bestIndex = 1
-    let bestScore = Number.POSITIVE_INFINITY
+function getSpineWidth(obstacleWidth) {
+    return Math.max(10, Math.round(obstacleWidth * 0.72))
+}
 
-    for (let index = 1; index < paragraphs.length; index++) {
-        const topHeight = layoutDraggableInlineParagraphs(paragraphs.slice(0, index), typography, maxWidth, obstacle).totalHeight
-        const bottomHeight = layoutDraggableInlineParagraphs(paragraphs.slice(index), typography, maxWidth, obstacle).totalHeight
-        const score = Math.abs(topHeight - bottomHeight)
+function getMinimumSlotWidth(lineHeight = 0, contentWidth = 0) {
+    const lineBasedWidth = lineHeight > 0 ? Math.round(lineHeight * 2.6) : 68
+    const maxAllowedWidth = Math.max(52, Math.round(contentWidth * 0.32))
+    return Math.min(maxAllowedWidth, Math.max(56, lineBasedWidth))
+}
 
-        if (score < bestScore) {
-            bestScore = score
-            bestIndex = index
-        }
-    }
+function getRatioFromClientX(clientX, element, trackMinX, trackWidth) {
+    if (!element) return 0
 
-    return bestIndex
+    const bounds = element.getBoundingClientRect()
+    const localX = clientX - bounds.left
+    return clamp((localX - trackMinX) / trackWidth, 0, 1)
 }
 
 function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value))
+}
+
+function capturePointer(event) {
+    if (!event.currentTarget?.setPointerCapture) return
+
+    try {
+        event.currentTarget.setPointerCapture(event.pointerId)
+    } catch {
+        // Ignore pointer-capture failures.
+    }
+}
+
+function releasePointerCapture(dragState) {
+    if (!dragState?.captureTarget?.releasePointerCapture) return
+
+    try {
+        dragState.captureTarget.releasePointerCapture(dragState.pointerId)
+    } catch {
+        // Ignore release failures.
+    }
 }
 
 export default PretextDraggableInlineIconText

@@ -40,7 +40,7 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
     useEffect(() => {
         setAnimatedCursorEnabled(
             canHaveAnimatedCursor &&
-            !utils.device.isTouchDevice() &&
+            utils.device.canHoverWithFinePointer() &&
             viewport.isBreakpoint("md")
         )
     }, [canHaveAnimatedCursor, viewport.innerWidth])

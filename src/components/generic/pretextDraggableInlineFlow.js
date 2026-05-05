@@ -27,6 +27,7 @@ export function parseDraggableInlineHtml(html) {
             previousRun.href === run.href &&
             previousRun.target === run.target &&
             previousRun.rel === run.rel &&
+            Boolean(previousRun.locked) === Boolean(run.locked) &&
             marksEqual(previousRun.marks, run.marks)
 
         if (canMerge) {
@@ -47,6 +48,7 @@ export function parseDraggableInlineHtml(html) {
                 href: context.href,
                 target: context.target,
                 rel: context.rel,
+                locked: context.locked,
                 marks: { ...context.marks }
             })
             return
@@ -77,6 +79,7 @@ export function parseDraggableInlineHtml(html) {
             href: context.href,
             target: context.target,
             rel: context.rel,
+            locked: context.locked,
             marks: { ...context.marks }
         }
 
@@ -96,6 +99,10 @@ export function parseDraggableInlineHtml(html) {
 
         if (element.classList.contains("text-primary")) {
             nextContext.marks.highlight = true
+        }
+
+        if (element.classList.contains("pretext-lock") || element.dataset?.pretextLock != null) {
+            nextContext.locked = true
         }
 
         Array.from(element.childNodes).forEach(child => {
@@ -273,6 +280,7 @@ function createPreparedParagraph(paragraph, paragraphIndex, typography) {
             href: run.href,
             target: run.target,
             rel: run.rel,
+            locked: run.locked,
             text: run.text || "",
             font: fontConfig.font,
             letterSpacing: fontConfig.letterSpacing
@@ -295,7 +303,8 @@ function createPreparedParagraph(paragraph, paragraphIndex, typography) {
     const prepared = prepareRichInline(items.map(item => ({
         text: item.text,
         font: item.font,
-        letterSpacing: item.letterSpacing
+        letterSpacing: item.letterSpacing,
+        break: item.locked || item.href ? "never" : "normal"
     })))
 
     writeCachedValue(preparedParagraphCache, cacheKey, prepared, PREPARED_PARAGRAPH_CACHE_LIMIT)
@@ -328,7 +337,7 @@ function getTextLineSlots(maxWidth, bandTop, bandBottom, obstacle) {
         obstacle.verticalPadding
     )
 
-    return carveTextLineSlots(base, blocked).sort((first, second) => first.left - second.left)
+    return carveTextLineSlots(base, blocked, obstacle.minimumSlotWidth).sort((first, second) => first.left - second.left)
 }
 
 function getRectIntervalsForBand(rects, bandTop, bandBottom, horizontalPadding, verticalPadding) {
@@ -349,7 +358,7 @@ function getRectIntervalsForBand(rects, bandTop, bandBottom, horizontalPadding, 
     return intervals
 }
 
-function carveTextLineSlots(base, blocked) {
+function carveTextLineSlots(base, blocked, minimumSlotWidth = 24) {
     let slots = [base]
 
     for (let blockedIndex = 0; blockedIndex < blocked.length; blockedIndex++) {
@@ -375,7 +384,7 @@ function carveTextLineSlots(base, blocked) {
         slots = next
     }
 
-    return slots.filter(slot => slot.right - slot.left >= 24)
+    return slots.filter(slot => slot.right - slot.left >= minimumSlotWidth)
 }
 
 function createFragment(item, fragment) {
@@ -400,6 +409,7 @@ function createDefaultContext() {
         href: undefined,
         target: undefined,
         rel: undefined,
+        locked: false,
         marks: {
             highlight: false,
             strong: false,
@@ -461,6 +471,7 @@ function createPreparedParagraphCacheKey(paragraph, typography) {
             href: run.href || "",
             target: run.target || "",
             rel: run.rel || "",
+            locked: Boolean(run.locked),
             marks: run.marks,
             text: run.text || ""
         }))

@@ -62,15 +62,41 @@ function ArticleTextItem({ itemWrapper, textLayoutMode }) {
             2: 1,
             3: 0.7
         }
+        const html = itemWrapper.locales.text || itemWrapper.placeholder
         const initialXRatio = initialXRatioByItemId[itemWrapper.id] ?? 0.7
+        const heading = extractFlowCardHeading(html)
+        const storyHtml = extractFlowCardStoryHtml(html)
+        const impactWords = extractFlowCardImpactWords(html)
 
         return (
-            <div className={`article-text-item article-text-item-flow-card`}>
-                <PretextDraggableInlineIconText html={itemWrapper.locales.text || itemWrapper.placeholder}
+            <div className={`article-text-item article-text-item-flow-card`}
+                 data-flow-card-index={itemWrapper.id}>
+                <div className={`article-text-flow-card-header`}>
+                    {heading && (
+                        <p className={`article-text-flow-card-heading`}>
+                            {heading}
+                        </p>
+                    )}
+                </div>
+
+                <PretextDraggableInlineIconText html={storyHtml}
                                                 faIcon={itemWrapper.faIconWithFallback}
                                                 iconStyle={itemWrapper.faIconStyle}
                                                 alt={itemWrapper.imageAlt}
-                                                initialXRatio={initialXRatio}/>
+                                                initialXRatio={initialXRatio}
+                                                className={`article-text-flow-card-story`}/>
+
+                {impactWords.length > 0 && (
+                    <div className={`article-text-flow-card-impact-list`}
+                         aria-hidden={true}>
+                        {impactWords.map(word => (
+                            <span key={word}
+                                  className={`article-text-flow-card-impact-pill`}>
+                                {word}
+                            </span>
+                        ))}
+                    </div>
+                )}
             </div>
         )
     }
@@ -93,6 +119,72 @@ function ArticleTextItem({ itemWrapper, textLayoutMode }) {
                  dangerouslySetInnerHTML={{__html: itemWrapper.locales.text || itemWrapper.placeholder}}/>
         </div>
     )
+}
+
+function extractFlowCardHeading(html = "") {
+    const paragraphs = extractParagraphInnerHtmlList(html)
+    if (paragraphs.length > 0) {
+        return sanitizeInlineText(paragraphs[0])
+    }
+
+    const match = html.match(/\{\{([^{}]+)\}\}/)
+    return match ? sanitizeInlineText(match[1]) : ""
+}
+
+function extractFlowCardStoryHtml(html = "") {
+    const paragraphs = extractParagraphInnerHtmlList(html)
+    if (paragraphs.length === 0) return html
+    if (paragraphs.length === 1) return wrapParagraphs(paragraphs)
+
+    if (paragraphs.length >= 3) {
+        return wrapParagraphs(paragraphs.slice(1, -1))
+    }
+
+    return wrapParagraphs(paragraphs.slice(0, 1))
+}
+
+function extractFlowCardImpactWords(html = "") {
+    const paragraphs = extractParagraphInnerHtmlList(html)
+    const impactSource = paragraphs.length > 0 ? paragraphs[paragraphs.length - 1] : html
+    const matches = [...impactSource.matchAll(/<strong>(.*?)<\/strong>/g)]
+
+    return matches
+        .map(([, word]) => sanitizeInlineText(word))
+        .filter(Boolean)
+        .slice(0, 6)
+}
+
+function extractParagraphInnerHtmlList(html = "") {
+    if (!html) return []
+
+    const parser = new DOMParser()
+    const documentNode = parser.parseFromString(`<div>${html}</div>`, "text/html")
+    const root = documentNode.body.firstElementChild
+    if (!root) return []
+
+    const paragraphs = Array.from(root.querySelectorAll(":scope > p"))
+    if (paragraphs.length === 0) return [root.innerHTML]
+
+    return paragraphs.map(paragraph => paragraph.innerHTML || "")
+}
+
+function wrapParagraphs(paragraphs = []) {
+    return paragraphs
+        .filter(Boolean)
+        .map(paragraph => `<p>${paragraph}</p>`)
+        .join("")
+}
+
+function sanitizeInlineText(text = "") {
+    return text
+        .replace(/<[^>]*>/g, "")
+        .replace(/\{\{|\}\}/g, "")
+        .replace(/&mdash;|&#8212;/gi, " ")
+        .replace(/&ndash;|&#8211;/gi, " ")
+        .replace(/&nbsp;/gi, " ")
+        .replace(/\s+/g, " ")
+        .replace(/\s*:\s*$/, "")
+        .trim()
 }
 
 export default ArticleText

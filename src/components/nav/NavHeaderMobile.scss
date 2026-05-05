@@ -17,9 +17,6 @@ nav.nav-header-mobile {
         overflow: hidden;
         border-radius: 0;
         background:
-            radial-gradient(circle at 15% 5%,
-                rgba(255, 255, 255, 0.84),
-                transparent 30%),
             linear-gradient(180deg,
                 color-mix(in srgb, var(--theme-nav-surface) 84%, white 16%) 0%,
                 var(--theme-nav-surface) 18%,

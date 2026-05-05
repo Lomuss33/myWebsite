@@ -1,6 +1,5 @@
 import "./CategoryFilter.scss"
 import React, {useLayoutEffect, useRef, useState} from 'react'
-import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useUtils} from "../../hooks/utils.js"
 
 function CategoryFilter({ categories, selectedCategoryId, setSelectedCategoryId, className = "" }) {
@@ -104,18 +103,15 @@ function CategoryFilter({ categories, selectedCategoryId, setSelectedCategoryId,
 }
 
 function CategoryFilterButton({ category, isSelected, onClick, className = "" }) {
-    const language = useLanguage()
-
     const selectedClassName = isSelected ?
         `category-filter-button-selected` : ``
-
-    const tooltip = language.getString("filter_by").replace("{x}", category.label)
 
     return (
         <button type={"button"}
                 className={`category-filter-button ${className} ${selectedClassName} btn text-2`}
                 onClick={onClick}
-                data-tooltip={tooltip}>
+                data-selected={isSelected ? "true" : "false"}
+                aria-pressed={isSelected}>
             <span className={`category-filter-button-label`}>{category.label}</span>
             <span className={`category-filter-button-count`}>({category.count})</span>
         </button>

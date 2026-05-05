@@ -3,10 +3,8 @@ import React, {useEffect, useState} from "react"
 import {Card} from "react-bootstrap"
 import {useFloatingFrame} from "../../../hooks/floatingFrame.js"
 import {useLanguage} from "../../../providers/LanguageProvider.jsx"
-import {useNavigation} from "../../../providers/NavigationProvider.jsx"
 import {useUtils} from "../../../hooks/utils.js"
 import ImageView from "../../generic/ImageView.jsx"
-import StatusCircle from "../../generic/StatusCircle.jsx"
 import TextTyper from "../../generic/TextTyper.jsx"
 import AudioButton from "../../buttons/AudioButton.jsx"
 
@@ -22,7 +20,6 @@ function NavProfileCard({
     showNameAudioButton = true
 }) {
     const language = useLanguage()
-    const navigation = useNavigation()
     const utils = useUtils()
     const floatingFrame = useFloatingFrame()
     const safeProfile = profile || {}
@@ -46,19 +43,6 @@ function NavProfileCard({
         loveSentences = [loveSentences[0]]
 
     const profilePictureUrl = language.parseJsonText(safeProfile.profilePictureUrl)
-
-    const statusCircleVisible = Boolean(safeProfile.statusCircleVisible)
-    const statusCircleVariant = statusCircleVisible ?
-        safeProfile.statusCircleVariant :
-        ""
-
-    const statusCircleHoverMessage = statusCircleVisible ?
-        language.getTranslation(safeProfile.locales, safeProfile.statusCircleHoverMessage) :
-        null
-
-    const statusCircleSize = expanded ?
-        StatusCircle.Sizes.DEFAULT :
-        StatusCircle.Sizes.SMALL
 
     const namePronunciationIpa = language.getTranslation(safeProfile.locales, "name_pronunciation_ipa", null)
     const namePronunciationAudioUrl = language.getTranslation(safeProfile.locales, "name_pronunciation_audio_url", null)
@@ -84,14 +68,7 @@ function NavProfileCard({
         )
     }, [safeProfile.profilePictureAltUrl, alternateProfilePictureDefaultChance])
 
-    const _onStatusBadgeClicked = () => {
-        navigation.navigateToSectionWithId("contact")
-    }
-
     const _onMediaClicked = (event) => {
-        if(event?.target?.closest?.(".status-circle"))
-            return
-
         setShowAlternateProfilePicture((current) => !current)
     }
 
@@ -139,13 +116,6 @@ function NavProfileCard({
                                        sizes={PROFILE_AVATAR_SIZES}/>
                         </div>
                     </div>
-
-                    {statusCircleVisible && (
-                        <StatusCircle className={`nav-profile-card-status-circle`}
-                                      variant={statusCircleVariant}
-                                      message={statusCircleHoverMessage}
-                                      size={statusCircleSize} onClick={_onStatusBadgeClicked}/>
-                    )}
                 </div>
 
                 <div className={`nav-profile-card-info`}>

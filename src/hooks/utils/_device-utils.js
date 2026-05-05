@@ -72,6 +72,14 @@ export const _deviceUtils = {
     /**
      * @return {boolean}
      */
+    canHoverWithFinePointer: () => {
+        if (!window.matchMedia) return false
+        return window.matchMedia("(hover: hover) and (pointer: fine)").matches
+    },
+
+    /**
+     * @return {boolean}
+     */
     isTouchDevice: () => {
         return (('ontouchstart' in window) ||
             (navigator.maxTouchPoints > 0) ||

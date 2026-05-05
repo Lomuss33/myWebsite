@@ -198,27 +198,140 @@ div.article-text-item.article-text-item-flow-card {
 }
 
 article#article-3-section-experience {
+    div.article-text-items.article-text-items-mode-draggable_inline_icon_flow {
+        gap: 24px;
+
+        @include media-breakpoint-down(sm) {
+            gap: 18px;
+        }
+    }
+
     div.article-text-item.article-text-item-flow-card {
+        --experience-card-accent: #f2b544;
+        --experience-card-accent-soft: rgba(242, 181, 68, 0.16);
+        --experience-card-accent-contrast: #f8fafc;
         position: relative;
-        overflow: hidden;
-        border: 1px solid rgba(78, 163, 255, 0.20);
+        overflow: clip;
+        padding: clamp(18px, 2vw, 30px);
+        border-radius: 28px;
+        border: 1px solid rgba(242, 181, 68, 0.22);
         background:
-            linear-gradient(140deg, rgba(11, 18, 32, 0.96), rgba(5, 8, 16, 0.96));
-        box-shadow: 0 18px 42px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            linear-gradient(180deg, rgba(18, 24, 34, 0.98), rgba(7, 11, 18, 0.98));
+        box-shadow:
+            0 20px 48px rgba(0, 0, 0, 0.34),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+        &[data-flow-card-index="2"] {
+            --experience-card-accent: #70b8ff;
+            --experience-card-accent-soft: rgba(112, 184, 255, 0.16);
+        }
+
+        &[data-flow-card-index="3"] {
+            --experience-card-accent: #f68f66;
+            --experience-card-accent-soft: rgba(246, 143, 102, 0.16);
+        }
 
         &::before {
             content: "";
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(circle at top right, rgba(78, 163, 255, 0.12) 0%, transparent 55%),
-                radial-gradient(circle at bottom left, rgba(250, 204, 21, 0.06) 0%, transparent 42%);
+                radial-gradient(circle at top right, color-mix(in srgb, var(--experience-card-accent) 16%, transparent) 0%, transparent 55%),
+                radial-gradient(circle at bottom left, color-mix(in srgb, var(--experience-card-accent) 9%, transparent) 0%, transparent 42%);
             pointer-events: none;
         }
     }
 
-    div.article-text-excerpt {
-        color: #e2e8f0;
+    div.article-text-flow-card-header {
+        position: relative;
+        z-index: 1;
+        display: block;
+        margin-bottom: 18px;
+
+        @include media-breakpoint-down(sm) {
+            margin-bottom: 14px;
+        }
+    }
+
+    p.article-text-flow-card-heading {
+        margin: 0;
+        max-width: min(100%, 46rem);
+        color: #f8fafc;
+        font-size: clamp(1.14rem, 0.85vw + 0.98rem, 1.5rem);
+        line-height: 1.18;
+        font-weight: 760;
+        letter-spacing: -0.03em;
+        text-wrap: pretty;
+        overflow-wrap: anywhere;
+    }
+
+    div.article-text-flow-card-story {
+        --pretext-draggable-inline-icon-text-accent: var(--experience-card-accent);
+        --pretext-draggable-inline-icon-text-accent-soft: var(--experience-card-accent-soft);
+        --pretext-draggable-inline-icon-text-surface: color-mix(in srgb, var(--experience-card-accent) 6%, transparent);
+        position: relative;
+        z-index: 1;
+    }
+
+    div.article-text-flow-card-impact-list {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    span.article-text-flow-card-impact-pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 7px 14px;
+        border-radius: 999px;
+        border: 1px solid color-mix(in srgb, var(--experience-card-accent) 24%, rgba(255, 255, 255, 0.08));
+        background: color-mix(in srgb, var(--experience-card-accent) 10%, rgba(255, 255, 255, 0.02));
+        color: #dbe7f5;
+        font-size: 0.9rem;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+    }
+
+    div.pretext-draggable-inline-icon-text-measure,
+    div.pretext-draggable-inline-icon-text-lines {
+        font-size: clamp(1rem, 0.3vw + 0.98rem, 1.14rem);
+        line-height: 1.9;
+    }
+
+    div.pretext-draggable-inline-icon-text-canvas {
+        margin-top: 8px;
+        margin-bottom: 2px;
+    }
+
+    span.pretext-draggable-inline-icon-text-fragment,
+    a.pretext-draggable-inline-icon-text-fragment {
+        color: #d9e6f5;
+    }
+
+    span.pretext-draggable-inline-icon-text-fragment-highlight,
+    a.pretext-draggable-inline-icon-text-fragment-highlight {
+        color: var(--experience-card-accent);
+        font-weight: 700;
+    }
+
+    span.pretext-draggable-inline-icon-text-fragment strong,
+    a.pretext-draggable-inline-icon-text-fragment strong {
+        color: #f8fafc;
+        font-weight: 700;
+    }
+
+    span.pretext-draggable-inline-icon-text-fragment em,
+    a.pretext-draggable-inline-icon-text-fragment em {
+        color: #b7c6d8;
+    }
+
+    a.pretext-draggable-inline-icon-text-fragment {
+        color: #f8fafc;
+        text-decoration-color: color-mix(in srgb, var(--experience-card-accent) 44%, currentColor);
     }
 
     div.article-text-avatar-view {
@@ -230,8 +343,10 @@ article#article-3-section-experience {
     @media (hover: hover) and (pointer: fine) {
         div.article-text-item.article-text-item-flow-card:hover {
             transform: translateY(-2px);
-            border-color: rgba(250, 204, 21, 0.36);
-            box-shadow: 0 22px 50px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            border-color: color-mix(in srgb, var(--experience-card-accent) 36%, rgba(255, 255, 255, 0.12));
+            box-shadow:
+                0 24px 58px rgba(0, 0, 0, 0.40),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06);
         }
     }
 }

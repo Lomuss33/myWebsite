@@ -322,8 +322,8 @@ section#section-contact div.article-content {
 button.section-fullscreen-toggle {
     position: absolute;
     top: 10px;
-    // Keep clear of the custom scrollbar hit-area on the right.
-    right: calc(10px + 26px);
+    // Keep just enough clearance from the custom scrollbar hit-area.
+    right: 18px;
     z-index: $z-index-section-floating-items;
     width: 20px;
     height: 20px;

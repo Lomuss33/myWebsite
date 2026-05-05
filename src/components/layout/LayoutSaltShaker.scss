@@ -1,6 +1,6 @@
 @use "../../styles/extend" as *;
 
-button.layout-salt-shaker {
+div.layout-salt-shaker-wrapper {
     --layout-salt-shaker-glass-base: #f5f5f5;
     --layout-salt-shaker-top-fill: #eaeaea;
     --layout-salt-shaker-surface-fill: #ffffff;
@@ -17,6 +17,12 @@ button.layout-salt-shaker {
     z-index: $z-index-section-floating-items;
 
     width: 67px;
+    height: auto;
+    pointer-events: none;
+}
+
+button.layout-salt-shaker {
+    width: 100%;
     height: auto;
     margin: 0;
     padding: 0;
@@ -79,7 +85,7 @@ button.layout-salt-shaker svg {
     pointer-events: none;
 }
 
-button.layout-salt-shaker div.layout-salt-shaker-tooltip {
+div.layout-salt-shaker-wrapper div.layout-salt-shaker-tooltip {
     right: 0;
     left: auto;
     bottom: calc(100% + 10px);
@@ -94,14 +100,18 @@ button.layout-salt-shaker div.layout-salt-shaker-tooltip {
     }
 }
 
-button.layout-salt-shaker.layout-salt-shaker-paused svg #layout-salt-shaker-saliere,
-button.layout-salt-shaker.layout-salt-shaker-paused svg #layout-salt-shaker-salt {
+div.layout-salt-shaker-wrapper.layout-salt-shaker-paused svg #layout-salt-shaker-saliere,
+div.layout-salt-shaker-wrapper.layout-salt-shaker-paused svg #layout-salt-shaker-salt {
     animation-play-state: paused !important;
 }
 
 @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-    button.layout-salt-shaker {
+    div.layout-salt-shaker-wrapper {
         width: 59px;
         bottom: calc(#{$nav-tabs-height} + var(--default-card-spacing));
+    }
+
+    button.layout-salt-shaker {
+        width: 100%;
     }
 }

@@ -11,7 +11,8 @@ function NavToolResumeDownloader({
     dropdownClassName = "",
     menuClassName = "",
     compactMenu = false,
-    mobileTubeMenu = false
+    mobileTubeMenu = false,
+    showTooltip = true
 }) {
     const language = useLanguage()
     const utils = useUtils()
@@ -138,7 +139,7 @@ function NavToolResumeDownloader({
                             options={options}
                             selectedOptionId={selectedOptionId}
                             onOptionSelected={_onOptionSelected}
-                            tooltipLabel={tooltip}
+                            tooltipLabel={showTooltip ? tooltip : null}
                             dropdownDrop={dropdownDrop}
                             dropdownClassName={dropdownClassName}
                             menuClassName={menuClassName}

@@ -990,7 +990,7 @@ function ProbeItem({
                     </div>
                 </div>
 
-                <pre className={`article-data-probe-item-value`}>
+                <pre className={`article-data-probe-item-value ${extraState?.status === "ok" && extraState?.value ? "has-following-extra" : ""}`}>
                     {isExpanded ? fullText : collapsedText}
                 </pre>
 

@@ -38,6 +38,35 @@ nav.nav-header-mobile {
     }
 }
 
+[data-theme="light"] {
+    nav.nav-header-mobile {
+        @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+            --theme-nav-surface: #f6fafe;
+            --theme-nav-surface-accent: #ecf3fa;
+            --theme-nav-surface-raised: #dfeaf6;
+            --theme-nav-border: rgba(148, 169, 191, 0.30);
+            --theme-nav-divider: rgba(148, 169, 191, 0.18);
+            --theme-nav-text: rgba(16, 32, 51, 0.98);
+            --theme-nav-text-muted: rgba(83, 101, 122, 0.72);
+            --theme-nav-selected-ink: #ffffff;
+
+            div.nav-header-mobile-card-wrapper {
+                background:
+                    radial-gradient(circle at top center, rgba(37, 99, 235, 0.08), transparent 58%),
+                    linear-gradient(180deg,
+                        color-mix(in srgb, var(--theme-nav-surface) 88%, white 12%) 0%,
+                        var(--theme-nav-surface) 18%,
+                        color-mix(in srgb, var(--theme-nav-surface-accent) 96%, #dce9f6 4%) 100%);
+                border-color: var(--theme-nav-border);
+                box-shadow:
+                    0 16px 32px rgba(15, 23, 42, 0.10),
+                    0 3px 12px rgba(15, 23, 42, 0.06),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.72);
+            }
+        }
+    }
+}
+
 [data-theme="dark"] {
     nav.nav-header-mobile {
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {

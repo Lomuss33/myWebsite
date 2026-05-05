@@ -1,5 +1,6 @@
 import "./ArticleComplaintForm.scss"
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
+import {createPortal} from "react-dom"
 import {useApi} from "../../hooks/api.js"
 import {useConstants} from "../../hooks/constants.js"
 import {useFeedbacks} from "../../providers/FeedbacksProvider.jsx"
@@ -16,6 +17,8 @@ const DESTINATIONS = {
 }
 
 const POPUP_COUNT = 30
+const NOWHERE_SPARK_COUNT = 54
+const NOWHERE_SPARK_COLORS = ["#2563eb", "#ef4444", "#22c55e", "#7c3aed", "#06b6d4", "#f59e0b", "#ec4899"]
 
 function ArticleComplaintForm({ dataWrapper }) {
     return (
@@ -40,14 +43,18 @@ function ArticleComplaintFormContent({ dataWrapper }) {
     const [statusMessage, setStatusMessage] = useState(null)
     const [complaintPopups, setComplaintPopups] = useState([])
     const [isSending, setIsSending] = useState(false)
+    const [nowhereBursts, setNowhereBursts] = useState([])
+    const sendButtonWrapperRef = useRef(null)
 
     const complaintEmail = dataWrapper.locales.complaintEmailLabel || "trash@lovro-music.de"
     const complaintNote = dataWrapper.locales.complaintNote || ""
     const complaintDestinationLabel = dataWrapper.locales.complaintDestinationLabel || "destination"
     const complaintNowhereLabel = dataWrapper.locales.complaintNowhereLabel || "nowhere"
-    const complaintYouWhereLabel = dataWrapper.locales.complaintYouWhereLabel || "You where"
+    const complaintYouWhereLabel = dataWrapper.locales.complaintYouWhereLabel || "actual hate"
     const complaintKnjigaLabel = dataWrapper.locales.complaintKnjigaLabel || "Knjiga zalbi"
     const complaintAnzeigeLabel = dataWrapper.locales.complaintAnzeigeLabel || "Anzeige raus"
+    const complaintYouWhereTitle = dataWrapper.locales.complaintYouWhereTitle || complaintYouWhereLabel
+    const complaintYouWhereBody = dataWrapper.locales.complaintYouWhereBody || complaintYouWhereLabel
     const complaintSentTitle = dataWrapper.locales.complaintSentTitle || ""
     const complaintSentBody = dataWrapper.locales.complaintSentBody || ""
     const complaintPopupTitle = dataWrapper.locales.complaintPopupTitle || "Anzeige raus"
@@ -87,13 +94,14 @@ function ArticleComplaintFormContent({ dataWrapper }) {
             return
 
         if(destination === DESTINATIONS.NOWHERE) {
+            triggerNowhereBurst(sendButtonWrapperRef.current)
             setMessage("")
             setStatusMessage(null)
             return
         }
 
         if(destination === DESTINATIONS.YOU_WHERE) {
-            openThrowoffTab()
+            openThrowoffTab(complaintYouWhereTitle, complaintYouWhereBody)
             setDestination(DESTINATIONS.NOWHERE)
             setMessage("")
             return
@@ -102,7 +110,7 @@ function ArticleComplaintFormContent({ dataWrapper }) {
         if(destination === DESTINATIONS.ANZEIGE) {
             setValidationError(null)
             setStatusMessage(null)
-            setComplaintPopups(createComplaintPopups(complaintPopupTitle, getPopupGeometry(event.currentTarget)))
+            setComplaintPopups(createComplaintPopups(complaintPopupTitle))
             return
         }
 
@@ -165,14 +173,27 @@ function ArticleComplaintFormContent({ dataWrapper }) {
               noValidate={true}
               onSubmit={handleSubmit}>
             <div className={`article-complaint-form-main`}>
-                <Textarea id={`complaint-form-textarea`}
-                          name={`message`}
-                          model={message}
-                          setModel={setMessage}
-                          faIconPrefix={`fa-solid fa-comment-dots`}
-                          placeholder={`complaint`}
-                          className={`text-4`}
-                          required={false}/>
+                <div className={`article-complaint-form-message-column`}>
+                    <Textarea id={`complaint-form-textarea`}
+                              name={`message`}
+                              model={message}
+                              setModel={setMessage}
+                              faIconPrefix={`fa-solid fa-comment-dots`}
+                              placeholder={`complaint`}
+                              className={`text-4`}
+                              required={false}/>
+
+                    <div className={`article-complaint-form-message-error-slot`}>
+                        {errorMessage ? (
+                            <p className={`article-complaint-form-message-error text-2`}>
+                                {errorMessage}
+                            </p>
+                        ) : (
+                            <span className={`article-complaint-form-message-error-placeholder`} aria-hidden={`true`} />
+                        )}
+                    </div>
+
+                </div>
 
                 <aside className={`article-complaint-form-rail`}>
                     <div className={`article-complaint-form-note text-3`}
@@ -181,7 +202,7 @@ function ArticleComplaintFormContent({ dataWrapper }) {
                     <div className={`article-complaint-form-controls-row`}>
                         <label className={`article-complaint-form-select-wrapper`}>
                             <span className={`article-complaint-form-select-label text-2`}>
-                                {complaintDestinationLabel}
+                                {isKnjiga ? complaintEmail : complaintDestinationLabel}
                             </span>
 
                             <select className={`article-complaint-form-select text-3`}
@@ -193,117 +214,160 @@ function ArticleComplaintFormContent({ dataWrapper }) {
                                 <option value={DESTINATIONS.ANZEIGE}>{complaintAnzeigeLabel}</option>
                             </select>
                         </label>
-                        <StandardButton label={`send`}
-                                        faIcon={`fa-solid fa-paper-plane`}
-                                        type={`submit`}
-                                        variant={`primary`}
-                                        size={StandardButton.Size.LARGE}
-                                        tooltip={`send`}
-                                        status={isSending ? StandardButton.Status.DISABLED : StandardButton.Status.ENABLED}/>
+                        <div ref={sendButtonWrapperRef}
+                             className={`article-complaint-form-send-button-wrapper`}>
+                            <StandardButton label={`send`}
+                                            faIcon={`fa-solid fa-paper-plane`}
+                                            type={`submit`}
+                                            className={`article-complaint-form-send-button`}
+                                            variant={`primary`}
+                                            size={StandardButton.Size.LARGE}
+                                            tooltip={`send`}
+                                            status={isSending ? StandardButton.Status.DISABLED : StandardButton.Status.ENABLED}/>
+                        </div>
                     </div>
-
-                    {isKnjiga && (
-                        <p className={`article-complaint-form-destination-email text-3`}>
-                            {complaintEmail}
-                        </p>
-                    )}
 
                     {statusMessage && (
                         <p className={`article-complaint-form-status text-2`}>
                             {statusMessage}
                         </p>
                     )}
-
-                    {errorMessage && (
-                        <p className={`article-complaint-form-error text-2`}>
-                            {errorMessage}
-                        </p>
-                    )}
                 </aside>
             </div>
 
-            {complaintPopups.length > 0 && (
-                <div className={`article-complaint-form-popup-layer`} aria-hidden={false}>
-                    {complaintPopups.map(popup => (
-                        <div key={popup.id}
-                             className={`article-complaint-form-popup`}
-                             style={popup.style}>
-                            <div className={`article-complaint-form-popup-header`}>
-                                <p className={`article-complaint-form-popup-title text-2`}>
-                                    {popup.title}
-                                </p>
+            {typeof document !== "undefined" && createPortal(
+                <>
+                    {complaintPopups.length > 0 && (
+                        <div className={`article-complaint-form-popup-layer`}
+                             aria-hidden={false}
+                             onClick={() => {
+                                 closeTopComplaintPopup()
+                             }}>
+                            {complaintPopups.map((popup, index) => {
+                                const isTopmost = index === complaintPopups.length - 1
 
-                                <button type={`button`}
-                                        className={`article-complaint-form-popup-close`}
-                                        aria-label={language.getString("close")}
-                                        onClick={() => {
-                                            setComplaintPopups(prev => prev.filter(current => current.id !== popup.id))
-                                        }}>
-                                    <i className={`fa-solid fa-xmark`}/>
-                                </button>
-                            </div>
+                                return (
+                                    <div key={popup.id}
+                                         className={`article-complaint-form-popup ${isTopmost ? "article-complaint-form-popup-topmost" : ""}`}
+                                         style={popup.style}
+                                         onClick={(event) => {
+                                             event.stopPropagation()
+                                         }}>
+                                        <div className={`article-complaint-form-popup-header`}>
+                                            <p className={`article-complaint-form-popup-title text-2`}>
+                                                {popup.title}
+                                            </p>
 
+                                            <button type={`button`}
+                                                    className={`article-complaint-form-popup-close`}
+                                                    aria-label={language.getString("close")}
+                                                    onClick={() => {
+                                                        closeComplaintPopup(popup.id)
+                                                    }}>
+                                                <i className={`fa-solid fa-xmark`}/>
+                                            </button>
+                                        </div>
+                                    </div>
+                                )
+                            })}
                         </div>
-                    ))}
-                </div>
+                    )}
+
+                    <div className={`article-complaint-form-burst-layer`} aria-hidden={true}>
+                        {nowhereBursts.map((burst) => (
+                            <div key={burst.id}
+                                 className={`article-complaint-form-burst`}
+                                 style={{
+                                     left: `${burst.x}px`,
+                                     top: `${burst.y}px`
+                                 }}>
+                                {burst.sparks.map((spark) => (
+                                    <span key={spark.id}
+                                          className={`article-complaint-form-burst-spark`}
+                                          style={{
+                                              "--spark-dx": `${spark.dx}px`,
+                                              "--spark-dy": `${spark.dy}px`,
+                                              "--spark-rotation": `${spark.rotation}deg`,
+                                              "--spark-scale": spark.scale,
+                                              "--spark-color": spark.color,
+                                              "--spark-duration": `${spark.duration}ms`,
+                                              "--spark-delay": `${spark.delay}ms`
+                                          }}>
+                                        *
+                                    </span>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                </>,
+                document.body
             )}
         </form>
     )
+
+    function triggerNowhereBurst(target) {
+        if(typeof window === "undefined" || !target)
+            return
+
+        const rect = target.getBoundingClientRect()
+        const burst = createNowhereBurst(rect)
+
+        setNowhereBursts((current) => [...current, burst])
+
+        window.setTimeout(() => {
+            setNowhereBursts((current) => current.filter((entry) => entry.id !== burst.id))
+        }, 1900)
+    }
+
+    function closeComplaintPopup(id) {
+        setComplaintPopups((current) => current.filter((entry) => entry.id !== id))
+    }
+
+    function closeTopComplaintPopup() {
+        setComplaintPopups((current) => current.slice(0, -1))
+    }
 }
 
-function createComplaintPopups(title, geometry) {
+function createComplaintPopups(title) {
     return Array.from({length: POPUP_COUNT}, (_, index) => {
         const popupId = `${Date.now()}-${index}-${Math.random().toString(36).slice(2, 9)}`
 
         return {
             id: popupId,
             title: `${title} ${index + 1}`,
-            style: buildRandomPopupStyle(index, geometry)
+            style: buildRandomPopupStyle(index)
         }
     })
 }
 
-function getPopupGeometry(formEl) {
-    if(!formEl || typeof window === "undefined") {
-        return {
-            width: 0,
-            height: 0
-        }
-    }
-
-    const rect = formEl.getBoundingClientRect()
-    return {
-        width: Math.max(rect.width, formEl.scrollWidth || 0),
-        height: Math.max(rect.height, formEl.scrollHeight || 0)
-    }
-}
-
-function buildRandomPopupStyle(index, geometry = null) {
+function buildRandomPopupStyle(index) {
     if(typeof window === "undefined") {
         return {
-            top: `${32 + index * 18}px`,
-            left: `${32 + index * 18}px`
+            width: `${320 + index * 6}px`,
+            minHeight: `${150 + index * 4}px`,
+            left: `50%`,
+            top: `50%`,
+            marginLeft: `${index * 14}px`,
+            marginTop: `${index * 12}px`
         }
     }
 
-    const areaWidth = Math.max(320, geometry?.width || window.innerWidth)
-    const areaHeight = Math.max(260, geometry?.height || window.innerHeight)
-    const popupWidth = Math.round(180 + Math.random() * 180)
-    const popupHeight = Math.round(120 + Math.random() * 140)
-    const maxLeft = Math.max(12, areaWidth - popupWidth - 12)
-    const maxTop = Math.max(12, areaHeight - popupHeight - 12)
+    const popupWidth = Math.round(320 + Math.random() * 180)
+    const popupHeight = Math.round(150 + Math.random() * 140)
+    const xOffset = Math.round((Math.random() - 0.5) * 44 + index * 12)
+    const yOffset = Math.round((Math.random() - 0.5) * 38 + index * 10)
 
     return {
-        left: `${Math.round(12 + Math.random() * maxLeft)}px`,
-        top: `${Math.round(12 + Math.random() * maxTop)}px`,
         width: `${popupWidth}px`,
         minHeight: `${popupHeight}px`,
         "--popup-rotation": `${Math.round((Math.random() - 0.5) * 14)}deg`,
-        zIndex: 3000 + index
+        left: `calc(50% + ${xOffset}px)`,
+        top: `calc(50% + ${yOffset}px)`,
+        zIndex: 1000 + index
     }
 }
 
-function openThrowoffTab() {
+function openThrowoffTab(title = "actual hate", body = "Bye, my dear.\nI hope this was annoying enough to finally help you leave the page.") {
     if(typeof window === "undefined")
         return
 
@@ -311,23 +375,28 @@ function openThrowoffTab() {
     if(!tab)
         return
 
+    const lines = String(body)
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean)
+
     const html = [
         "<!doctype html>",
         "<html>",
         "<head>",
-        "<title>You where</title>",
+        `<title>${escapeHtml(title)}</title>`,
         "<style>",
-        "body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0f172a;color:#f8fafc;font-family:system-ui,sans-serif;padding:24px;text-align:center}",
-        "main{max-width:420px;padding:24px;border:1px solid rgba(255,255,255,.16);background:rgba(15,23,42,.92);box-shadow:0 20px 50px rgba(0,0,0,.35)}",
-        "h1{margin:0 0 12px;font-size:2rem}",
-        "p{margin:0;line-height:1.55;font-size:1rem;color:#cbd5e1}",
-        "a{color:#93c5fd}",
+        "body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at top,rgba(37,99,235,.12) 0,transparent 42%),linear-gradient(180deg,#fbfdff 0%,#eef4fb 100%);color:#0f172a;font-family:Georgia,'Times New Roman',serif;padding:24px;text-align:center}",
+        "main{width:min(100%,560px);padding:28px 26px;border:1px solid rgba(15,23,42,.12);background:rgba(255,255,255,.88);box-shadow:0 18px 45px rgba(15,23,42,.10)}",
+        "p{margin:0;line-height:1.45;color:#1e293b}",
+        "p+p{margin-top:14px}",
+        ".lead{font-size:clamp(1.35rem,2vw,1.7rem);font-style:italic;color:#0f172a}",
+        ".sub{font-size:clamp(1rem,1.45vw,1.1rem);max-width:34ch;margin-inline:auto;color:#334155}",
         "</style>",
         "</head>",
         "<body>",
         "<main>",
-        "<h1>You where</h1>",
-        "<p>This tab opened itself in the most annoying possible way. Please return to the complaint box and continue complaining responsibly.</p>",
+        ...lines.map((line, index) => `<p class="${index === 0 ? "lead" : "sub"}">${escapeHtml(line)}</p>`),
         "</main>",
         "</body>",
         "</html>"
@@ -337,6 +406,43 @@ function openThrowoffTab() {
     tab.document.write(html)
     tab.document.close()
     tab.focus()
+}
+
+function escapeHtml(value) {
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll("\"", "&quot;")
+        .replaceAll("'", "&#39;")
+}
+
+function createNowhereBurst(rect) {
+    const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+    const originX = rect.left + rect.width / 2
+    const originY = rect.top + rect.height / 2
+
+    return {
+        id,
+        x: originX,
+        y: originY,
+        sparks: Array.from({length: NOWHERE_SPARK_COUNT}, (_, index) => {
+            const angle = (Math.PI * 2 * index) / NOWHERE_SPARK_COUNT + (Math.random() - 0.5) * 0.28
+            const distance = 88 + Math.random() * 140
+            const lift = 18 + Math.random() * 34
+
+            return {
+                id: `${id}-${index}`,
+                dx: Math.cos(angle) * distance,
+                dy: Math.sin(angle) * distance - lift,
+                rotation: Math.round((Math.random() - 0.5) * 180),
+                scale: (1.15 + Math.random() * 1.2).toFixed(2),
+                color: NOWHERE_SPARK_COLORS[index % NOWHERE_SPARK_COLORS.length],
+                duration: 1100 + Math.round(Math.random() * 380),
+                delay: Math.round(Math.random() * 90)
+            }
+        })
+    }
 }
 
 export default ArticleComplaintForm

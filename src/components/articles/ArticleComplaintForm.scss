@@ -3,32 +3,50 @@
 article.article-complaint-form {
     --complaint-surface: #08111f;
     --complaint-panel: #0f172a;
-    --complaint-panel-2: #17233d;
-    --complaint-border: rgba(125, 211, 252, 0.18);
-    --complaint-border-strong: rgba(125, 211, 252, 0.38);
-    --complaint-text: #e5eefb;
-    --complaint-muted: #8ea1bf;
+    --complaint-panel-2: #16213a;
+    --complaint-panel-3: #1f2a44;
+    --complaint-border: rgba(148, 163, 184, 0.18);
+    --complaint-border-strong: rgba(125, 211, 252, 0.42);
+    --complaint-text: #eff6ff;
+    --complaint-muted: #9db0ca;
     --complaint-accent: #7dd3fc;
     --complaint-accent-2: #a78bfa;
+    --complaint-accent-3: #22c55e;
     --complaint-action-bg: linear-gradient(135deg, #7dd3fc 0%, #a78bfa 100%);
     --complaint-action-text: #06111f;
-    --complaint-action-shadow: 0 12px 24px rgba(2, 6, 23, 0.32);
+    --complaint-action-shadow: 0 12px 24px rgba(2, 6, 23, 0.28);
     --complaint-shadow: 0 18px 36px rgba(2, 6, 23, 0.42);
+    --complaint-selection: rgba(125, 211, 252, 0.22);
+    --complaint-field-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, transparent 46%);
+    --complaint-message-slot-height: 3.15rem;
+    --complaint-error-border: color-mix(in srgb, #ef4444 46%, var(--complaint-border));
+    --complaint-error-surface-top: color-mix(in srgb, #7f1d1d 36%, var(--complaint-panel-2));
+    --complaint-error-surface-bottom: color-mix(in srgb, #ef4444 11%, var(--complaint-panel-2));
+    --complaint-error-text: color-mix(in srgb, #fee2e2 84%, var(--complaint-text));
 
     [data-theme="light"] & {
-        --complaint-surface: #fbfcff;
+        --complaint-surface: #fcfdff;
         --complaint-panel: #ffffff;
-        --complaint-panel-2: #eef4ff;
-        --complaint-border: rgba(15, 23, 42, 0.12);
-        --complaint-border-strong: rgba(37, 99, 235, 0.24);
+        --complaint-panel-2: #f7faff;
+        --complaint-panel-3: #edf3fb;
+        --complaint-border: rgba(71, 85, 105, 0.14);
+        --complaint-border-strong: rgba(37, 99, 235, 0.30);
         --complaint-text: #0f172a;
-        --complaint-muted: #5c6b82;
+        --complaint-muted: #56657d;
         --complaint-accent: #1d4ed8;
         --complaint-accent-2: #0f766e;
-        --complaint-action-bg: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+        --complaint-accent-3: #d97706;
+        --complaint-action-bg: linear-gradient(135deg, #1d4ed8 0%, #0f766e 100%);
         --complaint-action-text: #f8fafc;
-        --complaint-action-shadow: 0 12px 22px rgba(15, 23, 42, 0.18);
-        --complaint-shadow: 0 16px 28px rgba(15, 23, 42, 0.08);
+        --complaint-action-shadow: 0 14px 28px rgba(37, 99, 235, 0.18);
+        --complaint-shadow: 0 18px 34px rgba(15, 23, 42, 0.08);
+        --complaint-selection: rgba(29, 78, 216, 0.12);
+        --complaint-field-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.62) 0%, transparent 46%);
+        --complaint-message-slot-height: 3.15rem;
+        --complaint-error-border: rgba(185, 28, 28, 0.22);
+        --complaint-error-surface-top: #fff1f2;
+        --complaint-error-surface-bottom: #ffe4e6;
+        --complaint-error-text: #9f1239;
     }
 
     overflow: visible;
@@ -43,68 +61,120 @@ article.article-complaint-form {
 
     div.article-complaint-form-main {
         display: grid;
-        grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
+        grid-template-columns: minmax(0, 0.82fr) minmax(320px, 1.18fr);
         gap: 8px;
         align-items: stretch;
         overflow: visible;
     }
 
-    div.article-complaint-form-main > div.input-field-wrapper {
+    div.article-complaint-form-message-column {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 0;
+        overflow: visible;
+    }
+
+    div.article-complaint-form-message-error-slot {
+        min-height: var(--complaint-message-slot-height);
+        display: flex;
+        align-items: flex-start;
+    }
+
+    div.article-complaint-form-message-column > div.input-field-wrapper {
+        align-self: stretch;
         min-height: 100%;
+        min-width: 0;
         border: 1px solid var(--complaint-border);
         background:
-            linear-gradient(180deg, color-mix(in srgb, var(--complaint-panel) 84%, transparent) 0%, var(--complaint-surface) 100%);
+            var(--complaint-field-sheen),
+            linear-gradient(180deg, var(--complaint-panel) 0%, var(--complaint-surface) 100%);
         box-shadow: var(--complaint-shadow);
     }
 
-    div.article-complaint-form-main > div.input-field-wrapper,
-    div.article-complaint-form-main > div.input-field-wrapper * {
+    div.article-complaint-form-message-column > div.input-field-wrapper,
+    div.article-complaint-form-message-column > div.input-field-wrapper * {
         border-radius: 0 !important;
     }
 
-    div.article-complaint-form-main > div.input-field-wrapper div.input-group-text {
+    div.article-complaint-form-message-column > div.input-field-wrapper div.input-group-text {
         border: 0;
-        background: var(--complaint-panel-2);
+        background: linear-gradient(180deg, var(--complaint-panel-3) 0%, var(--complaint-panel-2) 100%);
         color: var(--complaint-text);
+        border-right: 1px solid var(--complaint-border);
     }
 
-    div.article-complaint-form-main > div.input-field-wrapper textarea.form-textarea {
+    div.article-complaint-form-message-column > div.input-field-wrapper textarea.form-textarea {
         min-height: 100%;
         padding: 0.9rem;
         color: var(--complaint-text);
         background: transparent;
     }
 
+    div.article-complaint-form-message-column > div.input-field-wrapper textarea.form-textarea::placeholder {
+        color: color-mix(in srgb, var(--complaint-muted) 82%, transparent);
+        opacity: 1;
+    }
+
+    div.article-complaint-form-message-column > div.input-field-wrapper textarea.form-textarea::selection,
+    div.article-complaint-form-message-column > div.input-field-wrapper textarea.form-textarea::-moz-selection {
+        background: var(--complaint-selection);
+        color: var(--complaint-text);
+    }
+
     div.article-complaint-form-rail {
+        position: relative;
+        align-self: stretch;
         display: flex;
         flex-direction: column;
-        gap: 8px;
-        padding: 10px;
+        justify-content: flex-start;
+        gap: 12px;
+        min-height: 100%;
+        padding: calc(var(--complaint-message-slot-height) * 0.72) 12px 12px;
         border: 1px solid var(--complaint-border);
         background:
-            radial-gradient(circle at top right, color-mix(in srgb, var(--complaint-accent) 16%, transparent) 0, transparent 36%),
-            linear-gradient(180deg, color-mix(in srgb, var(--complaint-panel) 88%, transparent) 0%, var(--complaint-surface) 100%);
+            radial-gradient(circle at top right, color-mix(in srgb, var(--complaint-accent) 16%, transparent) 0, transparent 34%),
+            linear-gradient(180deg, var(--complaint-panel) 0%, var(--complaint-surface) 100%);
         box-shadow: var(--complaint-shadow);
         overflow: hidden;
     }
 
+    div.article-complaint-form-rail::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: calc(var(--complaint-message-slot-height) * 0.86);
+        background: linear-gradient(180deg, color-mix(in srgb, var(--complaint-panel-3) 78%, transparent) 0%, transparent 100%);
+        clip-path: polygon(0 0, 100% 0, 100% 62%, 86% 100%, 0 100%);
+        pointer-events: none;
+        opacity: 0.92;
+    }
+
+    div.article-complaint-form-rail > * {
+        position: relative;
+        z-index: 1;
+    }
+
     div.article-complaint-form-note {
         margin: 0;
+        flex: 1 1 auto;
         color: var(--complaint-text);
         line-height: 1.5;
+        text-wrap: balance;
     }
 
     div.article-complaint-form-controls-row {
-        display: flex;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(140px, 0.42fr);
+        gap: 10px;
         align-items: end;
-        gap: 8px;
     }
 
     label.article-complaint-form-select-wrapper {
-        flex: 1 1 auto;
-        display: flex;
-        flex-direction: column;
+        min-width: 0;
+        display: grid;
         gap: 6px;
+        align-content: start;
     }
 
     span.article-complaint-form-select-label {
@@ -114,22 +184,26 @@ article.article-complaint-form {
     }
 
     select.article-complaint-form-select {
+        width: 100%;
+        min-width: 0;
         appearance: none;
         border: 1px solid var(--complaint-border);
-        padding: 0.9rem 2.75rem 0.9rem 0.9rem;
+        padding: 0.92rem 3rem 0.92rem 0.95rem;
+        min-height: 44px;
         color: var(--complaint-text);
         background:
-            linear-gradient(135deg, transparent 50%, var(--complaint-accent) 50%) calc(100% - 20px) 52% / 8px 8px no-repeat,
-            linear-gradient(225deg, transparent 50%, var(--complaint-accent-2) 50%) calc(100% - 14px) 52% / 8px 8px no-repeat,
+            linear-gradient(135deg, transparent 50%, var(--complaint-accent) 50%) calc(100% - 20px) 53% / 8px 8px no-repeat,
+            linear-gradient(225deg, transparent 50%, var(--complaint-accent-2) 50%) calc(100% - 14px) 53% / 8px 8px no-repeat,
             var(--complaint-panel-2);
         outline: none;
         cursor: pointer;
         box-shadow: none;
+        text-overflow: ellipsis;
     }
 
     select.article-complaint-form-select:focus-visible {
         border-color: var(--complaint-border-strong);
-        box-shadow: 0 0 0 2px color-mix(in srgb, var(--complaint-accent) 14%, transparent);
+        box-shadow: 0 0 0 2px color-mix(in srgb, var(--complaint-accent) 20%, transparent);
     }
 
     p.article-complaint-form-destination-email,
@@ -139,9 +213,21 @@ article.article-complaint-form {
         margin: 0;
     }
 
-    p.article-complaint-form-destination-email {
-        color: var(--complaint-accent);
-        font-weight: 700;
+    p.article-complaint-form-message-error {
+        margin: 0;
+        padding: 0.8rem 0.9rem;
+        width: 100%;
+        border: 1px solid var(--complaint-error-border);
+        background: linear-gradient(180deg, var(--complaint-error-surface-top) 0%, var(--complaint-error-surface-bottom) 100%);
+        color: var(--complaint-error-text);
+        clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 10px 100%);
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    span.article-complaint-form-message-error-placeholder {
+        display: block;
+        width: 100%;
+        min-height: var(--complaint-message-slot-height);
     }
 
     p.article-complaint-form-destination-tip {
@@ -153,52 +239,74 @@ article.article-complaint-form {
     p.article-complaint-form-error {
         padding: 0.7rem 0.8rem;
         border: 1px solid var(--complaint-border);
-        background: var(--complaint-panel-2);
+        background: linear-gradient(180deg, var(--complaint-panel-3) 0%, var(--complaint-panel-2) 100%);
         color: var(--complaint-text);
     }
 
     p.article-complaint-form-error {
-        border-color: color-mix(in srgb, #ef4444 38%, var(--complaint-border));
-        background: color-mix(in srgb, #ef4444 12%, var(--complaint-panel-2));
-        color: color-mix(in srgb, #fecaca 82%, var(--complaint-text));
+        border-color: var(--complaint-error-border);
+        background: linear-gradient(180deg, var(--complaint-error-surface-top) 0%, var(--complaint-error-surface-bottom) 100%);
+        color: var(--complaint-error-text);
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
     }
 
-    div.article-complaint-form-controls-row > button.standard-button {
-        flex: 0 0 128px;
-        min-width: 128px;
+    div.article-complaint-form-controls-row > button.standard-button,
+    div.article-complaint-form-send-button-wrapper > button.standard-button {
+        width: 100%;
+        min-width: 0;
         align-self: stretch;
         border-radius: 999px;
-        padding-inline: 0.9rem;
+        padding-inline: 1rem;
         padding-block: 0.55rem;
         min-height: 42px;
         font-size: 0.92rem;
         background: var(--complaint-action-bg);
         color: var(--complaint-action-text);
-        border: 1px solid color-mix(in srgb, var(--complaint-accent) 24%, transparent);
+        border: 1px solid color-mix(in srgb, var(--complaint-accent) 28%, transparent);
         box-shadow: var(--complaint-action-shadow);
         justify-content: center;
+        white-space: nowrap;
+    }
+
+    div.article-complaint-form-send-button-wrapper {
+        position: relative;
+        display: flex;
+        align-self: stretch;
+        min-width: 0;
+    }
+
+    div.article-complaint-form-send-button-wrapper > button.standard-button.article-complaint-form-send-button {
+        min-width: 0;
+        justify-content: center;
+        gap: 0.55rem;
+    }
+
+    div.article-complaint-form-send-button-wrapper > button.standard-button {
+        width: 100%;
     }
 
     div.article-complaint-form-controls-row > button.standard-button:hover,
-    div.article-complaint-form-controls-row > button.standard-button:focus-visible {
+    div.article-complaint-form-controls-row > button.standard-button:focus-visible,
+    div.article-complaint-form-send-button-wrapper > button.standard-button:hover,
+    div.article-complaint-form-send-button-wrapper > button.standard-button:focus-visible {
         transform: translateY(-1px);
         box-shadow: 0 14px 28px rgba(2, 6, 23, 0.28);
+        filter: saturate(1.04);
     }
 
     div.article-complaint-form-popup-layer {
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        z-index: 3000;
-        overflow: hidden;
+        display: none;
     }
 
     div.article-complaint-form-popup {
-        position: absolute;
+        position: relative;
+        max-width: 100%;
         padding: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.16);
-        background: linear-gradient(180deg, rgba(17, 24, 39, 0.98) 0%, rgba(9, 14, 28, 0.98) 100%);
-        box-shadow: 0 18px 42px rgba(0, 0, 0, 0.4);
+        border: 1px solid var(--complaint-border);
+        background:
+            radial-gradient(circle at top right, color-mix(in srgb, var(--complaint-accent) 16%, transparent) 0, transparent 28%),
+            linear-gradient(180deg, color-mix(in srgb, var(--complaint-panel) 96%, transparent) 0%, color-mix(in srgb, var(--complaint-surface) 88%, transparent) 100%);
+        box-shadow: 0 18px 42px rgba(0, 0, 0, 0.34);
         pointer-events: auto;
         animation: complaint-popup-enter 180ms ease-out both;
         transform: translate3d(0, 0, 0) rotate(var(--popup-rotation, 0deg));
@@ -219,7 +327,7 @@ article.article-complaint-form {
 
     p.article-complaint-form-popup-title {
         margin: 0;
-        color: #f8fafc;
+        color: var(--complaint-text);
         text-transform: uppercase;
         letter-spacing: 0.08em;
         font-weight: 700;
@@ -228,8 +336,8 @@ article.article-complaint-form {
     button.article-complaint-form-popup-close {
         width: 28px;
         height: 28px;
-        border: 1px solid color-mix(in srgb, var(--complaint-accent) 22%, transparent);
-        background: color-mix(in srgb, var(--complaint-panel-2) 84%, transparent);
+        border: 1px solid var(--complaint-border);
+        background: linear-gradient(180deg, var(--complaint-panel-3) 0%, var(--complaint-panel-2) 100%);
         color: var(--complaint-text);
         display: grid;
         place-items: center;
@@ -240,7 +348,7 @@ article.article-complaint-form {
     button.article-complaint-form-popup-close:hover,
     button.article-complaint-form-popup-close:focus-visible {
         transform: scale(1.04);
-        background: color-mix(in srgb, var(--complaint-accent) 14%, var(--complaint-panel-2));
+        background: linear-gradient(180deg, color-mix(in srgb, var(--complaint-accent) 14%, var(--complaint-panel-3)) 0%, var(--complaint-panel-2) 100%);
         border-color: var(--complaint-border-strong);
     }
 
@@ -259,6 +367,21 @@ article.article-complaint-form {
     @media (max-width: 991.98px) {
         div.article-complaint-form-main {
             grid-template-columns: 1fr;
+            align-items: stretch;
+        }
+
+        div.article-complaint-form-message-column > div.input-field-wrapper,
+        div.article-complaint-form-rail {
+            align-self: stretch;
+        }
+
+        div.article-complaint-form-rail {
+            padding-top: 10px;
+        }
+
+        div.article-complaint-form-rail::before {
+            height: 16px;
+            clip-path: none;
         }
     }
 
@@ -272,15 +395,17 @@ article.article-complaint-form {
         }
 
         div.article-complaint-form-rail {
-            padding: 8px;
+            padding: 10px 8px 8px;
         }
 
         div.article-complaint-form-controls-row {
             flex-direction: column;
             align-items: stretch;
+            grid-template-columns: 1fr;
         }
 
-        div.article-complaint-form-controls-row > button.standard-button {
+        div.article-complaint-form-controls-row > button.standard-button,
+        div.article-complaint-form-send-button-wrapper > button.standard-button {
             flex: 1 1 auto;
             min-width: 0;
             width: 100%;
@@ -288,12 +413,127 @@ article.article-complaint-form {
             min-height: 44px;
         }
 
-        div.article-complaint-form-main > div.input-field-wrapper textarea.form-textarea {
+        div.article-complaint-form-message-column > div.input-field-wrapper textarea.form-textarea {
             padding: 0.8rem;
         }
 
         div.article-complaint-form-popup {
             width: min(88vw, 260px) !important;
         }
+    }
+}
+
+div.article-complaint-form-popup-layer {
+    position: fixed;
+    inset: 0;
+    display: block;
+    pointer-events: auto;
+    z-index: 2147483646;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at center, rgba(15, 23, 42, 0.16) 0%, rgba(2, 6, 23, 0.34) 100%);
+    backdrop-filter: blur(1.6px);
+}
+
+div.article-complaint-form-popup {
+    position: fixed;
+    max-width: min(88vw, 500px);
+    min-width: min(78vw, 320px);
+    transform: translate(-50%, -50%) rotate(var(--popup-rotation, 0deg));
+    box-shadow:
+        0 28px 80px rgba(0, 0, 0, 0.44),
+        0 8px 22px rgba(0, 0, 0, 0.22);
+    cursor: default;
+}
+
+div.article-complaint-form-popup-topmost {
+    box-shadow:
+        0 32px 92px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+div.article-complaint-form-popup::before {
+    content: "";
+    display: block;
+    height: 18px;
+    margin: -10px -10px 10px;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            color-mix(in srgb, var(--complaint-accent) 18%, var(--complaint-panel-3)) 0 18px,
+            color-mix(in srgb, var(--complaint-panel-2) 90%, black 10%) 18px 36px
+        );
+    border-bottom: 1px solid var(--complaint-border);
+}
+
+@media (max-width: 575.98px) {
+    div.article-complaint-form-popup-layer {
+        backdrop-filter: blur(1px);
+    }
+
+    div.article-complaint-form-popup {
+        min-width: min(88vw, 300px);
+        max-width: min(90vw, 340px);
+    }
+}
+
+div.article-complaint-form-burst-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2147483647;
+    overflow: visible;
+}
+
+div.article-complaint-form-burst {
+    position: fixed;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+span.article-complaint-form-burst-spark {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block;
+    color: var(--spark-color);
+    font-family: monospace;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    text-shadow:
+        0 0 12px color-mix(in srgb, var(--spark-color) 42%, transparent),
+        0 0 24px color-mix(in srgb, var(--spark-color) 24%, transparent);
+    transform: translate(-50%, -50%);
+    animation: complaint-burst-spark var(--spark-duration) ease-out var(--spark-delay) forwards;
+    will-change: transform, opacity;
+}
+
+@keyframes complaint-burst-spark {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.24) rotate(0deg);
+    }
+
+    10% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(calc(var(--spark-scale) * 1.28)) rotate(calc(var(--spark-rotation) * 0.2));
+    }
+
+    62% {
+        opacity: 0.92;
+        transform: translate(
+            calc(-50% + var(--spark-dx) * 0.78),
+            calc(-50% + var(--spark-dy) * 0.78)
+        ) scale(calc(var(--spark-scale) * 0.72)) rotate(calc(var(--spark-rotation) * 0.82));
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(
+            calc(-50% + var(--spark-dx)),
+            calc(-50% + var(--spark-dy))
+        ) scale(0.22) rotate(var(--spark-rotation));
     }
 }

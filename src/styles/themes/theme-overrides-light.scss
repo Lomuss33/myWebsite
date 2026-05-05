@@ -571,11 +571,11 @@
 [data-theme="light"] article#article-3-section-my-writings div.article-skills-item-progress,
 [data-theme="light"] article#article-4-section-my-writings div.article-skills-item-progress {
     margin-top: 8px;
-    height: 56px;
+    height: 22.4px;
     overflow: hidden;
     background-color: #ffffff;
     border: 0;
-    border-radius: 16px;
+    border-radius: 12px;
 }
 
 [data-theme="light"] article#article-3-section-my-writings div.article-skills-item-progress .progress-bar,
@@ -777,6 +777,11 @@
     color: #2563eb;
 }
 
+[data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-block-icon i,
+[data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-item-icon i {
+    color: #2563eb;
+}
+
 [data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-item-badge.badge-hidden {
     background: linear-gradient(180deg, rgba(220, 38, 38, 0.14), rgba(244, 63, 94, 0.10));
     color: #991b1b;
@@ -944,7 +949,8 @@
     background:
         radial-gradient(circle at top left, rgba(37, 99, 235, 0.08) 0%, transparent 30%),
         radial-gradient(circle at top right, rgba(250, 204, 21, 0.08) 0%, transparent 26%),
-        linear-gradient(180deg, #fbfdff 0%, #f6f9fc 48%, #eef3fa 100%);
+        radial-gradient(circle at bottom right, rgba(20, 184, 166, 0.07) 0%, transparent 24%),
+        linear-gradient(180deg, #fbfdff 0%, #f7fafe 44%, #eef4fb 100%);
     color: #0f172a;
 }
 
@@ -1058,6 +1064,11 @@
 [data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-summary-chip i,
 [data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-block-icon,
 [data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-item-icon {
+    color: #06b6d4;
+}
+
+[data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-block-icon i,
+[data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-item-icon i {
     color: #06b6d4;
 }
 
@@ -1175,6 +1186,77 @@
             color-mix(in srgb, var(--experience-card-accent) 74%, white 10%),
             color-mix(in srgb, var(--experience-card-accent) 88%, #172033 12%)
         );
+}
+
+[data-theme="light"] article#article-3-section-experience div.article-text-item {
+    border-color: color-mix(in srgb, var(--experience-card-accent) 14%, rgba(148, 163, 184, 0.22));
+    background:
+        radial-gradient(circle at top left, color-mix(in srgb, var(--experience-card-accent) 8%, transparent), transparent 34%),
+        linear-gradient(180deg, #ffffff, #f6f9fd);
+    box-shadow:
+        0 16px 36px rgba(15, 23, 42, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.78);
+}
+
+[data-theme="light"] article#article-3-section-experience p.article-text-item-eyebrow {
+    background: color-mix(in srgb, var(--experience-card-accent) 8%, white);
+    border-color: color-mix(in srgb, var(--experience-card-accent) 18%, rgba(148, 163, 184, 0.22));
+    color: color-mix(in srgb, var(--experience-card-accent) 68%, #334155 32%);
+}
+
+[data-theme="light"] article#article-3-section-experience h3.article-text-item-heading,
+[data-theme="light"] article#article-3-section-experience div.article-text-excerpt strong,
+[data-theme="light"] article#article-3-section-experience div.article-text-excerpt a {
+    color: #0f172a;
+}
+
+[data-theme="light"] article#article-3-section-experience span.article-text-item-pill {
+    background: color-mix(in srgb, var(--experience-card-accent) 8%, white);
+    border-color: color-mix(in srgb, var(--experience-card-accent) 16%, rgba(148, 163, 184, 0.20));
+    color: #334155;
+}
+
+[data-theme="light"] article#article-3-section-experience div.article-text-excerpt {
+    color: #334155;
+}
+
+[data-theme="light"] article#article-3-section-experience div.article-text-excerpt em {
+    color: #64748b;
+}
+
+[data-theme="light"] article#article-3-section-experience span.article-text-avatar-rail-line {
+    background: linear-gradient(
+        90deg,
+        rgba(37, 99, 235, 0) 0%,
+        color-mix(in srgb, var(--experience-card-accent) 20%, transparent) 10%,
+        color-mix(in srgb, var(--experience-card-accent) 68%, white 32%) 50%,
+        color-mix(in srgb, var(--experience-card-accent) 20%, transparent) 90%,
+        rgba(37, 99, 235, 0) 100%
+    );
+}
+
+[data-theme="light"] article#article-3-section-experience span.article-text-avatar-rail-progress {
+    box-shadow: 0 0 18px color-mix(in srgb, var(--experience-card-accent) 26%, transparent);
+}
+
+[data-theme="light"] article#article-3-section-experience span.article-text-avatar-rail-dot {
+    background-color: color-mix(in srgb, var(--experience-card-accent) 18%, white);
+    border-color: color-mix(in srgb, var(--experience-card-accent) 34%, rgba(148, 163, 184, 0.22));
+}
+
+[data-theme="light"] article#article-3-section-experience div.article-text-avatar-view {
+    background:
+        radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 45%),
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--experience-card-accent) 18%, #ffffff 82%),
+            #f8fbff
+        );
+    color: color-mix(in srgb, var(--experience-card-accent) 82%, #1e3a8a 18%);
+    border-color: color-mix(in srgb, var(--experience-card-accent) 22%, rgba(148, 163, 184, 0.24));
+    box-shadow:
+        0 10px 24px rgba(15, 23, 42, 0.08),
+        0 0 0 10px color-mix(in srgb, var(--experience-card-accent) 8%, transparent);
 }
 
 [data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines,
@@ -1320,6 +1402,11 @@
 [data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-summary-chip i,
 [data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-block-icon,
 [data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-item-icon {
+    color: #06b6d4;
+}
+
+[data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-block-icon i,
+[data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-item-icon i {
     color: #06b6d4;
 }
 

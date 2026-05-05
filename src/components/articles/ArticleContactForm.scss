@@ -35,6 +35,10 @@ article.article-contact-form {
             var(--theme-card-background) 100%);
         --contact-form-panel-shadow: 0 16px 32px rgba(15, 23, 42, 0.10);
         --contact-form-panel-border: color-mix(in srgb, var(--contact-form-border) 72%, transparent 28%);
+        --form-attach-background-color: linear-gradient(180deg, #eff5ff 0%, #e3edf9 100%);
+        --form-attach-color: #1d4ed8;
+        --form-focus-attach-background-color: linear-gradient(180deg, #dbeafe 0%, #bfdbfe 100%);
+        --form-focus-attach-color: #0f172a;
     }
 
     --form-background-color: var(--contact-form-surface);

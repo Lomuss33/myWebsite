@@ -57,6 +57,8 @@ export default class ArticleDataWrapper {
             complaintYouWhereLabel: language.getTranslation(rawLocales, "complaint_you_where_label", undefined),
             complaintKnjigaLabel: language.getTranslation(rawLocales, "complaint_knjiga_label", undefined),
             complaintAnzeigeLabel: language.getTranslation(rawLocales, "complaint_anzeige_label", undefined),
+            complaintYouWhereTitle: language.getTranslation(rawLocales, "complaint_you_where_title", undefined),
+            complaintYouWhereBody: language.getTranslation(rawLocales, "complaint_you_where_body", undefined),
             complaintNowhereTip: language.getTranslation(rawLocales, "complaint_nowhere_tip", undefined),
             complaintYouWhereTip: language.getTranslation(rawLocales, "complaint_you_where_tip", undefined),
             complaintAnzeigeTip: language.getTranslation(rawLocales, "complaint_anzeige_tip", undefined),

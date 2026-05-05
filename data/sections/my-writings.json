@@ -323,16 +323,16 @@
           "percentage": 6,
           "locales": {
             "en": {
-              "title": "Šta je bilo prije?"
+              "title": "What Came Before?"
             },
             "de": {
-              "title": "Šta je bilo prije?"
+              "title": "Was war davor?"
             },
             "hr": {
               "title": "Šta je bilo prije?"
             },
             "tr": {
-              "title": "Šta je bilo prije?"
+              "title": "Öncesinde ne vardı?"
             }
           }
         },
@@ -349,16 +349,16 @@
           "percentage": 4,
           "locales": {
             "en": {
-              "title": "Bato i Mato na putu za Solun"
+              "title": "Bato and Mato on the Road to Thessaloniki"
             },
             "de": {
-              "title": "Bato i Mato na putu za Solun"
+              "title": "Bato und Mato auf dem Weg nach Thessaloniki"
             },
             "hr": {
               "title": "Bato i Mato na putu za Solun"
             },
             "tr": {
-              "title": "Bato i Mato na putu za Solun"
+              "title": "Bato ve Mato Selanik yolunda"
             }
           }
         },
@@ -375,16 +375,16 @@
           "percentage": 3,
           "locales": {
             "en": {
-              "title": "Sv Jeronim pije pivu u Posusju"
+              "title": "St. Jerome Drinks Beer in Posušje"
             },
             "de": {
-              "title": "Sv Jeronim pije pivu u Posusju"
+              "title": "Der heilige Hieronymus trinkt Bier in Posušje"
             },
             "hr": {
-              "title": "Sv Jeronim pije pivu u Posusju"
+              "title": "Sv. Jeronim pije pivu u Posušju"
             },
             "tr": {
-              "title": "Sv Jeronim pije pivu u Posusju"
+              "title": "Aziz Jeronim Posušje'de bira içiyor"
             }
           }
         },
@@ -401,16 +401,16 @@
           "percentage": 3,
           "locales": {
             "en": {
-              "title": "Deus Vult majmune"
+              "title": "Deus Vult, Monkey"
             },
             "de": {
-              "title": "Deus Vult majmune"
+              "title": "Deus Vult, Affe"
             },
             "hr": {
               "title": "Deus Vult majmune"
             },
             "tr": {
-              "title": "Deus Vult majmune"
+              "title": "Deus Vult, maymun"
             }
           }
         },
@@ -427,16 +427,16 @@
           "percentage": 5,
           "locales": {
             "en": {
-              "title": "Stari Mijat i dukati za Imotski"
+              "title": "Old Mijat and Ducats for Imotski"
             },
             "de": {
-              "title": "Stari Mijat i dukati za Imotski"
+              "title": "Der alte Mijat und Dukaten für Imotski"
             },
             "hr": {
               "title": "Stari Mijat i dukati za Imotski"
             },
             "tr": {
-              "title": "Stari Mijat i dukati za Imotski"
+              "title": "Eski Mijat ve Imotski için dukatlar"
             }
           }
         },
@@ -453,16 +453,16 @@
           "percentage": 2,
           "locales": {
             "en": {
-              "title": "Švabo otkrio Ramu"
+              "title": "The Schwabe Discovered Rama"
             },
             "de": {
-              "title": "Švabo otkrio Ramu"
+              "title": "Der Schwabe entdeckte Rama"
             },
             "hr": {
               "title": "Švabo otkrio Ramu"
             },
             "tr": {
-              "title": "Švabo otkrio Ramu"
+              "title": "Şvabo Rama'yı keşfetti"
             }
           }
         },

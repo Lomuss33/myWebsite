@@ -282,16 +282,16 @@
     "certifications": [
         {
             "name": "AEVO Certification",
-            "status": "completed",
-            "statusLabel": "Completed",
-            "targetDate": "2026-04",
+            "status": "in_preparation",
+            "statusLabel": "Incoming",
+            "targetDate": "2026-09",
             "issuer": "IHK",
             "url": "https://www.frankfurt-main.ihk.de/aus-und-weiterbildung/weiterbildung/weiterbildungspruefungen/weiterbildungspruefungen-von-a-bis-z/a-z-liste/ausbildereignung-pruefung-5189130"
         },
         {
             "name": "CCNA Certification",
             "status": "in_preparation",
-            "statusLabel": "In preparation",
+            "statusLabel": "Incoming",
             "targetDate": "2026-06",
             "issuer": "Cisco",
             "url": ""

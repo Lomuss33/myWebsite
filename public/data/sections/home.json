@@ -652,22 +652,22 @@
           "locales": {
             "en": {
               "title": "Writing & documentation",
-              "text": "Academic and professional writing; clear technical documentation, reports, and presentations; familiar with academic conventions and versioned documents.",
+              "text": "Academic and professional writing; clear technical documentation, reports, and presentations.",
               "proofBubble": "Cogito, ergo sum. If I understand it well, I can usually write it clearly."
             },
             "de": {
               "title": "Schreiben & Dokumentation",
-              "text": "Akademisches und berufliches Schreiben; klare technische Dokumentation, Berichte und Präsentationen; vertraut mit akademischen Standards und versionierten Dokumenten.",
+              "text": "Akademisches und berufliches Schreiben; klare technische Dokumentation, Berichte und Präsentationen.",
               "proofBubble": "Cogito, ergo sum. Wenn ich etwas wirklich verstanden habe, kann ich es meistens auch klar aufschreiben."
             },
             "hr": {
               "title": "Pisanje i dokumentacija",
-              "text": "Akademsko i profesionalno pisanje; jasna tehnička dokumentacija, izvještaji i prezentacije; upoznat s akademskim standardima i verzioniranim dokumentima.",
+              "text": "Akademsko i profesionalno pisanje; jasna tehnička dokumentacija, izvještaji i prezentacije.",
               "proofBubble": "Cogito, ergo sum. Ako nesto zaista razumijem, obicno to mogu i jasno napisati."
             },
             "tr": {
               "title": "Yazım ve dokümantasyon",
-              "text": "Akademik ve profesyonel yazım; net teknik dokümantasyon, rapor ve sunumlar; akademik normlara ve sürümlü belgelere aşina.",
+              "text": "Akademik ve profesyonel yazım; net teknik dokümantasyon, rapor ve sunumlar.",
               "proofBubble": "Cogito, ergo sum. Bir seyi gercekten anladiysam, onu genelde acik ve temiz bir sekilde yazabilirim."
             }
           }
@@ -690,22 +690,22 @@
           "locales": {
             "en": {
               "title": "Intercultural communication & languages",
-              "text": "Comfortable working across cultures; international study and volunteering experience; languages: Croatian (native), English (advanced), German (upper‑intermediate), basic Macedonian and Turkish.",
+              "text": "Comfortable working across cultures; international study and volunteering experience",
               "proofBubble": "Croatian roots, born in Bosnia, living in Germany, and typing into the English internet. I learned early that context changes everything."
             },
             "de": {
               "title": "Interkulturelle Kommunikation & Sprachen",
-              "text": "Sicher im interkulturellen Umfeld; internationale Studien‑ und Ehrenamtserfahrung; Sprachen: Kroatisch (Muttersprache), Englisch (fortgeschritten), Deutsch (obere Mittelstufe), Grundkenntnisse in Mazedonisch und Türkisch.",
+              "text": "Sicher im interkulturellen Umfeld; internationale Studien‑ und Ehrenamtserfahrung",
               "proofBubble": "Kroatische Wurzeln, in Bosnien geboren, in Deutschland lebend und im englischen Internet unterwegs. So lernt man frueh, dass Kontext alles veraendert."
             },
             "hr": {
               "title": "Međukulturalna komunikacija i jezici",
-              "text": "Ugodan rad u različitim kulturama; međunarodno iskustvo studiranja i volontiranja; jezici: hrvatski (izvorni), engleski (napredno), njemački (viša srednja razina), osnovno makedonski i turski.",
+              "text": "Ugodan rad u različitim kulturama; međunarodno iskustvo studiranja i volontiranja",
               "proofBubble": "Hrvatski korijeni, roden u Bosni, zivim u Njemackoj i sjedim na engleskom internetu. Rano sam naucio da kontekst mijenja sve."
             },
             "tr": {
               "title": "Kültürler arası iletişim ve diller",
-              "text": "Farklı kültürlerle çalışmada rahatim; uluslararası öğrenim ve gönüllülük deneyimi; diller: Hırvatça (anadil), İngilizce (ileri), Almanca (üst‑orta), temel Makedonca ve Türkçe.",
+              "text": "Farklı kültürlerle çalışmada rahatim; uluslararası öğrenim ve gönüllülük deneyimi; diller",
               "proofBubble": "Hirvat kokenleri, Bosnada dogdum, Almanyada yasiyorum ve Ingilizce internette oturuyorum. Baglamin her seyi degistirdigini erken ogrendim."
             }
           }

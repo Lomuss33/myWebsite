@@ -1,6 +1,6 @@
 @use "../../styles/extend" as *;
 
-div.layout-salt-shaker {
+button.layout-salt-shaker {
     --layout-salt-shaker-glass-base: #f5f5f5;
     --layout-salt-shaker-top-fill: #eaeaea;
     --layout-salt-shaker-surface-fill: #ffffff;
@@ -18,6 +18,13 @@ div.layout-salt-shaker {
 
     width: 67px;
     height: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    appearance: none;
+    -webkit-appearance: none;
+    text-align: inherit;
 
     opacity: 0.95;
     pointer-events: auto;
@@ -30,12 +37,17 @@ div.layout-salt-shaker {
         filter 0.18s ease,
         opacity 0.18s ease;
 
+    contain: layout paint style;
+    isolation: isolate;
+    will-change: transform;
+    transform: translateZ(0);
+
     &:focus {
         outline: none;
     }
 }
 
-div.layout-salt-shaker.layout-salt-shaker-interactive {
+button.layout-salt-shaker.layout-salt-shaker-interactive {
     cursor: pointer;
 
     &:hover,
@@ -52,7 +64,7 @@ div.layout-salt-shaker.layout-salt-shaker-interactive {
     }
 }
 
-div.layout-salt-shaker.layout-salt-shaker-cursor-off {
+button.layout-salt-shaker.layout-salt-shaker-cursor-off {
     --layout-salt-shaker-top-fill: #6a4128;
     --layout-salt-shaker-surface-fill: #5e3a22;
     --layout-salt-shaker-surface-stroke: #2f1b10;
@@ -60,14 +72,14 @@ div.layout-salt-shaker.layout-salt-shaker-cursor-off {
     --layout-salt-shaker-grain-stroke: #140d09;
 }
 
-div.layout-salt-shaker svg {
+button.layout-salt-shaker svg {
     display: block;
     width: 100%;
     height: auto;
     pointer-events: none;
 }
 
-div.layout-salt-shaker div.layout-salt-shaker-tooltip {
+button.layout-salt-shaker div.layout-salt-shaker-tooltip {
     right: 0;
     left: auto;
     bottom: calc(100% + 10px);
@@ -82,13 +94,13 @@ div.layout-salt-shaker div.layout-salt-shaker-tooltip {
     }
 }
 
-div.layout-salt-shaker.layout-salt-shaker-paused svg #layout-salt-shaker-saliere,
-div.layout-salt-shaker.layout-salt-shaker-paused svg #layout-salt-shaker-salt {
+button.layout-salt-shaker.layout-salt-shaker-paused svg #layout-salt-shaker-saliere,
+button.layout-salt-shaker.layout-salt-shaker-paused svg #layout-salt-shaker-salt {
     animation-play-state: paused !important;
 }
 
 @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-    div.layout-salt-shaker {
+    button.layout-salt-shaker {
         width: 59px;
         bottom: calc(#{$nav-tabs-height} + var(--default-card-spacing));
     }

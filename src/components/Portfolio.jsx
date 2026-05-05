@@ -40,16 +40,13 @@ function Portfolio() {
     const settings = data.getSettings()
     const sections = data.getSections()
 
-    const backgroundStyle = settings?.templateSettings?.backgroundStyle || "plain"
-
     const currentSection = navigation.targetSection
     const previousSection = navigation.previousSection
     const sectionLinks = navigation.sectionLinks
     const categoryLinks = navigation.categoryLinks
 
     return (
-        <Layout id={"react-portfolio"}
-                backgroundStyle={backgroundStyle}>
+        <Layout id={"react-portfolio"}>
             <LayoutImageCache profile={profile}
                               settings={settings}
                               sections={sections}/>

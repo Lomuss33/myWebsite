@@ -846,7 +846,7 @@ function EmbroideryTile({ itemWrapper, index, activate, locked, onReady }) {
                             if(visibleRef.current && hoverRef.current) engine.start()
                             else engine.stop()
                         }
-                    }, { threshold: 0.05 })
+                    }, { threshold: 0.25 })
                     io.observe(tile)
                 }
             }
@@ -1181,7 +1181,7 @@ function GridWaveTile({ itemWrapper, index, activate, locked, onReady }) {
                             if(visibleRef.current && hoverRef.current) engine.start()
                             else engine.stop()
                         }
-                    }, { threshold: 0.05 })
+                    }, { threshold: 0.25 })
                     io.observe(tile)
                 }
             }
@@ -1331,7 +1331,7 @@ function ThreeTunnelTile({ itemWrapper, index, activate, locked, onReady }) {
                         if(visibleRef.current && hoverRef.current) engine.start()
                         else engine.stop()
                     }
-                }, { threshold: 0.05 })
+                }, { threshold: 0.25 })
                 io.observe(tile)
             }
 
@@ -1490,7 +1490,7 @@ function ThreePolygonDemo5Tile({ itemWrapper, index, activate, locked, onReady }
                         if(visibleRef.current && hoverRef.current) engine.start()
                         else engine.stop()
                     }
-                }, { threshold: 0.05 })
+                }, { threshold: 0.25 })
                 io.observe(tile)
             }
 
@@ -1693,7 +1693,7 @@ function OrbitCirclesTile({ itemWrapper, index, activate, locked, onReady }) {
                             if(visibleRef.current && hoverRef.current) engine.start()
                             else engine.stop()
                         }
-                    }, { threshold: 0.05 })
+                    }, { threshold: 0.25 })
                     io.observe(tile)
                 }
             }
@@ -1846,7 +1846,7 @@ function TortuosityTraceTile({ readyId, locked, onReady }) {
                             if(entry.isIntersecting) engine.start?.()
                             else engine.stop?.()
                         }
-                    }, { threshold: 0.05 })
+                    }, { threshold: 0.25 })
                     io.observe(tile)
                 }
             }
@@ -1981,7 +1981,7 @@ function HexFlowBallsTile({ readyId, locked, onReady }) {
                             if(entry.isIntersecting) engine.start?.()
                             else engine.stop?.()
                         }
-                    }, { threshold: 0.05 })
+                    }, { threshold: 0.25 })
                     io.observe(tile)
                 }
             }
@@ -2114,7 +2114,7 @@ function PixelPlopTile({ readyId, locked, onReady }) {
                             if(entry.isIntersecting) engine.start?.()
                             else engine.stop?.()
                         }
-                    }, { threshold: 0.05 })
+                    }, { threshold: 0.25 })
                     io.observe(tile)
                 }
             }
@@ -2261,7 +2261,7 @@ function JuliaLinesTile({ readyId, locked, onReady }) {
                             if(entry.isIntersecting) engine.start?.()
                             else engine.stop?.()
                         }
-                    }, { threshold: 0.05 })
+                    }, { threshold: 0.25 })
                     io.observe(tile)
                 }
             }
@@ -2644,7 +2644,7 @@ function FallingRingsTile({ readyId, locked, onReady }) {
                             if(entry.isIntersecting) engine.start?.()
                             else engine.stop?.()
                         }
-                    }, { threshold: 0.05 })
+                    }, { threshold: 0.25 })
                     io.observe(tile)
                 }
             }
@@ -2797,7 +2797,7 @@ function PrismFieldTile({ readyId, locked, onReady }) {
                             if(entry.isIntersecting) engine.start?.()
                             else engine.stop?.()
                         }
-                    }, { threshold: 0.05 })
+                    }, { threshold: 0.25 })
                     io.observe(tile)
                 }
             }
@@ -2943,7 +2943,7 @@ function RopeLightTile({ readyId, locked, onReady }) {
                             if(entry.isIntersecting) engine.start?.()
                             else engine.stop?.()
                         }
-                    }, { threshold: 0.05 })
+                    }, { threshold: 0.25 })
                     io.observe(tile)
                 }
             }
@@ -3087,7 +3087,7 @@ function SoupShaderTile({ readyId, locked, onReady }) {
                             if(entry.isIntersecting) engine.start?.()
                             else engine.stop?.()
                         }
-                    }, { threshold: 0.05 })
+                    }, { threshold: 0.25 })
                     io.observe(tile)
                 }
             }
@@ -3228,7 +3228,7 @@ function TardisTile({ readyId, locked, onReady }) {
                             if(entry.isIntersecting) engine.start?.()
                             else engine.stop?.()
                         }
-                    }, { threshold: 0.05 })
+                    }, { threshold: 0.25 })
                     io.observe(tile)
                 }
             }

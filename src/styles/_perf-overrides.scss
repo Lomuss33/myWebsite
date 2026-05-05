@@ -1,0 +1,8 @@
+// Perf overrides for browsers / devices that struggle with backdrop-filter.
+// Classes (`is-edge`, `low-perf`) are applied to <html> in main.jsx.
+
+html.is-edge * {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    filter: none !important;
+}

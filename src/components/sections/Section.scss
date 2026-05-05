@@ -16,6 +16,8 @@ section.section {
     border: 1px solid var(--theme-nav-border);
     border-radius: $standard-border-radius;
     backdrop-filter: blur(16px) saturate(1.04);
+
+    contain: paint;
     box-shadow:
         0 26px 54px var(--theme-shell-shadow),
         0 4px 16px rgba(15, 23, 42, 0.08);

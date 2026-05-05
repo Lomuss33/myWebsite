@@ -6,6 +6,7 @@ import Link from "../generic/Link.jsx"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import CopyButton from "../buttons/CopyButton.jsx"
+import Collapsable from "../capabilities/Collapsable.jsx"
 
 const PROOF_BUBBLE_DEFAULTS = {
     desktop: {
@@ -153,96 +154,41 @@ function ArticleInfoList({ dataWrapper }) {
  * @constructor
  */
 function ArticleInfoListItems({ dataWrapper, selectedItemCategoryId, isHomeInfoList, isContactInfoList }) {
-    const language = useLanguage()
-    const [expanded, setExpanded] = useState(false)
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
     const shouldCollapseHomeSkills = isHomeInfoList && filteredItems.length > 4
-    const visibleItems = shouldCollapseHomeSkills && !expanded ?
-        filteredItems.slice(0, 4) :
-        filteredItems
 
     const id = dataWrapper.uniqueId
     const shrinkClass = filteredItems.find(itemWrapper => itemWrapper.locales.text) ?
         `` :
         `article-info-list-items-shrink`
     const homeClass = isHomeInfoList ? `article-info-list-items-home` : ``
-    const collapsedClass = shouldCollapseHomeSkills && !expanded ? `article-info-list-items-collapsed` : ``
-    const expandedClass = shouldCollapseHomeSkills && expanded ? `article-info-list-items-expanded` : ``
 
-    const viewport = useViewport()
+    const items = filteredItems.map((itemWrapper, key) => (
+        <ArticleInfoListItem itemWrapper={itemWrapper}
+                             isHomeInfoList={isHomeInfoList}
+                             isContactInfoList={isContactInfoList}
+                             key={key}/>
+    ))
 
-    const selectedLanguageId = language?.selectedLanguageId || language?.getSelectedLanguage?.()?.id || "en"
-    const showMoreLabel = ({
-        de: "Mehr anzeigen",
-        hr: "Prikaži više",
-        tr: "Daha fazla göster"
-    })[selectedLanguageId] || "Show more"
-    const showLessLabel = ({
-        de: "Weniger anzeigen",
-        hr: "Prikaži manje",
-        tr: "Daha az göster"
-    })[selectedLanguageId] || "Show less"
-
-    useEffect(() => {
-        const containerEl = document.getElementById(id)
-        const itemDivs = containerEl?.querySelectorAll(`.article-info-list-item`) || []
-        const maxEqualizedHeight = isHomeInfoList ? 148 : 120
-
-        if(!itemDivs.length)
-            return
-
-        itemDivs.forEach(div => {
-            div.style.height = 'auto'
-            div.style.minHeight = '0px'
-        })
-
-        if(isContactInfoList)
-            return
-
-        let maxHeight = 0
-        itemDivs.forEach(div => {
-            const height = div.offsetHeight
-            if (height > maxHeight) maxHeight = height
-        })
-
-        if(maxHeight < maxEqualizedHeight) {
-            itemDivs.forEach(div => {
-                div.style.minHeight = `${maxHeight}px`
-            })
-        }
-    }, [dataWrapper?.id, viewport.innerWidth, isHomeInfoList, isContactInfoList])
+    if(shouldCollapseHomeSkills) {
+        return (
+            <Collapsable className={`article-info-list-items ${shrinkClass} ${homeClass}`.trim()}
+                         id={dataWrapper.uniqueId}
+                         contentId={dataWrapper.uniqueId}
+                         initialVisibleItems={4}
+                         itemsPerStep={filteredItems.length}>
+                {items}
+            </Collapsable>
+        )
+    }
 
     return (
-        <>
-            <div className={`article-info-list-items ${shrinkClass} ${homeClass} ${collapsedClass} ${expandedClass}`}
-                 id={dataWrapper.uniqueId}>
-                {visibleItems.map((itemWrapper, key) => (
-                    <ArticleInfoListItem itemWrapper={itemWrapper}
-                                         isHomeInfoList={isHomeInfoList}
-                                         isContactInfoList={isContactInfoList}
-                                         key={key}/>
-                ))}
-            </div>
-
-            {shouldCollapseHomeSkills && (
-                <div className={`article-info-list-toggle-row`}>
-                    <button type="button"
-                            className={`article-info-list-toggle-button`}
-                            aria-expanded={expanded}
-                            onClick={() => setExpanded(currentState => !currentState)}>
-                        {expanded ? showLessLabel : showMoreLabel}
-                    </button>
-                </div>
-            )}
-        </>
+        <div className={`article-info-list-items ${shrinkClass} ${homeClass}`.trim()}
+             id={dataWrapper.uniqueId}>
+            {items}
+        </div>
     )
 }
-
-/**
- * @param {ArticleItemDataWrapper} itemWrapper
- * @return {JSX.Element}
- * @constructor
- */
 function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList }) {
     const language = useLanguage()
     const viewport = useViewport()
@@ -566,3 +512,5 @@ function renderInfoListTitle(titleMarkup) {
 }
 
 export default ArticleInfoList
+
+

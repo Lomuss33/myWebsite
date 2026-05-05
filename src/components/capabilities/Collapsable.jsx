@@ -4,7 +4,7 @@ import {useUtils} from "../../hooks/utils.js"
 import StandardButton from "../buttons/StandardButton.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 
-function Collapsable({ children, id, breakpointId, initialVisibleItems = 0, itemsPerStep = 0, className = "", trailingItemComponent = null }) {
+function Collapsable({ children, id, breakpointId, initialVisibleItems = 0, itemsPerStep = 0, className = "", trailingItemComponent = null, contentId = null }) {
     const utils = useUtils()
     const language = useLanguage()
 
@@ -35,7 +35,8 @@ function Collapsable({ children, id, breakpointId, initialVisibleItems = 0, item
 
     return (
         <div className={`collapsable`}>
-            <div className={`collapsable-content ${className}`}>
+            <div className={`collapsable-content ${className}`}
+                 id={contentId || undefined}>
                 {children?.slice(0, visibleItems).map((child, key) => (
                     <div className={`collapsable-item`} key={key}>
                         {child}

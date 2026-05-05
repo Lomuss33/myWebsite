@@ -37,7 +37,6 @@ const createDefaultSettings = () => ({
     },
     templateSettings: {
         animatedCursorEnabled: true,
-        backgroundStyle: "plain",
         defaultLanguageId: "en",
         defaultThemeId: "dark",
         fullscreenEnabled: true,
@@ -50,6 +49,17 @@ const createDefaultSettings = () => ({
 
 /** Initialization Script... **/
 let container = null
+
+const _applyEnvironmentClasses = () => {
+    if(typeof navigator === "undefined" || typeof document === "undefined") return
+    const ua = navigator.userAgent || ""
+    const isEdge = ua.includes("Edg/")
+    const isLowPerf = isEdge || (navigator.hardwareConcurrency || 8) <= 4
+    document.documentElement.classList.toggle("is-edge", isEdge)
+    document.documentElement.classList.toggle("low-perf", isLowPerf)
+}
+
+_applyEnvironmentClasses()
 
 document.addEventListener('DOMContentLoaded', function() {
     if(container)
@@ -189,9 +199,8 @@ const AppEssentialsWrapper = ({children}) => {
 
         if(debugMode) {
             settings.preloaderSettings.enabled = stayOnThePreloaderScreen
-            settings.templateSettings.backgroundStyle = "plain"
             utils.storage.setWindowVariable("suspendAnimations", true)
-            utils.log.warn("DataProvider", "Debug Mode is enabled, so transitions and animated content such as the preloader screen, background animations, and role text typing will be skipped. You can disable it manually in settings.json or by running the app in PROD_MODE, which disables it by default.")
+            utils.log.warn("DataProvider", "Debug Mode is enabled, so transitions and animated content such as the preloader screen and role text typing will be skipped. You can disable it manually in settings.json or by running the app in PROD_MODE, which disables it by default.")
         }
 
         if(fakeEmailRequests) {

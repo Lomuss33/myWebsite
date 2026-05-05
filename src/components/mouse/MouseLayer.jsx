@@ -34,6 +34,8 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
         isClicked: false,
         currentFaIcon: null,
         tooltipLabel: "",
+        tooltipWidth: 0,
+        tooltipHeight: 0,
         targetElementParameters: null
     })
 
@@ -298,12 +300,16 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
             state.tooltipLabel = nextLabel
             tooltip.querySelector("span").innerHTML = nextLabel
             tooltip.classList.toggle("custom-tooltip-hidden", !nextLabel)
+            if (nextLabel) {
+                const bounds = tooltip.getBoundingClientRect()
+                state.tooltipWidth = bounds.width
+                state.tooltipHeight = bounds.height
+            }
         }
 
         if (nextLabel) {
-            const tooltipBounds = tooltip.getBoundingClientRect()
-            const targetX = state.currentX - tooltipBounds.width / 2
-            const targetY = state.currentY - tooltipBounds.height - (CIRCLE_SIZE_IN_PIXELS * state.currentScale / 3) / 2 - 5
+            const targetX = state.currentX - state.tooltipWidth / 2
+            const targetY = state.currentY - state.tooltipHeight - (CIRCLE_SIZE_IN_PIXELS * state.currentScale / 3) / 2 - 5
             tooltip.style.transform = `translate3d(${targetX}px, ${targetY}px, 0)`
         }
 

@@ -16,6 +16,7 @@ function NavLinkList({ links, expanded, compactRail = false }) {
         const container = containerRef.current
         if(!container)
             return
+        const railCard = container.closest(".nav-sidebar-card-wrapper")
 
         const minRowHeight = compactRail
             ? (expanded ? 26 : 24)
@@ -27,17 +28,21 @@ function NavLinkList({ links, expanded, compactRail = false }) {
             ? (expanded ? 56 : 46)
             : (expanded ? 64 : 54)
 
-        const _setVariable = (name, value, unit = "px") => {
+        const _setVariable = (name, value, unit = "px", target = container, cacheScope = "container") => {
+            if(!target)
+                return
+
             const normalizedValue = unit === "px"
                 ? Math.round(value)
                 : Number(value.toFixed(3))
             const nextSerializedValue = `${normalizedValue}${unit}`
+            const cacheKey = `${cacheScope}:${name}`
 
-            if(lastValuesRef.current[name] === nextSerializedValue)
+            if(lastValuesRef.current[cacheKey] === nextSerializedValue)
                 return
 
-            lastValuesRef.current[name] = nextSerializedValue
-            container.style.setProperty(name, nextSerializedValue)
+            lastValuesRef.current[cacheKey] = nextSerializedValue
+            target.style.setProperty(name, nextSerializedValue)
         }
 
         const _interpolate = (min, max, factor) => {
@@ -73,6 +78,7 @@ function NavLinkList({ links, expanded, compactRail = false }) {
             )
 
             _setVariable("--nav-link-target-height", rawRowHeight)
+            _setVariable("--nav-link-target-height", rawRowHeight, "px", railCard, "rail-card")
             _setVariable(
                 "--nav-link-icon-width",
                 _getAdaptiveValue(
@@ -145,6 +151,7 @@ function NavLinkList({ links, expanded, compactRail = false }) {
         resizeObserver.observe(container)
         return () => {
             resizeObserver.disconnect()
+            railCard?.style.removeProperty("--nav-link-target-height")
         }
     }, [compactRail, expanded, links.length])
 

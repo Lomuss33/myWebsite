@@ -4,6 +4,19 @@ div.layout {
     color: var(--theme-texts);
 }
 
+div.layout-background {
+    position: fixed;
+    inset: 0;
+    z-index: $z-index-background;
+    pointer-events: none;
+    background: linear-gradient(
+        180deg,
+        var(--theme-background-sky-top) 0%,
+        var(--theme-background-sky-middle) 48%,
+        var(--theme-background-sky-bottom) 100%
+    );
+}
+
 div.layout-content {
     z-index: $z-index-content;
     padding: var(--default-card-spacing);

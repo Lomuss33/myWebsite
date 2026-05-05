@@ -1,11 +1,14 @@
 @use "../../../styles/extend" as *;
 
 div.nav-tools {
-    --nav-tools-height: clamp(42px, 5.2vh, 52px);
+    --nav-tools-height: var(--nav-link-target-height, clamp(38px, 4.8vh, 52px));
+    --nav-tools-button-radius: 15px;
 
     display: flex;
     width: 100%;
     height: var(--nav-tools-height);
+    min-height: var(--nav-tools-height);
+    max-height: var(--nav-tools-height);
     align-items: center;
     justify-content: space-between;
     gap: 0;
@@ -13,12 +16,14 @@ div.nav-tools {
     border-bottom-left-radius: calc($standard-border-radius * 1.8);
     border-bottom-right-radius: calc($standard-border-radius * 1.8);
     overflow: visible;
-    padding: 4px 8px 5px;
+    padding: 3px 6px;
     background:
         linear-gradient(180deg,
-            color-mix(in srgb, var(--theme-nav-surface-accent) 92%, white 8%) 0%,
+            color-mix(in srgb, var(--theme-nav-surface-accent) 88%, white 12%) 0%,
             var(--theme-nav-surface-accent) 100%);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        inset 0 -1px 0 rgba(15, 23, 42, 0.08);
 
     div.btn-option-picker {
         display: flex;
@@ -48,14 +53,24 @@ div.nav-tools {
         flex: 1 1 auto;
         width: 100%;
         height: 100%;
-        padding: 0 0.5rem;
+        padding: 0 0.4rem;
         min-height: 100%;
         min-width: 0;
-        border-radius: 999px;
+        border: 0;
+        outline: none;
+        border-radius: var(--nav-tools-button-radius);
+        background:
+            linear-gradient(180deg,
+                color-mix(in srgb, var(--theme-nav-surface-raised) 78%, white 22%) 0%,
+                color-mix(in srgb, var(--theme-nav-surface-accent) 96%, var(--theme-nav-surface) 4%) 100%);
+        box-shadow:
+            inset 0 0 0 1px color-mix(in srgb, var(--theme-nav-divider) 84%, white 16%),
+            inset 0 1px 0 rgba(255, 255, 255, 0.10);
         transition:
             transform 0.18s ease,
             box-shadow 0.18s ease,
-            background-color 0.18s ease;
+            background 0.18s ease,
+            color 0.18s ease;
 
         img, i.fa-icon {
             transition: 0.1s ease-in-out transform;
@@ -68,11 +83,11 @@ div.nav-tools {
         }
 
         i.fa-icon {
-            opacity: 0.84;
+            opacity: 0.8;
         }
 
         i.fa-caret-icon {
-            opacity: 0.72;
+            opacity: 0.62;
         }
 
         i.fa-caret-icon {
@@ -82,7 +97,21 @@ div.nav-tools {
         }
 
         &:hover {
-            box-shadow: inset 0 0 0 1px var(--theme-nav-divider);
+            transform: translateY(-1px);
+            background:
+                linear-gradient(180deg,
+                    color-mix(in srgb, var(--theme-nav-surface-raised) 72%, white 28%) 0%,
+                    color-mix(in srgb, var(--theme-nav-surface-raised) 94%, var(--theme-nav-surface-accent) 6%) 100%);
+            box-shadow:
+                inset 0 0 0 1px color-mix(in srgb, var(--theme-primary) 18%, var(--theme-nav-divider) 82%),
+                0 8px 16px rgba(15, 23, 42, 0.10);
+
+            i.fa-icon,
+            i.fa-caret-icon,
+            span.btn-option-picker-toggle-caption {
+                color: var(--theme-primary);
+            }
+
             img, i.fa-icon {
                 transform: scale(1.05);
             }
@@ -96,31 +125,32 @@ div.nav-tools {
     }
 
     button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption) {
-        border-radius: 0;
-        box-shadow: none;
-        outline: none;
-        border: 0;
-        background-color: transparent;
-
-        &:hover,
-        &:focus,
-        &:focus-visible,
-        &:active {
-            box-shadow: none;
-            background-color: transparent;
-        }
+        border-radius: var(--nav-tools-button-radius);
     }
 
     div.dropdown.show > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption),
     div.dropup.show > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption),
     div.dropdown > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption).show,
     div.dropup > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption).show,
+    button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):focus-visible,
     div.dropdown > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):not(.show):active,
     div.dropup > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):not(.show):active {
-        box-shadow: none;
-        outline: none;
-        border: 0;
-        background-color: transparent;
+        transform: translateY(-1px);
+        box-shadow:
+            inset 0 0 0 1px color-mix(in srgb, var(--theme-primary) 28%, var(--theme-nav-divider) 72%),
+            inset 0 1px 0 rgba(255, 255, 255, 0.18),
+            0 10px 20px rgba(15, 23, 42, 0.14);
+        background:
+            linear-gradient(180deg,
+                color-mix(in srgb, var(--theme-primary) 10%, white 90%) 0%,
+                color-mix(in srgb, var(--theme-nav-surface-raised) 78%, var(--theme-primary) 22%) 100%);
+
+        i.fa-icon,
+        i.fa-caret-icon,
+        span.btn-option-picker-toggle-caption {
+            color: var(--theme-primary);
+            opacity: 1;
+        }
     }
 
     div.btn-option-picker-icon-size-2 {
@@ -136,11 +166,11 @@ div.nav-tools-item {
     flex: 1 1 0;
     min-width: 0;
     height: 100%;
-    padding: 0;
+    padding: 0 2px;
     overflow: visible;
 
     &:not(:first-child) {
-        border-left: 1px solid var(--theme-nav-divider);
+        border-left: 1px solid color-mix(in srgb, var(--theme-nav-divider) 86%, transparent 14%);
     }
 }
 
@@ -284,7 +314,7 @@ nav.nav-sidebar-short-rail div.nav-tools div.dropdown-menu.nav-tools-popup-menu 
 
 div.nav-tools-shrink {
     flex-direction: row;
-    padding: 0;
+    padding: 2px 3px;
     gap: 0;
 
     span.btn-option-picker-toggle-caption {
@@ -294,6 +324,7 @@ div.nav-tools-shrink {
     div.nav-tools-item {
         width: auto;
         height: 100%;
+        padding-inline: 1px;
     }
 
     div.nav-tools-item-language {

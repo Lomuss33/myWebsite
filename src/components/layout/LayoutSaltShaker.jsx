@@ -1,5 +1,5 @@
 import "./LayoutSaltShaker.scss"
-import React, {useEffect, useRef, useState} from "react"
+import React, {memo, useEffect, useRef, useState} from "react"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useNavigation} from "../../providers/NavigationProvider.jsx"
 import {useFeedbacks} from "../../providers/FeedbacksProvider.jsx"
@@ -11,6 +11,7 @@ function LayoutSaltShaker() {
     const feedbacks = useFeedbacks()
 
     const [isPaused, setIsPaused] = useState(false)
+    const [isIdlePaused, setIsIdlePaused] = useState(false)
     const pauseTimeoutRef = useRef(null)
     const didInitTargetSectionRef = useRef(false)
 
@@ -62,6 +63,41 @@ function LayoutSaltShaker() {
         pauseFor(1000)
     }, [navigation?.targetSection?.id])
 
+    useEffect(() => {
+        if (typeof document === "undefined") return
+
+        const IDLE_MS = 30000
+        let idleTimer = null
+
+        const goIdle = () => setIsIdlePaused(true)
+        const goActive = () => {
+            setIsIdlePaused(false)
+            if (idleTimer) clearTimeout(idleTimer)
+            idleTimer = setTimeout(goIdle, IDLE_MS)
+        }
+
+        const onVisibility = () => {
+            if (document.visibilityState === "visible") goActive()
+            else goIdle()
+        }
+
+        goActive()
+
+        const inputEvents = ["pointermove", "pointerdown", "keydown", "touchstart", "wheel", "scroll"]
+        for (const name of inputEvents) {
+            window.addEventListener(name, goActive, { passive: true })
+        }
+        document.addEventListener("visibilitychange", onVisibility)
+
+        return () => {
+            if (idleTimer) clearTimeout(idleTimer)
+            for (const name of inputEvents) {
+                window.removeEventListener(name, goActive)
+            }
+            document.removeEventListener("visibilitychange", onVisibility)
+        }
+    }, [])
+
     const handleDesktopClick = () => {
         if (!isInteractiveDesktop) {
             return
@@ -70,47 +106,39 @@ function LayoutSaltShaker() {
         feedbacks.toggleAnimatedCursorActive(true)
     }
 
-    const handleKeyDown = (event) => {
-        if (!isInteractiveDesktop) {
-            return
-        }
-
-        if (event.key !== "Enter" && event.key !== " " && event.key !== "Spacebar") {
-            return
-        }
-
-        event.preventDefault()
-        feedbacks.toggleAnimatedCursorActive(true)
-    }
-
     const stateClass = !isInteractiveDesktop || isCursorActive
         ? "layout-salt-shaker-cursor-on"
         : "layout-salt-shaker-cursor-off"
     const interactiveClass = isInteractiveDesktop ? "layout-salt-shaker-interactive" : ""
-    const pausedClass = isPaused ? "layout-salt-shaker-paused" : ""
+    const pausedClass = (isPaused || isIdlePaused) ? "layout-salt-shaker-paused" : ""
 
     return (
-        <div id="layout-salt-shaker"
-             className={`layout-salt-shaker ${stateClass} ${interactiveClass} ${pausedClass}`.trim()}
-             role={isInteractiveDesktop ? "button" : undefined}
-             tabIndex={isInteractiveDesktop ? 0 : undefined}
-             aria-label={isInteractiveDesktop ? cursorActionLabel : tooltipLabel}
-             aria-pressed={isInteractiveDesktop ? isCursorActive : undefined}
-             onKeyDown={handleKeyDown}>
+        <button id="layout-salt-shaker"
+                type="button"
+                className={`layout-salt-shaker ${stateClass} ${interactiveClass} ${pausedClass}`.trim()}
+                aria-label={isInteractiveDesktop ? cursorActionLabel : tooltipLabel}
+                aria-pressed={isInteractiveDesktop ? isCursorActive : undefined}
+                onClick={handleDesktopClick}>
             <HoverStaticTooltip label={tooltipLabel}
                                className={`layout-salt-shaker-tooltip text-center`}
                                id={`layout-salt-shaker-tooltip`}
                                targetId={`layout-salt-shaker`}
-                               onDesktopClick={isInteractiveDesktop ? handleDesktopClick : null}
                                forceResetFlag={`${navigation?.targetSection?.id || "none"}-${isPaused ? "paused" : "active"}`}
                                toggleBehaviorOnTouchScreens={true}/>
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 331 379"
-                preserveAspectRatio="xMaxYMax meet"
-                width="331"
-                height="379"
-                focusable="false">
+            <SaltShakerSvg/>
+        </button>
+    )
+}
+
+const SaltShakerSvg = memo(function SaltShakerSvg() {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 331 379"
+            preserveAspectRatio="xMaxYMax meet"
+            width="331"
+            height="379"
+            focusable="false">
                 <style>{`
                     .st0{opacity:0.5;fill:var(--layout-salt-shaker-glass-base, #F5F5F5);transition:fill 0.22s ease, stroke 0.22s ease, opacity 0.22s ease;}
                     .st1{clip-path:url(#layout-salt-shaker-svgid-2);fill:var(--layout-salt-shaker-top-fill, #EAEAEA);stroke:var(--layout-salt-shaker-top-fill, #EAEAEA);stroke-width:4;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:1,6;transition:fill 0.22s ease, stroke 0.22s ease, opacity 0.22s ease;}
@@ -308,9 +336,8 @@ function LayoutSaltShaker() {
                         <circle className="st14" cx="90.5" cy="303.6" r="2.7" />
                     </g>
                 </g>
-            </svg>
-        </div>
+        </svg>
     )
-}
+})
 
 export default LayoutSaltShaker

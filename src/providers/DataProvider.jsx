@@ -27,7 +27,6 @@ function DataProvider({ children, settings }) {
             },
             templateSettings: {
                 animatedCursorEnabled: true,
-                backgroundStyle: "plain",
                 defaultLanguageId: "en",
                 defaultThemeId: "dark",
                 fullscreenEnabled: true,

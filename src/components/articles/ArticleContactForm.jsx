@@ -262,6 +262,7 @@ function ArticleContactFormContentFields({ onInput, didSubmit }) {
                               name={`message`}
                               model={message}
                               setModel={setMessage}
+                              faIconPrefix={`fa-solid fa-ellipsis`}
                               placeholder={language.getString("message")}
                               className={textClass}
                               required={true}/>

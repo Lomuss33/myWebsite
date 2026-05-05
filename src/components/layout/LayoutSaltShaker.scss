@@ -12,11 +12,11 @@ div.layout-salt-shaker-wrapper {
     --layout-salt-shaker-grain-stroke: #d3d3d3;
 
     position: fixed;
-    right: var(--default-card-spacing);
-    bottom: var(--default-card-spacing);
+    right: 6px;
+    bottom: 6px;
     z-index: $z-index-section-floating-items;
 
-    width: 67px;
+    width: 50px;
     height: auto;
     pointer-events: none;
 }
@@ -70,7 +70,7 @@ button.layout-salt-shaker.layout-salt-shaker-interactive {
     }
 }
 
-button.layout-salt-shaker.layout-salt-shaker-cursor-off {
+button.layout-salt-shaker.layout-salt-shaker-mode-medieval {
     --layout-salt-shaker-top-fill: #6a4128;
     --layout-salt-shaker-surface-fill: #5e3a22;
     --layout-salt-shaker-surface-stroke: #2f1b10;
@@ -107,8 +107,8 @@ div.layout-salt-shaker-wrapper.layout-salt-shaker-paused svg #layout-salt-shaker
 
 @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
     div.layout-salt-shaker-wrapper {
-        width: 59px;
-        bottom: calc(#{$nav-tabs-height} + var(--default-card-spacing));
+        width: 44px;
+        bottom: calc(#{$nav-tabs-height} + 6px);
     }
 
     button.layout-salt-shaker {

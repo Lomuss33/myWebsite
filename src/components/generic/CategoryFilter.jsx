@@ -10,9 +10,9 @@ function CategoryFilter({ categories, selectedCategoryId, setSelectedCategoryId,
 
     const [lastCategorySelectTime, setLastCategorySelectTime] = useState(0)
 
-    const hoverClass = utils.device.isTouchDevice() ?
-        `category-filter-no-hover-effects` :
-        ``
+    const hoverClass = utils.device.canHoverWithFinePointer() ?
+        `` :
+        `category-filter-no-hover-effects`
 
     useLayoutEffect(() => {
         const container = containerRef.current

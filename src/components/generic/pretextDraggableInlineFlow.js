@@ -224,33 +224,32 @@ function layoutPreparedParagraph(paragraph, typography, maxWidth, obstacle, offs
         const bandTop = lineTop
         const bandBottom = lineTop + typography.lineHeight
         const slots = getTextLineSlots(safeWidth, bandTop, bandBottom, obstacle)
+        const slot = pickPrimaryTextSlot(slots)
         let consumedOnBand = false
         const startingCursorKey = createRichCursorKey(cursor)
 
-        for (let slotIndex = 0; slotIndex < slots.length; slotIndex++) {
-            const slot = slots[slotIndex]
+        if (slot) {
             const slotWidth = slot.right - slot.left
             const lineRange = layoutNextRichInlineLineRange(paragraph.prepared, slotWidth, cursor)
-            if (!lineRange) continue
-
-            const line = materializeRichInlineLineRange(paragraph.prepared, lineRange)
-            if (line.fragments.length === 0) {
-                cursor = line.end
-                continue
+            if (lineRange) {
+                const line = materializeRichInlineLineRange(paragraph.prepared, lineRange)
+                if (line.fragments.length === 0) {
+                    cursor = line.end
+                } else {
+                    consumedOnBand = true
+                    lines.push({
+                        key: `paragraph-${paragraphIndex}-band-${lines.length}`,
+                        x: slot.left,
+                        y: lineTop,
+                        width: line.width,
+                        fragments: line.fragments.map(fragment => {
+                            const item = paragraph.items[fragment.itemIndex]
+                            return createFragment(item, fragment)
+                        })
+                    })
+                    cursor = line.end
+                }
             }
-
-            consumedOnBand = true
-            lines.push({
-                key: `paragraph-${paragraphIndex}-band-${lines.length}`,
-                x: slot.left,
-                y: lineTop,
-                width: line.width,
-                fragments: line.fragments.map(fragment => {
-                    const item = paragraph.items[fragment.itemIndex]
-                    return createFragment(item, fragment)
-                })
-            })
-            cursor = line.end
         }
 
         lineTop += typography.lineHeight
@@ -385,6 +384,24 @@ function carveTextLineSlots(base, blocked, minimumSlotWidth = 24) {
     }
 
     return slots.filter(slot => slot.right - slot.left >= minimumSlotWidth)
+}
+
+function pickPrimaryTextSlot(slots) {
+    if (!Array.isArray(slots) || slots.length === 0) return null
+
+    let widestSlot = slots[0]
+    let widestWidth = widestSlot.right - widestSlot.left
+
+    for (let index = 1; index < slots.length; index++) {
+        const slot = slots[index]
+        const slotWidth = slot.right - slot.left
+        if (slotWidth > widestWidth) {
+            widestSlot = slot
+            widestWidth = slotWidth
+        }
+    }
+
+    return widestSlot
 }
 
 function createFragment(item, fragment) {

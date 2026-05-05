@@ -13,9 +13,9 @@ function AudioButton({ url = "", tooltip = "", tooltipLabel = "", size = "", but
     const [status, setStatus] = useState(AudioButton.Status.NONE)
     const [isTooltipVisible, setIsTooltipVisible] = useState(false)
 
-    const isMagicCursorEnabledAndActive = feedbacks.animatedCursorEnabled && feedbacks.animatedCursorActive
+    const isMagicCursorMode = feedbacks.animatedCursorEnabled && feedbacks.cursorMode === "magic"
     const tooltipHtml = tooltipLabel || tooltip
-    const shouldShowStaticTooltip = tooltipHtml && !isMagicCursorEnabledAndActive
+    const shouldShowStaticTooltip = tooltipHtml && !isMagicCursorMode
 
     /** @listens url **/ 
     useEffect(() => {

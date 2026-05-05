@@ -243,24 +243,282 @@ article#article-1-section-my-writings {
             0 12px 30px rgba(0, 0, 0, 0.38);
     }
 
+    button.article-timeline-item-avatar-button-reset {
+        width: var(--avatar-size);
+        height: var(--avatar-size);
+        padding: 0;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        box-shadow: none;
+        appearance: none;
+        -webkit-appearance: none;
+        cursor: pointer;
+    }
+
+    button.article-timeline-item-avatar-button-reset:focus,
+    button.article-timeline-item-avatar-button-reset:focus-visible {
+        outline: none;
+        box-shadow: none;
+    }
+
     div.article-timeline-item-avatar.article-timeline-item-avatar--button {
-        border-color: rgba(245, 158, 11, 0.62);
+        border-color: transparent;
+        box-shadow: none;
     }
 
     a.article-timeline-item-avatar-link:hover div.article-timeline-item-avatar--button {
-        border-color: rgba(245, 158, 11, 0.82);
-        box-shadow:
-            0 0 0 4px rgba(56, 189, 248, 0.12),
-            0 0 0 1px rgba(255, 255, 255, 0.10) inset,
-            0 16px 34px rgba(0, 0, 0, 0.42);
+        border-color: transparent;
+        box-shadow: none;
     }
 
     a.article-timeline-item-avatar-link:focus-visible div.article-timeline-item-avatar--button {
-        border-color: rgba(56, 189, 248, 0.86);
+        border-color: transparent;
+        box-shadow: none;
+    }
+}
+
+article#article-1-section-experience {
+    ul.article-timeline-items {
+        --experience-avatar-size: 80px;
+        --experience-rail-width: 40px;
+        --experience-card-overlap: calc(var(--experience-avatar-size) / 2);
+        --experience-card-right-padding-resting: calc(0.95rem + var(--experience-card-overlap));
+        --experience-card-right-padding-active: calc(0.95rem + var(--experience-card-overlap));
+        --experience-overlay-shift-active: calc(var(--experience-avatar-size) * 0.12);
+        --experience-overlay-mask-start: 0%;
+        --experience-overlay-mask-end: 62%;
+        --experience-overlay-gradient-width-resting: calc(var(--experience-avatar-size) * 0.76);
+        --experience-overlay-gradient-width-active: calc(var(--experience-avatar-size) * 1.02);
+        --experience-overlay-opacity-resting: 0.2;
+        --experience-overlay-opacity-active: 0.34;
+        --experience-avatar-shadow-resting:
+            0 14px 30px rgba(0, 0, 0, 0.30),
+            0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+        --experience-avatar-shadow-active:
+            0 22px 44px rgba(0, 0, 0, 0.34),
+            0 0 0 1px rgba(255, 255, 255, 0.14) inset,
+            0 0 0 7px color-mix(in srgb, var(--theme-primary) 12%, transparent);
+        --experience-avatar-filter-resting: saturate(0.94) brightness(0.98);
+        --experience-avatar-filter-active: saturate(1.08) brightness(1.04);
+        --experience-card-transform-resting: translate3d(0, 0, 0);
+        --experience-card-transform-active: translate3d(-4px, -2px, 0);
+        --experience-card-shadow-active:
+            0 26px 48px rgba(0, 0, 0, 0.30),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        --experience-rail-background-resting:
+            linear-gradient(
+                180deg,
+                color-mix(in srgb, #5bbcff 82%, rgba(255, 255, 255, 0.18)) 0%,
+                color-mix(in srgb, #34d399 78%, #5bbcff 22%) 22%,
+                color-mix(in srgb, #f59e0b 76%, #34d399 24%) 44%,
+                color-mix(in srgb, #c2410c 74%, #f59e0b 26%) 68%,
+                color-mix(in srgb, #7c4a2d 88%, rgba(255, 255, 255, 0.10)) 100%
+            );
+        --experience-rail-background-active:
+            linear-gradient(
+                180deg,
+                color-mix(in srgb, #7dd3fc 88%, rgba(255, 255, 255, 0.24)) 0%,
+                color-mix(in srgb, #4ade80 84%, #7dd3fc 16%) 22%,
+                color-mix(in srgb, #fbbf24 84%, #4ade80 16%) 44%,
+                color-mix(in srgb, #f97316 82%, #fbbf24 18%) 68%,
+                color-mix(in srgb, #8b5e34 92%, rgba(255, 255, 255, 0.16)) 100%
+            );
+        --experience-rail-shadow-resting:
+            0 0 0 1px rgba(255, 255, 255, 0.10),
+            0 0 44px color-mix(in srgb, #34d399 18%, transparent),
+            0 0 28px color-mix(in srgb, #f59e0b 18%, transparent),
+            0 0 18px color-mix(in srgb, #7c4a2d 20%, transparent);
+        --experience-rail-shadow-active:
+            0 0 0 1px rgba(255, 255, 255, 0.14),
+            0 0 52px color-mix(in srgb, #4ade80 22%, transparent),
+            0 0 34px color-mix(in srgb, #f97316 22%, transparent),
+            0 0 22px color-mix(in srgb, #8b5e34 24%, transparent);
+        --avatar-size: var(--experience-avatar-size);
+        --avatar-border-width: 4px;
+        --timeline-line-width: var(--experience-rail-width);
+        --timeline-line-color: color-mix(in srgb, var(--theme-primary) 72%, var(--theme-secondary) 28%);
+        --avatar-offset-merge-mode: 0px;
+        gap: 18px;
+        overflow: visible;
+
+        @include media-breakpoint-up(md) {
+            --experience-avatar-size: 98px;
+            --experience-rail-width: 40px;
+            --experience-card-right-padding-resting: calc(1rem + var(--experience-card-overlap));
+            --experience-card-right-padding-active: calc(1rem + var(--experience-card-overlap));
+            --experience-overlay-shift-active: calc(var(--experience-avatar-size) * 0.14);
+            --experience-overlay-gradient-width-resting: calc(var(--experience-avatar-size) * 0.8);
+            --experience-overlay-gradient-width-active: calc(var(--experience-avatar-size) * 1.08);
+            --experience-overlay-opacity-resting: 0.22;
+            --experience-overlay-opacity-active: 0.36;
+            gap: 20px;
+        }
+
+        @include media-breakpoint-up(xl) {
+            --experience-avatar-size: 120px;
+            --experience-rail-width: 48px;
+            --experience-card-right-padding-resting: calc(1.15rem + var(--experience-card-overlap));
+            --experience-card-right-padding-active: calc(1.15rem + var(--experience-card-overlap));
+            --experience-overlay-shift-active: calc(var(--experience-avatar-size) * 0.18);
+            --experience-overlay-gradient-width-resting: calc(var(--experience-avatar-size) * 0.84);
+            --experience-overlay-gradient-width-active: calc(var(--experience-avatar-size) * 1.16);
+            --experience-overlay-opacity-resting: 0.24;
+            --experience-overlay-opacity-active: 0.4;
+            --experience-card-transform-active: translate3d(-5px, -2px, 0);
+            gap: 22px;
+        }
+    }
+
+    ul.article-timeline-items:before {
+        left: auto;
+        right: calc(var(--experience-card-overlap) - var(--experience-rail-width) / 2);
+        width: var(--experience-rail-width);
+        background: var(--experience-rail-background-resting);
+        border-radius: 999px;
+        box-shadow: var(--experience-rail-shadow-resting);
+        z-index: 0;
+        opacity: 0.98;
+    }
+
+    li.article-timeline-item--experience {
+        --experience-card-right-padding: var(--experience-card-right-padding-resting);
+        --experience-card-scrim-width: var(--experience-overlay-gradient-width-resting);
+        --experience-card-scrim-opacity: var(--experience-overlay-opacity-resting);
+        --experience-card-transform-current: var(--experience-card-transform-resting);
+        --experience-card-shadow-current: var(--card-shadow);
+        --experience-card-border-current: var(--card-border);
+        position: relative;
+        display: block;
+        min-width: 0;
+        min-height: max(calc(var(--experience-avatar-size) + 8px), 100%);
+        padding-right: var(--experience-card-overlap);
+        isolation: isolate;
+        z-index: 1;
+    }
+
+    div.article-timeline-item-avatar-wrapper--experience {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        width: var(--experience-avatar-size);
+        min-width: var(--experience-avatar-size);
+        height: var(--experience-avatar-size);
+        align-items: center;
+        justify-content: center;
+        transform: translateY(-50%);
+        z-index: 4;
+    }
+
+    a.article-timeline-item-avatar-link--experience,
+    button.article-timeline-item-avatar-button-reset--experience {
+        width: 100%;
+        height: 100%;
+        border-radius: 999px;
+    }
+
+    button.article-timeline-item-avatar-button-reset--experience {
+        padding: 0;
+        border: 0;
+        background: transparent;
+        appearance: none;
+        cursor: pointer;
+    }
+
+    div.article-timeline-item-avatar.article-timeline-item-avatar--experience {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: var(--experience-avatar-size);
+        height: var(--experience-avatar-size);
+        background:
+            radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.10), transparent 42%),
+            linear-gradient(180deg, rgba(10, 16, 30, 0.98), rgba(5, 8, 16, 0.98));
+        border-color: color-mix(in srgb, var(--theme-secondary) 62%, var(--theme-primary) 38%);
+        box-shadow: var(--experience-avatar-shadow-resting);
+        transform: translate3d(0, 0, 0) scale(1);
+        filter: var(--experience-avatar-filter-resting);
+        -webkit-mask-image: linear-gradient(#000, #000);
+        mask-image: linear-gradient(#000, #000);
+        transition:
+            transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 220ms ease,
+            border-color 220ms ease,
+            filter 220ms ease,
+            -webkit-mask-image 220ms ease,
+            mask-image 220ms ease;
+
+        div.avatar-view-image-view {
+            background:
+                radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.08), transparent 44%),
+                linear-gradient(180deg, rgba(10, 16, 30, 0.98), rgba(5, 8, 16, 0.98));
+        }
+    }
+
+    div.article-timeline-item-content--experience {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-right: var(--experience-card-right-padding);
+        position: relative;
+        z-index: 2;
+        transition:
+            transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+            border-color 220ms ease,
+            box-shadow 220ms ease,
+            filter 220ms ease;
+    }
+
+    a.article-timeline-item-avatar-link--experience:focus-visible div.article-timeline-item-avatar--button,
+    button.article-timeline-item-avatar-button-reset--experience:focus-visible div.article-timeline-item-avatar--button {
+        border-color: color-mix(in srgb, var(--theme-primary) 78%, white 22%);
         box-shadow:
-            0 0 0 3px rgba(56, 189, 248, 0.22),
-            0 0 0 1px rgba(255, 255, 255, 0.10) inset,
-            0 16px 34px rgba(0, 0, 0, 0.42);
+            0 0 0 3px color-mix(in srgb, var(--theme-primary) 24%, transparent),
+            0 0 0 1px rgba(255, 255, 255, 0.12) inset,
+            0 14px 30px rgba(0, 0, 0, 0.34);
+    }
+
+    li.article-timeline-item--experience.is-overlay-active,
+    li.article-timeline-item--experience:focus-within {
+        --experience-card-right-padding: var(--experience-card-right-padding-active);
+        --experience-card-scrim-width: var(--experience-overlay-gradient-width-active);
+        --experience-card-scrim-opacity: var(--experience-overlay-opacity-active);
+        --experience-card-transform-current: var(--experience-card-transform-active);
+        --experience-card-shadow-current: var(--experience-card-shadow-active);
+        --experience-card-border-current: color-mix(in srgb, var(--card-accent) 58%, var(--card-border) 42%);
+
+        div.article-timeline-item-avatar.article-timeline-item-avatar--experience {
+            transform: translate3d(calc(-1 * var(--experience-overlay-shift-active)), 0, 0) scale(1.04);
+            filter: var(--experience-avatar-filter-active);
+            box-shadow: var(--experience-avatar-shadow-active);
+            -webkit-mask-image: linear-gradient(#000, #000);
+            mask-image: linear-gradient(#000, #000);
+        }
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        li.article-timeline-item--experience:hover {
+            --experience-card-right-padding: var(--experience-card-right-padding-active);
+            --experience-card-scrim-width: var(--experience-overlay-gradient-width-active);
+            --experience-card-scrim-opacity: var(--experience-overlay-opacity-active);
+            --experience-card-transform-current: var(--experience-card-transform-active);
+            --experience-card-shadow-current: var(--experience-card-shadow-active);
+            --experience-card-border-current: color-mix(in srgb, var(--card-accent) 58%, var(--card-border) 42%);
+
+            div.article-timeline-item-avatar.article-timeline-item-avatar--experience {
+                transform: translate3d(calc(-1 * var(--experience-overlay-shift-active)), 0, 0) scale(1.04);
+                filter: var(--experience-avatar-filter-active);
+                box-shadow: var(--experience-avatar-shadow-active);
+                -webkit-mask-image: linear-gradient(#000, #000);
+                mask-image: linear-gradient(#000, #000);
+            }
+        }
+    }
+
+    ul.article-timeline-items:hover:before,
+    ul.article-timeline-items:focus-within:before {
+        background: var(--experience-rail-background-active);
+        box-shadow: var(--experience-rail-shadow-active);
+        opacity: 1;
     }
 }
 

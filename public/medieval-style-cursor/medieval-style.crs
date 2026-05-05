@@ -1,0 +1,39 @@
+﻿[AppStarting]
+Path=Medieval-Arming sword blacksmith work in background.ani
+
+[Help]
+Path=Medieval-Arming sword helmet help select.cur
+
+[Arrow]
+Path=Medieval-Arming sword normal.cur
+
+[SizeNWSE]
+Path=Medieval-Arrow diagonal resize 1.cur
+
+[SizeNESW]
+Path=Medieval-Arrow diagonal resize 2.cur
+
+[SizeWE]
+Path=Medieval-Arrow horizontal resize.cur
+
+[SizeNS]
+Path=Medieval-Arrow veritical resize.cur
+
+[Wait]
+Path=Medieval-Blacksmith busy.ani
+
+[Hand]
+Path=Medieval-Gauntlet link select.cur
+
+[SizeAll]
+Path=Medieval-Greek cross move.cur
+
+[Crosshair]
+Path=Medieval-Maltese cross precision select.cur
+
+[NWPen]
+Path=Medieval-Quill pen.cur
+
+[No]
+Path=Medieval-Shield unavailable.cur
+

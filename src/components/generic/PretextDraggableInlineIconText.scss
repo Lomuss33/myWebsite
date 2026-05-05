@@ -4,6 +4,8 @@ div.pretext-draggable-inline-icon-text {
     --pretext-draggable-inline-icon-text-accent: var(--theme-primary);
     --pretext-draggable-inline-icon-text-accent-soft: color-mix(in srgb, var(--theme-primary) 18%, transparent);
     --pretext-draggable-inline-icon-text-surface: color-mix(in srgb, var(--theme-primary) 5%, transparent);
+    --pretext-draggable-inline-icon-text-handle-size: clamp(64px, 6vw, 84px);
+
     position: relative;
     width: 100%;
 
@@ -12,46 +14,42 @@ div.pretext-draggable-inline-icon-text {
     }
 }
 
-div.pretext-draggable-inline-icon-text-canvas {
-    position: relative;
-    width: 100%;
-    padding: 8px 0;
+p.pretext-draggable-inline-icon-text-intro,
+p.pretext-draggable-inline-icon-text-paragraph {
+    margin: 0;
+    color: var(--theme-texts-light);
 }
 
-div.pretext-draggable-inline-icon-text-spine {
-    position: absolute;
-    top: 0;
-    z-index: 0;
-    border-radius: 999px;
-    background:
-        linear-gradient(
-            180deg,
-            rgba(255, 255, 255, 0) 0%,
-            var(--pretext-draggable-inline-icon-text-accent-soft) 14%,
-            color-mix(in srgb, var(--pretext-draggable-inline-icon-text-accent) 16%, transparent) 50%,
-            var(--pretext-draggable-inline-icon-text-accent-soft) 86%,
-            rgba(255, 255, 255, 0) 100%
-        );
-    pointer-events: none;
+p.pretext-draggable-inline-icon-text-intro {
+    text-align: center;
 }
 
-div.pretext-draggable-inline-icon-text-rail {
-    position: relative;
-    width: 100%;
-    height: 100%;
+div.pretext-draggable-inline-icon-text-body {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    gap: 0.95rem;
+}
+
+div.pretext-draggable-inline-icon-text-rail-block {
+    position: relative;
+    margin: clamp(1.05rem, 1vw + 0.8rem, 1.45rem) 0 clamp(1rem, 1vw + 0.75rem, 1.4rem);
+    padding: 0.3rem 0;
 }
 
 div.pretext-draggable-inline-icon-text-rail-hit-area {
-    position: absolute;
-    left: 0;
-    right: 0;
-    z-index: 2;
-    height: 72px;
-    transform: translateY(-50%);
+    position: relative;
+    width: min(100%, 460px);
+    height: 74px;
+    margin: 0 auto;
     cursor: ew-resize;
     touch-action: none;
+}
+
+div.pretext-draggable-inline-icon-text-rail {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
 }
 
 span.pretext-draggable-inline-icon-text-rail-line {
@@ -104,55 +102,15 @@ span.pretext-draggable-inline-icon-text-rail-dot-end {
     right: 6px;
 }
 
-div.pretext-draggable-inline-icon-text-lines {
-    position: relative;
-    width: 100%;
-    color: var(--theme-texts-light);
-    z-index: 1;
-
-    &.is-dragging {
-        user-select: none;
-        -webkit-user-select: none;
-    }
-}
-
-div.pretext-draggable-inline-icon-text-line {
-    position: absolute;
-    display: flex;
-    align-items: baseline;
-    white-space: nowrap;
-    pointer-events: none;
-}
-
-span.pretext-draggable-inline-icon-text-fragment,
-a.pretext-draggable-inline-icon-text-fragment {
-    display: inline-flex;
-    align-items: baseline;
-    white-space: pre;
-    pointer-events: auto;
-    position: relative;
-}
-
-a.pretext-draggable-inline-icon-text-fragment {
-    color: inherit;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.18em;
-}
-
-span.pretext-draggable-inline-icon-text-fragment-highlight,
-a.pretext-draggable-inline-icon-text-fragment-highlight {
-    color: var(--pretext-draggable-inline-icon-text-accent);
-    text-shadow: 0 0 14px color-mix(in srgb, var(--pretext-draggable-inline-icon-text-accent) 16%, transparent);
-}
-
 button.pretext-draggable-inline-icon-text-handle {
     position: absolute;
+    top: 50%;
     z-index: 3;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: var(--pretext-draggable-inline-icon-text-icon-size);
-    height: var(--pretext-draggable-inline-icon-text-icon-size);
+    width: var(--pretext-draggable-inline-icon-text-handle-size);
+    height: var(--pretext-draggable-inline-icon-text-handle-size);
     border: 1px solid color-mix(in srgb, var(--pretext-draggable-inline-icon-text-accent) 30%, var(--theme-standard-borders));
     border-radius: 50%;
     background:
@@ -170,7 +128,7 @@ button.pretext-draggable-inline-icon-text-handle {
     touch-action: none;
     user-select: none;
     -webkit-user-select: none;
-    transform: translateZ(0);
+    transform: translate(-50%, -50%) translateZ(0);
     transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
 
     &:focus-visible {
@@ -179,11 +137,11 @@ button.pretext-draggable-inline-icon-text-handle {
     }
 
     &:hover {
-        transform: scale(1.03);
+        transform: translate(-50%, -50%) scale(1.03);
     }
 
     &.is-dragging {
-        transform: scale(1.06);
+        transform: translate(-50%, -50%) scale(1.06);
         box-shadow:
             0 22px 42px rgba(0, 0, 0, 0.32),
             0 0 0 10px color-mix(in srgb, var(--pretext-draggable-inline-icon-text-accent) 15%, transparent);
@@ -197,24 +155,25 @@ span.pretext-draggable-inline-icon-text-handle-icon {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    font-size: calc(var(--pretext-draggable-inline-icon-text-icon-size) * 0.38);
+    font-size: calc(var(--pretext-draggable-inline-icon-text-handle-size) * 0.38);
 }
 
-div.pretext-draggable-inline-icon-text-measure {
-    position: absolute;
-    inset: 0 auto auto 0;
-    visibility: hidden;
-    pointer-events: none;
-    height: 0;
-    overflow: hidden;
-    white-space: pre;
-}
-
-span.pretext-draggable-inline-icon-text-measure-body,
-p.pretext-draggable-inline-icon-text-measure-paragraph,
-strong.pretext-draggable-inline-icon-text-measure-strong,
-em.pretext-draggable-inline-icon-text-measure-em,
-em.pretext-draggable-inline-icon-text-measure-strong-em {
+span.pretext-draggable-inline-icon-text-fragment,
+a.pretext-draggable-inline-icon-text-fragment {
     display: inline;
-    padding: 0;
+    white-space: pre-wrap;
+    pointer-events: auto;
+    position: relative;
+}
+
+a.pretext-draggable-inline-icon-text-fragment {
+    color: inherit;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+}
+
+span.pretext-draggable-inline-icon-text-fragment-highlight,
+a.pretext-draggable-inline-icon-text-fragment-highlight {
+    color: var(--pretext-draggable-inline-icon-text-accent);
+    text-shadow: 0 0 14px color-mix(in srgb, var(--pretext-draggable-inline-icon-text-accent) 16%, transparent);
 }

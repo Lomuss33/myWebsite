@@ -647,7 +647,7 @@
                     },
                     "date": {
                         "year": 2026,
-                        "month": 4
+                        "month": 9
                     },
                     "link": {
                         "href": "https://www.frankfurt-main.ihk.de/aus-und-weiterbildung/weiterbildung/weiterbildungspruefungen/weiterbildungspruefungen-von-a-bis-z/a-z-liste/ausbildereignung-pruefung-5189130",
@@ -655,20 +655,20 @@
                     },
                     "locales": {
                       "en": {
-                        "title": "{{AEVO}} Certification",
-                        "text": "Completed the IHK AEVO qualification in April 2026, authorizing me as a certified instructor to train apprentices in Germany."
+                        "title": "{{AEVO}} Certification (Incoming)",
+                        "text": "The IHK AEVO qualification is planned for July 2026, with certification expected in September 2026. It authorizes me as a certified instructor to train apprentices in Germany."
                       },
                       "de": {
-                        "title": "{{AEVO}}-Zertifikat",
-                        "text": "Die IHK-AEVO-Qualifikation habe ich im April 2026 abgeschlossen. Sie berechtigt mich als zertifizierten Ausbilder zur Ausbildung von Auszubildenden in Deutschland."
+                        "title": "{{AEVO}}-Zertifikat (Anstehend)",
+                        "text": "Die IHK-AEVO-Qualifikation ist fuer Juli 2026 geplant, das Zertifikat wird im September 2026 erwartet. Sie berechtigt mich als zertifizierten Ausbilder zur Ausbildung von Auszubildenden in Deutschland."
                       },
                       "hr": {
-                        "title": "{{AEVO}} certifikat",
-                        "text": "IHK-ovu AEVO kvalifikaciju završio sam u travnju 2026., čime sam stekao ovlaštenje za stručno osposobljavanje pripravnika u Njemačkoj."
+                        "title": "{{AEVO}} certifikat (Nadolazeci)",
+                        "text": "IHK AEVO kvalifikacija planirana je za srpanj 2026., a certifikat se ocekuje u rujnu 2026. Time se stjece ovlast za strucno osposobljavanje pripravnika u Njemackoj."
                       },
                       "tr": {
-                        "title": "{{AEVO}} sertifikası",
-                        "text": "IHK AEVO yeterliliğini Nisan 2026'da tamamladım; bu belge Almanya’da çırak eğitimi verebilen sertifikalı bir eğitici olmamı sağlar."
+                        "title": "{{AEVO}} sertifikasi (Yaklasan)",
+                        "text": "IHK AEVO yeterliligi Temmuz 2026 icin planlandi, sertifikanin ise Eylul 2026'da gelmesi bekleniyor. Bu belge Almanya'da cirak egitimi verebilen sertifikali bir egitici olma yetkisi saglar."
                       }
                     }
                 },
@@ -692,19 +692,19 @@
                     },
                     "locales": {
                       "en": {
-                        "title": "{{CCNA}} Certification (in preparation)",
+                        "title": "{{CCNA}} Certification (Incoming)",
                         "text": "Preparing for the Cisco CCNA exam with a target date of June 2026, focused on network fundamentals, security, and automation."
                       },
                       "de": {
-                        "title": "{{CCNA}}-Zertifikat (in Vorbereitung)",
+                        "title": "{{CCNA}}-Zertifikat (Anstehend)",
                         "text": "Vorbereitung auf die Cisco-CCNA-Prüfung mit geplantem Termin im Juni 2026; Schwerpunkt auf Netzwerkgrundlagen, Sicherheit und Automatisierung."
                       },
                       "hr": {
-                        "title": "{{CCNA}} certifikat (u pripremi)",
+                        "title": "{{CCNA}} certifikat (Nadolazeci)",
                         "text": "Pripremam se za Cisco CCNA ispit s planiranim rokom u lipnju 2026., s fokusom na mrežne osnove, sigurnost i automatizaciju."
                       },
                       "tr": {
-                        "title": "{{CCNA}} sertifikası (hazırlık aşamasında)",
+                        "title": "{{CCNA}} sertifikasi (Yaklasan)",
                         "text": "Haziran 2026 hedefli Cisco CCNA sınavına hazırlanıyorum; odak alanlarım ağ temelleri, güvenlik ve otomasyon."
                       }
                     }
@@ -758,27 +758,57 @@
                         "en": {
                             "title": "Croatian",
                             "text": "Native level; I can communicate effortlessly in everyday life, technical topics, and professional settings.",
-                            "level": "Native / 100%"
+                            "level": "Native / 100%",
+                            "list": [
+                                "Dobar dan, kako si?",
+                                "Hvala lijepa, to mi puno znači.",
+                                "Ajmo na kavu pa ćemo polako pričati.",
+                                "Polako, sve će doći na svoje."
+                            ]
                         },
                         "de": {
                             "title": "Kroatisch",
                             "text": "Muttersprache; ich kann m\u00fchelos im Alltag, zu technischen Themen und im Berufsleben kommunizieren.",
-                            "level": "Muttersprache / 100%"
+                            "level": "Muttersprache / 100%",
+                            "list": [
+                                "Dobar dan, kako si?",
+                                "Hvala lijepa, to mi puno znači.",
+                                "Ajmo na kavu pa ćemo polako pričati.",
+                                "Polako, sve će doći na svoje."
+                            ]
                         },
                         "hr": {
                             "title": "Hrvatski",
                             "text": "Materinji jezik; mogu se potpuno prirodno izra\u017eavati u svakodnevnim, stru\u010dnim i poslovnim situacijama.",
-                            "level": "Izvorni / 100%"
+                            "level": "Izvorni / 100%",
+                            "list": [
+                                "Dobar dan, kako si?",
+                                "Hvala lijepa, to mi puno znači.",
+                                "Ajmo na kavu pa ćemo polako pričati.",
+                                "Polako, sve će doći na svoje."
+                            ]
                         },
                         "tr": {
                             "title": "H\u0131rvat\u00e7a",
                             "text": "Anadil seviyesinde, g\u00fcnl\u00fck ya\u015famda ve teknik konularda \u00e7ok ak\u0131c\u0131 ileti\u015fim kurabiliyorum.",
-                            "level": "Anadil / 100%"
+                            "level": "Anadil / 100%",
+                            "list": [
+                                "Dobar dan, kako si?",
+                                "Hvala lijepa, to mi puno znači.",
+                                "Ajmo na kavu pa ćemo polako pričati.",
+                                "Polako, sve će doći na svoje."
+                            ]
                         },
                         "mk": {
                             "title": "\u0425\u0440\u0432\u0430\u0442\u0441\u043a\u0438",
                             "text": "\u041c\u043e\u0458 \u043c\u0430\u0458\u0447\u0438\u043d \u0458\u0430\u0437\u0438\u043a; \u0442\u0435\u0447\u043d\u043e \u0437\u0431\u043e\u0440\u0443\u0432\u0430\u043c \u0432\u043e \u0441\u0435\u043a\u043e\u0458\u0434\u043d\u0435\u0432\u043d\u0438, \u0442\u0435\u0445\u043d\u0438\u0447\u043a\u0438 \u0438 \u043f\u0440\u043e\u0444\u0435\u0441\u0438\u043e\u043d\u0430\u043b\u043d\u0438 \u0441\u0438\u0442\u0443\u0430\u0446\u0438\u0438.",
-                            "level": "\u041c\u0430\u0458\u0447\u0438\u043d / 100%"
+                            "level": "\u041c\u0430\u0458\u0447\u0438\u043d / 100%",
+                            "list": [
+                                "Dobar dan, kako si?",
+                                "Hvala lijepa, to mi puno znači.",
+                                "Ajmo na kavu pa ćemo polako pričati.",
+                                "Polako, sve će doći na svoje."
+                            ]
                         }
                     }
                 },
@@ -799,27 +829,57 @@
                         "en": {
                             "title": "English",
                             "text": "Very strong working proficiency; I use English daily for technical documentation, learning, and professional communication.",
-                            "level": "C2 / 98%"
+                            "level": "C2 / 98%",
+                            "list": [
+                                "Hi, how are you doing today?",
+                                "A cup of tea fixes more than expected.",
+                                "Queue first, then improvise.",
+                                "Sorry can be politeness, not guilt."
+                            ]
                         },
                         "de": {
                             "title": "Englisch",
                             "text": "Sehr gute Arbeitssprache; ich nutze Englisch t\u00e4glich f\u00fcr technische Dokumentation, Lernen und professionelle Kommunikation.",
-                            "level": "C2 / 98%"
+                            "level": "C2 / 98%",
+                            "list": [
+                                "Hi, how are you doing today?",
+                                "A cup of tea fixes more than expected.",
+                                "Queue first, then improvise.",
+                                "Sorry can be politeness, not guilt."
+                            ]
                         },
                         "hr": {
                             "title": "Engleski",
                             "text": "Vrlo sna\u017eno radno znanje; svakodnevno koristim engleski za tehni\u010dku dokumentaciju, u\u010denje i profesionalnu komunikaciju.",
-                            "level": "C2 / 98%"
+                            "level": "C2 / 98%",
+                            "list": [
+                                "Hi, how are you doing today?",
+                                "A cup of tea fixes more than expected.",
+                                "Queue first, then improvise.",
+                                "Sorry can be politeness, not guilt."
+                            ]
                         },
                         "tr": {
                             "title": "\u0130ngilizce",
                             "text": "\u0130yi d\u00fczeyde, \u00f6zellikle teknik dok\u00fcmanlar ve g\u00fcnl\u00fck ileti\u015fim i\u00e7in rahat\u00e7a kullanabiliyorum.",
-                            "level": "\u0130leri / 98%"
+                            "level": "\u0130leri / 98%",
+                            "list": [
+                                "Hi, how are you doing today?",
+                                "A cup of tea fixes more than expected.",
+                                "Queue first, then improvise.",
+                                "Sorry can be politeness, not guilt."
+                            ]
                         },
                         "mk": {
                             "title": "\u0410\u043d\u0433\u043b\u0438\u0441\u043a\u0438",
                             "text": "\u041c\u043d\u043e\u0433\u0443 \u0434\u043e\u0431\u0440\u043e \u043d\u0438\u0432\u043e \u0437\u0430 \u0440\u0430\u0431\u043e\u0442\u0430; \u0433\u043e \u043a\u043e\u0440\u0438\u0441\u0442\u0430\u043c \u0437\u0430 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u0458\u0430, \u0443\u0447\u0435\u045a\u0435 \u0438 \u043f\u0440\u043e\u0444\u0435\u0441\u0438\u043e\u043d\u0430\u043b\u043d\u0430 \u043a\u043e\u043c\u0443\u043d\u0438\u043a\u0430\u0446\u0438\u0458\u0430.",
-                            "level": "C2 / 98%"
+                            "level": "C2 / 98%",
+                            "list": [
+                                "Hi, how are you doing today?",
+                                "A cup of tea fixes more than expected.",
+                                "Queue first, then improvise.",
+                                "Sorry can be politeness, not guilt."
+                            ]
                         }
                     }
                 },
@@ -840,27 +900,57 @@
                         "en": {
                             "title": "German",
                             "text": "Comfortable in everyday and professional contexts; I can discuss technical topics and integrate well in German-speaking teams.",
-                            "level": "C1-C2 / 95%"
+                            "level": "C1-C2 / 95%",
+                            "list": [
+                                "Guten Tag, wie geht es dir?",
+                                "Ein Kaffee und ein Brötchen gehen fast immer.",
+                                "Ordnung ist gut, aber Freundlichkeit ist besser.",
+                                "Bis später heißt nicht für immer."
+                            ]
                         },
                         "de": {
                             "title": "Deutsch",
                             "text": "Sicher im Alltag und Beruf; ich kann technische Themen besprechen und mich gut in deutschsprachige Teams integrieren.",
-                            "level": "C1-C2 / 95%"
+                            "level": "C1-C2 / 95%",
+                            "list": [
+                                "Guten Tag, wie geht es dir?",
+                                "Ein Kaffee und ein Brötchen gehen fast immer.",
+                                "Ordnung ist gut, aber Freundlichkeit ist besser.",
+                                "Bis später heißt nicht für immer."
+                            ]
                         },
                         "hr": {
                             "title": "Njema\u010dki",
                             "text": "Siguran u svakodnevnim i poslovnim situacijama; mogu raspravljati o tehni\u010dkim temama i dobro funkcionirati u njema\u010dkim timovima.",
-                            "level": "C1-C2 / 95%"
+                            "level": "C1-C2 / 95%",
+                            "list": [
+                                "Guten Tag, wie geht es dir?",
+                                "Ein Kaffee und ein Brötchen gehen fast immer.",
+                                "Ordnung ist gut, aber Freundlichkeit ist besser.",
+                                "Bis später heißt nicht für immer."
+                            ]
                         },
                         "tr": {
                             "title": "Almanca",
                             "text": "G\u00fcnl\u00fck hayat ve i\u015f ortam\u0131nda kendimi rahat ifade edebiliyorum.",
-                            "level": "Orta-ileri / 95%"
+                            "level": "Orta-ileri / 95%",
+                            "list": [
+                                "Guten Tag, wie geht es dir?",
+                                "Ein Kaffee und ein Brötchen gehen fast immer.",
+                                "Ordnung ist gut, aber Freundlichkeit ist besser.",
+                                "Bis später heißt nicht für immer."
+                            ]
                         },
                         "mk": {
                             "title": "\u0413\u0435\u0440\u043c\u0430\u043d\u0441\u043a\u0438",
                             "text": "\u0414\u043e\u0431\u0440\u043e \u043d\u0438\u0432\u043e \u0437\u0430 \u0441\u0435\u043a\u043e\u0458\u0434\u043d\u0435\u0432\u043d\u0430 \u043a\u043e\u043c\u0443\u043d\u0438\u043a\u0430\u0446\u0438\u0458\u0430 \u0438 \u0440\u0430\u0431\u043e\u0442\u0430, \u043e\u0441\u043e\u0431\u0435\u043d\u043e \u0432\u043e \u0442\u0435\u0445\u043d\u0438\u0447\u043a\u0438 \u0441\u0440\u0435\u0434\u0438\u043d\u0438.",
-                            "level": "C1-C2 / 95%"
+                            "level": "C1-C2 / 95%",
+                            "list": [
+                                "Guten Tag, wie geht es dir?",
+                                "Ein Kaffee und ein Brötchen gehen fast immer.",
+                                "Ordnung ist gut, aber Freundlichkeit ist besser.",
+                                "Bis später heißt nicht für immer."
+                            ]
                         }
                     }
                 },
@@ -881,27 +971,57 @@
                         "en": {
                             "title": "Macedonian",
                             "text": "Basic understanding and communication, especially with speakers from the region; still improving over time.",
-                            "level": "A2 / 40%"
+                            "level": "A2 / 40%",
+                            "list": [
+                                "Здраво, како си?",
+                                "Фала многу, тоа многу значи.",
+                                "Ајде на кафе, таму почнува муабет.",
+                                "Полека, ќе се среди."
+                            ]
                         },
                         "de": {
                             "title": "Mazedonisch",
                             "text": "Grundkenntnisse in Verst\u00e4ndnis und einfacher Kommunikation, besonders mit Sprechern aus der Region.",
-                            "level": "A2 / 40%"
+                            "level": "A2 / 40%",
+                            "list": [
+                                "Здраво, како си?",
+                                "Фала многу, тоа многу значи.",
+                                "Ајде на кафе, таму почнува муабет.",
+                                "Полека, ќе се среди."
+                            ]
                         },
                         "hr": {
                             "title": "Makedonski",
                             "text": "Osnovno razumijevanje i jednostavna komunikacija, posebno s govornicima iz regije; znanje polako raste.",
-                            "level": "A2 / 40%"
+                            "level": "A2 / 40%",
+                            "list": [
+                                "Здраво, како си?",
+                                "Фала многу, тоа многу значи.",
+                                "Ајде на кафе, таму почнува муабет.",
+                                "Полека, ќе се среди."
+                            ]
                         },
                         "tr": {
                             "title": "Makedonca",
                             "text": "Temel seviyede anlayabiliyorum, b\u00f6lgede konu\u015fulan dile biraz a\u015finay\u0131m.",
-                            "level": "Temel / 40%"
+                            "level": "Temel / 40%",
+                            "list": [
+                                "Здраво, како си?",
+                                "Фала многу, тоа многу значи.",
+                                "Ајде на кафе, таму почнува муабет.",
+                                "Полека, ќе се среди."
+                            ]
                         },
                         "mk": {
                             "title": "\u041c\u0430\u043a\u0435\u0434\u043e\u043d\u0441\u043a\u0438",
                             "text": "\u041e\u0441\u043d\u043e\u0432\u043d\u043e \u043d\u0438\u0432\u043e \u043d\u0430 \u043a\u043e\u043c\u0443\u043d\u0438\u043a\u0430\u0446\u0438\u0458\u0430; \u0440\u0430\u0437\u0431\u0438\u0440\u0430\u043c \u0435\u0434\u043d\u043e\u0441\u0442\u0430\u0432\u043d\u0438 \u0440\u0435\u0447\u0435\u043d\u0438\u0446\u0438 \u0438 \u0438\u0437\u0440\u0430\u0437\u0438 \u0438 \u043f\u043e\u0441\u0442\u0435\u043f\u0435\u043d\u043e \u043d\u0430\u043f\u0440\u0435\u0434\u0443\u0432\u0430\u043c.",
-                            "level": "A2 / 40%"
+                            "level": "A2 / 40%",
+                            "list": [
+                                "Здраво, како си?",
+                                "Фала многу, тоа многу значи.",
+                                "Ајде на кафе, таму почнува муабет.",
+                                "Полека, ќе се среди."
+                            ]
                         }
                     }
                 },
@@ -922,27 +1042,57 @@
                         "en": {
                             "title": "Turkish",
                             "text": "Very basic level; I understand a few common phrases and am slowly building up more vocabulary.",
-                            "level": "Beginner / 15%"
+                            "level": "Beginner / 15%",
+                            "list": [
+                                "Merhaba, nasılsın?",
+                                "Bir çay molası her şeyi yumuşatır.",
+                                "Eline sağlık küçük ama güzel bir nezakettir.",
+                                "Görüşürüz bazen gerçekten yakında demektir."
+                            ]
                         },
                         "de": {
                             "title": "T\u00fcrkisch",
                             "text": "Sehr einfaches Niveau; ich verstehe einige h\u00e4ufige Ausdr\u00fccke und baue langsam Wortschatz auf.",
-                            "level": "Anf\u00e4nger / 15%"
+                            "level": "Anf\u00e4nger / 15%",
+                            "list": [
+                                "Merhaba, nasılsın?",
+                                "Bir çay molası her şeyi yumuşatır.",
+                                "Eline sağlık küçük ama güzel bir nezakettir.",
+                                "Görüşürüz bazen gerçekten yakında demektir."
+                            ]
                         },
                         "hr": {
                             "title": "Turski",
                             "text": "Vrlo osnovna razina; razumijem nekoliko naj\u010de\u0161\u0107ih fraza i polako u\u010dim nove rije\u010di.",
-                            "level": "Po\u010detnik / 15%"
+                            "level": "Po\u010detnik / 15%",
+                            "list": [
+                                "Merhaba, nasılsın?",
+                                "Bir çay molası her şeyi yumuşatır.",
+                                "Eline sağlık küçük ama güzel bir nezakettir.",
+                                "Görüşürüz bazen gerçekten yakında demektir."
+                            ]
                         },
                         "tr": {
                             "title": "T\u00fcrk\u00e7e",
                             "text": "\u015eimdilik sadece birka\u00e7 temel kelime ve ifade biliyorum, ama zamanla geli\u015ftirmek istiyorum.",
-                            "level": "Ba\u015flang\u0131\u00e7 / 15%"
+                            "level": "Ba\u015flang\u0131\u00e7 / 15%",
+                            "list": [
+                                "Merhaba, nasılsın?",
+                                "Bir çay molası her şeyi yumuşatır.",
+                                "Eline sağlık küçük ama güzel bir nezakettir.",
+                                "Görüşürüz bazen gerçekten yakında demektir."
+                            ]
                         },
                         "mk": {
                             "title": "\u0422\u0443\u0440\u0441\u043a\u0438",
                             "text": "\u041c\u043d\u043e\u0433\u0443 \u043e\u0441\u043d\u043e\u0432\u043d\u043e \u043d\u0438\u0432\u043e; \u0437\u043d\u0430\u043c \u043d\u0435\u043a\u043e\u043b\u043a\u0443 \u0438\u0437\u0440\u0430\u0437\u0438 \u0438 \u043f\u043e\u043b\u0435\u043a\u0430 \u0443\u0447\u0430\u043c \u043d\u043e\u0432\u0438 \u0437\u0431\u043e\u0440\u043e\u0432\u0438.",
-                            "level": "A1 / 15%"
+                            "level": "A1 / 15%",
+                            "list": [
+                                "Merhaba, nasılsın?",
+                                "Bir çay molası her şeyi yumuşatır.",
+                                "Eline sağlık küçük ama güzel bir nezakettir.",
+                                "Görüşürüz bazen gerçekten yakında demektir."
+                            ]
                         }
                     }
                 },
@@ -963,27 +1113,57 @@
                         "en": {
                             "title": "Chinese (Mandarin)",
                             "text": "Just starting out; I know a few basic words and phrases and am curious to explore the language more over time.",
-                            "level": "Absolute beginner / 1%"
+                            "level": "Absolute beginner / 1%",
+                            "list": [
+                                "你好，很高兴认识你。",
+                                "谢谢，你太客气了。",
+                                "我们先喝茶，再慢慢聊天。",
+                                "有空一起吃饭吧。"
+                            ]
                         },
                         "de": {
                             "title": "Chinesisch (Mandarin)",
                             "text": "Ganz am Anfang; ich kenne nur ein paar grundlegende W\u00f6rter und Ausdr\u00fccke und m\u00f6chte die Sprache nach und nach besser kennenlernen.",
-                            "level": "Anf\u00e4nger / 1%"
+                            "level": "Anf\u00e4nger / 1%",
+                            "list": [
+                                "你好，很高兴认识你。",
+                                "谢谢，你太客气了。",
+                                "我们先喝茶，再慢慢聊天。",
+                                "有空一起吃饭吧。"
+                            ]
                         },
                         "hr": {
                             "title": "Kineski (mandarinski)",
                             "text": "Tek sam na po\u010detku; znam par osnovnih rije\u010di i fraza i rado bih s vremenom vi\u0161e upoznao jezik.",
-                            "level": "Potpuni po\u010detnik / 1%"
+                            "level": "Potpuni po\u010detnik / 1%",
+                            "list": [
+                                "你好，很高兴认识你。",
+                                "谢谢，你太客气了。",
+                                "我们先喝茶，再慢慢聊天。",
+                                "有空一起吃饭吧。"
+                            ]
                         },
                         "tr": {
                             "title": "\u00c7ince (Mandarin)",
                             "text": "Hen\u00fcz en ba\u015ftay\u0131m; sadece birka\u00e7 temel kelime biliyorum ve dili yava\u015f yava\u015f ke\u015ffetmek istiyorum.",
-                            "level": "Ba\u015flang\u0131\u00e7 / 1%"
+                            "level": "Ba\u015flang\u0131\u00e7 / 1%",
+                            "list": [
+                                "你好，很高兴认识你。",
+                                "谢谢，你太客气了。",
+                                "我们先喝茶，再慢慢聊天。",
+                                "有空一起吃饭吧。"
+                            ]
                         },
                         "mk": {
                             "title": "\u041a\u0438\u043d\u0435\u0441\u043a\u0438 (\u041c\u0430\u043d\u0434\u0430\u0440\u0438\u043d)",
                             "text": "\u0421\u0430\u043c\u043e \u043f\u043e\u0447\u0435\u0442\u043d\u043e \u043d\u0438\u0432\u043e; \u0437\u043d\u0430\u043c \u043d\u0435\u043a\u043e\u043b\u043a\u0443 \u043e\u0441\u043d\u043e\u0432\u043d\u0438 \u0437\u0431\u043e\u0440\u043e\u0432\u0438 \u0438 \u0438\u0437\u0440\u0430\u0437\u0438 \u0438 \u0441\u0430\u043a\u0430\u043c \u0441\u043e \u0432\u0440\u0435\u043c\u0435 \u043f\u043e\u0434\u043e\u0431\u0440\u043e \u0434\u0430 \u0433\u043e \u0437\u0430\u043f\u043e\u0437\u043d\u0430\u0430\u043c \u0458\u0430\u0437\u0438\u043a\u043e\u0442.",
-                            "level": "\u041f\u043e\u0447\u0435\u0442\u043d\u0438\u043a / 1%"
+                            "level": "\u041f\u043e\u0447\u0435\u0442\u043d\u0438\u043a / 1%",
+                            "list": [
+                                "你好，很高兴认识你。",
+                                "谢谢，你太客气了。",
+                                "我们先喝茶，再慢慢聊天。",
+                                "有空一起吃饭吧。"
+                            ]
                         }
                     }
                 }

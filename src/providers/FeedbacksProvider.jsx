@@ -18,6 +18,11 @@ import GalleryModal from "../components/modals/GalleryModal.jsx"
 import PhoneQrModal from "../components/modals/PhoneQrModal.jsx"
 import ResumeEmailModal from "../components/modals/ResumeEmailModal.jsx"
 
+const CURSOR_MODES = {
+    MAGIC: "magic",
+    MEDIEVAL: "medieval"
+}
+
 function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
     const scheduler = useScheduler()
     const language = useLanguage()
@@ -26,7 +31,15 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
 
     const [spinnerActivities, setSpinnerActivities] = useState([])
     const [animatedCursorEnabled, setAnimatedCursorEnabled] = useState(false)
-    const [animatedCursorActive, setAnimatedCursorActive] = useState(true)
+    const [cursorMode, setCursorModeState] = useState(() => {
+        if(typeof window === "undefined")
+            return CURSOR_MODES.MAGIC
+
+        const savedCursorMode = utils.storage.getPreferredCursorMode()
+        return Object.values(CURSOR_MODES).includes(savedCursorMode) ?
+            savedCursorMode :
+            CURSOR_MODES.MAGIC
+    })
     const [animatedCursorLocked, setAnimatedCursorLocked] = useState(false)
     const [displayingNotification, setDisplayingNotification] = useState(null)
     const [displayingYoutubeVideo, setDisplayingYoutubeVideo] = useState(null)
@@ -44,6 +57,24 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
             viewport.isBreakpoint("md")
         )
     }, [canHaveAnimatedCursor, viewport.innerWidth])
+
+    /** @listens cursorMode **/
+    useEffect(() => {
+        utils.storage.setPreferredCursorMode(cursorMode)
+    }, [cursorMode])
+
+    /** @listens animatedCursorEnabled|cursorMode **/
+    useEffect(() => {
+        if(typeof document === "undefined")
+            return
+
+        if(!animatedCursorEnabled) {
+            document.documentElement.removeAttribute("data-cursor-mode")
+            return
+        }
+
+        document.documentElement.setAttribute("data-cursor-mode", cursorMode)
+    }, [animatedCursorEnabled, cursorMode])
 
     const setActivitySpinnerVisible = (visible, activityId, message) => {
         setSpinnerActivities(prev => {
@@ -69,15 +100,29 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
         return Boolean(spinnerActivities.length)
     }
 
-    const toggleAnimatedCursorActive = (withNotification) => {
-        const newValue = !animatedCursorActive
-        setAnimatedCursorActive(newValue)
+    const setCursorMode = (mode) => {
+        if(!Object.values(CURSOR_MODES).includes(mode))
+            return
+
+        setCursorModeState(mode)
+    }
+
+    const toggleCursorMode = (withNotification) => {
+        const nextMode = cursorMode === CURSOR_MODES.MEDIEVAL ?
+            CURSOR_MODES.MAGIC :
+            CURSOR_MODES.MEDIEVAL
+
+        setCursorModeState(nextMode)
         if(!withNotification)
             return
 
         displayNotification(
-            language.getString("magic_cursor"),
-            language.getString(newValue ? "activate_magic_cursor_message" : "deactivate_magic_cursor_message"),
+            language.getString("cursor_mode"),
+            language.getString(
+                nextMode === CURSOR_MODES.MEDIEVAL ?
+                    "switch_to_medieval_cursor_message" :
+                    "switch_to_magic_cursor_message"
+            ),
             "default",
             {
                 compact: true,
@@ -171,10 +216,10 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
             isShowingActivitySpinner,
 
             animatedCursorEnabled,
-            animatedCursorActive,
-            setAnimatedCursorActive,
+            cursorMode,
+            setCursorMode,
             setAnimatedCursorLocked,
-            toggleAnimatedCursorActive,
+            toggleCursorMode,
 
             displayNotification,
             killNotification,
@@ -197,7 +242,7 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
             <ActivitySpinner activities={spinnerActivities}
                              defaultMessage={language.getString("loading")}/>
 
-            <MouseLayer active={animatedCursorEnabled && animatedCursorActive}
+            <MouseLayer active={animatedCursorEnabled && cursorMode === CURSOR_MODES.MAGIC}
                         hidden={animatedCursorLocked}
                         isBlockedByOverlay={isBlockedByOverlay()}/>
 
@@ -238,10 +283,10 @@ const FeedbacksContext = createContext(null)
  *    isShowingActivitySpinner: Function,
  *
  *    animatedCursorEnabled: Boolean,
- *    animatedCursorActive: Boolean,
- *    setAnimatedCursorActive: Function,
+ *    cursorMode: String,
+ *    setCursorMode: Function,
  *    setAnimatedCursorLocked: Function,
- *    toggleAnimatedCursorActive: Function,
+ *    toggleCursorMode: Function,
  *
  *    displayNotification: Function,
  *    killNotification: Function,

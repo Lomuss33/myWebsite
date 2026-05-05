@@ -1,6 +1,13 @@
 {
     "locales": {
         "en": {
+            "cursor_mode": "Cursor Mode",
+            "cursor_mode_magic": "Magic",
+            "cursor_mode_medieval": "Medieval",
+            "switch_to_medieval_cursor": "Switch to Medieval Cursor",
+            "switch_to_medieval_cursor_message": "The cursor mode has been switched to [[Medieval]].",
+            "switch_to_magic_cursor": "Switch to Magic Cursor",
+            "switch_to_magic_cursor_message": "The cursor mode has been switched to [[Magic]].",
             "about_video": "About Video",
             "salt_shaker_grain_of_salt": "Take it with a grain of salt.",
             "activate_magic_cursor": "Activate Magic Cursor",
@@ -80,6 +87,13 @@
             "yes": "Yes"
         },
         "de": {
+            "cursor_mode": "Cursor-Modus",
+            "cursor_mode_magic": "Magisch",
+            "cursor_mode_medieval": "Mittelalterlich",
+            "switch_to_medieval_cursor": "Zum mittelalterlichen Cursor wechseln",
+            "switch_to_medieval_cursor_message": "Der Cursor-Modus wurde auf [[Mittelalterlich]] umgestellt.",
+            "switch_to_magic_cursor": "Zum magischen Cursor wechseln",
+            "switch_to_magic_cursor_message": "Der Cursor-Modus wurde auf [[Magisch]] umgestellt.",
             "about_video": "Über Video",
             "salt_shaker_grain_of_salt": "Nimm es mit einer Prise Salz.",
             "activate_magic_cursor": "Aktiviere Magischer Cursor",
@@ -159,6 +173,13 @@
             "yes": "Ja"
         },
         "hr": {
+            "cursor_mode": "Način kursora",
+            "cursor_mode_magic": "Magični",
+            "cursor_mode_medieval": "Srednjovjekovni",
+            "switch_to_medieval_cursor": "Prebaci na srednjovjekovni kursor",
+            "switch_to_medieval_cursor_message": "Način kursora je prebačen na [[srednjovjekovni]].",
+            "switch_to_magic_cursor": "Prebaci na magični kursor",
+            "switch_to_magic_cursor_message": "Način kursora je prebačen na [[magični]].",
             "about_video": "Video O",
             "salt_shaker_grain_of_salt": "Uzmi to s prstohvatom soli.",
             "activate_magic_cursor": "Aktiviraj Magični Kursor",
@@ -238,6 +259,13 @@
             "yes": "Da"
         },
         "tr": {
+            "cursor_mode": "İmleç Modu",
+            "cursor_mode_magic": "Sihirli",
+            "cursor_mode_medieval": "Orta Çağ",
+            "switch_to_medieval_cursor": "Orta Çağ imlecine geç",
+            "switch_to_medieval_cursor_message": "İmleç modu [[Orta Çağ]] olarak değiştirildi.",
+            "switch_to_magic_cursor": "Sihirli imlece geç",
+            "switch_to_magic_cursor_message": "İmleç modu [[Sihirli]] olarak değiştirildi.",
             "about_video": "Hakkında Video",
             "salt_shaker_grain_of_salt": "Bunu biraz şüpheyle karşıla.",
             "activate_magic_cursor": "Sihirli İmleci Aktif Et",

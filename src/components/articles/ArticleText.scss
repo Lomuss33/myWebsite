@@ -207,28 +207,35 @@ article#article-3-section-experience {
     }
 
     div.article-text-item.article-text-item-flow-card {
-        --experience-card-accent: #f2b544;
-        --experience-card-accent-soft: rgba(242, 181, 68, 0.16);
-        --experience-card-accent-contrast: #f8fafc;
+        --experience-card-base-hue: 42deg;
+        --experience-card-hue-shift: 0deg;
+        --experience-card-accent-hue: calc(var(--experience-card-base-hue) + var(--experience-card-hue-shift));
+        --experience-card-accent: hsl(var(--experience-card-accent-hue) 86% 61%);
+        --experience-card-accent-soft: hsl(var(--experience-card-accent-hue) 86% 61% / 0.16);
+        --experience-card-accent-soft-strong: hsl(var(--experience-card-accent-hue) 86% 61% / 0.28);
         position: relative;
         overflow: clip;
         padding: clamp(18px, 2vw, 30px);
         border-radius: 28px;
-        border: 1px solid rgba(242, 181, 68, 0.22);
+        border: 1px solid color-mix(in srgb, var(--experience-card-accent) 24%, rgba(255, 255, 255, 0.08));
         background:
+            radial-gradient(circle at top left, color-mix(in srgb, var(--experience-card-accent) 14%, transparent), transparent 32%),
             linear-gradient(180deg, rgba(18, 24, 34, 0.98), rgba(7, 11, 18, 0.98));
         box-shadow:
             0 20px 48px rgba(0, 0, 0, 0.34),
             inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        transition:
+            transform 220ms ease,
+            border-color 220ms ease,
+            box-shadow 220ms ease,
+            background 220ms ease;
 
         &[data-flow-card-index="2"] {
-            --experience-card-accent: #70b8ff;
-            --experience-card-accent-soft: rgba(112, 184, 255, 0.16);
+            --experience-card-base-hue: 208deg;
         }
 
         &[data-flow-card-index="3"] {
-            --experience-card-accent: #f68f66;
-            --experience-card-accent-soft: rgba(246, 143, 102, 0.16);
+            --experience-card-base-hue: 16deg;
         }
 
         &::before {
@@ -236,75 +243,120 @@ article#article-3-section-experience {
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(circle at top right, color-mix(in srgb, var(--experience-card-accent) 16%, transparent) 0%, transparent 55%),
-                radial-gradient(circle at bottom left, color-mix(in srgb, var(--experience-card-accent) 9%, transparent) 0%, transparent 42%);
+                radial-gradient(circle at top right, color-mix(in srgb, var(--experience-card-accent) 18%, transparent) 0%, transparent 55%),
+                radial-gradient(circle at bottom left, color-mix(in srgb, var(--experience-card-accent) 11%, transparent) 0%, transparent 42%);
             pointer-events: none;
         }
-    }
 
-    div.article-text-flow-card-header {
-        position: relative;
-        z-index: 1;
-        display: block;
-        margin-bottom: 18px;
-
-        @include media-breakpoint-down(sm) {
-            margin-bottom: 14px;
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 1px;
+            border-radius: inherit;
+            background:
+                linear-gradient(
+                    135deg,
+                    color-mix(in srgb, var(--experience-card-accent) 7%, transparent),
+                    transparent 22%,
+                    transparent 78%,
+                    color-mix(in srgb, var(--experience-card-accent) 5%, transparent)
+                );
+            opacity: 0.8;
+            pointer-events: none;
         }
-    }
-
-    p.article-text-flow-card-heading {
-        margin: 0;
-        max-width: min(100%, 46rem);
-        color: #f8fafc;
-        font-size: clamp(1.14rem, 0.85vw + 0.98rem, 1.5rem);
-        line-height: 1.18;
-        font-weight: 760;
-        letter-spacing: -0.03em;
-        text-wrap: pretty;
-        overflow-wrap: anywhere;
     }
 
     div.article-text-flow-card-story {
         --pretext-draggable-inline-icon-text-accent: var(--experience-card-accent);
         --pretext-draggable-inline-icon-text-accent-soft: var(--experience-card-accent-soft);
         --pretext-draggable-inline-icon-text-surface: color-mix(in srgb, var(--experience-card-accent) 6%, transparent);
+        --pretext-draggable-inline-icon-text-handle-size: clamp(60px, 5.4vw, 78px);
         position: relative;
         z-index: 1;
     }
 
-    div.article-text-flow-card-impact-list {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 10px;
-    }
-
-    span.article-text-flow-card-impact-pill {
-        display: inline-flex;
-        align-items: center;
-        min-height: 34px;
-        padding: 7px 14px;
-        border-radius: 999px;
-        border: 1px solid color-mix(in srgb, var(--experience-card-accent) 24%, rgba(255, 255, 255, 0.08));
-        background: color-mix(in srgb, var(--experience-card-accent) 10%, rgba(255, 255, 255, 0.02));
-        color: #dbe7f5;
-        font-size: 0.9rem;
-        font-weight: 600;
-        letter-spacing: 0.01em;
-    }
-
-    div.pretext-draggable-inline-icon-text-measure,
-    div.pretext-draggable-inline-icon-text-lines {
+    p.pretext-draggable-inline-icon-text-intro,
+    div.pretext-draggable-inline-icon-text-body,
+    p.pretext-draggable-inline-icon-text-paragraph {
         font-size: clamp(1rem, 0.3vw + 0.98rem, 1.14rem);
-        line-height: 1.9;
+        line-height: 1.82;
     }
 
-    div.pretext-draggable-inline-icon-text-canvas {
-        margin-top: 8px;
-        margin-bottom: 2px;
+    p.pretext-draggable-inline-icon-text-intro {
+        max-width: 26ch;
+        margin: 0 auto;
+        color: #f8fbff;
+        font-size: clamp(1.08rem, 0.8vw + 0.92rem, 1.42rem);
+        font-weight: 650;
+        line-height: 1.55;
+        text-wrap: balance;
+        letter-spacing: -0.015em;
+    }
+
+    div.pretext-draggable-inline-icon-text-body {
+        gap: 1rem;
+        max-width: min(100%, 64ch);
+        margin: 0 auto;
+    }
+
+    p.pretext-draggable-inline-icon-text-paragraph {
+        color: #d9e6f5;
+    }
+
+    div.pretext-draggable-inline-icon-text-rail-block {
+        margin: clamp(1.1rem, 1.4vw, 1.8rem) 0;
+    }
+
+    div.pretext-draggable-inline-icon-text-rail-hit-area {
+        width: min(100%, 520px);
+        height: 86px;
+    }
+
+    span.pretext-draggable-inline-icon-text-rail-line {
+        height: 3px;
+        background: linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0) 0%,
+            color-mix(in srgb, var(--experience-card-accent) 24%, transparent) 10%,
+            color-mix(in srgb, var(--experience-card-accent) 88%, white 10%) 50%,
+            color-mix(in srgb, var(--experience-card-accent) 24%, transparent) 90%,
+            rgba(0, 0, 0, 0) 100%
+        );
+    }
+
+    span.pretext-draggable-inline-icon-text-rail-progress {
+        height: 3px;
+        background: linear-gradient(
+            90deg,
+            color-mix(in srgb, var(--experience-card-accent) 22%, transparent),
+            color-mix(in srgb, var(--experience-card-accent) 92%, white 10%)
+        );
+        box-shadow: 0 0 20px color-mix(in srgb, var(--experience-card-accent) 34%, transparent);
+    }
+
+    span.pretext-draggable-inline-icon-text-rail-dot {
+        width: 11px;
+        height: 11px;
+        background-color: color-mix(in srgb, var(--experience-card-accent) 32%, rgba(255, 255, 255, 0.2));
+        border-color: color-mix(in srgb, var(--experience-card-accent) 56%, rgba(255, 255, 255, 0.2));
+    }
+
+    button.pretext-draggable-inline-icon-text-handle {
+        border-color: color-mix(in srgb, var(--experience-card-accent) 40%, rgba(255, 255, 255, 0.12));
+        background:
+            radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0) 45%),
+            linear-gradient(
+                180deg,
+                color-mix(in srgb, var(--experience-card-accent) 26%, rgba(10, 14, 24, 0.94)),
+                rgba(10, 14, 24, 0.96)
+            );
+        box-shadow:
+            0 18px 34px rgba(0, 0, 0, 0.26),
+            0 0 0 10px color-mix(in srgb, var(--experience-card-accent) 14%, transparent);
+    }
+
+    span.pretext-draggable-inline-icon-text-handle-icon {
+        color: #f8fbff;
     }
 
     span.pretext-draggable-inline-icon-text-fragment,
@@ -343,7 +395,7 @@ article#article-3-section-experience {
     @media (hover: hover) and (pointer: fine) {
         div.article-text-item.article-text-item-flow-card:hover {
             transform: translateY(-2px);
-            border-color: color-mix(in srgb, var(--experience-card-accent) 36%, rgba(255, 255, 255, 0.12));
+            border-color: color-mix(in srgb, var(--experience-card-accent) 44%, rgba(255, 255, 255, 0.12));
             box-shadow:
                 0 24px 58px rgba(0, 0, 0, 0.40),
                 inset 0 1px 0 rgba(255, 255, 255, 0.06);

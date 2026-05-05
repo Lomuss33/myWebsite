@@ -8,6 +8,7 @@ function TextArea({
    name = "",
    model = "",
    setModel = null,
+   faIconPrefix = "",
    required = false,
    className = "",
    placeholder = "",
@@ -52,6 +53,7 @@ function TextArea({
 
     return (
         <InputFieldWrapper isFocused={isFocused}
+                          faIconPrefix={faIconPrefix}
                           wrapperClassName={`input-field-wrapper-resizable`}>
             <textarea className={`form-control form-textarea ${focusClass} ${className}`}
                       id={id}

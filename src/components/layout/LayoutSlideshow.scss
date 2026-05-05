@@ -3,20 +3,10 @@
 div.layout-slideshow {
     display: grid;
     grid-template-columns: 1fr;
-    width: calc(100% + var(--default-card-spacing));
+    width: 100%;
     height: 100%;
-    padding: 0 3rem 0 calc(3rem + var(--default-card-spacing));
+    padding: 0;
     overflow-x: hidden;
-
-    @include media-breakpoint-down(xl) {
-        padding: 0 calc(var(--default-card-spacing) + 10px) 0 10px;
-        height: 100%;
-    }
-
-    @include media-breakpoint-down(lg) {
-        padding: 0 var(--default-card-spacing) 0 0;
-        height: 100%;
-    }
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         margin: 0;

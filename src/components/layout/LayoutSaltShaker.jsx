@@ -20,10 +20,10 @@ function LayoutSaltShaker() {
         "Take it with a grain of salt."
     )
     const isInteractiveDesktop = Boolean(feedbacks?.animatedCursorEnabled)
-    const isCursorActive = feedbacks?.animatedCursorActive ?? true
+    const isMedievalMode = feedbacks?.cursorMode === "medieval"
     const cursorActionLabel = language?.getStringOrFallback?.(
-        isCursorActive ? "deactivate_magic_cursor" : "activate_magic_cursor",
-        isCursorActive ? "Deactivate Magic Cursor" : "Activate Magic Cursor"
+        isMedievalMode ? "switch_to_magic_cursor" : "switch_to_medieval_cursor",
+        isMedievalMode ? "Switch to Magic Cursor" : "Switch to Medieval Cursor"
     )
 
     const pauseFor = (ms) => {
@@ -103,12 +103,12 @@ function LayoutSaltShaker() {
             return
         }
 
-        feedbacks.toggleAnimatedCursorActive(true)
+        feedbacks.toggleCursorMode(true)
     }
 
-    const stateClass = !isInteractiveDesktop || isCursorActive
-        ? "layout-salt-shaker-cursor-on"
-        : "layout-salt-shaker-cursor-off"
+    const stateClass = !isInteractiveDesktop || !isMedievalMode
+        ? "layout-salt-shaker-mode-magic"
+        : "layout-salt-shaker-mode-medieval"
     const interactiveClass = isInteractiveDesktop ? "layout-salt-shaker-interactive" : ""
     const pausedClass = (isPaused || isIdlePaused) ? "layout-salt-shaker-paused" : ""
 
@@ -126,7 +126,7 @@ function LayoutSaltShaker() {
                     type="button"
                     className={`layout-salt-shaker ${stateClass} ${interactiveClass}`.trim()}
                     aria-label={isInteractiveDesktop ? cursorActionLabel : tooltipLabel}
-                    aria-pressed={isInteractiveDesktop ? isCursorActive : undefined}
+                    aria-pressed={isInteractiveDesktop ? isMedievalMode : undefined}
                     onClick={handleDesktopClick}>
                 <SaltShakerSvg/>
             </button>

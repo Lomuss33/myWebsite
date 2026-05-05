@@ -117,14 +117,16 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
     flex-direction: column;
     width: 100%;
     padding: var(--content-padding);
+    padding-right: var(--experience-card-right-padding, 1.1rem);
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    border: 1px solid var(--card-border);
+    border: 1px solid var(--experience-card-border-current, var(--card-border));
     border-radius: $standard-border-radius;
     background:
         linear-gradient(140deg, var(--card-surface-top), var(--card-surface-bottom));
-    box-shadow: var(--card-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    box-shadow: var(--experience-card-shadow-current, var(--card-shadow)), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    transform: var(--experience-card-transform-current, translateY(0));
     transition:
         transform 180ms ease,
         border-color 180ms ease,
@@ -136,7 +138,13 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
         position: absolute;
         inset: 0;
         background:
-            radial-gradient(circle at top right, rgba(78, 163, 255, 0.14) 0%, transparent 58%),
+            radial-gradient(circle at top right, rgba(78, 163, 255, 0.16) 0%, transparent 56%),
+            radial-gradient(circle at right center, rgba(250, 204, 21, 0.10) 0%, transparent 38%),
+            linear-gradient(
+                90deg,
+                transparent calc(100% - var(--experience-card-scrim-width, 0px)),
+                rgba(5, 8, 16, var(--experience-card-scrim-opacity, 0)) 100%
+            ),
             linear-gradient(135deg, rgba(255, 255, 255, 0.035), transparent 48%);
         pointer-events: none;
         z-index: 0;
@@ -160,9 +168,9 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
 
     &:hover,
     &:focus-within {
-        transform: translateY(-2px);
-        border-color: color-mix(in srgb, var(--card-accent) 52%, var(--card-border) 48%);
-        box-shadow: var(--card-shadow-hover), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        transform: var(--experience-card-transform-current, translateY(-2px));
+        border-color: var(--experience-card-border-current, color-mix(in srgb, var(--card-accent) 52%, var(--card-border) 48%));
+        box-shadow: var(--experience-card-shadow-current, var(--card-shadow-hover)), inset 0 1px 0 rgba(255, 255, 255, 0.05);
         filter: saturate(1.03);
     }
 }

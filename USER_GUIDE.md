@@ -52,8 +52,9 @@ This file explains the visible clickable controls in the website and what each o
 
 ### Magic cursor shaker
 
-- On supported desktop layouts, clicking the salt shaker turns the animated cursor effect on or off.
-- The shaker keeps its tooltip and also shows the current cursor state visually.
+- On supported desktop layouts, clicking the salt shaker switches between the `Magic` cursor and the `Medieval` cursor theme.
+- There is no desktop off state anymore; the toggle is always one mode or the other.
+- The shaker keeps its tooltip and also shows the current cursor mode visually.
 - On touch or unsupported layouts, the shaker stays informational and does not enable the custom cursor.
 
 ### Resume download

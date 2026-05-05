@@ -757,13 +757,37 @@
         linear-gradient(180deg, #fffdf9 0%, #f8fbff 50%, #fff3f7 100%);
 }
 
+[data-theme="light"] section#section-contact {
+    background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.08) 0%, transparent 30%),
+        radial-gradient(circle at top right, rgba(250, 204, 21, 0.08) 0%, transparent 26%),
+        linear-gradient(180deg, #fbfdff 0%, #f6f9fc 48%, #eef3fa 100%);
+    color: #0f172a;
+}
+
+[data-theme="light"] section#section-contact div.section-content-border-decoration-top-left {
+    border-top-color: #2563eb;
+    border-left-color: #f59e0b;
+    opacity: 0.45;
+}
+
+[data-theme="light"] section#section-contact h4.article-title,
+[data-theme="light"] section#section-contact div.article-content {
+    color: #0f172a;
+}
+
+[data-theme="light"] section#section-contact h4.article-title span.article-title-prefix {
+    color: #2563eb;
+}
+
 [data-theme="light"] section#section-about div.section-content-border-decoration-top-left,
 [data-theme="light"] section#section-education div.section-content-border-decoration-top-left,
 [data-theme="light"] section#section-experience div.section-content-border-decoration-top-left,
 [data-theme="light"] section#section-my-software div.section-content-border-decoration-top-left,
 [data-theme="light"] section#section-my-hardware div.section-content-border-decoration-top-left,
 [data-theme="light"] section#section-my-writings div.section-content-border-decoration-top-left,
-[data-theme="light"] section#section-my-art div.section-content-border-decoration-top-left {
+[data-theme="light"] section#section-my-art div.section-content-border-decoration-top-left,
+[data-theme="light"] section#section-contact div.section-content-border-decoration-top-left {
     opacity: 0.45;
 }
 
@@ -806,12 +830,14 @@
     border-color: rgba(245, 158, 11, 0.28);
 }
 
+[data-theme="light"] article#article-1-section-my-writings div.article-timeline-item-avatar.article-timeline-item-avatar--button {
+    border-color: transparent;
+    box-shadow: none;
+}
+
 [data-theme="light"] article#article-1-section-my-writings a.article-timeline-item-avatar-link:hover div.article-timeline-item-avatar--button {
-    border-color: rgba(245, 158, 11, 0.38);
-    box-shadow:
-        0 0 0 4px rgba(99, 102, 241, 0.08),
-        0 0 0 1px rgba(255, 255, 255, 0.12) inset,
-        0 16px 34px rgba(15, 23, 42, 0.10);
+    border-color: transparent;
+    box-shadow: none;
 }
 
 [data-theme="light"] article#article-1-section-my-art ul.article-timeline-items {
@@ -1067,6 +1093,13 @@
         0 0 0 4px rgba(99, 102, 241, 0.08),
         0 0 0 1px rgba(255, 255, 255, 0.12) inset,
         0 16px 34px rgba(15, 23, 42, 0.10);
+}
+
+[data-theme="light"] article#article-1-section-my-writings div.article-timeline-item-avatar.article-timeline-item-avatar--button,
+[data-theme="light"] article#article-1-section-my-writings a.article-timeline-item-avatar-link:hover div.article-timeline-item-avatar--button,
+[data-theme="light"] article#article-1-section-my-writings a.article-timeline-item-avatar-link:focus-visible div.article-timeline-item-avatar--button {
+    border-color: transparent;
+    box-shadow: none;
 }
 
 [data-theme="light"] article#article-2-section-my-hardware {

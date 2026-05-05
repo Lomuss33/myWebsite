@@ -247,6 +247,8 @@ div.nav-tools-item-resume {
 // the row instead of to its own button. Then override left/top/bottom/
 // transform with !important to defeat Popper's runtime styles.
 nav.nav-sidebar div.nav-tools {
+    --nav-tools-popup-left-inset: 8px;
+
     position: relative;
 
     div.nav-tools-item-resume,
@@ -262,13 +264,13 @@ nav.nav-sidebar div.nav-tools {
         inset: auto !important;
         bottom: calc(100% + 8px) !important;
         top: auto !important;
-        left: 0 !important;
+        left: var(--nav-tools-popup-left-inset) !important;
         right: auto !important;
         transform: none !important;
         margin: 0 !important;
 
         width: max-content;
-        min-width: calc(100% + 160px); // rail width + extension past the right edge
+        min-width: calc(100% + 160px - var(--nav-tools-popup-left-inset)); // rail width + extension past the right edge
         max-width: min(420px, 80vw);
         z-index: $z-index-pop-over;
 

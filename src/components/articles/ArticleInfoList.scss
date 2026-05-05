@@ -535,6 +535,9 @@ article.article-info-list-contact {
         --contact-card-text-strong: var(--theme-texts);
         --contact-card-text: color-mix(in srgb, var(--theme-texts) 76%, var(--theme-secondary) 24%);
         --contact-card-text-soft: color-mix(in srgb, var(--theme-texts) 62%, var(--theme-secondary) 38%);
+        --contact-avatar-bg: rgba(248, 250, 252, 0.92);
+        --contact-avatar-bg-hover: rgba(238, 244, 251, 0.95);
+        --contact-avatar-bg-pressed: rgba(226, 232, 240, 0.98);
     }
 
     div.article-info-list-items {
@@ -597,18 +600,18 @@ article.article-info-list-contact {
         min-height: var(--avatar-size);
         max-height: var(--avatar-size);
         place-self: center;
-        background-color: rgba(15, 23, 42, 0.86) !important;
+        background-color: var(--contact-avatar-bg, rgba(15, 23, 42, 0.86)) !important;
         border: 1px solid color-mix(in srgb, currentColor 26%, var(--contact-card-border) 74%);
     }
 
     div.article-info-list-item-hovered div.article-info-list-item-avatar {
-        background-color: rgba(17, 29, 49, 0.90) !important;
+        background-color: var(--contact-avatar-bg-hover, rgba(17, 29, 49, 0.90)) !important;
         border-color: color-mix(in srgb, currentColor 36%, var(--contact-card-border) 64%);
         color: currentColor !important;
     }
 
     div.article-info-list-item.article-info-list-item-pressed div.article-info-list-item-avatar {
-        background-color: rgba(8, 14, 26, 0.98) !important;
+        background-color: var(--contact-avatar-bg-pressed, rgba(8, 14, 26, 0.98)) !important;
         border-color: color-mix(in srgb, currentColor 48%, var(--contact-card-border) 52%);
         color: currentColor !important;
     }

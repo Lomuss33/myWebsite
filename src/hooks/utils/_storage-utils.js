@@ -57,4 +57,6 @@ export const _storageUtils = {
     setPreferredLanguage: (value) => _storageUtils.setPreference("preferredLanguage", value),
     getPreferredTheme: () => _storageUtils.getPreference()["preferredTheme"],
     setPreferredTheme: (value) => _storageUtils.setPreference("preferredTheme", value),
+    getPreferredCursorMode: () => _storageUtils.getPreference()["preferredCursorMode"],
+    setPreferredCursorMode: (value) => _storageUtils.setPreference("preferredCursorMode", value),
 }

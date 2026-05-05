@@ -3,7 +3,8 @@
 article.article-contact-form {
     --contact-form-surface: color-mix(in srgb, #0b1220 92%, #111827 8%);
     --contact-form-surface-hover: color-mix(in srgb, #111827 88%, #4ea3ff 12%);
-    --contact-form-surface-focus: color-mix(in srgb, #16263f 84%, #4ea3ff 16%);
+    --contact-form-surface-focus: #000000;
+    --contact-form-focus-text: #ffffff;
     --contact-form-border: rgba(78, 163, 255, 0.16);
     --contact-form-border-hover: rgba(78, 163, 255, 0.26);
     --contact-form-border-focus: rgba(96, 165, 250, 0.62);
@@ -20,7 +21,8 @@ article.article-contact-form {
     [data-theme="light"] & {
         --contact-form-surface: color-mix(in srgb, var(--theme-card-background) 90%, var(--theme-primary) 10%);
         --contact-form-surface-hover: color-mix(in srgb, var(--theme-card-background) 84%, var(--theme-primary) 16%);
-        --contact-form-surface-focus: color-mix(in srgb, var(--theme-card-background) 78%, var(--theme-secondary) 22%);
+        --contact-form-surface-focus: #ffffff;
+        --contact-form-focus-text: #000000;
         --contact-form-border: color-mix(in srgb, var(--theme-standard-borders) 66%, var(--theme-primary) 34%);
         --contact-form-border-hover: color-mix(in srgb, var(--theme-secondary) 48%, var(--contact-form-border) 52%);
         --contact-form-border-focus: color-mix(in srgb, var(--theme-primary) 84%, var(--theme-secondary) 16%);
@@ -40,7 +42,7 @@ article.article-contact-form {
     --form-autofill-color: var(--theme-primary);
     --form-border-color: var(--contact-form-border);
     --form-focus-background-color: var(--contact-form-surface-focus);
-    --form-focus-color: var(--contact-form-text);
+    --form-focus-color: var(--contact-form-focus-text);
     --form-focus-border-color: var(--contact-form-border-focus);
     --form-attach-background-color: color-mix(in srgb, #0b1220 92%, #1d4ed8 8%);
     --form-attach-color: color-mix(in srgb, #dbeafe 76%, #94a3b8 24%);
@@ -92,7 +94,7 @@ article.article-contact-form {
     input.form-input-focused,
     textarea.form-textarea-focused {
         background-color: var(--contact-form-surface-focus) !important;
-        color: var(--contact-form-text) !important;
+        color: var(--contact-form-focus-text, var(--contact-form-text)) !important;
     }
 
     // When the message textarea is manually resized, keep the left column visually "in sync":
@@ -109,20 +111,46 @@ article.article-contact-form {
         }
     }
 
-    // Let the message field wrapper control its own height (resizable).
     div.row-form-group.article-contact-form-right {
         div.row-form-group-item {
-            height: auto;
+            height: 100%;
             justify-content: stretch;
         }
 
         div.input-field-wrapper {
             width: 100%;
+            height: 100%;
+            flex-wrap: wrap;
+            resize: none;
+            background-color: transparent;
+
+            span.input-field-wrapper-attach {
+                width: 100%;
+                min-width: 100%;
+                min-height: 42px;
+                border-radius: 0;
+            }
+
+            textarea.form-textarea {
+                min-height: 0;
+                width: 100%;
+                flex: 1 1 100%;
+                background-color: var(--contact-form-surface);
+            }
+
+            textarea.form-textarea-focused {
+                background-color: var(--contact-form-surface-focus) !important;
+                color: var(--contact-form-focus-text) !important;
+            }
+        }
+
+        div.input-field-wrapper-focused {
+            background-color: transparent;
         }
     }
 
     div.message-card {
-        background: linear-gradient(180deg, rgba(13, 20, 32, 0.98) 0%, rgba(8, 12, 20, 0.98) 100%) !important;
+        background: var(--contact-form-panel-surface) !important;
         border: 1px solid var(--contact-form-panel-border);
         box-shadow: var(--contact-form-panel-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.03);
     }

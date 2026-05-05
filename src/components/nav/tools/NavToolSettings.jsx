@@ -30,12 +30,12 @@ function NavToolSettings({ options }) {
     }
 
     if(options.includes(NavToolSettings.Options.CURSOR)) {
-        const isEnabledAndActive = feedbacks.animatedCursorEnabled && feedbacks.animatedCursorActive
+        const isMedievalMode = feedbacks.cursorMode === "medieval"
 
         displayOptions.push({
             id: NavToolSettings.Options.CURSOR,
-            faIcon: isEnabledAndActive ? "fa-solid fa-wand-magic-sparkles" : "fa-solid fa-wand-magic",
-            label: language.getString(isEnabledAndActive ? "deactivate_magic_cursor" : "activate_magic_cursor")
+            faIcon: isMedievalMode ? "fa-solid fa-wand-magic" : "fa-solid fa-wand-magic-sparkles",
+            label: language.getString(isMedievalMode ? "switch_to_magic_cursor" : "switch_to_medieval_cursor")
         })
     }
 
@@ -54,7 +54,7 @@ function NavToolSettings({ options }) {
                 break
 
             case NavToolSettings.Options.CURSOR:
-                feedbacks.toggleAnimatedCursorActive(true)
+                feedbacks.toggleCursorMode(true)
                 break
 
             case NavToolSettings.Options.DOWNLOAD_RESUME: {

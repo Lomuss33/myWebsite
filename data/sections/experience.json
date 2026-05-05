@@ -606,9 +606,7 @@
                 "feature_text_fit_to_media_height": false,
                 "feature_text_fit_min_scale": 0.78,
                 "feature_text_fit_max_scale": 1,
-                "feature_interactive_item_ids": [
-                    1
-                ]
+                "feature_interactive_item_ids": []
             },
             "items": [
                 {
@@ -617,19 +615,19 @@
                     "locales": {
                         "en": {
                             "title": "Wood Products Deutschland",
-                            "text": "<p>{{Wood Products Deutschland}} was my {{first side hustle}} &mdash; not big and not super serious, but it taught me real-world business fast.</p><p>I had a great guide: my friend, co-partner and {{B2B mentor}} {{Miloš Ristić}}. It started with {{simple tech automation}} help, then turned into a perfect {{gap-filling}} opportunity right when I began university.</p><p>The work was straightforward: a bit of {{cold calling}}, handling the phone/WhatsApp/email, quick customer support, and turning messy requests into clear offers (scope, materials, timelines). I also helped keep social media and messaging consistent so leads didn’t get lost.</p><p>Later it naturally {{faded out}} as new opportunities showed up. The takeaway stayed: if you work hard and stay consistent, {{money isn’t the issue}} &mdash; execution is.</p><p>Region focus: {{Hessen}} and the Rhein-Main orbit ({{Frankfurt}}, {{Mainz}}, {{Wiesbaden}}, {{Darmstadt}}, {{Offenbach}}, {{Main-Taunus-Kreis}}).</p><p>Social: <a href='https://www.instagram.com/wood_products_deutschland/' target='_blank' rel='noopener noreferrer'>Instagram</a></p>"
+                            "text": "<p><strong>Wood Products Deutschland</strong> was my <strong>first side hustle</strong> &mdash; not huge and not overly serious, but it taught me real-world business quickly.</p><p><strong>Guide:</strong> my friend, co-partner, and <strong>B2B mentor</strong> Milos Ristic. It started with <strong>simple tech automation</strong> support and turned into a strong <strong>gap-filling</strong> opportunity right as I began university.</p><p><strong>Work included:</strong> cold calling, handling phone/WhatsApp/email, fast customer communication, and turning messy requests into clear offers with defined scope, materials, and timelines. I also helped keep social media and messaging consistent so leads did not get lost.</p><p><em>Main takeaway:</em> if you work hard and stay consistent, <strong>money is not the issue</strong> &mdash; execution is.</p><p><strong>Region focus:</strong> Hessen and the Rhein-Main orbit (Frankfurt, Mainz, Wiesbaden, Darmstadt, Offenbach, Main-Taunus-Kreis).</p><p><em>Social:</em> <a href='https://www.instagram.com/wood_products_deutschland/' target='_blank' rel='noopener noreferrer'>Instagram</a></p>"
                         },
                         "de": {
                             "title": "Wood Products Deutschland",
-                            "text": "<p>{{Wood Products Deutschland}} war mein {{erster Side Hustle}} &mdash; nichts Riesiges und nicht mega ernst, aber es hat mir in kurzer Zeit richtig viel Praxis beigebracht.</p><p>An meiner Seite: mein Freund, Co-Partner und {{B2B-Mentor}} {{Miloš Ristić}}. Es begann mit Hilfe bei {{einfacher Technik-Automatisierung}} und wurde dann zur perfekten {{Lückenfüller}}-Chance genau zu Beginn meiner Uni-Zeit.</p><p>Der Alltag war simpel und direkt: etwas {{Kaltakquise}}, Telefon/WhatsApp/E-Mail, schnelle Kundenkommunikation und aus chaotischen Anfragen klare Angebote machen (Umfang, Material, Zeitplan). Nebenbei Social Media und Ton konsistent halten, damit Leads nicht verschwinden.</p><p>Später ist das Projekt ganz natürlich {{ausgelaufen}}, als neue Chancen kamen. Die Lektion blieb: Wenn du konsequent arbeitest, {{ist Geld nicht das Problem}} &mdash; Umsetzung ist es.</p><p>Region-Fokus: {{Hessen}} und Rhein-Main ({{Frankfurt}}, {{Mainz}}, {{Wiesbaden}}, {{Darmstadt}}, {{Offenbach}}, {{Main-Taunus-Kreis}}).</p><p>Social: <a href='https://www.instagram.com/wood_products_deutschland/' target='_blank' rel='noopener noreferrer'>Instagram</a></p>"
+                            "text": "<p><strong>Wood Products Deutschland</strong> war mein <strong>erster Side Hustle</strong> &mdash; nichts Riesiges und nicht mega ernst, aber es hat mir in kurzer Zeit richtig viel Praxis beigebracht.</p><p>An meiner Seite: mein Freund, Co-Partner und <strong>B2B-Mentor</strong> <strong>Miloš Ristić</strong>. Es begann mit Hilfe bei <strong>einfacher Technik-Automatisierung</strong> und wurde dann zur perfekten <strong>Lückenfüller</strong>-Chance genau zu Beginn meiner Uni-Zeit.</p><p>Der Alltag war simpel und direkt: etwas <strong>Kaltakquise</strong>, Telefon/WhatsApp/E-Mail, schnelle Kundenkommunikation und aus chaotischen Anfragen klare Angebote machen (Umfang, Material, Zeitplan). Nebenbei Social Media und Ton konsistent halten, damit Leads nicht verschwinden.</p><p>Später ist das Projekt ganz natürlich <strong>ausgelaufen</strong>, als neue Chancen kamen. Die Lektion blieb: Wenn du konsequent arbeitest, <strong>ist Geld nicht das Problem</strong> &mdash; Umsetzung ist es.</p><p>Region-Fokus: <strong>Hessen</strong> und Rhein-Main (<strong>Frankfurt</strong>, <strong>Mainz</strong>, <strong>Wiesbaden</strong>, <strong>Darmstadt</strong>, <strong>Offenbach</strong>, <strong>Main-Taunus-Kreis</strong>).</p><p>Social: <a href='https://www.instagram.com/wood_products_deutschland/' target='_blank' rel='noopener noreferrer'>Instagram</a></p>"
                         },
                         "hr": {
                             "title": "Wood Products Deutschland",
-                            "text": "<p>{{Wood Products Deutschland}} je bio moj {{prvi side hustle}} &mdash; ništa veliko i ništa preozbiljno, ali mi je brzo dao stvarno business iskustvo.</p><p>Uz mene je bio prijatelj, co-partner i {{B2B mentor}} {{Miloš Ristić}}. Krenulo je s {{jednostavnom tehničkom automatizacijom}}, a onda se pretvorilo u super {{popunjavanje rupe}} u poslu baš kad sam tek počinjao fakultet.</p><p>Posao je bio jednostavan: malo {{hladnih poziva}}, telefon/WhatsApp/e-mail, brza komunikacija s kupcima i pretvaranje nejasnih upita u jasne ponude (opseg, materijali, rokovi). Uz to držati social i poruke konzistentnima da leadovi ne propadnu.</p><p>Kasnije je sve prirodno {{izblijedjelo}} kad su došle druge prilike. Ali lekcija je ostala: ako radiš i držiš ritam, {{novac nije problem}} &mdash; izvedba je.</p><p>Fokus regije: {{Hessen}} i Rhein-Main ({{Frankfurt}}, {{Mainz}}, {{Wiesbaden}}, {{Darmstadt}}, {{Offenbach}}, {{Main-Taunus-Kreis}}).</p><p>Društvene mreže: <a href='https://www.instagram.com/wood_products_deutschland/' target='_blank' rel='noopener noreferrer'>Instagram</a></p>"
+                            "text": "<p><strong>Wood Products Deutschland</strong> je bio moj <strong>prvi side hustle</strong> &mdash; ništa veliko i ništa preozbiljno, ali mi je brzo dao stvarno business iskustvo.</p><p>Uz mene je bio prijatelj, co-partner i <strong>B2B mentor</strong> <strong>Miloš Ristić</strong>. Krenulo je s <strong>jednostavnom tehničkom automatizacijom</strong>, a onda se pretvorilo u super <strong>popunjavanje rupe</strong> u poslu baš kad sam tek počinjao fakultet.</p><p>Posao je bio jednostavan: malo <strong>hladnih poziva</strong>, telefon/WhatsApp/e-mail, brza komunikacija s kupcima i pretvaranje nejasnih upita u jasne ponude (opseg, materijali, rokovi). Uz to držati social i poruke konzistentnima da leadovi ne propadnu.</p><p>Kasnije je sve prirodno <strong>izblijedjelo</strong> kad su došle druge prilike. Ali lekcija je ostala: ako radiš i držiš ritam, <strong>novac nije problem</strong> &mdash; izvedba je.</p><p>Fokus regije: <strong>Hessen</strong> i Rhein-Main (<strong>Frankfurt</strong>, <strong>Mainz</strong>, <strong>Wiesbaden</strong>, <strong>Darmstadt</strong>, <strong>Offenbach</strong>, <strong>Main-Taunus-Kreis</strong>).</p><p>Društvene mreže: <a href='https://www.instagram.com/wood_products_deutschland/' target='_blank' rel='noopener noreferrer'>Instagram</a></p>"
                         },
                         "tr": {
                             "title": "Wood Products Deutschland",
-                            "text": "<p>{{Wood Products Deutschland}} benim {{ilk side hustle}} deneyimimdi &mdash; büyük bir şey değildi, çok ciddi değildi, ama bana hızlıca gerçek hayat iş deneyimi verdi.</p><p>Yanımda arkadaşım, co-partnerım ve {{B2B mentor}} {{Miloš Ristić}} vardı. {{Basit teknik otomasyon}} desteğiyle başladı, sonra üniversitenin ilk döneminde tam ihtiyaç olan bir {{boşluğu doldurma}} fırsatına dönüştü.</p><p>Günlük iş netti: biraz {{soğuk arama}}, telefon/WhatsApp/e-posta, hızlı müşteri iletişimi ve karışık istekleri net tekliflere çevirme (kapsam, malzeme, zaman). Bir yandan da sosyal medya ve mesaj tonunu tutarlı tutup leadlerin kaybolmamasını sağlamak.</p><p>Zamanla proje doğal olarak {{söndü}}; başka fırsatlar geldi. Ama ders kaldı: düzenli çalışan biri için {{para sorun değil}} &mdash; asıl konu uygulama.</p><p>Bölge odağı: {{Hessen}} ve Rhein-Main ({{Frankfurt}}, {{Mainz}}, {{Wiesbaden}}, {{Darmstadt}}, {{Offenbach}}, {{Main-Taunus-Kreis}}).</p><p>Sosyal: <a href='https://www.instagram.com/wood_products_deutschland/' target='_blank' rel='noopener noreferrer'>Instagram</a></p>"
+                            "text": "<p><strong>Wood Products Deutschland</strong> benim <strong>ilk side hustle</strong> deneyimimdi &mdash; büyük bir şey değildi, çok ciddi değildi, ama bana hızlıca gerçek hayat iş deneyimi verdi.</p><p>Yanımda arkadaşım, co-partnerım ve <strong>B2B mentor</strong> <strong>Miloš Ristić</strong> vardı. <strong>Basit teknik otomasyon</strong> desteğiyle başladı, sonra üniversitenin ilk döneminde tam ihtiyaç olan bir <strong>boşluğu doldurma</strong> fırsatına dönüştü.</p><p>Günlük iş netti: biraz <strong>soğuk arama</strong>, telefon/WhatsApp/e-posta, hızlı müşteri iletişimi ve karışık istekleri net tekliflere çevirme (kapsam, malzeme, zaman). Bir yandan da sosyal medya ve mesaj tonunu tutarlı tutup leadlerin kaybolmamasını sağlamak.</p><p>Zamanla proje doğal olarak <strong>söndü</strong>; başka fırsatlar geldi. Ama ders kaldı: düzenli çalışan biri için <strong>para sorun değil</strong> &mdash; asıl konu uygulama.</p><p>Bölge odağı: <strong>Hessen</strong> ve Rhein-Main (<strong>Frankfurt</strong>, <strong>Mainz</strong>, <strong>Wiesbaden</strong>, <strong>Darmstadt</strong>, <strong>Offenbach</strong>, <strong>Main-Taunus-Kreis</strong>).</p><p>Sosyal: <a href='https://www.instagram.com/wood_products_deutschland/' target='_blank' rel='noopener noreferrer'>Instagram</a></p>"
                         }
                     }
                 }
@@ -655,7 +653,7 @@
             "settings": {
                 "order_items_by": "id",
                 "order_items_sort": "asc",
-                "text_layout_mode": "draggable_inline_icon_flow"
+                "text_layout_mode": "default"
             },
             "items": [
                 {
@@ -664,16 +662,48 @@
                     "faIcon": "fa-solid fa-tractor",
                     "locales": {
                         "en": {
-                            "text": "<p>{{Family Farm Work}}</p><p>Grew up working on a family farm with direct responsibility for daily operations: animal care, feeding, cleaning, crop cultivation, field work, firewood preparation, and basic repairs.</p><p>This was not symbolic work. Tasks had to be completed regardless of conditions or motivation. The environment demanded consistency, physical endurance, and attention to safety.</p><p>Developed a strong work ethic grounded in <strong>discipline</strong>, <strong>reliability</strong>, and <strong>accountability</strong>, along with respect for practical, outcome-driven work.</p>"
+                            "eyebrow": "Real responsibility",
+                            "title": "Family Farm Work",
+                            "list": [
+                                "01 Discipline",
+                                "02 Reliability",
+                                "03 Accountability",
+                                "04 Safety awareness"
+                            ],
+                            "text": "<p><strong>Daily operations:</strong> animal care, feeding, cleaning, crop cultivation, field work, firewood preparation, and basic repairs.</p><p>This was not symbolic work. Tasks had to be completed regardless of conditions or motivation. The environment demanded consistency, physical endurance, and attention to safety.</p><p><em>Result:</em> a practical, outcome-driven work ethic and lasting respect for people who keep essential work moving every day.</p>"
                         },
                         "de": {
-                            "text": "<p>{{Arbeit auf dem Familienhof}}</p><p>Ich bin mit der Arbeit auf einem Familienhof aufgewachsen und trug direkte Verantwortung für den täglichen Betrieb: Tierpflege, Füttern, Reinigen, Anbau, Feldarbeit, Brennholzvorbereitung und einfache Reparaturen.</p><p>Das war keine symbolische Arbeit. Die Aufgaben mussten unabhängig von Wetter, Umständen oder Motivation erledigt werden. Dieses Umfeld verlangte Beständigkeit, körperliche Belastbarkeit und Aufmerksamkeit für Sicherheit.</p><p>Dadurch entstanden eine starke Arbeitsethik auf Basis von <strong>Disziplin</strong>, <strong>Zuverlässigkeit</strong> und <strong>Verantwortungsbewusstsein</strong> sowie Respekt für praktische, ergebnisorientierte Arbeit.</p>"
+                            "eyebrow": "Echte Verantwortung",
+                            "title": "Arbeit auf dem Familienhof",
+                            "list": [
+                                "Disziplin",
+                                "Zuverlässigkeit",
+                                "Verantwortung",
+                                "Sicherheitsbewusstsein"
+                            ],
+                            "text": "<p>Ich bin mit der Arbeit auf einem Familienhof aufgewachsen und trug direkte Verantwortung für den täglichen Betrieb: Tierpflege, Füttern, Reinigen, Anbau, Feldarbeit, Brennholzvorbereitung und einfache Reparaturen.</p><p>Das war keine symbolische Arbeit. Die Aufgaben mussten unabhängig von Wetter, Umständen oder Motivation erledigt werden. Dieses Umfeld verlangte Beständigkeit, körperliche Belastbarkeit und Aufmerksamkeit für Sicherheit.</p><p>So entstand eine praktische, ergebnisorientierte Arbeitsethik und ein dauerhafter Respekt für Menschen, die unverzichtbare Arbeit zuverlässig leisten.</p>"
                         },
                         "hr": {
-                            "text": "<p>{{Rad na obiteljskom gospodarstvu}}</p><p>Odrastao sam radeći na obiteljskom gospodarstvu s izravnom odgovornošću za svakodnevne poslove: brigu o životinjama, hranjenje, čišćenje, uzgoj usjeva, rad u polju, pripremu ogrjeva i osnovne popravke.</p><p>To nije bio simboličan rad. Zadaci su se morali izvršiti bez obzira na uvjete ili motivaciju. Takvo okruženje tražilo je dosljednost, fizičku izdržljivost i pažnju prema sigurnosti.</p><p>Razvio sam snažnu radnu etiku utemeljenu na <strong>disciplini</strong>, <strong>pouzdanosti</strong> i <strong>odgovornosti</strong>, uz poštovanje prema praktičnom radu usmjerenom na rezultat.</p>"
+                            "eyebrow": "Stvarna odgovornost",
+                            "title": "Rad na obiteljskom gospodarstvu",
+                            "list": [
+                                "Disciplina",
+                                "Pouzdanost",
+                                "Odgovornost",
+                                "Sigurnost"
+                            ],
+                            "text": "<p>Odrastao sam radeći na obiteljskom gospodarstvu s izravnom odgovornošću za svakodnevne poslove: brigu o životinjama, hranjenje, čišćenje, uzgoj usjeva, rad u polju, pripremu ogrjeva i osnovne popravke.</p><p>To nije bio simboličan rad. Zadaci su se morali izvršiti bez obzira na uvjete ili motivaciju. Takvo okruženje tražilo je dosljednost, fizičku izdržljivost i pažnju prema sigurnosti.</p><p>Tako se razvila praktična radna etika usmjerena na rezultat i trajno poštovanje prema ljudima koji svaki dan nose stvarni posao.</p>"
                         },
                         "tr": {
-                            "text": "<p>{{Aile Çiftliğinde Çalışma}}</p><p>Bir aile çiftliğinde çalışarak büyüdüm ve günlük işleyişte doğrudan sorumluluk aldım: hayvan bakımı, yemleme, temizlik, ürün yetiştiriciliği, tarla işleri, odun hazırlığı ve temel onarımlar.</p><p>Bu sembolik bir iş değildi. Görevler, koşullar veya motivasyon ne olursa olsun tamamlanmak zorundaydı. Bu ortam; süreklilik, fiziksel dayanıklılık ve güvenliğe dikkat gerektiriyordu.</p><p><strong>Disiplin</strong>, <strong>güvenilirlik</strong> ve <strong>sorumluluk</strong> temelli güçlü bir çalışma ahlakı ile birlikte pratik ve sonuç odaklı işe saygı geliştirdim.</p>"
+                            "eyebrow": "Gerçek sorumluluk",
+                            "title": "Aile Çiftliğinde Çalışma",
+                            "list": [
+                                "Disiplin",
+                                "Güvenilirlik",
+                                "Sorumluluk",
+                                "Güvenlik bilinci"
+                            ],
+                            "text": "<p>Bir aile çiftliğinde çalışarak büyüdüm ve günlük işleyişte doğrudan sorumluluk aldım: hayvan bakımı, yemleme, temizlik, ürün yetiştiriciliği, tarla işleri, odun hazırlığı ve temel onarımlar.</p><p>Bu sembolik bir iş değildi. Görevler, koşullar veya motivasyon ne olursa olsun tamamlanmak zorundaydı. Bu ortam; süreklilik, fiziksel dayanıklılık ve güvenliğe dikkat gerektiriyordu.</p><p>Bu süreç, pratik ve sonuç odaklı bir çalışma ahlakı ile her gün işi gerçekten ayakta tutan insanlara karşı kalıcı bir saygı geliştirdi.</p>"
                         }
                     }
                 },
@@ -683,16 +713,48 @@
                     "faIcon": "fa-solid fa-church",
                     "locales": {
                         "en": {
-                            "text": "<p>{{Volunteer Leadership – Catholic Youth Program}}</p><p>Held multiple roles over several years:</p><p>President (2 years)<br>Treasurer (3 years)<br>Youth Instructor (2 years)</p><p>Also supported event organization, logistics, and group coordination.</p><p>This required dependability beyond individual performance—planning ahead, communicating clearly, organizing activities, and resolving issues in real time. The experience reinforced that effective leadership is built on consistency and follow-through.</p><p>Strengthened <strong>leadership</strong>, <strong>financial responsibility</strong>, <strong>communication</strong>, <strong>teaching</strong>, and <strong>team coordination</strong> skills.</p>"
+                            "eyebrow": "Service and follow-through",
+                            "title": "Volunteer Leadership - Catholic Youth Program",
+                            "list": [
+                                "01 President - 2 years",
+                                "02 Treasurer - 3 years",
+                                "03 Youth Instructor - 2 years",
+                                "04 Event and group coordination"
+                            ],
+                            "text": "<p><strong>Roles held:</strong> President (2 years), Treasurer (3 years), and Youth Instructor (2 years).</p><p><strong>Additional support:</strong> event organization, logistics, and group coordination.</p><p>This required dependability beyond individual performance: planning ahead, communicating clearly, organizing activities, and resolving issues in real time.</p><p><em>Core lesson:</em> effective leadership is built on consistency, service, and follow-through when other people are counting on you.</p>"
                         },
                         "de": {
-                            "text": "<p>{{Freiwillige Führung – Katholisches Jugendprogramm}}</p><p>Über mehrere Jahre hinweg hatte ich verschiedene Rollen:</p><p>Vorsitzender (2 Jahre)<br>Kassenwart (3 Jahre)<br>Jugendleiter/Dozent (2 Jahre)</p><p>Zusätzlich unterstützte ich die Organisation von Veranstaltungen, Logistik und Gruppenkoordination.</p><p>Das verlangte Verlässlichkeit über die eigene Leistung hinaus: vorausplanen, klar kommunizieren, Aktivitäten strukturieren und Probleme in Echtzeit lösen. Die Erfahrung hat bestätigt, dass wirksame Führung auf Beständigkeit und konsequenter Umsetzung beruht.</p><p>Gestärkt wurden <strong>Führung</strong>, <strong>Finanzverantwortung</strong>, <strong>Kommunikation</strong>, <strong>Vermittlung/Unterrichten</strong> und <strong>Teamkoordination</strong>.</p>"
+                            "eyebrow": "Dienst und Verlässlichkeit",
+                            "title": "Freiwillige Führung – Katholisches Jugendprogramm",
+                            "list": [
+                                "Vorsitzender · 2 Jahre",
+                                "Kassenwart · 3 Jahre",
+                                "Jugendleiter · 2 Jahre",
+                                "Event- und Gruppenkoordination"
+                            ],
+                            "text": "<p>Über mehrere Jahre hinweg übernahm ich verschiedene Führungs- und Unterstützungsrollen, darunter Vorsitzender, Kassenwart und Jugendleiter. Außerdem half ich bei Veranstaltungen, Logistik und Gruppenaktivitäten.</p><p>Das verlangte Verlässlichkeit über die eigene Leistung hinaus: vorausplanen, klar kommunizieren, Aktivitäten strukturieren und Probleme in Echtzeit lösen.</p><p>Die Erfahrung hat bestätigt, dass wirksame Führung auf Beständigkeit, Dienstbereitschaft und konsequenter Umsetzung beruht, wenn andere auf dich zählen.</p>"
                         },
                         "hr": {
-                            "text": "<p>{{Volontersko vodstvo – katolički program za mlade}}</p><p>Tijekom više godina imao sam više uloga:</p><p>Predsjednik (2 godine)<br>Blagajnik (3 godine)<br>Voditelj/Instruktor mladih (2 godine)</p><p>Također sam pomagao u organizaciji događaja, logistici i koordinaciji grupa.</p><p>To je tražilo pouzdanost koja nadilazi individualni učinak — planiranje unaprijed, jasnu komunikaciju, organizaciju aktivnosti i rješavanje problema u stvarnom vremenu. To iskustvo potvrdilo mi je da se učinkovito vodstvo gradi na dosljednosti i odgovornom izvršavanju obveza.</p><p>Ojačane su <strong>liderstvo</strong>, <strong>odgovornost za financije</strong>, <strong>komunikacija</strong>, <strong>podučavanje</strong> i <strong>koordinacija tima</strong>.</p>"
+                            "eyebrow": "Služenje i dosljednost",
+                            "title": "Volontersko vodstvo – katolički program za mlade",
+                            "list": [
+                                "Predsjednik · 2 godine",
+                                "Blagajnik · 3 godine",
+                                "Instruktor mladih · 2 godine",
+                                "Koordinacija događaja i grupa"
+                            ],
+                            "text": "<p>Tijekom više godina preuzeo sam više voditeljskih i pomoćnih uloga, uključujući predsjednika, blagajnika i instruktora mladih. Također sam pomagao u organizaciji događaja, logistici i grupnim aktivnostima.</p><p>To je tražilo pouzdanost koja nadilazi individualni učinak: planiranje unaprijed, jasnu komunikaciju, organizaciju aktivnosti i rješavanje problema u stvarnom vremenu.</p><p>To iskustvo potvrdilo mi je da se učinkovito vodstvo gradi na dosljednosti, služenju i izvršavanju obveza kada drugi računaju na tebe.</p>"
                         },
                         "tr": {
-                            "text": "<p>{{Gönüllü Liderlik – Katolik Gençlik Programı}}</p><p>Birkaç yıl boyunca birden fazla rol üstlendim:</p><p>Başkan (2 yıl)<br>Sayman (3 yıl)<br>Gençlik Eğitmeni (2 yıl)</p><p>Ayrıca etkinlik organizasyonu, lojistik ve grup koordinasyonunda da destek verdim.</p><p>Bu, bireysel performansın ötesinde güvenilirlik gerektiriyordu: önceden planlama, açık iletişim kurma, faaliyetleri organize etme ve sorunları gerçek zamanlı çözme. Bu deneyim, etkili liderliğin tutarlılık ve işi sonuna kadar takip etme üzerine kurulduğunu pekiştirdi.</p><p><strong>Liderlik</strong>, <strong>finansal sorumluluk</strong>, <strong>iletişim</strong>, <strong>eğitmenlik</strong> ve <strong>ekip koordinasyonu</strong> becerilerimi güçlendirdi.</p>"
+                            "eyebrow": "Hizmet ve istikrar",
+                            "title": "Gönüllü Liderlik – Katolik Gençlik Programı",
+                            "list": [
+                                "Başkan · 2 yıl",
+                                "Sayman · 3 yıl",
+                                "Gençlik Eğitmeni · 2 yıl",
+                                "Etkinlik ve grup koordinasyonu"
+                            ],
+                            "text": "<p>Birkaç yıl boyunca başkan, sayman ve gençlik eğitmeni dahil olmak üzere birden fazla liderlik ve destek rolü üstlendim. Ayrıca etkinlik organizasyonu, lojistik ve grup faaliyetlerinde de görev aldım.</p><p>Bu, bireysel performansın ötesinde güvenilirlik gerektiriyordu: önceden planlama, açık iletişim kurma, faaliyetleri organize etme ve sorunları gerçek zamanlı çözme.</p><p>Bu deneyim, etkili liderliğin; insanlar sana güvenirken, tutarlılık, hizmet anlayışı ve işi sonuna kadar takip etme üzerine kurulduğunu pekiştirdi.</p>"
                         }
                     }
                 },
@@ -702,16 +764,48 @@
                     "faIcon": "fa-solid fa-chart-line",
                     "locales": {
                         "en": {
-                            "text": "<p>{{Private Market Investing & Trading}}</p><p>Maintained a structured, long-term personal practice in financial markets, focused on disciplined decision-making rather than speculation.</p><p>Activities included research, trade journaling, performance review, and risk management across multiple instruments: stocks, bonds, options, leveraged products, crypto, REITs, ETFs, and peer-to-peer lending. Developed a particular interest in macro and geopolitical-driven strategies.</p><p>Markets provided a feedback-driven environment where poor decisions are quickly exposed. This led to improved patience, risk awareness, and the ability to operate under uncertainty without emotional bias.</p><p>Developed <strong>analytical thinking</strong>, <strong>structured decision-making</strong>, <strong>risk control</strong>, and <strong>process discipline</strong>. <em>Not financial advice.</em></p>"
+                            "eyebrow": "Feedback-driven decision making",
+                            "title": "Private Market Investing & Trading",
+                            "list": [
+                                "01 Research and journaling",
+                                "02 Risk management",
+                                "03 Macro and geopolitical focus",
+                                "04 Process discipline"
+                            ],
+                            "text": "<p><strong>Approach:</strong> a structured, long-term personal practice in financial markets focused on disciplined decision-making rather than speculation.</p><p><strong>Activities:</strong> research, trade journaling, performance review, and risk management across stocks, bonds, options, leveraged products, crypto, REITs, ETFs, and peer-to-peer lending.</p><p>Markets provided a feedback-driven environment where poor decisions are quickly exposed. This improved patience, risk awareness, and the ability to operate under uncertainty without emotional bias.</p><p><em>Not financial advice.</em></p>"
                         },
                         "de": {
-                            "text": "<p>{{Privates Investieren & Trading}}</p><p>Über längere Zeit habe ich Finanzmärkte als strukturierte persönliche Praxis betrieben, mit Fokus auf disziplinierte Entscheidungen statt auf Spekulation.</p><p>Dazu gehörten Recherche, Trading-Journal, Leistungsanalyse und Risikomanagement über verschiedene Instrumente hinweg: Aktien, Anleihen, Optionen, Hebelprodukte, Krypto, REITs, ETFs und Peer-to-Peer-Lending. Besonders interessiert habe ich mich für makro- und geopolitisch getriebene Strategien.</p><p>Die Märkte boten ein feedbackgetriebenes Umfeld, in dem schlechte Entscheidungen schnell sichtbar werden. Dadurch haben sich Geduld, Risikobewusstsein und die Fähigkeit verbessert, unter Unsicherheit ohne emotionale Verzerrung zu handeln.</p><p>Entwickelt wurden <strong>analytisches Denken</strong>, <strong>strukturiertes Entscheiden</strong>, <strong>Risikokontrolle</strong> und <strong>Prozessdisziplin</strong>. <em>Keine Anlageberatung.</em></p>"
+                            "eyebrow": "Feedbackgetriebene Entscheidungen",
+                            "title": "Privates Investieren & Trading",
+                            "list": [
+                                "Recherche und Journal",
+                                "Risikomanagement",
+                                "Makro- und Geopolitik-Fokus",
+                                "Prozessdisziplin"
+                            ],
+                            "text": "<p>Über längere Zeit habe ich Finanzmärkte als strukturierte persönliche Praxis betrieben, mit Fokus auf disziplinierte Entscheidungen statt auf Spekulation.</p><p>Dazu gehörten Recherche, Trading-Journal, Leistungsanalyse und Risikomanagement über verschiedene Instrumente hinweg: Aktien, Anleihen, Optionen, Hebelprodukte, Krypto, REITs, ETFs und Peer-to-Peer-Lending.</p><p>Die Märkte boten ein feedbackgetriebenes Umfeld, in dem schlechte Entscheidungen schnell sichtbar werden. Dadurch verbesserten sich Geduld, Risikobewusstsein und die Fähigkeit, unter Unsicherheit ohne emotionale Verzerrung zu handeln. <em>Keine Anlageberatung.</em></p>"
                         },
                         "hr": {
-                            "text": "<p>{{Privatno investiranje i trading}}</p><p>Dugo sam održavao strukturiranu osobnu praksu na financijskim tržištima, usmjerenu na disciplinirano donošenje odluka, a ne na špekulaciju.</p><p>Aktivnosti su uključivale istraživanje, vođenje dnevnika trgovanja, analizu rezultata i upravljanje rizikom kroz više instrumenata: dionice, obveznice, opcije, leveridžirane proizvode, kripto, REIT-ove, ETF-ove i peer-to-peer lending. Posebno sam razvio interes za makro i geopolitički vođene strategije.</p><p>Tržišta su pružila okruženje vođeno povratnom informacijom, gdje se loše odluke brzo razotkrivaju. To je poboljšalo strpljenje, svijest o riziku i sposobnost djelovanja u neizvjesnosti bez emocionalne pristranosti.</p><p>Razvijeni su <strong>analitičko razmišljanje</strong>, <strong>strukturirano donošenje odluka</strong>, <strong>kontrola rizika</strong> i <strong>disciplina procesa</strong>. <em>Nije financijski savjet.</em></p>"
+                            "eyebrow": "Odluke vođene povratnom informacijom",
+                            "title": "Privatno investiranje i trading",
+                            "list": [
+                                "Istraživanje i dnevnik",
+                                "Upravljanje rizikom",
+                                "Makro i geopolitika",
+                                "Disciplina procesa"
+                            ],
+                            "text": "<p>Dugo sam održavao strukturiranu osobnu praksu na financijskim tržištima, usmjerenu na disciplinirano donošenje odluka, a ne na špekulaciju.</p><p>Aktivnosti su uključivale istraživanje, vođenje dnevnika trgovanja, analizu rezultata i upravljanje rizikom kroz više instrumenata: dionice, obveznice, opcije, leveridžirane proizvode, kripto, REIT-ove, ETF-ove i peer-to-peer lending.</p><p>Tržišta su pružila okruženje vođeno povratnom informacijom, gdje se loše odluke brzo razotkrivaju. To je poboljšalo strpljenje, svijest o riziku i sposobnost djelovanja u neizvjesnosti bez emocionalne pristranosti. <em>Nije financijski savjet.</em></p>"
                         },
                         "tr": {
-                            "text": "<p>{{Kişisel Piyasa Yatırımı ve Trading}}</p><p>Finansal piyasalarda, spekülasyondan ziyade disiplinli karar verme odağıyla, yapılandırılmış ve uzun vadeli kişisel bir pratik sürdürdüm.</p><p>Faaliyetler; araştırma, işlem günlüğü tutma, performans değerlendirmesi ve risk yönetimini kapsıyordu. Bunlar çeşitli araçlar üzerinde yürütüldü: hisseler, tahviller, opsiyonlar, kaldıraçlı ürünler, kripto, REIT'ler, ETF'ler ve peer-to-peer lending. Özellikle makro ve jeopolitik etkenli stratejilere ilgi geliştirdim.</p><p>Piyasalar, kötü kararların hızla ortaya çıktığı geri bildirim odaklı bir ortam sundu. Bu da sabrı, risk farkındalığını ve duygusal önyargı olmadan belirsizlik altında hareket etme becerisini geliştirdi.</p><p><strong>Analitik düşünme</strong>, <strong>yapılandırılmış karar verme</strong>, <strong>risk kontrolü</strong> ve <strong>süreç disiplini</strong> geliştirdim. <em>Yatırım tavsiyesi değildir.</em></p>"
+                            "eyebrow": "Geri bildirimle şekillenen kararlar",
+                            "title": "Kişisel Piyasa Yatırımı ve Trading",
+                            "list": [
+                                "Araştırma ve günlük",
+                                "Risk yönetimi",
+                                "Makro ve jeopolitik odak",
+                                "Süreç disiplini"
+                            ],
+                            "text": "<p>Finansal piyasalarda, spekülasyondan ziyade disiplinli karar verme odağıyla, yapılandırılmış ve uzun vadeli kişisel bir pratik sürdürdüm.</p><p>Faaliyetler; araştırma, işlem günlüğü tutma, performans değerlendirmesi ve risk yönetimini kapsıyordu. Bunlar çeşitli araçlar üzerinde yürütüldü: hisseler, tahviller, opsiyonlar, kaldıraçlı ürünler, kripto, REIT'ler, ETF'ler ve peer-to-peer lending.</p><p>Piyasalar, kötü kararların hızla ortaya çıktığı geri bildirim odaklı bir ortam sundu. Bu da sabrı, risk farkındalığını ve duygusal önyargı olmadan belirsizlik altında hareket etme becerisini geliştirdi. <em>Yatırım tavsiyesi değildir.</em></p>"
                         }
                     }
                 }

@@ -292,6 +292,79 @@
         }
       },
       "items": null
+    },
+    {
+      "id": 3,
+      "component": "ArticleComplaintForm",
+      "settings": {
+        "email_js_public_key": "j1Kq3rfeTdVXEZYWh",
+        "email_js_service_id": "myWebsite",
+        "email_js_template_id": "template_puj7mco",
+        "email_js_complaint_template_id": "template_puj7mco"
+      },
+      "locales": {
+        "en": {
+          "title": "Complaint {{box}}",
+          "complaint_title": "Complaint box",
+          "complaint_intro": "Use the box for complaints, criticism, or noise.",
+          "complaint_note": "Please feel free to complain and give any kind of criticism, whether personal, professional, business, troll-level, brotherly, or any other advice. It is gladly taken.",
+          "complaint_destination_label": "destination",
+          "complaint_nowhere_label": "Nowhere, obviously.",
+          "complaint_you_where_label": "You were here",
+          "complaint_knjiga_label": "Ministry of Whining",
+          "complaint_anzeige_label": "Chaos Mode",
+          "complaint_email_label": "trash@lovro-music.de",
+          "complaint_sent_title": "Complaint filed.",
+          "complaint_sent_body": "It has been sent to the trash inbox.",
+          "complaint_popup_title": "Anzeige raus"
+        },
+        "de": {
+          "title": "Beschwerde {{box}}",
+          "complaint_title": "Beschwerdebox",
+          "complaint_intro": "Nutze die Box fuer Beschwerden, Kritik oder Larm.",
+          "complaint_note": "Bitte fuehle dich frei zu meckern und jede Art von Kritik abzuladen, ob persoenlich, beruflich, geschaeftlich, trollig, bruerlich oder sonstige Ratschlaege. Alles wird dankend angenommen.",
+          "complaint_destination_label": "Ziel",
+          "complaint_nowhere_label": "Nirgendwo, ganz klar",
+          "complaint_you_where_label": "Du warst da",
+          "complaint_knjiga_label": "Meckermeile",
+          "complaint_anzeige_label": "Krawallmodus",
+          "complaint_email_label": "trash@lovro-music.de",
+          "complaint_sent_title": "Beschwerde eingereicht.",
+          "complaint_sent_body": "Sie wurde an das Trash-Postfach geschickt.",
+          "complaint_popup_title": "Anzeige raus"
+        },
+        "hr": {
+          "title": "Zalba {{kutija}}",
+          "complaint_title": "Knjiga zalbi",
+          "complaint_intro": "Koristi kutiju za zalbe, kritiku ili buku.",
+          "complaint_note": "Slobodno se pozali i ostavi bilo kakvu kritiku, bilo osobnu, profesionalnu, poslovnu, trolovsku, bratsku ili bilo kakav drugi savjet. Sve se rado prima.",
+          "complaint_destination_label": "odrediste",
+          "complaint_nowhere_label": "Nigdje, bas nigdje",
+          "complaint_you_where_label": "Ti si bio tu",
+          "complaint_knjiga_label": "Knjiga kuknjave",
+          "complaint_anzeige_label": "Pusti dramu",
+          "complaint_email_label": "trash@lovro-music.de",
+          "complaint_sent_title": "Zalba je poslana.",
+          "complaint_sent_body": "Preusmjerena je u trash pretinac.",
+          "complaint_popup_title": "Anzeige raus"
+        },
+        "tr": {
+          "title": "Sikayet {{kutusu}}",
+          "complaint_title": "Sikayet kutusu",
+          "complaint_intro": "Kutuyu sikayet, elestiri veya gurultu icin kullan.",
+          "complaint_note": "Lutfen dertlenmekten ve her turden elestiriyi birakmaktan cekinme; kisisel, profesyonel, is, troll, kardesce ya da herhangi bir tavsiye olsun, memnuniyetle alinir.",
+          "complaint_destination_label": "hedef",
+          "complaint_nowhere_label": "Yok, tabii ki",
+          "complaint_you_where_label": "Sen buralardin",
+          "complaint_knjiga_label": "Sikayet defteri",
+          "complaint_anzeige_label": "Kiyamet modu",
+          "complaint_email_label": "trash@lovro-music.de",
+          "complaint_sent_title": "?ikayet kaydedildi.",
+          "complaint_sent_body": "Trash gelen kutusuna g?nderildi.",
+          "complaint_popup_title": "Anzeige raus"
+        }
+      },
+      "items": null
     }
   ]
 }

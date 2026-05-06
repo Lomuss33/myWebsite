@@ -91,33 +91,79 @@ nav.nav-sidebar-shrink {
 }
 
 nav.nav-sidebar-short-rail {
+    --nav-short-rail-profile-height: 96px;
+    --nav-short-rail-tools-height: 64px;
+
     div.nav-sidebar-card-wrapper {
         width: 108px;
         min-width: 108px;
     }
 
-    div.nav-profile-card-shrink {
-        --nav-short-rail-row-height: var(--nav-link-target-height, 48px);
-        --avatar-size: clamp(32px, calc(var(--nav-short-rail-row-height) - 16px), 54px);
-        --border-size: clamp(2px, calc(var(--nav-short-rail-row-height) * 0.05), 3px);
-        --offset-status-circle: clamp(7px, calc(var(--avatar-size) * 0.18), 10px);
+    div.nav-sidebar-card-wrapper > div.nav-profile-card.nav-profile-card-shrink {
         margin: 0;
-        padding: 4px 8px;
-        height: var(--nav-short-rail-row-height);
-        min-height: var(--nav-short-rail-row-height);
-        max-height: var(--nav-short-rail-row-height);
+        padding: 0;
+        border-top-left-radius: inherit;
+        border-top-right-radius: inherit;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    div.nav-profile-card-shrink {
+        --avatar-size: var(--nav-short-rail-profile-height);
+        --border-size: 0px;
+        --offset-status-circle: 10px;
+        margin: 0;
+        padding: 0;
+        height: var(--nav-short-rail-profile-height);
+        min-height: var(--nav-short-rail-profile-height);
+        max-height: var(--nav-short-rail-profile-height);
         justify-content: center;
         overflow: hidden;
+        border-radius: 0;
     }
 
     div.nav-profile-card-shrink div.nav-profile-card-header {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    div.nav-profile-card-shrink div.nav-profile-card-media {
+        position: absolute;
+        inset: 0;
         width: 100%;
         height: 100%;
     }
 
+    div.nav-profile-card-shrink div.image-view,
+    div.nav-profile-card-shrink div.nav-profile-card-avatar-face,
+    div.nav-profile-card-shrink div.nav-profile-card-avatar-switch,
+    div.nav-profile-card-shrink img.nav-profile-card-avatar {
+        width: 100%;
+        height: 100%;
+        border-radius: 0 !important;
+    }
+
+    div.nav-profile-card-shrink div.nav-profile-card-avatar-switch {
+        border: 0 !important;
+        box-shadow: none;
+    }
+
+    div.nav-profile-card-shrink img.image-view-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 0 !important;
+    }
+
     div.nav-tools {
-        --nav-tools-height: var(--nav-link-target-height, 48px);
-        padding: 0 4px;
+        --nav-tools-height: var(--nav-short-rail-tools-height);
+        flex: 0 0 var(--nav-tools-height);
+        padding: 0 6px;
         height: var(--nav-tools-height);
         min-height: var(--nav-tools-height);
         max-height: var(--nav-tools-height);

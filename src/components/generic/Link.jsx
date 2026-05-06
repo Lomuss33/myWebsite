@@ -86,15 +86,15 @@ function Link({
     }
 
     const _goToSectionHash = (hashContent) => {
-        const colonIndex = hashContent.indexOf(":")
-        if(colonIndex > 0) {
-            const sectionId = hashContent.slice(0, colonIndex)
-            const action = hashContent.slice(colonIndex + 1)
+        const parts = hashContent.split(":")
+        if(parts.length >= 2) {
+            const [sectionId, action, targetArticleId] = parts
             if(sectionId && action) {
                 if(typeof window !== "undefined") {
                     window.__pendingSectionAction = {
                         sectionId,
                         action,
+                        targetArticleId: targetArticleId || undefined,
                         requestedAt: Date.now()
                     }
                 }

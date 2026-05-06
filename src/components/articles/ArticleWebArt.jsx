@@ -36,6 +36,23 @@ function _syncTileEngineSize(tile, engine, devicePixelRatio = 1) {
     engine?.setSize?.(width, height, devicePixelRatio)
 }
 
+function _scrollArticleIntoSectionView(articleId, sectionId, behavior = "smooth") {
+    if(typeof window === "undefined") return
+
+    const articleEl = document.getElementById(articleId)
+    const scrollableEl = document.getElementById(`scrollable-${sectionId}`)
+    if(!articleEl || !scrollableEl) return
+
+    const articleRect = articleEl.getBoundingClientRect()
+    const scrollableRect = scrollableEl.getBoundingClientRect()
+    const targetScrollTop = scrollableEl.scrollTop + (articleRect.top - scrollableRect.top)
+
+    scrollableEl.scrollTo({
+        top: Math.max(0, targetScrollTop),
+        behavior
+    })
+}
+
 const MINESWEEPER_ROWS = 9
 const MINESWEEPER_COLS = 9
 const MINESWEEPER_MINES = 10
@@ -215,6 +232,7 @@ window.addEventListener("resize", () => {
 
 function ArticleWebArt({ dataWrapper, id }) {
     const language = useLanguage()
+    const navigation = useNavigation()
     const ambientTraceReadyId = `${dataWrapper.uniqueId}-ambient-trace`
     const ambientHexReadyId = `${dataWrapper.uniqueId}-ambient-hex`
     const ambientPlopReadyId = `${dataWrapper.uniqueId}-ambient-plop`
@@ -407,11 +425,14 @@ function ArticleWebArt({ dataWrapper, id }) {
 
     useEffect(() => {
         if(typeof window === "undefined") return
+        if(navigation.targetSection?.id !== dataWrapper.sectionId) return
+        if(navigation.transitionStatus !== "transition_status_none") return
 
         const pending = window.__pendingSectionAction
         if(!pending) return
         if(pending.action !== "enter") return
         if(pending.sectionId !== dataWrapper.sectionId) return
+        if(pending.targetArticleId && pending.targetArticleId !== dataWrapper.uniqueId) return
         if(Date.now() - (pending.requestedAt || 0) > 5000) {
             delete window.__pendingSectionAction
             return
@@ -421,22 +442,31 @@ function ArticleWebArt({ dataWrapper, id }) {
 
         onIntroEnter()
 
-        const scrollTimeoutId = window.setTimeout(() => {
-            const articleEl = document.getElementById(dataWrapper.uniqueId)
-            const scrollableEl = document.getElementById(`scrollable-${dataWrapper.sectionId}`)
-            if(!articleEl || !scrollableEl) return
+        const targetArticleId = pending.targetArticleId || dataWrapper.uniqueId
+        let openTimeoutId = null
+        let firstFrameId = null
+        let retryTimeoutId = null
+        let secondFrameId = null
 
-            const articleRect = articleEl.getBoundingClientRect()
-            const scrollableRect = scrollableEl.getBoundingClientRect()
-            const targetScrollTop = scrollableEl.scrollTop + (articleRect.top - scrollableRect.top)
-            scrollableEl.scrollTo({
-                top: Math.max(0, targetScrollTop),
-                behavior: "smooth"
+        openTimeoutId = window.setTimeout(() => {
+            firstFrameId = window.requestAnimationFrame(() => {
+                _scrollArticleIntoSectionView(targetArticleId, dataWrapper.sectionId)
+
+                retryTimeoutId = window.setTimeout(() => {
+                    secondFrameId = window.requestAnimationFrame(() => {
+                        _scrollArticleIntoSectionView(targetArticleId, dataWrapper.sectionId)
+                    })
+                }, 220)
             })
-        }, 500)
+        }, 90)
 
-        return () => window.clearTimeout(scrollTimeoutId)
-    }, [dataWrapper.uniqueId, dataWrapper.sectionId, onIntroEnter])
+        return () => {
+            if(openTimeoutId !== null) window.clearTimeout(openTimeoutId)
+            if(firstFrameId !== null) window.cancelAnimationFrame(firstFrameId)
+            if(retryTimeoutId !== null) window.clearTimeout(retryTimeoutId)
+            if(secondFrameId !== null) window.cancelAnimationFrame(secondFrameId)
+        }
+    }, [dataWrapper.uniqueId, dataWrapper.sectionId, navigation.targetSection?.id, navigation.transitionStatus, onIntroEnter])
 
     const openTile = useCallback((uniqueId) => {
         if(!uniqueId) return
@@ -651,7 +681,6 @@ function ArticleWebArt({ dataWrapper, id }) {
 
     useEffect(() => {
         resetArtState()
-        setShowIntroCover(true)
     }, [dataWrapper.uniqueId, resetArtState])
 
     useEffect(() => {

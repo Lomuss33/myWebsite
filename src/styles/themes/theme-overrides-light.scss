@@ -433,21 +433,14 @@
 
 [data-theme="light"] article#article-3-section-my-writings,
 [data-theme="light"] article#article-4-section-my-writings,
-[data-theme="light"] article#article-5-section-my-writings {
-    position: relative;
-    isolation: isolate;
-}
-
 [data-theme="light"] article#article-3-section-my-writings h4.article-title,
-[data-theme="light"] article#article-4-section-my-writings h4.article-title,
-[data-theme="light"] article#article-5-section-my-writings h4.article-title {
+[data-theme="light"] article#article-4-section-my-writings h4.article-title {
     margin-bottom: 12px;
     letter-spacing: -0.02em;
 }
 
 [data-theme="light"] article#article-3-section-my-writings h4.article-title span.article-title-prefix,
-[data-theme="light"] article#article-4-section-my-writings h4.article-title span.article-title-prefix,
-[data-theme="light"] article#article-5-section-my-writings h4.article-title span.article-title-prefix {
+[data-theme="light"] article#article-4-section-my-writings h4.article-title span.article-title-prefix {
     display: inline;
     margin-right: 8px !important;
     border: 0;
@@ -478,10 +471,6 @@
 [data-theme="light"] article#article-4-section-my-writings {
     --writings-skill-accent: #dc2626;
     --writings-skill-accent-2: #7f1d1d;
-}
-
-[data-theme="light"] article#article-3-section-my-writings div.article-skills-embed.article-skills-embed-illustrated-manuscript {
-    display: none;
 }
 
 [data-theme="light"] article#article-3-section-my-writings div.article-skills-item,
@@ -592,24 +581,6 @@
     box-shadow: none;
 }
 
-[data-theme="light"] article#article-5-section-my-writings div.article-skills-items {
-    row-gap: 0;
-}
-
-[data-theme="light"] article#article-5-section-my-writings div.article-skills-embed.article-skills-embed-illustrated-manuscript {
-    margin: 2px 0 0;
-}
-
-[data-theme="light"] article#article-5-section-my-writings div.article-skills-embed.article-skills-embed-illustrated-manuscript div.illustrated-manuscript {
-    width: 100%;
-    max-width: 900px;
-    height: clamp(420px, 61vw, 684px);
-    border-radius: 22px;
-    border: 1px solid rgba(37, 99, 235, 0.14);
-    box-shadow:
-        0 22px 46px rgba(15, 23, 42, 0.10),
-        inset 0 1px 0 rgba(255, 255, 255, 0.84);
-}
 
 [data-theme="light"] article#article-3-section-my-writings div.article-skills-item:hover,
 [data-theme="light"] article#article-4-section-my-writings div.article-skills-item:hover,

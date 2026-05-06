@@ -18,7 +18,6 @@ function NavLinkList({ links, expanded, compactRail = false }) {
             return
         const railCard = container.closest(".nav-sidebar-card-wrapper")
         const navTools = railCard?.querySelector(".nav-tools")
-        const sharedRowSlots = links.length + 1 + (compactRail ? 1 : 0)
 
         const minRowHeight = compactRail
             ? (expanded ? 26 : 24)
@@ -55,6 +54,15 @@ function NavLinkList({ links, expanded, compactRail = false }) {
             return Math.min(max, Math.max(min, value))
         }
 
+        const _readPxVariable = (element, name, fallback = 0) => {
+            if(!element || typeof window === "undefined")
+                return fallback
+
+            const rawValue = window.getComputedStyle(element).getPropertyValue(name)
+            const parsedValue = parseFloat(rawValue)
+            return Number.isFinite(parsedValue) ? parsedValue : fallback
+        }
+
         const _getAdaptiveValue = (minimum, baseline, maximum, shrinkFactor, growFactor) => {
             if(growFactor > 0)
                 return _interpolate(baseline, maximum, growFactor)
@@ -63,7 +71,7 @@ function NavLinkList({ links, expanded, compactRail = false }) {
 
         const _syncDensity = () => {
             const amountOfItems = links.length || 0
-            if(!amountOfItems || !sharedRowSlots)
+            if(!amountOfItems)
                 return
 
             const totalHeight = container.clientHeight
@@ -72,8 +80,12 @@ function NavLinkList({ links, expanded, compactRail = false }) {
                 return
 
             const currentToolsHeight = navTools?.clientHeight || 0
+            const reservedCompactHeight = compactRail ?
+                _readPxVariable(railCard, "--nav-short-rail-profile-height") +
+                _readPxVariable(railCard, "--nav-short-rail-tools-height") :
+                0
             const sharedRowHeight = compactRail && railHeight > 0 ?
-                railHeight / sharedRowSlots :
+                Math.max((railHeight - reservedCompactHeight) / amountOfItems, 0) :
                 (currentToolsHeight > 0 ? (totalHeight + currentToolsHeight) / (amountOfItems + 1) : totalHeight / amountOfItems)
             const shrinkFactor = _clamp(
                 (baselineRowHeight - sharedRowHeight) / Math.max(baselineRowHeight - minRowHeight, 1),

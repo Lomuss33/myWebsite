@@ -4,6 +4,7 @@ div.nav-tools {
     --nav-tools-height: var(--nav-link-target-height, 48px);
 
     display: flex;
+    flex: 0 0 auto;
     width: 100%;
     height: var(--nav-tools-height);
     min-height: var(--nav-tools-height);
@@ -403,6 +404,7 @@ nav.nav-sidebar-short-rail div.nav-tools div.dropdown-menu.nav-tools-popup-menu 
 
 div.nav-tools-shrink {
     flex-direction: row;
+    align-items: stretch;
     padding: 0;
     gap: 0;
     height: var(--nav-tools-height);

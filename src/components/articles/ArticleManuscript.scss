@@ -1,0 +1,46 @@
+@use "../../styles/extend" as *;
+
+article.article-manuscript {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: min(100%, 980px);
+    margin-inline: auto;
+
+    div.article-content {
+        width: 100%;
+        margin: 0;
+    }
+}
+
+div.article-manuscript-stage {
+    width: 100%;
+    max-width: 900px;
+    margin: 2px auto 0;
+}
+
+div.article-manuscript-stage div.illustrated-manuscript {
+    width: 100%;
+    max-width: 900px;
+    height: clamp(420px, 61vw, 684px);
+    border-radius: 22px;
+    border: 1px solid rgba(56, 189, 248, 0.16);
+    box-shadow:
+        0 26px 56px rgba(0, 0, 0, 0.42),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+@include media-breakpoint-down(lg) {
+    div.article-manuscript-stage div.illustrated-manuscript {
+        height: clamp(334px, 78vw, 560px);
+    }
+}
+
+[data-theme="light"] div.article-manuscript-stage div.illustrated-manuscript {
+    border: 1px solid rgba(37, 99, 235, 0.14);
+    box-shadow:
+        0 22px 46px rgba(15, 23, 42, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.84);
+}

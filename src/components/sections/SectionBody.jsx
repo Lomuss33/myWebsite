@@ -12,6 +12,7 @@ function _loadArticleFacts() { return import("../articles/ArticleFacts.jsx") }
 function _loadArticleFallingWords() { return import("../articles/ArticleFallingWords.jsx") }
 function _loadArticleInfoList() { return import("../articles/ArticleInfoList.jsx") }
 function _loadArticleInlineList() { return import("../articles/ArticleInlineList.jsx") }
+function _loadArticleManuscript() { return import("../articles/ArticleManuscript.jsx") }
 function _loadArticlePortfolio() { return import("../articles/ArticlePortfolio.jsx") }
 function _loadArticleSkills() { return import("../articles/ArticleSkills.jsx") }
 function _loadArticleStack() { return import("../articles/ArticleStack.jsx") }
@@ -124,6 +125,7 @@ SectionBody.ARTICLE_LOADERS = {
     ArticleFallingWords: _loadArticleFallingWords,
     ArticleInfoList: _loadArticleInfoList,
     ArticleInlineList: _loadArticleInlineList,
+    ArticleManuscript: _loadArticleManuscript,
     ArticlePortfolio: _loadArticlePortfolio,
     ArticleSkills: _loadArticleSkills,
     ArticleStack: _loadArticleStack,
@@ -144,6 +146,7 @@ SectionBody.ARTICLES = {
     ArticleFallingWords: lazy(_loadArticleFallingWords),
     ArticleInfoList: lazy(_loadArticleInfoList),
     ArticleInlineList: lazy(_loadArticleInlineList),
+    ArticleManuscript: lazy(_loadArticleManuscript),
     ArticlePortfolio: lazy(_loadArticlePortfolio),
     ArticleSkills: lazy(_loadArticleSkills),
     ArticleStack: lazy(_loadArticleStack),

@@ -757,6 +757,7 @@ div.nav-profile-card-shrink {
     --avatar-size: 72px;
     --border-size: 3px;
     --offset-status-circle: 11px;
+    align-self: stretch;
 
     div.nav-profile-card-avatar-switch {
         border-radius: calc($standard-border-radius * 2)!important;
@@ -768,6 +769,7 @@ div.nav-profile-card-shrink {
 
     div.nav-profile-card-header {
         width: auto;
+        min-width: 0;
     }
 
     div.nav-profile-card-compact-name {

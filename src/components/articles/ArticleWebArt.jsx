@@ -405,6 +405,39 @@ function ArticleWebArt({ dataWrapper, id }) {
         setSendYoursPreviewOpen(false)
     }, [items.length])
 
+    useEffect(() => {
+        if(typeof window === "undefined") return
+
+        const pending = window.__pendingSectionAction
+        if(!pending) return
+        if(pending.action !== "enter") return
+        if(pending.sectionId !== dataWrapper.sectionId) return
+        if(Date.now() - (pending.requestedAt || 0) > 5000) {
+            delete window.__pendingSectionAction
+            return
+        }
+
+        delete window.__pendingSectionAction
+
+        onIntroEnter()
+
+        const scrollTimeoutId = window.setTimeout(() => {
+            const articleEl = document.getElementById(dataWrapper.uniqueId)
+            const scrollableEl = document.getElementById(`scrollable-${dataWrapper.sectionId}`)
+            if(!articleEl || !scrollableEl) return
+
+            const articleRect = articleEl.getBoundingClientRect()
+            const scrollableRect = scrollableEl.getBoundingClientRect()
+            const targetScrollTop = scrollableEl.scrollTop + (articleRect.top - scrollableRect.top)
+            scrollableEl.scrollTo({
+                top: Math.max(0, targetScrollTop),
+                behavior: "smooth"
+            })
+        }, 500)
+
+        return () => window.clearTimeout(scrollTimeoutId)
+    }, [dataWrapper.uniqueId, dataWrapper.sectionId, onIntroEnter])
+
     const openTile = useCallback((uniqueId) => {
         if(!uniqueId) return
         mountTile(uniqueId)

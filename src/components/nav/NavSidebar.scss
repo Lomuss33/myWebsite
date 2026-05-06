@@ -97,14 +97,34 @@ nav.nav-sidebar-short-rail {
     }
 
     div.nav-profile-card-shrink {
-        --avatar-size: 66px;
-        --border-size: 3px;
-        --offset-status-circle: 10px;
+        --nav-short-rail-row-height: var(--nav-link-target-height, 48px);
+        --avatar-size: clamp(32px, calc(var(--nav-short-rail-row-height) - 16px), 54px);
+        --border-size: clamp(2px, calc(var(--nav-short-rail-row-height) * 0.05), 3px);
+        --offset-status-circle: clamp(7px, calc(var(--avatar-size) * 0.18), 10px);
         margin: 0;
-        padding: 12px 8px 10px;
+        padding: 4px 8px;
+        height: var(--nav-short-rail-row-height);
+        min-height: var(--nav-short-rail-row-height);
+        max-height: var(--nav-short-rail-row-height);
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    div.nav-profile-card-shrink div.nav-profile-card-header {
+        width: 100%;
+        height: 100%;
     }
 
     div.nav-tools {
+        --nav-tools-height: var(--nav-link-target-height, 48px);
         padding: 0 4px;
+        height: var(--nav-tools-height);
+        min-height: var(--nav-tools-height);
+        max-height: var(--nav-tools-height);
+    }
+
+    div.nav-tools.nav-tools-shrink,
+    div.nav-tools.nav-tools-shrink div.nav-tools-item {
+        min-height: var(--nav-tools-height);
     }
 }

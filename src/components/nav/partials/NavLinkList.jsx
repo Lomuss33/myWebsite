@@ -18,6 +18,7 @@ function NavLinkList({ links, expanded, compactRail = false }) {
             return
         const railCard = container.closest(".nav-sidebar-card-wrapper")
         const navTools = railCard?.querySelector(".nav-tools")
+        const sharedRowSlots = links.length + 1 + (compactRail ? 1 : 0)
 
         const minRowHeight = compactRail
             ? (expanded ? 26 : 24)
@@ -62,14 +63,18 @@ function NavLinkList({ links, expanded, compactRail = false }) {
 
         const _syncDensity = () => {
             const amountOfItems = links.length || 0
+            if(!amountOfItems || !sharedRowSlots)
+                return
+
             const totalHeight = container.clientHeight
-            if(!totalHeight || !amountOfItems)
+            const railHeight = railCard?.clientHeight || 0
+            if(!totalHeight && !railHeight)
                 return
 
             const currentToolsHeight = navTools?.clientHeight || 0
-            const sharedRowHeight = currentToolsHeight > 0 ?
-                (totalHeight + currentToolsHeight) / (amountOfItems + 1) :
-                totalHeight / amountOfItems
+            const sharedRowHeight = compactRail && railHeight > 0 ?
+                railHeight / sharedRowSlots :
+                (currentToolsHeight > 0 ? (totalHeight + currentToolsHeight) / (amountOfItems + 1) : totalHeight / amountOfItems)
             const shrinkFactor = _clamp(
                 (baselineRowHeight - sharedRowHeight) / Math.max(baselineRowHeight - minRowHeight, 1),
                 0,

@@ -1,6 +1,8 @@
 @use "../../styles/extend" as *;
 
 div.layout-navigation-wrapper {
+    --mobile-nav-tabs-total-height: calc(var(--nav-tabs-height, #{$nav-tabs-height}) + env(safe-area-inset-bottom, 0px) + var(--mobile-viewport-offset-bottom, 0px));
+
     display: flex;
     position: relative;
     isolation: isolate;
@@ -33,7 +35,7 @@ div.layout-navigation-wrapper {
         flex-direction: column;
 
         &::before {
-            inset: 0 0 $nav-tabs-height 0;
+            inset: 0 0 var(--mobile-nav-tabs-total-height) 0;
             border-radius: 0;
         }
     }
@@ -53,8 +55,6 @@ div.layout-navigation-children-wrapper {
 }
  
 div.layout-navigation-children-wrapper {
-    --mobile-nav-safe-area-bottom: env(safe-area-inset-bottom, 0px);
-
     flex: 1 1 auto;
     min-width: 0;
     width: 100%;
@@ -70,7 +70,7 @@ div.layout-navigation-children-wrapper {
         margin-left: 0;
         margin-top: calc(var(--default-card-spacing) - 1px);
         margin-right: 0;
-        margin-bottom: calc(#{$nav-tabs-height} + var(--mobile-nav-safe-area-bottom));
+        margin-bottom: var(--mobile-nav-tabs-total-height);
         border-radius: 0;
     }
 }

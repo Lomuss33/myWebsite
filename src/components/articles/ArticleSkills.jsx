@@ -241,6 +241,14 @@ function ArticleSkillsItems({ dataWrapper, selectedItemCategoryId }) {
         return renderResponsiveBalancedColumns()
     }
 
+    if (shouldRenderEmbeddedFeature && renderedItems.length === 0) {
+        return (
+            <div className={`article-skills-items ${itemsPerRowClass} ${sectionClass}`.trim()}>
+                {renderEmbeddedFeature()}
+            </div>
+        )
+    }
+
     return (
         <Collapsable className={`article-skills-items ${itemsPerRowClass} ${sectionClass}`.trim()}
                      id={dataWrapper.uniqueId}

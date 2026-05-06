@@ -892,6 +892,26 @@ div.article-feature-items.article-feature-items-section-my-writings {
         }
     }
 
+    @include media-breakpoint-down(sm) {
+        div.article-feature-item.article-feature-item-id-2 {
+            align-items: stretch;
+
+            div.article-feature-item-content {
+                align-items: flex-start;
+                justify-content: flex-start;
+                min-height: auto;
+            }
+
+            div.article-feature-item-text {
+                width: 100%;
+
+                div.pretext-interactive-text {
+                    padding-inline: 0;
+                }
+            }
+        }
+    }
+
     @media (prefers-reduced-motion: reduce) {
         span.pretext-interactive-text-fragment-highlight,
         span.pretext-interactive-text-fragment-highlight span.pretext-interactive-text-grapheme {

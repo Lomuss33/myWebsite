@@ -155,7 +155,7 @@ function ArticleInfoList({ dataWrapper }) {
  */
 function ArticleInfoListItems({ dataWrapper, selectedItemCategoryId, isHomeInfoList, isContactInfoList }) {
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
-    const shouldCollapseHomeSkills = isHomeInfoList && filteredItems.length > 4
+    const shouldCollapseHomeSkills = isHomeInfoList && filteredItems.length > 2
 
     const id = dataWrapper.uniqueId
     const shrinkClass = filteredItems.find(itemWrapper => itemWrapper.locales.text) ?
@@ -175,7 +175,7 @@ function ArticleInfoListItems({ dataWrapper, selectedItemCategoryId, isHomeInfoL
             <Collapsable className={`article-info-list-items ${shrinkClass} ${homeClass}`.trim()}
                          id={dataWrapper.uniqueId}
                          contentId={dataWrapper.uniqueId}
-                         initialVisibleItems={4}
+                         initialVisibleRows={2}
                          itemsPerStep={filteredItems.length}>
                 {items}
             </Collapsable>

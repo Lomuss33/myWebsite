@@ -246,6 +246,61 @@ section#section-my-writings div.article-content {
     color: var(--writings-text-strong);
 }
 
+@include media-breakpoint-up(md) {
+    section#section-my-writings div.section-body {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        column-gap: 24px;
+        row-gap: 0;
+        align-items: start;
+
+        > article {
+            grid-column: 1 / -1;
+            min-width: 0;
+        }
+
+        > article#article-3-section-my-writings {
+            grid-column: 1 / 2;
+        }
+
+        > article#article-4-section-my-writings {
+            grid-column: 2 / 3;
+        }
+
+        > article#article-5-section-my-writings {
+            grid-column: 1 / -1;
+            justify-self: center;
+            width: min(100%, 880px);
+        }
+    }
+
+    section#section-my-writings article#article-3-section-my-writings {
+        div.article-skills-embed.article-skills-embed-illustrated-manuscript {
+            div.illustrated-manuscript {
+                height: clamp(260px, 36vw, 460px);
+            }
+        }
+    }
+}
+
+@include media-breakpoint-up(lg) {
+    section#section-my-writings div.section-body {
+        column-gap: 32px;
+    }
+
+    section#section-my-writings article#article-5-section-my-writings {
+        width: min(100%, 980px);
+    }
+
+    section#section-my-writings article#article-3-section-my-writings {
+        div.article-skills-embed.article-skills-embed-illustrated-manuscript {
+            div.illustrated-manuscript {
+                height: clamp(320px, 30vw, 520px);
+            }
+        }
+    }
+}
+
 section#section-my-art {
     --art-page-bg: #030406;
     --art-page-bg-2: #090f1a;

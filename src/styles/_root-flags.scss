@@ -8,7 +8,11 @@
 :root {
     --max-breakpoint-for-tabbed-interface: #{$max-breakpoint-for-tabbed-interface};
     --default-card-spacing: #{$default-card-spacing};
+    --nav-tabs-height: #{$nav-tabs-height};
     --nav-pills-height: #{$nav-pills-height};
+    --mobile-viewport-offset-top: 0px;
+    --mobile-viewport-offset-bottom: 0px;
+    --mobile-visual-viewport-height: 100vh;
 
     --form-background-color: var(--theme-empty);
     --form-color: var(--theme-texts-light);
@@ -27,11 +31,14 @@
 @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
     :root {
         --default-card-spacing: #{$default-card-spacing-mobile};
+        --nav-tabs-height: #{$nav-tabs-height-mobile};
+        --nav-pills-height: #{$nav-pills-height-mobile};
     }
 }
 
 @include media-breakpoint-down(sm) {
     :root {
+        --nav-tabs-height: #{$nav-tabs-height-mobile-compact};
         --nav-pills-height: #{$nav-pills-height-compressed};
     }
 }

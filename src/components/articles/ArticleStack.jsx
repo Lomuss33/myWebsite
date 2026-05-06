@@ -9,12 +9,6 @@ import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useTheme} from "../../providers/ThemeProvider.jsx"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
 
-const HOME_STACK_BREAKPOINTS = {
-    0: { id: "home-stack-bp-0", columns: 1 },
-    560: { id: "home-stack-bp-560", columns: 2 },
-    980: { id: "home-stack-bp-980", columns: 3 }
-}
-
 const HOME_STACK_POPUP_COPY = {
     1: "Built with a tall frame, long reach, and a natural advantage for seeing the bigger picture. Useful in life, teamwork, and for changing light bulbs without negotiations.",
     2: "A solid operating weight for carrying momentum, staying grounded, and generally looking like the hardware edition of a software engineer.",
@@ -182,19 +176,12 @@ function ArticleStack({ dataWrapper, id }) {
 function ArticleStackItems({ dataWrapper, selectedItemCategoryId, isHomeStack, isCompactStack }) {
     const language = useLanguage()
     const theme = useTheme()
-    const viewport = useViewport()
 
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
     const refreshFlag = selectedItemCategoryId + "::" + language.getSelectedLanguage()?.id + "-" + theme.getSelectedTheme()?.id
     const homeClass = isHomeStack ? `article-stack-items-home` : ``
     const compactClass = isCompactStack ? `article-stack-items-compact` : ``
     const stackClassName = `article-stack-items ${homeClass} ${compactClass}`.trim()
-    const homeBreakpoint = isHomeStack ?
-        viewport.getCustomBreakpoint(HOME_STACK_BREAKPOINTS) || HOME_STACK_BREAKPOINTS[0] :
-        null
-    const initialVisibleItems = isHomeStack ?
-        Math.min(filteredItems.length, homeBreakpoint?.columns || filteredItems.length) :
-        filteredItems.length
     const renderedItems = filteredItems.map((itemWrapper, key) => (
         <ArticleStackItem itemWrapper={itemWrapper}
                           isHomeStack={isHomeStack}
@@ -206,8 +193,7 @@ function ArticleStackItems({ dataWrapper, selectedItemCategoryId, isHomeStack, i
         return (
             <Collapsable className={stackClassName}
                          id={dataWrapper.uniqueId}
-                         breakpointId={homeBreakpoint.id}
-                         initialVisibleItems={initialVisibleItems}>
+                         initialVisibleRows={1}>
                 {renderedItems}
             </Collapsable>
         )

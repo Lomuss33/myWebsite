@@ -78,11 +78,31 @@ function Link({
         else if(href.startsWith("#gallery:open"))
             _openGalleryLink()
         else if(href.startsWith("#"))
-            location.goToSectionWithId(href.replaceAll("#", ""))
+            _goToSectionHash(href.slice(1))
         else if(href.includes("youtube.com/embed") || href.includes("youtube.com/watch?v="))
             _openYoutubeLink()
         else
             _openExternalLink()
+    }
+
+    const _goToSectionHash = (hashContent) => {
+        const colonIndex = hashContent.indexOf(":")
+        if(colonIndex > 0) {
+            const sectionId = hashContent.slice(0, colonIndex)
+            const action = hashContent.slice(colonIndex + 1)
+            if(sectionId && action) {
+                if(typeof window !== "undefined") {
+                    window.__pendingSectionAction = {
+                        sectionId,
+                        action,
+                        requestedAt: Date.now()
+                    }
+                }
+                location.goToSectionWithId(sectionId)
+                return
+            }
+        }
+        location.goToSectionWithId(hashContent)
     }
 
     const _openYoutubeLink = () => {

@@ -64,6 +64,8 @@ function ViewportProvider({ children }) {
     const _createListeners = () => {
         window.addEventListener('scroll', _onScroll, { passive: true })
         window.addEventListener('resize', _onResize)
+        window.visualViewport?.addEventListener('resize', _onVisualViewportChange)
+        window.visualViewport?.addEventListener('scroll', _onVisualViewportChange)
 
         _onScroll()
         _applyResize()
@@ -72,9 +74,12 @@ function ViewportProvider({ children }) {
     const _destroyListeners = () => {
         window.removeEventListener('scroll', _onScroll)
         window.removeEventListener('resize', _onResize)
+        window.visualViewport?.removeEventListener('resize', _onVisualViewportChange)
+        window.visualViewport?.removeEventListener('scroll', _onVisualViewportChange)
 
         scheduler.clearAllWithTag(tag)
         scheduler.clearAllWithTag(resizeTag)
+        _clearVisualViewportMetrics()
     }
 
     const _onScroll = () => {
@@ -85,11 +90,13 @@ function ViewportProvider({ children }) {
 
         scrollPositionRef.current = nextPosition
         updateScrollStore(nextPosition)
+        _syncVisualViewportMetrics()
     }
 
     const _applyResize = () => {
         setInnerWidth(window.innerWidth)
         setInnerHeight(window.innerHeight)
+        _syncVisualViewportMetrics()
     }
 
     const _onResize = () => {
@@ -97,6 +104,35 @@ function ViewportProvider({ children }) {
         scheduler.schedule(() => {
             _applyResize()
         }, 120, resizeTag)
+    }
+
+    const _onVisualViewportChange = () => {
+        _syncVisualViewportMetrics()
+    }
+
+    const _syncVisualViewportMetrics = () => {
+        const rootStyle = document?.documentElement?.style
+        if(!rootStyle)
+            return
+
+        const visualViewport = window.visualViewport
+        const viewportOffsetTop = Math.max(0, Math.round(visualViewport?.offsetTop || 0))
+        const visualViewportHeight = Math.max(0, Math.round(visualViewport?.height || window.innerHeight || 0))
+        const viewportOffsetBottom = Math.max(0, Math.round((window.innerHeight || visualViewportHeight) - visualViewportHeight - viewportOffsetTop))
+
+        rootStyle.setProperty("--mobile-viewport-offset-top", `${viewportOffsetTop}px`)
+        rootStyle.setProperty("--mobile-viewport-offset-bottom", `${viewportOffsetBottom}px`)
+        rootStyle.setProperty("--mobile-visual-viewport-height", `${visualViewportHeight}px`)
+    }
+
+    const _clearVisualViewportMetrics = () => {
+        const rootStyle = document?.documentElement?.style
+        if(!rootStyle)
+            return
+
+        rootStyle.removeProperty("--mobile-viewport-offset-top")
+        rootStyle.removeProperty("--mobile-viewport-offset-bottom")
+        rootStyle.removeProperty("--mobile-visual-viewport-height")
     }
 
     const isBreakpoint = (breakpoint) => {

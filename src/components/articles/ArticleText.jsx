@@ -60,48 +60,62 @@ function ArticleTextItem({ itemWrapper, textLayoutMode }) {
 
     if (textLayoutMode === "draggable_inline_icon_flow") {
         const html = normalizePretextStoryHtml(itemWrapper.locales.text || itemWrapper.placeholder)
-        const hueShift = Math.round((hueRatio - 0.5) * 120)
-        const eyebrow = itemWrapper.locales.eyebrow
         const heading = itemWrapper.locales.title
-        const impactPills = Array.isArray(itemWrapper.locales.list) ? itemWrapper.locales.list : []
+        const axisStart = itemWrapper.locales.axisStart
+        const axisEnd = itemWrapper.locales.axisEnd
+        const hasAxisLabels = Boolean(axisStart || axisEnd)
+        const axisBias = Number(((hueRatio - 0.5) * 2).toFixed(3))
+        const axisBiasAbs = Number(Math.abs(axisBias).toFixed(3))
+        const axisPhase = hueRatio < 0.35 ? "start" : hueRatio > 0.65 ? "end" : "middle"
+        const axisAccentOpacity = 0.28 + (axisBiasAbs * 0.32)
+        const axisGlowOpacity = 0.56 + (axisBiasAbs * 0.26)
+        const accentColor = getExperienceAccentColor(itemWrapper.id, hueRatio)
 
         return (
             <div className={`article-text-item article-text-item-flow-card`}
                  data-flow-card-index={itemWrapper.id}
+                 data-axis-phase={axisPhase}
                  style={{
-                     "--experience-card-hue-shift": `${hueShift}deg`
+                     "--experience-card-accent": toRgbCssColor(accentColor),
+                     "--experience-card-accent-soft": toRgbCssColor(accentColor, 0.18),
+                     "--experience-card-accent-soft-strong": toRgbCssColor(accentColor, 0.34),
+                     "--experience-axis-bias": `${axisBias}`,
+                     "--experience-axis-bias-abs": `${axisBiasAbs}`,
+                     "--experience-axis-accent-opacity": `${axisAccentOpacity}`,
+                     "--experience-axis-glow-opacity": `${axisGlowOpacity}`
                  }}>
                 <div className={`article-text-flow-card-header`}>
-                    {eyebrow && (
-                        <p className={`article-text-flow-card-eyebrow`}>
-                            {eyebrow}
-                        </p>
-                    )}
-
                     {heading && (
                         <h3 className={`article-text-flow-card-heading`}>
                             {heading}
                         </h3>
                     )}
-
-                    {impactPills.length > 0 && (
-                        <div className={`article-text-flow-card-impact-list`}>
-                            {impactPills.map((pill, index) => (
-                                <span className={`article-text-flow-card-impact-pill`}
-                                      key={`${itemWrapper.uniqueId}-pill-${index}`}>
-                                    {pill}
-                                </span>
-                            ))}
-                        </div>
-                    )}
                 </div>
+
+                {hasAxisLabels && (
+                    <div className={`article-text-flow-card-axis`}
+                         aria-hidden={true}>
+                        <span className={`article-text-flow-card-axis-label article-text-flow-card-axis-label-start`}>
+                            {axisStart || ""}
+                        </span>
+                        <span className={`article-text-flow-card-axis-label article-text-flow-card-axis-label-end`}>
+                            {axisEnd || ""}
+                        </span>
+                    </div>
+                )}
 
                 <PretextDraggableInlineIconText html={html}
                                                 faIcon={itemWrapper.faIconWithFallback}
                                                 iconStyle={itemWrapper.faIconStyle}
-                                                alt={itemWrapper.imageAlt}
+                                                alt={heading || itemWrapper.imageAlt}
                                                 initialXRatio={0.5}
                                                 onRatioChange={setHueRatio}
+                                                getAriaValueText={(xRatio) => getSemanticAxisValueText({
+                                                    axisEnd,
+                                                    axisPhase: getAxisPhaseFromRatio(xRatio),
+                                                    axisStart,
+                                                    xRatio
+                                                })}
                                                 className={`article-text-flow-card-story`}/>
             </div>
         )
@@ -159,6 +173,70 @@ function ArticleTextItem({ itemWrapper, textLayoutMode }) {
             </div>
         </div>
     )
+}
+
+function getAxisPhaseFromRatio(xRatio) {
+    if (xRatio < 0.35) return "start"
+    if (xRatio > 0.65) return "end"
+    return "middle"
+}
+
+function getExperienceAccentColor(itemId, xRatio) {
+    const palettes = {
+        1: {
+            left: [168, 88, 24],
+            middle: [34, 198, 82],
+            right: [234, 48, 72]
+        },
+        2: {
+            left: [255, 84, 156],
+            middle: [255, 210, 44],
+            right: [250, 247, 240]
+        },
+        3: {
+            left: [46, 134, 255],
+            middle: [132, 70, 255],
+            right: [14, 16, 22]
+        }
+    }
+
+    const palette = palettes[itemId] || palettes[1]
+    const safeRatio = clamp(xRatio, 0, 1)
+
+    if (safeRatio <= 0.5) {
+        return interpolateRgb(palette.left, palette.middle, safeRatio * 2)
+    }
+
+    return interpolateRgb(palette.middle, palette.right, (safeRatio - 0.5) * 2)
+}
+
+function interpolateRgb(start, end, ratio) {
+    return start.map((value, index) => {
+        return Math.round(value + ((end[index] - value) * ratio))
+    })
+}
+
+function toRgbCssColor([r, g, b], alpha = null) {
+    if (alpha === null) {
+        return `rgb(${r} ${g} ${b})`
+    }
+
+    return `rgb(${r} ${g} ${b} / ${alpha})`
+}
+
+function getSemanticAxisValueText({ axisStart, axisEnd, axisPhase, xRatio }) {
+    const percent = Math.round(clamp(xRatio, 0, 1) * 100)
+
+    if (!axisStart || !axisEnd)
+        return `${percent} percent`
+
+    const activeSideLabel = axisPhase === "start" ?
+        axisStart :
+        axisPhase === "end" ?
+            axisEnd :
+            `${axisStart} and ${axisEnd}`
+
+    return `${axisStart} to ${axisEnd}, ${percent}% toward ${activeSideLabel}`
 }
 
 function ArticleTextAvatarRail({ itemWrapper, hueRatio, setHueRatio }) {

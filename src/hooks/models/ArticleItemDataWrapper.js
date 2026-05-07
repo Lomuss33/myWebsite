@@ -141,6 +141,8 @@ export default class ArticleItemDataWrapper {
 
         const translations = {
             eyebrow: language.getTranslation(locales, "eyebrow", null),
+            axisStart: language.getTranslation(locales, "axis_start", null),
+            axisEnd: language.getTranslation(locales, "axis_end", null),
             title: language.getTranslation(locales, "title", null),
             country: language.getTranslation(locales, "country", null),
             institution: language.getTranslation(locales, "institution", null),

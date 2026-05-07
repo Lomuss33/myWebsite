@@ -293,16 +293,6 @@
     color: transparent;
 }
 
-[data-theme="light"] article#article-3-section-experience div.article-text-item.article-text-item-flow-card {
-    border: 1px solid rgba(37, 99, 235, 0.12);
-    background: linear-gradient(180deg, #ffffff, #f6f9fd);
-    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
-}
-
-[data-theme="light"] article#article-3-section-experience div.article-text-excerpt {
-    color: #0f172a;
-}
-
 [data-theme="light"] article.article-timeline--my-art div.article-timeline-item-content,
 [data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines,
 [data-theme="light"] article#article-1-section-experience div.article-timeline-item-info-for-timelines,
@@ -1119,23 +1109,40 @@
 }
 
 [data-theme="light"] article#article-3-section-experience div.article-text-item.article-text-item-flow-card {
-    background: linear-gradient(180deg, #fffdf8, #f7f3ea);
-    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+    border-color: color-mix(in srgb, var(--experience-card-accent) 16%, rgba(148, 163, 184, 0.22));
+    background:
+        radial-gradient(circle at top left, color-mix(in srgb, var(--experience-card-accent) 9%, transparent), transparent 34%),
+        radial-gradient(circle at bottom right, color-mix(in srgb, var(--experience-card-accent) 7%, transparent), transparent 40%),
+        linear-gradient(180deg, #ffffff, #f6f9fd);
+    box-shadow:
+        0 18px 40px rgba(15, 23, 42, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 [data-theme="light"] article#article-3-section-experience div.article-text-item.article-text-item-flow-card::before {
     background:
-        radial-gradient(circle at top right, color-mix(in srgb, var(--experience-card-accent) 14%, transparent) 0%, transparent 55%),
+        radial-gradient(circle at top right, color-mix(in srgb, var(--experience-card-accent) 12%, transparent) 0%, transparent 55%),
         radial-gradient(circle at bottom left, color-mix(in srgb, var(--experience-card-accent) 8%, transparent) 0%, transparent 42%);
 }
 
-[data-theme="light"] article#article-3-section-experience p.article-text-flow-card-heading {
+[data-theme="light"] article#article-3-section-experience p.article-text-flow-card-eyebrow {
+    color: color-mix(in srgb, var(--experience-card-accent) 54%, #475569 46%);
+}
+
+[data-theme="light"] article#article-3-section-experience h3.article-text-flow-card-heading {
     color: #172033;
 }
 
 [data-theme="light"] article#article-3-section-experience span.article-text-flow-card-impact-pill {
     color: #334155;
-    background: color-mix(in srgb, var(--experience-card-accent) 10%, white);
+}
+
+[data-theme="light"] article#article-3-section-experience span.article-text-flow-card-impact-pill + span.article-text-flow-card-impact-pill::before {
+    background: color-mix(in srgb, var(--experience-card-accent) 22%, rgba(100, 116, 139, 0.24));
+}
+
+[data-theme="light"] article#article-3-section-experience span.article-text-flow-card-axis-label {
+    color: color-mix(in srgb, var(--experience-card-accent) 54%, #64748b 46%);
 }
 
 [data-theme="light"] article#article-3-section-experience span.pretext-draggable-inline-icon-text-fragment,
@@ -1144,7 +1151,8 @@
 }
 
 [data-theme="light"] article#article-3-section-experience span.pretext-draggable-inline-icon-text-fragment strong,
-[data-theme="light"] article#article-3-section-experience a.pretext-draggable-inline-icon-text-fragment strong {
+[data-theme="light"] article#article-3-section-experience a.pretext-draggable-inline-icon-text-fragment strong,
+[data-theme="light"] article#article-3-section-experience a.pretext-draggable-inline-icon-text-fragment {
     color: #172033;
 }
 
@@ -1153,11 +1161,33 @@
     color: #64748b;
 }
 
-[data-theme="light"] article#article-3-section-experience div.article-text-avatar-view {
-    background-color: #ffffff;
-    color: #2563eb;
-    border: 1px solid rgba(37, 99, 235, 0.18);
-    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+[data-theme="light"] article#article-3-section-experience span.pretext-draggable-inline-icon-text-fragment-highlight,
+[data-theme="light"] article#article-3-section-experience a.pretext-draggable-inline-icon-text-fragment-highlight {
+    color: color-mix(in srgb, var(--experience-card-accent) 82%, #1d4ed8 18%);
+}
+
+[data-theme="light"] article#article-3-section-experience p.pretext-draggable-inline-icon-text-intro {
+    color: #172033;
+}
+
+[data-theme="light"] article#article-3-section-experience span.pretext-draggable-inline-icon-text-rail-line {
+    background: linear-gradient(
+        90deg,
+        rgba(37, 99, 235, 0) 0%,
+        color-mix(in srgb, var(--experience-card-accent) 20%, transparent) 10%,
+        color-mix(in srgb, var(--experience-card-accent) 68%, white 32%) 50%,
+        color-mix(in srgb, var(--experience-card-accent) 20%, transparent) 90%,
+        rgba(37, 99, 235, 0) 100%
+    );
+}
+
+[data-theme="light"] article#article-3-section-experience span.pretext-draggable-inline-icon-text-rail-progress {
+    box-shadow: 0 0 18px color-mix(in srgb, var(--experience-card-accent) 26%, transparent);
+}
+
+[data-theme="light"] article#article-3-section-experience span.pretext-draggable-inline-icon-text-rail-dot {
+    background-color: color-mix(in srgb, var(--experience-card-accent) 18%, white);
+    border-color: color-mix(in srgb, var(--experience-card-accent) 34%, rgba(148, 163, 184, 0.22));
 }
 
 [data-theme="light"] article#article-3-section-experience button.pretext-draggable-inline-icon-text-handle {
@@ -1169,77 +1199,6 @@
             color-mix(in srgb, var(--experience-card-accent) 74%, white 10%),
             color-mix(in srgb, var(--experience-card-accent) 88%, #172033 12%)
         );
-}
-
-[data-theme="light"] article#article-3-section-experience div.article-text-item {
-    border-color: color-mix(in srgb, var(--experience-card-accent) 14%, rgba(148, 163, 184, 0.22));
-    background:
-        radial-gradient(circle at top left, color-mix(in srgb, var(--experience-card-accent) 8%, transparent), transparent 34%),
-        linear-gradient(180deg, #ffffff, #f6f9fd);
-    box-shadow:
-        0 16px 36px rgba(15, 23, 42, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.78);
-}
-
-[data-theme="light"] article#article-3-section-experience p.article-text-item-eyebrow {
-    background: color-mix(in srgb, var(--experience-card-accent) 8%, white);
-    border-color: color-mix(in srgb, var(--experience-card-accent) 18%, rgba(148, 163, 184, 0.22));
-    color: color-mix(in srgb, var(--experience-card-accent) 68%, #334155 32%);
-}
-
-[data-theme="light"] article#article-3-section-experience h3.article-text-item-heading,
-[data-theme="light"] article#article-3-section-experience div.article-text-excerpt strong,
-[data-theme="light"] article#article-3-section-experience div.article-text-excerpt a {
-    color: #0f172a;
-}
-
-[data-theme="light"] article#article-3-section-experience span.article-text-item-pill {
-    background: color-mix(in srgb, var(--experience-card-accent) 8%, white);
-    border-color: color-mix(in srgb, var(--experience-card-accent) 16%, rgba(148, 163, 184, 0.20));
-    color: #334155;
-}
-
-[data-theme="light"] article#article-3-section-experience div.article-text-excerpt {
-    color: #334155;
-}
-
-[data-theme="light"] article#article-3-section-experience div.article-text-excerpt em {
-    color: #64748b;
-}
-
-[data-theme="light"] article#article-3-section-experience span.article-text-avatar-rail-line {
-    background: linear-gradient(
-        90deg,
-        rgba(37, 99, 235, 0) 0%,
-        color-mix(in srgb, var(--experience-card-accent) 20%, transparent) 10%,
-        color-mix(in srgb, var(--experience-card-accent) 68%, white 32%) 50%,
-        color-mix(in srgb, var(--experience-card-accent) 20%, transparent) 90%,
-        rgba(37, 99, 235, 0) 100%
-    );
-}
-
-[data-theme="light"] article#article-3-section-experience span.article-text-avatar-rail-progress {
-    box-shadow: 0 0 18px color-mix(in srgb, var(--experience-card-accent) 26%, transparent);
-}
-
-[data-theme="light"] article#article-3-section-experience span.article-text-avatar-rail-dot {
-    background-color: color-mix(in srgb, var(--experience-card-accent) 18%, white);
-    border-color: color-mix(in srgb, var(--experience-card-accent) 34%, rgba(148, 163, 184, 0.22));
-}
-
-[data-theme="light"] article#article-3-section-experience div.article-text-avatar-view {
-    background:
-        radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 45%),
-        linear-gradient(
-            180deg,
-            color-mix(in srgb, var(--experience-card-accent) 18%, #ffffff 82%),
-            #f8fbff
-        );
-    color: color-mix(in srgb, var(--experience-card-accent) 82%, #1e3a8a 18%);
-    border-color: color-mix(in srgb, var(--experience-card-accent) 22%, rgba(148, 163, 184, 0.24));
-    box-shadow:
-        0 10px 24px rgba(15, 23, 42, 0.08),
-        0 0 0 10px color-mix(in srgb, var(--experience-card-accent) 8%, transparent);
 }
 
 [data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines,

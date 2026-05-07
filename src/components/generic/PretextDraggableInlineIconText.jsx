@@ -11,7 +11,8 @@ function PretextDraggableInlineIconText({
     alt,
     initialXRatio = 0.5,
     className = "",
-    onRatioChange = null
+    onRatioChange = null,
+    getAriaValueText = null
 }) {
     const railRef = useRef(null)
     const dragStateRef = useRef(null)
@@ -118,6 +119,9 @@ function PretextDraggableInlineIconText({
         }
     }
 
+    const ariaValueText = getAriaValueText?.(xRatio) || `${Math.round(xRatio * 100)} percent`
+    const railPosition = getRailPositionValue(xRatio)
+
     return (
         <div className={`pretext-draggable-inline-icon-text ${isDragging ? "is-dragging" : ""} ${className}`.trim()}>
             {introParagraph && (
@@ -134,7 +138,7 @@ function PretextDraggableInlineIconText({
                              aria-hidden={true}>
                             <span className={`pretext-draggable-inline-icon-text-rail-line`}/>
                             <span className={`pretext-draggable-inline-icon-text-rail-progress`}
-                                  style={{ width: `${xRatio * 100}%` }}/>
+                                  style={{ width: railPosition }}/>
                             <span className={`pretext-draggable-inline-icon-text-rail-dot pretext-draggable-inline-icon-text-rail-dot-start`}/>
                             <span className={`pretext-draggable-inline-icon-text-rail-dot pretext-draggable-inline-icon-text-rail-dot-end`}/>
                         </div>
@@ -142,7 +146,7 @@ function PretextDraggableInlineIconText({
                         <button type={`button`}
                                 className={`pretext-draggable-inline-icon-text-handle ${isDragging ? "is-dragging" : ""}`}
                                 style={{
-                                    left: `${xRatio * 100}%`,
+                                    left: railPosition,
                                     ...(iconStyle || {})
                                 }}
                                 aria-label={alt || "Hue slider"}
@@ -150,7 +154,7 @@ function PretextDraggableInlineIconText({
                                 aria-valuemin={0}
                                 aria-valuemax={100}
                                 aria-valuenow={Math.round(xRatio * 100)}
-                                aria-valuetext={`${Math.round(xRatio * 100)} percent`}
+                                aria-valuetext={ariaValueText}
                                 role={`slider`}
                                 onPointerDown={handlePointerDown}
                                 onKeyDown={handleKeyDown}>
@@ -249,6 +253,11 @@ function getRatioFromClientX(clientX, element) {
 
 function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value))
+}
+
+function getRailPositionValue(xRatio) {
+    const safeRatio = clamp(xRatio, 0, 1)
+    return `calc(var(--pretext-draggable-inline-icon-text-handle-safe-inset, 0px) + ${safeRatio} * (100% - (var(--pretext-draggable-inline-icon-text-handle-safe-inset, 0px) * 2)))`
 }
 
 function capturePointer(event) {

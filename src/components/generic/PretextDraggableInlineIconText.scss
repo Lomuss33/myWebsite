@@ -5,6 +5,7 @@ div.pretext-draggable-inline-icon-text {
     --pretext-draggable-inline-icon-text-accent-soft: color-mix(in srgb, var(--theme-primary) 18%, transparent);
     --pretext-draggable-inline-icon-text-surface: color-mix(in srgb, var(--theme-primary) 5%, transparent);
     --pretext-draggable-inline-icon-text-handle-size: clamp(64px, 6vw, 84px);
+    --pretext-draggable-inline-icon-text-handle-safe-inset: calc((var(--pretext-draggable-inline-icon-text-handle-size) / 2) + 2px);
 
     position: relative;
     width: 100%;

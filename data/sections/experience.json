@@ -653,7 +653,7 @@
             "settings": {
                 "order_items_by": "id",
                 "order_items_sort": "asc",
-                "text_layout_mode": "default"
+                "text_layout_mode": "draggable_inline_icon_flow"
             },
             "items": [
                 {
@@ -663,47 +663,51 @@
                     "locales": {
                         "en": {
                             "eyebrow": "Real responsibility",
+                            "axis_start": "Routine",
+                            "axis_end": "Responsibility",
                             "title": "Family Farm Work",
                             "list": [
-                                "01 Discipline",
-                                "02 Reliability",
-                                "03 Accountability",
-                                "04 Safety awareness"
+                                "Discipline",
+                                "Reliability",
+                                "Responsibility"
                             ],
-                            "text": "<p>I grew up working on a family farm, handling daily essentials such as animal care, feeding, cleaning, field work, firewood, and basic repairs.</p><p>The work was physical, repetitive, and not optional. It built <strong>discipline</strong>, <strong>reliability</strong>, and respect for practical work that simply has to be done properly.</p>"
+                            "text": "<p>I grew up working on a family farm, where everyday tasks meant animal care, feeding, cleaning, field work, firewood, and basic repairs.</p><p>The work was physical, repetitive, and rarely negotiable. It trained me to value {{showing up}}, staying useful, and doing ordinary work properly even when nobody is watching.</p><p>The lasting lesson was simple: <strong>discipline</strong> starts with <strong>doing the work right</strong>.</p>"
                         },
                         "de": {
                             "eyebrow": "Echte Verantwortung",
+                            "axis_start": "Routine",
+                            "axis_end": "Verantwortung",
                             "title": "Arbeit auf dem Familienhof",
                             "list": [
                                 "Disziplin",
                                 "Zuverlässigkeit",
-                                "Verantwortung",
-                                "Sicherheitsbewusstsein"
+                                "Verantwortung"
                             ],
-                            "text": "<p>Schon fr?h arbeitete ich auf einem Familienhof und ?bernahm Verantwortung f?r t?gliche Grundaufgaben: Tierpflege, F?ttern, Reinigen, Feldarbeit, Brennholz und einfache Reparaturen.</p><p>Die Arbeit war k?rperlich, wiederkehrend und nicht optional. Dadurch entstanden <strong>Disziplin</strong>, <strong>Zuverl?ssigkeit</strong> und Respekt f?r praktische Arbeit, die einfach erledigt werden muss.</p>"
+                            "text": "<p>Schon früh arbeitete ich auf einem Familienhof und übernahm tägliche Aufgaben wie Tierpflege, Füttern, Reinigen, Feldarbeit, Brennholz und einfache Reparaturen.</p><p>Die Arbeit war körperlich, wiederkehrend und selten verhandelbar. Sie lehrte mich, wie wichtig {{verlässliches Auftreten}}, Nützlichkeit und saubere Ausführung selbst bei unspektakulären Aufgaben sind.</p><p>Die wichtigste Erkenntnis blieb einfach: <strong>Disziplin</strong> beginnt damit, <strong>Arbeit ordentlich zu Ende zu bringen</strong>.</p>"
                         },
                         "hr": {
                             "eyebrow": "Stvarna odgovornost",
+                            "axis_start": "Rutina",
+                            "axis_end": "Odgovornost",
                             "title": "Rad na obiteljskom gospodarstvu",
                             "list": [
                                 "Disciplina",
                                 "Pouzdanost",
-                                "Odgovornost",
-                                "Sigurnost"
+                                "Odgovornost"
                             ],
-                            "text": "<p>Od ranih godina radio sam na obiteljskom gospodarstvu i imao izravnu odgovornost za svakodnevne poslove: brigu o ?ivotinjama, hranjenje, ?i??enje, rad u polju, ogrjev i osnovne popravke.</p><p>Taj rad bio je fizi?ki, ponavljaju?i i nije bio opcionalan. Izgradio je <strong>disciplinu</strong>, <strong>pouzdanost</strong> i po?tovanje prema prakti?nom radu koji se jednostavno mora odraditi.</p>"
+                            "text": "<p>Od ranih godina radio sam na obiteljskom gospodarstvu i imao odgovornost za svakodnevne poslove: brigu o životinjama, hranjenje, čišćenje, rad u polju, ogrjev i osnovne popravke.</p><p>Taj rad bio je fizički, ponavljajući i rijetko odgodiv. Naučio me vrijednosti {{pojavljivanja na vrijeme}}, korisnosti i kvalitetnog odrađivanja i najobičnijih zadataka.</p><p>Glavna lekcija ostala je jednostavna: <strong>disciplina</strong> počinje kada <strong>posao napraviš kako treba</strong>.</p>"
                         },
                         "tr": {
                             "eyebrow": "Gerçek sorumluluk",
+                            "axis_start": "Rutin",
+                            "axis_end": "Sorumluluk",
                             "title": "Aile Çiftliğinde Çalışma",
                             "list": [
                                 "Disiplin",
                                 "Güvenilirlik",
-                                "Sorumluluk",
-                                "Güvenlik bilinci"
+                                "Sorumluluk"
                             ],
-                            "text": "<p>K???k ya?tan itibaren aile ?iftli?inde ?al??t?m ve g?nl?k temel i?ler i?in do?rudan sorumluluk ald?m: hayvan bak?m?, yemleme, temizlik, tarla i?leri, odun haz?rl??? ve basit onar?mlar.</p><p>Bu i? fiziksel, tekrar eden ve ertelenemeyen bir i?ti. Bana <strong>disiplin</strong>, <strong>g?venilirlik</strong> ve yap?lmas? gereken pratik i?e kar?? sayg? kazand?rd?.</p>"
+                            "text": "<p>Küçük yaştan itibaren aile çiftliğinde çalıştım; hayvan bakımı, yemleme, temizlik, tarla işleri, odun hazırlığı ve basit onarımlar günlük sorumluluğumun parçasıydı.</p><p>Bu işler fiziksel, tekrar eden ve çoğu zaman ertelenemeyen işlerdi. Bana {{her gün hazır olmayı}}, işe yarar kalmayı ve sıradan görünen işi bile doğru yapmayı öğretti.</p><p>En kalıcı ders şuydu: <strong>disiplin</strong>, <strong>işi doğru şekilde bitirmekle</strong> başlar.</p>"
                         }
                     }
                 },
@@ -714,47 +718,51 @@
                     "locales": {
                         "en": {
                             "eyebrow": "Service and follow-through",
+                            "axis_start": "Service",
+                            "axis_end": "Leadership",
                             "title": "Volunteer Leadership - Catholic Youth Program",
                             "list": [
-                                "01 President - 2 years",
-                                "02 Treasurer - 3 years",
-                                "03 Youth Instructor - 2 years",
-                                "04 Event and group coordination"
+                                "Preparation",
+                                "Communication",
+                                "Dependability"
                             ],
-                            "text": "<p>Over several years, I served as president, treasurer, and youth instructor, while also supporting events, logistics, and group coordination.</p><p>It taught me a practical version of leadership: prepare early, communicate clearly, stay dependable, and follow through when other people rely on you.</p>"
+                            "text": "<p>Over several years, I served as president, treasurer, and youth instructor while also helping with events, logistics, and group coordination.</p><p>That environment made leadership very practical. You prepare early, communicate clearly, and stay calm when other people depend on the plan holding together.</p><p>It strengthened {{follow-through}} and showed me that <strong>leadership is usually service first</strong>, visibility second.</p>"
                         },
                         "de": {
                             "eyebrow": "Dienst und Verlässlichkeit",
+                            "axis_start": "Dienst",
+                            "axis_end": "Führung",
                             "title": "Freiwillige Führung – Katholisches Jugendprogramm",
                             "list": [
-                                "Vorsitzender · 2 Jahre",
-                                "Kassenwart · 3 Jahre",
-                                "Jugendleiter · 2 Jahre",
-                                "Event- und Gruppenkoordination"
+                                "Vorbereitung",
+                                "Kommunikation",
+                                "Verlässlichkeit"
                             ],
-                            "text": "<p>?ber mehrere Jahre war ich Vorsitzender, Kassenwart und Jugendleiter und unterst?tzte zus?tzlich Veranstaltungen, Logistik und Gruppenkoordination.</p><p>Die Erfahrung vermittelte mir eine praktische Form von F?hrung: fr?h vorbereiten, klar kommunizieren, verl?sslich bleiben und Dinge sauber zu Ende bringen, wenn andere auf dich z?hlen.</p>"
+                            "text": "<p>Über mehrere Jahre war ich Vorsitzender, Kassenwart und Jugendleiter und unterstützte zusätzlich Veranstaltungen, Logistik und Gruppenkoordination.</p><p>Dort wurde Führung sehr konkret. Man bereitet früh vor, kommuniziert klar und bleibt ruhig, wenn andere darauf angewiesen sind, dass der Plan trägt.</p><p>Die Erfahrung stärkte {{Verbindlichkeit}} und zeigte mir: <strong>Führung ist meist zuerst Dienst</strong> und erst danach Sichtbarkeit.</p>"
                         },
                         "hr": {
                             "eyebrow": "Služenje i dosljednost",
+                            "axis_start": "Služenje",
+                            "axis_end": "Vodstvo",
                             "title": "Volontersko vodstvo – katolički program za mlade",
                             "list": [
-                                "Predsjednik · 2 godine",
-                                "Blagajnik · 3 godine",
-                                "Instruktor mladih · 2 godine",
-                                "Koordinacija događaja i grupa"
+                                "Priprema",
+                                "Komunikacija",
+                                "Pouzdanost"
                             ],
-                            "text": "<p>Tijekom vi?e godina bio sam predsjednik, blagajnik i instruktor mladih, uz dodatnu pomo? oko doga?aja, logistike i koordinacije grupa.</p><p>To iskustvo nau?ilo me prakti?nom obliku vodstva: pripremi se unaprijed, komuniciraj jasno, budi pouzdan i zavr?i posao kada drugi ra?unaju na tebe.</p>"
+                            "text": "<p>Tijekom više godina bio sam predsjednik, blagajnik i instruktor mladih, uz dodatnu pomoć oko događaja, logistike i koordinacije grupa.</p><p>U takvom okruženju vodstvo postaje vrlo praktično. Pripremaš se unaprijed, komuniciraš jasno i ostaješ miran kada drugi ovise o tome da plan funkcionira.</p><p>To iskustvo ojačalo je {{dosljednost}} i pokazalo mi da je <strong>vodstvo najprije služenje</strong>, a tek onda isticanje.</p>"
                         },
                         "tr": {
                             "eyebrow": "Hizmet ve istikrar",
+                            "axis_start": "Hizmet",
+                            "axis_end": "Liderlik",
                             "title": "Gönüllü Liderlik – Katolik Gençlik Programı",
                             "list": [
-                                "Başkan · 2 yıl",
-                                "Sayman · 3 yıl",
-                                "Gençlik Eğitmeni · 2 yıl",
-                                "Etkinlik ve grup koordinasyonu"
+                                "Hazırlık",
+                                "İletişim",
+                                "Güvenilirlik"
                             ],
-                            "text": "<p>Birka? y?l boyunca ba?kan, sayman ve gen?lik e?itmeni olarak g?rev ald?m; ayr?ca etkinlikler, lojistik ve grup koordinasyonunda da aktif rol ?stlendim.</p><p>Bu deneyim bana liderli?in pratik taraf?n? ??retti: ?nceden haz?rlanmak, a??k ileti?im kurmak, g?venilir olmak ve insanlar sana ba?l?yken i?i tamamlamak.</p>"
+                            "text": "<p>Birkaç yıl boyunca başkan, sayman ve gençlik eğitmeni olarak görev aldım; ayrıca etkinlikler, lojistik ve grup koordinasyonunda da aktif rol üstlendim.</p><p>Bu ortamda liderlik çok pratik bir hale geliyor. Önceden hazırlanman, açık iletişim kurman ve başkaları plana bağlıyken sakin kalman gerekiyor.</p><p>Bu deneyim {{işi sonuna kadar götürmeyi}} güçlendirdi ve bana şunu gösterdi: <strong>liderlik önce hizmettir</strong>, görünürlük sonra gelir.</p>"
                         }
                     }
                 },
@@ -765,47 +773,51 @@
                     "locales": {
                         "en": {
                             "eyebrow": "Feedback-driven decision making",
+                            "axis_start": "Research",
+                            "axis_end": "Discipline",
                             "title": "Private Market Investing & Trading",
                             "list": [
-                                "01 Research and journaling",
-                                "02 Risk management",
-                                "03 Macro and geopolitical focus",
-                                "04 Process discipline"
+                                "Research",
+                                "Risk management",
+                                "Decision discipline"
                             ],
-                            "text": "<p>I maintained a long-term personal practice in financial markets built around research, journaling, review, and risk control rather than impulse or speculation.</p><p>The process sharpened <strong>analytical thinking</strong>, patience, and decision-making under uncertainty without emotional overreaction. <em>Not financial advice.</em></p>"
+                            "text": "<p>I built a long-term personal practice around financial markets that focused on research, journaling, review, and risk control instead of impulse or entertainment.</p><p>Markets give fast feedback when your process is weak. That pushed me toward {{clear decision rules}}, patience, and learning how to operate under uncertainty without emotional overreaction.</p><p>It sharpened <strong>analytical thinking</strong> and respect for disciplined process. <em>Not financial advice.</em></p>"
                         },
                         "de": {
                             "eyebrow": "Feedbackgetriebene Entscheidungen",
+                            "axis_start": "Recherche",
+                            "axis_end": "Disziplin",
                             "title": "Privates Investieren & Trading",
                             "list": [
-                                "Recherche und Journal",
+                                "Recherche",
                                 "Risikomanagement",
-                                "Makro- und Geopolitik-Fokus",
-                                "Prozessdisziplin"
+                                "Entscheidungsdisziplin"
                             ],
-                            "text": "<p>Ich pflegte ?ber l?ngere Zeit eine pers?nliche Praxis an den Finanzm?rkten, gepr?gt von Recherche, Journal, Auswertung und Risikokontrolle statt Impuls oder Spekulation.</p><p>Dieser Prozess st?rkte <strong>analytisches Denken</strong>, Geduld und die F?higkeit, unter Unsicherheit ohne emotionale ?berreaktion zu entscheiden. <em>Keine Anlageberatung.</em></p>"
+                            "text": "<p>Ich entwickelte über längere Zeit eine persönliche Praxis an den Finanzmärkten, die auf Recherche, Journal, Auswertung und Risikokontrolle statt auf Impuls oder Unterhaltung beruhte.</p><p>Märkte geben sehr schnell Rückmeldung, wenn der eigene Prozess schwach ist. Das schärfte {{klare Entscheidungsregeln}}, Geduld und den Umgang mit Unsicherheit ohne emotionale Überreaktion.</p><p>Dadurch wurden <strong>analytisches Denken</strong> und Respekt vor sauberer Prozessdisziplin stärker. <em>Keine Anlageberatung.</em></p>"
                         },
                         "hr": {
                             "eyebrow": "Odluke vođene povratnom informacijom",
+                            "axis_start": "Istraživanje",
+                            "axis_end": "Disciplina",
                             "title": "Privatno investiranje i trading",
                             "list": [
-                                "Istraživanje i dnevnik",
+                                "Istraživanje",
                                 "Upravljanje rizikom",
-                                "Makro i geopolitika",
-                                "Disciplina procesa"
+                                "Disciplina odlučivanja"
                             ],
-                            "text": "<p>Dugoro?no sam odr?avao osobnu praksu na financijskim tr?i?tima, temeljenu na istra?ivanju, vo?enju dnevnika, analizi i kontroli rizika, a ne na impulsu ili ?pekulaciji.</p><p>Taj proces izo?trio je <strong>analiti?ko razmi?ljanje</strong>, strpljenje i sposobnost dono?enja odluka u neizvjesnosti bez emocionalne prenagla?enosti. <em>Nije financijski savjet.</em></p>"
+                            "text": "<p>Dugoročno sam održavao osobnu praksu na financijskim tržištima, temeljenu na istraživanju, vođenju dnevnika, analizi i kontroli rizika, a ne na impulsu ili zabavi.</p><p>Tržišta vrlo brzo pokažu kada je proces slab. To me gurnulo prema {{jasnim pravilima odlučivanja}}, strpljenju i radu pod neizvjesnošću bez emocionalne prenaglašenosti.</p><p>Taj proces izoštrio je <strong>analitičko razmišljanje</strong> i poštovanje prema disciplini procesa. <em>Nije financijski savjet.</em></p>"
                         },
                         "tr": {
                             "eyebrow": "Geri bildirimle şekillenen kararlar",
+                            "axis_start": "Araştırma",
+                            "axis_end": "Disiplin",
                             "title": "Kişisel Piyasa Yatırımı ve Trading",
                             "list": [
-                                "Araştırma ve günlük",
+                                "Araştırma",
                                 "Risk yönetimi",
-                                "Makro ve jeopolitik odak",
-                                "Süreç disiplini"
+                                "Karar disiplini"
                             ],
-                            "text": "<p>Finansal piyasalarda, d?rt? veya spek?lasyon yerine ara?t?rma, g?nl?k tutma, de?erlendirme ve risk kontrol?ne dayal? uzun vadeli ki?isel bir pratik s?rd?rd?m.</p><p>Bu s?re? <strong>analitik d???nmeyi</strong>, sabr? ve belirsizlik alt?nda duygusal a??r?l??a kap?lmadan karar verebilme becerisini geli?tirdi. <em>Yat?r?m tavsiyesi de?ildir.</em></p>"
+                            "text": "<p>Finansal piyasalarda, dürtü veya eğlence yerine araştırma, günlük tutma, değerlendirme ve risk kontrolüne dayalı uzun vadeli kişisel bir pratik sürdürdüm.</p><p>Piyasalar, süreç zayıf olduğunda bunu çok hızlı gösterir. Bu da beni {{net karar kurallarına}}, sabra ve belirsizlik altında duygusal aşırılığa kapılmadan hareket etmeye zorladı.</p><p>Bu süreç <strong>analitik düşünmeyi</strong> ve disiplinli sürece duyulan saygıyı geliştirdi. <em>Yatırım tavsiyesi değildir.</em></p>"
                         }
                     }
                 }

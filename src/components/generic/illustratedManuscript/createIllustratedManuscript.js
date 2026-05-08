@@ -297,10 +297,29 @@ function createIllustratedManuscript({
         context.restore()
     }
 
-    const measureCanvas = () => {
+    const getObservedMetrics = () => {
         const rect = observedElement.getBoundingClientRect()
-        const nextWidth = Math.max(1, Math.round(rect.width || observedElement.clientWidth || canvas.clientWidth || 1))
-        const nextHeight = Math.max(1, Math.round(rect.height || observedElement.clientHeight || canvas.clientHeight || 1))
+        const renderedWidth = Math.max(1, Math.round(rect.width || observedElement.clientWidth || canvas.clientWidth || 1))
+        const renderedHeight = Math.max(1, Math.round(rect.height || observedElement.clientHeight || canvas.clientHeight || 1))
+        const layoutWidth = Math.max(1, Math.round(observedElement.offsetWidth || observedElement.clientWidth || renderedWidth))
+        const layoutHeight = Math.max(1, Math.round(observedElement.offsetHeight || observedElement.clientHeight || renderedHeight))
+        const scaleX = layoutWidth > 0 ? renderedWidth / layoutWidth : 1
+        const scaleY = layoutHeight > 0 ? renderedHeight / layoutHeight : 1
+
+        return {
+            renderedWidth,
+            renderedHeight,
+            layoutWidth,
+            layoutHeight,
+            scaleX: Number.isFinite(scaleX) && scaleX > 0 ? scaleX : 1,
+            scaleY: Number.isFinite(scaleY) && scaleY > 0 ? scaleY : 1
+        }
+    }
+
+    const measureCanvas = () => {
+        const metrics = getObservedMetrics()
+        const nextWidth = metrics.renderedWidth
+        const nextHeight = metrics.renderedHeight
         const nextDevicePixelRatio = Math.ceil(window.devicePixelRatio || 1)
         const hasChanged =
             nextWidth !== viewportWidth ||
@@ -318,21 +337,57 @@ function createIllustratedManuscript({
     }
 
     const setObservedHeight = nextHeight => {
-        const targetHeight = Math.max(1, Math.ceil(nextHeight || 0))
-        const currentHeight = Math.max(
-            1,
-            Math.round(observedElement.getBoundingClientRect().height || viewportHeight || targetHeight)
-        )
+        const metrics = getObservedMetrics()
+        const targetRenderedHeight = Math.max(1, Math.ceil(nextHeight || 0))
+        const renderScale = metrics.scaleX || metrics.scaleY || 1
+        const targetLayoutHeight = Math.max(1, Math.ceil(targetRenderedHeight / renderScale))
+        const currentLayoutHeight = Math.max(1, metrics.layoutHeight || targetLayoutHeight)
 
-        if (Math.abs(currentHeight - targetHeight) <= 1) {
+        if (Math.abs(currentLayoutHeight - targetLayoutHeight) <= 1) {
             return false
         }
 
-        observedElement.style.height = `${targetHeight}px`
+        observedElement.style.height = `${targetLayoutHeight}px`
         return true
     }
 
-    const updateLayoutState = (forcePrepare = false) => {
+    const syncMeasuredHeight = ({
+        activeDragon = dragon,
+        allowShrink = false,
+        offsetX = 0,
+        offsetY = 0
+    } = {}) => {
+        const measuredTextBottom = storyContent ?
+            measureAllTextBottom(layout, activeDragon, offsetX, offsetY) :
+            layout.margin
+        const requiredHeight = getRequiredPageHeight(layout, measuredTextBottom)
+        const currentHeight = Math.max(
+            1,
+            Math.round(observedElement.getBoundingClientRect().height || viewportHeight || requiredHeight)
+        )
+        const shouldGrow = requiredHeight > currentHeight + 1
+        const shouldShrink = allowShrink && requiredHeight < currentHeight - 1
+
+        if (!shouldGrow && !shouldShrink) {
+            return false
+        }
+
+        if (!setObservedHeight(requiredHeight)) {
+            return false
+        }
+
+        measureCanvas()
+        layout = getResponsiveLayout(viewportWidth, viewportHeight)
+
+        if (!prepared || prepared.font !== layout.font) {
+            prepared = getPreparedSegments(storyContent, layout.font, prepared)
+        }
+
+        textDirty = true
+        return true
+    }
+
+    const updateLayoutState = (forcePrepare = false, allowShrink = true) => {
         layout = getResponsiveLayout(viewportWidth, viewportHeight)
 
         if (forcePrepare || !prepared || prepared.font !== layout.font) {
@@ -344,14 +399,7 @@ function createIllustratedManuscript({
         }
 
         if ((dropCapImage || illustrationImage) && viewportWidth > 1) {
-            const requiredHeight = getRequiredPageHeight(layout)
-            const currentHeight = observedElement.getBoundingClientRect().height || viewportHeight
-
-            if (Math.abs(requiredHeight - currentHeight) > 1) {
-                observedElement.style.height = `${Math.ceil(requiredHeight)}px`
-                measureCanvas()
-                layout = getResponsiveLayout(viewportWidth, viewportHeight)
-            }
+            syncMeasuredHeight({ activeDragon: dragon, allowShrink })
         }
 
         textDirty = true
@@ -414,7 +462,7 @@ function createIllustratedManuscript({
         }]
     }
 
-    const measureAllTextBottom = (activeLayout, activeDragon = null) => {
+    const measureAllTextBottom = (activeLayout, activeDragon = null, offsetX = 0, offsetY = 0) => {
         const activePrepared = getPreparedSegments(storyContent, activeLayout.font)
         const exclusions = getStaticDropCapExclusions(activeLayout)
         let cursor = { segmentIndex: 0, graphemeIndex: 0 }
@@ -438,13 +486,13 @@ function createIllustratedManuscript({
             if (activeDragon) {
                 const dragonExclusions = getDragonExclusions(
                     activeDragon,
-                    y,
-                    y + activeLayout.lineHeight,
+                    offsetY + y,
+                    offsetY + y + activeLayout.lineHeight,
                     Math.max(2, activeLayout.fontSize * 0.15)
                 )
 
                 for (const exclusion of dragonExclusions) {
-                    ranges = subtractRanges(ranges, exclusion.left, exclusion.right)
+                    ranges = subtractRanges(ranges, exclusion.left - offsetX, exclusion.right - offsetX)
                 }
 
                 ranges = ranges.filter(range => range.right - range.left >= MIN_LINE_WIDTH)
@@ -838,6 +886,16 @@ function createIllustratedManuscript({
             illustrationFrame = getIllustrationFrame(textBottom)
         }
 
+        if (syncMeasuredHeight({
+            activeDragon: dragon,
+            allowShrink: false,
+            offsetX: offset.x,
+            offsetY: offset.y
+        })) {
+            scheduleFrame()
+            return
+        }
+
         context.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0)
         context.fillStyle = BG_COLOR
         context.fillRect(0, 0, viewportWidth, viewportHeight)
@@ -864,13 +922,13 @@ function createIllustratedManuscript({
 
     const initialize = async () => {
         measureCanvas()
-        updateLayoutState(true)
+        updateLayoutState(true, true)
 
         resizeObserver = new ResizeObserver(() => {
             const hasChanged = measureCanvas()
             if (!hasChanged) return
 
-            updateLayoutState()
+            updateLayoutState(false, true)
 
             if (ready) {
                 scheduleFrame()
@@ -903,7 +961,7 @@ function createIllustratedManuscript({
         dropCapImage = loadedDropCap
         illustrationImage = loadedIllustration
 
-        updateLayoutState(true)
+        updateLayoutState(true, true)
         layoutText([{
             x: layout.margin - 4,
             y: layout.margin - 4,
@@ -911,6 +969,9 @@ function createIllustratedManuscript({
             height: getDropCap().height
         }], 0, 0)
         initializeDragon()
+        if (syncMeasuredHeight({ activeDragon: dragon, allowShrink: true })) {
+            initializeDragon()
+        }
         ready = true
         onReady?.()
         scheduleFrame()

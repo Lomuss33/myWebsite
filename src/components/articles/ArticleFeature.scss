@@ -714,7 +714,8 @@ div.article-feature-items.article-feature-items-section-my-writings {
 
         div.illustrated-manuscript {
             max-width: 764px;
-            height: clamp(406px, 60.8vw, 671px);
+            height: auto;
+            min-height: clamp(406px, 60.8vw, 671px);
         }
     }
 
@@ -847,7 +848,7 @@ div.article-feature-items.article-feature-items-section-my-writings {
     @include media-breakpoint-down(lg) {
         div.article-feature-embed.article-feature-embed-illustrated-manuscript {
             div.illustrated-manuscript {
-                height: clamp(328px, 78vw, 546px);
+                min-height: clamp(328px, 78vw, 546px);
             }
         }
 

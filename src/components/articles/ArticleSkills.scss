@@ -741,14 +741,15 @@ div.article-skills-items.article-skills-items-section-my-writings {
     div.article-skills-embed.article-skills-embed-illustrated-manuscript {
         div.illustrated-manuscript {
             max-width: 764px;
-            height: clamp(406px, 60.8vw, 671px);
+            height: auto;
+            min-height: clamp(406px, 60.8vw, 671px);
         }
     }
 
     @include media-breakpoint-down(lg) {
         div.article-skills-embed.article-skills-embed-illustrated-manuscript {
             div.illustrated-manuscript {
-                height: clamp(328px, 78vw, 546px);
+                min-height: clamp(328px, 78vw, 546px);
             }
         }
     }
@@ -969,7 +970,8 @@ article#article-3-section-my-writings {
 
         div.illustrated-manuscript {
             max-width: 780px;
-            height: clamp(420px, 61vw, 684px);
+            height: auto;
+            min-height: clamp(420px, 61vw, 684px);
             border-radius: 22px;
             border: 1px solid rgba(56, 189, 248, 0.16);
             box-shadow:
@@ -981,7 +983,7 @@ article#article-3-section-my-writings {
     @include media-breakpoint-down(lg) {
         div.article-skills-embed.article-skills-embed-illustrated-manuscript {
             div.illustrated-manuscript {
-                height: clamp(334px, 78vw, 560px);
+                min-height: clamp(334px, 78vw, 560px);
             }
         }
     }

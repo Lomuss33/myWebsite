@@ -356,13 +356,23 @@ function FallingWords({
             ...wordBodies.filter(Boolean).map(w => w.body)
         ])
 
+        const fixedStep = 1000 / 60
+        const maxAccumulatedTime = fixedStep * 5
         let lastTime = performance.now()
+        let accumulator = 0
         const tick = (time) => {
-            const delta = Math.min(33.333, time - lastTime) || 16.667
+            const delta = Math.max(0, time - lastTime) || fixedStep
             lastTime = time
 
             if(selectedIndexRef.current === null) {
-                Matter.Engine.update(engine, delta)
+                accumulator = Math.min(accumulator + delta, maxAccumulatedTime)
+                while(accumulator >= fixedStep) {
+                    Matter.Engine.update(engine, fixedStep)
+                    accumulator -= fixedStep
+                }
+            }
+            else {
+                accumulator = 0
             }
 
             const activeSelectedIndex = selectedIndexRef.current

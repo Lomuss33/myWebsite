@@ -397,7 +397,9 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                                            alt={itemWrapper.imageAlt}
                                            className={`article-feature-item-image-source`}
                                            hideSpinner={true}
-                                           sizes={imageSizes}/>
+                                           sizes={imageSizes}
+                                           loading={isHomeStyleIntro ? "eager" : "lazy"}
+                                           fetchPriority={isHomeStyleIntro ? "high" : "auto"}/>
                             </div>
 
                             <div className={`article-feature-item-image-face article-feature-item-image-face-back`}>
@@ -405,6 +407,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                                            alt={itemWrapper.imageAlt}
                                            className={`article-feature-item-image-source`}
                                            hideSpinner={true}
+                                           loading={"lazy"}
                                            fetchPriority={`low`}
                                            sizes={imageSizes}/>
                             </div>
@@ -415,7 +418,9 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                                    className={`article-feature-item-image floating-frame`}
                                    style={imageStyle}
                                    hideSpinner={true}
-                                   sizes={imageSizes}/>
+                                   sizes={imageSizes}
+                                   loading={isHomeStyleIntro ? "eager" : "lazy"}
+                                   fetchPriority={isHomeStyleIntro ? "high" : "auto"}/>
                     )
                 ) : (
                     <div className={`article-feature-item-image article-feature-item-image-fallback floating-frame`}

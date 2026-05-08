@@ -317,8 +317,31 @@ function createIllustratedManuscript({
         return hasChanged
     }
 
+    const setObservedHeight = nextHeight => {
+        const targetHeight = Math.max(1, Math.ceil(nextHeight || 0))
+        const currentHeight = Math.max(
+            1,
+            Math.round(observedElement.getBoundingClientRect().height || viewportHeight || targetHeight)
+        )
+
+        if (Math.abs(currentHeight - targetHeight) <= 1) {
+            return false
+        }
+
+        observedElement.style.height = `${targetHeight}px`
+        return true
+    }
+
     const updateLayoutState = (forcePrepare = false) => {
         layout = getResponsiveLayout(viewportWidth, viewportHeight)
+
+        if (forcePrepare || !prepared || prepared.font !== layout.font) {
+            prepared = getPreparedSegments(storyContent, layout.font, prepared)
+        }
+
+        if (dragon) {
+            updateDragonScale(dragon, getPageScale(viewportWidth) * MANUSCRIPT_DRAGON_SCALE)
+        }
 
         if ((dropCapImage || illustrationImage) && viewportWidth > 1) {
             const requiredHeight = getRequiredPageHeight(layout)
@@ -329,14 +352,6 @@ function createIllustratedManuscript({
                 measureCanvas()
                 layout = getResponsiveLayout(viewportWidth, viewportHeight)
             }
-        }
-
-        if (forcePrepare || !prepared || prepared.font !== layout.font) {
-            prepared = getPreparedSegments(storyContent, layout.font, prepared)
-        }
-
-        if (dragon) {
-            updateDragonScale(dragon, getPageScale(viewportWidth) * MANUSCRIPT_DRAGON_SCALE)
         }
 
         textDirty = true
@@ -399,7 +414,7 @@ function createIllustratedManuscript({
         }]
     }
 
-    const measureAllTextBottom = activeLayout => {
+    const measureAllTextBottom = (activeLayout, activeDragon = null) => {
         const activePrepared = getPreparedSegments(storyContent, activeLayout.font)
         const exclusions = getStaticDropCapExclusions(activeLayout)
         let cursor = { segmentIndex: 0, graphemeIndex: 0 }
@@ -415,6 +430,26 @@ function createIllustratedManuscript({
             }
 
             ranges = ranges.filter(range => range.right - range.left >= MIN_LINE_WIDTH)
+            if (ranges.length === 0) {
+                y += activeLayout.lineHeight
+                continue
+            }
+
+            if (activeDragon) {
+                const dragonExclusions = getDragonExclusions(
+                    activeDragon,
+                    y,
+                    y + activeLayout.lineHeight,
+                    Math.max(2, activeLayout.fontSize * 0.15)
+                )
+
+                for (const exclusion of dragonExclusions) {
+                    ranges = subtractRanges(ranges, exclusion.left, exclusion.right)
+                }
+
+                ranges = ranges.filter(range => range.right - range.left >= MIN_LINE_WIDTH)
+            }
+
             if (ranges.length === 0) {
                 y += activeLayout.lineHeight
                 continue
@@ -440,13 +475,13 @@ function createIllustratedManuscript({
         return nextTextBottom
     }
 
-    const getRequiredPageHeight = activeLayout => {
+    const getRequiredPageHeight = (activeLayout, activeTextBottom = null) => {
         const illustrationSlot = getIllustrationSlot(activeLayout)
         if (!illustrationSlot) return activeLayout.pageHeight
 
         const reservedTextHeight = activeLayout.lineHeight * RESERVED_TEXT_ROWS
         const textBottomNeeded = storyContent ?
-            measureAllTextBottom(activeLayout) + reservedTextHeight :
+            (activeTextBottom ?? measureAllTextBottom(activeLayout, dragon)) + reservedTextHeight :
             activeLayout.margin + reservedTextHeight
         return Math.ceil(textBottomNeeded + illustrationSlot.gap + illustrationSlot.height + 2)
     }

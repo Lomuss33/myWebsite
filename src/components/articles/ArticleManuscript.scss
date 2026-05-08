@@ -24,7 +24,8 @@ div.article-manuscript-stage {
 div.article-manuscript-stage div.illustrated-manuscript {
     width: 100%;
     max-width: 900px;
-    height: clamp(420px, 61vw, 684px);
+    height: auto;
+    min-height: clamp(420px, 61vw, 684px);
     border-radius: 22px;
     border: 1px solid rgba(56, 189, 248, 0.16);
     box-shadow:
@@ -34,7 +35,7 @@ div.article-manuscript-stage div.illustrated-manuscript {
 
 @include media-breakpoint-down(lg) {
     div.article-manuscript-stage div.illustrated-manuscript {
-        height: clamp(334px, 78vw, 560px);
+        min-height: clamp(334px, 78vw, 560px);
     }
 }
 

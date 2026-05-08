@@ -3,7 +3,8 @@
 div.illustrated-manuscript {
     width: 100%;
     max-width: 980px;
-    height: clamp(520px, 78vw, 860px);
+    height: auto;
+    min-height: clamp(520px, 78vw, 860px);
     margin: 0 auto;
     padding: 0;
     display: flex;
@@ -16,7 +17,7 @@ div.illustrated-manuscript {
 
     @include media-breakpoint-down(md) {
         width: 100%;
-        height: clamp(420px, 100vw, 700px);
+        min-height: clamp(420px, 100vw, 700px);
     }
 }
 

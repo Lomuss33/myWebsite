@@ -721,19 +721,20 @@ function ArticleWebArt({ dataWrapper, id }) {
                                   onSecondaryAction={!showIntroCover ? toggleAllArtTiles : null}
                                   secondaryPressed={areAllArtTilesOpen}/>
 
-                {!showIntroCover && (
-                    <div className={`article-web-art-stage`}>
-                        <div className={`article-web-art-items ${locked ? "article-web-art-items-locked" : ""}`}
-                             ref={tilesWrapperRef}
-                             aria-busy={showIntroCover}>
+                <div className={`article-web-art-stage ${showIntroCover ? "article-web-art-stage-preview" : ""}`}
+                     aria-hidden={showIntroCover}>
+                    <div className={`article-web-art-items ${locked ? "article-web-art-items-locked" : ""}`}
+                         ref={tilesWrapperRef}
+                         aria-busy={showIntroCover}>
+                        {shouldMountTiles && (
                             <SendYourFunAnimationTile label={submitTileLabel}
                                                       clickLabel={clickTileLabel}
                                                       previewRequested={sendYoursPreviewOpen}/>
-                            {itemTiles}
-                            {ambientTiles}
-                        </div>
+                        )}
+                        {itemTiles}
+                        {ambientTiles}
                     </div>
-                )}
+                </div>
             </div>
         </Article>
     )

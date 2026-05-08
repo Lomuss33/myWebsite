@@ -21,7 +21,6 @@ const TAP_RIPPLE_DURATION_MS = 420
 const TAP_RIPPLE_FADE_MS = 420
 const TAP_RIPPLE_SPEED_PX_PER_MS = 0.30
 const TAP_RIPPLE_BAND_PX = 28
-const WAVE_EFFECT_STRENGTH_MULTIPLIER = 2.4
 // Trigger slightly above the row top so the text starts falling before the cursor touches the line.
 const GRAVITY_RELEASE_ROW_OFFSET = -0.08
 const GRAVITY_ABOVE_LATCH_MS = 180
@@ -1293,21 +1292,21 @@ function computeWaveHoverOffset(pointerState, x, y, terrain, contentSize, terrai
 
     const config = terrainVariant === "detailed" ? {
         radius: 140,
-        influenceAmplitude: 0.62 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
-        lateralAmplitude: 5.2 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
-        verticalAmplitude: 7.4 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
-        slopeAmplitude: 3.2 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
-        scaleAmplitude: 0.012 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
-        rotationAmplitude: 2.1 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
+        influenceAmplitude: 0.62 * intensity,
+        lateralAmplitude: 5.2 * intensity,
+        verticalAmplitude: 7.4 * intensity,
+        slopeAmplitude: 3.2 * intensity,
+        scaleAmplitude: 0.012 * intensity,
+        rotationAmplitude: 2.1 * intensity,
         falloffPower: 2.7
     } : {
         radius: 162,
-        influenceAmplitude: 0.96 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
-        lateralAmplitude: 8 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
-        verticalAmplitude: 12 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
-        slopeAmplitude: 4.5 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
-        scaleAmplitude: 0.018 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
-        rotationAmplitude: 3.1 * WAVE_EFFECT_STRENGTH_MULTIPLIER * intensity,
+        influenceAmplitude: 0.96 * intensity,
+        lateralAmplitude: 8 * intensity,
+        verticalAmplitude: 12 * intensity,
+        slopeAmplitude: 4.5 * intensity,
+        scaleAmplitude: 0.018 * intensity,
+        rotationAmplitude: 3.1 * intensity,
         falloffPower: 2.3
     }
 
@@ -1336,17 +1335,17 @@ function computeWaveTapRippleOffset(tapRippleState, now, x, y, terrain, contentS
     }
 
     const config = terrainVariant === "detailed" ? {
-        lateralAmplitude: 9 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
-        verticalAmplitude: 12 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
-        slopeAmplitude: 5.5 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
-        scaleAmplitude: 0.022 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
-        rotationAmplitude: 3.8 * WAVE_EFFECT_STRENGTH_MULTIPLIER
+        lateralAmplitude: 9,
+        verticalAmplitude: 12,
+        slopeAmplitude: 5.5,
+        scaleAmplitude: 0.022,
+        rotationAmplitude: 3.8
     } : {
-        lateralAmplitude: 8.2 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
-        verticalAmplitude: 10.4 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
-        slopeAmplitude: 5 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
-        scaleAmplitude: 0.019 * WAVE_EFFECT_STRENGTH_MULTIPLIER,
-        rotationAmplitude: 3.4 * WAVE_EFFECT_STRENGTH_MULTIPLIER
+        lateralAmplitude: 8.2,
+        verticalAmplitude: 10.4,
+        slopeAmplitude: 5,
+        scaleAmplitude: 0.019,
+        rotationAmplitude: 3.4
     }
 
     const normalizedPoint = normalizeTerrainPoint(x, y, contentSize)

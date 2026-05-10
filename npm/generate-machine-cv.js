@@ -219,6 +219,33 @@ const buildProfilePageJsonLd = ({
     }
 }
 
+const buildHomeJsonLd = ({ canonicalCv, imageUrl }) => {
+    const websiteId = `${canonicalCv.url}#website`
+    const personId = `${canonicalCv.url}#person`
+
+    return {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebSite",
+                "@id": websiteId,
+                "url": canonicalCv.url,
+                "name": canonicalCv.name,
+                "alternateName": canonicalCv.alternateName
+            },
+            {
+                "@type": "Person",
+                "@id": personId,
+                "name": canonicalCv.name,
+                "alternateName": canonicalCv.alternateName,
+                "url": canonicalCv.url,
+                "sameAs": canonicalCv.sameAs,
+                "image": imageUrl
+            }
+        ]
+    }
+}
+
 const renderContactArticle = (canonicalCv, includeGermanAlternate = true) => {
     const contact = canonicalCv.contact
     const germanAddressLine = `${contact.streetAddress}, ${contact.postalCode} ${contact.addressLocality}, Deutschland`
@@ -420,14 +447,9 @@ const buildCvSectionMarkup = ({ canonicalCv, projects, hidden }) => {
 }
 
 const buildHomeHeadHtml = ({ canonicalCv, imageUrl }) => {
-    const pageTitle = "Lovro Musić | Engineering Computer Science Student, Automation & IT Portfolio"
-    const metaDescription = canonicalCv.description
-    const profilePageJsonLd = buildProfilePageJsonLd({
-        canonicalCv,
-        imageUrl,
-        pageUrl: canonicalCv.url,
-        pageTitle
-    })
+    const pageTitle = canonicalCv.name
+    const metaDescription = `Main website for ${canonicalCv.name} at ${canonicalCv.url}.`
+    const homeJsonLd = buildHomeJsonLd({ canonicalCv, imageUrl })
 
     return `
         <title>${escapeHtml(pageTitle)}</title>
@@ -437,7 +459,7 @@ const buildHomeHeadHtml = ({ canonicalCv, imageUrl }) => {
         <link rel="canonical" href="${escapeHtml(canonicalCv.url)}" />
         <link rel="alternate" type="application/json" href="/resume.json" title="${escapeHtml(canonicalCv.name)} Resume JSON" />
 
-        <meta property="og:type" content="profile" />
+        <meta property="og:type" content="website" />
         <meta property="og:site_name" content="${escapeHtml(canonicalCv.name)}" />
         <meta property="og:url" content="${escapeHtml(canonicalCv.url)}" />
         <meta property="og:title" content="${escapeHtml(pageTitle)}" />
@@ -472,7 +494,7 @@ const buildHomeHeadHtml = ({ canonicalCv, imageUrl }) => {
         </style>
 
         <script type="application/ld+json">
-${JSON.stringify(profilePageJsonLd, null, 4)}
+${JSON.stringify(homeJsonLd, null, 4)}
         </script>
     `
 }
@@ -594,6 +616,9 @@ ${JSON.stringify(profilePageJsonLd, null, 4)}
     </head>
     <body>
         <main class="machine-cv-page">
+            <p class="machine-cv-page__links">
+                <a href="${escapeHtml(canonicalCv.url)}" rel="noopener noreferrer">Main portfolio: ${escapeHtml(canonicalCv.url.replace(/\/$/, ""))}</a>
+            </p>
             <p class="machine-cv-page__links">
                 <a href="/">Portfolio</a> |
                 <a href="/resume.json">resume.json</a> |

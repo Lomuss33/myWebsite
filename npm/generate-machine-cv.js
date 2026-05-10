@@ -231,7 +231,8 @@ const buildHomeJsonLd = ({ canonicalCv, imageUrl }) => {
                 "@id": websiteId,
                 "url": canonicalCv.url,
                 "name": canonicalCv.name,
-                "alternateName": canonicalCv.alternateName
+                "alternateName": canonicalCv.alternateName,
+                "description": canonicalCv.description
             },
             {
                 "@type": "Person",
@@ -240,7 +241,32 @@ const buildHomeJsonLd = ({ canonicalCv, imageUrl }) => {
                 "alternateName": canonicalCv.alternateName,
                 "url": canonicalCv.url,
                 "sameAs": canonicalCv.sameAs,
-                "image": imageUrl
+                "image": imageUrl,
+                "jobTitle": canonicalCv.jobTitle,
+                "description": canonicalCv.description,
+                "email": canonicalCv.contact.email,
+                "telephone": canonicalCv.contact.telephone,
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": canonicalCv.contact.streetAddress,
+                    "postalCode": canonicalCv.contact.postalCode,
+                    "addressLocality": canonicalCv.contact.addressLocality,
+                    "addressCountry": canonicalCv.contact.addressCountry
+                },
+                "knowsAbout": flattenSkills(canonicalCv.skills),
+                "alumniOf": buildAlumniOf(canonicalCv.education),
+                "affiliation": [
+                    {
+                        "@type": "CollegeOrUniversity",
+                        "name": "Technische Hochschule Mittelhessen (THM)",
+                        "address": "Gießen, Germany"
+                    }
+                ],
+                "hasOccupation": {
+                    "@type": "Occupation",
+                    "name": "Automation and IT Professional",
+                    "description": "Hands-on background across industrial automation, IT support, hardware production, technical writing, and infrastructure projects."
+                }
             }
         ]
     }
@@ -447,8 +473,8 @@ const buildCvSectionMarkup = ({ canonicalCv, projects, hidden }) => {
 }
 
 const buildHomeHeadHtml = ({ canonicalCv, imageUrl }) => {
-    const pageTitle = canonicalCv.name
-    const metaDescription = `Main website for ${canonicalCv.name} at ${canonicalCv.url}.`
+    const pageTitle = "Lovro Musić | Engineering Computer Science Student, Automation & IT Portfolio"
+    const metaDescription = canonicalCv.description
     const homeJsonLd = buildHomeJsonLd({ canonicalCv, imageUrl })
 
     return `

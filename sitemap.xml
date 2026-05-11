@@ -5,7 +5,7 @@
 >
     <url>
         <loc>https://lovro-music.de/</loc>
-        <lastmod>2026-05-01</lastmod>
+        <lastmod>2026-05-11</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
         <image:image>
@@ -15,19 +15,19 @@
     </url>
     <url>
         <loc>https://lovro-music.de/cv/</loc>
-        <lastmod>2026-05-01</lastmod>
+        <lastmod>2026-05-11</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
         <loc>https://lovro-music.de/resume.json</loc>
-        <lastmod>2026-05-01</lastmod>
+        <lastmod>2026-05-11</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://lovro-music.de/resume.pdf</loc>
-        <lastmod>2026-05-01</lastmod>
+        <lastmod>2026-05-11</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>

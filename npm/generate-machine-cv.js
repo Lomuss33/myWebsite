@@ -174,47 +174,24 @@ const buildAlumniOf = (educationEntries) => {
 
 const buildProfilePageJsonLd = ({
     canonicalCv,
-    imageUrl,
     pageUrl,
     pageTitle
 }) => {
+    const personId = `${canonicalCv.url}#person`
+
     return {
         "@context": "https://schema.org",
         "@type": "ProfilePage",
         "url": pageUrl,
         "name": pageTitle,
+        "about": {
+            "@id": personId
+        },
         "mainEntity": {
+            "@id": personId,
             "@type": "Person",
             "name": canonicalCv.name,
-            "alternateName": canonicalCv.alternateName,
-            "url": canonicalCv.url,
-            "sameAs": canonicalCv.sameAs,
-            "image": imageUrl,
-            "jobTitle": canonicalCv.jobTitle,
-            "description": canonicalCv.description,
-            "email": canonicalCv.contact.email,
-            "telephone": canonicalCv.contact.telephone,
-            "address": {
-                "@type": "PostalAddress",
-                "streetAddress": canonicalCv.contact.streetAddress,
-                "postalCode": canonicalCv.contact.postalCode,
-                "addressLocality": canonicalCv.contact.addressLocality,
-                "addressCountry": canonicalCv.contact.addressCountry
-            },
-            "knowsAbout": flattenSkills(canonicalCv.skills),
-            "alumniOf": buildAlumniOf(canonicalCv.education),
-            "affiliation": [
-                {
-                    "@type": "CollegeOrUniversity",
-                    "name": "Technische Hochschule Mittelhessen (THM)",
-                    "address": "Gießen, Germany"
-                }
-            ],
-            "hasOccupation": {
-                "@type": "Occupation",
-                "name": "Automation and IT Professional",
-                "description": "Hands-on background across industrial automation, IT support, hardware production, technical writing, and infrastructure projects."
-            }
+            "url": canonicalCv.url
         }
     }
 }
@@ -232,7 +209,10 @@ const buildHomeJsonLd = ({ canonicalCv, imageUrl }) => {
                 "url": canonicalCv.url,
                 "name": canonicalCv.name,
                 "alternateName": canonicalCv.alternateName,
-                "description": canonicalCv.description
+                "description": canonicalCv.description,
+                "mainEntity": {
+                    "@id": personId
+                }
             },
             {
                 "@type": "Person",
@@ -240,6 +220,7 @@ const buildHomeJsonLd = ({ canonicalCv, imageUrl }) => {
                 "name": canonicalCv.name,
                 "alternateName": canonicalCv.alternateName,
                 "url": canonicalCv.url,
+                "mainEntityOfPage": canonicalCv.url,
                 "sameAs": canonicalCv.sameAs,
                 "image": imageUrl,
                 "jobTitle": canonicalCv.jobTitle,
@@ -435,15 +416,16 @@ const renderSkillsArticle = (canonicalCv) => {
     `
 }
 
-const buildCvSectionMarkup = ({ canonicalCv, projects, hidden }) => {
+const buildCvSectionMarkup = ({ canonicalCv, projects, hidden, headingTag = "h1" }) => {
     const hiddenClassName = hidden ? " machine-cv-sr-only" : ""
     const ariaLabel = hidden
         ? `Machine-readable curriculum vitae for ${canonicalCv.name}`
         : `Curriculum vitae of ${canonicalCv.name}`
+    const normalizedHeadingTag = headingTag === "p" ? "p" : "h1"
 
     return `
         <section class="machine-cv${hiddenClassName}" aria-label="${escapeHtml(ariaLabel)}" lang="en">
-            <h1>${escapeHtml(canonicalCv.name)}</h1>
+            <${normalizedHeadingTag}>${escapeHtml(canonicalCv.name)}</${normalizedHeadingTag}>
             <p>${escapeHtml(canonicalCv.jobTitle)}</p>
             ${renderContactArticle(canonicalCv)}
             ${renderSummaryArticle(canonicalCv)}
@@ -456,8 +438,8 @@ const buildCvSectionMarkup = ({ canonicalCv, projects, hidden }) => {
 }
 
 const buildHomeHeadHtml = ({ canonicalCv, imageUrl }) => {
-    const pageTitle = "Lovro Musić | Engineering Computer Science Student, Automation & IT Portfolio"
-    const metaDescription = canonicalCv.description
+    const pageTitle = "Lovro Musić | Official Portfolio & Personal Website"
+    const metaDescription = "Official personal website of Lovro Musić, with portfolio projects, technical work, contact links, and supporting CV resources."
     const homeJsonLd = buildHomeJsonLd({ canonicalCv, imageUrl })
 
     return `
@@ -510,10 +492,9 @@ ${JSON.stringify(homeJsonLd, null, 4)}
 
 const buildCvPageHtml = ({ canonicalCv, projects, imageUrl }) => {
     const pageTitle = "Lovro Musić CV | Resume, Experience & Projects"
-    const metaDescription = "CV page for Lovro Musić covering education, experience, technical skills, projects, and structured resume data."
+    const metaDescription = "CV and resume page for Lovro Musić, provided as a supporting document for education, experience, technical skills, projects, and structured resume data."
     const profilePageJsonLd = buildProfilePageJsonLd({
         canonicalCv,
-        imageUrl,
         pageUrl: canonicalCv.cvUrl,
         pageTitle
     })
@@ -529,6 +510,7 @@ const buildCvPageHtml = ({ canonicalCv, projects, imageUrl }) => {
         <meta name="author" content="${escapeHtml(canonicalCv.name)}" />
         <title>${escapeHtml(pageTitle)}</title>
         <link rel="canonical" href="${escapeHtml(canonicalCv.cvUrl)}" />
+        <link rel="author" href="${escapeHtml(canonicalCv.url)}" />
         <link rel="alternate" type="application/json" href="/resume.json" title="${escapeHtml(canonicalCv.name)} Resume JSON" />
 
         <meta property="og:type" content="profile" />
@@ -622,7 +604,7 @@ ${JSON.stringify(profilePageJsonLd, null, 4)}
     <body>
         <main class="machine-cv-page">
             <p class="machine-cv-page__links">
-                <a href="${escapeHtml(canonicalCv.url)}" rel="noopener noreferrer">Main website: ${escapeHtml(canonicalCv.url)}</a>
+                <a href="${escapeHtml(canonicalCv.url)}" rel="author noopener noreferrer">Official website: ${escapeHtml(canonicalCv.url)}</a>
             </p>
             <p class="machine-cv-page__links">
                 <a href="/">Portfolio</a> |
@@ -630,7 +612,7 @@ ${JSON.stringify(profilePageJsonLd, null, 4)}
                 <a href="${escapeHtml(canonicalCv.contact.github)}" rel="noopener noreferrer">GitHub</a> |
                 <a href="${escapeHtml(canonicalCv.contact.linkedin)}" rel="noopener noreferrer">LinkedIn</a>
             </p>
-            ${buildCvSectionMarkup({ canonicalCv, projects, hidden: false })}
+            ${buildCvSectionMarkup({ canonicalCv, projects, hidden: false, headingTag: "h1" })}
         </main>
     </body>
 </html>
@@ -733,6 +715,6 @@ const resumePdfUrl = toAbsoluteUrl(canonicalCv.url, profileData.resumePdfUrl || 
 const projects = extractProjects(canonicalCv)
 
 writeFile(GENERATED_HEAD_PATH, buildHomeHeadHtml({ canonicalCv, imageUrl }))
-writeFile(GENERATED_BODY_PATH, buildCvSectionMarkup({ canonicalCv, projects, hidden: true }))
+writeFile(GENERATED_BODY_PATH, buildCvSectionMarkup({ canonicalCv, projects, hidden: true, headingTag: "p" }))
 writeFile(CV_PAGE_PATH, buildCvPageHtml({ canonicalCv, projects, imageUrl }))
 writeFile(RESUME_JSON_PATH, JSON.stringify(buildResumeJson({ canonicalCv, projects }), null, 4))

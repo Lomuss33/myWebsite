@@ -7,6 +7,7 @@ import NavProfileCard from "./partials/NavProfileCard.jsx"
 import NavLinkList from "./partials/NavLinkList.jsx"
 import NavToolList from "./partials/NavToolList.jsx"
 import NavToolShrinkToggle from "./tools/NavToolShrinkToggle.jsx"
+import NavToolResumeDownloader from "./tools/NavToolResumeDownloader.jsx"
 import {useInput} from "../../providers/InputProvider.jsx"
 
 function NavSidebar({ profile, links }) {
@@ -20,11 +21,15 @@ function NavSidebar({ profile, links }) {
     const shouldForceShrink = !viewport.isBreakpoint("lg") || shouldUseCompactRail
     const expanded = !shouldForceShrink && expandedOption
     const railIsCompact = shouldUseCompactRail || !expanded
+    const showCompactResumeBand = railIsCompact && Boolean(profile.resumePdfUrl)
     const shrinkClass = expanded ?
         `` :
         `nav-sidebar-shrink`
     const compactRailClass = railIsCompact ?
         `nav-sidebar-short-rail` :
+        ``
+    const compactResumeBandClass = showCompactResumeBand ?
+        `nav-sidebar-short-rail-with-resume-band` :
         ``
 
     useEffect(() => {
@@ -37,7 +42,7 @@ function NavSidebar({ profile, links }) {
     }, [input.lastKeyPressed, shouldForceShrink])
 
     return (
-        <nav className={`nav-sidebar ${constants.HTML_CLASSES.scrollbarDecorator} ${shrinkClass} ${compactRailClass}`}>
+        <nav className={`nav-sidebar ${constants.HTML_CLASSES.scrollbarDecorator} ${shrinkClass} ${compactRailClass} ${compactResumeBandClass}`}>
             <Card className={`nav-sidebar-card-wrapper`}>
                 {!shouldForceShrink && (
                     <NavToolShrinkToggle expanded={expandedOption}
@@ -52,7 +57,16 @@ function NavSidebar({ profile, links }) {
                              expanded={expanded}
                              compactRail={railIsCompact}/>
 
-                <NavToolList expanded={expanded}/>
+                {showCompactResumeBand && (
+                    <div className={`nav-short-rail-resume-band`}>
+                        <NavToolResumeDownloader showTooltip={false}
+                                                 menuClassName={"nav-tools-popup-menu"}
+                                                 toggleClassName={"nav-short-rail-resume-pill"}/>
+                    </div>
+                )}
+
+                <NavToolList expanded={expanded}
+                             compactRail={railIsCompact}/>
             </Card>
         </nav>
     )

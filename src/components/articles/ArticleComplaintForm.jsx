@@ -5,6 +5,7 @@ import {useApi} from "../../hooks/api.js"
 import {useConstants} from "../../hooks/constants.js"
 import {useFeedbacks} from "../../providers/FeedbacksProvider.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
+import {useTheme} from "../../providers/ThemeProvider.jsx"
 import Article from "./base/Article.jsx"
 import Textarea from "../forms/fields/Textarea.jsx"
 import StandardButton from "../buttons/StandardButton.jsx"
@@ -18,7 +19,8 @@ const DESTINATIONS = {
 
 const POPUP_COUNT = 30
 const NOWHERE_SPARK_COUNT = 54
-const NOWHERE_SPARK_COLORS = ["#2563eb", "#ef4444", "#22c55e", "#7c3aed", "#06b6d4", "#f59e0b", "#ec4899"]
+const NOWHERE_SPARK_COLORS_DARK = ["#60a5fa", "#f97316", "#22c55e", "#a855f7", "#06b6d4", "#f59e0b", "#f472b6"]
+const NOWHERE_SPARK_COLORS_LIGHT = ["#1d4ed8", "#d97706", "#0f766e", "#7c3aed", "#0284c7", "#b45309", "#db2777"]
 
 function ArticleComplaintForm({ dataWrapper }) {
     return (
@@ -36,6 +38,8 @@ function ArticleComplaintFormContent({ dataWrapper }) {
     const constants = useConstants()
     const feedbacks = useFeedbacks()
     const language = useLanguage()
+    const theme = useTheme()
+    const selectedThemeId = theme.getSelectedTheme()?.id || "dark"
 
     const [message, setMessage] = useState("")
     const [destination, setDestination] = useState(DESTINATIONS.NOWHERE)
@@ -45,6 +49,8 @@ function ArticleComplaintFormContent({ dataWrapper }) {
     const [isSending, setIsSending] = useState(false)
     const [nowhereBursts, setNowhereBursts] = useState([])
     const sendButtonWrapperRef = useRef(null)
+    const destinationMenuRef = useRef(null)
+    const [isDestinationMenuOpen, setIsDestinationMenuOpen] = useState(false)
 
     const complaintEmail = dataWrapper.locales.complaintEmailLabel || "trash@lovro-music.de"
     const complaintNote = dataWrapper.locales.complaintNote || ""
@@ -53,11 +59,20 @@ function ArticleComplaintFormContent({ dataWrapper }) {
     const complaintYouWhereLabel = dataWrapper.locales.complaintYouWhereLabel || "actual hate"
     const complaintKnjigaLabel = dataWrapper.locales.complaintKnjigaLabel || "Knjiga zalbi"
     const complaintAnzeigeLabel = dataWrapper.locales.complaintAnzeigeLabel || "Anzeige raus"
+    const complaintSendLabel = dataWrapper.locales.complaintSendLabel || language.getString("send_message")
     const complaintYouWhereTitle = dataWrapper.locales.complaintYouWhereTitle || complaintYouWhereLabel
     const complaintYouWhereBody = dataWrapper.locales.complaintYouWhereBody || complaintYouWhereLabel
     const complaintSentTitle = dataWrapper.locales.complaintSentTitle || ""
     const complaintSentBody = dataWrapper.locales.complaintSentBody || ""
     const complaintPopupTitle = dataWrapper.locales.complaintPopupTitle || "Anzeige raus"
+
+    const destinationOptions = [
+        { value: DESTINATIONS.NOWHERE, label: complaintNowhereLabel },
+        { value: DESTINATIONS.YOU_WHERE, label: complaintYouWhereLabel },
+        { value: DESTINATIONS.KNJIGA, label: complaintKnjigaLabel },
+        { value: DESTINATIONS.ANZEIGE, label: complaintAnzeigeLabel },
+    ]
+    const currentDestinationLabel = destinationOptions.find((option) => option.value === destination)?.label || complaintNowhereLabel
 
     useEffect(() => {
         if(destination !== DESTINATIONS.NOWHERE)
@@ -75,11 +90,39 @@ function ArticleComplaintFormContent({ dataWrapper }) {
         }
     }, [])
 
+    useEffect(() => {
+        if(!isDestinationMenuOpen)
+            return
+
+        const handlePointerDown = (event) => {
+            if(destinationMenuRef.current?.contains(event.target))
+                return
+
+            setIsDestinationMenuOpen(false)
+        }
+
+        const handleEscape = (event) => {
+            if(event.key !== "Escape")
+                return
+
+            setIsDestinationMenuOpen(false)
+        }
+
+        document.addEventListener("pointerdown", handlePointerDown)
+        document.addEventListener("keydown", handleEscape)
+
+        return () => {
+            document.removeEventListener("pointerdown", handlePointerDown)
+            document.removeEventListener("keydown", handleEscape)
+        }
+    }, [isDestinationMenuOpen])
+
     const handleDestinationChange = (nextDestination) => {
         setValidationError(null)
 
         setDestination(nextDestination)
         setStatusMessage(null)
+        setIsDestinationMenuOpen(false)
 
         if(nextDestination === DESTINATIONS.ANZEIGE) {
             setComplaintPopups([])
@@ -94,7 +137,7 @@ function ArticleComplaintFormContent({ dataWrapper }) {
             return
 
         if(destination === DESTINATIONS.NOWHERE) {
-            triggerNowhereBurst(sendButtonWrapperRef.current)
+            triggerNowhereBurst(sendButtonWrapperRef.current, selectedThemeId)
             setMessage("")
             setStatusMessage(null)
             return
@@ -166,8 +209,6 @@ function ArticleComplaintFormContent({ dataWrapper }) {
     }
 
     const errorMessage = validationError ? language.getString(validationError.errorCode) : null
-    const isKnjiga = destination === DESTINATIONS.KNJIGA
-
     return (
         <form className={`article-complaint-form-shell`}
               noValidate={true}
@@ -182,57 +223,88 @@ function ArticleComplaintFormContent({ dataWrapper }) {
                               placeholder={`complaint`}
                               className={`text-4`}
                               required={false}/>
+                </div>
 
-                    <div className={`article-complaint-form-message-error-slot`}>
-                        {errorMessage ? (
-                            <p className={`article-complaint-form-message-error text-2`}>
-                                {errorMessage}
-                            </p>
-                        ) : (
-                            <span className={`article-complaint-form-message-error-placeholder`} aria-hidden={`true`} />
-                        )}
-                    </div>
-
+                <div ref={sendButtonWrapperRef}
+                     className={`article-complaint-form-send-button-wrapper`}>
+                    <StandardButton label={complaintSendLabel}
+                                    faIcon={`fa-solid fa-paper-plane`}
+                                    type={`submit`}
+                                    className={`article-complaint-form-send-button`}
+                                    variant={`primary`}
+                                    size={StandardButton.Size.DEFAULT}
+                                    tooltip={complaintSendLabel}
+                                    status={isSending ? StandardButton.Status.DISABLED : StandardButton.Status.ENABLED}/>
                 </div>
 
                 <aside className={`article-complaint-form-rail`}>
-                    <div className={`article-complaint-form-note text-3`}
+                    <div className={`article-complaint-form-note text-2`}
                          dangerouslySetInnerHTML={{__html: complaintNote}}/>
 
                     <div className={`article-complaint-form-controls-row`}>
-                        <label className={`article-complaint-form-select-wrapper`}>
-                            <span className={`article-complaint-form-select-label text-2`}>
-                                {isKnjiga ? complaintEmail : complaintDestinationLabel}
-                            </span>
+                        <div ref={destinationMenuRef}
+                             className={`article-complaint-form-select-wrapper ${isDestinationMenuOpen ? "article-complaint-form-select-wrapper-open" : ""}`}>
+                            <button type={`button`}
+                                    className={`article-complaint-form-select-trigger`}
+                                    aria-label={complaintDestinationLabel}
+                                    aria-haspopup={`listbox`}
+                                    aria-expanded={isDestinationMenuOpen}
+                                    onClick={() => {
+                                        setIsDestinationMenuOpen((current) => !current)
+                                    }}>
+                                <span className={`article-complaint-form-select-display`} aria-hidden={`true`}>
+                                    <span className={`article-complaint-form-select-prefix`}>Send to:</span>
+                                    <span className={`article-complaint-form-select-value text-3`}>{currentDestinationLabel}</span>
+                                </span>
 
-                            <select className={`article-complaint-form-select text-3`}
-                                    value={destination}
-                                    onChange={(event) => handleDestinationChange(event.target.value)}>
-                                <option value={DESTINATIONS.NOWHERE}>{complaintNowhereLabel}</option>
-                                <option value={DESTINATIONS.YOU_WHERE}>{complaintYouWhereLabel}</option>
-                                <option value={DESTINATIONS.KNJIGA}>{complaintKnjigaLabel}</option>
-                                <option value={DESTINATIONS.ANZEIGE}>{complaintAnzeigeLabel}</option>
-                            </select>
-                        </label>
-                        <div ref={sendButtonWrapperRef}
-                             className={`article-complaint-form-send-button-wrapper`}>
-                            <StandardButton label={`send`}
-                                            faIcon={`fa-solid fa-paper-plane`}
-                                            type={`submit`}
-                                            className={`article-complaint-form-send-button`}
-                                            variant={`primary`}
-                                            size={StandardButton.Size.LARGE}
-                                            tooltip={`send`}
-                                            status={isSending ? StandardButton.Status.DISABLED : StandardButton.Status.ENABLED}/>
+                                <span className={`article-complaint-form-select-caret`} aria-hidden={`true`} />
+                            </button>
+
+                            {isDestinationMenuOpen && (
+                                <div className={`article-complaint-form-select-menu`}
+                                     role={`listbox`}
+                                     aria-label={complaintDestinationLabel}>
+                                    {destinationOptions.map((option) => {
+                                        const isSelected = option.value === destination
+
+                                        return (
+                                            <button key={option.value}
+                                                    type={`button`}
+                                                    role={`option`}
+                                                    aria-selected={isSelected}
+                                                    className={`article-complaint-form-select-option ${isSelected ? "article-complaint-form-select-option-selected" : ""}`}
+                                                    onClick={() => {
+                                                        handleDestinationChange(option.value)
+                                                    }}>
+                                                <span className={`article-complaint-form-select-option-label text-3`}>
+                                                    {option.label}
+                                                </span>
+
+                                                {isSelected && (
+                                                    <i className={`fa-solid fa-check article-complaint-form-select-option-icon`} aria-hidden={`true`} />
+                                                )}
+                                            </button>
+                                        )
+                                    })}
+                                </div>
+                            )}
                         </div>
                     </div>
+                </aside>
 
-                    {statusMessage && (
+                <div className={`article-complaint-form-message-error-slot`}>
+                    {errorMessage ? (
+                        <p className={`article-complaint-form-message-error text-2`}>
+                            {errorMessage}
+                        </p>
+                    ) : statusMessage ? (
                         <p className={`article-complaint-form-status text-2`}>
                             {statusMessage}
                         </p>
+                    ) : (
+                        <span className={`article-complaint-form-message-error-placeholder`} aria-hidden={`true`} />
                     )}
-                </aside>
+                </div>
             </div>
 
             {typeof document !== "undefined" && createPortal(
@@ -305,12 +377,12 @@ function ArticleComplaintFormContent({ dataWrapper }) {
         </form>
     )
 
-    function triggerNowhereBurst(target) {
+    function triggerNowhereBurst(target, themeId) {
         if(typeof window === "undefined" || !target)
             return
 
         const rect = target.getBoundingClientRect()
-        const burst = createNowhereBurst(rect)
+        const burst = createNowhereBurst(rect, themeId)
 
         setNowhereBursts((current) => [...current, burst])
 
@@ -375,10 +447,21 @@ function openThrowoffTab(title = "actual hate", body = "Bye, my dear.\nI hope th
     if(!tab)
         return
 
+    const isLightTheme = document.documentElement.getAttribute("data-theme") === "light"
     const lines = String(body)
         .split(/\r?\n/)
         .map((line) => line.trim())
         .filter(Boolean)
+
+    const surface = isLightTheme ? "#ffffff" : "#0b1324"
+    const surfaceSoft = isLightTheme ? "#f4f8fc" : "#111c30"
+    const surfaceAccent = isLightTheme ? "#e8f1fb" : "#18263d"
+    const border = isLightTheme ? "rgba(15, 23, 42, 0.12)" : "rgba(148, 163, 184, 0.18)"
+    const ink = isLightTheme ? "#102033" : "#eef6ff"
+    const muted = isLightTheme ? "#4e5f76" : "#a9b9cf"
+    const overlay = isLightTheme ? "rgba(15, 23, 42, 0.10)" : "rgba(2, 6, 23, 0.42)"
+    const accentA = isLightTheme ? "#1d4ed8" : "#7dd3fc"
+    const accentB = isLightTheme ? "#0f766e" : "#8b5cf6"
 
     const html = [
         "<!doctype html>",
@@ -386,12 +469,14 @@ function openThrowoffTab(title = "actual hate", body = "Bye, my dear.\nI hope th
         "<head>",
         `<title>${escapeHtml(title)}</title>`,
         "<style>",
-        "body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at top,rgba(37,99,235,.12) 0,transparent 42%),linear-gradient(180deg,#fbfdff 0%,#eef4fb 100%);color:#0f172a;font-family:Georgia,'Times New Roman',serif;padding:24px;text-align:center}",
-        "main{width:min(100%,560px);padding:28px 26px;border:1px solid rgba(15,23,42,.12);background:rgba(255,255,255,.88);box-shadow:0 18px 45px rgba(15,23,42,.10)}",
-        "p{margin:0;line-height:1.45;color:#1e293b}",
+        `body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;text-align:center;font-family:Inter,Segoe UI,system-ui,-apple-system,BlinkMacSystemFont,sans-serif;background:radial-gradient(circle at top,${overlay} 0,transparent 42%),linear-gradient(180deg,${isLightTheme ? "#f8fbff" : "#020712"} 0%,${isLightTheme ? "#eef4fb" : "#09101d"} 100%);color:${ink}}`,
+        `main{width:min(100%,560px);padding:30px 28px;border:1px solid ${border};border-radius:24px;background:linear-gradient(180deg,${surface} 0%,${surfaceSoft} 74%,${surfaceAccent} 100%);box-shadow:0 20px 50px ${isLightTheme ? "rgba(15, 23, 42, 0.12)" : "rgba(0, 0, 0, 0.38)"};position:relative;overflow:hidden}`,
+        `main::before{content:"";position:absolute;inset:0 0 auto 0;height:8px;background:linear-gradient(90deg,${accentA} 0%,${accentB} 100%);opacity:.92}`,
+        `main::after{content:"";position:absolute;inset:auto -12px -12px auto;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,${isLightTheme ? "rgba(29, 78, 216, 0.08)" : "rgba(125, 211, 252, 0.10)"} 0,transparent 72%);pointer-events:none}`,
+        "p{margin:0;line-height:1.55;color:inherit}",
         "p+p{margin-top:14px}",
-        ".lead{font-size:clamp(1.35rem,2vw,1.7rem);font-style:italic;color:#0f172a}",
-        ".sub{font-size:clamp(1rem,1.45vw,1.1rem);max-width:34ch;margin-inline:auto;color:#334155}",
+        `.lead{font-size:clamp(1.35rem,2vw,1.75rem);font-weight:700;color:${ink}}`,
+        `.sub{font-size:clamp(1rem,1.45vw,1.08rem);max-width:38ch;margin-inline:auto;color:${muted}}`,
         "</style>",
         "</head>",
         "<body>",
@@ -417,10 +502,11 @@ function escapeHtml(value) {
         .replaceAll("'", "&#39;")
 }
 
-function createNowhereBurst(rect) {
+function createNowhereBurst(rect, themeId = "dark") {
     const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
     const originX = rect.left + rect.width / 2
     const originY = rect.top + rect.height / 2
+    const sparkColors = getNowhereSparkColors(themeId)
 
     return {
         id,
@@ -437,12 +523,16 @@ function createNowhereBurst(rect) {
                 dy: Math.sin(angle) * distance - lift,
                 rotation: Math.round((Math.random() - 0.5) * 180),
                 scale: (1.15 + Math.random() * 1.2).toFixed(2),
-                color: NOWHERE_SPARK_COLORS[index % NOWHERE_SPARK_COLORS.length],
+                color: sparkColors[index % sparkColors.length],
                 duration: 1100 + Math.round(Math.random() * 380),
                 delay: Math.round(Math.random() * 90)
             }
         })
     }
+}
+
+function getNowhereSparkColors(themeId) {
+    return themeId === "light" ? NOWHERE_SPARK_COLORS_LIGHT : NOWHERE_SPARK_COLORS_DARK
 }
 
 export default ArticleComplaintForm

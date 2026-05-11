@@ -31,6 +31,24 @@ button.btn-option-picker-toggle {
         gap: 2px;
     }
 
+    &.btn-option-picker-toggle-caption-inline {
+        flex-direction: row;
+        gap: 8px;
+        justify-content: center;
+        align-items: center;
+
+        span.btn-option-picker-toggle-row {
+            width: auto;
+            flex: 0 0 auto;
+        }
+
+        span.btn-option-picker-toggle-caption {
+            max-width: min(100%, 5.1rem);
+            font-size: 0.74rem;
+            text-align: left;
+        }
+    }
+
     span.btn-option-picker-toggle-caption {
         font-size: 0.68rem;
         line-height: 1;

@@ -63,6 +63,7 @@ export default class ArticleDataWrapper {
             complaintYouWhereTip: language.getTranslation(rawLocales, "complaint_you_where_tip", undefined),
             complaintAnzeigeTip: language.getTranslation(rawLocales, "complaint_anzeige_tip", undefined),
             complaintEmailLabel: language.getTranslation(rawLocales, "complaint_email_label", undefined),
+            complaintSendLabel: language.getTranslation(rawLocales, "complaint_send_label", undefined),
             complaintSentTitle: language.getTranslation(rawLocales, "complaint_sent_title", undefined),
             complaintSentBody: language.getTranslation(rawLocales, "complaint_sent_body", undefined),
             complaintPopupTitle: language.getTranslation(rawLocales, "complaint_popup_title", undefined),

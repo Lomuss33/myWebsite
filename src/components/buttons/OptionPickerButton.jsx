@@ -10,6 +10,8 @@ function OptionPickerButton({
     tooltipLabel,
     showSelectedOptionOnDropdown = false,
     toggleCaption = null,
+    toggleCaptionLayout = "stack",
+    toggleClassName = "",
     dropdownDrop = "down",
     hideCaret = false,
     dropdownClassName = "",
@@ -74,6 +76,8 @@ function OptionPickerButton({
                                           onClick={_onToggleClicked}
                                           tooltipLabel={tooltipLabel}
                                           toggleCaption={toggleCaption}
+                                          toggleCaptionLayout={toggleCaptionLayout}
+                                          toggleClassName={toggleClassName}
                                           dropdownToggle={false}/>
             </div>
         )
@@ -91,6 +95,8 @@ function OptionPickerButton({
                                           caretIcon={caretIcon}
                                           tooltipLabel={tooltipLabel}
                                           toggleCaption={toggleCaption}
+                                          toggleCaptionLayout={toggleCaptionLayout}
+                                          toggleClassName={toggleClassName}
                                           dropdownToggle={true}/>
 
                 <OptionPickerButtonMenu availableOptions={availableOptions}
@@ -103,8 +109,21 @@ function OptionPickerButton({
     )
 }
 
-function OptionPickerButtonToggle({ option, caretIcon, onClick, tooltipLabel, toggleCaption, dropdownToggle }) {
+function OptionPickerButtonToggle({
+    option,
+    caretIcon,
+    onClick,
+    tooltipLabel,
+    toggleCaption,
+    toggleCaptionLayout,
+    toggleClassName,
+    dropdownToggle
+}) {
     const captionClass = toggleCaption ? "btn-option-picker-toggle-with-caption" : ""
+    const captionLayoutClass = toggleCaption && toggleCaptionLayout === "inline" ?
+        "btn-option-picker-toggle-caption-inline" :
+        ""
+    const toggleClasses = `btn-option-picker-toggle ${captionClass} ${captionLayoutClass} ${toggleClassName}`.trim()
     const toggleContent = (
         <>
             <span className={`btn-option-picker-toggle-row`}>
@@ -127,7 +146,7 @@ function OptionPickerButtonToggle({ option, caretIcon, onClick, tooltipLabel, to
     if(!dropdownToggle) {
         return (
             <button type={`button`}
-                    className={`btn-option-picker-toggle btn btn-transparent ${captionClass}`}
+                    className={`${toggleClasses} btn btn-transparent`}
                     onClick={onClick}
                     data-tooltip={tooltipLabel}>
                 {toggleContent}
@@ -137,7 +156,7 @@ function OptionPickerButtonToggle({ option, caretIcon, onClick, tooltipLabel, to
 
     return (
         <Dropdown.Toggle variant={`transparent`}
-                         className={`btn-option-picker-toggle ${captionClass}`}
+                         className={toggleClasses}
                          data-tooltip={tooltipLabel}>
             {toggleContent}
         </Dropdown.Toggle>

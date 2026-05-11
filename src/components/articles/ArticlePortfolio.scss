@@ -56,12 +56,12 @@ div.article-portfolio-items {
 
 /** ---------- 2 ITEMS PER ROW ---------------- */
 div.article-portfolio-items-2-per-row, div.article-portfolio-items-3-per-row {
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--portfolio-card-min-width)), 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 /** ---------- 3 ITEMS PER ROW ---------------- */
 div.article-portfolio-items-3-per-row {
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--portfolio-card-min-width)), 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 div.article-portfolio-item {

@@ -2,6 +2,7 @@
 
 nav.nav-sidebar {
     --width: 224px;
+    --nav-short-rail-resume-height: 0px;
 
     display: flex;
     min-height: 0;
@@ -102,6 +103,7 @@ nav.nav-sidebar-short-rail {
     div.nav-sidebar-card-wrapper > div.nav-profile-card.nav-profile-card-shrink {
         margin: 0;
         padding: 0;
+        align-self: stretch;
         border-top-left-radius: inherit;
         border-top-right-radius: inherit;
         border-bottom-left-radius: 0;
@@ -109,14 +111,16 @@ nav.nav-sidebar-short-rail {
     }
 
     div.nav-profile-card-shrink {
-        --avatar-size: var(--nav-short-rail-profile-height);
+        --avatar-size: calc(var(--nav-short-rail-profile-height) - 4px);
         --border-size: 0px;
         --offset-status-circle: 10px;
         margin: 0;
         padding: 0;
+        width: 100%;
         height: var(--nav-short-rail-profile-height);
         min-height: var(--nav-short-rail-profile-height);
         max-height: var(--nav-short-rail-profile-height);
+        align-items: center;
         justify-content: center;
         overflow: hidden;
         border-radius: 0;
@@ -126,6 +130,7 @@ nav.nav-sidebar-short-rail {
         position: relative;
         width: 100%;
         height: 100%;
+        min-width: 0;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -156,14 +161,14 @@ nav.nav-sidebar-short-rail {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        object-position: center;
+        object-position: 42% 16%;
         border-radius: 0 !important;
     }
 
     div.nav-tools {
         --nav-tools-height: var(--nav-short-rail-tools-height);
         flex: 0 0 var(--nav-tools-height);
-        padding: 0 6px;
+        padding: 0;
         height: var(--nav-tools-height);
         min-height: var(--nav-tools-height);
         max-height: var(--nav-tools-height);
@@ -172,5 +177,135 @@ nav.nav-sidebar-short-rail {
     div.nav-tools.nav-tools-shrink,
     div.nav-tools.nav-tools-shrink div.nav-tools-item {
         min-height: var(--nav-tools-height);
+    }
+}
+
+nav.nav-sidebar-short-rail.nav-sidebar-short-rail-with-resume-band {
+    --nav-short-rail-resume-height: 64px;
+}
+
+nav.nav-sidebar-short-rail div.nav-short-rail-resume-band {
+    flex: 0 0 var(--nav-short-rail-resume-height);
+    width: 100%;
+    height: var(--nav-short-rail-resume-height);
+    min-height: var(--nav-short-rail-resume-height);
+    max-height: var(--nav-short-rail-resume-height);
+    padding: 0;
+    position: relative;
+    overflow: visible;
+
+    div.btn-option-picker,
+    div.dropdown,
+    div.dropup {
+        width: 100%;
+        height: 100%;
+    }
+
+    button.nav-short-rail-resume-pill {
+        width: 100%;
+        height: 100%;
+        min-width: 0;
+        border: 0;
+        border-radius: 0;
+        padding-inline: 12px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background:
+            linear-gradient(180deg,
+                color-mix(in srgb, var(--theme-secondary) 16%, var(--theme-nav-surface-raised) 84%) 0%,
+                color-mix(in srgb, var(--theme-secondary) 12%, var(--theme-nav-surface-accent) 88%) 100%);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.16),
+            inset 0 -2px 0 color-mix(in srgb, var(--theme-secondary) 34%, transparent 66%),
+            inset 0 0 0 1px color-mix(in srgb, var(--theme-secondary) 12%, transparent 88%);
+        transition:
+            background 0.18s ease,
+            box-shadow 0.18s ease,
+            color 0.18s ease;
+
+        span.btn-option-picker-toggle-row {
+            width: auto;
+            flex: 0 0 auto;
+        }
+
+        span.btn-option-picker-toggle-caption {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        i.fa-icon,
+        span.btn-option-picker-toggle-caption {
+            color: color-mix(in srgb, var(--theme-nav-text) 88%, var(--theme-secondary) 12%);
+        }
+
+        i.fa-icon {
+            opacity: 0.92;
+        }
+
+        &::after {
+            display: none !important;
+            content: none !important;
+        }
+
+        &:hover {
+            background:
+                linear-gradient(180deg,
+                    color-mix(in srgb, var(--theme-secondary) 22%, var(--theme-nav-surface-raised) 78%) 0%,
+                    color-mix(in srgb, var(--theme-secondary) 18%, var(--theme-nav-surface-accent) 82%) 100%);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.18),
+                inset 0 -2px 0 color-mix(in srgb, var(--theme-secondary) 44%, transparent 56%),
+                inset 0 0 0 1px color-mix(in srgb, var(--theme-secondary) 18%, transparent 82%);
+
+            i.fa-icon,
+            span.btn-option-picker-toggle-caption {
+                color: var(--theme-secondary);
+            }
+        }
+
+        &:focus-visible,
+        &.show,
+        &:active {
+            background:
+                linear-gradient(180deg,
+                    color-mix(in srgb, var(--theme-secondary) 24%, var(--theme-nav-surface-raised) 76%) 0%,
+                    color-mix(in srgb, var(--theme-secondary) 22%, var(--theme-nav-surface-accent) 78%) 100%);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.18),
+                inset 0 -3px 0 color-mix(in srgb, var(--theme-secondary) 54%, transparent 46%),
+                inset 0 0 0 1px color-mix(in srgb, var(--theme-secondary) 24%, transparent 76%);
+        }
+    }
+}
+
+[data-theme="dark"] nav.nav-sidebar-short-rail div.nav-short-rail-resume-band {
+    button.nav-short-rail-resume-pill {
+        background:
+            linear-gradient(180deg,
+                color-mix(in srgb, var(--theme-secondary) 16%, var(--theme-nav-surface-raised) 84%) 0%,
+                color-mix(in srgb, var(--theme-secondary) 18%, black 82%) 100%);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            inset 0 -2px 0 color-mix(in srgb, var(--theme-secondary) 40%, transparent 60%),
+            inset 0 0 0 1px color-mix(in srgb, var(--theme-secondary) 22%, transparent 78%);
+
+        i.fa-icon,
+        span.btn-option-picker-toggle-caption {
+            color: color-mix(in srgb, var(--theme-secondary) 68%, white 32%);
+        }
+
+        &:hover,
+        &:focus-visible,
+        &.show,
+        &:active {
+            background:
+                linear-gradient(180deg,
+                    color-mix(in srgb, var(--theme-secondary) 24%, var(--theme-nav-surface-raised) 76%) 0%,
+                    color-mix(in srgb, var(--theme-secondary) 28%, black 72%) 100%);
+        }
     }
 }

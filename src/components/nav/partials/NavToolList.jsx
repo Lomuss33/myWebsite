@@ -8,7 +8,7 @@ import NavToolThemePicker from "../tools/NavToolThemePicker.jsx"
 import NavToolResumeDownloader from "../tools/NavToolResumeDownloader.jsx"
 import NavToolSettings from "../tools/NavToolSettings.jsx"
 
-function NavToolList({ expanded }) {
+function NavToolList({ expanded, compactRail = false }) {
     const language = useLanguage()
     const theme = useTheme()
     const data = useData()
@@ -22,7 +22,7 @@ function NavToolList({ expanded }) {
     const widgets = [
         ...(language.supportsMultipleLanguages ? ["language"] : []),
         ...(theme.supportsMultipleThemes ? [NavToolSettings.Options.THEME] : []),
-        ...(profile.resumePdfUrl ? [NavToolSettings.Options.DOWNLOAD_RESUME] : []),
+        ...(profile.resumePdfUrl && !compactRail ? [NavToolSettings.Options.DOWNLOAD_RESUME] : []),
     ]
 
     const orderedWidgets = [

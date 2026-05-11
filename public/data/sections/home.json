@@ -106,8 +106,8 @@
       "items": [
         {
           "id": 1,
-          "img": "/images/private/LovroMusic2025.webp",
-          "imgAlt": "/images/contant/profil_dog.webp",
+          "img": "/images/contant/profilePix.webp",
+          "imgAlt": "/images/contant/profil.webp",
           "imgAltDefaultChance": 0.5,
           "faIcon": "",
           "faIconColors": {

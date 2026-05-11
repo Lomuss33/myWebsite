@@ -82,10 +82,14 @@ function NavLinkList({ links, expanded, compactRail = false }) {
             const currentToolsHeight = navTools?.clientHeight || 0
             const reservedCompactHeight = compactRail ?
                 _readPxVariable(railCard, "--nav-short-rail-profile-height") +
+                _readPxVariable(railCard, "--nav-short-rail-resume-height") +
                 _readPxVariable(railCard, "--nav-short-rail-tools-height") :
                 0
+            const compactAvailableHeight = compactRail && railHeight > 0 ?
+                Math.max(railHeight - reservedCompactHeight, 0) :
+                0
             const sharedRowHeight = compactRail && railHeight > 0 ?
-                Math.max((railHeight - reservedCompactHeight) / amountOfItems, 0) :
+                Math.max(baselineRowHeight, compactAvailableHeight / amountOfItems) :
                 (currentToolsHeight > 0 ? (totalHeight + currentToolsHeight) / (amountOfItems + 1) : totalHeight / amountOfItems)
             const shrinkFactor = _clamp(
                 (baselineRowHeight - sharedRowHeight) / Math.max(baselineRowHeight - minRowHeight, 1),

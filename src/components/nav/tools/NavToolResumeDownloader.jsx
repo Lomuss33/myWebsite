@@ -12,7 +12,10 @@ function NavToolResumeDownloader({
     menuClassName = "",
     compactMenu = false,
     mobileTubeMenu = false,
-    showTooltip = true
+    showTooltip = true,
+    toggleCaption = null,
+    toggleCaptionLayout = "stack",
+    toggleClassName = ""
 }) {
     const language = useLanguage()
     const utils = useUtils()
@@ -143,7 +146,10 @@ function NavToolResumeDownloader({
                             dropdownDrop={dropdownDrop}
                             dropdownClassName={dropdownClassName}
                             menuClassName={menuClassName}
-                            compactMenu={compactMenu}/>
+                            compactMenu={compactMenu}
+                            toggleCaption={toggleCaption}
+                            toggleCaptionLayout={toggleCaptionLayout}
+                            toggleClassName={toggleClassName}/>
     )
 }
 

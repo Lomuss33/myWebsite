@@ -41,9 +41,9 @@ function ArticlePortfolioItems({ dataWrapper, selectedItemCategoryId }) {
     const viewport = useViewport()
 
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
-    const itemsPerRow = viewport.isBreakpoint("lg") ?
+    const itemsPerRow = viewport.isBreakpoint("xxl") ?
         3 :
-        viewport.isBreakpoint("md") ?
+        viewport.isBreakpoint("lg") ?
             2 :
             1
     const itemsPerRowClass = `article-portfolio-items-${itemsPerRow}-per-row`

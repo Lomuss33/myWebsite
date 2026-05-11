@@ -758,6 +758,9 @@ div.nav-profile-card-shrink {
     --border-size: 3px;
     --offset-status-circle: 11px;
     align-self: stretch;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
 
     div.nav-profile-card-avatar-switch {
         border-radius: calc($standard-border-radius * 2)!important;
@@ -768,12 +771,17 @@ div.nav-profile-card-shrink {
     }
 
     div.nav-profile-card-header {
-        width: auto;
+        width: 100%;
         min-width: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     div.nav-profile-card-compact-name {
         display: block;
         max-width: 68px;
+        margin-left: auto;
+        margin-right: auto;
     }
 }

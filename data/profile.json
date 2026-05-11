@@ -1,7 +1,7 @@
 {
     "name": "Lovro Musić",
-    "profilePictureUrl": "images/contant/profilePix.webp",
-    "profilePictureAltUrl": "images/contant/profil.webp",
+    "profilePictureUrl": "images/private/LovroMusic2025.webp",
+    "profilePictureAltUrl": "images/contant/profil_dog.webp",
     "profilePictureAltDefaultChance": 0.5,
     "resumePdfUrl": "/resume.pdf",
     "statusCircleVisible": true,

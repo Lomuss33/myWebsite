@@ -272,9 +272,8 @@ const buildHomeJsonLd = ({ canonicalCv, imageUrl }) => {
     }
 }
 
-const renderContactArticle = (canonicalCv, includeGermanAlternate = true) => {
+const renderContactArticle = (canonicalCv) => {
     const contact = canonicalCv.contact
-    const germanAddressLine = `${contact.streetAddress}, ${contact.postalCode} ${contact.addressLocality}, Deutschland`
 
     return `
         <article class="machine-cv__article">
@@ -283,7 +282,6 @@ const renderContactArticle = (canonicalCv, includeGermanAlternate = true) => {
                 <p><a href="mailto:${escapeHtml(contact.email)}">${escapeHtml(contact.email)}</a></p>
                 <p><a href="tel:${escapeHtml(contact.telephone.replace(/\s+/g, ""))}">${escapeHtml(contact.telephone)}</a></p>
                 <p>${escapeHtml(contact.streetAddress)}, ${escapeHtml(contact.postalCode)} ${escapeHtml(contact.addressLocality)}, ${escapeHtml(contact.addressCountry)}</p>
-                ${includeGermanAlternate ? `<p lang="de">${escapeHtml(germanAddressLine)}</p>` : ""}
                 <p><a href="${escapeHtml(contact.linkedin)}" rel="noopener noreferrer">LinkedIn</a></p>
                 <p><a href="${escapeHtml(contact.github)}" rel="noopener noreferrer">GitHub</a></p>
                 <p><a href="${escapeHtml(canonicalCv.url)}" rel="noopener noreferrer">${escapeHtml(canonicalCv.url)}</a></p>
@@ -298,24 +296,19 @@ const renderSummaryArticle = (canonicalCv) => {
         <article class="machine-cv__article">
             <h2>Summary</h2>
             <p>${escapeHtml(canonicalCv.description)}</p>
-            <p lang="de">${escapeHtml(canonicalCv.descriptionDe)}</p>
         </article>
     `
 }
 
 const renderTimelineItem = (entry) => {
     const englishDateRange = formatDateRange(entry.startDate, entry.endDate, "en-US")
-    const germanDateRange = formatDateRange(entry.startDate, entry.endDate, "de-DE")
 
     return `
         <li>
             <h3>${escapeHtml(entry.title)}</h3>
-            ${entry.titleDe ? `<p lang="de">${escapeHtml(entry.titleDe)}</p>` : ""}
             <p><strong>${escapeHtml(entry.institution)}</strong> · ${escapeHtml(entry.location)}</p>
             <p><time datetime="${escapeHtml(entry.startDate)}">${escapeHtml(englishDateRange)}</time></p>
-            <p lang="de"><time datetime="${escapeHtml(entry.startDate)}">${escapeHtml(germanDateRange)}</time></p>
             <p>${escapeHtml(entry.summary)}</p>
-            <p lang="de">${escapeHtml(entry.summaryDe)}</p>
             <ul>
                 ${entry.bullets.map(bullet => `<li>${escapeHtml(bullet)}</li>`).join("")}
             </ul>
@@ -381,16 +374,13 @@ const renderProjectsArticle = (projects) => {
             ${projectGroups.map(group => `
                 <section class="machine-cv__subsection">
                     <h3>${escapeHtml(group.title)}</h3>
-                    <p lang="de">${escapeHtml(group.titleDe)}</p>
                     <ul>
                         ${group.items.map(project => `
                             <li>
                                 <strong>${escapeHtml(project.title)}</strong>
-                                ${project.titleDe ? `<p lang="de">${escapeHtml(project.titleDe)}</p>` : ""}
                                 ${project.date ? `<p><time datetime="${escapeHtml(project.date)}">${escapeHtml(formatYearMonth(project.date, "en-US"))}</time></p>` : ""}
                                 ${project.startDate ? `<p><time datetime="${escapeHtml(project.startDate)}">${escapeHtml(formatDateRange(project.startDate, project.endDate, "en-US"))}</time></p>` : ""}
                                 <p>${escapeHtml(project.summary)}</p>
-                                ${project.summaryDe ? `<p lang="de">${escapeHtml(project.summaryDe)}</p>` : ""}
                                 ${project.tags.length > 0 ? `<p>${escapeHtml(project.tags.join(", "))}</p>` : ""}
                                 ${renderProjectLinkLine(project)}
                             </li>
@@ -409,7 +399,6 @@ const renderSkillsArticle = (canonicalCv) => {
             ${canonicalCv.skills.map(skillGroup => `
                 <section class="machine-cv__subsection">
                     <h3>${escapeHtml(skillGroup.category)}</h3>
-                    <p lang="de">${escapeHtml(skillGroup.categoryDe)}</p>
                     <ul>
                         ${skillGroup.items.map(item => `<li>${escapeHtml(item)}</li>`).join("")}
                     </ul>
@@ -417,16 +406,14 @@ const renderSkillsArticle = (canonicalCv) => {
             `).join("")}
             <section class="machine-cv__subsection">
                 <h3>Languages</h3>
-                <p lang="de">Sprachen</p>
                 <ul>
                     ${canonicalCv.languages.map(language => `
-                        <li>${escapeHtml(language.language)} — ${escapeHtml(language.level)}${language.languageDe ? ` <span lang="de">(${escapeHtml(language.languageDe)})</span>` : ""}</li>
+                        <li>${escapeHtml(language.language)} — ${escapeHtml(language.level)}</li>
                     `).join("")}
                 </ul>
             </section>
             <section class="machine-cv__subsection">
                 <h3>Certifications</h3>
-                <p lang="de">Zertifizierungen</p>
                 <ul>
                     ${canonicalCv.certifications.map(certification => `
                         <li>
@@ -439,12 +426,9 @@ const renderSkillsArticle = (canonicalCv) => {
             </section>
             <section class="machine-cv__subsection">
                 <h3>Additional Information</h3>
-                <p lang="de">Weitere Angaben</p>
                 <ul>
                     <li>Interests: ${escapeHtml(canonicalCv.interests.join(", "))}</li>
-                    <li lang="de">Interessen: ${escapeHtml(canonicalCv.interests.join(", "))}</li>
                     <li>Driver license: ${escapeHtml(canonicalCv.driverLicense)}</li>
-                    <li lang="de">Führerschein: ${escapeHtml(canonicalCv.driverLicense)}</li>
                 </ul>
             </section>
         </article>
@@ -460,7 +444,6 @@ const buildCvSectionMarkup = ({ canonicalCv, projects, hidden }) => {
     return `
         <section class="machine-cv${hiddenClassName}" aria-label="${escapeHtml(ariaLabel)}" lang="en">
             <h1>${escapeHtml(canonicalCv.name)}</h1>
-            <p lang="de">${escapeHtml(canonicalCv.jobTitleDe)}</p>
             <p>${escapeHtml(canonicalCv.jobTitle)}</p>
             ${renderContactArticle(canonicalCv)}
             ${renderSummaryArticle(canonicalCv)}
@@ -526,8 +509,8 @@ ${JSON.stringify(homeJsonLd, null, 4)}
 }
 
 const buildCvPageHtml = ({ canonicalCv, projects, imageUrl }) => {
-    const pageTitle = "Lovro Musić CV | Bilingual Resume, Experience & Projects"
-    const metaDescription = "Bilingual machine-readable CV for Lovro Musić covering education, experience, technical skills, projects, and structured resume data."
+    const pageTitle = "Lovro Musić CV | Resume, Experience & Projects"
+    const metaDescription = "CV page for Lovro Musić covering education, experience, technical skills, projects, and structured resume data."
     const profilePageJsonLd = buildProfilePageJsonLd({
         canonicalCv,
         imageUrl,
@@ -625,10 +608,6 @@ const buildCvPageHtml = ({ canonicalCv, projects, imageUrl }) => {
                 color: #0f4c81;
             }
 
-            .machine-cv [lang="de"] {
-                color: #475569;
-            }
-
             @media (max-width: 640px) {
                 .machine-cv {
                     padding: 1.25rem;
@@ -643,7 +622,7 @@ ${JSON.stringify(profilePageJsonLd, null, 4)}
     <body>
         <main class="machine-cv-page">
             <p class="machine-cv-page__links">
-                <a href="${escapeHtml(canonicalCv.url)}" rel="noopener noreferrer">Main portfolio: ${escapeHtml(canonicalCv.url.replace(/\/$/, ""))}</a>
+                <a href="${escapeHtml(canonicalCv.url)}" rel="noopener noreferrer">Main website: ${escapeHtml(canonicalCv.url)}</a>
             </p>
             <p class="machine-cv-page__links">
                 <a href="/">Portfolio</a> |

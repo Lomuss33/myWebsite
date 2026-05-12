@@ -22,6 +22,15 @@ const NOWHERE_SPARK_COUNT = 54
 const NOWHERE_SPARK_COLORS_DARK = ["#60a5fa", "#f97316", "#22c55e", "#a855f7", "#06b6d4", "#f59e0b", "#f472b6"]
 const NOWHERE_SPARK_COLORS_LIGHT = ["#1d4ed8", "#d97706", "#0f766e", "#7c3aed", "#0284c7", "#b45309", "#db2777"]
 
+function createDestinationOptions(labels) {
+    return [
+        { value: DESTINATIONS.NOWHERE, label: labels.nowhereLabel },
+        { value: DESTINATIONS.YOU_WHERE, label: labels.youWhereLabel },
+        { value: DESTINATIONS.KNJIGA, label: labels.knjigaLabel },
+        { value: DESTINATIONS.ANZEIGE, label: labels.anzeigeLabel },
+    ]
+}
+
 function ArticleComplaintForm({ dataWrapper }) {
     return (
         <Article id={dataWrapper.uniqueId}
@@ -48,12 +57,20 @@ function ArticleComplaintFormContent({ dataWrapper }) {
     const [complaintPopups, setComplaintPopups] = useState([])
     const [isSending, setIsSending] = useState(false)
     const [nowhereBursts, setNowhereBursts] = useState([])
-    const sendButtonWrapperRef = useRef(null)
-    const destinationMenuRef = useRef(null)
     const [isDestinationMenuOpen, setIsDestinationMenuOpen] = useState(false)
 
+    const sendButtonWrapperRef = useRef(null)
+    const destinationMenuRef = useRef(null)
+    const destinationButtonRef = useRef(null)
+    const destinationOptionRefs = useRef(new Map())
+    const popupCloseButtonRefs = useRef(new Map())
+    const pendingDestinationFocusRef = useRef(null)
+    const pendingTimeoutIdsRef = useRef(new Set())
+    const mountedRef = useRef(true)
+    const previousComplaintPopupCountRef = useRef(0)
+
     const complaintEmail = dataWrapper.locales.complaintEmailLabel || "trash@lovro-music.de"
-    const complaintNote = dataWrapper.locales.complaintNote || ""
+    const complaintNote = String(dataWrapper.locales.complaintNote || "").trim()
     const complaintDestinationLabel = dataWrapper.locales.complaintDestinationLabel || "destination"
     const complaintNowhereLabel = dataWrapper.locales.complaintNowhereLabel || "nowhere"
     const complaintYouWhereLabel = dataWrapper.locales.complaintYouWhereLabel || "actual hate"
@@ -65,14 +82,26 @@ function ArticleComplaintFormContent({ dataWrapper }) {
     const complaintSentTitle = dataWrapper.locales.complaintSentTitle || ""
     const complaintSentBody = dataWrapper.locales.complaintSentBody || ""
     const complaintPopupTitle = dataWrapper.locales.complaintPopupTitle || "Anzeige raus"
-
-    const destinationOptions = [
-        { value: DESTINATIONS.NOWHERE, label: complaintNowhereLabel },
-        { value: DESTINATIONS.YOU_WHERE, label: complaintYouWhereLabel },
-        { value: DESTINATIONS.KNJIGA, label: complaintKnjigaLabel },
-        { value: DESTINATIONS.ANZEIGE, label: complaintAnzeigeLabel },
-    ]
+    const destinationOptions = createDestinationOptions({
+        nowhereLabel: complaintNowhereLabel,
+        youWhereLabel: complaintYouWhereLabel,
+        knjigaLabel: complaintKnjigaLabel,
+        anzeigeLabel: complaintAnzeigeLabel
+    })
     const currentDestinationLabel = destinationOptions.find((option) => option.value === destination)?.label || complaintNowhereLabel
+    const destinationMenuId = `${dataWrapper.uniqueId}-destination-menu`
+    const destinationTriggerLabelId = `${dataWrapper.uniqueId}-destination-trigger-label`
+    const destinationTriggerValueId = `${dataWrapper.uniqueId}-destination-trigger-value`
+    const complaintPopupsTitleIdPrefix = `${dataWrapper.uniqueId}-complaint-popup`
+    const errorMessage = validationError ? language.getString(validationError.errorCode) : null
+    const hasComplaintNote = complaintNote.length > 0
+
+    useEffect(() => {
+        return () => {
+            mountedRef.current = false
+            clearPendingTimeouts()
+        }
+    }, [])
 
     useEffect(() => {
         if(destination !== DESTINATIONS.NOWHERE)
@@ -85,12 +114,6 @@ function ArticleComplaintFormContent({ dataWrapper }) {
     }, [destination])
 
     useEffect(() => {
-        return () => {
-            setComplaintPopups([])
-        }
-    }, [])
-
-    useEffect(() => {
         if(!isDestinationMenuOpen)
             return
 
@@ -98,34 +121,158 @@ function ArticleComplaintFormContent({ dataWrapper }) {
             if(destinationMenuRef.current?.contains(event.target))
                 return
 
-            setIsDestinationMenuOpen(false)
+            closeDestinationMenu()
         }
 
         const handleEscape = (event) => {
             if(event.key !== "Escape")
                 return
 
-            setIsDestinationMenuOpen(false)
+            event.preventDefault()
+            closeDestinationMenu({ focusTrigger: true })
         }
 
         document.addEventListener("pointerdown", handlePointerDown)
         document.addEventListener("keydown", handleEscape)
 
+        const focusValue = pendingDestinationFocusRef.current || destination
+        const frameId = window.requestAnimationFrame(() => {
+            focusDestinationOption(focusValue)
+            pendingDestinationFocusRef.current = null
+        })
+
         return () => {
             document.removeEventListener("pointerdown", handlePointerDown)
             document.removeEventListener("keydown", handleEscape)
+            window.cancelAnimationFrame(frameId)
         }
-    }, [isDestinationMenuOpen])
+    }, [destination, isDestinationMenuOpen])
+
+    useEffect(() => {
+        const previousCount = previousComplaintPopupCountRef.current
+        previousComplaintPopupCountRef.current = complaintPopups.length
+
+        const handleEscape = (event) => {
+            if(event.key !== "Escape")
+                return
+
+            event.preventDefault()
+            closeTopComplaintPopup()
+        }
+
+        if(complaintPopups.length > 0) {
+            document.addEventListener("keydown", handleEscape)
+        }
+
+        const frameId = window.requestAnimationFrame(() => {
+            if(complaintPopups.length > 0) {
+                const topmostPopup = complaintPopups[complaintPopups.length - 1]
+                if(topmostPopup) {
+                    popupCloseButtonRefs.current.get(topmostPopup.id)?.focus()
+                }
+            }
+            else if(previousCount > 0) {
+                destinationButtonRef.current?.focus()
+            }
+        })
+
+        return () => {
+            if(complaintPopups.length > 0) {
+                document.removeEventListener("keydown", handleEscape)
+            }
+            window.cancelAnimationFrame(frameId)
+        }
+    }, [complaintPopups.length])
 
     const handleDestinationChange = (nextDestination) => {
         setValidationError(null)
-
-        setDestination(nextDestination)
         setStatusMessage(null)
-        setIsDestinationMenuOpen(false)
+        setDestination(nextDestination)
+        closeDestinationMenu({ focusTrigger: true })
 
         if(nextDestination === DESTINATIONS.ANZEIGE) {
             setComplaintPopups([])
+        }
+    }
+
+    const handleDestinationTriggerClick = () => {
+        if(isDestinationMenuOpen) {
+            closeDestinationMenu({ focusTrigger: true })
+            return
+        }
+
+        openDestinationMenu(destination)
+    }
+
+    const handleDestinationTriggerKeyDown = (event) => {
+        const key = event.key
+        const openKeys = ["ArrowDown", "ArrowUp", "Enter", " "]
+
+        if(key === "Escape") {
+            if(isDestinationMenuOpen) {
+                event.preventDefault()
+                closeDestinationMenu({ focusTrigger: true })
+            }
+            return
+        }
+
+        if(!openKeys.includes(key))
+            return
+
+        event.preventDefault()
+
+        const currentIndex = destinationOptions.findIndex((option) => option.value === destination)
+        const nextIndex = key === "ArrowUp" ?
+            (currentIndex - 1 + destinationOptions.length) % destinationOptions.length :
+            currentIndex >= 0 ?
+                (currentIndex + 1) % destinationOptions.length :
+                0
+
+        const nextValue = key === "Enter" || key === " " ?
+            destination :
+            destinationOptions[nextIndex]?.value || destination
+
+        openDestinationMenu(nextValue)
+    }
+
+    const handleDestinationOptionKeyDown = (event, optionValue) => {
+        const key = event.key
+        const currentIndex = destinationOptions.findIndex((option) => option.value === optionValue)
+
+        if(key === "ArrowDown" || key === "ArrowUp" || key === "Home" || key === "End") {
+            event.preventDefault()
+
+            let nextIndex = currentIndex
+            if(key === "ArrowDown") {
+                nextIndex = (currentIndex + 1) % destinationOptions.length
+            }
+            else if(key === "ArrowUp") {
+                nextIndex = (currentIndex - 1 + destinationOptions.length) % destinationOptions.length
+            }
+            else if(key === "Home") {
+                nextIndex = 0
+            }
+            else if(key === "End") {
+                nextIndex = destinationOptions.length - 1
+            }
+
+            const nextValue = destinationOptions[nextIndex]?.value
+            if(nextValue) {
+                pendingDestinationFocusRef.current = nextValue
+                focusDestinationOption(nextValue)
+            }
+            return
+        }
+
+        if(key === "Enter" || key === " ") {
+            event.preventDefault()
+            handleDestinationChange(optionValue)
+            return
+        }
+
+        if(key === "Escape") {
+            event.preventDefault()
+            closeDestinationMenu({ focusTrigger: true })
         }
     }
 
@@ -147,6 +294,8 @@ function ArticleComplaintFormContent({ dataWrapper }) {
             openThrowoffTab(complaintYouWhereTitle, complaintYouWhereBody)
             setDestination(DESTINATIONS.NOWHERE)
             setMessage("")
+            setValidationError(null)
+            setStatusMessage(null)
             return
         }
 
@@ -168,9 +317,10 @@ function ArticleComplaintFormContent({ dataWrapper }) {
             return
         }
 
-        const publicKey = dataWrapper.settings.emailJsPublicKey
-        const serviceId = dataWrapper.settings.emailJsServiceId
-        const templateId = dataWrapper.settings.emailJsComplaintTemplateId || dataWrapper.settings.emailJsTemplateId
+        const settings = dataWrapper.settings || {}
+        const publicKey = settings.emailJsPublicKey
+        const serviceId = settings.emailJsServiceId
+        const templateId = settings.emailJsComplaintTemplateId || settings.emailJsTemplateId
 
         if(!publicKey || !serviceId || !templateId) {
             setValidationError({
@@ -181,34 +331,47 @@ function ArticleComplaintFormContent({ dataWrapper }) {
         }
 
         setValidationError(null)
+        setStatusMessage(null)
         setIsSending(true)
         feedbacks.setActivitySpinnerVisible(true, dataWrapper.uniqueId, language.getString("sending_message"))
 
-        const response = await api.handlers.sendEmailRequest(
-            validation.bundle,
-            publicKey,
-            serviceId,
-            templateId
-        )
+        try {
+            const response = await api.handlers.sendEmailRequest(
+                validation.bundle,
+                publicKey,
+                serviceId,
+                templateId
+            )
 
-        feedbacks.setActivitySpinnerVisible(false, dataWrapper.uniqueId)
-        setIsSending(false)
+            if(!mountedRef.current)
+                return
 
-        if(!response.success) {
+            if(!response?.success) {
+                setValidationError({
+                    errorCode: constants.ErrorCodes.MESSAGE_SUBMIT_FAILED
+                })
+                return
+            }
+
+            setMessage("")
+            setStatusMessage([complaintSentTitle, complaintSentBody].filter(Boolean).join(" "))
+        }
+        catch (_error) {
+            if(!mountedRef.current)
+                return
+
             setValidationError({
                 errorCode: constants.ErrorCodes.MESSAGE_SUBMIT_FAILED
             })
-            setStatusMessage(null)
-            return
         }
-
-        setMessage("")
-        setStatusMessage(
-            [complaintSentTitle, complaintSentBody].filter(Boolean).join(" ")
-        )
+        finally {
+            feedbacks.setActivitySpinnerVisible(false, dataWrapper.uniqueId)
+            if(mountedRef.current) {
+                setIsSending(false)
+            }
+        }
     }
 
-    const errorMessage = validationError ? language.getString(validationError.errorCode) : null
     return (
         <form className={`article-complaint-form-shell`}
               noValidate={true}
@@ -238,30 +401,37 @@ function ArticleComplaintFormContent({ dataWrapper }) {
                 </div>
 
                 <aside className={`article-complaint-form-rail`}>
-                    <div className={`article-complaint-form-note text-2`}
-                         dangerouslySetInnerHTML={{__html: complaintNote}}/>
+                    {hasComplaintNote && (
+                        <p className={`article-complaint-form-note text-2`}>
+                            {complaintNote}
+                        </p>
+                    )}
 
                     <div className={`article-complaint-form-controls-row`}>
                         <div ref={destinationMenuRef}
                              className={`article-complaint-form-select-wrapper ${isDestinationMenuOpen ? "article-complaint-form-select-wrapper-open" : ""}`}>
-                            <button type={`button`}
+                            <button ref={destinationButtonRef}
+                                    type={`button`}
                                     className={`article-complaint-form-select-trigger`}
-                                    aria-label={complaintDestinationLabel}
+                                    aria-labelledby={`${destinationTriggerLabelId} ${destinationTriggerValueId}`}
+                                    aria-controls={destinationMenuId}
                                     aria-haspopup={`listbox`}
                                     aria-expanded={isDestinationMenuOpen}
-                                    onClick={() => {
-                                        setIsDestinationMenuOpen((current) => !current)
-                                    }}>
-                                <span className={`article-complaint-form-select-display`} aria-hidden={`true`}>
-                                    <span className={`article-complaint-form-select-prefix`}>Send to:</span>
-                                    <span className={`article-complaint-form-select-value text-3`}>{currentDestinationLabel}</span>
+                                    onClick={handleDestinationTriggerClick}
+                                    onKeyDown={handleDestinationTriggerKeyDown}>
+                                <span className={`article-complaint-form-select-display`}>
+                                    <span id={destinationTriggerLabelId}
+                                          className={`article-complaint-form-select-prefix`}>{complaintDestinationLabel}:</span>
+                                    <span id={destinationTriggerValueId}
+                                          className={`article-complaint-form-select-value text-3`}>{currentDestinationLabel}</span>
                                 </span>
 
                                 <span className={`article-complaint-form-select-caret`} aria-hidden={`true`} />
                             </button>
 
                             {isDestinationMenuOpen && (
-                                <div className={`article-complaint-form-select-menu`}
+                                <div id={destinationMenuId}
+                                     className={`article-complaint-form-select-menu`}
                                      role={`listbox`}
                                      aria-label={complaintDestinationLabel}>
                                     {destinationOptions.map((option) => {
@@ -269,12 +439,24 @@ function ArticleComplaintFormContent({ dataWrapper }) {
 
                                         return (
                                             <button key={option.value}
+                                                    ref={(node) => {
+                                                        if(node) {
+                                                            destinationOptionRefs.current.set(option.value, node)
+                                                        }
+                                                        else {
+                                                            destinationOptionRefs.current.delete(option.value)
+                                                        }
+                                                    }}
                                                     type={`button`}
                                                     role={`option`}
+                                                    tabIndex={isSelected ? 0 : -1}
                                                     aria-selected={isSelected}
                                                     className={`article-complaint-form-select-option ${isSelected ? "article-complaint-form-select-option-selected" : ""}`}
                                                     onClick={() => {
                                                         handleDestinationChange(option.value)
+                                                    }}
+                                                    onKeyDown={(event) => {
+                                                        handleDestinationOptionKeyDown(event, option.value)
                                                     }}>
                                                 <span className={`article-complaint-form-select-option-label text-3`}>
                                                     {option.label}
@@ -292,7 +474,9 @@ function ArticleComplaintFormContent({ dataWrapper }) {
                     </div>
                 </aside>
 
-                <div className={`article-complaint-form-message-error-slot`}>
+                <div className={`article-complaint-form-message-error-slot`}
+                     aria-live={`polite`}
+                     aria-atomic={`true`}>
                     {errorMessage ? (
                         <p className={`article-complaint-form-message-error text-2`}>
                             {errorMessage}
@@ -311,28 +495,41 @@ function ArticleComplaintFormContent({ dataWrapper }) {
                 <>
                     {complaintPopups.length > 0 && (
                         <div className={`article-complaint-form-popup-layer`}
-                             aria-hidden={false}
+                             role={`presentation`}
                              onClick={() => {
                                  closeTopComplaintPopup()
                              }}>
                             {complaintPopups.map((popup, index) => {
                                 const isTopmost = index === complaintPopups.length - 1
+                                const popupTitleId = `${complaintPopupsTitleIdPrefix}-${popup.id}`
 
                                 return (
                                     <div key={popup.id}
                                          className={`article-complaint-form-popup ${isTopmost ? "article-complaint-form-popup-topmost" : ""}`}
+                                         role={`dialog`}
+                                         aria-modal={false}
+                                         aria-labelledby={popupTitleId}
                                          style={popup.style}
                                          onClick={(event) => {
                                              event.stopPropagation()
                                          }}>
                                         <div className={`article-complaint-form-popup-header`}>
-                                            <p className={`article-complaint-form-popup-title text-2`}>
+                                            <p id={popupTitleId}
+                                               className={`article-complaint-form-popup-title text-2`}>
                                                 {popup.title}
                                             </p>
 
                                             <button type={`button`}
                                                     className={`article-complaint-form-popup-close`}
                                                     aria-label={language.getString("close")}
+                                                    ref={(node) => {
+                                                        if(node) {
+                                                            popupCloseButtonRefs.current.set(popup.id, node)
+                                                        }
+                                                        else {
+                                                            popupCloseButtonRefs.current.delete(popup.id)
+                                                        }
+                                                    }}
                                                     onClick={() => {
                                                         closeComplaintPopup(popup.id)
                                                     }}>
@@ -377,6 +574,47 @@ function ArticleComplaintFormContent({ dataWrapper }) {
         </form>
     )
 
+    function openDestinationMenu(focusValue = destination) {
+        pendingDestinationFocusRef.current = focusValue
+        setIsDestinationMenuOpen(true)
+    }
+
+    function closeDestinationMenu({ focusTrigger = false } = {}) {
+        pendingDestinationFocusRef.current = null
+        setIsDestinationMenuOpen(false)
+
+        if(focusTrigger) {
+            destinationButtonRef.current?.focus()
+        }
+    }
+
+    function focusDestinationOption(value) {
+        destinationOptionRefs.current.get(value)?.focus()
+    }
+
+    function clearPendingTimeouts() {
+        if(typeof window === "undefined")
+            return
+
+        pendingTimeoutIdsRef.current.forEach((timeoutId) => {
+            window.clearTimeout(timeoutId)
+        })
+        pendingTimeoutIdsRef.current.clear()
+    }
+
+    function registerTimeout(callback, delay) {
+        if(typeof window === "undefined")
+            return null
+
+        const timeoutId = window.setTimeout(() => {
+            pendingTimeoutIdsRef.current.delete(timeoutId)
+            callback()
+        }, delay)
+
+        pendingTimeoutIdsRef.current.add(timeoutId)
+        return timeoutId
+    }
+
     function triggerNowhereBurst(target, themeId) {
         if(typeof window === "undefined" || !target)
             return
@@ -386,7 +624,10 @@ function ArticleComplaintFormContent({ dataWrapper }) {
 
         setNowhereBursts((current) => [...current, burst])
 
-        window.setTimeout(() => {
+        registerTimeout(() => {
+            if(!mountedRef.current)
+                return
+
             setNowhereBursts((current) => current.filter((entry) => entry.id !== burst.id))
         }, 1900)
     }
@@ -443,7 +684,7 @@ function openThrowoffTab(title = "actual hate", body = "Bye, my dear.\nI hope th
     if(typeof window === "undefined")
         return
 
-    const tab = window.open("about:blank", "_blank")
+    const tab = window.open("about:blank", "_blank", "noopener,noreferrer")
     if(!tab)
         return
 

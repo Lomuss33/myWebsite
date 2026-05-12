@@ -656,6 +656,208 @@
     box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
 }
 
+[data-theme="light"] article#article-1-section-my-software div.article-portfolio-item {
+    --software-card-accent: rgba(37, 99, 235, 0.16);
+    --software-card-accent-strong: rgba(249, 115, 22, 0.26);
+    --software-card-title-category: #2563eb;
+    --software-card-label: #2563eb;
+    --software-card-text: #0f172a;
+    --software-card-title: #0f172a;
+    --software-card-control-text: #0f172a;
+    --software-card-control-bg-top: #ffffff;
+    --software-card-control-bg-bottom: #f6f9fd;
+    --software-card-sheen-1: rgba(37, 99, 235, 0.08);
+    --software-card-sheen-2: rgba(249, 115, 22, 0.06);
+    border-color: var(--software-card-accent);
+    background: linear-gradient(180deg, #ffffff, #f7f9fd);
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(circle at top right, var(--software-card-sheen-1) 0%, transparent 56%),
+            radial-gradient(circle at bottom left, var(--software-card-sheen-2) 0%, transparent 40%);
+        pointer-events: none;
+    }
+}
+
+[data-theme="light"] article#article-1-section-my-software div.article-portfolio-item.software-tone-belot {
+    --software-card-accent: rgba(22, 163, 74, 0.20);
+    --software-card-accent-strong: rgba(220, 38, 38, 0.26);
+    --software-card-title-category: #15803d;
+    --software-card-label: #b91c1c;
+    --software-card-sheen-1: rgba(22, 163, 74, 0.10);
+    --software-card-sheen-2: rgba(220, 38, 38, 0.07);
+    background: linear-gradient(180deg, #fbfff8, #edf9f0);
+}
+
+[data-theme="light"] article#article-1-section-my-software div.article-portfolio-item.software-tone-robotics {
+    --software-card-accent: rgba(2, 132, 199, 0.20);
+    --software-card-accent-strong: rgba(14, 165, 233, 0.26);
+    --software-card-title-category: #0369a1;
+    --software-card-label: #0c4a6e;
+    --software-card-sheen-1: rgba(2, 132, 199, 0.11);
+    --software-card-sheen-2: rgba(125, 211, 252, 0.08);
+    background: linear-gradient(180deg, #f8fdff, #ebf7ff);
+}
+
+[data-theme="light"] article#article-1-section-my-software div.article-portfolio-item.software-tone-arcade {
+    --software-card-accent: rgba(147, 51, 234, 0.20);
+    --software-card-accent-strong: rgba(236, 72, 153, 0.26);
+    --software-card-title-category: #7e22ce;
+    --software-card-label: #be185d;
+    --software-card-sheen-1: rgba(147, 51, 234, 0.10);
+    --software-card-sheen-2: rgba(236, 72, 153, 0.07);
+    background: linear-gradient(180deg, #fffaff, #f8efff);
+}
+
+[data-theme="light"] article#article-1-section-my-software div.article-portfolio-item.software-tone-linguistics {
+    --software-card-accent: rgba(13, 148, 136, 0.20);
+    --software-card-accent-strong: rgba(8, 145, 178, 0.24);
+    --software-card-title-category: #0f766e;
+    --software-card-label: #0f766e;
+    --software-card-sheen-1: rgba(13, 148, 136, 0.10);
+    --software-card-sheen-2: rgba(8, 145, 178, 0.06);
+    background: linear-gradient(180deg, #f8fffe, #ebfbf8);
+}
+
+[data-theme="light"] article#article-1-section-my-software div.article-portfolio-item.software-tone-architecture {
+    --software-card-accent: rgba(234, 88, 12, 0.20);
+    --software-card-accent-strong: rgba(217, 119, 6, 0.26);
+    --software-card-title-category: #c2410c;
+    --software-card-label: #b45309;
+    --software-card-sheen-1: rgba(234, 88, 12, 0.10);
+    --software-card-sheen-2: rgba(245, 158, 11, 0.07);
+    background: linear-gradient(180deg, #fffaf5, #fff1e5);
+}
+
+[data-theme="light"] article#article-1-section-my-software div.article-portfolio-item.software-tone-editorial {
+    --software-card-accent: rgba(220, 38, 38, 0.18);
+    --software-card-accent-strong: rgba(239, 68, 68, 0.26);
+    --software-card-title-category: #b91c1c;
+    --software-card-label: #991b1b;
+    --software-card-sheen-1: rgba(220, 38, 38, 0.09);
+    --software-card-sheen-2: rgba(251, 113, 133, 0.06);
+    background: linear-gradient(180deg, #fff9fa, #ffeff2);
+}
+
+[data-theme="light"] article#article-1-section-my-software div.article-portfolio-item.software-tone-genealogy {
+    --software-card-accent: rgba(101, 163, 13, 0.20);
+    --software-card-accent-strong: rgba(34, 197, 94, 0.24);
+    --software-card-title-category: #4d7c0f;
+    --software-card-label: #3f6212;
+    --software-card-sheen-1: rgba(132, 204, 22, 0.10);
+    --software-card-sheen-2: rgba(34, 197, 94, 0.06);
+    background: linear-gradient(180deg, #fbfff8, #f0f9e8);
+}
+
+[data-theme="light"] article#article-1-section-my-hardware div.article-portfolio-item {
+    --hardware-card-accent: rgba(37, 99, 235, 0.14);
+    --hardware-card-accent-strong: rgba(245, 158, 11, 0.22);
+    --hardware-card-title-category: #0f766e;
+    --hardware-card-label: #b45309;
+    --hardware-card-text: #0f172a;
+    --hardware-card-title: #0f172a;
+    --hardware-card-control-text: #0f172a;
+    --hardware-card-control-bg-top: #ffffff;
+    --hardware-card-control-bg-bottom: #f6f9fd;
+    --hardware-card-sheen-1: rgba(148, 163, 184, 0.08);
+    --hardware-card-sheen-2: rgba(120, 113, 108, 0.06);
+    border-color: var(--hardware-card-accent);
+    background: linear-gradient(180deg, #fffefd, #f5f4f1);
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(circle at top right, var(--hardware-card-sheen-1) 0%, transparent 56%),
+            radial-gradient(circle at bottom left, var(--hardware-card-sheen-2) 0%, transparent 42%);
+        pointer-events: none;
+    }
+}
+
+[data-theme="light"] article#article-1-section-my-hardware div.article-portfolio-item.hardware-tone-rack-steel {
+    --hardware-card-accent: rgba(59, 130, 246, 0.20);
+    --hardware-card-accent-strong: rgba(14, 165, 233, 0.24);
+    --hardware-card-title-category: #1d4ed8;
+    --hardware-card-label: #0369a1;
+    --hardware-card-sheen-1: rgba(59, 130, 246, 0.10);
+    --hardware-card-sheen-2: rgba(14, 165, 233, 0.06);
+    background: linear-gradient(180deg, #f6fbff, #e8f2fb);
+}
+
+[data-theme="light"] article#article-1-section-my-hardware div.article-portfolio-item.hardware-tone-conveyor-steel {
+    --hardware-card-accent: rgba(234, 179, 8, 0.22);
+    --hardware-card-accent-strong: rgba(234, 88, 12, 0.24);
+    --hardware-card-title-category: #a16207;
+    --hardware-card-label: #c2410c;
+    --hardware-card-sheen-1: rgba(234, 179, 8, 0.12);
+    --hardware-card-sheen-2: rgba(234, 88, 12, 0.06);
+    background: linear-gradient(180deg, #fffceb, #f8efd2);
+}
+
+[data-theme="light"] article#article-1-section-my-hardware div.article-portfolio-item.hardware-tone-forged-iron {
+    --hardware-card-accent: rgba(239, 68, 68, 0.20);
+    --hardware-card-accent-strong: rgba(202, 138, 4, 0.24);
+    --hardware-card-title-category: #b91c1c;
+    --hardware-card-label: #a16207;
+    --hardware-card-sheen-1: rgba(239, 68, 68, 0.10);
+    --hardware-card-sheen-2: rgba(202, 138, 4, 0.06);
+    background: linear-gradient(180deg, #fff8f6, #f8e8e3);
+}
+
+[data-theme="light"] article#article-1-section-my-hardware div.article-portfolio-item.hardware-tone-varnished-wood {
+    --hardware-card-accent: rgba(34, 197, 94, 0.20);
+    --hardware-card-accent-strong: rgba(217, 119, 6, 0.24);
+    --hardware-card-title-category: #15803d;
+    --hardware-card-label: #b45309;
+    --hardware-card-sheen-1: rgba(34, 197, 94, 0.10);
+    --hardware-card-sheen-2: rgba(180, 83, 9, 0.06);
+    background: linear-gradient(180deg, #f8fff3, #ebf4df);
+}
+
+[data-theme="light"] article#article-1-section-my-hardware div.article-portfolio-item.hardware-tone-brushed-aluminum {
+    --hardware-card-accent: rgba(203, 213, 225, 0.22);
+    --hardware-card-accent-strong: rgba(6, 182, 212, 0.22);
+    --hardware-card-title-category: #475569;
+    --hardware-card-label: #0891b2;
+    --hardware-card-sheen-1: rgba(203, 213, 225, 0.12);
+    --hardware-card-sheen-2: rgba(6, 182, 212, 0.06);
+    background: linear-gradient(180deg, #fcfeff, #eef5f8);
+}
+
+[data-theme="light"] article#article-1-section-my-hardware div.article-portfolio-item.hardware-tone-slate-copper {
+    --hardware-card-accent: rgba(234, 88, 12, 0.20);
+    --hardware-card-accent-strong: rgba(168, 85, 247, 0.24);
+    --hardware-card-title-category: #c2410c;
+    --hardware-card-label: #7e22ce;
+    --hardware-card-sheen-1: rgba(234, 88, 12, 0.10);
+    --hardware-card-sheen-2: rgba(168, 85, 247, 0.06);
+    background: linear-gradient(180deg, #fff8fc, #f5ebf7);
+}
+
+[data-theme="light"] article#article-1-section-my-hardware div.article-portfolio-item.hardware-tone-gunmetal {
+    --hardware-card-accent: rgba(217, 70, 239, 0.20);
+    --hardware-card-accent-strong: rgba(59, 130, 246, 0.22);
+    --hardware-card-title-category: #a21caf;
+    --hardware-card-label: #2563eb;
+    --hardware-card-sheen-1: rgba(217, 70, 239, 0.10);
+    --hardware-card-sheen-2: rgba(59, 130, 246, 0.06);
+    background: linear-gradient(180deg, #fff7ff, #f3eafb);
+}
+
+[data-theme="light"] article#article-1-section-my-hardware div.article-portfolio-item.hardware-tone-workshop-steel {
+    --hardware-card-accent: rgba(34, 197, 94, 0.20);
+    --hardware-card-accent-strong: rgba(13, 148, 136, 0.22);
+    --hardware-card-title-category: #15803d;
+    --hardware-card-label: #0f766e;
+    --hardware-card-sheen-1: rgba(34, 197, 94, 0.10);
+    --hardware-card-sheen-2: rgba(13, 148, 136, 0.06);
+    background: linear-gradient(180deg, #f6fff8, #e7f6ea);
+}
+
 [data-theme="light"] article#article-1-section-my-software div.article-portfolio-item-title-main,
 [data-theme="light"] article#article-1-section-my-hardware div.article-portfolio-item-title-main,
 [data-theme="light"] article#article-1-section-my-software div.article-portfolio-item-body-description,
@@ -663,9 +865,33 @@
     color: #0f172a;
 }
 
+[data-theme="light"] article#article-1-section-my-software div.article-portfolio-item-title-main {
+    color: var(--software-card-title);
+}
+
+[data-theme="light"] article#article-1-section-my-hardware div.article-portfolio-item-title-main {
+    color: var(--hardware-card-title);
+}
+
+[data-theme="light"] article#article-1-section-my-software div.article-portfolio-item-body-description {
+    color: var(--software-card-text);
+}
+
+[data-theme="light"] article#article-1-section-my-hardware div.article-portfolio-item-body-description {
+    color: var(--hardware-card-text);
+}
+
 [data-theme="light"] article#article-1-section-my-software div.article-portfolio-item-title-category,
 [data-theme="light"] article#article-1-section-my-hardware div.article-portfolio-item-title-category {
     color: #2563eb;
+}
+
+[data-theme="light"] article#article-1-section-my-software div.article-portfolio-item-title-category {
+    color: var(--software-card-title-category);
+}
+
+[data-theme="light"] article#article-1-section-my-hardware div.article-portfolio-item-title-category {
+    color: var(--hardware-card-title-category);
 }
 
 [data-theme="light"] article#article-1-section-my-software a.article-portfolio-item-control-btn,
@@ -677,14 +903,56 @@
     border-color: rgba(37, 99, 235, 0.14);
 }
 
+[data-theme="light"] article#article-1-section-my-software a.article-portfolio-item-control-btn,
+[data-theme="light"] article#article-1-section-my-software div.article-portfolio-item-control-btn {
+    background: linear-gradient(180deg, var(--software-card-control-bg-top), var(--software-card-control-bg-bottom));
+    color: var(--software-card-control-text);
+    border-color: var(--software-card-accent);
+}
+
+[data-theme="light"] article#article-1-section-my-hardware a.article-portfolio-item-control-btn,
+[data-theme="light"] article#article-1-section-my-hardware div.article-portfolio-item-control-btn {
+    background: linear-gradient(180deg, var(--hardware-card-control-bg-top), var(--hardware-card-control-bg-bottom));
+    color: var(--hardware-card-control-text);
+    border-color: var(--hardware-card-accent);
+}
+
 [data-theme="light"] article#article-1-section-my-software span.article-portfolio-item-control-btn-label,
 [data-theme="light"] article#article-1-section-my-hardware span.article-portfolio-item-control-btn-label {
     color: #f59e0b;
 }
 
+[data-theme="light"] article#article-1-section-my-software span.article-portfolio-item-control-btn-label {
+    color: var(--software-card-label);
+}
+
+[data-theme="light"] article#article-1-section-my-hardware span.article-portfolio-item-control-btn-label {
+    color: var(--hardware-card-label);
+}
+
 [data-theme="light"] article#article-1-section-my-software div.article-portfolio-item-control-avatar,
 [data-theme="light"] article#article-1-section-my-hardware div.article-portfolio-item-control-avatar {
     border-color: rgba(37, 99, 235, 0.18);
+}
+
+[data-theme="light"] article#article-1-section-my-software div.article-portfolio-item-control-avatar {
+    border-color: color-mix(in srgb, var(--software-card-accent) 100%, white 10%);
+}
+
+[data-theme="light"] article#article-1-section-my-hardware div.article-portfolio-item-control-avatar {
+    border-color: color-mix(in srgb, var(--hardware-card-accent) 100%, white 10%);
+}
+
+[data-theme="light"] article#article-1-section-my-software li.article-portfolio-item-body-tag {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--software-card-accent) 82%, white 18%), rgba(255, 255, 255, 0.92));
+    color: #0f172a;
+    border: 1px solid var(--software-card-accent);
+}
+
+[data-theme="light"] article#article-1-section-my-hardware li.article-portfolio-item-body-tag {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--hardware-card-accent) 82%, white 18%), rgba(255, 255, 255, 0.92));
+    color: #0f172a;
+    border: 1px solid var(--hardware-card-accent);
 }
 
 [data-theme="light"] article#article-2-section-my-software div.article-testimonials-item-balloon,
@@ -951,22 +1219,6 @@
 [data-theme="light"] section#section-my-art div.section-content-border-decoration-top-left,
 [data-theme="light"] section#section-contact div.section-content-border-decoration-top-left {
     opacity: 0.45;
-}
-
-[data-theme="light"] article#article-1-section-my-software div.article-portfolio-item-title-category {
-    color: #f97316;
-}
-
-[data-theme="light"] article#article-1-section-my-hardware div.article-portfolio-item-title-category {
-    color: #06b6d4;
-}
-
-[data-theme="light"] article#article-1-section-my-software span.article-portfolio-item-control-btn-label {
-    color: #2563eb;
-}
-
-[data-theme="light"] article#article-1-section-my-hardware span.article-portfolio-item-control-btn-label {
-    color: #f59e0b;
 }
 
 [data-theme="light"] article#article-1-section-my-writings ul.article-timeline-items {

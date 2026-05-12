@@ -89,9 +89,21 @@ div.article-portfolio-item {
 
 article#article-1-section-my-software {
     div.article-portfolio-item {
+        --software-card-accent: rgba(78, 163, 255, 0.18);
+        --software-card-accent-strong: rgba(250, 204, 21, 0.36);
+        --software-card-title-category: #93c5fd;
+        --software-card-text: #cbd5e1;
+        --software-card-title: #f8fafc;
+        --software-card-label: #facc15;
+        --software-card-control-text: #cbd5e1;
+        --software-card-control-bg-top: rgba(15, 23, 42, 0.94);
+        --software-card-control-bg-bottom: rgba(6, 9, 16, 0.94);
+        --software-card-sheen-1: rgba(78, 163, 255, 0.12);
+        --software-card-sheen-2: rgba(250, 204, 21, 0.06);
+
         position: relative;
         overflow: hidden;
-        border: 1px solid rgba(78, 163, 255, 0.18);
+        border: 1px solid var(--software-card-accent);
         background:
             linear-gradient(140deg, rgba(11, 18, 32, 0.96), rgba(5, 8, 16, 0.96));
         box-shadow: 0 18px 44px rgba(0, 0, 0, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -102,49 +114,119 @@ article#article-1-section-my-software {
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(circle at top right, rgba(78, 163, 255, 0.12) 0%, transparent 56%),
-                radial-gradient(circle at bottom left, rgba(250, 204, 21, 0.06) 0%, transparent 40%);
+                radial-gradient(circle at top right, var(--software-card-sheen-1) 0%, transparent 56%),
+                radial-gradient(circle at bottom left, var(--software-card-sheen-2) 0%, transparent 40%);
             pointer-events: none;
         }
 
         &:hover {
             transform: translateY(-3px);
-            border-color: rgba(250, 204, 21, 0.36);
+            border-color: var(--software-card-accent-strong);
             box-shadow: 0 24px 52px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.06);
             filter: saturate(1.03);
         }
     }
 
+    div.article-portfolio-item.software-tone-belot {
+        --software-card-accent: rgba(34, 197, 94, 0.28);
+        --software-card-accent-strong: rgba(248, 113, 113, 0.44);
+        --software-card-title-category: #86efac;
+        --software-card-label: #fca5a5;
+        --software-card-sheen-1: rgba(34, 197, 94, 0.20);
+        --software-card-sheen-2: rgba(248, 113, 113, 0.12);
+        background: linear-gradient(145deg, rgba(8, 28, 20, 0.98), rgba(6, 18, 14, 0.98));
+    }
+
+    div.article-portfolio-item.software-tone-robotics {
+        --software-card-accent: rgba(56, 189, 248, 0.28);
+        --software-card-accent-strong: rgba(125, 211, 252, 0.44);
+        --software-card-title-category: #7dd3fc;
+        --software-card-label: #bae6fd;
+        --software-card-sheen-1: rgba(56, 189, 248, 0.20);
+        --software-card-sheen-2: rgba(96, 165, 250, 0.12);
+        background: linear-gradient(145deg, rgba(7, 18, 33, 0.98), rgba(4, 10, 20, 0.98));
+    }
+
+    div.article-portfolio-item.software-tone-arcade {
+        --software-card-accent: rgba(168, 85, 247, 0.30);
+        --software-card-accent-strong: rgba(244, 114, 182, 0.46);
+        --software-card-title-category: #d8b4fe;
+        --software-card-label: #f9a8d4;
+        --software-card-sheen-1: rgba(168, 85, 247, 0.22);
+        --software-card-sheen-2: rgba(244, 114, 182, 0.12);
+        background: linear-gradient(145deg, rgba(28, 13, 44, 0.98), rgba(18, 7, 28, 0.98));
+    }
+
+    div.article-portfolio-item.software-tone-linguistics {
+        --software-card-accent: rgba(20, 184, 166, 0.28);
+        --software-card-accent-strong: rgba(45, 212, 191, 0.44);
+        --software-card-title-category: #99f6e4;
+        --software-card-label: #67e8f9;
+        --software-card-sheen-1: rgba(20, 184, 166, 0.20);
+        --software-card-sheen-2: rgba(34, 211, 238, 0.10);
+        background: linear-gradient(145deg, rgba(6, 32, 34, 0.98), rgba(4, 19, 22, 0.98));
+    }
+
+    div.article-portfolio-item.software-tone-architecture {
+        --software-card-accent: rgba(249, 115, 22, 0.30);
+        --software-card-accent-strong: rgba(251, 191, 36, 0.46);
+        --software-card-title-category: #fdba74;
+        --software-card-label: #fde68a;
+        --software-card-sheen-1: rgba(249, 115, 22, 0.20);
+        --software-card-sheen-2: rgba(251, 191, 36, 0.12);
+        background: linear-gradient(145deg, rgba(44, 18, 8, 0.98), rgba(25, 11, 5, 0.98));
+    }
+
+    div.article-portfolio-item.software-tone-editorial {
+        --software-card-accent: rgba(239, 68, 68, 0.28);
+        --software-card-accent-strong: rgba(248, 113, 113, 0.46);
+        --software-card-title-category: #fca5a5;
+        --software-card-label: #fecaca;
+        --software-card-sheen-1: rgba(239, 68, 68, 0.20);
+        --software-card-sheen-2: rgba(251, 113, 133, 0.10);
+        background: linear-gradient(145deg, rgba(43, 10, 16, 0.98), rgba(26, 7, 12, 0.98));
+    }
+
+    div.article-portfolio-item.software-tone-genealogy {
+        --software-card-accent: rgba(132, 204, 22, 0.28);
+        --software-card-accent-strong: rgba(74, 222, 128, 0.44);
+        --software-card-title-category: #bef264;
+        --software-card-label: #bbf7d0;
+        --software-card-sheen-1: rgba(132, 204, 22, 0.18);
+        --software-card-sheen-2: rgba(74, 222, 128, 0.10);
+        background: linear-gradient(145deg, rgba(18, 31, 10, 0.98), rgba(11, 20, 7, 0.98));
+    }
+
     div.article-portfolio-item-title-main {
-        color: #f8fafc;
+        color: var(--software-card-title);
     }
 
     div.article-portfolio-item-title-category {
-        color: #93c5fd;
+        color: var(--software-card-title-category);
     }
 
     div.article-portfolio-item-body-description {
-        color: #cbd5e1;
+        color: var(--software-card-text);
     }
 
     a.article-portfolio-item-control-btn,
     div.article-portfolio-item-control-btn {
-        background: linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(6, 9, 16, 0.94));
-        color: #cbd5e1;
-        border-color: rgba(78, 163, 255, 0.18);
+        background: linear-gradient(180deg, var(--software-card-control-bg-top), var(--software-card-control-bg-bottom));
+        color: var(--software-card-control-text);
+        border-color: var(--software-card-accent);
 
         &:hover {
-            border-color: rgba(250, 204, 21, 0.36);
+            border-color: var(--software-card-accent-strong);
             color: #f8fafc;
         }
     }
 
     span.article-portfolio-item-control-btn-label {
-        color: #facc15;
+        color: var(--software-card-label);
     }
 
     div.article-portfolio-item-control-avatar {
-        border-color: rgba(78, 163, 255, 0.28);
+        border-color: color-mix(in srgb, var(--software-card-accent) 100%, white 12%);
     }
 
     ul.article-portfolio-item-body-tags {
@@ -152,17 +234,29 @@ article#article-1-section-my-software {
     }
 
     li.article-portfolio-item-body-tag {
-        background: linear-gradient(180deg, rgba(78, 163, 255, 0.18), rgba(11, 18, 32, 0.96));
+        background: linear-gradient(180deg, color-mix(in srgb, var(--software-card-accent) 100%, transparent 0%), rgba(11, 18, 32, 0.96));
         color: #e2e8f0;
-        border: 1px solid rgba(78, 163, 255, 0.18);
+        border: 1px solid var(--software-card-accent);
     }
 }
 
 article#article-1-section-my-hardware {
     div.article-portfolio-item {
+        --hardware-card-accent: rgba(56, 189, 248, 0.16);
+        --hardware-card-accent-strong: rgba(245, 158, 11, 0.38);
+        --hardware-card-title-category: #7dd3fc;
+        --hardware-card-text: #cbd5e1;
+        --hardware-card-title: #f8fafc;
+        --hardware-card-label: #f59e0b;
+        --hardware-card-control-text: #d1d5db;
+        --hardware-card-control-bg-top: rgba(15, 23, 42, 0.95);
+        --hardware-card-control-bg-bottom: rgba(6, 9, 16, 0.95);
+        --hardware-card-sheen-1: rgba(56, 189, 248, 0.13);
+        --hardware-card-sheen-2: rgba(245, 158, 11, 0.08);
+
         position: relative;
         overflow: hidden;
-        border: 1px solid rgba(56, 189, 248, 0.16);
+        border: 1px solid var(--hardware-card-accent);
         background:
             linear-gradient(140deg, rgba(9, 14, 22, 0.98), rgba(4, 7, 12, 0.98));
         box-shadow: 0 18px 44px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -173,49 +267,135 @@ article#article-1-section-my-hardware {
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(circle at top right, rgba(56, 189, 248, 0.13) 0%, transparent 56%),
-                radial-gradient(circle at bottom left, rgba(245, 158, 11, 0.08) 0%, transparent 42%);
+                radial-gradient(circle at top right, var(--hardware-card-sheen-1) 0%, transparent 56%),
+                radial-gradient(circle at bottom left, var(--hardware-card-sheen-2) 0%, transparent 42%);
             pointer-events: none;
         }
 
         &:hover {
             transform: translateY(-3px);
-            border-color: rgba(245, 158, 11, 0.38);
+            border-color: var(--hardware-card-accent-strong);
             box-shadow: 0 24px 52px rgba(0, 0, 0, 0.46), inset 0 1px 0 rgba(255, 255, 255, 0.06);
             filter: saturate(1.03);
         }
     }
 
+    div.article-portfolio-item.hardware-tone-rack-steel {
+        --hardware-card-accent: rgba(59, 130, 246, 0.30);
+        --hardware-card-accent-strong: rgba(125, 211, 252, 0.44);
+        --hardware-card-title-category: #bfdbfe;
+        --hardware-card-label: #7dd3fc;
+        --hardware-card-sheen-1: rgba(59, 130, 246, 0.22);
+        --hardware-card-sheen-2: rgba(125, 211, 252, 0.12);
+        background: linear-gradient(145deg, rgba(10, 22, 39, 0.98), rgba(5, 13, 24, 0.98));
+    }
+
+    div.article-portfolio-item.hardware-tone-conveyor-steel {
+        --hardware-card-accent: rgba(250, 204, 21, 0.34);
+        --hardware-card-accent-strong: rgba(251, 146, 60, 0.46);
+        --hardware-card-title-category: #fde68a;
+        --hardware-card-label: #fcd34d;
+        --hardware-card-sheen-1: rgba(250, 204, 21, 0.24);
+        --hardware-card-sheen-2: rgba(251, 146, 60, 0.14);
+        background: linear-gradient(145deg, rgba(38, 32, 12, 0.98), rgba(20, 17, 6, 0.98));
+    }
+
+    div.article-portfolio-item.hardware-tone-forged-iron {
+        --hardware-card-accent: rgba(248, 113, 113, 0.30);
+        --hardware-card-accent-strong: rgba(251, 191, 36, 0.42);
+        --hardware-card-title-category: #fecaca;
+        --hardware-card-label: #fcd34d;
+        --hardware-card-sheen-1: rgba(248, 113, 113, 0.22);
+        --hardware-card-sheen-2: rgba(251, 191, 36, 0.10);
+        background: linear-gradient(145deg, rgba(39, 16, 16, 0.98), rgba(20, 8, 8, 0.98));
+    }
+
+    div.article-portfolio-item.hardware-tone-varnished-wood {
+        --hardware-card-accent: rgba(34, 197, 94, 0.30);
+        --hardware-card-accent-strong: rgba(251, 191, 36, 0.44);
+        --hardware-card-title-category: #bbf7d0;
+        --hardware-card-label: #fde68a;
+        --hardware-card-sheen-1: rgba(34, 197, 94, 0.20);
+        --hardware-card-sheen-2: rgba(180, 83, 9, 0.12);
+        background: linear-gradient(145deg, rgba(28, 39, 18, 0.98), rgba(17, 24, 11, 0.98));
+    }
+
+    div.article-portfolio-item.hardware-tone-brushed-aluminum {
+        --hardware-card-accent: rgba(226, 232, 240, 0.34);
+        --hardware-card-accent-strong: rgba(103, 232, 249, 0.42);
+        --hardware-card-title-category: #f1f5f9;
+        --hardware-card-label: #a5f3fc;
+        --hardware-card-sheen-1: rgba(226, 232, 240, 0.22);
+        --hardware-card-sheen-2: rgba(103, 232, 249, 0.12);
+        background: linear-gradient(145deg, rgba(49, 57, 68, 0.98), rgba(24, 31, 40, 0.98));
+    }
+
+    div.article-portfolio-item.hardware-tone-slate-copper {
+        --hardware-card-accent: rgba(251, 146, 60, 0.30);
+        --hardware-card-accent-strong: rgba(192, 132, 252, 0.42);
+        --hardware-card-title-category: #fdba74;
+        --hardware-card-label: #d8b4fe;
+        --hardware-card-sheen-1: rgba(251, 146, 60, 0.18);
+        --hardware-card-sheen-2: rgba(192, 132, 252, 0.12);
+        background: linear-gradient(145deg, rgba(33, 22, 44, 0.98), rgba(18, 12, 26, 0.98));
+    }
+
+    div.article-portfolio-item.hardware-tone-gunmetal {
+        --hardware-card-accent: rgba(217, 70, 239, 0.30);
+        --hardware-card-accent-strong: rgba(96, 165, 250, 0.42);
+        --hardware-card-title-category: #f5d0fe;
+        --hardware-card-label: #93c5fd;
+        --hardware-card-sheen-1: rgba(217, 70, 239, 0.20);
+        --hardware-card-sheen-2: rgba(96, 165, 250, 0.12);
+        background: linear-gradient(145deg, rgba(28, 12, 36, 0.98), rgba(15, 8, 22, 0.98));
+    }
+
+    div.article-portfolio-item.hardware-tone-workshop-steel {
+        --hardware-card-accent: rgba(74, 222, 128, 0.30);
+        --hardware-card-accent-strong: rgba(45, 212, 191, 0.40);
+        --hardware-card-title-category: #bbf7d0;
+        --hardware-card-label: #99f6e4;
+        --hardware-card-sheen-1: rgba(74, 222, 128, 0.18);
+        --hardware-card-sheen-2: rgba(45, 212, 191, 0.10);
+        background: linear-gradient(145deg, rgba(16, 40, 26, 0.98), rgba(9, 23, 15, 0.98));
+    }
+
     div.article-portfolio-item-title-main {
-        color: #f8fafc;
+        color: var(--hardware-card-title);
     }
 
     div.article-portfolio-item-title-category {
-        color: #7dd3fc;
+        color: var(--hardware-card-title-category);
     }
 
     div.article-portfolio-item-body-description {
-        color: #cbd5e1;
+        color: var(--hardware-card-text);
     }
 
     a.article-portfolio-item-control-btn,
     div.article-portfolio-item-control-btn {
-        background: linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(6, 9, 16, 0.95));
-        color: #d1d5db;
-        border-color: rgba(56, 189, 248, 0.18);
+        background: linear-gradient(180deg, var(--hardware-card-control-bg-top), var(--hardware-card-control-bg-bottom));
+        color: var(--hardware-card-control-text);
+        border-color: var(--hardware-card-accent);
 
         &:hover {
-            border-color: rgba(245, 158, 11, 0.36);
+            border-color: var(--hardware-card-accent-strong);
             color: #f8fafc;
         }
     }
 
     span.article-portfolio-item-control-btn-label {
-        color: #f59e0b;
+        color: var(--hardware-card-label);
     }
 
     div.article-portfolio-item-control-avatar {
-        border-color: rgba(56, 189, 248, 0.28);
+        border-color: color-mix(in srgb, var(--hardware-card-accent) 100%, white 12%);
+    }
+
+    li.article-portfolio-item-body-tag {
+        background: linear-gradient(180deg, color-mix(in srgb, var(--hardware-card-accent) 100%, transparent 0%), rgba(9, 14, 22, 0.96));
+        color: #e5e7eb;
+        border: 1px solid var(--hardware-card-accent);
     }
 }
 

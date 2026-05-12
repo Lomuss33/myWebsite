@@ -85,6 +85,8 @@ function ArticlePortfolioItems({ dataWrapper, selectedItemCategoryId }) {
  */
 function ArticlePortfolioItem({ itemWrapper }) {
     const previewLinks = itemWrapper?.preview?.links || []
+    const itemTitle = itemWrapper?.locales?.title || itemWrapper?.placeholder || ""
+    const portfolioToneClass = getPortfolioToneClass(itemTitle)
     const websiteLink = previewLinks.find(link => link?.isWebsiteAction && isNonEmptyHref(link?.href)) ||
         (itemWrapper?.link?.isWebsiteAction && isNonEmptyHref(itemWrapper?.link?.href) ? itemWrapper.link : null)
     const githubLink = previewLinks.find(link => isNonEmptyHref(link?.href) && String(link?.href || "").includes("github.com")) || null
@@ -98,7 +100,7 @@ function ArticlePortfolioItem({ itemWrapper }) {
     const leftControlsGapCount = Math.max(0, actionsCount - 1)
 
     return (
-        <div className={`article-portfolio-item`}
+        <div className={`article-portfolio-item ${portfolioToneClass}`}
              style={{
                  "--portfolio-left-controls-count": actionsCount,
                  "--portfolio-left-controls-gap-count": leftControlsGapCount
@@ -218,4 +220,27 @@ export default ArticlePortfolio
 
 function isNonEmptyHref(href) {
     return typeof href === "string" && href.trim().length > 0
+}
+
+function getPortfolioToneClass(title) {
+    const normalizedTitle = String(title || "").toLowerCase()
+
+    if (normalizedTitle.includes("belot")) return "software-tone-belot"
+    if (normalizedTitle.includes("pepper") || normalizedTitle.includes("nao")) return "software-tone-robotics"
+    if (normalizedTitle.includes("simon")) return "software-tone-arcade"
+    if (normalizedTitle.includes("germancro") || normalizedTitle.includes("language")) return "software-tone-linguistics"
+    if (normalizedTitle.includes("villa") || normalizedTitle.includes("renovation")) return "software-tone-architecture"
+    if (normalizedTitle.includes("latex") || normalizedTitle.includes("cv")) return "software-tone-editorial"
+    if (normalizedTitle.includes("family tree")) return "software-tone-genealogy"
+
+    if (normalizedTitle.includes("proxmox") || normalizedTitle.includes("homelab")) return "hardware-tone-rack-steel"
+    if (normalizedTitle.includes("sorting") || normalizedTitle.includes("material")) return "hardware-tone-conveyor-steel"
+    if (normalizedTitle.includes("plc") || normalizedTitle.includes("siemens") || normalizedTitle.includes("automation systems")) return "hardware-tone-forged-iron"
+    if (normalizedTitle.includes("flag")) return "hardware-tone-varnished-wood"
+    if (normalizedTitle.includes("curtain")) return "hardware-tone-brushed-aluminum"
+    if (normalizedTitle.includes("smart home") || normalizedTitle.includes("tri-location")) return "hardware-tone-slate-copper"
+    if (normalizedTitle.includes("gaming pc") || normalizedTitle.includes("gaming")) return "hardware-tone-gunmetal"
+    if (normalizedTitle.includes("bicycle") || normalizedTitle.includes("bike")) return "hardware-tone-workshop-steel"
+
+    return ""
 }

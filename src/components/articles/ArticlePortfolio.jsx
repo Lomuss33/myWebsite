@@ -118,14 +118,14 @@ function ArticlePortfolioItem({ itemWrapper }) {
                         {githubLink && (
                             <Link href={githubLink.href}
                                   tooltip={githubLink.tooltip || "GitHub"}
-                                  className={`article-portfolio-item-control-btn article-portfolio-item-control-btn-icon`}>
+                                  className={`article-portfolio-item-control-btn article-portfolio-item-control-btn-icon article-portfolio-item-control-btn-github`}>
                                 <i className={`fa-icon ${githubLink.faIcon || "fa-brands fa-github"}`}/>
                             </Link>
                         )}
                         {docsLink && (
                             <Link href={docsLink.href}
                                   tooltip={docsLink.tooltip || "Docs"}
-                                  className={`article-portfolio-item-control-btn article-portfolio-item-control-btn-icon`}>
+                                  className={`article-portfolio-item-control-btn article-portfolio-item-control-btn-icon article-portfolio-item-control-btn-docs`}>
                                 <i className={`fa-icon ${docsLink.faIcon || "fa-solid fa-file-lines"}`}/>
                             </Link>
                         )}

@@ -86,6 +86,19 @@ div.article-portfolio-item {
     --portfolio-control-hover-surface-top: var(--portfolio-control-surface-top);
     --portfolio-control-hover-surface-bottom: var(--portfolio-control-surface-bottom);
     --portfolio-control-avatar-border-color: var(--portfolio-control-border-color);
+    --portfolio-control-shell-top: color-mix(in srgb, #121826 88%, var(--portfolio-control-border-color) 12%);
+    --portfolio-control-shell-bottom: color-mix(in srgb, #020617 94%, var(--portfolio-control-border-color) 6%);
+    --portfolio-control-shell-border-color: color-mix(in srgb, var(--portfolio-control-border-color) 72%, rgba(255, 255, 255, 0.16) 28%);
+    --portfolio-control-shell-hover-top: color-mix(in srgb, #182132 82%, var(--portfolio-control-hover-border-color) 18%);
+    --portfolio-control-shell-hover-bottom: color-mix(in srgb, #040914 88%, var(--portfolio-control-hover-border-color) 12%);
+    --portfolio-control-shell-shadow: 0 14px 28px rgba(2, 6, 23, 0.34);
+    --portfolio-control-shell-shadow-hover: 0 18px 34px rgba(2, 6, 23, 0.42);
+    --portfolio-control-shell-highlight: rgba(255, 255, 255, 0.10);
+    --portfolio-control-shell-text-color: #f8fafc;
+    --portfolio-control-shell-icon-color: color-mix(in srgb, var(--portfolio-control-icon-color) 76%, white 24%);
+    --portfolio-control-shell-label-color: color-mix(in srgb, var(--portfolio-control-label-color) 72%, white 28%);
+    --portfolio-control-shell-github-icon-color: #f8fafc;
+    --portfolio-control-shell-docs-icon-color: var(--portfolio-control-shell-icon-color);
     --portfolio-tag-surface-top: color-mix(in srgb, var(--theme-boards-background) 82%, var(--theme-empty) 18%);
     --portfolio-tag-surface-bottom: color-mix(in srgb, var(--theme-boards-background) 70%, var(--theme-empty) 30%);
     --portfolio-tag-text-color: var(--theme-texts-light-1);
@@ -614,8 +627,8 @@ a.article-portfolio-item-control-btn,
 div.article-portfolio-item-control-btn {
     height: var(--portfolio-control-height);
     border-radius: var(--portfolio-control-radius);
-    background: linear-gradient(180deg, var(--portfolio-control-surface-top), var(--portfolio-control-surface-bottom));
-    border: 1px solid var(--portfolio-control-border-color);
+    background: linear-gradient(180deg, var(--portfolio-control-shell-top), var(--portfolio-control-shell-bottom));
+    border: 1px solid var(--portfolio-control-shell-border-color);
 
     display: inline-flex;
     align-items: center;
@@ -623,11 +636,17 @@ div.article-portfolio-item-control-btn {
     gap: 10px;
 
     text-decoration: none;
-    color: var(--portfolio-control-text-color);
+    color: var(--portfolio-control-shell-text-color);
     min-width: 0;
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.08),
-        0 0 0 1px rgba(255, 255, 255, 0.015);
+        inset 0 1px 0 var(--portfolio-control-shell-highlight),
+        var(--portfolio-control-shell-shadow);
+    transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        background 180ms ease,
+        color 180ms ease;
 
     i.fa-icon {
         font-size: clamp(0.8rem, 1.7cqw, 0.95rem);
@@ -638,11 +657,11 @@ div.article-portfolio-item-control-btn {
         transform: translateY(-1px);
         border-color: var(--portfolio-control-hover-border-color);
         color: var(--portfolio-control-hover-text-color);
-        background: linear-gradient(180deg, var(--portfolio-control-hover-surface-top), var(--portfolio-control-hover-surface-bottom));
+        background: linear-gradient(180deg, var(--portfolio-control-shell-hover-top), var(--portfolio-control-shell-hover-bottom));
         box-shadow:
-            0 12px 26px color-mix(in srgb, var(--portfolio-control-border-color) 24%, transparent),
+            var(--portfolio-control-shell-shadow-hover),
             0 0 0 1px color-mix(in srgb, var(--portfolio-control-hover-border-color) 40%, transparent),
-            inset 0 1px 0 rgba(255, 255, 255, 0.14);
+            inset 0 1px 0 rgba(255, 255, 255, 0.16);
     }
 
     &:focus-visible {
@@ -653,10 +672,15 @@ div.article-portfolio-item-control-btn {
 a.article-portfolio-item-control-btn-icon {
     width: var(--portfolio-control-height);
     padding: 0;
-    background: linear-gradient(135deg, var(--portfolio-control-icon-surface-top), var(--portfolio-control-icon-surface-bottom));
+    background:
+        linear-gradient(
+            135deg,
+            var(--portfolio-control-shell-top),
+            color-mix(in srgb, var(--portfolio-control-shell-bottom) 84%, var(--portfolio-control-icon-color) 16%)
+        );
 
     i.fa-icon {
-        color: var(--portfolio-control-icon-strong-color);
+        color: var(--portfolio-control-shell-icon-color);
     }
 }
 
@@ -665,10 +689,35 @@ a.article-portfolio-item-control-btn-visit {
     padding-left: 12px;
     padding-right: 6px;
     min-width: 0;
-    background: linear-gradient(135deg, var(--portfolio-control-visit-surface-top), var(--portfolio-control-visit-surface-bottom));
+    background:
+        linear-gradient(
+            135deg,
+            var(--portfolio-control-shell-top),
+            color-mix(in srgb, var(--portfolio-control-shell-bottom) 78%, var(--portfolio-control-label-color) 22%)
+        );
 
     div.article-portfolio-item-control-avatar {
         margin-left: auto;
+    }
+}
+
+a.article-portfolio-item-control-btn-github {
+    border-color: color-mix(in srgb, var(--portfolio-control-shell-border-color) 80%, currentColor 20%);
+    background:
+        linear-gradient(
+            135deg,
+            var(--portfolio-control-shell-top),
+            color-mix(in srgb, var(--portfolio-control-shell-bottom) 92%, currentColor 8%)
+        );
+
+    i.fa-icon {
+        color: var(--portfolio-control-shell-github-icon-color);
+    }
+}
+
+a.article-portfolio-item-control-btn-docs {
+    i.fa-icon {
+        color: var(--portfolio-control-shell-docs-icon-color);
     }
 }
 
@@ -681,13 +730,13 @@ span.article-portfolio-item-control-btn-label {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--portfolio-control-label-color);
+    color: var(--portfolio-control-shell-label-color);
 }
 
 i.article-portfolio-item-control-btn-external-icon {
     font-size: 0.95em;
     opacity: 0.9;
-    color: var(--portfolio-control-icon-color);
+    color: var(--portfolio-control-shell-icon-color);
 }
 
 div.article-portfolio-item-control-avatar {
@@ -714,8 +763,25 @@ div.article-portfolio-item-control-avatar {
     .avatar-icon-view {
         width: 100%;
         height: 100%;
-        text-shadow: none;
+        text-shadow:
+            0 1px 0 rgba(255, 255, 255, 0.10),
+            0 0 18px color-mix(in srgb, var(--portfolio-control-avatar-color) 26%, transparent);
     }
+}
+
+[data-theme="light"] div.article-portfolio-item {
+    --portfolio-control-shell-top: #ffffff;
+    --portfolio-control-shell-bottom: color-mix(in srgb, #ffffff 88%, var(--portfolio-control-border-color) 12%);
+    --portfolio-control-shell-border-color: color-mix(in srgb, var(--portfolio-control-border-color) 48%, rgba(255, 255, 255, 0.92) 52%);
+    --portfolio-control-shell-hover-top: #ffffff;
+    --portfolio-control-shell-hover-bottom: color-mix(in srgb, #ffffff 78%, var(--portfolio-control-hover-border-color) 22%);
+    --portfolio-control-shell-shadow: 0 14px 28px rgba(15, 23, 42, 0.10);
+    --portfolio-control-shell-shadow-hover: 0 18px 34px rgba(15, 23, 42, 0.14);
+    --portfolio-control-shell-highlight: rgba(255, 255, 255, 0.92);
+    --portfolio-control-shell-text-color: #0f172a;
+    --portfolio-control-shell-icon-color: color-mix(in srgb, var(--portfolio-control-icon-color) 82%, #0f172a 18%);
+    --portfolio-control-shell-label-color: color-mix(in srgb, var(--portfolio-control-label-color) 76%, #0f172a 24%);
+    --portfolio-control-shell-github-icon-color: #111827;
 }
 
 div.article-portfolio-item-control-btn-avatar-only {

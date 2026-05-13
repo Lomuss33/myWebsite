@@ -1,5 +1,5 @@
 import "./NavProfileCard.scss"
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useRef, useState} from "react"
 import {Card} from "react-bootstrap"
 import {useFloatingFrame} from "../../../hooks/floatingFrame.js"
 import {useLanguage} from "../../../providers/LanguageProvider.jsx"
@@ -25,6 +25,11 @@ function NavProfileCard({
     const safeProfile = profile || {}
     const alternateProfilePictureDefaultChance = normalizeDefaultChance(safeProfile.profilePictureAltDefaultChance)
     const [showAlternateProfilePicture, setShowAlternateProfilePicture] = useState(false)
+    const [stackMobileName, setStackMobileName] = useState(false)
+    const headerRef = useRef(null)
+    const nameHeadingRef = useRef(null)
+    const firstNameRef = useRef(null)
+    const lastNameRef = useRef(null)
 
     const expandedClass = expanded ?
         `` :
@@ -49,9 +54,10 @@ function NavProfileCard({
     const namePronunciationButtonVisible = showNameAudioButton && (namePronunciationIpa || namePronunciationAudioUrl)
     const namePronunciationTooltipLabel = namePronunciationIpa ? `<span class="audio-button-tooltip-lines"><span class="audio-button-tooltip-line audio-button-tooltip-line-top">lǒːʋro  ˈmu.sit͡ɕ</span><span class="audio-button-tooltip-line audio-button-tooltip-line-bottom">LOHV-roh  muu-SEEch</span></span>` : ""
 
-    const navProfileCardNameClass = namePronunciationButtonVisible ?
-        `nav-profile-card-name-with-audio-button` :
-        ``
+    const navProfileCardNameClass = [
+        namePronunciationButtonVisible ? `nav-profile-card-name-with-audio-button` : ``,
+        stackMobileName ? `nav-profile-card-name-mobile-stacked` : ``
+    ].filter(Boolean).join(` `)
     const hasMobileActionStackBeforeInfo = Boolean(mobileActionStackBeforeInfo)
     const hasMobileActionStackAfterInfo = Boolean(mobileActionStackAfterInfo || mobileActionStack)
     const navProfileCardHeaderClass = [
@@ -68,13 +74,114 @@ function NavProfileCard({
         )
     }, [safeProfile.profilePictureAltUrl, alternateProfilePictureDefaultChance])
 
+    useEffect(() => {
+        const headerElement = headerRef.current
+        const headingElement = nameHeadingRef.current
+        const firstNameElement = firstNameRef.current
+        const lastNameElement = lastNameRef.current
+
+        if(!headerElement || !headingElement || !firstNameElement || !lastNameElement) {
+            setStackMobileName(false)
+            return undefined
+        }
+
+        let animationFrameId = 0
+        let resizeObserver = null
+        const fontSet = document.fonts
+        const scheduleMeasurement = () => {
+            if(animationFrameId)
+                cancelAnimationFrame(animationFrameId)
+
+            animationFrameId = requestAnimationFrame(() => {
+                const computedStyle = window.getComputedStyle(headingElement)
+                const isMobileLayout = computedStyle.position === "absolute"
+
+                if(!isMobileLayout) {
+                    headingElement.style.removeProperty(`--mobile-title-center-x`)
+                    headingElement.style.removeProperty(`--mobile-title-dynamic-width`)
+                    setStackMobileName((current) => current ? false : current)
+                    return
+                }
+
+                const headerRect = headerElement.getBoundingClientRect()
+                const firstNameRect = firstNameElement.getBoundingClientRect()
+                const lastNameRect = lastNameElement.getBoundingClientRect()
+                const mediaElement = headerElement.querySelector(`.nav-profile-card-media`)
+                const mediaRect = mediaElement?.getBoundingClientRect()
+                const middleActionStackElement = headerElement.querySelector(`.nav-profile-card-mobile-action-stack-middle`)
+                const middleActionStackRect = middleActionStackElement?.getBoundingClientRect()
+                const rightActionStackElement = headerElement.querySelector(`.nav-profile-card-mobile-action-stack-right`)
+                const rightActionStackRect = rightActionStackElement?.getBoundingClientRect()
+                const surnameGap = parseFloat(window.getComputedStyle(lastNameElement).paddingLeft) || 0
+                const collisionPadding = 6
+                const comfortPadding = 10
+                const centerX = firstNameRect.left + (firstNameRect.width / 2)
+                const safeLeftEdge = Math.max(
+                    headerRect.left + collisionPadding,
+                    (mediaRect?.right || headerRect.left) + collisionPadding,
+                    (middleActionStackRect?.right || headerRect.left) + collisionPadding
+                )
+                const safeRightEdge = rightActionStackRect ?
+                    Math.min(headerRect.right, rightActionStackRect.left - collisionPadding) :
+                    headerRect.right - collisionPadding
+                const requiredLeftSpace = (firstNameRect.width / 2) + comfortPadding
+                const requiredRightSpace = (firstNameRect.width / 2) + surnameGap + lastNameRect.width + comfortPadding
+                const requiredTotalWidth = firstNameRect.width + surnameGap + lastNameRect.width + (comfortPadding * 2)
+                const availableLeftSpace = Math.max(0, centerX - safeLeftEdge)
+                const availableRightSpace = Math.max(0, safeRightEdge - centerX)
+                const availableTotalWidth = Math.max(0, safeRightEdge - safeLeftEdge)
+                const corridorCenterX = (safeLeftEdge + safeRightEdge) / 2
+                const shouldStack = requiredLeftSpace > availableLeftSpace ||
+                    requiredRightSpace > availableRightSpace ||
+                    requiredTotalWidth > availableTotalWidth
+
+                if(shouldStack) {
+                    headingElement.style.setProperty(`--mobile-title-center-x`, `${corridorCenterX - headerRect.left}px`)
+                    headingElement.style.setProperty(`--mobile-title-dynamic-width`, `${availableTotalWidth}px`)
+                } else {
+                    headingElement.style.removeProperty(`--mobile-title-center-x`)
+                    headingElement.style.removeProperty(`--mobile-title-dynamic-width`)
+                }
+
+                setStackMobileName((current) => current !== shouldStack ? shouldStack : current)
+            })
+        }
+
+        scheduleMeasurement()
+        resizeObserver = new ResizeObserver(() => {
+            scheduleMeasurement()
+        })
+        resizeObserver.observe(headerElement)
+        resizeObserver.observe(headingElement)
+        resizeObserver.observe(firstNameElement)
+        resizeObserver.observe(lastNameElement)
+
+        window.addEventListener(`resize`, scheduleMeasurement)
+
+        if(fontSet?.addEventListener)
+            fontSet.addEventListener(`loadingdone`, scheduleMeasurement)
+        else
+            fontSet?.ready?.then(scheduleMeasurement).catch(() => {})
+
+        return () => {
+            if(animationFrameId)
+                cancelAnimationFrame(animationFrameId)
+
+            headingElement.style.removeProperty(`--mobile-title-center-x`)
+            headingElement.style.removeProperty(`--mobile-title-dynamic-width`)
+            resizeObserver?.disconnect()
+            window.removeEventListener(`resize`, scheduleMeasurement)
+            fontSet?.removeEventListener?.(`loadingdone`, scheduleMeasurement)
+        }
+    }, [firstName, lastName])
+
     const _onMediaClicked = (event) => {
         setShowAlternateProfilePicture((current) => !current)
     }
 
     return (
         <Card className={`nav-profile-card ${expandedClass}`}>
-            <div className={navProfileCardHeaderClass}>
+            <div className={navProfileCardHeaderClass} ref={headerRef}>
                 {mobileActionStackBeforeInfo && (
                     <div className={`nav-profile-card-mobile-action-stack nav-profile-card-mobile-action-stack-middle`}>
                         {mobileActionStackBeforeInfo}
@@ -119,7 +226,7 @@ function NavProfileCard({
                 </div>
 
                 <div className={`nav-profile-card-info`}>
-                    <h1 className={`nav-profile-card-name ${navProfileCardNameClass}`}>
+                    <h1 className={`nav-profile-card-name ${navProfileCardNameClass}`} ref={nameHeadingRef}>
                         {namePronunciationButtonVisible && (
                             <span className={`nav-profile-card-name-audio-button`}>
                                 <AudioButton url={namePronunciationAudioUrl}
@@ -130,12 +237,12 @@ function NavProfileCard({
                         )}
 
                         <span className={`nav-profile-card-name-text`}>
-                            <span className={`nav-profile-card-name-line nav-profile-card-name-line-first`}>
+                            <span className={`nav-profile-card-name-line nav-profile-card-name-line-first`} ref={firstNameRef}>
                                 {firstName}
                             </span>
 
                             {lastName && (
-                                <span className={`nav-profile-card-name-line nav-profile-card-name-line-last`}>
+                                <span className={`nav-profile-card-name-line nav-profile-card-name-line-last`} ref={lastNameRef}>
                                     {lastName}
                                 </span>
                             )}

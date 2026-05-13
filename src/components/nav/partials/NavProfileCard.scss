@@ -457,6 +457,7 @@ div.nav-profile-card {
         --mobile-title-right-space: clamp(0.2rem, 1.8vw, 0.55rem);
         --mobile-title-safe-gutter: max(var(--mobile-title-left-space), var(--mobile-title-right-space));
         --mobile-title-safe-width: calc(100% - (var(--mobile-title-safe-gutter) * 2));
+        --mobile-title-usable-width: calc(100% - var(--mobile-title-left-space) - var(--mobile-title-right-space));
 
         align-items: center;
         justify-content: center;
@@ -840,19 +841,23 @@ div.nav-profile-card {
             justify-content: center;
             text-align: center;
             margin: 0;
-            width: max(0px, var(--mobile-title-safe-width));
-            max-width: max(0px, var(--mobile-title-safe-width));
+            width: max(0px, var(--mobile-title-usable-width));
+            max-width: max(0px, var(--mobile-title-usable-width));
             font-size: clamp(1.6rem, 7.4vw, 3.05rem) !important;
             line-height: 0.92 !important;
             letter-spacing: -0.03em;
             text-wrap: balance;
             transform: translate(-50%, -50%);
             container-type: inline-size;
+            transition:
+                font-size 0.24s cubic-bezier(.22, .7, .2, 1),
+                letter-spacing 0.24s cubic-bezier(.22, .7, .2, 1),
+                line-height 0.24s cubic-bezier(.22, .7, .2, 1);
         }
 
         h1.nav-profile-card-name-with-audio-button {
-            width: max(0px, var(--mobile-title-safe-width));
-            max-width: max(0px, var(--mobile-title-safe-width));
+            width: max(0px, var(--mobile-title-usable-width));
+            max-width: max(0px, var(--mobile-title-usable-width));
             display: inline-flex;
             flex-wrap: nowrap;
             align-items: center;
@@ -860,6 +865,7 @@ div.nav-profile-card {
             justify-content: center;
             margin-left: 0;
             margin-right: 0;
+            transition: column-gap 0.22s cubic-bezier(.22, .7, .2, 1);
         }
 
         span.nav-profile-card-name-text {
@@ -873,6 +879,9 @@ div.nav-profile-card {
             line-height: 0.94;
             flex: 0 1 auto;
             min-width: 0;
+            transition:
+                row-gap 0.22s cubic-bezier(.22, .7, .2, 1),
+                line-height 0.22s cubic-bezier(.22, .7, .2, 1);
         }
 
         span.nav-profile-card-name-line {
@@ -892,6 +901,40 @@ div.nav-profile-card {
             grid-column: 3;
             justify-self: start;
             padding-left: 0.35rem;
+            transition:
+                padding-left 0.22s cubic-bezier(.22, .7, .2, 1),
+                transform 0.22s cubic-bezier(.22, .7, .2, 1);
+        }
+
+        h1.nav-profile-card-name-mobile-stacked {
+            left: var(--mobile-title-center-x, 50%);
+            width: var(--mobile-title-dynamic-width, max(0px, var(--mobile-title-usable-width)));
+            max-width: var(--mobile-title-dynamic-width, max(0px, var(--mobile-title-usable-width)));
+        }
+
+        h1.nav-profile-card-name-mobile-stacked span.nav-profile-card-name-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            row-gap: 0.04em;
+            width: 100%;
+            line-height: 0.9;
+            text-align: center;
+        }
+
+        h1.nav-profile-card-name-mobile-stacked span.nav-profile-card-name-line-first {
+            grid-column: auto;
+            grid-row: auto;
+            justify-self: center;
+        }
+
+        h1.nav-profile-card-name-mobile-stacked span.nav-profile-card-name-line-last {
+            grid-column: auto;
+            grid-row: auto;
+            justify-self: center;
+            padding-left: 0;
+            transform: none;
         }
 
         span.nav-profile-card-name-audio-button {
@@ -916,22 +959,74 @@ div.nav-profile-card {
             filter: drop-shadow(0 0 0.32rem color-mix(in srgb, var(--theme-primary) 36%, transparent 64%));
         }
 
-        @container (max-width: 15rem) {
-            span.nav-profile-card-name-text {
-                grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-                grid-template-rows: auto auto;
+        @container (max-width: 18rem) {
+            h1.nav-profile-card-name {
+                font-size: clamp(1.54rem, 7.1vw, 2.72rem) !important;
+                letter-spacing: -0.028em;
             }
 
-            span.nav-profile-card-name-line-first {
-                grid-column: 2;
-                grid-row: 1;
+            h1.nav-profile-card-name-with-audio-button {
+                column-gap: 0.31rem;
             }
 
             span.nav-profile-card-name-line-last {
-                grid-column: 2 / 4;
-                grid-row: 2;
-                justify-self: start;
-                padding-left: 0.16rem;
+                padding-left: 0.28rem;
+            }
+        }
+
+        @container (max-width: 16.5rem) {
+            h1.nav-profile-card-name {
+                font-size: clamp(1.46rem, 6.9vw, 2.42rem) !important;
+                letter-spacing: -0.025em;
+            }
+
+            h1.nav-profile-card-name-with-audio-button {
+                column-gap: 0.26rem;
+            }
+
+            span.nav-profile-card-name-text {
+                row-gap: 0.06em;
+            }
+
+            span.nav-profile-card-name-line-last {
+                padding-left: 0.22rem;
+            }
+        }
+
+        @container (max-width: 15rem) {
+            h1.nav-profile-card-name {
+                font-size: clamp(1.4rem, 6.8vw, 2.16rem) !important;
+                letter-spacing: -0.022em;
+                line-height: 0.9 !important;
+            }
+
+            h1.nav-profile-card-name-with-audio-button {
+                column-gap: 0.22rem;
+            }
+
+            h1.nav-profile-card-name-mobile-stacked span.nav-profile-card-name-text {
+                row-gap: 0.04em;
+                line-height: 0.9;
+            }
+
+            h1.nav-profile-card-name-mobile-stacked span.nav-profile-card-name-line-last {
+                padding-left: 0;
+                transform: none;
+            }
+        }
+
+        @container (max-width: 13.5rem) {
+            h1.nav-profile-card-name {
+                font-size: clamp(1.3rem, 7vw, 1.92rem) !important;
+                letter-spacing: -0.018em;
+            }
+
+            h1.nav-profile-card-name-mobile-stacked span.nav-profile-card-name-text {
+                row-gap: 0.02em;
+            }
+
+            h1.nav-profile-card-name-mobile-stacked span.nav-profile-card-name-line-last {
+                padding-left: 0;
             }
         }
 

@@ -1569,6 +1569,11 @@ div.article-web-art-items-locked {
     }
 }
 
+.article-web-art-tile-shape {
+    cursor: crosshair;
+    touch-action: pan-y;
+}
+
 canvas.article-web-art-canvas {
     position: absolute;
     inset: 0;

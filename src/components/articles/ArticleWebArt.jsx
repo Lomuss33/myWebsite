@@ -247,9 +247,9 @@ function ArticleWebArt({ dataWrapper, id }) {
     const [showIntroCover, setShowIntroCover] = useState(true)
     const rawItems = useMemo(() => dataWrapper.orderedItems, [dataWrapper.orderedItems])
     const items = useMemo(() => {
-        // Desired visual order: Poly, 5, 3D, Orbit, Hover, Wave, Spin
-        // Matches ids: 4 (Poly), 5 (Embroidery), 3 (3D tunnel), 6 (Orbit), 1 (Hover), 2 (Wave), 7 (Spin)
-        const desiredOrder = [4, 5, 3, 6, 1, 2, 7]
+        // Desired visual order: Poly, 5, 3D, Orbit, Hover, Wave, Spin, Shape
+        // Matches ids: 4 (Poly), 5 (Embroidery), 3 (3D tunnel), 6 (Orbit), 1 (Hover), 2 (Wave), 7 (Spin), 8 (Shape)
+        const desiredOrder = [4, 5, 3, 6, 1, 2, 7, 8]
         const byId = new Map(rawItems.map((item) => [Number(item?.id), item]))
         const ordered = []
 
@@ -524,6 +524,7 @@ function ArticleWebArt({ dataWrapper, id }) {
         if(itemId === 5) return "Click"
         if(itemId === 6) return "Orbit"
         if(itemId === 7) return "Spin"
+        if(itemId === 8) return "Shape"
         return String(index + 1)
     }
 
@@ -825,6 +826,10 @@ function WebArtTile({ itemWrapper, index, activate, locked, onReady }) {
         return <SpinBoxesTile itemWrapper={itemWrapper} locked={locked} onReady={onReady}/>
     }
 
+    if(Number(itemWrapper.id) === 8) {
+        return <ShapeFieldTile itemWrapper={itemWrapper} index={index} activate={activate} locked={locked} onReady={onReady}/>
+    }
+
     return <EmbroideryTile itemWrapper={itemWrapper} index={index} activate={activate} locked={locked} onReady={onReady}/>
 }
 
@@ -838,7 +843,8 @@ function SpinBoxesTile({ itemWrapper, locked, onReady }) {
     }, [itemWrapper.uniqueId, onReady])
 
     const boxes = useMemo(() => {
-        return [2, 4, 0.5, 0.2].map((speed) => {
+        // Grid order: top-left, top-right, bottom-left, bottom-right
+        return [-4, -2, 0.5, 4].map((speed) => {
             const delta = speed - 1
             const controlDuration = Math.abs(5 / delta)
             const controlTurn = delta >= 0 ? "1turn" : "-1turn"
@@ -867,6 +873,154 @@ function SpinBoxesTile({ itemWrapper, locked, onReady }) {
                 ))}
             </div>
         </div>
+    )
+}
+
+function ShapeFieldTile({ itemWrapper, index, activate, locked, onReady }) {
+    const tileRef = useRef(null)
+    const canvasRef = useRef(null)
+    const engineRef = useRef(null)
+    const didReadyRef = useRef(false)
+    const visibleRef = useRef(true)
+
+    const reduceMotion = useMemo(() => {
+        if(typeof window === "undefined" || !window.matchMedia) return false
+        return window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    }, [])
+
+    const config = useMemo(() => {
+        return {
+            seed: 1729 + (Number(itemWrapper.id) || 8) * 4242,
+            reduceMotion
+        }
+    }, [itemWrapper.id, reduceMotion])
+
+    useEffect(() => {
+        if(!activate) return
+
+        const tile = tileRef.current
+        const canvas = canvasRef.current
+        if(!tile || !canvas) return
+
+        let canceled = false
+        let engine = null
+        let ro = null
+        let io = null
+
+        const markReady = () => {
+            if(didReadyRef.current) return
+            didReadyRef.current = true
+            onReady?.(itemWrapper.uniqueId)
+        }
+
+        const cancelWork = _scheduleIdleWork(async () => {
+            try {
+                const mod = await import("./webArt/shapeFieldEngine.js")
+                if(canceled) return
+
+                engine = mod.createShapeFieldEngine(canvas, config)
+                engineRef.current = engine
+
+                const updateSize = () => _syncTileEngineSize(tile, engine, window.devicePixelRatio || 1)
+
+                updateSize()
+                engine.renderStatic?.()
+                engine.triggerWave?.()
+                if(!locked) engine.start?.()
+                markReady()
+
+                ro = new ResizeObserver(() => {
+                    updateSize()
+                    engine.renderStatic?.()
+                })
+                ro.observe(tile)
+
+                if("IntersectionObserver" in window) {
+                    io = new IntersectionObserver((entries) => {
+                        for(const entry of entries) {
+                            visibleRef.current = Boolean(entry.isIntersecting)
+                            if(locked) {
+                                engine.stop?.()
+                                continue
+                            }
+
+                            if(visibleRef.current) engine.start?.()
+                            else engine.stop?.()
+                        }
+                    }, { threshold: 0.2 })
+                    io.observe(tile)
+                }
+            }
+            catch(e) {
+                markReady()
+            }
+        })
+
+        return () => {
+            canceled = true
+            cancelWork?.()
+            io?.disconnect()
+            ro?.disconnect()
+            engine?.destroy?.()
+            engineRef.current = null
+        }
+    }, [activate, config, itemWrapper.uniqueId, locked, onReady])
+
+    useEffect(() => {
+        const engine = engineRef.current
+        if(!engine) return
+        if(locked) {
+            engine.clearPointer?.()
+            engine.stop?.()
+            return
+        }
+        if(visibleRef.current) engine.start?.()
+    }, [locked])
+
+    const getLocalPoint = (event) => {
+        const tile = tileRef.current
+        if(!tile) return { x: 0, y: 0 }
+        const rect = tile.getBoundingClientRect()
+        return {
+            x: event.clientX - rect.left,
+            y: event.clientY - rect.top
+        }
+    }
+
+    const onPointerMove = (event) => {
+        const point = getLocalPoint(event)
+        engineRef.current?.setPointer?.(point.x, point.y)
+    }
+
+    const onPointerDown = (event) => {
+        const point = getLocalPoint(event)
+        engineRef.current?.setPointer?.(point.x, point.y)
+        engineRef.current?.triggerWave?.(point.x, point.y)
+    }
+
+    const onKeyDown = (event) => {
+        if(event.key !== "Enter" && event.key !== " ") return
+        event.preventDefault()
+        engineRef.current?.triggerWave?.()
+    }
+
+    return (
+        <button type={"button"}
+                ref={tileRef}
+                className={`article-web-art-tile article-web-art-tile-clickable article-web-art-tile-shape`}
+                aria-label={`Shape web art tile ${index + 1}`}
+                disabled={locked}
+                onPointerMove={locked ? undefined : onPointerMove}
+                onPointerDown={locked ? undefined : onPointerDown}
+                onPointerLeave={locked ? undefined : (() => engineRef.current?.clearPointer?.())}
+                onBlur={locked ? undefined : (() => engineRef.current?.clearPointer?.())}
+                onKeyDown={locked ? undefined : onKeyDown}>
+            <canvas ref={canvasRef}
+                    className={`article-web-art-canvas`}/>
+            <span className={`article-web-art-tile-label`}>
+                Shape
+            </span>
+        </button>
     )
 }
 

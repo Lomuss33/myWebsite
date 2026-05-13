@@ -5,6 +5,18 @@ div.nav-profile-card {
     --border-size: 5px;
     --info-margin-top: 6px;
     --offset-status-circle: 14px;
+    --avatar-frame-radius: calc(#{$standard-border-radius} * 2);
+    --avatar-frame-top-right-radius: 0;
+    --avatar-shell-gap: 6px;
+    --avatar-outline-size: 1.5px;
+    --avatar-inner-rim-size: 1px;
+    --avatar-outline-opacity: 0.94;
+    --avatar-inner-rim-opacity: 0.84;
+    --avatar-shell-shadow:
+        0 18px 34px rgba(2, 6, 23, 0.26),
+        0 8px 18px rgba(15, 23, 42, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        inset 0 -10px 18px rgba(0, 0, 0, 0.18);
 
     display: flex;
     flex: 0 0 auto;
@@ -41,6 +53,22 @@ div.nav-profile-card {
     &-media {
         position: relative;
         display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--avatar-shell-gap);
+        overflow: visible;
+        isolation: isolate;
+        border-radius: calc(var(--avatar-frame-radius) + var(--avatar-shell-gap));
+        border-top-right-radius: var(--avatar-frame-top-right-radius);
+        background:
+            radial-gradient(circle at 22% 18%,
+                rgba(255, 255, 255, 0.24),
+                rgba(255, 255, 255, 0.04) 26%,
+                transparent 52%),
+            linear-gradient(180deg,
+                color-mix(in srgb, var(--theme-nav-surface) 82%, white 18%) 0%,
+                color-mix(in srgb, var(--theme-nav-surface) 72%, black 28%) 100%);
+        box-shadow: var(--avatar-shell-shadow);
         transform-style: preserve-3d;
         will-change: transform;
         cursor: pointer;
@@ -50,11 +78,94 @@ div.nav-profile-card {
         --ff-hover-lift: 4px;
         transition:
             transform 0.24s ease,
-            filter 0.24s ease;
+            filter 0.24s ease,
+            background 0.24s ease,
+            box-shadow 0.24s ease;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            border-radius: inherit;
+            border-top-right-radius: inherit;
+            background:
+                linear-gradient(145deg,
+                    rgba(255, 255, 255, 0.16),
+                    rgba(255, 255, 255, 0.03) 28%,
+                    transparent 60%);
+            opacity: 0.72;
+            transition:
+                opacity 0.24s ease,
+                transform 0.24s ease;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            pointer-events: none;
+            padding: var(--avatar-outline-size);
+            border-radius: inherit;
+            border-top-right-radius: inherit;
+            background:
+                conic-gradient(from 180deg,
+                    rgba(59, 130, 246, 0.95) 0deg,
+                    rgba(226, 232, 240, 0.94) 52deg,
+                    rgba(244, 63, 94, 0.92) 138deg,
+                    rgba(241, 245, 249, 0.94) 224deg,
+                    rgba(59, 130, 246, 0.95) 360deg);
+            opacity: var(--avatar-outline-opacity);
+            filter: grayscale(1) saturate(0.82) brightness(0.94);
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask-composite: exclude;
+            transform: translateZ(0) rotate(0deg);
+            animation: nav-profile-card-metal-spin 3.6s linear infinite paused;
+            transition:
+                filter 0.28s ease,
+                opacity 0.28s ease,
+                transform 0.28s ease;
+        }
 
         &:hover {
             transform: translateY(-1px);
-            filter: saturate(1.01);
+            filter: saturate(1.04);
+            background:
+                radial-gradient(circle at 18% 14%,
+                    rgba(255, 255, 255, 0.3),
+                    rgba(255, 255, 255, 0.05) 28%,
+                    transparent 52%),
+                linear-gradient(180deg,
+                    color-mix(in srgb, var(--theme-nav-surface) 78%, white 22%) 0%,
+                    color-mix(in srgb, var(--theme-nav-surface) 66%, black 34%) 100%);
+            box-shadow:
+                0 22px 42px rgba(2, 6, 23, 0.28),
+                0 10px 24px rgba(15, 23, 42, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.16),
+                inset 0 -12px 22px rgba(0, 0, 0, 0.22);
+        }
+
+        &:hover::before,
+        &:focus-visible::before,
+        &.floating-frame--active::before {
+            opacity: 0.9;
+            transform: scale(1.01);
+        }
+
+        &:hover::after,
+        &:focus-visible::after,
+        &.floating-frame--active::after {
+            filter: grayscale(0) saturate(1.08) brightness(1.06);
+            opacity: 1;
+            animation-play-state: running;
+        }
+
+        &:focus-visible {
+            outline: none;
         }
     }
 
@@ -63,15 +174,80 @@ div.nav-profile-card {
         height: var(--avatar-size);
         position: relative;
         overflow: hidden;
-        border: var(--border-size) solid var(--theme-nav-border);
-        border-radius: calc($standard-border-radius * 2);
-        border-top-right-radius: 0;
+        border: 0;
+        border-radius: var(--avatar-frame-radius);
+        border-top-right-radius: var(--avatar-frame-top-right-radius);
+        background:
+            linear-gradient(180deg,
+                rgba(255, 255, 255, 0.14),
+                rgba(255, 255, 255, 0.04) 18%,
+                rgba(0, 0, 0, 0.08) 100%);
         transform-style: preserve-3d;
         will-change: transform;
         transition: none;
         box-shadow:
             0 12px 26px rgba(2, 6, 23, 0.24),
-            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            pointer-events: none;
+            padding: var(--avatar-inner-rim-size);
+            border-radius: inherit;
+            border-top-right-radius: inherit;
+            background:
+                linear-gradient(180deg,
+                    rgba(255, 255, 255, 0.74) 0%,
+                    rgba(148, 163, 184, 0.72) 22%,
+                    rgba(30, 41, 59, 0.72) 70%,
+                    rgba(226, 232, 240, 0.68) 100%);
+            opacity: var(--avatar-inner-rim-opacity);
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask-composite: exclude;
+            transition:
+                opacity 0.28s ease,
+                filter 0.28s ease;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            border-radius: inherit;
+            border-top-right-radius: inherit;
+            background:
+                linear-gradient(145deg,
+                    rgba(255, 255, 255, 0.24) 0%,
+                    rgba(255, 255, 255, 0.10) 18%,
+                    transparent 38%,
+                    transparent 100%);
+            opacity: 0.74;
+            transition:
+                opacity 0.24s ease,
+                transform 0.24s ease;
+        }
+    }
+
+    &-media:hover &-avatar-switch::after,
+    &-media:focus-visible &-avatar-switch::after,
+    &-media.floating-frame--active &-avatar-switch::after {
+        opacity: 0.9;
+        transform: translateY(-1px);
+    }
+
+    &-media:hover &-avatar-switch::before,
+    &-media:focus-visible &-avatar-switch::before,
+    &-media.floating-frame--active &-avatar-switch::before {
+        opacity: 0.96;
+        filter: brightness(1.08);
     }
 
     &-avatar {
@@ -271,6 +447,9 @@ div.nav-profile-card {
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         --avatar-size: clamp(4.65rem, 20vw, 6rem);
+        --avatar-shell-gap: clamp(4px, 1.2vw, 6px);
+        --avatar-outline-size: clamp(1.2px, 0.4vw, 1.45px);
+        --avatar-inner-rim-size: clamp(0.9px, 0.25vw, 1.1px);
         --mobile-action-size: clamp(2.3rem, 9.2vw, 2.7rem);
         --mobile-stack-gap: clamp(0.36rem, 1.7vw, 0.5rem);
         --mobile-header-gap: clamp(0.5rem, 2.6vw, 0.9rem);
@@ -757,13 +936,35 @@ div.nav-profile-card-shrink {
     --avatar-size: 72px;
     --border-size: 3px;
     --offset-status-circle: 11px;
+    --avatar-shell-gap: 0px;
+    --avatar-outline-size: 0px;
+    --avatar-inner-rim-size: 0px;
     align-self: stretch;
     width: 100%;
     align-items: center;
     justify-content: center;
 
+    div.nav-profile-card-media {
+        padding: 0;
+        background: none;
+        box-shadow: none;
+        border-radius: 0;
+        filter: none;
+    }
+
+    div.nav-profile-card-media::before,
+    div.nav-profile-card-media::after,
+    div.nav-profile-card-avatar-switch::before,
+    div.nav-profile-card-avatar-switch::after {
+        display: none;
+        content: none;
+    }
+
     div.nav-profile-card-avatar-switch {
+        background: none;
+        box-shadow: none;
         border-radius: calc($standard-border-radius * 2)!important;
+        border-top-right-radius: calc($standard-border-radius * 2)!important;
     }
 
     div.nav-profile-card-info {
@@ -783,5 +984,15 @@ div.nav-profile-card-shrink {
         max-width: 68px;
         margin-left: auto;
         margin-right: auto;
+    }
+}
+
+@keyframes nav-profile-card-metal-spin {
+    from {
+        transform: translateZ(0) rotate(0deg);
+    }
+
+    to {
+        transform: translateZ(0) rotate(360deg);
     }
 }

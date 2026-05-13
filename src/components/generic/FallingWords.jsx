@@ -36,8 +36,12 @@ function FallingWords({
         startY: 0,
         targetX: 0,
         targetY: 0,
-        offsetX: 0,
-        offsetY: 0,
+        anchorOffsetX: 0,
+        anchorOffsetY: 0,
+        dragBoxWidth: 0,
+        dragBoxHeight: 0,
+        dragBoxLeftOffset: 0,
+        dragBoxTopOffset: 0,
         pointerType: null,
         lastDragAt: 0
     })
@@ -325,7 +329,7 @@ function FallingWords({
                             Matter.Sleeping.set(draggedEntry.body, false)
                             Matter.Body.setPosition(draggedEntry.body, { x: nextX, y: nextY })
                             Matter.Body.setVelocity(draggedEntry.body, { x: velocityX, y: velocityY })
-                            Matter.Body.setAngle(draggedEntry.body, draggedEntry.body.angle * 0.88)
+                            Matter.Body.setAngle(draggedEntry.body, 0)
                             Matter.Body.setAngularVelocity(draggedEntry.body, 0)
                         }
                     }
@@ -398,6 +402,31 @@ function FallingWords({
         }
     }
 
+    const _getWordIndexAtPoint = (clientX, clientY) => {
+        if(typeof document === "undefined") return null
+
+        const elements = document.elementsFromPoint?.(clientX, clientY) || []
+        for(const element of elements) {
+            if(!(element instanceof HTMLElement)) continue
+            if(!element.classList.contains("falling-word")) continue
+
+            const index = wordRefs.current.findIndex(node => node === element)
+            if(index >= 0) return index
+        }
+
+        for(let i = wordRefs.current.length - 1; i >= 0; i -= 1) {
+            const element = wordRefs.current[i]
+            if(!element) continue
+
+            const rect = element.getBoundingClientRect()
+            const insideX = clientX >= rect.left && clientX <= rect.right
+            const insideY = clientY >= rect.top && clientY <= rect.bottom
+            if(insideX && insideY) return i
+        }
+
+        return null
+    }
+
     const _selectWord = (index, { ignoreDragGate = false } = {}) => {
         if(index == null) return
         if(!ignoreDragGate && _shouldIgnoreClick()) return
@@ -424,7 +453,7 @@ function FallingWords({
         setSelectedIndex(index)
     }
 
-    const onWordPointerUp = (event) => {
+    const onPointerTap = (event) => {
         const dragState = dragStateRef.current
         if(dragState.pointerId !== event.pointerId) return
         if(dragState.index == null) return
@@ -453,23 +482,28 @@ function FallingWords({
     const onPointerDown = (event) => {
         if(selectedIndexRef.current !== null) return
 
-        const rawTarget = event.target
-        const targetEl = typeof Element !== "undefined" && rawTarget instanceof Element
-            ? rawTarget.closest?.("span.falling-word")
-            : rawTarget?.parentElement?.closest?.("span.falling-word")
-        if(!targetEl) return
-
-        const index = wordRefs.current.findIndex(node => node === targetEl)
-        if(index < 0) return
+        const index = _getWordIndexAtPoint(event.clientX, event.clientY)
+        if(index == null) return
 
         const entry = wordBodiesRef.current[index]
         const engine = engineRef.current
         const container = containerRef.current
         if(!entry || !engine || !container) return
+        const targetEl = entry.el
+        if(!targetEl) return
 
         const rect = container.getBoundingClientRect()
         const pointerX = event.clientX - rect.left
         const pointerY = event.clientY - rect.top
+        const wordRect = targetEl.getBoundingClientRect()
+        const anchorOffsetX = clamp(event.clientX - wordRect.left, 0, wordRect.width || 0)
+        const anchorOffsetY = clamp(event.clientY - wordRect.top, 0, wordRect.height || 0)
+        const dragBoxWidth = wordRect.width || entry.bodyWidth
+        const dragBoxHeight = wordRect.height || entry.bodyHeight
+        const renderOriginLeft = entry.body.position.x - entry.bodyWidth / 2
+        const renderOriginTop = entry.body.position.y - entry.bodyHeight / 2
+        const dragBoxLeftOffset = (wordRect.left - rect.left) - renderOriginLeft
+        const dragBoxTopOffset = (wordRect.top - rect.top) - renderOriginTop
 
         dragStateRef.current.pointerId = event.pointerId
         dragStateRef.current.index = index
@@ -477,8 +511,12 @@ function FallingWords({
         dragStateRef.current.tapEligible = true
         dragStateRef.current.startX = event.clientX
         dragStateRef.current.startY = event.clientY
-        dragStateRef.current.offsetX = entry.body.position.x - pointerX
-        dragStateRef.current.offsetY = entry.body.position.y - pointerY
+        dragStateRef.current.anchorOffsetX = anchorOffsetX
+        dragStateRef.current.anchorOffsetY = anchorOffsetY
+        dragStateRef.current.dragBoxWidth = dragBoxWidth
+        dragStateRef.current.dragBoxHeight = dragBoxHeight
+        dragStateRef.current.dragBoxLeftOffset = dragBoxLeftOffset
+        dragStateRef.current.dragBoxTopOffset = dragBoxTopOffset
         dragStateRef.current.targetX = entry.body.position.x
         dragStateRef.current.targetY = entry.body.position.y
         dragStateRef.current.pointerType = event.pointerType || null
@@ -493,6 +531,7 @@ function FallingWords({
         }
 
         Matter.Sleeping.set(entry.body, false)
+        Matter.Body.setAngle(entry.body, 0)
         Matter.Body.setVelocity(entry.body, { x: 0, y: 0 })
         Matter.Body.setAngularVelocity(entry.body, 0)
         event.preventDefault()
@@ -518,16 +557,20 @@ function FallingWords({
         const rect = container.getBoundingClientRect()
         const pointerX = event.clientX - rect.left
         const pointerY = event.clientY - rect.top
-        const nextX = clamp(
-            pointerX + dragState.offsetX,
-            entry.bodyWidth / 2 + 8,
-            rect.width - entry.bodyWidth / 2 - 8
+        const desiredBoxLeft = pointerX - dragState.anchorOffsetX
+        const desiredBoxTop = pointerY - dragState.anchorOffsetY
+        const clampedBoxLeft = clamp(
+            desiredBoxLeft,
+            8,
+            Math.max(8, rect.width - dragState.dragBoxWidth - 8)
         )
-        const nextY = clamp(
-            pointerY + dragState.offsetY,
-            entry.bodyHeight / 2 + 8,
-            rect.height - entry.bodyHeight / 2 - 8
+        const clampedBoxTop = clamp(
+            desiredBoxTop,
+            8,
+            Math.max(8, rect.height - dragState.dragBoxHeight - 8)
         )
+        const nextX = (clampedBoxLeft - dragState.dragBoxLeftOffset) + entry.bodyWidth / 2
+        const nextY = (clampedBoxTop - dragState.dragBoxTopOffset) + entry.bodyHeight / 2
         dragState.targetX = nextX
         dragState.targetY = nextY
         event.preventDefault()
@@ -547,11 +590,20 @@ function FallingWords({
             dragState.lastDragAt = Date.now()
             applyRedHold(index, 4000)
         }
+        else if(index != null && dragState.tapEligible) {
+            onPointerTap(event)
+        }
 
         dragState.pointerId = null
         dragState.index = null
         dragState.moved = false
         dragState.tapEligible = false
+        dragState.anchorOffsetX = 0
+        dragState.anchorOffsetY = 0
+        dragState.dragBoxWidth = 0
+        dragState.dragBoxHeight = 0
+        dragState.dragBoxLeftOffset = 0
+        dragState.dragBoxTopOffset = 0
         dragState.pointerType = null
     }
 
@@ -601,12 +653,6 @@ function FallingWords({
                         key={`${word}-${index}`}
                         ref={(el) => { wordRefs.current[index] = el }}
                         className={`falling-word ${isHighlighted ? "falling-word-highlighted" : ""} ${selectedIndex === index ? "falling-word-selected" : ""} ${isRedHold ? "falling-word-red-hold" : ""} ${isRedPermanent ? "falling-word-red-permanent" : ""}`}
-                        onPointerUp={onWordPointerUp}
-                        onClick={() => {
-                            if(Date.now() < suppressNextClickUntilRef.current) return
-                            if(dragStateRef.current.index != null) return
-                            _selectWord(index)
-                        }}
                     >
                         {word}
                     </span>

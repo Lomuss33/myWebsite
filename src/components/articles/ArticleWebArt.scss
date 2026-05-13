@@ -349,6 +349,67 @@ div.article-web-art-items {
     }
 }
 
+.article-web-art-spin-boxes {
+    display: grid;
+    place-items: center;
+    padding: clamp(14px, 6%, 24px);
+    background:
+        radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.08), transparent 32%),
+        radial-gradient(circle at 80% 82%, rgba(255, 255, 255, 0.06), transparent 30%),
+        linear-gradient(180deg, #474747 0%, #2f2f2f 100%);
+}
+
+.article-web-art-spin-boxes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(10px, 5.5%, 18px);
+    width: 100%;
+    max-width: 220px;
+}
+
+.article-web-art-spin-box {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1 / 1;
+}
+
+.article-web-art-spin-box-core {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 26%;
+    background: conic-gradient(in hsl longer hue, red 0 100%);
+    background-color: red;
+    cursor: pointer;
+    animation:
+        article-web-art-spin-box-init linear infinite var(--spin-duration),
+        article-web-art-spin-box-control linear infinite var(--control-duration) paused;
+    animation-composition: add;
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+        0 10px 22px rgba(0, 0, 0, 0.26);
+}
+
+.article-web-art-spin-box-core:hover {
+    animation-play-state: running;
+}
+
+.article-web-art-spin-boxes-locked .article-web-art-spin-box-core {
+    animation-play-state: paused;
+    cursor: default;
+}
+
+@keyframes article-web-art-spin-box-init {
+    to {
+        rotate: 1turn;
+    }
+}
+
+@keyframes article-web-art-spin-box-control {
+    to {
+        rotate: var(--control-turn);
+    }
+}
+
 .article-web-art-gated-tile-sheet {
     position: absolute;
     inset: -2px;

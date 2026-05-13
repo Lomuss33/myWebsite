@@ -65,6 +65,32 @@ div.article-portfolio-items-3-per-row {
 }
 
 div.article-portfolio-item {
+    --portfolio-item-text-color: var(--theme-texts-light-1);
+    --portfolio-item-title-color: var(--theme-primary);
+    --portfolio-item-title-shadow: none;
+    --portfolio-item-category-color: var(--theme-texts-light-2);
+    --portfolio-control-text-color: var(--theme-texts-light-1);
+    --portfolio-control-label-color: var(--theme-primary);
+    --portfolio-control-icon-color: currentColor;
+    --portfolio-control-icon-strong-color: currentColor;
+    --portfolio-control-avatar-color: var(--portfolio-control-icon-strong-color);
+    --portfolio-control-border-color: var(--theme-standard-borders);
+    --portfolio-control-surface-top: color-mix(in srgb, var(--theme-boards-background) 70%, var(--theme-empty) 30%);
+    --portfolio-control-surface-bottom: color-mix(in srgb, var(--theme-boards-background) 82%, var(--theme-empty) 18%);
+    --portfolio-control-icon-surface-top: var(--portfolio-control-surface-top);
+    --portfolio-control-icon-surface-bottom: var(--portfolio-control-surface-bottom);
+    --portfolio-control-visit-surface-top: var(--portfolio-control-surface-top);
+    --portfolio-control-visit-surface-bottom: var(--portfolio-control-surface-bottom);
+    --portfolio-control-hover-text-color: var(--theme-primary);
+    --portfolio-control-hover-border-color: var(--theme-primary);
+    --portfolio-control-hover-surface-top: var(--portfolio-control-surface-top);
+    --portfolio-control-hover-surface-bottom: var(--portfolio-control-surface-bottom);
+    --portfolio-control-avatar-border-color: var(--portfolio-control-border-color);
+    --portfolio-tag-surface-top: color-mix(in srgb, var(--theme-boards-background) 82%, var(--theme-empty) 18%);
+    --portfolio-tag-surface-bottom: color-mix(in srgb, var(--theme-boards-background) 70%, var(--theme-empty) 30%);
+    --portfolio-tag-text-color: var(--theme-texts-light-1);
+    --portfolio-tag-border-color: var(--theme-standard-borders);
+
     position: relative;
     display: flex;
     flex-direction: column;
@@ -75,6 +101,7 @@ div.article-portfolio-item {
 
     background-color: var(--theme-boards-background);
     border-radius: $standard-border-radius;
+    color: var(--portfolio-item-text-color);
 
     padding: var(--padding);
     margin-top: var(--margin-top);
@@ -89,314 +116,460 @@ div.article-portfolio-item {
 
 article#article-1-section-my-software {
     div.article-portfolio-item {
-        --software-card-accent: rgba(78, 163, 255, 0.18);
-        --software-card-accent-strong: rgba(250, 204, 21, 0.36);
+        --software-card-accent: rgba(96, 165, 250, 0.30);
+        --software-card-accent-strong: rgba(244, 114, 182, 0.44);
         --software-card-title-category: #93c5fd;
-        --software-card-text: #cbd5e1;
-        --software-card-title: #f8fafc;
-        --software-card-label: #facc15;
-        --software-card-control-text: #cbd5e1;
-        --software-card-control-bg-top: rgba(15, 23, 42, 0.94);
-        --software-card-control-bg-bottom: rgba(6, 9, 16, 0.94);
-        --software-card-sheen-1: rgba(78, 163, 255, 0.12);
-        --software-card-sheen-2: rgba(250, 204, 21, 0.06);
+        --software-card-text: #dbe7f5;
+        --software-card-title: #fef3c7;
+        --software-card-label: #f9a8d4;
+        --software-card-control-text: #e2e8f0;
+        --software-card-control-bg-top: rgba(22, 34, 54, 0.92);
+        --software-card-control-bg-bottom: rgba(10, 18, 32, 0.96);
+        --software-card-control-icon: #7dd3fc;
+        --software-card-control-icon-strong: #f9a8d4;
+        --software-card-sheen-1: rgba(96, 165, 250, 0.18);
+        --software-card-sheen-2: rgba(244, 114, 182, 0.14);
+        --software-card-ambient-1: rgba(59, 130, 246, 0.18);
+        --software-card-ambient-2: rgba(236, 72, 153, 0.10);
+        --software-card-bg-1: rgba(30, 41, 82, 0.98);
+        --software-card-bg-2: rgba(79, 28, 78, 0.95);
+        --software-card-bg-3: rgba(10, 18, 32, 0.98);
+        --software-card-tag-bg: rgba(11, 24, 40, 0.86);
+        --software-card-tag-text: #e6edf6;
+        --portfolio-item-text-color: var(--software-card-text);
+        --portfolio-item-title-color: var(--software-card-title);
+        --portfolio-item-title-shadow: 0 1px 16px color-mix(in srgb, var(--software-card-accent-strong) 18%, transparent);
+        --portfolio-item-category-color: var(--software-card-title-category);
+        --portfolio-control-text-color: var(--software-card-control-text);
+        --portfolio-control-label-color: var(--software-card-label);
+        --portfolio-control-icon-color: var(--software-card-control-icon);
+        --portfolio-control-icon-strong-color: var(--software-card-control-icon-strong);
+        --portfolio-control-avatar-color: var(--software-card-control-icon-strong);
+        --portfolio-control-border-color: var(--software-card-accent);
+        --portfolio-control-surface-top: var(--software-card-control-bg-top);
+        --portfolio-control-surface-bottom: var(--software-card-control-bg-bottom);
+        --portfolio-control-icon-surface-top: color-mix(in srgb, var(--software-card-accent-strong) 32%, var(--software-card-control-bg-top));
+        --portfolio-control-icon-surface-bottom: color-mix(in srgb, var(--software-card-accent) 24%, var(--software-card-control-bg-bottom));
+        --portfolio-control-visit-surface-top: color-mix(in srgb, var(--software-card-accent) 34%, var(--software-card-control-bg-top));
+        --portfolio-control-visit-surface-bottom: color-mix(in srgb, var(--software-card-accent-strong) 18%, var(--software-card-control-bg-bottom));
+        --portfolio-control-hover-text-color: #f8fafc;
+        --portfolio-control-hover-border-color: var(--software-card-accent-strong);
+        --portfolio-control-hover-surface-top: color-mix(in srgb, var(--software-card-accent) 28%, var(--software-card-control-bg-top));
+        --portfolio-control-hover-surface-bottom: color-mix(in srgb, var(--software-card-accent-strong) 14%, var(--software-card-control-bg-bottom));
+        --portfolio-control-avatar-border-color: color-mix(in srgb, var(--software-card-accent) 100%, white 12%);
+        --portfolio-tag-surface-top: color-mix(in srgb, var(--software-card-accent) 20%, var(--software-card-tag-bg));
+        --portfolio-tag-surface-bottom: color-mix(in srgb, var(--software-card-accent-strong) 8%, var(--software-card-tag-bg));
+        --portfolio-tag-text-color: var(--software-card-tag-text);
+        --portfolio-tag-border-color: var(--software-card-accent);
+        color: var(--software-card-text);
 
         position: relative;
         overflow: hidden;
         border: 1px solid var(--software-card-accent);
         background:
-            linear-gradient(140deg, rgba(11, 18, 32, 0.96), rgba(5, 8, 16, 0.96));
-        box-shadow: 0 18px 44px rgba(0, 0, 0, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-        transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+            linear-gradient(135deg, var(--software-card-bg-1) 0%, var(--software-card-bg-2) 54%, var(--software-card-bg-3) 100%);
+        box-shadow:
+            0 20px 46px rgba(2, 6, 23, 0.38),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.015);
+        transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, filter 180ms ease, background 180ms ease;
 
         &::before {
             content: "";
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(circle at top right, var(--software-card-sheen-1) 0%, transparent 56%),
-                radial-gradient(circle at bottom left, var(--software-card-sheen-2) 0%, transparent 40%);
+                radial-gradient(circle at top right, var(--software-card-sheen-1) 0%, transparent 54%),
+                radial-gradient(circle at bottom left, var(--software-card-sheen-2) 0%, transparent 40%),
+                radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--software-card-accent-strong) 16%, transparent) 0%, transparent 36%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0) 30%);
+            pointer-events: none;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 14% 18%, var(--software-card-ambient-1) 0%, transparent 28%),
+                radial-gradient(circle at 88% 82%, var(--software-card-ambient-2) 0%, transparent 32%);
             pointer-events: none;
         }
 
         &:hover {
             transform: translateY(-3px);
             border-color: var(--software-card-accent-strong);
-            box-shadow: 0 24px 52px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-            filter: saturate(1.03);
+            box-shadow:
+                0 28px 58px rgba(2, 6, 23, 0.46),
+                0 0 0 1px color-mix(in srgb, var(--software-card-accent) 32%, transparent),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            filter: saturate(1.1) brightness(1.03);
         }
     }
 
     div.article-portfolio-item.software-tone-belot {
-        --software-card-accent: rgba(34, 197, 94, 0.28);
-        --software-card-accent-strong: rgba(248, 113, 113, 0.44);
-        --software-card-title-category: #86efac;
+        --software-card-accent: rgba(245, 158, 11, 0.36);
+        --software-card-accent-strong: rgba(220, 38, 38, 0.46);
+        --software-card-title-category: #fde68a;
         --software-card-label: #fca5a5;
-        --software-card-sheen-1: rgba(34, 197, 94, 0.20);
-        --software-card-sheen-2: rgba(248, 113, 113, 0.12);
-        background: linear-gradient(145deg, rgba(8, 28, 20, 0.98), rgba(6, 18, 14, 0.98));
+        --software-card-title: #fef3c7;
+        --software-card-text: #f8ede3;
+        --software-card-control-icon: #fcd34d;
+        --software-card-control-icon-strong: #fca5a5;
+        --software-card-sheen-1: rgba(245, 158, 11, 0.24);
+        --software-card-sheen-2: rgba(220, 38, 38, 0.16);
+        --software-card-ambient-1: rgba(245, 158, 11, 0.18);
+        --software-card-ambient-2: rgba(22, 163, 74, 0.10);
+        --software-card-control-bg-top: rgba(64, 32, 12, 0.92);
+        --software-card-control-bg-bottom: rgba(24, 13, 9, 0.98);
+        --software-card-bg-1: rgba(58, 28, 14, 0.98);
+        --software-card-bg-2: rgba(22, 44, 24, 0.95);
+        --software-card-bg-3: rgba(61, 15, 24, 0.98);
     }
 
     div.article-portfolio-item.software-tone-robotics {
-        --software-card-accent: rgba(56, 189, 248, 0.28);
-        --software-card-accent-strong: rgba(125, 211, 252, 0.44);
-        --software-card-title-category: #7dd3fc;
-        --software-card-label: #bae6fd;
-        --software-card-sheen-1: rgba(56, 189, 248, 0.20);
-        --software-card-sheen-2: rgba(96, 165, 250, 0.12);
-        background: linear-gradient(145deg, rgba(7, 18, 33, 0.98), rgba(4, 10, 20, 0.98));
+        --software-card-accent: rgba(34, 211, 238, 0.36);
+        --software-card-accent-strong: rgba(99, 102, 241, 0.46);
+        --software-card-title-category: #a5f3fc;
+        --software-card-label: #c7d2fe;
+        --software-card-title: #ecfeff;
+        --software-card-text: #e0f2fe;
+        --software-card-control-icon: #67e8f9;
+        --software-card-control-icon-strong: #e9d5ff;
+        --software-card-sheen-1: rgba(34, 211, 238, 0.24);
+        --software-card-sheen-2: rgba(99, 102, 241, 0.16);
+        --software-card-ambient-1: rgba(6, 182, 212, 0.18);
+        --software-card-ambient-2: rgba(148, 163, 184, 0.10);
+        --software-card-control-bg-top: rgba(18, 40, 62, 0.92);
+        --software-card-control-bg-bottom: rgba(9, 19, 37, 0.98);
+        --software-card-bg-1: rgba(9, 47, 74, 0.98);
+        --software-card-bg-2: rgba(43, 56, 118, 0.95);
+        --software-card-bg-3: rgba(25, 34, 44, 0.98);
     }
 
     div.article-portfolio-item.software-tone-arcade {
-        --software-card-accent: rgba(168, 85, 247, 0.30);
-        --software-card-accent-strong: rgba(244, 114, 182, 0.46);
+        --software-card-accent: rgba(192, 132, 252, 0.34);
+        --software-card-accent-strong: rgba(251, 191, 36, 0.48);
         --software-card-title-category: #d8b4fe;
-        --software-card-label: #f9a8d4;
-        --software-card-sheen-1: rgba(168, 85, 247, 0.22);
-        --software-card-sheen-2: rgba(244, 114, 182, 0.12);
-        background: linear-gradient(145deg, rgba(28, 13, 44, 0.98), rgba(18, 7, 28, 0.98));
+        --software-card-label: #fde68a;
+        --software-card-title: #fbcfe8;
+        --software-card-text: #f5eaff;
+        --software-card-control-icon: #d8b4fe;
+        --software-card-control-icon-strong: #fde68a;
+        --software-card-sheen-1: rgba(168, 85, 247, 0.24);
+        --software-card-sheen-2: rgba(251, 191, 36, 0.14);
+        --software-card-ambient-1: rgba(168, 85, 247, 0.18);
+        --software-card-ambient-2: rgba(245, 158, 11, 0.10);
+        --software-card-control-bg-top: rgba(43, 24, 61, 0.92);
+        --software-card-control-bg-bottom: rgba(21, 11, 34, 0.98);
+        --software-card-bg-1: rgba(52, 20, 86, 0.98);
+        --software-card-bg-2: rgba(92, 30, 84, 0.95);
+        --software-card-bg-3: rgba(28, 12, 36, 0.98);
     }
 
     div.article-portfolio-item.software-tone-linguistics {
-        --software-card-accent: rgba(20, 184, 166, 0.28);
-        --software-card-accent-strong: rgba(45, 212, 191, 0.44);
-        --software-card-title-category: #99f6e4;
-        --software-card-label: #67e8f9;
-        --software-card-sheen-1: rgba(20, 184, 166, 0.20);
-        --software-card-sheen-2: rgba(34, 211, 238, 0.10);
-        background: linear-gradient(145deg, rgba(6, 32, 34, 0.98), rgba(4, 19, 22, 0.98));
+        --software-card-accent: rgba(239, 68, 68, 0.38);
+        --software-card-accent-strong: rgba(250, 204, 21, 0.50);
+        --software-card-title-category: #fca5a5;
+        --software-card-label: #fde68a;
+        --software-card-title: #fef2f2;
+        --software-card-text: #f3f4f6;
+        --software-card-control-icon: #fca5a5;
+        --software-card-control-icon-strong: #fde68a;
+        --software-card-sheen-1: rgba(239, 68, 68, 0.24);
+        --software-card-sheen-2: rgba(250, 204, 21, 0.16);
+        --software-card-ambient-1: rgba(239, 68, 68, 0.18);
+        --software-card-ambient-2: rgba(250, 204, 21, 0.12);
+        --software-card-control-bg-top: rgba(46, 14, 16, 0.94);
+        --software-card-control-bg-bottom: rgba(18, 12, 12, 0.98);
+        --software-card-bg-1: rgba(8, 8, 10, 0.99);
+        --software-card-bg-2: rgba(98, 14, 18, 0.96);
+        --software-card-bg-3: rgba(120, 72, 8, 0.94);
     }
 
     div.article-portfolio-item.software-tone-architecture {
-        --software-card-accent: rgba(249, 115, 22, 0.30);
-        --software-card-accent-strong: rgba(251, 191, 36, 0.46);
+        --software-card-accent: rgba(249, 115, 22, 0.36);
+        --software-card-accent-strong: rgba(20, 184, 166, 0.44);
         --software-card-title-category: #fdba74;
-        --software-card-label: #fde68a;
-        --software-card-sheen-1: rgba(249, 115, 22, 0.20);
-        --software-card-sheen-2: rgba(251, 191, 36, 0.12);
-        background: linear-gradient(145deg, rgba(44, 18, 8, 0.98), rgba(25, 11, 5, 0.98));
+        --software-card-label: #99f6e4;
+        --software-card-title: #fffbeb;
+        --software-card-text: #ffedd5;
+        --software-card-control-icon: #fdba74;
+        --software-card-control-icon-strong: #99f6e4;
+        --software-card-sheen-1: rgba(249, 115, 22, 0.24);
+        --software-card-sheen-2: rgba(20, 184, 166, 0.14);
+        --software-card-ambient-1: rgba(251, 146, 60, 0.18);
+        --software-card-ambient-2: rgba(14, 165, 233, 0.08);
+        --software-card-control-bg-top: rgba(60, 30, 16, 0.92);
+        --software-card-control-bg-bottom: rgba(21, 17, 12, 0.98);
+        --software-card-bg-1: rgba(111, 57, 28, 0.98);
+        --software-card-bg-2: rgba(206, 151, 86, 0.92);
+        --software-card-bg-3: rgba(24, 74, 84, 0.95);
     }
 
     div.article-portfolio-item.software-tone-editorial {
-        --software-card-accent: rgba(239, 68, 68, 0.28);
-        --software-card-accent-strong: rgba(248, 113, 113, 0.46);
+        --software-card-accent: rgba(251, 113, 133, 0.34);
+        --software-card-accent-strong: rgba(190, 24, 93, 0.46);
         --software-card-title-category: #fca5a5;
-        --software-card-label: #fecaca;
-        --software-card-sheen-1: rgba(239, 68, 68, 0.20);
-        --software-card-sheen-2: rgba(251, 113, 133, 0.10);
-        background: linear-gradient(145deg, rgba(43, 10, 16, 0.98), rgba(26, 7, 12, 0.98));
+        --software-card-label: #f9a8d4;
+        --software-card-title: #ffe4e6;
+        --software-card-text: #ffe7ef;
+        --software-card-control-icon: #fda4af;
+        --software-card-control-icon-strong: #f9a8d4;
+        --software-card-sheen-1: rgba(251, 113, 133, 0.22);
+        --software-card-sheen-2: rgba(190, 24, 93, 0.14);
+        --software-card-ambient-1: rgba(239, 68, 68, 0.18);
+        --software-card-ambient-2: rgba(190, 24, 93, 0.10);
+        --software-card-control-bg-top: rgba(57, 20, 30, 0.92);
+        --software-card-control-bg-bottom: rgba(28, 10, 16, 0.98);
+        --software-card-bg-1: rgba(74, 20, 34, 0.98);
+        --software-card-bg-2: rgba(78, 20, 61, 0.95);
+        --software-card-bg-3: rgba(24, 9, 13, 0.98);
     }
 
     div.article-portfolio-item.software-tone-genealogy {
-        --software-card-accent: rgba(132, 204, 22, 0.28);
-        --software-card-accent-strong: rgba(74, 222, 128, 0.44);
+        --software-card-accent: rgba(163, 230, 53, 0.34);
+        --software-card-accent-strong: rgba(56, 189, 248, 0.46);
         --software-card-title-category: #bef264;
-        --software-card-label: #bbf7d0;
-        --software-card-sheen-1: rgba(132, 204, 22, 0.18);
-        --software-card-sheen-2: rgba(74, 222, 128, 0.10);
-        background: linear-gradient(145deg, rgba(18, 31, 10, 0.98), rgba(11, 20, 7, 0.98));
+        --software-card-label: #7dd3fc;
+        --software-card-title: #ecfccb;
+        --software-card-text: #f0fdf4;
+        --software-card-control-icon: #bef264;
+        --software-card-control-icon-strong: #7dd3fc;
+        --software-card-sheen-1: rgba(163, 230, 53, 0.20);
+        --software-card-sheen-2: rgba(56, 189, 248, 0.14);
+        --software-card-ambient-1: rgba(132, 204, 22, 0.16);
+        --software-card-ambient-2: rgba(14, 165, 233, 0.10);
+        --software-card-control-bg-top: rgba(30, 45, 16, 0.92);
+        --software-card-control-bg-bottom: rgba(14, 23, 8, 0.98);
+        --software-card-bg-1: rgba(42, 61, 16, 0.98);
+        --software-card-bg-2: rgba(15, 58, 74, 0.95);
+        --software-card-bg-3: rgba(12, 19, 7, 0.98);
     }
 
-    div.article-portfolio-item-title-main {
-        color: var(--software-card-title);
+    div.article-portfolio-item.software-tone-portfolio {
+        --software-card-accent: rgba(96, 165, 250, 0.36);
+        --software-card-accent-strong: rgba(249, 115, 22, 0.48);
+        --software-card-title-category: #93c5fd;
+        --software-card-label: #fdba74;
+        --software-card-title: #e0f2fe;
+        --software-card-text: #dbeafe;
+        --software-card-control-icon: #67e8f9;
+        --software-card-control-icon-strong: #fdba74;
+        --software-card-sheen-1: rgba(59, 130, 246, 0.24);
+        --software-card-sheen-2: rgba(249, 115, 22, 0.16);
+        --software-card-ambient-1: rgba(14, 165, 233, 0.18);
+        --software-card-ambient-2: rgba(249, 115, 22, 0.10);
+        --software-card-control-bg-top: rgba(18, 36, 64, 0.92);
+        --software-card-control-bg-bottom: rgba(11, 20, 37, 0.98);
+        --software-card-bg-1: rgba(14, 48, 92, 0.98);
+        --software-card-bg-2: rgba(14, 106, 146, 0.94);
+        --software-card-bg-3: rgba(120, 58, 20, 0.95);
     }
 
-    div.article-portfolio-item-title-category {
-        color: var(--software-card-title-category);
-    }
-
-    div.article-portfolio-item-body-description {
-        color: var(--software-card-text);
-    }
-
-    a.article-portfolio-item-control-btn,
-    div.article-portfolio-item-control-btn {
-        background: linear-gradient(180deg, var(--software-card-control-bg-top), var(--software-card-control-bg-bottom));
-        color: var(--software-card-control-text);
-        border-color: var(--software-card-accent);
-
-        &:hover {
-            border-color: var(--software-card-accent-strong);
-            color: #f8fafc;
-        }
-    }
-
-    span.article-portfolio-item-control-btn-label {
-        color: var(--software-card-label);
-    }
-
-    div.article-portfolio-item-control-avatar {
-        border-color: color-mix(in srgb, var(--software-card-accent) 100%, white 12%);
-    }
-
-    ul.article-portfolio-item-body-tags {
-        margin-top: 10px;
-    }
-
-    li.article-portfolio-item-body-tag {
-        background: linear-gradient(180deg, color-mix(in srgb, var(--software-card-accent) 100%, transparent 0%), rgba(11, 18, 32, 0.96));
-        color: #e2e8f0;
-        border: 1px solid var(--software-card-accent);
-    }
 }
 
 article#article-1-section-my-hardware {
     div.article-portfolio-item {
-        --hardware-card-accent: rgba(56, 189, 248, 0.16);
-        --hardware-card-accent-strong: rgba(245, 158, 11, 0.38);
-        --hardware-card-title-category: #7dd3fc;
-        --hardware-card-text: #cbd5e1;
+        --hardware-card-accent: rgba(103, 232, 249, 0.28);
+        --hardware-card-accent-strong: rgba(245, 158, 11, 0.44);
+        --hardware-card-title-category: #67e8f9;
+        --hardware-card-text: #c7d2e0;
         --hardware-card-title: #f8fafc;
-        --hardware-card-label: #f59e0b;
-        --hardware-card-control-text: #d1d5db;
-        --hardware-card-control-bg-top: rgba(15, 23, 42, 0.95);
-        --hardware-card-control-bg-bottom: rgba(6, 9, 16, 0.95);
-        --hardware-card-sheen-1: rgba(56, 189, 248, 0.13);
-        --hardware-card-sheen-2: rgba(245, 158, 11, 0.08);
+        --hardware-card-label: #fbbf24;
+        --hardware-card-control-text: #e2e8f0;
+        --hardware-card-control-bg-top: rgba(18, 36, 52, 0.92);
+        --hardware-card-control-bg-bottom: rgba(8, 18, 30, 0.96);
+        --hardware-card-control-icon: var(--hardware-card-control-text);
+        --hardware-card-control-icon-strong: var(--hardware-card-label);
+        --hardware-card-sheen-1: rgba(103, 232, 249, 0.18);
+        --hardware-card-sheen-2: rgba(245, 158, 11, 0.14);
+        --hardware-card-ambient-1: rgba(8, 145, 178, 0.18);
+        --hardware-card-ambient-2: rgba(249, 115, 22, 0.10);
+        --hardware-card-tag-bg: rgba(11, 28, 41, 0.86);
+        --hardware-card-tag-text: #e6edf6;
+        --portfolio-item-text-color: var(--hardware-card-text);
+        --portfolio-item-title-color: var(--hardware-card-title);
+        --portfolio-item-category-color: var(--hardware-card-title-category);
+        --portfolio-control-text-color: var(--hardware-card-control-text);
+        --portfolio-control-label-color: var(--hardware-card-label);
+        --portfolio-control-icon-color: var(--hardware-card-control-icon);
+        --portfolio-control-icon-strong-color: var(--hardware-card-control-icon-strong);
+        --portfolio-control-avatar-color: var(--hardware-card-control-icon-strong);
+        --portfolio-control-border-color: var(--hardware-card-accent);
+        --portfolio-control-surface-top: var(--hardware-card-control-bg-top);
+        --portfolio-control-surface-bottom: var(--hardware-card-control-bg-bottom);
+        --portfolio-control-icon-surface-top: color-mix(in srgb, var(--hardware-card-accent-strong) 32%, var(--hardware-card-control-bg-top));
+        --portfolio-control-icon-surface-bottom: color-mix(in srgb, var(--hardware-card-accent) 24%, var(--hardware-card-control-bg-bottom));
+        --portfolio-control-visit-surface-top: color-mix(in srgb, var(--hardware-card-accent) 34%, var(--hardware-card-control-bg-top));
+        --portfolio-control-visit-surface-bottom: color-mix(in srgb, var(--hardware-card-accent-strong) 18%, var(--hardware-card-control-bg-bottom));
+        --portfolio-control-hover-text-color: #f8fafc;
+        --portfolio-control-hover-border-color: var(--hardware-card-accent-strong);
+        --portfolio-control-hover-surface-top: color-mix(in srgb, var(--hardware-card-accent) 28%, var(--hardware-card-control-bg-top));
+        --portfolio-control-hover-surface-bottom: color-mix(in srgb, var(--hardware-card-accent-strong) 14%, var(--hardware-card-control-bg-bottom));
+        --portfolio-control-avatar-border-color: color-mix(in srgb, var(--hardware-card-accent) 100%, white 12%);
+        --portfolio-tag-surface-top: color-mix(in srgb, var(--hardware-card-accent) 20%, var(--hardware-card-tag-bg));
+        --portfolio-tag-surface-bottom: color-mix(in srgb, var(--hardware-card-accent-strong) 8%, var(--hardware-card-tag-bg));
+        --portfolio-tag-text-color: var(--hardware-card-tag-text);
+        --portfolio-tag-border-color: var(--hardware-card-accent);
+        color: var(--hardware-card-text);
 
         position: relative;
         overflow: hidden;
         border: 1px solid var(--hardware-card-accent);
         background:
-            linear-gradient(140deg, rgba(9, 14, 22, 0.98), rgba(4, 7, 12, 0.98));
-        box-shadow: 0 18px 44px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-        transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+            linear-gradient(180deg, rgba(16, 31, 45, 0.98), rgba(8, 16, 27, 0.98));
+        box-shadow:
+            0 20px 46px rgba(2, 6, 23, 0.40),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.015);
+        transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, filter 180ms ease, background 180ms ease;
 
         &::before {
             content: "";
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(circle at top right, var(--hardware-card-sheen-1) 0%, transparent 56%),
-                radial-gradient(circle at bottom left, var(--hardware-card-sheen-2) 0%, transparent 42%);
+                radial-gradient(circle at top right, var(--hardware-card-sheen-1) 0%, transparent 54%),
+                radial-gradient(circle at bottom left, var(--hardware-card-sheen-2) 0%, transparent 42%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0) 30%);
+            pointer-events: none;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 14% 18%, var(--hardware-card-ambient-1) 0%, transparent 28%),
+                radial-gradient(circle at 88% 82%, var(--hardware-card-ambient-2) 0%, transparent 32%);
+            opacity: 0.95;
             pointer-events: none;
         }
 
         &:hover {
             transform: translateY(-3px);
             border-color: var(--hardware-card-accent-strong);
-            box-shadow: 0 24px 52px rgba(0, 0, 0, 0.46), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-            filter: saturate(1.03);
+            box-shadow:
+                0 28px 58px rgba(2, 6, 23, 0.48),
+                0 0 0 1px color-mix(in srgb, var(--hardware-card-accent) 32%, transparent),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            filter: saturate(1.1) brightness(1.03);
         }
     }
 
     div.article-portfolio-item.hardware-tone-rack-steel {
-        --hardware-card-accent: rgba(59, 130, 246, 0.30);
-        --hardware-card-accent-strong: rgba(125, 211, 252, 0.44);
+        --hardware-card-accent: rgba(96, 165, 250, 0.34);
+        --hardware-card-accent-strong: rgba(125, 211, 252, 0.50);
         --hardware-card-title-category: #bfdbfe;
         --hardware-card-label: #7dd3fc;
-        --hardware-card-sheen-1: rgba(59, 130, 246, 0.22);
-        --hardware-card-sheen-2: rgba(125, 211, 252, 0.12);
-        background: linear-gradient(145deg, rgba(10, 22, 39, 0.98), rgba(5, 13, 24, 0.98));
+        --hardware-card-sheen-1: rgba(59, 130, 246, 0.24);
+        --hardware-card-sheen-2: rgba(34, 211, 238, 0.14);
+        --hardware-card-ambient-1: rgba(59, 130, 246, 0.22);
+        --hardware-card-ambient-2: rgba(34, 211, 238, 0.10);
+        --hardware-card-control-bg-top: rgba(16, 38, 66, 0.92);
+        --hardware-card-control-bg-bottom: rgba(6, 20, 38, 0.98);
+        background: linear-gradient(180deg, rgba(13, 28, 51, 0.98), rgba(6, 16, 30, 0.98));
     }
 
     div.article-portfolio-item.hardware-tone-conveyor-steel {
-        --hardware-card-accent: rgba(250, 204, 21, 0.34);
-        --hardware-card-accent-strong: rgba(251, 146, 60, 0.46);
+        --hardware-card-accent: rgba(250, 204, 21, 0.36);
+        --hardware-card-accent-strong: rgba(251, 146, 60, 0.50);
         --hardware-card-title-category: #fde68a;
-        --hardware-card-label: #fcd34d;
-        --hardware-card-sheen-1: rgba(250, 204, 21, 0.24);
-        --hardware-card-sheen-2: rgba(251, 146, 60, 0.14);
-        background: linear-gradient(145deg, rgba(38, 32, 12, 0.98), rgba(20, 17, 6, 0.98));
+        --hardware-card-label: #fdba74;
+        --hardware-card-sheen-1: rgba(250, 204, 21, 0.26);
+        --hardware-card-sheen-2: rgba(251, 146, 60, 0.16);
+        --hardware-card-ambient-1: rgba(234, 179, 8, 0.22);
+        --hardware-card-ambient-2: rgba(249, 115, 22, 0.10);
+        --hardware-card-control-bg-top: rgba(56, 44, 12, 0.92);
+        --hardware-card-control-bg-bottom: rgba(29, 22, 6, 0.98);
+        background: linear-gradient(180deg, rgba(47, 36, 10, 0.98), rgba(24, 18, 5, 0.98));
     }
 
     div.article-portfolio-item.hardware-tone-forged-iron {
-        --hardware-card-accent: rgba(248, 113, 113, 0.30);
-        --hardware-card-accent-strong: rgba(251, 191, 36, 0.42);
+        --hardware-card-accent: rgba(248, 113, 113, 0.34);
+        --hardware-card-accent-strong: rgba(251, 191, 36, 0.46);
         --hardware-card-title-category: #fecaca;
-        --hardware-card-label: #fcd34d;
-        --hardware-card-sheen-1: rgba(248, 113, 113, 0.22);
-        --hardware-card-sheen-2: rgba(251, 191, 36, 0.10);
-        background: linear-gradient(145deg, rgba(39, 16, 16, 0.98), rgba(20, 8, 8, 0.98));
+        --hardware-card-label: #fbbf24;
+        --hardware-card-sheen-1: rgba(248, 113, 113, 0.24);
+        --hardware-card-sheen-2: rgba(251, 191, 36, 0.12);
+        --hardware-card-ambient-1: rgba(239, 68, 68, 0.20);
+        --hardware-card-ambient-2: rgba(245, 158, 11, 0.08);
+        --hardware-card-control-bg-top: rgba(62, 22, 22, 0.92);
+        --hardware-card-control-bg-bottom: rgba(30, 10, 10, 0.98);
+        background: linear-gradient(180deg, rgba(50, 18, 18, 0.98), rgba(24, 9, 9, 0.98));
     }
 
     div.article-portfolio-item.hardware-tone-varnished-wood {
-        --hardware-card-accent: rgba(34, 197, 94, 0.30);
-        --hardware-card-accent-strong: rgba(251, 191, 36, 0.44);
+        --hardware-card-accent: rgba(74, 222, 128, 0.34);
+        --hardware-card-accent-strong: rgba(245, 158, 11, 0.48);
         --hardware-card-title-category: #bbf7d0;
         --hardware-card-label: #fde68a;
-        --hardware-card-sheen-1: rgba(34, 197, 94, 0.20);
-        --hardware-card-sheen-2: rgba(180, 83, 9, 0.12);
-        background: linear-gradient(145deg, rgba(28, 39, 18, 0.98), rgba(17, 24, 11, 0.98));
+        --hardware-card-sheen-1: rgba(74, 222, 128, 0.22);
+        --hardware-card-sheen-2: rgba(245, 158, 11, 0.10);
+        --hardware-card-ambient-1: rgba(34, 197, 94, 0.18);
+        --hardware-card-ambient-2: rgba(180, 83, 9, 0.10);
+        --hardware-card-control-bg-top: rgba(22, 52, 27, 0.92);
+        --hardware-card-control-bg-bottom: rgba(10, 27, 14, 0.98);
+        background: linear-gradient(180deg, rgba(20, 45, 22, 0.98), rgba(10, 24, 12, 0.98));
     }
 
     div.article-portfolio-item.hardware-tone-brushed-aluminum {
-        --hardware-card-accent: rgba(226, 232, 240, 0.34);
-        --hardware-card-accent-strong: rgba(103, 232, 249, 0.42);
+        --hardware-card-accent: rgba(226, 232, 240, 0.32);
+        --hardware-card-accent-strong: rgba(103, 232, 249, 0.46);
         --hardware-card-title-category: #f1f5f9;
         --hardware-card-label: #a5f3fc;
-        --hardware-card-sheen-1: rgba(226, 232, 240, 0.22);
-        --hardware-card-sheen-2: rgba(103, 232, 249, 0.12);
-        background: linear-gradient(145deg, rgba(49, 57, 68, 0.98), rgba(24, 31, 40, 0.98));
+        --hardware-card-sheen-1: rgba(226, 232, 240, 0.18);
+        --hardware-card-sheen-2: rgba(103, 232, 249, 0.14);
+        --hardware-card-ambient-1: rgba(148, 163, 184, 0.18);
+        --hardware-card-ambient-2: rgba(34, 211, 238, 0.10);
+        --hardware-card-control-bg-top: rgba(49, 59, 72, 0.92);
+        --hardware-card-control-bg-bottom: rgba(24, 31, 40, 0.98);
+        background: linear-gradient(180deg, rgba(47, 57, 70, 0.98), rgba(24, 31, 41, 0.98));
     }
 
     div.article-portfolio-item.hardware-tone-slate-copper {
-        --hardware-card-accent: rgba(251, 146, 60, 0.30);
-        --hardware-card-accent-strong: rgba(192, 132, 252, 0.42);
+        --hardware-card-accent: rgba(251, 146, 60, 0.34);
+        --hardware-card-accent-strong: rgba(192, 132, 252, 0.46);
         --hardware-card-title-category: #fdba74;
         --hardware-card-label: #d8b4fe;
-        --hardware-card-sheen-1: rgba(251, 146, 60, 0.18);
-        --hardware-card-sheen-2: rgba(192, 132, 252, 0.12);
-        background: linear-gradient(145deg, rgba(33, 22, 44, 0.98), rgba(18, 12, 26, 0.98));
+        --hardware-card-sheen-1: rgba(251, 146, 60, 0.22);
+        --hardware-card-sheen-2: rgba(192, 132, 252, 0.14);
+        --hardware-card-ambient-1: rgba(249, 115, 22, 0.18);
+        --hardware-card-ambient-2: rgba(168, 85, 247, 0.12);
+        --hardware-card-control-bg-top: rgba(54, 28, 52, 0.92);
+        --hardware-card-control-bg-bottom: rgba(25, 14, 31, 0.98);
+        background: linear-gradient(180deg, rgba(43, 24, 49, 0.98), rgba(21, 12, 28, 0.98));
     }
 
     div.article-portfolio-item.hardware-tone-gunmetal {
-        --hardware-card-accent: rgba(217, 70, 239, 0.30);
-        --hardware-card-accent-strong: rgba(96, 165, 250, 0.42);
+        --hardware-card-accent: rgba(217, 70, 239, 0.34);
+        --hardware-card-accent-strong: rgba(96, 165, 250, 0.46);
         --hardware-card-title-category: #f5d0fe;
         --hardware-card-label: #93c5fd;
-        --hardware-card-sheen-1: rgba(217, 70, 239, 0.20);
-        --hardware-card-sheen-2: rgba(96, 165, 250, 0.12);
-        background: linear-gradient(145deg, rgba(28, 12, 36, 0.98), rgba(15, 8, 22, 0.98));
+        --hardware-card-sheen-1: rgba(217, 70, 239, 0.24);
+        --hardware-card-sheen-2: rgba(96, 165, 250, 0.14);
+        --hardware-card-ambient-1: rgba(192, 38, 211, 0.18);
+        --hardware-card-ambient-2: rgba(59, 130, 246, 0.12);
+        --hardware-card-control-bg-top: rgba(45, 20, 57, 0.92);
+        --hardware-card-control-bg-bottom: rgba(22, 10, 31, 0.98);
+        background: linear-gradient(180deg, rgba(35, 16, 47, 0.98), rgba(16, 9, 25, 0.98));
     }
 
     div.article-portfolio-item.hardware-tone-workshop-steel {
-        --hardware-card-accent: rgba(74, 222, 128, 0.30);
-        --hardware-card-accent-strong: rgba(45, 212, 191, 0.40);
+        --hardware-card-accent: rgba(74, 222, 128, 0.34);
+        --hardware-card-accent-strong: rgba(45, 212, 191, 0.44);
         --hardware-card-title-category: #bbf7d0;
         --hardware-card-label: #99f6e4;
-        --hardware-card-sheen-1: rgba(74, 222, 128, 0.18);
-        --hardware-card-sheen-2: rgba(45, 212, 191, 0.10);
-        background: linear-gradient(145deg, rgba(16, 40, 26, 0.98), rgba(9, 23, 15, 0.98));
+        --hardware-card-sheen-1: rgba(74, 222, 128, 0.20);
+        --hardware-card-sheen-2: rgba(45, 212, 191, 0.12);
+        --hardware-card-ambient-1: rgba(34, 197, 94, 0.18);
+        --hardware-card-ambient-2: rgba(13, 148, 136, 0.10);
+        --hardware-card-control-bg-top: rgba(18, 49, 33, 0.92);
+        --hardware-card-control-bg-bottom: rgba(8, 26, 18, 0.98);
+        background: linear-gradient(180deg, rgba(16, 43, 28, 0.98), rgba(8, 23, 15, 0.98));
     }
 
-    div.article-portfolio-item-title-main {
-        color: var(--hardware-card-title);
-    }
-
-    div.article-portfolio-item-title-category {
-        color: var(--hardware-card-title-category);
-    }
-
-    div.article-portfolio-item-body-description {
-        color: var(--hardware-card-text);
-    }
-
-    a.article-portfolio-item-control-btn,
-    div.article-portfolio-item-control-btn {
-        background: linear-gradient(180deg, var(--hardware-card-control-bg-top), var(--hardware-card-control-bg-bottom));
-        color: var(--hardware-card-control-text);
-        border-color: var(--hardware-card-accent);
-
-        &:hover {
-            border-color: var(--hardware-card-accent-strong);
-            color: #f8fafc;
-        }
-    }
-
-    span.article-portfolio-item-control-btn-label {
-        color: var(--hardware-card-label);
-    }
-
-    div.article-portfolio-item-control-avatar {
-        border-color: color-mix(in srgb, var(--hardware-card-accent) 100%, white 12%);
-    }
-
-    li.article-portfolio-item-body-tag {
-        background: linear-gradient(180deg, color-mix(in srgb, var(--hardware-card-accent) 100%, transparent 0%), rgba(9, 14, 22, 0.96));
-        color: #e5e7eb;
-        border: 1px solid var(--hardware-card-accent);
-    }
 }
 
 /* Dock wrappers are absolutely positioned and static */
@@ -441,8 +614,8 @@ a.article-portfolio-item-control-btn,
 div.article-portfolio-item-control-btn {
     height: var(--portfolio-control-height);
     border-radius: var(--portfolio-control-radius);
-    background: color-mix(in srgb, var(--theme-boards-background) 70%, var(--theme-empty) 30%);
-    border: 1px solid var(--theme-standard-borders);
+    background: linear-gradient(180deg, var(--portfolio-control-surface-top), var(--portfolio-control-surface-bottom));
+    border: 1px solid var(--portfolio-control-border-color);
 
     display: inline-flex;
     align-items: center;
@@ -450,8 +623,11 @@ div.article-portfolio-item-control-btn {
     gap: 10px;
 
     text-decoration: none;
-    color: var(--theme-texts-light-1);
+    color: var(--portfolio-control-text-color);
     min-width: 0;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 0 0 1px rgba(255, 255, 255, 0.015);
 
     i.fa-icon {
         font-size: clamp(0.8rem, 1.7cqw, 0.95rem);
@@ -460,8 +636,13 @@ div.article-portfolio-item-control-btn {
 
     &:hover {
         transform: translateY(-1px);
-        border-color: var(--theme-primary);
-        color: var(--theme-primary);
+        border-color: var(--portfolio-control-hover-border-color);
+        color: var(--portfolio-control-hover-text-color);
+        background: linear-gradient(180deg, var(--portfolio-control-hover-surface-top), var(--portfolio-control-hover-surface-bottom));
+        box-shadow:
+            0 12px 26px color-mix(in srgb, var(--portfolio-control-border-color) 24%, transparent),
+            0 0 0 1px color-mix(in srgb, var(--portfolio-control-hover-border-color) 40%, transparent),
+            inset 0 1px 0 rgba(255, 255, 255, 0.14);
     }
 
     &:focus-visible {
@@ -472,6 +653,11 @@ div.article-portfolio-item-control-btn {
 a.article-portfolio-item-control-btn-icon {
     width: var(--portfolio-control-height);
     padding: 0;
+    background: linear-gradient(135deg, var(--portfolio-control-icon-surface-top), var(--portfolio-control-icon-surface-bottom));
+
+    i.fa-icon {
+        color: var(--portfolio-control-icon-strong-color);
+    }
 }
 
 a.article-portfolio-item-control-btn-visit {
@@ -479,6 +665,7 @@ a.article-portfolio-item-control-btn-visit {
     padding-left: 12px;
     padding-right: 6px;
     min-width: 0;
+    background: linear-gradient(135deg, var(--portfolio-control-visit-surface-top), var(--portfolio-control-visit-surface-bottom));
 
     div.article-portfolio-item-control-avatar {
         margin-left: auto;
@@ -494,23 +681,41 @@ span.article-portfolio-item-control-btn-label {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--theme-primary);
+    color: var(--portfolio-control-label-color);
 }
 
 i.article-portfolio-item-control-btn-external-icon {
     font-size: 0.95em;
     opacity: 0.9;
+    color: var(--portfolio-control-icon-color);
 }
 
 div.article-portfolio-item-control-avatar {
     width: calc(var(--portfolio-control-height) - 10px);
     height: calc(var(--portfolio-control-height) - 10px);
-    border-radius: 999px;
     flex: 0 0 auto;
-
-    // Keep it crisp (no big buffer ring like the old large avatar dock).
-    border: 1px solid var(--theme-standard-borders);
+    border-radius: 0;
+    overflow: visible;
+    background: transparent;
+    color: var(--portfolio-control-avatar-color);
+    border: 0;
+    box-shadow: none;
     font-size: calc(var(--portfolio-control-height) / 2.25);
+    border-color: var(--portfolio-control-avatar-border-color);
+    --ff-filter: none;
+    --ff-hover-lift: 0px;
+    --ff-hover-y: 0px;
+    --ff-highlight-opacity: 0;
+
+    &::after {
+        display: none;
+    }
+
+    .avatar-icon-view {
+        width: 100%;
+        height: 100%;
+        text-shadow: none;
+    }
 }
 
 div.article-portfolio-item-control-btn-avatar-only {
@@ -543,7 +748,8 @@ div.article-portfolio-item-title {
 
     h5.article-portfolio-item-title-main {
         font-weight: bold;
-        color: var(--theme-primary);
+        color: var(--portfolio-item-title-color);
+        text-shadow: var(--portfolio-item-title-shadow);
         margin-bottom: 0;
         line-height: 1.06;
 
@@ -565,7 +771,7 @@ div.article-portfolio-item-title {
     }
 
     div.article-portfolio-item-title-category {
-        color: var(--theme-texts-light-2);
+        color: var(--portfolio-item-category-color);
         margin-top: 0;
         margin-left: 0;
 
@@ -632,7 +838,7 @@ div.article-portfolio-item-body {
 
     div.article-portfolio-item-body-description {
         margin-top: 0;
-        color: var(--theme-texts-light-1);
+        color: inherit;
         font-size: clamp(0.77rem, 0.75rem + 0.12vw, 0.85rem);
         line-height: 1.45;
 
@@ -646,14 +852,28 @@ div.article-portfolio-item-body {
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 4;
         overflow: hidden;
+
+        &,
+        & :where(a, span, strong, em, b, i, small, code, mark) {
+            color: inherit;
+        }
+
+        a {
+            text-decoration-color: currentColor;
+        }
     }
 }
 
 ul.article-portfolio-item-body-tags {
     line-height: 1;
+    margin-top: 10px;
 }
 
 li.article-portfolio-item-body-tag {
+    background: linear-gradient(180deg, var(--portfolio-tag-surface-top), var(--portfolio-tag-surface-bottom));
+    color: var(--portfolio-tag-text-color);
+    border: 1px solid var(--portfolio-tag-border-color);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
     font-size: clamp(0.62rem, 0.6rem + 0.08vw, 0.69rem) !important;
     padding: 2px 6px;
     margin-right: 4px;

@@ -59,7 +59,7 @@ function NavSidebar({ profile, links }) {
 
                 {showCompactResumeBand && (
                     <div className={`nav-short-rail-resume-band`}>
-                        <NavToolResumeDownloader showTooltip={false}
+                        <NavToolResumeDownloader showTooltip={true}
                                                  menuClassName={"nav-tools-popup-menu"}
                                                  toggleClassName={"nav-short-rail-resume-pill"}/>
                     </div>

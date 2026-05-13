@@ -208,68 +208,7 @@
     ],
     "projects": [
         {
-            "id": "software-4",
-            "type": "software",
-            "title": "Java Learning Project: Belot",
-            "title_de": "Java-Lernprojekt: Belot",
-            "summary": "University project focused on learning Java programming by developing a Belot card game. Implemented core game logic, user interaction, and basic AI opponents.",
-            "summary_de": "Universitätsprojekt zum Erlernen der Java-Programmierung durch die Entwicklung eines Belot-Kartenspiels. Implementierung der Spiel-Logik, Benutzerinteraktion und einfacher KI-Gegner.",
-            "start_date": null,
-            "end_date": null,
-            "date": null,
-            "tags": [
-                "Java",
-                "Learning",
-                "Card Game",
-                "University Project"
-            ],
-            "url": "https://lomuss33.github.io/AdioBella/",
-            "github_url": "https://github.com/Lomuss33/AdioBella",
-            "source_path": "public/data/sections/my-software.json"
-        },
-        {
             "id": "software-1",
-            "type": "software",
-            "title": "Pepper & Nao Poker Game",
-            "title_de": "Pepper & Nao Pokerspiel",
-            "summary": "University project using Pepper and Nao robots to create an interactive poker game with animations and real-time card dealing on a monitor.",
-            "summary_de": "Universitätsprojekt mit Pepper- und Nao-Robotern zur Erstellung eines interaktiven Pokerspiels mit Animationen und Echtzeit-Kartenverteilung auf einem Monitor.",
-            "start_date": null,
-            "end_date": null,
-            "date": null,
-            "tags": [
-                "Robotics",
-                "Pepper",
-                "Nao",
-                "Poker",
-                "University Project"
-            ],
-            "url": "",
-            "github_url": "https://github.com/Lomuss33/Pepper-Poker",
-            "source_path": "public/data/sections/my-software.json"
-        },
-        {
-            "id": "software-2",
-            "type": "software",
-            "title": "Simon Game: Multiplayer & Database",
-            "title_de": "Simon-Spiel: Mehrspieler & Datenbank",
-            "summary": "University project combining theoretical knowledge to create a multiplayer Simon Game with a physical and virtual server database for high scores and user management.",
-            "summary_de": "Universitätsprojekt zur Kombination von theoretischem Wissen für ein Mehrspieler-Simon-Spiel mit physischer und virtueller Server-Datenbank für Highscores und Benutzerverwaltung.",
-            "start_date": null,
-            "end_date": null,
-            "date": null,
-            "tags": [
-                "Game",
-                "Multiplayer",
-                "Database",
-                "University Project"
-            ],
-            "url": "",
-            "github_url": "https://github.com/Lomuss33/Projekt_SimonGame",
-            "source_path": "public/data/sections/my-software.json"
-        },
-        {
-            "id": "software-3",
             "type": "software",
             "title": "GermanCro - Language Learning Tool",
             "title_de": "GermanCro - Language Learning Tool",
@@ -290,7 +229,48 @@
             "source_path": "public/data/sections/my-software.json"
         },
         {
-            "id": "software-6",
+            "id": "software-2",
+            "type": "software",
+            "title": "Java Learning Project: Belot",
+            "title_de": "Java-Lernprojekt: Belot",
+            "summary": "University project focused on learning Java programming by developing a Belot card game. Implemented core game logic, user interaction, and basic AI opponents.",
+            "summary_de": "Universitätsprojekt zum Erlernen der Java-Programmierung durch die Entwicklung eines Belot-Kartenspiels. Implementierung der Spiel-Logik, Benutzerinteraktion und einfacher KI-Gegner.",
+            "start_date": null,
+            "end_date": null,
+            "date": null,
+            "tags": [
+                "Java",
+                "Learning",
+                "Card Game",
+                "University Project"
+            ],
+            "url": "https://lomuss33.github.io/AdioBella/",
+            "github_url": "https://github.com/Lomuss33/Projekt_Belot",
+            "source_path": "public/data/sections/my-software.json"
+        },
+        {
+            "id": "software-3",
+            "type": "software",
+            "title": "Pepper & Nao Poker Game",
+            "title_de": "Pepper & Nao Pokerspiel",
+            "summary": "University project using Pepper and Nao robots to create an interactive poker game with animations and real-time card dealing on a monitor.",
+            "summary_de": "Universitätsprojekt mit Pepper- und Nao-Robotern zur Erstellung eines interaktiven Pokerspiels mit Animationen und Echtzeit-Kartenverteilung auf einem Monitor.",
+            "start_date": null,
+            "end_date": null,
+            "date": null,
+            "tags": [
+                "Robotics",
+                "Pepper",
+                "Nao",
+                "Poker",
+                "University Project"
+            ],
+            "url": "https://www.probo-robotics.at/",
+            "github_url": "https://github.com/Lomuss33/Pepper-Poker",
+            "source_path": "public/data/sections/my-software.json"
+        },
+        {
+            "id": "software-4",
             "type": "software",
             "title": "Villa Bagara: Renovation Project",
             "title_de": "Villa Bagara: Renovierungsprojekt",
@@ -305,27 +285,8 @@
                 "Mountain Retreat",
                 "Personal Project"
             ],
-            "url": "",
+            "url": "https://maps.app.goo.gl/agLy9TSrUBiWoguS8",
             "github_url": "https://github.com/Lomuss33/VillaBagara",
-            "source_path": "public/data/sections/my-software.json"
-        },
-        {
-            "id": "software-7",
-            "type": "software",
-            "title": "LaTeX CV",
-            "title_de": "LaTeX-Lebenslauf",
-            "summary": "Personal CV designed in LaTeX, featuring a beautiful, detail-packed yet concise format that respects the 15-second rule for quick readability.",
-            "summary_de": "Persönlicher Lebenslauf in LaTeX, mit einem schönen, detailreichen, aber prägnanten Format, das die 15-Sekunden-Regel für schnelle Lesbarkeit einhält.",
-            "start_date": null,
-            "end_date": null,
-            "date": null,
-            "tags": [
-                "LaTeX",
-                "CV",
-                "Personal Project"
-            ],
-            "url": "",
-            "github_url": "https://github.com/Lomuss33/latex-lebenslauf",
             "source_path": "public/data/sections/my-software.json"
         },
         {
@@ -349,6 +310,44 @@
             "source_path": "public/data/sections/my-software.json"
         },
         {
+            "id": "software-6",
+            "type": "software",
+            "title": "LaTeX CV",
+            "title_de": "LaTeX-Lebenslauf",
+            "summary": "Personal CV designed in LaTeX, featuring a beautiful, detail-packed yet concise format that respects the 15-second rule for quick readability.",
+            "summary_de": "Persönlicher Lebenslauf in LaTeX, mit einem schönen, detailreichen, aber prägnanten Format, das die 15-Sekunden-Regel für schnelle Lesbarkeit einhält.",
+            "start_date": null,
+            "end_date": null,
+            "date": null,
+            "tags": [
+                "LaTeX",
+                "CV",
+                "Personal Project"
+            ],
+            "url": "",
+            "github_url": "https://github.com/Lomuss33/latex-lebenslauf",
+            "source_path": "public/data/sections/my-software.json"
+        },
+        {
+            "id": "software-7",
+            "type": "software",
+            "title": "This Portfolio Website",
+            "title_de": "This Portfolio Website",
+            "summary": "Personal portfolio website presenting my projects, background, and experience in a clear and structured way.",
+            "summary_de": "Persönliche Portfolio-Website, die meine Projekte, meinen Hintergrund und meine Erfahrung klar und strukturiert präsentiert.",
+            "start_date": null,
+            "end_date": null,
+            "date": null,
+            "tags": [
+                "Portfolio",
+                "Website",
+                "Personal Project"
+            ],
+            "url": "https://lovro-music.de/",
+            "github_url": "https://github.com/Lomuss33/myWebsite",
+            "source_path": "public/data/sections/my-software.json"
+        },
+        {
             "id": "hardware-1",
             "type": "hardware",
             "title": "Self-Built Proxmox Homelab Platform",
@@ -366,7 +365,7 @@
                 "Tunneling",
                 "Containers"
             ],
-            "url": "",
+            "url": "https://www.proxmox.com",
             "github_url": "",
             "source_path": "public/data/sections/my-hardware.json"
         },
@@ -386,7 +385,7 @@
                 "Material Sorting",
                 "Conveyor Belt"
             ],
-            "url": "",
+            "url": "https://www.youtube.com/watch?v=4wcEp9DzTM8",
             "github_url": "",
             "source_path": "public/data/sections/my-hardware.json"
         },
@@ -406,7 +405,7 @@
                 "Industrial Automation",
                 "Process Control"
             ],
-            "url": "",
+            "url": "https://www.siemens.com/en-us/products/tia-portal/",
             "github_url": "",
             "source_path": "public/data/sections/my-hardware.json"
         },
@@ -427,7 +426,7 @@
                 "Motors",
                 "Interactive Art"
             ],
-            "url": "",
+            "url": "https://www.espressif.com/en/products/socs/esp32",
             "github_url": "",
             "source_path": "public/data/sections/my-hardware.json"
         },
@@ -447,7 +446,7 @@
                 "Motorized Curtains",
                 "IoT"
             ],
-            "url": "",
+            "url": "https://www.raspberrypi.com/products/raspberry-pi-5/",
             "github_url": "",
             "source_path": "public/data/sections/my-hardware.json"
         },
@@ -467,7 +466,7 @@
                 "Home Assistant",
                 "IoT"
             ],
-            "url": "",
+            "url": "https://www.home-assistant.io/",
             "github_url": "",
             "source_path": "public/data/sections/my-hardware.json"
         },
@@ -487,7 +486,7 @@
                 "High-Performance",
                 "Adwanced Cooling"
             ],
-            "url": "",
+            "url": "https://de.pcpartpicker.com/list/ZgQHzv",
             "github_url": "",
             "source_path": "public/data/sections/my-hardware.json"
         },
@@ -496,8 +495,8 @@
             "type": "hardware",
             "title": "Custom Electric Bicycle",
             "title_de": "Custom-Elektrofahrrad",
-            "summary": "Budget-focused electric bicycle built as a sustainable mobility solution for daily life in Giessen, combining an affordable frame with high-quality components such as Shimano for reliability and efficiency.",
-            "summary_de": "Budgetorientiertes Elektrofahrrad als nachhaltige Mobilitätslösung für den Alltag in Gießen, kombiniert einen günstigen Rahmen mit hochwertigen Komponenten wie Shimano für Zuverlässigkeit und Effizienz.",
+            "summary": "Custom electric bicycle with 504 Wh battery (36 V, 14 Ah), 6061 aluminium frame, 29\" tires, hydraulic disc brakes, and SHIMANO DEORE 10-speed drivetrain.",
+            "summary_de": "Custom-Elektrofahrrad mit 504-Wh-Akku (36 V, 14 Ah), 6061-Aluminiumrahmen, 29-Zoll-Reifen, hydraulischen Scheibenbremsen und SHIMANO-DEORE-10-Gang-Antrieb.",
             "start_date": null,
             "end_date": null,
             "date": null,
@@ -507,7 +506,7 @@
                 "DIY",
                 "Shimano"
             ],
-            "url": "",
+            "url": "https://www.bafang-e.com/de/products/motors/m-series/m410",
             "github_url": "",
             "source_path": "public/data/sections/my-hardware.json"
         },

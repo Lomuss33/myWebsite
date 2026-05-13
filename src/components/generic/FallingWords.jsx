@@ -21,23 +21,25 @@ function FallingWords({
     const rafRef = useRef(null)
     const cleanupRef = useRef(() => {})
     const engineRef = useRef(null)
-    const mouseConstraintRef = useRef(null)
-    const mouseConstraintEnabledRef = useRef(false)
     const wordBodiesRef = useRef([])
     const selectedIndexRef = useRef(null)
-    const draggingIndexRef = useRef(null)
     const redHoldIndicesRef = useRef(new Set())
     const permanentRedIndicesRef = useRef(new Set())
     const redHoldTimersRef = useRef(new Map())
     const [, forceRedRerender] = useState(0)
     const dragStateRef = useRef({
-        isDown: false,
+        pointerId: null,
+        index: null,
         moved: false,
-        x: 0,
-        y: 0,
-        lastDragAt: 0,
+        tapEligible: false,
+        startX: 0,
+        startY: 0,
+        targetX: 0,
+        targetY: 0,
+        offsetX: 0,
+        offsetY: 0,
         pointerType: null,
-        startedOnWord: false
+        lastDragAt: 0
     })
     const suppressNextClickUntilRef = useRef(0)
     const [layoutVersion, setLayoutVersion] = useState(0)
@@ -204,9 +206,6 @@ function FallingWords({
         const World = Matter.World
         const Bodies = Matter.Bodies
         const Body = Matter.Body
-        const Mouse = Matter.Mouse
-        const MouseConstraint = Matter.MouseConstraint
-        const Events = Matter.Events
 
         const engine = Engine.create({})
         engine.gravity.y = isCoarsePointer() ? 0.6 : 1
@@ -294,65 +293,11 @@ function FallingWords({
 
         wordBodiesRef.current = wordBodies
 
-        const mouse = Mouse.create(container)
-        const mouseConstraint = MouseConstraint.create(engine, {
-            mouse,
-            constraint: {
-                stiffness: 0.2,
-                render: {visible: false}
-            }
-        })
-        mouseConstraintRef.current = mouseConstraint
-        mouseConstraintEnabledRef.current = true
-
-        const onStartDrag = (event) => {
-            if(selectedIndexRef.current !== null) return
-            const body = event?.body
-            if(!body) return
-
-            const index = wordBodies.findIndex(entry => entry?.body === body)
-            if(index < 0) return
-
-            draggingIndexRef.current = index
-            const el = wordBodies[index]?.el
-            if(!el) return
-
-            // Cancel any active drag red-hold when the user starts dragging again.
-            _clearRedHold(index)
-
-            el.classList.add("falling-word-held")
-        }
-
-        const onEndDrag = () => {
-            const index = draggingIndexRef.current
-            if(index === null || index === undefined) return
-
-            draggingIndexRef.current = null
-            const el = wordBodies[index]?.el
-            if(!el) return
-
-            el.classList.remove("falling-word-held")
-
-            // After releasing a dragged word, show red for 4s, then fade back (CSS).
-            applyRedHold(index, 4000)
-        }
-
-        try {
-            Events.on(mouseConstraint, "startdrag", onStartDrag)
-            Events.on(mouseConstraint, "enddrag", onEndDrag)
-        } catch {
-            // no-op
-        }
-
-        mouse.element.removeEventListener("mousewheel", mouse.mousewheel)
-        mouse.element.removeEventListener("DOMMouseScroll", mouse.mousewheel)
-
         World.add(engine.world, [
             floor,
             wallLeft,
             wallRight,
             ceiling,
-            mouseConstraint,
             ...wordBodies.filter(Boolean).map(w => w.body)
         ])
 
@@ -367,6 +312,24 @@ function FallingWords({
             if(selectedIndexRef.current === null) {
                 accumulator = Math.min(accumulator + delta, maxAccumulatedTime)
                 while(accumulator >= fixedStep) {
+                    const dragState = dragStateRef.current
+                    if(dragState.index != null) {
+                        const draggedEntry = wordBodies[dragState.index]
+                        if(draggedEntry) {
+                            const nextX = dragState.targetX
+                            const nextY = dragState.targetY
+                            const velocityScale = 1000 / fixedStep
+                            const velocityX = (nextX - draggedEntry.body.position.x) / velocityScale
+                            const velocityY = (nextY - draggedEntry.body.position.y) / velocityScale
+
+                            Matter.Sleeping.set(draggedEntry.body, false)
+                            Matter.Body.setPosition(draggedEntry.body, { x: nextX, y: nextY })
+                            Matter.Body.setVelocity(draggedEntry.body, { x: velocityX, y: velocityY })
+                            Matter.Body.setAngle(draggedEntry.body, draggedEntry.body.angle * 0.88)
+                            Matter.Body.setAngularVelocity(draggedEntry.body, 0)
+                        }
+                    }
+
                     Matter.Engine.update(engine, fixedStep)
                     accumulator -= fixedStep
                 }
@@ -398,12 +361,6 @@ function FallingWords({
             if(rafRef.current) cancelAnimationFrame(rafRef.current)
             rafRef.current = null
             try {
-                try {
-                    Events.off(mouseConstraint, "startdrag", onStartDrag)
-                    Events.off(mouseConstraint, "enddrag", onEndDrag)
-                } catch {
-                    // no-op
-                }
                 Matter.World.clear(engine.world, false)
                 Matter.Engine.clear(engine)
             } catch {
@@ -418,36 +375,11 @@ function FallingWords({
             redHoldIndicesRef.current.clear()
 
             engineRef.current = null
-            mouseConstraintRef.current = null
-            mouseConstraintEnabledRef.current = false
             wordBodiesRef.current = []
         }
 
         return () => cleanupRef.current?.()
     }, [words, effectiveEntries, layoutVersion])
-
-    useEffect(() => {
-        const engine = engineRef.current
-        const mouseConstraint = mouseConstraintRef.current
-        if(!engine || !mouseConstraint) return
-
-        const world = engine.world
-        const shouldEnable = selectedIndex === null
-        if(shouldEnable === mouseConstraintEnabledRef.current) return
-
-        try {
-            if(shouldEnable) {
-                Matter.World.add(world, mouseConstraint)
-                mouseConstraintEnabledRef.current = true
-            }
-            else {
-                Matter.World.remove(world, mouseConstraint)
-                mouseConstraintEnabledRef.current = false
-            }
-        } catch {
-            // no-op
-        }
-    }, [selectedIndex])
 
     const _shouldIgnoreClick = () => {
         const { lastDragAt } = dragStateRef.current
@@ -473,17 +405,6 @@ function FallingWords({
         const engine = engineRef.current
         if(!engine) return
 
-        // Disable dragging immediately so a quick second tap doesn't move the selected body.
-        const mouseConstraint = mouseConstraintRef.current
-        if(mouseConstraint && mouseConstraintEnabledRef.current) {
-            try {
-                Matter.World.remove(engine.world, mouseConstraint)
-                mouseConstraintEnabledRef.current = false
-            } catch {
-                // no-op
-            }
-        }
-
         const bodies = wordBodiesRef.current
         const target = bodies[index]
         if(!target) return
@@ -503,17 +424,14 @@ function FallingWords({
         setSelectedIndex(index)
     }
 
-    const onWordPointerUp = (event, index) => {
-        if(event.pointerType !== "touch") return
-
+    const onWordPointerUp = (event) => {
         const dragState = dragStateRef.current
-        if(!dragState.isDown) return
-        if(dragState.moved) return
+        if(dragState.pointerId !== event.pointerId) return
+        if(dragState.index == null) return
+        if(dragState.moved || !dragState.tapEligible) return
 
-        // On touch devices a tiny finger jitter often trips the drag gate and prevents the click
-        // from opening the modal. Handle "tap" via pointer events and suppress the synthesized click.
         suppressNextClickUntilRef.current = Date.now() + 650
-        _selectWord(index, { ignoreDragGate: true })
+        _selectWord(dragState.index, { ignoreDragGate: true })
     }
 
     const onOverlayPointerUp = (event) => {
@@ -525,20 +443,6 @@ function FallingWords({
         const index = selectedIndexRef.current
         if(index === null) return
 
-        const engine = engineRef.current
-        if(engine) {
-            // Re-enable dragging immediately after closing.
-            const mouseConstraint = mouseConstraintRef.current
-            if(mouseConstraint && !mouseConstraintEnabledRef.current) {
-                try {
-                    Matter.World.add(engine.world, mouseConstraint)
-                    mouseConstraintEnabledRef.current = true
-                } catch {
-                    // no-op
-                }
-            }
-        }
-
         // After closing the definition popup, keep the word red until refresh.
         applyPermanentRed(index)
 
@@ -547,40 +451,108 @@ function FallingWords({
     }
 
     const onPointerDown = (event) => {
+        if(selectedIndexRef.current !== null) return
+
         const rawTarget = event.target
-        const targetEl =
-            (typeof Element !== "undefined" && rawTarget instanceof Element)
-                ? rawTarget
-                : rawTarget?.parentElement
-        const startedOnWord = Boolean(targetEl?.closest?.("span.falling-word"))
-        dragStateRef.current.isDown = true
+        const targetEl = typeof Element !== "undefined" && rawTarget instanceof Element
+            ? rawTarget.closest?.("span.falling-word")
+            : rawTarget?.parentElement?.closest?.("span.falling-word")
+        if(!targetEl) return
+
+        const index = wordRefs.current.findIndex(node => node === targetEl)
+        if(index < 0) return
+
+        const entry = wordBodiesRef.current[index]
+        const engine = engineRef.current
+        const container = containerRef.current
+        if(!entry || !engine || !container) return
+
+        const rect = container.getBoundingClientRect()
+        const pointerX = event.clientX - rect.left
+        const pointerY = event.clientY - rect.top
+
+        dragStateRef.current.pointerId = event.pointerId
+        dragStateRef.current.index = index
         dragStateRef.current.moved = false
-        dragStateRef.current.x = event.clientX
-        dragStateRef.current.y = event.clientY
+        dragStateRef.current.tapEligible = true
+        dragStateRef.current.startX = event.clientX
+        dragStateRef.current.startY = event.clientY
+        dragStateRef.current.offsetX = entry.body.position.x - pointerX
+        dragStateRef.current.offsetY = entry.body.position.y - pointerY
+        dragStateRef.current.targetX = entry.body.position.x
+        dragStateRef.current.targetY = entry.body.position.y
         dragStateRef.current.pointerType = event.pointerType || null
-        dragStateRef.current.startedOnWord = startedOnWord
+
+        _clearRedHold(index)
+        targetEl.classList.add("falling-word-held")
+
+        try {
+            targetEl.setPointerCapture?.(event.pointerId)
+        } catch {
+            // no-op
+        }
+
+        Matter.Sleeping.set(entry.body, false)
+        Matter.Body.setVelocity(entry.body, { x: 0, y: 0 })
+        Matter.Body.setAngularVelocity(entry.body, 0)
+        event.preventDefault()
     }
 
     const onPointerMove = (event) => {
         const dragState = dragStateRef.current
-        if(!dragState.isDown) return
-        if(!dragState.startedOnWord) return
+        if(dragState.pointerId !== event.pointerId) return
+        if(dragState.index == null) return
+
+        const entry = wordBodiesRef.current[dragState.index]
+        const container = containerRef.current
+        if(!entry || !container) return
 
         const threshold = dragState.pointerType === "touch" ? 12 : 6
-        const dx = event.clientX - dragState.x
-        const dy = event.clientY - dragState.y
-        if(Math.hypot(dx, dy) > threshold) dragState.moved = true
+        const tapThreshold = dragState.pointerType === "touch" ? 6 : 2
+        const dx = event.clientX - dragState.startX
+        const dy = event.clientY - dragState.startY
+        const distance = Math.hypot(dx, dy)
+        if(distance > tapThreshold) dragState.tapEligible = false
+        if(distance > threshold) dragState.moved = true
+
+        const rect = container.getBoundingClientRect()
+        const pointerX = event.clientX - rect.left
+        const pointerY = event.clientY - rect.top
+        const nextX = clamp(
+            pointerX + dragState.offsetX,
+            entry.bodyWidth / 2 + 8,
+            rect.width - entry.bodyWidth / 2 - 8
+        )
+        const nextY = clamp(
+            pointerY + dragState.offsetY,
+            entry.bodyHeight / 2 + 8,
+            rect.height - entry.bodyHeight / 2 - 8
+        )
+        dragState.targetX = nextX
+        dragState.targetY = nextY
+        event.preventDefault()
     }
 
-    const onPointerUp = () => {
+    const onPointerUp = (event) => {
         const dragState = dragStateRef.current
-        if(dragState.isDown && dragState.startedOnWord && dragState.moved) {
-            dragState.lastDragAt = Date.now()
+        if(event?.pointerId != null && dragState.pointerId !== event.pointerId) return
+
+        const index = dragState.index
+        if(index != null) {
+            const entry = wordBodiesRef.current[index]
+            entry?.el?.classList.remove("falling-word-held")
         }
-        dragState.isDown = false
+
+        if(index != null && dragState.moved) {
+            dragState.lastDragAt = Date.now()
+            applyRedHold(index, 4000)
+        }
+
+        dragState.pointerId = null
+        dragState.index = null
         dragState.moved = false
+        dragState.tapEligible = false
         dragState.pointerType = null
-        dragState.startedOnWord = false
     }
 
     return (
@@ -607,6 +579,8 @@ function FallingWords({
                         className={`falling-words-modal-card`}
                         role={`dialog`}
                         aria-modal={true}
+                        onClick={(event) => event.stopPropagation()}
+                        onPointerUp={(event) => event.stopPropagation()}
                     >
                         <div className={`falling-words-modal-title text-1`}>
                             {effectiveEntries[selectedIndex]?.word || ""}
@@ -627,9 +601,10 @@ function FallingWords({
                         key={`${word}-${index}`}
                         ref={(el) => { wordRefs.current[index] = el }}
                         className={`falling-word ${isHighlighted ? "falling-word-highlighted" : ""} ${selectedIndex === index ? "falling-word-selected" : ""} ${isRedHold ? "falling-word-red-hold" : ""} ${isRedPermanent ? "falling-word-red-permanent" : ""}`}
-                        onPointerUp={(e) => onWordPointerUp(e, index)}
+                        onPointerUp={onWordPointerUp}
                         onClick={() => {
                             if(Date.now() < suppressNextClickUntilRef.current) return
+                            if(dragStateRef.current.index != null) return
                             _selectWord(index)
                         }}
                     >

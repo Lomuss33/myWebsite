@@ -3,7 +3,6 @@ import React from 'react'
 import {useFeedbacks} from "../../providers/FeedbacksProvider.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useLocation} from "../../providers/LocationProvider.jsx"
-import {useUtils} from "../../hooks/utils.js"
 import {useScheduler} from "../../hooks/scheduler.js"
 
 function Link({
@@ -23,16 +22,17 @@ function Link({
     onPointerCancel = null,
     onMouseDown = null,
     onMouseUp = null,
+    openYoutubeInModal = false,
 }) {
     const feedbacks = useFeedbacks()
     const language = useLanguage()
     const location = useLocation()
     const scheduler = useScheduler()
-    const utils = useUtils()
 
     const hrefClass = !href ?
         `link-no-href` :
         ``
+    const useNativeExternalNavigation = shouldUseNativeExternalNavigation(href, openYoutubeInModal)
 
     const _onMouseEnter = (e) => {
         onHoverStatus && onHoverStatus(true)
@@ -52,6 +52,9 @@ function Link({
         }
 
         if(href.includes('mailto') || href.includes('tel:'))
+            return
+
+        if(useNativeExternalNavigation)
             return
 
         e.preventDefault()
@@ -79,7 +82,7 @@ function Link({
             _openGalleryLink()
         else if(href.startsWith("#"))
             _goToSectionHash(href.slice(1))
-        else if(href.includes("youtube.com/embed") || href.includes("youtube.com/watch?v="))
+        else if(openYoutubeInModal && (href.includes("youtube.com/embed") || href.includes("youtube.com/watch?v=")))
             _openYoutubeLink()
         else
             _openExternalLink()
@@ -133,20 +136,10 @@ function Link({
     }
 
     const _openExternalLink = () => {
-        const shortenedHref = utils.string.limitTextSize(href, 45)
-        const formattedUrl = `<br><span class="text-secondary"><i class="fa-solid fa-arrow-up-right-from-square me-2"></i><b>${shortenedHref}</b></span><br><br>`
-        const text = language.getString("leaving_site").replace("{url}", formattedUrl) +
-            language.getString("confirm_to_continue")
+        if(typeof window === "undefined" || !href)
+            return
 
-        feedbacks.showConfirmationDialog(
-            language.getString("open_link"),
-            text,
-            "fa-solid fa-arrow-up-right-from-square",
-            () => { utils.url.open(href) },
-            language.getString("proceed"),
-            null,
-            language.getString("cancel"),
-        )
+        window.location.assign(href)
     }
 
     return (
@@ -154,6 +147,8 @@ function Link({
            id={id}
            className={`${className} ${hrefClass}`}
            aria-label={ariaLabel || undefined}
+           target={useNativeExternalNavigation ? "_blank" : undefined}
+           rel={useNativeExternalNavigation ? "noopener noreferrer" : undefined}
            onClick={_onClick}
            onMouseEnter={_onMouseEnter}
            onMouseLeave={_onMouseLeave}
@@ -170,3 +165,26 @@ function Link({
 }
 
 export default Link
+
+function shouldUseNativeExternalNavigation(href, openYoutubeInModal) {
+    if(typeof href !== "string" || href.length === 0)
+        return false
+
+    if(href.startsWith("#"))
+        return false
+
+    if(href.startsWith("mailto:") || href.startsWith("tel:"))
+        return false
+
+    if(href.startsWith("http://") || href.startsWith("https://")) {
+        if(openYoutubeInModal && (href.includes("youtube.com/embed") || href.includes("youtube.com/watch?v=")))
+            return false
+
+        return true
+    }
+
+    if(href.startsWith("/") || href.startsWith("./") || href.startsWith("../"))
+        return true
+
+    return false
+}

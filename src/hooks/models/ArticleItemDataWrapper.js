@@ -30,7 +30,8 @@ export default class ArticleItemDataWrapper {
         this._articleDataWrapper = articleDataWrapper
 
         this.id = this._parseNumber(rawData.id, 1) || id
-        this.categoryId = rawData.categoryId || rawData.category
+        this.categoryIds = this._parseCategoryIds(rawData)
+        this.categoryId = this.categoryIds[0]
         this.category = undefined
 
         const date = this._parseDate(rawData.date)
@@ -113,6 +114,16 @@ export default class ArticleItemDataWrapper {
         const month = rawDate.month != null ? rawDate.month - 1 : 0
         const day = rawDate.day != null ? rawDate.day : 1
         return new Date(year, month, day)
+    }
+
+    _parseCategoryIds(rawData) {
+        const rawCategoryIds = Array.isArray(rawData.categoryIds) ?
+            rawData.categoryIds :
+            [rawData.categoryId || rawData.category]
+
+        return rawCategoryIds.filter(categoryId => {
+            return typeof categoryId === "string" && categoryId.length > 0
+        })
     }
 
     _parseLink(rawLink, language) {

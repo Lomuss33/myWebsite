@@ -93,6 +93,7 @@ function ItemPreviewMenuYoutubeButton({ itemWrapper }) {
 
     return (
         <Link href={href}
+              openYoutubeInModal={true}
               metadata={metadata}
               className={`article-item-preview-menu-link`}
               tooltip={language.getString("watch_video")}>

@@ -245,11 +245,11 @@ function ArticleWebArt({ dataWrapper, id }) {
     const ambientTardisReadyId = `${dataWrapper.uniqueId}-ambient-tardis`
     const [selectedItemCategoryId, setSelectedItemCategoryId] = useState(null)
     const [showIntroCover, setShowIntroCover] = useState(true)
-    const rawItems = useMemo(() => dataWrapper.orderedItems.slice(0, 6), [dataWrapper.orderedItems])
+    const rawItems = useMemo(() => dataWrapper.orderedItems, [dataWrapper.orderedItems])
     const items = useMemo(() => {
-        // Desired visual order: Poly, 5, 3D, Orbit, Hover, Wave
-        // Matches ids: 4 (Poly), 5 (Embroidery), 3 (3D tunnel), 6 (Orbit), 1 (Hover), 2 (Wave)
-        const desiredOrder = [4, 5, 3, 6, 1, 2]
+        // Desired visual order: Poly, 5, 3D, Orbit, Hover, Wave, Spin
+        // Matches ids: 4 (Poly), 5 (Embroidery), 3 (3D tunnel), 6 (Orbit), 1 (Hover), 2 (Wave), 7 (Spin)
+        const desiredOrder = [4, 5, 3, 6, 1, 2, 7]
         const byId = new Map(rawItems.map((item) => [Number(item?.id), item]))
         const ordered = []
 
@@ -523,6 +523,7 @@ function ArticleWebArt({ dataWrapper, id }) {
         if(itemId === 4) return "Poly"
         if(itemId === 5) return "Click"
         if(itemId === 6) return "Orbit"
+        if(itemId === 7) return "Spin"
         return String(index + 1)
     }
 
@@ -820,7 +821,53 @@ function WebArtTile({ itemWrapper, index, activate, locked, onReady }) {
         return <OrbitCirclesTile itemWrapper={itemWrapper} index={index} activate={activate} locked={locked} onReady={onReady}/>
     }
 
+    if(Number(itemWrapper.id) === 7) {
+        return <SpinBoxesTile itemWrapper={itemWrapper} locked={locked} onReady={onReady}/>
+    }
+
     return <EmbroideryTile itemWrapper={itemWrapper} index={index} activate={activate} locked={locked} onReady={onReady}/>
+}
+
+function SpinBoxesTile({ itemWrapper, locked, onReady }) {
+    const didReadyRef = useRef(false)
+
+    useEffect(() => {
+        if(didReadyRef.current) return
+        didReadyRef.current = true
+        onReady?.(itemWrapper.uniqueId)
+    }, [itemWrapper.uniqueId, onReady])
+
+    const boxes = useMemo(() => {
+        return [2, 4, 0.5, 0.2].map((speed) => {
+            const delta = speed - 1
+            const controlDuration = Math.abs(5 / delta)
+            const controlTurn = delta >= 0 ? "1turn" : "-1turn"
+
+            return {
+                speed,
+                controlDuration: `${controlDuration}s`,
+                controlTurn
+            }
+        })
+    }, [])
+
+    return (
+        <div className={`article-web-art-tile article-web-art-spin-boxes ${locked ? "article-web-art-spin-boxes-locked" : ""}`}>
+            <div className={`article-web-art-spin-boxes-grid`}>
+                {boxes.map(({ speed, controlDuration, controlTurn }) => (
+                    <div key={String(speed)}
+                         className={`article-web-art-spin-box`}
+                         style={{
+                             "--spin-duration": "5s",
+                             "--control-duration": controlDuration,
+                             "--control-turn": controlTurn
+                         }}>
+                        <div className={`article-web-art-spin-box-core`} data-speed={speed}/>
+                    </div>
+                ))}
+            </div>
+        </div>
+    )
 }
 
 function EmbroideryTile({ itemWrapper, index, activate, locked, onReady }) {

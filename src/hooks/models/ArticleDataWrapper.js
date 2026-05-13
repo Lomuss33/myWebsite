@@ -242,22 +242,24 @@ export default class ArticleDataWrapper {
             return this._filteredItemsByCategory.get(categoryId)
 
         const filteredItems = this.orderedItems.filter(item => {
-            return item.categoryId === categoryId
+            return item.categoryIds.includes(categoryId)
         })
         this._filteredItemsByCategory.set(categoryId, filteredItems)
         return filteredItems
     }
 
     _evaluate() {
-        // Check if all items have a valid categoryId...
+        // Check if all item categories are valid...
         const categories = this.categories.map(category => category.id)
         this._items.forEach(item => {
-            if(categories.length > 1 && !categories.includes(item.categoryId)) {
-                utils.log.warn(
-                    "ArticleDataWrapper",
-                    `Item ${item.id} has an invalid categoryId "${item.categoryId}".`
-                )
-            }
+            item.categoryIds.forEach(categoryId => {
+                if(categories.length > 1 && !categories.includes(categoryId)) {
+                    utils.log.warn(
+                        "ArticleDataWrapper",
+                        `Item ${item.id} has an invalid categoryId "${categoryId}".`
+                    )
+                }
+            })
         })
     }
 }

@@ -42,10 +42,10 @@ function NavToolList({ expanded, compactRail = false }) {
                 <div className={`nav-tools-item ${item === "language" ? "nav-tools-item-language" : ""} ${item === NavToolSettings.Options.DOWNLOAD_RESUME ? "nav-tools-item-resume" : ""}`}
                      key={key}>
                     {item === "language" && (<NavToolLanguagePicker dropdownDrop={"up"}
-                                                                    showTooltip={false}
+                                                                    showTooltip={true}
                                                                     menuClassName={"nav-tools-popup-menu"}/>)}
-                    {item === NavToolSettings.Options.THEME && (<NavToolThemePicker showTooltip={false}/>)}
-                    {item === NavToolSettings.Options.DOWNLOAD_RESUME && (<NavToolResumeDownloader showTooltip={false}
+                    {item === NavToolSettings.Options.THEME && (<NavToolThemePicker showTooltip={true}/>)}
+                    {item === NavToolSettings.Options.DOWNLOAD_RESUME && (<NavToolResumeDownloader showTooltip={true}
                                                                                                   menuClassName={"nav-tools-popup-menu"}/>)}
                 </div>
             ))}

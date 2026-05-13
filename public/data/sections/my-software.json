@@ -35,28 +35,28 @@
         "en": {
           "title": "My {{Software}} Projects",
           "category_all": "All Projects",
-          "category_educational": "Educational",
+          "category_educational": "University",
           "category_professional": "Professional",
           "category_personal": "Personal"
         },
         "de": {
           "title": "Meine {{Software}}-Projekte",
           "category_all": "Alle Projekte",
-          "category_educational": "Bildung",
+          "category_educational": "Universität",
           "category_professional": "Beruflich",
           "category_personal": "Persönlich"
         },
         "hr": {
           "title": "Moji {{softverski}} projekti",
           "category_all": "Svi projekti",
-          "category_educational": "Edukativno",
+          "category_educational": "Sveučilište",
           "category_professional": "Profesionalno",
           "category_personal": "Osobno"
         },
         "tr": {
           "title": "{{Yazılım}} Projelerim",
           "category_all": "Tüm Projeler",
-          "category_educational": "EÄŸitsel",
+          "category_educational": "Üniversite",
           "category_professional": "Profesyonel",
           "category_personal": "KiÅŸisel"
         }
@@ -72,229 +72,7 @@
       },
       "items": [
         {
-          "id": 4,
-          "img": "",
-          "faIcon": "fa-solid fa-graduation-cap",
-          "faIconColors": {
-            "bg": "#0D1117",
-            "bgLight": "#EDF2F7",
-            "fill": "#2962FF",
-            "fillLight": "#1E88E5"
-          },
-          "categoryId": "category_educational",
-          "preview": {
-            "links": [
-              {
-                "href": "https://github.com/Lomuss33/AdioBella",
-                "tooltipString": "GitHub",
-                "faIcon": "fa-brands fa-github"
-              },
-              {
-                "href": "https://lomuss33.github.io/AdioBella/",
-                "tooltipString": "open_website",
-                "faIcon": "fa-solid fa-globe"
-              },
-              {
-                "href": "https://docs.google.com/document/d/REPLACE_WITH_GOOGLE_DOC_LINK_1/edit",
-                "tooltipString": "open_website",
-                "faIcon": "fa-solid fa-file-lines"
-              }
-            ],
-            "screenshots": [],
-            "screenshotsAspectRatio": "16:9",
-            "youtubeVideo": ""
-          },
-          "locales": {
-            "en": {
-              "title": "Java Learning Project: Belot",
-              "text": "University project focused on learning Java programming by developing a Belot card game. Implemented core game logic, user interaction, and basic AI opponents.",
-              "tags": [
-                "Java",
-                "Learning",
-                "Card Game",
-                "University Project"
-              ]
-            },
-            "de": {
-              "title": "Java-Lernprojekt: Belot",
-              "text": "Universitätsprojekt zum Erlernen der Java-Programmierung durch die Entwicklung eines Belot-Kartenspiels. Implementierung der Spiel-Logik, Benutzerinteraktion und einfacher KI-Gegner.",
-              "tags": [
-                "Java",
-                "Lernen",
-                "Kartenspiel",
-                "Universitätsprojekt"
-              ]
-            },
-            "hr": {
-              "title": "Java projekt učenja: Belot",
-              "text": "Sveučilišni projekt usmjeren na učenje Java programiranja kroz razvoj igre Belot. Implementirana osnovna logika igre, interakcija s korisnikom i jednostavni AI protivnici.",
-              "tags": [
-                "Java",
-                "Učenje",
-                "Kartaška igra",
-                "Sveučilišni projekt"
-              ]
-            },
-            "tr": {
-              "title": "Java Öğrenme Projesi: Belot",
-              "text": "Belot kart oyunu geliştirerek Java programlama öğrenmeye odaklanan üniversite projesi. Temel oyun mantığı, kullanıcı etkileşimi ve basit AI rakipleri uygulandı.",
-              "tags": [
-                "Java",
-                "Öğrenme",
-                "Kart Oyunu",
-                "Üniversite Projesi"
-              ]
-            }
-          }
-        },
-        {
           "id": 1,
-          "img": "",
-          "faIcon": "fa-solid fa-robot",
-          "faIconColors": {
-            "bg": "#101A29",
-            "bgLight": "#ECF0F6",
-            "fill": "#1976D2",
-            "fillLight": "#1565C0"
-          },
-          "categoryId": "category_educational",
-          "preview": {
-            "links": [
-              {
-                "href": "https://github.com/Lomuss33/Pepper-Poker",
-                "tooltipString": "GitHub",
-                "faIcon": "fa-brands fa-github"
-              },
-              {
-                "href": "https://docs.google.com/document/d/REPLACE_WITH_GOOGLE_DOC_LINK_2/edit",
-                "tooltipString": "open_website",
-                "faIcon": "fa-solid fa-file-lines"
-              }
-            ],
-            "screenshots": [],
-            "screenshotsAspectRatio": "16:9",
-            "youtubeVideo": ""
-          },
-          "locales": {
-            "en": {
-              "title": "Pepper & Nao Poker Game",
-              "text": "University project using Pepper and Nao robots to create an interactive poker game with animations and real-time card dealing on a monitor.",
-              "tags": [
-                "Robotics",
-                "Pepper",
-                "Nao",
-                "Poker",
-                "University Project"
-              ]
-            },
-            "de": {
-              "title": "Pepper & Nao Pokerspiel",
-              "text": "Universitätsprojekt mit Pepper- und Nao-Robotern zur Erstellung eines interaktiven Pokerspiels mit Animationen und Echtzeit-Kartenverteilung auf einem Monitor.",
-              "tags": [
-                "Robotik",
-                "Pepper",
-                "Nao",
-                "Poker",
-                "Universitätsprojekt"
-              ]
-            },
-            "hr": {
-              "title": "Poker igra s Pepper i Nao robotima",
-              "text": "Sveučilišni projekt korištenjem Pepper i Nao robota za stvaranje interaktivne poker igre s animacijama i dijeljenjem karata u realnom vremenu na monitoru.",
-              "tags": [
-                "Robotika",
-                "Pepper",
-                "Nao",
-                "Poker",
-                "Sveučilišni projekt"
-              ]
-            },
-            "tr": {
-              "title": "Pepper & Nao Poker Oyunu",
-              "text": "Pepper ve Nao robotlarını kullanarak, animasyonlu ve gerçek zamanlı kart dağıtımının yapıldığı interaktif bir poker oyunu oluşturan üniversite projesi.",
-              "tags": [
-                "Robotik",
-                "Pepper",
-                "Nao",
-                "Poker",
-                "Üniversite Projesi"
-              ]
-            }
-          }
-        },
-        {
-          "id": 2,
-          "img": "",
-          "faIcon": "fa-solid fa-gamepad",
-          "faIconColors": {
-            "bg": "#1A1B2E",
-            "bgLight": "#E8E8F0",
-            "fill": "#7C3AED",
-            "fillLight": "#6D28D9"
-          },
-          "categoryId": "category_educational",
-          "preview": {
-            "links": [
-              {
-                "href": "https://github.com/Lomuss33/Projekt_SimonGame",
-                "tooltipString": "GitHub",
-                "faIcon": "fa-brands fa-github"
-              },
-              {
-                "href": "https://docs.google.com/document/d/REPLACE_WITH_GOOGLE_DOC_LINK_3/edit",
-                "tooltipString": "open_website",
-                "faIcon": "fa-solid fa-file-lines"
-              }
-            ],
-            "screenshots": [],
-            "screenshotsAspectRatio": "16:9",
-            "youtubeVideo": ""
-          },
-          "locales": {
-            "en": {
-              "title": "Simon Game: Multiplayer & Database",
-              "text": "University project combining theoretical knowledge to create a multiplayer Simon Game with a physical and virtual server database for high scores and user management.",
-              "tags": [
-                "Game",
-                "Multiplayer",
-                "Database",
-                "University Project"
-              ]
-            },
-            "de": {
-              "title": "Simon-Spiel: Mehrspieler & Datenbank",
-              "text": "Universitätsprojekt zur Kombination von theoretischem Wissen für ein Mehrspieler-Simon-Spiel mit physischer und virtueller Server-Datenbank für Highscores und Benutzerverwaltung.",
-              "tags": [
-                "Spiel",
-                "Mehrspieler",
-                "Datenbank",
-                "Universitätsprojekt"
-              ]
-            },
-            "hr": {
-              "title": "Simon igra: Višeigrač & baza podataka",
-              "text": "Sveučilišni projekt kombiniranjem teorijskog znanja za stvaranje višeigračke Simon igre s fizičkom i virtualnom server bazom podataka za rezultate i upravljanje korisnicima.",
-              "tags": [
-                "Igra",
-                "Višeigrač",
-                "Baza podataka",
-                "Sveučilišni projekt"
-              ]
-            },
-            "tr": {
-              "title": "Simon Oyunu: Çoklu Oyuncu & Veritabanı",
-              "text": "Teorik bilgiyi birleştiren, fiziksel ve sanal sunucu veritabanı ile yüksek skorlar ve kullanıcı yönetimi için çoklu oyuncu Simon oyunu oluşturan üniversite projesi.",
-              "tags": [
-                "Oyun",
-                "Çoklu Oyuncu",
-                "Veritabanı",
-                "Üniversite Projesi"
-              ]
-            }
-          }
-        },
-        {
-          "id": 3,
           "img": "",
           "faIcon": "fa-solid fa-language",
           "faIconColors": {
@@ -303,7 +81,7 @@
             "fill": "#06B6D4",
             "fillLight": "#0891B2"
           },
-          "categoryId": "category_personal",
+          "categoryId": "category_professional",
           "preview": {
             "links": [
               {
@@ -315,11 +93,6 @@
                 "href": "https://lomuss33.github.io/GermanCro/",
                 "tooltipString": "open_website",
                 "faIcon": "fa-solid fa-globe"
-              },
-              {
-                "href": "https://docs.google.com/document/d/REPLACE_WITH_GOOGLE_DOC_LINK_4/edit",
-                "tooltipString": "open_website",
-                "faIcon": "fa-solid fa-file-lines"
               }
             ],
             "screenshots": [],
@@ -374,7 +147,153 @@
           }
         },
         {
-          "id": 6,
+          "id": 2,
+          "img": "",
+          "faIcon": "fa-solid fa-graduation-cap",
+          "faIconColors": {
+            "bg": "#0D1117",
+            "bgLight": "#EDF2F7",
+            "fill": "#2962FF",
+            "fillLight": "#1E88E5"
+          },
+          "categoryId": "category_educational",
+          "preview": {
+            "links": [
+              {
+                "href": "https://github.com/Lomuss33/Projekt_Belot",
+                "tooltipString": "GitHub",
+                "faIcon": "fa-brands fa-github"
+              },
+              {
+                "href": "https://lomuss33.github.io/AdioBella/",
+                "tooltipString": "open_website",
+                "faIcon": "fa-solid fa-globe"
+              }
+            ],
+            "screenshots": [],
+            "screenshotsAspectRatio": "16:9",
+            "youtubeVideo": ""
+          },
+          "locales": {
+            "en": {
+              "title": "Java Learning Project: Belot",
+              "text": "University project focused on learning Java programming by developing a Belot card game. Implemented core game logic, user interaction, and basic AI opponents.",
+              "tags": [
+                "Java",
+                "Learning",
+                "Card Game",
+                "University Project"
+              ]
+            },
+            "de": {
+              "title": "Java-Lernprojekt: Belot",
+              "text": "Universitätsprojekt zum Erlernen der Java-Programmierung durch die Entwicklung eines Belot-Kartenspiels. Implementierung der Spiel-Logik, Benutzerinteraktion und einfacher KI-Gegner.",
+              "tags": [
+                "Java",
+                "Lernen",
+                "Kartenspiel",
+                "Universitätsprojekt"
+              ]
+            },
+            "hr": {
+              "title": "Java projekt učenja: Belot",
+              "text": "Sveučilišni projekt usmjeren na učenje Java programiranja kroz razvoj igre Belot. Implementirana osnovna logika igre, interakcija s korisnikom i jednostavni AI protivnici.",
+              "tags": [
+                "Java",
+                "Učenje",
+                "Kartaška igra",
+                "Sveučilišni projekt"
+              ]
+            },
+            "tr": {
+              "title": "Java Öğrenme Projesi: Belot",
+              "text": "Belot kart oyunu geliştirerek Java programlama öğrenmeye odaklanan üniversite projesi. Temel oyun mantığı, kullanıcı etkileşimi ve basit AI rakipleri uygulandı.",
+              "tags": [
+                "Java",
+                "Öğrenme",
+                "Kart Oyunu",
+                "Üniversite Projesi"
+              ]
+            }
+          }
+        },
+        {
+          "id": 3,
+          "img": "",
+          "faIcon": "fa-solid fa-robot",
+          "faIconColors": {
+            "bg": "#101A29",
+            "bgLight": "#ECF0F6",
+            "fill": "#1976D2",
+            "fillLight": "#1565C0"
+          },
+          "categoryId": "category_educational",
+          "preview": {
+            "links": [
+              {
+                "href": "https://github.com/Lomuss33/Pepper-Poker",
+                "tooltipString": "GitHub",
+                "faIcon": "fa-brands fa-github"
+              },
+              {
+                "href": "https://www.probo-robotics.at/",
+                "tooltipString": "open_website",
+                "faIcon": "fa-solid fa-globe"
+              }
+            ],
+            "screenshots": [],
+            "screenshotsAspectRatio": "16:9",
+            "youtubeVideo": ""
+          },
+          "locales": {
+            "en": {
+              "title": "Pepper & Nao Poker Game",
+              "text": "University project using Pepper and Nao robots to create an interactive poker game with animations and real-time card dealing on a monitor.",
+              "tags": [
+                "Robotics",
+                "Pepper",
+                "Nao",
+                "Poker",
+                "University Project"
+              ]
+            },
+            "de": {
+              "title": "Pepper & Nao Pokerspiel",
+              "text": "Universitätsprojekt mit Pepper- und Nao-Robotern zur Erstellung eines interaktiven Pokerspiels mit Animationen und Echtzeit-Kartenverteilung auf einem Monitor.",
+              "tags": [
+                "Robotik",
+                "Pepper",
+                "Nao",
+                "Poker",
+                "Universitätsprojekt"
+              ]
+            },
+            "hr": {
+              "title": "Poker igra s Pepper i Nao robotima",
+              "text": "Sveučilišni projekt korištenjem Pepper i Nao robota za stvaranje interaktivne poker igre s animacijama i dijeljenjem karata u realnom vremenu na monitoru.",
+              "tags": [
+                "Robotika",
+                "Pepper",
+                "Nao",
+                "Poker",
+                "Sveučilišni projekt"
+              ]
+            },
+            "tr": {
+              "title": "Pepper & Nao Poker Oyunu",
+              "text": "Pepper ve Nao robotlarını kullanarak, animasyonlu ve gerçek zamanlı kart dağıtımının yapıldığı interaktif bir poker oyunu oluşturan üniversite projesi.",
+              "tags": [
+                "Robotik",
+                "Pepper",
+                "Nao",
+                "Poker",
+                "Üniversite Projesi"
+              ]
+            }
+          }
+        },
+        {
+          "id": 4,
           "img": "",
           "faIcon": "fa-solid fa-home",
           "faIconColors": {
@@ -392,9 +311,9 @@
                 "faIcon": "fa-brands fa-github"
               },
               {
-                "href": "https://docs.google.com/document/d/REPLACE_WITH_GOOGLE_DOC_LINK_5/edit",
+                "href": "https://maps.app.goo.gl/agLy9TSrUBiWoguS8",
                 "tooltipString": "open_website",
-                "faIcon": "fa-solid fa-file-lines"
+                "faIcon": "fa-solid fa-globe"
               }
             ],
             "screenshots": [],
@@ -445,73 +364,6 @@
           }
         },
         {
-          "id": 7,
-          "img": "",
-          "faIcon": "fa-solid fa-file-pdf",
-          "faIconColors": {
-            "bg": "#0F172A",
-            "bgLight": "#F8FAFC",
-            "fill": "#EF4444",
-            "fillLight": "#DC2626"
-          },
-          "categoryId": "category_personal",
-          "preview": {
-            "links": [
-              {
-                "href": "https://github.com/Lomuss33/latex-lebenslauf",
-                "tooltipString": "GitHub",
-                "faIcon": "fa-brands fa-github"
-              },
-              {
-                "href": "https://docs.google.com/document/d/REPLACE_WITH_GOOGLE_DOC_LINK_6/edit",
-                "tooltipString": "open_website",
-                "faIcon": "fa-solid fa-file-lines"
-              }
-            ],
-            "screenshots": [],
-            "screenshotsAspectRatio": "16:9",
-            "youtubeVideo": ""
-          },
-          "locales": {
-            "en": {
-              "title": "LaTeX CV",
-              "text": "Personal CV designed in LaTeX, featuring a beautiful, detail-packed yet concise format that respects the 15-second rule for quick readability.",
-              "tags": [
-                "LaTeX",
-                "CV",
-                "Personal Project"
-              ]
-            },
-            "de": {
-              "title": "LaTeX-Lebenslauf",
-              "text": "Persönlicher Lebenslauf in LaTeX, mit einem schönen, detailreichen, aber prägnanten Format, das die 15-Sekunden-Regel für schnelle Lesbarkeit einhält.",
-              "tags": [
-                "LaTeX",
-                "Lebenslauf",
-                "Persönliches Projekt"
-              ]
-            },
-            "hr": {
-              "title": "LaTeX životopis",
-              "text": "Osobni životopis dizajniran u LaTeX-u, s lijepim, detaljnim, ali sažetim formatom koji poštuje 15-sekundno pravilo za brzo čitanje.",
-              "tags": [
-                "LaTeX",
-                "Životopis",
-                "Osobni projekt"
-              ]
-            },
-            "tr": {
-              "title": "LaTeX Özgeçmiş",
-              "text": "LaTeX ile tasarlanmış kişisel özgeçmiş. Güzel, detaylı ancak özlü bir formatta, hızlı okunabilirlik için 15 saniye kuralına uygun.",
-              "tags": [
-                "LaTeX",
-                "Özgeçmiş",
-                "KiÅŸisel Proje"
-              ]
-            }
-          }
-        },
-        {
           "id": 5,
           "img": "",
           "faIcon": "fa-solid fa-project-diagram",
@@ -533,11 +385,6 @@
                 "href": "https://lomuss33.github.io/HTML-FamilyTree/",
                 "tooltipString": "open_website",
                 "faIcon": "fa-solid fa-globe"
-              },
-              {
-                "href": "https://docs.google.com/document/d/REPLACE_WITH_GOOGLE_DOC_LINK_7/edit",
-                "tooltipString": "open_website",
-                "faIcon": "fa-solid fa-file-lines"
               }
             ],
             "screenshots": [],
@@ -583,6 +430,143 @@
                 "Aile Ağacı",
                 "Web Tasarım",
                 "KiÅŸisel Proje"
+              ]
+            }
+          }
+        },
+        {
+          "id": 6,
+          "img": "",
+          "faIcon": "fa-solid fa-file-pdf",
+          "faIconColors": {
+            "bg": "#0F172A",
+            "bgLight": "#F8FAFC",
+            "fill": "#EF4444",
+            "fillLight": "#DC2626"
+          },
+          "categoryId": "category_personal",
+          "preview": {
+            "links": [
+              {
+                "href": "https://github.com/Lomuss33/latex-lebenslauf",
+                "tooltipString": "GitHub",
+                "faIcon": "fa-brands fa-github"
+              }
+            ],
+            "screenshots": [],
+            "screenshotsAspectRatio": "16:9",
+            "youtubeVideo": ""
+          },
+          "locales": {
+            "en": {
+              "title": "LaTeX CV",
+              "text": "Personal CV designed in LaTeX, featuring a beautiful, detail-packed yet concise format that respects the 15-second rule for quick readability.",
+              "tags": [
+                "LaTeX",
+                "CV",
+                "Personal Project"
+              ]
+            },
+            "de": {
+              "title": "LaTeX-Lebenslauf",
+              "text": "Persönlicher Lebenslauf in LaTeX, mit einem schönen, detailreichen, aber prägnanten Format, das die 15-Sekunden-Regel für schnelle Lesbarkeit einhält.",
+              "tags": [
+                "LaTeX",
+                "Lebenslauf",
+                "Persönliches Projekt"
+              ]
+            },
+            "hr": {
+              "title": "LaTeX životopis",
+              "text": "Osobni životopis dizajniran u LaTeX-u, s lijepim, detaljnim, ali sažetim formatom koji poštuje 15-sekundno pravilo za brzo čitanje.",
+              "tags": [
+                "LaTeX",
+                "Životopis",
+                "Osobni projekt"
+              ]
+            },
+            "tr": {
+              "title": "LaTeX Özgeçmiş",
+              "text": "LaTeX ile tasarlanmış kişisel özgeçmiş. Güzel, detaylı ancak özlü bir formatta, hızlı okunabilirlik için 15 saniye kuralına uygun.",
+              "tags": [
+                "LaTeX",
+                "Özgeçmiş",
+                "KiÅŸisel Proje"
+              ]
+            }
+          },
+          "link": {
+            "href": "/resume.pdf",
+            "tooltipString": "open_website",
+            "faIcon": "fa-solid fa-globe"
+          }
+        },
+        {
+          "id": 7,
+          "img": "",
+          "faIcon": "fa-solid fa-window-maximize",
+          "faIconColors": {
+            "bg": "#0F172A",
+            "bgLight": "#EFF6FF",
+            "fill": "#38BDF8",
+            "fillLight": "#0284C7"
+          },
+          "categoryIds": [
+            "category_personal",
+            "category_professional"
+          ],
+          "preview": {
+            "links": [
+              {
+                "href": "https://github.com/Lomuss33/myWebsite",
+                "tooltipString": "GitHub",
+                "faIcon": "fa-brands fa-github"
+              },
+              {
+                "href": "https://lovro-music.de/",
+                "tooltipString": "open_website",
+                "faIcon": "fa-solid fa-globe"
+              }
+            ],
+            "screenshots": [],
+            "screenshotsAspectRatio": "16:9",
+            "youtubeVideo": ""
+          },
+          "locales": {
+            "en": {
+              "title": "This Portfolio Website",
+              "text": "Personal portfolio website presenting my projects, background, and experience in a clear and structured way.",
+              "tags": [
+                "Portfolio",
+                "Website",
+                "Personal Project"
+              ]
+            },
+            "de": {
+              "title": "This Portfolio Website",
+              "text": "Persönliche Portfolio-Website, die meine Projekte, meinen Hintergrund und meine Erfahrung klar und strukturiert präsentiert.",
+              "tags": [
+                "Portfolio",
+                "Website",
+                "Persönliches Projekt"
+              ]
+            },
+            "hr": {
+              "title": "This Portfolio Website",
+              "text": "Osobna portfolio web stranica koja jasno i pregledno predstavlja moje projekte, iskustvo i pozadinu.",
+              "tags": [
+                "Portfolio",
+                "Web stranica",
+                "Osobni projekt"
+              ]
+            },
+            "tr": {
+              "title": "This Portfolio Website",
+              "text": "Projelerimi, geçmişimi ve deneyimimi açık ve düzenli şekilde sunan kişisel portfolyo web sitesi.",
+              "tags": [
+                "Portfolyo",
+                "Web Sitesi",
+                "Kişisel Proje"
               ]
             }
           }

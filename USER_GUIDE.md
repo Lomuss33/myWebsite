@@ -1,148 +1,255 @@
 # User Guide
 
-Back to the repo overview: [README.md](./README.md)
+Back to the main template guide: [README.md](./README.md)
 
-Maintainer and schema notes: [MAINTANER.md](./MAINTANER.md)
+Maintainer and extension notes: [MAINTANER.md](./MAINTANER.md)
 
 ## Purpose
 
-This file explains the visible clickable controls in the website and what each one does. It is focused on the live interface, not the internal code structure.
+This file explains how the website behaves from a visitor's point of view.
 
-## Main Navigation
+It is about:
 
-### Sidebar and section links
+- what users can click
+- what visible controls do
+- how navigation and contact features behave
 
-- Clicking a section link opens that section.
-- On desktop, the left sidebar is the main navigation.
-- On mobile, the current section links appear near the top and the category tabs appear at the bottom.
+It is not the right file for:
 
-### Category tabs
+- template setup
+- code architecture
+- adding new article types
+- changing the schema
 
-- Bottom tabs on mobile switch between the top-level groups like Home, History, Hobbys, and Contact.
-- When a category contains multiple sections, the app remembers the last visited section inside that category.
+For that, use [README.md](./README.md) and [MAINTANER.md](./MAINTANER.md).
+
+## What This Guide Helps You Check
+
+Use this file when you want to confirm that a customized copy of the template still behaves well for visitors.
+
+It is especially useful for:
+
+- manual QA after content changes
+- checking navigation flow
+- checking contact and resume behavior
+- checking desktop vs mobile expectations
+
+## What Kind Of Site This Is
+
+This website is a single-page portfolio/resume site made of sections.
+
+Users move through it by:
+
+- opening sections from navigation
+- switching categories
+- interacting with cards, links, filters, modals, and forms
+
+Depending on the device, the layout changes between desktop and mobile presentation.
+
+## Navigation
+
+### Section navigation
+
+- clicking a section link opens that section
+- on desktop, the main navigation appears in the sidebar
+- on mobile, section links appear near the top of the current view
+
+### Category navigation
+
+- categories group sections into larger buckets such as `Home`, `History`, `Hobbys`, and `Contact`
+- on mobile, category controls appear near the bottom of the interface
+- when a category contains more than one section, the site remembers the last visited section in that category
+
+### Deep links
+
+- the site uses URL hash navigation
+- opening a direct link to a section should land on that section
+- refreshing the page should keep the current section route
 
 ## Profile Area
 
-### Avatar and profile card
+### Profile card
 
-- The profile card shows the avatar, name, current roles, and status.
-- The animated role text rotates automatically when more than one role is defined.
+The profile area can show:
+
+- avatar
+- name
+- rotating roles
+- status indicator
+
+### Rotating roles
+
+- if more than one role is configured, the role text rotates automatically
 
 ### Status circle
 
-- Clicking the status circle jumps directly to the `contact` section.
-- The hover message explains the current availability state.
+- when visible, the status circle acts as a quick shortcut to the `contact` section
+- its message explains the configured availability state
 
-### Name pronunciation button
+### Name pronunciation
 
-- The speaker button next to the name plays the pronunciation audio when an audio URL is configured.
-- If only IPA text is configured, the tooltip still explains the pronunciation.
+- if a pronunciation audio file exists, the speaker control plays it
+- if only pronunciation text exists, the UI can still explain how the name is pronounced
 
-## Top/Side Tools
+## Utility Tools
 
 ### Language picker
 
-- Opens a dropdown with all enabled languages.
-- Choosing one immediately switches the interface and content translations.
+- shows the enabled languages from site settings
+- switching language updates interface text and localized content immediately
 
 ### Theme picker
 
-- Switches between the configured themes, usually dark and light mode.
-- Theme changes affect colors, icons, and any theme-aware image/text placeholders.
+- switches between configured themes, usually dark and light
+- theme changes affect colors and theme-aware UI styling
 
-### Magic cursor shaker
+### Resume control
 
-- On supported desktop layouts, clicking the salt shaker switches between the `Magic` cursor and the `Medieval` cursor theme.
-- There is no desktop off state anymore; the toggle is always one mode or the other.
-- The shaker keeps its tooltip and also shows the current cursor mode visually.
-- On touch or unsupported layouts, the shaker stays informational and does not enable the custom cursor.
+Depending on configuration, the resume control can offer:
 
-### Resume download
+- view resume
+- download resume
+- email resume
 
-- Downloads or opens the configured resume PDF.
-- If no PDF is configured, the site shows an error notification instead.
+If no resume PDF is configured, the site should show an error notification instead of opening a broken link.
 
 ### Fullscreen toggle
 
-- On supported desktop browsers, the fullscreen button expands the current section into fullscreen mode.
-- The button is hidden on unsupported layouts or browsers.
+- on supported browsers and layouts, the fullscreen button enters or exits fullscreen mode
+- if the browser or layout does not support it well, the control may be absent
 
-## Section Content Controls
+### Cursor mode toggle
 
-### Category filter buttons
+On supported desktop layouts, the cursor tool can switch cursor behavior or theme presentation.
 
-- Some articles show filter buttons such as `All`, `Tools`, or `Web`.
-- Clicking a filter only changes the items inside that article, not the whole page.
+If the current fork/template keeps this feature:
 
-### Preview buttons on projects and media items
+- it is mainly a visual/interaction enhancement
+- touch devices or unsupported environments may not activate it fully
 
-- Video button: opens an embedded YouTube video in a modal.
-- Camera/gallery button: opens screenshots in a gallery modal.
-- Link buttons: open an external page after a confirmation dialog.
+## Content Interactions
+
+### Category filters inside articles
+
+- some article blocks show filter buttons such as `All`, `Tools`, `Web`, or other custom categories
+- these filters only change the items inside that article
+- they do not change the whole page or top-level navigation
+
+### Project and media preview controls
+
+Cards and items may expose preview actions such as:
+
+- opening a website
+- opening GitHub or docs links
+- opening screenshots in a gallery modal
+- opening a YouTube video modal
 
 ### External links
 
-- External links do not open immediately.
-- The site first shows a confirmation dialog explaining that the user is leaving the site.
+- external links may show a confirmation step before leaving the site
+- this is meant to make it clear that the user is leaving the portfolio
 
-### Copy buttons
+### Copy-to-clipboard controls
 
-- Some contact or handle fields show a copy button.
-- Clicking it copies the related text to the clipboard and briefly shows a success state.
+- some contact items or handles can be copied directly
+- after copying, the site should provide visible feedback
 
 ## Contact Section
 
 ### Contact links
 
-- WhatsApp, Telegram, LinkedIn, Discord, Instagram, and similar entries open the configured destination.
-- Some entries are optimized for quick actions, for example Gmail compose links or copyable usernames.
+The contact area may include direct links for:
+
+- email
+- phone
+- LinkedIn
+- WhatsApp
+- Telegram
+- Discord
+- Instagram
+- other configured platforms
+
+Some contact entries may also support:
+
+- copy actions
+- Gmail compose links
+- quick chat links
+- QR-style or device-friendly phone actions
 
 ### Contact form
 
-- The form validates name, email, subject, and message before sending.
-- If the message is accepted, a success message replaces the form.
-- Email delivery depends on the EmailJS configuration in the content JSON.
+The contact form typically:
 
-## Modals and Overlays
+1. validates the fields
+2. sends the message through the configured EmailJS integration
+3. shows a success state if the send worked
+
+Expected fields:
+
+- name
+- email
+- subject
+- message
+
+### Resume email flow
+
+If enabled, the site can also support a resume-by-email flow using the configured resume email settings.
+
+## Modals And Feedback Layers
 
 ### Gallery modal
 
-- Opens when a gallery-enabled item is clicked.
-- Used for screenshots, travel albums, and similar image collections.
+- used for screenshots, albums, and image previews
 
 ### YouTube modal
 
-- Opens when a video-enabled item is clicked.
-- Used for project demos or related videos.
+- used for project demos or embedded video content
 
 ### Confirmation dialog
 
-- Appears before opening external links.
-- Lets the user continue or cancel.
+- used before opening certain external destinations
 
 ### Notifications
 
-- Small feedback messages appear for actions like errors, cursor toggle, or missing files.
+- used for success, missing-file, or error feedback
 
-## Neue Karte hinzufügen
+### Loading indicators
 
-If by "Karte" you mean a new visible content card/item on the website, the usual workflow is:
+- some actions can show a spinner or temporary loading state
+- examples include sending messages and queued transitions
 
-1. Open the target section file in `public/data/sections/`.
-2. Find the article block that should contain the new card.
-3. Add a new object to that article's `items` array.
-4. Keep the `id` unique within that article.
-5. If the article uses categories, set `categoryId` to one of the values from `settings.categorize_by`.
-6. Fill in the visible fields such as `locales.title`, `locales.text`, `img`, `faIcon`, `tags`, and `preview`.
+## What Visitors Should Expect
 
-Common examples:
+From a user perspective, the site should feel like:
 
-- Portfolio/project card: title, text, tags, optional image, optional preview links, optional screenshots.
-- Info list card: title, text, icon, optional link, optional copy button.
-- Timeline card: title, institution, location, dates, description, and tags.
+- a smooth single-page portfolio
+- section-driven rather than page-driven
+- responsive on desktop and mobile
+- content-rich but still navigable
 
-Important:
+## Quick QA Checklist
 
-- Use `categoryId`, not the old `category` field, for new content.
-- Use an array in `settings.categorize_by`, not the old string form.
-- If you need a completely new visual card type, that is a maintainer task and is described in [MAINTANER.md](./MAINTANER.md).
+After customizing the template, a maintainer can use this checklist:
+
+- section navigation opens the expected section
+- category navigation stays understandable on mobile
+- language switching updates visible text correctly
+- theme switching works without broken contrast
+- resume actions point to the correct file or CV page
+- contact links open the correct destinations
+- the contact form succeeds or fails gracefully
+- project previews, galleries, and video modals still work
+- external links show the expected confirmation behavior
+
+## When This Guide Is Useful
+
+Use this guide when you want to:
+
+- understand the live UI behavior
+- QA the visible features
+- check whether a fork/template still behaves correctly after customization
+
+If you want to change the content or extend the system, go back to:
+
+- [README.md](./README.md)
+- [MAINTANER.md](./MAINTANER.md)

@@ -96,6 +96,7 @@ function ArticlePortfolioItem({ itemWrapper }) {
         if (!isNonEmptyHref(href)) return false
         return icon.includes("fa-file") || href.includes("docs.google.com") || href.includes("readthedocs") || href.includes("/docs")
     }) || null
+    const controlAvatarStyle = getTransparentControlAvatarStyle(itemWrapper?.faIconStyle)
     const actionsCount = Number(Boolean(githubLink)) + Number(Boolean(docsLink))
     const leftControlsGapCount = Math.max(0, actionsCount - 1)
 
@@ -143,7 +144,7 @@ function ArticlePortfolioItem({ itemWrapper }) {
                         </span>
                         <AvatarView src={itemWrapper.img}
                                     faIcon={itemWrapper.faIcon}
-                                    style={itemWrapper.faIconStyle}
+                                    style={controlAvatarStyle}
                                     alt={itemWrapper.imageAlt}
                                     className={`article-portfolio-item-control-avatar`}/>
                     </Link>
@@ -152,7 +153,7 @@ function ArticlePortfolioItem({ itemWrapper }) {
                          data-tooltip={`No public link`}>
                         <AvatarView src={itemWrapper.img}
                                     faIcon={itemWrapper.faIcon}
-                                    style={itemWrapper.faIconStyle}
+                                    style={controlAvatarStyle}
                                     alt={itemWrapper.imageAlt}
                                     className={`article-portfolio-item-control-avatar`}/>
                     </div>
@@ -232,6 +233,7 @@ function getPortfolioToneClass(title) {
     if (normalizedTitle.includes("villa") || normalizedTitle.includes("renovation")) return "software-tone-architecture"
     if (normalizedTitle.includes("latex") || normalizedTitle.includes("cv")) return "software-tone-editorial"
     if (normalizedTitle.includes("family tree")) return "software-tone-genealogy"
+    if (normalizedTitle.includes("portfolio website")) return "software-tone-portfolio"
 
     if (normalizedTitle.includes("proxmox") || normalizedTitle.includes("homelab")) return "hardware-tone-rack-steel"
     if (normalizedTitle.includes("sorting") || normalizedTitle.includes("material")) return "hardware-tone-conveyor-steel"
@@ -243,4 +245,16 @@ function getPortfolioToneClass(title) {
     if (normalizedTitle.includes("bicycle") || normalizedTitle.includes("bike")) return "hardware-tone-workshop-steel"
 
     return ""
+}
+
+function getTransparentControlAvatarStyle(faIconStyle) {
+    if (!faIconStyle) return null
+
+    return {
+        color: faIconStyle.color || null,
+        backgroundColor: "transparent",
+        background: "transparent",
+        borderColor: "transparent",
+        boxShadow: "none"
+    }
 }

@@ -13,7 +13,7 @@ function mulberry32(seed) {
     }
 }
 
-const MIN_DOT_POWER = 1
+const MIN_DOT_POWER = 4
 const MAX_DOT_POWER = 9
 const BASE_SPEED = 0.00042
 const FRQ_PERIOD_MS = 6000
@@ -36,7 +36,7 @@ uniform float frq;
 uniform vec2 dots[${dotCount}];
 
 vec3 palette(float t) {
-  return 0.42 + 0.58 * cos(6.28318 * (vec3(0.0, 0.33, 0.67) + t));
+  return 0.52 + 0.48 * cos(6.28318 * (vec3(0.0, 0.25, 0.55) + t));
 }
 
 float hashIndex(float n) {
@@ -46,6 +46,7 @@ float hashIndex(float n) {
 void main() {
   vec2 resolution = vec2(width, height);
   vec2 uv = (gl_FragCoord.xy / resolution) - 0.5;
+  uv.x *= resolution.x / max(resolution.y, 1.0);
 
   float nearest = 100000000.0;
   float dist;
@@ -60,8 +61,12 @@ void main() {
   }
 
   float bands = (cos(nearest * frq) + 1.0) * 0.5;
+  float ring = smoothstep(0.12, 1.0, bands);
+  float core = smoothstep(0.045, 0.0, nearest);
   vec3 hue = palette(hashIndex(hueId));
-  gl_FragColor = vec4(bands * hue, 1.0);
+  vec3 base = vec3(0.015, 0.02, 0.045);
+  vec3 glow = hue * (0.22 + ring * 0.82) + core * vec3(1.0, 0.92, 0.64);
+  gl_FragColor = vec4(base + glow, 1.0);
 }
 `
 }
@@ -150,6 +155,8 @@ export function createDistanceFieldEngine(canvas, options = {}) {
     let clickImpulse = 0
 
     function initGeometry() {
+        gl.clearColor(0.015, 0.02, 0.045, 1)
+
         const vertexData = new Float32Array([
             -1,  1,
             -1, -1,
@@ -276,6 +283,7 @@ export function createDistanceFieldEngine(canvas, options = {}) {
 
         lastTime = nowMs
         gl.useProgram(resources.program)
+        gl.clear(gl.COLOR_BUFFER_BIT)
         gl.uniform1f(resources.frqHandle, currentFrq(nowMs))
         gl.uniform2fv(resources.dotsHandle, dots)
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)

@@ -496,8 +496,6 @@ div.article-web-art-items {
     user-select: none;
     -webkit-tap-highlight-color: transparent;
     outline: none;
-    content-visibility: auto;
-    contain-intrinsic-size: 220px 220px;
     isolation: isolate;
 
     transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
@@ -551,26 +549,18 @@ div.article-web-art-items {
     background: conic-gradient(in hsl longer hue, red 0 100%);
     background-color: red;
     cursor: pointer;
-    animation:
-        article-web-art-spin-box-init linear infinite var(--spin-duration),
-        article-web-art-spin-box-control linear infinite var(--control-duration) paused;
-    animation-composition: add;
+    animation: article-web-art-spin-box-init linear infinite var(--spin-duration);
     box-shadow:
         inset 0 0 0 1px rgba(255, 255, 255, 0.18),
         0 10px 22px rgba(0, 0, 0, 0.26);
 }
 
 .article-web-art-spin-box-core:hover {
-    animation-play-state: running;
+    animation-duration: var(--spin-hover-duration);
 }
 
-.article-web-art-spin-box-core-stop:hover,
-.article-web-art-spin-box-core-pause:hover {
+.article-web-art-spin-box-core-stop:hover {
     animation-play-state: paused;
-}
-
-.article-web-art-spin-box-core-control:hover {
-    animation-play-state: running;
 }
 
 .article-web-art-spin-boxes-locked .article-web-art-spin-box-core {
@@ -581,12 +571,6 @@ div.article-web-art-items {
 @keyframes article-web-art-spin-box-init {
     to {
         rotate: 1turn;
-    }
-}
-
-@keyframes article-web-art-spin-box-control {
-    to {
-        rotate: var(--control-turn);
     }
 }
 

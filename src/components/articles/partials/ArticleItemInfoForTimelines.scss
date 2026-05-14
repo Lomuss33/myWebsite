@@ -16,6 +16,8 @@ div.article-timeline-item-info-for-timelines {
     --card-border: color-mix(in srgb, var(--theme-standard-borders) 68%, var(--card-accent) 32%);
     --card-shadow: 0 16px 36px color-mix(in srgb, var(--theme-dark) 16%, transparent 84%);
     --card-shadow-hover: 0 22px 48px color-mix(in srgb, var(--card-accent) 18%, transparent 82%);
+    --timeline-title-rule-color: var(--card-accent);
+    --timeline-detail-rule-color: var(--card-accent-2, var(--card-accent));
 
     @include media-breakpoint-down(lg) {
         --content-padding: clamp(0.85rem, 0.8rem + 0.18vw, 1rem) clamp(0.9rem, 0.84rem + 0.24vw, 1.1rem);
@@ -175,9 +177,37 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
     }
 }
 
+article#article-1-section-my-writings li.article-timeline-item:nth-child(6n + 1) div.article-timeline-item-info-for-timelines {
+    --timeline-rule-color: #0077ff;
+}
+
+article#article-1-section-my-writings li.article-timeline-item:nth-child(6n + 2) div.article-timeline-item-info-for-timelines {
+    --timeline-rule-color: #7c3aed;
+}
+
+article#article-1-section-my-writings li.article-timeline-item:nth-child(6n + 3) div.article-timeline-item-info-for-timelines {
+    --timeline-rule-color: #e11d48;
+}
+
+article#article-1-section-my-writings li.article-timeline-item:nth-child(6n + 4) div.article-timeline-item-info-for-timelines {
+    --timeline-rule-color: #d97706;
+}
+
+article#article-1-section-my-writings li.article-timeline-item:nth-child(6n + 5) div.article-timeline-item-info-for-timelines {
+    --timeline-rule-color: #059669;
+}
+
+article#article-1-section-my-writings li.article-timeline-item:nth-child(6n) div.article-timeline-item-info-for-timelines {
+    --timeline-rule-color: #9333ea;
+}
+
 article#article-1-section-my-writings div.article-timeline-item-info-for-timelines {
     --card-accent: #743ad5;
     --card-accent-2: #d53a9d;
+    --timeline-rule-color: var(--card-accent);
+    --timeline-rule-width: 85%;
+    --timeline-rule-thickness: 2px;
+    --timeline-rule-background: color-mix(in srgb, var(--timeline-rule-color) 82%, transparent 18%);
     --card-surface-top: transparent;
     --card-surface-bottom: transparent;
     --card-border: transparent;
@@ -398,6 +428,7 @@ article.article-timeline--art-digital-expression li.article-timeline-item div.ar
     }
 
     div.article-timeline-item-info-for-timelines-header {
+        order: 1;
         min-height: calc(var(--digital-card-stack-base, 9rem) * 0.72);
         padding-right: calc(var(--digital-card-stack-base, 9rem) + 1.25rem);
     }
@@ -417,18 +448,34 @@ article.article-timeline--art-digital-expression li.article-timeline-item div.ar
     }
 
     div.article-timeline-item-info-for-timelines-body {
+        order: 3;
         margin-top: 0.58rem;
         padding: 0.68rem 0.78rem;
         border-radius: 22px;
+        color: var(--card-text-mid);
         background: rgba(255, 255, 255, 0.12);
         border: 1px solid rgba(255, 255, 255, 0.18);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+
+        &,
+        p,
+        span,
+        li {
+            color: var(--card-text-mid);
+        }
+
+        a,
+        b,
+        strong {
+            color: var(--card-text-strong);
+        }
     }
 
     div.article-timeline-item-info-preview-footer {
+        order: 2;
         margin-top: auto;
         padding-top: 0.78rem;
-        justify-content: flex-start;
+        justify-content: flex-end;
         align-items: flex-end;
         position: relative;
         z-index: 30;
@@ -440,7 +487,7 @@ article.article-timeline--art-digital-expression li.article-timeline-item div.ar
         z-index: 31;
         display: flex;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: flex-end;
         gap: 0;
         flex-wrap: nowrap;
         width: fit-content;
@@ -765,6 +812,20 @@ div.article-timeline-item-info-for-timelines-header-title {
     width: 100%;
 }
 
+article#article-1-section-my-writings div.article-timeline-item-info-for-timelines-header-title {
+    position: relative;
+    padding-bottom: clamp(0.42rem, 0.34rem + 0.2vw, 0.58rem);
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: auto auto 0 0;
+        width: var(--timeline-rule-width);
+        height: var(--timeline-rule-thickness);
+        background: var(--timeline-rule-background);
+    }
+}
+
 div.article-timeline-item-info-for-timelines-header-meta-band {
     display: flex;
     align-items: center;
@@ -840,58 +901,6 @@ article.article-timeline--art-digital-expression div.article-timeline-item-info-
     text-decoration-color: var(--card-accent);
 }
 
-article#article-1-section-experience div.article-timeline-item-info-for-timelines-header-date-badge {
-    div.date-badge {
-        width: auto!important;
-        padding: 4px 12px;
-        white-space: nowrap;
-        color: var(--card-text-strong);
-        background: linear-gradient(180deg, rgba(11, 18, 32, 0.94), rgba(5, 8, 16, 0.94));
-        border: 1px solid color-mix(in srgb, var(--card-accent) 34%, var(--card-border) 66%);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-
-        i.fa-icon {
-            margin-right: 8px;
-            color: var(--card-accent-2);
-        }
-    }
-}
-
-article#article-1-section-my-writings div.article-timeline-item-info-for-timelines-header-date-badge {
-    div.date-badge {
-        width: auto!important;
-        padding: 4px 12px;
-        white-space: nowrap;
-        color: var(--card-text-strong);
-        background: transparent;
-        border: 1px solid color-mix(in srgb, var(--card-accent) 34%, transparent);
-        box-shadow: none;
-
-        i.fa-icon {
-            margin-right: 8px;
-            color: var(--card-accent);
-        }
-    }
-}
-
-article.article-timeline--art-photography div.article-timeline-item-info-for-timelines-header-date-badge,
-article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-header-date-badge {
-    div.date-badge {
-        width: auto!important;
-        padding: 4px 12px;
-        white-space: nowrap;
-        color: var(--card-text-strong);
-        background: linear-gradient(180deg, rgba(11, 18, 32, 0.94), rgba(5, 7, 13, 0.94));
-        border: 1px solid color-mix(in srgb, var(--card-accent) 38%, var(--card-border) 62%);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-
-        i.fa-icon {
-            margin-right: 8px;
-            color: var(--card-accent-2);
-        }
-    }
-}
-
 article#article-1-section-experience ul.article-timeline-item-info-for-timelines-header-prop-list {
     color: var(--card-text-mid);
 }
@@ -903,30 +912,6 @@ article#article-1-section-my-writings ul.article-timeline-item-info-for-timeline
 article.article-timeline--art-photography ul.article-timeline-item-info-for-timelines-header-prop-list,
 article.article-timeline--art-digital-expression ul.article-timeline-item-info-for-timelines-header-prop-list {
     color: var(--card-text-mid);
-}
-
-div.article-timeline-item-info-for-timelines-header-date-badge {
-    flex: 0 0 auto;
-    max-width: 100%;
-    min-width: 0!important;
-
-    div.date-badge {
-        width: auto!important;
-        padding: clamp(0.2rem, 0.16rem + 0.15vw, 0.3rem) clamp(0.55rem, 0.48rem + 0.35vw, 0.75rem);
-        font-size: var(--timeline-badge-size) !important;
-        line-height: 1.2;
-        white-space: nowrap;
-        color: var(--card-text-strong);
-        background: linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(6, 9, 16, 0.94));
-        border: 1px solid color-mix(in srgb, var(--card-accent) 38%, var(--card-border) 62%);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-
-        i.fa-icon {
-            margin-right: 8px;
-            color: var(--card-accent-2);
-            font-size: 0.95em !important;
-        }
-    }
 }
 
 ul.article-timeline-item-info-for-timelines-header-prop-list {
@@ -1089,6 +1074,20 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
     }
 }
 
+article#article-1-section-my-writings div.article-timeline-item-info-for-timelines-body {
+    position: relative;
+    padding-top: clamp(0.48rem, 0.4rem + 0.2vw, 0.68rem);
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto auto 0;
+        width: var(--timeline-rule-width);
+        height: var(--timeline-rule-thickness);
+        background: var(--timeline-rule-background);
+    }
+}
+
 article.article-timeline--art-photography div.article-timeline-item-info-for-timelines-tags-footer,
 article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-tags-footer {
     li.article-timeline-item-info-for-timelines-tags-footer-tag {
@@ -1148,17 +1147,36 @@ div.article-timeline-item-info-preview-footer {
 
 article#article-1-section-my-writings div.article-timeline-item-info-for-timelines-header-meta-band {
     align-items: center;
+    justify-content: flex-start;
+    gap: clamp(0.7rem, 0.5rem + 0.46vw, 1rem);
+
+    ul.article-timeline-item-info-for-timelines-header-prop-list {
+        flex: 0 1 auto;
+        max-width: none;
+    }
 
     div.article-timeline-item-info-preview-footer--meta-end {
         position: relative;
         right: 0;
         margin-top: 0;
-        margin-left: auto;
+        margin-left: 0;
+        padding-left: clamp(0.85rem, 0.66rem + 0.48vw, 1.15rem);
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: calc(-1 * var(--meta-gap));
+            bottom: calc(-1 * var(--header-gap));
+            left: 0;
+            width: var(--timeline-rule-thickness);
+            background: var(--timeline-rule-background);
+            pointer-events: none;
+        }
     }
 
     div.article-item-preview-menu,
     div.article-item-preview-menu-button-list {
-        justify-content: flex-end;
+        justify-content: flex-start;
     }
 
     @include media-breakpoint-down(sm) {
@@ -1166,6 +1184,7 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
 
         div.article-timeline-item-info-preview-footer--meta-end {
             align-self: flex-start;
+            margin-top: 0.1rem;
         }
     }
 }

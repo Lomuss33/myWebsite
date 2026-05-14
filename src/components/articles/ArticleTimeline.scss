@@ -246,9 +246,34 @@ article#article-1-section-my-writings {
     }
 
     li.article-timeline-item {
+        --timeline-writing-gradient: linear-gradient(135deg, #0077ff 0%, #7c3aed 100%);
         position: relative;
         display: block;
         min-width: 0;
+    }
+
+    li.article-timeline-item:nth-child(6n + 1) {
+        --timeline-writing-gradient: linear-gradient(135deg, #0077ff 0%, #7c3aed 100%);
+    }
+
+    li.article-timeline-item:nth-child(6n + 2) {
+        --timeline-writing-gradient: linear-gradient(135deg, #7c3aed 0%, #e11d48 100%);
+    }
+
+    li.article-timeline-item:nth-child(6n + 3) {
+        --timeline-writing-gradient: linear-gradient(135deg, #e11d48 0%, #d97706 100%);
+    }
+
+    li.article-timeline-item:nth-child(6n + 4) {
+        --timeline-writing-gradient: linear-gradient(135deg, #d97706 0%, #059669 100%);
+    }
+
+    li.article-timeline-item:nth-child(6n + 5) {
+        --timeline-writing-gradient: linear-gradient(135deg, #059669 0%, #9333ea 100%);
+    }
+
+    li.article-timeline-item:nth-child(6n) {
+        --timeline-writing-gradient: linear-gradient(135deg, #9333ea 0%, #0077ff 100%);
     }
 
     li.article-timeline-item:first-child div.article-timeline-item-content {
@@ -670,7 +695,7 @@ article.article-timeline--art-digital-expression {
     ul.article-timeline-items {
         --timeline-line-width: 0px;
         --timeline-line-color: transparent;
-        --digital-card-stack-base: clamp(8.25rem, 11vw, 10.6rem);
+        --digital-card-stack-base: clamp(7rem, 9vw, 8.8rem);
         --gap-between-avatar-and-content: 0px;
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -680,12 +705,12 @@ article.article-timeline--art-digital-expression {
         perspective-origin: 70% 18%;
 
         @include media-breakpoint-down(lg) {
-            --digital-card-stack-base: clamp(8.2rem, 26vw, 10.4rem);
+            --digital-card-stack-base: clamp(7rem, 22vw, 8.8rem);
             grid-template-columns: 1fr;
         }
 
         @include media-breakpoint-down(sm) {
-            --digital-card-stack-base: clamp(6.7rem, 36vw, 8.3rem);
+            --digital-card-stack-base: clamp(5.8rem, 30vw, 7rem);
         }
 
         @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
@@ -700,7 +725,7 @@ article.article-timeline--art-digital-expression {
     li.article-timeline-item {
         position: relative;
         align-items: stretch;
-        min-height: 305px;
+        min-height: 240px;
         padding: 0;
         transform-style: preserve-3d;
         isolation: isolate;

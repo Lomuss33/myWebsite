@@ -27,14 +27,28 @@ function _measureTileContentSize(element) {
     }
 
     const rect = element.getBoundingClientRect()
-    const width = Math.max(1, Math.round(rect.width || element.clientWidth || 1))
-    const height = Math.max(1, Math.round(rect.height || element.clientHeight || 1))
+    const parentRect = element.parentElement?.getBoundingClientRect?.()
+    const fallbackWidth = parentRect?.width || element.parentElement?.clientWidth || 1
+    const fallbackHeight = parentRect?.height || element.parentElement?.clientHeight || fallbackWidth
+    const width = Math.max(1, Math.round(rect.width || element.clientWidth || fallbackWidth || 1))
+    const height = Math.max(1, Math.round(rect.height || element.clientHeight || fallbackHeight || width || 1))
     return { width, height }
 }
 
 function _syncTileEngineSize(tile, engine, devicePixelRatio = 1) {
     const { width, height } = _measureTileContentSize(tile)
-    engine?.setSize?.(width, height, devicePixelRatio)
+    const isCoarsePointer = typeof window !== "undefined" && window.matchMedia?.("(pointer: coarse)")?.matches
+    const safeDevicePixelRatio = Math.min(isCoarsePointer ? 1 : 1.5, Math.max(1, Number(devicePixelRatio) || 1))
+    if((width < 32 || height < 32) && typeof window !== "undefined") {
+        window.requestAnimationFrame(() => {
+            const retrySize = _measureTileContentSize(tile)
+            if(retrySize.width >= 32 && retrySize.height >= 32) {
+                engine?.setSize?.(retrySize.width, retrySize.height, safeDevicePixelRatio)
+            }
+        })
+        return
+    }
+    engine?.setSize?.(width, height, safeDevicePixelRatio)
 }
 
 function _scrollArticleIntoSectionView(articleId, sectionId, behavior = "smooth") {
@@ -1311,30 +1325,29 @@ function SpinBoxesTile({ itemWrapper, locked, onReady }) {
         onReady?.(itemWrapper.uniqueId)
     }, [itemWrapper.uniqueId, onReady])
 
-      const boxes = useMemo(() => {
-          // Grid order: top-left, top-right, bottom-left, bottom-right
-          return [
-            { speed: -4, controlDuration: "0.0001s", controlTurn: "0turn", hoverMode: "stop" },
-            { speed: -2, controlDuration: "0.0001s", controlTurn: "0turn", hoverMode: "pause" },
-            { speed: 0.5, controlDuration: "10s", controlTurn: "-1turn", hoverMode: "control" },
-            { speed: 4, controlDuration: "1s", controlTurn: "4turn", hoverMode: "control" }
-          ]
-      }, [])
+    const boxes = useMemo(() => {
+        // Grid order: top-left, top-right, bottom-left, bottom-right
+        return [
+            { key: "stop", hoverMode: "stop", hoverDuration: "5s" },
+            { key: "slow", hoverMode: "slow", hoverDuration: "18s" },
+            { key: "super-fast", hoverMode: "super-fast", hoverDuration: "0.22s" },
+            { key: "very-fast", hoverMode: "very-fast", hoverDuration: "0.55s" }
+        ]
+    }, [])
 
     return (
         <div className={`article-web-art-tile article-web-art-spin-boxes ${locked ? "article-web-art-spin-boxes-locked" : ""}`}>
             <div className={`article-web-art-spin-boxes-grid`}>
-                {boxes.map(({ speed, controlDuration, controlTurn, hoverMode }) => (
-                      <div key={String(speed)}
-                           className={`article-web-art-spin-box`}
-                           style={{
-                               "--spin-duration": "5s",
-                              "--control-duration": controlDuration,
-                              "--control-turn": controlTurn
-                           }}>
-                         <div className={`article-web-art-spin-box-core article-web-art-spin-box-core-${hoverMode}`} data-speed={speed}/>
-                     </div>
-                 ))}
+                {boxes.map(({ key, hoverDuration, hoverMode }) => (
+                    <div key={key}
+                         className={`article-web-art-spin-box`}
+                         style={{
+                             "--spin-duration": "5s",
+                             "--spin-hover-duration": hoverDuration
+                         }}>
+                        <div className={`article-web-art-spin-box-core article-web-art-spin-box-core-${hoverMode}`}/>
+                    </div>
+                ))}
             </div>
         </div>
     )

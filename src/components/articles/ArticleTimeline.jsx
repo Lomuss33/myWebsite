@@ -557,7 +557,9 @@ function ArticleTimelineItem({
                                          containerRef={contentRef}>
                 <ArticleItemInfoForTimelinesHeader itemWrapper={itemWrapper}
                                                    dateInterval={shouldShowDateInterval}
-                                                   metaEnd={writingPreviewFooter}/>
+                                                   metaEnd={writingPreviewFooter}
+                                                   forceDateInMetaBand={isWritingsTimeline}
+                                                   showMeta={!isDigitalExpressionTimeline}/>
 
                 <ArticleItemInfoForTimelinesBody itemWrapper={itemWrapper}/>
 

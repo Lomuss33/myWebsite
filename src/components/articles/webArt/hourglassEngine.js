@@ -8,7 +8,8 @@ const DEFAULT_PARAMS = {
 }
 
 const CONFIG = {
-    maxParticles: 18000,
+    maxParticles: 45000,
+    particleDensityMultiplier: 2.5,
     wallThickness: 42,
     colors: [
         "#ff3f70",
@@ -97,8 +98,8 @@ export function createHourglassEngine(canvas) {
     function buildGeometry() {
         const { width, height } = dimensions
 
-        geometry.height = Math.min(height * 0.38, 260)
-        geometry.maxWidth = Math.min(width * 0.22, 160)
+        geometry.height = Math.min(height * 0.48, 320)
+        geometry.maxWidth = Math.min(width * 0.38, 260)
         geometry.particleRadius = Math.max(Math.min(geometry.maxWidth / 44, 3.5), 2)
         geometry.neckWidth = Math.max(
             geometry.maxWidth * params.neckRatio,
@@ -182,7 +183,7 @@ export function createHourglassEngine(canvas) {
         const maxW = geometry.maxWidth
         const particleRadius = geometry.particleRadius
         const neckW = geometry.neckWidth
-        const { wallThickness, maxParticles, colors } = CONFIG
+        const { wallThickness, maxParticles, colors, particleDensityMultiplier } = CONFIG
         const particleCollision = CONFIG.collision.particle
         const wallCollision = CONFIG.collision.wall
 
@@ -223,7 +224,8 @@ export function createHourglassEngine(canvas) {
             collisionFilter: particleCollision
         }
 
-        const step = particleRadius * 1.35
+        const densityScale = Math.sqrt(Math.max(1, particleDensityMultiplier))
+        const step = particleRadius * 1.35 / densityScale
         const startY = -H + particleRadius * 4
         const endY = -H * 0.02
         const yRange = endY - startY || 1
@@ -288,12 +290,24 @@ export function createHourglassEngine(canvas) {
 
     function renderParticles() {
         const buckets = groupParticlesByColor(entities.particles)
+        const { cx, cy } = dimensions
 
         for(const [color, particles] of buckets.entries()) {
             ctx.beginPath()
 
             for(const particle of particles) {
                 const radius = particle.circleRadius || geometry.particleRadius
+                const localX = particle.position.x - cx
+                const localY = particle.position.y - cy
+                const isFullyInsideGlass =
+                    ctx.isPointInPath(paths.glass, localX, localY) &&
+                    ctx.isPointInPath(paths.glass, localX - radius, localY) &&
+                    ctx.isPointInPath(paths.glass, localX + radius, localY) &&
+                    ctx.isPointInPath(paths.glass, localX, localY - radius) &&
+                    ctx.isPointInPath(paths.glass, localX, localY + radius)
+
+                if(!isFullyInsideGlass) continue
+
                 ctx.moveTo(particle.position.x + radius, particle.position.y)
                 ctx.arc(
                     particle.position.x,

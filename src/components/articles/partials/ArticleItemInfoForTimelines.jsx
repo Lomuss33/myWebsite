@@ -1,7 +1,6 @@
 import "./ArticleItemInfoForTimelines.scss"
 import React from 'react'
 import {useViewport} from "../../../providers/ViewportProvider.jsx"
-import DateBadge from "../../widgets/DateBadge.jsx"
 import {PropList, PropListItem} from "../../generic/PropList.jsx"
 import {Tags, Tag} from "../../generic/Tags.jsx"
 import ArticleItemPreviewMenu from "./ArticleItemPreviewMenu.jsx"
@@ -34,12 +33,15 @@ function ArticleItemInfoForTimelines({ children, itemWrapper, className = "", sm
  * @param {String} className
  * @param {Boolean} dateInterval
  * @param {JSX.Element|null} metaEnd
+ * @param {Boolean} forceDateInMetaBand
+ * @param {Boolean} showMeta
  * @return {JSX.Element}
  * @constructor
  */
-function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateInterval = false, metaEnd = null }) {
+function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateInterval = false, metaEnd = null, forceDateInMetaBand = false, showMeta = true }) {
     const viewport = useViewport()
-    const shouldShowDateBadge = viewport.isBreakpoint("xl")
+    const shouldForceDateInMetaBand = forceDateInMetaBand ||
+        Boolean(itemWrapper?.articleWrapper?.uniqueId?.includes("section-my-writings"))
     const isSmallScreen = !viewport.isBreakpoint("sm")
 
     const institution = itemWrapper.locales.institution
@@ -50,40 +52,18 @@ function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateIn
 
     const propListItems = []
 
-    // Case 1 - The date is being displayed as a badge (no need to display it here).
-    if (shouldShowDateBadge) {
-        if(institution) {
-            propListItems.push({
-                faIcon: `fa-regular fa-building`,
-                type: PropListItem.Types.SINGLE,
-                value: [institution]
-            })
-        }
+    propListItems.push({
+        faIcon: `fa-regular fa-clock`,
+        type: dateInterval ? PropListItem.Types.INTERVAL : PropListItem.Types.SINGLE,
+        value: dateInterval ? [itemWrapper.dateStartDisplay, itemWrapper.dateEndDisplay] : [itemWrapper.dateStartDisplay]
+    })
 
-        if(location) {
-            propListItems.push({
-                faIcon: `fa-regular fa-font-awesome`,
-                type: PropListItem.Types.SINGLE,
-                value: [location]
-            })
-        }
-    }
-
-    // Case 2 - Must display date inside the prop list.
-    else {
+    if(institution || location) {
         propListItems.push({
-            faIcon: `fa-regular fa-clock`,
-            type: dateInterval ? PropListItem.Types.INTERVAL : PropListItem.Types.SINGLE,
-            value: dateInterval ? [itemWrapper.dateStartDisplay, itemWrapper.dateEndDisplay] : [itemWrapper.dateStartDisplay]
+            faIcon: `fa-regular fa-building`,
+            type: institution && location ? PropListItem.Types.DUO : PropListItem.Types.SINGLE,
+            value: institution && location ? [institution, location] : [institution || location]
         })
-
-        if(institution || location) {
-            propListItems.push({
-                faIcon: `fa-regular fa-building`,
-                type: institution && location ? PropListItem.Types.DUO : PropListItem.Types.SINGLE,
-                value: institution && location ? [institution, location] : [institution || location]
-            })
-        }
     }
 
     return (
@@ -93,29 +73,25 @@ function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateIn
                     <h5 className={``}
                         dangerouslySetInnerHTML={{__html: itemWrapper.locales.title || itemWrapper.placeholder}}/>
 
-                    {shouldShowDateBadge && (
-                        <DateBadge dateStart={itemWrapper.dateStartDisplay}
-                                   dateEnd={dateInterval ? itemWrapper.dateEndDisplay : null}
-                                   variant={DateBadge.Variants.DEFAULT}
-                                   className={`article-timeline-item-info-for-timelines-header-date-badge`}/>
-                    )}
                 </div>
             </div>
 
-            <div className={`article-timeline-item-info-for-timelines-header-meta-band`}>
-                <PropList className={`article-timeline-item-info-for-timelines-header-prop-list text-1`}
-                          inlineBreakpoint={`xl`}>
-                    {propListItems.map((item, key) => (
-                        <PropListItem key={key}
-                                      faIcon={item.faIcon}
-                                      type={item.type}
-                                      iconSpacing={isSmallScreen ? 22 : 24}
-                                      value={item.value}/>
-                    ))}
-                </PropList>
+            {showMeta && (
+                <div className={`article-timeline-item-info-for-timelines-header-meta-band`}>
+                    <PropList className={`article-timeline-item-info-for-timelines-header-prop-list text-1`}
+                              inlineBreakpoint={shouldForceDateInMetaBand ? null : `xl`}>
+                        {propListItems.map((item, key) => (
+                            <PropListItem key={key}
+                                          faIcon={item.faIcon}
+                                          type={item.type}
+                                          iconSpacing={isSmallScreen ? 22 : 24}
+                                          value={item.value}/>
+                        ))}
+                    </PropList>
 
-                {metaEnd}
-            </div>
+                    {metaEnd}
+                </div>
+            )}
         </div>
     )
 }

@@ -22,9 +22,11 @@ section.section {
         0 26px 54px var(--theme-shell-shadow),
         0 4px 16px rgba(15, 23, 42, 0.08);
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        height: auto;
         min-height: 100vh;
         border-top-left-radius: 0;
         border-top-right-radius: 0;
+        overflow: visible;
     }
 }
 
@@ -325,10 +327,22 @@ section#section-my-art div.article-content {
     color: var(--art-text-strong);
 }
 
+@include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    section#section-my-hardware,
+    section#section-my-writings,
+    section#section-my-art {
+        background:
+            radial-gradient(circle at top left, rgba(78, 163, 255, 0.16) 0%, transparent 32%),
+            radial-gradient(circle at top right, rgba(250, 204, 21, 0.10) 0%, transparent 26%),
+            radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.08) 0%, transparent 28%),
+            linear-gradient(180deg, #04060b 0%, #0b1020 46%, #111827 100%);
+    }
+}
+
 section#section-contact {
-    --contact-page-bg: #04060b;
-    --contact-page-bg-2: #08111d;
-    --contact-page-bg-3: #0f172a;
+    --contact-page-bg: #010101;
+    --contact-page-bg-2: #050505;
+    --contact-page-bg-3: #0a0a0a;
     --contact-accent-blue: #4ea3ff;
     --contact-accent-gold: #facc15;
     --contact-text-strong: #f8fafc;
@@ -336,9 +350,9 @@ section#section-contact {
     --contact-text-soft: #94a3b8;
 
     background:
-        radial-gradient(circle at top left, rgba(78, 163, 255, 0.16) 0%, transparent 31%),
-        radial-gradient(circle at top right, rgba(250, 204, 21, 0.07) 0%, transparent 24%),
-        radial-gradient(circle at bottom right, rgba(78, 163, 255, 0.08) 0%, transparent 26%),
+        radial-gradient(circle at top left, rgba(78, 163, 255, 0.10) 0%, transparent 31%),
+        radial-gradient(circle at top right, rgba(250, 204, 21, 0.05) 0%, transparent 24%),
+        radial-gradient(circle at bottom right, rgba(78, 163, 255, 0.06) 0%, transparent 26%),
         linear-gradient(180deg, var(--contact-page-bg) 0%, var(--contact-page-bg-2) 46%, var(--contact-page-bg-3) 100%);
     color: var(--contact-text-strong);
 }

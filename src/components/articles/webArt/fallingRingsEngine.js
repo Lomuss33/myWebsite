@@ -199,7 +199,7 @@ export function createFallingRingsEngine(canvas, options = {}) {
         lastFrameMs = nowMs
 
         if(held) {
-            holdMix = Math.min(1, holdMix + dt / 3000)
+            holdMix = Math.min(1, holdMix + dt / 1500)
         }
         else {
             holdMix = Math.max(0, holdMix - dt / 650)

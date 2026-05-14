@@ -12,8 +12,8 @@ function clamp(value, min, max) {
 
 export function createThreeTunnelEngine(canvas, options = {}) {
     const reduceMotion = Boolean(options.reduceMotion)
-    const ringCount = clampInt(options.ringCount, 6, 16, 10)
-    const cubesPerRing = clampInt(options.cubesPerRing, 8, 18, 10)
+    const ringCount = clampInt(options.ringCount, 6, 22, 10)
+    const cubesPerRing = clampInt(options.cubesPerRing, 8, 24, 10)
     const ringSpacing = Number.isFinite(options.ringSpacing) ? options.ringSpacing : 110
     const tunnelRadius = Number.isFinite(options.tunnelRadius) ? options.tunnelRadius : 80
     const speed = Number.isFinite(options.speed) ? options.speed : 3.6
@@ -216,7 +216,7 @@ export function createThreeTunnelEngine(canvas, options = {}) {
         scene = new THREE.Scene()
         scene.fog = new THREE.Fog(0x010013, 260, 1250)
 
-        camera = new THREE.PerspectiveCamera(50, 1, 1, 4000)
+        camera = new THREE.PerspectiveCamera(62, 1, 1, 5000)
         camera.position.z = 70
         scene.add(camera)
 
@@ -237,7 +237,7 @@ export function createThreeTunnelEngine(canvas, options = {}) {
         elements = new THREE.Object3D()
         scene.add(elements)
 
-        geometry = new THREE.BoxGeometry(24, 24, 78)
+        geometry = new THREE.BoxGeometry(18, 18, 92)
 
         // Environment map (procedural equirectangular gradient) for a reflective “deep tunnel” look
         scene.environment = null
@@ -250,6 +250,8 @@ export function createThreeTunnelEngine(canvas, options = {}) {
             for(let j = 0; j < cubesPerRing; j++) {
                 const a = (Math.PI * 2 * j) / cubesPerRing
                 const color = new THREE.Color(0xffffff)
+                const depthRatio = ringCount <= 1 ? 0 : i / (ringCount - 1)
+                const radial = tunnelRadius * (1 + depthRatio * 0.34)
 
                 const material = new THREE.MeshStandardMaterial({
                     color,
@@ -259,8 +261,9 @@ export function createThreeTunnelEngine(canvas, options = {}) {
                     emissiveIntensity: 0.22
                 })
                 const cube = new THREE.Mesh(geometry, material)
-                cube.position.set(Math.cos(a) * tunnelRadius, Math.sin(a) * tunnelRadius, 0)
+                cube.position.set(Math.cos(a) * radial, Math.sin(a) * radial, 0)
                 cube.rotation.z = a
+                cube.scale.setScalar(1 + depthRatio * 0.42)
                 ring.add(cube)
 
                 cubeMeshes.push({ mesh: cube, ringIndex: i, cubeIndex: j })
@@ -284,8 +287,10 @@ export function createThreeTunnelEngine(canvas, options = {}) {
         if(!running) return
 
         t += 1
-        camera.rotation.z += 0.0065
+        camera.rotation.z += 0.009
         camera.position.z -= speed
+        camera.position.x = Math.sin(t / 42) * 5.5
+        camera.position.y = Math.cos(t / 57) * 4.25
 
         light.position.z = camera.position.z - 220
         light.position.y = Math.sin(t / 40) * 65
@@ -297,6 +302,10 @@ export function createThreeTunnelEngine(canvas, options = {}) {
 
         for(let i = 0; i < elements.children.length; i++) {
             const ring = elements.children[i]
+            const depthRatio = ringCount <= 1 ? 0 : i / (ringCount - 1)
+            ring.rotation.z += 0.0028 + depthRatio * 0.0018
+            ring.rotation.x = Math.sin(t * 0.018 + i * 0.34) * 0.085
+            ring.rotation.y = Math.cos(t * 0.014 + i * 0.28) * 0.065
             if(camera.position.z < ring.position.z - ringSpacing) {
                 farthestZ -= ringSpacing
                 ring.position.z = farthestZ
@@ -345,10 +354,14 @@ export function createThreeTunnelEngine(canvas, options = {}) {
         stop()
         t = 0
         camera.position.z = 70
+        camera.position.x = 0
+        camera.position.y = 0
         camera.rotation.z = 0
 
         for(let i = 0; i < elements.children.length; i++) {
-            elements.children[i].position.z = -i * ringSpacing
+            const ring = elements.children[i]
+            ring.position.z = -i * ringSpacing
+            ring.rotation.set(0, 0, 0)
         }
         farthestZ = - (ringCount - 1) * ringSpacing
         renderFrame()

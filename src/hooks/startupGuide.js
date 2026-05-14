@@ -1,13 +1,29 @@
 const APP_READY_CLASS = "body-theme"
-const TARGET_SELECTOR = ".nav-tools"
 const HOME_SECTION_SELECTOR = "section#section-about.section-shown"
 const STORAGE_PREFERENCES_KEY = "storage-preferences"
+const DESKTOP_TARGET_SELECTOR = ".nav-tools"
+const DESKTOP_RAIL_SELECTOR = ".nav-sidebar-card-wrapper"
+const DESKTOP_RESUME_BAND_SELECTOR = ".nav-short-rail-resume-band"
+const MOBILE_TOP_TARGET_SELECTOR = ".nav-link-pills-fixed-wrapper-shown"
+const MOBILE_BOTTOM_TARGET_SELECTOR = ".nav-tab-controller-wrapper"
 
 const GUIDE_HINT_LABELS = {
-    en: "Hover and click around",
-    de: "Bewegen und herumklicken",
-    hr: "Prelazi i klikaj okolo",
-    tr: "Uzerinde gezin ve tiklayin",
+    en: {
+        desktop: "Look around.",
+        mobile: "Explore.",
+    },
+    de: {
+        desktop: "Schau dich um.",
+        mobile: "Erkunde.",
+    },
+    hr: {
+        desktop: "Pogledaj oko sebe.",
+        mobile: "Istrazi.",
+    },
+    tr: {
+        desktop: "Etrafa bak.",
+        mobile: "Kesfet.",
+    },
 }
 
 const GUIDE_LABELS = {
@@ -24,7 +40,6 @@ const INACTIVITY_REPLAY_START_MS = 5000
 const INACTIVITY_REPLAY_STEP_MS = 5000
 
 const INITIAL_MOVEMENT_THRESHOLD_PX = 28
-const DISMISS_MOVEMENT_THRESHOLD_PX = 90
 
 const FADE_IN_MS = 140
 const TRAVEL_MS = 650
@@ -34,6 +49,7 @@ const INITIAL_RADIUS_PX = 36
 const MIN_TARGET_RADIUS_PX = 60
 const MAX_TARGET_RADIUS_RATIO = 0.38
 const TARGET_RADIUS_PADDING_PX = 14
+const GUIDE_PAUSE_MS = 220
 
 let controller = null
 
@@ -58,6 +74,7 @@ function createController() {
         cleanupHooks: new Set(),
         eventListeners: [],
         rafId: null,
+        ambientRafId: null,
         destroyed: false,
 
         isHomeActive: false,
@@ -163,6 +180,22 @@ function registerGlobalListeners(state) {
         handleMouseMove(state, event)
     }, { passive: true })
 
+    addWindowListener(state, "wheel", () => {
+        handleInteraction(state, { dismissVisibleGuide: true })
+    }, { passive: true })
+
+    addWindowListener(state, "scroll", () => {
+        handleInteraction(state, { dismissVisibleGuide: true })
+    }, { passive: true })
+
+    addWindowListener(state, "touchstart", () => {
+        handleInteraction(state, { dismissVisibleGuide: true })
+    }, { passive: true })
+
+    addWindowListener(state, "touchmove", () => {
+        handleInteraction(state, { dismissVisibleGuide: true })
+    }, { passive: true })
+
     addWindowListener(state, "mousedown", () => {
         handleInteraction(state, { dismissVisibleGuide: true })
     }, { passive: true })
@@ -210,8 +243,7 @@ function syncHomeState(state) {
         return
     }
 
-    const navTools = getNavTools()
-    if(!navTools) {
+    if(!resolveGuideTargets()) {
         hideGuide(state, { immediate: true })
         return
     }
@@ -276,6 +308,12 @@ function handleMouseMove(state, event) {
         y: event.clientY
     }
 
+    if(state.isVisible || state.isAnimating) {
+        state.lastPointerPosition = point
+        handleInteraction(state, { dismissVisibleGuide: true })
+        return
+    }
+
     const previousPoint = state.lastPointerPosition
     state.lastPointerPosition = point
 
@@ -286,12 +324,8 @@ function handleMouseMove(state, event) {
             state.initialMovementDistance += distance
 
         if(state.isVisible || state.isAnimating) {
-            state.dismissMovementDistance += distance
-
-            if(state.dismissMovementDistance >= DISMISS_MOVEMENT_THRESHOLD_PX) {
-                handleInteraction(state, { dismissVisibleGuide: true })
-                return
-            }
+            handleInteraction(state, { dismissVisibleGuide: true })
+            return
         }
     }
 
@@ -315,17 +349,14 @@ async function showGuide(state) {
     if(state.destroyed || !state.isHomeActive || state.isVisible || state.isAnimating)
         return
 
-    const navTools = getNavTools()
-    if(!navTools)
-        return
-
-    const targetRect = navTools.getBoundingClientRect()
-    if(targetRect.width <= 0 || targetRect.height <= 0)
+    const guideTargets = resolveGuideTargets()
+    if(!guideTargets)
         return
 
     const root = ensureGuideElements(state)
     if(!root)
         return
+    setGuideLayoutMode(state, guideTargets.layoutMode)
 
     state.isAnimating = true
     state.dismissMovementDistance = 0
@@ -337,8 +368,8 @@ async function showGuide(state) {
         opacity: 0,
     }
 
-    const endSpotlight = resolveTargetSpotlight(targetRect)
-    if(!endSpotlight) {
+    const spotlightSteps = resolveSpotlightSteps(guideTargets)
+    if(!spotlightSteps.length) {
         state.isAnimating = false
         return
     }
@@ -355,15 +386,24 @@ async function showGuide(state) {
     if(!await waitForDuration(state, FADE_IN_MS))
         return
 
-    if(!await animateSpotlight(state, {
-        from: {
-            ...startSpotlight,
-            opacity: 1,
-        },
-        to: endSpotlight,
-        durationMs: TRAVEL_MS
-    })) {
-        return
+    let currentSpotlight = {
+        ...startSpotlight,
+        opacity: 1,
+    }
+
+    for(const step of spotlightSteps) {
+        if(!await animateSpotlight(state, {
+            from: currentSpotlight,
+            to: step.spotlight,
+            durationMs: step.durationMs
+        })) {
+            return
+        }
+
+        currentSpotlight = step.spotlight
+
+        if(step.pauseMs > 0 && !await waitForDuration(state, step.pauseMs))
+            return
     }
 
     state.isAnimating = false
@@ -371,6 +411,7 @@ async function showGuide(state) {
     state.dismissMovementDistance = 0
     clearTrackedTimeout(state, state.inactivityReplayTimeoutId)
     state.inactivityReplayTimeoutId = null
+    startAmbientMotion(state, guideTargets)
 
     if(state.hasShownGuideAtLeastOnce) {
         state.nextInactivityReplayMs += INACTIVITY_REPLAY_STEP_MS
@@ -384,6 +425,7 @@ function hideGuide(state, { immediate = false } = {}) {
         return
 
     state.isVisible = false
+    stopAmbientMotion(state)
 
     if(immediate || state.destroyed) {
         removeGuideElements(state)
@@ -432,11 +474,14 @@ function ensureGuideElements(state) {
     const overlay = document.createElement("div")
     overlay.className = "startup-guide-overlay"
 
+    const mobileOverlay = createMobileGuideOverlay()
+
     const label = document.createElement("div")
     label.className = "startup-guide-overlay-label"
-    label.textContent = getGuideLabel()
+    label.textContent = getGuideLabel(resolveLayoutMode())
 
     root.appendChild(overlay)
+    root.appendChild(mobileOverlay)
     root.appendChild(label)
     document.body.appendChild(root)
 
@@ -447,6 +492,8 @@ function ensureGuideElements(state) {
 }
 
 function removeGuideElements(state) {
+    stopAmbientMotion(state)
+
     if(state.root?.parentNode)
         state.root.parentNode.removeChild(state.root)
     state.root = null
@@ -454,13 +501,93 @@ function removeGuideElements(state) {
     state.label = null
 }
 
-function getNavTools() {
-    return document.querySelector(TARGET_SELECTOR)
+function setGuideLayoutMode(state, layoutMode) {
+    if(!state.root)
+        return
+
+    state.root.setAttribute("data-layout", layoutMode === "mobile" ? "mobile" : "desktop")
 }
 
-function getGuideLabel() {
+function createMobileGuideOverlay() {
+    const svgNs = "http://www.w3.org/2000/svg"
+    const svg = document.createElementNS(svgNs, "svg")
+    svg.setAttribute("class", "startup-guide-overlay-mobile")
+    svg.setAttribute("viewBox", "0 0 100 100")
+    svg.setAttribute("preserveAspectRatio", "none")
+    svg.setAttribute("aria-hidden", "true")
+
+    const defs = document.createElementNS(svgNs, "defs")
+    const mask = document.createElementNS(svgNs, "mask")
+    mask.setAttribute("id", "startup-guide-mobile-mask")
+    mask.setAttribute("maskUnits", "objectBoundingBox")
+    mask.setAttribute("maskContentUnits", "objectBoundingBox")
+
+    const maskRect = document.createElementNS(svgNs, "rect")
+    maskRect.setAttribute("x", "0")
+    maskRect.setAttribute("y", "0")
+    maskRect.setAttribute("width", "1")
+    maskRect.setAttribute("height", "1")
+    maskRect.setAttribute("fill", "white")
+
+    const centerCutout = document.createElementNS(svgNs, "circle")
+    centerCutout.setAttribute("cx", "0.5")
+    centerCutout.setAttribute("cy", "0.5")
+    centerCutout.setAttribute("r", "0.08")
+    centerCutout.setAttribute("fill", "black")
+
+    const topCone = document.createElementNS(svgNs, "polygon")
+    topCone.setAttribute("points", "0.5,0.5 0.28,0.15 0.72,0.15")
+    topCone.setAttribute("fill", "black")
+    topCone.setAttribute("opacity", "0.9")
+
+    const bottomCone = document.createElementNS(svgNs, "polygon")
+    bottomCone.setAttribute("points", "0.5,0.5 0.28,0.85 0.72,0.85")
+    bottomCone.setAttribute("fill", "black")
+    bottomCone.setAttribute("opacity", "0.9")
+
+    const topBand = document.createElementNS(svgNs, "rect")
+    topBand.setAttribute("x", "0.12")
+    topBand.setAttribute("y", "0")
+    topBand.setAttribute("width", "0.76")
+    topBand.setAttribute("height", "0.15")
+    topBand.setAttribute("rx", "0.03")
+    topBand.setAttribute("fill", "black")
+    topBand.setAttribute("opacity", "0.92")
+
+    const bottomBand = document.createElementNS(svgNs, "rect")
+    bottomBand.setAttribute("x", "0.08")
+    bottomBand.setAttribute("y", "0.85")
+    bottomBand.setAttribute("width", "0.84")
+    bottomBand.setAttribute("height", "0.15")
+    bottomBand.setAttribute("rx", "0.03")
+    bottomBand.setAttribute("fill", "black")
+    bottomBand.setAttribute("opacity", "0.94")
+
+    mask.appendChild(maskRect)
+    mask.appendChild(centerCutout)
+    mask.appendChild(topCone)
+    mask.appendChild(bottomCone)
+    mask.appendChild(topBand)
+    mask.appendChild(bottomBand)
+    defs.appendChild(mask)
+    svg.appendChild(defs)
+
+    const scrim = document.createElementNS(svgNs, "rect")
+    scrim.setAttribute("x", "0")
+    scrim.setAttribute("y", "0")
+    scrim.setAttribute("width", "100")
+    scrim.setAttribute("height", "100")
+    scrim.setAttribute("fill", "rgba(5, 10, 18, 0.74)")
+    scrim.setAttribute("mask", "url(#startup-guide-mobile-mask)")
+    svg.appendChild(scrim)
+
+    return svg
+}
+
+function getGuideLabel(layoutMode) {
     const selectedLanguageId = getPreferredLanguageId()
-    return GUIDE_HINT_LABELS[selectedLanguageId] || GUIDE_HINT_LABELS.en
+    const labels = GUIDE_HINT_LABELS[selectedLanguageId] || GUIDE_HINT_LABELS.en
+    return labels[layoutMode] || labels.desktop || GUIDE_HINT_LABELS.en.desktop
 }
 
 function getPreferredLanguageId() {
@@ -491,21 +618,260 @@ function applySpotlight(state, { x, y, radius, opacity }) {
     state.root.style.setProperty("--startup-guide-opacity", `${clamp(opacity, 0, 1)}`)
 }
 
-function resolveTargetSpotlight(targetRect) {
+function resolveLayoutMode() {
+    const topTarget = getVisibleElement(MOBILE_TOP_TARGET_SELECTOR)
+    const bottomTarget = getVisibleElement(MOBILE_BOTTOM_TARGET_SELECTOR)
+    return topTarget || bottomTarget ? "mobile" : "desktop"
+}
+
+function resolveGuideTargets() {
+    const layoutMode = resolveLayoutMode()
+
+    if(layoutMode === "mobile") {
+        const topTarget = getVisibleElement(MOBILE_TOP_TARGET_SELECTOR)
+        const bottomTarget = getVisibleElement(MOBILE_BOTTOM_TARGET_SELECTOR)
+
+        if(!topTarget && !bottomTarget)
+            return null
+
+        return {
+            layoutMode,
+            topRect: getElementRect(topTarget),
+            bottomRect: getElementRect(bottomTarget),
+        }
+    }
+
+    const rail = getVisibleElement(DESKTOP_RAIL_SELECTOR)
+    const navTools = getVisibleElement(DESKTOP_TARGET_SELECTOR)
+    const resumeBand = getVisibleElement(DESKTOP_RESUME_BAND_SELECTOR)
+    const railRect = getElementRect(rail)
+    const toolsRect = getElementRect(navTools)
+    const lowerRailRect = mergeRects(toolsRect, getElementRect(resumeBand))
+
+    if(!railRect && !lowerRailRect)
+        return null
+
+    return {
+        layoutMode,
+        railRect,
+        lowerRailRect: lowerRailRect || railRect,
+    }
+}
+
+function resolveSpotlightSteps(targets) {
+    if(!targets)
+        return []
+
+    if(targets.layoutMode === "mobile")
+        return resolveMobileSpotlightSteps(targets)
+
+    return resolveDesktopSpotlightSteps(targets)
+}
+
+function startAmbientMotion(state, initialTargets) {
+    stopAmbientMotion(state)
+
+    const targets = initialTargets || resolveGuideTargets()
+    if(!targets || !state.root)
+        return
+    if(targets.layoutMode === "mobile")
+        return
+
+    const startedAt = performance.now()
+
+    const tick = (now) => {
+        if(state.destroyed || !state.root || !state.isVisible || state.isAnimating || !state.isHomeActive) {
+            stopAmbientMotion(state)
+            return
+        }
+
+        const freshTargets = resolveGuideTargets() || targets
+        const ambientSpotlight = resolveAmbientSpotlight(freshTargets, now - startedAt)
+        if(ambientSpotlight)
+            applySpotlight(state, ambientSpotlight)
+
+        state.ambientRafId = requestAnimationFrame(tick)
+    }
+
+    state.ambientRafId = requestAnimationFrame(tick)
+}
+
+function stopAmbientMotion(state) {
+    if(state.ambientRafId !== null) {
+        cancelAnimationFrame(state.ambientRafId)
+        state.ambientRafId = null
+    }
+}
+
+function resolveAmbientSpotlight(targets, elapsedMs) {
+    if(!targets)
+        return null
+
+    if(targets.layoutMode === "mobile")
+        return null
+
+    return resolveDesktopAmbientSpotlight(targets, elapsedMs)
+}
+
+function resolveDesktopSpotlightSteps({ railRect, lowerRailRect }) {
+    const driftRect = railRect || lowerRailRect
+    const finalRect = lowerRailRect || railRect
+    if(!driftRect || !finalRect)
+        return []
+
+    const driftSpotlight = resolveWeightedSpotlight(driftRect, {
+        anchorX: 0.42,
+        anchorY: 0.7,
+        radiusScale: 1.22,
+        minRadius: 78,
+        maxRadiusRatio: 0.32,
+    })
+    const finalSpotlight = resolveWeightedSpotlight(finalRect, {
+        anchorX: 0.34,
+        anchorY: 0.82,
+        radiusScale: 1.16,
+        minRadius: 72,
+        maxRadiusRatio: 0.3,
+    })
+
+    return compactSpotlightSteps([
+        {
+            spotlight: driftSpotlight,
+            durationMs: Math.round(TRAVEL_MS * 0.66),
+            pauseMs: 0,
+        },
+        {
+            spotlight: finalSpotlight,
+            durationMs: Math.round(TRAVEL_MS * 0.48),
+            pauseMs: GUIDE_PAUSE_MS,
+        },
+    ])
+}
+
+function resolveDesktopAmbientSpotlight({ railRect, lowerRailRect }, elapsedMs) {
+    const upperRailSpotlight = resolveWeightedSpotlight(railRect || lowerRailRect, {
+        anchorX: 0.34,
+        anchorY: 0.28,
+        radiusScale: 1.32,
+        minRadius: 86,
+        maxRadiusRatio: 0.34,
+    })
+    const lowerRailSpotlight = resolveWeightedSpotlight(lowerRailRect || railRect, {
+        anchorX: 0.32,
+        anchorY: 0.82,
+        radiusScale: 1.12,
+        minRadius: 74,
+        maxRadiusRatio: 0.3,
+    })
+
+    if(!upperRailSpotlight || !lowerRailSpotlight)
+        return null
+
+    const travel = easeInOutSine((Math.sin(elapsedMs * 0.00052) + 1) / 2)
+    const glow = (Math.sin((elapsedMs * 0.0011) + 0.85) + 1) / 2
+
+    return {
+        x: interpolate(upperRailSpotlight.x, lowerRailSpotlight.x, travel),
+        y: interpolate(upperRailSpotlight.y, lowerRailSpotlight.y, travel),
+        radius: interpolate(upperRailSpotlight.radius, lowerRailSpotlight.radius, travel) + interpolate(-3, 6, glow),
+        opacity: 0.9 + (glow * 0.1),
+    }
+}
+
+function resolveMobileSpotlightSteps({ topRect, bottomRect }) {
+    if(!topRect && !bottomRect)
+        return []
+
+    return [{
+        spotlight: {
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2,
+            radius: Math.min(window.innerWidth, window.innerHeight) * 0.12,
+            opacity: 1,
+        },
+        durationMs: Math.round(TRAVEL_MS * 0.5),
+        pauseMs: GUIDE_PAUSE_MS,
+    }]
+}
+
+function breatheSpotlight(spotlight, elapsedMs, baseOpacity = 0.9) {
+    if(!spotlight)
+        return null
+
+    const glow = (Math.sin((elapsedMs * 0.00105) + 0.45) + 1) / 2
+    return {
+        x: spotlight.x,
+        y: spotlight.y,
+        radius: spotlight.radius + interpolate(-3, 4, glow),
+        opacity: baseOpacity + (glow * 0.08),
+    }
+}
+
+function compactSpotlightSteps(steps) {
+    return steps.filter(step => Boolean(step?.spotlight))
+}
+
+function resolveWeightedSpotlight(targetRect, {
+    anchorX = 0.5,
+    anchorY = 0.5,
+    radiusScale = 1,
+    minRadius = MIN_TARGET_RADIUS_PX,
+    maxRadiusRatio = MAX_TARGET_RADIUS_RATIO,
+} = {}) {
     if(!targetRect || targetRect.width <= 0 || targetRect.height <= 0)
         return null
 
-    const centerX = targetRect.left + (targetRect.width / 2)
-    const centerY = targetRect.top + (targetRect.height / 2)
+    const centerX = targetRect.left + (targetRect.width * clamp(anchorX, 0, 1))
+    const centerY = targetRect.top + (targetRect.height * clamp(anchorY, 0, 1))
     const halfDiagonal = Math.sqrt((targetRect.width ** 2) + (targetRect.height ** 2)) / 2
-    const rawRadius = halfDiagonal + TARGET_RADIUS_PADDING_PX
-    const maxRadius = Math.min(window.innerWidth, window.innerHeight) * MAX_TARGET_RADIUS_RATIO
+    const rawRadius = (halfDiagonal + TARGET_RADIUS_PADDING_PX) * radiusScale
+    const maxRadius = Math.min(window.innerWidth, window.innerHeight) * maxRadiusRatio
 
     return {
         x: centerX,
         y: centerY,
-        radius: clamp(rawRadius, MIN_TARGET_RADIUS_PX, maxRadius),
+        radius: clamp(rawRadius, minRadius, maxRadius),
         opacity: 1,
+    }
+}
+
+function getVisibleElement(selector) {
+    const element = document.querySelector(selector)
+    const rect = getElementRect(element)
+    return rect ? element : null
+}
+
+function getElementRect(element) {
+    if(!element)
+        return null
+
+    const rect = element.getBoundingClientRect()
+    if(rect.width <= 0 || rect.height <= 0)
+        return null
+
+    return rect
+}
+
+function mergeRects(rectA, rectB) {
+    if(rectA && !rectB)
+        return rectA
+    if(rectB && !rectA)
+        return rectB
+    if(!rectA || !rectB)
+        return null
+
+    const left = Math.min(rectA.left, rectB.left)
+    const top = Math.min(rectA.top, rectB.top)
+    const right = Math.max(rectA.right, rectB.right)
+    const bottom = Math.max(rectA.bottom, rectB.bottom)
+
+    return {
+        left,
+        top,
+        right,
+        bottom,
+        width: right - left,
+        height: bottom - top,
     }
 }
 
@@ -709,6 +1075,10 @@ function getDistance(from, to) {
 
 function interpolate(from, to, progress) {
     return from + ((to - from) * progress)
+}
+
+function easeInOutSine(progress) {
+    return -(Math.cos(Math.PI * progress) - 1) / 2
 }
 
 function easeOutCubic(progress) {

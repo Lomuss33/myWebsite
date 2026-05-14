@@ -241,7 +241,7 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
     }
 }
 
-article#article-1-section-my-art div.article-timeline-item-info-for-timelines {
+article.article-timeline--art-photography div.article-timeline-item-info-for-timelines {
     --card-accent: #38bdf8;
     --card-accent-2: #f59e0b;
     --card-surface-top: #0b1220;
@@ -304,6 +304,84 @@ article#article-1-section-my-art div.article-timeline-item-info-for-timelines {
         border-color: color-mix(in srgb, var(--card-accent) 54%, var(--card-border) 46%);
         box-shadow: var(--card-shadow-hover), inset 0 1px 0 rgba(255, 255, 255, 0.06);
         filter: saturate(1.03);
+    }
+}
+
+article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines {
+    --card-accent: #22d3ee;
+    --card-accent-2: #a855f7;
+    --card-accent-3: #fbbf24;
+    --card-surface-top: #070b16;
+    --card-surface-bottom: #03050c;
+    --card-border: rgba(70, 85, 130, 0.58);
+    --card-shadow: 0 24px 52px rgba(2, 6, 23, 0.56);
+    --card-shadow-hover: 0 30px 64px rgba(34, 211, 238, 0.16);
+    --card-text-strong: #f8fbff;
+    --card-text-mid: #d4ddf4;
+    --card-text-soft: #8ea3c7;
+
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: var(--content-padding);
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid var(--card-border);
+    border-radius: $standard-border-radius;
+    background:
+        radial-gradient(circle at 14% 12%, rgba(34, 211, 238, 0.12), transparent 30%),
+        radial-gradient(circle at 86% 14%, rgba(168, 85, 247, 0.16), transparent 32%),
+        radial-gradient(circle at 84% 84%, rgba(251, 191, 36, 0.10), transparent 30%),
+        linear-gradient(142deg, var(--card-surface-top), var(--card-surface-bottom));
+    box-shadow:
+        var(--card-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07),
+        0 0 0 1px rgba(34, 211, 238, 0.06);
+    transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        filter 180ms ease;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 22%),
+            radial-gradient(circle at top right, rgba(168, 85, 247, 0.16) 0%, transparent 52%),
+            radial-gradient(circle at bottom left, rgba(34, 211, 238, 0.14) 0%, transparent 46%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 4px;
+        background: linear-gradient(180deg, var(--card-accent), var(--card-accent-2) 58%, var(--card-accent-3));
+        opacity: 0.98;
+        pointer-events: none;
+        z-index: 0;
+        box-shadow: 0 0 18px rgba(34, 211, 238, 0.28);
+    }
+
+    > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    &:hover,
+    &:focus-within {
+        transform: translateY(-3px);
+        border-color: color-mix(in srgb, var(--card-accent) 44%, rgba(255, 255, 255, 0.18) 56%);
+        box-shadow:
+            var(--card-shadow-hover),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 0 0 1px rgba(34, 211, 238, 0.12);
+        filter: saturate(1.06);
     }
 }
 
@@ -382,7 +460,8 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
     text-decoration-color: var(--card-accent);
 }
 
-article#article-1-section-my-art div.article-timeline-item-info-for-timelines-header-main h5 {
+article.article-timeline--art-photography div.article-timeline-item-info-for-timelines-header-main h5,
+article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-header-main h5 {
     color: var(--card-text-strong);
     text-decoration-color: var(--card-accent);
 }
@@ -421,7 +500,8 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
     }
 }
 
-article#article-1-section-my-art div.article-timeline-item-info-for-timelines-header-date-badge {
+article.article-timeline--art-photography div.article-timeline-item-info-for-timelines-header-date-badge,
+article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-header-date-badge {
     div.date-badge {
         width: auto!important;
         padding: 4px 12px;
@@ -446,7 +526,8 @@ article#article-1-section-my-writings ul.article-timeline-item-info-for-timeline
     color: var(--card-text-mid);
 }
 
-article#article-1-section-my-art ul.article-timeline-item-info-for-timelines-header-prop-list {
+article.article-timeline--art-photography ul.article-timeline-item-info-for-timelines-header-prop-list,
+article.article-timeline--art-digital-expression ul.article-timeline-item-info-for-timelines-header-prop-list {
     color: var(--card-text-mid);
 }
 
@@ -586,7 +667,8 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
     }
 }
 
-article#article-1-section-my-art div.article-timeline-item-info-for-timelines-body {
+article.article-timeline--art-photography div.article-timeline-item-info-for-timelines-body,
+article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-body {
     color: var(--card-text-mid);
 
     a,
@@ -604,7 +686,8 @@ article#article-1-section-my-writings ul.article-timeline-item-info-for-timeline
     color: var(--card-text-soft);
 }
 
-article#article-1-section-my-art ul.article-timeline-item-info-for-timelines-body-list {
+article.article-timeline--art-photography ul.article-timeline-item-info-for-timelines-body-list,
+article.article-timeline--art-digital-expression ul.article-timeline-item-info-for-timelines-body-list {
     color: var(--card-text-soft);
 }
 
@@ -632,7 +715,8 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
     }
 }
 
-article#article-1-section-my-art div.article-timeline-item-info-for-timelines-tags-footer {
+article.article-timeline--art-photography div.article-timeline-item-info-for-timelines-tags-footer,
+article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-tags-footer {
     li.article-timeline-item-info-for-timelines-tags-footer-tag {
         color: var(--card-text-strong);
         background: linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(6, 9, 16, 0.96));
@@ -640,7 +724,8 @@ article#article-1-section-my-art div.article-timeline-item-info-for-timelines-ta
     }
 }
 
-article#article-1-section-my-art div.article-timeline-item-info-preview-footer {
+article.article-timeline--art-photography div.article-timeline-item-info-preview-footer,
+article.article-timeline--art-digital-expression div.article-timeline-item-info-preview-footer {
     div.article-item-preview-menu-button {
         border-color: color-mix(in srgb, var(--card-accent) 36%, var(--card-border) 64%);
     }

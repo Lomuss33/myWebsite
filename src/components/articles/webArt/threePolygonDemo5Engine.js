@@ -106,6 +106,7 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
     let boostEnergy = 0
     let boostTail = 0
     let held = false
+    let holdSlowMix = 0
     let pmrem = null
     let envTexture = null
     let envSourceTexture = null
@@ -219,14 +220,17 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
         lastFrameMs = nowMs
 
         if(held) {
+            holdSlowMix = Math.min(1, holdSlowMix + dt * 3.2)
             boostTail = Math.max(0, boostTail - dt * 2.8)
             boostEnergy = Math.max(0, boostEnergy - dt * (1.6 + boostEnergy * 0.6))
         }
         else if(boostTail > 0) {
+            holdSlowMix = Math.max(0, holdSlowMix - dt * 2.4)
             boostTail = Math.max(0, boostTail - dt)
             boostEnergy = Math.max(0, boostEnergy - dt * 0.08)
         }
         else {
+            holdSlowMix = Math.max(0, holdSlowMix - dt * 2.2)
             boostEnergy = Math.max(0, boostEnergy - dt * 0.45)
         }
 
@@ -234,7 +238,8 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
         const ampX = (rotationXDeg * Math.PI) / 180
         const ampY = (rotationYDeg * Math.PI) / 180
         const ampZ = (rotationZDeg * Math.PI) / 180
-        const currentDuration = animationDuration / Math.max(1, 1 + boostEnergy)
+        const speedFactor = clamp((1 + boostEnergy) * (1 - holdSlowMix * 0.78), 0.18, 5.0)
+        const currentDuration = animationDuration / speedFactor
         const omega = (Math.PI * 2) / Math.max(0.1, currentDuration)
 
         for(let i = 0; i < group.children.length; i++) {
@@ -301,6 +306,7 @@ export function createThreePolygonDemo5Engine(canvas, options = {}) {
         boostEnergy = 0
         boostTail = 0
         held = false
+        holdSlowMix = 0
         for(let i = 0; i < group.children.length; i++) {
             group.children[i].rotation.set(0, 0, 0)
             applyRingPalette(group.children[i], i, group.children.length, 0)

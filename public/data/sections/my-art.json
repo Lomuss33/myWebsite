@@ -33,22 +33,23 @@
             "component": "ArticleTimeline",
             "locales": {
                 "en": {
-                    "title": "My {{Artworks & Travel Albums}}"
+                    "title": "My {{Photography Travel Albums}}"
                 },
                 "de": {
-                    "title": "Meine {{Kunstwerke & Reisealben}}"
+                    "title": "Meine {{Reisefotoalben}}"
                 },
                 "hr": {
-                    "title": "Moji {{umjetnički radovi i putni albumi}}"
+                    "title": "Moji {{fotografski putni albumi}}"
                 },
                 "tr": {
-                    "title": "{{Sanat çalışmalarım ve seyahat albümlerim}}"
+                    "title": "{{Fotoğraf seyahat albümlerim}}"
                 }
             },
             "settings": {
                 "max_rows_collapse_threshold": 3,
                 "order_items_by": "date",
-                "order_items_sort": "desc"
+                "order_items_sort": "desc",
+                "timeline_variant": "art-photography"
             },
             "items": [
                 {
@@ -95,58 +96,6 @@
                             "country": "Makedonya",
                             "text": "Dağlar, manastırlar, şehir hayatı ve manzaralar.",
                             "medium": "Fotoğrafçılık"
-                        }
-                    }
-                },
-                {
-                    "id": 2,
-                    "date": {
-                        "year": 2019,
-                        "month": 12
-                    },
-                    "preview": {
-                        "links": [
-                            {
-                                "href": "https://de.pinterest.com/lovromusi/tattoo-favorites-collection/",
-                                "tooltipString": "See on Pinterest",
-                                "faIcon": "fa-brands fa-pinterest"
-                            }
-                        ],
-                        "screenshots": [
-                            "/images/personal_art/tattoo_design/cekic_vatra.webp",
-                            "/images/personal_art/tattoo_design/elixir_god.webp",
-                            "/images/personal_art/tattoo_design/ilir_2.webp",
-                            "/images/personal_art/tattoo_design/konj_linija_art.webp",
-                            "/images/personal_art/tattoo_design/mitski_lav.webp",
-                            "/images/personal_art/tattoo_design/vrijeme_box.webp",
-                            "/images/personal_art/tattoo_design/zid_alien.webp"
-                        ],
-                        "screenshotsAspectRatio": "1:1"
-                    },
-                    "locales": {
-                        "en": {
-                            "title": "Tattoos — My Living Canvas",
-                            "country": "Germany",
-                            "text": "Personal comic, geometric, and life-story tattoos.",
-                            "medium": "Tattoo"
-                        },
-                        "de": {
-                            "title": "Tätowierungen — Meine lebendige Leinwand",
-                            "country": "Deutschland",
-                            "text": "Persönliche Comic-, geometrische und lebensgeschichtliche Tattoos.",
-                            "medium": "Tätowierung"
-                        },
-                        "hr": {
-                            "title": "Tetovaže — moje živo platno",
-                            "country": "Njemačka",
-                            "text": "Osobne stripovske, geometrijske i životnom pričom nadahnute tetovaže.",
-                            "medium": "Tetovaža"
-                        },
-                        "tr": {
-                            "title": "Dövmeler — yaşayan tuvalim",
-                            "country": "Almanya",
-                            "text": "Kişisel, çizgi roman esintili, geometrik ve hayat hikâyesi taşıyan dövmeler.",
-                            "medium": "Dövme"
                         }
                     }
                 },
@@ -434,6 +383,137 @@
             ]
         },
         {
+            "id": 2,
+            "component": "ArticleTimeline",
+            "locales": {
+                "en": {
+                    "title": "My {{Digital Expression Albums}}"
+                },
+                "de": {
+                    "title": "Meine {{digitalen Ausdrucksalben}}"
+                },
+                "hr": {
+                    "title": "Moji {{albumi digitalnog izraza}}"
+                },
+                "tr": {
+                    "title": "{{Dijital ifade albümlerim}}"
+                }
+            },
+            "settings": {
+                "max_rows_collapse_threshold": 3,
+                "order_items_by": "date",
+                "order_items_sort": "desc",
+                "timeline_variant": "art-digital-expression"
+            },
+            "items": [
+                {
+                    "id": 2,
+                    "date": {
+                        "year": 2019,
+                        "month": 12
+                    },
+                    "preview": {
+                        "links": [
+                            {
+                                "href": "https://de.pinterest.com/lovromusi/tattoo-favorites-collection/",
+                                "tooltipString": "See on Pinterest",
+                                "faIcon": "fa-brands fa-pinterest"
+                            }
+                        ],
+                        "screenshots": [
+                            "/images/personal_art/tattoo_design/cekic_vatra.webp",
+                            "/images/personal_art/tattoo_design/elixir_god.webp",
+                            "/images/personal_art/tattoo_design/ilir_2.webp",
+                            "/images/personal_art/tattoo_design/konj_linija_art.webp",
+                            "/images/personal_art/tattoo_design/mitski_lav.webp",
+                            "/images/personal_art/tattoo_design/vrijeme_box.webp",
+                            "/images/personal_art/tattoo_design/zid_alien.webp"
+                        ],
+                        "screenshotsAspectRatio": "1:1"
+                    },
+                    "locales": {
+                        "en": {
+                            "title": "Tattoos — My Living Canvas",
+                            "country": "Germany",
+                            "text": "Personal comic, geometric, and life-story tattoos.",
+                            "medium": "Tattoo"
+                        },
+                        "de": {
+                            "title": "Tätowierungen — Meine lebendige Leinwand",
+                            "country": "Deutschland",
+                            "text": "Persönliche Comic-, geometrische und lebensgeschichtliche Tattoos.",
+                            "medium": "Tätowierung"
+                        },
+                        "hr": {
+                            "title": "Tetovaže — moje živo platno",
+                            "country": "Njemačka",
+                            "text": "Osobne stripovske, geometrijske i životnom pričom nadahnute tetovaže.",
+                            "medium": "Tetovaža"
+                        },
+                        "tr": {
+                            "title": "Dövmeler — yaşayan tuvalim",
+                            "country": "Almanya",
+                            "text": "Kişisel, çizgi roman esintili, geometrik ve hayat hikâyesi taşıyan dövmeler.",
+                            "medium": "Dövme"
+                        }
+                    }
+                },
+                {
+                    "id": 99,
+                    "date": {
+                        "year": 2018,
+                        "month": 11
+                    },
+                    "preview": {
+                        "links": [
+                            {
+                                "href": "#my-art-ai-prompts-coming-soon",
+                                "tooltipString": "open_website",
+                                "faIcon": "fa-solid fa-images",
+                                "label": "Image Folder",
+                                "isWebsiteAction": true
+                            },
+                            {
+                                "href": "#my-art-ai-prompts-pinterest-coming-soon",
+                                "tooltipString": "open_website",
+                                "faIcon": "fa-brands fa-pinterest"
+                            }
+                        ],
+                        "screenshots": [
+                            "/images/personal_art/tattoo_design/vrijeme_box.webp"
+                        ],
+                        "screenshotsAspectRatio": "1:1"
+                    },
+                    "locales": {
+                        "en": {
+                            "title": "Prompts for AI image creation",
+                            "country": "Digital Archive",
+                            "text": "A growing placeholder archive for curated prompt sets, visual directions, and experimental image ideas prepared for future AI image workflows.",
+                            "medium": "AI Prompt Design"
+                        },
+                        "de": {
+                            "title": "Prompts zur KI-Bilderstellung",
+                            "country": "Digitales Archiv",
+                            "text": "Ein wachsendes Platzhalter-Archiv für kuratierte Prompt-Sammlungen, visuelle Richtungen und experimentelle Bildideen für künftige KI-Bild-Workflows.",
+                            "medium": "KI-Prompt-Design"
+                        },
+                        "hr": {
+                            "title": "Promptovi za AI generiranje slika",
+                            "country": "Digitalni arhiv",
+                            "text": "Rastući privremeni arhiv za kurirane kolekcije promptova, vizualne smjerove i eksperimentalne ideje slika pripremljene za buduće AI image workflowe.",
+                            "medium": "Dizajn AI promptova"
+                        },
+                        "tr": {
+                            "title": "Yapay zekâ görsel üretimi için promptlar",
+                            "country": "Dijital Arşiv",
+                            "text": "Gelecekteki yapay zekâ görsel üretim akışları için hazırlanan, küratöryel prompt koleksiyonlarını, görsel yönleri ve deneysel görsel fikirlerini içeren büyüyen bir yer tutucu arşiv.",
+                            "medium": "YZ Prompt Tasarımı"
+                        }
+                    }
+                }
+            ]
+        },
+        {
             "id": 0,
             "component": "ArticleWebArt",
             "locales": {
@@ -451,17 +531,39 @@
                 }
             },
             "items": [
-                { "id": 1 },
-                { "id": 2 },
-                { "id": 3 },
-                { "id": 4 },
-                { "id": 5 },
-                { "id": 6 },
-                { "id": 7 },
-                { "id": 8 },
-                { "id": 9 },
-                { "id": 10 },
-                { "id": 11 }
+                {
+                    "id": 1
+                },
+                {
+                    "id": 2
+                },
+                {
+                    "id": 3
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                },
+                {
+                    "id": 6
+                },
+                {
+                    "id": 7
+                },
+                {
+                    "id": 8
+                },
+                {
+                    "id": 9
+                },
+                {
+                    "id": 10
+                },
+                {
+                    "id": 11
+                }
             ]
         },
         {

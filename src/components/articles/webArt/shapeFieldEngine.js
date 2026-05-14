@@ -61,7 +61,7 @@ const PALETTE = [
     { type: "gradient", stops: ["#34d399", "#3b82f6"] }
 ]
 
-const SHAPE_TYPES = ["circle", "pill", "star", "star"]
+const SHAPE_TYPES = ["circle", "pill", "star", "diamond", "triangle", "square", "cross", "hex", "octagon"]
 
 function drawCircle(ctx, size) {
     ctx.beginPath()
@@ -99,6 +99,39 @@ function drawStar(ctx, size, points, innerRatio) {
     ctx.fill()
 }
 
+function drawPolygon(ctx, size, sides, rotation = 0) {
+    ctx.beginPath()
+    for(let i = 0; i < sides; i++) {
+        const angle = rotation + (i * Math.PI * 2) / sides - Math.PI / 2
+        const x = Math.cos(angle) * size
+        const y = Math.sin(angle) * size
+        if(i === 0) ctx.moveTo(x, y)
+        else ctx.lineTo(x, y)
+    }
+    ctx.closePath()
+    ctx.fill()
+}
+
+function drawCross(ctx, size, thicknessRatio = 0.36) {
+    const arm = size
+    const half = size * thicknessRatio
+    ctx.beginPath()
+    ctx.moveTo(-half, -arm)
+    ctx.lineTo(half, -arm)
+    ctx.lineTo(half, -half)
+    ctx.lineTo(arm, -half)
+    ctx.lineTo(arm, half)
+    ctx.lineTo(half, half)
+    ctx.lineTo(half, arm)
+    ctx.lineTo(-half, arm)
+    ctx.lineTo(-half, half)
+    ctx.lineTo(-arm, half)
+    ctx.lineTo(-arm, -half)
+    ctx.lineTo(-half, -half)
+    ctx.closePath()
+    ctx.fill()
+}
+
 function drawShape(ctx, shape) {
     if(shape.type === "circle") {
         drawCircle(ctx, shape.size / 1.5)
@@ -110,7 +143,42 @@ function drawShape(ctx, shape) {
         return
     }
 
-    drawStar(ctx, shape.size, shape.points, shape.innerRatio)
+    if(shape.type === "star") {
+        drawStar(ctx, shape.size, shape.points, shape.innerRatio)
+        return
+    }
+
+    if(shape.type === "diamond") {
+        drawPolygon(ctx, shape.size * 0.94, 4, Math.PI / 4)
+        return
+    }
+
+    if(shape.type === "triangle") {
+        drawPolygon(ctx, shape.size * 1.02, 3, shape.rotationBias || 0)
+        return
+    }
+
+    if(shape.type === "square") {
+        drawPolygon(ctx, shape.size * 0.9, 4, shape.rotationBias || 0)
+        return
+    }
+
+    if(shape.type === "hex") {
+        drawPolygon(ctx, shape.size * 0.96, 6, shape.rotationBias || 0)
+        return
+    }
+
+    if(shape.type === "octagon") {
+        drawPolygon(ctx, shape.size * 0.92, 8, shape.rotationBias || 0)
+        return
+    }
+
+    if(shape.type === "cross") {
+        drawCross(ctx, shape.size * 0.92, shape.thicknessRatio || 0.34)
+        return
+    }
+
+    drawCircle(ctx, shape.size / 1.5)
 }
 
 function resolveFill(ctx, colorDef, size) {
@@ -124,7 +192,7 @@ function resolveFill(ctx, colorDef, size) {
 export function createShapeFieldEngine(canvas, options = {}) {
     const seed = clampInt(options.seed, 1, 2147483647, 12345)
     const reduceMotion = Boolean(options.reduceMotion)
-    const gap = Number.isFinite(options.gap) ? Math.max(18, options.gap) : 40
+    const gap = Number.isFinite(options.gap) ? Math.max(14, options.gap) : 32
     const radiusRatio = Number.isFinite(options.radiusRatio) ? clamp(options.radiusRatio, 0.12, 0.7) : 0.30
     const speedIn = Number.isFinite(options.speedIn) ? options.speedIn : 0.5
     const speedOut = Number.isFinite(options.speedOut) ? options.speedOut : 0.6
@@ -155,9 +223,24 @@ export function createShapeFieldEngine(canvas, options = {}) {
         }
     }
 
+    function randomShapeProps(type) {
+        if(type === "star") return randomStarProps()
+        if(type === "triangle" || type === "square" || type === "hex") {
+            return {
+                rotationBias: rnd(random, 0, Math.PI * 2)
+            }
+        }
+        if(type === "cross") {
+            return {
+                thicknessRatio: rnd(random, 0.24, 0.42)
+            }
+        }
+        return {}
+    }
+
     function buildGrid() {
-        const cols = Math.max(1, Math.floor(width / gap))
-        const rows = Math.max(1, Math.floor(height / gap))
+        const cols = Math.max(1, Math.floor(width / gap) + 1)
+        const rows = Math.max(1, Math.floor(height / gap) + 1)
         const offsetX = cols <= 1 ? width / 2 : (width - (cols - 1) * gap) / 2
         const offsetY = rows <= 1 ? height / 2 : (height - (rows - 1) * gap) / 2
         const nextShapes = []
@@ -171,15 +254,13 @@ export function createShapeFieldEngine(canvas, options = {}) {
                     type,
                     color: pick(random, PALETTE),
                     angle: rnd(random, 0, Math.PI * 2),
-                    size: gap * 0.38,
+                    size: gap * rnd(random, 0.34, 0.5),
                     scale: restScale,
                     maxScale: rnd(random, minHoverScale, maxHoverScale),
                     hovered: false
                 }
 
-                if(type === "star") {
-                    Object.assign(shape, randomStarProps())
-                }
+                Object.assign(shape, randomShapeProps(type))
 
                 nextShapes.push(shape)
             }
@@ -217,9 +298,7 @@ export function createShapeFieldEngine(canvas, options = {}) {
                     shape.hovered = true
                     shape.maxScale = rnd(random, minHoverScale, maxHoverScale)
                     shape.angle = rnd(random, 0, Math.PI * 2)
-                    if(shape.type === "star") {
-                        Object.assign(shape, randomStarProps())
-                    }
+                    Object.assign(shape, randomShapeProps(shape.type))
                 }
                 else if(pointerInfluence <= 0.05) {
                     shape.hovered = false

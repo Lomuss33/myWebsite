@@ -126,6 +126,7 @@ export default class ArticleDataWrapper {
             avatarImageMode: rawSettings["avatar_image_mode"] || undefined,
             roundIcons: Boolean(rawSettings["round_icons"]) || undefined,
             showItemNumbers: Boolean(rawSettings["show_item_numbers"]) || undefined,
+            timelineVariant: rawSettings["timeline_variant"] || undefined,
 
             // - ArticleContactForm
             emailJsPublicKey: rawSettings["email_js_public_key"] || undefined,

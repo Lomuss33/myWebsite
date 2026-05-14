@@ -2,13 +2,13 @@ import Matter from "matter-js"
 
 const { Engine, Bodies, Body, Composite, Sleeping } = Matter
 
-const PARAMS = {
-    gravity: 1.1,
-    neckRatio: 0.035
+const DEFAULT_PARAMS = {
+    gravity: 1.4,
+    neckRatio: 0.03
 }
 
 const CONFIG = {
-    maxParticles: 8000,
+    maxParticles: 18000,
     wallThickness: 42,
     colors: [
         "#ff3f70",
@@ -25,10 +25,15 @@ const CONFIG = {
     },
     physics: {
         dtBase: 16.667,
-        maxDt: 33.334,
+        maxDt: 50,
         posIters: 10,
         velIters: 8
     }
+}
+
+const LIMITS = {
+    gravity: { min: 0.45, max: 2.8 },
+    neckRatio: { min: 0.01, max: 0.22 }
 }
 
 function clamp(value, min, max) {
@@ -50,6 +55,7 @@ export function createHourglassEngine(canvas) {
     const ctx = canvas.getContext("2d", { alpha: true })
     if(!ctx) throw new Error("Canvas 2D context not available")
 
+    const params = { ...DEFAULT_PARAMS }
     const engine = Engine.create({
         enableSleeping: true,
         positionIterations: CONFIG.physics.posIters,
@@ -57,7 +63,7 @@ export function createHourglassEngine(canvas) {
     })
 
     engine.world.gravity.x = 0
-    engine.world.gravity.y = PARAMS.gravity
+    engine.world.gravity.y = params.gravity
 
     const dimensions = { cx: 0, cy: 0, width: 0, height: 0 }
     const geometry = {
@@ -85,17 +91,18 @@ export function createHourglassEngine(canvas) {
     let frostGradient = null
     let lastTimestamp = null
     let rafId = null
+    let rebuildRafId = null
     let running = false
 
     function buildGeometry() {
         const { width, height } = dimensions
 
-        geometry.height = Math.min(height * 0.46, 310)
-        geometry.maxWidth = Math.min(width * 0.34, 190)
-        geometry.particleRadius = Math.max(Math.min(geometry.maxWidth / 34, 4.6), 2.6)
+        geometry.height = Math.min(height * 0.38, 260)
+        geometry.maxWidth = Math.min(width * 0.22, 160)
+        geometry.particleRadius = Math.max(Math.min(geometry.maxWidth / 44, 3.5), 2)
         geometry.neckWidth = Math.max(
-            geometry.maxWidth * PARAMS.neckRatio,
-            geometry.particleRadius * 2.4
+            geometry.maxWidth * params.neckRatio,
+            geometry.particleRadius * 1.5
         )
 
         const H = geometry.height
@@ -105,7 +112,7 @@ export function createHourglassEngine(canvas) {
         paths.right = []
         paths.left = []
 
-        for(let y = -H; y <= H; y += 6) {
+        for(let y = -H; y <= H; y += 8) {
             const x = neckW + (maxW - neckW) * Math.pow(Math.sin((Math.abs(y) / H) * (Math.PI / 2)), 2.5)
             paths.right.push({ x, y })
             paths.left.push({ x: -x, y })
@@ -154,7 +161,7 @@ export function createHourglassEngine(canvas) {
         const body = Bodies.rectangle(
             cx + mx,
             cy + my,
-            length + wallThickness * 0.45,
+            length + 2,
             wallThickness,
             {
                 isStatic: true,
@@ -195,8 +202,8 @@ export function createHourglassEngine(canvas) {
             collisionFilter: wallCollision
         }
 
-        const capWidth = maxW * 2 + wallThickness * 2
-        const capOffset = H + wallThickness / 2 - 1
+        const capWidth = maxW * 2 + 40
+        const capOffset = H + wallThickness / 2 - 2
 
         entities.walls.push(
             Bodies.rectangle(cx, cy - capOffset, capWidth, wallThickness, capOptions)
@@ -208,16 +215,16 @@ export function createHourglassEngine(canvas) {
         Composite.add(engine.world, entities.walls)
 
         const particleOptions = {
-            restitution: 0.02,
+            restitution: 0.05,
             friction: 0.001,
-            frictionAir: 0.0025,
+            frictionAir: 0.001,
             density: 0.05,
             sleepThreshold: 60,
             collisionFilter: particleCollision
         }
 
-        const step = particleRadius * 1.55
-        const startY = -H + particleRadius * 3.2
+        const step = particleRadius * 1.35
+        const startY = -H + particleRadius * 4
         const endY = -H * 0.02
         const yRange = endY - startY || 1
 
@@ -370,8 +377,8 @@ export function createHourglassEngine(canvas) {
             ? angles.targetGravity
             : angles.gravity + diffGrav * timeScale
 
-        engine.world.gravity.x = Math.sin(angles.gravity) * PARAMS.gravity
-        engine.world.gravity.y = Math.cos(angles.gravity) * PARAMS.gravity
+        engine.world.gravity.x = Math.sin(angles.gravity) * params.gravity
+        engine.world.gravity.y = Math.cos(angles.gravity) * params.gravity
 
         if(Math.abs(diffGrav) > 0.05) {
             entities.particles.forEach((particle) => Sleeping.set(particle, false))
@@ -389,7 +396,7 @@ export function createHourglassEngine(canvas) {
         })
 
         cullEscapedParticles()
-        const subSteps = clamp(Math.ceil(dt / 8.333), 1, 4)
+        const subSteps = clamp(Math.ceil(dt / 8.333), 1, 6)
         const stepDt = dt / subSteps
         for(let i = 0; i < subSteps; i++) {
             Engine.update(engine, stepDt)
@@ -414,14 +421,40 @@ export function createHourglassEngine(canvas) {
         rafId = requestAnimationFrame(tick)
     }
 
+    function rebuildWorld() {
+        lastTimestamp = null
+        buildGeometry()
+        populateWorld()
+        drawFrame()
+    }
+
+    function scheduleRebuild() {
+        if(rebuildRafId != null) cancelAnimationFrame(rebuildRafId)
+        rebuildRafId = requestAnimationFrame(() => {
+            rebuildRafId = null
+            rebuildWorld()
+        })
+    }
+
     function reset() {
         angles.draw = 0
         angles.targetDraw = 0
         angles.gravity = 0
         angles.targetGravity = 0
-        buildGeometry()
-        populateWorld()
+        rebuildWorld()
+    }
+
+    function setGravity(nextGravity) {
+        params.gravity = clamp(Number(nextGravity) || params.gravity, LIMITS.gravity.min, LIMITS.gravity.max)
+        engine.world.gravity.x = Math.sin(angles.gravity) * params.gravity
+        engine.world.gravity.y = Math.cos(angles.gravity) * params.gravity
+        entities.particles.forEach((particle) => Sleeping.set(particle, false))
         drawFrame()
+    }
+
+    function setNeckRatio(nextNeckRatio) {
+        params.neckRatio = clamp(Number(nextNeckRatio) || params.neckRatio, LIMITS.neckRatio.min, LIMITS.neckRatio.max)
+        scheduleRebuild()
     }
 
     function setSize(width, height, devicePixelRatio = 1) {
@@ -468,15 +501,24 @@ export function createHourglassEngine(canvas) {
 
     function destroy() {
         stop()
+        if(rebuildRafId != null) cancelAnimationFrame(rebuildRafId)
+        rebuildRafId = null
         Composite.clear(engine.world)
     }
 
     return {
         setSize,
+        setGravity,
+        setNeckRatio,
         start,
         stop,
         flip,
         renderStatic,
-        destroy
+        destroy,
+        getState: () => ({
+            gravity: params.gravity,
+            neckRatio: params.neckRatio,
+            limits: LIMITS
+        })
     }
 }

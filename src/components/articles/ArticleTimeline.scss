@@ -522,7 +522,7 @@ article#article-1-section-experience {
     }
 }
 
-article#article-1-section-my-art {
+article.article-timeline--art-photography {
     ul.article-timeline-items {
         --timeline-line-width: 4px;
         --timeline-line-color: rgba(56, 189, 248, 0.48);
@@ -592,6 +592,96 @@ article#article-1-section-my-art {
             0 0 0 3px rgba(56, 189, 248, 0.22),
             0 0 0 1px rgba(255, 255, 255, 0.10) inset,
             0 16px 34px rgba(0, 0, 0, 0.42);
+    }
+
+    div.article-timeline-item-content {
+        @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+            margin-left: var(--gap-between-avatar-and-content)!important;
+            border-top-left-radius: $standard-border-radius!important;
+            border-bottom-left-radius: $standard-border-radius!important;
+        }
+    }
+}
+
+article.article-timeline--art-digital-expression {
+    ul.article-timeline-items {
+        --timeline-line-width: 4px;
+        --timeline-line-color: rgba(34, 211, 238, 0.42);
+        --avatar-size: 168px;
+        --gap-between-avatar-and-content: 18px;
+
+        @include media-breakpoint-down(lg) {
+            --avatar-size: 144px;
+            --gap-between-avatar-and-content: 16px;
+        }
+
+        @include media-breakpoint-down(md) {
+            --avatar-size: 120px;
+            --gap-between-avatar-and-content: 14px;
+        }
+
+        @include media-breakpoint-down(sm) {
+            --avatar-size: 88px;
+            --gap-between-avatar-and-content: 14px;
+        }
+
+        @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+            --avatar-offset-merge-mode: 0px;
+        }
+    }
+
+    ul.article-timeline-items:before {
+        background: linear-gradient(180deg, rgba(34, 211, 238, 0.78), rgba(168, 85, 247, 0.66) 52%, rgba(251, 191, 36, 0.44));
+        box-shadow:
+            0 0 0 1px rgba(5, 10, 20, 0.28),
+            0 0 24px rgba(34, 211, 238, 0.14);
+    }
+
+    li.article-timeline-item {
+        align-items: stretch;
+    }
+
+    div.article-timeline-item-avatar-wrapper {
+        align-items: center;
+    }
+
+    div.article-timeline-item-avatar {
+        border-color: rgba(34, 211, 238, 0.54);
+        box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.12) inset,
+            0 16px 36px rgba(2, 6, 23, 0.54),
+            0 0 28px rgba(34, 211, 238, 0.18);
+
+        @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+            top: 0;
+            left: 0;
+        }
+    }
+
+    div.article-timeline-item-avatar.article-timeline-item-avatar--button {
+        border-color: rgba(168, 85, 247, 0.62);
+        box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.14) inset,
+            0 18px 36px rgba(2, 6, 23, 0.56),
+            0 0 32px rgba(168, 85, 247, 0.18);
+    }
+
+    a.article-timeline-item-avatar-link:hover div.article-timeline-item-avatar--button {
+        border-color: rgba(251, 191, 36, 0.84);
+        box-shadow:
+            0 0 0 4px rgba(34, 211, 238, 0.16),
+            0 0 0 1px rgba(255, 255, 255, 0.14) inset,
+            0 18px 40px rgba(2, 6, 23, 0.58),
+            0 0 36px rgba(168, 85, 247, 0.2);
+    }
+
+    a.article-timeline-item-avatar-link:focus-visible div.article-timeline-item-avatar--button {
+        border-color: rgba(34, 211, 238, 0.88);
+        box-shadow:
+            0 0 0 3px rgba(34, 211, 238, 0.24),
+            0 0 0 1px rgba(255, 255, 255, 0.14) inset,
+            0 18px 40px rgba(2, 6, 23, 0.58),
+            0 0 36px rgba(34, 211, 238, 0.18);
     }
 
     div.article-timeline-item-content {

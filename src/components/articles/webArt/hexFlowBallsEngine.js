@@ -86,6 +86,9 @@ export function createHexFlowBallsEngine(canvas, options = {}) {
     let globalBgHue = random() * 360
     let globalBgNoise = createNoise1DOneShot(420, -0.4, 0.4, random)
     let darkGrid = false
+    let pointer = { active: false, x: 0.5, y: 0.5 }
+    let interactionEnergy = 0
+    let burstEnergy = 0
 
     function buildGrid() {
         const rayHexX = Math.floor((maxx - 6) / (nbCells + Math.floor((nbCells + 1) / 2)))
@@ -265,14 +268,29 @@ export function createHexFlowBallsEngine(canvas, options = {}) {
             meanHue = (Math.atan2(sumSin, sumCos) * 180 / Math.PI + 360) % 360
         }
 
-        globalBgHue = (meanHue + globalBgNoise() * 16 + nowMs * 0.002) % 360
-        ctx.fillStyle = `hsl(${globalBgHue}, 100%, 50%)`
+        const px = pointer.x * maxx
+        const py = pointer.y * maxy
+        const pulseHue = (meanHue + burstEnergy * 55 + interactionEnergy * 22) % 360
+        globalBgHue = (meanHue + globalBgNoise() * 16 + nowMs * (0.002 + interactionEnergy * 0.0025 + burstEnergy * 0.005)) % 360
+        const gradient = ctx.createRadialGradient(px, py, 0, px, py, Math.max(maxx, maxy) * (0.55 + burstEnergy * 0.18))
+        gradient.addColorStop(0, `hsl(${pulseHue}, 100%, ${58 + burstEnergy * 10}%)`)
+        gradient.addColorStop(0.4, `hsl(${(globalBgHue + 24) % 360}, 100%, ${52 + interactionEnergy * 8}%)`)
+        gradient.addColorStop(1, `hsl(${globalBgHue}, 100%, ${46 - burstEnergy * 6}%)`)
+        ctx.fillStyle = gradient
         ctx.fillRect(0, 0, maxx, maxy)
     }
 
-    function drawBall(ball) {
+    function drawBall(ball, speedFactor) {
         const fill = `hsl(${ball.hue},100%,50%)`
         ctx.fillStyle = fill
+        const pointerX = pointer.x * maxx
+        const pointerY = pointer.y * maxy
+        const dxp = ball.cell.xc - pointerX
+        const dyp = ball.cell.yc - pointerY
+        const pointerDist = Math.hypot(dxp, dyp)
+        const pointerRadius = rayHex * 4.8
+        const pointerInfluence = pointer.active ? Math.max(0, 1 - pointerDist / Math.max(pointerRadius, 1)) : 0
+        const localSpeed = speedFactor * (1 + pointerInfluence * 2.2)
 
         switch(ball.state) {
             case 0: {
@@ -305,7 +323,7 @@ export function createHexFlowBallsEngine(canvas, options = {}) {
             }
 
             case 1: {
-                ball.dC += rayHex * ballSpeed
+                ball.dC += rayHex * ballSpeed * localSpeed
                 if(ball.dC + ball.radius >= apoHex) {
                     ball.dC = apoHex - ball.radius
                     ball.state = 2
@@ -320,7 +338,7 @@ export function createHexFlowBallsEngine(canvas, options = {}) {
             }
 
             case 2: {
-                ball.alphaCross += ballSpeed / 2
+                ball.alphaCross += (ballSpeed / 2) * localSpeed
                 if(ball.alphaCross >= 1) {
                     ball.alphaCross = 1
                     ball.state = 3
@@ -342,7 +360,7 @@ export function createHexFlowBallsEngine(canvas, options = {}) {
             }
 
             case 3: {
-                ball.dC += rayHex * ballSpeed
+                ball.dC += rayHex * ballSpeed * localSpeed
                 if(ball.dC >= 2 * apoHex) {
                     ball.dC = 2 * apoHex
                 }
@@ -366,12 +384,19 @@ export function createHexFlowBallsEngine(canvas, options = {}) {
     }
 
     function drawFrame(nowMs) {
+        interactionEnergy += ((pointer.active ? 1 : 0) - interactionEnergy) * 0.08
+        burstEnergy *= 0.95
+        const speedFactor = 1 + interactionEnergy * 1.6 + burstEnergy * 4.2
         fillBackground(nowMs)
         if(gridCanvas) ctx.drawImage(gridCanvas, 0, 0)
 
         for(const ball of balls) {
-            ball.hue = (ball.hue + ball.hueNoise() + 360) % 360
-            drawBall(ball)
+            const pointerX = pointer.x * maxx
+            const pointerY = pointer.y * maxy
+            const dist = Math.hypot(ball.cell.xc - pointerX, ball.cell.yc - pointerY)
+            const influence = pointer.active ? Math.max(0, 1 - dist / Math.max(rayHex * 5.2, 1)) : 0
+            ball.hue = (ball.hue + ball.hueNoise() * (1 + interactionEnergy * 1.5) + influence * 6 + burstEnergy * 4 + 360) % 360
+            drawBall(ball, speedFactor)
         }
     }
 
@@ -389,6 +414,28 @@ export function createHexFlowBallsEngine(canvas, options = {}) {
         darkGrid = !darkGrid
         renderGridCanvas()
         drawFrame(performance.now())
+    }
+
+    function setPointer(x, y) {
+        pointer.active = true
+        pointer.x = clamp(Number(x) || 0.5, 0, 1)
+        pointer.y = clamp(Number(y) || 0.5, 0, 1)
+        if(!running) drawFrame(performance.now())
+    }
+
+    function clearPointer() {
+        pointer.active = false
+        if(!running) drawFrame(performance.now())
+    }
+
+    function burst() {
+        burstEnergy = 1
+        darkGrid = !darkGrid
+        renderGridCanvas()
+        for(const ball of balls) {
+            ball.hue = (Math.floor(random() * 360) + burstEnergy * 20) % 360
+        }
+        if(!running) drawFrame(performance.now())
     }
 
     function setSize(width, height, devicePixelRatio = 1) {
@@ -437,6 +484,9 @@ export function createHexFlowBallsEngine(canvas, options = {}) {
         destroy,
         renderStatic,
         setSize,
-        toggleGridContrast
+        toggleGridContrast,
+        setPointer,
+        clearPointer,
+        burst
     }
 }

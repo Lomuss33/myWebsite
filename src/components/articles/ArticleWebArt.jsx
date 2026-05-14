@@ -216,19 +216,64 @@ const renderer = createHexLoopRenderer(canvas, {
     seed: ${safeSeed}
 })
 
-const render = () => renderer.render()
-render()
+let rafId = 0
+let retryTimerId = 0
+
+const queueRender = () => {
+    if(retryTimerId) {
+        window.clearTimeout(retryTimerId)
+        retryTimerId = 0
+    }
+    if(rafId) cancelAnimationFrame(rafId)
+    rafId = requestAnimationFrame(() => {
+        const rect = canvas.getBoundingClientRect()
+        if(rect.width < 24 || rect.height < 24) {
+            retryTimerId = window.setTimeout(queueRender, 60)
+            return
+        }
+        renderer.render()
+    })
+}
+
+const resizeObserver = "ResizeObserver" in window ? new ResizeObserver(() => {
+    queueRender()
+}) : null
+
+resizeObserver?.observe(document.documentElement)
+resizeObserver?.observe(document.body)
+resizeObserver?.observe(canvas)
+
+queueRender()
+requestAnimationFrame(() => requestAnimationFrame(queueRender))
 
 document.addEventListener("click", () => {
-    render()
+    queueRender()
 })
 
 window.addEventListener("resize", () => {
-    render()
+    queueRender()
 }, { passive: true })
+
+window.addEventListener("pageshow", () => {
+    queueRender()
+})
 </script>
 </body>
 </html>`
+}
+
+function _renderGuideLineContent(line) {
+    if(!Array.isArray(line)) return line
+
+    return line.map((fragment, index) => {
+        const toneClass = fragment?.tone ? ` article-web-art-intro-guide-fragment-${fragment.tone}` : ""
+        return (
+            <span key={`${fragment?.text || "fragment"}-${index}`}
+                  className={`article-web-art-intro-guide-fragment${toneClass}`}>
+                {fragment?.text}
+            </span>
+        )
+    })
 }
 
 function ArticleWebArt({ dataWrapper, id }) {
@@ -339,42 +384,95 @@ function ArticleWebArt({ dataWrapper, id }) {
     const introCopy = {
         en: {
             title: "Doors of the world behind an amazing art gallery.",
-            note: "At your own risk",
-            revealNote: "At your own risk click on the card to reveal it!",
+            guide: {
+                eyebrow: "How to explore",
+                lines: [
+                    [
+                        { text: "Enter the gallery", tone: "hero" },
+                        { text: " and browse the " },
+                        { text: "cards", tone: "glow" },
+                        { text: " at your own risk!", tone: "soft" }
+                    ],
+                    [
+                        { text: "Click, hold, or drag", tone: "action" },
+                        { text: " inside a card to have " },
+                        { text: "some fun.", tone: "glow" }
+                    ],
+                    [
+                        { text: "All pieces are unique, and beautiful.", tone: "hero" },
+                        { text: " " },
+                        { text: "Contact me to send or credit an idea.", tone: "soft" }
+                    ]
+                ]
+            },
             button: "Enter",
             preparing: "Preparing..."
         },
         de: {
-            title: "Türen der Welt hinter einer erstaunlichen Kunstgalerie.",
-            note: "Auf eigenes Risiko",
+            title: "T\u00fcren der Welt hinter einer erstaunlichen Kunstgalerie.",
+            guide: {
+                eyebrow: "So funktioniert es",
+                lines: [
+                    "Betritt die Galerie und schau dir die Karten in Ruhe an.",
+                    "Klicke, tippe oder halte eine Karte, um das Werk darin sichtbar zu machen.",
+                    "Manche Werke reagieren anders, und einige brauchen einen kurzen Moment zum Laden."
+                ]
+            },
             button: "Eintreten",
             preparing: "Wird vorbereitet..."
         },
         hr: {
-            title: "Vrata svijeta iza nevjerojatne umjetničke galerije.",
-            note: "Na vlastiti rizik",
-            button: "Uđi",
+            title: "Vrata svijeta iza nevjerojatne umjetni\u010dke galerije.",
+            guide: {
+                eyebrow: "Kako istra\u017eivati",
+                lines: [
+                    "U\u0111i u galeriju i istra\u017euj kartice svojim tempom.",
+                    "Klikni, dodirni ili pritisni karticu da otkrije\u0161 \u0161to skriva.",
+                    "Neki radovi reagiraju druga\u010dije, a nekima treba trenutak da se pripreme."
+                ]
+            },
+            button: "U\u0111i",
             preparing: "Priprema se..."
         },
         tr: {
-            title: "Muhteşem bir sanat galerisinin ardındaki dünyanın kapıları.",
-            note: "Tüm risk size ait",
+            title: "Muhte\u015fem bir sanat galerisinin ard\u0131ndaki d\u00fcnyan\u0131n kap\u0131lar\u0131.",
+            guide: {
+                eyebrow: "Nas\u0131l gezilir",
+                lines: [
+                    "Galeriye girin ve kartlar\u0131 kendi temponuzda inceleyin.",
+                    "\u0130\u00e7indekini ortaya \u00e7\u0131karmak i\u00e7in karta t\u0131klay\u0131n, dokunun veya bas\u0131l\u0131 tutun.",
+                    "Baz\u0131 i\u015fler farkl\u0131 tepki verir ve baz\u0131lar\u0131n\u0131n haz\u0131rlanmas\u0131 biraz s\u00fcrebilir."
+                ]
+            },
             button: "Gir",
-            preparing: "Hazırlanıyor..."
+            preparing: "Haz\u0131rlan\u0131yor..."
         }
     }[selectedLanguageId] || {
         title: "Doors of the world behind an amazing art gallery.",
-        note: "At your own risk",
+        guide: {
+            eyebrow: "How to explore",
+            lines: [
+                [
+                    { text: "Enter the gallery", tone: "hero" },
+                    { text: " and browse the " },
+                    { text: "cards", tone: "glow" },
+                    { text: " at your own risk!", tone: "soft" }
+                ],
+                [
+                    { text: "Click, hold, or drag", tone: "action" },
+                    { text: " inside a card to have " },
+                    { text: "some fun.", tone: "glow" }
+                ],
+                [
+                    { text: "All pieces are unique, and beautiful.", tone: "hero" },
+                    { text: " " },
+                    { text: "Contact me to send or credit an idea.", tone: "soft" }
+                ]
+            ]
+        },
         button: "Enter",
         preparing: "Preparing..."
     }
-    const introRevealHint = selectedLanguageId === "de"
-        ? "Auf eigenes Risiko klicke auf die Karte, um sie zu öffnen!"
-        : selectedLanguageId === "hr"
-            ? "Na vlastiti rizik klikni karticu da je otkriješ!"
-            : selectedLanguageId === "tr"
-                ? "Tüm risk size ait, göstermek için karta tıklayın!"
-                : "At your own risk click on the card to reveal it!"
     const introHideLabel = "hide"
 
     const onTileReady = useCallback((uniqueId) => {
@@ -719,7 +817,7 @@ function ArticleWebArt({ dataWrapper, id }) {
                  selectedItemCategoryId={selectedItemCategoryId}
                  setSelectedItemCategoryId={setSelectedItemCategoryId}>
             <div className={`article-web-art-shell`}>
-                <WebArtIntroCover note={showIntroCover ? introCopy.note : introRevealHint}
+                <WebArtIntroCover guide={introCopy.guide}
                                   buttonLabel={showIntroCover ? introCopy.button : introHideLabel}
                                   hidden={!showIntroCover}
                                   onEnter={showIntroCover ? onIntroEnter : onIntroHide}
@@ -746,7 +844,7 @@ function ArticleWebArt({ dataWrapper, id }) {
     )
 }
 
-function WebArtIntroCover({ note, buttonLabel, hidden, onEnter, secondaryButtonLabel = null, onSecondaryAction = null, secondaryPressed = false }) {
+function WebArtIntroCover({ guide, buttonLabel, hidden, onEnter, secondaryButtonLabel = null, onSecondaryAction = null, secondaryPressed = false }) {
     const onKeyDown = (event) => {
         if(event.key === "Enter" || event.key === " ") {
             event.preventDefault()
@@ -758,29 +856,52 @@ function WebArtIntroCover({ note, buttonLabel, hidden, onEnter, secondaryButtonL
         <div className={`article-web-art-intro-cover ${hidden ? "article-web-art-intro-cover-hidden" : "article-web-art-intro-cover-open"}`}>
             <div className={`article-web-art-intro-cover-inner`}>
                 <div className={`article-web-art-intro-cover-actions`}>
-                    <span className={`article-web-art-intro-cover-note ${hidden ? "article-web-art-intro-cover-note-compact" : "article-web-art-intro-cover-note-expanded"}`}>
-                        {note}
-                    </span>
-                </div>
+                    <div className={`article-web-art-intro-guide ${hidden ? "article-web-art-intro-guide-hidden" : "article-web-art-intro-guide-open"}`}>
+                        <div className={`article-web-art-intro-guide-inner`}>
+                            <div className={`article-web-art-intro-guide-top-row`}>
+                                <div className={`article-web-art-intro-guide-top-copy`}>
+                                    <span className={`article-web-art-intro-guide-eyebrow`}>
+                                        {guide.eyebrow}
+                                    </span>
 
-                <div className={`article-web-art-intro-cover-buttons`}>
-                    {secondaryButtonLabel ? (
-                        <button type={"button"}
-                                className={`article-web-art-intro-cover-button article-web-art-intro-cover-button-secondary ${secondaryPressed ? "article-web-art-intro-cover-button-secondary-active" : ""}`}
-                                onClick={onSecondaryAction || undefined}
-                                aria-pressed={secondaryPressed}
-                                aria-label={secondaryButtonLabel}>
-                            {secondaryButtonLabel}
-                        </button>
-                    ) : null}
+                                    <p className={`article-web-art-intro-guide-line article-web-art-intro-guide-line-primary`}>
+                                        {_renderGuideLineContent(guide.lines[0])}
+                                    </p>
+                                </div>
 
-                    <button type={"button"}
-                            className={`article-web-art-intro-cover-button`}
-                            onClick={onEnter}
-                            onKeyDown={onKeyDown}
-                            aria-label={buttonLabel}>
-                        {buttonLabel}
-                    </button>
+                                <div className={`article-web-art-intro-cover-buttons`}>
+                                    {secondaryButtonLabel ? (
+                                        <button type={"button"}
+                                                className={`article-web-art-intro-cover-button article-web-art-intro-cover-button-secondary ${secondaryPressed ? "article-web-art-intro-cover-button-secondary-active" : ""}`}
+                                                onClick={onSecondaryAction || undefined}
+                                                aria-pressed={secondaryPressed}
+                                                aria-label={secondaryButtonLabel}>
+                                            {secondaryButtonLabel}
+                                        </button>
+                                    ) : null}
+
+                                    <button type={"button"}
+                                            className={`article-web-art-intro-cover-button`}
+                                            onClick={onEnter}
+                                            onKeyDown={onKeyDown}
+                                            aria-label={buttonLabel}>
+                                        {buttonLabel}
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className={`article-web-art-intro-guide-lines`}>
+                                {guide.lines.slice(1).map((line, index) => {
+                                    return (
+                                        <p key={Array.isArray(line) ? line.map((fragment) => fragment?.text).join("") : line}
+                                           className={`article-web-art-intro-guide-line article-web-art-intro-guide-line-${index + 2}`}>
+                                            {_renderGuideLineContent(line)}
+                                        </p>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1033,35 +1154,30 @@ function SpinBoxesTile({ itemWrapper, locked, onReady }) {
         onReady?.(itemWrapper.uniqueId)
     }, [itemWrapper.uniqueId, onReady])
 
-    const boxes = useMemo(() => {
-        // Grid order: top-left, top-right, bottom-left, bottom-right
-        return [-4, -2, 0.5, 4].map((speed) => {
-            const delta = speed - 1
-            const controlDuration = Math.abs(5 / delta)
-            const controlTurn = delta >= 0 ? "1turn" : "-1turn"
-
-            return {
-                speed,
-                controlDuration: `${controlDuration}s`,
-                controlTurn
-            }
-        })
-    }, [])
+      const boxes = useMemo(() => {
+          // Grid order: top-left, top-right, bottom-left, bottom-right
+          return [
+            { speed: -4, controlDuration: "0.0001s", controlTurn: "0turn", hoverMode: "stop" },
+            { speed: -2, controlDuration: "0.0001s", controlTurn: "0turn", hoverMode: "pause" },
+            { speed: 0.5, controlDuration: "10s", controlTurn: "-1turn", hoverMode: "control" },
+            { speed: 4, controlDuration: "1s", controlTurn: "4turn", hoverMode: "control" }
+          ]
+      }, [])
 
     return (
         <div className={`article-web-art-tile article-web-art-spin-boxes ${locked ? "article-web-art-spin-boxes-locked" : ""}`}>
             <div className={`article-web-art-spin-boxes-grid`}>
-                {boxes.map(({ speed, controlDuration, controlTurn }) => (
-                    <div key={String(speed)}
-                         className={`article-web-art-spin-box`}
-                         style={{
-                             "--spin-duration": "5s",
-                             "--control-duration": controlDuration,
-                             "--control-turn": controlTurn
-                         }}>
-                        <div className={`article-web-art-spin-box-core`} data-speed={speed}/>
-                    </div>
-                ))}
+                {boxes.map(({ speed, controlDuration, controlTurn, hoverMode }) => (
+                      <div key={String(speed)}
+                           className={`article-web-art-spin-box`}
+                           style={{
+                               "--spin-duration": "5s",
+                              "--control-duration": controlDuration,
+                              "--control-turn": controlTurn
+                           }}>
+                         <div className={`article-web-art-spin-box-core article-web-art-spin-box-core-${hoverMode}`} data-speed={speed}/>
+                     </div>
+                 ))}
             </div>
         </div>
     )
@@ -1082,7 +1198,13 @@ function ShapeFieldTile({ itemWrapper, index, activate, locked, onReady }) {
     const config = useMemo(() => {
         return {
             seed: 1729 + (Number(itemWrapper.id) || 8) * 4242,
-            reduceMotion
+            reduceMotion,
+            gap: 18,
+            radiusRatio: 0.4,
+            restScale: 0.28,
+            minHoverScale: 1.65,
+            maxHoverScale: 5.4,
+            waveWidth: 260
         }
     }, [itemWrapper.id, reduceMotion])
 
@@ -1221,6 +1343,8 @@ function HourglassTile({ itemWrapper, index, activate, locked, onReady }) {
     const engineRef = useRef(null)
     const didReadyRef = useRef(false)
     const visibleRef = useRef(true)
+    const [gravity, setGravity] = useState(1.1)
+    const [neckRatio, setNeckRatio] = useState(0.03)
 
     useEffect(() => {
         if(!activate) return
@@ -1247,6 +1371,11 @@ function HourglassTile({ itemWrapper, index, activate, locked, onReady }) {
 
                 engine = mod.createHourglassEngine(canvas)
                 engineRef.current = engine
+                const state = engine.getState?.()
+                if(state) {
+                    setGravity(state.gravity)
+                    setNeckRatio(state.neckRatio)
+                }
 
                 const updateSize = () => _syncTileEngineSize(tile, engine, window.devicePixelRatio || 1)
 
@@ -1308,20 +1437,76 @@ function HourglassTile({ itemWrapper, index, activate, locked, onReady }) {
         engineRef.current?.flip?.()
     }
 
+      const stopControlEvent = (event) => {
+          event.stopPropagation()
+      }
+
+      const stopControlEventCapture = (event) => {
+          event.stopPropagation()
+      }
+
+      const onGravityChange = (event) => {
+          const nextValue = Number(event.target.value)
+          setGravity(nextValue)
+          engineRef.current?.setGravity?.(nextValue)
+      }
+
+      const onNeckRatioChange = (event) => {
+          const nextValue = Number(event.target.value)
+          setNeckRatio(nextValue)
+          engineRef.current?.setNeckRatio?.(nextValue)
+          if(!locked && visibleRef.current) engineRef.current?.start?.()
+      }
+
     return (
-        <button type={"button"}
-                ref={tileRef}
-                className={`article-web-art-tile article-web-art-tile-clickable article-web-art-tile-hourglass`}
-                aria-label={`Hourglass web art tile ${index + 1}`}
-                disabled={locked}
-                onClick={locked ? undefined : (() => engineRef.current?.flip?.())}
-                onKeyDown={locked ? undefined : onKeyDown}>
-            <canvas ref={canvasRef}
-                    className={`article-web-art-canvas`}/>
-            <span className={`article-web-art-tile-label`}>
-                Hourglass
-            </span>
-        </button>
+        <div ref={tileRef}
+             className={`article-web-art-tile article-web-art-tile-clickable article-web-art-tile-hourglass`}
+             role={locked ? undefined : "button"}
+             tabIndex={locked ? -1 : 0}
+             aria-label={`Hourglass web art tile ${index + 1}`}
+             onClick={locked ? undefined : (() => engineRef.current?.flip?.())}
+             onKeyDown={locked ? undefined : onKeyDown}>
+              <canvas ref={canvasRef}
+                      className={`article-web-art-canvas`}/>
+                <div className={`article-web-art-hourglass-controls`}
+                     onClickCapture={stopControlEventCapture}
+                     onPointerDownCapture={stopControlEventCapture}
+                     onPointerUpCapture={stopControlEventCapture}
+                     onClick={stopControlEvent}
+                     onPointerDown={stopControlEvent}
+                     onPointerUp={stopControlEvent}
+                     onKeyDown={stopControlEvent}>
+                    <label className={`article-web-art-hourglass-control article-web-art-hourglass-control-left`}>
+                        <span className={`article-web-art-hourglass-control-name`}>Neck</span>
+                        <input className={`article-web-art-hourglass-slider`}
+                               type={"range"}
+                               min={"0.01"}
+                               max={"0.22"}
+                               step={"0.001"}
+                               value={neckRatio}
+                               onInput={onNeckRatioChange}
+                               onChange={onNeckRatioChange}
+                               disabled={locked}
+                               aria-label={"Hourglass neck size"}/>
+                    </label>
+                    <label className={`article-web-art-hourglass-control article-web-art-hourglass-control-right`}>
+                        <span className={`article-web-art-hourglass-control-name`}>Gravity</span>
+                        <input className={`article-web-art-hourglass-slider`}
+                               type={"range"}
+                               min={"0.45"}
+                               max={"2.8"}
+                               step={"0.01"}
+                               value={gravity}
+                               onInput={onGravityChange}
+                               onChange={onGravityChange}
+                               disabled={locked}
+                               aria-label={"Hourglass gravity"}/>
+                  </label>
+              </div>
+              <span className={`article-web-art-tile-label`}>
+                  Hourglass
+              </span>
+          </div>
     )
 }
 
@@ -1668,7 +1853,7 @@ function SpiralDotsTile({ itemWrapper, index, activate, locked, onReady }) {
             reduceMotion,
             dotsCount: 180,
             dotsMouseDistanceSensitivity: 115,
-            dotsMaxEscapeRouteLength: 120,
+            dotsMaxEscapeRouteLength: 60,
             introDurationMs: 950
         }
     }, [itemWrapper.id, reduceMotion])
@@ -1989,12 +2174,12 @@ function ThreeTunnelTile({ itemWrapper, index, activate, locked, onReady }) {
     const config = useMemo(() => {
         return {
             reduceMotion,
-            ringCount: 9,
-            cubesPerRing: 10,
-            ringSpacing: 82,
-            tunnelRadius: 58,
-            speed: 4.6,
-            exposure: 1.45
+            ringCount: 13,
+            cubesPerRing: 12,
+            ringSpacing: 62,
+            tunnelRadius: 54,
+            speed: 6.4,
+            exposure: 1.58
         }
     }, [reduceMotion])
 
@@ -2186,6 +2371,11 @@ function ThreePolygonDemo5Tile({ itemWrapper, index, activate, locked, onReady }
 
             updateSize()
             engine.reset()
+            window.requestAnimationFrame(() => {
+                if(canceled || engineRef.current !== engine) return
+                updateSize()
+                engine.reset()
+            })
             if(visibleRef.current) engine.start?.()
             markReady()
 
@@ -2341,7 +2531,7 @@ function OrbitCirclesTile({ itemWrapper, index, activate, locked, onReady }) {
     const hoverRef = useRef(true)
     const visibleRef = useRef(true)
     const didReadyRef = useRef(false)
-    const paletteIndexRef = useRef(0)
+    const ringColorIndexRef = useRef(0)
 
     const reduceMotion = useMemo(() => {
         if(typeof window === "undefined" || !window.matchMedia) return false
@@ -2449,17 +2639,13 @@ function OrbitCirclesTile({ itemWrapper, index, activate, locked, onReady }) {
         const engine = engineRef.current
         if(!engine) return
 
-        const palettes = [
-            { palette: ["#A8DA00", "#76C700", "#D9FF6A"], bgColor: "#06130a" }, // green
-            { palette: ["#DD0F7E", "#FF4FAE", "#7B2CFF"], bgColor: "#200018" }, // pink/purple
-            { palette: ["#009BBE", "#00D5FF", "#2B7BFF"], bgColor: "#001018" }, // cyan/blue
-            { palette: ["#F2E205", "#FFB703", "#EE5A02"], bgColor: "#1a0f00" }, // yellow/orange
-            { palette: ["#8A2BFF", "#C300FF", "#FF00C8"], bgColor: "#07000f" }, // violet/neon
-        ]
+        const totalRings = Math.max(1, engine.getTotalCircles?.() || 1)
+        const ringIndex = ringColorIndexRef.current % totalRings
+        const nextColor = `#${Math.floor(Math.random() * 0x1000000).toString(16).padStart(6, "0")}`
 
-        const next = palettes[paletteIndexRef.current % palettes.length]
-        paletteIndexRef.current = (paletteIndexRef.current + 1) % palettes.length
-        engine.setPalette?.(next.palette, next.bgColor)
+        engine.setCircleColor?.(ringIndex, nextColor)
+
+        ringColorIndexRef.current += 1
 
         if(visibleRef.current) engine.start?.()
     }
@@ -2633,6 +2819,7 @@ function HexFlowBallsTile({ readyId, locked, onReady }) {
     const canvasRef = useRef(null)
     const engineRef = useRef(null)
     const didReadyRef = useRef(false)
+    const pointerIdRef = useRef(null)
 
     const reduceMotion = useMemo(() => {
         if(typeof window === "undefined" || !window.matchMedia) return false
@@ -2681,11 +2868,11 @@ function HexFlowBallsTile({ readyId, locked, onReady }) {
                 engine.start?.()
                 markReady()
 
-                ro = new ResizeObserver(() => {
-                    updateSize()
-                    engine.reset?.()
-                })
-                ro.observe(tile)
+                  ro = new ResizeObserver(() => {
+                      updateSize()
+                      engine.renderStatic?.()
+                  })
+                  ro.observe(tile)
 
                 if("IntersectionObserver" in window) {
                     io = new IntersectionObserver((entries) => {
@@ -2713,47 +2900,78 @@ function HexFlowBallsTile({ readyId, locked, onReady }) {
         }
     }, [config, onReady, readyId])
 
-    useEffect(() => {
-        const engine = engineRef.current
-        if(!engine) return
-        if(locked) {
-            engine.clearPointer?.()
+      useEffect(() => {
+          const engine = engineRef.current
+          if(!engine) return
+          if(locked) {
+              engine.clearPointer?.()
             engine.stop?.()
             return
         }
-        engine.start?.()
-    }, [locked])
+          engine.start?.()
+      }, [locked])
 
-    useEffect(() => {
-        const engine = engineRef.current
-        if(!engine) return
-        if(locked) {
-            engine.stop?.()
-            return
-        }
-        engine.start?.()
-    }, [locked])
+      const pointerPosition = (event) => {
+          const tile = tileRef.current
+          if(!tile) return { x: 0.5, y: 0.5 }
+          const rect = tile.getBoundingClientRect()
+          return {
+              x: rect.width > 0 ? (event.clientX - rect.left) / rect.width : 0.5,
+              y: rect.height > 0 ? (event.clientY - rect.top) / rect.height : 0.5
+          }
+      }
 
-    const toggleGrid = () => {
-        engineRef.current?.toggleGridContrast?.()
-        engineRef.current?.start?.()
-    }
+      const boostHex = () => {
+          engineRef.current?.burst?.()
+          engineRef.current?.start?.()
+      }
 
-    const onKeyDown = (event) => {
-        if(event.key === "Enter" || event.key === " ") {
-            event.preventDefault()
-            toggleGrid()
-        }
-    }
+      const onKeyDown = (event) => {
+          if(event.key === "Enter" || event.key === " ") {
+              event.preventDefault()
+              boostHex()
+          }
+      }
 
     return (
         <button type={"button"}
                 ref={tileRef}
-                className={`article-web-art-tile article-web-art-tile-clickable`}
-                aria-label={`Hex flow web art tile`}
-                disabled={locked}
-                onClick={locked ? undefined : toggleGrid}
-                onKeyDown={locked ? undefined : onKeyDown}>
+                  className={`article-web-art-tile article-web-art-tile-clickable`}
+                  aria-label={`Hex flow web art tile`}
+                  disabled={locked}
+                  onClick={locked ? undefined : boostHex}
+                  onPointerDown={locked ? undefined : (event => {
+                      pointerIdRef.current = event.pointerId
+                      try { event.currentTarget.setPointerCapture(event.pointerId) } catch(err) { void err }
+                      const pos = pointerPosition(event)
+                      engineRef.current?.setPointer?.(pos.x, pos.y)
+                  })}
+                  onPointerMove={locked ? undefined : (event => {
+                      if(pointerIdRef.current != null && event.pointerId !== pointerIdRef.current) return
+                      const pos = pointerPosition(event)
+                      engineRef.current?.setPointer?.(pos.x, pos.y)
+                  })}
+                  onPointerUp={locked ? undefined : (event => {
+                      if(pointerIdRef.current != null && event.pointerId !== pointerIdRef.current) return
+                      pointerIdRef.current = null
+                  })}
+                  onPointerCancel={locked ? undefined : (() => {
+                      pointerIdRef.current = null
+                      engineRef.current?.clearPointer?.()
+                  })}
+                  onMouseMove={locked ? undefined : (event => {
+                      const pos = pointerPosition(event)
+                      engineRef.current?.setPointer?.(pos.x, pos.y)
+                  })}
+                  onMouseLeave={locked ? undefined : (() => {
+                      pointerIdRef.current = null
+                      engineRef.current?.clearPointer?.()
+                  })}
+                  onBlur={locked ? undefined : (() => {
+                      pointerIdRef.current = null
+                      engineRef.current?.clearPointer?.()
+                  })}
+                  onKeyDown={locked ? undefined : onKeyDown}>
             <canvas ref={canvasRef}
                     className={`article-web-art-canvas`}/>
             <span className={`article-web-art-tile-label`}>
@@ -3545,6 +3763,10 @@ function PrismFieldTile({ readyId, locked, onReady }) {
                 className={`article-web-art-tile article-web-art-tile-clickable`}
                 aria-label={`Prism field web art tile`}
                 disabled={locked}
+                onClick={locked ? undefined : (() => {
+                    engineRef.current?.reset?.()
+                    engineRef.current?.start?.()
+                })}
                 onPointerDown={locked ? undefined : (event) => {
                     pointerIdRef.current = event.pointerId
                     pointerTypeRef.current = event.pointerType || "mouse"
@@ -3887,7 +4109,6 @@ function TardisTile({ readyId, locked, onReady }) {
     const pointerIdRef = useRef(null)
     const lastPointerRef = useRef(null)
     const rippleIdRef = useRef(0)
-    const [cursorActive, setCursorActive] = useState(false)
     const [boosting, setBoosting] = useState(false)
     const [ripples, setRipples] = useState([])
 
@@ -3975,7 +4196,6 @@ function TardisTile({ readyId, locked, onReady }) {
         if(!engine) return
         if(locked) {
             setBoosting(false)
-            setCursorActive(false)
             lastPointerRef.current = null
             engine.clearPointer?.()
             engine.stop?.()
@@ -3995,14 +4215,12 @@ function TardisTile({ readyId, locked, onReady }) {
         const surfacePx = Math.max(0, Math.min(surfaceRect.width, event.clientX - surfaceRect.left))
         const surfacePy = Math.max(0, Math.min(surfaceRect.height, event.clientY - surfaceRect.top))
         const prev = lastPointerRef.current
-        const dx = prev ? surfacePx - prev.px : 0
-        const dy = prev ? surfacePy - prev.py : 0
-        lastPointerRef.current = { px: surfacePx, py: surfacePy }
-        tile.style.setProperty("--tardis-cursor-x", `${px}px`)
-        tile.style.setProperty("--tardis-cursor-y", `${py}px`)
-        return {
-            x: surfaceRect.width > 0 ? surfacePx / surfaceRect.width : 0.5,
-            y: surfaceRect.height > 0 ? surfacePy / surfaceRect.height : 0.5,
+          const dx = prev ? surfacePx - prev.px : 0
+          const dy = prev ? surfacePy - prev.py : 0
+          lastPointerRef.current = { px: surfacePx, py: surfacePy }
+          return {
+              x: surfaceRect.width > 0 ? surfacePx / surfaceRect.width : 0.5,
+              y: surfaceRect.height > 0 ? surfacePy / surfaceRect.height : 0.5,
             px,
             py,
             dx,
@@ -4029,7 +4247,7 @@ function TardisTile({ readyId, locked, onReady }) {
     return (
         <button type={"button"}
                 ref={tileRef}
-                className={`article-web-art-tile article-web-art-tile-clickable article-web-art-tile-tardis ${cursorActive ? "article-web-art-tile-tardis-active" : ""} ${boosting ? "article-web-art-tile-tardis-boost" : ""}`}
+                className={`article-web-art-tile article-web-art-tile-clickable article-web-art-tile-tardis ${boosting ? "article-web-art-tile-tardis-boost" : ""}`}
                 aria-label={`Tardis wormhole web art tile`}
                 disabled={locked}
                 onClick={locked ? undefined : triggerBoost}
@@ -4064,9 +4282,6 @@ function TardisTile({ readyId, locked, onReady }) {
                 onPointerCancel={locked ? undefined : (() => {
                     pointerIdRef.current = null
                 })}
-                onMouseEnter={locked ? undefined : (() => {
-                    setCursorActive(true)
-                })}
                 onMouseMove={locked ? undefined : (event) => {
                     const pos = pointerPosition(event)
                     engineRef.current?.setPointer?.(pos.x, pos.y, pos.dx, pos.dy)
@@ -4074,13 +4289,11 @@ function TardisTile({ readyId, locked, onReady }) {
                 onMouseLeave={locked ? undefined : (() => {
                     pointerIdRef.current = null
                     lastPointerRef.current = null
-                    setCursorActive(false)
                     engineRef.current?.clearPointer?.()
                 })}
                 onBlur={locked ? undefined : (() => {
                     pointerIdRef.current = null
                     lastPointerRef.current = null
-                    setCursorActive(false)
                     engineRef.current?.clearPointer?.()
                 })}
                 onKeyDown={locked ? undefined : ((event) => {
@@ -4097,12 +4310,6 @@ function TardisTile({ readyId, locked, onReady }) {
             <div className={`article-web-art-tardis-grain`} aria-hidden={true}/>
             <div className={`article-web-art-tardis-speed-lines`} aria-hidden={true}/>
             <div className={`article-web-art-tardis-boost-vignette`} aria-hidden={true}/>
-            <div className={`article-web-art-tardis-cursor`} aria-hidden={true}/>
-            <div className={`article-web-art-tardis-cursor-dot`} aria-hidden={true}/>
-            <div className={`article-web-art-tardis-hud`} aria-hidden={true}>
-                <div className={`article-web-art-tardis-hud-label`}>Traversing Singularity</div>
-                <div className={`article-web-art-tardis-hud-bar`}/>
-            </div>
             {ripples.map((ripple) => (
                 <div key={ripple.id}
                      className={`article-web-art-tardis-ripple`}
@@ -4152,13 +4359,28 @@ function SendYourFunAnimationTile({ label, clickLabel, previewRequested = false 
     }, [label, previewOpen, previewSeed, reduceMotion])
 
     useEffect(() => {
+        let frameOneId = 0
+        let frameTwoId = 0
+
         if(previewRequested) {
-            setPreviewSeed(Date.now())
-            setPreviewOpen(true)
-            return
+            frameOneId = window.requestAnimationFrame(() => {
+                frameTwoId = window.requestAnimationFrame(() => {
+                    setPreviewSeed(Date.now())
+                    setPreviewOpen(true)
+                })
+            })
+
+            return () => {
+                if(frameOneId) window.cancelAnimationFrame(frameOneId)
+                if(frameTwoId) window.cancelAnimationFrame(frameTwoId)
+            }
         }
 
         setPreviewOpen(false)
+        return () => {
+            if(frameOneId) window.cancelAnimationFrame(frameOneId)
+            if(frameTwoId) window.cancelAnimationFrame(frameTwoId)
+        }
     }, [previewRequested])
 
     return (
@@ -4244,6 +4466,8 @@ function GoldfishTile({ locked = false }) {
     const rafRef = useRef(null)
     const rateRef = useRef(1)
     const releaseRafRef = useRef(null)
+    const burstRafRef = useRef(null)
+    const burstTimeoutRef = useRef(null)
 
     useEffect(() => {
         const tile = tileRef.current
@@ -4266,21 +4490,47 @@ function GoldfishTile({ locked = false }) {
             return all
         }
 
-        const setRate = (rate) => {
-            const r = Math.max(1, Math.min(5.2, Number(rate) || 1))
-            rateRef.current = r
+          const setRate = (rate) => {
+              const r = Math.max(1, Math.min(5.2, Number(rate) || 1))
+              rateRef.current = r
             const anims = collectAnimations()
             for(const a of anims) {
                 a.playbackRate = r
-            }
-        }
+              }
+          }
 
-        const stopHold = () => {
-            holdRef.current = false
-            pointerIdRef.current = null
-            tile.classList.remove("article-web-art-tile-goldfish-held")
-            if(rafRef.current != null) cancelAnimationFrame(rafRef.current)
-            rafRef.current = null
+          const clearBurst = () => {
+              if(burstRafRef.current != null) cancelAnimationFrame(burstRafRef.current)
+              if(burstTimeoutRef.current != null) window.clearTimeout(burstTimeoutRef.current)
+              burstRafRef.current = null
+              burstTimeoutRef.current = null
+          }
+
+          const triggerClickBurst = () => {
+              clearBurst()
+              setRate(5.2)
+              burstTimeoutRef.current = window.setTimeout(() => {
+                  const from = rateRef.current
+                  const start = performance.now()
+                  const dur = 320
+                  const burstRelease = () => {
+                      const t = (performance.now() - start) / dur
+                      const k = smoothstep01(t)
+                      setRate(from + (1 - from) * k)
+                      if(t < 1) burstRafRef.current = requestAnimationFrame(burstRelease)
+                      else burstRafRef.current = null
+                  }
+                  burstRafRef.current = requestAnimationFrame(burstRelease)
+                  burstTimeoutRef.current = null
+              }, 2000)
+          }
+
+          const stopHold = () => {
+              holdRef.current = false
+              pointerIdRef.current = null
+              tile.classList.remove("article-web-art-tile-goldfish-held")
+              if(rafRef.current != null) cancelAnimationFrame(rafRef.current)
+              rafRef.current = null
 
             const from = rateRef.current
             const dur = 360
@@ -4305,12 +4555,13 @@ function GoldfishTile({ locked = false }) {
             rafRef.current = requestAnimationFrame(tick)
         }
 
-        const onPointerDown = (e) => {
-            if(reduceMotion) return
-            if(e.button != null && e.button !== 0) return
-            holdRef.current = true
-            holdStartRef.current = performance.now()
-            pointerIdRef.current = e.pointerId
+          const onPointerDown = (e) => {
+              if(reduceMotion || locked) return
+              if(e.button != null && e.button !== 0) return
+              clearBurst()
+              holdRef.current = true
+              holdStartRef.current = performance.now()
+              pointerIdRef.current = e.pointerId
             tile.classList.add("article-web-art-tile-goldfish-held")
 
             try { tile.setPointerCapture(e.pointerId) } catch (err) { void err }
@@ -4321,9 +4572,13 @@ function GoldfishTile({ locked = false }) {
             if(rafRef.current == null) rafRef.current = requestAnimationFrame(tick)
         }
 
-        const onPointerUp = () => {
-            stopHold()
-        }
+          const onPointerUp = () => {
+              const heldForMs = performance.now() - holdStartRef.current
+              stopHold()
+              if(heldForMs < 220) {
+                  triggerClickBurst()
+              }
+          }
 
         const onPointerCancel = () => {
             stopHold()
@@ -4338,16 +4593,17 @@ function GoldfishTile({ locked = false }) {
         tile.addEventListener("pointercancel", onPointerCancel)
         tile.addEventListener("lostpointercapture", onLostCapture)
 
-        return () => {
-            tile.removeEventListener("pointerdown", onPointerDown)
-            tile.removeEventListener("pointerup", onPointerUp)
-            tile.removeEventListener("pointercancel", onPointerCancel)
-            tile.removeEventListener("lostpointercapture", onLostCapture)
-            stopHold()
-            if(releaseRafRef.current != null) cancelAnimationFrame(releaseRafRef.current)
-            releaseRafRef.current = null
-        }
-    }, [reduceMotion])
+          return () => {
+              tile.removeEventListener("pointerdown", onPointerDown)
+              tile.removeEventListener("pointerup", onPointerUp)
+              tile.removeEventListener("pointercancel", onPointerCancel)
+              tile.removeEventListener("lostpointercapture", onLostCapture)
+              stopHold()
+              clearBurst()
+              if(releaseRafRef.current != null) cancelAnimationFrame(releaseRafRef.current)
+              releaseRafRef.current = null
+          }
+      }, [locked, reduceMotion])
 
     useEffect(() => {
         const tile = tileRef.current

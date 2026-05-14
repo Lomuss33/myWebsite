@@ -24,12 +24,16 @@ function ArticleTimeline({ dataWrapper, id }) {
     const isExperienceTimeline = useMemo(() => {
         return Boolean(dataWrapper?.uniqueId?.includes("section-experience"))
     }, [dataWrapper?.uniqueId])
+    const timelineVariantClass = useMemo(() => {
+        const timelineVariant = dataWrapper?.settings?.timelineVariant
+        return timelineVariant ? `article-timeline--${timelineVariant}` : ""
+    }, [dataWrapper?.settings?.timelineVariant])
 
     return (
         <Article id={dataWrapper.uniqueId}
                  type={Article.Types.SPACING_DEFAULT}
                  dataWrapper={dataWrapper}
-                 className={`article-timeline ${isMyArtTimeline ? "article-timeline--my-art" : ""} ${isExperienceTimeline ? "article-timeline--experience" : ""}`}
+                 className={`article-timeline ${isMyArtTimeline ? "article-timeline--my-art" : ""} ${isExperienceTimeline ? "article-timeline--experience" : ""} ${timelineVariantClass}`}
                  selectedItemCategoryId={selectedItemCategoryId}
                  setSelectedItemCategoryId={setSelectedItemCategoryId}>
             <ArticleTimelineItems dataWrapper={dataWrapper}

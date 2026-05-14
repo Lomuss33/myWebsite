@@ -523,14 +523,14 @@
                     "preview": {
                         "links": [
                             {
-                                "href": "#my-art-gifs-stickers-coming-soon",
+                                "href": "#my-art-favorite-infographics-coming-soon",
                                 "tooltipString": "open_website",
                                 "faIcon": "fa-solid fa-images",
                                 "label": "Image Folder",
                                 "isWebsiteAction": true
                             },
                             {
-                                "href": "#my-art-gifs-stickers-pinterest-coming-soon",
+                                "href": "#my-art-favorite-infographics-pinterest-coming-soon",
                                 "tooltipString": "open_website",
                                 "faIcon": "fa-brands fa-pinterest"
                             }
@@ -545,28 +545,28 @@
                     },
                     "locales": {
                         "en": {
-                            "title": "My gifs and chat stickers",
-                            "country": "Digital Archive",
-                            "text": "A placeholder album for animated reactions, chat sticker ideas, and small expressive loops planned as a growing visual archive.",
-                            "medium": "GIFs and Stickers"
+                            "title": "Favorite infographics selection",
+                            "country": "Visual Archive",
+                            "text": "A curated selection of favorite infographics, highlighting clear layouts, strong visual storytelling, and data-led design references.",
+                            "medium": "Infographics"
                         },
                         "de": {
-                            "title": "Meine GIFs und Chat-Sticker",
-                            "country": "Digitales Archiv",
-                            "text": "Ein Platzhalteralbum fuer animierte Reaktionen, Chat-Sticker-Ideen und kleine expressive Loops als wachsendes visuelles Archiv.",
-                            "medium": "GIFs und Sticker"
+                            "title": "Auswahl favorisierter Infografiken",
+                            "country": "Visuelles Archiv",
+                            "text": "Eine kuratierte Auswahl favorisierter Infografiken mit klaren Layouts, starkem visuellem Storytelling und datenbasierten Designreferenzen.",
+                            "medium": "Infografiken"
                         },
                         "hr": {
-                            "title": "Moji GIF-ovi i chat naljepnice",
-                            "country": "Digitalni arhiv",
-                            "text": "Privremeni album za animirane reakcije, ideje za chat naljepnice i male ekspresivne loopove kao rastuci vizualni arhiv.",
-                            "medium": "GIF-ovi i naljepnice"
+                            "title": "Odabir omiljenih infografika",
+                            "country": "Vizualni arhiv",
+                            "text": "Kurirani odabir omiljenih infografika s naglaskom na jasne rasporede, snazno vizualno pripovijedanje i dizajnerske reference vodene podacima.",
+                            "medium": "Infografike"
                         },
                         "tr": {
-                            "title": "GIF'lerim ve sohbet cikartmalarim",
-                            "country": "Dijital Arsiv",
-                            "text": "Animasyonlu tepkiler, sohbet cikartmasi fikirleri ve kucuk ifade donguleri icin buyuyen gorsel arsiv yer tutucusu.",
-                            "medium": "GIF ve cikartmalar"
+                            "title": "Favori infografik secimi",
+                            "country": "Gorsel Arsiv",
+                            "text": "Net duzenleri, guclu gorsel hikaye anlatimini ve veriye dayali tasarim referanslarini one cikaran secilmis favori infografikler.",
+                            "medium": "Infografikler"
                         }
                     }
                 }

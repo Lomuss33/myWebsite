@@ -408,6 +408,7 @@
             "items": [
                 {
                     "id": 2,
+                    "visual_variant": "neo-surface",
                     "date": {
                         "year": 2019,
                         "month": 12
@@ -460,6 +461,7 @@
                 },
                 {
                     "id": 99,
+                    "visual_variant": "orb-glass",
                     "date": {
                         "year": 2018,
                         "month": 11
@@ -563,6 +565,9 @@
                 },
                 {
                     "id": 11
+                },
+                {
+                    "id": 12
                 }
             ]
         },

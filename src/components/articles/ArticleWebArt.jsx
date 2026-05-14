@@ -513,14 +513,24 @@ function ArticleWebArt({ dataWrapper, id }) {
         setSendYoursPreviewOpen(false)
     }, [])
 
-    const onIntroEnter = useCallback(() => {
+    const openAllArtTiles = useCallback(() => {
+        setMountedTileIds(new Set(allTileIds))
+        setOpenTileIds(new Set(allTileIds))
+        setSendYoursPreviewOpen(true)
+    }, [allTileIds])
+
+    const onIntroEnter = useCallback(({ openAll = false } = {}) => {
         setShowIntroCover(false)
         setShouldMountTiles(true)
         setActivationIndex(items.length - 1)
+        if(openAll) {
+            openAllArtTiles()
+            return
+        }
         setOpenTileIds(new Set())
         setMountedTileIds(new Set())
         setSendYoursPreviewOpen(false)
-    }, [items.length])
+    }, [items.length, openAllArtTiles])
 
     useEffect(() => {
         if(typeof window === "undefined") return
@@ -539,7 +549,7 @@ function ArticleWebArt({ dataWrapper, id }) {
 
         delete window.__pendingSectionAction
 
-        onIntroEnter()
+        onIntroEnter({ openAll: true })
 
         const targetArticleId = pending.targetArticleId || dataWrapper.uniqueId
         let openTimeoutId = null
@@ -604,10 +614,8 @@ function ArticleWebArt({ dataWrapper, id }) {
             return
         }
 
-        setMountedTileIds(new Set(allTileIds))
-        setOpenTileIds(new Set(allTileIds))
-        setSendYoursPreviewOpen(true)
-    }, [allTileIds, openTileIds.size])
+        openAllArtTiles()
+    }, [allTileIds, openAllArtTiles, openTileIds.size])
 
     const onIntroHide = useCallback(() => {
         resetArtState()

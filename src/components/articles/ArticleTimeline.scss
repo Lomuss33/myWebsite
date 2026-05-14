@@ -650,7 +650,7 @@ article.article-timeline--art-digital-expression {
             content: "";
             position: absolute;
             pointer-events: none;
-            z-index: 0;
+            z-index: -1;
         }
     }
 
@@ -818,15 +818,7 @@ article.article-timeline--art-digital-expression {
         }
 
         &::after {
-            left: 24px;
-            bottom: 26px;
-            width: 48%;
-            height: 10px;
-            border-radius: 999px;
-            background: linear-gradient(90deg, rgba(34, 211, 238, 0.62), rgba(251, 191, 36, 0.74), rgba(236, 72, 153, 0.62));
-            box-shadow: 0 0 24px rgba(251, 191, 36, 0.24);
-            transform: translateZ(34px) rotate(-4deg);
-            z-index: 0;
+            display: none;
         }
 
         span.digital-expression-layer-stack__layer {
@@ -857,17 +849,7 @@ article.article-timeline--art-digital-expression {
         }
 
         &::after {
-            left: 22px;
-            bottom: 22px;
-            width: 44%;
-            height: 38px;
-            border-radius: 999px;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0.18), rgba(0, 255, 214, 0.18), rgba(167, 139, 250, 0.14));
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            backdrop-filter: blur(9px);
-            -webkit-backdrop-filter: blur(9px);
-            transform: translateZ(32px) rotate(-5deg);
-            z-index: 0;
+            display: none;
         }
 
         span.digital-expression-layer-stack__layer {
@@ -876,6 +858,30 @@ article.article-timeline--art-digital-expression {
                 0 0 0 8px rgba(0, 255, 214, 0.05),
                 0 18px 38px rgba(0, 80, 60, 0.28),
                 0 0 34px rgba(0, 255, 214, 0.16);
+        }
+    }
+
+    li.article-timeline-item--visual-crystal-facet {
+        &::before {
+            inset: 14px 14px auto auto;
+            width: min(52%, 15.5rem);
+            aspect-ratio: 1;
+            background: conic-gradient(from 200deg at 65% 35%, rgba(34, 211, 238, 0.62), rgba(129, 140, 248, 0.62), rgba(244, 114, 182, 0.58), rgba(250, 204, 21, 0.58), rgba(34, 211, 238, 0.62));
+            clip-path: polygon(50% 0, 92% 22%, 78% 86%, 24% 100%, 0 38%);
+            filter: blur(0.4px);
+            opacity: 0.54;
+            transform: translateZ(12px) rotate(8deg);
+        }
+
+        &::after {
+            display: none;
+        }
+
+        span.digital-expression-layer-stack__layer {
+            box-shadow:
+                rgba(49, 46, 129, 0.24) -10px 10px 24px 0,
+                0 0 20px rgba(34, 211, 238, 0.12),
+                0 0 28px rgba(244, 114, 182, 0.10);
         }
     }
 

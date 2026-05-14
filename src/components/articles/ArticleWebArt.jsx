@@ -26,8 +26,9 @@ function _measureTileContentSize(element) {
         return { width: 1, height: 1 }
     }
 
-    const width = Math.max(1, Math.round(element.clientWidth || element.getBoundingClientRect().width || 1))
-    const height = Math.max(1, Math.round(element.clientHeight || element.getBoundingClientRect().height || 1))
+    const rect = element.getBoundingClientRect()
+    const width = Math.max(1, Math.round(rect.width || element.clientWidth || 1))
+    const height = Math.max(1, Math.round(rect.height || element.clientHeight || 1))
     return { width, height }
 }
 
@@ -247,9 +248,9 @@ function ArticleWebArt({ dataWrapper, id }) {
     const [showIntroCover, setShowIntroCover] = useState(true)
     const rawItems = useMemo(() => dataWrapper.orderedItems, [dataWrapper.orderedItems])
     const items = useMemo(() => {
-        // Desired visual order: Poly, 5, 3D, Orbit, Hover, Wave, Spin, Shape
-        // Matches ids: 4 (Poly), 5 (Embroidery), 3 (3D tunnel), 6 (Orbit), 1 (Hover), 2 (Wave), 7 (Spin), 8 (Shape)
-        const desiredOrder = [4, 5, 3, 6, 1, 2, 7, 8]
+        // Desired visual order: Poly, 5, 3D, Orbit, Hover, Wave, Spin, Shape, Hourglass, Noice, Distance
+        // Matches ids: 4 (Poly), 5 (Embroidery), 3 (3D tunnel), 6 (Orbit), 1 (Hover), 2 (Wave), 7 (Spin), 8 (Shape), 9 (Hourglass), 10 (Noice), 11 (Distance)
+        const desiredOrder = [4, 5, 3, 6, 1, 2, 7, 8, 9, 10, 11]
         const byId = new Map(rawItems.map((item) => [Number(item?.id), item]))
         const ordered = []
 
@@ -525,6 +526,9 @@ function ArticleWebArt({ dataWrapper, id }) {
         if(itemId === 6) return "Orbit"
         if(itemId === 7) return "Spin"
         if(itemId === 8) return "Shape"
+        if(itemId === 9) return "Hourglass"
+        if(itemId === 10) return "Noice"
+        if(itemId === 11) return "Distance"
         return String(index + 1)
     }
 
@@ -830,7 +834,194 @@ function WebArtTile({ itemWrapper, index, activate, locked, onReady }) {
         return <ShapeFieldTile itemWrapper={itemWrapper} index={index} activate={activate} locked={locked} onReady={onReady}/>
     }
 
+    if(Number(itemWrapper.id) === 9) {
+        return <HourglassTile itemWrapper={itemWrapper} index={index} activate={activate} locked={locked} onReady={onReady}/>
+    }
+
+    if(Number(itemWrapper.id) === 10) {
+        return <NoiceTile itemWrapper={itemWrapper} index={index} activate={activate} locked={locked} onReady={onReady}/>
+    }
+
+    if(Number(itemWrapper.id) === 11) {
+        return <DistanceTile itemWrapper={itemWrapper} index={index} activate={activate} locked={locked} onReady={onReady}/>
+    }
+
     return <EmbroideryTile itemWrapper={itemWrapper} index={index} activate={activate} locked={locked} onReady={onReady}/>
+}
+
+function DistanceTile({ itemWrapper, index, activate, locked, onReady }) {
+    const tileRef = useRef(null)
+    const canvasRef = useRef(null)
+    const engineRef = useRef(null)
+    const didReadyRef = useRef(false)
+    const visibleRef = useRef(true)
+    const pointerIdRef = useRef(null)
+
+    const reduceMotion = useMemo(() => {
+        if(typeof window === "undefined" || !window.matchMedia) return false
+        return window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    }, [])
+
+    const config = useMemo(() => {
+        return {
+            seed: 54013 + (Number(itemWrapper.id) || 11) * 7331,
+            reduceMotion
+        }
+    }, [itemWrapper.id, reduceMotion])
+
+    useEffect(() => {
+        if(!activate) return
+
+        const tile = tileRef.current
+        const canvas = canvasRef.current
+        if(!tile || !canvas) return
+
+        let canceled = false
+        let engine = null
+        let ro = null
+        let io = null
+
+        const markReady = () => {
+            if(didReadyRef.current) return
+            didReadyRef.current = true
+            onReady?.(itemWrapper.uniqueId)
+        }
+
+        const cancelWork = _scheduleIdleWork(async () => {
+            try {
+                const mod = await import("./webArt/distanceFieldEngine.js")
+                if(canceled) return
+
+                engine = mod.createDistanceFieldEngine(canvas, config)
+                engineRef.current = engine
+
+                const updateSize = () => _syncTileEngineSize(tile, engine, Math.min(1.5, window.devicePixelRatio || 1))
+
+                updateSize()
+                engine.renderStatic?.()
+                if(!locked) engine.start?.()
+                markReady()
+
+                ro = new ResizeObserver(() => {
+                    updateSize()
+                })
+                ro.observe(tile)
+
+                if("IntersectionObserver" in window) {
+                    io = new IntersectionObserver((entries) => {
+                        for(const entry of entries) {
+                            visibleRef.current = Boolean(entry.isIntersecting)
+                            if(locked) {
+                                engine.setHoverActive?.(false)
+                                engine.stop?.()
+                                continue
+                            }
+
+                            if(visibleRef.current) engine.start?.()
+                            else engine.stop?.()
+                        }
+                    }, { threshold: 0.25 })
+                    io.observe(tile)
+                }
+            }
+            catch(err) {
+                void err
+                markReady()
+            }
+        }, { timeoutMs: 220 })
+
+        return () => {
+            canceled = true
+            cancelWork?.()
+            io?.disconnect()
+            ro?.disconnect()
+            engine?.destroy?.()
+            engineRef.current = null
+        }
+    }, [activate, config, itemWrapper.uniqueId, locked, onReady])
+
+    useEffect(() => {
+        const engine = engineRef.current
+        if(!engine) return
+        if(locked) {
+            engine.setHoverActive?.(false)
+            engine.clearPointer?.()
+            engine.stop?.()
+            return
+        }
+        if(visibleRef.current) engine.start?.()
+    }, [locked])
+
+    const pointerPosition = (event) => {
+        const tile = tileRef.current
+        if(!tile) return { x: 0.5, y: 0.5 }
+        const rect = tile.getBoundingClientRect()
+        return {
+            x: Math.max(0, Math.min(1, (event.clientX - rect.left) / Math.max(1, rect.width))),
+            y: Math.max(0, Math.min(1, (event.clientY - rect.top) / Math.max(1, rect.height)))
+        }
+    }
+
+    return (
+        <button type={"button"}
+                ref={tileRef}
+                className={`article-web-art-tile article-web-art-tile-clickable`}
+                aria-label={`Distance web art tile ${index + 1}`}
+                disabled={locked}
+                onPointerEnter={locked ? undefined : (() => {
+                    engineRef.current?.setHoverActive?.(true)
+                    engineRef.current?.start?.()
+                })}
+                onPointerMove={locked ? undefined : ((event) => {
+                    const pos = pointerPosition(event)
+                    engineRef.current?.setHoverActive?.(true)
+                    engineRef.current?.setPointer?.(pos.x, pos.y)
+                })}
+                onPointerLeave={locked ? undefined : (() => {
+                    pointerIdRef.current = null
+                    engineRef.current?.setHoverActive?.(false)
+                    engineRef.current?.clearPointer?.()
+                })}
+                onPointerDown={locked ? undefined : ((event) => {
+                    if(event.button != null && event.button !== 0) return
+                    pointerIdRef.current = event.pointerId
+                    try { event.currentTarget.setPointerCapture(event.pointerId) } catch(err) { void err }
+                    const pos = pointerPosition(event)
+                    engineRef.current?.setHoverActive?.(true)
+                    engineRef.current?.setPointer?.(pos.x, pos.y)
+                    engineRef.current?.boostPopulation?.()
+                })}
+                onPointerUp={locked ? undefined : ((event) => {
+                    if(pointerIdRef.current != null && event.pointerId !== pointerIdRef.current) return
+                    pointerIdRef.current = null
+                })}
+                onPointerCancel={locked ? undefined : (() => {
+                    pointerIdRef.current = null
+                    engineRef.current?.setHoverActive?.(false)
+                    engineRef.current?.clearPointer?.()
+                })}
+                onFocus={locked ? undefined : (() => {
+                    engineRef.current?.setHoverActive?.(true)
+                    engineRef.current?.start?.()
+                })}
+                onBlur={locked ? undefined : (() => {
+                    pointerIdRef.current = null
+                    engineRef.current?.setHoverActive?.(false)
+                    engineRef.current?.clearPointer?.()
+                })}
+                onKeyDown={locked ? undefined : ((event) => {
+                    if(event.key === "Enter" || event.key === " ") {
+                        event.preventDefault()
+                        engineRef.current?.boostPopulation?.()
+                    }
+                })}>
+            <canvas ref={canvasRef}
+                    className={`article-web-art-canvas`}/>
+            <span className={`article-web-art-tile-label`}>
+                Distance
+            </span>
+        </button>
+    )
 }
 
 function SpinBoxesTile({ itemWrapper, locked, onReady }) {
@@ -978,9 +1169,9 @@ function ShapeFieldTile({ itemWrapper, index, activate, locked, onReady }) {
     }, [locked])
 
     const getLocalPoint = (event) => {
-        const tile = tileRef.current
-        if(!tile) return { x: 0, y: 0 }
-        const rect = tile.getBoundingClientRect()
+        const surface = canvasRef.current || tileRef.current
+        if(!surface) return { x: 0, y: 0 }
+        const rect = surface.getBoundingClientRect()
         return {
             x: event.clientX - rect.left,
             y: event.clientY - rect.top
@@ -1019,6 +1210,263 @@ function ShapeFieldTile({ itemWrapper, index, activate, locked, onReady }) {
                     className={`article-web-art-canvas`}/>
             <span className={`article-web-art-tile-label`}>
                 Shape
+            </span>
+        </button>
+    )
+}
+
+function HourglassTile({ itemWrapper, index, activate, locked, onReady }) {
+    const tileRef = useRef(null)
+    const canvasRef = useRef(null)
+    const engineRef = useRef(null)
+    const didReadyRef = useRef(false)
+    const visibleRef = useRef(true)
+
+    useEffect(() => {
+        if(!activate) return
+
+        const tile = tileRef.current
+        const canvas = canvasRef.current
+        if(!tile || !canvas) return
+
+        let canceled = false
+        let engine = null
+        let ro = null
+        let io = null
+
+        const markReady = () => {
+            if(didReadyRef.current) return
+            didReadyRef.current = true
+            onReady?.(itemWrapper.uniqueId)
+        }
+
+        const cancelWork = _scheduleIdleWork(async () => {
+            try {
+                const mod = await import("./webArt/hourglassEngine.js")
+                if(canceled) return
+
+                engine = mod.createHourglassEngine(canvas)
+                engineRef.current = engine
+
+                const updateSize = () => _syncTileEngineSize(tile, engine, window.devicePixelRatio || 1)
+
+                updateSize()
+                engine.renderStatic?.()
+                if(!locked) engine.start?.()
+                markReady()
+
+                ro = new ResizeObserver(() => {
+                    updateSize()
+                    engine.renderStatic?.()
+                })
+                ro.observe(tile)
+
+                if("IntersectionObserver" in window) {
+                    io = new IntersectionObserver((entries) => {
+                        for(const entry of entries) {
+                            visibleRef.current = Boolean(entry.isIntersecting)
+                            if(locked) {
+                                engine.stop?.()
+                                continue
+                            }
+
+                            if(visibleRef.current) engine.start?.()
+                            else engine.stop?.()
+                        }
+                    }, { threshold: 0.2 })
+                    io.observe(tile)
+                }
+            }
+            catch(e) {
+                markReady()
+            }
+        })
+
+        return () => {
+            canceled = true
+            cancelWork?.()
+            io?.disconnect()
+            ro?.disconnect()
+            engine?.destroy?.()
+            engineRef.current = null
+        }
+    }, [activate, itemWrapper.uniqueId, locked, onReady])
+
+    useEffect(() => {
+        const engine = engineRef.current
+        if(!engine) return
+        if(locked) {
+            engine.stop?.()
+            return
+        }
+        if(visibleRef.current) engine.start?.()
+    }, [locked])
+
+    const onKeyDown = (event) => {
+        if(event.key !== "Enter" && event.key !== " ") return
+        event.preventDefault()
+        engineRef.current?.flip?.()
+    }
+
+    return (
+        <button type={"button"}
+                ref={tileRef}
+                className={`article-web-art-tile article-web-art-tile-clickable article-web-art-tile-hourglass`}
+                aria-label={`Hourglass web art tile ${index + 1}`}
+                disabled={locked}
+                onClick={locked ? undefined : (() => engineRef.current?.flip?.())}
+                onKeyDown={locked ? undefined : onKeyDown}>
+            <canvas ref={canvasRef}
+                    className={`article-web-art-canvas`}/>
+            <span className={`article-web-art-tile-label`}>
+                Hourglass
+            </span>
+        </button>
+    )
+}
+
+function NoiceTile({ itemWrapper, index, activate, locked, onReady }) {
+    const tileRef = useRef(null)
+    const canvasRef = useRef(null)
+    const engineRef = useRef(null)
+    const didReadyRef = useRef(false)
+    const visibleRef = useRef(true)
+
+    const reduceMotion = useMemo(() => {
+        if(typeof window === "undefined" || !window.matchMedia) return false
+        return window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    }, [])
+
+    useEffect(() => {
+        if(!activate) return
+
+        const tile = tileRef.current
+        const canvas = canvasRef.current
+        if(!tile || !canvas) return
+
+        let canceled = false
+        let engine = null
+        let ro = null
+        let io = null
+
+        const markReady = () => {
+            if(didReadyRef.current) return
+            didReadyRef.current = true
+            onReady?.(itemWrapper.uniqueId)
+        }
+
+        const cancelWork = _scheduleIdleWork(async () => {
+            try {
+                const mod = await import("./webArt/noiceShaderEngine.js")
+                if(canceled) return
+
+                engine = mod.createNoiceShaderEngine(canvas, { reduceMotion })
+                engineRef.current = engine
+
+                const updateSize = () => _syncTileEngineSize(tile, engine, Math.min(1.5, window.devicePixelRatio || 1))
+
+                updateSize()
+                engine.renderStatic?.()
+                if(!locked) engine.start?.()
+                markReady()
+
+                ro = new ResizeObserver(() => {
+                    updateSize()
+                    engine.renderStatic?.()
+                })
+                ro.observe(tile)
+
+                if("IntersectionObserver" in window) {
+                    io = new IntersectionObserver((entries) => {
+                        for(const entry of entries) {
+                            visibleRef.current = Boolean(entry.isIntersecting)
+                            if(locked) {
+                                engine.stop?.()
+                                continue
+                            }
+
+                            if(visibleRef.current) engine.start?.()
+                            else engine.stop?.()
+                        }
+                    }, { threshold: 0.25 })
+                    io.observe(tile)
+                }
+            }
+            catch(err) {
+                void err
+                markReady()
+            }
+        }, { timeoutMs: 220 })
+
+        return () => {
+            canceled = true
+            cancelWork?.()
+            io?.disconnect()
+            ro?.disconnect()
+            engine?.destroy?.()
+            engineRef.current = null
+        }
+    }, [activate, itemWrapper.uniqueId, locked, onReady, reduceMotion])
+
+    useEffect(() => {
+        const engine = engineRef.current
+        if(!engine) return
+        if(locked) {
+            engine.clearPointer?.()
+            engine.stop?.()
+            return
+        }
+        if(visibleRef.current) engine.start?.()
+    }, [locked])
+
+    const pointerPosition = (event) => {
+        const surface = canvasRef.current || tileRef.current
+        if(!surface) return { x: 0.5, y: 0.5 }
+        const rect = surface.getBoundingClientRect()
+        return {
+            x: Math.max(0, Math.min(1, (event.clientX - rect.left) / Math.max(1, rect.width))),
+            y: Math.max(0, Math.min(1, (event.clientY - rect.top) / Math.max(1, rect.height)))
+        }
+    }
+
+    const pulse = (event) => {
+        const pos = pointerPosition(event)
+        engineRef.current?.setPointer?.(pos.x, pos.y)
+        engineRef.current?.pulsePattern?.()
+        engineRef.current?.start?.()
+    }
+
+    return (
+        <button type={"button"}
+                ref={tileRef}
+                className={`article-web-art-tile article-web-art-tile-clickable article-web-art-tile-noice`}
+                aria-label={`Noice web art tile ${index + 1}`}
+                disabled={locked}
+                onPointerMove={locked ? undefined : ((event) => {
+                    const pos = pointerPosition(event)
+                    engineRef.current?.setPointer?.(pos.x, pos.y)
+                })}
+                onPointerDown={locked ? undefined : ((event) => {
+                    if(event.button != null && event.button !== 0) return
+                    pulse(event)
+                })}
+                onMouseLeave={locked ? undefined : (() => {
+                    engineRef.current?.clearPointer?.()
+                })}
+                onBlur={locked ? undefined : (() => {
+                    engineRef.current?.clearPointer?.()
+                })}
+                onKeyDown={locked ? undefined : ((event) => {
+                    if(event.key === "Enter" || event.key === " ") {
+                        event.preventDefault()
+                        engineRef.current?.pulsePattern?.()
+                        engineRef.current?.start?.()
+                    }
+                })}>
+            <canvas ref={canvasRef}
+                    className={`article-web-art-canvas`}/>
+            <span className={`article-web-art-tile-label`}>
+                Noice
             </span>
         </button>
     )
@@ -1290,9 +1738,9 @@ function SpiralDotsTile({ itemWrapper, index, activate, locked, onReady }) {
     }, [locked])
 
     const _mousePosFromEvent = (event) => {
-        const tile = tileRef.current
-        if(!tile) return { x: -10000, y: -10000 }
-        const rect = tile.getBoundingClientRect()
+        const surface = canvasRef.current || tileRef.current
+        if(!surface) return { x: -10000, y: -10000 }
+        const rect = surface.getBoundingClientRect()
         return {
             x: event.clientX - rect.left,
             y: event.clientY - rect.top
@@ -1476,9 +1924,9 @@ function GridWaveTile({ itemWrapper, index, activate, locked, onReady }) {
     }
 
     const _posFromEvent = (event) => {
-        const tile = tileRef.current
-        if(!tile) return { x: 0, y: 0 }
-        const rect = tile.getBoundingClientRect()
+        const surface = canvasRef.current || tileRef.current
+        if(!surface) return { x: 0, y: 0 }
+        const rect = surface.getBoundingClientRect()
 
         if(typeof event?.clientX !== "number" || typeof event?.clientY !== "number") {
             return { x: rect.width / 2, y: rect.height / 2 }
@@ -2425,13 +2873,13 @@ function PixelPlopTile({ readyId, locked, onReady }) {
     }
 
     const burstAtEvent = (event) => {
-        const tile = tileRef.current
-        if(!tile || typeof event?.clientX !== "number" || typeof event?.clientY !== "number") {
+        const surface = canvasRef.current || tileRef.current
+        if(!surface || typeof event?.clientX !== "number" || typeof event?.clientY !== "number") {
             seed()
             return
         }
 
-        const rect = tile.getBoundingClientRect()
+        const rect = surface.getBoundingClientRect()
         engineRef.current?.burstAt?.(event.clientX - rect.left, event.clientY - rect.top)
         engineRef.current?.start?.()
     }
@@ -3538,19 +3986,23 @@ function TardisTile({ readyId, locked, onReady }) {
 
     const pointerPosition = (event) => {
         const tile = tileRef.current
-        if(!tile) return { x: 0.5, y: 0.5, px: 0, py: 0, dx: 0, dy: 0 }
-        const rect = tile.getBoundingClientRect()
-        const px = Math.max(0, Math.min(rect.width, event.clientX - rect.left))
-        const py = Math.max(0, Math.min(rect.height, event.clientY - rect.top))
+        const surface = canvasRef.current || tile
+        if(!tile || !surface) return { x: 0.5, y: 0.5, px: 0, py: 0, dx: 0, dy: 0 }
+        const surfaceRect = surface.getBoundingClientRect()
+        const tileRect = tile.getBoundingClientRect()
+        const px = Math.max(0, Math.min(tileRect.width, event.clientX - tileRect.left))
+        const py = Math.max(0, Math.min(tileRect.height, event.clientY - tileRect.top))
+        const surfacePx = Math.max(0, Math.min(surfaceRect.width, event.clientX - surfaceRect.left))
+        const surfacePy = Math.max(0, Math.min(surfaceRect.height, event.clientY - surfaceRect.top))
         const prev = lastPointerRef.current
-        const dx = prev ? px - prev.px : 0
-        const dy = prev ? py - prev.py : 0
-        lastPointerRef.current = { px, py }
+        const dx = prev ? surfacePx - prev.px : 0
+        const dy = prev ? surfacePy - prev.py : 0
+        lastPointerRef.current = { px: surfacePx, py: surfacePy }
         tile.style.setProperty("--tardis-cursor-x", `${px}px`)
         tile.style.setProperty("--tardis-cursor-y", `${py}px`)
         return {
-            x: rect.width > 0 ? px / rect.width : 0.5,
-            y: rect.height > 0 ? py / rect.height : 0.5,
+            x: surfaceRect.width > 0 ? surfacePx / surfaceRect.width : 0.5,
+            y: surfaceRect.height > 0 ? surfacePy / surfaceRect.height : 0.5,
             px,
             py,
             dx,

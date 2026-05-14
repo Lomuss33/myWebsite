@@ -2,6 +2,7 @@ import "./ArticleTimeline.scss"
 import React, {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react'
 import Article from "./base/Article.jsx"
 import AvatarView from "../generic/AvatarView.jsx"
+import ImageView from "../generic/ImageView.jsx"
 import StandardButton from "../buttons/StandardButton.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {ArticleItemInfoForTimelines, ArticleItemInfoForTimelinesHeader, ArticleItemInfoForTimelinesBody, ArticleItemInfoForTimelinesPreviewFooter} from "./partials/ArticleItemInfoForTimelines.jsx"
@@ -24,6 +25,7 @@ function ArticleTimeline({ dataWrapper, id }) {
     const isExperienceTimeline = useMemo(() => {
         return Boolean(dataWrapper?.uniqueId?.includes("section-experience"))
     }, [dataWrapper?.uniqueId])
+    const isDigitalExpressionTimeline = dataWrapper?.settings?.timelineVariant === "art-digital-expression"
     const timelineVariantClass = useMemo(() => {
         const timelineVariant = dataWrapper?.settings?.timelineVariant
         return timelineVariant ? `article-timeline--${timelineVariant}` : ""
@@ -39,7 +41,8 @@ function ArticleTimeline({ dataWrapper, id }) {
             <ArticleTimelineItems dataWrapper={dataWrapper}
                                   selectedItemCategoryId={selectedItemCategoryId}
                                   isMyArtTimeline={isMyArtTimeline}
-                                  isExperienceTimeline={isExperienceTimeline}/>
+                                  isExperienceTimeline={isExperienceTimeline}
+                                  isDigitalExpressionTimeline={isDigitalExpressionTimeline}/>
         </Article>
     )
 }
@@ -50,7 +53,7 @@ function ArticleTimeline({ dataWrapper, id }) {
  * @return {JSX.Element}
  * @constructor
  */
-function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTimeline = false, isExperienceTimeline = false }) {
+function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTimeline = false, isExperienceTimeline = false, isDigitalExpressionTimeline = false }) {
     const language = useLanguage()
     const utils = useUtils()
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
@@ -321,6 +324,7 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
                                          itemIndex={key}
                                          isMyArtTimeline={isMyArtTimeline}
                                          isExperienceTimeline={isExperienceTimeline}
+                                         isDigitalExpressionTimeline={isDigitalExpressionTimeline}
                                          isOverlayActive={isExperienceTimeline && activeOverlayItemId === itemWrapper.id}
                                          usesTapOverlay={usesTapOverlay}
                                          avatarColumnSizePx={avatarColumnSizePx}
@@ -354,6 +358,7 @@ function ArticleTimelineItem({
     itemIndex = 0,
     isMyArtTimeline = false,
     isExperienceTimeline = false,
+    isDigitalExpressionTimeline = false,
     isOverlayActive = false,
     usesTapOverlay = false,
     avatarColumnSizePx = null,
@@ -460,6 +465,10 @@ function ArticleTimelineItem({
     const shouldInterceptGalleryTap = Boolean(isExperienceTimeline && usesTapOverlay && !isOverlayActive)
     const experienceItemClass = isExperienceTimeline ? "article-timeline-item--experience" : ""
     const overlayActiveClass = isOverlayActive ? "is-overlay-active" : ""
+    const visualVariantClass = itemWrapper?.visualVariant ?
+        `article-timeline-item--visual-${String(itemWrapper.visualVariant).replace(/[^a-z0-9-]/gi, "").toLowerCase()}` :
+        ""
+    const shouldRenderDigitalImageStack = Boolean(isDigitalExpressionTimeline && canOpenGallery)
     const avatarWrapperClass = isExperienceTimeline ?
         "article-timeline-item-avatar-wrapper article-timeline-item-avatar-wrapper--experience" :
         "article-timeline-item-avatar-wrapper"
@@ -487,52 +496,58 @@ function ArticleTimelineItem({
     }
 
     return (
-        <li className={`article-timeline-item ${experienceItemClass} ${overlayActiveClass}`.trim()}
+        <li className={`article-timeline-item ${experienceItemClass} ${overlayActiveClass} ${visualVariantClass}`.trim()}
             ref={itemRef}
             data-overlay-item-id={isExperienceTimeline ? itemWrapper.id : undefined}>
-            <div className={avatarWrapperClass}>
-                {canOpenGallery ? (
-                    <Link href={"#gallery:open"}
-                          metadata={galleryMetadata}
-                          className={avatarLinkClass}
-                          tooltip={language.getString("open_gallery")}
-                          ariaLabel={overlayActionLabel}
-                          intercept={shouldInterceptGalleryTap}
-                          onClick={_onGalleryAvatarClick}>
-                        <AvatarView src={avatarSrc}
-                                     faIcon={avatarFaIcon}
-                                     style={avatarStyle}
-                                     alt={itemWrapper?.imageAlt}
-                                     sizes={avatarSizes}
-                                     className={`article-timeline-item-avatar article-timeline-item-avatar--button ${isExperienceTimeline ? "article-timeline-item-avatar--experience" : ""}`.trim()}/>
-                    </Link>
-                ) : shouldUsePreviewLinkAvatar ? (
-                    <Link href={primaryPreviewLink.href}
-                          className={avatarLinkClass}
-                          tooltip={avatarActionLabel}
-                          ariaLabel={avatarActionLabel}>
-                        <AvatarView src={avatarSrc}
-                                     faIcon={avatarFaIcon}
-                                     style={avatarStyle}
-                                     alt={itemWrapper?.imageAlt}
-                                     sizes={avatarSizes}
-                                     className={`article-timeline-item-avatar article-timeline-item-avatar--button ${isExperienceTimeline ? "article-timeline-item-avatar--experience" : ""}`.trim()}/>
-                    </Link>
-                ) : (
-                    <button type={"button"}
-                            className={`article-timeline-item-avatar-button-reset ${isExperienceTimeline ? "article-timeline-item-avatar-button-reset--experience" : ""}`.trim()}
-                            aria-label={overlayActionLabel}
-                            aria-pressed={usesTapOverlay ? isOverlayActive : undefined}
-                            onClick={_onStaticAvatarClick}>
-                        <AvatarView src={avatarSrc}
-                                    faIcon={avatarFaIcon}
-                                    style={avatarStyle}
-                                    alt={itemWrapper?.imageAlt}
-                                    sizes={avatarSizes}
-                                    className={`article-timeline-item-avatar article-timeline-item-avatar--button ${isExperienceTimeline ? "article-timeline-item-avatar--experience" : ""}`.trim()}/>
-                    </button>
-                )}
-            </div>
+            {shouldRenderDigitalImageStack ? (
+                <DigitalExpressionImageStack screenshots={screenshots}
+                                             galleryMetadata={galleryMetadata}
+                                             label={overlayActionLabel}/>
+            ) : (
+                <div className={avatarWrapperClass}>
+                    {canOpenGallery ? (
+                        <Link href={"#gallery:open"}
+                              metadata={galleryMetadata}
+                              className={avatarLinkClass}
+                              tooltip={language.getString("open_gallery")}
+                              ariaLabel={overlayActionLabel}
+                              intercept={shouldInterceptGalleryTap}
+                              onClick={_onGalleryAvatarClick}>
+                            <AvatarView src={avatarSrc}
+                                         faIcon={avatarFaIcon}
+                                         style={avatarStyle}
+                                         alt={itemWrapper?.imageAlt}
+                                         sizes={avatarSizes}
+                                         className={`article-timeline-item-avatar article-timeline-item-avatar--button ${isExperienceTimeline ? "article-timeline-item-avatar--experience" : ""}`.trim()}/>
+                        </Link>
+                    ) : shouldUsePreviewLinkAvatar ? (
+                        <Link href={primaryPreviewLink.href}
+                              className={avatarLinkClass}
+                              tooltip={avatarActionLabel}
+                              ariaLabel={avatarActionLabel}>
+                            <AvatarView src={avatarSrc}
+                                         faIcon={avatarFaIcon}
+                                         style={avatarStyle}
+                                         alt={itemWrapper?.imageAlt}
+                                         sizes={avatarSizes}
+                                         className={`article-timeline-item-avatar article-timeline-item-avatar--button ${isExperienceTimeline ? "article-timeline-item-avatar--experience" : ""}`.trim()}/>
+                        </Link>
+                    ) : (
+                        <button type={"button"}
+                                className={`article-timeline-item-avatar-button-reset ${isExperienceTimeline ? "article-timeline-item-avatar-button-reset--experience" : ""}`.trim()}
+                                aria-label={overlayActionLabel}
+                                aria-pressed={usesTapOverlay ? isOverlayActive : undefined}
+                                onClick={_onStaticAvatarClick}>
+                            <AvatarView src={avatarSrc}
+                                        faIcon={avatarFaIcon}
+                                        style={avatarStyle}
+                                        alt={itemWrapper?.imageAlt}
+                                        sizes={avatarSizes}
+                                        className={`article-timeline-item-avatar article-timeline-item-avatar--button ${isExperienceTimeline ? "article-timeline-item-avatar--experience" : ""}`.trim()}/>
+                        </button>
+                    )}
+                </div>
+            )}
 
             <ArticleItemInfoForTimelines className={contentClass}
                                          containerRef={contentRef}>
@@ -544,6 +559,44 @@ function ArticleTimelineItem({
                 <ArticleItemInfoForTimelinesPreviewFooter itemWrapper={itemWrapper}/>
             </ArticleItemInfoForTimelines>
         </li>
+    )
+}
+
+function DigitalExpressionImageStack({ screenshots = [], galleryMetadata = null, label = "" }) {
+    const language = useLanguage()
+    const sourceImages = screenshots.slice(0, 4)
+    const firstImage = sourceImages[0]
+
+    if(!firstImage)
+        return <></>
+
+    const layerCount = 4
+    const layerImages = Array.from({ length: layerCount }, (_, index) => sourceImages[index] || firstImage)
+    const sizes = "(max-width: 575.98px) 88px, (max-width: 767.98px) 104px, (max-width: 991.98px) 124px, 148px"
+
+    return (
+        <div className={`digital-expression-layer-stack`}>
+            <Link href={"#gallery:open"}
+                  metadata={galleryMetadata}
+                  className={`digital-expression-layer-stack__link`}
+                  tooltip={language.getString("open_gallery")}
+                  ariaLabel={label}>
+                {layerImages.map((src, index) => {
+                    const isPrimaryLayer = index === 0
+                    return (
+                        <span className={`digital-expression-layer-stack__layer digital-expression-layer-stack__layer--${index + 1}`}
+                              aria-hidden={!isPrimaryLayer}
+                              key={`${src}-${index}`}>
+                            <ImageView src={src}
+                                       alt={isPrimaryLayer ? label : ""}
+                                       className={`digital-expression-layer-stack__image`}
+                                       sizes={sizes}
+                                       hideSpinner={!isPrimaryLayer}/>
+                        </span>
+                    )
+                })}
+            </Link>
+        </div>
     )
 }
 

@@ -1762,6 +1762,100 @@
     box-shadow: none;
 }
 
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines {
+    border-color: rgba(255, 255, 255, 0.44);
+    box-shadow:
+        0 24px 48px rgba(15, 23, 42, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-neo-surface div.article-timeline-item-info-for-timelines {
+    --card-text-strong: #7c2d12;
+    --card-text-mid: rgba(124, 45, 18, 0.84);
+    --card-text-soft: rgba(124, 45, 18, 0.66);
+    border-color: rgba(251, 146, 60, 0.36);
+    background:
+        radial-gradient(circle at 88% 12%, rgba(251, 191, 36, 0.26), transparent 34%),
+        radial-gradient(circle at 12% 86%, rgba(34, 211, 238, 0.15), transparent 42%),
+        linear-gradient(135deg, #fef3c7 0%, #fed7aa 34%, #fecaca 72%, #fff7ed 100%);
+    box-shadow:
+        0 24px 48px rgba(124, 45, 18, 0.14),
+        0 0 0 1px rgba(251, 146, 60, 0.12) inset,
+        0 0 38px rgba(236, 72, 153, 0.10);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-neo-surface div.article-timeline-item-info-for-timelines::before {
+    background:
+        linear-gradient(168deg, rgba(255, 255, 255, 0.66) 0%, rgba(255, 255, 255, 0.26) 100%),
+        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.42), transparent 32%);
+    border-color: rgba(255, 255, 255, 0.78);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-neo-surface div.article-timeline-item-info-for-timelines::after {
+    background: linear-gradient(90deg, #0891b2 0%, #f59e0b 38%, #db2777 74%, #7c3aed 100%);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-neo-surface div.article-timeline-item-info-for-timelines-header-main h5 {
+    color: #7c2d12;
+    text-shadow: none;
+    text-decoration-color: #0891b2;
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-neo-surface ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item,
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-neo-surface div.article-timeline-item-info-for-timelines-body {
+    color: rgba(124, 45, 18, 0.86);
+    background: rgba(255, 255, 255, 0.46);
+    border-color: rgba(251, 146, 60, 0.22);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass div.article-timeline-item-info-for-timelines {
+    --card-text-strong: #005a3d;
+    --card-text-mid: rgba(0, 72, 48, 0.82);
+    --card-text-soft: rgba(0, 80, 55, 0.66);
+    border-color: rgba(14, 165, 233, 0.22);
+    background:
+        radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.62), transparent 34%),
+        linear-gradient(135deg, #ccfbf1 0%, #bbf7d0 58%, #dcfce7 100%);
+    box-shadow:
+        0 24px 48px rgba(0, 100, 70, 0.12),
+        0 0 0 1px rgba(255, 255, 255, 0.54) inset,
+        0 0 38px rgba(20, 184, 166, 0.12);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass div.article-timeline-item-info-for-timelines::before {
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.44) 0%, rgba(255, 255, 255, 0.9) 100%);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass div.article-timeline-item-info-for-timelines::after {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.36), rgba(20, 184, 166, 0.16));
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass div.article-timeline-item-info-for-timelines-header-main h5 {
+    color: #005a3d;
+    text-decoration-color: #7c3aed;
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item,
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass div.article-timeline-item-info-for-timelines-body {
+    color: rgba(0, 72, 48, 0.86);
+    background: rgba(255, 255, 255, 0.5);
+    border-color: rgba(20, 184, 166, 0.18);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-neo-surface span.digital-expression-layer-stack__layer {
+    border: 0;
+    box-shadow:
+        rgba(124, 45, 18, 0.20) -10px 10px 24px 0,
+        0 0 24px rgba(219, 39, 119, 0.10);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass span.digital-expression-layer-stack__layer {
+    border: 0;
+    box-shadow:
+        0 18px 34px rgba(0, 100, 70, 0.14),
+        0 0 32px rgba(20, 184, 166, 0.14);
+}
+
 [data-theme="light"] article#article-2-section-my-hardware {
     --probe-accent: #06b6d4;
     --probe-accent-strong: color-mix(in srgb, var(--probe-accent) 72%, #ffffff 28%);

@@ -59,6 +59,7 @@ export default class ArticleItemDataWrapper {
         this.shortLabel = rawData.shortLabel || rawData.short_label || null
         this.link = this._parseLink(rawData.link, language)
         this.copyToClipboardButton = rawData.copyToClipboardButton || false
+        this.visualVariant = rawData["visual_variant"] || rawData.visualVariant || undefined
         this.locales = this._parseLocales(rawData.locales, language)
         this.percentage = this._parseNumber(rawData.percentage, 0, 100)
         this.preview = this._parsePreview(rawData.preview, language)

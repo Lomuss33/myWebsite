@@ -385,6 +385,10 @@ function ArticleTimelineItem({
         null
     const isWritingsTimeline = Boolean(itemWrapper?.articleWrapper?.uniqueId?.includes("section-my-writings"))
     const shouldUsePreviewLinkAvatar = isWritingsTimeline && !canOpenGallery && Boolean(primaryPreviewLink)
+    const writingPreviewFooter = isWritingsTimeline ? (
+        <ArticleItemInfoForTimelinesPreviewFooter itemWrapper={itemWrapper}
+                                                  className={`article-timeline-item-info-preview-footer--meta-end`}/>
+    ) : null
 
     const galleryMetadata = useMemo(() => {
         if(!canOpenGallery)
@@ -552,11 +556,14 @@ function ArticleTimelineItem({
             <ArticleItemInfoForTimelines className={contentClass}
                                          containerRef={contentRef}>
                 <ArticleItemInfoForTimelinesHeader itemWrapper={itemWrapper}
-                                                   dateInterval={shouldShowDateInterval}/>
+                                                   dateInterval={shouldShowDateInterval}
+                                                   metaEnd={writingPreviewFooter}/>
 
                 <ArticleItemInfoForTimelinesBody itemWrapper={itemWrapper}/>
 
-                <ArticleItemInfoForTimelinesPreviewFooter itemWrapper={itemWrapper}/>
+                {!isWritingsTimeline && (
+                    <ArticleItemInfoForTimelinesPreviewFooter itemWrapper={itemWrapper}/>
+                )}
             </ArticleItemInfoForTimelines>
         </li>
     )

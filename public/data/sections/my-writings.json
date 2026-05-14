@@ -61,12 +61,12 @@
             "links": [
               {
                 "href": "https://drive.google.com/file/d/1iAKAgkY7UZAmAEF-13pNZWZ6QZ12eP0Y/view?usp=sharing",
-                "tooltipString": "Open Powerpoint (placeholder)",
+                "tooltipString": "Open Powerpoint",
                 "faIcon": "fa-solid fa-chalkboard-user"
               },
               {
                 "href": "https://drive.google.com/file/d/1hh0fdztupAyFoOIZO5jFnUTZKV3o4kKI/view?usp=sharing",
-                "tooltipString": "Open document (placeholder)",
+                "tooltipString": "Open document",
                 "faIcon": "fa-solid fa-file-lines"
               }
             ]
@@ -108,12 +108,12 @@
             "links": [
               {
                 "href": "https://drive.google.com/file/d/1QQycgtzpfkG-KAHkItSj8E6LEYEeqdIZ/view?usp=sharing",
-                "tooltipString": "Open document (placeholder)",
+                "tooltipString": "Open document",
                 "faIcon": "fa-solid fa-file-lines"
               },
               {
                 "href": "https://drive.google.com/file/d/1KpaM0VpDcyUVG7im5lTWSl0n0nZTsv3r/view?usp=sharing",
-                "tooltipString": "Open Certificate (placeholder)",
+                "tooltipString": "Open Certificate",
                 "faIcon": "fa-solid fa-certificate"
               }
             ]
@@ -155,7 +155,7 @@
             "links": [
               {
                 "href": "https://drive.google.com/file/d/1QKoR7CLON23qP49AGDegZxiI-4pZUstB/view?usp=sharing",
-                "tooltipString": "Open poster (placeholder)",
+                "tooltipString": "Open poster",
                 "faIcon": "fa-solid fa-chalkboard-user"
               }
             ]
@@ -197,7 +197,7 @@
             "links": [
               {
                 "href": "https://drive.google.com/file/d/1D0Gy6srJBADn1JcT8NdnmILq0BD6sxTY/view?usp=sharing",
-                "tooltipString": "Open presentation (placeholder)",
+                "tooltipString": "Open presentation",
                 "faIcon": "fa-solid fa-chalkboard-user"
               }
             ]

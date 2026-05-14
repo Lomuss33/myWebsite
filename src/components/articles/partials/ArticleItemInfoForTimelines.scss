@@ -176,55 +176,38 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
 }
 
 article#article-1-section-my-writings div.article-timeline-item-info-for-timelines {
-    --card-accent: #38bdf8;
-    --card-accent-2: #f59e0b;
-    --card-surface-top: #0b1220;
-    --card-surface-bottom: #05070d;
-    --card-border: #1f2a3a;
-    --card-shadow: 0 18px 40px rgba(0, 0, 0, 0.42);
-    --card-shadow-hover: 0 26px 58px rgba(56, 189, 248, 0.14);
-    --card-text-strong: #f8fafc;
-    --card-text-mid: #d1d5db;
-    --card-text-soft: #94a3b8;
+    --card-accent: #743ad5;
+    --card-accent-2: #d53a9d;
+    --card-surface-top: transparent;
+    --card-surface-bottom: transparent;
+    --card-border: transparent;
+    --card-shadow: none;
+    --card-shadow-hover: none;
+    --card-text-strong: var(--theme-texts);
+    --card-text-mid: var(--theme-texts-light-1);
+    --card-text-soft: var(--theme-texts-light-2);
 
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding: var(--content-padding);
+    padding: clamp(1.75rem, 1.35rem + 1.15vw, 2.5rem);
     position: relative;
     isolation: isolate;
-    overflow: hidden;
-    border: 1px solid var(--card-border);
-    border-radius: $standard-border-radius;
-    background:
-        linear-gradient(140deg, var(--card-surface-top), var(--card-surface-bottom));
-    box-shadow: var(--card-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-    transition:
-        transform 180ms ease,
-        border-color 180ms ease,
-        box-shadow 180ms ease,
-        filter 180ms ease;
+    overflow: visible;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 4px 0 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: var(--card-shadow);
+    transition: none;
 
     &::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background:
-            radial-gradient(circle at top right, rgba(56, 189, 248, 0.14) 0%, transparent 58%),
-            radial-gradient(circle at bottom left, rgba(245, 158, 11, 0.08) 0%, transparent 42%);
-        pointer-events: none;
-        z-index: 0;
+        display: none;
     }
 
     &::after {
-        content: "";
-        position: absolute;
-        inset: 0 auto 0 0;
-        width: 4px;
-        background: linear-gradient(180deg, var(--card-accent), var(--card-accent-2));
-        opacity: 0.92;
-        pointer-events: none;
-        z-index: 0;
+        display: none;
     }
 
     > * {
@@ -234,11 +217,17 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
 
     &:hover,
     &:focus-within {
-        transform: translateY(-2px);
-        border-color: color-mix(in srgb, var(--card-accent) 54%, var(--card-border) 46%);
-        box-shadow: var(--card-shadow-hover), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-        filter: saturate(1.03);
+        transform: none;
+        box-shadow: none;
+        filter: none;
     }
+}
+
+article#article-1-section-my-writings div.article-timeline-item-content,
+article#article-1-section-my-writings div.article-timeline-item-info-for-timelines-header,
+article#article-1-section-my-writings div.article-timeline-item-info-for-timelines-body,
+article#article-1-section-my-writings div.article-timeline-item-info-preview-footer {
+    background: transparent;
 }
 
 article.article-timeline--art-photography div.article-timeline-item-info-for-timelines {
@@ -776,6 +765,29 @@ div.article-timeline-item-info-for-timelines-header-title {
     width: 100%;
 }
 
+div.article-timeline-item-info-for-timelines-header-meta-band {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(0.55rem, 0.42rem + 0.34vw, 0.85rem);
+    min-width: 0;
+    width: 100%;
+
+    ul.article-timeline-item-info-for-timelines-header-prop-list {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    div.article-timeline-item-info-preview-footer {
+        flex: 0 0 auto;
+        margin-top: 0;
+        margin-left: auto;
+        padding-top: 0;
+        justify-content: flex-end;
+        align-items: center;
+    }
+}
+
 div.article-timeline-item-info-for-timelines-header-main {
     display: flex;
     align-items: flex-start;
@@ -851,13 +863,13 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
         padding: 4px 12px;
         white-space: nowrap;
         color: var(--card-text-strong);
-        background: linear-gradient(180deg, rgba(11, 18, 32, 0.94), rgba(5, 7, 13, 0.94));
-        border: 1px solid color-mix(in srgb, var(--card-accent) 38%, var(--card-border) 62%);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        background: transparent;
+        border: 1px solid color-mix(in srgb, var(--card-accent) 34%, transparent);
+        box-shadow: none;
 
         i.fa-icon {
             margin-right: 8px;
-            color: var(--card-accent-2);
+            color: var(--card-accent);
         }
     }
 }
@@ -1072,8 +1084,8 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
 article#article-1-section-my-writings div.article-timeline-item-info-for-timelines-tags-footer {
     li.article-timeline-item-info-for-timelines-tags-footer-tag {
         color: var(--card-text-strong);
-        background: linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(6, 9, 16, 0.96));
-        border: 1px solid color-mix(in srgb, var(--card-accent) 34%, var(--card-border) 66%);
+        background: transparent;
+        border: 1px solid color-mix(in srgb, var(--card-accent-2) 34%, transparent);
     }
 }
 
@@ -1131,5 +1143,29 @@ div.article-timeline-item-info-preview-footer {
     div.article-item-preview-menu-button-list {
         width: auto;
         justify-content: flex-end;
+    }
+}
+
+article#article-1-section-my-writings div.article-timeline-item-info-for-timelines-header-meta-band {
+    align-items: center;
+
+    div.article-timeline-item-info-preview-footer--meta-end {
+        position: relative;
+        right: 0;
+        margin-top: 0;
+        margin-left: auto;
+    }
+
+    div.article-item-preview-menu,
+    div.article-item-preview-menu-button-list {
+        justify-content: flex-end;
+    }
+
+    @include media-breakpoint-down(sm) {
+        align-items: flex-start;
+
+        div.article-timeline-item-info-preview-footer--meta-end {
+            align-self: flex-start;
+        }
     }
 }

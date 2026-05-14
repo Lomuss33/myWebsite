@@ -208,39 +208,99 @@ article.article-timeline--my-art {
 }
 
 article#article-1-section-my-writings {
+    font-family: "Open Sans", "Segoe UI", sans-serif;
+
     ul.article-timeline-items {
         --timeline-line-width: 4px;
-        --timeline-line-color: rgba(56, 189, 248, 0.48);
+        --timeline-writing-gradient: linear-gradient(to right, #743ad5 0%, #d53a9d 100%);
+        --timeline-writing-ink: #34435e;
         --avatar-size: 132px;
-        --gap-between-avatar-and-content: 18px;
+        --gap-between-avatar-and-content: 22px;
+        --timeline-edge-clearance: calc(var(--avatar-size) / 2 + 10px);
+        box-sizing: border-box;
+        width: 100%;
+        padding-right: var(--timeline-edge-clearance);
+        padding-left: var(--timeline-edge-clearance);
+        gap: 0;
 
         @include media-breakpoint-down(lg) {
             --avatar-size: 112px;
-            --gap-between-avatar-and-content: 16px;
+            --gap-between-avatar-and-content: 18px;
         }
 
         @include media-breakpoint-down(md) {
             --avatar-size: 96px;
-            --gap-between-avatar-and-content: 14px;
+            --gap-between-avatar-and-content: 16px;
         }
 
         @include media-breakpoint-down(sm) {
             --avatar-size: 76px;
             --gap-between-avatar-and-content: 14px;
             --avatar-offset-merge-mode: 0px;
+            --timeline-edge-clearance: calc(var(--avatar-size) / 2 + 8px);
         }
     }
 
     ul.article-timeline-items:before {
-        background: linear-gradient(180deg, rgba(56, 189, 248, 0.65), rgba(245, 158, 11, 0.45));
-        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.16);
+        display: none;
+    }
+
+    li.article-timeline-item {
+        position: relative;
+        display: block;
+        min-width: 0;
+    }
+
+    li.article-timeline-item:first-child div.article-timeline-item-content {
+        border-top: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+    li.article-timeline-item:last-child div.article-timeline-item-content {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    li.article-timeline-item:nth-child(odd) div.article-timeline-item-content {
+        border-right: var(--timeline-line-width) solid transparent;
+    }
+
+    li.article-timeline-item:nth-child(even) div.article-timeline-item-content {
+        border-left: var(--timeline-line-width) solid transparent;
+    }
+
+    div.article-timeline-item-avatar-wrapper {
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        position: absolute;
+        top: calc(-1 * var(--avatar-size) / 2);
+        z-index: 3;
+    }
+
+    li.article-timeline-item:first-child div.article-timeline-item-avatar-wrapper {
+        top: 0;
+    }
+
+    li.article-timeline-item:nth-child(odd) div.article-timeline-item-avatar-wrapper {
+        left: 100%;
+        transform: translateX(-50%);
+    }
+
+    li.article-timeline-item:nth-child(even) div.article-timeline-item-avatar-wrapper {
+        right: 100%;
+        transform: translateX(50%);
     }
 
     div.article-timeline-item-avatar {
-        border-color: rgba(56, 189, 248, 0.52);
-        box-shadow:
-            0 0 0 1px rgba(255, 255, 255, 0.08) inset,
-            0 12px 30px rgba(0, 0, 0, 0.38);
+        border-color: transparent;
+        box-shadow: none;
+
+        @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+            top: 0;
+            left: 0;
+        }
     }
 
     button.article-timeline-item-avatar-button-reset {
@@ -262,19 +322,22 @@ article#article-1-section-my-writings {
         box-shadow: none;
     }
 
-    div.article-timeline-item-avatar.article-timeline-item-avatar--button {
-        border-color: transparent;
-        box-shadow: none;
-    }
-
-    a.article-timeline-item-avatar-link:hover div.article-timeline-item-avatar--button {
-        border-color: transparent;
-        box-shadow: none;
-    }
-
+    div.article-timeline-item-avatar.article-timeline-item-avatar--button,
+    a.article-timeline-item-avatar-link:hover div.article-timeline-item-avatar--button,
     a.article-timeline-item-avatar-link:focus-visible div.article-timeline-item-avatar--button {
         border-color: transparent;
         box-shadow: none;
+    }
+
+    div.article-timeline-item-content {
+        margin-left: 0 !important;
+        border-top: var(--timeline-line-width) solid transparent;
+        border-image: var(--timeline-writing-gradient) 1;
+        border-radius: 0;
+
+        @include media-breakpoint-down(sm) {
+            margin-left: 0 !important;
+        }
     }
 }
 

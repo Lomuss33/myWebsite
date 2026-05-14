@@ -33,10 +33,11 @@ function ArticleItemInfoForTimelines({ children, itemWrapper, className = "", sm
  * @param {ArticleItemDataWrapper} itemWrapper
  * @param {String} className
  * @param {Boolean} dateInterval
+ * @param {JSX.Element|null} metaEnd
  * @return {JSX.Element}
  * @constructor
  */
-function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateInterval = false }) {
+function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateInterval = false, metaEnd = null }) {
     const viewport = useViewport()
     const shouldShowDateBadge = viewport.isBreakpoint("xl")
     const isSmallScreen = !viewport.isBreakpoint("sm")
@@ -101,16 +102,20 @@ function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateIn
                 </div>
             </div>
 
-            <PropList className={`article-timeline-item-info-for-timelines-header-prop-list text-1`}
-                      inlineBreakpoint={`xl`}>
-                {propListItems.map((item, key) => (
-                    <PropListItem key={key}
-                                  faIcon={item.faIcon}
-                                  type={item.type}
-                                  iconSpacing={isSmallScreen ? 22 : 24}
-                                  value={item.value}/>
-                ))}
-            </PropList>
+            <div className={`article-timeline-item-info-for-timelines-header-meta-band`}>
+                <PropList className={`article-timeline-item-info-for-timelines-header-prop-list text-1`}
+                          inlineBreakpoint={`xl`}>
+                    {propListItems.map((item, key) => (
+                        <PropListItem key={key}
+                                      faIcon={item.faIcon}
+                                      type={item.type}
+                                      iconSpacing={isSmallScreen ? 22 : 24}
+                                      value={item.value}/>
+                    ))}
+                </PropList>
+
+                {metaEnd}
+            </div>
         </div>
     )
 }

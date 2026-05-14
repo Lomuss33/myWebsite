@@ -512,6 +512,63 @@
                             "medium": "YZ Prompt Tasarımı"
                         }
                     }
+                },
+                {
+                    "id": 100,
+                    "visual_variant": "crystal-facet",
+                    "date": {
+                        "year": 2017,
+                        "month": 10
+                    },
+                    "preview": {
+                        "links": [
+                            {
+                                "href": "#my-art-gifs-stickers-coming-soon",
+                                "tooltipString": "open_website",
+                                "faIcon": "fa-solid fa-images",
+                                "label": "Image Folder",
+                                "isWebsiteAction": true
+                            },
+                            {
+                                "href": "#my-art-gifs-stickers-pinterest-coming-soon",
+                                "tooltipString": "open_website",
+                                "faIcon": "fa-brands fa-pinterest"
+                            }
+                        ],
+                        "screenshots": [
+                            "/images/personal_art/tattoo_design/elixir_god.webp",
+                            "/images/personal_art/tattoo_design/ilir_2.webp",
+                            "/images/personal_art/tattoo_design/mitski_lav.webp",
+                            "/images/personal_art/tattoo_design/zid_alien.webp"
+                        ],
+                        "screenshotsAspectRatio": "1:1"
+                    },
+                    "locales": {
+                        "en": {
+                            "title": "My gifs and chat stickers",
+                            "country": "Digital Archive",
+                            "text": "A placeholder album for animated reactions, chat sticker ideas, and small expressive loops planned as a growing visual archive.",
+                            "medium": "GIFs and Stickers"
+                        },
+                        "de": {
+                            "title": "Meine GIFs und Chat-Sticker",
+                            "country": "Digitales Archiv",
+                            "text": "Ein Platzhalteralbum fuer animierte Reaktionen, Chat-Sticker-Ideen und kleine expressive Loops als wachsendes visuelles Archiv.",
+                            "medium": "GIFs und Sticker"
+                        },
+                        "hr": {
+                            "title": "Moji GIF-ovi i chat naljepnice",
+                            "country": "Digitalni arhiv",
+                            "text": "Privremeni album za animirane reakcije, ideje za chat naljepnice i male ekspresivne loopove kao rastuci vizualni arhiv.",
+                            "medium": "GIF-ovi i naljepnice"
+                        },
+                        "tr": {
+                            "title": "GIF'lerim ve sohbet cikartmalarim",
+                            "country": "Dijital Arsiv",
+                            "text": "Animasyonlu tepkiler, sohbet cikartmasi fikirleri ve kucuk ifade donguleri icin buyuyen gorsel arsiv yer tutucusu.",
+                            "medium": "GIF ve cikartmalar"
+                        }
+                    }
                 }
             ]
         },

@@ -469,13 +469,6 @@
                     "preview": {
                         "links": [
                             {
-                                "href": "#my-art-ai-prompts-coming-soon",
-                                "tooltipString": "open_website",
-                                "faIcon": "fa-solid fa-images",
-                                "label": "Image Folder",
-                                "isWebsiteAction": true
-                            },
-                            {
                                 "href": "#my-art-ai-prompts-pinterest-coming-soon",
                                 "tooltipString": "open_website",
                                 "faIcon": "fa-brands fa-pinterest"
@@ -522,13 +515,6 @@
                     },
                     "preview": {
                         "links": [
-                            {
-                                "href": "#my-art-favorite-infographics-coming-soon",
-                                "tooltipString": "open_website",
-                                "faIcon": "fa-solid fa-images",
-                                "label": "Image Folder",
-                                "isWebsiteAction": true
-                            },
                             {
                                 "href": "#my-art-favorite-infographics-pinterest-coming-soon",
                                 "tooltipString": "open_website",
@@ -625,6 +611,12 @@
                 },
                 {
                     "id": 12
+                },
+                {
+                    "id": 13
+                },
+                {
+                    "id": 14
                 }
             ]
         },

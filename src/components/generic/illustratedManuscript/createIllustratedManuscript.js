@@ -41,6 +41,14 @@ function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value))
 }
 
+function isCoarsePointerDevice() {
+    if (typeof window === "undefined") return false
+    return Boolean(
+        window.matchMedia?.("(pointer: coarse)")?.matches ||
+        navigator?.maxTouchPoints
+    )
+}
+
 function resolveAssetPath(path) {
     if (!path) return path
     if (/^https?:\/\//i.test(path)) return path
@@ -270,6 +278,7 @@ function createIllustratedManuscript({
     let textBottom = layout.margin
     let illustrationFrame = null
     let patrolPath = null
+    const coarsePointerDevice = isCoarsePointerDevice()
 
     let dropCapImage = null
     let illustrationImage = null
@@ -552,10 +561,17 @@ function createIllustratedManuscript({
     const getDragonPatrolTarget = time => {
         const frame = illustrationFrame || getIllustrationFrame(textBottom)
         const scale = (dragon?.scale || getPageScale(viewportWidth) * MANUSCRIPT_DRAGON_SCALE)
+        const shouldConstrainDragonToViewport = coarsePointerDevice || viewportWidth < 640
+        const horizontalInset = shouldConstrainDragonToViewport ? Math.min(
+            Math.max(layout.margin, Math.round((coarsePointerDevice ? 104 : 88) * scale)),
+            Math.max(layout.margin, Math.floor((viewportWidth - layout.margin * 2) / 2))
+        ) : 0
 
         if (!frame) {
             return {
-                x: layout.margin + 48 * scale,
+                x: shouldConstrainDragonToViewport ?
+                    clamp(layout.margin + 48 * scale, horizontalInset, Math.max(horizontalInset, viewportWidth - horizontalInset)) :
+                    layout.margin + 48 * scale,
                 y: layout.pageHeight - layout.margin - 36 * scale,
                 angle: 0
             }
@@ -592,7 +608,13 @@ function createIllustratedManuscript({
         const nextPoint = samplePathAtDistance(path, distance + PATROL_LOOK_AHEAD_DISTANCE)
 
         return {
-            x: centerX + currentPoint.x,
+            x: shouldConstrainDragonToViewport ?
+                clamp(
+                    centerX + currentPoint.x,
+                    horizontalInset,
+                    Math.max(horizontalInset, viewportWidth - horizontalInset)
+                ) :
+                centerX + currentPoint.x,
             y: centerY + currentPoint.y,
             angle: normalizeAngle(Math.atan2(nextPoint.y - currentPoint.y, nextPoint.x - currentPoint.x))
         }
@@ -848,9 +870,18 @@ function createIllustratedManuscript({
             (pointerInside || pointerDown || time - lastMouseMove <= MOUSE_IDLE_TIMEOUT)
         const patrolTarget = getDragonPatrolTarget(time)
         const scale = dragon?.scale || getPageScale(viewportWidth) * MANUSCRIPT_DRAGON_SCALE
-        const flyBehindMarginX = Math.max(18, 88 * scale)
+        const shouldConstrainDragonToViewport = coarsePointerDevice || viewportWidth < 640
+        const horizontalInset = shouldConstrainDragonToViewport ? Math.min(
+            Math.max(layout.margin, Math.round((coarsePointerDevice ? 104 : 88) * scale)),
+            Math.max(layout.margin, Math.floor((viewportWidth - layout.margin * 2) / 2))
+        ) : 0
+        const flyBehindMarginX = shouldConstrainDragonToViewport ? horizontalInset : Math.max(18, 88 * scale)
         const target = shouldFollowPointer ? {
-            x: offset.x + clamp(mouse.x, -flyBehindMarginX, viewportWidth + flyBehindMarginX),
+            x: offset.x + (
+                shouldConstrainDragonToViewport ?
+                    clamp(mouse.x, horizontalInset, Math.max(horizontalInset, viewportWidth - horizontalInset)) :
+                    clamp(mouse.x, -flyBehindMarginX, viewportWidth + flyBehindMarginX)
+            ),
             y: offset.y + clamp(mouse.y, 0, viewportHeight)
         } : {
             x: offset.x + patrolTarget.x,

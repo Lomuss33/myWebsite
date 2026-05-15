@@ -14,6 +14,8 @@ uniform float u_time;
 uniform bool u_complex;
 
 const int octaves = 6;
+const int cubeCount = 28;
+const int dotsPerEdge = 8;
 const float seed = 43758.5453123;
 const float seed2 = 73156.8473192;
 
@@ -73,8 +75,117 @@ float pattern2(vec2 uv, float seed, float time, inout vec2 q, inout vec2 r) {
     return fbm1(uv + 4.0 * v, seed);
 }
 
+vec3 rotateX(vec3 p, float angle) {
+    float s = sin(angle);
+    float c = cos(angle);
+    return vec3(p.x, c * p.y - s * p.z, s * p.y + c * p.z);
+}
+
+vec3 rotateY(vec3 p, float angle) {
+    float s = sin(angle);
+    float c = cos(angle);
+    return vec3(c * p.x + s * p.z, p.y, -s * p.x + c * p.z);
+}
+
+vec3 rotateZ(vec3 p, float angle) {
+    float s = sin(angle);
+    float c = cos(angle);
+    return vec3(c * p.x - s * p.y, s * p.x + c * p.y, p.z);
+}
+
+float bezierY(float t) {
+    float inv = 1.0 - t;
+    return 3.0 * inv * inv * t * -1.0 + 3.0 * inv * t * t * -1.0 + t * t * t;
+}
+
+vec3 rotateOriginalCube(vec3 p, float phase) {
+    float local = phase;
+    float rotY = 0.78539816339;
+    float rotZ = 0.0;
+
+    if(local < 0.5) {
+        float k = clamp(bezierY(local * 2.0), 0.0, 1.0);
+        rotY = mix(0.78539816339, 3.92699081699, k);
+    }
+    else {
+        float k = clamp(bezierY((local - 0.5) * 2.0), 0.0, 1.0);
+        rotY = mix(3.92699081699, 0.0, k);
+        rotZ = mix(0.0, 1.57079632679, k);
+    }
+
+    p = rotateX(p, -1.57079632679);
+    p = rotateY(p, rotY);
+    p = rotateZ(p, rotZ);
+    return p;
+}
+
+vec2 projectCubePoint(vec3 p, float size, float phase) {
+    p = rotateOriginalCube(p, phase) * size;
+    float perspective = 2.4 / max(0.4, 2.4 - p.z);
+    return p.xy * perspective;
+}
+
+vec3 rotatedNormal(vec3 n, float phase) {
+    return normalize(rotateOriginalCube(n, phase));
+}
+
+float dotCircle(vec2 p, vec2 center, float radius) {
+    float dist = length(p - center);
+    return 1.0 - smoothstep(radius, radius * 1.55, dist);
+}
+
+float dottedEdge(vec2 p, vec3 a, vec3 b, float size, float phase, float radius) {
+    vec2 pa = projectCubePoint(a, size, phase);
+    vec2 pb = projectCubePoint(b, size, phase);
+    float edge = 0.0;
+
+    for(int i = 0; i < dotsPerEdge; i++) {
+        float t = (float(i) + 0.5) / float(dotsPerEdge);
+        edge = max(edge, dotCircle(p, mix(pa, pb, t), radius));
+    }
+
+    return edge;
+}
+
+float dottedFace(vec2 p, vec3 a, vec3 b, vec3 c, vec3 d, vec3 normal, float size, float phase, float radius) {
+    float visible = smoothstep(-0.02, 0.12, rotatedNormal(normal, phase).z);
+    float face = 0.0;
+
+    face = max(face, dottedEdge(p, a, b, size, phase, radius));
+    face = max(face, dottedEdge(p, b, c, size, phase, radius));
+    face = max(face, dottedEdge(p, c, d, size, phase, radius));
+    face = max(face, dottedEdge(p, d, a, size, phase, radius));
+
+    return face * visible;
+}
+
+float cubeMask(vec2 p, float uTime) {
+    float mask = 0.0;
+
+    for(int i = 0; i < cubeCount; i++) {
+        float fi = float(i);
+        float depth = (fi + 1.0) / float(cubeCount);
+        float size = (fi + 1.0) * 0.027;
+        float phase = fract(uTime * 0.0317 - (fi + 1.0) * 0.008);
+        float radius = size * 0.036;
+        float cube = 0.0;
+
+        cube = max(cube, dottedFace(p, vec3(-0.5, -0.5, 0.5), vec3(0.5, -0.5, 0.5), vec3(0.5, 0.5, 0.5), vec3(-0.5, 0.5, 0.5), vec3(0.0, 0.0, 1.0), size, phase, radius));
+        cube = max(cube, dottedFace(p, vec3(0.5, -0.5, 0.5), vec3(0.5, -0.5, -0.5), vec3(0.5, 0.5, -0.5), vec3(0.5, 0.5, 0.5), vec3(1.0, 0.0, 0.0), size, phase, radius));
+        cube = max(cube, dottedFace(p, vec3(0.5, -0.5, -0.5), vec3(-0.5, -0.5, -0.5), vec3(-0.5, 0.5, -0.5), vec3(0.5, 0.5, -0.5), vec3(0.0, 0.0, -1.0), size, phase, radius));
+        cube = max(cube, dottedFace(p, vec3(-0.5, -0.5, -0.5), vec3(-0.5, -0.5, 0.5), vec3(-0.5, 0.5, 0.5), vec3(-0.5, 0.5, -0.5), vec3(-1.0, 0.0, 0.0), size, phase, radius));
+        cube = max(cube, dottedFace(p, vec3(-0.5, -0.5, -0.5), vec3(0.5, -0.5, -0.5), vec3(0.5, -0.5, 0.5), vec3(-0.5, -0.5, 0.5), vec3(0.0, -1.0, 0.0), size, phase, radius));
+        cube = max(cube, dottedFace(p, vec3(-0.5, 0.5, 0.5), vec3(0.5, 0.5, 0.5), vec3(0.5, 0.5, -0.5), vec3(-0.5, 0.5, -0.5), vec3(0.0, 1.0, 0.0), size, phase, radius));
+
+        mask = max(mask, cube * smoothstep(0.02, 0.82, depth));
+    }
+
+    return clamp(mask, 0.0, 1.0);
+}
+
 void main() {
-    vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / u_resolution.y;
+    vec2 baseUv = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / u_resolution.y;
+    vec2 uv = baseUv;
     float time = u_time / 10.0;
     mat2 rot = mat2(cos(time / 10.0), sin(time / 10.0), -sin(time / 10.0), cos(time / 10.0));
     uv = rot * uv;
@@ -91,7 +202,11 @@ void main() {
     colour -= q.y * 1.5;
     colour = mix(colour, vec3(0.2, 0.2, 0.2), clamp(q.x, -1.0, 0.0) * 3.0);
 
-    gl_FragColor = vec4(-colour + (abs(colour) * 0.5), 1.0);
+    vec3 waveColour = clamp(-colour + (abs(colour) * 0.5), 0.0, 1.0);
+    waveColour = pow(clamp(waveColour * vec3(1.35, 1.48, 1.62), 0.0, 1.0), vec3(0.72));
+
+    float mask = cubeMask(baseUv, u_time);
+    gl_FragColor = vec4(waveColour * mask, 1.0);
 }
 `
 
@@ -128,6 +243,7 @@ export function createSoupShaderEngine(canvas, options = {}) {
 
         const geometry = new THREE.PlaneGeometry(2, 2)
         material = new THREE.ShaderMaterial({
+            depthWrite: false,
             uniforms: {
                 u_time: { value: timeValue },
                 u_resolution: { value: new THREE.Vector2(1, 1) },

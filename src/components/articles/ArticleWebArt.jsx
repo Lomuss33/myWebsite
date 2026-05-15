@@ -307,9 +307,9 @@ function ArticleWebArt({ dataWrapper, id }) {
     const [showIntroCover, setShowIntroCover] = useState(true)
     const rawItems = useMemo(() => dataWrapper.orderedItems, [dataWrapper.orderedItems])
     const items = useMemo(() => {
-        // Desired visual order: Poly, 5, 3D, Orbit, Hover, Wave, Spin, Shape, Hourglass, Noice, Distance, Android
-        // Matches ids: 4 (Poly), 5 (Embroidery), 3 (3D tunnel), 6 (Orbit), 1 (Hover), 2 (Wave), 7 (Spin), 8 (Shape), 9 (Hourglass), 10 (Noice), 11 (Distance), 12 (Android)
-        const desiredOrder = [4, 5, 3, 6, 1, 2, 7, 8, 9, 10, 11, 12]
+        // Desired visual order: Poly, 5, 3D, Orbit, Hover, Wave, Spin, Shape, Hourglass, Noice, Distance, Android, Pulse
+        // Matches ids: 4 (Poly), 5 (Embroidery), 3 (3D tunnel), 6 (Orbit), 1 (Hover), 2 (Wave), 7 (Spin), 8 (Shape), 9 (Hourglass), 10 (Noice), 11 (Distance), 12 (Android), 13 (Pulse)
+        const desiredOrder = [4, 5, 3, 6, 1, 2, 7, 8, 9, 10, 11, 12, 13]
         const byId = new Map(rawItems.map((item) => [Number(item?.id), item]))
         const ordered = []
 
@@ -395,6 +395,15 @@ function ArticleWebArt({ dataWrapper, id }) {
             tr: "Tıkla",
         }[langId] || "Click"
     }
+    const submitTileText = {
+        en: { top: "Send me", bottom: "one idea" },
+        de: { top: "Sende mir", bottom: "eine Idee" },
+        hr: { top: "Pošalji mi", bottom: "jednu ideju" },
+        tr: { top: "Bana gönder", bottom: "bir fikir" }
+    }[selectedLanguageId] || { top: "Send me", bottom: "one idea" }
+    void submitTileLabel
+    void clickTileLabel
+
     const introCopy = {
         en: {
             title: "Doors of the world behind an amazing art gallery.",
@@ -650,6 +659,7 @@ function ArticleWebArt({ dataWrapper, id }) {
         if(itemId === 10) return "Noice"
         if(itemId === 11) return "Distance"
         if(itemId === 12) return "Android"
+        if(itemId === 13) return "Pulse"
         return String(index + 1)
     }
 
@@ -854,8 +864,8 @@ function ArticleWebArt({ dataWrapper, id }) {
                          ref={tilesWrapperRef}
                          aria-busy={showIntroCover}>
                         {shouldMountTiles && (
-                            <SendYourFunAnimationTile label={submitTileLabel}
-                                                      clickLabel={clickTileLabel}
+                            <SendYourFunAnimationTile submitLabelTop={submitTileText.top}
+                                                      submitLabelBottom={submitTileText.bottom}
                                                       previewRequested={sendYoursPreviewOpen}/>
                         )}
                         {itemTiles}
@@ -992,6 +1002,10 @@ function WebArtTile({ itemWrapper, index, activate, locked, onReady }) {
 
     if(Number(itemWrapper.id) === 12) {
         return <AndroidTile itemWrapper={itemWrapper} index={index} activate={activate} locked={locked} onReady={onReady}/>
+    }
+
+    if(Number(itemWrapper.id) === 13) {
+        return <PulseBoxTile itemWrapper={itemWrapper} index={index} activate={activate} locked={locked} onReady={onReady}/>
     }
 
     return <EmbroideryTile itemWrapper={itemWrapper} index={index} activate={activate} locked={locked} onReady={onReady}/>
@@ -1174,7 +1188,9 @@ function DistanceTile({ itemWrapper, index, activate, locked, onReady }) {
 
 function AndroidTile({ itemWrapper, index, activate, locked, onReady }) {
     const tileRef = useRef(null)
+    const backgroundCanvasRef = useRef(null)
     const canvasRef = useRef(null)
+    const backgroundEngineRef = useRef(null)
     const engineRef = useRef(null)
     const didReadyRef = useRef(false)
     const visibleRef = useRef(true)
@@ -1188,10 +1204,12 @@ function AndroidTile({ itemWrapper, index, activate, locked, onReady }) {
         if(!activate) return
 
         const tile = tileRef.current
+        const backgroundCanvas = backgroundCanvasRef.current
         const canvas = canvasRef.current
-        if(!tile || !canvas) return
+        if(!tile || !backgroundCanvas || !canvas) return
 
         let canceled = false
+        let backgroundEngine = null
         let engine = null
         let ro = null
         let io = null
@@ -1204,16 +1222,25 @@ function AndroidTile({ itemWrapper, index, activate, locked, onReady }) {
 
         const cancelWork = _scheduleIdleWork(async () => {
             try {
+                const bgMod = await import("./webArt/androidBackgroundEngine.js")
                 const mod = await import("./webArt/androidRobotEngine.js")
                 if(canceled) return
 
+                backgroundEngine = bgMod.createAndroidBackgroundEngine(backgroundCanvas, { reduceMotion })
+                backgroundEngineRef.current = backgroundEngine
                 engine = mod.createAndroidRobotEngine(canvas, { reduceMotion })
                 engineRef.current = engine
 
-                const updateSize = () => _syncTileEngineSize(tile, engine, Math.min(1.5, window.devicePixelRatio || 1))
+                const updateSize = () => {
+                    const devicePixelRatio = Math.min(1.5, window.devicePixelRatio || 1)
+                    _syncTileEngineSize(tile, backgroundEngine, devicePixelRatio)
+                    _syncTileEngineSize(tile, engine, devicePixelRatio)
+                }
 
                 updateSize()
+                backgroundEngine.renderStatic?.()
                 engine.renderStatic?.()
+                if(!locked) backgroundEngine.start?.()
                 if(!locked) engine.start?.()
                 markReady()
 
@@ -1227,12 +1254,19 @@ function AndroidTile({ itemWrapper, index, activate, locked, onReady }) {
                         for(const entry of entries) {
                             visibleRef.current = Boolean(entry.isIntersecting)
                             if(locked) {
+                                backgroundEngine.stop?.()
                                 engine.stop?.()
                                 continue
                             }
 
-                            if(visibleRef.current) engine.start?.()
-                            else engine.stop?.()
+                            if(visibleRef.current) {
+                                backgroundEngine.start?.()
+                                engine.start?.()
+                            }
+                            else {
+                                backgroundEngine.stop?.()
+                                engine.stop?.()
+                            }
                         }
                     }, { threshold: 0.2 })
                     io.observe(tile)
@@ -1249,20 +1283,27 @@ function AndroidTile({ itemWrapper, index, activate, locked, onReady }) {
             cancelWork?.()
             io?.disconnect()
             ro?.disconnect()
+            backgroundEngine?.destroy?.()
             engine?.destroy?.()
+            backgroundEngineRef.current = null
             engineRef.current = null
         }
     }, [activate, itemWrapper.uniqueId, locked, onReady, reduceMotion])
 
     useEffect(() => {
         const engine = engineRef.current
-        if(!engine) return
+        const backgroundEngine = backgroundEngineRef.current
+        if(!engine || !backgroundEngine) return
         if(locked) {
             engine.clearPointer?.()
+            backgroundEngine.stop?.()
             engine.stop?.()
             return
         }
-        if(visibleRef.current) engine.start?.()
+        if(visibleRef.current) {
+            backgroundEngine.start?.()
+            engine.start?.()
+        }
     }, [locked])
 
     const pointerPosition = (event) => {
@@ -1278,7 +1319,7 @@ function AndroidTile({ itemWrapper, index, activate, locked, onReady }) {
     return (
         <button type={"button"}
                 ref={tileRef}
-                className={`article-web-art-tile article-web-art-tile-clickable article-web-art-tile-android`}
+            className={`article-web-art-tile article-web-art-tile-clickable article-web-art-tile-android`}
                 aria-label={`Android web art tile ${index + 1}`}
                 disabled={locked}
                 onPointerEnter={locked ? undefined : (() => {
@@ -1306,6 +1347,9 @@ function AndroidTile({ itemWrapper, index, activate, locked, onReady }) {
                         engineRef.current?.poke?.()
                     }
                 })}>
+            <canvas ref={backgroundCanvasRef}
+                    className={`article-web-art-android-bg-canvas`}
+                    aria-hidden={true}/>
             <div className={`article-web-art-android-glow`} aria-hidden={true}/>
             <canvas ref={canvasRef}
                     className={`article-web-art-android-canvas`}/>
@@ -1513,8 +1557,8 @@ function HourglassTile({ itemWrapper, index, activate, locked, onReady }) {
     const engineRef = useRef(null)
     const didReadyRef = useRef(false)
     const visibleRef = useRef(true)
-    const [gravity, setGravity] = useState(1.1)
-    const [neckRatio, setNeckRatio] = useState(0.03)
+    const [gravity, setGravity] = useState(2.8)
+    const [neckRatio, setNeckRatio] = useState(0.01)
 
     useEffect(() => {
         if(!activate) return
@@ -1654,7 +1698,6 @@ function HourglassTile({ itemWrapper, index, activate, locked, onReady }) {
                                max={"0.22"}
                                step={"0.001"}
                                value={neckRatio}
-                               onInput={onNeckRatioChange}
                                onChange={onNeckRatioChange}
                                disabled={locked}
                                aria-label={"Hourglass neck size"}/>
@@ -1667,7 +1710,6 @@ function HourglassTile({ itemWrapper, index, activate, locked, onReady }) {
                                max={"2.8"}
                                step={"0.01"}
                                value={gravity}
-                               onInput={onGravityChange}
                                onChange={onGravityChange}
                                disabled={locked}
                                aria-label={"Hourglass gravity"}/>
@@ -2004,12 +2046,159 @@ function EmbroideryTile({ itemWrapper, index, activate, locked, onReady }) {
     )
 }
 
+function PulseBoxTile({ itemWrapper, index, activate, onReady }) {
+    const didReadyRef = useRef(false)
+    const iframeRef = useRef(null)
+
+    const srcDoc = useMemo(() => {
+        return `<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: #212121;
+}
+
+@keyframes pulse {
+  70% {
+    background-color: #e6e6ff;
+  }
+}
+
+.box {
+  -webkit-filter: contrast(30);
+  filter: contrast(30);
+  box-shadow: 0 0 100px black;
+  background-color: black;
+  font-size: min(10em, 48vmin);
+  padding: 0.5em;
+  position: relative;
+  z-index: 0;
+  color: #808080;
+  border: 2px solid #555;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  vertical-align: middle;
+  transition: background-color 2s linear;
+}
+
+.box:hover {
+  background-color: #d580ff;
+  animation: pulse 5s ease-in infinite;
+}
+
+.box:active {
+  background-color: black;
+  -webkit-filter: contrast(50) invert(1);
+  filter: contrast(50) invert(1);
+  animation: none;
+}
+
+@keyframes swayx {
+  50% {
+    left: 75%;
+  }
+}
+
+@keyframes swayy {
+  50% {
+    top: 75%;
+  }
+}
+
+@keyframes color {
+  14.2857142857% { background-color: hsl(14.2857142857deg 100% 50%); }
+  28.5714285714% { background-color: hsl(28.5714285714deg 100% 50%); }
+  42.8571428571% { background-color: hsl(42.8571428571deg 100% 50%); }
+  57.1428571429% { background-color: hsl(57.1428571429deg 100% 50%); }
+  71.4285714286% { background-color: hsl(71.4285714286deg 100% 50%); }
+  85.7142857143% { background-color: hsl(85.7142857143deg 100% 50%); }
+  100% { background-color: hsl(100deg 100% 50%); }
+}
+
+.circle {
+  border-radius: 50%;
+  height: 1em;
+  width: 1em;
+  -webkit-filter: blur(25px);
+  filter: blur(25px);
+  position: absolute;
+  background-color: white;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.one {
+  animation: color 12s linear infinite alternate;
+}
+
+.two {
+  font-size: 0.75em;
+  left: -75%;
+  top: -75%;
+  animation:
+    swayx 3s ease-in-out infinite,
+    swayy 3.3s ease-in-out infinite,
+    color 16s linear infinite alternate-reverse;
+}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="one circle"></div>
+    <div class="two circle"></div>
+  </div>
+</body>
+</html>`
+    }, [])
+
+    useEffect(() => {
+        if(!activate) return
+        if(didReadyRef.current) return
+        didReadyRef.current = true
+        onReady?.(itemWrapper.uniqueId)
+    }, [activate, itemWrapper.uniqueId, onReady])
+
+    return (
+        <div className={`article-web-art-tile article-web-art-pulse-tile`}
+             role={"img"}
+             aria-label={`Pulse web art tile ${index + 1}`}>
+            <iframe ref={iframeRef}
+                    className={`article-web-art-pulse-frame`}
+                    title={"Pulse web art"}
+                    srcDoc={srcDoc}
+                    sandbox={""}
+                    scrolling={"no"}/>
+        </div>
+    )
+}
+
 function SpiralDotsTile({ itemWrapper, index, activate, locked, onReady }) {
     const tileRef = useRef(null)
     const canvasRef = useRef(null)
     const engineRef = useRef(null)
     const didReadyRef = useRef(false)
     const pointerIdRef = useRef(null)
+    const pointerStartRef = useRef(null)
+    const didDragRef = useRef(false)
     const pointerActiveRef = useRef(false)
 
     const reduceMotion = useMemo(() => {
@@ -3997,6 +4186,8 @@ function RopeLightTile({ readyId, locked, onReady }) {
     const engineRef = useRef(null)
     const didReadyRef = useRef(false)
     const pointerIdRef = useRef(null)
+    const pointerStartRef = useRef(null)
+    const didDragRef = useRef(false)
 
     const reduceMotion = useMemo(() => {
         if(typeof window === "undefined" || !window.matchMedia) return false
@@ -4077,8 +4268,13 @@ function RopeLightTile({ readyId, locked, onReady }) {
         }
     }
 
-    const reset = () => {
-        engineRef.current?.reset?.()
+    const toggleHang = (event) => {
+        if(didDragRef.current) {
+            didDragRef.current = false
+            return
+        }
+        const pos = event ? pointerPosition(event) : { x: 0.5, y: 0.18 }
+        engineRef.current?.toggleHangAt?.(pos.x, pos.y)
         engineRef.current?.start?.()
     }
 
@@ -4088,24 +4284,35 @@ function RopeLightTile({ readyId, locked, onReady }) {
                 className={`article-web-art-tile article-web-art-tile-clickable`}
                 aria-label={`Rope light web art tile`}
                 disabled={locked}
-                onClick={locked ? undefined : reset}
+                onClick={locked ? undefined : toggleHang}
                 onPointerDown={locked ? undefined : (event) => {
                     pointerIdRef.current = event.pointerId
-                    const pos = pointerPosition(event)
-                    engineRef.current?.setPointer?.(pos.x, pos.y)
+                    didDragRef.current = false
+                    pointerStartRef.current = pointerPosition(event)
+                    try { event.currentTarget.setPointerCapture(event.pointerId) } catch(err) { void err }
+                    engineRef.current?.setPointer?.(pointerStartRef.current.x, pointerStartRef.current.y)
                 }}
                 onPointerMove={locked ? undefined : (event) => {
                     if(pointerIdRef.current != null && event.pointerId !== pointerIdRef.current) return
                     const pos = pointerPosition(event)
+                    const start = pointerStartRef.current
+                    if(start && Math.hypot(pos.x - start.x, pos.y - start.y) > 0.025) {
+                        didDragRef.current = true
+                    }
                     engineRef.current?.setPointer?.(pos.x, pos.y)
                 }}
                 onPointerUp={locked ? undefined : (event) => {
                     if(pointerIdRef.current != null && event.pointerId !== pointerIdRef.current) return
+                    try { event.currentTarget.releasePointerCapture(event.pointerId) } catch(err) { void err }
                     pointerIdRef.current = null
+                    pointerStartRef.current = null
                     engineRef.current?.clearPointer?.()
                 }}
-                onPointerCancel={locked ? undefined : (() => {
+                onPointerCancel={locked ? undefined : ((event) => {
+                    try { event.currentTarget.releasePointerCapture(event.pointerId) } catch(err) { void err }
                     pointerIdRef.current = null
+                    pointerStartRef.current = null
+                    didDragRef.current = false
                     engineRef.current?.clearPointer?.()
                 })}
                 onMouseMove={locked ? undefined : (event) => {
@@ -4114,16 +4321,19 @@ function RopeLightTile({ readyId, locked, onReady }) {
                 }}
                 onMouseLeave={locked ? undefined : (() => {
                     pointerIdRef.current = null
+                    pointerStartRef.current = null
                     engineRef.current?.clearPointer?.()
                 })}
                 onBlur={locked ? undefined : (() => {
                     pointerIdRef.current = null
+                    pointerStartRef.current = null
+                    didDragRef.current = false
                     engineRef.current?.clearPointer?.()
                 })}
                 onKeyDown={locked ? undefined : ((event) => {
                     if(event.key === "Enter" || event.key === " ") {
                         event.preventDefault()
-                        reset()
+                        toggleHang()
                     }
                 })}>
             <canvas ref={canvasRef}
@@ -4132,6 +4342,39 @@ function RopeLightTile({ readyId, locked, onReady }) {
                 Rope
             </span>
         </button>
+    )
+}
+
+const SOUP_CUBE_FACE_TRANSFORMS = [
+    "rotateX(270deg) translateZ(0.5em)",
+    "rotateY(0deg) translateZ(0.5em)",
+    "rotateY(90deg) translateZ(0.5em)",
+    "rotateY(180deg) translateZ(0.5em)",
+    "rotateY(270deg) translateZ(0.5em)",
+    "rotateX(90deg) translateZ(0.5em)"
+]
+
+const SOUP_CUBE_INDICES = Array.from({ length: 28 }, (_, index) => index)
+
+function SoupCubeBackdrop() {
+    return (
+        <div className={`article-web-art-soup-backdrop`} aria-hidden={true}>
+            {SOUP_CUBE_INDICES.map((index) => (
+                <div key={index}
+                     className={`article-web-art-soup-cube`}
+                     style={{
+                         animationDelay: `${index * 0.06}s`,
+                         fontSize: `${index + 1}em`,
+                         "--soup-cube-depth": `${index / Math.max(1, SOUP_CUBE_INDICES.length - 1)}`
+                     }}>
+                    {SOUP_CUBE_FACE_TRANSFORMS.map((transform, faceIndex) => (
+                        <span key={faceIndex}
+                              className={`article-web-art-soup-face`}
+                              style={{ transform }}/>
+                    ))}
+                </div>
+            ))}
+        </div>
     )
 }
 
@@ -4224,7 +4467,7 @@ function SoupShaderTile({ readyId, locked, onReady }) {
     return (
         <button type={"button"}
                 ref={tileRef}
-                className={`article-web-art-tile article-web-art-tile-clickable`}
+                className={`article-web-art-tile article-web-art-tile-clickable article-web-art-soup-tile`}
                 aria-label={`Soup shader web art tile`}
                 disabled={locked}
                 onPointerDown={locked ? undefined : (event) => {
@@ -4262,6 +4505,7 @@ function SoupShaderTile({ readyId, locked, onReady }) {
                     engineRef.current?.setHeld?.(false)
                     engineRef.current?.clearPointer?.()
                 })}>
+            <SoupCubeBackdrop/>
             <canvas ref={canvasRef}
                     className={`article-web-art-canvas`}/>
             <span className={`article-web-art-tile-label`}>
@@ -4493,7 +4737,7 @@ function TardisTile({ readyId, locked, onReady }) {
     )
 }
 
-function SendYourFunAnimationTile({ label, clickLabel, previewRequested = false }) {
+function SendYourFunAnimationTile({ submitLabelTop, submitLabelBottom, previewRequested = false }) {
     const navigation = useNavigation()
     const tileRef = useRef(null)
     const [previewOpen, setPreviewOpen] = useState(false)
@@ -4523,10 +4767,10 @@ function SendYourFunAnimationTile({ label, clickLabel, previewRequested = false 
     const iframeSrcDoc = useMemo(() => {
         if(!previewOpen) return ""
         return _buildSendYoursHexLoopSrcDoc({
-            seed: `${previewSeed || Date.now()}:${label}`,
+            seed: `${previewSeed || Date.now()}:${submitLabelTop} ${submitLabelBottom}`,
             reduceMotion
         })
-    }, [label, previewOpen, previewSeed, reduceMotion])
+    }, [previewOpen, previewSeed, reduceMotion, submitLabelBottom, submitLabelTop])
 
     useEffect(() => {
         let frameOneId = 0
@@ -4558,14 +4802,14 @@ function SendYourFunAnimationTile({ label, clickLabel, previewRequested = false 
              role={"button"}
              tabIndex={0}
             className={`article-web-art-tile article-web-art-tile-clickable article-web-art-tile-cta ${previewOpen ? "article-web-art-tile-cta-open" : "article-web-art-tile-cta-closed"}`}
-            aria-label={previewOpen ? "Kontakt preview" : label}
+            aria-label={previewOpen ? "Kontakt preview" : `${submitLabelTop} ${submitLabelBottom}`}
             aria-pressed={previewOpen}
             onClick={openPreview}
             onKeyDown={onKeyDown}>
             <div className={`article-web-art-tile-cta-preview ${previewOpen ? "article-web-art-tile-cta-preview-visible" : ""}`}
                  aria-hidden={true}>
                 {previewOpen && (
-                    <iframe key={`${previewSeed}-${label}`}
+                    <iframe key={`${previewSeed}-${submitLabelTop}-${submitLabelBottom}`}
                             className={`article-web-art-tile-cta-preview-frame`}
                             title={"Send yours preview"}
                             srcDoc={iframeSrcDoc}
@@ -4598,8 +4842,8 @@ function SendYourFunAnimationTile({ label, clickLabel, previewRequested = false 
             )}
 
             <div className={`article-web-art-tile-cta-content ${previewOpen ? "article-web-art-tile-cta-content-hidden" : ""}`}>
-                <div className={`article-web-art-tile-cta-title article-web-art-tile-cta-title-top`}>{label}</div>
-                <div className={`article-web-art-tile-cta-title article-web-art-tile-cta-title-bottom`}>{clickLabel}</div>
+                <div className={`article-web-art-tile-cta-title article-web-art-tile-cta-title-top`}>{submitLabelTop}</div>
+                <div className={`article-web-art-tile-cta-title article-web-art-tile-cta-title-bottom`}>{submitLabelBottom}</div>
             </div>
 
             {previewOpen && (

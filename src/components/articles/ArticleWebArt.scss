@@ -568,6 +568,100 @@ div.article-web-art-items {
     cursor: default;
 }
 
+.article-web-art-soup-tile {
+    background: #000;
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: none;
+    isolation: isolate;
+}
+
+.article-web-art-soup-backdrop {
+    position: absolute;
+    inset: 0;
+    display: none;
+    overflow: hidden;
+    z-index: 1;
+    pointer-events: none;
+    background: transparent;
+    color: black;
+    font-size: calc(0.5vh + 0.7vw);
+    perspective: 900px;
+    transform-style: preserve-3d;
+}
+
+.article-web-art-soup-cube {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 1em;
+    height: 1em;
+    transform-style: preserve-3d;
+    transform: rotateX(-90deg) rotateY(45deg);
+    animation: article-web-art-soup-spin 7.5s cubic-bezier(.5, -1, .25, -1) infinite;
+    animation-delay: var(--soup-cube-delay);
+}
+
+.article-web-art-soup-face {
+    display: block;
+    position: absolute;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    background: transparent;
+    border: 0.1em dotted rgb(0 0 0 / var(--soup-cube-depth, 0));
+    border-radius: 0.05em;
+    backface-visibility: hidden;
+}
+
+.article-web-art-soup-tile .article-web-art-canvas {
+    z-index: 0;
+    background: #000;
+    opacity: 1;
+    mix-blend-mode: normal;
+}
+
+.article-web-art-pulse-tile {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border: 0 !important;
+    border-radius: 0;
+    box-shadow: none !important;
+    background: #212121;
+    padding: 0;
+    cursor: default;
+    isolation: isolate;
+}
+
+.article-web-art-pulse-frame {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #212121;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .article-web-art-pulse-frame {
+        opacity: 1;
+    }
+}
+
+@keyframes article-web-art-soup-spin {
+    50% {
+        transform: rotateX(-90deg) rotateY(225deg);
+    }
+
+    100% {
+        transform: rotateX(-90deg) rotateY(0deg) rotateZ(90deg);
+    }
+}
+
 @keyframes article-web-art-spin-box-init {
     to {
         rotate: 1turn;
@@ -1014,6 +1108,11 @@ div.article-web-art-items-locked {
 .article-web-art-tile-cta-content {
     position: absolute;
     inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.12em;
     text-align: center;
     padding: 18px;
     pointer-events: none;
@@ -1022,24 +1121,25 @@ div.article-web-art-items-locked {
 }
 
 .article-web-art-tile-cta-title {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
     font-weight: 300;
     letter-spacing: 0.1px;
     color: rgba(255, 255, 255, 0.92);
-    font-size: 1.02rem;
-    line-height: 1.25;
+    font-size: 1rem;
+    line-height: 1.02;
     padding: 0;
     background: transparent;
 }
 
 .article-web-art-tile-cta-title-top {
-    top: 30%;
+    transform: translateY(-0.04em);
+    font-weight: 350;
+    letter-spacing: 0.02em;
 }
 
 .article-web-art-tile-cta-title-bottom {
-    top: 82%;
+    transform: translateY(0.04em);
+    font-weight: 350;
+    letter-spacing: 0.02em;
 }
 
 .article-web-art-tile-cta-preview {
@@ -1787,7 +1887,7 @@ div.article-web-art-items-locked {
 .article-web-art-tile-android {
     padding: clamp(10px, 5.5%, 20px);
     border: 1px solid rgba(255, 255, 255, 0.10);
-    border-radius: 30px;
+    border-radius: inherit;
     background:
         radial-gradient(circle at 18% 16%, rgba(37, 211, 102, 0.18), transparent 28%),
         radial-gradient(circle at 82% 82%, rgba(248, 250, 252, 0.08), transparent 26%),
@@ -1806,7 +1906,17 @@ div.article-web-art-android-glow {
     opacity: 0.22;
     filter: blur(12px);
     pointer-events: none;
+    z-index: 1;
+}
+
+canvas.article-web-art-android-bg-canvas {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
     z-index: 0;
+    pointer-events: none;
 }
 
 canvas.article-web-art-android-canvas {
@@ -1815,7 +1925,8 @@ canvas.article-web-art-android-canvas {
     display: block;
     width: 100%;
     height: 100%;
-    z-index: 1;
+    z-index: 2;
+    pointer-events: none;
     filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.20));
 }
 
@@ -1869,7 +1980,7 @@ span.article-web-art-tile-label {
     position: absolute;
     top: 10px;
     left: 10px;
-    z-index: 2;
+    z-index: 3;
     min-width: 28px;
     height: 28px;
     border-radius: 999px;

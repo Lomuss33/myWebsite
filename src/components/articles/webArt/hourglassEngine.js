@@ -3,14 +3,13 @@ import Matter from "matter-js"
 const { Engine, Bodies, Body, Composite, Sleeping } = Matter
 
 const DEFAULT_PARAMS = {
-    gravity: 1.4,
-    neckRatio: 0.03
+    gravity: 2.8,
+    neckRatio: 0.01
 }
 
 const CONFIG = {
-    maxParticles: 45000,
-    particleDensityMultiplier: 2.5,
-    wallThickness: 42,
+    maxParticles: 6000,
+    wallThickness: 36,
     colors: [
         "#ff3f70",
         "#ff7626",
@@ -33,8 +32,8 @@ const CONFIG = {
 }
 
 const LIMITS = {
-    gravity: { min: 0.45, max: 2.8 },
-    neckRatio: { min: 0.01, max: 0.22 }
+    gravity: { min: 0.25, max: 2.8 },
+    neckRatio: { min: 0.01, max: 0.2 }
 }
 
 function clamp(value, min, max) {
@@ -98,9 +97,12 @@ export function createHourglassEngine(canvas) {
     function buildGeometry() {
         const { width, height } = dimensions
 
-        geometry.height = Math.min(height * 0.48, 320)
-        geometry.maxWidth = Math.min(width * 0.38, 260)
-        geometry.particleRadius = Math.max(Math.min(geometry.maxWidth / 44, 3.5), 2)
+        geometry.height = Math.min(height * 0.44, 300)
+        geometry.maxWidth = Math.min(width * 0.34, 220)
+        geometry.particleRadius = Math.max(
+            Math.min(geometry.maxWidth / 44, 3.5),
+            2
+        )
         geometry.neckWidth = Math.max(
             geometry.maxWidth * params.neckRatio,
             geometry.particleRadius * 1.5
@@ -114,7 +116,11 @@ export function createHourglassEngine(canvas) {
         paths.left = []
 
         for(let y = -H; y <= H; y += 8) {
-            const x = neckW + (maxW - neckW) * Math.pow(Math.sin((Math.abs(y) / H) * (Math.PI / 2)), 2.5)
+            const x = neckW + (maxW - neckW) * Math.pow(
+                Math.sin((Math.abs(y) / H) * (Math.PI / 2)),
+                2.5
+            )
+
             paths.right.push({ x, y })
             paths.left.push({ x: -x, y })
         }
@@ -183,7 +189,7 @@ export function createHourglassEngine(canvas) {
         const maxW = geometry.maxWidth
         const particleRadius = geometry.particleRadius
         const neckW = geometry.neckWidth
-        const { wallThickness, maxParticles, colors, particleDensityMultiplier } = CONFIG
+        const { wallThickness, maxParticles, colors } = CONFIG
         const particleCollision = CONFIG.collision.particle
         const wallCollision = CONFIG.collision.wall
 
@@ -224,59 +230,52 @@ export function createHourglassEngine(canvas) {
             collisionFilter: particleCollision
         }
 
-        const densityScale = Math.sqrt(Math.max(1, particleDensityMultiplier))
-        const step = particleRadius * 1.35 / densityScale
-        const startY = -H + particleRadius * 4
-        const endY = -H * 0.02
+        const step = particleRadius * 1.8
+        const spawnPasses = 3
+        const startY = -H + particleRadius * 5
+        const endY = -H * 0.17
         const yRange = endY - startY || 1
 
-        for(let y = startY; y < endY; y += step) {
-            const rowWidth = neckW + (maxW - neckW) * Math.pow(Math.sin((Math.abs(y) / H) * (Math.PI / 2)), 2.5)
-            const limit = rowWidth - wallThickness / 2 - particleRadius * 2
-            if(limit <= 0) continue
+        for(let pass = 0; pass < spawnPasses; pass++) {
+            const yOffset = (pass / spawnPasses) * step
+            const xOffset = ((pass + 1) / spawnPasses) * step
 
-            const colorProgress = (y - startY) / yRange
-            const colorIndex = clamp(Math.floor(colorProgress * colors.length), 0, colors.length - 1)
-            const color = colors[colorIndex]
-
-            for(let x = -limit; x <= limit; x += step) {
-                if(entities.particles.length >= maxParticles) break
-
-                const randomizedRadius = particleRadius * (0.8 + Math.random() * 0.4)
-                const particle = Bodies.circle(
-                    cx + x + (Math.random() - 0.5),
-                    cy + y + (Math.random() - 0.5),
-                    randomizedRadius,
-                    {
-                        ...particleOptions,
-                        render: { fillStyle: color }
-                    }
+            for(let y = startY + yOffset; y < endY; y += step) {
+                const rowWidth = neckW + (maxW - neckW) * Math.pow(
+                    Math.sin((Math.abs(y) / H) * (Math.PI / 2)),
+                    2.5
                 )
+                const limit = rowWidth - wallThickness / 2 - particleRadius * 2
+                if(limit <= 0) continue
 
-                entities.particles.push(particle)
+                const colorProgress = (y - startY) / yRange
+                const colorIndex = clamp(Math.floor(colorProgress * colors.length), 0, colors.length - 1)
+                const color = colors[colorIndex]
+
+                for(let x = -limit + xOffset; x <= limit; x += step) {
+                    if(entities.particles.length >= maxParticles) break
+
+                    const randomizedRadius = particleRadius * (0.8 + Math.random() * 0.4)
+                    const particle = Bodies.circle(
+                        cx + x + (Math.random() - 0.5),
+                        cy + y + (Math.random() - 0.5),
+                        randomizedRadius,
+                        {
+                            ...particleOptions,
+                            render: { fillStyle: color }
+                        }
+                    )
+
+                    entities.particles.push(particle)
+                }
+
+                if(entities.particles.length >= maxParticles) break
             }
 
             if(entities.particles.length >= maxParticles) break
         }
 
         Composite.add(engine.world, entities.particles)
-    }
-
-    function cullEscapedParticles() {
-        const { cx, cy } = dimensions
-        const boundsX = geometry.maxWidth + 80
-        const boundsY = geometry.height + 80
-
-        for(let i = entities.particles.length - 1; i >= 0; i--) {
-            const particle = entities.particles[i]
-            if(
-                Math.abs(particle.position.x - cx) > boundsX ||
-                Math.abs(particle.position.y - cy) > boundsY
-            ) {
-                Composite.remove(engine.world, particle)
-                entities.particles.splice(i, 1)
-            }
-        }
     }
 
     function renderGlassBackground() {
@@ -290,24 +289,12 @@ export function createHourglassEngine(canvas) {
 
     function renderParticles() {
         const buckets = groupParticlesByColor(entities.particles)
-        const { cx, cy } = dimensions
 
         for(const [color, particles] of buckets.entries()) {
             ctx.beginPath()
 
             for(const particle of particles) {
                 const radius = particle.circleRadius || geometry.particleRadius
-                const localX = particle.position.x - cx
-                const localY = particle.position.y - cy
-                const isFullyInsideGlass =
-                    ctx.isPointInPath(paths.glass, localX, localY) &&
-                    ctx.isPointInPath(paths.glass, localX - radius, localY) &&
-                    ctx.isPointInPath(paths.glass, localX + radius, localY) &&
-                    ctx.isPointInPath(paths.glass, localX, localY - radius) &&
-                    ctx.isPointInPath(paths.glass, localX, localY + radius)
-
-                if(!isFullyInsideGlass) continue
-
                 ctx.moveTo(particle.position.x + radius, particle.position.y)
                 ctx.arc(
                     particle.position.x,
@@ -394,22 +381,12 @@ export function createHourglassEngine(canvas) {
         engine.world.gravity.x = Math.sin(angles.gravity) * params.gravity
         engine.world.gravity.y = Math.cos(angles.gravity) * params.gravity
 
-        if(Math.abs(diffGrav) > 0.05) {
-            entities.particles.forEach((particle) => Sleeping.set(particle, false))
-        }
-
-        const wakeChance = 0.02
         entities.particles.forEach((particle) => {
-            if(particle.isSleeping && Math.random() < wakeChance) {
+            if(particle.isSleeping && Math.random() < 0.02) {
                 Sleeping.set(particle, false)
-                Body.setVelocity(particle, {
-                    x: (Math.random() - 0.5) * 0.1,
-                    y: (Math.random() - 0.5) * 0.1
-                })
             }
         })
 
-        cullEscapedParticles()
         const subSteps = clamp(Math.ceil(dt / 8.333), 1, 6)
         const stepDt = dt / subSteps
         for(let i = 0; i < subSteps; i++) {

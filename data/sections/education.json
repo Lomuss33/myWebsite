@@ -162,10 +162,9 @@
                         "en": {
                             "title": "Training as Electronic Technician for Automation Technology",
                             "institution": "Provadis",
-                            "country": "Frankfurt AM, Germany",
+                            "country": "Frankfurt am Main, Germany",
                             "text": "Completed a training program focusing on automation technology.",
                             "list": [
-                                "3 years and 6 months of training",
                                 "Hands-on experience in automation systems",
                                 "Collaboration on technical projects"
                             ],
@@ -177,10 +176,9 @@
                         "de": {
                             "title": "Ausbildung als Elektroniker für Automatisierungstechnik",
                             "institution": "Clariant",
-                            "country": "Deutschland",
+                            "country": "Frankfurt am Main, Deutschland",
                             "text": "Absolvierte eine Ausbildung mit dem Schwerpunkt Automatisierungstechnik.",
                             "list": [
-                                "3 Jahre und 6 Monate Ausbildung",
                                 "Praktische Erfahrung in Automatisierungssystemen",
                                 "Zusammenarbeit an technischen Projekten"
                             ],
@@ -192,10 +190,9 @@
                         "hr": {
                             "title": "Obuka za Elektroničara za Automatizaciju",
                             "institution": "Clariant",
-                            "country": "Njemačka",
+                            "country": "Frankfurt am Main, Njemačka",
                             "text": "Završena obuka s fokusom na automatizaciju.",
                             "list": [
-                                "3 godine i 6 mjeseci obuke",
                                 "Praktično iskustvo u automatizacijskim sustavima",
                                 "Suradnja na tehničkim projektima"
                             ],
@@ -207,10 +204,9 @@
                         "tr": {
                             "title": "Otomasyon Teknolojisi Eğitimine Elektronik Teknisyeni",
                             "institution": "Clariant",
-                            "country": "Almanya",
+                            "country": "Frankfurt am Main, Almanya",
                             "text": "Otomasyon teknolojisi üzerine odaklanan bir eğitim programını tamamladım.",
                             "list": [
-                                "3 yıl 6 ay eğitim",
                                 "Otomasyon sistemlerinde uygulamalı deneyim",
                                 "Teknik projelerde işbirliği"
                             ],
@@ -256,7 +252,7 @@
                         "de": {
                             "title": "Ingenieurinformatik",
                             "institution": "Technische Hochschule Mittelhessen - THM",
-                            "country": "Deutschland",
+                            "country": "Gießen, Deutschland",
                             "text": "Aktuell studiere ich Ingenieurinformatik.",
                             "list": [
                                 "Jetzt seit 2 Jahren und 2 Monaten am Studium",
@@ -270,7 +266,7 @@
                         "hr": {
                             "title": "Inženjerska Računalna Sindrom",
                             "institution": "Tehnička Visoka Škola Mittelhessen - THM",
-                            "country": "Njemačka",
+                            "country": "Gießen, Njemačka",
                             "text": "Trenutno studiram inženjersku računalnu znanost.",
                             "list": [
                                 "Sad studiram 2 godine i 2 mjeseca",
@@ -284,7 +280,7 @@
                         "tr": {
                             "title": "Mühendislik Bilgisayar Bilimi",
                             "institution": "Mittelhessen Teknik Üniversitesi - THM",
-                            "country": "Almanya",
+                            "country": "Gießen, Almanya",
                             "text": "Şu anda Mühendislik Bilgisayar Biliminde okumaktayım.",
                             "list": [
                                 "Şu anda 2 yıl 2 ay okuma",
@@ -551,12 +547,10 @@
                             "country": "Livno, Bosnia",
                             "text": "Born in Livno, where my story began with curiosity, resilience, and a habit of learning from both the easy and the challenging parts of life.",
                             "list": [
-                                "Feb 2001 - Present",
                                 "Where my story started",
                                 "Shaped by both challenge and opportunity"
                             ],
                             "tags": [
-                                "Born in Livno",
                                 "Personal Story",
                                 "Growth Mindset"
                             ]
@@ -567,12 +561,10 @@
                             "country": "Livno, Bosnien",
                             "text": "In Livno geboren, begann mein Weg mit Neugier, Widerstandskraft und der Gewohnheit, aus den einfachen wie aus den herausfordernden Seiten des Lebens zu lernen.",
                             "list": [
-                                "Feb 2001 - heute",
                                 "Hier begann meine Geschichte",
                                 "Geprägt von Herausforderung und Chance"
                             ],
                             "tags": [
-                                "In Livno geboren",
                                 "Persönliche Geschichte",
                                 "Wachstumsdenken"
                             ]
@@ -583,12 +575,10 @@
                             "country": "Livno, Bosna",
                             "text": "Rođen u Livnu, gdje je moja priča počela znatiželjom, otpornošću i navikom da učim i iz jednostavnih i iz zahtjevnih strana života.",
                             "list": [
-                                "Velj 2001 - danas",
                                 "Tu je moja priča krenula",
                                 "Oblikovan i izazovima i prilikama"
                             ],
                             "tags": [
-                                "Rođen u Livnu",
                                 "Osobna priča",
                                 "Rast i razvoj"
                             ]
@@ -599,12 +589,10 @@
                             "country": "Livno, Bosna",
                             "text": "Livno'da başlayan hikayem; merak, dayanıklılık ve hayatın hem kolay hem de zor taraflarından öğrenme alışkanlığıyla şekillendi.",
                             "list": [
-                                "Şub 2001 - bugün",
                                 "Hikayemin başladığı yer",
                                 "Hayatın zorlu ve akıcı yanlarıyla şekillenen bir yolculuk"
                             ],
                             "tags": [
-                                "Livno'da doğdum",
                                 "Kişisel hikaye",
                                 "Gelişim odaklı"
                             ]

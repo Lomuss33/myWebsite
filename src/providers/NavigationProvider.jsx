@@ -175,6 +175,7 @@ function NavigationProvider({ children, sections, categories }) {
 
     const _adjustScrollBeforeTransition = () => {
         _clearPendingScrollWait()
+        utils.capabilities.scrollTo(0, true)
         _startTransition()
     }
 

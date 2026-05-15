@@ -28,8 +28,8 @@ div.scrollable {
 div.scrollable.scrollable-mobile-native {
     height: auto;
     min-height: 100vh;
-    overflow: visible;
-    overflow-x: hidden;
+    overflow-y: visible;
+    overflow-x: clip;
     overscroll-behavior-y: auto;
     touch-action: auto;
 }

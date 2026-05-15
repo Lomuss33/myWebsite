@@ -7,6 +7,8 @@ section.section {
     width: 100%;
     height: 100%;
     max-width: 1300px;
+    min-width: 0;
+    box-sizing: border-box;
 
     position: relative;
     margin: 0 auto;
@@ -22,6 +24,7 @@ section.section {
         0 26px 54px var(--theme-shell-shadow),
         0 4px 16px rgba(15, 23, 42, 0.08);
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        max-width: 100%;
         height: auto;
         min-height: 100vh;
         border-top-left-radius: 0;

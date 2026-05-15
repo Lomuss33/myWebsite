@@ -1037,7 +1037,8 @@ div.nav-profile-card {
             text-align: center;
             min-height: 0;
             margin-top: 2px;
-            width: calc(100% + 20px);
+            width: 100%;
+            max-width: 100%;
             transition:
                 opacity 0.18s ease,
                 filter 0.18s ease,

@@ -416,7 +416,7 @@ const renderSkillsArticle = (canonicalCv) => {
     `
 }
 
-const buildCvSectionMarkup = ({ canonicalCv, projects, hidden, headingTag = "h1" }) => {
+const buildCvSectionMarkup = ({ canonicalCv, projects, hidden, headingTag = "h1", includeContact = false }) => {
     const hiddenClassName = hidden ? " machine-cv-sr-only" : ""
     const ariaLabel = hidden
         ? `Machine-readable curriculum vitae for ${canonicalCv.name}`
@@ -427,7 +427,7 @@ const buildCvSectionMarkup = ({ canonicalCv, projects, hidden, headingTag = "h1"
         <section class="machine-cv${hiddenClassName}" aria-label="${escapeHtml(ariaLabel)}" lang="en">
             <${normalizedHeadingTag}>${escapeHtml(canonicalCv.name)}</${normalizedHeadingTag}>
             <p>${escapeHtml(canonicalCv.jobTitle)}</p>
-            ${renderContactArticle(canonicalCv)}
+            ${includeContact ? renderContactArticle(canonicalCv) : ""}
             ${renderSummaryArticle(canonicalCv)}
             ${renderTimelineArticle("Education", canonicalCv.education)}
             ${renderTimelineArticle("Experience", canonicalCv.experience)}
@@ -491,7 +491,7 @@ ${JSON.stringify(homeJsonLd, null, 4)}
 }
 
 const buildCvPageHtml = ({ canonicalCv, projects, imageUrl }) => {
-    const pageTitle = "Lovro Musić CV | Resume, Experience & Projects"
+    const pageTitle = "Lovro Musić English CV | Experience & Projects"
     const metaDescription = "CV and resume page for Lovro Musić, provided as a supporting document for education, experience, technical skills, projects, and structured resume data."
     const profilePageJsonLd = buildProfilePageJsonLd({
         canonicalCv,
@@ -603,9 +603,6 @@ ${JSON.stringify(profilePageJsonLd, null, 4)}
     </head>
     <body>
         <main class="machine-cv-page">
-            <p class="machine-cv-page__links">
-                <a href="${escapeHtml(canonicalCv.url)}" rel="author noopener noreferrer">Official website: ${escapeHtml(canonicalCv.url)}</a>
-            </p>
             <p class="machine-cv-page__links">
                 <a href="/">Portfolio</a> |
                 <a href="/resume.json">resume.json</a> |

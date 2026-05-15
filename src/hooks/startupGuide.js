@@ -10,19 +10,19 @@ const MOBILE_BOTTOM_TARGET_SELECTOR = ".nav-tab-controller-wrapper"
 const GUIDE_HINT_LABELS = {
     en: {
         desktop: "Look around.",
-        mobile: "Explore.",
+        mobile: "Explore the edges.",
     },
     de: {
         desktop: "Schau dich um.",
-        mobile: "Erkunde.",
+        mobile: "Kanten erkunden.",
     },
     hr: {
         desktop: "Pogledaj oko sebe.",
-        mobile: "Istrazi.",
+        mobile: "Istrazi rubove.",
     },
     tr: {
         desktop: "Etrafa bak.",
-        mobile: "Kesfet.",
+        mobile: "Kenarlari kesfet.",
     },
 }
 
@@ -44,6 +44,8 @@ const INITIAL_MOVEMENT_THRESHOLD_PX = 28
 const FADE_IN_MS = 140
 const TRAVEL_MS = 650
 const FADE_OUT_MS = 160
+const AMBIENT_START_DIP_MS = 900
+const AMBIENT_START_DIP_PX = 14
 
 const INITIAL_RADIUS_PX = 36
 const MIN_TARGET_RADIUS_PX = 60
@@ -474,14 +476,11 @@ function ensureGuideElements(state) {
     const overlay = document.createElement("div")
     overlay.className = "startup-guide-overlay"
 
-    const mobileOverlay = createMobileGuideOverlay()
-
     const label = document.createElement("div")
     label.className = "startup-guide-overlay-label"
     label.textContent = getGuideLabel(resolveLayoutMode())
 
     root.appendChild(overlay)
-    root.appendChild(mobileOverlay)
     root.appendChild(label)
     document.body.appendChild(root)
 
@@ -506,82 +505,6 @@ function setGuideLayoutMode(state, layoutMode) {
         return
 
     state.root.setAttribute("data-layout", layoutMode === "mobile" ? "mobile" : "desktop")
-}
-
-function createMobileGuideOverlay() {
-    const svgNs = "http://www.w3.org/2000/svg"
-    const svg = document.createElementNS(svgNs, "svg")
-    svg.setAttribute("class", "startup-guide-overlay-mobile")
-    svg.setAttribute("viewBox", "0 0 100 100")
-    svg.setAttribute("preserveAspectRatio", "none")
-    svg.setAttribute("aria-hidden", "true")
-
-    const defs = document.createElementNS(svgNs, "defs")
-    const mask = document.createElementNS(svgNs, "mask")
-    mask.setAttribute("id", "startup-guide-mobile-mask")
-    mask.setAttribute("maskUnits", "objectBoundingBox")
-    mask.setAttribute("maskContentUnits", "objectBoundingBox")
-
-    const maskRect = document.createElementNS(svgNs, "rect")
-    maskRect.setAttribute("x", "0")
-    maskRect.setAttribute("y", "0")
-    maskRect.setAttribute("width", "1")
-    maskRect.setAttribute("height", "1")
-    maskRect.setAttribute("fill", "white")
-
-    const centerCutout = document.createElementNS(svgNs, "circle")
-    centerCutout.setAttribute("cx", "0.5")
-    centerCutout.setAttribute("cy", "0.5")
-    centerCutout.setAttribute("r", "0.08")
-    centerCutout.setAttribute("fill", "black")
-
-    const topCone = document.createElementNS(svgNs, "polygon")
-    topCone.setAttribute("points", "0.5,0.5 0.28,0.15 0.72,0.15")
-    topCone.setAttribute("fill", "black")
-    topCone.setAttribute("opacity", "0.9")
-
-    const bottomCone = document.createElementNS(svgNs, "polygon")
-    bottomCone.setAttribute("points", "0.5,0.5 0.28,0.85 0.72,0.85")
-    bottomCone.setAttribute("fill", "black")
-    bottomCone.setAttribute("opacity", "0.9")
-
-    const topBand = document.createElementNS(svgNs, "rect")
-    topBand.setAttribute("x", "0.12")
-    topBand.setAttribute("y", "0")
-    topBand.setAttribute("width", "0.76")
-    topBand.setAttribute("height", "0.15")
-    topBand.setAttribute("rx", "0.03")
-    topBand.setAttribute("fill", "black")
-    topBand.setAttribute("opacity", "0.92")
-
-    const bottomBand = document.createElementNS(svgNs, "rect")
-    bottomBand.setAttribute("x", "0.08")
-    bottomBand.setAttribute("y", "0.85")
-    bottomBand.setAttribute("width", "0.84")
-    bottomBand.setAttribute("height", "0.15")
-    bottomBand.setAttribute("rx", "0.03")
-    bottomBand.setAttribute("fill", "black")
-    bottomBand.setAttribute("opacity", "0.94")
-
-    mask.appendChild(maskRect)
-    mask.appendChild(centerCutout)
-    mask.appendChild(topCone)
-    mask.appendChild(bottomCone)
-    mask.appendChild(topBand)
-    mask.appendChild(bottomBand)
-    defs.appendChild(mask)
-    svg.appendChild(defs)
-
-    const scrim = document.createElementNS(svgNs, "rect")
-    scrim.setAttribute("x", "0")
-    scrim.setAttribute("y", "0")
-    scrim.setAttribute("width", "100")
-    scrim.setAttribute("height", "100")
-    scrim.setAttribute("fill", "rgba(5, 10, 18, 0.74)")
-    scrim.setAttribute("mask", "url(#startup-guide-mobile-mask)")
-    svg.appendChild(scrim)
-
-    return svg
 }
 
 function getGuideLabel(layoutMode) {
@@ -686,7 +609,8 @@ function startAmbientMotion(state, initialTargets) {
         }
 
         const freshTargets = resolveGuideTargets() || targets
-        const ambientSpotlight = resolveAmbientSpotlight(freshTargets, now - startedAt)
+        const elapsedMs = now - startedAt
+        const ambientSpotlight = resolveAmbientSpotlight(freshTargets, elapsedMs)
         if(ambientSpotlight)
             applySpotlight(state, ambientSpotlight)
 
@@ -727,10 +651,10 @@ function resolveDesktopSpotlightSteps({ railRect, lowerRailRect }) {
         maxRadiusRatio: 0.32,
     })
     const finalSpotlight = resolveWeightedSpotlight(finalRect, {
-        anchorX: 0.34,
+        anchorX: 0.32,
         anchorY: 0.82,
-        radiusScale: 1.16,
-        minRadius: 72,
+        radiusScale: 1.12,
+        minRadius: 74,
         maxRadiusRatio: 0.3,
     })
 
@@ -767,12 +691,14 @@ function resolveDesktopAmbientSpotlight({ railRect, lowerRailRect }, elapsedMs) 
     if(!upperRailSpotlight || !lowerRailSpotlight)
         return null
 
-    const travel = easeInOutSine((Math.sin(elapsedMs * 0.00052) + 1) / 2)
+    const travel = easeInOutSine((Math.cos(elapsedMs * 0.00052) + 1) / 2)
     const glow = (Math.sin((elapsedMs * 0.0011) + 0.85) + 1) / 2
+    const startDipProgress = clamp(elapsedMs / AMBIENT_START_DIP_MS, 0, 1)
+    const startDip = Math.sin(startDipProgress * Math.PI) * AMBIENT_START_DIP_PX
 
     return {
         x: interpolate(upperRailSpotlight.x, lowerRailSpotlight.x, travel),
-        y: interpolate(upperRailSpotlight.y, lowerRailSpotlight.y, travel),
+        y: interpolate(upperRailSpotlight.y, lowerRailSpotlight.y, travel) + startDip,
         radius: interpolate(upperRailSpotlight.radius, lowerRailSpotlight.radius, travel) + interpolate(-3, 6, glow),
         opacity: 0.9 + (glow * 0.1),
     }

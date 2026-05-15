@@ -18,11 +18,14 @@ function Scrollable({ children, id, shouldResetScroll, setShouldResetScroll, cla
 
         const div = document.getElementById(id)
         setTimeout(() => {
-            if(div) div.scrollTop = 0
+            if(isMobileLayout) {
+                window.scrollTo({ top: 0, behavior: "instant" })
+            }
+            else if(div) div.scrollTop = 0
         }, 50)
 
         setShouldResetScroll(false)
-    }, [shouldResetScroll])
+    }, [shouldResetScroll, isMobileLayout])
 
     return (
         <div className={`scrollable-wrapper ${constants.HTML_CLASSES.scrollbarDecorator} ${className}`}>

@@ -293,13 +293,12 @@
     color: transparent;
 }
 
-[data-theme="light"] article.article-timeline--my-art div.article-timeline-item-content,
 [data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines,
 [data-theme="light"] article#article-1-section-experience div.article-timeline-item-info-for-timelines,
 [data-theme="light"] article#article-1-section-my-writings div.article-timeline-item-info-for-timelines,
 [data-theme="light"] article.article-timeline--art-photography div.article-timeline-item-info-for-timelines,
 [data-theme="light"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines {
-    border: 1px solid rgba(37, 99, 235, 0.14);
+    border-color: rgba(37, 99, 235, 0.14);
     background: linear-gradient(180deg, #ffffff, #f6f9fd);
     box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
 }
@@ -363,7 +362,7 @@
 [data-theme="light"] article.article-timeline--art-photography div.article-timeline-item-info-for-timelines-tags-footer li.article-timeline-item-info-for-timelines-tags-footer-tag,
 [data-theme="light"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-tags-footer li.article-timeline-item-info-for-timelines-tags-footer-tag {
     background: linear-gradient(180deg, #ffffff, #eef4fb);
-    border: 1px solid rgba(37, 99, 235, 0.14);
+    border-color: rgba(37, 99, 235, 0.14);
     color: #0f172a;
 }
 
@@ -1341,7 +1340,6 @@
 }
 
 [data-theme="light"] article.article-timeline--art-photography ul.article-timeline-items {
-    --timeline-line-width: 4px;
     --timeline-line-color: rgba(14, 165, 233, 0.28);
 }
 
@@ -1422,6 +1420,342 @@
     --probe-accent: #06b6d4;
     --probe-accent-strong: color-mix(in srgb, var(--probe-accent) 72%, #ffffff 28%);
     --probe-accent-soft: color-mix(in srgb, var(--probe-accent) 10%, transparent 90%);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines {
+    --card-accent: #22d3ee;
+    --card-accent-2: #a855f7;
+    --card-accent-3: #fbbf24;
+    --card-surface-top: #070b16;
+    --card-surface-bottom: #03050c;
+    --card-border: rgba(70, 85, 130, 0.58);
+    --card-shadow: 0 24px 52px rgba(2, 6, 23, 0.56);
+    --card-shadow-hover: 0 30px 64px rgba(34, 211, 238, 0.16);
+    --card-text-strong: #f8fbff;
+    --card-text-mid: #d4ddf4;
+    --card-text-soft: #8ea3c7;
+    border-color: var(--card-border);
+    background:
+        radial-gradient(circle at 14% 12%, rgba(34, 211, 238, 0.12), transparent 30%),
+        radial-gradient(circle at 86% 14%, rgba(168, 85, 247, 0.16), transparent 32%),
+        radial-gradient(circle at 84% 84%, rgba(251, 191, 36, 0.10), transparent 30%),
+        linear-gradient(142deg, var(--card-surface-top), var(--card-surface-bottom));
+    box-shadow:
+        var(--card-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07),
+        0 0 0 1px rgba(34, 211, 238, 0.06);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines::before {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 22%),
+        radial-gradient(circle at top right, rgba(168, 85, 247, 0.16) 0%, transparent 52%),
+        radial-gradient(circle at bottom left, rgba(34, 211, 238, 0.14) 0%, transparent 46%);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines::after {
+    background: linear-gradient(180deg, var(--card-accent), var(--card-accent-2) 58%, var(--card-accent-3));
+    box-shadow: 0 0 18px rgba(34, 211, 238, 0.28);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-header-main h5 {
+    color: var(--card-text-strong);
+    text-shadow: none;
+    text-decoration-color: var(--card-accent);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression ul.article-timeline-item-info-for-timelines-header-prop-list,
+[data-theme="light"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-body,
+[data-theme="light"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-body p,
+[data-theme="light"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-body span,
+[data-theme="light"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-body li {
+    color: var(--card-text-mid);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item,
+[data-theme="light"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-body {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-body a,
+[data-theme="light"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-body strong,
+[data-theme="light"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-body b {
+    color: var(--card-text-strong);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-tags-footer li.article-timeline-item-info-for-timelines-tags-footer-tag {
+    color: var(--card-text-strong);
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(6, 9, 16, 0.96));
+    border: 1px solid color-mix(in srgb, var(--card-accent) 34%, var(--card-border) 66%);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression div.article-item-preview-menu-button-list {
+    background: rgba(3, 7, 18, 0.28);
+    border-color: rgba(255, 255, 255, 0.20);
+    box-shadow:
+        0 12px 28px rgba(2, 6, 23, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression button.article-item-preview-menu-circular-button,
+[data-theme="light"] article.article-timeline--art-digital-expression button.article-item-preview-menu-website-button-compact {
+    color: #ecfffb;
+    background:
+        radial-gradient(circle at 30% 22%, rgba(255, 255, 255, 0.36), transparent 46%),
+        rgba(15, 23, 42, 0.66);
+    border-color: rgba(255, 255, 255, 0.32);
+    box-shadow:
+        0 10px 18px rgba(2, 6, 23, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression button.article-item-preview-menu-website-button {
+    color: #ecfffb !important;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.06)) !important;
+    border-color: rgba(255, 255, 255, 0.28) !important;
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-neo-surface div.article-timeline-item-info-for-timelines {
+    --card-accent: #fbbf24;
+    --card-accent-2: #ec4899;
+    --card-accent-3: #22d3ee;
+    --card-text-strong: #fff7ed;
+    --card-text-mid: rgba(255, 247, 237, 0.84);
+    --card-text-soft: rgba(255, 237, 213, 0.74);
+    border-color: rgba(251, 191, 36, 0.4);
+    background:
+        radial-gradient(circle at 88% 10%, rgba(251, 191, 36, 0.24), transparent 34%),
+        radial-gradient(circle at 12% 86%, rgba(34, 211, 238, 0.18), transparent 42%),
+        linear-gradient(135deg, #fbbf24 0%, #f97316 34%, #dc2626 72%, #7c2d12 100%);
+    box-shadow:
+        0 28px 58px rgba(124, 45, 18, 0.36),
+        0 0 0 1px rgba(251, 191, 36, 0.16) inset,
+        0 0 44px rgba(236, 72, 153, 0.16);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-neo-surface div.article-timeline-item-info-for-timelines::before {
+    background:
+        linear-gradient(168deg, rgba(255, 255, 255, 0.30) 0%, rgba(255, 255, 255, 0.07) 100%),
+        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.22), transparent 32%);
+    border-color: rgba(255, 255, 255, 0.34);
+    border-bottom-color: rgba(255, 255, 255, 0.16);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-neo-surface div.article-timeline-item-info-for-timelines-header-main h5 {
+    color: #fff7ed;
+    text-shadow: 0 2px 18px rgba(124, 45, 18, 0.5);
+    text-decoration-color: rgba(34, 211, 238, 0.78);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-neo-surface ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item,
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-neo-surface div.article-timeline-item-info-for-timelines-body {
+    color: rgba(255, 247, 237, 0.86);
+    background: rgba(124, 45, 18, 0.24);
+    border-color: rgba(255, 255, 255, 0.24);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass div.article-timeline-item-info-for-timelines {
+    --card-accent: #00ffd6;
+    --card-accent-2: #08e260;
+    --card-accent-3: #c084fc;
+    --card-text-strong: #003b2a;
+    --card-text-mid: rgba(0, 70, 48, 0.82);
+    --card-text-soft: rgba(0, 80, 55, 0.7);
+    border-color: rgba(255, 255, 255, 0.62);
+    background:
+        radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.42), transparent 34%),
+        linear-gradient(135deg, #00ffd6 0%, #08e260 58%, #22c55e 100%);
+    box-shadow:
+        0 28px 58px rgba(0, 80, 60, 0.28),
+        0 0 0 1px rgba(255, 255, 255, 0.26) inset,
+        0 0 48px rgba(0, 255, 214, 0.22);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass div.article-timeline-item-info-for-timelines::before {
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0.82) 100%);
+    border-color: rgba(255, 255, 255, 0.82);
+    border-bottom-color: rgba(255, 255, 255, 0.72);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass div.article-timeline-item-info-for-timelines-header-main h5 {
+    color: #005a3d;
+    text-shadow: 0 12px 30px rgba(0, 137, 78, 0.16);
+    text-decoration-color: rgba(192, 132, 252, 0.82);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item,
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass div.article-timeline-item-info-for-timelines-body {
+    color: rgba(0, 72, 48, 0.86);
+    background: rgba(255, 255, 255, 0.34);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-crystal-facet div.article-timeline-item-info-for-timelines {
+    --card-accent: #22d3ee;
+    --card-accent-2: #818cf8;
+    --card-accent-3: #f472b6;
+    --card-text-strong: #f8fbff;
+    --card-text-mid: rgba(226, 232, 255, 0.86);
+    --card-text-soft: rgba(203, 213, 255, 0.72);
+    border-color: rgba(129, 140, 248, 0.42);
+    background:
+        radial-gradient(circle at 82% 14%, rgba(244, 114, 182, 0.20), transparent 32%),
+        radial-gradient(circle at 12% 82%, rgba(34, 211, 238, 0.18), transparent 38%),
+        conic-gradient(from 200deg at 65% 35%, #22d3ee 0deg, #818cf8 92deg, #f472b6 172deg, #facc15 250deg, #22d3ee 360deg);
+    box-shadow:
+        0 28px 58px rgba(49, 46, 129, 0.34),
+        0 0 0 1px rgba(255, 255, 255, 0.16) inset,
+        0 0 44px rgba(34, 211, 238, 0.16);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-crystal-facet div.article-timeline-item-info-for-timelines::before {
+    background:
+        linear-gradient(155deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.07) 48%, rgba(15, 23, 42, 0.08)),
+        linear-gradient(110deg, transparent 0 36%, rgba(255, 255, 255, 0.22) 36% 37%, transparent 37% 100%);
+    border-color: rgba(255, 255, 255, 0.32);
+    border-bottom-color: rgba(255, 255, 255, 0.16);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-crystal-facet div.article-timeline-item-info-for-timelines-header-main h5 {
+    color: #f8fbff;
+    text-shadow: 0 2px 18px rgba(49, 46, 129, 0.42);
+    text-decoration-color: rgba(250, 204, 21, 0.82);
+}
+
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-crystal-facet ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item,
+[data-theme="light"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-crystal-facet div.article-timeline-item-info-for-timelines-body {
+    color: rgba(248, 251, 255, 0.88);
+    background: rgba(15, 23, 42, 0.24);
+    border-color: rgba(255, 255, 255, 0.24);
+}
+
+[data-theme="dark"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines {
+    --card-accent: #67e8f9;
+    --card-accent-2: #c084fc;
+    --card-accent-3: #fde68a;
+    --card-surface-top: #020617;
+    --card-surface-bottom: #050014;
+    --card-border: rgba(103, 232, 249, 0.24);
+    --card-shadow: 0 28px 64px rgba(0, 0, 0, 0.68);
+    --card-shadow-hover: 0 34px 76px rgba(103, 232, 249, 0.18);
+    --card-text-strong: #ffffff;
+    --card-text-mid: rgba(226, 242, 255, 0.88);
+    --card-text-soft: rgba(169, 190, 218, 0.76);
+    border-color: var(--card-border);
+    background:
+        radial-gradient(circle at 10% 10%, rgba(103, 232, 249, 0.16), transparent 28%),
+        radial-gradient(circle at 88% 12%, rgba(192, 132, 252, 0.20), transparent 34%),
+        radial-gradient(circle at 80% 86%, rgba(253, 230, 138, 0.08), transparent 30%),
+        linear-gradient(142deg, var(--card-surface-top), var(--card-surface-bottom));
+    box-shadow:
+        var(--card-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 0 0 1px rgba(103, 232, 249, 0.08);
+}
+
+[data-theme="dark"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines::before {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 24%),
+        radial-gradient(circle at top right, rgba(192, 132, 252, 0.20) 0%, transparent 52%),
+        radial-gradient(circle at bottom left, rgba(103, 232, 249, 0.16) 0%, transparent 46%);
+}
+
+[data-theme="dark"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines::after {
+    background: linear-gradient(180deg, var(--card-accent), var(--card-accent-2) 58%, var(--card-accent-3));
+    box-shadow: 0 0 24px rgba(103, 232, 249, 0.34);
+}
+
+[data-theme="dark"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-body {
+    background: rgba(6, 12, 28, 0.58);
+    border-color: rgba(255, 255, 255, 0.16);
+}
+
+[data-theme="dark"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-neo-surface div.article-timeline-item-info-for-timelines {
+    --card-accent: #facc15;
+    --card-accent-2: #fb7185;
+    --card-accent-3: #22d3ee;
+    --card-text-strong: #fff7ed;
+    --card-text-mid: rgba(255, 237, 213, 0.86);
+    --card-text-soft: rgba(254, 215, 170, 0.72);
+    border-color: rgba(250, 204, 21, 0.34);
+    background:
+        radial-gradient(circle at 86% 10%, rgba(250, 204, 21, 0.18), transparent 34%),
+        radial-gradient(circle at 12% 88%, rgba(34, 211, 238, 0.14), transparent 42%),
+        linear-gradient(135deg, #451a03 0%, #7c2d12 38%, #881337 72%, #1e1b4b 100%);
+    box-shadow:
+        0 30px 66px rgba(0, 0, 0, 0.62),
+        0 0 0 1px rgba(250, 204, 21, 0.12) inset,
+        0 0 48px rgba(251, 113, 133, 0.15);
+}
+
+[data-theme="dark"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-neo-surface div.article-timeline-item-info-for-timelines-body,
+[data-theme="dark"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-neo-surface ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item {
+    color: rgba(255, 247, 237, 0.88);
+    background: rgba(69, 26, 3, 0.38);
+    border-color: rgba(250, 204, 21, 0.18);
+}
+
+[data-theme="dark"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass div.article-timeline-item-info-for-timelines {
+    --card-accent: #2dd4bf;
+    --card-accent-2: #22c55e;
+    --card-accent-3: #a78bfa;
+    --card-text-strong: #eafffb;
+    --card-text-mid: rgba(209, 250, 244, 0.86);
+    --card-text-soft: rgba(153, 225, 211, 0.72);
+    border-color: rgba(45, 212, 191, 0.28);
+    background:
+        radial-gradient(circle at 30% 18%, rgba(45, 212, 191, 0.22), transparent 36%),
+        radial-gradient(circle at 82% 82%, rgba(167, 139, 250, 0.14), transparent 34%),
+        linear-gradient(135deg, #022c22 0%, #064e3b 56%, #052e2b 100%);
+    box-shadow:
+        0 30px 66px rgba(0, 0, 0, 0.62),
+        0 0 0 1px rgba(45, 212, 191, 0.14) inset,
+        0 0 50px rgba(45, 212, 191, 0.16);
+}
+
+[data-theme="dark"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass div.article-timeline-item-info-for-timelines::before {
+    background: linear-gradient(0deg, rgba(6, 78, 59, 0.28) 0%, rgba(209, 250, 229, 0.16) 100%);
+    border-color: rgba(153, 246, 228, 0.24);
+}
+
+[data-theme="dark"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass div.article-timeline-item-info-for-timelines-header-main h5 {
+    color: #eafffb;
+    text-shadow: 0 2px 18px rgba(20, 184, 166, 0.34);
+    text-decoration-color: rgba(167, 139, 250, 0.86);
+}
+
+[data-theme="dark"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass div.article-timeline-item-info-for-timelines-body,
+[data-theme="dark"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item {
+    color: rgba(209, 250, 244, 0.88);
+    background: rgba(2, 44, 34, 0.42);
+    border-color: rgba(45, 212, 191, 0.20);
+}
+
+[data-theme="dark"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-crystal-facet div.article-timeline-item-info-for-timelines {
+    --card-accent: #67e8f9;
+    --card-accent-2: #a78bfa;
+    --card-accent-3: #f0abfc;
+    --card-text-strong: #fbfdff;
+    --card-text-mid: rgba(226, 232, 255, 0.88);
+    --card-text-soft: rgba(199, 210, 254, 0.74);
+    border-color: rgba(167, 139, 250, 0.32);
+    background:
+        radial-gradient(circle at 82% 14%, rgba(240, 171, 252, 0.18), transparent 32%),
+        radial-gradient(circle at 12% 82%, rgba(103, 232, 249, 0.16), transparent 38%),
+        conic-gradient(from 200deg at 65% 35%, #164e63 0deg, #3730a3 92deg, #831843 172deg, #713f12 250deg, #164e63 360deg);
+    box-shadow:
+        0 30px 66px rgba(0, 0, 0, 0.62),
+        0 0 0 1px rgba(255, 255, 255, 0.12) inset,
+        0 0 48px rgba(103, 232, 249, 0.14);
+}
+
+[data-theme="dark"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-crystal-facet div.article-timeline-item-info-for-timelines-body,
+[data-theme="dark"] article.article-timeline--art-digital-expression li.article-timeline-item--visual-crystal-facet ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item {
+    color: rgba(248, 251, 255, 0.9);
+    background: rgba(15, 23, 42, 0.34);
+    border-color: rgba(255, 255, 255, 0.22);
 }
 
 [data-theme="light"] article#article-2-section-my-hardware section.article-data-probe-block.accent-interactive {
@@ -1712,7 +2046,7 @@
 [data-theme="light"] article.article-timeline--art-photography div.article-timeline-item-info-for-timelines-tags-footer li.article-timeline-item-info-for-timelines-tags-footer-tag,
 [data-theme="light"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-tags-footer li.article-timeline-item-info-for-timelines-tags-footer-tag {
     background: linear-gradient(180deg, #ffffff, #eef4fb);
-    border: 1px solid rgba(37, 99, 235, 0.14);
+    border-color: rgba(37, 99, 235, 0.14);
     color: #0f172a;
 }
 
@@ -2010,9 +2344,62 @@
     color: #0f172a;
 }
 
-[data-theme="light"] article.article-timeline--my-art div.article-timeline-item-content {
-    background: transparent;
-    border: 0;
-    box-shadow: none;
-    padding: 0;
+[data-theme="light"] article#article-3-section-my-art div.article-web-art-intro-guide-inner,
+[data-theme="light"] article#article-3-section-my-art div.article-web-art-intro-guide:hover div.article-web-art-intro-guide-inner {
+    color: #0f172a;
 }
+
+[data-theme="light"] article#article-3-section-my-art p.article-web-art-intro-cover-title,
+[data-theme="light"] article#article-3-section-my-art span.article-web-art-intro-guide-eyebrow,
+[data-theme="light"] article#article-3-section-my-art p.article-web-art-intro-guide-line,
+[data-theme="light"] article#article-3-section-my-art .article-web-art-intro-guide-fragment,
+[data-theme="light"] article#article-3-section-my-art .article-web-art-intro-guide-fragment-hero,
+[data-theme="light"] article#article-3-section-my-art .article-web-art-intro-guide-fragment-glow,
+[data-theme="light"] article#article-3-section-my-art .article-web-art-intro-guide-fragment-soft {
+    color: #0f172a;
+    text-shadow: none;
+}
+
+[data-theme="light"] article#article-3-section-my-art .article-web-art-intro-guide-fragment-glow {
+    text-decoration-color: rgba(37, 99, 235, 0.42);
+}
+
+[data-theme="light"] article#article-3-section-my-art .article-web-art-intro-guide-fragment-soft {
+    color: #334155;
+}
+
+[data-theme="light"] article#article-3-section-my-art .article-web-art-intro-guide-fragment-action {
+    border-color: rgba(37, 99, 235, 0.22);
+    background: linear-gradient(180deg, rgba(37, 99, 235, 0.10), rgba(14, 165, 233, 0.08));
+    color: #1e3a8a;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.72),
+        0 0 0 1px rgba(37, 99, 235, 0.06);
+}
+
+[data-theme="light"] article#article-3-section-my-art p.article-web-art-intro-guide-line-2::before,
+[data-theme="light"] article#article-3-section-my-art p.article-web-art-intro-guide-line-3::before {
+    color: #2563eb;
+    text-shadow: none;
+}
+
+[data-theme="light"] article#article-3-section-my-art div.article-web-art-intro-cover-buttons {
+    border-color: rgba(37, 99, 235, 0.16);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(238, 244, 251, 0.94));
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.88),
+        0 14px 24px rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="light"] article#article-3-section-my-art button.article-web-art-intro-cover-button,
+[data-theme="light"] article#article-3-section-my-art button.article-web-art-intro-cover-button-secondary,
+[data-theme="light"] article#article-3-section-my-art button.article-web-art-intro-cover-button-secondary-active {
+    color: #0f172a;
+    text-shadow: none;
+}
+
+[data-theme="light"] article#article-3-section-my-art button.article-web-art-intro-cover-button-secondary {
+    border-color: rgba(37, 99, 235, 0.18);
+    background: linear-gradient(180deg, #ffffff 0%, #eef4fb 100%);
+}
+

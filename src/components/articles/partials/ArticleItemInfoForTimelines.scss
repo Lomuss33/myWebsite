@@ -1547,3 +1547,26 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
         width: calc(100% - var(--digital-card-stack-base, 7rem) - 0.9rem);
     }
 }
+
+[data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines,
+[data-theme="light"] article#article-1-section-experience div.article-timeline-item-info-for-timelines,
+[data-theme="light"] article#article-1-section-my-writings div.article-timeline-item-info-for-timelines,
+[data-theme="light"] article.article-timeline--art-photography div.article-timeline-item-info-for-timelines,
+[data-theme="light"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines {
+    --card-surface-top: transparent;
+    --card-surface-bottom: transparent;
+    --card-border: transparent;
+    --card-shadow: none;
+    --card-shadow-hover: none;
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+}
+
+[data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines::before,
+[data-theme="light"] article#article-1-section-experience div.article-timeline-item-info-for-timelines::before,
+[data-theme="light"] article#article-1-section-my-writings div.article-timeline-item-info-for-timelines::before,
+[data-theme="light"] article.article-timeline--art-photography div.article-timeline-item-info-for-timelines::before,
+[data-theme="light"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines::before {
+    background: none;
+}

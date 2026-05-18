@@ -204,13 +204,13 @@ article#article-3-section-experience {
         --experience-card-prose-max-width: min(100%, 72ch);
         --experience-card-intro-max-width: min(100%, 46ch);
         --experience-card-rail-max-width: min(100%, 780px);
-        --experience-flow-card-gap: clamp(18px, 2vw, 28px);
-        --experience-flow-card-radius: 30px;
+        --experience-flow-card-gap: clamp(14px, 1.6vw, 22px);
+        --experience-flow-card-radius: 26px;
         --experience-flow-label-color: #95a6bb;
         --experience-flow-label-color-strong: #eef5ff;
         --experience-flow-trait-color: #c7d5e6;
         --experience-flow-trait-divider: rgba(255, 255, 255, 0.18);
-        --experience-flow-rail-padding: calc(var(--pretext-draggable-inline-icon-text-handle-size) / 2 + 16px);
+        --experience-flow-rail-padding: calc(var(--pretext-draggable-inline-icon-text-handle-size) / 2 + 12px);
         --experience-flow-axis-label-inactive-opacity: 0.48;
         --experience-flow-axis-label-active-opacity: 1;
         gap: var(--experience-flow-card-gap);
@@ -222,7 +222,7 @@ article#article-3-section-experience {
             --experience-card-prose-max-width: 100%;
             --experience-card-intro-max-width: 100%;
             --experience-card-rail-max-width: 100%;
-            gap: 18px;
+            gap: 14px;
         }
     }
 
@@ -231,11 +231,11 @@ article#article-3-section-experience {
         --experience-card-accent-soft: rgb(54 190 92 / 0.18);
         --experience-card-accent-soft-strong: rgb(54 190 92 / 0.34);
         display: grid;
-        gap: clamp(16px, 1.5vw, 22px);
+        gap: clamp(12px, 1.2vw, 18px);
         position: relative;
         width: 100%;
         overflow: clip;
-        padding: clamp(20px, 2.4vw, 34px) clamp(24px, 2.6vw, 36px);
+        padding: clamp(18px, 2vw, 28px) clamp(20px, 2.2vw, 30px);
         border-radius: var(--experience-flow-card-radius);
         border: 1px solid color-mix(in srgb, var(--experience-card-accent) 24%, rgba(255, 255, 255, 0.08));
         background:
@@ -253,7 +253,7 @@ article#article-3-section-experience {
             background 140ms linear;
 
         @include media-breakpoint-down(lg) {
-            padding-inline: 22px;
+            padding-inline: 20px;
         }
 
         &::before {
@@ -331,8 +331,8 @@ article#article-3-section-experience {
         display: grid;
         gap: 4px;
         width: var(--experience-card-inner-max-width);
-        margin: 0 auto 2px;
-        padding-bottom: 0.72rem;
+        margin: 0 auto;
+        padding-bottom: 0.56rem;
         justify-items: center;
         text-align: center;
 
@@ -415,7 +415,7 @@ article#article-3-section-experience {
         justify-content: space-between;
         gap: 16px;
         width: var(--experience-card-inner-max-width);
-        margin: 0 auto -2px;
+        margin: 0 auto -4px;
         padding-bottom: 2px;
 
         &::after {
@@ -466,7 +466,7 @@ article#article-3-section-experience {
     div.pretext-draggable-inline-icon-text-body,
     p.pretext-draggable-inline-icon-text-paragraph {
         font-size: clamp(0.98rem, 0.22vw + 0.96rem, 1.08rem);
-        line-height: 1.72;
+        line-height: 1.64;
     }
 
     p.pretext-draggable-inline-icon-text-intro {
@@ -475,13 +475,13 @@ article#article-3-section-experience {
         color: #f8fbff;
         font-size: clamp(1.02rem, 0.46vw + 0.98rem, 1.24rem);
         font-weight: 600;
-        line-height: 1.58;
+        line-height: 1.5;
         text-wrap: balance;
         letter-spacing: -0.018em;
     }
 
     div.pretext-draggable-inline-icon-text-body {
-        gap: 0.82rem;
+        gap: 0.68rem;
         max-width: var(--experience-card-prose-max-width);
         margin: 0 auto;
     }
@@ -492,14 +492,14 @@ article#article-3-section-experience {
 
     div.pretext-draggable-inline-icon-text-rail-block {
         width: var(--experience-card-rail-max-width);
-        margin: clamp(0.95rem, 1.2vw, 1.45rem) auto;
+        margin: clamp(0.65rem, 0.9vw, 1.05rem) auto;
         padding-inline: var(--experience-flow-rail-padding);
     }
 
     div.pretext-draggable-inline-icon-text-rail-hit-area {
         width: 100%;
         max-width: none;
-        height: clamp(76px, 8vw, 92px);
+        height: clamp(66px, 7vw, 80px);
         margin: 0;
     }
 
@@ -597,8 +597,8 @@ article#article-3-section-experience {
 
     @include media-breakpoint-down(sm) {
         div.article-text-item.article-text-item-flow-card {
-            padding: 18px 16px;
-            border-radius: 24px;
+            padding: 16px 14px;
+            border-radius: 22px;
         }
 
         div.article-text-flow-card-header {
@@ -611,7 +611,7 @@ article#article-3-section-experience {
         }
 
         div.article-text-flow-card-header {
-            padding-bottom: 0.62rem;
+            padding-bottom: 0.52rem;
         }
 
         p.article-text-flow-card-eyebrow {
@@ -639,7 +639,7 @@ article#article-3-section-experience {
         }
 
         div.pretext-draggable-inline-icon-text-rail-block {
-            padding-inline: calc(var(--pretext-draggable-inline-icon-text-handle-size) / 2 + 10px);
+            padding-inline: calc(var(--pretext-draggable-inline-icon-text-handle-size) / 2 + 8px);
         }
     }
 }

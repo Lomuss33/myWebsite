@@ -85,8 +85,7 @@ function ArticlePortfolioItems({ dataWrapper, selectedItemCategoryId }) {
  */
 function ArticlePortfolioItem({ itemWrapper }) {
     const previewLinks = itemWrapper?.preview?.links || []
-    const itemTitle = itemWrapper?.locales?.title || itemWrapper?.placeholder || ""
-    const portfolioToneClass = getPortfolioToneClass(itemTitle)
+    const portfolioToneClass = getPortfolioToneClass(itemWrapper)
     const websiteLink = previewLinks.find(link => link?.isWebsiteAction && isNonEmptyHref(link?.href)) ||
         (itemWrapper?.link?.isWebsiteAction && isNonEmptyHref(itemWrapper?.link?.href) ? itemWrapper.link : null)
     const githubLink = previewLinks.find(link => isNonEmptyHref(link?.href) && String(link?.href || "").includes("github.com")) || null
@@ -223,7 +222,39 @@ function isNonEmptyHref(href) {
     return typeof href === "string" && href.trim().length > 0
 }
 
-function getPortfolioToneClass(title) {
+const HARDWARE_TONE_BY_ITEM_ID = {
+    1: "hardware-tone-rack-steel",
+    4: "hardware-tone-conveyor-steel",
+    5: "hardware-tone-forged-iron",
+    7: "hardware-tone-varnished-wood",
+    8: "hardware-tone-brushed-aluminum",
+    10: "hardware-tone-slate-copper",
+    22: "hardware-tone-gunmetal",
+    11: "hardware-tone-workshop-steel"
+}
+
+const SOFTWARE_PROJECT_TONE_BY_ITEM_ID = {
+    1: "software-tone-linguistics",
+    2: "software-tone-belot",
+    3: "software-tone-robotics",
+    4: "software-tone-architecture",
+    5: "software-tone-genealogy",
+    6: "software-tone-editorial",
+    7: "software-tone-portfolio"
+}
+
+function getPortfolioToneClass(itemWrapper) {
+    const articleWrapper = itemWrapper?.articleWrapper
+    const sectionId = articleWrapper?.sectionId
+    const stableSoftwareTone = sectionId === "my-software" && articleWrapper?.id === 1 ?
+        SOFTWARE_PROJECT_TONE_BY_ITEM_ID[itemWrapper?.id] :
+        null
+    const stableHardwareTone = sectionId === "my-hardware" ? HARDWARE_TONE_BY_ITEM_ID[itemWrapper?.id] : null
+
+    if (stableSoftwareTone) return stableSoftwareTone
+    if (stableHardwareTone) return stableHardwareTone
+
+    const title = itemWrapper?.locales?.title || itemWrapper?.placeholder || ""
     const normalizedTitle = String(title || "").toLowerCase()
 
     if (normalizedTitle.includes("belot")) return "software-tone-belot"

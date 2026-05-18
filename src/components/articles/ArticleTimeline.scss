@@ -696,6 +696,7 @@ article.article-timeline--art-digital-expression {
         --timeline-line-width: 0px;
         --timeline-line-color: transparent;
         --digital-card-stack-base: clamp(7rem, 9vw, 8.8rem);
+        --digital-item-buffer: clamp(0.45rem, 0.9vw, 0.7rem);
         --gap-between-avatar-and-content: 0px;
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -711,6 +712,7 @@ article.article-timeline--art-digital-expression {
 
         @include media-breakpoint-down(sm) {
             --digital-card-stack-base: clamp(5.8rem, 30vw, 7rem);
+            --digital-item-buffer: 0.38rem;
         }
 
         @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
@@ -726,7 +728,7 @@ article.article-timeline--art-digital-expression {
         position: relative;
         align-items: stretch;
         min-height: 240px;
-        padding: 0;
+        padding: var(--digital-item-buffer);
         transform-style: preserve-3d;
         isolation: isolate;
         transition:
@@ -755,15 +757,13 @@ article.article-timeline--art-digital-expression {
 
         @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
             margin-left: 0!important;
-            border-top-left-radius: $standard-border-radius!important;
-            border-bottom-left-radius: $standard-border-radius!important;
         }
     }
 
     div.digital-expression-layer-stack {
         position: absolute;
-        top: 8px;
-        right: 8px;
+        top: calc(8px + var(--digital-item-buffer));
+        right: calc(8px + var(--digital-item-buffer));
         width: calc(var(--digital-card-stack-base) + 0.5rem);
         height: calc(var(--digital-card-stack-base) + 0.5rem);
         z-index: 5;
@@ -1014,8 +1014,47 @@ article.article-timeline--art-digital-expression {
         }
 
         div.digital-expression-layer-stack {
-            top: 7px;
-            right: 7px;
+            top: calc(7px + var(--digital-item-buffer));
+            right: calc(7px + var(--digital-item-buffer));
+        }
+    }
+
+    @media (max-width: 380px) {
+        ul.article-timeline-items {
+            --digital-card-stack-base: clamp(5.3rem, 28vw, 6.35rem);
+            --digital-item-buffer: 0.5rem;
+            perspective-origin: 50% 14%;
+        }
+
+        li.article-timeline-item {
+            min-height: 286px;
+            padding-left: calc(var(--digital-item-buffer) + 0.16rem);
+        }
+
+        li.article-timeline-item:hover,
+        li.article-timeline-item:focus-within {
+            transform: translateY(-3px);
+        }
+
+        div.article-timeline-item-content {
+            transform: translateZ(10px);
+        }
+    }
+
+    @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+        li.article-timeline-item--visual-neo-surface div.article-timeline-item-content {
+            border-top-left-radius: 34px!important;
+            border-bottom-left-radius: 34px!important;
+        }
+
+        li.article-timeline-item--visual-orb-glass div.article-timeline-item-content {
+            border-top-left-radius: 38px!important;
+            border-bottom-left-radius: 38px!important;
+        }
+
+        li.article-timeline-item--visual-crystal-facet div.article-timeline-item-content {
+            border-top-left-radius: 30px!important;
+            border-bottom-left-radius: 30px!important;
         }
     }
 

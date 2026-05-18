@@ -93,7 +93,17 @@ vec3 rotateZ(vec3 p, float angle) {
     return vec3(c * p.x - s * p.y, s * p.x + c * p.y, p.z);
 }
 
-float bezierY(float t) {
+float cubicBezier(float x) {
+    float t = x;
+
+    for(int i = 0; i < 6; i++) {
+        float inv = 1.0 - t;
+        float currentX = 3.0 * inv * inv * t * 0.5 + 3.0 * inv * t * t * 0.25 + t * t * t;
+        float derivativeX = 3.0 * inv * inv * 0.5 + 6.0 * inv * t * (0.25 - 0.5) + 3.0 * t * t * (1.0 - 0.25);
+        t -= (currentX - x) / max(derivativeX, 0.0001);
+        t = clamp(t, 0.0, 1.0);
+    }
+
     float inv = 1.0 - t;
     return 3.0 * inv * inv * t * -1.0 + 3.0 * inv * t * t * -1.0 + t * t * t;
 }
@@ -104,18 +114,18 @@ vec3 rotateOriginalCube(vec3 p, float phase) {
     float rotZ = 0.0;
 
     if(local < 0.5) {
-        float k = clamp(bezierY(local * 2.0), 0.0, 1.0);
+        float k = cubicBezier(local * 2.0);
         rotY = mix(0.78539816339, 3.92699081699, k);
     }
     else {
-        float k = clamp(bezierY((local - 0.5) * 2.0), 0.0, 1.0);
+        float k = cubicBezier((local - 0.5) * 2.0);
         rotY = mix(3.92699081699, 0.0, k);
         rotZ = mix(0.0, 1.57079632679, k);
     }
 
-    p = rotateX(p, -1.57079632679);
-    p = rotateY(p, rotY);
     p = rotateZ(p, rotZ);
+    p = rotateY(p, rotY);
+    p = rotateX(p, -1.57079632679);
     return p;
 }
 
@@ -134,6 +144,26 @@ float dotCircle(vec2 p, vec2 center, float radius) {
     return 1.0 - smoothstep(radius, radius * 1.55, dist);
 }
 
+float cross2(vec2 a, vec2 b) {
+    return a.x * b.y - a.y * b.x;
+}
+
+float softHalfPlane(vec2 p, vec2 a, vec2 b, float side, float feather) {
+    float edgeLength = max(length(b - a), 0.0001);
+    float dist = cross2(b - a, p - a) * side / edgeLength;
+    return smoothstep(-feather, feather, dist);
+}
+
+float quadMask(vec2 p, vec2 a, vec2 b, vec2 c, vec2 d, float feather) {
+    float winding = cross2(b - a, d - a);
+    float side = mix(-1.0, 1.0, step(0.0, winding));
+
+    return softHalfPlane(p, a, b, side, feather)
+         * softHalfPlane(p, b, c, side, feather)
+         * softHalfPlane(p, c, d, side, feather)
+         * softHalfPlane(p, d, a, side, feather);
+}
+
 float dottedEdge(vec2 p, vec3 a, vec3 b, float size, float phase, float radius) {
     vec2 pa = projectCubePoint(a, size, phase);
     vec2 pb = projectCubePoint(b, size, phase);
@@ -147,8 +177,18 @@ float dottedEdge(vec2 p, vec3 a, vec3 b, float size, float phase, float radius) 
     return edge;
 }
 
-float dottedFace(vec2 p, vec3 a, vec3 b, vec3 c, vec3 d, vec3 normal, float size, float phase, float radius) {
-    float visible = smoothstep(-0.02, 0.12, rotatedNormal(normal, phase).z);
+vec3 dottedFace(vec2 p, vec3 a, vec3 b, vec3 c, vec3 d, vec3 normal, float size, float phase, float radius) {
+    vec3 faceNormal = rotatedNormal(normal, phase);
+    float visible = smoothstep(-0.02, 0.12, faceNormal.z);
+    float light = clamp(dot(faceNormal, normalize(vec3(-0.42, -0.58, 0.82))) * 0.5 + 0.5, 0.0, 1.0);
+    float facing = smoothstep(-0.02, 0.92, faceNormal.z);
+    float shade = mix(0.12, 1.0, pow(light, 2.15)) * mix(0.22, 1.0, pow(facing, 1.35));
+
+    vec2 pa = projectCubePoint(a, size, phase);
+    vec2 pb = projectCubePoint(b, size, phase);
+    vec2 pc = projectCubePoint(c, size, phase);
+    vec2 pd = projectCubePoint(d, size, phase);
+    float fill = quadMask(p, pa, pb, pc, pd, max(radius * 0.75, 0.00035)) * visible;
     float face = 0.0;
 
     face = max(face, dottedEdge(p, a, b, size, phase, radius));
@@ -156,19 +196,21 @@ float dottedFace(vec2 p, vec3 a, vec3 b, vec3 c, vec3 d, vec3 normal, float size
     face = max(face, dottedEdge(p, c, d, size, phase, radius));
     face = max(face, dottedEdge(p, d, a, size, phase, radius));
 
-    return face * visible;
+    return vec3(face * visible, face * visible * shade, fill);
 }
 
-float cubeMask(vec2 p, float uTime) {
-    float mask = 0.0;
+vec3 cubeMask(vec2 p, float uTime) {
+    vec3 mask = vec3(0.0);
 
     for(int i = 0; i < cubeCount; i++) {
         float fi = float(i);
         float depth = (fi + 1.0) / float(cubeCount);
-        float size = (fi + 1.0) * 0.027;
-        float phase = fract(uTime * 0.0317 - (fi + 1.0) * 0.008);
-        float radius = size * 0.036;
-        float cube = 0.0;
+        float size = (fi + 1.0) * 0.02835;
+        float delay = (fi + 1.0) * 0.06;
+        float phase = uTime < delay ? 0.0 : fract((uTime - delay) / 7.5);
+        float radius = size * 0.029;
+        float depthFade = mix(0.045, 1.0, pow(depth, 0.82));
+        vec3 cube = vec3(0.0);
 
         cube = max(cube, dottedFace(p, vec3(-0.5, -0.5, 0.5), vec3(0.5, -0.5, 0.5), vec3(0.5, 0.5, 0.5), vec3(-0.5, 0.5, 0.5), vec3(0.0, 0.0, 1.0), size, phase, radius));
         cube = max(cube, dottedFace(p, vec3(0.5, -0.5, 0.5), vec3(0.5, -0.5, -0.5), vec3(0.5, 0.5, -0.5), vec3(0.5, 0.5, 0.5), vec3(1.0, 0.0, 0.0), size, phase, radius));
@@ -177,7 +219,7 @@ float cubeMask(vec2 p, float uTime) {
         cube = max(cube, dottedFace(p, vec3(-0.5, -0.5, -0.5), vec3(0.5, -0.5, -0.5), vec3(0.5, -0.5, 0.5), vec3(-0.5, -0.5, 0.5), vec3(0.0, -1.0, 0.0), size, phase, radius));
         cube = max(cube, dottedFace(p, vec3(-0.5, 0.5, 0.5), vec3(0.5, 0.5, 0.5), vec3(0.5, 0.5, -0.5), vec3(-0.5, 0.5, -0.5), vec3(0.0, 1.0, 0.0), size, phase, radius));
 
-        mask = max(mask, cube * smoothstep(0.02, 0.82, depth));
+        mask = max(mask, cube * vec3(depthFade, depthFade, depthFade * 0.92));
     }
 
     return clamp(mask, 0.0, 1.0);
@@ -186,10 +228,10 @@ float cubeMask(vec2 p, float uTime) {
 void main() {
     vec2 baseUv = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / u_resolution.y;
     vec2 uv = baseUv;
-    float time = u_time / 10.0;
+    float time = u_time * 1.55;
     mat2 rot = mat2(cos(time / 10.0), sin(time / 10.0), -sin(time / 10.0), cos(time / 10.0));
     uv = rot * uv;
-    uv *= 0.9 * sin(u_time / 20.0) + 3.0;
+    uv *= 0.9 * sin(time * 0.5) + 3.0;
     uv.x -= time / 5.0;
 
     vec2 q = vec2(0.0);
@@ -204,9 +246,24 @@ void main() {
 
     vec3 waveColour = clamp(-colour + (abs(colour) * 0.5), 0.0, 1.0);
     waveColour = pow(clamp(waveColour * vec3(1.35, 1.48, 1.62), 0.0, 1.0), vec3(0.72));
+    float waveValue = max(max(waveColour.r, waveColour.g), waveColour.b);
+    float palette = fract(p * 1.7 + dot(q, r) * 0.025 + time * 0.035);
+    vec3 accentA = mix(vec3(0.0, 0.92, 0.82), vec3(0.96, 0.08, 0.48), smoothstep(0.12, 0.72, palette));
+    vec3 accentB = mix(accentA, vec3(1.0, 0.16, 0.04), smoothstep(0.68, 1.0, palette));
+    waveColour = mix(waveColour, accentB * waveValue, 0.46);
 
-    float mask = cubeMask(baseUv, u_time);
-    gl_FragColor = vec4(waveColour * mask, 1.0);
+    vec3 cube = cubeMask(baseUv, u_time);
+    float edgeMask = cube.x;
+    float shadedEdge = cube.y;
+    float faceCover = cube.z;
+    float dotShade = shadedEdge / max(edgeMask, 0.0001);
+    float shadedDots = edgeMask * mix(0.22, 1.24, dotShade);
+    float colourStrength = pow(clamp(shadedDots, 0.0, 1.0), 1.08);
+    float blackShade = clamp(faceCover * (1.0 - dotShade) * 0.16, 0.0, 0.42);
+    vec3 shadedColour = waveColour * colourStrength;
+    shadedColour = mix(shadedColour, vec3(0.0), blackShade);
+
+    gl_FragColor = vec4(shadedColour, 1.0);
 }
 `
 
@@ -222,7 +279,7 @@ export function createSoupShaderEngine(canvas, options = {}) {
     let rafId = null
     let mouseX = 0.5
     let mouseY = 0.5
-    let timeValue = 2001.0
+    let timeValue = 0
     let held = false
     let holdMix = 0
     let lastFrameMs = 0
@@ -272,10 +329,8 @@ export function createSoupShaderEngine(canvas, options = {}) {
         }
 
         const easedHoldMix = holdMix * holdMix * (3 - 2 * holdMix)
-        const ambientSpeed = 0.07 * (1 + mouseX * 5)
-        const heldSpeed = 0.003 + mouseX * 0.004
-        const speed = ambientSpeed + (heldSpeed - ambientSpeed) * easedHoldMix
-        timeValue += reduceMotion ? speed * 0.15 : speed
+        const speed = 1 - easedHoldMix
+        if(!reduceMotion) timeValue += (dt / 1000) * speed
         material.uniforms.u_time.value = timeValue
         material.uniforms.u_mouse.value.set(mouseX, mouseY)
         material.uniforms.u_complex.value = false
@@ -314,7 +369,7 @@ export function createSoupShaderEngine(canvas, options = {}) {
     }
 
     function reset() {
-        timeValue = 2001.0
+        timeValue = 0
         held = false
         holdMix = 0
         lastFrameMs = 0

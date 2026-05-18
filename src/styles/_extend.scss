@@ -4,3 +4,32 @@
  */
 
 @forward "./bootstrap-api";
+
+@mixin nav-selected-edge($edge, $thickness: 6px) {
+    position: relative;
+
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        #{$edge}: 0;
+        z-index: 3;
+        height: $thickness;
+        background: var(--theme-primary);
+        pointer-events: none;
+    }
+}
+
+@mixin nav-selected-button {
+    background: var(--theme-primary)!important;
+    user-select: none;
+    pointer-events: none;
+    box-shadow: none;
+
+    i,
+    span {
+        color: var(--theme-nav-selected-ink)!important;
+        opacity: 1;
+    }
+}

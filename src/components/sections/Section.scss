@@ -330,6 +330,27 @@ section#section-my-art div.article-content {
     color: var(--art-text-strong);
 }
 
+section#section-my-art div.section-body {
+    display: flex;
+    flex-direction: column;
+
+    > article#article-1-section-my-art {
+        order: 1;
+    }
+
+    > article#article-3-section-my-art {
+        order: 2;
+    }
+
+    > article#article-2-section-my-art {
+        order: 3;
+    }
+
+    > article#article-4-section-my-art {
+        order: 4;
+    }
+}
+
 @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
     section#section-my-hardware,
     section#section-my-writings,

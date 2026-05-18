@@ -380,8 +380,8 @@ function ArticleWebArt({ dataWrapper, id }) {
         submitTileLabel = {
             en: "Send yours!",
             de: "Sende deine!",
-            hr: "Pošalji svoju!",
-            tr: "Sen de gönder!",
+            hr: "PoÅ¡alji svoju!",
+            tr: "Sen de gÃ¶nder!",
         }[langId] || "Send yours!"
     }
 
@@ -392,17 +392,9 @@ function ArticleWebArt({ dataWrapper, id }) {
             en: "Click",
             de: "Klicken",
             hr: "Klikni",
-            tr: "Tıkla",
+            tr: "TÄ±kla",
         }[langId] || "Click"
     }
-    const submitTileText = {
-        en: { top: "Send me", bottom: "one idea" },
-        de: { top: "Sende mir", bottom: "eine Idee" },
-        hr: { top: "Pošalji mi", bottom: "jednu ideju" },
-        tr: { top: "Bana gönder", bottom: "bir fikir" }
-    }[selectedLanguageId] || { top: "Send me", bottom: "one idea" }
-    void submitTileLabel
-    void clickTileLabel
 
     const introCopy = {
         en: {
@@ -864,8 +856,8 @@ function ArticleWebArt({ dataWrapper, id }) {
                          ref={tilesWrapperRef}
                          aria-busy={showIntroCover}>
                         {shouldMountTiles && (
-                            <SendYourFunAnimationTile submitLabelTop={submitTileText.top}
-                                                      submitLabelBottom={submitTileText.bottom}
+                            <SendYourFunAnimationTile label={submitTileLabel}
+                                                      clickLabel={clickTileLabel}
                                                       previewRequested={sendYoursPreviewOpen}/>
                         )}
                         {itemTiles}
@@ -4737,7 +4729,7 @@ function TardisTile({ readyId, locked, onReady }) {
     )
 }
 
-function SendYourFunAnimationTile({ submitLabelTop, submitLabelBottom, previewRequested = false }) {
+function SendYourFunAnimationTile({ label, clickLabel, previewRequested = false }) {
     const navigation = useNavigation()
     const tileRef = useRef(null)
     const [previewOpen, setPreviewOpen] = useState(false)
@@ -4767,10 +4759,10 @@ function SendYourFunAnimationTile({ submitLabelTop, submitLabelBottom, previewRe
     const iframeSrcDoc = useMemo(() => {
         if(!previewOpen) return ""
         return _buildSendYoursHexLoopSrcDoc({
-            seed: `${previewSeed || Date.now()}:${submitLabelTop} ${submitLabelBottom}`,
+            seed: `${previewSeed || Date.now()}:${label}`,
             reduceMotion
         })
-    }, [previewOpen, previewSeed, reduceMotion, submitLabelBottom, submitLabelTop])
+    }, [label, previewOpen, previewSeed, reduceMotion])
 
     useEffect(() => {
         let frameOneId = 0
@@ -4802,14 +4794,14 @@ function SendYourFunAnimationTile({ submitLabelTop, submitLabelBottom, previewRe
              role={"button"}
              tabIndex={0}
             className={`article-web-art-tile article-web-art-tile-clickable article-web-art-tile-cta ${previewOpen ? "article-web-art-tile-cta-open" : "article-web-art-tile-cta-closed"}`}
-            aria-label={previewOpen ? "Kontakt preview" : `${submitLabelTop} ${submitLabelBottom}`}
+            aria-label={previewOpen ? "Kontakt preview" : label}
             aria-pressed={previewOpen}
             onClick={openPreview}
             onKeyDown={onKeyDown}>
             <div className={`article-web-art-tile-cta-preview ${previewOpen ? "article-web-art-tile-cta-preview-visible" : ""}`}
                  aria-hidden={true}>
                 {previewOpen && (
-                    <iframe key={`${previewSeed}-${submitLabelTop}-${submitLabelBottom}`}
+                    <iframe key={`${previewSeed}-${label}`}
                             className={`article-web-art-tile-cta-preview-frame`}
                             title={"Send yours preview"}
                             srcDoc={iframeSrcDoc}
@@ -4842,8 +4834,8 @@ function SendYourFunAnimationTile({ submitLabelTop, submitLabelBottom, previewRe
             )}
 
             <div className={`article-web-art-tile-cta-content ${previewOpen ? "article-web-art-tile-cta-content-hidden" : ""}`}>
-                <div className={`article-web-art-tile-cta-title article-web-art-tile-cta-title-top`}>{submitLabelTop}</div>
-                <div className={`article-web-art-tile-cta-title article-web-art-tile-cta-title-bottom`}>{submitLabelBottom}</div>
+                <div className={`article-web-art-tile-cta-title article-web-art-tile-cta-title-top`}>{label}</div>
+                <div className={`article-web-art-tile-cta-title article-web-art-tile-cta-title-bottom`}>{clickLabel}</div>
             </div>
 
             {previewOpen && (
@@ -5243,3 +5235,6 @@ function PatronusTile({ locked = false }) {
 }
 
 export default ArticleWebArt
+
+
+

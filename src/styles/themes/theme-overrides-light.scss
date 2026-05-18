@@ -415,31 +415,31 @@
     box-shadow: 0 0 18px rgba(37, 99, 235, 0.20);
 }
 
-[data-theme="light"] article#article-3-section-my-writings div.article-skills-item-progress .progress-bar,
-[data-theme="light"] article#article-4-section-my-writings div.article-skills-item-progress .progress-bar {
+[data-theme="light"] article#article-4-section-my-writings div.article-skills-item-progress .progress-bar,
+[data-theme="light"] article#article-5-section-my-writings div.article-skills-item-progress .progress-bar {
     background-image: linear-gradient(90deg, #f59e0b 0%, #facc15 100%);
     box-shadow: 0 0 18px rgba(245, 158, 11, 0.24);
 }
 
-[data-theme="light"] article#article-3-section-my-writings span.article-skills-item-title-percentage,
-[data-theme="light"] article#article-4-section-my-writings span.article-skills-item-title-percentage {
+[data-theme="light"] article#article-4-section-my-writings span.article-skills-item-title-percentage,
+[data-theme="light"] article#article-5-section-my-writings span.article-skills-item-title-percentage {
     color: #0f172a;
 }
 
-[data-theme="light"] article#article-4-section-my-writings span.article-skills-item-title-prefix {
+[data-theme="light"] article#article-5-section-my-writings span.article-skills-item-title-prefix {
     display: none;
 }
 
-[data-theme="light"] article#article-3-section-my-writings,
 [data-theme="light"] article#article-4-section-my-writings,
-[data-theme="light"] article#article-3-section-my-writings h4.article-title,
-[data-theme="light"] article#article-4-section-my-writings h4.article-title {
-    margin-bottom: 12px;
+[data-theme="light"] article#article-5-section-my-writings,
+[data-theme="light"] article#article-4-section-my-writings h4.article-title,
+[data-theme="light"] article#article-5-section-my-writings h4.article-title {
+    margin-bottom: 16px;
     letter-spacing: -0.02em;
 }
 
-[data-theme="light"] article#article-3-section-my-writings h4.article-title span.article-title-prefix,
-[data-theme="light"] article#article-4-section-my-writings h4.article-title span.article-title-prefix {
+[data-theme="light"] article#article-4-section-my-writings h4.article-title span.article-title-prefix,
+[data-theme="light"] article#article-5-section-my-writings h4.article-title span.article-title-prefix {
     display: inline;
     margin-right: 8px !important;
     border: 0;
@@ -451,7 +451,7 @@
     box-shadow: none;
 }
 
-[data-theme="light"] article#article-3-section-my-writings {
+[data-theme="light"] article#article-4-section-my-writings {
     --writings-skill-accent: #2563eb;
     --writings-skill-accent-2: #f59e0b;
 
@@ -467,13 +467,13 @@
     }
 }
 
-[data-theme="light"] article#article-4-section-my-writings {
+[data-theme="light"] article#article-5-section-my-writings {
     --writings-skill-accent: #dc2626;
     --writings-skill-accent-2: #7f1d1d;
 }
 
-[data-theme="light"] article#article-3-section-my-writings div.article-skills-item,
-[data-theme="light"] article#article-4-section-my-writings div.article-skills-item {
+[data-theme="light"] article#article-4-section-my-writings div.article-skills-item,
+[data-theme="light"] article#article-5-section-my-writings div.article-skills-item {
     position: relative;
     overflow: hidden;
     padding: 15px 16px 14px;
@@ -485,8 +485,8 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.82);
 }
 
-[data-theme="light"] article#article-3-section-my-writings div.article-skills-item::before,
-[data-theme="light"] article#article-4-section-my-writings div.article-skills-item::before {
+[data-theme="light"] article#article-4-section-my-writings div.article-skills-item::before,
+[data-theme="light"] article#article-5-section-my-writings div.article-skills-item::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -503,8 +503,8 @@
     pointer-events: none;
 }
 
-[data-theme="light"] article#article-3-section-my-writings div.article-skills-item::after,
-[data-theme="light"] article#article-4-section-my-writings div.article-skills-item::after {
+[data-theme="light"] article#article-4-section-my-writings div.article-skills-item::after,
+[data-theme="light"] article#article-5-section-my-writings div.article-skills-item::after {
     content: "";
     position: absolute;
     inset: 0 auto 0 0;
@@ -514,8 +514,8 @@
     pointer-events: none;
 }
 
-[data-theme="light"] article#article-3-section-my-writings div.article-skills-item-avatar,
-[data-theme="light"] article#article-4-section-my-writings div.article-skills-item-avatar {
+[data-theme="light"] article#article-4-section-my-writings div.article-skills-item-avatar,
+[data-theme="light"] article#article-5-section-my-writings div.article-skills-item-avatar {
     border: 1px solid rgba(37, 99, 235, 0.18);
     box-shadow:
         0 12px 26px rgba(15, 23, 42, 0.10),
@@ -523,8 +523,8 @@
     color: #0f172a;
 }
 
-[data-theme="light"] article#article-3-section-my-writings span.article-skills-item-title-prefix,
-[data-theme="light"] article#article-4-section-my-writings span.article-skills-item-title-prefix {
+[data-theme="light"] article#article-4-section-my-writings span.article-skills-item-title-prefix,
+[data-theme="light"] article#article-5-section-my-writings span.article-skills-item-title-prefix {
     padding: 0;
     margin-right: 6px;
     border-radius: 0;
@@ -535,36 +535,36 @@
     box-shadow: none;
 }
 
-[data-theme="light"] article#article-3-section-my-writings span.article-skills-item-title-main,
-[data-theme="light"] article#article-4-section-my-writings span.article-skills-item-title-main {
+[data-theme="light"] article#article-4-section-my-writings span.article-skills-item-title-main,
+[data-theme="light"] article#article-5-section-my-writings span.article-skills-item-title-main {
     color: #0f172a;
 }
 
-[data-theme="light"] article#article-3-section-my-writings span.article-skills-item-title-label,
-[data-theme="light"] article#article-4-section-my-writings span.article-skills-item-title-label {
+[data-theme="light"] article#article-4-section-my-writings span.article-skills-item-title-label,
+[data-theme="light"] article#article-5-section-my-writings span.article-skills-item-title-label {
     color: #475569;
     letter-spacing: 0.05em;
     text-transform: uppercase;
 }
 
-[data-theme="light"] article#article-3-section-my-writings span.article-skills-item-title-suffix,
-[data-theme="light"] article#article-4-section-my-writings span.article-skills-item-title-suffix {
+[data-theme="light"] article#article-4-section-my-writings span.article-skills-item-title-suffix,
+[data-theme="light"] article#article-5-section-my-writings span.article-skills-item-title-suffix {
     color: var(--writings-skill-accent-2);
 }
 
-[data-theme="light"] article#article-3-section-my-writings span.article-skills-item-title-percentage,
-[data-theme="light"] article#article-4-section-my-writings span.article-skills-item-title-percentage {
+[data-theme="light"] article#article-4-section-my-writings span.article-skills-item-title-percentage,
+[data-theme="light"] article#article-5-section-my-writings span.article-skills-item-title-percentage {
     color: #0f172a;
 }
 
-[data-theme="light"] article#article-3-section-my-writings div.article-skills-item-description,
-[data-theme="light"] article#article-4-section-my-writings div.article-skills-item-description {
+[data-theme="light"] article#article-4-section-my-writings div.article-skills-item-description,
+[data-theme="light"] article#article-5-section-my-writings div.article-skills-item-description {
     color: #475569;
     line-height: 1.58;
 }
 
-[data-theme="light"] article#article-3-section-my-writings div.article-skills-item-progress,
-[data-theme="light"] article#article-4-section-my-writings div.article-skills-item-progress {
+[data-theme="light"] article#article-4-section-my-writings div.article-skills-item-progress,
+[data-theme="light"] article#article-5-section-my-writings div.article-skills-item-progress {
     margin-top: 8px;
     height: 22.4px;
     overflow: hidden;
@@ -573,18 +573,18 @@
     border-radius: 12px;
 }
 
-[data-theme="light"] article#article-3-section-my-writings div.article-skills-item-progress .progress-bar,
-[data-theme="light"] article#article-4-section-my-writings div.article-skills-item-progress .progress-bar {
+[data-theme="light"] article#article-4-section-my-writings div.article-skills-item-progress .progress-bar,
+[data-theme="light"] article#article-5-section-my-writings div.article-skills-item-progress .progress-bar {
     border-radius: inherit;
     background-image: linear-gradient(90deg, #000000 0%, #000000 100%);
     box-shadow: none;
 }
 
 
-[data-theme="light"] article#article-3-section-my-writings div.article-skills-item:hover,
 [data-theme="light"] article#article-4-section-my-writings div.article-skills-item:hover,
-[data-theme="light"] article#article-3-section-my-writings div.article-skills-item:focus-within,
-[data-theme="light"] article#article-4-section-my-writings div.article-skills-item:focus-within {
+[data-theme="light"] article#article-5-section-my-writings div.article-skills-item:hover,
+[data-theme="light"] article#article-4-section-my-writings div.article-skills-item:focus-within,
+[data-theme="light"] article#article-5-section-my-writings div.article-skills-item:focus-within {
     transform: translateY(-2px);
     border-color: rgba(15, 23, 42, 0.22);
     box-shadow:
@@ -592,23 +592,23 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.84);
 }
 
-[data-theme="light"] article#article-6-section-my-writings div.falling-words.article-falling-words-stage {
+[data-theme="light"] article#article-2-section-my-writings div.falling-words.article-falling-words-stage {
     border: 1px solid rgba(37, 99, 235, 0.14);
     background: linear-gradient(180deg, #ffffff, #f7f9fd);
     box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
 }
 
-[data-theme="light"] article#article-6-section-my-writings div.article-falling-words-hint {
+[data-theme="light"] article#article-2-section-my-writings div.article-falling-words-hint {
     color: #334155;
 }
 
-[data-theme="light"] article#article-6-section-my-writings span.falling-word {
+[data-theme="light"] article#article-2-section-my-writings span.falling-word {
     --falling-word-color: #2563eb;
     color: var(--falling-word-color);
     text-shadow: none;
 }
 
-[data-theme="light"] article#article-6-section-my-writings span.falling-word-selected {
+[data-theme="light"] article#article-2-section-my-writings span.falling-word-selected {
     --falling-word-color: #f59e0b;
     filter:
         drop-shadow(0 10px 22px rgba(15, 23, 42, 0.10))
@@ -629,13 +629,13 @@
     color: #ffffff;
 }
 
-[data-theme="light"] article#article-6-section-my-writings div.falling-words-modal-card {
+[data-theme="light"] article#article-2-section-my-writings div.falling-words-modal-card {
     border-color: rgba(37, 99, 235, 0.16);
     background: linear-gradient(180deg, #ffffff, #f7f9fd);
 }
 
-[data-theme="light"] article#article-6-section-my-writings div.falling-words-modal-title,
-[data-theme="light"] article#article-6-section-my-writings div.falling-words-modal-definition {
+[data-theme="light"] article#article-2-section-my-writings div.falling-words-modal-title,
+[data-theme="light"] article#article-2-section-my-writings div.falling-words-modal-definition {
     color: #0f172a;
 }
 

@@ -264,15 +264,15 @@ section#section-my-writings div.article-content {
             min-width: 0;
         }
 
-        > article#article-3-section-my-writings {
+        > article#article-4-section-my-writings {
             grid-column: 1 / 2;
         }
 
-        > article#article-4-section-my-writings {
+        > article#article-5-section-my-writings {
             grid-column: 2 / 3;
         }
 
-        > article#article-5-section-my-writings {
+        > article#article-6-section-my-writings {
             grid-column: 1 / -1;
             justify-self: center;
             width: min(100%, 880px);
@@ -287,7 +287,7 @@ section#section-my-writings div.article-content {
         column-gap: 32px;
     }
 
-    section#section-my-writings article#article-5-section-my-writings {
+    section#section-my-writings article#article-6-section-my-writings {
         width: min(100%, 980px);
     }
 

@@ -12,14 +12,16 @@ h4.article-title {
     font-size: clamp(1.06rem, 0.98rem + 0.42vw, 1.34rem)!important;
     line-height: 1.18;
 
-    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-bottom: 18px;
 
     @include media-breakpoint-down(xl) {
         font-size: clamp(1.04rem, 0.98rem + 0.34vw, 1.24rem)!important;
     }
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-        margin-bottom: 8px;
+        margin-top: 8px;
+        margin-bottom: 16px;
         font-size: clamp(1rem, 0.94rem + 0.28vw, 1.12rem)!important;
     }
 

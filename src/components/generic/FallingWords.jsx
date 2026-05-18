@@ -50,6 +50,28 @@ function FallingWords({
     const [isReady, setIsReady] = useState(false)
     const [selectedIndex, setSelectedIndex] = useState(null)
 
+    const _clearWordTransforms = () => {
+        for(const element of wordRefs.current) {
+            if(!element) continue
+            element.style.transform = ""
+            element.classList.remove("falling-word-held")
+        }
+    }
+
+    const _resetDragState = () => {
+        dragStateRef.current.pointerId = null
+        dragStateRef.current.index = null
+        dragStateRef.current.moved = false
+        dragStateRef.current.tapEligible = false
+        dragStateRef.current.anchorOffsetX = 0
+        dragStateRef.current.anchorOffsetY = 0
+        dragStateRef.current.dragBoxWidth = 0
+        dragStateRef.current.dragBoxHeight = 0
+        dragStateRef.current.dragBoxLeftOffset = 0
+        dragStateRef.current.dragBoxTopOffset = 0
+        dragStateRef.current.pointerType = null
+    }
+
     useEffect(() => {
         selectedIndexRef.current = selectedIndex
     }, [selectedIndex])
@@ -124,23 +146,11 @@ function FallingWords({
     }
 
     useEffect(() => {
+        if(typeof ResizeObserver === "function") return
+
         const onResize = () => setLayoutVersion(v => v + 1)
         window.addEventListener("resize", onResize)
         return () => window.removeEventListener("resize", onResize)
-    }, [])
-
-    useEffect(() => {
-        const container = containerRef.current
-        if(!container) return
-
-        const onTouchMove = (event) => {
-            event.preventDefault()
-        }
-
-        container.addEventListener("touchmove", onTouchMove, { passive: false })
-        return () => {
-            container.removeEventListener("touchmove", onTouchMove)
-        }
     }, [])
 
     useEffect(() => {
@@ -190,6 +200,9 @@ function FallingWords({
 
     useLayoutEffect(() => {
         cleanupRef.current?.()
+        _clearWordTransforms()
+        _resetDragState()
+        selectedIndexRef.current = null
         setIsReady(false)
         setSelectedIndex(null)
 
@@ -380,6 +393,8 @@ function FallingWords({
 
             engineRef.current = null
             wordBodiesRef.current = []
+            _clearWordTransforms()
+            _resetDragState()
         }
 
         return () => cleanupRef.current?.()

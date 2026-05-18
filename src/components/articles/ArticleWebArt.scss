@@ -8,13 +8,15 @@
 
 div.article-web-art-shell {
     --article-web-art-guide-radius: clamp(18px, 3cqw, 24px);
+    --article-web-art-guide-rim: 2px;
+    --article-web-art-shell-padding: 6px;
     --article-web-art-shell-border: linear-gradient(
         var(--article-web-art-guide-rotate),
         #5ddcff,
         #3c67e3 43%,
         #4e00c2
     );
-    --article-web-art-shell-rim: 3px;
+    --article-web-art-shell-rim: var(--article-web-art-guide-rim);
     --article-web-art-shell-border-opacity: 0;
     position: relative;
     display: flex;
@@ -74,6 +76,10 @@ div.article-web-art-intro-cover {
     display: flex;
     align-items: stretch;
     justify-content: center;
+    margin:
+        calc((var(--article-web-art-shell-padding) - var(--article-web-art-guide-rim)) * -1)
+        calc((var(--article-web-art-shell-padding) - var(--article-web-art-guide-rim)) * -1)
+        0;
     padding: 0;
     border-radius: var(--article-web-art-guide-radius);
     overflow: visible;
@@ -2062,9 +2068,10 @@ span.article-web-art-tile-label {
 
 article#article-3-section-my-art {
     div.article-web-art-shell {
+        --article-web-art-guide-radius: 22px;
         border: 1px solid transparent;
         border-radius: 22px;
-        padding: 6px;
+        padding: var(--article-web-art-shell-padding);
         background:
             radial-gradient(ellipse at 14% 8%, rgba(255, 255, 255, 0.58), transparent 30%),
             radial-gradient(ellipse at 86% 92%, rgba(255, 255, 255, 0.20), transparent 36%),

@@ -479,7 +479,7 @@ function createIllustratedManuscript({
         let nextTextBottom = activeLayout.margin
 
         while (true) {
-            let ranges = [{ left: activeLayout.margin, right: activeLayout.pageWidth - activeLayout.margin }]
+            let ranges = [{ left: activeLayout.margin, right: activeLayout.pageWidth - Math.round(activeLayout.margin * 0.1) }]
 
             for (const exclusion of exclusions) {
                 if (y + activeLayout.lineHeight <= exclusion.y || y >= exclusion.y + exclusion.height) continue
@@ -718,7 +718,7 @@ function createIllustratedManuscript({
     }
 
     const getAvailableRanges = (y, lineHeight, exclusions) => {
-        let ranges = [{ left: layout.margin, right: layout.pageWidth - layout.margin }]
+        let ranges = [{ left: layout.margin, right: layout.pageWidth - Math.round(layout.margin * 0.1) }]
 
         for (const exclusion of exclusions) {
             if (y + lineHeight <= exclusion.y || y >= exclusion.y + exclusion.height) continue

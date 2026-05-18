@@ -755,12 +755,12 @@ div.article-skills-items.article-skills-items-section-my-writings {
     }
 }
 
-article#article-3-section-my-writings div.article-skills-item-progress .progress-bar {
+article#article-4-section-my-writings div.article-skills-item-progress .progress-bar {
     background-image: linear-gradient(90deg, #ffffff 0%, #ffffff 100%);
     box-shadow: none;
 }
 
-article#article-4-section-my-writings div.article-skills-item-progress .progress-bar {
+article#article-5-section-my-writings div.article-skills-item-progress .progress-bar {
     background-image: linear-gradient(90deg, #ffffff 0%, #ffffff 100%);
     box-shadow: none;
 }
@@ -774,15 +774,16 @@ article#article-4-section-my-writings div.article-skills-item-progress .progress
     }
 }
 
-article#article-3-section-my-writings,
-article#article-4-section-my-writings {
+article#article-4-section-my-writings,
+article#article-5-section-my-writings {
     position: relative;
     isolation: isolate;
 
     h4.article-title {
         align-items: center;
         gap: 0.2rem;
-        margin-bottom: 12px;
+        margin-top: 10px;
+        margin-bottom: 20px;
         letter-spacing: -0.02em;
         text-wrap: balance;
     }
@@ -941,7 +942,7 @@ article#article-4-section-my-writings {
     }
 }
 
-article#article-3-section-my-writings {
+article#article-4-section-my-writings {
     --writings-skill-accent: #38bdf8;
     --writings-skill-accent-2: #f59e0b;
     --writings-skill-surface-top: rgba(9, 15, 28, 0.96);
@@ -990,7 +991,8 @@ article#article-3-section-my-writings {
 
     @include media-breakpoint-down(sm) {
         h4.article-title {
-            margin-bottom: 10px;
+            margin-top: 8px;
+            margin-bottom: 18px;
         }
 
         div.article-skills-item {
@@ -1011,7 +1013,7 @@ article#article-3-section-my-writings {
     }
 }
 
-article#article-4-section-my-writings {
+article#article-5-section-my-writings {
     --writings-skill-accent: #dc2626;
     --writings-skill-accent-2: #7f1d1d;
     --writings-skill-surface-top: rgba(13, 18, 31, 0.97);

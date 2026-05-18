@@ -16,7 +16,6 @@ div.article-web-art-shell {
     );
     --article-web-art-shell-rim: 3px;
     --article-web-art-shell-border-opacity: 0;
-    --article-web-art-shell-glow-opacity: 0;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -26,18 +25,14 @@ div.article-web-art-shell {
     isolation: isolate;
     transition: filter 180ms ease;
 
-    &::before,
-    &::after {
+    &::before {
         content: "";
         position: absolute;
         pointer-events: none;
         background-image: var(--article-web-art-shell-border);
         animation: article-web-art-guide-spin 1.7s linear infinite;
-        transition: opacity 180ms ease, filter 180ms ease;
+        transition: opacity 180ms ease;
         z-index: 0;
-    }
-
-    &::before {
         inset: 0;
         padding: var(--article-web-art-shell-rim);
         border-radius: inherit;
@@ -52,13 +47,6 @@ div.article-web-art-shell {
         -webkit-mask-composite: xor;
     }
 
-    &::after {
-        inset: -18px;
-        border-radius: calc(22px + 18px);
-        filter: blur(34px);
-        opacity: var(--article-web-art-shell-glow-opacity);
-    }
-
     > * {
         position: relative;
         z-index: 1;
@@ -66,16 +54,12 @@ div.article-web-art-shell {
 
     &:hover {
         --article-web-art-shell-border-opacity: 1;
-        --article-web-art-shell-glow-opacity: 0.55;
-        filter: saturate(1.04);
     }
 
     &:has(div.article-web-art-intro-guide:hover) {
         --article-web-art-shell-border-opacity: 0.08;
-        --article-web-art-shell-glow-opacity: 0;
 
-        &::before,
-        &::after {
+        &::before {
             animation-play-state: paused;
         }
     }

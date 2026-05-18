@@ -107,18 +107,32 @@ function NavProfileCard({
                 const firstNameRect = firstNameElement.getBoundingClientRect()
                 const lastNameRect = lastNameElement.getBoundingClientRect()
                 const mediaElement = headerElement.querySelector(`.nav-profile-card-media`)
-                const mediaRect = mediaElement?.getBoundingClientRect()
                 const middleActionStackElement = headerElement.querySelector(`.nav-profile-card-mobile-action-stack-middle`)
                 const middleActionStackRect = middleActionStackElement?.getBoundingClientRect()
                 const rightActionStackElement = headerElement.querySelector(`.nav-profile-card-mobile-action-stack-right`)
                 const rightActionStackRect = rightActionStackElement?.getBoundingClientRect()
+                const nameLineLeftEdge = Math.min(firstNameRect.left, lastNameRect.left)
+                let mobileAvatarOffsetX = 0
+
+                if(mediaElement && middleActionStackRect && Number.isFinite(nameLineLeftEdge) && nameLineLeftEdge > middleActionStackRect.right) {
+                    const avatarBandCenterX = (middleActionStackRect.right + nameLineLeftEdge) / 2
+                    const mediaLayoutCenterX = headerRect.left + mediaElement.offsetLeft + (mediaElement.offsetWidth / 2)
+                    mobileAvatarOffsetX = avatarBandCenterX - mediaLayoutCenterX
+                    mediaElement.style.setProperty(`--mobile-avatar-offset-x`, `${mobileAvatarOffsetX}px`)
+                } else {
+                    mediaElement?.style.removeProperty(`--mobile-avatar-offset-x`)
+                }
+
+                const mediaSafeRight = mediaElement ?
+                    headerRect.left + mediaElement.offsetLeft + mediaElement.offsetWidth + mobileAvatarOffsetX :
+                    headerRect.left
                 const surnameGap = parseFloat(window.getComputedStyle(lastNameElement).paddingLeft) || 0
                 const collisionPadding = 6
                 const comfortPadding = 10
                 const centerX = firstNameRect.left + (firstNameRect.width / 2)
                 const safeLeftEdge = Math.max(
                     headerRect.left + collisionPadding,
-                    (mediaRect?.right || headerRect.left) + collisionPadding,
+                    mediaSafeRight + collisionPadding,
                     (middleActionStackRect?.right || headerRect.left) + collisionPadding
                 )
                 const safeRightEdge = rightActionStackRect ?
@@ -169,6 +183,7 @@ function NavProfileCard({
 
             headingElement.style.removeProperty(`--mobile-title-center-x`)
             headingElement.style.removeProperty(`--mobile-title-dynamic-width`)
+            headerElement.querySelector(`.nav-profile-card-media`)?.style.removeProperty(`--mobile-avatar-offset-x`)
             resizeObserver?.disconnect()
             window.removeEventListener(`resize`, scheduleMeasurement)
             fontSet?.removeEventListener?.(`loadingdone`, scheduleMeasurement)

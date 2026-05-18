@@ -16,7 +16,13 @@
         #{$edge}: 0;
         z-index: 3;
         height: $thickness;
-        background: var(--theme-primary);
+        background-image: repeating-linear-gradient(
+            -55deg,
+            #000,
+            #000 20px,
+            var(--theme-primary) 20px,
+            var(--theme-primary) 40px
+        );
         pointer-events: none;
     }
 }

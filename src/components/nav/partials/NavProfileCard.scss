@@ -70,6 +70,12 @@ div.nav-profile-card {
                 color-mix(in srgb, var(--theme-nav-surface) 72%, black 28%) 100%);
         box-shadow: var(--avatar-shell-shadow);
         transform-style: preserve-3d;
+        transform:
+            perspective(var(--ff-perspective, 900px))
+            translate3d(var(--mobile-avatar-offset-x, 0px), var(--ff-translate-y, 0px), var(--ff-lift, 0px))
+            rotateX(var(--ff-ry, 0deg))
+            rotateY(var(--ff-rx, 0deg))
+            scale(var(--ff-scale, 1));
         will-change: transform;
         cursor: pointer;
         --ff-highlight-opacity: 0.02;
@@ -132,7 +138,7 @@ div.nav-profile-card {
         }
 
         &:hover {
-            transform: translateY(-1px);
+            --ff-translate-y: -1px;
             filter: saturate(1.04);
             background:
                 radial-gradient(circle at 18% 14%,
@@ -492,6 +498,10 @@ div.nav-profile-card {
             z-index: 1;
         }
 
+        div.nav-profile-card-header.nav-profile-card-header-has-mobile-before-info.nav-profile-card-header-has-mobile-after-info > div.nav-profile-card-media {
+            margin-left: 0;
+        }
+
         div.nav-profile-card-mobile-action-stack {
             display: flex;
             flex-direction: column;
@@ -521,6 +531,8 @@ div.nav-profile-card {
                     color-mix(in srgb, var(--theme-nav-surface) 94%, white 6%) 0%,
                     var(--theme-nav-surface-accent) 100%);
             border: 1px solid var(--theme-nav-divider);
+            transform: scale(1.055);
+            transform-origin: center;
             box-shadow:
                 0 8px 20px rgba(2, 6, 23, 0.20),
                 inset 0 1px 0 rgba(255, 255, 255, 0.08);
@@ -1037,12 +1049,25 @@ div.nav-profile-card {
             text-align: center;
             min-height: 0;
             margin-top: 2px;
-            width: 100%;
-            max-width: 100%;
+            width: calc(100% + 20px);
+            max-width: calc(100% + 20px);
+            box-sizing: border-box;
+            overflow: hidden;
             transition:
                 opacity 0.18s ease,
                 filter 0.18s ease,
                 transform 0.18s ease;
+
+            span.text-typer-span {
+                min-width: 0;
+                width: 100%;
+            }
+
+            span.text-typer-span-dynamic {
+                min-width: 0;
+                width: 100% !important;
+                max-width: 100%;
+            }
         }
 
         div.nav-profile-card:has(div.nav-profile-card-mobile-language-dropdown.show) div.nav-profile-card-role,

@@ -237,14 +237,14 @@ article#article-3-section-experience {
         overflow: clip;
         padding: clamp(18px, 2vw, 28px) clamp(20px, 2.2vw, 30px);
         border-radius: var(--experience-flow-card-radius);
-        border: 1px solid color-mix(in srgb, var(--experience-card-accent) 24%, rgba(255, 255, 255, 0.08));
+        border: 1px solid color-mix(in srgb, var(--experience-card-accent) 30%, rgba(255, 255, 255, 0.08));
         background:
-            radial-gradient(circle at top left, color-mix(in srgb, var(--experience-card-accent) 18%, transparent), transparent 34%),
-            radial-gradient(circle at bottom right, color-mix(in srgb, var(--experience-card-accent) 10%, transparent), transparent 38%),
+            radial-gradient(circle at top left, color-mix(in srgb, var(--experience-card-accent) 22%, transparent), transparent 34%),
+            radial-gradient(circle at bottom right, color-mix(in srgb, var(--experience-card-accent) 14%, transparent), transparent 38%),
             linear-gradient(180deg, rgba(18, 24, 34, 0.98), rgba(7, 11, 18, 0.98));
         box-shadow:
             0 24px 54px rgba(0, 0, 0, 0.34),
-            0 0 0 1px color-mix(in srgb, var(--experience-card-accent) 10%, transparent),
+            0 0 0 1px color-mix(in srgb, var(--experience-card-accent) 14%, transparent),
             inset 0 1px 0 rgba(255, 255, 255, 0.05);
         transition:
             transform 220ms ease,
@@ -261,8 +261,8 @@ article#article-3-section-experience {
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(circle at top right, color-mix(in srgb, var(--experience-card-accent) 28%, transparent) 0%, transparent 55%),
-                radial-gradient(circle at bottom left, color-mix(in srgb, var(--experience-card-accent) 16%, transparent) 0%, transparent 42%);
+                radial-gradient(circle at top right, color-mix(in srgb, var(--experience-card-accent) 34%, transparent) 0%, transparent 55%),
+                radial-gradient(circle at bottom left, color-mix(in srgb, var(--experience-card-accent) 22%, transparent) 0%, transparent 42%);
             pointer-events: none;
             opacity: var(--experience-axis-glow-opacity, 0.62);
             transition: opacity 140ms linear, background 140ms linear;
@@ -276,10 +276,10 @@ article#article-3-section-experience {
             background:
                 linear-gradient(
                     135deg,
-                    color-mix(in srgb, var(--experience-card-accent) 12%, transparent),
+                    color-mix(in srgb, var(--experience-card-accent) 16%, transparent),
                     transparent 22%,
                     transparent 78%,
-                    color-mix(in srgb, var(--experience-card-accent) 9%, transparent)
+                    color-mix(in srgb, var(--experience-card-accent) 12%, transparent)
                 );
             opacity: 0.9;
             pointer-events: none;
@@ -344,7 +344,7 @@ article#article-3-section-experience {
             bottom: 0;
             height: 3px;
             border-radius: 999px;
-            background: color-mix(in srgb, var(--experience-card-accent) 84%, white 8%);
+            background: color-mix(in srgb, var(--experience-card-accent) 92%, white 8%);
             opacity: 0.92;
         }
     }
@@ -353,7 +353,7 @@ article#article-3-section-experience {
         width: fit-content;
         margin: 0;
         padding: 0;
-        color: color-mix(in srgb, var(--experience-card-accent) 42%, var(--experience-flow-label-color) 58%);
+        color: color-mix(in srgb, var(--experience-card-accent) 54%, var(--experience-flow-label-color) 46%);
         font-size: 0.72rem;
         font-weight: 700;
         letter-spacing: 0.18em;
@@ -438,7 +438,7 @@ article#article-3-section-experience {
 
     span.article-text-flow-card-axis-label {
         min-width: 0;
-        color: color-mix(in srgb, var(--experience-card-accent) 54%, var(--experience-flow-label-color) 46%);
+        color: color-mix(in srgb, var(--experience-card-accent) 64%, var(--experience-flow-label-color) 36%);
         font-size: clamp(0.94rem, 0.28vw + 0.88rem, 1.08rem);
         font-weight: 700;
         letter-spacing: 0.14em;
@@ -492,14 +492,14 @@ article#article-3-section-experience {
 
     div.pretext-draggable-inline-icon-text-rail-block {
         width: var(--experience-card-rail-max-width);
-        margin: clamp(0.65rem, 0.9vw, 1.05rem) auto;
+        margin: clamp(0.35rem, 0.55vw, 0.7rem) auto;
         padding-inline: var(--experience-flow-rail-padding);
     }
 
     div.pretext-draggable-inline-icon-text-rail-hit-area {
         width: 100%;
         max-width: none;
-        height: clamp(66px, 7vw, 80px);
+        height: clamp(58px, 6.4vw, 72px);
         margin: 0;
     }
 
@@ -508,9 +508,9 @@ article#article-3-section-experience {
         background: linear-gradient(
             90deg,
             rgba(0, 0, 0, 0) 0%,
-            color-mix(in srgb, var(--experience-card-accent) 24%, transparent) 10%,
-            color-mix(in srgb, var(--experience-card-accent) 88%, white 10%) 50%,
-            color-mix(in srgb, var(--experience-card-accent) 24%, transparent) 90%,
+            color-mix(in srgb, var(--experience-card-accent) 30%, transparent) 10%,
+            color-mix(in srgb, var(--experience-card-accent) 94%, white 6%) 50%,
+            color-mix(in srgb, var(--experience-card-accent) 30%, transparent) 90%,
             rgba(0, 0, 0, 0) 100%
         );
     }
@@ -519,32 +519,32 @@ article#article-3-section-experience {
         height: 3px;
         background: linear-gradient(
             90deg,
-            color-mix(in srgb, var(--experience-card-accent) 22%, transparent),
-            color-mix(in srgb, var(--experience-card-accent) 92%, white 10%)
+            color-mix(in srgb, var(--experience-card-accent) 30%, transparent),
+            color-mix(in srgb, var(--experience-card-accent) 96%, white 6%)
         );
         opacity: var(--experience-axis-glow-opacity, 0.62);
-        box-shadow: 0 0 20px color-mix(in srgb, var(--experience-card-accent) 34%, transparent);
+        box-shadow: 0 0 22px color-mix(in srgb, var(--experience-card-accent) 40%, transparent);
     }
 
     span.pretext-draggable-inline-icon-text-rail-dot {
         width: 11px;
         height: 11px;
-        background-color: color-mix(in srgb, var(--experience-card-accent) 32%, rgba(255, 255, 255, 0.2));
-        border-color: color-mix(in srgb, var(--experience-card-accent) 56%, rgba(255, 255, 255, 0.2));
+        background-color: color-mix(in srgb, var(--experience-card-accent) 40%, rgba(255, 255, 255, 0.2));
+        border-color: color-mix(in srgb, var(--experience-card-accent) 66%, rgba(255, 255, 255, 0.2));
     }
 
     button.pretext-draggable-inline-icon-text-handle {
-        border-color: color-mix(in srgb, var(--experience-card-accent) 40%, rgba(255, 255, 255, 0.12));
+        border-color: color-mix(in srgb, var(--experience-card-accent) 50%, rgba(255, 255, 255, 0.12));
         background:
             radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0) 45%),
             linear-gradient(
                 180deg,
-                color-mix(in srgb, var(--experience-card-accent) 26%, rgba(10, 14, 24, 0.94)),
+                color-mix(in srgb, var(--experience-card-accent) 34%, rgba(10, 14, 24, 0.94)),
                 rgba(10, 14, 24, 0.96)
             );
         box-shadow:
             0 18px 34px rgba(0, 0, 0, 0.26),
-            0 0 0 10px color-mix(in srgb, var(--experience-card-accent) 14%, transparent);
+            0 0 0 10px color-mix(in srgb, var(--experience-card-accent) 18%, transparent);
     }
 
     span.pretext-draggable-inline-icon-text-handle-icon {

@@ -387,7 +387,7 @@
             "component": "ArticleTimeline",
             "locales": {
                 "en": {
-                    "title": "My {{Digital Expression Albums}}"
+                    "title": "<span class='art-title-rgb-my'>My</span> <span class='art-title-rgb-red'>Digital</span> <span class='art-title-rgb-green'>Expression</span> <span class='art-title-rgb-blue'>Albums</span>"
                 },
                 "de": {
                     "title": "Meine {{digitalen Ausdrucksalben}}"

@@ -60,6 +60,10 @@
                         "fill": "#FFF",
                         "fillLight": "#FFF"
                     },
+                    "link": {
+                        "href": "https://www.inlingua.de/",
+                        "tooltipString": "open_website"
+                    },
                     "dateStart": {
                         "year": 2024,
                         "month": 11
@@ -164,6 +168,10 @@
                         "bgLight": "#FFF",
                         "fill": "#FFF",
                         "fillLight": "#FFF"
+                    },
+                    "link": {
+                        "href": "https://www.tci.de/",
+                        "tooltipString": "open_website"
                     },
                     "dateStart": {
                         "year": 2024,
@@ -270,6 +278,10 @@
                         "fill": "#FFF",
                         "fillLight": "#FFF"
                     },
+                    "link": {
+                        "href": "https://www.tipwin.de/",
+                        "tooltipString": "open_website"
+                    },
                     "dateStart": {
                         "year": 2022,
                         "month": 9
@@ -374,6 +386,10 @@
                         "bgLight": "#FFF",
                         "fill": "#FFF",
                         "fillLight": "#FFF"
+                    },
+                    "link": {
+                        "href": "https://www.tueg-schillings.de/",
+                        "tooltipString": "open_website"
                     },
                     "dateStart": {
                         "year": 2022,
@@ -480,6 +496,10 @@
                         "fill": "#FFF",
                         "fillLight": "#FFF"
                     },
+                    "link": {
+                        "href": "https://www.clariant.com/Solutions/Industries/Coatings-Paints-and-Inks",
+                        "tooltipString": "open_website"
+                    },
                     "dateStart": {
                         "year": 2018,
                         "month": 9
@@ -582,16 +602,16 @@
             "component": "ArticleFeature",
             "locales": {
                 "en": {
-                    "title": "{{Wood Products Deutschland}} | {{First Side Hustle}}"
+                    "title": "{{First Side Hustle}}<br/>{{Wood Products Deutschland}}"
                 },
                 "de": {
-                    "title": "{{Wood Products Deutschland}} | {{Erster Side Hustle}}"
+                    "title": "{{Erster Side Hustle}}<br/>{{Wood Products Deutschland}}"
                 },
                 "hr": {
-                    "title": "{{Wood Products Deutschland}} | {{Prvi side hustle}}"
+                    "title": "{{Prvi side hustle}}<br/>{{Wood Products Deutschland}}"
                 },
                 "tr": {
-                    "title": "{{Wood Products Deutschland}} | {{İlk side hustle}}"
+                    "title": "{{İlk side hustle}}<br/>{{Wood Products Deutschland}}"
                 }
             },
             "settings": {
@@ -720,7 +740,7 @@
                             "eyebrow": "Service and follow-through",
                             "axis_start": "Service",
                             "axis_end": "Leadership",
-                            "title": "Volunteer Leadership - Catholic Youth Program",
+                            "title": "Catholic Youth\nVolunteer Leadership",
                             "list": [
                                 "Preparation",
                                 "Communication",

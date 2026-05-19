@@ -40,9 +40,9 @@ section#section-education {
     --education-accent-blue: #4ea3ff;
     --education-accent-gold: #facc15;
     --education-title-start: #f8fafc;
-    --education-title-mid: #38bdf8;
-    --education-title-end: #a78bfa;
-    --education-title-shadow: 0 16px 34px rgba(56, 189, 248, 0.20);
+    --education-title-mid: #c084fc;
+    --education-title-end: #34d399;
+    --education-title-shadow: 0 16px 34px rgba(192, 132, 252, 0.20);
     --education-text-strong: #f8fafc;
     --education-text-mid: #cbd5e1;
     --education-text-soft: #94a3b8;
@@ -99,7 +99,7 @@ section#section-education header.section-header div.section-header-prefix {
     padding: 0.24rem 0.72rem;
     border: 1px solid color-mix(in srgb, var(--education-title-mid) 26%, transparent);
     border-radius: 999px;
-    background: linear-gradient(90deg, rgba(56, 189, 248, 0.10), rgba(167, 139, 250, 0.09));
+    background: linear-gradient(90deg, rgba(192, 132, 252, 0.10), rgba(52, 211, 153, 0.09));
     color: var(--education-text-mid);
     font-size: clamp(0.9rem, 0.82rem + 0.26vw, 1.06rem);
     letter-spacing: 0.03em;
@@ -145,10 +145,10 @@ section#section-education article:is(
 }
 
 section#section-education article#article-1-section-education {
-    --education-current-title-start: #f8fafc;
-    --education-current-title-mid: #38bdf8;
-    --education-current-title-end: #facc15;
-    --education-current-title-shadow: 0 16px 34px rgba(56, 189, 248, 0.22);
+    --education-current-title-start: #e0f2fe;
+    --education-current-title-mid: #0ea5e9;
+    --education-current-title-end: #f59e0b;
+    --education-current-title-shadow: 0 16px 34px rgba(14, 165, 233, 0.22);
     --education-current-title-line-top: 4px;
 }
 
@@ -235,7 +235,7 @@ section#section-education article:is(
 }
 
 section#section-education article#article-1-section-education h4.article-title::before {
-    background: linear-gradient(90deg, #2563eb, #38bdf8 42%, #facc15);
+    background: linear-gradient(90deg, #0284c7, #0ea5e9 42%, #f59e0b);
 }
 
 section#section-education article#article-2-section-education h4.article-title::before {
@@ -385,10 +385,10 @@ section#section-experience {
     --experience-page-bg-3: #111827;
     --experience-accent-blue: #4ea3ff;
     --experience-accent-gold: #facc15;
-    --experience-title-start: #f8fafc;
-    --experience-title-mid: #60a5fa;
-    --experience-title-end: #facc15;
-    --experience-title-shadow: 0 16px 34px rgba(96, 165, 250, 0.20);
+    --experience-title-start: #fff7ed;
+    --experience-title-mid: #fb7185;
+    --experience-title-end: #8b5cf6;
+    --experience-title-shadow: 0 16px 34px rgba(251, 113, 133, 0.20);
     --experience-text-strong: #f8fafc;
     --experience-text-mid: #cbd5e1;
     --experience-text-soft: #94a3b8;
@@ -433,7 +433,7 @@ section#section-experience header.section-header::after {
     margin-top: 2px;
     border-radius: 999px;
     background: linear-gradient(90deg, transparent, var(--experience-title-mid), var(--experience-title-end), transparent);
-    box-shadow: 0 0 28px rgba(96, 165, 250, 0.22);
+    box-shadow: 0 0 28px color-mix(in srgb, var(--experience-title-mid) 22%, transparent);
 }
 
 section#section-experience header.section-header div.section-header-prefix {
@@ -446,7 +446,7 @@ section#section-experience header.section-header div.section-header-prefix {
     padding: 0.24rem 0.72rem;
     border: 1px solid color-mix(in srgb, var(--experience-title-mid) 26%, transparent);
     border-radius: 999px;
-    background: linear-gradient(90deg, rgba(96, 165, 250, 0.10), rgba(250, 204, 21, 0.08));
+    background: linear-gradient(90deg, rgba(251, 113, 133, 0.10), rgba(139, 92, 246, 0.09));
     color: var(--experience-text-mid);
     font-size: clamp(0.9rem, 0.82rem + 0.26vw, 1.06rem);
     letter-spacing: 0.03em;
@@ -492,10 +492,10 @@ section#section-experience article:is(
 }
 
 section#section-experience article#article-1-section-experience {
-    --experience-current-title-start: #f8fafc;
-    --experience-current-title-mid: #60a5fa;
+    --experience-current-title-start: #e0f2fe;
+    --experience-current-title-mid: #22d3ee;
     --experience-current-title-end: #facc15;
-    --experience-current-title-shadow: 0 16px 34px rgba(96, 165, 250, 0.22);
+    --experience-current-title-shadow: 0 16px 34px rgba(34, 211, 238, 0.20);
     --experience-current-title-line-top: 4px;
 }
 
@@ -587,7 +587,7 @@ section#section-experience article:is(
 }
 
 section#section-experience article#article-1-section-experience h4.article-title::before {
-    background: linear-gradient(90deg, #2563eb, #60a5fa 42%, #facc15);
+    background: linear-gradient(90deg, #0891b2, #22d3ee 42%, #facc15);
 }
 
 section#section-experience article#article-2-section-experience h4.article-title::before {

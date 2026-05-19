@@ -22,10 +22,10 @@
 }
 
 [data-theme="light"] section#section-education {
-    --education-title-start: #0f172a;
-    --education-title-mid: #2563eb;
-    --education-title-end: #7c3aed;
-    --education-title-shadow: 0 14px 28px rgba(37, 99, 235, 0.13);
+    --education-title-start: #312e81;
+    --education-title-mid: #7c3aed;
+    --education-title-end: #059669;
+    --education-title-shadow: 0 14px 28px rgba(124, 58, 237, 0.13);
 
     background:
         radial-gradient(circle at top left, rgba(37, 99, 235, 0.10) 0%, transparent 30%),
@@ -51,9 +51,9 @@
 
 [data-theme="light"] section#section-education article#article-1-section-education {
     --education-current-title-start: #0f172a;
-    --education-current-title-mid: #2563eb;
+    --education-current-title-mid: #0284c7;
     --education-current-title-end: #b45309;
-    --education-current-title-shadow: 0 14px 28px rgba(37, 99, 235, 0.13);
+    --education-current-title-shadow: 0 14px 28px rgba(2, 132, 199, 0.13);
 }
 
 [data-theme="light"] section#section-education article#article-2-section-education {
@@ -71,7 +71,7 @@
 }
 
 [data-theme="light"] section#section-education article#article-1-section-education h4.article-title::before {
-    background: linear-gradient(90deg, #1d4ed8, #2563eb 42%, #b45309);
+    background: linear-gradient(90deg, #0369a1, #0284c7 42%, #b45309);
 }
 
 [data-theme="light"] section#section-education article#article-2-section-education h4.article-title::before {
@@ -83,10 +83,10 @@
 }
 
 [data-theme="light"] section#section-experience {
-    --experience-title-start: #0f172a;
-    --experience-title-mid: #2563eb;
-    --experience-title-end: #b45309;
-    --experience-title-shadow: 0 14px 28px rgba(37, 99, 235, 0.13);
+    --experience-title-start: #7c2d12;
+    --experience-title-mid: #e11d48;
+    --experience-title-end: #6d28d9;
+    --experience-title-shadow: 0 14px 28px rgba(225, 29, 72, 0.12);
 
     background:
         radial-gradient(circle at top left, rgba(99, 102, 241, 0.10) 0%, transparent 30%),
@@ -112,9 +112,9 @@
 
 [data-theme="light"] section#section-experience article#article-1-section-experience {
     --experience-current-title-start: #0f172a;
-    --experience-current-title-mid: #2563eb;
+    --experience-current-title-mid: #0891b2;
     --experience-current-title-end: #b45309;
-    --experience-current-title-shadow: 0 14px 28px rgba(37, 99, 235, 0.13);
+    --experience-current-title-shadow: 0 14px 28px rgba(8, 145, 178, 0.13);
 }
 
 [data-theme="light"] section#section-experience article#article-2-section-experience {
@@ -132,7 +132,7 @@
 }
 
 [data-theme="light"] section#section-experience article#article-1-section-experience h4.article-title::before {
-    background: linear-gradient(90deg, #1d4ed8, #2563eb 42%, #b45309);
+    background: linear-gradient(90deg, #0e7490, #0891b2 42%, #b45309);
 }
 
 [data-theme="light"] section#section-experience article#article-2-section-experience h4.article-title::before {

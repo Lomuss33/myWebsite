@@ -307,9 +307,9 @@ function ArticleWebArt({ dataWrapper, id }) {
     const [showIntroCover, setShowIntroCover] = useState(true)
     const rawItems = useMemo(() => dataWrapper.orderedItems, [dataWrapper.orderedItems])
     const items = useMemo(() => {
-        // Desired visual order: Poly, 5, 3D, Orbit, Hover, Wave, Spin, Shape, Hourglass, Noice, Distance, Android, Pulse
-        // Matches ids: 4 (Poly), 5 (Embroidery), 3 (3D tunnel), 6 (Orbit), 1 (Hover), 2 (Wave), 7 (Spin), 8 (Shape), 9 (Hourglass), 10 (Noice), 11 (Distance), 12 (Android), 13 (Pulse)
-        const desiredOrder = [4, 5, 3, 6, 1, 2, 7, 8, 9, 10, 11, 12, 13]
+        // Desired visual order: Poly, 5, 3D, Orbit, Hover, Wave, Spin, Shape, Hourglass, Noice, Distance, Android, Pulse, Bars
+        // Matches ids: 4 (Poly), 5 (Embroidery), 3 (3D tunnel), 6 (Orbit), 1 (Hover), 2 (Wave), 7 (Spin), 8 (Shape), 9 (Hourglass), 10 (Noice), 11 (Distance), 12 (Android), 13 (Pulse), 14 (Bars)
+        const desiredOrder = [4, 5, 3, 6, 1, 2, 7, 8, 9, 10, 11, 12, 13, 14]
         const byId = new Map(rawItems.map((item) => [Number(item?.id), item]))
         const ordered = []
 
@@ -652,6 +652,7 @@ function ArticleWebArt({ dataWrapper, id }) {
         if(itemId === 11) return "Distance"
         if(itemId === 12) return "Android"
         if(itemId === 13) return "Pulse"
+        if(itemId === 14) return "Bars"
         return String(index + 1)
     }
 
@@ -998,6 +999,10 @@ function WebArtTile({ itemWrapper, index, activate, locked, onReady }) {
 
     if(Number(itemWrapper.id) === 13) {
         return <PulseBoxTile itemWrapper={itemWrapper} index={index} activate={activate} locked={locked} onReady={onReady}/>
+    }
+
+    if(Number(itemWrapper.id) === 14) {
+        return <BarsTile itemWrapper={itemWrapper} index={index} activate={activate} locked={locked} onReady={onReady}/>
     }
 
     return <EmbroideryTile itemWrapper={itemWrapper} index={index} activate={activate} locked={locked} onReady={onReady}/>
@@ -1386,6 +1391,66 @@ function SpinBoxesTile({ itemWrapper, locked, onReady }) {
                 ))}
             </div>
         </div>
+    )
+}
+
+function BarsTile({ itemWrapper, index, activate, locked, onReady }) {
+    const didReadyRef = useRef(false)
+    const panelCount = 50
+    const levels = useMemo(() => ["level-1", "level-2", "level-3", "level-4", "level-5"], [])
+    const [levelIndex, setLevelIndex] = useState(0)
+    const level = levels[levelIndex]
+
+    const panels = useMemo(() => {
+        return Array.from({ length: panelCount }, (_, panelIndex) => {
+            const animationDelay = `${(3 / (panelCount / 2)) * (panelIndex + 1)}s`
+            const band = panelIndex % 5
+            return {
+                key: panelIndex,
+                style: {
+                    animationDelay,
+                    "--bar-index": panelIndex,
+                    "--bar-band": band,
+                    "--bar-hue": `${Math.round((panelIndex / Math.max(1, panelCount - 1)) * 360)}deg`
+                }
+            }
+        })
+    }, [])
+
+    const toggleLevel = useCallback((event) => {
+        event?.preventDefault?.()
+        event?.stopPropagation?.()
+        setLevelIndex((current) => (current + 1) % levels.length)
+    }, [levels.length])
+
+    useEffect(() => {
+        if(!activate) return
+        if(didReadyRef.current) return
+        didReadyRef.current = true
+        onReady?.(itemWrapper.uniqueId)
+    }, [activate, itemWrapper.uniqueId, onReady])
+
+    return (
+        <button type={"button"}
+                className={`article-web-art-tile article-web-art-bars-tile article-web-art-tile-clickable`}
+                aria-label={`Bars web art tile ${index + 1}, ${level.replace("level-", "mode ")}`}
+                disabled={locked}
+                onClick={locked ? undefined : toggleLevel}
+                onKeyDown={locked ? undefined : (event) => {
+                    if(event.key === "Enter" || event.key === " ") {
+                        toggleLevel(event)
+                    }
+                }}>
+            <div className={`article-web-art-bars-stage`}>
+                <div className={`article-web-art-bars article-web-art-bars-${level}`}>
+                    {panels.map((panel) => (
+                        <div key={panel.key}
+                             className={`article-web-art-bars-panel`}
+                             style={panel.style}/>
+                    ))}
+                </div>
+            </div>
+        </button>
     )
 }
 

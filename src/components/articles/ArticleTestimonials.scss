@@ -135,7 +135,7 @@ article#article-2-section-my-software {
     h4.article-title {
         flex-direction: column;
         gap: 12px;
-        width: min(100%, 960px);
+        width: 100%;
         margin-bottom: 14px;
         font-size: clamp(2rem, 1.24rem + 2.25vw, 3.18rem)!important;
         font-weight: 900;
@@ -145,7 +145,9 @@ article#article-2-section-my-software {
 
     h4.article-title::before {
         flex: 0 0 auto;
-        width: clamp(92px, 14vw, 176px);
+        width: calc(100vw / var(--section-content-scale, 1));
+        margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+        margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
         max-width: none;
         height: 3px;
         background: linear-gradient(90deg, var(--software-rec-title-mid), var(--software-rec-title-end));
@@ -246,7 +248,7 @@ article#article-2-section-my-software {
 
         h4.article-title {
             display: block;
-            width: min(100%, 520px);
+            width: 100%;
             margin-bottom: 12px;
             font-size: clamp(1.62rem, 1.16rem + 1.55vw, 2.18rem)!important;
             line-height: 1.08;
@@ -262,7 +264,6 @@ article#article-2-section-my-software {
         }
 
         h4.article-title::before {
-            width: 82px;
             height: 3px;
             margin-bottom: 10px;
         }
@@ -308,12 +309,11 @@ article#article-2-section-my-software {
         margin-top: 28px;
 
         h4.article-title {
-            width: min(100%, 360px);
+            width: 100%;
             font-size: clamp(1.42rem, 1.14rem + 1.18vw, 1.78rem)!important;
         }
 
         h4.article-title::before {
-            width: 64px;
             margin-bottom: 8px;
         }
 

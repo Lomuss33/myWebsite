@@ -6,6 +6,7 @@ import SectionBody from "./SectionBody.jsx"
 function SectionContent({ section }) {
     const contentRef = useRef(null)
     const [bottomCollapse, setBottomCollapse] = useState(0)
+    const shouldHideHeader = section?.hideHeader === true
 
     useLayoutEffect(() => {
         const contentEl = contentRef.current
@@ -48,7 +49,9 @@ function SectionContent({ section }) {
             <div className={`section-content-elements-wrapper`}
                  ref={contentRef}
                  style={{ "--section-content-collapse": `${bottomCollapse}px` }}>
-                <SectionHeader section={section}/>
+                {!shouldHideHeader && (
+                    <SectionHeader section={section}/>
+                )}
                 <SectionBody section={section}/>
             </div>
         </div>

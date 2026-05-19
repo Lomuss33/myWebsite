@@ -840,7 +840,7 @@ article#article-2-section-my-hardware {
         flex-direction: column;
         align-items: center;
         gap: 10px;
-        width: min(100%, 860px);
+        width: 100%;
         margin: 0 auto 12px;
         font-size: clamp(1.82rem, 1.22rem + 1.9vw, 2.82rem)!important;
         font-weight: 900;
@@ -859,7 +859,9 @@ article#article-2-section-my-hardware {
     }
 
     h4.article-title::before {
-        width: clamp(82px, 13vw, 156px);
+        width: calc(100vw / var(--section-content-scale, 1));
+        margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+        margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
         height: 3px;
         background: linear-gradient(90deg, var(--probe-title-mid), var(--probe-title-end));
         box-shadow: 0 0 22px rgba(56, 189, 248, 0.22);

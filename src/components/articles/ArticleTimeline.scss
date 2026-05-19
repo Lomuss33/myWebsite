@@ -216,7 +216,8 @@ article#article-1-section-my-writings {
         --timeline-writing-ink: #34435e;
         --avatar-size: 132px;
         --gap-between-avatar-and-content: 22px;
-        --timeline-edge-clearance: calc(var(--avatar-size) / 2 + 10px);
+        --timeline-edge-buffer: clamp(2px, 0.4vw, 5px);
+        --timeline-edge-clearance: calc(var(--avatar-size) / 2 + var(--timeline-edge-buffer));
         box-sizing: border-box;
         width: 100%;
         padding-right: var(--timeline-edge-clearance);
@@ -237,7 +238,7 @@ article#article-1-section-my-writings {
             --avatar-size: 76px;
             --gap-between-avatar-and-content: 14px;
             --avatar-offset-merge-mode: 0px;
-            --timeline-edge-clearance: calc(var(--avatar-size) / 2 + 8px);
+            --timeline-edge-buffer: 1px;
         }
     }
 
@@ -387,8 +388,16 @@ article#article-1-section-experience {
             0 22px 44px rgba(0, 0, 0, 0.34),
             0 0 0 1px rgba(255, 255, 255, 0.14) inset,
             0 0 0 7px color-mix(in srgb, var(--theme-primary) 12%, transparent);
+        --experience-avatar-shadow-direct:
+            0 28px 56px rgba(0, 0, 0, 0.40),
+            0 0 0 1px rgba(255, 255, 255, 0.18) inset,
+            0 0 0 9px color-mix(in srgb, var(--theme-primary) 16%, transparent);
         --experience-avatar-filter-resting: saturate(0.94) brightness(0.98);
         --experience-avatar-filter-active: saturate(1.08) brightness(1.04);
+        --experience-avatar-filter-direct: saturate(1.16) brightness(1.08);
+        --experience-avatar-transform-resting: translate3d(0, 0, 0) scale(1);
+        --experience-avatar-transform-active: translate3d(calc(-1 * var(--experience-overlay-shift-active)), 0, 0) scale(1.04);
+        --experience-avatar-transform-direct: translate3d(calc(-1 * (var(--experience-overlay-shift-active) + var(--experience-avatar-size) * 0.12)), -2px, 0) scale(1.11);
         --experience-card-transform-resting: translate3d(0, 0, 0);
         --experience-card-transform-active: translate3d(-4px, -2px, 0);
         --experience-card-shadow-active:
@@ -524,7 +533,7 @@ article#article-1-section-experience {
             linear-gradient(180deg, rgba(10, 16, 30, 0.98), rgba(5, 8, 16, 0.98));
         border-color: color-mix(in srgb, var(--theme-secondary) 62%, var(--theme-primary) 38%);
         box-shadow: var(--experience-avatar-shadow-resting);
-        transform: translate3d(0, 0, 0) scale(1);
+        transform: var(--experience-avatar-transform-resting);
         filter: var(--experience-avatar-filter-resting);
         -webkit-mask-image: linear-gradient(#000, #000);
         mask-image: linear-gradient(#000, #000);
@@ -559,10 +568,11 @@ article#article-1-section-experience {
     a.article-timeline-item-avatar-link--experience:focus-visible div.article-timeline-item-avatar--button,
     button.article-timeline-item-avatar-button-reset--experience:focus-visible div.article-timeline-item-avatar--button {
         border-color: color-mix(in srgb, var(--theme-primary) 78%, white 22%);
+        transform: var(--experience-avatar-transform-direct);
+        filter: var(--experience-avatar-filter-direct);
         box-shadow:
-            0 0 0 3px color-mix(in srgb, var(--theme-primary) 24%, transparent),
-            0 0 0 1px rgba(255, 255, 255, 0.12) inset,
-            0 14px 30px rgba(0, 0, 0, 0.34);
+            var(--experience-avatar-shadow-direct),
+            0 0 0 3px color-mix(in srgb, var(--theme-primary) 24%, transparent);
     }
 
     li.article-timeline-item--experience.is-overlay-active,
@@ -575,7 +585,7 @@ article#article-1-section-experience {
         --experience-card-border-current: color-mix(in srgb, var(--card-accent) 58%, var(--card-border) 42%);
 
         div.article-timeline-item-avatar.article-timeline-item-avatar--experience {
-            transform: translate3d(calc(-1 * var(--experience-overlay-shift-active)), 0, 0) scale(1.04);
+            transform: var(--experience-avatar-transform-active);
             filter: var(--experience-avatar-filter-active);
             box-shadow: var(--experience-avatar-shadow-active);
             -webkit-mask-image: linear-gradient(#000, #000);
@@ -593,12 +603,19 @@ article#article-1-section-experience {
             --experience-card-border-current: color-mix(in srgb, var(--card-accent) 58%, var(--card-border) 42%);
 
             div.article-timeline-item-avatar.article-timeline-item-avatar--experience {
-                transform: translate3d(calc(-1 * var(--experience-overlay-shift-active)), 0, 0) scale(1.04);
+                transform: var(--experience-avatar-transform-active);
                 filter: var(--experience-avatar-filter-active);
                 box-shadow: var(--experience-avatar-shadow-active);
                 -webkit-mask-image: linear-gradient(#000, #000);
                 mask-image: linear-gradient(#000, #000);
             }
+        }
+
+        a.article-timeline-item-avatar-link--experience:hover div.article-timeline-item-avatar--experience,
+        button.article-timeline-item-avatar-button-reset--experience:hover div.article-timeline-item-avatar--experience {
+            transform: var(--experience-avatar-transform-direct);
+            filter: var(--experience-avatar-filter-direct);
+            box-shadow: var(--experience-avatar-shadow-direct);
         }
     }
 

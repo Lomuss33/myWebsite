@@ -543,7 +543,7 @@ div.article-web-art-intro-cover-open {
 
 div.article-web-art-items {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(clamp(168px, 24cqw, 220px), 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
     position: relative;
 
@@ -836,8 +836,15 @@ div.article-web-art-items {
     }
 }
 
+@container web-art-shell (min-width: 720px) {
+    div.article-web-art-items {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
 @container web-art-shell (min-width: 920px) {
     div.article-web-art-items {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 18px;
     }
 }

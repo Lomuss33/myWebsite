@@ -39,6 +39,10 @@ section#section-education {
     --education-page-bg-3: #0d1422;
     --education-accent-blue: #4ea3ff;
     --education-accent-gold: #facc15;
+    --education-title-start: #f8fafc;
+    --education-title-mid: #38bdf8;
+    --education-title-end: #a78bfa;
+    --education-title-shadow: 0 16px 34px rgba(56, 189, 248, 0.20);
     --education-text-strong: #f8fafc;
     --education-text-mid: #cbd5e1;
     --education-text-soft: #94a3b8;
@@ -67,6 +71,276 @@ section#section-education h4.article-title span.article-title-prefix {
 
 section#section-education div.article-content {
     color: var(--education-text-strong);
+}
+
+section#section-education header.section-header {
+    gap: clamp(0.42rem, 1.1vw, 0.72rem);
+    margin: 4px auto clamp(30px, 4vw, 52px);
+    text-align: center;
+}
+
+section#section-education header.section-header::after {
+    content: "";
+    display: block;
+    width: min(100%, 720px);
+    height: 2px;
+    margin-top: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent, var(--education-title-mid), var(--education-title-end), transparent);
+    box-shadow: 0 0 28px color-mix(in srgb, var(--education-title-mid) 22%, transparent);
+}
+
+section#section-education header.section-header div.section-header-prefix {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    margin: 0 auto;
+    padding: 0.24rem 0.72rem;
+    border: 1px solid color-mix(in srgb, var(--education-title-mid) 26%, transparent);
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(56, 189, 248, 0.10), rgba(167, 139, 250, 0.09));
+    color: var(--education-text-mid);
+    font-size: clamp(0.9rem, 0.82rem + 0.26vw, 1.06rem);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+section#section-education header.section-header div.section-header-prefix i {
+    margin-right: 8px;
+    color: var(--education-title-end);
+    opacity: 0.95;
+}
+
+section#section-education header.section-header h2.section-header-title {
+    max-width: 980px;
+    margin: 0 auto;
+    background: linear-gradient(120deg, var(--education-title-start) 0%, var(--education-title-mid) 45%, var(--education-title-end) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    font-size: clamp(2.12rem, 1.28rem + 2.72vw, 4.35rem)!important;
+    font-weight: 950;
+    line-height: 0.98;
+    letter-spacing: 0;
+    text-shadow: var(--education-title-shadow);
+    text-wrap: balance;
+}
+
+section#section-education header.section-header h2.section-header-title span {
+    color: inherit!important;
+}
+
+section#section-education article:is(
+    #article-1-section-education,
+    #article-2-section-education,
+    #article-3-section-education
+) {
+    --education-current-title-start: var(--education-title-start);
+    --education-current-title-mid: var(--education-title-mid);
+    --education-current-title-end: var(--education-title-end);
+    --education-current-title-shadow: var(--education-title-shadow);
+    --education-current-title-line-top: 3px;
+    --education-current-title-line-bottom: 1px;
+}
+
+section#section-education article#article-1-section-education {
+    --education-current-title-start: #f8fafc;
+    --education-current-title-mid: #38bdf8;
+    --education-current-title-end: #facc15;
+    --education-current-title-shadow: 0 16px 34px rgba(56, 189, 248, 0.22);
+    --education-current-title-line-top: 4px;
+}
+
+section#section-education article#article-2-section-education {
+    --education-current-title-start: #f8fafc;
+    --education-current-title-mid: #94a3b8;
+    --education-current-title-end: #38bdf8;
+    --education-current-title-shadow: 0 16px 34px rgba(148, 163, 184, 0.20);
+}
+
+section#section-education article#article-3-section-education {
+    --education-current-title-start: #fff7ed;
+    --education-current-title-mid: #f9a8d4;
+    --education-current-title-end: #5eead4;
+    --education-current-title-shadow: 0 16px 34px rgba(249, 168, 212, 0.18);
+    --education-current-title-line-bottom: 2px;
+}
+
+section#section-education article:is(
+    #article-1-section-education,
+    #article-2-section-education,
+    #article-3-section-education
+) h4.article-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    margin: 0 auto clamp(24px, 3vw, 34px);
+    font-size: clamp(1.76rem, 1.12rem + 1.82vw, 2.8rem)!important;
+    font-weight: 900;
+    line-height: 1.04;
+    text-align: center;
+    text-shadow: var(--education-current-title-shadow);
+    text-wrap: balance;
+}
+
+section#section-education article:is(#article-2-section-education, #article-3-section-education) h4.article-title {
+    margin-top: clamp(30px, 4vw, 46px);
+}
+
+section#section-education article:is(
+    #article-1-section-education,
+    #article-2-section-education,
+    #article-3-section-education
+) h4.article-title::before,
+section#section-education article:is(
+    #article-1-section-education,
+    #article-2-section-education,
+    #article-3-section-education
+) h4.article-title::after {
+    content: "";
+    display: block;
+    flex: 0 0 auto;
+    max-width: none;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 999px;
+    opacity: 0.92;
+}
+
+section#section-education article:is(
+    #article-1-section-education,
+    #article-2-section-education,
+    #article-3-section-education
+) h4.article-title::before {
+    width: calc(100vw / var(--section-content-scale, 1));
+    height: var(--education-current-title-line-top);
+    margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    background: linear-gradient(90deg, var(--education-current-title-mid), var(--education-current-title-end));
+    box-shadow: 0 0 24px color-mix(in srgb, var(--education-current-title-mid) 24%, transparent);
+}
+
+section#section-education article:is(
+    #article-1-section-education,
+    #article-2-section-education,
+    #article-3-section-education
+) h4.article-title::after {
+    width: clamp(176px, 30vw, 368px);
+    height: var(--education-current-title-line-bottom);
+    background: linear-gradient(90deg, transparent, var(--education-current-title-mid), var(--education-current-title-end), transparent);
+}
+
+section#section-education article#article-1-section-education h4.article-title::before {
+    background: linear-gradient(90deg, #2563eb, #38bdf8 42%, #facc15);
+}
+
+section#section-education article#article-2-section-education h4.article-title::before {
+    background: repeating-linear-gradient(90deg, #475569 0 16px, #e2e8f0 16px 32px, #38bdf8 32px 48px);
+}
+
+section#section-education article#article-3-section-education h4.article-title::before {
+    background: linear-gradient(90deg, #f9a8d4, #fff7ed 38%, #5eead4 72%, #c4b5fd);
+}
+
+section#section-education article:is(
+    #article-1-section-education,
+    #article-2-section-education,
+    #article-3-section-education
+) h4.article-title span.article-title-prefix {
+    display: none;
+}
+
+section#section-education article:is(
+    #article-1-section-education,
+    #article-2-section-education,
+    #article-3-section-education
+) h4.article-title span.article-title-text {
+    display: block;
+    max-width: 100%;
+    min-width: 0;
+    padding: 0 2px;
+    overflow-wrap: anywhere;
+    background: linear-gradient(135deg, var(--education-current-title-start) 0%, var(--education-current-title-mid) 48%, var(--education-current-title-end) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+section#section-education article:is(
+    #article-1-section-education,
+    #article-2-section-education,
+    #article-3-section-education
+) h4.article-title span.article-title-text span {
+    color: inherit!important;
+}
+
+@include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    section#section-education header.section-header {
+        gap: 0.42rem;
+        margin-bottom: 34px;
+    }
+
+    section#section-education header.section-header div.section-header-prefix {
+        padding: 0.2rem 0.58rem;
+        font-size: clamp(0.76rem, 0.72rem + 0.2vw, 0.88rem);
+    }
+
+    section#section-education header.section-header h2.section-header-title {
+        max-width: 620px;
+        font-size: clamp(1.82rem, 1.18rem + 2.2vw, 2.7rem)!important;
+        line-height: 1.02;
+    }
+
+    section#section-education header.section-header::after {
+        width: min(68vw, 420px);
+    }
+
+    section#section-education article:is(
+        #article-1-section-education,
+        #article-2-section-education,
+        #article-3-section-education
+    ) h4.article-title {
+        gap: 10px;
+        margin-bottom: 26px;
+        font-size: clamp(1.44rem, 1.1rem + 1.32vw, 2.02rem)!important;
+        line-height: 1.08;
+    }
+
+    section#section-education article:is(#article-2-section-education, #article-3-section-education) h4.article-title {
+        margin-top: 34px;
+    }
+
+    section#section-education article:is(
+        #article-1-section-education,
+        #article-2-section-education,
+        #article-3-section-education
+    ) h4.article-title::after {
+        width: min(62vw, 220px);
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    section#section-education header.section-header {
+        margin-bottom: 28px;
+    }
+
+    section#section-education header.section-header h2.section-header-title {
+        font-size: clamp(1.52rem, 1.12rem + 1.68vw, 2.08rem)!important;
+    }
+
+    section#section-education article:is(
+        #article-1-section-education,
+        #article-2-section-education,
+        #article-3-section-education
+    ) h4.article-title {
+        gap: 9px;
+        margin-bottom: 22px;
+        font-size: clamp(1.24rem, 1.04rem + 0.92vw, 1.56rem)!important;
+    }
 }
 
 section#section-about {
@@ -111,6 +385,10 @@ section#section-experience {
     --experience-page-bg-3: #111827;
     --experience-accent-blue: #4ea3ff;
     --experience-accent-gold: #facc15;
+    --experience-title-start: #f8fafc;
+    --experience-title-mid: #60a5fa;
+    --experience-title-end: #facc15;
+    --experience-title-shadow: 0 16px 34px rgba(96, 165, 250, 0.20);
     --experience-text-strong: #f8fafc;
     --experience-text-mid: #cbd5e1;
     --experience-text-soft: #94a3b8;
@@ -139,6 +417,290 @@ section#section-experience h4.article-title span.article-title-prefix {
 
 section#section-experience div.article-content {
     color: var(--experience-text-strong);
+}
+
+section#section-experience header.section-header {
+    gap: clamp(0.42rem, 1.1vw, 0.72rem);
+    margin: 4px auto clamp(30px, 4vw, 52px);
+    text-align: center;
+}
+
+section#section-experience header.section-header::after {
+    content: "";
+    display: block;
+    width: min(100%, 720px);
+    height: 2px;
+    margin-top: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent, var(--experience-title-mid), var(--experience-title-end), transparent);
+    box-shadow: 0 0 28px rgba(96, 165, 250, 0.22);
+}
+
+section#section-experience header.section-header div.section-header-prefix {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: fit-content;
+    margin: 0 auto;
+    padding: 0.24rem 0.72rem;
+    border: 1px solid color-mix(in srgb, var(--experience-title-mid) 26%, transparent);
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(96, 165, 250, 0.10), rgba(250, 204, 21, 0.08));
+    color: var(--experience-text-mid);
+    font-size: clamp(0.9rem, 0.82rem + 0.26vw, 1.06rem);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+section#section-experience header.section-header div.section-header-prefix i {
+    margin-right: 0;
+    color: var(--experience-title-end);
+    opacity: 0.95;
+}
+
+section#section-experience header.section-header h2.section-header-title {
+    max-width: 980px;
+    margin: 0 auto;
+    background: linear-gradient(120deg, var(--experience-title-start) 0%, var(--experience-title-mid) 44%, var(--experience-title-end) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    font-size: clamp(2.12rem, 1.28rem + 2.72vw, 4.35rem)!important;
+    font-weight: 950;
+    line-height: 0.98;
+    letter-spacing: 0;
+    text-shadow: var(--experience-title-shadow);
+    text-wrap: balance;
+}
+
+section#section-experience header.section-header h2.section-header-title span {
+    color: inherit!important;
+}
+
+section#section-experience article:is(
+    #article-1-section-experience,
+    #article-2-section-experience,
+    #article-3-section-experience
+) {
+    --experience-current-title-start: var(--experience-title-start);
+    --experience-current-title-mid: var(--experience-title-mid);
+    --experience-current-title-end: var(--experience-title-end);
+    --experience-current-title-shadow: var(--experience-title-shadow);
+    --experience-current-title-line-top: 3px;
+    --experience-current-title-line-bottom: 1px;
+}
+
+section#section-experience article#article-1-section-experience {
+    --experience-current-title-start: #f8fafc;
+    --experience-current-title-mid: #60a5fa;
+    --experience-current-title-end: #facc15;
+    --experience-current-title-shadow: 0 16px 34px rgba(96, 165, 250, 0.22);
+    --experience-current-title-line-top: 4px;
+}
+
+section#section-experience article#article-2-section-experience {
+    --experience-current-title-start: #f5e6c8;
+    --experience-current-title-mid: #b45309;
+    --experience-current-title-end: #4d7c0f;
+    --experience-current-title-shadow: 0 16px 34px rgba(180, 83, 9, 0.20);
+}
+
+section#section-experience article#article-3-section-experience {
+    --experience-current-title-start: #ffffff;
+    --experience-current-title-mid: #e5e7eb;
+    --experience-current-title-end: #38bdf8;
+    --experience-current-title-shadow: 0 16px 34px rgba(56, 189, 248, 0.18);
+    --experience-current-title-line-bottom: 2px;
+}
+
+section#section-experience article:is(
+    #article-1-section-experience,
+    #article-2-section-experience,
+    #article-3-section-experience
+) h4.article-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    margin: 0 auto clamp(24px, 3vw, 34px);
+    font-size: clamp(1.76rem, 1.12rem + 1.82vw, 2.8rem)!important;
+    font-weight: 900;
+    line-height: 1.04;
+    text-align: center;
+    text-shadow: var(--experience-current-title-shadow);
+    text-wrap: balance;
+}
+
+section#section-experience article:is(#article-2-section-experience, #article-3-section-experience) h4.article-title {
+    margin-top: clamp(30px, 4vw, 46px);
+}
+
+section#section-experience article#article-2-section-experience h4.article-title {
+    font-size: clamp(1.46rem, 0.98rem + 1.42vw, 2.28rem)!important;
+    line-height: 1.08;
+}
+
+section#section-experience article:is(
+    #article-1-section-experience,
+    #article-2-section-experience,
+    #article-3-section-experience
+) h4.article-title::before,
+section#section-experience article:is(
+    #article-1-section-experience,
+    #article-2-section-experience,
+    #article-3-section-experience
+) h4.article-title::after {
+    content: "";
+    display: block;
+    flex: 0 0 auto;
+    max-width: none;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 999px;
+    opacity: 0.92;
+}
+
+section#section-experience article:is(
+    #article-1-section-experience,
+    #article-2-section-experience,
+    #article-3-section-experience
+) h4.article-title::before {
+    width: calc(100vw / var(--section-content-scale, 1));
+    height: var(--experience-current-title-line-top);
+    margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    background: linear-gradient(90deg, var(--experience-current-title-mid), var(--experience-current-title-end));
+    box-shadow: 0 0 24px color-mix(in srgb, var(--experience-current-title-mid) 24%, transparent);
+}
+
+section#section-experience article:is(
+    #article-1-section-experience,
+    #article-2-section-experience,
+    #article-3-section-experience
+) h4.article-title::after {
+    width: clamp(176px, 30vw, 368px);
+    height: var(--experience-current-title-line-bottom);
+    background: linear-gradient(90deg, transparent, var(--experience-current-title-mid), var(--experience-current-title-end), transparent);
+}
+
+section#section-experience article#article-1-section-experience h4.article-title::before {
+    background: linear-gradient(90deg, #2563eb, #60a5fa 42%, #facc15);
+}
+
+section#section-experience article#article-2-section-experience h4.article-title::before {
+    background: repeating-linear-gradient(90deg, #7c2d12 0 18px, #b45309 18px 36px, #4d7c0f 36px 54px);
+}
+
+section#section-experience article#article-3-section-experience h4.article-title::before {
+    background: linear-gradient(90deg, #94a3b8, #ffffff 38%, #38bdf8 70%, #f8fafc);
+}
+
+section#section-experience article:is(
+    #article-1-section-experience,
+    #article-2-section-experience,
+    #article-3-section-experience
+) h4.article-title span.article-title-prefix {
+    display: none;
+}
+
+section#section-experience article:is(
+    #article-1-section-experience,
+    #article-2-section-experience,
+    #article-3-section-experience
+) h4.article-title span.article-title-text {
+    display: block;
+    max-width: 100%;
+    min-width: 0;
+    padding: 0 2px;
+    overflow-wrap: anywhere;
+    background: linear-gradient(135deg, var(--experience-current-title-start) 0%, var(--experience-current-title-mid) 48%, var(--experience-current-title-end) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+section#section-experience article:is(
+    #article-1-section-experience,
+    #article-2-section-experience,
+    #article-3-section-experience
+) h4.article-title span.article-title-text span {
+    color: inherit!important;
+}
+
+@include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    section#section-experience header.section-header {
+        gap: 0.42rem;
+        margin-bottom: 34px;
+    }
+
+    section#section-experience header.section-header div.section-header-prefix {
+        padding: 0.2rem 0.58rem;
+        font-size: clamp(0.76rem, 0.72rem + 0.2vw, 0.88rem);
+    }
+
+    section#section-experience header.section-header h2.section-header-title {
+        max-width: 620px;
+        font-size: clamp(1.82rem, 1.18rem + 2.2vw, 2.7rem)!important;
+        line-height: 1.02;
+    }
+
+    section#section-experience header.section-header::after {
+        width: min(68vw, 420px);
+    }
+
+    section#section-experience article:is(
+        #article-1-section-experience,
+        #article-2-section-experience,
+        #article-3-section-experience
+    ) h4.article-title {
+        gap: 10px;
+        margin-bottom: 26px;
+        font-size: clamp(1.44rem, 1.1rem + 1.32vw, 2.02rem)!important;
+        line-height: 1.08;
+    }
+
+    section#section-experience article:is(#article-2-section-experience, #article-3-section-experience) h4.article-title {
+        margin-top: 34px;
+    }
+
+    section#section-experience article#article-2-section-experience h4.article-title {
+        font-size: clamp(1.24rem, 1rem + 0.98vw, 1.68rem)!important;
+    }
+
+    section#section-experience article:is(
+        #article-1-section-experience,
+        #article-2-section-experience,
+        #article-3-section-experience
+    ) h4.article-title::after {
+        width: min(62vw, 220px);
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    section#section-experience header.section-header {
+        margin-bottom: 28px;
+    }
+
+    section#section-experience header.section-header h2.section-header-title {
+        font-size: clamp(1.52rem, 1.12rem + 1.68vw, 2.08rem)!important;
+    }
+
+    section#section-experience article:is(
+        #article-1-section-experience,
+        #article-2-section-experience,
+        #article-3-section-experience
+    ) h4.article-title {
+        gap: 9px;
+        margin-bottom: 22px;
+        font-size: clamp(1.24rem, 1.04rem + 0.92vw, 1.56rem)!important;
+    }
+
+    section#section-experience article#article-2-section-experience h4.article-title {
+        font-size: clamp(1.08rem, 0.96rem + 0.62vw, 1.32rem)!important;
+    }
 }
 
 section#section-my-software {
@@ -301,7 +863,7 @@ section#section-my-writings article:is(
     align-items: center;
     justify-content: center;
     gap: 12px;
-    width: min(100%, 940px);
+    width: 100%;
     margin: 0 auto clamp(24px, 3vw, 34px);
     font-size: clamp(1.86rem, 1.16rem + 2vw, 3rem)!important;
     font-weight: 900;
@@ -348,7 +910,9 @@ section#section-my-writings article:is(
     #article-3-section-my-writings,
     #article-6-section-my-writings
 ) h4.article-title::before {
-    width: clamp(86px, 13vw, 168px);
+    width: calc(100vw / var(--section-content-scale, 1));
+    margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
     height: 3px;
     background: linear-gradient(90deg, var(--writings-current-title-mid), var(--writings-current-title-end));
     box-shadow: 0 0 24px rgba(245, 158, 11, 0.22);
@@ -413,7 +977,7 @@ section#section-my-writings article:is(#article-4-section-my-writings, #article-
     justify-content: center;
     align-items: center;
     gap: clamp(10px, 1.6vw, 18px);
-    width: min(100%, 520px);
+    width: 100%;
     margin: 0 auto 20px;
     color: var(--writings-text-strong);
     font-size: clamp(1.18rem, 0.98rem + 0.62vw, 1.54rem)!important;
@@ -465,7 +1029,7 @@ section#section-my-writings article:is(#article-4-section-my-writings, #article-
         #article-6-section-my-writings
     ) h4.article-title {
         gap: 10px;
-        width: min(100%, 520px);
+        width: 100%;
         margin-bottom: 26px;
         font-size: clamp(1.48rem, 1.12rem + 1.34vw, 2.06rem)!important;
         line-height: 1.08;
@@ -485,7 +1049,9 @@ section#section-my-writings article:is(#article-4-section-my-writings, #article-
         #article-3-section-my-writings,
         #article-6-section-my-writings
     ) h4.article-title::before {
-        width: 76px;
+        width: calc(100vw / var(--section-content-scale, 1));
+        margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+        margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
     }
 
     section#section-my-writings article:is(
@@ -506,7 +1072,7 @@ section#section-my-writings article:is(#article-4-section-my-writings, #article-
         #article-6-section-my-writings
     ) h4.article-title {
         gap: 9px;
-        width: min(100%, 360px);
+        width: 100%;
         margin-bottom: 22px;
         font-size: clamp(1.34rem, 1.08rem + 1vw, 1.68rem)!important;
     }
@@ -659,7 +1225,7 @@ section#section-my-art article:is(
     align-items: center;
     justify-content: center;
     gap: 12px;
-    width: min(100%, 940px);
+    width: 100%;
     margin: 0 auto clamp(24px, 3vw, 34px);
     font-size: clamp(1.84rem, 1.14rem + 1.96vw, 2.96rem)!important;
     font-weight: 900;
@@ -701,7 +1267,9 @@ section#section-my-art article:is(
     #article-3-section-my-art,
     #article-4-section-my-art
 ) h4.article-title::before {
-    width: clamp(86px, 13vw, 168px);
+    width: calc(100vw / var(--section-content-scale, 1));
+    margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
     height: var(--art-current-title-line-top);
     background: linear-gradient(90deg, var(--art-current-title-mid), var(--art-current-title-end));
     box-shadow: 0 0 24px color-mix(in srgb, var(--art-current-title-mid) 24%, transparent);
@@ -719,7 +1287,9 @@ section#section-my-art article:is(
 }
 
 section#section-my-art article#article-3-section-my-art h4.article-title::before {
-    width: clamp(110px, 18vw, 220px);
+    width: calc(100vw / var(--section-content-scale, 1));
+    margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
     background: repeating-linear-gradient(90deg, #38bdf8 0 12px, #8b5cf6 12px 24px, #f472b6 24px 36px);
 }
 
@@ -802,13 +1372,16 @@ section#section-my-art article#article-4-section-my-art h4.article-title {
 }
 
 section#section-my-art article#article-4-section-my-art h4.article-title::before {
-    width: clamp(118px, 18vw, 240px);
+    width: calc(100vw / var(--section-content-scale, 1));
+    margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
     background: linear-gradient(90deg, #ff0033, #ffffff 52%, #facc15);
 }
 
 section#section-my-art article#article-4-section-my-art h4.article-title span.article-title-text {
     position: relative;
-    padding: 0.04em 0.16em 0.04em calc(0.2em + 54px);
+    display: inline-block;
+    padding: 0.04em calc(0.2em + 54px) 0.04em 0.16em;
     background: linear-gradient(120deg, #ffffff 0%, #ffffff 34%, #ff0033 58%, #facc15 100%);
     background-clip: text;
     -webkit-background-clip: text;
@@ -818,7 +1391,7 @@ section#section-my-art article#article-4-section-my-art h4.article-title span.ar
     content: "";
     position: absolute;
     top: 50%;
-    left: 0;
+    right: 0;
     width: 44px;
     height: 30px;
     border-radius: 10px;
@@ -831,7 +1404,7 @@ section#section-my-art article#article-4-section-my-art h4.article-title span.ar
     content: "";
     position: absolute;
     top: 50%;
-    left: 17px;
+    right: 14px;
     width: 0;
     height: 0;
     border-top: 8px solid transparent;
@@ -869,7 +1442,7 @@ section#section-my-art div.section-body {
         #article-4-section-my-art
     ) h4.article-title {
         gap: 10px;
-        width: min(100%, 520px);
+        width: 100%;
         margin-bottom: 26px;
         font-size: clamp(1.48rem, 1.12rem + 1.34vw, 2.06rem)!important;
         line-height: 1.08;
@@ -885,7 +1458,9 @@ section#section-my-art div.section-body {
         #article-3-section-my-art,
         #article-4-section-my-art
     ) h4.article-title::before {
-        width: 76px;
+        width: calc(100vw / var(--section-content-scale, 1));
+        margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+        margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
     }
 
     section#section-my-art article:is(
@@ -916,7 +1491,7 @@ section#section-my-art div.section-body {
         #article-4-section-my-art
     ) h4.article-title {
         gap: 9px;
-        width: min(100%, 360px);
+        width: 100%;
         margin-bottom: 22px;
         font-size: clamp(1.34rem, 1.08rem + 1vw, 1.68rem)!important;
     }

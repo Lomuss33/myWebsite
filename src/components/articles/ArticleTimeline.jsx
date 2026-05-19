@@ -25,6 +25,9 @@ function ArticleTimeline({ dataWrapper, id }) {
     const isExperienceTimeline = useMemo(() => {
         return Boolean(dataWrapper?.uniqueId?.includes("section-experience"))
     }, [dataWrapper?.uniqueId])
+    const isEducationTimeline = useMemo(() => {
+        return Boolean(dataWrapper?.uniqueId?.includes("section-education"))
+    }, [dataWrapper?.uniqueId])
     const isDigitalExpressionTimeline = dataWrapper?.settings?.timelineVariant === "art-digital-expression"
     const timelineVariantClass = useMemo(() => {
         const timelineVariant = dataWrapper?.settings?.timelineVariant
@@ -42,6 +45,7 @@ function ArticleTimeline({ dataWrapper, id }) {
                                   selectedItemCategoryId={selectedItemCategoryId}
                                   isMyArtTimeline={isMyArtTimeline}
                                   isExperienceTimeline={isExperienceTimeline}
+                                  isEducationTimeline={isEducationTimeline}
                                   isDigitalExpressionTimeline={isDigitalExpressionTimeline}/>
         </Article>
     )
@@ -53,7 +57,7 @@ function ArticleTimeline({ dataWrapper, id }) {
  * @return {JSX.Element}
  * @constructor
  */
-function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTimeline = false, isExperienceTimeline = false, isDigitalExpressionTimeline = false }) {
+function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTimeline = false, isExperienceTimeline = false, isEducationTimeline = false, isDigitalExpressionTimeline = false }) {
     const language = useLanguage()
     const utils = useUtils()
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
@@ -324,6 +328,7 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
                                          itemIndex={key}
                                          isMyArtTimeline={isMyArtTimeline}
                                          isExperienceTimeline={isExperienceTimeline}
+                                         isEducationTimeline={isEducationTimeline}
                                          isDigitalExpressionTimeline={isDigitalExpressionTimeline}
                                          isOverlayActive={isExperienceTimeline && activeOverlayItemId === itemWrapper.id}
                                          usesTapOverlay={usesTapOverlay}
@@ -358,6 +363,7 @@ function ArticleTimelineItem({
     itemIndex = 0,
     isMyArtTimeline = false,
     isExperienceTimeline = false,
+    isEducationTimeline = false,
     isDigitalExpressionTimeline = false,
     isOverlayActive = false,
     usesTapOverlay = false,
@@ -383,8 +389,12 @@ function ArticleTimelineItem({
     const primaryPreviewLink = previewLinks.find(link => isNonEmptyHref(link?.href) && link?.faIcon === avatarFaIcon) ||
         previewLinks.find(link => isNonEmptyHref(link?.href)) ||
         null
+    const primaryAvatarLink = (isExperienceTimeline || isEducationTimeline) && isNonEmptyHref(itemWrapper.link?.href) ?
+        itemWrapper.link :
+        null
     const isWritingsTimeline = Boolean(itemWrapper?.articleWrapper?.uniqueId?.includes("section-my-writings"))
     const shouldUsePreviewLinkAvatar = isWritingsTimeline && !canOpenGallery && Boolean(primaryPreviewLink)
+    const shouldUseItemLinkAvatar = !canOpenGallery && Boolean(primaryAvatarLink)
     const writingPreviewFooter = isWritingsTimeline ? (
         <ArticleItemInfoForTimelinesPreviewFooter itemWrapper={itemWrapper}
                                                   className={`article-timeline-item-info-preview-footer--meta-end`}/>
@@ -483,7 +493,7 @@ function ArticleTimelineItem({
         "article-timeline-item-content article-timeline-item-content--experience" :
         "article-timeline-item-content"
     const overlayActionLabel = itemWrapper?.imageAlt || itemWrapper.locales?.title || language.getString("get_to_know_more")
-    const avatarActionLabel = primaryPreviewLink?.tooltip || overlayActionLabel
+    const avatarActionLabel = primaryAvatarLink?.tooltip || primaryPreviewLink?.tooltip || overlayActionLabel
 
     const _onGalleryAvatarClick = () => {
         if(!shouldInterceptGalleryTap)
@@ -524,8 +534,8 @@ function ArticleTimelineItem({
                                          sizes={avatarSizes}
                                          className={`article-timeline-item-avatar article-timeline-item-avatar--button ${isExperienceTimeline ? "article-timeline-item-avatar--experience" : ""}`.trim()}/>
                         </Link>
-                    ) : shouldUsePreviewLinkAvatar ? (
-                        <Link href={primaryPreviewLink.href}
+                    ) : shouldUseItemLinkAvatar || shouldUsePreviewLinkAvatar ? (
+                        <Link href={(primaryAvatarLink || primaryPreviewLink).href}
                               className={avatarLinkClass}
                               tooltip={avatarActionLabel}
                               ariaLabel={avatarActionLabel}>

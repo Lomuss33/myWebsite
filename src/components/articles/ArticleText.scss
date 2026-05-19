@@ -373,6 +373,12 @@ article#article-3-section-experience {
         max-width: min(100%, 26ch);
     }
 
+    div.article-text-item-flow-card[data-flow-card-index="2"] h3.article-text-flow-card-heading {
+        white-space: pre-line;
+        text-align: center;
+        line-height: 1.08;
+    }
+
     div.article-text-flow-card-impact-list {
         display: flex;
         flex-wrap: wrap;

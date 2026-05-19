@@ -61,6 +61,10 @@
                         "fill": "#FFF",
                         "fillLight": "#FFF"
                     },
+                    "link": {
+                        "href": "https://www.ibu.edu.mk",
+                        "tooltipString": "open_website"
+                    },
                     "dateStart": {
                         "year": 2025,
                         "month": 10
@@ -150,6 +154,10 @@
                         "fill": "#FFF",
                         "fillLight": "#FFF"
                     },
+                    "link": {
+                        "href": "https://www.provadis.de/ausbildung/elektrotechnik/elektroniker-in-fuer-automatisierungstechnik",
+                        "tooltipString": "open_website"
+                    },
                     "dateStart": {
                         "year": 2018,
                         "month": 9
@@ -227,6 +235,10 @@
                         "fill": "#FFF",
                         "fillLight": "#FFF"
                     },
+                    "link": {
+                        "href": "https://www.thm.de/site/studium/unsere-studienangebote/ingenieur-informatik-bachelor-bsc-mni-giessen",
+                        "tooltipString": "open_website"
+                    },
                     "dateStart": {
                         "year": 2023,
                         "month": 10
@@ -302,6 +314,10 @@
                         "bgLight": "#FFF",
                         "fill": "#FFF",
                         "fillLight": "#FFF"
+                    },
+                    "link": {
+                        "href": "https://bws-hofheim.de/schulform/elektrotechnik",
+                        "tooltipString": "open_website"
                     },
                     "dateStart": {
                         "year": 2020,
@@ -380,6 +396,10 @@
                         "fill": "#FFF",
                         "fillLight": "#FFF"
                     },
+                    "link": {
+                        "href": "https://www.eichendorffschule.net/",
+                        "tooltipString": "open_website"
+                    },
                     "dateStart": {
                         "year": 2018,
                         "month": 9
@@ -457,6 +477,10 @@
                         "fill": "#FFF",
                         "fillLight": "#FFF"
                     },
+                    "link": {
+                        "href": "https://osbukovica.ba/",
+                        "tooltipString": "open_website"
+                    },
                     "dateStart": {
                         "year": 2007,
                         "month": 1
@@ -532,6 +556,10 @@
                         "bgLight": "#0F172A",
                         "fill": "#F8FAFC",
                         "fillLight": "#F8FAFC"
+                    },
+                    "link": {
+                        "href": "https://bolnica-livno.com/",
+                        "tooltipString": "open_website"
                     },
                     "dateStart": {
                         "year": 2001,

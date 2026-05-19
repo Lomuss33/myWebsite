@@ -139,7 +139,7 @@ article#article-1-section-my-software {
         align-items: center;
         justify-content: center;
         gap: 12px;
-        width: min(100%, 960px);
+        width: 100%;
         margin: 0 auto clamp(24px, 3vw, 34px);
         color: #f8fafc;
         font-size: clamp(2rem, 1.24rem + 2.25vw, 3.18rem)!important;
@@ -163,7 +163,9 @@ article#article-1-section-my-software {
     }
 
     h4.article-title::before {
-        width: clamp(92px, 14vw, 176px);
+        width: calc(100vw / var(--section-content-scale, 1));
+        margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+        margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
         height: 3px;
         background: linear-gradient(90deg, var(--software-project-title-mid), var(--software-project-title-end));
         box-shadow: 0 0 24px rgba(236, 72, 153, 0.26);
@@ -198,14 +200,10 @@ article#article-1-section-my-software {
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         h4.article-title {
             gap: 10px;
-            width: min(100%, 520px);
+            width: 100%;
             margin-bottom: 26px;
             font-size: clamp(1.62rem, 1.16rem + 1.55vw, 2.18rem)!important;
             line-height: 1.08;
-        }
-
-        h4.article-title::before {
-            width: 82px;
         }
 
         h4.article-title::after {
@@ -216,13 +214,9 @@ article#article-1-section-my-software {
     @include media-breakpoint-down(sm) {
         h4.article-title {
             gap: 9px;
-            width: min(100%, 360px);
+            width: 100%;
             margin-bottom: 22px;
             font-size: clamp(1.42rem, 1.14rem + 1.18vw, 1.78rem)!important;
-        }
-
-        h4.article-title::before {
-            width: 64px;
         }
 
         h4.article-title::after {
@@ -496,7 +490,7 @@ article#article-1-section-my-hardware {
         align-items: center;
         justify-content: center;
         gap: 12px;
-        width: min(100%, 960px);
+        width: 100%;
         margin: 0 auto clamp(24px, 3vw, 34px);
         color: #f8fafc;
         font-size: clamp(2rem, 1.24rem + 2.25vw, 3.18rem)!important;
@@ -520,7 +514,9 @@ article#article-1-section-my-hardware {
     }
 
     h4.article-title::before {
-        width: clamp(92px, 14vw, 176px);
+        width: calc(100vw / var(--section-content-scale, 1));
+        margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+        margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
         height: 3px;
         background: linear-gradient(90deg, var(--hardware-project-title-mid), var(--hardware-project-title-end));
         box-shadow: 0 0 24px rgba(163, 230, 53, 0.22);
@@ -555,14 +551,10 @@ article#article-1-section-my-hardware {
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         h4.article-title {
             gap: 10px;
-            width: min(100%, 520px);
+            width: 100%;
             margin-bottom: 26px;
             font-size: clamp(1.62rem, 1.16rem + 1.55vw, 2.18rem)!important;
             line-height: 1.08;
-        }
-
-        h4.article-title::before {
-            width: 82px;
         }
 
         h4.article-title::after {
@@ -573,13 +565,9 @@ article#article-1-section-my-hardware {
     @include media-breakpoint-down(sm) {
         h4.article-title {
             gap: 9px;
-            width: min(100%, 360px);
+            width: 100%;
             margin-bottom: 22px;
             font-size: clamp(1.42rem, 1.14rem + 1.18vw, 1.78rem)!important;
-        }
-
-        h4.article-title::before {
-            width: 64px;
         }
 
         h4.article-title::after {

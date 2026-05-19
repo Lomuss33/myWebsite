@@ -32,6 +32,7 @@ export default class ArticleDataWrapper {
         this.component = rawData.component
         this.locales = this._parseLocales(rawData, language)
         this.settings = this._parseSettings(rawData)
+        this.groups = this._parseGroups(rawData, language)
         this.categories = this._parseCategories(rawData, language)
 
         this._evaluate()
@@ -69,6 +70,7 @@ export default class ArticleDataWrapper {
             complaintPopupTitle: language.getTranslation(rawLocales, "complaint_popup_title", undefined),
             complaintPopupBody: language.getTranslation(rawLocales, "complaint_popup_body", undefined),
             title: language.getTranslation(rawLocales, "title", null),
+            description: language.getTranslation(rawLocales, "description", null),
         }
     }
 
@@ -208,6 +210,27 @@ export default class ArticleDataWrapper {
         })
 
         return [...new Set(categoryIds.filter(categoryId => typeof categoryId === "string" && categoryId.length > 0))]
+    }
+
+    /**
+     * @param rawData
+     * @param language
+     * @return {{ id: String, label: String }[]}
+     * @private
+     */
+    _parseGroups(rawData, language) {
+        const rawGroups = Array.isArray(rawData.groups) ? rawData.groups : []
+
+        return rawGroups
+            .filter(group => typeof group?.id === "string" && group.id.length > 0)
+            .map(group => {
+                const labelKey = group.label || group.title || group.id
+
+                return {
+                    id: group.id,
+                    label: language.getTranslation(rawData.locales, labelKey, labelKey)
+                }
+            })
     }
 
     get uniqueId() {

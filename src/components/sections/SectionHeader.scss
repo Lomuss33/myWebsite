@@ -9,6 +9,13 @@ header.section-header {
     gap: 0.2rem;
 }
 
+section#section-my-software header.section-header,
+section#section-my-hardware header.section-header,
+section#section-my-writings header.section-header,
+section#section-my-art header.section-header {
+    display: none;
+}
+
 header.section-header.section-header-home {
     gap: 0.28rem;
     margin-bottom: 6px;

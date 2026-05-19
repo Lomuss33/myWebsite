@@ -29,6 +29,7 @@ function NavToolResumeDownloader({
     const resumeCvUrlAbsolute = utils.file.toAbsoluteUrl("/cv/")
     const selectedOptionId = "resume"
     const tooltip = language.getString("resume_options")
+    const menuHeader = "CV Resume:"
 
     const options = [
         {
@@ -40,19 +41,19 @@ function NavToolResumeDownloader({
         {
             id: "resume_view",
             faIcon: "fa-solid fa-eye",
-            label: language.getString("view_resume")
+            label: "Open new tab"
         },
 
         {
             id: "resume_download",
             faIcon: "fa-solid fa-file-arrow-down",
-            label: language.getString("download_resume")
+            label: "Download PDF"
         },
 
         ...(resumeEmailConfig ? [{
             id: "resume_email",
             faIcon: "fa-solid fa-envelope",
-            label: language.getString("email_resume")
+            label: "E-mail to self"
         }] : [])
     ]
     const selectedOption = options.find(option => option.id === selectedOptionId) || options[0]
@@ -110,6 +111,10 @@ function NavToolResumeDownloader({
                             )}>
                 {({ closeMenu }) => (
                     <>
+                        <div className={`nav-profile-card-mobile-resume-menu-header`}>
+                            {menuHeader}
+                        </div>
+
                         {availableOptions.map((option) => (
                             <button key={option.id}
                                     type={`button`}
@@ -149,7 +154,8 @@ function NavToolResumeDownloader({
                             compactMenu={compactMenu}
                             toggleCaption={toggleCaption}
                             toggleCaptionLayout={toggleCaptionLayout}
-                            toggleClassName={toggleClassName}/>
+                            toggleClassName={toggleClassName}
+                            menuHeader={menuHeader}/>
     )
 }
 

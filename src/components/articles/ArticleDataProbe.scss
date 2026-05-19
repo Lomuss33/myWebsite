@@ -32,6 +32,16 @@ article.article-data-probe {
         --probe-block-radius: 18px;
     }
 
+    p.article-data-probe-intro {
+        width: min(100%, 820px);
+        margin: 0 auto 20px;
+        color: var(--probe-text-soft);
+        font-size: clamp(0.96rem, 0.9rem + 0.18vw, 1.08rem)!important;
+        line-height: 1.58;
+        text-align: center;
+        text-wrap: balance;
+    }
+
     div.article-data-probe-summary {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -807,6 +817,11 @@ article.article-data-probe {
 }
 
 article#article-2-section-my-hardware {
+    margin-top: clamp(30px, 4vw, 46px);
+    --probe-title-start: #f8fafc;
+    --probe-title-mid: #38bdf8;
+    --probe-title-end: #a78bfa;
+    --probe-title-shadow: 0 16px 34px rgba(56, 189, 248, 0.18);
     --probe-accent: #38bdf8;
     --probe-accent-strong: color-mix(in srgb, var(--probe-accent) 72%, #05070d 28%);
     --probe-accent-soft: color-mix(in srgb, var(--probe-accent) 12%, transparent 88%);
@@ -821,7 +836,58 @@ article#article-2-section-my-hardware {
     --probe-inset: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 
     h4.article-title {
-        margin-bottom: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        width: min(100%, 860px);
+        margin: 0 auto 12px;
+        font-size: clamp(1.82rem, 1.22rem + 1.9vw, 2.82rem)!important;
+        font-weight: 900;
+        line-height: 1.04;
+        text-align: center;
+        text-shadow: var(--probe-title-shadow);
+        text-wrap: balance;
+    }
+
+    h4.article-title::before,
+    h4.article-title::after {
+        content: "";
+        flex: 0 0 auto;
+        max-width: none;
+        border-radius: 999px;
+    }
+
+    h4.article-title::before {
+        width: clamp(82px, 13vw, 156px);
+        height: 3px;
+        background: linear-gradient(90deg, var(--probe-title-mid), var(--probe-title-end));
+        box-shadow: 0 0 22px rgba(56, 189, 248, 0.22);
+    }
+
+    h4.article-title::after {
+        width: clamp(132px, 24vw, 292px);
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--probe-title-mid), var(--probe-title-end), transparent);
+        box-shadow: 0 0 22px rgba(56, 189, 248, 0.20);
+    }
+
+    h4.article-title span.article-title-prefix {
+        display: none;
+    }
+
+    h4.article-title span.article-title-text {
+        display: block;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+        background: linear-gradient(135deg, var(--probe-title-start) 0%, var(--probe-title-mid) 48%, var(--probe-title-end) 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+    h4.article-title span.article-title-text span {
+        color: inherit!important;
     }
 
     div.article-content {
@@ -956,4 +1022,5 @@ article#article-2-section-my-hardware {
     button.copy-button.copy-button-pill {
         border-color: color-mix(in srgb, #38bdf8 34%, var(--probe-line) 66%);
     }
+
 }

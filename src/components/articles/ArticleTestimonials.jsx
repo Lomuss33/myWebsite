@@ -23,6 +23,11 @@ function ArticleTestimonials({ dataWrapper, id }) {
                  className={`article-testimonials`}
                  selectedItemCategoryId={selectedItemCategoryId}
                  setSelectedItemCategoryId={setSelectedItemCategoryId}>
+            {dataWrapper.locales.description && (
+                <p className={`article-testimonials-intro text-5`}
+                   dangerouslySetInnerHTML={{__html: dataWrapper.locales.description}}/>
+            )}
+
             <ArticleTestimonialsItems dataWrapper={dataWrapper}
                                       selectedItemCategoryId={selectedItemCategoryId}/>
         </Article>
@@ -36,10 +41,44 @@ function ArticleTestimonials({ dataWrapper, id }) {
  * @constructor
  */
 function ArticleTestimonialsItems({ dataWrapper, selectedItemCategoryId }) {
-    const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
-    const slideCount = Math.max(1, filteredItems.length)
+    const groups = dataWrapper.groups || []
 
-    // Mobile + tight tablets: 2-up, wider views: 3-up (if enough items exist).
+    if(groups.length > 0) {
+        return (
+            <div className={`article-testimonials-groups`}>
+                {groups.map(group => {
+                    const groupItems = dataWrapper.orderedItems.filter(itemWrapper => {
+                        return itemWrapper.categoryIds.includes(group.id)
+                    })
+
+                    if(groupItems.length <= 0)
+                        return null
+
+                    return (
+                        <section className={`article-testimonials-group`}
+                                 key={group.id}>
+                            <h5 className={`article-testimonials-group-title`}
+                                dangerouslySetInnerHTML={{__html: group.label}}/>
+                            <ArticleTestimonialsCarousel items={groupItems}/>
+                        </section>
+                    )
+                })}
+            </div>
+        )
+    }
+
+    return (
+        <ArticleTestimonialsCarousel items={dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)}/>
+    )
+}
+
+/**
+ * @param {ArticleItemDataWrapper[]} items
+ * @return {JSX.Element}
+ * @constructor
+ */
+function ArticleTestimonialsCarousel({ items }) {
+    const slideCount = Math.max(1, items.length)
     const breakpoints = {
         0:    { id: "bp-0", slidesPerView: Math.min(2, slideCount) },
         1050: { id: "bp-1", slidesPerView: Math.min(3, slideCount) }
@@ -51,7 +90,7 @@ function ArticleTestimonialsItems({ dataWrapper, selectedItemCategoryId }) {
                    slidesPerView={Math.min(3, slideCount)}
                    spaceBetween={16}
                    loop={true}>
-            {filteredItems.map((itemWrapper, key) => (
+            {items.map((itemWrapper, key) => (
                 <ArticleTestimonialsItem itemWrapper={itemWrapper}
                                          key={key}/>
             ))}

@@ -100,6 +100,16 @@ button.btn-option-picker-toggle:hover {
     }
 }
 
+div.btn-option-picker-menu-header {
+    padding: 0.3rem 0.55rem 0.36rem;
+    font-size: 0.72rem;
+    line-height: 1.1;
+    font-weight: 700;
+    color: var(--theme-texts-light);
+    letter-spacing: 0;
+    user-select: none;
+    pointer-events: none;
+}
 
 a.btn-option-picker-menu-item,
 button.btn-option-picker-menu-item {

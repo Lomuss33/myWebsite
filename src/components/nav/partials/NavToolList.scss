@@ -363,6 +363,35 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
         }
     }
 
+    div.nav-tools-item-resume div.dropdown-menu.nav-tools-popup-menu,
+    div.nav-short-rail-resume-band div.dropdown-menu.nav-tools-popup-menu {
+        width: max-content;
+        min-width: 11rem;
+        max-width: min(13rem, 80vw);
+        border-color: #f8aa28;
+
+        &::before {
+            border-right-color: #f8aa28;
+            border-bottom-color: #f8aa28;
+        }
+
+        div.btn-option-picker-menu-header {
+            padding: 3px 12px 7px;
+            margin: 0 0 2px;
+            font-size: 0.73rem;
+            line-height: 1.05;
+            font-weight: 700;
+            color: color-mix(in srgb, var(--theme-texts) 68%, var(--theme-secondary) 32%);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        button.dropdown-item {
+            min-height: 42px;
+            padding: 9px 10px;
+        }
+    }
+
     div.nav-tools-item-language div.dropdown-menu.nav-tools-popup-menu {
         a.dropdown-item,
         button.dropdown-item {
@@ -415,6 +444,14 @@ nav.nav-sidebar-shrink div.nav-tools div.dropdown-menu.nav-tools-popup-menu,
 nav.nav-sidebar-short-rail div.nav-tools div.dropdown-menu.nav-tools-popup-menu,
 nav.nav-sidebar-short-rail div.nav-short-rail-resume-band div.dropdown-menu.nav-tools-popup-menu {
     min-width: 280px;
+}
+
+nav.nav-sidebar-shrink div.nav-tools div.nav-tools-item-resume div.dropdown-menu.nav-tools-popup-menu,
+nav.nav-sidebar-short-rail div.nav-tools div.nav-tools-item-resume div.dropdown-menu.nav-tools-popup-menu,
+nav.nav-sidebar-short-rail div.nav-short-rail-resume-band div.dropdown-menu.nav-tools-popup-menu {
+    width: max-content;
+    min-width: 11rem;
+    max-width: min(13rem, 80vw);
 }
 
 div.nav-tools-shrink {
@@ -611,7 +648,15 @@ div.nav-tools-shrink {
     }
 }
 
-[data-theme="dark"] nav.nav-sidebar div.nav-tools div.nav-tools-item-resume div.dropdown-menu.nav-tools-popup-menu {
+[data-theme="dark"] nav.nav-sidebar div.nav-tools div.nav-tools-item-resume div.dropdown-menu.nav-tools-popup-menu,
+[data-theme="dark"] nav.nav-sidebar div.nav-short-rail-resume-band div.dropdown-menu.nav-tools-popup-menu {
+    border-color: #f8aa28;
+
+    &::before {
+        border-right-color: #f8aa28;
+        border-bottom-color: #f8aa28;
+    }
+
     a.dropdown-item,
     button.dropdown-item {
         div.btn-option-picker-icon {

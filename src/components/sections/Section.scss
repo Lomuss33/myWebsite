@@ -221,6 +221,12 @@ section#section-my-writings {
     --writings-accent-blue: #38bdf8;
     --writings-accent-gold: #f59e0b;
     --writings-accent-red: #ef4444;
+    --writings-title-start: #f8fafc;
+    --writings-title-mid: #f59e0b;
+    --writings-title-end: #38bdf8;
+    --writings-title-alt-mid: #f472b6;
+    --writings-title-alt-end: #a78bfa;
+    --writings-title-shadow: 0 16px 34px rgba(245, 158, 11, 0.18);
     --writings-text-strong: #f8fafc;
     --writings-text-mid: #d1d5db;
     --writings-text-soft: #94a3b8;
@@ -249,6 +255,266 @@ section#section-my-writings h4.article-title span.article-title-prefix {
 
 section#section-my-writings div.article-content {
     color: var(--writings-text-strong);
+}
+
+section#section-my-writings article:is(
+    #article-1-section-my-writings,
+    #article-2-section-my-writings,
+    #article-3-section-my-writings,
+    #article-6-section-my-writings
+) {
+    --writings-current-title-start: var(--writings-title-start);
+    --writings-current-title-mid: var(--writings-title-mid);
+    --writings-current-title-end: var(--writings-title-end);
+    --writings-current-title-shadow: var(--writings-title-shadow);
+}
+
+section#section-my-writings article#article-2-section-my-writings {
+    --writings-current-title-start: #f8fafc;
+    --writings-current-title-mid: #ef4444;
+    --writings-current-title-end: #2563eb;
+    --writings-current-title-shadow: 0 16px 34px rgba(37, 99, 235, 0.20);
+}
+
+section#section-my-writings article#article-3-section-my-writings {
+    --writings-current-title-start: #f5e6c8;
+    --writings-current-title-mid: #b45309;
+    --writings-current-title-end: #7c2d12;
+    --writings-current-title-shadow: 0 16px 34px rgba(180, 83, 9, 0.18);
+}
+
+section#section-my-writings article#article-6-section-my-writings {
+    --writings-current-title-start: #fff7ed;
+    --writings-current-title-mid: #ef4444;
+    --writings-current-title-end: #facc15;
+    --writings-current-title-shadow: 0 16px 34px rgba(239, 68, 68, 0.18);
+}
+
+section#section-my-writings article:is(
+    #article-1-section-my-writings,
+    #article-2-section-my-writings,
+    #article-3-section-my-writings,
+    #article-6-section-my-writings
+) h4.article-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: min(100%, 940px);
+    margin: 0 auto clamp(24px, 3vw, 34px);
+    font-size: clamp(1.86rem, 1.16rem + 2vw, 3rem)!important;
+    font-weight: 900;
+    line-height: 1.04;
+    text-align: center;
+    text-shadow: var(--writings-current-title-shadow);
+    text-wrap: balance;
+}
+
+section#section-my-writings article:is(
+    #article-2-section-my-writings,
+    #article-3-section-my-writings,
+    #article-6-section-my-writings
+) h4.article-title {
+    margin-top: clamp(30px, 4vw, 46px);
+    font-size: clamp(1.68rem, 1.1rem + 1.58vw, 2.54rem)!important;
+}
+
+section#section-my-writings article:is(
+    #article-1-section-my-writings,
+    #article-2-section-my-writings,
+    #article-3-section-my-writings,
+    #article-6-section-my-writings
+) h4.article-title::before,
+section#section-my-writings article:is(
+    #article-1-section-my-writings,
+    #article-2-section-my-writings,
+    #article-3-section-my-writings,
+    #article-6-section-my-writings
+) h4.article-title::after {
+    content: "";
+    display: block;
+    flex: 0 0 auto;
+    max-width: none;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 999px;
+    opacity: 0.9;
+}
+
+section#section-my-writings article:is(
+    #article-1-section-my-writings,
+    #article-2-section-my-writings,
+    #article-3-section-my-writings,
+    #article-6-section-my-writings
+) h4.article-title::before {
+    width: clamp(86px, 13vw, 168px);
+    height: 3px;
+    background: linear-gradient(90deg, var(--writings-current-title-mid), var(--writings-current-title-end));
+    box-shadow: 0 0 24px rgba(245, 158, 11, 0.22);
+}
+
+section#section-my-writings article:is(
+    #article-1-section-my-writings,
+    #article-2-section-my-writings,
+    #article-3-section-my-writings,
+    #article-6-section-my-writings
+) h4.article-title::after {
+    width: clamp(176px, 30vw, 368px);
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--writings-current-title-mid), var(--writings-current-title-end), transparent);
+}
+
+section#section-my-writings article:is(#article-2-section-my-writings, #article-3-section-my-writings, #article-6-section-my-writings) h4.article-title::before {
+    box-shadow: 0 0 24px color-mix(in srgb, var(--writings-current-title-mid) 22%, transparent);
+}
+
+section#section-my-writings article:is(
+    #article-1-section-my-writings,
+    #article-2-section-my-writings,
+    #article-3-section-my-writings,
+    #article-6-section-my-writings
+) h4.article-title span.article-title-prefix {
+    display: none;
+}
+
+section#section-my-writings article:is(
+    #article-1-section-my-writings,
+    #article-2-section-my-writings,
+    #article-3-section-my-writings,
+    #article-6-section-my-writings
+) h4.article-title span.article-title-text {
+    display: block;
+    max-width: 100%;
+    min-width: 0;
+    padding: 0 2px;
+    overflow-wrap: anywhere;
+    background: linear-gradient(135deg, var(--writings-current-title-start) 0%, var(--writings-current-title-mid) 48%, var(--writings-current-title-end) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+section#section-my-writings article:is(
+    #article-1-section-my-writings,
+    #article-2-section-my-writings,
+    #article-3-section-my-writings,
+    #article-6-section-my-writings
+) h4.article-title span.article-title-text span {
+    color: inherit!important;
+}
+
+section#section-my-writings article:is(#article-4-section-my-writings, #article-5-section-my-writings) {
+    margin-top: clamp(34px, 4vw, 52px);
+}
+
+section#section-my-writings article:is(#article-4-section-my-writings, #article-5-section-my-writings) h4.article-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(10px, 1.6vw, 18px);
+    width: min(100%, 520px);
+    margin: 0 auto 20px;
+    color: var(--writings-text-strong);
+    font-size: clamp(1.18rem, 0.98rem + 0.62vw, 1.54rem)!important;
+    font-weight: 800;
+    line-height: 1.12;
+    text-align: center;
+    text-wrap: balance;
+}
+
+section#section-my-writings article:is(#article-4-section-my-writings, #article-5-section-my-writings) h4.article-title::before,
+section#section-my-writings article:is(#article-4-section-my-writings, #article-5-section-my-writings) h4.article-title::after {
+    content: "";
+    flex: 1 1 58px;
+    max-width: 112px;
+    height: 1px;
+    border-radius: 999px;
+    opacity: 0.82;
+}
+
+section#section-my-writings article:is(#article-4-section-my-writings, #article-5-section-my-writings) h4.article-title::before {
+    background: linear-gradient(90deg, transparent, var(--writings-title-mid));
+}
+
+section#section-my-writings article:is(#article-4-section-my-writings, #article-5-section-my-writings) h4.article-title::after {
+    background: linear-gradient(90deg, var(--writings-title-end), transparent);
+}
+
+section#section-my-writings article:is(#article-4-section-my-writings, #article-5-section-my-writings) h4.article-title span.article-title-prefix {
+    display: none;
+}
+
+section#section-my-writings article:is(#article-4-section-my-writings, #article-5-section-my-writings) h4.article-title span.article-title-text {
+    min-width: 0;
+    background: linear-gradient(135deg, var(--writings-title-start), var(--writings-title-mid) 52%, var(--writings-title-end));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+section#section-my-writings article:is(#article-4-section-my-writings, #article-5-section-my-writings) h4.article-title span.article-title-text span {
+    color: inherit!important;
+}
+
+@include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    section#section-my-writings article:is(
+        #article-1-section-my-writings,
+        #article-2-section-my-writings,
+        #article-3-section-my-writings,
+        #article-6-section-my-writings
+    ) h4.article-title {
+        gap: 10px;
+        width: min(100%, 520px);
+        margin-bottom: 26px;
+        font-size: clamp(1.48rem, 1.12rem + 1.34vw, 2.06rem)!important;
+        line-height: 1.08;
+    }
+
+    section#section-my-writings article:is(
+        #article-2-section-my-writings,
+        #article-3-section-my-writings,
+        #article-6-section-my-writings
+    ) h4.article-title {
+        margin-top: 34px;
+    }
+
+    section#section-my-writings article:is(
+        #article-1-section-my-writings,
+        #article-2-section-my-writings,
+        #article-3-section-my-writings,
+        #article-6-section-my-writings
+    ) h4.article-title::before {
+        width: 76px;
+    }
+
+    section#section-my-writings article:is(
+        #article-1-section-my-writings,
+        #article-2-section-my-writings,
+        #article-3-section-my-writings,
+        #article-6-section-my-writings
+    ) h4.article-title::after {
+        width: min(62vw, 220px);
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    section#section-my-writings article:is(
+        #article-1-section-my-writings,
+        #article-2-section-my-writings,
+        #article-3-section-my-writings,
+        #article-6-section-my-writings
+    ) h4.article-title {
+        gap: 9px;
+        width: min(100%, 360px);
+        margin-bottom: 22px;
+        font-size: clamp(1.34rem, 1.08rem + 1vw, 1.68rem)!important;
+    }
+
+    section#section-my-writings article:is(#article-4-section-my-writings, #article-5-section-my-writings) h4.article-title {
+        gap: 9px;
+        font-size: clamp(1.06rem, 0.96rem + 0.42vw, 1.24rem)!important;
+    }
 }
 
 @include media-breakpoint-up(md) {
@@ -300,6 +566,10 @@ section#section-my-art {
     --art-accent-blue: #38bdf8;
     --art-accent-amber: #f59e0b;
     --art-accent-rose: #fb7185;
+    --art-title-start: #f8fafc;
+    --art-title-mid: #38bdf8;
+    --art-title-end: #f59e0b;
+    --art-title-shadow: 0 16px 34px rgba(56, 189, 248, 0.18);
     --art-text-strong: #f8fafc;
     --art-text-mid: #d1d5db;
     --art-text-soft: #94a3b8;
@@ -330,6 +600,246 @@ section#section-my-art div.article-content {
     color: var(--art-text-strong);
 }
 
+section#section-my-art article:is(
+    #article-1-section-my-art,
+    #article-2-section-my-art,
+    #article-3-section-my-art,
+    #article-4-section-my-art
+) {
+    --art-current-title-start: var(--art-title-start);
+    --art-current-title-mid: var(--art-title-mid);
+    --art-current-title-end: var(--art-title-end);
+    --art-current-title-shadow: var(--art-title-shadow);
+    --art-current-title-line-top: 3px;
+    --art-current-title-line-bottom: 1px;
+}
+
+section#section-my-art article#article-1-section-my-art {
+    --art-current-title-start: #f8fafc;
+    --art-current-title-mid: #38bdf8;
+    --art-current-title-end: #fbbf24;
+    --art-current-title-shadow: 0 16px 34px rgba(56, 189, 248, 0.20);
+}
+
+section#section-my-art article#article-2-section-my-art {
+    --art-current-title-start: #f8fafc;
+    --art-current-title-mid: #22c55e;
+    --art-current-title-end: #3b82f6;
+    --art-current-title-shadow: 0 16px 34px rgba(59, 130, 246, 0.20);
+    --art-current-title-line-top: 4px;
+    --art-rgb-my: #f8fafc;
+    --art-rgb-red: #ff4d5a;
+    --art-rgb-green: #2ee66b;
+    --art-rgb-blue: #60a5fa;
+}
+
+section#section-my-art article#article-3-section-my-art {
+    --art-current-title-start: #60a5fa;
+    --art-current-title-mid: #a78bfa;
+    --art-current-title-end: #f472b6;
+    --art-current-title-shadow: 0 16px 34px rgba(167, 139, 250, 0.22);
+}
+
+section#section-my-art article#article-4-section-my-art {
+    --art-current-title-start: #ffffff;
+    --art-current-title-mid: #ff0033;
+    --art-current-title-end: #facc15;
+    --art-current-title-shadow: 0 18px 36px rgba(255, 0, 51, 0.22);
+    --art-current-title-line-bottom: 2px;
+}
+
+section#section-my-art article:is(
+    #article-1-section-my-art,
+    #article-2-section-my-art,
+    #article-3-section-my-art,
+    #article-4-section-my-art
+) h4.article-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: min(100%, 940px);
+    margin: 0 auto clamp(24px, 3vw, 34px);
+    font-size: clamp(1.84rem, 1.14rem + 1.96vw, 2.96rem)!important;
+    font-weight: 900;
+    line-height: 1.04;
+    text-align: center;
+    text-shadow: var(--art-current-title-shadow);
+    text-wrap: balance;
+}
+
+section#section-my-art article:is(#article-2-section-my-art, #article-3-section-my-art, #article-4-section-my-art) h4.article-title {
+    margin-top: clamp(30px, 4vw, 46px);
+}
+
+section#section-my-art article:is(
+    #article-1-section-my-art,
+    #article-2-section-my-art,
+    #article-3-section-my-art,
+    #article-4-section-my-art
+) h4.article-title::before,
+section#section-my-art article:is(
+    #article-1-section-my-art,
+    #article-2-section-my-art,
+    #article-3-section-my-art,
+    #article-4-section-my-art
+) h4.article-title::after {
+    content: "";
+    display: block;
+    flex: 0 0 auto;
+    max-width: none;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 999px;
+    opacity: 0.92;
+}
+
+section#section-my-art article:is(
+    #article-1-section-my-art,
+    #article-2-section-my-art,
+    #article-3-section-my-art,
+    #article-4-section-my-art
+) h4.article-title::before {
+    width: clamp(86px, 13vw, 168px);
+    height: var(--art-current-title-line-top);
+    background: linear-gradient(90deg, var(--art-current-title-mid), var(--art-current-title-end));
+    box-shadow: 0 0 24px color-mix(in srgb, var(--art-current-title-mid) 24%, transparent);
+}
+
+section#section-my-art article:is(
+    #article-1-section-my-art,
+    #article-2-section-my-art,
+    #article-3-section-my-art,
+    #article-4-section-my-art
+) h4.article-title::after {
+    width: clamp(176px, 30vw, 368px);
+    height: var(--art-current-title-line-bottom);
+    background: linear-gradient(90deg, transparent, var(--art-current-title-mid), var(--art-current-title-end), transparent);
+}
+
+section#section-my-art article#article-3-section-my-art h4.article-title::before {
+    width: clamp(110px, 18vw, 220px);
+    background: repeating-linear-gradient(90deg, #38bdf8 0 12px, #8b5cf6 12px 24px, #f472b6 24px 36px);
+}
+
+section#section-my-art article#article-2-section-my-art h4.article-title::after {
+    width: clamp(154px, 26vw, 332px);
+}
+
+section#section-my-art article:is(
+    #article-1-section-my-art,
+    #article-2-section-my-art,
+    #article-3-section-my-art,
+    #article-4-section-my-art
+) h4.article-title span.article-title-prefix {
+    display: none;
+}
+
+section#section-my-art article:is(
+    #article-1-section-my-art,
+    #article-2-section-my-art,
+    #article-3-section-my-art,
+    #article-4-section-my-art
+) h4.article-title span.article-title-text {
+    display: block;
+    max-width: 100%;
+    min-width: 0;
+    padding: 0 2px;
+    overflow-wrap: anywhere;
+    background: linear-gradient(135deg, var(--art-current-title-start) 0%, var(--art-current-title-mid) 48%, var(--art-current-title-end) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+section#section-my-art article:is(
+    #article-1-section-my-art,
+    #article-2-section-my-art,
+    #article-3-section-my-art,
+    #article-4-section-my-art
+) h4.article-title span.article-title-text span {
+    color: inherit!important;
+}
+
+section#section-my-art article#article-3-section-my-art h4.article-title span.article-title-text {
+    background: linear-gradient(100deg, #38bdf8 0%, #60a5fa 24%, #8b5cf6 54%, #f472b6 78%, #fb7185 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+}
+
+section#section-my-art article#article-2-section-my-art h4.article-title span.article-title-text {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.12em 0.22em;
+    background: none;
+    color: var(--art-rgb-my);
+}
+
+section#section-my-art article#article-2-section-my-art h4.article-title span.article-title-text span {
+    display: inline-block;
+    color: var(--art-rgb-my)!important;
+}
+
+section#section-my-art article#article-2-section-my-art h4.article-title span.article-title-text span.art-title-rgb-red {
+    color: var(--art-rgb-red)!important;
+    text-shadow: 0 0 20px color-mix(in srgb, var(--art-rgb-red) 34%, transparent);
+}
+
+section#section-my-art article#article-2-section-my-art h4.article-title span.article-title-text span.art-title-rgb-green {
+    color: var(--art-rgb-green)!important;
+    text-shadow: 0 0 20px color-mix(in srgb, var(--art-rgb-green) 34%, transparent);
+}
+
+section#section-my-art article#article-2-section-my-art h4.article-title span.article-title-text span.art-title-rgb-blue {
+    color: var(--art-rgb-blue)!important;
+    text-shadow: 0 0 20px color-mix(in srgb, var(--art-rgb-blue) 34%, transparent);
+}
+
+section#section-my-art article#article-4-section-my-art h4.article-title {
+    gap: 14px;
+}
+
+section#section-my-art article#article-4-section-my-art h4.article-title::before {
+    width: clamp(118px, 18vw, 240px);
+    background: linear-gradient(90deg, #ff0033, #ffffff 52%, #facc15);
+}
+
+section#section-my-art article#article-4-section-my-art h4.article-title span.article-title-text {
+    position: relative;
+    padding: 0.04em 0.16em 0.04em calc(0.2em + 54px);
+    background: linear-gradient(120deg, #ffffff 0%, #ffffff 34%, #ff0033 58%, #facc15 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+}
+
+section#section-my-art article#article-4-section-my-art h4.article-title span.article-title-text::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 44px;
+    height: 30px;
+    border-radius: 10px;
+    background: #ff0033;
+    box-shadow: 0 10px 26px rgba(255, 0, 51, 0.36);
+    transform: translateY(-50%);
+}
+
+section#section-my-art article#article-4-section-my-art h4.article-title span.article-title-text::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 17px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 13px solid #ffffff;
+    transform: translateY(-50%);
+}
+
 section#section-my-art div.section-body {
     display: flex;
     flex-direction: column;
@@ -352,6 +862,41 @@ section#section-my-art div.section-body {
 }
 
 @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    section#section-my-art article:is(
+        #article-1-section-my-art,
+        #article-2-section-my-art,
+        #article-3-section-my-art,
+        #article-4-section-my-art
+    ) h4.article-title {
+        gap: 10px;
+        width: min(100%, 520px);
+        margin-bottom: 26px;
+        font-size: clamp(1.48rem, 1.12rem + 1.34vw, 2.06rem)!important;
+        line-height: 1.08;
+    }
+
+    section#section-my-art article:is(#article-2-section-my-art, #article-3-section-my-art, #article-4-section-my-art) h4.article-title {
+        margin-top: 34px;
+    }
+
+    section#section-my-art article:is(
+        #article-1-section-my-art,
+        #article-2-section-my-art,
+        #article-3-section-my-art,
+        #article-4-section-my-art
+    ) h4.article-title::before {
+        width: 76px;
+    }
+
+    section#section-my-art article:is(
+        #article-1-section-my-art,
+        #article-2-section-my-art,
+        #article-3-section-my-art,
+        #article-4-section-my-art
+    ) h4.article-title::after {
+        width: min(62vw, 220px);
+    }
+
     section#section-my-hardware,
     section#section-my-writings,
     section#section-my-art {
@@ -360,6 +905,20 @@ section#section-my-art div.section-body {
             radial-gradient(circle at top right, rgba(250, 204, 21, 0.10) 0%, transparent 26%),
             radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.08) 0%, transparent 28%),
             linear-gradient(180deg, #04060b 0%, #0b1020 46%, #111827 100%);
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    section#section-my-art article:is(
+        #article-1-section-my-art,
+        #article-2-section-my-art,
+        #article-3-section-my-art,
+        #article-4-section-my-art
+    ) h4.article-title {
+        gap: 9px;
+        width: min(100%, 360px);
+        margin-bottom: 22px;
+        font-size: clamp(1.34rem, 1.08rem + 1vw, 1.68rem)!important;
     }
 }
 

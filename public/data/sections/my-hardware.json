@@ -611,16 +611,20 @@
       "component": "ArticleDataProbe",
       "locales": {
         "en": {
-          "title": "You allowed me to see this"
+          "title": "Hardware Fingerprint Explorer",
+          "description": "Experimental browser-based tool that shows what information websites can see about your device, browser, network, and system before and after permissions are granted."
         },
         "de": {
-          "title": "Du hast mir erlaubt, das zu sehen"
+          "title": "Hardware Fingerprint Explorer",
+          "description": "Experimental browser-based tool that shows what information websites can see about your device, browser, network, and system before and after permissions are granted."
         },
         "hr": {
-          "title": "Dopustio si mi da ovo vidim"
+          "title": "Hardware Fingerprint Explorer",
+          "description": "Experimental browser-based tool that shows what information websites can see about your device, browser, network, and system before and after permissions are granted."
         },
         "tr": {
-          "title": "Bunu görmeme izin verdin"
+          "title": "Hardware Fingerprint Explorer",
+          "description": "Experimental browser-based tool that shows what information websites can see about your device, browser, network, and system before and after permissions are granted."
         }
       },
       "settings": {}

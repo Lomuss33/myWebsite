@@ -128,6 +128,108 @@ div.article-portfolio-item {
 }
 
 article#article-1-section-my-software {
+    --software-project-title-start: #f8fafc;
+    --software-project-title-mid: #f0abfc;
+    --software-project-title-end: #67e8f9;
+    --software-project-title-shadow: 0 16px 34px rgba(236, 72, 153, 0.20);
+
+    h4.article-title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        width: min(100%, 960px);
+        margin: 0 auto clamp(24px, 3vw, 34px);
+        color: #f8fafc;
+        font-size: clamp(2rem, 1.24rem + 2.25vw, 3.18rem)!important;
+        font-weight: 900;
+        line-height: 1.02;
+        text-align: center;
+        text-shadow: var(--software-project-title-shadow);
+        text-wrap: balance;
+    }
+
+    h4.article-title::before,
+    h4.article-title::after {
+        content: "";
+        display: block;
+        flex: 0 0 auto;
+        max-width: none;
+        margin-right: auto;
+        margin-left: auto;
+        border-radius: 999px;
+        opacity: 0.9;
+    }
+
+    h4.article-title::before {
+        width: clamp(92px, 14vw, 176px);
+        height: 3px;
+        background: linear-gradient(90deg, var(--software-project-title-mid), var(--software-project-title-end));
+        box-shadow: 0 0 24px rgba(236, 72, 153, 0.26);
+    }
+
+    h4.article-title::after {
+        width: clamp(180px, 30vw, 380px);
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--software-project-title-mid), var(--software-project-title-end), transparent);
+    }
+
+    h4.article-title span.article-title-prefix {
+        display: none;
+    }
+
+    h4.article-title span.article-title-text {
+        display: block;
+        max-width: 100%;
+        min-width: 0;
+        padding: 0 2px;
+        overflow-wrap: anywhere;
+        background: linear-gradient(135deg, var(--software-project-title-start) 0%, var(--software-project-title-mid) 48%, var(--software-project-title-end) 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+    h4.article-title span.article-title-text span {
+        color: inherit!important;
+    }
+
+    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        h4.article-title {
+            gap: 10px;
+            width: min(100%, 520px);
+            margin-bottom: 26px;
+            font-size: clamp(1.62rem, 1.16rem + 1.55vw, 2.18rem)!important;
+            line-height: 1.08;
+        }
+
+        h4.article-title::before {
+            width: 82px;
+        }
+
+        h4.article-title::after {
+            width: min(64vw, 220px);
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        h4.article-title {
+            gap: 9px;
+            width: min(100%, 360px);
+            margin-bottom: 22px;
+            font-size: clamp(1.42rem, 1.14rem + 1.18vw, 1.78rem)!important;
+        }
+
+        h4.article-title::before {
+            width: 64px;
+        }
+
+        h4.article-title::after {
+            width: min(58vw, 168px);
+        }
+    }
+
     div.article-portfolio-item {
         --software-card-accent: rgba(96, 165, 250, 0.30);
         --software-card-accent-strong: rgba(244, 114, 182, 0.44);
@@ -383,6 +485,108 @@ article#article-1-section-my-software {
 }
 
 article#article-1-section-my-hardware {
+    --hardware-project-title-start: #f8fafc;
+    --hardware-project-title-mid: #a3e635;
+    --hardware-project-title-end: #c084fc;
+    --hardware-project-title-shadow: 0 16px 34px rgba(163, 230, 53, 0.18);
+
+    h4.article-title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        width: min(100%, 960px);
+        margin: 0 auto clamp(24px, 3vw, 34px);
+        color: #f8fafc;
+        font-size: clamp(2rem, 1.24rem + 2.25vw, 3.18rem)!important;
+        font-weight: 900;
+        line-height: 1.02;
+        text-align: center;
+        text-shadow: var(--hardware-project-title-shadow);
+        text-wrap: balance;
+    }
+
+    h4.article-title::before,
+    h4.article-title::after {
+        content: "";
+        display: block;
+        flex: 0 0 auto;
+        max-width: none;
+        margin-right: auto;
+        margin-left: auto;
+        border-radius: 999px;
+        opacity: 0.9;
+    }
+
+    h4.article-title::before {
+        width: clamp(92px, 14vw, 176px);
+        height: 3px;
+        background: linear-gradient(90deg, var(--hardware-project-title-mid), var(--hardware-project-title-end));
+        box-shadow: 0 0 24px rgba(163, 230, 53, 0.22);
+    }
+
+    h4.article-title::after {
+        width: clamp(180px, 30vw, 380px);
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--hardware-project-title-mid), var(--hardware-project-title-end), transparent);
+    }
+
+    h4.article-title span.article-title-prefix {
+        display: none;
+    }
+
+    h4.article-title span.article-title-text {
+        display: block;
+        max-width: 100%;
+        min-width: 0;
+        padding: 0 2px;
+        overflow-wrap: anywhere;
+        background: linear-gradient(135deg, var(--hardware-project-title-start) 0%, var(--hardware-project-title-mid) 48%, var(--hardware-project-title-end) 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+    h4.article-title span.article-title-text span {
+        color: inherit!important;
+    }
+
+    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        h4.article-title {
+            gap: 10px;
+            width: min(100%, 520px);
+            margin-bottom: 26px;
+            font-size: clamp(1.62rem, 1.16rem + 1.55vw, 2.18rem)!important;
+            line-height: 1.08;
+        }
+
+        h4.article-title::before {
+            width: 82px;
+        }
+
+        h4.article-title::after {
+            width: min(64vw, 220px);
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        h4.article-title {
+            gap: 9px;
+            width: min(100%, 360px);
+            margin-bottom: 22px;
+            font-size: clamp(1.42rem, 1.14rem + 1.18vw, 1.78rem)!important;
+        }
+
+        h4.article-title::before {
+            width: 64px;
+        }
+
+        h4.article-title::after {
+            width: min(58vw, 168px);
+        }
+    }
+
     div.article-portfolio-item {
         --hardware-card-accent: rgba(103, 232, 249, 0.28);
         --hardware-card-accent-strong: rgba(245, 158, 11, 0.44);

@@ -578,18 +578,45 @@
       "component": "ArticleTestimonials",
       "locales": {
         "en": {
-          "title": "My {{Online Tool}} Recommendations"
+          "title": "My {{software}} recommendations",
+          "description": "Tools and software I am really thankful for — from powerful desktop applications to useful websites and mobile apps that make work, learning, and daily life smoother, faster, or simply more enjoyable.",
+          "recommendation_group_online": "My {{Online Tool}} Recommendations",
+          "recommendation_group_desktop": "My {{Desktop Software}} Recommendations",
+          "recommendation_group_mobile": "My {{Mobile App}} Recommendations"
         },
         "de": {
-          "title": "Meine {{Online-Tool}}-Empfehlungen"
+          "title": "Meine {{Software}}-Empfehlungen",
+          "recommendation_group_online": "Meine {{Online-Tool}}-Empfehlungen",
+          "recommendation_group_desktop": "Meine {{Desktop-Programm}}-Empfehlungen",
+          "recommendation_group_mobile": "Meine {{Mobile-App}}-Empfehlungen"
         },
         "hr": {
-          "title": "Moje preporuke za {{online alate}}"
+          "title": "Moje {{softverske}} preporuke",
+          "recommendation_group_online": "Moje preporuke za {{online alate}}",
+          "recommendation_group_desktop": "Moje preporuke za {{desktop programe}}",
+          "recommendation_group_mobile": "Moje preporuke za {{mobilne aplikacije}}"
         },
         "tr": {
-          "title": "{{Çevrim İçi Araç}} Önerilerim"
+          "title": "{{Yazilim}} onerilerim",
+          "recommendation_group_online": "{{Çevrim İçi Araç}} Önerilerim",
+          "recommendation_group_desktop": "{{Masaüstü Yazılım}} Önerilerim",
+          "recommendation_group_mobile": "{{Mobil Uygulama}} Önerilerim"
         }
       },
+      "groups": [
+        {
+          "id": "recommendation_group_online",
+          "label": "recommendation_group_online"
+        },
+        {
+          "id": "recommendation_group_desktop",
+          "label": "recommendation_group_desktop"
+        },
+        {
+          "id": "recommendation_group_mobile",
+          "label": "recommendation_group_mobile"
+        }
+      ],
       "settings": {
         "order_items_by": "id",
         "order_items_sort": "asc"
@@ -627,7 +654,8 @@
               "title": "Tarayıcı Ana Sayfa Organizasyonu",
               "text": "Group Speed Dial, tarayıcı ana sayfanızı bir [[kontrol merkezine]] dönüştürüyor. Yer imleri karmaşası yerine her şey görsel ve düzenli."
             }
-          }
+          },
+          "categoryId": "recommendation_group_online"
         },
         {
           "id": 22,
@@ -661,7 +689,8 @@
               "title": "Amazon Fiyat Takibi",
               "text": "Keepa alışverişçilere [[veri süper güçleri]] verir. Fiyat geçmişi gerçek indirimleri ortaya çıkarır."
             }
-          }
+          },
+          "categoryId": "recommendation_group_online"
         },
         {
           "id": 23,
@@ -695,7 +724,8 @@
               "title": "Kendi Barındırılan Bulut",
               "text": "Nextcloud, bulutun gerçekten [[size ait]] olduğu bir platformdur."
             }
-          }
+          },
+          "categoryId": "recommendation_group_online"
         },
         {
           "id": 24,
@@ -729,7 +759,8 @@
               "title": "Ücretsiz Bilgi Ansiklopedisi",
               "text": "Wikipedia, insanlığın birlikte oluşturduğu [[bilgi arşivi]]."
             }
-          }
+          },
+          "categoryId": "recommendation_group_online"
         },
         {
           "id": 25,
@@ -763,7 +794,8 @@
               "title": "Avrupa Yapay Zekası",
               "text": "Mistral, [[Avrupa merkezli]] güçlü yapay zeka modellerini temsil ediyor."
             }
-          }
+          },
+          "categoryId": "recommendation_group_online"
         },
         {
           "id": 26,
@@ -797,7 +829,8 @@
               "title": "Diyagram Aracı",
               "text": "draw.io, karmaşık fikirleri [[görsel olarak]] açıklamak için mükemmeldir."
             }
-          }
+          },
+          "categoryId": "recommendation_group_online"
         },
         {
           "id": 27,
@@ -831,7 +864,8 @@
               "title": "Sanallaştırma Platformu",
               "text": "Proxmox, bir sunucuyu [[mini veri merkezine]] dönüştürür."
             }
-          }
+          },
+          "categoryId": "recommendation_group_online"
         },
         {
           "id": 28,
@@ -865,7 +899,8 @@
               "title": "Özel Ağ",
               "text": "Tailscale, cihazları [[güvenli şekilde]] birbirine bağlar."
             }
-          }
+          },
+          "categoryId": "recommendation_group_online"
         },
         {
           "id": 29,
@@ -899,32 +934,9 @@
               "title": "Piyasa Analizi",
               "text": "TradingView, grafikler ve analizleri [[tek bir platformda]] birleÅŸtirir."
             }
-          }
-        }
-      ]
-    },
-    {
-      "id": 3,
-      "component": "ArticleTestimonials",
-      "locales": {
-        "en": {
-          "title": "My {{Desktop Software}} Recommendations"
+          },
+          "categoryId": "recommendation_group_online"
         },
-        "de": {
-          "title": "Meine {{Desktop-Programm}}-Empfehlungen"
-        },
-        "hr": {
-          "title": "Moje preporuke za {{desktop programe}}"
-        },
-        "tr": {
-          "title": "{{Masaüstü Yazılım}} Önerilerim"
-        }
-      },
-      "settings": {
-        "order_items_by": "id",
-        "order_items_sort": "asc"
-      },
-      "items": [
         {
           "id": 31,
           "label": "Joplin",
@@ -957,7 +969,8 @@
               "title": "Not Alma Sistemi",
               "text": "Joplin sadece bir not uygulaması değil, [[kişisel bilgi sistemi]] gibi çalışır."
             }
-          }
+          },
+          "categoryId": "recommendation_group_desktop"
         },
         {
           "id": 32,
@@ -991,7 +1004,8 @@
               "title": "Çoklu Monitör Yönetimi",
               "text": "DisplayFusion çoklu monitör kurulumunu [[verimli bir çalışma alanına]] dönüştürür."
             }
-          }
+          },
+          "categoryId": "recommendation_group_desktop"
         },
         {
           "id": 33,
@@ -1025,7 +1039,8 @@
               "title": "PDF Düzenleme",
               "text": "Foxit, PDF düzenlemeyi [[hızlı ve güçlü]] hale getirir."
             }
-          }
+          },
+          "categoryId": "recommendation_group_desktop"
         },
         {
           "id": 34,
@@ -1059,7 +1074,8 @@
               "title": "Ses GeliÅŸtirme",
               "text": "FxSound sıradan hoparlörlerden [[daha iyi ses]] elde etmenizi sağlar."
             }
-          }
+          },
+          "categoryId": "recommendation_group_desktop"
         },
         {
           "id": 35,
@@ -1093,7 +1109,8 @@
               "title": "Kod Editörü",
               "text": "VS Code geliştiriciler için [[çok yönlü]] bir editördür."
             }
-          }
+          },
+          "categoryId": "recommendation_group_desktop"
         },
         {
           "id": 36,
@@ -1127,7 +1144,8 @@
               "title": "Git İstemcisi",
               "text": "GitHub Desktop, Git işlemlerini [[görsel ve kolay]] hale getirir."
             }
-          }
+          },
+          "categoryId": "recommendation_group_desktop"
         },
         {
           "id": 37,
@@ -1161,7 +1179,8 @@
               "title": "E-posta İstemcisi",
               "text": "Thunderbird, kullanıcıya [[kontrol veren]] açık kaynaklı bir e-posta istemcisidir."
             }
-          }
+          },
+          "categoryId": "recommendation_group_desktop"
         },
         {
           "id": 38,
@@ -1195,7 +1214,8 @@
               "title": "AÄŸ Analizi",
               "text": "Wireshark, aÄŸ trafiÄŸini [[paket paket]] analiz etmenizi saÄŸlar."
             }
-          }
+          },
+          "categoryId": "recommendation_group_desktop"
         },
         {
           "id": 39,
@@ -1229,32 +1249,9 @@
               "title": "Şifre Yöneticisi",
               "text": "Bitwarden, [[güvenli şifre yönetimi]] için sağlam bir çözümdür."
             }
-          }
-        }
-      ]
-    },
-    {
-      "id": 4,
-      "component": "ArticleTestimonials",
-      "locales": {
-        "en": {
-          "title": "My {{Mobile App}} Recommendations"
+          },
+          "categoryId": "recommendation_group_desktop"
         },
-        "de": {
-          "title": "Meine {{Mobile-App}}-Empfehlungen"
-        },
-        "hr": {
-          "title": "Moje preporuke za {{mobilne aplikacije}}"
-        },
-        "tr": {
-          "title": "{{Mobil Uygulama}} Önerilerim"
-        }
-      },
-      "settings": {
-        "order_items_by": "id",
-        "order_items_sort": "asc"
-      },
-      "items": [
         {
           "id": 41,
           "label": "bitchat",
@@ -1287,7 +1284,8 @@
               "title": "Merkezi Olmayan MesajlaÅŸma",
               "text": "bitchat, merkezi kontrol olmadan iletişim fikrini araştıran ilginç bir [[merkeziyetsiz teknoloji]] örneğidir."
             }
-          }
+          },
+          "categoryId": "recommendation_group_mobile"
         },
         {
           "id": 42,
@@ -1321,7 +1319,8 @@
               "title": "Hava Durumu",
               "text": "yr, gerçekten [[meteoroloji temelli]] hava tahminleri sunan güvenilir bir uygulamadır."
             }
-          }
+          },
+          "categoryId": "recommendation_group_mobile"
         },
         {
           "id": 43,
@@ -1355,7 +1354,8 @@
               "title": "Gıda Şeffaflığı",
               "text": "Yuka, ürünleri tarayarak içerikleri ve katkı maddelerini gösterir ve kullanıcılara [[bilgi gücü]] verir."
             }
-          }
+          },
+          "categoryId": "recommendation_group_mobile"
         },
         {
           "id": 44,
@@ -1389,7 +1389,8 @@
               "title": "Yapay Zeka ile İncil",
               "text": "BibleAI, kutsal metinleri yapay zekâ ile analiz ederek [[etkileşimli bir çalışma]] sunar."
             }
-          }
+          },
+          "categoryId": "recommendation_group_mobile"
         },
         {
           "id": 45,
@@ -1423,7 +1424,8 @@
               "title": "Kat Planı Tasarımı",
               "text": "Floor Plan Creator, telefonunuzu bir [[mimari tasarım aracı]] haline getirir."
             }
-          }
+          },
+          "categoryId": "recommendation_group_mobile"
         },
         {
           "id": 46,
@@ -1457,7 +1459,8 @@
               "title": "Aralıklı Tekrar Öğrenme",
               "text": "AnkiDroid, [[spaced repetition]] yöntemiyle öğrenmeyi güçlendirir."
             }
-          }
+          },
+          "categoryId": "recommendation_group_mobile"
         },
         {
           "id": 47,
@@ -1491,7 +1494,8 @@
               "title": "Görsel Düzenleme",
               "text": "Picsart, telefonu [[yaratıcı bir stüdyoya]] dönüştürür."
             }
-          }
+          },
+          "categoryId": "recommendation_group_mobile"
         },
         {
           "id": 48,
@@ -1525,7 +1529,8 @@
               "title": "Navigasyon & KeÅŸif",
               "text": "Google Maps, şehirleri [[veri destekli keşiflere]] dönüştürür."
             }
-          }
+          },
+          "categoryId": "recommendation_group_mobile"
         }
       ]
     }

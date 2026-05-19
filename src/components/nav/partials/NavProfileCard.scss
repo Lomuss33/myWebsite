@@ -530,12 +530,24 @@ div.nav-profile-card {
                 linear-gradient(180deg,
                     color-mix(in srgb, var(--theme-nav-surface) 94%, white 6%) 0%,
                     var(--theme-nav-surface-accent) 100%);
-            border: 1px solid var(--theme-nav-divider);
+            border: 1px solid var(--theme-nav-mobile-action-edge, var(--theme-nav-divider));
             transform: scale(1.055);
             transform-origin: center;
+            transition:
+                border-color 0.18s ease,
+                box-shadow 0.18s ease;
             box-shadow:
                 0 8px 20px rgba(2, 6, 23, 0.20),
                 inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        div.nav-profile-card-mobile-action-stack > div.nav-profile-card-mobile-action:not(.nav-profile-card-mobile-action-audio):hover,
+        div.nav-profile-card-mobile-action-stack > div.nav-profile-card-mobile-action:not(.nav-profile-card-mobile-action-audio):focus-within {
+            border-color: #f8aa28;
+            box-shadow:
+                0 10px 24px rgba(248, 170, 40, 0.16),
+                inset 0 0 0 1px rgba(248, 170, 40, 0.14),
+                inset 0 1px 0 rgba(255, 255, 255, 0.10);
         }
 
         div.nav-profile-card-mobile-action-stack > div.nav-profile-card-mobile-action:has(.show) {
@@ -618,7 +630,7 @@ div.nav-profile-card {
             margin-left: 0;
             padding: 0.32rem 0;
             border-radius: 999px;
-            border: 1px solid color-mix(in srgb, var(--theme-nav-divider) 88%, white 12%);
+            border: 1px solid #f8aa28;
             background:
                 linear-gradient(180deg,
                     color-mix(in srgb, var(--theme-nav-surface) 96%, white 4%) 0%,
@@ -650,11 +662,13 @@ div.nav-profile-card {
         div.nav-profile-card-mobile-action-resume div.nav-profile-card-mobile-resume-menu {
             left: calc(100% + var(--mobile-header-gap));
             right: auto;
-            width: clamp(9.5rem, 38vw, 11.75rem);
-            padding: 0.34rem;
+            width: max-content;
+            min-width: 9.4rem;
+            max-width: min(11rem, calc(100vw - 5.25rem));
+            padding: 0.36rem;
             border-radius: 1rem;
             align-items: stretch;
-            gap: 0.22rem;
+            gap: 0.18rem;
             transform-origin: left center;
         }
 
@@ -700,10 +714,10 @@ div.nav-profile-card {
         div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item {
             width: 100%;
             height: auto;
-            min-height: 2.4rem;
+            min-height: 2.32rem;
             justify-content: flex-start;
-            gap: 0.6rem;
-            padding: 0.52rem 0.72rem;
+            gap: 0.56rem;
+            padding: 0.48rem 0.66rem;
             border-radius: 0.8rem;
         }
 
@@ -717,10 +731,10 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item .btn-option-picker-icon {
-            width: 1.15rem;
-            height: 1.15rem;
-            flex: 0 0 1.15rem;
-            font-size: 1rem;
+            width: 1.1rem;
+            height: 1.1rem;
+            flex: 0 0 1.1rem;
+            font-size: 0.96rem;
         }
 
         div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item i.fa-icon {
@@ -732,7 +746,7 @@ div.nav-profile-card {
         span.nav-profile-card-mobile-resume-item-label {
             display: block;
             min-width: 0;
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             line-height: 1.1;
             font-weight: 600;
             letter-spacing: 0.01em;
@@ -741,6 +755,19 @@ div.nav-profile-card {
             overflow: hidden;
             text-overflow: ellipsis;
             transition: color 0.18s ease;
+        }
+
+        div.nav-profile-card-mobile-resume-menu-header {
+            padding: 0.18rem 0.66rem 0.24rem;
+            font-size: 0.68rem;
+            line-height: 1.05;
+            font-weight: 700;
+            color: color-mix(in srgb, var(--theme-nav-text) 72%, var(--theme-primary) 28%);
+            letter-spacing: 0;
+            text-align: center;
+            white-space: nowrap;
+            user-select: none;
+            pointer-events: none;
         }
 
         div.nav-profile-card-mobile-action-language button.nav-profile-card-mobile-language-item img {
@@ -787,10 +814,19 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-mobile-action-stack button.audio-button {
-            width: calc(var(--mobile-action-size) - 0.4rem);
-            height: calc(var(--mobile-action-size) - 0.4rem);
+            width: 100%;
+            height: 100%;
             margin-left: 0;
             color: var(--theme-nav-text);
+        }
+
+        div.nav-profile-card-mobile-action-stack button.audio-button:hover {
+            transform: none;
+        }
+
+        div.nav-profile-card-mobile-action-stack button.audio-button svg.audio-button-icon {
+            width: 100%;
+            height: 100%;
         }
 
         div.nav-profile-card-mobile-action-stack button.audio-button .triangle,

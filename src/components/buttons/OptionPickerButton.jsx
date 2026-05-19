@@ -16,7 +16,8 @@ function OptionPickerButton({
     hideCaret = false,
     dropdownClassName = "",
     menuClassName = "",
-    compactMenu = false
+    compactMenu = false,
+    menuHeader = null
 }) {
     const [dropdownVisible, setDropdownVisible] = useState(false)
 
@@ -103,7 +104,8 @@ function OptionPickerButton({
                                         selectedOptionId={selectedOptionId}
                                         onClick={_onDropdownOptionClicked}
                                         menuClassName={menuClassName}
-                                        compactMenu={compactMenu}/>
+                                        compactMenu={compactMenu}
+                                        menuHeader={menuHeader}/>
             </Dropdown>
         </div>
     )
@@ -163,13 +165,19 @@ function OptionPickerButtonToggle({
     )
 }
 
-function OptionPickerButtonMenu({ availableOptions, selectedOptionId, onClick, menuClassName, compactMenu }) {
+function OptionPickerButtonMenu({ availableOptions, selectedOptionId, onClick, menuClassName, compactMenu, menuHeader }) {
     const hasSelectedOption = availableOptions.some(option => option.id === selectedOptionId)
     const borderClass = hasSelectedOption ? 'dropdown-item-no-border' : ''
     const compactClass = compactMenu ? 'btn-option-picker-menu-item-compact' : ''
 
     return (
         <Dropdown.Menu className={menuClassName}>
+            {menuHeader && (
+                <div className={`btn-option-picker-menu-header`}>
+                    {menuHeader}
+                </div>
+            )}
+
             {availableOptions.map((option, key) => (
                 <Dropdown.Item key={key}
                                as={`button`}

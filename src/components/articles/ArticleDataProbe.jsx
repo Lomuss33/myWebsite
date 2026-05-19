@@ -740,6 +740,11 @@ function ArticleDataProbe({ dataWrapper }) {
                  type={Article.Types.SPACING_DEFAULT}
                  dataWrapper={dataWrapper}
                  className={`article-data-probe`}>
+            {dataWrapper.locales.description && (
+                <p className={`article-data-probe-intro text-3`}
+                   dangerouslySetInnerHTML={{__html: dataWrapper.locales.description}}/>
+            )}
+
             <div className={`article-data-probe-summary`}>
                 <div className={`article-data-probe-summary-chip`}>
                     <i className={`fa-solid fa-eye`}/>

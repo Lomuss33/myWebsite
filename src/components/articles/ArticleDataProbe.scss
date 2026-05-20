@@ -17,6 +17,15 @@ article.article-data-probe {
     --probe-shadow: 0 18px 42px color-mix(in srgb, var(--probe-accent) 12%, transparent 88%);
     --probe-shadow-strong: 0 26px 56px color-mix(in srgb, var(--probe-accent) 18%, transparent 82%);
     --probe-inset: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    --probe-button-radius: 12px;
+    --probe-button-text: var(--probe-text);
+    --probe-button-border: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 36%, var(--probe-line) 64%);
+    --probe-button-surface-top: color-mix(in srgb, var(--probe-surface) 76%, var(--probe-item-accent, var(--probe-accent)) 24%);
+    --probe-button-surface-bottom: color-mix(in srgb, var(--probe-surface-strong) 88%, var(--probe-item-accent, var(--probe-accent)) 12%);
+    --probe-button-sheen: rgba(255, 255, 255, 0.12);
+    --probe-button-shadow: 0 10px 22px color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 14%, transparent 86%);
+    --probe-button-shadow-hover: 0 16px 30px color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 20%, transparent 80%);
+    --probe-button-ring: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 54%, transparent 46%);
 
     @include media-breakpoint-down(md) {
         --probe-gap: 10px;
@@ -103,6 +112,7 @@ article.article-data-probe {
         position: relative;
         overflow: hidden;
         isolation: isolate;
+        --probe-item-accent: var(--probe-accent);
         margin-top: 16px;
         padding: 16px;
         border-radius: var(--probe-block-radius);
@@ -406,6 +416,22 @@ article.article-data-probe {
 
     div.article-data-probe-grid.article-data-probe-grid-compact {
         grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+    }
+
+    div.article-data-probe-grid.article-data-probe-grid-fixed-two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        @include media-breakpoint-up(xxl) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    div.article-data-probe-list-footer {
+        --probe-item-accent: var(--probe-accent);
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin-top: 12px;
     }
 
     div.article-data-probe-item {
@@ -741,38 +767,148 @@ article.article-data-probe {
     }
 
     button.standard-button.btn-contrast.article-data-probe-action-btn,
-    button.standard-button.btn-contrast.article-data-probe-unlock-btn {
+    button.standard-button.btn-contrast.article-data-probe-unlock-btn,
+    button.copy-button.copy-button-pill {
         --padding: 0.54rem 0.95rem;
         --font-size: 0.84rem;
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.52rem;
         padding: var(--padding) !important;
         font-size: var(--font-size) !important;
+        border-radius: var(--probe-button-radius) !important;
         min-height: 38px;
+        border: 1px solid var(--probe-button-border) !important;
+        background:
+            linear-gradient(180deg, var(--probe-button-sheen), transparent 42%),
+            linear-gradient(180deg, var(--probe-button-surface-top), var(--probe-button-surface-bottom)) !important;
+        color: var(--probe-button-text) !important;
         box-shadow:
-            0 10px 20px color-mix(in srgb, var(--probe-item-accent) 9%, transparent 91%),
-            inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
-        transform: none !important;
+            var(--probe-button-shadow),
+            inset 0 1px 0 rgba(255, 255, 255, 0.16),
+            inset 0 -1px 0 color-mix(in srgb, black 18%, transparent 82%) !important;
+        transform: translate3d(0, 0, 0) !important;
+        transition:
+            transform 170ms cubic-bezier(0.16, 1, 0.3, 1),
+            border-color 170ms ease,
+            background 170ms ease,
+            box-shadow 170ms ease,
+            color 170ms ease,
+            filter 170ms ease;
         text-transform: none !important;
         letter-spacing: 0.01em !important;
         font-weight: 900 !important;
-        color: var(--probe-text) !important;
-        border: 1px solid color-mix(in srgb, var(--probe-item-accent) 26%, var(--probe-line) 74%) !important;
-        background-image: linear-gradient(
-            180deg,
-            color-mix(in srgb, var(--probe-surface) 82%, var(--probe-item-accent) 18%),
-            color-mix(in srgb, var(--probe-surface-strong) 90%, var(--probe-item-accent) 10%)
-        ) !important;
+        text-shadow: none !important;
+        cursor: pointer;
 
-        &:hover {
-            transform: none !important;
-            filter: brightness(1.02) saturate(1.03);
-            box-shadow:
-                0 12px 24px color-mix(in srgb, var(--probe-item-accent) 12%, transparent 88%),
-                inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
-            border-color: color-mix(in srgb, var(--probe-item-accent) 38%, var(--probe-line) 62%) !important;
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            background:
+                radial-gradient(circle at 18% 0%,
+                    color-mix(in srgb, var(--probe-item-accent) 22%, transparent 78%) 0%,
+                    transparent 46%
+                ),
+                linear-gradient(90deg,
+                    transparent 0%,
+                    color-mix(in srgb, var(--probe-item-accent) 18%, transparent 82%) 50%,
+                    transparent 100%
+                );
+            opacity: 0.64;
+            transform: translateX(-18%);
+            transition: opacity 170ms ease, transform 210ms cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
         }
 
-        &:active {
-            transform: none !important;
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 1px;
+            z-index: 0;
+            border-radius: calc(var(--probe-button-radius) - 1px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            pointer-events: none;
+        }
+
+        i {
+            position: relative;
+            z-index: 1;
+            width: 1.42rem;
+            height: 1.42rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+            margin: 0 !important;
+            border-radius: 999px;
+            color: color-mix(in srgb, var(--probe-item-accent) 78%, var(--probe-button-text) 22%);
+            background:
+                linear-gradient(180deg,
+                    color-mix(in srgb, var(--probe-item-accent) 22%, var(--probe-surface) 78%),
+                    color-mix(in srgb, var(--probe-item-accent) 12%, var(--probe-surface-strong) 88%)
+                );
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            transition: transform 170ms ease, color 170ms ease, background 170ms ease;
+        }
+
+        span {
+            min-width: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        &:hover:not(:disabled) {
+            transform: translate3d(0, -2px, 0) !important;
+            filter: saturate(1.08) brightness(1.04);
+            border-color: color-mix(in srgb, var(--probe-item-accent) 54%, var(--probe-line) 46%) !important;
+            background:
+                linear-gradient(180deg, color-mix(in srgb, var(--probe-button-sheen) 78%, white 22%), transparent 46%),
+                linear-gradient(
+                    180deg,
+                    color-mix(in srgb, var(--probe-button-surface-top) 78%, var(--probe-item-accent) 22%),
+                    color-mix(in srgb, var(--probe-button-surface-bottom) 84%, var(--probe-item-accent) 16%)
+                ) !important;
+            box-shadow:
+                var(--probe-button-shadow-hover),
+                inset 0 1px 0 rgba(255, 255, 255, 0.22),
+                inset 0 -1px 0 color-mix(in srgb, black 12%, transparent 88%) !important;
+
+            &::before {
+                opacity: 0.92;
+                transform: translateX(0);
+            }
+
+            i {
+                transform: translateY(-1px) scale(1.04);
+                color: var(--probe-button-text);
+                background:
+                    linear-gradient(180deg,
+                        color-mix(in srgb, var(--probe-item-accent) 58%, var(--probe-surface) 42%),
+                        color-mix(in srgb, var(--probe-item-accent) 34%, var(--probe-surface-strong) 66%)
+                    );
+            }
+        }
+
+        &:active:not(:disabled) {
+            transform: translate3d(0, 0, 0) scale(0.985) !important;
+            filter: saturate(1.02) brightness(0.98);
+            box-shadow:
+                0 7px 16px color-mix(in srgb, var(--probe-item-accent) 14%, transparent 86%),
+                inset 0 2px 5px color-mix(in srgb, black 18%, transparent 82%) !important;
+        }
+
+        &:focus-visible {
+            outline: 0;
+            box-shadow:
+                0 0 0 3px color-mix(in srgb, var(--probe-button-ring) 48%, transparent 52%),
+                var(--probe-button-shadow-hover),
+                inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
         }
 
         @include media-breakpoint-down(sm) {
@@ -784,32 +920,26 @@ article.article-data-probe {
     button.standard-button.btn-contrast.article-data-probe-action-btn.article-data-probe-expand-btn {
         --padding: 0.46rem 0.82rem;
         --font-size: 0.78rem;
+        --probe-button-surface-top: color-mix(in srgb, var(--probe-surface) 86%, var(--probe-item-accent) 14%);
+        --probe-button-surface-bottom: color-mix(in srgb, var(--probe-surface-strong) 94%, var(--probe-item-accent) 6%);
     }
 
-    button.copy-button.copy-button-pill {
-        min-height: 38px;
-        padding: 0.54rem 0.95rem;
-        background-image: linear-gradient(
-            180deg,
-            color-mix(in srgb, var(--probe-item-accent) 32%, var(--probe-surface-strong) 68%),
-            color-mix(in srgb, var(--probe-item-accent) 16%, var(--probe-surface) 84%)
-        );
-        border: 1px solid var(--probe-line);
-        color: var(--probe-text);
-        box-shadow: var(--probe-shadow), inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+    button.standard-button.btn-contrast.article-data-probe-action-btn.article-data-probe-list-toggle-btn {
+        --padding: 0.62rem 1.12rem;
+        --font-size: 0.84rem;
+        min-width: min(100%, 180px);
+        --probe-button-surface-top: color-mix(in srgb, var(--probe-surface) 68%, var(--probe-item-accent) 32%);
+        --probe-button-surface-bottom: color-mix(in srgb, var(--probe-surface-strong) 82%, var(--probe-item-accent) 18%);
 
-        &:hover {
-            border-color: color-mix(in srgb, var(--probe-item-accent) 44%, var(--probe-line) 56%);
-            background-image: linear-gradient(
-                180deg,
-                color-mix(in srgb, var(--probe-item-accent) 38%, var(--probe-surface-strong) 62%),
-                color-mix(in srgb, var(--probe-item-accent) 22%, var(--probe-surface) 78%)
-            );
-            color: var(--probe-text);
+        @include media-breakpoint-down(sm) {
+            width: auto;
+            min-width: min(100%, 160px);
         }
     }
 
     div.copy-button-wrapper.article-data-probe-item-copy {
+        --probe-button-surface-top: color-mix(in srgb, var(--probe-surface) 70%, var(--probe-item-accent) 30%);
+        --probe-button-surface-bottom: color-mix(in srgb, var(--probe-surface-strong) 84%, var(--probe-item-accent) 16%);
         flex: 0 0 auto;
         display: flex;
         align-items: stretch;
@@ -1013,16 +1143,26 @@ article#article-2-section-my-hardware {
         border-radius: 12px;
     }
 
-    button.article-data-probe-unlock-btn {
-        border-color: color-mix(in srgb, var(--probe-item-accent) 26%, var(--probe-line) 74%) !important;
+}
+
+[data-theme="light"] article#article-2-section-my-hardware {
+    --probe-button-text: #102033;
+    --probe-button-border: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 40%, #b8c9dc 60%);
+    --probe-button-surface-top: color-mix(in srgb, #ffffff 80%, var(--probe-item-accent, var(--probe-accent)) 20%);
+    --probe-button-surface-bottom: color-mix(in srgb, #e7f0f8 88%, var(--probe-item-accent, var(--probe-accent)) 12%);
+    --probe-button-sheen: rgba(255, 255, 255, 0.62);
+    --probe-button-shadow: 0 10px 22px color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 16%, rgba(15, 23, 42, 0.10) 84%);
+    --probe-button-shadow-hover: 0 18px 34px color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 24%, rgba(15, 23, 42, 0.16) 76%);
+    --probe-button-ring: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 46%, transparent 54%);
+
+    button.standard-button.btn-contrast.article-data-probe-action-btn.article-data-probe-expand-btn {
+        --probe-button-surface-top: color-mix(in srgb, #ffffff 88%, var(--probe-item-accent) 12%);
+        --probe-button-surface-bottom: color-mix(in srgb, #edf4fb 94%, var(--probe-item-accent) 6%);
     }
 
-    button.standard-button.article-data-probe-action-btn {
-        border-color: color-mix(in srgb, var(--probe-item-accent) 26%, var(--probe-line) 74%) !important;
+    button.standard-button.btn-contrast.article-data-probe-action-btn.article-data-probe-list-toggle-btn,
+    div.copy-button-wrapper.article-data-probe-item-copy {
+        --probe-button-surface-top: color-mix(in srgb, #ffffff 72%, var(--probe-item-accent) 28%);
+        --probe-button-surface-bottom: color-mix(in srgb, #e2edf7 84%, var(--probe-item-accent) 16%);
     }
-
-    button.copy-button.copy-button-pill {
-        border-color: color-mix(in srgb, #38bdf8 34%, var(--probe-line) 66%);
-    }
-
 }

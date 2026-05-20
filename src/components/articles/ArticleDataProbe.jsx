@@ -5,6 +5,7 @@ import StandardButton from "../buttons/StandardButton.jsx"
 import CopyButton from "../buttons/CopyButton.jsx"
 
 const HIDDEN_TEXT = "No data returned. Access may be blocked, denied, or intentionally hidden."
+const LIST_PREVIEW_COUNT = 2
 const PROBE_WHAT = {
     secure_context: "Whether the page runs in a trusted browser mode that unlocks restricted web capabilities.",
     user_agent: "The legacy browser identification string sent for compatibility with old sites and servers.",
@@ -51,6 +52,7 @@ function ArticleDataProbe({ dataWrapper }) {
     const [unlocked, setUnlocked] = useState(false)
     const [probeStates, setProbeStates] = useState({})
     const [expanded, setExpanded] = useState({})
+    const [listExpanded, setListExpanded] = useState({})
     const [passiveInitReady, setPassiveInitReady] = useState(false)
     const didInitRef = useRef(false)
 
@@ -731,9 +733,17 @@ function ArticleDataProbe({ dataWrapper }) {
         setExpanded(prev => ({ ...prev, [id]: !prev?.[id] }))
     }
 
+    const toggleListExpanded = (id) => {
+        setListExpanded(prev => ({ ...prev, [id]: !prev?.[id] }))
+    }
+
     const autoCount = passiveProbes.length
     const requestCount = requestProbes.length
     const publicCount = publicIpProbes.length
+    const requestListExpanded = Boolean(listExpanded?.permission_gated)
+    const passiveListExpanded = Boolean(listExpanded?.passive_reads)
+    const visibleRequestProbes = requestListExpanded ? requestProbes : requestProbes.slice(0, LIST_PREVIEW_COUNT)
+    const visiblePassiveProbes = passiveListExpanded ? passiveProbes : passiveProbes.slice(0, LIST_PREVIEW_COUNT)
 
     return (
         <Article id={dataWrapper.uniqueId}
@@ -802,22 +812,29 @@ function ArticleDataProbe({ dataWrapper }) {
                                     onClick={() => setUnlocked(true)}/>
                 ) : null}>
                 {unlocked && (
-                    <div className={`article-data-probe-grid`}>
-                        {requestProbes.map(p => (
-                            <ProbeItem key={p.id}
-                                       probe={p}
-                                       state={probeStates[p.id]}
-                                       showRequest={true}
-                                       requestLabel={`Request`}
-                                       onRequest={() => runRequestProbe(p)}
-                                       extraAction={p.extraAction ? () => runExtraAction(p) : null}
-                                       extraLabel={p.extraAction?.label}
-                                       extraIcon={p.extraAction?.icon}
-                                       extraState={probeStates[`${p.id}__extra`]}
-                                       expanded={Boolean(expanded?.[p.id])}
-                                       onToggleExpand={() => toggleExpanded(p.id)}/>
-                        ))}
-                    </div>
+                    <>
+                        <div className={`article-data-probe-grid article-data-probe-grid-fixed-two`}>
+                            {visibleRequestProbes.map(p => (
+                                <ProbeItem key={p.id}
+                                           probe={p}
+                                           state={probeStates[p.id]}
+                                           showRequest={true}
+                                           requestLabel={`Request`}
+                                           onRequest={() => runRequestProbe(p)}
+                                           extraAction={p.extraAction ? () => runExtraAction(p) : null}
+                                           extraLabel={p.extraAction?.label}
+                                           extraIcon={p.extraAction?.icon}
+                                           extraState={probeStates[`${p.id}__extra`]}
+                                           expanded={Boolean(expanded?.[p.id])}
+                                           onToggleExpand={() => toggleExpanded(p.id)}/>
+                            ))}
+                        </div>
+
+                        <ProbeListToggle expanded={requestListExpanded}
+                                         visibleCount={visibleRequestProbes.length}
+                                         totalCount={requestCount}
+                                         onToggle={() => toggleListExpanded("permission_gated")}/>
+                    </>
                 )}
             </ProbeSection>
 
@@ -833,8 +850,8 @@ function ArticleDataProbe({ dataWrapper }) {
                         Passive probes are queued until the browser is idle so this section does not stall page transitions.
                     </div>
                 )}
-                <div className={`article-data-probe-grid`}>
-                    {passiveProbes.map(p => (
+                <div className={`article-data-probe-grid article-data-probe-grid-fixed-two`}>
+                    {visiblePassiveProbes.map(p => (
                         <ProbeItem key={p.id}
                                    probe={p}
                                    state={probeStates[p.id]}
@@ -842,6 +859,11 @@ function ArticleDataProbe({ dataWrapper }) {
                                    onToggleExpand={() => toggleExpanded(p.id)}/>
                     ))}
                 </div>
+
+                <ProbeListToggle expanded={passiveListExpanded}
+                                 visibleCount={visiblePassiveProbes.length}
+                                 totalCount={autoCount}
+                                 onToggle={() => toggleListExpanded("passive_reads")}/>
             </ProbeSection>
         </Article>
     )
@@ -884,6 +906,23 @@ function ProbeSection({ icon, eyebrow, title, description, count, accent, action
                 {children}
             </div>
         </section>
+    )
+}
+
+function ProbeListToggle({ expanded, visibleCount, totalCount, onToggle }) {
+    if (totalCount <= LIST_PREVIEW_COUNT) return null
+
+    const remaining = Math.max(0, totalCount - visibleCount)
+    const label = expanded ? "Show less" : `Show more (${remaining})`
+
+    return (
+        <div className={`article-data-probe-list-footer`}>
+            <StandardButton variant={`contrast`}
+                            className={`article-data-probe-action-btn article-data-probe-list-toggle-btn`}
+                            label={label}
+                            faIcon={expanded ? "fa-solid fa-chevron-up" : "fa-solid fa-chevron-down"}
+                            onClick={onToggle}/>
+        </div>
     )
 }
 
@@ -988,7 +1027,7 @@ function ProbeItem({
                         {canExpand && onToggleExpand && (
                             <StandardButton variant={`contrast`}
                                             className={`article-data-probe-action-btn article-data-probe-expand-btn`}
-                                            label={isExpanded ? "Hide" : "More"}
+                                            label={isExpanded ? "Show less" : "Show more"}
                                             faIcon={isExpanded ? "fa-solid fa-chevron-up" : "fa-solid fa-chevron-down"}
                                             onClick={onToggleExpand}/>
                         )}

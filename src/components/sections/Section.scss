@@ -1086,22 +1086,13 @@ section#section-my-writings article:is(#article-4-section-my-writings, #article-
 @include media-breakpoint-up(md) {
     section#section-my-writings div.section-body {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-        column-gap: 24px;
+        grid-template-columns: minmax(0, 1fr);
         row-gap: 0;
         align-items: start;
 
         > article {
             grid-column: 1 / -1;
             min-width: 0;
-        }
-
-        > article#article-4-section-my-writings {
-            grid-column: 1 / 2;
-        }
-
-        > article#article-5-section-my-writings {
-            grid-column: 2 / 3;
         }
 
         > article#article-6-section-my-writings {
@@ -1115,10 +1106,6 @@ section#section-my-writings article:is(#article-4-section-my-writings, #article-
 }
 
 @include media-breakpoint-up(lg) {
-    section#section-my-writings div.section-body {
-        column-gap: 32px;
-    }
-
     section#section-my-writings article#article-6-section-my-writings {
         width: min(100%, 980px);
     }

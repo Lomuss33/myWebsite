@@ -2,6 +2,7 @@ import "./SectionBody.scss"
 import React, {Suspense, lazy, useEffect, useMemo, useState} from 'react'
 import {useParser} from "../../hooks/parser.js"
 import ArticleNotFound from "../articles/ArticleNotFound.jsx"
+import SectionDecorationBand from "./SectionDecorationBand.jsx"
 
 function _loadArticleCards() { return import("../articles/ArticleCards.jsx") }
 function _loadArticleComplaintForm() { return import("../articles/ArticleComplaintForm.jsx") }
@@ -46,7 +47,7 @@ function SectionBodyFallbackArticle() {
     )
 }
 
-function SectionBody({ section }) {
+function SectionBody({ section, showDecorationBands = true }) {
     const parser = useParser()
     const articleDataWrappers = useMemo(() => {
         return parser.parseSectionArticles(section)
@@ -104,11 +105,17 @@ function SectionBody({ section }) {
             {visibleArticleWrappers && visibleArticleWrappers.map((dataWrapper, key) => {
                 const Component = SectionBody.ARTICLES[dataWrapper.component] || ArticleNotFound
                 return (
-                    <Suspense key={dataWrapper.uniqueId}
-                              fallback={<SectionBodyFallbackArticle />}>
-                        <Component dataWrapper={dataWrapper}
-                                   id={key}/>
-                    </Suspense>
+                    <React.Fragment key={dataWrapper.uniqueId}>
+                        {showDecorationBands && key > 0 && (
+                            <SectionDecorationBand type="between-articles"
+                                                   index={key}/>
+                        )}
+
+                        <Suspense fallback={<SectionBodyFallbackArticle />}>
+                            <Component dataWrapper={dataWrapper}
+                                       id={key}/>
+                        </Suspense>
+                    </React.Fragment>
                 )
             })}
         </div>

@@ -1404,14 +1404,11 @@ function BarsTile({ itemWrapper, index, activate, locked, onReady }) {
     const panels = useMemo(() => {
         return Array.from({ length: panelCount }, (_, panelIndex) => {
             const animationDelay = `${(3 / (panelCount / 2)) * (panelIndex + 1)}s`
-            const band = panelIndex % 5
             return {
                 key: panelIndex,
                 style: {
                     animationDelay,
-                    "--bar-index": panelIndex,
-                    "--bar-band": band,
-                    "--bar-hue": `${Math.round((panelIndex / Math.max(1, panelCount - 1)) * 360)}deg`
+                    "--bar-index": panelIndex
                 }
             }
         })
@@ -1441,7 +1438,7 @@ function BarsTile({ itemWrapper, index, activate, locked, onReady }) {
                         toggleLevel(event)
                     }
                 }}>
-            <div className={`article-web-art-bars-stage`}>
+            <div className={`article-web-art-bars-stage article-web-art-bars-stage-${level}`}>
                 <div className={`article-web-art-bars article-web-art-bars-${level}`}>
                     {panels.map((panel) => (
                         <div key={panel.key}
@@ -2380,7 +2377,7 @@ function SpiralDotsTile({ itemWrapper, index, activate, locked, onReady }) {
 
     return (
         <div ref={tileRef}
-             className={`article-web-art-tile article-web-art-tile-hover-only`}
+             className={`article-web-art-tile article-web-art-tile-hover-only article-web-art-tile-hover-dots`}
              role={"img"}
              tabIndex={locked ? -1 : 0}
              aria-label={`Spiral dots web art tile ${index + 1}`}

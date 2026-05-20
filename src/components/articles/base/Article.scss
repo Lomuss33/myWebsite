@@ -2,6 +2,85 @@
 
 article.article {
     width: 100%;
+    --article-title-line-mid: var(
+        --education-current-title-mid,
+        var(
+            --experience-current-title-mid,
+            var(
+                --writings-current-title-mid,
+                var(
+                    --art-current-title-mid,
+                    var(
+                        --software-project-title-mid,
+                        var(
+                            --hardware-project-title-mid,
+                            var(
+                                --software-rec-title-mid,
+                                var(
+                                    --probe-title-mid,
+                                    var(--writings-title-mid, var(--art-title-mid, var(--theme-primary)))
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    );
+    --article-title-line-end: var(
+        --education-current-title-end,
+        var(
+            --experience-current-title-end,
+            var(
+                --writings-current-title-end,
+                var(
+                    --art-current-title-end,
+                    var(
+                        --software-project-title-end,
+                        var(
+                            --hardware-project-title-end,
+                            var(
+                                --software-rec-title-end,
+                                var(
+                                    --probe-title-end,
+                                    var(--writings-title-end, var(--art-title-end, var(--theme-secondary)))
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    );
+    --article-title-line-thickness: var(
+        --education-current-title-line-top,
+        var(
+            --experience-current-title-line-top,
+            var(--art-current-title-line-top, 3px)
+        )
+    );
+}
+
+article.article::after {
+    content: "";
+    display: block;
+    width: calc(100vw / var(--section-content-scale, 1));
+    height: var(--article-title-line-thickness);
+    margin-top: clamp(28px, 3vw, 42px);
+    margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--article-title-line-mid), var(--article-title-line-end));
+    box-shadow: 0 0 24px color-mix(in srgb, var(--article-title-line-mid) 24%, transparent);
+    opacity: 0.9;
+
+    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        margin-top: 30px;
+    }
+
+    @include media-breakpoint-down(sm) {
+        margin-top: 26px;
+    }
 }
 
 h4.article-title {

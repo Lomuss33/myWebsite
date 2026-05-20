@@ -3,6 +3,7 @@
 div.section-content {
     /* Keep the section anchored higher while preserving comfortable side and bottom spacing. */
     --section-content-scale: 0.8;
+    --section-content-min-height: calc(100vh - #{$default-card-spacing * 5});
     --padding-top: 0.85rem;
     --padding-x: 1.35rem;
     --padding-bottom: 2.35rem;
@@ -11,10 +12,10 @@ div.section-content {
     position: relative;
     width: 100%;
     padding: var(--padding);
-    min-height: calc(100vh - calc($default-card-spacing*5));
+    min-height: var(--section-content-min-height);
 
     @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
-        min-height: calc(100dvh - calc($default-card-spacing*2));
+        --section-content-min-height: calc(100dvh - #{$default-card-spacing * 2});
         --padding-top: 0.95rem;
         --padding-bottom: 2.75rem;
     }
@@ -58,12 +59,80 @@ div.section-content-border-decoration-top-left {
 }
 
 div.section-content-elements-wrapper {
+    display: flex;
+    flex-direction: column;
     padding: 4px 0 0 0;
     width: calc(100% / var(--section-content-scale));
+    min-height: calc((var(--section-content-min-height) - var(--padding-top) - var(--padding-bottom)) / var(--section-content-scale));
     transform: scale(var(--section-content-scale));
     transform-origin: top left;
     margin-bottom: calc(var(--section-content-collapse, 0px) * -1);
     @include media-breakpoint-down(lg) {
         padding: 0;
     }
+}
+
+div.section-content.section-content-has-decoration-bands {
+    --padding-bottom: 0px;
+}
+
+div.section-decoration-band {
+    --section-decoration-band-background: #000;
+    --section-decoration-band-height: clamp(26px, 3.2vw, 46px);
+
+    display: block;
+    grid-column: 1 / -1;
+    width: calc(100vw / var(--section-content-scale, 1));
+    height: var(--section-decoration-band-height);
+    margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    background: var(--section-decoration-band-background);
+    pointer-events: none;
+}
+
+div.section-decoration-band-between-articles {
+    --section-decoration-band-height: clamp(28px, 3.4vw, 48px);
+}
+
+section#section-my-art div.section-decoration-band-between-articles[data-section-decoration-band-index="1"] {
+    order: 2;
+}
+
+section#section-my-art div.section-decoration-band-between-articles[data-section-decoration-band-index="3"] {
+    order: 4;
+}
+
+section#section-my-art div.section-decoration-band-between-articles[data-section-decoration-band-index="2"] {
+    order: 6;
+}
+
+section#section-my-art article#article-3-section-my-art {
+    order: 3;
+}
+
+section#section-my-art article#article-2-section-my-art {
+    order: 5;
+}
+
+section#section-my-art article#article-4-section-my-art {
+    order: 7;
+}
+
+div.section-decoration-band-page-bottom {
+    --section-decoration-band-height: clamp(30px, 4vw, 56px);
+
+    height: max(
+        var(--section-decoration-band-height),
+        var(--section-decoration-page-bottom-fill-height, 0px)
+    );
+}
+
+div.section-decoration-band + div.section-body > article.article:first-child,
+div.section-body > div.section-decoration-band + article.article {
+    margin-top: 0!important;
+}
+
+div.section-decoration-band + div.section-body > article.article:first-child > h4.article-title,
+div.section-body > div.section-decoration-band + article.article > h4.article-title {
+    margin-top: 0!important;
 }

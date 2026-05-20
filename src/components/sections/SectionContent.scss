@@ -59,11 +59,8 @@ div.section-content-border-decoration-top-left {
 }
 
 div.section-content-elements-wrapper {
-    display: flex;
-    flex-direction: column;
     padding: 4px 0 0 0;
     width: calc(100% / var(--section-content-scale));
-    min-height: calc((var(--section-content-min-height) - var(--padding-top) - var(--padding-bottom)) / var(--section-content-scale));
     transform: scale(var(--section-content-scale));
     transform-origin: top left;
     margin-bottom: calc(var(--section-content-collapse, 0px) * -1);
@@ -73,11 +70,15 @@ div.section-content-elements-wrapper {
 }
 
 div.section-content.section-content-has-decoration-bands {
+    --section-content-min-height: 0px;
     --padding-bottom: 0px;
+
+    height: calc(var(--section-content-rendered-height, 0px) + var(--padding-top));
 }
 
 div.section-decoration-band {
     --section-decoration-band-background: #000;
+    --section-decoration-band-between-height: clamp(28px, 3.4vw, 48px);
     --section-decoration-band-height: clamp(26px, 3.2vw, 46px);
 
     display: block;
@@ -91,7 +92,7 @@ div.section-decoration-band {
 }
 
 div.section-decoration-band-between-articles {
-    --section-decoration-band-height: clamp(28px, 3.4vw, 48px);
+    --section-decoration-band-height: var(--section-decoration-band-between-height);
 }
 
 section#section-my-art div.section-decoration-band-between-articles[data-section-decoration-band-index="1"] {
@@ -119,12 +120,7 @@ section#section-my-art article#article-4-section-my-art {
 }
 
 div.section-decoration-band-page-bottom {
-    --section-decoration-band-height: clamp(30px, 4vw, 56px);
-
-    height: max(
-        var(--section-decoration-band-height),
-        var(--section-decoration-page-bottom-fill-height, 0px)
-    );
+    --section-decoration-band-height: calc(var(--section-decoration-band-between-height) * 7);
 }
 
 div.section-decoration-band + div.section-body > article.article:first-child,

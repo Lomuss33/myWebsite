@@ -1069,23 +1069,26 @@ div.article-web-art-items {
     z-index: 10;
     touch-action: manipulation;
     appearance: none;
-    border: 1px solid rgba(255, 255, 255, 0.16);
+    border: 2px solid rgba(255, 255, 255, 0.16);
     background: rgba(7, 12, 22, 0.76);
     color: rgba(255, 255, 255, 0.92);
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 1rem;
     line-height: 1;
     border-radius: 999px;
-    padding: 0 14px;
-    min-width: 68px;
-    height: 36px;
+    padding: 0 16px;
+    min-width: 90px;
+    min-height: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     backdrop-filter: blur(8px);
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.24);
     transition: top 260ms ease, left 260ms ease, transform 260ms ease, opacity 220ms ease, background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
 
     &:hover {
-        border-color: rgba(255, 255, 255, 0.28);
-        background: rgba(11, 18, 32, 0.88);
+        border-color: rgba(255, 255, 255, 0.654);
+        background: rgba(0, 0, 0, 0.88);
     }
 }
 
@@ -1093,11 +1096,11 @@ div.article-web-art-items {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    min-width: 112px;
-    height: 52px;
-    padding: 0 22px;
-    font-size: 1.42rem;
-    letter-spacing: 0.04em;
+    min-width: 250px;
+    min-height: 100px;
+    padding: 0 28px;
+    font-size: 1.8rem;
+    letter-spacing: 0.01em;
     background: transparent;
     border-color: rgba(160, 210, 255, 0.68);
     box-shadow:
@@ -1110,10 +1113,10 @@ div.article-web-art-items {
     top: 10px;
     left: 10px;
     transform: translate(0, 0);
-    height: 28px;
-    padding: 0 10px;
-    min-width: 28px;
-    font-size: 0.9rem;
+    min-width: 138px;
+    min-height: 44px;
+    padding: 0 18px;
+    font-size: 0.98rem;
     background: rgba(7, 12, 22, 0.76);
     backdrop-filter: blur(8px);
 }
@@ -2197,6 +2200,20 @@ div.article-web-art-items-locked {
 .article-web-art-tile-shape {
     cursor: crosshair;
     touch-action: pan-y;
+}
+
+.article-web-art-tile-deep {
+    background:
+        repeating-radial-gradient(
+            circle at center,
+            #444 0 10%,
+            #111 10% 20%
+        );
+    touch-action: none;
+}
+
+.article-web-art-tile-deep .article-web-art-canvas {
+    background: #000;
 }
 
 .article-web-art-tile-hourglass {

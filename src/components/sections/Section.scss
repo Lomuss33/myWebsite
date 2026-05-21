@@ -823,6 +823,8 @@ section#section-my-writings article:is(
     #article-1-section-my-writings,
     #article-2-section-my-writings,
     #article-3-section-my-writings,
+    #article-4-section-my-writings,
+    #article-5-section-my-writings,
     #article-6-section-my-writings
 ) {
     --writings-current-title-start: var(--writings-title-start);
@@ -845,6 +847,20 @@ section#section-my-writings article#article-3-section-my-writings {
     --writings-current-title-shadow: 0 16px 34px rgba(180, 83, 9, 0.18);
 }
 
+section#section-my-writings article#article-4-section-my-writings {
+    --writings-current-title-start: #f8fafc;
+    --writings-current-title-mid: #38bdf8;
+    --writings-current-title-end: #f59e0b;
+    --writings-current-title-shadow: 0 16px 34px rgba(56, 189, 248, 0.18);
+}
+
+section#section-my-writings article#article-5-section-my-writings {
+    --writings-current-title-start: #fff7ed;
+    --writings-current-title-mid: #dc2626;
+    --writings-current-title-end: #7f1d1d;
+    --writings-current-title-shadow: 0 16px 34px rgba(220, 38, 38, 0.20);
+}
+
 section#section-my-writings article#article-6-section-my-writings {
     --writings-current-title-start: #fff7ed;
     --writings-current-title-mid: #ef4444;
@@ -856,6 +872,8 @@ section#section-my-writings article:is(
     #article-1-section-my-writings,
     #article-2-section-my-writings,
     #article-3-section-my-writings,
+    #article-4-section-my-writings,
+    #article-5-section-my-writings,
     #article-6-section-my-writings
 ) h4.article-title {
     display: flex;
@@ -876,6 +894,8 @@ section#section-my-writings article:is(
 section#section-my-writings article:is(
     #article-2-section-my-writings,
     #article-3-section-my-writings,
+    #article-4-section-my-writings,
+    #article-5-section-my-writings,
     #article-6-section-my-writings
 ) h4.article-title {
     margin-top: clamp(30px, 4vw, 46px);
@@ -886,12 +906,16 @@ section#section-my-writings article:is(
     #article-1-section-my-writings,
     #article-2-section-my-writings,
     #article-3-section-my-writings,
+    #article-4-section-my-writings,
+    #article-5-section-my-writings,
     #article-6-section-my-writings
 ) h4.article-title::before,
 section#section-my-writings article:is(
     #article-1-section-my-writings,
     #article-2-section-my-writings,
     #article-3-section-my-writings,
+    #article-4-section-my-writings,
+    #article-5-section-my-writings,
     #article-6-section-my-writings
 ) h4.article-title::after {
     content: "";
@@ -908,12 +932,14 @@ section#section-my-writings article:is(
     #article-1-section-my-writings,
     #article-2-section-my-writings,
     #article-3-section-my-writings,
+    #article-4-section-my-writings,
+    #article-5-section-my-writings,
     #article-6-section-my-writings
 ) h4.article-title::before {
     width: calc(100vw / var(--section-content-scale, 1));
     margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
     margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
-    height: 3px;
+    height: var(--article-title-line-thickness);
     background: linear-gradient(90deg, var(--writings-current-title-mid), var(--writings-current-title-end));
     box-shadow: 0 0 24px rgba(245, 158, 11, 0.22);
 }
@@ -922,14 +948,17 @@ section#section-my-writings article:is(
     #article-1-section-my-writings,
     #article-2-section-my-writings,
     #article-3-section-my-writings,
+    #article-4-section-my-writings,
+    #article-5-section-my-writings,
     #article-6-section-my-writings
 ) h4.article-title::after {
     width: clamp(176px, 30vw, 368px);
-    height: 1px;
+    height: calc(var(--article-title-line-thickness) / 3);
+    min-height: 2px;
     background: linear-gradient(90deg, transparent, var(--writings-current-title-mid), var(--writings-current-title-end), transparent);
 }
 
-section#section-my-writings article:is(#article-2-section-my-writings, #article-3-section-my-writings, #article-6-section-my-writings) h4.article-title::before {
+section#section-my-writings article:is(#article-2-section-my-writings, #article-3-section-my-writings, #article-4-section-my-writings, #article-5-section-my-writings, #article-6-section-my-writings) h4.article-title::before {
     box-shadow: 0 0 24px color-mix(in srgb, var(--writings-current-title-mid) 22%, transparent);
 }
 
@@ -937,6 +966,8 @@ section#section-my-writings article:is(
     #article-1-section-my-writings,
     #article-2-section-my-writings,
     #article-3-section-my-writings,
+    #article-4-section-my-writings,
+    #article-5-section-my-writings,
     #article-6-section-my-writings
 ) h4.article-title span.article-title-prefix {
     display: none;
@@ -946,6 +977,8 @@ section#section-my-writings article:is(
     #article-1-section-my-writings,
     #article-2-section-my-writings,
     #article-3-section-my-writings,
+    #article-4-section-my-writings,
+    #article-5-section-my-writings,
     #article-6-section-my-writings
 ) h4.article-title span.article-title-text {
     display: block;
@@ -963,61 +996,10 @@ section#section-my-writings article:is(
     #article-1-section-my-writings,
     #article-2-section-my-writings,
     #article-3-section-my-writings,
+    #article-4-section-my-writings,
+    #article-5-section-my-writings,
     #article-6-section-my-writings
 ) h4.article-title span.article-title-text span {
-    color: inherit!important;
-}
-
-section#section-my-writings article:is(#article-4-section-my-writings, #article-5-section-my-writings) {
-    margin-top: clamp(34px, 4vw, 52px);
-}
-
-section#section-my-writings article:is(#article-4-section-my-writings, #article-5-section-my-writings) h4.article-title {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: clamp(10px, 1.6vw, 18px);
-    width: 100%;
-    margin: 0 auto 20px;
-    color: var(--writings-text-strong);
-    font-size: clamp(1.18rem, 0.98rem + 0.62vw, 1.54rem)!important;
-    font-weight: 800;
-    line-height: 1.12;
-    text-align: center;
-    text-wrap: balance;
-}
-
-section#section-my-writings article:is(#article-4-section-my-writings, #article-5-section-my-writings) h4.article-title::before,
-section#section-my-writings article:is(#article-4-section-my-writings, #article-5-section-my-writings) h4.article-title::after {
-    content: "";
-    flex: 1 1 58px;
-    max-width: 112px;
-    height: 1px;
-    border-radius: 999px;
-    opacity: 0.82;
-}
-
-section#section-my-writings article:is(#article-4-section-my-writings, #article-5-section-my-writings) h4.article-title::before {
-    background: linear-gradient(90deg, transparent, var(--writings-title-mid));
-}
-
-section#section-my-writings article:is(#article-4-section-my-writings, #article-5-section-my-writings) h4.article-title::after {
-    background: linear-gradient(90deg, var(--writings-title-end), transparent);
-}
-
-section#section-my-writings article:is(#article-4-section-my-writings, #article-5-section-my-writings) h4.article-title span.article-title-prefix {
-    display: none;
-}
-
-section#section-my-writings article:is(#article-4-section-my-writings, #article-5-section-my-writings) h4.article-title span.article-title-text {
-    min-width: 0;
-    background: linear-gradient(135deg, var(--writings-title-start), var(--writings-title-mid) 52%, var(--writings-title-end));
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-}
-
-section#section-my-writings article:is(#article-4-section-my-writings, #article-5-section-my-writings) h4.article-title span.article-title-text span {
     color: inherit!important;
 }
 
@@ -1026,6 +1008,8 @@ section#section-my-writings article:is(#article-4-section-my-writings, #article-
         #article-1-section-my-writings,
         #article-2-section-my-writings,
         #article-3-section-my-writings,
+        #article-4-section-my-writings,
+        #article-5-section-my-writings,
         #article-6-section-my-writings
     ) h4.article-title {
         gap: 10px;
@@ -1038,6 +1022,8 @@ section#section-my-writings article:is(#article-4-section-my-writings, #article-
     section#section-my-writings article:is(
         #article-2-section-my-writings,
         #article-3-section-my-writings,
+        #article-4-section-my-writings,
+        #article-5-section-my-writings,
         #article-6-section-my-writings
     ) h4.article-title {
         margin-top: 34px;
@@ -1047,6 +1033,8 @@ section#section-my-writings article:is(#article-4-section-my-writings, #article-
         #article-1-section-my-writings,
         #article-2-section-my-writings,
         #article-3-section-my-writings,
+        #article-4-section-my-writings,
+        #article-5-section-my-writings,
         #article-6-section-my-writings
     ) h4.article-title::before {
         width: calc(100vw / var(--section-content-scale, 1));
@@ -1058,6 +1046,8 @@ section#section-my-writings article:is(#article-4-section-my-writings, #article-
         #article-1-section-my-writings,
         #article-2-section-my-writings,
         #article-3-section-my-writings,
+        #article-4-section-my-writings,
+        #article-5-section-my-writings,
         #article-6-section-my-writings
     ) h4.article-title::after {
         width: min(62vw, 220px);
@@ -1069,6 +1059,8 @@ section#section-my-writings article:is(#article-4-section-my-writings, #article-
         #article-1-section-my-writings,
         #article-2-section-my-writings,
         #article-3-section-my-writings,
+        #article-4-section-my-writings,
+        #article-5-section-my-writings,
         #article-6-section-my-writings
     ) h4.article-title {
         gap: 9px;
@@ -1077,10 +1069,6 @@ section#section-my-writings article:is(#article-4-section-my-writings, #article-
         font-size: clamp(1.34rem, 1.08rem + 1vw, 1.68rem)!important;
     }
 
-    section#section-my-writings article:is(#article-4-section-my-writings, #article-5-section-my-writings) h4.article-title {
-        gap: 9px;
-        font-size: clamp(1.06rem, 0.96rem + 0.42vw, 1.24rem)!important;
-    }
 }
 
 @include media-breakpoint-up(md) {

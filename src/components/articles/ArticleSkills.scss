@@ -779,15 +779,6 @@ article#article-5-section-my-writings {
     position: relative;
     isolation: isolate;
 
-    h4.article-title {
-        align-items: center;
-        gap: 0.2rem;
-        margin-top: 10px;
-        margin-bottom: 20px;
-        letter-spacing: -0.02em;
-        text-wrap: balance;
-    }
-
     div.article-skills-items.article-skills-items-section-my-writings {
         padding-top: 4px;
     }
@@ -990,11 +981,6 @@ article#article-4-section-my-writings {
     }
 
     @include media-breakpoint-down(sm) {
-        h4.article-title {
-            margin-top: 8px;
-            margin-bottom: 18px;
-        }
-
         div.article-skills-item {
             padding: 13px 13px 12px;
         }

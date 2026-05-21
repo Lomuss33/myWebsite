@@ -2,6 +2,7 @@
 
 article.article {
     width: 100%;
+    --article-separator-thickness-scale: 2;
     --article-title-line-mid: var(
         --education-current-title-mid,
         var(
@@ -52,12 +53,16 @@ article.article {
             )
         )
     );
-    --article-title-line-thickness: var(
+    --article-title-line-base-thickness: var(
         --education-current-title-line-top,
         var(
             --experience-current-title-line-top,
             var(--art-current-title-line-top, 3px)
         )
+    );
+    --article-title-line-thickness: calc(
+        var(--article-title-line-base-thickness) +
+        var(--article-title-line-base-thickness)
     );
 }
 
@@ -119,6 +124,10 @@ h4.article-title {
             font-size: clamp(0.92rem, 0.88rem + 0.18vw, 1rem)!important;
         }
     }
+}
+
+article.article > h4.article-title::before {
+    min-height: var(--article-title-line-thickness);
 }
 
 div.article-content {

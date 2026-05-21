@@ -307,9 +307,9 @@ function ArticleWebArt({ dataWrapper, id }) {
     const [showIntroCover, setShowIntroCover] = useState(true)
     const rawItems = useMemo(() => dataWrapper.orderedItems, [dataWrapper.orderedItems])
     const items = useMemo(() => {
-        // Desired visual order: Poly, 5, 3D, Orbit, Hover, Wave, Spin, Shape, Hourglass, Noice, Distance, Android, Pulse, Bars
-        // Matches ids: 4 (Poly), 5 (Embroidery), 3 (3D tunnel), 6 (Orbit), 1 (Hover), 2 (Wave), 7 (Spin), 8 (Shape), 9 (Hourglass), 10 (Noice), 11 (Distance), 12 (Android), 13 (Pulse), 14 (Bars)
-        const desiredOrder = [4, 5, 3, 6, 1, 2, 7, 8, 9, 10, 11, 12, 13, 14]
+        // Desired visual order: Poly, 5, 3D, Orbit, Hover, Wave, Spin, Shape, Hourglass, Noice, Distance, Android, Pulse, Bars, Deep
+        // Matches ids: 4 (Poly), 5 (Embroidery), 3 (3D tunnel), 6 (Orbit), 1 (Hover), 2 (Wave), 7 (Spin), 8 (Shape), 9 (Hourglass), 10 (Noice), 11 (Distance), 12 (Android), 13 (Pulse), 14 (Bars), 15 (Deep)
+        const desiredOrder = [4, 5, 3, 6, 1, 2, 7, 8, 9, 10, 11, 12, 13, 14, 15]
         const byId = new Map(rawItems.map((item) => [Number(item?.id), item]))
         const ordered = []
 
@@ -653,6 +653,7 @@ function ArticleWebArt({ dataWrapper, id }) {
         if(itemId === 12) return "Android"
         if(itemId === 13) return "Pulse"
         if(itemId === 14) return "Bars"
+        if(itemId === 15) return "Deep"
         return String(index + 1)
     }
 
@@ -1003,6 +1004,10 @@ function WebArtTile({ itemWrapper, index, activate, locked, onReady }) {
 
     if(Number(itemWrapper.id) === 14) {
         return <BarsTile itemWrapper={itemWrapper} index={index} activate={activate} locked={locked} onReady={onReady}/>
+    }
+
+    if(Number(itemWrapper.id) === 15) {
+        return <DeepTile itemWrapper={itemWrapper} index={index} activate={activate} locked={locked} onReady={onReady}/>
     }
 
     return <EmbroideryTile itemWrapper={itemWrapper} index={index} activate={activate} locked={locked} onReady={onReady}/>
@@ -1918,6 +1923,164 @@ function NoiceTile({ itemWrapper, index, activate, locked, onReady }) {
                     className={`article-web-art-canvas`}/>
             <span className={`article-web-art-tile-label`}>
                 Noice
+            </span>
+        </button>
+    )
+}
+
+function DeepTile({ itemWrapper, index, activate, locked, onReady }) {
+    const tileRef = useRef(null)
+    const canvasRef = useRef(null)
+    const engineRef = useRef(null)
+    const didReadyRef = useRef(false)
+    const visibleRef = useRef(true)
+    const pointerIdRef = useRef(null)
+
+    const reduceMotion = useMemo(() => {
+        if(typeof window === "undefined" || !window.matchMedia) return false
+        return window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    }, [])
+
+    useEffect(() => {
+        if(!activate) return
+
+        const tile = tileRef.current
+        const canvas = canvasRef.current
+        if(!tile || !canvas) return
+
+        let canceled = false
+        let engine = null
+        let ro = null
+        let io = null
+
+        const markReady = () => {
+            if(didReadyRef.current) return
+            didReadyRef.current = true
+            onReady?.(itemWrapper.uniqueId)
+        }
+
+        const cancelWork = _scheduleIdleWork(async () => {
+            try {
+                const mod = await import("./webArt/deepShaderEngine.js")
+                if(canceled) return
+
+                engine = mod.createDeepShaderEngine(canvas, { reduceMotion })
+                engineRef.current = engine
+
+                const updateSize = () => _syncTileEngineSize(tile, engine, Math.min(1.5, window.devicePixelRatio || 1))
+
+                updateSize()
+                engine.renderStatic?.()
+                if(!locked) engine.start?.()
+                markReady()
+
+                ro = new ResizeObserver(() => {
+                    updateSize()
+                    engine.renderStatic?.()
+                })
+                ro.observe(tile)
+
+                if("IntersectionObserver" in window) {
+                    io = new IntersectionObserver((entries) => {
+                        for(const entry of entries) {
+                            visibleRef.current = Boolean(entry.isIntersecting)
+                            if(locked) {
+                                engine.stop?.()
+                                continue
+                            }
+
+                            if(visibleRef.current) engine.start?.()
+                            else engine.stop?.()
+                        }
+                    }, { threshold: 0.25 })
+                    io.observe(tile)
+                }
+            }
+            catch(err) {
+                void err
+                markReady()
+            }
+        }, { timeoutMs: 220 })
+
+        return () => {
+            canceled = true
+            cancelWork?.()
+            io?.disconnect()
+            ro?.disconnect()
+            engine?.destroy?.()
+            engineRef.current = null
+        }
+    }, [activate, itemWrapper.uniqueId, locked, onReady, reduceMotion])
+
+    useEffect(() => {
+        const engine = engineRef.current
+        if(!engine) return
+        if(locked) {
+            pointerIdRef.current = null
+            engine.clearPointer?.()
+            engine.stop?.()
+            return
+        }
+        if(visibleRef.current) engine.start?.()
+    }, [locked])
+
+    const pointerPosition = (event) => {
+        const surface = canvasRef.current || tileRef.current
+        if(!surface) return { x: 0.5, y: 0.5 }
+        const rect = surface.getBoundingClientRect()
+        return {
+            x: Math.max(0, Math.min(1, (event.clientX - rect.left) / Math.max(1, rect.width))),
+            y: Math.max(0, Math.min(1, (event.clientY - rect.top) / Math.max(1, rect.height)))
+        }
+    }
+
+    return (
+        <button type={"button"}
+                ref={tileRef}
+                className={`article-web-art-tile article-web-art-tile-clickable article-web-art-tile-deep`}
+                aria-label={`Deep web art tile ${index + 1}`}
+                disabled={locked}
+                onPointerDown={locked ? undefined : (event) => {
+                    if(event.button != null && event.button !== 0) return
+                    pointerIdRef.current = event.pointerId
+                    try { event.currentTarget.setPointerCapture(event.pointerId) } catch(err) { void err }
+                    const pos = pointerPosition(event)
+                    engineRef.current?.setPointer?.(pos.x, pos.y)
+                    engineRef.current?.start?.()
+                }}
+                onPointerMove={locked ? undefined : (event) => {
+                    if(pointerIdRef.current != null && event.pointerId !== pointerIdRef.current) return
+                    if(pointerIdRef.current == null && event.pointerType !== "mouse") return
+                    const pos = pointerPosition(event)
+                    if(pointerIdRef.current != null) engineRef.current?.setPointer?.(pos.x, pos.y)
+                }}
+                onPointerUp={locked ? undefined : (event) => {
+                    if(pointerIdRef.current != null && event.pointerId !== pointerIdRef.current) return
+                    pointerIdRef.current = null
+                    engineRef.current?.clearPointer?.()
+                }}
+                onPointerCancel={locked ? undefined : (() => {
+                    pointerIdRef.current = null
+                    engineRef.current?.clearPointer?.()
+                })}
+                onMouseLeave={locked ? undefined : (() => {
+                    pointerIdRef.current = null
+                    engineRef.current?.clearPointer?.()
+                })}
+                onBlur={locked ? undefined : (() => {
+                    pointerIdRef.current = null
+                    engineRef.current?.clearPointer?.()
+                })}
+                onKeyDown={locked ? undefined : ((event) => {
+                    if(event.key === "Enter" || event.key === " ") {
+                        event.preventDefault()
+                        engineRef.current?.start?.()
+                    }
+                })}>
+            <canvas ref={canvasRef}
+                    className={`article-web-art-canvas`}/>
+            <span className={`article-web-art-tile-label`}>
+                Deep
             </span>
         </button>
     )

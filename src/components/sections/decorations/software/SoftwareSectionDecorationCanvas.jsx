@@ -27,16 +27,17 @@ function getVisibleCellSize() {
 }
 
 function createColumns(width, height, cellSize) {
-    const columnCount = Math.max(1, Math.ceil(width / cellSize))
+    const columnSpacing = cellSize * 0.58
+    const columnCount = Math.max(1, Math.ceil(width / columnSpacing))
     const rowCount = Math.max(1, Math.ceil(height / cellSize))
 
     return Array.from({ length: columnCount }, (_, columnIndex) => ({
-        x: columnIndex * cellSize,
+        x: columnIndex * columnSpacing,
         y: getRandomInt(-rowCount, rowCount) * cellSize,
-        delay: getRandomInt(20, 110),
-        elapsed: getRandomInt(0, 110),
-        trailSize: getRandomInt(10, 30),
-        chars: Array.from({ length: rowCount + 34 }, getRandomChar)
+        delay: getRandomInt(14, 72),
+        elapsed: getRandomInt(0, 72),
+        trailSize: getRandomInt(18, 46),
+        chars: Array.from({ length: rowCount + 54 }, getRandomChar)
     }))
 }
 
@@ -132,7 +133,7 @@ function drawBandClippedRain(context, layout, columns, cellSize) {
                 continue
 
             const charIndex = Math.abs(Math.floor(y / cellSize)) % column.chars.length
-            const lightness = trailIndex === 0 ? 86 : Math.max(18, 78 - trailIndex * 2.7)
+            const lightness = trailIndex === 0 ? 88 : Math.max(26, 82 - trailIndex * 1.45)
             context.fillStyle = `hsl(136, 100%, ${lightness}%)`
             context.shadowBlur = trailIndex === 0 ? 10 : 0
             context.shadowColor = trailIndex === 0 ? "#9bff9b" : "transparent"
@@ -188,7 +189,7 @@ function SoftwareSectionDecorationCanvas() {
                     column.y += cellSize
                     if(column.y - column.trailSize * cellSize > layout.height) {
                         column.y = getRandomInt(-24, 0) * cellSize
-                        column.trailSize = getRandomInt(10, 30)
+                        column.trailSize = getRandomInt(18, 46)
                     }
                     if(Math.random() < 0.28) {
                         const charIndex = Math.abs(Math.floor(column.y / cellSize)) % column.chars.length

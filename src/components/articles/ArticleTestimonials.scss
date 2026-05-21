@@ -264,6 +264,9 @@ article#article-2-section-my-software {
         }
 
         h4.article-title::before {
+            width: calc(100vw / var(--section-content-scale, 1));
+            margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+            margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
             height: 3px;
             margin-bottom: 10px;
         }

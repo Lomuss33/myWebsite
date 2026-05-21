@@ -1,15 +1,21 @@
 import "./SoftwareDecorationCanvases.scss"
 import React, {useEffect, useRef} from 'react'
 
-const RAIN_FRAME_INTERVAL_MS = 84
+const RAIN_FRAME_INTERVAL_MS = 72
 const SHADER_FRAME_INTERVAL_MS = 84
 const REDUCED_MOTION_FRAME_INTERVAL_MS = 320
 const RAIN_MAX_DEVICE_PIXEL_RATIO = 1.25
 const SHADER_MAX_DEVICE_PIXEL_RATIO = 1.25
-const SOFTWARE_RAIN_CHARS = [
+const LEGACY_SOFTWARE_RAIN_CHARS = [
     ..."ã‚¢ã‚¤ã‚¦ã‚¨ã‚ªã‚«ã‚­ã‚¯ã‚±ã‚³ã‚µã‚·ã‚¹ã‚»ã‚½ã‚¿ãƒãƒ„ãƒ†ãƒˆãƒŠãƒ‹ãƒŒãƒãƒŽãƒãƒ’ãƒ•ãƒ˜ãƒ›ãƒžãƒŸãƒ ãƒ¡ãƒ¢ãƒ¤ãƒ¦ãƒ¨ãƒ©ãƒªãƒ«ãƒ¬ãƒ­ãƒ¯ãƒ²ãƒ³",
     ..."0123456789",
     ..."<>[]{}#@$%&*+=?/\\|"
+]
+const SOFTWARE_RAIN_CHARS = [
+    ..."xyzXYZ",
+    ..."üäöÜÄÖ",
+    ..."čšćđžČŠĆĐŽ",
+    ..."çğışÇĞİŞ"
 ]
 
 const vertexSource = `#version 300 es
@@ -71,16 +77,16 @@ void main() {
     uv=floor(uv*k)/k;
     uv.x+=rnd(T+uv.y)*.09*f;
     vec3 col=vec3(0);
-    uv=pmod(uv*3.,6.);
-    uv.y-=.5;
+    uv=pmod(uv*1.62,6.);
+    uv.y-=.0;
     uv=smin(uv,-uv,.08);
     vec2 p=vec2(log(poly(uv,3.))+T,1);
     p=mod(p,2.)-1.;
-    col+=.05/hue(dot(p,p));
+    col+=.034/hue(dot(p,p));
     col-=sin(FC.y)*.5+.55;
     col=max(col,vec3(0));
     col=vec3(col.r*.22,col.g,col.b*.32);
-    float alpha=clamp(max(max(col.r,col.g),col.b)*1.55,0.,.82);
+    float alpha=clamp(max(max(col.r,col.g),col.b)*1.35,0.,.64);
     O=vec4(col,alpha);
 }`
 
@@ -101,15 +107,15 @@ function getVisibleCellSize() {
 }
 
 function createColumns(width, height, cellSize) {
-    const columnSpacing = cellSize * 0.72
+    const columnSpacing = cellSize * 0.64
     const columnCount = Math.max(1, Math.ceil(width / columnSpacing))
     const rowCount = Math.max(1, Math.ceil(height / cellSize))
 
     return Array.from({ length: columnCount }, (_, columnIndex) => ({
         x: columnIndex * columnSpacing,
         y: getRandomInt(-rowCount, rowCount) * cellSize,
-        delay: getRandomInt(24, 96),
-        elapsed: getRandomInt(0, 96),
+        delay: getRandomInt(18, 78),
+        elapsed: getRandomInt(0, 78),
         trailSize: getRandomInt(16, 40),
         chars: Array.from({ length: rowCount + 48 }, getRandomChar)
     }))
@@ -291,7 +297,7 @@ function updateColumns(columns, layout, cellSize, delta) {
             column.y = getRandomInt(-24, 0) * cellSize
             column.trailSize = getRandomInt(16, 40)
         }
-        if(Math.random() < 0.18) {
+        if(Math.random() < 0.24) {
             const charIndex = Math.abs(Math.floor(column.y / cellSize)) % column.chars.length
             column.chars[charIndex] = getRandomChar()
         }

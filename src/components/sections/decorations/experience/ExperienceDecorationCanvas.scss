@@ -1,0 +1,17 @@
+canvas.section-decoration-canvas-experience,
+canvas.section-decoration-canvas-experience-bottom {
+    position: absolute;
+    display: block;
+    pointer-events: none;
+    contain: strict;
+}
+
+canvas.section-decoration-canvas-experience {
+    top: 0;
+    z-index: 2;
+    height: 100%;
+}
+
+canvas.section-decoration-canvas-experience-bottom {
+    z-index: 3;
+}

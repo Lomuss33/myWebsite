@@ -1,0 +1,17 @@
+canvas.section-decoration-canvas-education,
+canvas.section-decoration-canvas-education-bottom {
+    position: absolute;
+    display: block;
+    pointer-events: none;
+    contain: strict;
+}
+
+canvas.section-decoration-canvas-education {
+    top: 0;
+    z-index: 2;
+    height: 100%;
+}
+
+canvas.section-decoration-canvas-education-bottom {
+    z-index: 3;
+}

@@ -22,6 +22,7 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
         isBlockedByOverlay
     })
     const deferredTargetUpdateRef = useRef(null)
+    const lastPointerTargetRef = useRef(null)
     const stateRef = useRef({
         currentX: 0,
         currentY: 0,
@@ -128,10 +129,13 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
             const state = stateRef.current
             state.targetX = event.clientX
             state.targetY = event.clientY
-            updateTargetParameters(resolveMouseTargetParameters({
-                event,
-                constants
-            }))
+            if(event.target !== lastPointerTargetRef.current) {
+                lastPointerTargetRef.current = event.target
+                updateTargetParameters(resolveMouseTargetParameters({
+                    event,
+                    constants
+                }))
+            }
             ensureAnimationLoop()
         }
 
@@ -141,6 +145,7 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
             }
 
             stateRef.current.isClicked = true
+            lastPointerTargetRef.current = event.target
             updateTargetParameters(resolveMouseTargetParameters({
                 event,
                 constants
@@ -151,6 +156,7 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
         const handlePointerUp = (event) => {
             const state = stateRef.current
             state.isClicked = false
+            lastPointerTargetRef.current = event.target
             updateTargetParameters(resolveMouseTargetParameters({
                 event,
                 constants
@@ -165,6 +171,7 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
                 deferredTargetUpdateRef.current = null
 
                 const hoveredElement = document.elementFromPoint(event.clientX, event.clientY)
+                lastPointerTargetRef.current = hoveredElement
                 updateTargetParameters(resolveMouseTargetParameters({
                     target: hoveredElement,
                     constants
@@ -174,6 +181,7 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
         }
 
         const handlePointerLeave = () => {
+            lastPointerTargetRef.current = null
             stateRef.current.isClicked = false
             updateTargetParameters(null)
             setDefaultTarget()

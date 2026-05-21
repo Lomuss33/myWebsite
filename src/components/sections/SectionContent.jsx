@@ -7,6 +7,10 @@ import SectionDecorationLayer from "./decorations/SectionDecorationLayer.jsx"
 
 function SectionContent({ section }) {
     const contentRef = useRef(null)
+    const lastLayoutMetricsRef = useRef({
+        bottomCollapse: null,
+        renderedContentHeight: null
+    })
     const [bottomCollapse, setBottomCollapse] = useState(0)
     const [renderedContentHeight, setRenderedContentHeight] = useState(0)
     const shouldHideHeader = section?.hideHeader === true
@@ -27,8 +31,17 @@ function SectionContent({ section }) {
                 bottomBandEl.getBoundingClientRect().bottom - sectionContentEl.getBoundingClientRect().top :
                 renderedHeight
 
-            setBottomCollapse(collapse)
-            setRenderedContentHeight(Math.max(0, contentVisualHeight))
+            const nextRenderedContentHeight = Math.max(0, Math.ceil(contentVisualHeight))
+            const previousMetrics = lastLayoutMetricsRef.current
+
+            if(previousMetrics.bottomCollapse !== collapse) {
+                previousMetrics.bottomCollapse = collapse
+                setBottomCollapse(collapse)
+            }
+            if(previousMetrics.renderedContentHeight !== nextRenderedContentHeight) {
+                previousMetrics.renderedContentHeight = nextRenderedContentHeight
+                setRenderedContentHeight(nextRenderedContentHeight)
+            }
         }
 
         let animationFrameId = null
@@ -61,15 +74,13 @@ function SectionContent({ section }) {
         const resizeObserver = new ResizeObserver(() => {
             scheduleBottomCollapseUpdate()
         })
-        const mutationObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(() => {
-            scheduleBottomCollapseUpdate()
-        })
+        const mutationObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(scheduleBottomCollapseUpdate)
 
         resizeObserver.observe(contentEl)
-        mutationObserver?.observe(contentEl, {
-            childList: true,
-            subtree: true
-        })
+        mutationObserver?.observe(contentEl, { childList: true })
+        const sectionBodyEl = contentEl.querySelector(".section-body")
+        if(sectionBodyEl)
+            mutationObserver?.observe(sectionBodyEl, { childList: true })
         window.addEventListener("resize", scheduleBottomCollapseUpdate)
 
         return () => {

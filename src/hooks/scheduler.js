@@ -13,8 +13,15 @@ export const useScheduler = () => {
      * @param {string} tag
      */
     const schedule = (callback, timeInMilliseconds, tag) => {
-        const timeoutId = setTimeout(callback, timeInMilliseconds)
+        const timeoutId = setTimeout(() => {
+            const timeoutIndex = timeouts.findIndex(timeout => timeout.id === timeoutId)
+            if(timeoutIndex >= 0)
+                timeouts.splice(timeoutIndex, 1)
+
+            callback()
+        }, timeInMilliseconds)
         timeouts.push({id: timeoutId, tag: tag})
+        return timeoutId
     }
 
     /**
@@ -25,6 +32,7 @@ export const useScheduler = () => {
     const interval = (callback, timeInMilliseconds, tag) => {
         const intervalId = setInterval(callback, timeInMilliseconds)
         intervals.push({id: intervalId, tag: tag})
+        return intervalId
     }
 
     /**

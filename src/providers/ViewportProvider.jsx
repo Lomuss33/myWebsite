@@ -49,6 +49,13 @@ function ViewportProvider({ children }) {
     const resizeTag = `${tag}-resize`
 
     const scrollPositionRef = useRef(getScrollPositionSnapshot())
+    const scrollNotificationFrameRef = useRef(null)
+    const visualViewportFrameRef = useRef(null)
+    const visualViewportMetricsRef = useRef({
+        top: null,
+        bottom: null,
+        height: null
+    })
     const [innerWidth, setInnerWidth] = useState(window.innerWidth)
     const [innerHeight, setInnerHeight] = useState(window.innerHeight)
     const [clipboardText, setClipboardText] = useState(null)
@@ -63,9 +70,9 @@ function ViewportProvider({ children }) {
 
     const _createListeners = () => {
         window.addEventListener('scroll', _onScroll, { passive: true })
-        window.addEventListener('resize', _onResize)
-        window.visualViewport?.addEventListener('resize', _onVisualViewportChange)
-        window.visualViewport?.addEventListener('scroll', _onVisualViewportChange)
+        window.addEventListener('resize', _onResize, { passive: true })
+        window.visualViewport?.addEventListener('resize', _onVisualViewportChange, { passive: true })
+        window.visualViewport?.addEventListener('scroll', _onVisualViewportChange, { passive: true })
 
         _onScroll()
         _applyResize()
@@ -79,6 +86,14 @@ function ViewportProvider({ children }) {
 
         scheduler.clearAllWithTag(tag)
         scheduler.clearAllWithTag(resizeTag)
+        if(scrollNotificationFrameRef.current !== null) {
+            cancelAnimationFrame(scrollNotificationFrameRef.current)
+            scrollNotificationFrameRef.current = null
+        }
+        if(visualViewportFrameRef.current !== null) {
+            cancelAnimationFrame(visualViewportFrameRef.current)
+            visualViewportFrameRef.current = null
+        }
         _clearVisualViewportMetrics()
     }
 
@@ -89,14 +104,15 @@ function ViewportProvider({ children }) {
         }
 
         scrollPositionRef.current = nextPosition
-        updateScrollStore(nextPosition)
-        _syncVisualViewportMetrics()
+        scrollStore.position = nextPosition
+        _scheduleScrollStoreNotification()
+        _scheduleVisualViewportSync()
     }
 
     const _applyResize = () => {
         setInnerWidth(window.innerWidth)
         setInnerHeight(window.innerHeight)
-        _syncVisualViewportMetrics()
+        _scheduleVisualViewportSync()
     }
 
     const _onResize = () => {
@@ -107,10 +123,30 @@ function ViewportProvider({ children }) {
     }
 
     const _onVisualViewportChange = () => {
-        _syncVisualViewportMetrics()
+        _scheduleVisualViewportSync()
     }
 
-    const _syncVisualViewportMetrics = () => {
+    const _scheduleScrollStoreNotification = () => {
+        if(scrollNotificationFrameRef.current !== null)
+            return
+
+        scrollNotificationFrameRef.current = requestAnimationFrame(() => {
+            scrollNotificationFrameRef.current = null
+            updateScrollStore(scrollPositionRef.current)
+        })
+    }
+
+    const _scheduleVisualViewportSync = () => {
+        if(visualViewportFrameRef.current !== null)
+            return
+
+        visualViewportFrameRef.current = requestAnimationFrame(() => {
+            visualViewportFrameRef.current = null
+            _applyVisualViewportMetrics()
+        })
+    }
+
+    const _applyVisualViewportMetrics = () => {
         const rootStyle = document?.documentElement?.style
         if(!rootStyle)
             return
@@ -120,9 +156,19 @@ function ViewportProvider({ children }) {
         const visualViewportHeight = Math.max(0, Math.round(visualViewport?.height || window.innerHeight || 0))
         const viewportOffsetBottom = Math.max(0, Math.round((window.innerHeight || visualViewportHeight) - visualViewportHeight - viewportOffsetTop))
 
-        rootStyle.setProperty("--mobile-viewport-offset-top", `${viewportOffsetTop}px`)
-        rootStyle.setProperty("--mobile-viewport-offset-bottom", `${viewportOffsetBottom}px`)
-        rootStyle.setProperty("--mobile-visual-viewport-height", `${visualViewportHeight}px`)
+        const previousMetrics = visualViewportMetricsRef.current
+        if(previousMetrics.top !== viewportOffsetTop) {
+            previousMetrics.top = viewportOffsetTop
+            rootStyle.setProperty("--mobile-viewport-offset-top", `${viewportOffsetTop}px`)
+        }
+        if(previousMetrics.bottom !== viewportOffsetBottom) {
+            previousMetrics.bottom = viewportOffsetBottom
+            rootStyle.setProperty("--mobile-viewport-offset-bottom", `${viewportOffsetBottom}px`)
+        }
+        if(previousMetrics.height !== visualViewportHeight) {
+            previousMetrics.height = visualViewportHeight
+            rootStyle.setProperty("--mobile-visual-viewport-height", `${visualViewportHeight}px`)
+        }
     }
 
     const _clearVisualViewportMetrics = () => {
@@ -133,6 +179,11 @@ function ViewportProvider({ children }) {
         rootStyle.removeProperty("--mobile-viewport-offset-top")
         rootStyle.removeProperty("--mobile-viewport-offset-bottom")
         rootStyle.removeProperty("--mobile-visual-viewport-height")
+        visualViewportMetricsRef.current = {
+            top: null,
+            bottom: null,
+            height: null
+        }
     }
 
     const isBreakpoint = (breakpoint) => {

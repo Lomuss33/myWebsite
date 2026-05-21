@@ -1,0 +1,32 @@
+canvas.section-decoration-canvas-writing {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: block;
+    overflow: hidden;
+    pointer-events: none;
+    contain: strict;
+    opacity: .96;
+    mix-blend-mode: normal;
+}
+
+[data-theme="light"] canvas.section-decoration-canvas-writing {
+    opacity: .9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    canvas.section-decoration-canvas-writing {
+        opacity: .94;
+    }
+}
+
+/* Reserved hook for the later writing-page button decoration layer.
+   Keep button effects above the wood canvas but below real interactive content. */
+.writing-decoration-button-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    contain: layout paint style;
+}

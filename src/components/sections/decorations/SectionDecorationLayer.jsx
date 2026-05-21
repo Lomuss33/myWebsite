@@ -3,6 +3,7 @@ import EducationDecorationCanvas from "./education/EducationDecorationCanvas.jsx
 import ExperienceDecorationCanvas from "./experience/ExperienceDecorationCanvas.jsx"
 import HardwareDecorationCanvas from "./hardware/HardwareDecorationCanvas.jsx"
 import SoftwareDecorationCanvases from "./software/SoftwareDecorationCanvases.jsx"
+import WritingDecorationSvg from "./writing/WritingDecorationSvg.jsx"
 
 function SectionDecorationLayer({ section }) {
     if(section?.id === "education")
@@ -16,6 +17,9 @@ function SectionDecorationLayer({ section }) {
 
     if(section?.id === "my-software")
         return <SoftwareDecorationCanvases/>
+
+    if(section?.id === "my-writings")
+        return <WritingDecorationSvg/>
 
     return null
 }

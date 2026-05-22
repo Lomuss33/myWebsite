@@ -143,6 +143,14 @@ section#section-my-art div.section-content div.section-body > article#article-4-
     order: 70;
 }
 
+section#section-my-art div.section-content div.section-body > div.section-decoration-band-between-articles[data-section-decoration-band-index="4"] {
+    order: 80;
+}
+
+section#section-my-art div.section-content div.section-body > article#article-5-section-my-art {
+    order: 90;
+}
+
 div.section-decoration-band-page-bottom {
     --section-decoration-band-height: calc(var(--section-decoration-band-between-height) * 7);
 }

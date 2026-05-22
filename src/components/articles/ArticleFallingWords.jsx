@@ -12,6 +12,7 @@ const DEFAULT_WORDS =
 function ArticleFallingWords({ dataWrapper }) {
     const language = useLanguage()
     const viewport = useViewport()
+    const isMobileLayout = viewport.isMobileLayout()
 
     const entries = useMemo(() => {
         const langId = language.selectedLanguageId || "en"
@@ -36,7 +37,9 @@ function ArticleFallingWords({ dataWrapper }) {
 
     const fallbackText = language.getString("definition_coming_soon")
     const hintText = language.getString("click_word_definition")
-    const stageHeight = Math.max(400, Math.min(560, Math.round(viewport.innerHeight * 0.34)))
+    const stageHeight = isMobileLayout ?
+        Math.max(280, Math.min(420, Math.round(viewport.innerHeight * 0.28))) :
+        Math.max(400, Math.min(560, Math.round(viewport.innerHeight * 0.34)))
     const stageFontScale = 0.6
 
     return (
@@ -46,6 +49,13 @@ function ArticleFallingWords({ dataWrapper }) {
             dataWrapper={dataWrapper}
             className={`article-falling-words`}
         >
+            {dataWrapper.locales.description && (
+                <p
+                    className={`article-falling-words-description text-2`}
+                    dangerouslySetInnerHTML={{ __html: dataWrapper.locales.description }}
+                />
+            )}
+
             <div className={`article-falling-words-hint text-2`}>
                 {hintText}
             </div>

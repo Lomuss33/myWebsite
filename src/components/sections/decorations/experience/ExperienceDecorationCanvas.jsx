@@ -2,7 +2,8 @@ import "./ExperienceDecorationCanvas.scss"
 import React, {useEffect, useRef} from 'react'
 
 const FRAME_INTERVAL_MS = 40
-const TIME_SCALE = 0.22
+const TIME_SCALE = 0.242
+const TREE_SPEED_SCALE = 1.1
 const MAX_DEVICE_PIXEL_RATIO = 1.15
 const BRANCH_MAX_DEVICE_PIXEL_RATIO = 1.25
 
@@ -251,7 +252,7 @@ function createBranch(length, angle, generation, maxGeneration) {
 }
 
 function drawBranch(context, branch, hue, reducedMotion) {
-    branch.sway += reducedMotion ? 0.16 : 1
+    branch.sway += (reducedMotion ? 0.16 : 1) * TREE_SPEED_SCALE
     context.save()
 
     branch.velocity *= 0.9
@@ -281,7 +282,7 @@ function createBottomBranches(layout) {
     return [
         {
             branch: createBranch(baseLength * 0.6, 0, 0, 7),
-            x: layout.width * 0.18,
+            x: layout.width * 0.212,
             scale: 0.6
         },
         {
@@ -291,7 +292,7 @@ function createBottomBranches(layout) {
         },
         {
             branch: createBranch(baseLength * 0.6, 0, 0, 7),
-            x: layout.width * 0.82,
+            x: layout.width * 0.788,
             scale: 0.6
         }
     ]
@@ -332,7 +333,7 @@ function drawBottomBranches(branchState, now, reducedMotion) {
 
     const { context, width, height, branches } = branchState
     const restrictedHues = [24, 8, 342, 286, 236, 194]
-    const hueProgress = reducedMotion ? 4 : (now * 0.00018) % restrictedHues.length
+    const hueProgress = reducedMotion ? 4 : (now * 0.00018 * TREE_SPEED_SCALE) % restrictedHues.length
     const hueIndex = Math.floor(hueProgress)
     const hueMix = hueProgress - hueIndex
     const hueStart = restrictedHues[hueIndex]
@@ -345,7 +346,7 @@ function drawBottomBranches(branchState, now, reducedMotion) {
 
     for(const item of branches) {
         context.save()
-        context.translate(item.x, height * 0.98)
+        context.translate(item.x, height * 1.08)
         context.rotate(-Math.PI * 0.5)
         context.scale(item.scale, item.scale)
         drawBranch(context, item.branch, hue, reducedMotion)

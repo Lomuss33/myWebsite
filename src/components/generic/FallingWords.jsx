@@ -30,6 +30,7 @@ function FallingWords({
     const dragStateRef = useRef({
         pointerId: null,
         index: null,
+        captureTarget: null,
         moved: false,
         tapEligible: false,
         startX: 0,
@@ -45,7 +46,6 @@ function FallingWords({
         pointerType: null,
         lastDragAt: 0
     })
-    const suppressNextClickUntilRef = useRef(0)
     const [layoutVersion, setLayoutVersion] = useState(0)
     const [isReady, setIsReady] = useState(false)
     const [selectedIndex, setSelectedIndex] = useState(null)
@@ -61,6 +61,7 @@ function FallingWords({
     const _resetDragState = () => {
         dragStateRef.current.pointerId = null
         dragStateRef.current.index = null
+        dragStateRef.current.captureTarget = null
         dragStateRef.current.moved = false
         dragStateRef.current.tapEligible = false
         dragStateRef.current.anchorOffsetX = 0
@@ -107,6 +108,52 @@ function FallingWords({
         if(redHoldIndicesRef.current.delete(index)) {
             _bumpRed()
         }
+    }
+
+    const _releaseDragCapture = () => {
+        const dragState = dragStateRef.current
+        if(!dragState?.captureTarget?.releasePointerCapture || dragState.pointerId == null) return
+
+        try {
+            dragState.captureTarget.releasePointerCapture(dragState.pointerId)
+        } catch {
+            // Ignore release failures. Some browsers auto-release capture first.
+        }
+    }
+
+    const _clearDragTargetHeldClass = () => {
+        const dragState = dragStateRef.current
+        if(dragState.index == null) return
+
+        const entry = wordBodiesRef.current[dragState.index]
+        entry?.el?.classList.remove("falling-word-held")
+    }
+
+    const _finalizePointerInteraction = ({ commitHold = false, holdMs = 0 } = {}) => {
+        const dragState = dragStateRef.current
+        const index = dragState.index
+
+        _clearDragTargetHeldClass()
+
+        if(commitHold && index != null) {
+            dragState.lastDragAt = Date.now()
+            applyRedHold(index, holdMs)
+        }
+
+        _releaseDragCapture()
+
+        dragState.captureTarget = null
+        dragState.pointerId = null
+        dragState.index = null
+        dragState.moved = false
+        dragState.tapEligible = false
+        dragState.anchorOffsetX = 0
+        dragState.anchorOffsetY = 0
+        dragState.dragBoxWidth = 0
+        dragState.dragBoxHeight = 0
+        dragState.dragBoxLeftOffset = 0
+        dragState.dragBoxTopOffset = 0
+        dragState.pointerType = null
     }
 
     const applyRedHold = (index, holdMs) => {
@@ -400,11 +447,6 @@ function FallingWords({
         return () => cleanupRef.current?.()
     }, [words, effectiveEntries, layoutVersion])
 
-    const _shouldIgnoreClick = () => {
-        const { lastDragAt } = dragStateRef.current
-        return Date.now() - lastDragAt < 250
-    }
-
     const _getContainerSize = () => {
         const container = containerRef.current
         if(!container) {
@@ -442,9 +484,8 @@ function FallingWords({
         return null
     }
 
-    const _selectWord = (index, { ignoreDragGate = false } = {}) => {
+    const _selectWord = (index) => {
         if(index == null) return
-        if(!ignoreDragGate && _shouldIgnoreClick()) return
 
         const engine = engineRef.current
         if(!engine) return
@@ -474,12 +515,11 @@ function FallingWords({
         if(dragState.index == null) return
         if(dragState.moved || !dragState.tapEligible) return
 
-        suppressNextClickUntilRef.current = Date.now() + 650
-        _selectWord(dragState.index, { ignoreDragGate: true })
+        _selectWord(dragState.index)
     }
 
     const onOverlayPointerUp = (event) => {
-        if(event.pointerType !== "touch") return
+        if(event.target !== event.currentTarget) return
         _closeSelection()
     }
 
@@ -496,6 +536,7 @@ function FallingWords({
 
     const onPointerDown = (event) => {
         if(selectedIndexRef.current !== null) return
+        if(event.pointerType === "mouse" && event.button !== 0) return
 
         const index = _getWordIndexAtPoint(event.clientX, event.clientY)
         if(index == null) return
@@ -535,6 +576,7 @@ function FallingWords({
         dragStateRef.current.targetX = entry.body.position.x
         dragStateRef.current.targetY = entry.body.position.y
         dragStateRef.current.pointerType = event.pointerType || null
+        dragStateRef.current.captureTarget = targetEl
 
         _clearRedHold(index)
         targetEl.classList.add("falling-word-held")
@@ -561,13 +603,14 @@ function FallingWords({
         const container = containerRef.current
         if(!entry || !container) return
 
-        const threshold = dragState.pointerType === "touch" ? 12 : 6
-        const tapThreshold = dragState.pointerType === "touch" ? 6 : 2
+        const threshold = dragState.pointerType === "touch" ? 14 : 12
         const dx = event.clientX - dragState.startX
         const dy = event.clientY - dragState.startY
         const distance = Math.hypot(dx, dy)
-        if(distance > tapThreshold) dragState.tapEligible = false
-        if(distance > threshold) dragState.moved = true
+        if(distance > threshold) {
+            dragState.tapEligible = false
+            dragState.moved = true
+        }
 
         const rect = container.getBoundingClientRect()
         const pointerX = event.clientX - rect.left
@@ -596,30 +639,30 @@ function FallingWords({
         if(event?.pointerId != null && dragState.pointerId !== event.pointerId) return
 
         const index = dragState.index
-        if(index != null) {
-            const entry = wordBodiesRef.current[index]
-            entry?.el?.classList.remove("falling-word-held")
-        }
-
         if(index != null && dragState.moved) {
-            dragState.lastDragAt = Date.now()
-            applyRedHold(index, 4000)
+            _finalizePointerInteraction({ commitHold: true, holdMs: 4000 })
         }
         else if(index != null && dragState.tapEligible) {
             onPointerTap(event)
+            _finalizePointerInteraction()
         }
+        else {
+            _finalizePointerInteraction()
+        }
+    }
 
-        dragState.pointerId = null
-        dragState.index = null
-        dragState.moved = false
-        dragState.tapEligible = false
-        dragState.anchorOffsetX = 0
-        dragState.anchorOffsetY = 0
-        dragState.dragBoxWidth = 0
-        dragState.dragBoxHeight = 0
-        dragState.dragBoxLeftOffset = 0
-        dragState.dragBoxTopOffset = 0
-        dragState.pointerType = null
+    const onPointerCancel = (event) => {
+        const dragState = dragStateRef.current
+        if(event?.pointerId != null && dragState.pointerId !== event.pointerId) return
+
+        _finalizePointerInteraction()
+    }
+
+    const onLostPointerCapture = (event) => {
+        const dragState = dragStateRef.current
+        if(event?.pointerId != null && dragState.pointerId !== event.pointerId) return
+
+        _finalizePointerInteraction()
     }
 
     return (
@@ -634,13 +677,13 @@ function FallingWords({
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}
             onPointerUp={onPointerUp}
-            onPointerCancel={onPointerUp}
+            onPointerCancel={onPointerCancel}
+            onLostPointerCapture={onLostPointerCapture}
         >
             {selectedIndex !== null && (
                 <div
                     className={`falling-words-overlay`}
                     onPointerUp={onOverlayPointerUp}
-                    onClick={_closeSelection}
                 >
                     <div
                         className={`falling-words-modal-card`}

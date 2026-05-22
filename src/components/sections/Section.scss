@@ -1145,7 +1145,8 @@ section#section-my-art article:is(
     #article-1-section-my-art,
     #article-2-section-my-art,
     #article-3-section-my-art,
-    #article-4-section-my-art
+    #article-4-section-my-art,
+    #article-5-section-my-art
 ) {
     --art-current-title-start: var(--art-title-start);
     --art-current-title-mid: var(--art-title-mid);
@@ -1189,11 +1190,21 @@ section#section-my-art article#article-4-section-my-art {
     --art-current-title-line-bottom: 2px;
 }
 
+section#section-my-art article#article-5-section-my-art {
+    --art-current-title-start: #f8fafc;
+    --art-current-title-mid: #dbeafe;
+    --art-current-title-end: #facc15;
+    --art-current-title-shadow: 0 18px 36px rgba(219, 234, 254, 0.18);
+    --art-current-title-line-top: 4px;
+    --art-current-title-line-bottom: 2px;
+}
+
 section#section-my-art article:is(
     #article-1-section-my-art,
     #article-2-section-my-art,
     #article-3-section-my-art,
-    #article-4-section-my-art
+    #article-4-section-my-art,
+    #article-5-section-my-art
 ) h4.article-title {
     display: flex;
     flex-direction: column;
@@ -1210,7 +1221,11 @@ section#section-my-art article:is(
     text-wrap: balance;
 }
 
-section#section-my-art article:is(#article-2-section-my-art, #article-3-section-my-art, #article-4-section-my-art) h4.article-title {
+section#section-my-art article:is(#article-2-section-my-art, #article-3-section-my-art, #article-4-section-my-art, #article-5-section-my-art) h4.article-title {
+    margin-top: clamp(30px, 4vw, 46px);
+}
+
+section#section-my-art article#article-5-section-my-art h4.article-title {
     margin-top: clamp(30px, 4vw, 46px);
 }
 
@@ -1218,13 +1233,15 @@ section#section-my-art article:is(
     #article-1-section-my-art,
     #article-2-section-my-art,
     #article-3-section-my-art,
-    #article-4-section-my-art
+    #article-4-section-my-art,
+    #article-5-section-my-art
 ) h4.article-title::before,
 section#section-my-art article:is(
     #article-1-section-my-art,
     #article-2-section-my-art,
     #article-3-section-my-art,
-    #article-4-section-my-art
+    #article-4-section-my-art,
+    #article-5-section-my-art
 ) h4.article-title::after {
     content: "";
     display: block;
@@ -1240,7 +1257,8 @@ section#section-my-art article:is(
     #article-1-section-my-art,
     #article-2-section-my-art,
     #article-3-section-my-art,
-    #article-4-section-my-art
+    #article-4-section-my-art,
+    #article-5-section-my-art
 ) h4.article-title::before {
     width: calc(100vw / var(--section-content-scale, 1));
     margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
@@ -1254,7 +1272,8 @@ section#section-my-art article:is(
     #article-1-section-my-art,
     #article-2-section-my-art,
     #article-3-section-my-art,
-    #article-4-section-my-art
+    #article-4-section-my-art,
+    #article-5-section-my-art
 ) h4.article-title::after {
     width: clamp(176px, 30vw, 368px);
     height: var(--art-current-title-line-bottom);
@@ -1276,7 +1295,8 @@ section#section-my-art article:is(
     #article-1-section-my-art,
     #article-2-section-my-art,
     #article-3-section-my-art,
-    #article-4-section-my-art
+    #article-4-section-my-art,
+    #article-5-section-my-art
 ) h4.article-title span.article-title-prefix {
     display: none;
 }
@@ -1285,7 +1305,8 @@ section#section-my-art article:is(
     #article-1-section-my-art,
     #article-2-section-my-art,
     #article-3-section-my-art,
-    #article-4-section-my-art
+    #article-4-section-my-art,
+    #article-5-section-my-art
 ) h4.article-title span.article-title-text {
     display: block;
     max-width: 100%;
@@ -1302,7 +1323,8 @@ section#section-my-art article:is(
     #article-1-section-my-art,
     #article-2-section-my-art,
     #article-3-section-my-art,
-    #article-4-section-my-art
+    #article-4-section-my-art,
+    #article-5-section-my-art
 ) h4.article-title span.article-title-text span {
     color: inherit!important;
 }
@@ -1346,6 +1368,10 @@ section#section-my-art article#article-4-section-my-art h4.article-title {
     gap: 14px;
 }
 
+section#section-my-art article#article-5-section-my-art h4.article-title {
+    gap: 14px;
+}
+
 section#section-my-art article#article-4-section-my-art h4.article-title::before {
     width: calc(100vw / var(--section-content-scale, 1));
     margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
@@ -1353,11 +1379,27 @@ section#section-my-art article#article-4-section-my-art h4.article-title::before
     background: linear-gradient(90deg, #ff0033, #ffffff 52%, #facc15);
 }
 
+section#section-my-art article#article-5-section-my-art h4.article-title::before {
+    width: calc(100vw / var(--section-content-scale, 1));
+    margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    background: linear-gradient(90deg, #dbeafe, #ffffff 45%, #facc15);
+}
+
 section#section-my-art article#article-4-section-my-art h4.article-title span.article-title-text {
     position: relative;
     display: inline-block;
     padding: 0.04em calc(0.2em + 54px) 0.04em 0.16em;
     background: linear-gradient(120deg, #ffffff 0%, #ffffff 34%, #ff0033 58%, #facc15 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+}
+
+section#section-my-art article#article-5-section-my-art h4.article-title span.article-title-text {
+    position: relative;
+    display: inline-block;
+    padding: 0.04em 0.16em;
+    background: linear-gradient(135deg, #f8fafc 0%, #dbeafe 48%, #facc15 100%);
     background-clip: text;
     -webkit-background-clip: text;
 }
@@ -1407,6 +1449,10 @@ section#section-my-art div.section-body {
     > article#article-4-section-my-art {
         order: 4;
     }
+
+    > article#article-5-section-my-art {
+        order: 5;
+    }
 }
 
 @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
@@ -1414,7 +1460,8 @@ section#section-my-art div.section-body {
         #article-1-section-my-art,
         #article-2-section-my-art,
         #article-3-section-my-art,
-        #article-4-section-my-art
+        #article-4-section-my-art,
+        #article-5-section-my-art
     ) h4.article-title {
         gap: 10px;
         width: 100%;
@@ -1423,7 +1470,7 @@ section#section-my-art div.section-body {
         line-height: 1.08;
     }
 
-    section#section-my-art article:is(#article-2-section-my-art, #article-3-section-my-art, #article-4-section-my-art) h4.article-title {
+    section#section-my-art article:is(#article-2-section-my-art, #article-3-section-my-art, #article-4-section-my-art, #article-5-section-my-art) h4.article-title {
         margin-top: 34px;
     }
 
@@ -1431,7 +1478,8 @@ section#section-my-art div.section-body {
         #article-1-section-my-art,
         #article-2-section-my-art,
         #article-3-section-my-art,
-        #article-4-section-my-art
+        #article-4-section-my-art,
+        #article-5-section-my-art
     ) h4.article-title::before {
         width: calc(100vw / var(--section-content-scale, 1));
         margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
@@ -1442,7 +1490,8 @@ section#section-my-art div.section-body {
         #article-1-section-my-art,
         #article-2-section-my-art,
         #article-3-section-my-art,
-        #article-4-section-my-art
+        #article-4-section-my-art,
+        #article-5-section-my-art
     ) h4.article-title::after {
         width: min(62vw, 220px);
     }
@@ -1463,7 +1512,8 @@ section#section-my-art div.section-body {
         #article-1-section-my-art,
         #article-2-section-my-art,
         #article-3-section-my-art,
-        #article-4-section-my-art
+        #article-4-section-my-art,
+        #article-5-section-my-art
     ) h4.article-title {
         gap: 9px;
         width: 100%;

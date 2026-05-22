@@ -21,6 +21,7 @@ function _loadArticleTestimonials() { return import("../articles/ArticleTestimon
 function _loadArticleText() { return import("../articles/ArticleText.jsx") }
 function _loadArticleThread() { return import("../articles/ArticleThread.jsx") }
 function _loadArticleTimeline() { return import("../articles/ArticleTimeline.jsx") }
+function _loadArticleSecretPearls() { return import("../articles/ArticleSecretPearls.jsx") }
 function _loadArticleWebArt() { return import("../articles/ArticleWebArt.jsx") }
 
 function _scheduleIdleWork(work, timeoutMs = 900) {
@@ -140,6 +141,7 @@ SectionBody.ARTICLE_LOADERS = {
     ArticleText: _loadArticleText,
     ArticleThread: _loadArticleThread,
     ArticleTimeline: _loadArticleTimeline,
+    ArticleSecretPearls: _loadArticleSecretPearls,
     ArticleWebArt: _loadArticleWebArt
 }
 
@@ -161,6 +163,7 @@ SectionBody.ARTICLES = {
     ArticleText: lazy(_loadArticleText),
     ArticleThread: lazy(_loadArticleThread),
     ArticleTimeline: lazy(_loadArticleTimeline),
+    ArticleSecretPearls: lazy(_loadArticleSecretPearls),
     ArticleWebArt: lazy(_loadArticleWebArt)
 }
 

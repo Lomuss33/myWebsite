@@ -2169,5 +2169,50 @@
                 }
             ]
         }
+        ,
+        {
+            "id": 5,
+            "component": "ArticleSecretPearls",
+            "locales": {
+                "en": {
+                    "title": "Secret pearls",
+                    "description": "Some extra web art you found. Wow. Cool little pearls and reflective fragments, like pieces of a hidden story about souls, the universe, and a pearl idea waiting to be opened."
+                }
+            },
+            "items": [
+                {
+                    "id": 1,
+                    "locales": {
+                        "en": {
+                            "title": "Sacred Pearl"
+                        }
+                    }
+                },
+                {
+                    "id": 2,
+                    "locales": {
+                        "en": {
+                            "title": "pearl"
+                        }
+                    }
+                },
+                {
+                    "id": 3,
+                    "locales": {
+                        "en": {
+                            "title": "Fluid Pearl Universe"
+                        }
+                    }
+                },
+                {
+                    "id": 4,
+                    "locales": {
+                        "en": {
+                            "title": "Pearl Rings"
+                        }
+                    }
+                }
+            ]
+        }
     ]
 }

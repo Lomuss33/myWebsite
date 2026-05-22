@@ -289,6 +289,13 @@
     --art-current-title-shadow: 0 14px 28px rgba(220, 38, 38, 0.12);
 }
 
+[data-theme="light"] section#section-my-art article#article-5-section-my-art {
+    --art-current-title-start: #0f172a;
+    --art-current-title-mid: #0ea5e9;
+    --art-current-title-end: #f59e0b;
+    --art-current-title-shadow: 0 14px 28px rgba(14, 165, 233, 0.12);
+}
+
 [data-theme="light"] section#section-my-art article#article-3-section-my-art h4.article-title span.article-title-text {
     background: linear-gradient(100deg, #1d4ed8 0%, #2563eb 24%, #7e22ce 54%, #be185d 78%, #e11d48 100%);
     background-clip: text;
@@ -297,6 +304,12 @@
 
 [data-theme="light"] section#section-my-art article#article-4-section-my-art h4.article-title span.article-title-text {
     background: linear-gradient(120deg, #111827 0%, #111827 34%, #ff0033 58%, #b45309 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+}
+
+[data-theme="light"] section#section-my-art article#article-5-section-my-art h4.article-title span.article-title-text {
+    background: linear-gradient(120deg, #0f172a 0%, #0ea5e9 42%, #f59e0b 100%);
     background-clip: text;
     -webkit-background-clip: text;
 }
@@ -733,6 +746,10 @@
 
 [data-theme="light"] article#article-2-section-my-writings div.article-falling-words-hint {
     color: #334155;
+}
+
+[data-theme="light"] article#article-2-section-my-writings div.article-falling-words-description {
+    color: #0f172a;
 }
 
 [data-theme="light"] article#article-2-section-my-writings span.falling-word {

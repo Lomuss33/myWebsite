@@ -1,12 +1,25 @@
 @use "../../styles/extend" as *;
 
 article.article-falling-words {
+    div.article-falling-words-description,
     div.article-falling-words-hint {
-        color: var(--theme-texts-light-4);
+        max-width: 64ch;
         margin: 0 12px 10px;
+        text-wrap: balance;
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
             margin: 0 10px 10px;
         }
+    }
+
+    div.article-falling-words-description {
+        color: color-mix(in srgb, var(--theme-texts) 82%, var(--theme-primary) 18%);
+        line-height: 1.45;
+        letter-spacing: 0.01em;
+    }
+
+    div.article-falling-words-hint {
+        color: var(--theme-texts-light-4);
+        margin-bottom: 12px;
     }
 
     div.falling-words.article-falling-words-stage {
@@ -22,6 +35,10 @@ article.article-falling-words {
 }
 
 article#article-2-section-my-writings {
+    div.article-falling-words-description {
+        color: #e2e8f0;
+    }
+
     div.article-falling-words-hint {
         color: #cbd5e1;
     }

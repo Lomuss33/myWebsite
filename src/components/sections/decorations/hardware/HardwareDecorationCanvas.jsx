@@ -17,7 +17,6 @@ out vec4 O;
 uniform vec2 resolution;
 uniform float time;
 uniform vec4 bottomBand;
-uniform vec4 activeBand;
 uniform float hasBottomBand;
 uniform float lightMode;
 
@@ -48,8 +47,8 @@ float spirals(vec2 uv) {
     return c;
 }
 
-vec3 pattern(vec2 uv, vec2 sourceResolution) {
-    float k=4./min(sourceResolution.x,sourceResolution.y);
+vec3 pattern(vec2 uv) {
+    float k=4./MN;
     vec3 raw=sqrt(spirals(uv*.95)*vec3(
         spirals(uv-k),
         spirals(uv),
@@ -69,16 +68,13 @@ float bottomMask(vec2 p) {
         step(p.y,b.y+b.w);
 }
 
-vec3 renderLayer(vec2 fragmentCoord, vec2 sourceResolution, bool includeSpirals) {
+vec3 renderLayer(vec2 fragmentCoord, bool includeSpirals) {
     vec3 col=vec3(0);
     float tt=beat(3.);
     float t=beat(6.);
     float m=S(1e-3,.5,1./(10.+90.*(1.-tt)));
     float n=S(1e-3,.5,1./(7.+93.*tt));
-    vec2 uv=(fragmentCoord-.5*sourceResolution)/min(sourceResolution.x,sourceResolution.y);
-
-    if(sourceResolution.x>sourceResolution.y)
-        uv=vec2(uv.y,-uv.x);
+    vec2 uv=(fragmentCoord-.5*R)/MN;
 
     uv*=2.75+sqrt(t*.55);
     vec2 p=uv*(1.+.12*sqrt(t));
@@ -95,29 +91,17 @@ vec3 renderLayer(vec2 fragmentCoord, vec2 sourceResolution, bool includeSpirals)
     col+=vec3(squareTone)*.045;
 
     if(includeSpirals)
-        col=max(col,pattern(uv,sourceResolution));
+        col=max(col,pattern(uv));
 
     return col;
 }
 
-vec2 localBandCoord(vec2 p, vec4 band, vec2 sourceResolution) {
-    vec2 local=p-band.xy;
-    return vec2(
-        local.x/max(band.z,1.)*sourceResolution.x,
-        local.y/max(band.w,1.)*sourceResolution.y
-    );
-}
-
 void main(){
-    vec2 sourceResolution=hasBottomBand>.5?bottomBand.zw:activeBand.zw;
-    vec2 bandCoord=localBandCoord(FC,activeBand,sourceResolution);
-    vec3 col=renderLayer(bandCoord,sourceResolution,false);
+    vec3 col=renderLayer(FC,false);
     float isBottom=bottomMask(FC);
 
     if(isBottom>.5) {
-        vec2 bottomCoord=FC-bottomBand.xy;
-        vec2 bottomResolution=bottomBand.zw;
-        col=max(col,renderLayer(bottomCoord,bottomResolution,true));
+        col=max(col,renderLayer(FC,true));
     }
 
     float brightness=max(max(col.r,col.g),col.b);
@@ -184,7 +168,6 @@ function setupShader(canvas) {
     program.resolution = gl.getUniformLocation(program, "resolution")
     program.time = gl.getUniformLocation(program, "time")
     program.bottomBand = gl.getUniformLocation(program, "bottomBand")
-    program.activeBand = gl.getUniformLocation(program, "activeBand")
     program.hasBottomBand = gl.getUniformLocation(program, "hasBottomBand")
     program.lightMode = gl.getUniformLocation(program, "lightMode")
 
@@ -296,7 +279,6 @@ function drawShader(shaderState, regions, now) {
 
     for(const rect of regions.scissorRects) {
         gl.scissor(rect.x, rect.y, rect.width, rect.height)
-        gl.uniform4f(program.activeBand, rect.x, rect.y, rect.width, rect.height)
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
     }
 

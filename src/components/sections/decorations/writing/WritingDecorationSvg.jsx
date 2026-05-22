@@ -94,7 +94,9 @@ void main() {
     vec2 p=aspectUv;
 
     float plankTargetHeight = 34.0;
-    float plankCount = clamp(floor(R.y / plankTargetHeight), 4.0, 40.0);    float plankIndex=floor(plankPosition);
+    float plankCount = clamp(floor(R.y / plankTargetHeight), 4.0, 40.0);
+    float plankPosition = uv.y * plankCount;
+    float plankIndex=floor(plankPosition);
     float plankUv=fract(plankPosition);
 
     float boardSeed=hash(vec2(plankIndex,17.0));
@@ -119,8 +121,8 @@ void main() {
     float pores=fbm(vec2(p.x*70.0,p.y*18.0+boardSeed*6.0));
     pores=S(.48,.88,pores)*.62+scratches;
 
-    float seamTop = S(.06,.0,plankUv);
-    float seamBottom = S(.06,.0,1.0-plankUv);
+    float seamTop = 1.0 - S(.0,.06,plankUv);
+    float seamBottom = 1.0 - S(.0,.06,1.0-plankUv);
     float plankLine = max(seamTop, seamBottom);
 
     float boardEdgeShadow=S(.0,.16,plankUv)*S(.0,.16,1.0-plankUv);

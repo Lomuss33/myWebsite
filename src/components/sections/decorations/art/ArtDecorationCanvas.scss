@@ -1,0 +1,10 @@
+canvas.section-decoration-canvas-art {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: block;
+    height: 100%;
+    pointer-events: none;
+    contain: strict;
+}

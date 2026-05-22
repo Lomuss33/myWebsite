@@ -236,16 +236,20 @@
       "component": "ArticleFallingWords",
       "locales": {
         "en": {
-          "title": "Word {{stack}}"
+          "title": "Word {{stack}}",
+          "description": "<p>Drag the stack with your mouse or finger, then {{click}} or {{tap}} a word to uncover the definition card.</p>"
         },
         "de": {
-          "title": "Wort-{{Stapel}}"
+          "title": "Wort-{{Stapel}}",
+          "description": "<p>Zieh den Stapel mit Maus oder Finger, dann {{klicke}} oder {{tippe}} auf ein Wort, um die Definitionskarte aufzudecken.</p>"
         },
         "hr": {
-          "title": "{{Stog}} riječi"
+          "title": "{{Stog}} riječi",
+          "description": "<p>Povuci hrpu riječi mišem ili prstom, pa {{klikni}} ili {{dodirni}} riječ da otkriješ karticu s definicijom.</p>"
         },
         "tr": {
-          "title": "Kelime {{yığını}}"
+          "title": "Kelime {{yığını}}",
+          "description": "<p>Kelime yığınını fareyle ya da parmağınla {{sürükle}}, sonra bir kelimeye {{tıkla}} ya da {{dokun}} ve tanım kartını ortaya çıkar.</p>"
         }
       },
       "settings": {},

@@ -1,14 +1,14 @@
 import "./ArtDecorationCanvas.scss"
 import React, {useEffect, useRef} from 'react'
 
-const CELL_STEP = 14
-const CELL_SIZE = 13
-const ANIMATION_DURATION_MS = 10000
-const MIN_EXCHANGES_PER_TICK = 120
-const MAX_EXCHANGES_PER_TICK = 2400
-const MAX_SWAP_RADIUS = 7
-const FRAME_INTERVAL_MS = 16
-const MAX_DEVICE_PIXEL_RATIO = 1.15
+const CELL_STEP = 37
+const CELL_SIZE = 34
+const ANIMATION_DURATION_MS = 100
+const MIN_EXCHANGES_PER_TICK = 1000
+const MAX_EXCHANGES_PER_TICK = 2800
+const MAX_SWAP_RADIUS = 3
+const FRAME_INTERVAL_MS = 1000
+const MAX_DEVICE_PIXEL_RATIO = 1.25
 
 function measureLayout(canvas) {
     const wrapper = canvas?.parentElement
@@ -200,7 +200,7 @@ function ArtDecorationCanvas() {
 
         const paintThemeCover = () => {
             const isLightMode = document.documentElement.getAttribute("data-theme") === "light"
-            const coverColor = isLightMode ? "rgba(255,255,255,0.77)" : "rgba(0,0,0,0.75)"
+            const coverColor = isLightMode ? "rgba(255,255,255,0.57)" : "rgba(0,0,0,0.52)"
 
             context.save()
             context.fillStyle = coverColor

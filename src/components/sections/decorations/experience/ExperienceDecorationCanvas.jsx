@@ -277,22 +277,28 @@ function drawBranch(context, branch, hue, reducedMotion) {
 }
 
 function createBottomBranches(layout) {
-    const baseLength = Math.max(36, Math.min(96, layout.width * 0.06, layout.height * 0.42))
+    const baseLength = Math.max(72, Math.min(132, layout.width * 0.094))
+    const centerY = layout.height * 0.98
+    const sideXOffset = Math.max(0, layout.width * 0.21)
+    const centerX = layout.width * 0.5
 
     return [
         {
             branch: createBranch(baseLength * 0.6, 0, 0, 7),
-            x: layout.width * 0.212,
+            x: sideXOffset,
+            y: centerY,
             scale: 0.6
         },
         {
             branch: createBranch(baseLength * 0.544, 0, 0, 8),
-            x: layout.width * 0.5,
+            x: centerX,
+            y: centerY,
             scale: 0.78
         },
         {
             branch: createBranch(baseLength * 0.6, 0, 0, 7),
-            x: layout.width * 0.788,
+            x: layout.width - sideXOffset,
+            y: centerY,
             scale: 0.6
         }
     ]
@@ -346,7 +352,7 @@ function drawBottomBranches(branchState, now, reducedMotion) {
 
     for(const item of branches) {
         context.save()
-        context.translate(item.x, height * 1.08)
+        context.translate(item.x, item.y)
         context.rotate(-Math.PI * 0.5)
         context.scale(item.scale, item.scale)
         drawBranch(context, item.branch, hue, reducedMotion)

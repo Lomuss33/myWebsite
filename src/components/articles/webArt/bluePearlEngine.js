@@ -49,7 +49,6 @@ export function createBluePearlEngine(canvas, options = {}) {
     let animationFrame = 0
     let isRunning = false
     let destroyed = false
-    let frameCount = 0
 
     camera.position.set(0, 0, 100)
 
@@ -81,6 +80,7 @@ export function createBluePearlEngine(canvas, options = {}) {
     })
     const shards = new THREE.InstancedMesh(shardGeometry, shardMaterial, config.particleCount)
     shards.instanceMatrix.setUsage(THREE.DynamicDrawUsage)
+    shards.frustumCulled = false
 
     for(let index = 0; index < config.particleCount; index++) {
         const theta = randomBetween(0, Math.PI * 2)
@@ -130,6 +130,7 @@ export function createBluePearlEngine(canvas, options = {}) {
             )
         })
     }
+    shards.instanceMatrix.needsUpdate = true
     shards.instanceColor.needsUpdate = true
     scene.add(shards)
 
@@ -164,6 +165,7 @@ export function createBluePearlEngine(canvas, options = {}) {
     scene.add(halo)
 
     const renderReflection = () => {
+        if(!config.showCore) return
         const shouldRestorePearl = pearl.visible
         const shouldRestoreHalo = halo.visible
         pearl.visible = false
@@ -204,8 +206,6 @@ export function createBluePearlEngine(canvas, options = {}) {
         halo.scale.setScalar(1 + Math.sin(time * 1.4) * 0.018)
         controls.update()
 
-        if(frameCount % 12 === 0) renderReflection()
-        frameCount++
         renderer.render(scene, camera)
     }
 

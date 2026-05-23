@@ -61,7 +61,7 @@ void main() {
         col+=background(lens);
         float g=.08+clamp(clamp(p.y,.0,.2)/2.,.0,1.)+clamp(clamp(-p.y,-.2,.2)*c/2.,.0,1.);
         vec3 light=clamp(col+a*g+b*.3,.0,1.);
-        col=mix(background(uv),light,S(.0,1.,a+b));
+        col=mix(background(uv),light,S(.0,1.,a+b)*.08);
     } else {
         col=background(uv);
     }
@@ -69,8 +69,6 @@ void main() {
     uv=2.*FC/R-1.;
     uv*=.84;
     uv*=uv*uv*uv;
-    float v=dot(uv,uv);
-    col=mix(col,vec3(1),v);
     col=mix(vec3(0),col,min(time*.3,1.));
     O=vec4(col,1);
 }`

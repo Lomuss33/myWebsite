@@ -191,7 +191,7 @@ class Vapourizing extends THREE.Points {
         geometry.setAttribute("inits", new THREE.Float32BufferAttribute(inits, 3))
 
         const material = new THREE.PointsMaterial({
-            size: 0.028,
+            size: 0.034,
             transparent: true,
             color: new THREE.Color(1, 0.75, 0.25),
             depthWrite: false,
@@ -663,7 +663,7 @@ export function createSacredPearlEngine(canvas, options = {}) {
 
         scene = new THREE.Scene()
         camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000)
-        camera.position.set(0, 0.25, 1).setLength(4)
+        camera.position.set(0, 1, 0.12).setLength(4.4)
 
         controls = new OrbitControls(camera, canvas)
         controls.enableDamping = true
@@ -735,7 +735,7 @@ export function createSacredPearlEngine(canvas, options = {}) {
         elapsed = 0
         uniforms.time.value = 0
         uniforms.timeDelta.value = 0
-        camera.position.set(0, 0.25, 1).setLength(4)
+        camera.position.set(0, 1, 0.12).setLength(4.4)
         controls?.target.set(0, 0, 0)
         renderFrame()
     }

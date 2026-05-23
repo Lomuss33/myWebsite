@@ -618,19 +618,19 @@ function LayeredPearlTile() {
             context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0)
         }
 
-        const drawRingGuides = (time, centerX, centerY, zoom, rotateX, rotateY) => {
+        const drawRingGuides = (time, centerX, centerY, zoom, rotateX, rotateY, isLightTheme) => {
             context.save()
             context.translate(centerX, centerY)
             context.scale(zoom, zoom)
             context.rotate(rotateY * 0.18 + Math.sin(time * 0.3) * 0.04)
-            context.globalAlpha = 0.34
+            context.globalAlpha = isLightTheme ? 0.42 : 0.24
             context.lineWidth = Math.max(0.7, Math.min(width, height) * 0.003)
             for(let index = 0; index < pearlRings.length; index++) {
                 const ring = pearlRings[index]
                 const rx = width * ring.radiusX * 0.009
                 const ry = height * ring.radiusY * 0.009 * (0.72 + Math.cos(rotateX) * 0.28)
                 context.beginPath()
-                context.strokeStyle = `hsla(${210 + index * 27}, 82%, 78%, ${0.15 + index * 0.012})`
+                context.strokeStyle = `hsla(${190 + index * 39}, 94%, ${isLightTheme ? 50 : 70}%, ${isLightTheme ? 0.24 + index * 0.012 : 0.10 + index * 0.01})`
                 context.ellipse(0, 0, rx, ry, ring.tilt * Math.PI / 180, 0, Math.PI * 2)
                 context.stroke()
             }
@@ -649,17 +649,17 @@ function LayeredPearlTile() {
             const isLightTheme = getIsLightTheme()
 
             context.clearRect(0, 0, width, height)
-            context.fillStyle = isLightTheme ? "rgb(251, 253, 255)" : "rgb(1, 1, 5)"
+            context.fillStyle = isLightTheme ? "rgb(255, 255, 255)" : "rgb(0, 0, 3)"
             context.fillRect(0, 0, width, height)
 
             const background = context.createRadialGradient(centerX, centerY, unit * 0.08, centerX, centerY, unit * 0.62)
-            background.addColorStop(0, isLightTheme ? "rgba(255, 255, 255, 0.72)" : "rgba(147, 197, 253, 0.045)")
-            background.addColorStop(0.42, isLightTheme ? "rgba(226, 232, 255, 0.54)" : "rgba(79, 70, 229, 0.025)")
+            background.addColorStop(0, isLightTheme ? "rgba(244, 248, 255, 0.92)" : "rgba(45, 212, 191, 0.026)")
+            background.addColorStop(0.42, isLightTheme ? "rgba(219, 234, 254, 0.68)" : "rgba(217, 70, 239, 0.016)")
             background.addColorStop(1, "rgba(0, 0, 0, 0)")
             context.fillStyle = background
             context.fillRect(0, 0, width, height)
 
-            drawRingGuides(time, centerX, centerY, zoom, rotateX, rotateY)
+            drawRingGuides(time, centerX, centerY, zoom, rotateX, rotateY, isLightTheme)
 
             drawPearls.length = 0
             for(const pearl of pearls) {
@@ -686,14 +686,14 @@ function LayeredPearlTile() {
                     y: centerY + yRotated * zoom,
                     depth: depthRotated,
                     size: Math.max(2, pearl.size * (0.72 + (depth + 1) * 0.18) * zoom),
-                    hue: 205 + pearl.hueShift,
-                    alpha: 0.56 + (depth + 1) * 0.18
+                    hue: 180 + pearl.hueShift * 1.45,
+                    alpha: (0.56 + (depth + 1) * 0.18) * (isLightTheme ? 0.72 : 0.52)
                 })
             }
 
             drawPearls.sort((a, b) => a.depth - b.depth)
             context.save()
-            context.globalCompositeOperation = "screen"
+            context.globalCompositeOperation = isLightTheme ? "source-over" : "lighter"
             for(const pearl of drawPearls) {
                 const gradient = context.createRadialGradient(
                     pearl.x - pearl.size * 0.28,
@@ -703,13 +703,13 @@ function LayeredPearlTile() {
                     pearl.y,
                     pearl.size
                 )
-                gradient.addColorStop(0, `hsla(${pearl.hue}, 100%, 98%, ${Math.min(1, pearl.alpha + 0.18)})`)
-                gradient.addColorStop(0.38, `hsla(${pearl.hue + 18}, 88%, 82%, ${pearl.alpha})`)
-                gradient.addColorStop(1, `hsla(${pearl.hue + 58}, 82%, 52%, 0.08)`)
+                gradient.addColorStop(0, `hsla(${pearl.hue}, 100%, ${isLightTheme ? 96 : 92}%, ${Math.min(0.82, pearl.alpha + (isLightTheme ? 0.10 : 0.05))})`)
+                gradient.addColorStop(0.38, `hsla(${pearl.hue + 28}, 96%, ${isLightTheme ? 62 : 72}%, ${pearl.alpha})`)
+                gradient.addColorStop(1, `hsla(${pearl.hue + 82}, 92%, ${isLightTheme ? 48 : 42}%, ${isLightTheme ? 0.18 : 0.045})`)
                 context.beginPath()
                 context.fillStyle = gradient
-                context.shadowColor = `hsla(${pearl.hue}, 90%, 72%, 0.42)`
-                context.shadowBlur = pearl.size * 0.75
+                context.shadowColor = `hsla(${pearl.hue}, 96%, ${isLightTheme ? 56 : 68}%, ${isLightTheme ? 0.22 : 0.20})`
+                context.shadowBlur = pearl.size * (isLightTheme ? 0.46 : 0.34)
                 context.arc(pearl.x, pearl.y, pearl.size, 0, Math.PI * 2)
                 context.fill()
             }

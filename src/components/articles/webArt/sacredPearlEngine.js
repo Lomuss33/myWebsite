@@ -599,13 +599,13 @@ class Hut extends THREE.Mesh {
 class Sketch extends THREE.Group {
     constructor(options, uniforms, lineMaterials, simplex) {
         super()
-        const pointLight = new THREE.PointLight(0xff8800, 5, 3, 4)
+        const pointLight = new THREE.PointLight(0xffc08a, 3.7, 3, 4)
         pointLight.position.set(0, -0.25, 0)
         this.add(pointLight)
-        this.add(new THREE.AmbientLight(0xff8800, 0.1))
+        this.add(new THREE.AmbientLight(0xffd4aa, 0.075))
         this.add(new THREE.Mesh(
             new THREE.SphereGeometry(200, 24, 12),
-            new THREE.MeshLambertMaterial({ color: "#fff", side: THREE.BackSide })
+            new THREE.MeshLambertMaterial({ color: "#f3f0ea", side: THREE.BackSide })
         ))
 
         const hut = new Hut(uniforms)
@@ -658,7 +658,7 @@ export function createSacredPearlEngine(canvas, options = {}) {
             alpha: false,
             powerPreference: "high-performance"
         })
-        renderer.setClearColor(0xffffff, 1)
+        renderer.setClearColor(0xf3f0ea, 1)
         renderer.outputColorSpace = THREE.SRGBColorSpace
 
         scene = new THREE.Scene()

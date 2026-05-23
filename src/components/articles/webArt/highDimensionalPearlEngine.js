@@ -59,9 +59,9 @@ void main() {
     if ((a+b)>.0) {
         vec2 lens=(uv+.01)*(1.-d*5e3);
         col+=background(lens);
-        float g=.08+clamp(clamp(p.y,.0,.2)/2.,.0,1.)+clamp(clamp(-p.y,-.2,.2)*c/2.,.0,1.);
-        vec3 light=clamp(col+a*g+b*.3,.0,1.);
-        col=mix(background(uv),light,S(.0,1.,a+b)*.08);
+        float g=.11+clamp(clamp(p.y,.0,.2)/1.8,.0,1.)+clamp(clamp(-p.y,-.2,.2)*c/1.8,.0,1.);
+        vec3 light=clamp(col+a*g+b*.46, .0, 1.);
+        col=mix(background(uv),light,S(.0,1.,a+b)*.16);
     } else {
         col=background(uv);
     }

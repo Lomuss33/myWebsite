@@ -53,6 +53,8 @@ export function createBluePearlEngine(canvas, options = {}) {
     camera.position.set(0, 0, 100)
 
     controls.enableDamping = true
+    controls.rotateSpeed = 0.48
+    controls.zoomSpeed = 0.62
     controls.enablePan = false
     controls.minDistance = 72
     controls.maxDistance = 132
@@ -120,13 +122,13 @@ export function createBluePearlEngine(canvas, options = {}) {
                 signedRandom(0.15, 1)
             ).normalize(),
             orbitPhase: randomBetween(0, Math.PI * 2),
-            orbitSpeed: signedRandom(0.0016, 0.0065),
+            orbitSpeed: signedRandom(0.0009, 0.0042),
             wobbleSpeed: randomBetween(0.25, 0.9),
             wobbleAmount: randomBetween(2, 9),
             spin: new THREE.Vector3(
-                signedRandom(0.004, 0.022),
-                signedRandom(0.004, 0.026),
-                signedRandom(0.004, 0.018)
+                signedRandom(0.0026, 0.014),
+                signedRandom(0.0026, 0.016),
+                signedRandom(0.0026, 0.012)
             )
         })
     }
@@ -200,9 +202,9 @@ export function createBluePearlEngine(canvas, options = {}) {
             shards.setMatrixAt(index, dummy.matrix)
         }
         shards.instanceMatrix.needsUpdate = true
-        shards.rotation.x = Math.sin(time * 0.18) * 0.28
-        shards.rotation.y += 0.0065
-        shards.rotation.z = Math.cos(time * 0.14) * 0.18
+        shards.rotation.x = Math.sin(time * 0.13) * 0.24
+        shards.rotation.y += 0.0042
+        shards.rotation.z = Math.cos(time * 0.11) * 0.15
         halo.scale.setScalar(1 + Math.sin(time * 1.4) * 0.018)
         controls.update()
 

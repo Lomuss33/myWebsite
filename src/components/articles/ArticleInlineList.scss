@@ -34,10 +34,15 @@ li.article-inline-list-item {
 }
 
 article#article-1-section-about {
+    &::after {
+        margin-top: 2px;
+    }
+
     ul.article-inline-list-items {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
+        margin-top: 16px;
         gap: 12px;
 
         @include media-breakpoint-down(sm) {
@@ -52,9 +57,10 @@ article#article-1-section-about {
         height: auto;
         white-space: normal;
         display: inline-flex;
-        align-items: center;
-        padding: 12px 18px;
+        align-items: stretch;
+        padding: 0 12px 0 0;
         border-radius: 999px;
+        overflow: hidden;
         background: linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(6, 9, 16, 0.94));
         border: 1px solid rgba(78, 163, 255, 0.28);
         box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -63,8 +69,8 @@ article#article-1-section-about {
         @include media-breakpoint-down(sm) {
             flex: 1 1 0;
             min-width: 0;
-            justify-content: center;
-            padding: 11px 9px;
+            justify-content: flex-start;
+            padding: 0 8px 0 0;
         }
 
         &:not(:last-child)::after {
@@ -81,21 +87,24 @@ article#article-1-section-about {
         a {
             display: inline-flex;
             align-items: center;
-            gap: 11px;
-            font-size: clamp(0.92rem, 0.84rem + 0.24vw, 1.08rem);
+            gap: 8px;
+            font-size: clamp(0.96rem, 0.87rem + 0.26vw, 1.14rem);
             line-height: 1.2;
 
             @include media-breakpoint-down(sm) {
                 width: 100%;
                 min-width: 0;
-                justify-content: center;
-                font-size: clamp(0.84rem, 0.8rem + 0.2vw, 0.94rem);
+                justify-content: flex-start;
+                font-size: clamp(0.87rem, 0.82rem + 0.2vw, 0.98rem);
             }
         }
     }
 
     i.article-inline-list-item-icon {
         margin: 0;
+        align-self: stretch;
+        height: auto;
+        aspect-ratio: 1;
         color: var(--theme-primary);
         background: color-mix(in srgb, var(--theme-primary) 14%, transparent 86%);
         border: 1px solid color-mix(in srgb, var(--theme-primary) 28%, transparent 72%);
@@ -121,12 +130,16 @@ article#article-1-section-about {
 
     @media (max-width: 420px) {
         li.article-inline-list-item {
-            padding: 9px 7px;
-            min-height: 56px;
+            padding: 0 7px 0 0;
+            min-height: 48px;
         }
 
         li.article-inline-list-item a {
             gap: 7px;
+        }
+
+        span.article-inline-list-item-label {
+            font-size: 0.98em;
         }
 
         i.article-inline-list-item-icon {

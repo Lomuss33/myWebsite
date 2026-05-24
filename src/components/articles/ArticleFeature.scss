@@ -147,8 +147,8 @@ article#article-2-section-experience {
     div.article-feature-item-text,
     div.article-feature-item-text-measure-square {
         width: 100%;
-        font-size: clamp(1rem, 0.22vw + 0.96rem, 1.12rem);
-        line-height: 1.62;
+        font-size: clamp(1.03rem, 0.24vw + 0.98rem, 1.16rem);
+        line-height: 1.66;
     }
 
     div.article-feature-item-text {
@@ -159,7 +159,7 @@ article#article-2-section-experience {
 
         p {
             margin-bottom: 0.9rem;
-            line-height: 1.68;
+            line-height: 1.72;
         }
 
         strong {
@@ -520,8 +520,8 @@ div.article-feature-item.article-feature-item-layout-fixed-vh-image.article-feat
         width: 100%;
         max-width: none;
         margin-left: 0;
-        font-size: clamp(0.98rem, 0.9rem + 0.3vw, 1.12rem);
-        line-height: 1.62;
+        font-size: clamp(1.2rem, 1.08rem + 0.37vw, 1.36rem);
+        line-height: 1.66;
     }
 
     div.article-feature-item-text {
@@ -595,8 +595,8 @@ div.article-feature-item.article-feature-item-layout-fixed-vh-image.article-feat
 
         div.article-feature-item-text,
         div.article-feature-item-text-measure-square {
-            font-size: clamp(1rem, 0.96rem + 0.22vw, 1.06rem);
-            line-height: 1.58;
+            font-size: clamp(1.02rem, 0.98rem + 0.22vw, 1.1rem);
+            line-height: 1.6;
         }
 
         div.article-feature-item-text-measure-square {
@@ -871,7 +871,7 @@ div.article-feature-items.article-feature-items-section-my-writings {
 
         div.article-feature-item-text {
             max-width: 100%;
-            font-size: 1rem;
+            font-size: 1.15rem;
             line-height: 1.6;
         }
 

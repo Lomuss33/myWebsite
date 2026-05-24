@@ -180,6 +180,7 @@ article#article-2-section-my-software {
         border-radius: 8px;
         background: var(--software-rec-intro-surface);
         color: var(--software-rec-intro-text);
+        font-size: clamp(0.94rem, 0.9rem + 0.16vw, 1.04rem);
         line-height: 1.68;
         text-align: center;
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -223,6 +224,8 @@ article#article-2-section-my-software {
     div.balloon {
         background: transparent;
         color: #e2e8f0;
+        font-size: clamp(0.92rem, 0.88rem + 0.14vw, 1rem);
+        line-height: 1.62;
     }
 
     div.balloon-triangle {
@@ -236,11 +239,14 @@ article#article-2-section-my-software {
 
     a.article-testimonials-item-name {
         color: #dbeafe;
+        font-size: clamp(1.02rem, 0.98rem + 0.14vw, 1.1rem);
         text-shadow: 0 0 14px rgba(78, 163, 255, 0.10);
     }
 
     div.article-testimonials-item-role {
         color: #93c5fd;
+        font-size: clamp(0.84rem, 0.8rem + 0.12vw, 0.92rem);
+        line-height: 1.38;
     }
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
@@ -298,6 +304,7 @@ article#article-2-section-my-software {
         p.article-testimonials-intro {
             padding: 0.78rem 0.9rem;
             margin-bottom: 34px;
+            font-size: clamp(0.88rem, 0.84rem + 0.18vw, 0.96rem);
             line-height: 1.56;
         }
 
@@ -339,7 +346,7 @@ article#article-2-section-my-software {
         p.article-testimonials-intro {
             padding: 0.72rem 0.78rem;
             margin-bottom: 30px;
-            font-size: 0.82rem;
+            font-size: clamp(0.84rem, 0.8rem + 0.2vw, 0.9rem);
         }
 
         h5.article-testimonials-group-title::before,

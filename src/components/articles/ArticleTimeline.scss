@@ -627,6 +627,20 @@ article#article-1-section-experience {
     }
 }
 
+@include media-breakpoint-up(xl) {
+    article#article-1-section-education div.article-content,
+    article#article-1-section-experience div.article-content {
+        width: min(100%, 77rem);
+        margin-inline: auto;
+    }
+
+    article#article-1-section-education ul.article-timeline-items,
+    article#article-1-section-experience ul.article-timeline-items {
+        width: 100%;
+        padding-inline: 0;
+    }
+}
+
 article.article-timeline--art-photography {
     ul.article-timeline-items {
         --timeline-line-width: 4px;

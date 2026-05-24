@@ -5,10 +5,10 @@ div.article-timeline-item-info-for-timelines {
     --header-gap: clamp(0.55rem, 0.46rem + 0.28vw, 0.8rem);
     --meta-gap: clamp(0.35rem, 0.28rem + 0.18vw, 0.5rem);
     --date-badge-width: auto;
-    --timeline-title-size: clamp(1.08rem, 0.98rem + 0.46vw, 1.4rem);
-    --timeline-meta-size: clamp(0.84rem, 0.79rem + 0.18vw, 0.96rem);
-    --timeline-body-size: clamp(0.98rem, 0.92rem + 0.22vw, 1.1rem);
-    --timeline-badge-size: clamp(0.8rem, 0.76rem + 0.16vw, 0.9rem);
+    --timeline-title-size: clamp(1.12rem, 1rem + 0.48vw, 1.44rem);
+    --timeline-meta-size: clamp(0.86rem, 0.8rem + 0.18vw, 0.98rem);
+    --timeline-body-size: clamp(1rem, 0.94rem + 0.22vw, 1.12rem);
+    --timeline-badge-size: clamp(0.82rem, 0.78rem + 0.16vw, 0.92rem);
     --card-accent: color-mix(in srgb, var(--theme-primary) 72%, var(--theme-secondary) 28%);
     --card-accent-soft: color-mix(in srgb, var(--card-accent) 14%, transparent 86%);
     --card-surface-top: color-mix(in srgb, var(--theme-boards-background) 86%, var(--card-accent) 14%);
@@ -39,6 +39,10 @@ div.article-timeline-item-info-for-timelines-date-badge-small {
 article#article-1-section-education div.article-timeline-item-info-for-timelines {
     --card-accent: #4ea3ff;
     --card-accent-2: #facc15;
+    --timeline-title-size: clamp(1.14rem, 1.02rem + 0.5vw, 1.48rem);
+    --timeline-meta-size: clamp(0.88rem, 0.82rem + 0.2vw, 1rem);
+    --timeline-body-size: clamp(1.02rem, 0.96rem + 0.24vw, 1.14rem);
+    --timeline-badge-size: clamp(0.84rem, 0.8rem + 0.16vw, 0.94rem);
     --card-surface-top: #0f172a;
     --card-surface-bottom: #060910;
     --card-border: #22324b;
@@ -174,6 +178,16 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
         border-color: var(--experience-card-border-current, color-mix(in srgb, var(--card-accent) 52%, var(--card-border) 48%));
         box-shadow: var(--experience-card-shadow-current, var(--card-shadow-hover)), inset 0 1px 0 rgba(255, 255, 255, 0.05);
         filter: saturate(1.03);
+    }
+}
+
+@include media-breakpoint-up(xl) {
+    article#article-1-section-education div.article-timeline-item-info-for-timelines,
+    article#article-1-section-experience div.article-timeline-item-info-for-timelines {
+        --timeline-title-size: clamp(1.56rem, 1.4rem + 0.66vw, 2rem);
+        --timeline-meta-size: clamp(1.2rem, 1.12rem + 0.26vw, 1.36rem);
+        --timeline-body-size: clamp(1.4rem, 1.31rem + 0.32vw, 1.58rem);
+        --timeline-badge-size: clamp(1.14rem, 1.08rem + 0.22vw, 1.28rem);
     }
 }
 
@@ -1015,7 +1029,7 @@ article.article-timeline--art-digital-expression ul.article-timeline-item-info-f
 ul.article-timeline-item-info-for-timelines-header-prop-list {
     color: var(--card-text-mid);
     font-size: var(--timeline-meta-size) !important;
-    line-height: 1.5;
+    line-height: 1.54;
     row-gap: clamp(0.22rem, 0.16rem + 0.14vw, 0.38rem);
 
     li.prop-list-item {
@@ -1063,7 +1077,7 @@ div.article-timeline-item-info-for-timelines-body {
     margin-top: var(--header-gap);
     color: var(--card-text-mid);
     font-size: var(--timeline-body-size);
-    line-height: 1.68;
+    line-height: 1.72;
 
     div.article-timeline-item-info-for-timelines-body-text {
         color: var(--card-text-mid);

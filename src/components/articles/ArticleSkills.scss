@@ -204,10 +204,10 @@ div.article-skills-item-popup-body.article-skills-item-popup-open {
 }
 
 div.article-skills-item-popup-body-inner {
-    --education-language-popup-font-size: 0.92rem;
+    --education-language-popup-font-size: 0.96rem;
     --education-language-popup-padding-x: 12px;
     --education-language-popup-padding-y: 10px;
-    --education-language-popup-line-height: 1.32;
+    --education-language-popup-line-height: 1.36;
 
     width: 100%;
     height: 100%;
@@ -343,10 +343,10 @@ article.article-skills-article-3-section-education {
         --avatar-size: 32px;
         --avatar-wrapper-width: 43px;
         --education-language-popup-body-min-height: 90px;
-        --education-language-popup-font-size: 0.86rem;
+        --education-language-popup-font-size: 0.9rem;
         --education-language-popup-padding-x: 11px;
         --education-language-popup-padding-y: 9px;
-        --education-language-popup-line-height: 1.28;
+        --education-language-popup-line-height: 1.32;
     }
 
     @include media-breakpoint-down(md) {
@@ -359,10 +359,10 @@ article.article-skills-article-3-section-education {
         --avatar-size: 28px;
         --avatar-wrapper-width: 39px;
         --education-language-popup-body-min-height: 82px;
-        --education-language-popup-font-size: 0.78rem;
+        --education-language-popup-font-size: 0.82rem;
         --education-language-popup-padding-x: 10px;
         --education-language-popup-padding-y: 8px;
-        --education-language-popup-line-height: 1.24;
+        --education-language-popup-line-height: 1.28;
     }
 
     div.article-skills-item-description {
@@ -503,6 +503,8 @@ article.article-skills-article-3-section-education {
 
     div.article-skills-item-title-main {
         color: var(--skill-card-text-strong);
+        font-size: clamp(1.02rem, 0.96rem + 0.18vw, 1.14rem);
+        line-height: 1.26;
     }
 
     div.article-skills-item-info-education-language {
@@ -604,18 +606,23 @@ article.article-skills-article-3-section-education {
 
     span.article-skills-item-title-label {
         color: var(--skill-card-text-mid);
+        font-size: clamp(0.84rem, 0.8rem + 0.12vw, 0.92rem);
     }
 
     span.article-skills-item-title-suffix {
         color: var(--skill-card-accent-2);
+        font-size: 0.96em;
     }
 
     span.article-skills-item-title-percentage {
         color: var(--skill-card-text-strong);
+        font-size: clamp(0.92rem, 0.88rem + 0.12vw, 1rem);
     }
 
     div.article-skills-item-experience {
         color: var(--skill-card-text-mid);
+        font-size: clamp(0.92rem, 0.88rem + 0.12vw, 1rem);
+        line-height: 1.42;
     }
 
     div.article-skills-item-progress {

@@ -224,6 +224,56 @@ article#article-1-section-my-software {
         }
     }
 
+    div.article-portfolio-item-title {
+        gap: 7px;
+
+        h5.article-portfolio-item-title-main {
+            font-size: 0.78rem;
+            line-height: 1.1;
+            letter-spacing: 0.005em;
+        }
+
+        div.article-portfolio-item-title-category {
+            font-size: clamp(0.78rem, 1.48cqw, 0.92rem);
+            line-height: 1.28;
+        }
+    }
+
+    @supports (container-type: inline-size) {
+        div.article-portfolio-item-title h5.article-portfolio-item-title-main {
+            font-size: clamp(0.68rem, 3.1cqw, 0.9rem);
+        }
+    }
+
+    @supports (container-type: inline-size) {
+        @container (max-width: 260px) {
+            div.article-portfolio-item-title h5.article-portfolio-item-title-main {
+                font-size: clamp(0.62rem, 2.9cqw, 0.8rem);
+            }
+        }
+
+        @container (max-width: 230px) {
+            div.article-portfolio-item-title h5.article-portfolio-item-title-main {
+                font-size: clamp(0.58rem, 2.75cqw, 0.74rem);
+            }
+        }
+    }
+
+    div.article-portfolio-item-body div.article-portfolio-item-body-description {
+        font-size: clamp(0.84rem, 0.8rem + 0.16vw, 0.94rem);
+        line-height: 1.52;
+    }
+
+    li.article-portfolio-item-body-tag {
+        font-size: clamp(0.66rem, 0.64rem + 0.09vw, 0.74rem) !important;
+        line-height: 1.18;
+    }
+
+    span.article-portfolio-item-control-btn-label {
+        font-size: clamp(0.76rem, 1.82cqw, 0.9rem);
+        line-height: 1.02;
+    }
+
     div.article-portfolio-item {
         --software-card-accent: rgba(96, 165, 250, 0.30);
         --software-card-accent-strong: rgba(244, 114, 182, 0.44);

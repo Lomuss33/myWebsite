@@ -354,7 +354,7 @@ article#article-3-section-experience {
         margin: 0;
         padding: 0;
         color: color-mix(in srgb, var(--experience-card-accent) 54%, var(--experience-flow-label-color) 46%);
-        font-size: 0.72rem;
+        font-size: 0.74rem;
         font-weight: 700;
         letter-spacing: 0.18em;
         text-transform: uppercase;
@@ -366,8 +366,8 @@ article#article-3-section-experience {
         width: fit-content;
         margin: 0;
         color: #f8fbff;
-        font-size: clamp(1.42rem, 1.04vw + 1.12rem, 2.08rem);
-        line-height: 1.04;
+        font-size: clamp(1.48rem, 1.06vw + 1.14rem, 2.14rem);
+        line-height: 1.06;
         letter-spacing: -0.03em;
         text-wrap: balance;
         max-width: min(100%, 26ch);
@@ -393,9 +393,9 @@ article#article-3-section-experience {
         min-height: 0;
         padding: 0;
         color: var(--experience-flow-trait-color);
-        font-size: 0.84rem;
+        font-size: 0.88rem;
         font-weight: 600;
-        line-height: 1.35;
+        line-height: 1.38;
 
         & + span.article-text-flow-card-impact-pill {
             padding-left: 14px;
@@ -445,7 +445,7 @@ article#article-3-section-experience {
     span.article-text-flow-card-axis-label {
         min-width: 0;
         color: color-mix(in srgb, var(--experience-card-accent) 64%, var(--experience-flow-label-color) 36%);
-        font-size: clamp(0.94rem, 0.28vw + 0.88rem, 1.08rem);
+        font-size: clamp(0.98rem, 0.28vw + 0.9rem, 1.12rem);
         font-weight: 700;
         letter-spacing: 0.14em;
         line-height: 1.18;
@@ -471,17 +471,17 @@ article#article-3-section-experience {
     p.pretext-draggable-inline-icon-text-intro,
     div.pretext-draggable-inline-icon-text-body,
     p.pretext-draggable-inline-icon-text-paragraph {
-        font-size: clamp(0.98rem, 0.22vw + 0.96rem, 1.08rem);
-        line-height: 1.64;
+        font-size: clamp(1.01rem, 0.22vw + 0.98rem, 1.12rem);
+        line-height: 1.68;
     }
 
     p.pretext-draggable-inline-icon-text-intro {
         max-width: var(--experience-card-intro-max-width);
         margin: 0 auto;
         color: #f8fbff;
-        font-size: clamp(1.02rem, 0.46vw + 0.98rem, 1.24rem);
+        font-size: clamp(1.06rem, 0.46vw + 1rem, 1.28rem);
         font-weight: 600;
-        line-height: 1.5;
+        line-height: 1.54;
         text-wrap: balance;
         letter-spacing: -0.018em;
     }
@@ -621,7 +621,7 @@ article#article-3-section-experience {
         }
 
         p.article-text-flow-card-eyebrow {
-            font-size: 0.68rem;
+            font-size: 0.7rem;
             letter-spacing: 0.14em;
         }
 
@@ -632,7 +632,7 @@ article#article-3-section-experience {
         }
 
         span.article-text-flow-card-axis-label {
-            font-size: 0.82rem;
+            font-size: 0.84rem;
             letter-spacing: 0.12em;
         }
 
@@ -641,7 +641,7 @@ article#article-3-section-experience {
         }
 
         span.article-text-flow-card-impact-pill {
-            font-size: 0.8rem;
+            font-size: 0.82rem;
         }
 
         div.pretext-draggable-inline-icon-text-rail-block {

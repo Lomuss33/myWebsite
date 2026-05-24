@@ -282,8 +282,8 @@ article.article-info-list-home {
         --proof-bubble-bleed-bottom: 20px;
         --proof-bubble-padding-x: 14px;
         --proof-bubble-padding-y: 12px;
-        --proof-bubble-font-size: clamp(0.96rem, 0.88rem + 0.18vw, 1.08rem);
-        --proof-bubble-line-height: 1.44;
+        --proof-bubble-font-size: clamp(0.98rem, 0.9rem + 0.2vw, 1.1rem);
+        --proof-bubble-line-height: 1.46;
 
         > div.collapsable-item {
             min-width: 0;
@@ -306,8 +306,8 @@ article.article-info-list-home {
             --proof-bubble-bleed-right: 24px;
             --proof-bubble-bleed-top: 4px;
             --proof-bubble-bleed-bottom: 19px;
-            --proof-bubble-font-size: clamp(0.92rem, 0.85rem + 0.16vw, 1.02rem);
-            --proof-bubble-line-height: 1.4;
+            --proof-bubble-font-size: clamp(0.94rem, 0.86rem + 0.18vw, 1.04rem);
+            --proof-bubble-line-height: 1.42;
         }
 
         @include media-breakpoint-down(lg) {
@@ -320,8 +320,8 @@ article.article-info-list-home {
             --proof-bubble-bleed-right: 23px;
             --proof-bubble-bleed-top: 4px;
             --proof-bubble-bleed-bottom: 18px;
-            --proof-bubble-font-size: clamp(0.88rem, 0.82rem + 0.14vw, 0.98rem);
-            --proof-bubble-line-height: 1.38;
+            --proof-bubble-font-size: clamp(0.9rem, 0.84rem + 0.16vw, 1rem);
+            --proof-bubble-line-height: 1.4;
         }
 
         @include media-breakpoint-down(md) {
@@ -334,8 +334,8 @@ article.article-info-list-home {
             --proof-bubble-bleed-right: 22px;
             --proof-bubble-bleed-top: 4px;
             --proof-bubble-bleed-bottom: 17px;
-            --proof-bubble-font-size: clamp(0.84rem, 0.8rem + 0.12vw, 0.92rem);
-            --proof-bubble-line-height: 1.34;
+            --proof-bubble-font-size: clamp(0.86rem, 0.81rem + 0.13vw, 0.94rem);
+            --proof-bubble-line-height: 1.36;
         }
 
         @include media-breakpoint-down(sm) {
@@ -351,8 +351,8 @@ article.article-info-list-home {
             --proof-bubble-bleed-bottom: 15px;
             --proof-bubble-padding-x: 10px;
             --proof-bubble-padding-y: 8px;
-            --proof-bubble-font-size: clamp(0.8rem, 0.77rem + 0.1vw, 0.88rem);
-            --proof-bubble-line-height: 1.3;
+            --proof-bubble-font-size: clamp(0.82rem, 0.78rem + 0.1vw, 0.9rem);
+            --proof-bubble-line-height: 1.32;
         }
     }
 
@@ -376,8 +376,8 @@ article.article-info-list-home {
             display: block;
             width: 100%;
             align-self: stretch;
-            font-size: clamp(1.06rem, 0.96rem + 0.22vw, 1.22rem);
-            line-height: 1.22;
+            font-size: clamp(1.1rem, 0.99rem + 0.24vw, 1.28rem);
+            line-height: 1.24;
             margin-bottom: 7px;
             letter-spacing: -0.008em;
             word-break: normal;
@@ -481,16 +481,16 @@ article.article-info-list-home {
             display: flex;
             align-items: center;
             width: 100%;
-            font-size: clamp(0.94rem, 0.87rem + 0.18vw, 1.04rem);
-            line-height: 1.5;
+            font-size: clamp(0.98rem, 0.9rem + 0.2vw, 1.1rem);
+            line-height: 1.54;
             word-break: normal;
             overflow-wrap: break-word;
         }
 
         @include media-breakpoint-down(sm) {
             div.article-info-list-item-info-title {
-                font-size: clamp(0.98rem, 0.92rem + 0.14vw, 1.06rem);
-                line-height: 1.18;
+                font-size: clamp(1rem, 0.94rem + 0.14vw, 1.1rem);
+                line-height: 1.2;
             }
 
             div.article-info-list-item-info-title-split {
@@ -502,8 +502,8 @@ article.article-info-list-home {
             }
 
             div.article-info-list-item-info-text {
-                font-size: clamp(0.86rem, 0.82rem + 0.12vw, 0.94rem);
-                line-height: 1.42;
+                font-size: clamp(0.9rem, 0.85rem + 0.12vw, 0.98rem);
+                line-height: 1.46;
             }
         }
     }

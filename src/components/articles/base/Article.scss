@@ -130,6 +130,23 @@ article.article > h4.article-title::before {
     min-height: var(--article-title-line-thickness);
 }
 
+section#section-about h4.article-title {
+    font-size: clamp(1.34rem, 1.22rem + 0.53vw, 1.7rem)!important;
+    line-height: 1.16;
+
+    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        font-size: clamp(1.25rem, 1.16rem + 0.36vw, 1.39rem)!important;
+    }
+}
+
+section#section-about h4.article-title span.article-title-prefix {
+    font-size: clamp(1.43rem, 1.33rem + 0.39vw, 1.62rem)!important;
+
+    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        font-size: clamp(1.32rem, 1.25rem + 0.25vw, 1.43rem)!important;
+    }
+}
+
 div.article-content {
     display: flex;
     flex-direction: column;

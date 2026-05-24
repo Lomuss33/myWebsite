@@ -940,6 +940,35 @@ article#article-5-section-my-writings {
     }
 }
 
+article:is(#article-3-section-my-writings, #article-4-section-my-writings) {
+    span.article-skills-item-title-prefix {
+        font-size: 0.96em;
+    }
+
+    span.article-skills-item-title-main {
+        font-size: clamp(1.02rem, 0.98rem + 0.16vw, 1.12rem);
+        line-height: 1.22;
+    }
+
+    span.article-skills-item-title-label {
+        font-size: clamp(0.84rem, 0.8rem + 0.12vw, 0.92rem);
+    }
+
+    span.article-skills-item-title-percentage {
+        font-size: clamp(0.98rem, 0.94rem + 0.12vw, 1.04rem);
+    }
+
+    div.article-skills-item-experience {
+        font-size: clamp(0.92rem, 0.88rem + 0.12vw, 0.98rem);
+        line-height: 1.42;
+    }
+
+    div.article-skills-item-description {
+        font-size: clamp(0.92rem, 0.88rem + 0.12vw, 0.98rem);
+        line-height: 1.58;
+    }
+}
+
 article#article-4-section-my-writings {
     --writings-skill-accent: #38bdf8;
     --writings-skill-accent-2: #f59e0b;

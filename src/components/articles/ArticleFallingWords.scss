@@ -13,12 +13,15 @@ article.article-falling-words {
 
     div.article-falling-words-description {
         color: color-mix(in srgb, var(--theme-texts) 82%, var(--theme-primary) 18%);
+        font-size: clamp(0.96rem, 0.92rem + 0.16vw, 1.04rem);
         line-height: 1.45;
         letter-spacing: 0.01em;
     }
 
     div.article-falling-words-hint {
         color: var(--theme-texts-light-4);
+        font-size: clamp(0.88rem, 0.84rem + 0.14vw, 0.96rem);
+        line-height: 1.4;
         margin-bottom: 12px;
     }
 
@@ -76,9 +79,12 @@ article#article-2-section-my-writings {
 
     div.falling-words-modal-title {
         color: #f8fafc;
+        font-size: clamp(1.04rem, 0.98rem + 0.18vw, 1.14rem);
     }
 
     div.falling-words-modal-definition {
         color: #d1d5db;
+        font-size: clamp(0.94rem, 0.9rem + 0.16vw, 1.02rem);
+        line-height: 1.56;
     }
 }

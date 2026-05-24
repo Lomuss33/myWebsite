@@ -1026,6 +1026,11 @@ article#article-2-section-my-hardware {
         margin: 0 4px;
     }
 
+    p.article-data-probe-intro {
+        font-size: clamp(0.98rem, 0.92rem + 0.2vw, 1.1rem)!important;
+        line-height: 1.62;
+    }
+
     div.article-data-probe-summary-chip,
     section.article-data-probe-block,
     div.article-data-probe-item,
@@ -1072,6 +1077,14 @@ article#article-2-section-my-hardware {
         gap: 8px;
     }
 
+    span.article-data-probe-summary-value {
+        font-size: clamp(1.08rem, 1.02rem + 0.18vw, 1.18rem);
+    }
+
+    span.article-data-probe-summary-label {
+        font-size: clamp(0.86rem, 0.82rem + 0.12vw, 0.92rem);
+    }
+
     div.article-data-probe-block {
         padding: 12px;
     }
@@ -1087,6 +1100,8 @@ article#article-2-section-my-hardware {
 
     div.article-data-probe-block-description {
         margin-top: 4px;
+        font-size: clamp(0.92rem, 0.88rem + 0.12vw, 0.98rem);
+        line-height: 1.5;
     }
 
     div.article-data-probe-block-count {
@@ -1113,6 +1128,7 @@ article#article-2-section-my-hardware {
 
     div.article-data-probe-item-meta {
         row-gap: 8px;
+        font-size: clamp(0.9rem, 0.86rem + 0.12vw, 0.96rem);
     }
 
     div.article-data-probe-item-meta-row + div.article-data-probe-item-meta-row {
@@ -1127,6 +1143,8 @@ article#article-2-section-my-hardware {
 
     pre.article-data-probe-item-value {
         padding: 12px 13px;
+        font-size: clamp(0.98rem, 0.94rem + 0.12vw, 1.04rem);
+        line-height: 1.72;
     }
 
     div.article-data-probe-item-badge.badge-hidden {
@@ -1141,6 +1159,26 @@ article#article-2-section-my-hardware {
     button.standard-button.article-data-probe-action-btn,
     button.copy-button.copy-button-pill {
         border-radius: 12px;
+    }
+
+    div.article-data-probe-item-title {
+        font-size: clamp(1.04rem, 1rem + 0.14vw, 1.12rem);
+    }
+
+    @include media-breakpoint-down(sm) {
+        p.article-data-probe-intro {
+            font-size: clamp(0.92rem, 0.88rem + 0.22vw, 0.98rem)!important;
+        }
+
+        span.article-data-probe-summary-label {
+            font-size: 0.84rem;
+        }
+
+        div.article-data-probe-block-description,
+        div.article-data-probe-item-meta,
+        pre.article-data-probe-item-value {
+            font-size: 0.92rem;
+        }
     }
 
 }

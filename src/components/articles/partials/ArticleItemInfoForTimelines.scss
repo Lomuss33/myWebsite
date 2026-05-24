@@ -218,6 +218,9 @@ article#article-1-section-my-writings li.article-timeline-item:nth-child(6n) div
 article#article-1-section-my-writings div.article-timeline-item-info-for-timelines {
     --card-accent: #743ad5;
     --card-accent-2: #d53a9d;
+    --timeline-title-size: clamp(1.18rem, 1.06rem + 0.5vw, 1.52rem);
+    --timeline-meta-size: clamp(0.92rem, 0.86rem + 0.2vw, 1.04rem);
+    --timeline-body-size: clamp(1.04rem, 0.98rem + 0.24vw, 1.16rem);
     --timeline-rule-color: var(--card-accent);
     --timeline-rule-width: 85%;
     --timeline-rule-thickness: 2px;

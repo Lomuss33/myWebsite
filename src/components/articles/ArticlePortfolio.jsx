@@ -7,6 +7,8 @@ import AvatarView from "../generic/AvatarView.jsx"
 import ArticleItemPreviewMenu from "./partials/ArticleItemPreviewMenu.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import Link from "../generic/Link.jsx"
+import PretextFitText from "../generic/PretextFitText.jsx"
+import {_stringUtils} from "../../hooks/utils/_string-utils.js"
 
 /**
  * @param {ArticleDataWrapper} dataWrapper
@@ -185,10 +187,20 @@ function ArticlePortfolioItemTitle({ itemWrapper }) {
  * @constructor
  */
 function ArticlePortfolioItemBody({ itemWrapper }) {
+    const shouldUseAdaptiveFit = shouldUseAdaptivePortfolioDescription(itemWrapper)
+
     return (
         <div className={`article-portfolio-item-body`}>
-            <div className={`article-portfolio-item-body-description text-2`}
-                 dangerouslySetInnerHTML={{__html: itemWrapper.locales.text}}/>
+            {shouldUseAdaptiveFit ? (
+                <PretextFitText text={_stringUtils.stripHTMLTags(itemWrapper.locales.text)}
+                                minFontSizePx={11}
+                                maxFontSizePx={17}
+                                lineHeightRatio={1.45}
+                                className={`article-portfolio-item-body-description article-portfolio-item-body-description-fit text-2`}/>
+            ) : (
+                <div className={`article-portfolio-item-body-description text-2`}
+                     dangerouslySetInnerHTML={{__html: itemWrapper.locales.text}}/>
+            )}
         </div>
     )
 }
@@ -220,6 +232,13 @@ export default ArticlePortfolio
 
 function isNonEmptyHref(href) {
     return typeof href === "string" && href.trim().length > 0
+}
+
+function shouldUseAdaptivePortfolioDescription(itemWrapper) {
+    const articleWrapper = itemWrapper?.articleWrapper
+    const sectionId = articleWrapper?.sectionId
+
+    return articleWrapper?.id === 1 && (sectionId === "my-software" || sectionId === "my-hardware")
 }
 
 const HARDWARE_TONE_BY_ITEM_ID = {

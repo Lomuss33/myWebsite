@@ -648,10 +648,6 @@ function FallingWords({
             }}
             aria-label={`Falling words`}
             onPointerDown={onPointerDown}
-            onPointerMove={onPointerMove}
-            onPointerUp={onPointerUp}
-            onPointerCancel={onPointerCancel}
-            onLostPointerCapture={onLostPointerCapture}
         >
             {selectedIndex !== null && (
                 <div

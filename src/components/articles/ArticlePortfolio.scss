@@ -1191,6 +1191,7 @@ div.article-portfolio-item-title {
 div.article-portfolio-item-body {
     margin-top: 10px;
     flex-grow: 1;
+    min-height: 0;
     min-width: 0;
     width: 100%;
 
@@ -1218,6 +1219,38 @@ div.article-portfolio-item-body {
 
         a {
             text-decoration-color: currentColor;
+        }
+    }
+
+    div.article-portfolio-item-body-description-fit {
+        font-size: var(--pretext-fit-font-size, clamp(0.77rem, 0.75rem + 0.12vw, 0.85rem));
+        line-height: var(--pretext-fit-line-height, 1.45);
+        display: block;
+        block-size: var(--portfolio-description-box-height, clamp(5rem, 8.5vw, 6.15rem));
+        overflow: hidden;
+        text-overflow: clip;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: normal;
+        hyphens: none;
+    }
+}
+
+article#article-1-section-my-software,
+article#article-1-section-my-hardware {
+    div.article-portfolio-item-body {
+        --portfolio-description-box-height: clamp(5rem, 8.5vw, 6.15rem);
+    }
+
+    @include media-breakpoint-down(lg) {
+        div.article-portfolio-item-body {
+            --portfolio-description-box-height: clamp(4.7rem, 12vw, 5.75rem);
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        div.article-portfolio-item-body {
+            --portfolio-description-box-height: clamp(4.45rem, 16vw, 5.25rem);
         }
     }
 }

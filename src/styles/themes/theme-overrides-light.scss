@@ -1275,6 +1275,16 @@
 [data-theme="light"] article#article-2-section-my-hardware button.copy-button.copy-button-pill {
     border-color: rgba(37, 99, 235, 0.16) !important;
     color: #0f172a !important;
+    --probe-button-border-strong: color-mix(in srgb, var(--probe-item-accent, #06b6d4) 44%, #94a3b8 56%);
+    --probe-button-icon-color: color-mix(in srgb, var(--probe-item-accent, #06b6d4) 72%, #0f172a 28%);
+    --probe-button-icon-color-hover: #0f172a;
+    --probe-button-icon-bg-top: color-mix(in srgb, var(--probe-item-accent, #06b6d4) 18%, #ffffff 82%);
+    --probe-button-icon-bg-bottom: color-mix(in srgb, var(--probe-item-accent, #06b6d4) 10%, #e2e8f0 90%);
+    --probe-button-icon-border: color-mix(in srgb, var(--probe-item-accent, #06b6d4) 26%, #cbd5e1 74%);
+    --probe-button-inner-border: rgba(255, 255, 255, 0.92);
+    --probe-button-frame-fill: color-mix(in srgb, #ffffff 88%, #dbeafe 12%);
+    --probe-button-corner-accent: color-mix(in srgb, var(--probe-item-accent, #06b6d4) 58%, white 42%);
+    --probe-button-corner-shadow: rgba(148, 163, 184, 0.24);
 }
 
 [data-theme="light"] article#article-2-section-my-hardware button.standard-button.btn-contrast.article-data-probe-unlock-btn {
@@ -1953,14 +1963,16 @@
     --probe-accent: #0ea5e9;
 }
 
-[data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-summary-chip i,
 [data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-block-icon,
 [data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-item-icon {
-    color: #06b6d4;
+    --probe-icon-box-color: color-mix(in srgb, var(--probe-accent) 64%, #0f172a 36%);
+    --probe-icon-box-bg-top: color-mix(in srgb, var(--probe-accent) 18%, #ffffff 82%);
+    --probe-icon-box-bg-bottom: color-mix(in srgb, var(--probe-accent) 10%, #dbeafe 90%);
+    --probe-icon-box-border: color-mix(in srgb, var(--probe-accent) 28%, #cbd5e1 72%);
+    --probe-icon-box-shadow: 0 12px 24px rgba(15, 23, 42, 0.10);
 }
 
-[data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-block-icon i,
-[data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-item-icon i {
+[data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-summary-chip i {
     color: #06b6d4;
 }
 
@@ -1971,12 +1983,6 @@
     box-shadow:
         0 14px 30px rgba(15, 23, 42, 0.08),
         inset 0 1px 0 rgba(255, 255, 255, 0.82) !important;
-}
-
-[data-theme="light"] article#article-2-section-my-hardware button.standard-button.btn-contrast.article-data-probe-unlock-btn i {
-    color: #0ea5e9;
-    background: linear-gradient(180deg, rgba(37, 99, 235, 0.10), rgba(255, 255, 255, 0.96));
-    border: 1px solid rgba(37, 99, 235, 0.18);
 }
 
 [data-theme="light"] article#article-2-section-my-hardware button.standard-button.article-data-probe-action-btn {
@@ -2465,14 +2471,7 @@
     box-shadow: none;
 }
 
-[data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-summary-chip i,
-[data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-block-icon,
-[data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-item-icon {
-    color: #06b6d4;
-}
-
-[data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-block-icon i,
-[data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-item-icon i {
+[data-theme="light"] article#article-2-section-my-hardware div.article-data-probe-summary-chip i {
     color: #06b6d4;
 }
 

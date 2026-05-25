@@ -4,17 +4,19 @@ import { layout, prepare } from "@chenglou/pretext"
 const PREPARED_TEXT_CACHE = new Map()
 const PREPARED_TEXT_CACHE_LIMIT = 400
 const DEFAULT_MIN_FONT_SIZE_PX = 11
-const DEFAULT_MAX_FONT_SIZE_PX = 17
-const DEFAULT_LINE_HEIGHT_RATIO = 1.45
-const DEFAULT_BINARY_SEARCH_PRECISION_PX = 0.25
+const DEFAULT_MAX_FONT_SIZE_PX = 22
+const DEFAULT_LINE_HEIGHT_RATIO = 1.34
+const DEFAULT_BINARY_SEARCH_PRECISION_PX = 0.2
 
 function PretextFitText({
     text,
+    as = "div",
     className = "",
     minFontSizePx = DEFAULT_MIN_FONT_SIZE_PX,
     maxFontSizePx = DEFAULT_MAX_FONT_SIZE_PX,
     lineHeightRatio = DEFAULT_LINE_HEIGHT_RATIO
 }) {
+    const Component = as
     const elementRef = useRef(null)
     const frameRef = useRef(null)
     const [fitState, setFitState] = useState(() => {
@@ -39,6 +41,7 @@ function PretextFitText({
             frameRef.current = requestAnimationFrame(() => {
                 frameRef.current = null
                 if(cancelled) return
+
                 const nextState = measureBestFit({
                     element,
                     text,
@@ -51,6 +54,7 @@ function PretextFitText({
                     if(prevState.fontSizePx === nextState.fontSizePx && prevState.lineHeight === nextState.lineHeight) {
                         return prevState
                     }
+
                     return nextState
                 })
             })
@@ -59,9 +63,7 @@ function PretextFitText({
         scheduleMeasure()
 
         if(typeof ResizeObserver === "function") {
-            resizeObserver = new ResizeObserver(() => {
-                scheduleMeasure()
-            })
+            resizeObserver = new ResizeObserver(scheduleMeasure)
             resizeObserver.observe(element)
         }
         else {
@@ -86,14 +88,14 @@ function PretextFitText({
     }, [text, minFontSizePx, maxFontSizePx, lineHeightRatio])
 
     return (
-        <div ref={elementRef}
-             className={className}
-             style={{
-                 "--pretext-fit-font-size": `${fitState.fontSizePx}px`,
-                 "--pretext-fit-line-height": `${fitState.lineHeight}px`
-             }}>
+        <Component ref={elementRef}
+                   className={className}
+                   style={{
+                       "--pretext-fit-font-size": `${fitState.fontSizePx}px`,
+                       "--pretext-fit-line-height": `${fitState.lineHeight}px`
+                   }}>
             {text}
-        </div>
+        </Component>
     )
 }
 
@@ -107,6 +109,11 @@ function measureBestFit({ element, text, minFontSizePx, maxFontSizePx, lineHeigh
         return buildFitState(maxFontSizePx, lineHeightRatio)
     }
 
+    const normalizedText = String(text || "").trim()
+    if(normalizedText.length === 0) {
+        return buildFitState(maxFontSizePx, lineHeightRatio)
+    }
+
     const computedStyles = window.getComputedStyle(element)
     const fontFamily = computedStyles.fontFamily || "sans-serif"
     const fontWeight = computedStyles.fontWeight || "400"
@@ -114,11 +121,6 @@ function measureBestFit({ element, text, minFontSizePx, maxFontSizePx, lineHeigh
     const fontVariant = computedStyles.fontVariant || "normal"
     const whiteSpace = computedStyles.whiteSpace === "pre-wrap" ? "pre-wrap" : "normal"
     const wordBreak = computedStyles.wordBreak === "keep-all" ? "keep-all" : "normal"
-    const normalizedText = String(text || "").trim()
-
-    if(normalizedText.length === 0) {
-        return buildFitState(maxFontSizePx, lineHeightRatio)
-    }
 
     const canFitAt = (fontSizePx) => {
         const font = buildCanvasFont({ fontStyle, fontVariant, fontWeight, fontFamily, fontSizePx })

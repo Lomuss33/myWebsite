@@ -41,9 +41,14 @@ function ArticlePortfolio({ dataWrapper, id }) {
 function ArticlePortfolioItems({ dataWrapper, selectedItemCategoryId }) {
     const language = useLanguage()
     const viewport = useViewport()
+    const shouldUseAdaptiveDescription = shouldUseAdaptivePortfolioArticle(dataWrapper)
 
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
-    const itemsPerRow = viewport.isBreakpoint("xxl") ?
+    const itemsPerRow = shouldUseAdaptiveDescription ?
+        viewport.isBreakpoint("lg") ?
+            2 :
+            1 :
+        viewport.isBreakpoint("xxl") ?
         3 :
         viewport.isBreakpoint("lg") ?
             2 :
@@ -170,6 +175,27 @@ function ArticlePortfolioItem({ itemWrapper }) {
  * @constructor
  */
 function ArticlePortfolioItemTitle({ itemWrapper }) {
+    const shouldUseAdaptiveFit = shouldUseAdaptivePortfolioDescription(itemWrapper)
+
+    if(shouldUseAdaptiveFit) {
+        return (
+            <div className={`article-portfolio-item-title`}>
+                <PretextFitText as={`h5`}
+                                text={_stringUtils.stripHTMLTags(itemWrapper.locales.title || itemWrapper.placeholder)}
+                                minFontSizePx={16}
+                                maxFontSizePx={40}
+                                lineHeightRatio={1.1}
+                                className={`article-portfolio-item-title-main article-portfolio-item-title-main-fit`}/>
+
+                <PretextFitText text={_stringUtils.stripHTMLTags(itemWrapper.category?.label || "")}
+                                minFontSizePx={14}
+                                maxFontSizePx={24}
+                                lineHeightRatio={1.16}
+                                className={`article-portfolio-item-title-category article-portfolio-item-title-category-fit text-2`}/>
+            </div>
+        )
+    }
+
     return (
         <div className={`article-portfolio-item-title`}>
             <h5 className={`article-portfolio-item-title-main`}
@@ -194,8 +220,8 @@ function ArticlePortfolioItemBody({ itemWrapper }) {
             {shouldUseAdaptiveFit ? (
                 <PretextFitText text={_stringUtils.stripHTMLTags(itemWrapper.locales.text)}
                                 minFontSizePx={11}
-                                maxFontSizePx={17}
-                                lineHeightRatio={1.45}
+                                maxFontSizePx={22}
+                                lineHeightRatio={1.34}
                                 className={`article-portfolio-item-body-description article-portfolio-item-body-description-fit text-2`}/>
             ) : (
                 <div className={`article-portfolio-item-body-description text-2`}
@@ -236,8 +262,11 @@ function isNonEmptyHref(href) {
 
 function shouldUseAdaptivePortfolioDescription(itemWrapper) {
     const articleWrapper = itemWrapper?.articleWrapper
-    const sectionId = articleWrapper?.sectionId
+    return shouldUseAdaptivePortfolioArticle(articleWrapper)
+}
 
+function shouldUseAdaptivePortfolioArticle(articleWrapper) {
+    const sectionId = articleWrapper?.sectionId
     return articleWrapper?.id === 1 && (sectionId === "my-software" || sectionId === "my-hardware")
 }
 

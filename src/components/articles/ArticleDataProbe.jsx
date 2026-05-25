@@ -737,6 +737,25 @@ function ArticleDataProbe({ dataWrapper }) {
         setListExpanded(prev => ({ ...prev, [id]: !prev?.[id] }))
     }
 
+    const openSearchConfirm = ({ title, variableId, faIcon, scopeLabel }) => {
+        if (!title || !variableId) return
+
+        const query = `${title} ${variableId}`
+        const searchUrl = buildGoogleSearchUrl(query)
+        const scopeText = scopeLabel === "section" ?
+            "Open a Google search for this signal group?" :
+            "Open a Google search for this signal?"
+        const message = `${scopeText}\n\n${query}\n\nContinue opens the result in a new tab/window.`
+
+        if (typeof window?.confirm === "function" && !window.confirm(message)) {
+            return
+        }
+
+        if (typeof window?.open === "function") {
+            window.open(searchUrl, "_blank", "noopener,noreferrer")
+        }
+    }
+
     const autoCount = passiveProbes.length
     const requestCount = requestProbes.length
     const publicCount = publicIpProbes.length
@@ -781,7 +800,9 @@ function ArticleDataProbe({ dataWrapper }) {
                 title={`Public IP`}
                 description={`Shows the address that outside services see. Nothing is fetched until you click one of the buttons.`}
                 count={publicCount}
-                accent={`accent-external`}>
+                accent={`accent-external`}
+                searchId={`public_ip`}
+                onIconClick={openSearchConfirm}>
                 <div className={`article-data-probe-grid article-data-probe-grid-compact`}>
                     {publicIpProbes.map(p => (
                         <ProbeItem key={p.id}
@@ -792,7 +813,8 @@ function ArticleDataProbe({ dataWrapper }) {
                                    onRequest={() => runPublicIp(p)}
                                    thirdParty={true}
                                    expanded={Boolean(expanded?.[p.id])}
-                                   onToggleExpand={() => toggleExpanded(p.id)}/>
+                                   onToggleExpand={() => toggleExpanded(p.id)}
+                                   onIconClick={openSearchConfirm}/>
                     ))}
                 </div>
             </ProbeSection>
@@ -804,6 +826,8 @@ function ArticleDataProbe({ dataWrapper }) {
                 description={`These checks stay dormant until you unlock the section and explicitly ask for each permission or hardware chooser.`}
                 count={requestCount}
                 accent={`accent-interactive`}
+                searchId={`permission_gated`}
+                onIconClick={openSearchConfirm}
                 actions={!unlocked ? (
                     <StandardButton variant={`contrast`}
                                     className={`article-data-probe-unlock-btn`}
@@ -826,7 +850,8 @@ function ArticleDataProbe({ dataWrapper }) {
                                            extraIcon={p.extraAction?.icon}
                                            extraState={probeStates[`${p.id}__extra`]}
                                            expanded={Boolean(expanded?.[p.id])}
-                                           onToggleExpand={() => toggleExpanded(p.id)}/>
+                                           onToggleExpand={() => toggleExpanded(p.id)}
+                                           onIconClick={openSearchConfirm}/>
                             ))}
                         </div>
 
@@ -844,7 +869,9 @@ function ArticleDataProbe({ dataWrapper }) {
                 title={`Visible without asking`}
                 description={`These values are exposed by the browser immediately, without prompts, and are enough to describe a device surprisingly well.`}
                 count={autoCount}
-                accent={`accent-passive`}>
+                accent={`accent-passive`}
+                searchId={`passive_reads`}
+                onIconClick={openSearchConfirm}>
                 {!passiveInitReady && (
                     <div className={`article-data-probe-block-description text-3 mb-3`}>
                         Passive probes are queued until the browser is idle so this section does not stall page transitions.
@@ -856,7 +883,8 @@ function ArticleDataProbe({ dataWrapper }) {
                                    probe={p}
                                    state={probeStates[p.id]}
                                    expanded={Boolean(expanded?.[p.id])}
-                                   onToggleExpand={() => toggleExpanded(p.id)}/>
+                                   onToggleExpand={() => toggleExpanded(p.id)}
+                                   onIconClick={openSearchConfirm}/>
                     ))}
                 </div>
 
@@ -869,12 +897,30 @@ function ArticleDataProbe({ dataWrapper }) {
     )
 }
 
-function ProbeSection({ icon, eyebrow, title, description, count, accent, actions = null, children }) {
+function ProbeSection({ icon, eyebrow, title, description, count, accent, actions = null, children, searchId = "", onIconClick = null }) {
+    const clickable = Boolean(searchId && onIconClick)
+    const handleActivate = () => {
+        if (!clickable) return
+        onIconClick({ title, variableId: searchId, faIcon: icon, scopeLabel: "section" })
+    }
+    const handleKeyDown = (event) => {
+        if (!clickable) return
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault()
+            handleActivate()
+        }
+    }
+
     return (
         <section className={`article-data-probe-block ${accent || ""}`}>
             <div className={`article-data-probe-block-header`}>
                 <div className={`article-data-probe-block-lead`}>
-                    <div className={`article-data-probe-block-icon`}>
+                    <div className={`article-data-probe-block-icon ${clickable ? "article-data-probe-block-icon-clickable" : ""}`}
+                         role={clickable ? "button" : undefined}
+                         tabIndex={clickable ? 0 : undefined}
+                         aria-label={clickable ? `Search Google for ${title}` : undefined}
+                         onClick={clickable ? handleActivate : undefined}
+                         onKeyDown={clickable ? handleKeyDown : undefined}>
                         <i className={icon}/>
                     </div>
 
@@ -939,10 +985,12 @@ function ProbeItem({
     extraState = null,
     expanded = false,
     onToggleExpand = null,
+    onIconClick = null,
 }) {
     const status = state?.status || (showRequest ? "idle" : "pending")
     const value = state?.value || null
     const whatText = probe?.what || PROBE_WHAT[probe?.id] || "Explanation unavailable."
+    const clickable = Boolean(probe?.id && probe?.title && onIconClick)
 
     const badge = status === "ok" ? "AVAILABLE" :
         status === "pending" ? "CHECKING" :
@@ -961,13 +1009,28 @@ function ProbeItem({
     const hasCollapsedPreview = status === "ok" && fullText !== collapsedText
     const canExpand = hasCollapsedPreview || hasExtraDetails
     const isExpanded = canExpand && expanded
-
     const requestIcon = thirdParty ? "fa-solid fa-globe" : "fa-solid fa-wand-magic-sparkles"
+    const handleActivateIcon = () => {
+        if (!clickable) return
+        onIconClick({ title: probe.title, variableId: probe.id, faIcon: probe.icon, scopeLabel: "probe" })
+    }
+    const handleIconKeyDown = (event) => {
+        if (!clickable) return
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault()
+            handleActivateIcon()
+        }
+    }
 
     return (
         <div className={`article-data-probe-item ${thirdParty ? "item-third-party" : ""} ${isExpanded ? "item-expanded" : ""}`}>
             <div className={`article-data-probe-item-head`}>
-                <div className={`article-data-probe-item-icon`}>
+                <div className={`article-data-probe-item-icon ${clickable ? "article-data-probe-item-icon-clickable" : ""}`}
+                     role={clickable ? "button" : undefined}
+                     tabIndex={clickable ? 0 : undefined}
+                     aria-label={clickable ? `Search Google for ${probe.title} (${probe.id})` : undefined}
+                     onClick={clickable ? handleActivateIcon : undefined}
+                     onKeyDown={clickable ? handleIconKeyDown : undefined}>
                     <i className={`${probe.icon}`}/>
                 </div>
 
@@ -1047,6 +1110,10 @@ function ProbeItem({
 }
 
 export default ArticleDataProbe
+
+function buildGoogleSearchUrl(query) {
+    return `https://www.google.com/search?q=${encodeURIComponent(query)}`
+}
 
 function safePretty(value) {
     try {

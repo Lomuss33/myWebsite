@@ -575,53 +575,6 @@
     },
     {
       "id": 2,
-      "component": "ArticleLookAtThisGraph",
-      "locales": {
-        "en": {
-          "title": "Look at this Graph",
-          "description": "Three stacked graph views. Use the arrows in each panel to swap between a line chart, a life timeline, and illustrative yearly earnings."
-        },
-        "de": {
-          "title": "Look at this Graph",
-          "description": "Drei gestapelte Diagrammansichten. Mit den Pfeilen in jedem Panel kannst du zwischen Liniengrafik, Lebenszeitleiste und beispielhaften Jahreseinnahmen wechseln."
-        },
-        "hr": {
-          "title": "Look at this Graph",
-          "description": "Tri složena prikaza grafa. Koristi strelice u svakom panelu za prebacivanje između linijskog grafa, vremenske crte života i ilustrativnih godišnjih zarada."
-        },
-        "tr": {
-          "title": "Look at this Graph",
-          "description": "Üç üst üste yığılmış grafik görünümü. Her paneldeki oklarla çizgi grafik, yaşam zaman çizelgesi ve örnek yıllık kazançlar arasında geçiş yap."
-        }
-      },
-      "settings": {},
-      "items": [
-        {
-          "id": 1,
-          "faIcon": "fa-solid fa-chart-column",
-          "locales": {
-            "en": {
-              "title": "Graph Deck",
-              "text": "Three large canvas panels with shared graph choices."
-            },
-            "de": {
-              "title": "Diagramm-Deck",
-              "text": "Drei große Canvas-Panels mit gemeinsamen Graph-Auswahlen."
-            },
-            "hr": {
-              "title": "Sklop grafova",
-              "text": "Tri velika canvas panela s istim izborom grafova."
-            },
-            "tr": {
-              "title": "Graf destesi",
-              "text": "Aynı grafik seçimlerini paylaşan üç büyük canvas paneli."
-            }
-          }
-        }
-      ]
-    },
-    {
-      "id": 3,
       "component": "ArticleTestimonials",
       "locales": {
         "en": {
@@ -1578,6 +1531,53 @@
             }
           },
           "categoryId": "recommendation_group_mobile"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "component": "ArticleLookAtThisGraph",
+      "locales": {
+        "en": {
+          "title": "Look at this Graph",
+          "description": "Three stacked graph views. Use the arrows in each panel to swap between a line chart, a life timeline, and illustrative yearly earnings."
+        },
+        "de": {
+          "title": "Look at this Graph",
+          "description": "Drei gestapelte Diagrammansichten. Mit den Pfeilen in jedem Panel kannst du zwischen Liniengrafik, Lebenszeitleiste und beispielhaften Jahreseinnahmen wechseln."
+        },
+        "hr": {
+          "title": "Look at this Graph",
+          "description": "Tri složena prikaza grafa. Koristi strelice u svakom panelu za prebacivanje između linijskog grafa, vremenske crte života i ilustrativnih godišnjih zarada."
+        },
+        "tr": {
+          "title": "Look at this Graph",
+          "description": "Üç üst üste yığılmış grafik görünümü. Her paneldeki oklarla çizgi grafik, yaşam zaman çizelgesi ve örnek yıllık kazançlar arasında geçiş yap."
+        }
+      },
+      "settings": {},
+      "items": [
+        {
+          "id": 1,
+          "faIcon": "fa-solid fa-chart-column",
+          "locales": {
+            "en": {
+              "title": "Graph Deck",
+              "text": "Three large canvas panels with shared graph choices."
+            },
+            "de": {
+              "title": "Diagramm-Deck",
+              "text": "Drei große Canvas-Panels mit gemeinsamen Graph-Auswahlen."
+            },
+            "hr": {
+              "title": "Sklop grafova",
+              "text": "Tri velika canvas panela s istim izborom grafova."
+            },
+            "tr": {
+              "title": "Graf destesi",
+              "text": "Aynı grafik seçimlerini paylaşan üç büyük canvas paneli."
+            }
+          }
         }
       ]
     }

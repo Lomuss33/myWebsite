@@ -23,10 +23,9 @@ function FallingWords({
     const engineRef = useRef(null)
     const wordBodiesRef = useRef([])
     const selectedIndexRef = useRef(null)
-    const redHoldIndicesRef = useRef(new Set())
     const permanentRedIndicesRef = useRef(new Set())
-    const redHoldTimersRef = useRef(new Map())
     const [, forceRedRerender] = useState(0)
+    const dragListenersCleanupRef = useRef(() => {})
     const dragStateRef = useRef({
         pointerId: null,
         index: null,
@@ -43,8 +42,7 @@ function FallingWords({
         dragBoxHeight: 0,
         dragBoxLeftOffset: 0,
         dragBoxTopOffset: 0,
-        pointerType: null,
-        lastDragAt: 0
+        pointerType: null
     })
     const [layoutVersion, setLayoutVersion] = useState(0)
     const [isReady, setIsReady] = useState(false)
@@ -99,17 +97,6 @@ function FallingWords({
 
     const _bumpRed = () => forceRedRerender(v => v + 1)
 
-    const _clearRedHold = (index) => {
-        const timers = redHoldTimersRef.current
-        const existingTimer = timers.get(index)
-        if(existingTimer) clearTimeout(existingTimer)
-        timers.delete(index)
-
-        if(redHoldIndicesRef.current.delete(index)) {
-            _bumpRed()
-        }
-    }
-
     const _releaseDragCapture = () => {
         const dragState = dragStateRef.current
         if(!dragState?.captureTarget?.releasePointerCapture || dragState.pointerId == null) return
@@ -129,16 +116,16 @@ function FallingWords({
         entry?.el?.classList.remove("falling-word-held")
     }
 
-    const _finalizePointerInteraction = ({ commitHold = false, holdMs = 0 } = {}) => {
+    const _clearDragListeners = () => {
+        dragListenersCleanupRef.current?.()
+        dragListenersCleanupRef.current = () => {}
+    }
+
+    const _finalizePointerInteraction = () => {
         const dragState = dragStateRef.current
-        const index = dragState.index
 
         _clearDragTargetHeldClass()
-
-        if(commitHold && index != null) {
-            dragState.lastDragAt = Date.now()
-            applyRedHold(index, holdMs)
-        }
+        _clearDragListeners()
 
         _releaseDragCapture()
 
@@ -156,30 +143,8 @@ function FallingWords({
         dragState.pointerType = null
     }
 
-    const applyRedHold = (index, holdMs) => {
-        if(index === null || index === undefined) return
-        if(permanentRedIndicesRef.current.has(index)) return
-
-        const timers = redHoldTimersRef.current
-        const previous = timers.get(index)
-        if(previous) clearTimeout(previous)
-
-        redHoldIndicesRef.current.add(index)
-        _bumpRed()
-
-        const timeoutId = setTimeout(() => {
-            timers.delete(index)
-            if(redHoldIndicesRef.current.delete(index)) {
-                _bumpRed()
-            }
-        }, holdMs)
-        timers.set(index, timeoutId)
-    }
-
     const applyPermanentRed = (index) => {
         if(index === null || index === undefined) return
-
-        _clearRedHold(index)
         if(permanentRedIndicesRef.current.has(index)) return
 
         permanentRedIndicesRef.current.add(index)
@@ -273,6 +238,9 @@ function FallingWords({
 
         const engine = Engine.create({})
         engine.gravity.y = isCoarsePointer() ? 0.6 : 1
+        engine.positionIterations = isCoarsePointer() ? 12 : 10
+        engine.velocityIterations = isCoarsePointer() ? 10 : 8
+        engine.constraintIterations = isCoarsePointer() ? 5 : 4
         engineRef.current = engine
 
         const wallThickness = 200
@@ -340,17 +308,19 @@ function FallingWords({
             )
 
             const body = Bodies.rectangle(startX, startY, bodyWidth, bodyHeight, {
-                friction: 0.18,
-                frictionAir: isCoarsePointer() ? 0.05 : 0.02,
-                restitution: 0.2,
+                friction: 0.26,
+                frictionStatic: 0.95,
+                frictionAir: isCoarsePointer() ? 0.035 : 0.018,
+                restitution: 0.06,
+                slop: 0.01,
                 render: {visible: false}
             })
 
-            // Slight initial horizontal drift to spread stacks.
-            Body.setVelocity(body, { x: (Math.random() - 0.5) * 1.2, y: 0 })
+            // Slight initial horizontal drift to spread stacks without making them look floaty.
+            Body.setVelocity(body, { x: (Math.random() - 0.5) * 0.9, y: 0 })
 
             // Keep bodies from accumulating extreme rotations.
-            Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.035)
+            Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.02)
 
             return {body, el, bodyWidth, bodyHeight}
         })
@@ -431,16 +401,10 @@ function FallingWords({
                 // no-op
             }
 
-            const timers = redHoldTimersRef.current
-            for(const timeoutId of timers.values()) {
-                clearTimeout(timeoutId)
-            }
-            timers.clear()
-            redHoldIndicesRef.current.clear()
-
             engineRef.current = null
             wordBodiesRef.current = []
             _clearWordTransforms()
+            _clearDragListeners()
             _resetDragState()
         }
 
@@ -551,15 +515,12 @@ function FallingWords({
         const rect = container.getBoundingClientRect()
         const pointerX = event.clientX - rect.left
         const pointerY = event.clientY - rect.top
-        const wordRect = targetEl.getBoundingClientRect()
-        const anchorOffsetX = clamp(event.clientX - wordRect.left, 0, wordRect.width || 0)
-        const anchorOffsetY = clamp(event.clientY - wordRect.top, 0, wordRect.height || 0)
-        const dragBoxWidth = wordRect.width || entry.bodyWidth
-        const dragBoxHeight = wordRect.height || entry.bodyHeight
-        const renderOriginLeft = entry.body.position.x - entry.bodyWidth / 2
-        const renderOriginTop = entry.body.position.y - entry.bodyHeight / 2
-        const dragBoxLeftOffset = (wordRect.left - rect.left) - renderOriginLeft
-        const dragBoxTopOffset = (wordRect.top - rect.top) - renderOriginTop
+        const bodyCenterX = entry.body.position.x
+        const bodyCenterY = entry.body.position.y
+        const dragBoxWidth = entry.bodyWidth
+        const dragBoxHeight = entry.bodyHeight
+        const anchorOffsetX = pointerX - bodyCenterX
+        const anchorOffsetY = pointerY - bodyCenterY
 
         dragStateRef.current.pointerId = event.pointerId
         dragStateRef.current.index = index
@@ -571,20 +532,30 @@ function FallingWords({
         dragStateRef.current.anchorOffsetY = anchorOffsetY
         dragStateRef.current.dragBoxWidth = dragBoxWidth
         dragStateRef.current.dragBoxHeight = dragBoxHeight
-        dragStateRef.current.dragBoxLeftOffset = dragBoxLeftOffset
-        dragStateRef.current.dragBoxTopOffset = dragBoxTopOffset
         dragStateRef.current.targetX = entry.body.position.x
         dragStateRef.current.targetY = entry.body.position.y
         dragStateRef.current.pointerType = event.pointerType || null
         dragStateRef.current.captureTarget = targetEl
 
-        _clearRedHold(index)
         targetEl.classList.add("falling-word-held")
 
         try {
             targetEl.setPointerCapture?.(event.pointerId)
         } catch {
             // no-op
+        }
+
+        const onGlobalPointerMove = (moveEvent) => onPointerMove(moveEvent)
+        const onGlobalPointerUp = (upEvent) => onPointerUp(upEvent)
+        const onGlobalPointerCancel = (cancelEvent) => onPointerCancel(cancelEvent)
+
+        window.addEventListener("pointermove", onGlobalPointerMove, { passive: false })
+        window.addEventListener("pointerup", onGlobalPointerUp, { passive: false })
+        window.addEventListener("pointercancel", onGlobalPointerCancel, { passive: false })
+        dragListenersCleanupRef.current = () => {
+            window.removeEventListener("pointermove", onGlobalPointerMove)
+            window.removeEventListener("pointerup", onGlobalPointerUp)
+            window.removeEventListener("pointercancel", onGlobalPointerCancel)
         }
 
         Matter.Sleeping.set(entry.body, false)
@@ -615,20 +586,22 @@ function FallingWords({
         const rect = container.getBoundingClientRect()
         const pointerX = event.clientX - rect.left
         const pointerY = event.clientY - rect.top
-        const desiredBoxLeft = pointerX - dragState.anchorOffsetX
-        const desiredBoxTop = pointerY - dragState.anchorOffsetY
-        const clampedBoxLeft = clamp(
-            desiredBoxLeft,
-            8,
-            Math.max(8, rect.width - dragState.dragBoxWidth - 8)
+        const dragInsetX = 8
+        const dragInsetTop = 0
+        const desiredCenterX = pointerX - dragState.anchorOffsetX
+        const desiredCenterY = pointerY - dragState.anchorOffsetY
+        const halfWidth = dragState.dragBoxWidth / 2
+        const halfHeight = dragState.dragBoxHeight / 2
+        const nextX = clamp(
+            desiredCenterX,
+            halfWidth + dragInsetX,
+            Math.max(halfWidth + dragInsetX, rect.width - halfWidth - dragInsetX)
         )
-        const clampedBoxTop = clamp(
-            desiredBoxTop,
-            8,
-            Math.max(8, rect.height - dragState.dragBoxHeight - 8)
+        const nextY = clamp(
+            desiredCenterY,
+            halfHeight + dragInsetTop,
+            Math.max(halfHeight + dragInsetTop, rect.height - halfHeight - dragInsetX)
         )
-        const nextX = (clampedBoxLeft - dragState.dragBoxLeftOffset) + entry.bodyWidth / 2
-        const nextY = (clampedBoxTop - dragState.dragBoxTopOffset) + entry.bodyHeight / 2
         dragState.targetX = nextX
         dragState.targetY = nextY
         event.preventDefault()
@@ -640,7 +613,7 @@ function FallingWords({
 
         const index = dragState.index
         if(index != null && dragState.moved) {
-            _finalizePointerInteraction({ commitHold: true, holdMs: 4000 })
+            _finalizePointerInteraction()
         }
         else if(index != null && dragState.tapEligible) {
             onPointerTap(event)
@@ -705,12 +678,11 @@ function FallingWords({
             {words.map((word, index) => {
                 const isHighlighted = (highlightPrefixes || []).some(prefix => word.startsWith(prefix))
                 const isRedPermanent = permanentRedIndicesRef.current.has(index)
-                const isRedHold = !isRedPermanent && redHoldIndicesRef.current.has(index)
                 return (
                     <span
                         key={`${word}-${index}`}
                         ref={(el) => { wordRefs.current[index] = el }}
-                        className={`falling-word ${isHighlighted ? "falling-word-highlighted" : ""} ${selectedIndex === index ? "falling-word-selected" : ""} ${isRedHold ? "falling-word-red-hold" : ""} ${isRedPermanent ? "falling-word-red-permanent" : ""}`}
+                        className={`falling-word ${isHighlighted ? "falling-word-highlighted" : ""} ${selectedIndex === index ? "falling-word-selected" : ""} ${isRedPermanent ? "falling-word-red-permanent" : ""}`}
                     >
                         {word}
                     </span>

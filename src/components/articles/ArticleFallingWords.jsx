@@ -40,7 +40,7 @@ function ArticleFallingWords({ dataWrapper }) {
     const stageHeight = isMobileLayout ?
         Math.max(280, Math.min(420, Math.round(viewport.innerHeight * 0.28))) :
         Math.max(400, Math.min(560, Math.round(viewport.innerHeight * 0.34)))
-    const stageFontScale = 0.6
+    const stageFontScale = isMobileLayout ? 0.64 : 0.72
 
     return (
         <Article
@@ -49,13 +49,6 @@ function ArticleFallingWords({ dataWrapper }) {
             dataWrapper={dataWrapper}
             className={`article-falling-words`}
         >
-            {dataWrapper.locales.description && (
-                <p
-                    className={`article-falling-words-description text-2`}
-                    dangerouslySetInnerHTML={{ __html: dataWrapper.locales.description }}
-                />
-            )}
-
             <div className={`article-falling-words-hint text-2`}>
                 {hintText}
             </div>

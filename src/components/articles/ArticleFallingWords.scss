@@ -1,28 +1,43 @@
 @use "../../styles/extend" as *;
 
 article.article-falling-words {
-    div.article-falling-words-description,
     div.article-falling-words-hint {
-        max-width: 64ch;
-        margin: 0 12px 10px;
+        width: 100%;
+        max-width: none;
+        box-sizing: border-box;
+        margin: 0 0 14px;
         text-wrap: balance;
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-            margin: 0 10px 10px;
+            margin: 0 0 12px;
         }
     }
 
-    div.article-falling-words-description {
-        color: color-mix(in srgb, var(--theme-texts) 82%, var(--theme-primary) 18%);
-        font-size: clamp(0.96rem, 0.92rem + 0.16vw, 1.04rem);
+    div.article-falling-words-hint {
+        position: relative;
+        overflow: hidden;
+        padding: 14px 18px;
+        color: color-mix(in srgb, var(--theme-texts) 84%, var(--theme-primary) 16%);
+        font-size: clamp(0.9rem, 0.86rem + 0.16vw, 1rem);
         line-height: 1.45;
         letter-spacing: 0.01em;
-    }
+        border: 1px solid color-mix(in srgb, var(--theme-primary) 18%, var(--theme-standard-borders) 82%);
+        border-radius: 18px;
+        background:
+            linear-gradient(135deg, color-mix(in srgb, var(--theme-primary) 12%, transparent) 0%, transparent 54%),
+            linear-gradient(180deg, color-mix(in srgb, var(--theme-boards-background) 96%, var(--theme-empty) 4%), color-mix(in srgb, var(--theme-boards-background) 91%, var(--theme-empty) 9%));
+        box-shadow:
+            0 12px 28px rgba(0, 0, 0, 0.10),
+            inset 0 1px 0 rgba(255, 255, 255, 0.06);
 
-    div.article-falling-words-hint {
-        color: var(--theme-texts-light-4);
-        font-size: clamp(0.88rem, 0.84rem + 0.14vw, 0.96rem);
-        line-height: 1.4;
-        margin-bottom: 12px;
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 5px;
+            background: linear-gradient(180deg, var(--theme-primary), var(--theme-secondary));
+            box-shadow: 0 0 18px color-mix(in srgb, var(--theme-primary) 30%, transparent);
+            opacity: 0.95;
+        }
     }
 
     div.falling-words.article-falling-words-stage {
@@ -38,12 +53,15 @@ article.article-falling-words {
 }
 
 article#article-2-section-my-writings {
-    div.article-falling-words-description {
-        color: #e2e8f0;
-    }
-
     div.article-falling-words-hint {
-        color: #cbd5e1;
+        color: #e2e8f0;
+        border-color: rgba(56, 189, 248, 0.28);
+        background:
+            linear-gradient(135deg, rgba(14, 165, 233, 0.18), rgba(14, 165, 233, 0.02) 48%),
+            linear-gradient(180deg, rgba(11, 18, 32, 0.98), rgba(5, 7, 13, 0.98));
+        box-shadow:
+            0 18px 40px rgba(0, 0, 0, 0.28),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
 
     div.falling-words.article-falling-words-stage {
@@ -86,5 +104,173 @@ article#article-2-section-my-writings {
         color: #d1d5db;
         font-size: clamp(0.94rem, 0.9rem + 0.16vw, 1.02rem);
         line-height: 1.56;
+    }
+}
+
+[data-theme="light"] article#article-2-section-my-writings {
+    div.article-falling-words-hint {
+        color: color-mix(in srgb, var(--theme-texts) 84%, var(--theme-primary) 16%);
+        border-color: color-mix(in srgb, var(--theme-primary) 20%, var(--theme-standard-borders) 80%);
+        background:
+            linear-gradient(135deg, color-mix(in srgb, var(--theme-primary) 16%, transparent) 0%, transparent 52%),
+            linear-gradient(180deg, color-mix(in srgb, var(--theme-boards-background) 98%, white 2%), color-mix(in srgb, var(--theme-boards-background) 92%, var(--theme-empty) 8%));
+        box-shadow:
+            0 14px 28px rgba(15, 23, 42, 0.08),
+            inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    div.falling-words.article-falling-words-stage {
+        border: 1px solid color-mix(in srgb, var(--theme-primary) 28%, var(--theme-standard-borders) 72%);
+        border-radius: 18px;
+        background:
+            linear-gradient(180deg, color-mix(in srgb, var(--theme-boards-background) 98%, white 2%), color-mix(in srgb, var(--theme-boards-background) 92%, var(--theme-empty) 8%));
+        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    div.falling-words-modal-card {
+        border-color: color-mix(in srgb, var(--theme-primary) 24%, var(--theme-standard-borders) 76%);
+        background: linear-gradient(180deg, #ffffff, color-mix(in srgb, var(--theme-boards-background) 96%, var(--theme-empty) 4%));
+    }
+
+    div.falling-words-modal-title {
+        color: color-mix(in srgb, var(--theme-texts) 88%, var(--theme-primary) 12%);
+        font-size: clamp(1.34rem, 1.2rem + 0.44vw, 1.68rem);
+    }
+
+    div.falling-words-modal-definition {
+        color: color-mix(in srgb, var(--theme-texts) 76%, var(--theme-muted) 24%);
+        font-size: clamp(1.08rem, 0.98rem + 0.28vw, 1.28rem);
+        line-height: 1.62;
+    }
+
+    @include media-breakpoint-down(sm) {
+        div.article-falling-words-hint {
+            padding: 12px 14px;
+            font-size: clamp(0.84rem, 0.8rem + 0.22vw, 0.92rem);
+        }
+
+        div.falling-words.article-falling-words-stage {
+            border-radius: 16px;
+        }
+
+        div.falling-words-modal-title {
+            font-size: clamp(1rem, 0.92rem + 0.28vw, 1.16rem);
+        }
+
+        div.falling-words-modal-definition {
+            font-size: clamp(0.88rem, 0.82rem + 0.18vw, 0.98rem);
+            line-height: 1.5;
+        }
+
+        span.falling-word.falling-word-held {
+            filter:
+                drop-shadow(0 6px 14px rgba(15, 23, 42, 0.12))
+                drop-shadow(0 0 12px rgba(245, 158, 11, 0.20));
+        }
+    }
+
+    span.falling-word.falling-word-held {
+        --falling-word-color: #f59e0b;
+        color: var(--falling-word-color);
+        transition: none !important;
+        text-shadow:
+            0 1px 0 rgba(255, 255, 255, 0.75),
+            0 12px 24px rgba(15, 23, 42, 0.12);
+        filter:
+            drop-shadow(0 8px 18px rgba(15, 23, 42, 0.16))
+            drop-shadow(0 0 16px rgba(245, 158, 11, 0.28));
+    }
+}
+
+[data-theme="dark"] article#article-2-section-my-writings {
+    div.article-falling-words-hint {
+        color: #e2e8f0;
+        border-color: rgba(56, 189, 248, 0.28);
+        background:
+            linear-gradient(135deg, rgba(14, 165, 233, 0.18), rgba(14, 165, 233, 0.02) 48%),
+            linear-gradient(180deg, rgba(11, 18, 32, 0.98), rgba(5, 7, 13, 0.98));
+        box-shadow:
+            0 18px 40px rgba(0, 0, 0, 0.28),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    div.falling-words.article-falling-words-stage {
+        border: 1px solid rgba(56, 189, 248, 0.20);
+        border-radius: 18px;
+        background:
+            linear-gradient(180deg, rgba(11, 18, 32, 0.96), rgba(5, 7, 13, 0.96));
+        box-shadow: 0 20px 48px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    span.falling-word {
+        --falling-word-color: #7dd3fc;
+        color: var(--falling-word-color);
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.30);
+    }
+
+    span.falling-word-selected {
+        --falling-word-color: #f59e0b;
+        color: var(--falling-word-color);
+        filter:
+            drop-shadow(0 10px 22px rgba(0, 0, 0, 0.40))
+            drop-shadow(0 0 18px rgba(245, 158, 11, 0.28));
+    }
+
+    span.falling-word-highlighted {
+        --falling-word-color: #f8fafc;
+    }
+
+    span.falling-word.falling-word-held {
+        --falling-word-color: #f59e0b;
+        color: var(--falling-word-color);
+        transition: none !important;
+        text-shadow:
+            0 1px 0 rgba(0, 0, 0, 0.30),
+            0 14px 28px rgba(0, 0, 0, 0.28);
+        filter:
+            drop-shadow(0 10px 22px rgba(0, 0, 0, 0.38))
+            drop-shadow(0 0 18px rgba(245, 158, 11, 0.30));
+    }
+
+    div.falling-words-modal-card {
+        border-color: rgba(56, 189, 248, 0.26);
+        background: linear-gradient(180deg, rgba(11, 18, 32, 0.98), rgba(5, 7, 13, 0.98));
+    }
+
+    div.falling-words-modal-title {
+        color: #f8fafc;
+        font-size: clamp(1.34rem, 1.2rem + 0.44vw, 1.68rem);
+    }
+
+    div.falling-words-modal-definition {
+        color: #d1d5db;
+        font-size: clamp(1.08rem, 0.98rem + 0.28vw, 1.28rem);
+        line-height: 1.62;
+    }
+
+    @include media-breakpoint-down(sm) {
+        div.article-falling-words-hint {
+            padding: 12px 14px;
+            font-size: clamp(0.84rem, 0.8rem + 0.22vw, 0.92rem);
+        }
+
+        div.falling-words.article-falling-words-stage {
+            border-radius: 16px;
+        }
+
+        div.falling-words-modal-title {
+            font-size: clamp(1rem, 0.92rem + 0.28vw, 1.16rem);
+        }
+
+        div.falling-words-modal-definition {
+            font-size: clamp(0.88rem, 0.82rem + 0.18vw, 0.98rem);
+            line-height: 1.5;
+        }
+
+        span.falling-word.falling-word-held {
+            filter:
+                drop-shadow(0 6px 14px rgba(0, 0, 0, 0.26))
+                drop-shadow(0 0 12px rgba(245, 158, 11, 0.20));
+        }
     }
 }

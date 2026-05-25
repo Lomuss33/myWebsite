@@ -1191,31 +1191,31 @@
     background: linear-gradient(180deg, #f1fff4, #e0f3e6);
 }
 
-[data-theme="light"] article#article-2-section-my-software div.article-testimonials-item-balloon,
-[data-theme="light"] article#article-2-section-my-software div.balloon {
+[data-theme="light"] article#article-3-section-my-software div.article-testimonials-item-balloon,
+[data-theme="light"] article#article-3-section-my-software div.balloon {
     background: linear-gradient(180deg, #ffffff, #f6f9fd);
     color: #0f172a;
     border-color: rgba(37, 99, 235, 0.14);
 }
 
-[data-theme="light"] article#article-2-section-my-software div.balloon-triangle {
+[data-theme="light"] article#article-3-section-my-software div.balloon-triangle {
     border-top-color: #f6f9fd;
 }
 
-[data-theme="light"] article#article-2-section-my-software div.article-testimonials-item-avatar {
+[data-theme="light"] article#article-3-section-my-software div.article-testimonials-item-avatar {
     border-color: rgba(37, 99, 235, 0.18);
     background-color: #eff6ff;
 }
 
-[data-theme="light"] article#article-2-section-my-software a.article-testimonials-item-name {
+[data-theme="light"] article#article-3-section-my-software a.article-testimonials-item-name {
     color: #1d4ed8;
 }
 
-[data-theme="light"] article#article-2-section-my-software div.article-testimonials-item-role {
+[data-theme="light"] article#article-3-section-my-software div.article-testimonials-item-role {
     color: #0f172a;
 }
 
-[data-theme="light"] article#article-2-section-my-software {
+[data-theme="light"] article#article-3-section-my-software {
     --software-rec-heading-text: #0f172a;
     --software-rec-title-start: #0f172a;
     --software-rec-title-mid: #2563eb;
@@ -2670,4 +2670,3 @@
 [data-theme="light"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines::before {
     background: none;
 }
-

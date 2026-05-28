@@ -96,7 +96,7 @@
           },
           "locales": {
             "en": {
-              "title": "Self-Built Proxmox Homelab Platform",
+              "title": "Self-Built Proxmox Homelab",
               "text": "Enterprise-style homelab built on Proxmox VE, hosting virtualized services for monitoring, tunneling, backups, and internal infrastructure. Includes containerized services, secure remote access, metrics collection, alerting, and network segmentation — designed as a personal R&D playground for infrastructure engineering.",
               "tags": [
                 "Proxmox",
@@ -108,8 +108,8 @@
               ]
             },
             "de": {
-              "title": "Selbstgebaute Proxmox-Homelab-Plattform",
-              "text": "Enterprise-ähnliches Homelab auf Basis von Proxmox VE mit virtualisierten Diensten für Monitoring, Tunneling, Backups und interne Infrastruktur. Containerisierte Services, sicherer Fernzugriff, Metrik-Erfassung, Alarmierung und Netzwerksegmentierung als persönliches Infrastruktur-Labor.",
+              "title": "Selbstgebautes Proxmox-Homelab",
+              "text": "Ein Enterprise-ähnliches Homelab auf Proxmox VE mit virtualisierten Diensten für Monitoring, Tunneling, Backups und interne Infrastruktur. Containerisierte Dienste, sicherer Fernzugriff, Metrik-Erfassung, Alarmierung und Netzwerksegmentierung machen es zu meinem persönlichen R&D-Spielplatz für Infrastrukturtechnik.",
               "tags": [
                 "Proxmox",
                 "Homelab",
@@ -120,8 +120,8 @@
               ]
             },
             "hr": {
-              "title": "Samostalno izgrađena Proxmox homelab platforma",
-              "text": "Napredno homelab okruženje temeljeno na Proxmox VE s virtualiziranim servisima za nadzor, tunneling, sigurnosne kopije i internu infrastrukturu. Sustav služi kao osobni R&D laboratorij za infrastrukturu i sustave.",
+              "title": "Samostalno izgrađen Proxmox homelab",
+              "text": "Homelab u enterprise stilu izgrađen na Proxmox VE-u, s virtualiziranim servisima za nadzor, tunneling, sigurnosne kopije i internu infrastrukturu. Uključuje kontejnerske servise, siguran udaljeni pristup, prikupljanje metrika, upozorenja i segmentaciju mreže, a služi mi kao osobni R&D poligon za infrastrukturu.",
               "tags": [
                 "Proxmox",
                 "Homelab",
@@ -131,8 +131,8 @@
               ]
             },
             "tr": {
-              "title": "Kendi Yaptığım Proxmox Homelab Platformu",
-              "text": "Proxmox VE tabanlı, izleme, tünelleme, yedekleme ve dahili servisler için sanallaştırılmış hizmetler barındıran kurumsal tarzda bir homelab. Altyapı mühendisliği için kişisel AR-GE ortamı olarak tasarlandı.",
+              "title": "Kendi Yaptığım Proxmox Homelab",
+              "text": "Proxmox VE üzerinde kurulu, izleme, tünelleme, yedekleme ve dahili altyapı için sanallaştırılmış hizmetler barındıran kurumsal tarzda bir homelab. Konteynerleştirilmiş servisler, güvenli uzaktan erişim, metrik toplama, uyarılar ve ağ segmentasyonu içerir; altyapı mühendisliği için kişisel AR-GE alanı olarak tasarlandı.",
               "tags": [
                 "Proxmox",
                 "Homelab",
@@ -179,7 +179,7 @@
             },
             "de": {
               "title": "VPS Fortgeschrittenes Materialsortierungssystem",
-              "text": "Industrielles Förderbandautomatisierungsprojekt mit Verbindungsprogrammierter Steuerung (VPS) für präzise Materialsortierung mit optischer Erkennung und mechanischer Trennung.",
+              "text": "Industrieprojekt zur Förderbandautomatisierung mit Verbindungsprogrammierter Steuerung (VPS) für präzises Sortieren von Materialien durch optische Erkennung und mechanische Trennung.",
               "tags": [
                 "Industrieautomatisierung",
                 "VPS",
@@ -189,7 +189,7 @@
             },
             "hr": {
               "title": "VPS napredni sustav za sortiranje materijala",
-              "text": "Projekt automatizacije industrijske transportne trake pomoću Verbindungsprogrammierte Steuerung (VPS) za precizno sortiranje materijala s optičkim prepoznavanjem i mehaničkim odvajanjem.",
+              "text": "Projekt automatizacije industrijske pokretne trake pomoću Verbindungsprogrammierte Steuerung (VPS) za precizno sortiranje materijala uz optičko prepoznavanje i mehaničko razdvajanje.",
               "tags": [
                 "Industrijska automatizacija",
                 "VPS",
@@ -199,7 +199,7 @@
             },
             "tr": {
               "title": "VPS Gelişmiş Malzeme Ayırma Sistemi",
-              "text": "Optik tanıma ve mekanik ayırma ile malzemelerin hassas şekilde sınıflandırılması için Verbindungsprogrammierte Steuerung (VPS) kullanan endüstriyel konveyör bandı otomasyon projesi.",
+              "text": "Optik tanıma ve mekanik ayırma ile malzemelerin hassas biçimde sınıflandırılması için Verbindungsprogrammierte Steuerung (VPS) kullanan endüstriyel konveyör bandı otomasyon projesi.",
               "tags": [
                 "Endüstriyel Otomasyon",
                 "VPS",
@@ -234,7 +234,7 @@
           },
           "locales": {
             "en": {
-              "title": "Industrial PLC Automation Systems (Siemens S7)",
+              "title": "Industrial PLC Automation Systems",
               "text": "Industrial automation projects based on Siemens S7 PLCs, including a multi-zone commercial pizza oven with precise temperature regulation and a high-end automated car wash system. Both systems feature structured control logic, sensor-driven workflows, water and energy optimization, and industrial-grade reliability.",
               "tags": [
                 "Siemens S7",
@@ -244,7 +244,7 @@
               ]
             },
             "de": {
-              "title": "Industrielle SPS-Automatisierungssysteme (Siemens S7)",
+              "title": "Industrielle SPS-Automatisierungssysteme",
               "text": "Industrieautomatisierungsprojekte auf Basis von Siemens S7 SPS, darunter ein kommerzieller Pizzaofen mit Mehrzonen-Temperaturregelung sowie eine vollautomatische Autowaschanlage. Fokus auf Prozesssteuerung, Sensorik und industrielle Zuverlässigkeit.",
               "tags": [
                 "Siemens S7",
@@ -254,8 +254,8 @@
               ]
             },
             "hr": {
-              "title": "Industrijski PLC automatizacijski sustavi (Siemens S7)",
-              "text": "Industrijski automatizacijski sustavi temeljeni na Siemens S7 PLC-u, uključujući komercijalnu pizza pećnicu i automatiziranu autopraonicu s više faza rada.",
+              "title": "Industrijski PLC automatizacijski sustavi",
+              "text": "Industrijski automatizacijski projekti temeljeni na Siemens S7 PLC-ovima, uključujući komercijalnu pizza pećnicu s preciznom regulacijom temperature i vrhunsku automatiziranu autopraonicu. Oba sustava imaju strukturiranu logiku upravljanja, procese vođene senzorima, optimizaciju vode i energije te pouzdanost industrijske klase.",
               "tags": [
                 "Siemens S7",
                 "PLC",
@@ -263,8 +263,8 @@
               ]
             },
             "tr": {
-              "title": "Endüstriyel PLC Otomasyon Sistemleri (Siemens S7)",
-              "text": "Siemens S7 PLC tabanlı endüstriyel otomasyon projeleri; çok bölgeli ticari pizza fırını ve gelişmiş otomatik araç yıkama sistemi dahil.",
+              "title": "Endüstriyel PLC Otomasyon Sistemleri",
+              "text": "Siemens S7 PLC tabanlı endüstriyel otomasyon projeleri; çok bölgeli ticari pizza fırını ve üst seviye otomatik araç yıkama sistemi dahil. Her iki sistem de yapılandırılmış kontrol mantığı, sensör odaklı iş akışları, su ve enerji optimizasyonu ve endüstriyel düzeyde güvenilirlik sunar.",
               "tags": [
                 "Siemens S7",
                 "PLC",
@@ -310,7 +310,7 @@
             },
             "de": {
               "title": "Interaktiver Arduino-Flaggenrahmen",
-              "text": "Interaktive Flaggeninstallation mit Arduino, LED-Hintergrundbeleuchtung, Glasfront und motorisierter Flaggenbewegung. Ein Knopfdruck startet eine synchronisierte Licht- und Musikshow.",
+              "text": "Interaktive, maßgefertigte Flaggenanzeige auf Basis von Arduino mit LED-Hintergrundbeleuchtung hinter einer Glasplatte und mechanisch animierter Fahne davor. Ein Knopf startet eine synchronisierte Licht- und Musikshow, während zwei Motoren die Fahne in einer sanften Kreisbewegung schwingen. Das Ganze steckt in einem übergroßen Gehäuse für Steuerungselektronik und Stromversorgung.",
               "tags": [
                 "Arduino",
                 "Elektromechanik",
@@ -319,23 +319,25 @@
               ]
             },
             "hr": {
-              "title": "Interaktivni Arduino okvir sa zastavom",
-              "text": "Interaktivni sustav sa svjetlosnim efektima i pokretnom zastavom upravljanom Arduino mikrokontrolerom.",
+              "title": "Interaktivni Arduino okvir za zastavu",
+              "text": "Interaktivni, ručno izrađen prikaz zastave temeljen na Arduinu, s LED efektima pozadinskog osvjetljenja iza staklene ploče i mehanički animiranom zastavom ispred. Jedan gumb pokreće sinkroniziranu svjetlosno-glazbenu predstavu, dok dva motora pomiču zastavu u glatkom kružnom zamahu. Smješteno u prevelikom kućištu kako bi stala upravljačka elektronika i napajanje.",
               "tags": [
                 "Arduino",
-                "Motori",
+                "Elektromehanika",
                 "LED",
-                "Interaktivno"
+                "Motori",
+                "Interaktivna umjetnost"
               ]
             },
             "tr": {
               "title": "Arduino Etkileşimli Bayrak Çerçevesi",
-              "text": "Arduino kontrollü, LED arka aydınlatmalı ve motorlu bayrak hareketine sahip etkileşimli sergi sistemi.",
+              "text": "Arduino ile yapılmış özel etkileşimli bayrak ekranı; cam panelin arkasında arkadan aydınlatmalı LED efektler ve önde mekanik olarak hareket eden bir bayrak içerir. Tek düğmeli tetikleme eşzamanlı bir ışık ve müzik gösterisi başlatır; iki motor bayrağı yumuşak dairesel bir sallanma hareketiyle hareket ettirir. Kontrol elektroniği ve güç bileşenlerini barındırmak için büyük bir muhafaza içinde yer alır.",
               "tags": [
                 "Arduino",
+                "Elektromekanik",
                 "Motorlar",
                 "LED",
-                "EtkileÅŸimli Sistem"
+                "Etkileşimli Sanat"
               ]
             }
           }
@@ -376,7 +378,7 @@
             },
             "de": {
               "title": "Automatisiertes Vorhangsystem",
-              "text": "Arduino-betriebene motorisierte Vorhangsteuerungen mit Lichtsensoren, Timer-Funktionalität und Integration mit Home Assistant für Sprach- und App-Steuerung.",
+              "text": "Arduino-gesteuerte motorisierte Vorhangsteuerungen mit Lichtsensoren, Timer-Funktion und Integration mit Home Assistant für Sprach- und App-Steuerung.",
               "tags": [
                 "Hausautomatisierung",
                 "Arduino",
@@ -386,7 +388,7 @@
             },
             "hr": {
               "title": "Sustav automatiziranih zavjesa",
-              "text": "Arduino motorizirani upravljači zavjesa sa svjetlosnim senzorima, funkcionalnost brojača vremena i integracija s kućnim asistentom za glasovnu kontrolu i upravljanje aplikacijom.",
+              "text": "Arduino motorizirani upravljači zavjesa sa svjetlosnim senzorima, funkcijom tajmera i integracijom s Home Assistantom za glasovno i aplikacijsko upravljanje.",
               "tags": [
                 "Kućna automatizacija",
                 "Arduino",
@@ -396,7 +398,7 @@
             },
             "tr": {
               "title": "Otomatik Perde Sistemi",
-              "text": "Işık sensörleri, zamanlayıcı işlevselliği ve sesli ve uygulama kontrolü için ev asistanı ile entegrasyon ile Arduino destekli motorlu perde kontrol cihazları.",
+              "text": "Işık sensörleri, zamanlayıcı işlevi ve sesli ile uygulama kontrolü için Home Assistant entegrasyonuna sahip Arduino destekli motorlu perde kontrol sistemleri.",
               "tags": [
                 "Ev Otomasyonu",
                 "Arduino",
@@ -441,8 +443,8 @@
               ]
             },
             "de": {
-              "title": "Tri-Standort Smart-Home-System",
-              "text": "Integriertes Smart-Home-Ökosystem an drei Standorten (Tomislavgrad, Kelkheim, Giessen) mit synchronisierten Steuerungen, Fernüberwachung und automatisierten Routinen.",
+              "title": "Tri-Standort-Smart-Home-System",
+              "text": "Integriertes Smart-Home-Ökosystem über drei Standorte (Tomislavgrad, Kelkheim, Giessen) hinweg mit synchronisierten Steuerungen, Fernüberwachung und automatisierten Routinen.",
               "tags": [
                 "Smart Home",
                 "Multi-Standort",
@@ -452,7 +454,7 @@
             },
             "hr": {
               "title": "Pametni sustav za tri lokacije",
-              "text": "Integrirani ekosustav pametnog doma na tri lokacije (Tomislavgrad, Kelkheim, Giessen) sa sinkroniziranim kontrolama, daljinskim nadzorom i automatiziranim rutinama.",
+              "text": "Integrirani ekosustav pametnog doma na tri lokacije (Tomislavgrad, Kelkheim, Giessen) sa sinkroniziranim upravljanjem, daljinskim nadzorom i automatiziranim rutinama.",
               "tags": [
                 "Pametni dom",
                 "Više lokacija",
@@ -503,12 +505,12 @@
                 "Gaming",
                 "Custom PC",
                 "High-Performance",
-                "Adwanced Cooling"
+                "Advanced Cooling"
               ]
             },
             "de": {
-              "title": "Custom Gaming-PC",
-              "text": "Hochleistungs-Gaming-Rechner mit Industriekühlung, RGB-Beleuchtung und sorgfältig ausgewählten Komponenten für maximale Gaming-Leistung und Zuverlässigkeit.",
+              "title": "Maßgeschneiderter Gaming-PC",
+              "text": "Hochleistungs-Gaming-PC mit Industriekühlung, RGB-Beleuchtung und sorgfältig ausgewählten Komponenten für maximale Gaming-Leistung und Zuverlässigkeit.",
               "tags": [
                 "Gaming",
                 "Individueller PC",
@@ -518,22 +520,22 @@
             },
             "hr": {
               "title": "Prilagođeno gaming računalo",
-              "text": "Visoko performansno gaming računalo s industrijskim hlađenjem, RGB osvjetljenjem i pažljivo odabranim komponentama za maksimalne gaming performanse i pouzdanost.",
+              "text": "Visokoperformansno gaming računalo s industrijskim hlađenjem, RGB osvjetljenjem i pažljivo odabranim komponentama za maksimalne performanse i pouzdanost.",
               "tags": [
                 "Gaming",
                 "Prilagođeno računalo",
                 "Visoke performanse",
-                "Industrijskim hlađenje"
+                "Industrijsko hlađenje"
               ]
             },
             "tr": {
               "title": "Özel Oyun Bilgisayarı",
-              "text": "Sıvı soğutma, RGB aydınlatma ve maksimum oyun performansı ve güvenilirlik için özenle seçilmiş bileşenlere sahip yüksek performanslı oyun sistemi.",
+              "text": "Maksimum oyun performansı ve güvenilirlik için endüstriyel soğutma, RGB aydınlatma ve özenle seçilmiş bileşenlere sahip yüksek performanslı bir oyun sistemi.",
               "tags": [
                 "Oyun",
                 "Özel PC",
                 "Yüksek Performans",
-                "Sıvı Soğutma"
+                "Endüstriyel Soğutma"
               ]
             }
           }
@@ -573,8 +575,8 @@
               ]
             },
             "de": {
-              "title": "Custom-Elektrofahrrad",
-              "text": "Custom-Elektrofahrrad mit 504-Wh-Akku (36 V, 14 Ah), 6061-Aluminiumrahmen, 29-Zoll-Reifen, hydraulischen Scheibenbremsen und SHIMANO-DEORE-10-Gang-Antrieb.",
+              "title": "Maßgeschneidertes E-Bike",
+              "text": "Maßgeschneidertes E-Bike mit 504-Wh-Akku (36 V, 14 Ah), 6061-Aluminiumrahmen, 29-Zoll-Reifen, hydraulischen Scheibenbremsen und SHIMANO DEORE 10-Gang-Antrieb.",
               "tags": [
                 "E-Bike",
                 "Nachhaltige Mobilität",
@@ -584,7 +586,7 @@
             },
             "hr": {
               "title": "Prilagođeni električni bicikl",
-              "text": "Prilago?eni elektri?ni bicikl s baterijom od 504 Wh (36 V, 14 Ah), okvirom od aluminija 6061, 29-in?nim gumama, hidrauli?nim disk ko?nicama i SHIMANO DEORE prijenosom s 10 brzina.",
+              "text": "Prilagođeni električni bicikl s baterijom od 504 Wh (36 V, 14 Ah), okvirom od aluminija 6061, 29-inčnim gumama, hidrauličnim disk kočnicama i SHIMANO DEORE pogonom s 10 brzina.",
               "tags": [
                 "E-bicikl",
                 "Održiva mobilnost",
@@ -594,7 +596,7 @@
             },
             "tr": {
               "title": "Özel Elektrikli Bisiklet",
-              "text": "504 Wh bataryaya (36 V, 14 Ah), 6061 al?minyum kadroya, 29 in? lastiklere, hidrolik disk frenlere ve SHIMANO DEORE 10 vites aktarma sistemine sahip ?zel elektrikli bisiklet.",
+              "text": "504 Wh bataryaya (36 V, 14 Ah), 6061 alüminyum kadroya, 29 inç lastiklere, hidrolik disk frenlere ve SHIMANO DEORE 10 vites aktarma sistemine sahip özel elektrikli bisiklet.",
               "tags": [
                 "E-Bisiklet",
                 "Sürdürülebilir Ulaşım",
@@ -612,19 +614,19 @@
       "locales": {
         "en": {
           "title": "Hardware Fingerprint Explorer",
-          "description": "Experimental browser-based tool that shows what information websites can see about your device, browser, network, and system before and after permissions are granted."
+          "description": "An experimental browser tool that lets you see what a site can learn about your device, browser, network, and system before and after you grant permissions."
         },
         "de": {
-          "title": "Hardware Fingerprint Explorer",
-          "description": "Experimental browser-based tool that shows what information websites can see about your device, browser, network, and system before and after permissions are granted."
+          "title": "Explorer für Hardware-Fingerabdrücke",
+          "description": "Ein experimentelles Browser-Tool, das zeigt, was eine Website über Gerät, Browser, Netzwerk und System erkennen kann, bevor und nachdem Berechtigungen erteilt werden."
         },
         "hr": {
-          "title": "Hardware Fingerprint Explorer",
-          "description": "Experimental browser-based tool that shows what information websites can see about your device, browser, network, and system before and after permissions are granted."
+          "title": "Istraživač hardverskog otiska",
+          "description": "Eksperimentalni alat u pregledniku koji prikazuje što stranica može saznati o uređaju, pregledniku, mreži i sustavu prije i nakon dodjele dopuštenja."
         },
         "tr": {
-          "title": "Hardware Fingerprint Explorer",
-          "description": "Experimental browser-based tool that shows what information websites can see about your device, browser, network, and system before and after permissions are granted."
+          "title": "Donanım Parmak İzi Gezgini",
+          "description": "Bir sitenin izinlerden önce ve sonra cihaz, tarayıcı, ağ ve sistem hakkında neleri öğrenebildiğini gösteren deneysel bir tarayıcı aracı."
         }
       },
       "settings": {}

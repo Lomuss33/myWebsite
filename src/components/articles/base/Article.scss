@@ -69,11 +69,11 @@ article.article {
 article.article::after {
     content: "";
     display: block;
-    width: calc(100vw / var(--section-content-scale, 1));
+    width: 100%;
     height: var(--article-title-line-thickness);
     margin-top: clamp(28px, 3vw, 42px);
-    margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
-    margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    margin-right: 0;
+    margin-left: 0;
     border-radius: 999px;
     background: linear-gradient(90deg, var(--article-title-line-mid), var(--article-title-line-end));
     box-shadow: 0 0 24px color-mix(in srgb, var(--article-title-line-mid) 24%, transparent);
@@ -95,6 +95,8 @@ h4.article-title {
     gap: 0;
     font-size: clamp(1.06rem, 0.98rem + 0.42vw, 1.34rem)!important;
     line-height: 1.18;
+    padding-bottom: 0.08em;
+    overflow: visible;
 
     margin-top: 10px;
     margin-bottom: 18px;

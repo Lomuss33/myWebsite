@@ -15,7 +15,6 @@ function _loadArticleInfoList() { return import("../articles/ArticleInfoList.jsx
 function _loadArticleInlineList() { return import("../articles/ArticleInlineList.jsx") }
 function _loadArticleManuscript() { return import("../articles/ArticleManuscript.jsx") }
 function _loadArticlePortfolio() { return import("../articles/ArticlePortfolio.jsx") }
-function _loadArticleLookAtThisGraph() { return import("../articles/ArticleLookAtThisGraph.jsx") }
 function _loadArticleSkills() { return import("../articles/ArticleSkills.jsx") }
 function _loadArticleStack() { return import("../articles/ArticleStack.jsx") }
 function _loadArticleTestimonials() { return import("../articles/ArticleTestimonials.jsx") }
@@ -136,7 +135,6 @@ SectionBody.ARTICLE_LOADERS = {
     ArticleInlineList: _loadArticleInlineList,
     ArticleManuscript: _loadArticleManuscript,
     ArticlePortfolio: _loadArticlePortfolio,
-    ArticleLookAtThisGraph: _loadArticleLookAtThisGraph,
     ArticleSkills: _loadArticleSkills,
     ArticleStack: _loadArticleStack,
     ArticleTestimonials: _loadArticleTestimonials,
@@ -159,7 +157,6 @@ SectionBody.ARTICLES = {
     ArticleInlineList: lazy(_loadArticleInlineList),
     ArticleManuscript: lazy(_loadArticleManuscript),
     ArticlePortfolio: lazy(_loadArticlePortfolio),
-    ArticleLookAtThisGraph: lazy(_loadArticleLookAtThisGraph),
     ArticleSkills: lazy(_loadArticleSkills),
     ArticleStack: lazy(_loadArticleStack),
     ArticleTestimonials: lazy(_loadArticleTestimonials),

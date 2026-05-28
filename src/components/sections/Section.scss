@@ -121,10 +121,12 @@ section#section-education header.section-header h2.section-header-title {
     color: transparent;
     font-size: clamp(2.12rem, 1.28rem + 2.72vw, 4.35rem)!important;
     font-weight: 950;
-    line-height: 0.98;
+    line-height: 1.06;
     letter-spacing: 0;
+    padding-bottom: 0.1em;
     text-shadow: var(--education-title-shadow);
     text-wrap: balance;
+    overflow: visible;
 }
 
 section#section-education header.section-header h2.section-header-title span {
@@ -181,10 +183,12 @@ section#section-education article:is(
     margin: 0 auto clamp(24px, 3vw, 34px);
     font-size: clamp(1.76rem, 1.12rem + 1.82vw, 2.8rem)!important;
     font-weight: 900;
-    line-height: 1.04;
+    line-height: 1.08;
+    padding-bottom: 0.1em;
     text-align: center;
     text-shadow: var(--education-current-title-shadow);
     text-wrap: balance;
+    overflow: visible;
 }
 
 section#section-education article:is(#article-2-section-education, #article-3-section-education) h4.article-title {
@@ -216,10 +220,10 @@ section#section-education article:is(
     #article-2-section-education,
     #article-3-section-education
 ) h4.article-title::before {
-    width: calc(100vw / var(--section-content-scale, 1));
+    width: 100%;
     height: var(--education-current-title-line-top);
-    margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
-    margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    margin-right: 0;
+    margin-left: 0;
     background: linear-gradient(90deg, var(--education-current-title-mid), var(--education-current-title-end));
     box-shadow: 0 0 24px color-mix(in srgb, var(--education-current-title-mid) 24%, transparent);
 }
@@ -262,7 +266,7 @@ section#section-education article:is(
     display: block;
     max-width: 100%;
     min-width: 0;
-    padding: 0 2px;
+    padding: 0 2px 0.08em;
     overflow-wrap: anywhere;
     background: linear-gradient(135deg, var(--education-current-title-start) 0%, var(--education-current-title-mid) 48%, var(--education-current-title-end) 100%);
     background-clip: text;
@@ -292,7 +296,7 @@ section#section-education article:is(
     section#section-education header.section-header h2.section-header-title {
         max-width: 620px;
         font-size: clamp(1.82rem, 1.18rem + 2.2vw, 2.7rem)!important;
-        line-height: 1.02;
+        line-height: 1.08;
     }
 
     section#section-education header.section-header::after {
@@ -468,10 +472,12 @@ section#section-experience header.section-header h2.section-header-title {
     color: transparent;
     font-size: clamp(2.12rem, 1.28rem + 2.72vw, 4.35rem)!important;
     font-weight: 950;
-    line-height: 0.98;
+    line-height: 1.06;
     letter-spacing: 0;
+    padding-bottom: 0.1em;
     text-shadow: var(--experience-title-shadow);
     text-wrap: balance;
+    overflow: visible;
 }
 
 section#section-experience header.section-header h2.section-header-title span {
@@ -528,10 +534,12 @@ section#section-experience article:is(
     margin: 0 auto clamp(24px, 3vw, 34px);
     font-size: clamp(1.76rem, 1.12rem + 1.82vw, 2.8rem)!important;
     font-weight: 900;
-    line-height: 1.04;
+    line-height: 1.08;
+    padding-bottom: 0.1em;
     text-align: center;
     text-shadow: var(--experience-current-title-shadow);
     text-wrap: balance;
+    overflow: visible;
 }
 
 section#section-experience article:is(#article-2-section-experience, #article-3-section-experience) h4.article-title {
@@ -568,10 +576,10 @@ section#section-experience article:is(
     #article-2-section-experience,
     #article-3-section-experience
 ) h4.article-title::before {
-    width: calc(100vw / var(--section-content-scale, 1));
+    width: 100%;
     height: var(--experience-current-title-line-top);
-    margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
-    margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    margin-right: 0;
+    margin-left: 0;
     background: linear-gradient(90deg, var(--experience-current-title-mid), var(--experience-current-title-end));
     box-shadow: 0 0 24px color-mix(in srgb, var(--experience-current-title-mid) 24%, transparent);
 }
@@ -614,7 +622,7 @@ section#section-experience article:is(
     display: block;
     max-width: 100%;
     min-width: 0;
-    padding: 0 2px;
+    padding: 0 2px 0.08em;
     overflow-wrap: anywhere;
     background: linear-gradient(135deg, var(--experience-current-title-start) 0%, var(--experience-current-title-mid) 48%, var(--experience-current-title-end) 100%);
     background-clip: text;
@@ -644,7 +652,7 @@ section#section-experience article:is(
     section#section-experience header.section-header h2.section-header-title {
         max-width: 620px;
         font-size: clamp(1.82rem, 1.18rem + 2.2vw, 2.7rem)!important;
-        line-height: 1.02;
+        line-height: 1.08;
     }
 
     section#section-experience header.section-header::after {
@@ -953,10 +961,12 @@ section#section-my-writings article:is(
     margin: 0 auto clamp(24px, 3vw, 34px);
     font-size: clamp(1.86rem, 1.16rem + 2vw, 3rem)!important;
     font-weight: 900;
-    line-height: 1.04;
+    line-height: 1.08;
+    padding-bottom: 0.1em;
     text-align: center;
     text-shadow: var(--writings-current-title-shadow);
     text-wrap: balance;
+    overflow: visible;
 }
 
 section#section-my-writings article:is(
@@ -1004,9 +1014,9 @@ section#section-my-writings article:is(
     #article-5-section-my-writings,
     #article-6-section-my-writings
 ) h4.article-title::before {
-    width: calc(100vw / var(--section-content-scale, 1));
-    margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
-    margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
     height: var(--article-title-line-thickness);
     background: linear-gradient(90deg, var(--writings-current-title-mid), var(--writings-current-title-end));
     box-shadow: 0 0 24px rgba(245, 158, 11, 0.22);
@@ -1052,7 +1062,7 @@ section#section-my-writings article:is(
     display: block;
     max-width: 100%;
     min-width: 0;
-    padding: 0 2px;
+    padding: 0 2px 0.08em;
     overflow-wrap: anywhere;
     background: linear-gradient(135deg, var(--writings-current-title-start) 0%, var(--writings-current-title-mid) 48%, var(--writings-current-title-end) 100%);
     background-clip: text;
@@ -1121,9 +1131,9 @@ section#section-my-writings article:is(
         #article-5-section-my-writings,
         #article-6-section-my-writings
     ) h4.article-title::before {
-        width: calc(100vw / var(--section-content-scale, 1));
-        margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
-        margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+        width: 100%;
+        margin-right: 0;
+        margin-left: 0;
     }
 
     section#section-my-writings article:is(
@@ -1307,10 +1317,12 @@ section#section-my-art article:is(
     margin: 0 auto clamp(24px, 3vw, 34px);
     font-size: clamp(1.84rem, 1.14rem + 1.96vw, 2.96rem)!important;
     font-weight: 900;
-    line-height: 1.04;
+    line-height: 1.08;
+    padding-bottom: 0.1em;
     text-align: center;
     text-shadow: var(--art-current-title-shadow);
     text-wrap: balance;
+    overflow: visible;
 }
 
 section#section-my-art article:is(#article-2-section-my-art, #article-3-section-my-art, #article-4-section-my-art, #article-5-section-my-art) h4.article-title {
@@ -1352,9 +1364,9 @@ section#section-my-art article:is(
     #article-4-section-my-art,
     #article-5-section-my-art
 ) h4.article-title::before {
-    width: calc(100vw / var(--section-content-scale, 1));
-    margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
-    margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
     height: var(--art-current-title-line-top);
     background: linear-gradient(90deg, var(--art-current-title-mid), var(--art-current-title-end));
     box-shadow: 0 0 24px color-mix(in srgb, var(--art-current-title-mid) 24%, transparent);
@@ -1373,9 +1385,9 @@ section#section-my-art article:is(
 }
 
 section#section-my-art article#article-3-section-my-art h4.article-title::before {
-    width: calc(100vw / var(--section-content-scale, 1));
-    margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
-    margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
     background: repeating-linear-gradient(90deg, #38bdf8 0 12px, #8b5cf6 12px 24px, #f472b6 24px 36px);
 }
 
@@ -1403,7 +1415,7 @@ section#section-my-art article:is(
     display: block;
     max-width: 100%;
     min-width: 0;
-    padding: 0 2px;
+    padding: 0 2px 0.08em;
     overflow-wrap: anywhere;
     background: linear-gradient(135deg, var(--art-current-title-start) 0%, var(--art-current-title-mid) 48%, var(--art-current-title-end) 100%);
     background-clip: text;
@@ -1465,23 +1477,23 @@ section#section-my-art article#article-5-section-my-art h4.article-title {
 }
 
 section#section-my-art article#article-4-section-my-art h4.article-title::before {
-    width: calc(100vw / var(--section-content-scale, 1));
-    margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
-    margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
     background: linear-gradient(90deg, #ff0033, #ffffff 52%, #facc15);
 }
 
 section#section-my-art article#article-5-section-my-art h4.article-title::before {
-    width: calc(100vw / var(--section-content-scale, 1));
-    margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
-    margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
     background: linear-gradient(90deg, #dbeafe, #ffffff 45%, #facc15);
 }
 
 section#section-my-art article#article-4-section-my-art h4.article-title span.article-title-text {
     position: relative;
     display: inline-block;
-    padding: 0.04em calc(0.2em + 54px) 0.04em 0.16em;
+    padding: 0.04em calc(0.2em + 54px) 0.12em 0.16em;
     background: linear-gradient(120deg, #ffffff 0%, #ffffff 34%, #ff0033 58%, #facc15 100%);
     background-clip: text;
     -webkit-background-clip: text;
@@ -1490,7 +1502,7 @@ section#section-my-art article#article-4-section-my-art h4.article-title span.ar
 section#section-my-art article#article-5-section-my-art h4.article-title span.article-title-text {
     position: relative;
     display: inline-block;
-    padding: 0.04em 0.16em;
+    padding: 0.04em 0.16em 0.12em;
     background: linear-gradient(135deg, #f8fafc 0%, #dbeafe 48%, #facc15 100%);
     background-clip: text;
     -webkit-background-clip: text;
@@ -1573,9 +1585,9 @@ section#section-my-art div.section-body {
         #article-4-section-my-art,
         #article-5-section-my-art
     ) h4.article-title::before {
-        width: calc(100vw / var(--section-content-scale, 1));
-        margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
-        margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+        width: 100%;
+        margin-right: 0;
+        margin-left: 0;
     }
 
     section#section-my-art article:is(

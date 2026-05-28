@@ -6,7 +6,9 @@ const PREPARED_TEXT_CACHE_LIMIT = 400
 const DEFAULT_MIN_FONT_SIZE_PX = 11
 const DEFAULT_MAX_FONT_SIZE_PX = 22
 const DEFAULT_LINE_HEIGHT_RATIO = 1.34
-const DEFAULT_BINARY_SEARCH_PRECISION_PX = 0.2
+const DEFAULT_BINARY_SEARCH_PRECISION_PX = 0.1
+const DEFAULT_SINGLE_LINE_RESERVED_WIDTH_PX = 4
+const DEFAULT_SINGLE_LINE_TOLERANCE_PX = 0.5
 
 function PretextFitText({
     text,
@@ -14,10 +16,12 @@ function PretextFitText({
     className = "",
     minFontSizePx = DEFAULT_MIN_FONT_SIZE_PX,
     maxFontSizePx = DEFAULT_MAX_FONT_SIZE_PX,
-    lineHeightRatio = DEFAULT_LINE_HEIGHT_RATIO
+    lineHeightRatio = DEFAULT_LINE_HEIGHT_RATIO,
+    singleLine = false
 }) {
     const Component = as
     const elementRef = useRef(null)
+    const measurementRef = useRef(null)
     const frameRef = useRef(null)
     const [fitState, setFitState] = useState(() => {
         return buildFitState(maxFontSizePx, lineHeightRatio)
@@ -44,10 +48,12 @@ function PretextFitText({
 
                 const nextState = measureBestFit({
                     element,
+                    measurementElement: measurementRef.current,
                     text,
                     minFontSizePx,
                     maxFontSizePx,
-                    lineHeightRatio
+                    lineHeightRatio,
+                    singleLine
                 })
 
                 setFitState(prevState => {
@@ -85,23 +91,33 @@ function PretextFitText({
                 window.removeEventListener("resize", scheduleMeasure)
             }
         }
-    }, [text, minFontSizePx, maxFontSizePx, lineHeightRatio])
+    }, [text, minFontSizePx, maxFontSizePx, lineHeightRatio, singleLine])
 
     return (
-        <Component ref={elementRef}
-                   className={className}
-                   style={{
-                       "--pretext-fit-font-size": `${fitState.fontSizePx}px`,
-                       "--pretext-fit-line-height": `${fitState.lineHeight}px`
-                   }}>
-            {text}
-        </Component>
+        <>
+            <Component ref={elementRef}
+                       className={className}
+                       style={{
+                           "--pretext-fit-font-size": `${fitState.fontSizePx}px`,
+                           "--pretext-fit-line-height": `${fitState.lineHeight}px`
+                       }}>
+                {text}
+            </Component>
+
+            {singleLine && (
+                <span ref={measurementRef}
+                      aria-hidden={`true`}
+                      className={`pretext-fit-text-measure ${className}`.trim()}>
+                    {text}
+                </span>
+            )}
+        </>
     )
 }
 
 export default PretextFitText
 
-function measureBestFit({ element, text, minFontSizePx, maxFontSizePx, lineHeightRatio }) {
+function measureBestFit({ element, measurementElement, text, minFontSizePx, maxFontSizePx, lineHeightRatio, singleLine }) {
     const width = element.clientWidth
     const height = element.clientHeight
 
@@ -121,11 +137,33 @@ function measureBestFit({ element, text, minFontSizePx, maxFontSizePx, lineHeigh
     const fontVariant = computedStyles.fontVariant || "normal"
     const whiteSpace = computedStyles.whiteSpace === "pre-wrap" ? "pre-wrap" : "normal"
     const wordBreak = computedStyles.wordBreak === "keep-all" ? "keep-all" : "normal"
+    const letterSpacing = computedStyles.letterSpacing || "normal"
+    const textTransform = computedStyles.textTransform || "none"
+    const availableWidth = Math.max(0, width - DEFAULT_SINGLE_LINE_RESERVED_WIDTH_PX)
+    const availableHeight = height
 
     const canFitAt = (fontSizePx) => {
+        const lineHeight = fontSizePx * lineHeightRatio
+
+        if(singleLine) {
+            return doesSingleLineFit({
+                measurementElement,
+                text: normalizedText,
+                fontStyle,
+                fontVariant,
+                fontWeight,
+                fontFamily,
+                fontSizePx,
+                lineHeight,
+                letterSpacing,
+                textTransform,
+                availableWidth,
+                availableHeight
+            })
+        }
+
         const font = buildCanvasFont({ fontStyle, fontVariant, fontWeight, fontFamily, fontSizePx })
         const prepared = getPreparedText(normalizedText, font, { whiteSpace, wordBreak })
-        const lineHeight = fontSizePx * lineHeightRatio
         const result = layout(prepared, width, lineHeight)
         return result.height <= height
     }
@@ -192,4 +230,39 @@ function buildFitState(fontSizePx, lineHeightRatio) {
 
 function roundToQuarter(value) {
     return Math.round(value * 4) / 4
+}
+
+function doesSingleLineFit({
+    measurementElement,
+    text,
+    fontStyle,
+    fontVariant,
+    fontWeight,
+    fontFamily,
+    fontSizePx,
+    lineHeight,
+    letterSpacing,
+    textTransform,
+    availableWidth,
+    availableHeight
+}) {
+    if(!measurementElement) {
+        return false
+    }
+
+    measurementElement.style.fontStyle = fontStyle
+    measurementElement.style.fontVariant = fontVariant
+    measurementElement.style.fontWeight = fontWeight
+    measurementElement.style.fontFamily = fontFamily
+    measurementElement.style.fontSize = `${fontSizePx}px`
+    measurementElement.style.lineHeight = `${lineHeight}px`
+    measurementElement.style.letterSpacing = letterSpacing
+    measurementElement.style.textTransform = textTransform
+    measurementElement.textContent = text
+
+    const measuredWidth = measurementElement.scrollWidth
+    const measuredHeight = measurementElement.scrollHeight
+
+    return measuredWidth <= availableWidth + DEFAULT_SINGLE_LINE_TOLERANCE_PX &&
+        measuredHeight <= availableHeight + DEFAULT_SINGLE_LINE_TOLERANCE_PX
 }

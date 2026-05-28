@@ -163,9 +163,7 @@ article#article-2-section-my-writings {
         }
 
         span.falling-word.falling-word-held {
-            filter:
-                drop-shadow(0 6px 14px rgba(15, 23, 42, 0.12))
-                drop-shadow(0 0 12px rgba(245, 158, 11, 0.20));
+            filter: none;
         }
     }
 
@@ -173,12 +171,8 @@ article#article-2-section-my-writings {
         --falling-word-color: #f59e0b;
         color: var(--falling-word-color);
         transition: none !important;
-        text-shadow:
-            0 1px 0 rgba(255, 255, 255, 0.75),
-            0 12px 24px rgba(15, 23, 42, 0.12);
-        filter:
-            drop-shadow(0 8px 18px rgba(15, 23, 42, 0.16))
-            drop-shadow(0 0 16px rgba(245, 158, 11, 0.28));
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+        filter: none;
     }
 }
 
@@ -224,12 +218,8 @@ article#article-2-section-my-writings {
         --falling-word-color: #f59e0b;
         color: var(--falling-word-color);
         transition: none !important;
-        text-shadow:
-            0 1px 0 rgba(0, 0, 0, 0.30),
-            0 14px 28px rgba(0, 0, 0, 0.28);
-        filter:
-            drop-shadow(0 10px 22px rgba(0, 0, 0, 0.38))
-            drop-shadow(0 0 18px rgba(245, 158, 11, 0.30));
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.30);
+        filter: none;
     }
 
     div.falling-words-modal-card {
@@ -268,9 +258,7 @@ article#article-2-section-my-writings {
         }
 
         span.falling-word.falling-word-held {
-            filter:
-                drop-shadow(0 6px 14px rgba(0, 0, 0, 0.26))
-                drop-shadow(0 0 12px rgba(245, 158, 11, 0.20));
+            filter: none;
         }
     }
 }

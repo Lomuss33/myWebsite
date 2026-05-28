@@ -10,30 +10,110 @@ import {useTheme} from "../../providers/ThemeProvider.jsx"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
 
 const HOME_STACK_POPUP_COPY = {
-    1: "Built with a tall frame, long reach, and a natural advantage for seeing the bigger picture. Useful in life, teamwork, and for changing light bulbs without negotiations.",
-    2: "A solid operating weight for carrying momentum, staying grounded, and generally looking like the hardware edition of a software engineer.",
-    3: "All major structural components accounted for. The chassis is complete, reliable, and still proudly running the original factory configuration.",
-    4: "Hydrated enough to keep the system running smoothly, the thoughts flowing, and the debugging patience at healthy professional levels.",
-    5: "A generous internal delivery network keeping every subsystem supplied. Quiet logistics, strong uptime, no complaints from operations.",
-    6: "Full manual input capacity still available. Excellent for typing, wiring, fixing, building, and making ambitious ideas look surprisingly manageable.",
-    7: "Close enough to sharp for catching details, spotting patterns, and noticing the tiny thing that somehow broke the whole nice-looking system.",
-    8: "Thermally stable, comfortably warm, and still operating well within recommended human specifications. No dramatic overheating under normal workloads.",
-    9: "A subtle reminder that upgrades are real, resilience is stylish, and good engineering sometimes becomes very personal.",
-    10: "An absurd amount of internal cabling, honestly. Respect to the original biological design team for shipping that kind of routing at scale.",
-    11: "Plenty of theoretical storage, with the usual premium human indexing system: brilliant associations, selective recall, and occasional mystery retrieval.",
-    12: "Continuous silent background maintenance. The body really believes in agile iteration, fast refresh cycles, and shipping updates without fanfare.",
-    13: "A surprisingly industrial internal chemistry setup. Proof that even the polite version of me includes at least one highly committed processing plant.",
-    14: "A fun reminder that nature loves remix culture. Under the polished professional exterior there is still a very collaborative biological codebase.",
-    15: "Strong roots, clear current, and a deep sense of place. A lot of the calm, grit, and humor started there and still travels with me.",
-    16: "Rarely deployed, highly kinetic, and absolutely not to be underestimated. Some systems only reveal their full performance in edge cases.",
-    17: "Fast internal signaling helps with reactions, decisions, and those satisfying moments when the solution appears before the panic fully loads.",
-    18: "Not enough to build a bridge, but enough to keep the red-team logistics moving. Small quantity, critical function, classic engineering elegance.",
-    19: "Officially precious in trace amounts. Just enough sparkle to support the legend without becoming financially unreasonable.",
-    20: "A serious in-house defense department working around the clock. Quiet, disciplined, and very committed to protecting the main mission.",
-    21: "One of those beautifully strange details that makes biology feel like art direction with a lab budget. Hidden structure, excellent taste.",
-    22: "Even at rest the machine is generating useful energy. Efficient? Debatable. Alive, motivated, and definitely online? Very much yes.",
-    23: "A disciplined monthly renewal schedule. The body clearly understands maintenance windows, lifecycle management, and the value of steady refresh.",
-    24: "An impressive internal processing timeline converting ordinary food into continued ambition. Slow magic, solid throughput, excellent long-term output."
+    en: {
+        1: "Built tall, with a useful view over most rooms and a good reach for high shelves.",
+        2: "Enough mass to stay grounded, keep momentum, and look like the hardware version of a software engineer.",
+        3: "All structural parts accounted for. The chassis is complete and still ships in the original configuration.",
+        4: "Well hydrated enough to keep the system running smoothly and the debugging patience intact.",
+        5: "A solid circulation reserve, quietly keeping everything supplied and on schedule.",
+        6: "Full manual input support. Handy for typing, wiring, fixing, and ambitious ideas.",
+        7: "Close enough to sharp to catch details, patterns, and the tiny issue that breaks the nice-looking system.",
+        8: "Thermally stable, pleasantly warm, and not prone to dramatic overheating under normal load.",
+        9: "One upgrade in the chassis. Small number, but it keeps the system moving in the right direction.",
+        10: "A lot of internal cabling, honestly. Respect to the original biological routing team.",
+        11: "Generous storage, with the usual human indexing: brilliant connections, selective recall, and the occasional mystery.",
+        12: "Quiet background maintenance. The body likes fast refresh cycles and shipping updates without a big announcement.",
+        13: "A seriously industrial chemistry setup. Even the polite version comes with one committed processing plant.",
+        14: "Proof that evolution enjoys remix culture. Under the polished exterior is a very collaborative codebase.",
+        15: "Strong roots, clear current, and a sense of place that still travels with me.",
+        16: "Rarely deployed, highly kinetic, and not to be underestimated. Edge cases only.",
+        17: "Fast signaling helps reactions, decisions, and those satisfying moments when the answer appears before panic loads.",
+        18: "Not bridge-building quantities, but enough for the small-but-critical logistics of staying human.",
+        19: "Precious in trace amounts. Just enough sparkle to keep the legend reasonable.",
+        20: "A serious internal defense department, working around the clock to keep the main mission safe.",
+        21: "One of those beautiful details that makes biology feel like art direction with a lab budget.",
+        22: "Even at rest, the machine is making useful energy. Efficient? Debatable. Alive and clearly online? Yes.",
+        23: "A disciplined renewal schedule. The body understands maintenance windows and steady refreshes.",
+        24: "An impressive processing line turning ordinary food into continued ambition. Slow magic, solid throughput."
+    },
+    de: {
+        1: "Groß gewachsen, mit gutem Blick über die meisten Räume und Reichweite für die oberen Regale.",
+        2: "Genug Masse zum geerdet bleiben, Schwung mitzunehmen und wie die Hardware-Version eines Softwaremenschen zu wirken.",
+        3: "Alle tragenden Teile sind da. Das Chassis ist komplett und läuft noch in der Originalkonfiguration.",
+        4: "Genug Wasser an Bord, damit das System sauber läuft und die Debugging-Geduld hält.",
+        5: "Solide Reserve im Kreislauf, die alles unauffällig und pünktlich versorgt.",
+        6: "Volle Hand-Eingabe vorhanden. Praktisch zum Tippen, Verdrahten, Reparieren und Anpacken.",
+        7: "Nahe genug an scharf, um Details, Muster und den winzigen Fehler zu sehen, der alles kaputt macht.",
+        8: "Thermisch stabil, angenehm warm und bei normaler Last nicht zu Drama-Neigung.",
+        9: "Ein Upgrade im Chassis. Kleine Zahl, aber sie hält das System in die richtige Richtung.",
+        10: "Ehrlich gesagt ziemlich viel interne Verkabelung. Respekt an das biologische Routing-Team.",
+        11: "Großzügiger Speicher mit typischer Menschen-Indexierung: geniale Verknüpfungen, selektives Erinnern und gelegentliche Rätsel.",
+        12: "Stille Hintergrundwartung. Der Körper mag schnelle Refresh-Zyklen und Updates ohne großes Tamtam.",
+        13: "Eine ziemlich industrielle Chemieanlage. Selbst die höfliche Version hat ein sehr engagiertes Verarbeitungswerk.",
+        14: "Beweis, dass Evolution Remix-Kultur liebt. Unter der glatten Oberfläche steckt eine sehr kollaborative Codebasis.",
+        15: "Starke Wurzeln, klare Strömung und ein Heimatgefühl, das mich bis heute begleitet.",
+        16: "Selten im Einsatz, sehr dynamisch und nicht zu unterschätzen. Nur für Grenzfälle.",
+        17: "Schnelle Signale helfen bei Reaktion, Entscheidung und den schönen Momenten, in denen die Lösung vor der Panik auftaucht.",
+        18: "Nicht genug für eine Brücke, aber genug für die kleinen, kritischen Logistikaufgaben des Menschseins.",
+        19: "In Spuren wertvoll. Gerade genug Glanz, damit die Legende bezahlbar bleibt.",
+        20: "Ein ernstes internes Verteidigungsministerium, das rund um die Uhr die Hauptmission schützt.",
+        21: "Eines dieser schönen Details, die Biologie wie Art Direction mit Laborbudget wirken lassen.",
+        22: "Schon im Leerlauf erzeugt die Maschine nützliche Energie. Effizient? Fraglich. Lebendig und online? Ganz klar.",
+        23: "Ein disziplinierter Erneuerungsplan. Der Körper versteht Wartungsfenster und regelmäßige Auffrischung.",
+        24: "Eine beeindruckende Verarbeitungskette, die normales Essen in anhaltenden Ehrgeiz verwandelt. Langsame Magie, solider Durchsatz."
+    },
+    hr: {
+        1: "Visok sam, pa imam dobar pregled prostorije i dosežem gornje police bez pregovora.",
+        2: "Dovoljno mase da ostanem prizemljen, zadržim zamah i izgledam kao hardverska verzija softveraša.",
+        3: "Svi nosivi dijelovi su tu. Šasija je kompletna i još radi u originalnoj konfiguraciji.",
+        4: "Dovoljno hidratacije da sustav radi glatko i da strpljenje za debug ostane netaknuto.",
+        5: "Solidna cirkulacijska zaliha koja tiho drži sve opskrbljenim i na vrijeme.",
+        6: "Puna ručna upravljačka podrška. Korisno za tipkanje, spajanje, popravljanje i velike ideje.",
+        7: "Dovoljno oštro za detalje, uzorke i onaj sitni problem koji sruši lijepu cjelinu.",
+        8: "Toplinski stabilan, ugodno topao i bez sklonosti drami pri normalnom opterećenju.",
+        9: "Jedna nadogradnja u šasiji. Malo, ali dovoljno da sustav ide u pravom smjeru.",
+        10: "Iskreno, ima dosta unutarnjeg kabliranja. Respect originalnom biološkom timu za routanje.",
+        11: "Dosta memorije, uz uobičajeni ljudski indeks: genijalne veze, selektivno pamćenje i pokoja misterija.",
+        12: "Tiho pozadinsko održavanje. Tijelo voli brze cikluse osvježavanja i ažuriranja bez pompe.",
+        13: "Prilično industrijski kemijski pogon. Čak i uljudna verzija dolazi s jednim vrlo posvećenim postrojenjem.",
+        14: "Dokaz da evolucija voli remix kulturu. Ispod uglađene površine stoji vrlo suradnički kod.",
+        15: "Snažni korijeni, jasna struja i osjećaj mjesta koji i dalje putuje sa mnom.",
+        16: "Rijetko aktivirano, vrlo kinetično i nikako za podcijeniti. Samo za rubne slučajeve.",
+        17: "Brzi signali pomažu reakciji, odluci i onim lijepim trenucima kad rješenje stigne prije panike.",
+        18: "Nije dovoljno za most, ali dovoljno za one male, kritične logistike ljudskog bića.",
+        19: "Dragocjeno u tragovima. Tek toliko sjaja da legenda ostane razumna.",
+        20: "Ozbiljno unutarnje obrambeno odjeljenje koje danonoćno čuva glavnu misiju.",
+        21: "Jedan od onih lijepih detalja zbog kojih biologija izgleda kao art direction s laboratorijskim budžetom.",
+        22: "Čak i u mirovanju stroj stvara korisnu energiju. Učinkovito? Upitno. Živo i online? Apsolutno.",
+        23: "Disciplina obnove. Tijelo razumije servisne prozore i stalna osvježenja.",
+        24: "Impresivna linija obrade koja običnu hranu pretvara u trajnu ambiciju. Spora magija, dobar protok."
+    },
+    tr: {
+        1: "Uzun boy, çoğu odaya hakim bir görüş ve üst raflara uzanmak için iyi bir erişim.",
+        2: "Ayakta tutan, ivmeyi koruyan ve yazılımcının donanım sürümü gibi duran bir ağırlık.",
+        3: "Tüm taşıyıcı parçalar yerli yerinde. Şasi tam ve hâlâ orijinal ayarında çalışıyor.",
+        4: "Sistem akışını ve debug sabrını koruyacak kadar iyi hidrate edilmiş.",
+        5: "Her şeyi sessizce ve zamanında besleyen sağlam bir dolaşım rezervi.",
+        6: "Tam el girişi desteği. Yazmak, kablolamak, tamir etmek ve büyük fikirler için kullanışlı.",
+        7: "Detayları, kalıpları ve güzel görünen sistemi bozan minicik sorunu yakalayacak kadar keskin.",
+        8: "Isıl olarak dengeli, hoş sıcak ve normal yükte dramatik ısınmaya meyilli değil.",
+        9: "Şaside bir yükseltme. Sayı küçük ama sistemi doğru yönde tutmaya yetiyor.",
+        10: "Dürüst olmak gerekirse bayağı iç kablolama var. Orijinal biyolojik yönlendirme ekibine saygı.",
+        11: "Cömert bir bellek alanı; parlak bağlantılar, seçici hatırlama ve ara sıra gizemli geri çağırma.",
+        12: "Sessiz arka plan bakımı. Vücut hızlı yenileme döngülerini ve duyuru yapmadan güncelleme çıkarmayı seviyor.",
+        13: "Oldukça endüstriyel bir kimya düzeni. Nezaketli sürümde bile ciddi bir işleme tesisi var.",
+        14: "Evrimin remix kültürünü sevdiğinin kanıtı. Parlak dış yüzeyin altında oldukça işbirlikçi bir kod tabanı var.",
+        15: "Güçlü kökler, net bir akış ve hâlâ benimle gelen bir aidiyet hissi.",
+        16: "Nadiren devreye girer, yüksek kinetiktir ve asla küçümsenmez. Sadece uç durumlar için.",
+        17: "Hızlı sinyaller, tepkiyi ve kararları hızlandırır; bazen panik yüklenmeden çözüm gelir.",
+        18: "Köprü kuracak kadar değil, ama insan olmanın küçük ve kritik lojistiği için yeterli.",
+        19: "İz miktarında kıymetli. Efsaneyi bütçeyi bozmadan yaşatacak kadar parıltı.",
+        20: "Ana görevi korumak için günün her saati çalışan ciddi bir iç savunma departmanı.",
+        21: "Biyolojiyi laboratuvar bütçeli bir sanat yönetimi gibi hissettiren güzel ayrıntılardan biri.",
+        22: "Dinlenirken bile makine yararlı enerji üretiyor. Verimli mi? Tartışılır. Canlı ve çevrimiçi mi? Kesinlikle.",
+        23: "Disiplinli bir yenilenme takvimi. Vücut bakım pencerelerini ve düzenli tazelemeyi iyi biliyor.",
+        24: "Sıradan yiyeceği sürdürülen hırsa çeviren etkileyici bir işleme hattı. Yavaş sihir, sağlam verim."
+    }
 }
 
 const HOME_STACK_BUBBLE_DEFAULTS = {
@@ -224,7 +304,9 @@ function ArticleStackItems({ dataWrapper, selectedItemCategoryId, isHomeStack, i
  * @constructor
  */
 function ArticleStackItem({ itemWrapper, isHomeStack, isCompactStack }) {
+    const language = useLanguage()
     const viewport = useViewport()
+    const selectedLanguageId = language.getSelectedLanguage()?.id || "en"
     const title = itemWrapper.locales.title || itemWrapper.placeholder
     const segmentedTitle = _splitTitle(title)
     const homeClass = isHomeStack ? `article-stack-item-home` : ``
@@ -233,7 +315,7 @@ function ArticleStackItem({ itemWrapper, isHomeStack, isCompactStack }) {
     const linkTooltip = itemWrapper.link?.tooltip
     const emojiIconText = itemWrapper.iconText
     const bubbleMarkup = itemWrapper.locales.proofBubble ||
-        (isHomeStack ? HOME_STACK_POPUP_COPY[itemWrapper.id] : null) ||
+        (isHomeStack ? HOME_STACK_POPUP_COPY[selectedLanguageId]?.[itemWrapper.id] || HOME_STACK_POPUP_COPY.en?.[itemWrapper.id] : null) ||
         itemWrapper.locales.text ||
         "Placeholder text for this item."
     const isHomeBubbleEnabled = Boolean(isHomeStack && bubbleMarkup)

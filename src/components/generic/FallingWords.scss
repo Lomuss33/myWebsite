@@ -23,6 +23,8 @@ span.falling-word {
     top: 0;
     left: 0;
     z-index: 1;
+    display: inline-block;
+    box-sizing: border-box;
 
     cursor: grab;
     user-select: none;
@@ -40,6 +42,8 @@ span.falling-word {
     transition: color 5s ease;
 
     will-change: transform;
+    transform-origin: 50% 50%;
+    transform-box: border-box;
     transform: translate3d(0, 0, 0);
 }
 
@@ -80,12 +84,8 @@ span.falling-word-held {
     --falling-word-color: #f59e0b;
     color: var(--falling-word-color);
     transition: none !important;
-    text-shadow:
-        0 1px 0 color-mix(in srgb, var(--theme-background) 25%, transparent 75%),
-        0 14px 28px rgba(0, 0, 0, 0.30);
-    filter:
-        drop-shadow(0 8px 18px rgba(0, 0, 0, 0.24))
-        drop-shadow(0 0 16px rgba(245, 158, 11, 0.34));
+    text-shadow: 0 1px 0 color-mix(in srgb, var(--theme-background) 25%, transparent 75%);
+    filter: none;
 }
 
 span.falling-word-red-hold {

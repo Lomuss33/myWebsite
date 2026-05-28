@@ -144,10 +144,12 @@ article#article-1-section-my-software {
         color: #f8fafc;
         font-size: clamp(2rem, 1.24rem + 2.25vw, 3.18rem)!important;
         font-weight: 900;
-        line-height: 1.02;
+        line-height: 1.08;
+        padding-bottom: 0.1em;
         text-align: center;
         text-shadow: var(--software-project-title-shadow);
         text-wrap: balance;
+        overflow: visible;
     }
 
     h4.article-title::before,
@@ -163,9 +165,9 @@ article#article-1-section-my-software {
     }
 
     h4.article-title::before {
-        width: calc(100vw / var(--section-content-scale, 1));
-        margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
-        margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+        width: 100%;
+        margin-right: 0;
+        margin-left: 0;
         height: 3px;
         background: linear-gradient(90deg, var(--software-project-title-mid), var(--software-project-title-end));
         box-shadow: 0 0 24px rgba(236, 72, 153, 0.26);
@@ -185,7 +187,7 @@ article#article-1-section-my-software {
         display: block;
         max-width: 100%;
         min-width: 0;
-        padding: 0 2px;
+        padding: 0 2px 0.08em;
         overflow-wrap: anywhere;
         background: linear-gradient(135deg, var(--software-project-title-start) 0%, var(--software-project-title-mid) 48%, var(--software-project-title-end) 100%);
         background-clip: text;
@@ -545,10 +547,12 @@ article#article-1-section-my-hardware {
         color: #f8fafc;
         font-size: clamp(2rem, 1.24rem + 2.25vw, 3.18rem)!important;
         font-weight: 900;
-        line-height: 1.02;
+        line-height: 1.08;
+        padding-bottom: 0.1em;
         text-align: center;
         text-shadow: var(--hardware-project-title-shadow);
         text-wrap: balance;
+        overflow: visible;
     }
 
     h4.article-title::before,
@@ -564,9 +568,9 @@ article#article-1-section-my-hardware {
     }
 
     h4.article-title::before {
-        width: calc(100vw / var(--section-content-scale, 1));
-        margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
-        margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+        width: 100%;
+        margin-right: 0;
+        margin-left: 0;
         height: 3px;
         background: linear-gradient(90deg, var(--hardware-project-title-mid), var(--hardware-project-title-end));
         box-shadow: 0 0 24px rgba(163, 230, 53, 0.22);
@@ -586,7 +590,7 @@ article#article-1-section-my-hardware {
         display: block;
         max-width: 100%;
         min-width: 0;
-        padding: 0 2px;
+        padding: 0 2px 0.08em;
         overflow-wrap: anywhere;
         background: linear-gradient(135deg, var(--hardware-project-title-start) 0%, var(--hardware-project-title-mid) 48%, var(--hardware-project-title-end) 100%);
         background-clip: text;
@@ -1238,34 +1242,30 @@ div.article-portfolio-item-body {
 
 article#article-1-section-my-software,
 article#article-1-section-my-hardware {
-    div.article-portfolio-item-title {
-        --portfolio-title-box-height: clamp(4.15rem, 6.45vw, 5.7rem);
-        --portfolio-category-box-height: clamp(1.32rem, 2vw, 1.78rem);
+    div.article-portfolio-item-title,
+    div.article-portfolio-item-body,
+    ul.article-portfolio-item-body-tags,
+    div.article-portfolio-item-footer {
+        position: relative;
+        z-index: 1;
     }
 
     div.article-portfolio-item-body {
-        --portfolio-description-box-height: clamp(6.5rem, 11vw, 8.15rem);
+        margin-top: 8px;
+        --portfolio-description-box-height: clamp(5.9rem, 9.8vw, 7.35rem);
     }
 
     @include media-breakpoint-down(lg) {
-        div.article-portfolio-item-title {
-            --portfolio-title-box-height: clamp(3.9rem, 8.35vw, 5.05rem);
-            --portfolio-category-box-height: clamp(1.24rem, 2.95vw, 1.6rem);
-        }
-
         div.article-portfolio-item-body {
-            --portfolio-description-box-height: clamp(6rem, 14vw, 7.35rem);
+            margin-top: 8px;
+            --portfolio-description-box-height: clamp(5.55rem, 12.8vw, 6.85rem);
         }
     }
 
     @include media-breakpoint-down(sm) {
-        div.article-portfolio-item-title {
-            --portfolio-title-box-height: clamp(3.62rem, 10.7vw, 4.5rem);
-            --portfolio-category-box-height: clamp(1.18rem, 3.7vw, 1.44rem);
-        }
-
         div.article-portfolio-item-body {
-            --portfolio-description-box-height: clamp(5.45rem, 18vw, 6.75rem);
+            margin-top: 7px;
+            --portfolio-description-box-height: clamp(5.15rem, 16.8vw, 6.3rem);
         }
     }
 }
@@ -1305,66 +1305,61 @@ article#article-1-section-my-hardware {
         gap: 4px;
 
         h5.article-portfolio-item-title-main {
-            font-size: clamp(1.3rem, 1.9vw, 2rem);
-            line-height: 1.1;
-            -webkit-line-clamp: 3;
+            font-size: clamp(1.48rem, 1.12rem + 1.16vw, 2.18rem);
+            line-height: 1.09;
+            font-weight: 800;
+            letter-spacing: -0.024em;
+            text-wrap: balance;
+            overflow-wrap: anywhere;
+            word-break: normal;
+            padding-bottom: 0.08em;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
         }
 
         div.article-portfolio-item-title-category {
-            font-size: clamp(1rem, 0.94rem + 0.4vw, 1.3rem);
-            line-height: 1.16;
-        }
-
-        h5.article-portfolio-item-title-main-fit,
-        div.article-portfolio-item-title-category-fit {
-            margin-top: 0;
-            margin-bottom: 0;
-            overflow: hidden;
-            text-overflow: clip;
-            white-space: normal;
-            word-break: normal;
-            hyphens: none;
-        }
-
-        h5.article-portfolio-item-title-main-fit {
-            display: block;
-            block-size: var(--portfolio-title-box-height, clamp(4.15rem, 6.45vw, 5.7rem));
-            font-size: var(--pretext-fit-font-size, clamp(1.3rem, 1.9vw, 2rem)) !important;
-            line-height: var(--pretext-fit-line-height, 1.1) !important;
-            overflow-wrap: anywhere;
-        }
-
-        div.article-portfolio-item-title-category-fit {
-            display: block;
-            block-size: var(--portfolio-category-box-height, clamp(1.32rem, 2vw, 1.78rem));
-            font-size: var(--pretext-fit-font-size, clamp(1rem, 0.94rem + 0.4vw, 1.3rem));
-            line-height: var(--pretext-fit-line-height, 1.16);
-            overflow-wrap: normal;
+            font-size: clamp(0.9rem, 0.84rem + 0.28vw, 1.08rem);
+            line-height: 1.1;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            opacity: 0.92;
         }
     }
 
     div.article-portfolio-item-body div.article-portfolio-item-body-description-fit {
-        font-size: var(--pretext-fit-font-size, clamp(0.92rem, 0.88rem + 0.2vw, 1.04rem));
-        line-height: var(--pretext-fit-line-height, 1.34);
+        font-size: var(--pretext-fit-font-size, clamp(0.88rem, 0.84rem + 0.18vw, 0.98rem));
+        line-height: var(--pretext-fit-line-height, 1.38);
+        opacity: 0.96;
     }
 
     @supports (container-type: inline-size) {
         div.article-portfolio-item-title h5.article-portfolio-item-title-main {
-            font-size: clamp(1.18rem, 5.2cqw, 1.95rem);
+            font-size: clamp(1.42rem, 5.8cqw, 2.08rem);
         }
 
         div.article-portfolio-item-title div.article-portfolio-item-title-category {
-            font-size: clamp(0.98rem, 3cqw, 1.28rem);
+            font-size: clamp(0.86rem, 2.2cqw, 1rem);
         }
     }
 
-    @container (max-width: 420px) {
+    @container (max-width: 340px) {
         div.article-portfolio-item-title h5.article-portfolio-item-title-main {
-            font-size: clamp(1rem, 4.8cqw, 1.45rem);
+            font-size: clamp(1.22rem, 4.9cqw, 1.56rem);
+            line-height: 1.1;
         }
 
         div.article-portfolio-item-title div.article-portfolio-item-title-category {
-            font-size: clamp(0.92rem, 2.9cqw, 1.12rem);
+            font-size: clamp(0.82rem, 2.05cqw, 0.94rem);
         }
+    }
+
+    ul.article-portfolio-item-body-tags {
+        margin-top: 8px;
+    }
+
+    div.article-portfolio-item-footer {
+        margin-top: 8px;
     }
 }

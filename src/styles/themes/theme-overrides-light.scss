@@ -1292,6 +1292,21 @@
     --probe-button-corner-shadow: rgba(148, 163, 184, 0.24);
 }
 
+[data-theme="light"] article#article-2-section-my-hardware {
+    --probe-popup-backdrop: rgba(148, 163, 184, 0.34);
+    --probe-popup-surface: #ffffff;
+    --probe-popup-border: color-mix(in srgb, var(--probe-accent) 20%, #cbd5e1 80%);
+    --probe-popup-shadow: 0 20px 48px rgba(15, 23, 42, 0.16);
+    --probe-popup-text: #0f172a;
+    --probe-popup-text-soft: #475569;
+    --probe-popup-query-bg: color-mix(in srgb, var(--probe-accent) 8%, #f8fbff 92%);
+    --probe-popup-query-border: color-mix(in srgb, var(--probe-accent) 16%, #dbeafe 84%);
+    --probe-popup-go-bg: linear-gradient(135deg, #0ea5e9, #2563eb);
+    --probe-popup-go-text: #f8fafc;
+    --probe-popup-cancel-bg: #f8fafc;
+    --probe-popup-cancel-text: #0f172a;
+}
+
 [data-theme="light"] article#article-2-section-my-hardware button.standard-button.btn-contrast.article-data-probe-unlock-btn {
     background: linear-gradient(180deg, #ffffff, #eef6ff) !important;
     border-color: rgba(37, 99, 235, 0.20) !important;

@@ -40,8 +40,8 @@ function FallingWords({
         anchorOffsetY: 0,
         dragBoxWidth: 0,
         dragBoxHeight: 0,
-        dragBoxLeftOffset: 0,
-        dragBoxTopOffset: 0,
+        dragAngle: 0,
+        dragCollisionMask: 0,
         pointerType: null
     })
     const [layoutVersion, setLayoutVersion] = useState(0)
@@ -66,8 +66,8 @@ function FallingWords({
         dragStateRef.current.anchorOffsetY = 0
         dragStateRef.current.dragBoxWidth = 0
         dragStateRef.current.dragBoxHeight = 0
-        dragStateRef.current.dragBoxLeftOffset = 0
-        dragStateRef.current.dragBoxTopOffset = 0
+        dragStateRef.current.dragAngle = 0
+        dragStateRef.current.dragCollisionMask = 0
         dragStateRef.current.pointerType = null
     }
 
@@ -123,11 +123,16 @@ function FallingWords({
 
     const _finalizePointerInteraction = () => {
         const dragState = dragStateRef.current
+        const entry = dragState.index == null ? null : wordBodiesRef.current[dragState.index]
 
         _clearDragTargetHeldClass()
         _clearDragListeners()
 
         _releaseDragCapture()
+
+        if(entry?.body) {
+            entry.body.collisionFilter.mask = dragState.dragCollisionMask ?? entry.body.collisionFilter.mask
+        }
 
         dragState.captureTarget = null
         dragState.pointerId = null
@@ -138,8 +143,8 @@ function FallingWords({
         dragState.anchorOffsetY = 0
         dragState.dragBoxWidth = 0
         dragState.dragBoxHeight = 0
-        dragState.dragBoxLeftOffset = 0
-        dragState.dragBoxTopOffset = 0
+        dragState.dragAngle = 0
+        dragState.dragCollisionMask = 0
         dragState.pointerType = null
     }
 
@@ -235,6 +240,10 @@ function FallingWords({
         const World = Matter.World
         const Bodies = Matter.Bodies
         const Body = Matter.Body
+        const collisionCategories = {
+            walls: 0x0002,
+            words: 0x0004
+        }
 
         const engine = Engine.create({})
         engine.gravity.y = isCoarsePointer() ? 0.6 : 1
@@ -246,7 +255,11 @@ function FallingWords({
         const wallThickness = 200
         const params = {
             isStatic: true,
-            render: {visible: false}
+            render: {visible: false},
+            collisionFilter: {
+                category: collisionCategories.walls,
+                mask: collisionCategories.words
+            }
         }
 
         const floor = Bodies.rectangle(
@@ -313,7 +326,11 @@ function FallingWords({
                 frictionAir: isCoarsePointer() ? 0.035 : 0.018,
                 restitution: 0.06,
                 slop: 0.01,
-                render: {visible: false}
+                render: {visible: false},
+                collisionFilter: {
+                    category: collisionCategories.words,
+                    mask: collisionCategories.words | collisionCategories.walls
+                }
             })
 
             // Slight initial horizontal drift to spread stacks without making them look floaty.
@@ -359,7 +376,7 @@ function FallingWords({
                             Matter.Sleeping.set(draggedEntry.body, false)
                             Matter.Body.setPosition(draggedEntry.body, { x: nextX, y: nextY })
                             Matter.Body.setVelocity(draggedEntry.body, { x: velocityX, y: velocityY })
-                            Matter.Body.setAngle(draggedEntry.body, 0)
+                            Matter.Body.setAngle(draggedEntry.body, dragState.dragAngle || 0)
                             Matter.Body.setAngularVelocity(draggedEntry.body, 0)
                         }
                     }
@@ -382,7 +399,7 @@ function FallingWords({
                 const y = body.position.y
                 const isSelected = activeSelectedIndex === i
                 const scale = isSelected ? 1.25 : 1
-                el.style.transform = `translate3d(${x - bodyWidth / 2}px, ${y - bodyHeight / 2}px, 0) rotate(${body.angle}rad) scale(${scale})`
+                el.style.transform = `translate3d(${x}px, ${y}px, 0) translate3d(-50%, -50%, 0) rotate(${body.angle}rad) scale(${scale})`
             }
 
             rafRef.current = requestAnimationFrame(tick)
@@ -513,14 +530,14 @@ function FallingWords({
         if(!targetEl) return
 
         const rect = container.getBoundingClientRect()
-        const pointerX = event.clientX - rect.left
-        const pointerY = event.clientY - rect.top
-        const bodyCenterX = entry.body.position.x
-        const bodyCenterY = entry.body.position.y
+        const borderLeft = container.clientLeft || 0
+        const borderTop = container.clientTop || 0
+        const pointerX = event.clientX - rect.left - borderLeft
+        const pointerY = event.clientY - rect.top - borderTop
         const dragBoxWidth = entry.bodyWidth
         const dragBoxHeight = entry.bodyHeight
-        const anchorOffsetX = pointerX - bodyCenterX
-        const anchorOffsetY = pointerY - bodyCenterY
+        const dragAngle = entry.body.angle || 0
+        const dragCollisionMask = entry.body.collisionFilter?.mask ?? 0
 
         dragStateRef.current.pointerId = event.pointerId
         dragStateRef.current.index = index
@@ -528,10 +545,12 @@ function FallingWords({
         dragStateRef.current.tapEligible = true
         dragStateRef.current.startX = event.clientX
         dragStateRef.current.startY = event.clientY
-        dragStateRef.current.anchorOffsetX = anchorOffsetX
-        dragStateRef.current.anchorOffsetY = anchorOffsetY
+        dragStateRef.current.anchorOffsetX = pointerX - entry.body.position.x
+        dragStateRef.current.anchorOffsetY = pointerY - entry.body.position.y
         dragStateRef.current.dragBoxWidth = dragBoxWidth
         dragStateRef.current.dragBoxHeight = dragBoxHeight
+        dragStateRef.current.dragAngle = dragAngle
+        dragStateRef.current.dragCollisionMask = dragCollisionMask
         dragStateRef.current.targetX = entry.body.position.x
         dragStateRef.current.targetY = entry.body.position.y
         dragStateRef.current.pointerType = event.pointerType || null
@@ -559,7 +578,7 @@ function FallingWords({
         }
 
         Matter.Sleeping.set(entry.body, false)
-        Matter.Body.setAngle(entry.body, 0)
+        entry.body.collisionFilter.mask = 0x0002
         Matter.Body.setVelocity(entry.body, { x: 0, y: 0 })
         Matter.Body.setAngularVelocity(entry.body, 0)
         event.preventDefault()
@@ -583,24 +602,41 @@ function FallingWords({
             dragState.moved = true
         }
 
+        // The body lives in the container's padding-edge frame (top:0/left:0 of an
+        // absolutely positioned child sits at the padding edge, inside the border).
+        // getBoundingClientRect() returns the border-edge frame, so we subtract the
+        // border via clientLeft/clientTop. We also clamp against clientWidth/clientHeight
+        // (padding-box) so the bounds match the physics walls — which use the same.
         const rect = container.getBoundingClientRect()
-        const pointerX = event.clientX - rect.left
-        const pointerY = event.clientY - rect.top
-        const dragInsetX = 8
-        const dragInsetTop = 0
+        const borderLeft = container.clientLeft || 0
+        const borderTop = container.clientTop || 0
+        const innerWidth = container.clientWidth || rect.width
+        const innerHeight = container.clientHeight || rect.height
+        const pointerX = event.clientX - rect.left - borderLeft
+        const pointerY = event.clientY - rect.top - borderTop
         const desiredCenterX = pointerX - dragState.anchorOffsetX
         const desiredCenterY = pointerY - dragState.anchorOffsetY
-        const halfWidth = dragState.dragBoxWidth / 2
-        const halfHeight = dragState.dragBoxHeight / 2
+
+        // Match the resting word's effective footprint: a body rotated by `angle`
+        // occupies an axis-aligned bounding box of (W·|cosθ| + H·|sinθ|) × (W·|sinθ| + H·|cosθ|).
+        // Clamping the center to this rotated AABB makes the dragged word stop exactly
+        // where a resting rotated word would — visible edges flush with the container walls.
+        const angle = dragState.dragAngle || 0
+        const cosA = Math.abs(Math.cos(angle))
+        const sinA = Math.abs(Math.sin(angle))
+        const baseW = dragState.dragBoxWidth || entry.bodyWidth
+        const baseH = dragState.dragBoxHeight || entry.bodyHeight
+        const halfAabbW = (baseW * cosA + baseH * sinA) / 2
+        const halfAabbH = (baseW * sinA + baseH * cosA) / 2
         const nextX = clamp(
             desiredCenterX,
-            halfWidth + dragInsetX,
-            Math.max(halfWidth + dragInsetX, rect.width - halfWidth - dragInsetX)
+            halfAabbW,
+            Math.max(halfAabbW, innerWidth - halfAabbW)
         )
         const nextY = clamp(
             desiredCenterY,
-            halfHeight + dragInsetTop,
-            Math.max(halfHeight + dragInsetTop, rect.height - halfHeight - dragInsetX)
+            halfAabbH,
+            Math.max(halfAabbH, innerHeight - halfAabbH)
         )
         dragState.targetX = nextX
         dragState.targetY = nextY

@@ -128,7 +128,6 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
     flex-direction: column;
     width: 100%;
     padding: var(--content-padding);
-    padding-right: var(--experience-card-right-padding, 1.1rem);
     position: relative;
     isolation: isolate;
     overflow: hidden;
@@ -1092,6 +1091,7 @@ article#article-1-section-experience {
         color: var(--card-text-mid);
         gap: clamp(0.52rem, 0.38rem + 0.28vw, 0.82rem);
         margin-top: clamp(0.28rem, 0.2rem + 0.18vw, 0.42rem);
+        width: 100%;
     }
 
     div.article-timeline-item-info-for-timelines-header-meta-row {
@@ -1127,17 +1127,29 @@ article#article-1-section-experience {
     }
 
     div.article-timeline-item-info-for-timelines-header-meta-row--split {
-        justify-content: space-between;
-        align-items: center;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: stretch;
         gap: clamp(0.75rem, 0.56rem + 0.4vw, 1.1rem);
         line-height: 1.24;
-        font-size: clamp(1.12rem, 1rem + 0.3vw, 1.3rem);
+        font-size: clamp(1.02rem, 0.92rem + 0.28vw, 1.18rem);
     }
 
     div.article-timeline-item-info-for-timelines-header-meta-segment {
-        flex: 1 1 0;
+        display: flex;
+        align-items: flex-start;
+        min-height: 100%;
+        padding: clamp(0.62rem, 0.5rem + 0.24vw, 0.8rem) clamp(0.7rem, 0.56rem + 0.3vw, 0.94rem);
+        border: 1px solid color-mix(in srgb, var(--card-border) 72%, var(--card-accent) 28%);
+        border-radius: clamp(0.85rem, 0.72rem + 0.24vw, 1.05rem);
+        background: linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--card-surface-top) 82%, rgba(255, 255, 255, 0.04) 18%),
+            color-mix(in srgb, var(--card-surface-bottom) 92%, rgba(255, 255, 255, 0.02) 8%)
+        );
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
         min-width: 0;
-        max-width: calc(50% - 0.4rem);
+        max-width: 100%;
 
         i.fa-icon {
             width: 1.22em;
@@ -1153,7 +1165,7 @@ article#article-1-section-experience {
     }
 
     div.article-timeline-item-info-for-timelines-header-meta-segment--company {
-        justify-content: flex-end;
+        justify-content: flex-start;
         text-align: right;
         font-weight: 650;
         color: color-mix(in srgb, var(--card-text-strong) 74%, var(--card-accent) 26%);
@@ -1164,15 +1176,15 @@ article#article-1-section-experience {
         grid-template-columns: minmax(0, 1fr) auto;
         align-items: start;
         column-gap: clamp(0.4rem, 0.3rem + 0.2vw, 0.58rem);
-        width: fit-content;
-        max-width: min(100%, 26ch);
-        margin-left: auto;
+        width: 100%;
+        max-width: 100%;
+        margin-left: 0;
 
         span {
             display: block;
             max-width: 100%;
             text-align: right;
-            text-wrap: balance;
+            overflow-wrap: anywhere;
         }
 
         i.fa-icon {
@@ -1187,44 +1199,84 @@ article#article-1-section-experience {
         color: color-mix(in srgb, var(--card-text-strong) 66%, var(--card-accent) 34%);
     }
 
+    div.article-timeline-item-info-for-timelines-body {
+        margin-top: clamp(0.8rem, 0.62rem + 0.38vw, 1.1rem);
+        padding-top: clamp(0.72rem, 0.58rem + 0.24vw, 0.9rem);
+        border-top: 1px solid color-mix(in srgb, var(--card-border) 74%, var(--card-accent) 26%);
+        text-align: left;
+        line-height: 1.68;
+
+        div.article-timeline-item-info-for-timelines-body-text {
+            width: calc(100% - var(--experience-description-right-buffer, 0px));
+            max-width: none;
+            margin-right: auto;
+            color: color-mix(in srgb, var(--card-text-mid) 92%, var(--card-text-strong) 8%);
+        }
+
+        ul.article-timeline-item-info-for-timelines-body-list {
+            width: calc(100% - var(--experience-description-right-buffer, 0px));
+            max-width: none;
+            margin-right: auto;
+            padding-left: 1.25em;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        div.article-timeline-item-info-for-timelines-header-meta-row--split {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        div.article-timeline-item-info-for-timelines-header-meta-segment--company,
+        div.article-timeline-item-info-for-timelines-header-meta-segment--location {
+            text-align: left;
+        }
+
+        div.article-timeline-item-info-for-timelines-header-meta-content--company {
+            span {
+                text-align: left;
+            }
+        }
+
+        div.article-timeline-item-info-for-timelines-body {
+            div.article-timeline-item-info-for-timelines-body-text,
+            ul.article-timeline-item-info-for-timelines-body-list {
+                width: calc(100% - var(--experience-description-right-buffer, 0px));
+                max-width: none;
+            }
+        }
+    }
+
     @include media-breakpoint-down(sm) {
         div.article-timeline-item-info-for-timelines-header-meta-row--split {
-            flex-direction: column;
-            align-items: stretch;
             gap: clamp(0.38rem, 0.3rem + 0.22vw, 0.58rem);
         }
 
         div.article-timeline-item-info-for-timelines-header-meta-segment--company,
         div.article-timeline-item-info-for-timelines-header-meta-segment--location {
-            justify-content: center;
-            text-align: center;
+            justify-content: flex-start;
+            text-align: left;
         }
 
         div.article-timeline-item-info-for-timelines-header-meta-segment--company {
-            width: fit-content;
             max-width: 100%;
-            margin-inline: auto;
         }
 
         div.article-timeline-item-info-for-timelines-header-meta-content--company {
-            display: inline-flex;
-            align-items: center;
-            justify-content: flex-start;
-            width: fit-content;
+            display: grid;
+            align-items: start;
+            justify-content: stretch;
+            width: 100%;
             max-width: 100%;
-            margin-left: auto;
-            margin-right: auto;
-            flex-direction: row;
-            gap: clamp(0.4rem, 0.3rem + 0.2vw, 0.58rem);
+            margin-right: 0;
 
             span {
                 display: block;
                 max-width: 100%;
-                text-align: center;
+                text-align: left;
             }
 
             i.fa-icon {
-                align-self: center;
+                align-self: start;
             }
         }
 

@@ -607,6 +607,7 @@ button.standard-button.btn-contrast.article-timeline-see-more-button {
 article#article-1-section-experience {
     ul.article-timeline-items {
         --experience-avatar-size: 112px;
+        --experience-description-right-buffer: calc(var(--experience-avatar-size) / 2);
         --experience-rail-width: 80px;
         --experience-rail-anchor-width: 40px;
         --experience-edge-gap: 10px;
@@ -629,15 +630,15 @@ article#article-1-section-experience {
             0 0 0 1px rgba(255, 255, 255, 0.14) inset,
             0 0 0 7px color-mix(in srgb, var(--theme-primary) 12%, transparent);
         --experience-avatar-shadow-direct:
-            0 28px 56px rgba(0, 0, 0, 0.40),
+            0 30px 60px rgba(0, 0, 0, 0.42),
             0 0 0 1px rgba(255, 255, 255, 0.18) inset,
-            0 0 0 9px color-mix(in srgb, var(--theme-primary) 16%, transparent);
+            0 0 0 10px color-mix(in srgb, var(--theme-primary) 16%, transparent);
         --experience-avatar-filter-resting: saturate(0.94) brightness(0.98);
         --experience-avatar-filter-active: saturate(1.08) brightness(1.04);
         --experience-avatar-filter-direct: saturate(1.16) brightness(1.08);
         --experience-avatar-transform-resting: translate3d(0, 0, 0) scale(1);
         --experience-avatar-transform-active: translate3d(calc(-1 * var(--experience-overlay-shift-active)), 0, 0) scale(1.04);
-        --experience-avatar-transform-direct: translate3d(calc(-1 * (var(--experience-overlay-shift-active) + var(--experience-avatar-size) * 0.12)), -2px, 0) scale(1.11);
+        --experience-avatar-transform-direct: translate3d(calc(-2 * var(--experience-overlay-shift-active)), 0, 0) scale(1.08);
         --experience-card-transform-resting: translate3d(0, 0, 0);
         --experience-card-transform-active: translate3d(-4px, -2px, 0);
         --experience-card-shadow-active:
@@ -773,6 +774,7 @@ article#article-1-section-experience {
         left: 0;
         width: var(--experience-avatar-size);
         height: var(--experience-avatar-size);
+        transform-origin: center center;
         background:
             radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.10), transparent 42%),
             linear-gradient(180deg, rgba(10, 16, 30, 0.98), rgba(5, 8, 16, 0.98));
@@ -857,11 +859,15 @@ article#article-1-section-experience {
             }
         }
 
-        a.article-timeline-item-avatar-link--experience:hover div.article-timeline-item-avatar--experience,
-        button.article-timeline-item-avatar-button-reset--experience:hover div.article-timeline-item-avatar--experience {
+        li.article-timeline-item--experience:hover a.article-timeline-item-avatar-link--experience:hover div.article-timeline-item-avatar--experience,
+        li.article-timeline-item--experience:hover button.article-timeline-item-avatar-button-reset--experience:hover div.article-timeline-item-avatar--experience,
+        li.article-timeline-item--experience a.article-timeline-item-avatar-link--experience:hover div.article-timeline-item-avatar--experience,
+        li.article-timeline-item--experience button.article-timeline-item-avatar-button-reset--experience:hover div.article-timeline-item-avatar--experience {
             transform: var(--experience-avatar-transform-direct);
             filter: var(--experience-avatar-filter-direct);
             box-shadow: var(--experience-avatar-shadow-direct);
+            -webkit-mask-image: linear-gradient(#000, #000);
+            mask-image: linear-gradient(#000, #000);
         }
     }
 

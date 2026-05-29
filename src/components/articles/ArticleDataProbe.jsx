@@ -4,7 +4,6 @@ import {createPortal} from "react-dom"
 import Article from "./base/Article.jsx"
 import StandardButton from "../buttons/StandardButton.jsx"
 import CopyButton from "../buttons/CopyButton.jsx"
-import {useLanguage} from "../../providers/LanguageProvider.jsx"
 
 const HIDDEN_TEXT = "No data returned. Access may be blocked, denied, or intentionally hidden."
 const LIST_PREVIEW_COUNT = 2
@@ -65,385 +64,7 @@ const PROBE_WHAT = {
     public_ip_v6: "Your outward-facing network address on the newer internet routing standard.",
 }
 
-const DATA_PROBE_UI = {
-    en: {
-        hiddenText: "No data returned. Access may be blocked, denied, or intentionally hidden.",
-        searchTitle: "Search Google?",
-        searchSectionDescription: "This will open a new tab to research this signal group.",
-        searchProbeDescription: "This will open a new tab to research this signal.",
-        searchEyebrow: "External search",
-        cancel: "Cancel",
-        go: "Go",
-        autoVisibleSignals: "Auto-visible signals",
-        clickToRequestProbes: "Click-to-request probes",
-        externalIpChecks: "External IP checks",
-        sectionExternalEyebrow: "External lookup",
-        sectionExternalTitle: "Public IP",
-        sectionExternalDescription: "Shows the address that outside services see. Nothing is fetched until you click one of the buttons.",
-        sectionPermissionEyebrow: "Permission gated",
-        sectionPermissionTitle: "Ask for more",
-        sectionPermissionDescription: "These checks stay dormant until you unlock the section and explicitly ask for each permission or hardware chooser.",
-        sectionPassiveEyebrow: "Passive reads",
-        sectionPassiveTitle: "Visible without asking",
-        sectionPassiveDescription: "These values are exposed by the browser immediately, without prompts, and are enough to describe a device surprisingly well.",
-        passiveQueuedDescription: "Passive probes are queued until the browser is idle so this section does not stall page transitions.",
-        unlockInteractions: "Unlock interactions",
-        request: "Request",
-        copy: "Copy",
-        details: "Details",
-        what: "What",
-        how: "How",
-        why: "Why",
-        signals: "signals",
-        showLess: "Show less",
-        showMore: "Show more",
-        searchGoogleFor: "Search Google for",
-        badges: {
-            ok: "AVAILABLE",
-            pending: "CHECKING",
-            idle: "READY",
-            unsupported: "NOT SUPPORTED",
-            hidden: "DENIED/HIDDEN"
-        },
-        statusText: {
-            requestPending: "Request in progress...",
-            passivePending: "Collecting locally exposed values...",
-            thirdPartyIdle: "No external request has been sent yet. Use the button to fetch it deliberately.",
-            requestIdle: "Waiting for your click. Nothing is requested until you trigger it.",
-            unsupported: "This browser or context does not expose this capability.",
-            explanationUnavailable: "Explanation unavailable."
-        },
-        buttons: {
-            sendTest: "Send test",
-            fetchPublicIPv4: "Fetch public IPv4",
-            fetchPublicIPv6: "Fetch public IPv6"
-        }
-    },
-    de: {
-        hiddenText: "Keine Daten zurueckgegeben. Der Zugriff ist moeglicherweise blockiert, verweigert oder absichtlich verborgen.",
-        searchTitle: "Bei Google suchen?",
-        searchSectionDescription: "Dies oeffnet einen neuen Tab, um diese Signalgruppe genauer zu recherchieren.",
-        searchProbeDescription: "Dies oeffnet einen neuen Tab, um dieses Signal genauer zu recherchieren.",
-        searchEyebrow: "Externe Suche",
-        cancel: "Abbrechen",
-        go: "Los",
-        autoVisibleSignals: "Automatisch sichtbare Signale",
-        clickToRequestProbes: "Per Klick anfragbare Abfragen",
-        externalIpChecks: "Externe IP-Abfragen",
-        sectionExternalEyebrow: "Externe Abfrage",
-        sectionExternalTitle: "Oeffentliche IP",
-        sectionExternalDescription: "Zeigt die Adresse, die externe Dienste von dir sehen. Es wird nichts abgefragt, bis du auf einen der Buttons klickst.",
-        sectionPermissionEyebrow: "Berechtigungsbasiert",
-        sectionPermissionTitle: "Mehr anfragen",
-        sectionPermissionDescription: "Diese Abfragen bleiben inaktiv, bis du den Bereich freischaltest und jede Berechtigung oder Hardware-Auswahl bewusst anstoesst.",
-        sectionPassiveEyebrow: "Passive Auslesung",
-        sectionPassiveTitle: "Ohne Nachfrage sichtbar",
-        sectionPassiveDescription: "Diese Werte liefert der Browser sofort und ohne Rueckfrage. Zusammen beschreiben sie ein Geraet erstaunlich genau.",
-        passiveQueuedDescription: "Passive Abfragen werden erst gestartet, wenn der Browser Leerlauf hat, damit dieser Bereich Seitenwechsel nicht ausbremst.",
-        unlockInteractions: "Interaktionen freischalten",
-        request: "Anfragen",
-        copy: "Kopieren",
-        details: "Details",
-        what: "Was",
-        how: "Wie",
-        why: "Warum",
-        signals: "Signale",
-        showLess: "Weniger zeigen",
-        showMore: "Mehr zeigen",
-        searchGoogleFor: "Google-Suche fuer",
-        badges: {
-            ok: "VERFUEGBAR",
-            pending: "PRUEFT",
-            idle: "BEREIT",
-            unsupported: "NICHT UNTERSTUETZT",
-            hidden: "VERWEIGERT/VERBORGEN"
-        },
-        statusText: {
-            requestPending: "Anfrage laeuft...",
-            passivePending: "Lokal sichtbare Werte werden gesammelt...",
-            thirdPartyIdle: "Es wurde noch keine externe Anfrage gesendet. Nutze den Button, um sie bewusst auszufuehren.",
-            requestIdle: "Wartet auf deinen Klick. Es wird nichts angefragt, bis du es ausloest.",
-            unsupported: "Dieser Browser oder Kontext stellt diese Faehigkeit nicht bereit.",
-            explanationUnavailable: "Keine Erklaerung verfuegbar."
-        },
-        buttons: {
-            sendTest: "Test senden",
-            fetchPublicIPv4: "Oeffentliche IPv4 abrufen",
-            fetchPublicIPv6: "Oeffentliche IPv6 abrufen"
-        }
-    },
-    hr: {
-        hiddenText: "Nema vracenih podataka. Pristup je mozda blokiran, odbijen ili namjerno skriven.",
-        searchTitle: "Pretraziti na Googleu?",
-        searchSectionDescription: "Otvorit ce se nova kartica za dodatno istrazivanje ove skupine signala.",
-        searchProbeDescription: "Otvorit ce se nova kartica za dodatno istrazivanje ovog signala.",
-        searchEyebrow: "Vanjska pretraga",
-        cancel: "Odustani",
-        go: "Idi",
-        autoVisibleSignals: "Automatski vidljivi signali",
-        clickToRequestProbes: "Provjere na klik",
-        externalIpChecks: "Vanjske IP provjere",
-        sectionExternalEyebrow: "Vanjski upit",
-        sectionExternalTitle: "Javna IP adresa",
-        sectionExternalDescription: "Prikazuje adresu koju vanjske usluge vide. Nista se ne dohvaca dok ne kliknes jedan od gumba.",
-        sectionPermissionEyebrow: "Uz dopustenje",
-        sectionPermissionTitle: "Zatrazi vise",
-        sectionPermissionDescription: "Ove provjere miruju dok ne otkljucas odjeljak i izricito ne zatrazis svako dopustenje ili odabir hardvera.",
-        sectionPassiveEyebrow: "Pasivno citanje",
-        sectionPassiveTitle: "Vidljivo bez pitanja",
-        sectionPassiveDescription: "Ove vrijednosti preglednik otkriva odmah, bez ikakvog upita, i iznenadujuce dobro opisuju uredaj.",
-        passiveQueuedDescription: "Pasivne provjere cekaju da preglednik ude u mirovanje kako ovaj odjeljak ne bi usporavao prijelaze stranice.",
-        unlockInteractions: "Otkljucaj interakcije",
-        request: "Zatrazi",
-        copy: "Kopiraj",
-        details: "Detalji",
-        what: "Sto",
-        how: "Kako",
-        why: "Zasto",
-        signals: "signala",
-        showLess: "Prikazi manje",
-        showMore: "Prikazi vise",
-        searchGoogleFor: "Pretrazi Google za",
-        badges: {
-            ok: "DOSTUPNO",
-            pending: "PROVJERA",
-            idle: "SPREMNO",
-            unsupported: "NIJE PODRZANO",
-            hidden: "ODBIJENO/SKRIVENO"
-        },
-        statusText: {
-            requestPending: "Zahtjev je u tijeku...",
-            passivePending: "Prikupljaju se lokalno vidljive vrijednosti...",
-            thirdPartyIdle: "Jos nije poslan nijedan vanjski zahtjev. Upotrijebi gumb ako to zelis namjerno uciniti.",
-            requestIdle: "Ceka tvoj klik. Nista se ne trazi dok to sam ne pokrenes.",
-            unsupported: "Ovaj preglednik ili kontekst ne izlaze ovu mogucnost.",
-            explanationUnavailable: "Objasnjenje nije dostupno."
-        },
-        buttons: {
-            sendTest: "Posalji test",
-            fetchPublicIPv4: "Dohvati javni IPv4",
-            fetchPublicIPv6: "Dohvati javni IPv6"
-        }
-    },
-    tr: {
-        hiddenText: "Veri donmedi. Erisim engellenmis, reddedilmis ya da bilincli olarak gizlenmis olabilir.",
-        searchTitle: "Google'da ara?",
-        searchSectionDescription: "Bu, bu sinyal grubunu arastirmak icin yeni bir sekme acar.",
-        searchProbeDescription: "Bu, bu sinyali arastirmak icin yeni bir sekme acar.",
-        searchEyebrow: "Harici arama",
-        cancel: "Iptal",
-        go: "Git",
-        autoVisibleSignals: "Otomatik gorunen sinyaller",
-        clickToRequestProbes: "Tiklayarak istenen yoklamalar",
-        externalIpChecks: "Harici IP kontrolleri",
-        sectionExternalEyebrow: "Harici sorgu",
-        sectionExternalTitle: "Genel IP",
-        sectionExternalDescription: "Dis servislerin gordugu adresi gosterir. Dugmelerden birine tiklayana kadar hicbir sey cekilmez.",
-        sectionPermissionEyebrow: "Izin gerektirir",
-        sectionPermissionTitle: "Daha fazlasini iste",
-        sectionPermissionDescription: "Bu kontroller, bolumu acana ve her izin ya da donanim secicisini acikca istemene kadar pasif kalir.",
-        sectionPassiveEyebrow: "Pasif okumalar",
-        sectionPassiveTitle: "Sormadan gorunenler",
-        sectionPassiveDescription: "Tarayici bu degerleri aninda ve izin istemeden aciga cikarir; birlikte bir cihazi sasirtici derecede iyi tarif ederler.",
-        passiveQueuedDescription: "Pasif yoklamalar, bu bolum sayfa gecislerini yavaslatmasin diye tarayici bosta kalana kadar bekletilir.",
-        unlockInteractions: "Etkilesimleri ac",
-        request: "Iste",
-        copy: "Kopyala",
-        details: "Detaylar",
-        what: "Ne",
-        how: "Nasil",
-        why: "Neden",
-        signals: "sinyal",
-        showLess: "Daha az goster",
-        showMore: "Daha fazla goster",
-        searchGoogleFor: "Google'da ara:",
-        badges: {
-            ok: "MEVCUT",
-            pending: "KONTROL EDIYOR",
-            idle: "HAZIR",
-            unsupported: "DESTEKLENMIYOR",
-            hidden: "REDDEDILDI/GIZLI"
-        },
-        statusText: {
-            requestPending: "Istek suruyor...",
-            passivePending: "Yerel olarak gorunen degerler toplanıyor...",
-            thirdPartyIdle: "Henuz harici bir istek gonderilmedi. Bilincli olarak cekmek icin dugmeyi kullan.",
-            requestIdle: "Tiklamani bekliyor. Sen tetiklemeden hicbir sey istenmez.",
-            unsupported: "Bu tarayici veya baglam bu yetenegi sunmuyor.",
-            explanationUnavailable: "Aciklama mevcut degil."
-        },
-        buttons: {
-            sendTest: "Test gonder",
-            fetchPublicIPv4: "Genel IPv4'u getir",
-            fetchPublicIPv6: "Genel IPv6'yi getir"
-        }
-    }
-}
-
-const DATA_PROBE_TRANSLATIONS = {
-    de: {
-        secure_context: { title: "Sicherer Kontext", what: "Ob die Seite in einem vertrauenswuerdigen Browsermodus laeuft, der eingeschraenkte Web-Faehigkeiten freischaltet.", how: "Aus window.isSecureContext gelesen.", why: "Viele hardware-nahe APIs (USB/Bluetooth/Clipboard/Medien) funktionieren nur ueber HTTPS." },
-        user_agent: { title: "User-Agent", what: "Die alte Browser-Kennung, die aus Kompatibilitaetsgruenden an alte Websites und Server gesendet wird.", how: "Aus navigator.userAgent gelesen.", why: "Eine auslaufende Kompatibilitaetskette; verraet oft OS, Browser-Builds und Geraeteklasse." },
-        ua_ch_basic: { title: "UA-CH (grundlegend)", what: "Eine strukturierte Browser-Zusammenfassung mit Marke, Plattform und Mobile-Hinweisen.", how: "Aus navigator.userAgentData gelesen (falls unterstuetzt).", why: "Strukturierter als User-Agent; kann Plattform und Marken-Versionen offenlegen." },
-        ua_ch_entropy: { title: "UA-CH (hohe Entropie)", what: "Ein detaillierterer Satz von Client Hints, der Architektur, Bitness, Modell und exakte Versionsinfos preisgeben kann.", how: "Ueber navigator.userAgentData.getHighEntropyValues() angefragt.", why: "Praezisere Geraetehinweise wie Architektur/Bitness/Modell in manchen Browsern." },
-        languages: { title: "Sprachen", what: "Deine bevorzugte Sprachliste, wie sie der Browser meldet.", how: "Aus navigator.languages gelesen.", why: "Passt oft zu OS- und Tastatur-Setup; kann Region und Nutzerpraeferenzen verraten." },
-        timezone: { title: "Zeitzone", what: "Die benannte Region, fuer die deine Systemuhr konfiguriert ist.", how: "Aus Intl.DateTimeFormat().resolvedOptions().timeZone gelesen.", why: "Sehr gut fuer Regionsrueckschluesse und relevant fuer Zeitstempel, Logs, Debugging und Datenschutz." },
-        local_time: { title: "Lokale Zeit", what: "Die aktuelle Datums-/Zeit-Zeichenkette, erzeugt von deiner Geraeteuhr.", how: "Mit new Date().toString() erzeugt.", why: "Kann Uhrenabweichungen und Locale-Formatierung zeigen; nuetzlich fuer Time-Sync-Debugging." },
-        referrer: { title: "Referrer", what: "Die Seite oder Website, von der der Browser hierher kam, falls sie mitgesendet wurde.", how: "Aus document.referrer gelesen.", why: "Zeigt Navigationspfade; gut fuer Debugging, aber potenziell datenschutzsensibel." },
-        do_not_track: { title: "Do Not Track", what: "Ein Browser-Datenschutzsignal, das reduziertes Tracking anfordert.", how: "Aus navigator.doNotTrack gelesen.", why: "Ein veralteter Datenschutz-Hinweis, der nicht immer respektiert wird, aber trotzdem eine Praeferenz zeigt." },
-        cookies: { title: "Cookies aktiviert", what: "Ob der Browser aktuell kleine Website-Datendateien fuer Sitzungen und Zustand zulaesst.", how: "Aus navigator.cookieEnabled gelesen.", why: "Wichtige Speicher-Voraussetzung; betrifft Sessions, Login und Tracking." },
-        online: { title: "Online", what: "Die grundlegende Schaetzung des Browsers, ob Netz-Zugang vorhanden ist.", how: "Aus navigator.onLine gelesen.", why: "Nur ein Hinweis, aber trotzdem nuetzlich fuer UX und Diagnose von Offline-Fehlern." },
-        screen: { title: "Bildschirm", what: "Die volle Groesse des angeschlossenen Displays in CSS-Pixeln.", how: "Aus screen.width / screen.height gelesen.", why: "Hinweise auf Panel und Skalierung; haeufig in Fingerprinting und Layout-Entscheidungen genutzt." },
-        viewport: { title: "Viewport", what: "Der aktuell nutzbare Seitenbereich innerhalb des Browserfensters.", how: "Aus window.innerWidth / window.innerHeight gelesen.", why: "Das, was die Seite wirklich nutzen kann; aendert sich durch Browser-UI, Zoom und Splitscreen." },
-        dpr: { title: "Geraete-Pixel-Verhaeltnis", what: "Das Verhaeltnis zwischen CSS-Pixeln und echten Bildschirm-Pixeln.", how: "Aus window.devicePixelRatio gelesen.", why: "Hinweis auf HiDPI und Skalierung; beeinflusst Schaerfe und Performance." },
-        touch_points: { title: "Touch-Punkte", what: "Wie viele gleichzeitige Beruehrungen das Geraet laut Browser verarbeiten kann.", how: "Aus navigator.maxTouchPoints gelesen.", why: "Hinweis auf Touch-Hardware; hilft beim Erkennen von Phone/Tablet/2-in-1." },
-        cpu_cores: { title: "CPU-Kerne (logisch)", what: "Die Zahl logischer Verarbeitungsthreads, die der Browser offenlegt.", how: "Aus navigator.hardwareConcurrency gelesen.", why: "Grober CPU-Tier-Hinweis; relevant fuer Performance und Parallelisierung." },
-        device_memory: { title: "Geraetespeicher (ca.)", what: "Eine grobe RAM-Klasse, die Browser fuer Performance-Entscheidungen verwenden.", how: "Aus navigator.deviceMemory gelesen (falls unterstuetzt).", why: "Sehr grobe RAM-Stufe; genutzt fuer Heuristiken und Fingerprinting." },
-        network_hints: { title: "Netzwerk-Hinweise", what: "Ungefaehre Verbindungsqualitaets-Signale wie Geschwindigkeitsklasse, Latenz und Datensparmodus.", how: "Aus navigator.connection gelesen (falls unterstuetzt).", why: "Hinweise auf Funk-/Link-Qualitaet; oft erkennbar, ob mobil oder kabelgebunden und ob Data Saver aktiv ist." },
-        storage_estimate: { title: "Speicher-Schaetzung", what: "Eine Schaetzung von Browser-Speichernutzung und verbleibendem Kontingent fuer diese Website.", how: "Aus navigator.storage.estimate() gelesen (falls unterstuetzt).", why: "Wie viel Plattenplatz der Browser nutzen kann; wichtig fuer Caching, Offline und grosse Apps." },
-        persistent_storage: { title: "Persistenter Speicher", what: "Ob Website-Daten vor automatischem Entfernen geschuetzt sind, wenn Speicher knapp wird.", how: "Aus navigator.storage.persisted() gelesen (falls unterstuetzt).", why: "Wenn false, kann der Browser gespeicherte Daten unter Druck verwerfen." },
-        battery: { title: "Akku", what: "Aktuelle Strom- und Ladeinformationen aus dem Akku-Subsystem des Geraets.", how: "Aus navigator.getBattery() gelesen (falls unterstuetzt).", why: "Hinweis auf Energiezustand, vor allem mobil/laptop; kann Performance-Modi beeinflussen." },
-        media_device_counts: { title: "Mediengeraete (Anzahl)", what: "Wie viele Audio- und Video-Ein-/Ausgabegeraete der Browser auflisten kann.", how: "Ueber navigator.mediaDevices.enumerateDevices() gezaehlt (sicherer Kontext).", why: "Peripherie-Hinweise wie Mikros/Kameras/Ausgabegeraete; koennen erstaunlich eindeutig sein." },
-        gpu_renderer: { title: "GPU-Renderer/Hersteller", what: "Die ueber WebGL offengelegte Identitaet von Grafikadapter und Treiber.", how: "Per WebGL + WEBGL_debug_renderer_info gelesen (falls vorhanden).", why: "GPU-Modellhinweise sind sehr fingerprintbar und korrelieren mit Performance-Klasse." },
-        local_fingerprint: { title: "Lokaler Fingerprint-Hash", what: "Eine lokal berechnete Signatur aus mehreren sichtbaren Browser- und Geraete-Merkmalen.", how: "SHA-256 ueber ein Buendel der oben gezeigten Werte (lokal berechnet).", why: "Zeigt, wie eindeutig du schon wirken kannst, ohne irgendeine Berechtigung anzufordern." },
-        geolocation: { title: "Geolokalisierung", what: "Deine physische Positions-Schaetzung aus Ortungsdiensten.", how: "Ueber navigator.geolocation.getCurrentPosition() angefragt.", why: "Meist GPS/WLAN/Mobilfunk-Triangulation. Sehr sensibel und sehr realweltlich." },
-        notifications: { title: "Benachrichtigungen", what: "Die Berechtigung, dass die Website systemweite Hinweise ausserhalb der Seite anzeigen darf.", how: "Ueber Notification.requestPermission() angefragt.", why: "Dauerhafte Berechtigung. Gute UX-Funktion, aber auch Spam- und Missbrauchsvektor." },
-        clipboard_read: { title: "Zwischenablage lesen", what: "Der aktuelle Textinhalt, der im System-Clipboard liegt.", how: "Ueber navigator.clipboard.readText() angefragt (User-Geste).", why: "Die Zwischenablage kann Passwoerter, Schluessel und private Nachrichten enthalten. Extrem sensibel." },
-        camera_mic_labels: { title: "Kamera- und Mikrofon-Namen", what: "Die Namen angeschlossener Aufnahmegeraete nach erteilter Freigabe.", how: "Fordert getUserMedia an und liest dann die Labels ueber enumerateDevices().", why: "Offenbart Capture-Hardware wie Headsets/Webcams. Praktisch fuer Setups, aber auch fingerprintbar." },
-        screen_share: { title: "Bildschirmfreigabe-Metadaten", what: "Metadaten ueber Display, Fenster oder Tab, den du zur Freigabe waehlst.", how: "Ueber navigator.mediaDevices.getDisplayMedia() angefragt.", why: "Zeigt, welche Freigabequelle du gewaehlt hast. Sensibel, auch ohne Pixel auszulesen." },
-        bluetooth: { title: "Bluetooth-Geraeteauswahl", what: "Eine Auswahl fuer nahe drahtlose Kurzstrecken-Geraete, mit denen der Browser kommunizieren kann.", how: "Ueber navigator.bluetooth.requestDevice() angefragt (Chooser).", why: "Nahe Hardware ist ein grosser Kontext-Leak. Stark fuer IoT, heikel fuer Privatsphaere." },
-        webusb: { title: "WebUSB-Auswahl", what: "Eine Auswahl direkt angeschlossener Peripherie, die ueber USB fuer den Browser sichtbar gemacht wird.", how: "Ueber navigator.usb.requestDevice() angefragt (Chooser).", why: "Direkter USB-Zugriff fuer Dev-Boards und Hardware-Tools. Sehr maechtig, wenn erlaubt." },
-        webserial: { title: "WebSerial-Auswahl", what: "Eine Auswahl fuer Hardware, die ueber serielle Ports kommuniziert.", how: "Ueber navigator.serial.requestPort() angefragt (Chooser).", why: "Serielle Konsolen fuer Embedded-Geraete wie Arduino, ESP oder Router. Ideal fuer Hardware-Hacking." },
-        webhid: { title: "WebHID-Auswahl", what: "Eine Auswahl fuer generische Human-Interface-Geraete wie Controller oder Eingabegeraete.", how: "Ueber navigator.hid.requestDevice() angefragt (Chooser).", why: "HID bedeutet Tastaturen, Maeuse, Gamepads. Kann angeschlossene Peripherie offenlegen." },
-        file_picker: { title: "Dateiauswahl", what: "Die Namen und Groessen von Dateien, die du bewusst auf deinem Geraet auswaehlst.", how: "Ueber showOpenFilePicker() angefragt (du waehlst).", why: "Schon Metadaten wie Dateiname und Groesse koennen Kontext verraten. Inhalte werden hier nicht gelesen." },
-        directory_picker: { title: "Ordnerauswahl", what: "Der Name eines Ordners, den du bewusst auf deinem Geraet auswaehlst.", how: "Ueber showDirectoryPicker() angefragt (du waehlst).", why: "Ordnernamen koennen Projekt- oder Firmenkontext verraten. Wir zeigen nur den Namen." },
-        contacts: { title: "Kontaktauswahl", what: "Ausgewaehlte Personeneintraege aus dem Adressbuch des Geraets.", how: "Ueber navigator.contacts.select() angefragt (falls unterstuetzt).", why: "Sozialer Graph plus Telefon-/E-Mail-Daten. Von Natur aus sehr sensibel." },
-        midi: { title: "MIDI-Geraete", what: "Angeschlossene Musik-Ein- und Ausgabegeraete, die der Browser sehen kann.", how: "Ueber navigator.requestMIDIAccess() angefragt (falls unterstuetzt).", why: "Hinweis auf Musik-Hardware und Peripherie. Macht Spass und ist ueberraschend identifizierend." },
-        public_ip_v4: { title: "Oeffentliche IP (IPv4)", what: "Deine nach aussen sichtbare Netzwerkadresse im aelteren Internet-Adressstandard.", how: "Von https://api.ipify.org?format=json abgerufen.", why: "Deine Internet-Adresse nach aussen, nicht deine LAN-IP. Genau diese sehen Server." },
-        public_ip_v6: { title: "Oeffentliche IP (IPv6)", what: "Deine nach aussen sichtbare Netzwerkadresse im neueren Internet-Adressstandard.", how: "Von https://api64.ipify.org?format=json abgerufen.", why: "Wenn dein Netzwerk IPv6 unterstuetzt, kann sie pro Geraet oder pro Netzwerk stabil und eindeutig sein." }
-    },
-    hr: {
-        secure_context: { title: "Siguran kontekst", what: "Pokazuje radi li stranica u pouzdanom nacinu preglednika koji otkljucava ogranicene web mogucnosti.", how: "Cita se iz window.isSecureContext.", why: "Mnogi hardverski API-ji poput USB-a, Bluetootha, medija ili clipboarda rade samo preko HTTPS-a." },
-        user_agent: { title: "User-Agent", what: "Stari identifikacijski niz preglednika koji se salje radi kompatibilnosti sa starijim stranicama i serverima.", how: "Cita se iz navigator.userAgent.", why: "Kompatibilnosni niz koji cesto otkriva OS, verziju preglednika i klasu uredaja." },
-        ua_ch_basic: { title: "UA-CH (osnovno)", what: "Strukturirani sazetak identiteta preglednika s markom, platformom i mobilnim naznakama.", how: "Cita se iz navigator.userAgentData (ako je podrzano).", why: "Strukturiranije od User-Agenta; moze otkriti platformu i verzije brandova." },
-        ua_ch_entropy: { title: "UA-CH (visoka entropija)", what: "Detaljniji skup client hintova koji moze otkriti arhitekturu, bitnost, model i tocne verzije.", how: "Trazi se preko navigator.userAgentData.getHighEntropyValues().", why: "Na nekim preglednicima daje preciznije podatke poput arhitekture, bitnosti i modela." },
-        languages: { title: "Jezici", what: "Popis jezicnih postavki koje preglednik prijavljuje kao tvoje preferencije.", how: "Cita se iz navigator.languages.", why: "Cesto odgovara OS-u i tipkovnici te moze otkriti regiju i korisnicke navike." },
-        timezone: { title: "Vremenska zona", what: "Nazvana regija koju koristi sistemski sat na uredaju.", how: "Cita se iz Intl.DateTimeFormat().resolvedOptions().timeZone.", why: "Vrlo dobro pogada regiju i bitna je za vremenske oznake, logove i privatnost." },
-        local_time: { title: "Lokalno vrijeme", what: "Trenutni zapis datuma i vremena generiran s uredaja.", how: "Generira se iz new Date().toString().", why: "Moze otkriti pomak sata i lokalni format; korisno za dijagnostiku sinkronizacije vremena." },
-        referrer: { title: "Referrer", what: "Stranica ili web-mjesto s kojeg je preglednik dosao ovamo, ako je podatak poslan.", how: "Cita se iz document.referrer.", why: "Pokazuje put navigacije; korisno za debugiranje, ali i osjetljivo za privatnost." },
-        do_not_track: { title: "Do Not Track", what: "Zastavica privatnosti preglednika koja trazi manje pracenja.", how: "Cita se iz navigator.doNotTrack.", why: "Zastarjeli signal privatnosti koji se ne postuje uvijek, ali i dalje otkriva korisnicku preferenciju." },
-        cookies: { title: "Cookies ukljuceni", what: "Pokazuje dopusta li preglednik male datoteke podataka za sesije i stanje stranice.", how: "Cita se iz navigator.cookieEnabled.", why: "Bitno za sesije, prijavu i pracenje; osnovni indikator spremanja stanja." },
-        online: { title: "Online", what: "Osnovna procjena preglednika postoji li mrezna povezanost.", how: "Cita se iz navigator.onLine.", why: "Samo je nagovjestaj, ali je koristan za UX i dijagnostiku offline problema." },
-        screen: { title: "Zaslon", what: "Puna velicina povezanog zaslona u CSS pikselima.", how: "Cita se iz screen.width / screen.height.", why: "Daje tragove o panelu i skaliranju; cesto se koristi u fingerprintingu i odlukama o rasporedu." },
-        viewport: { title: "Viewport", what: "Trenutno upotrebljivo podrucje stranice unutar prozora preglednika.", how: "Cita se iz window.innerWidth / window.innerHeight.", why: "To je prostor koji stranica stvarno ima; mijenja se zbog sucelja, zooma i podijeljenog zaslona." },
-        dpr: { title: "Omjer piksela uredaja", what: "Omjer izmedu CSS piksela i fizickih piksela zaslona.", how: "Cita se iz window.devicePixelRatio.", why: "Pokazuje HiDPI i skaliranje; utjece na ostrinu prikaza i performanse." },
-        touch_points: { title: "Tocke dodira", what: "Koliko istodobnih dodira uredaj moze prijaviti pregledniku.", how: "Cita se iz navigator.maxTouchPoints.", why: "Otkriva prisutnost touch hardvera i pomaze prepoznati mobitel, tablet ili 2-u-1 uredaj." },
-        cpu_cores: { title: "CPU jezgre (logicke)", what: "Broj logickih dretvi koje preglednik izlae.", how: "Cita se iz navigator.hardwareConcurrency.", why: "Grubi pokazatelj procesorske klase; vazno za performanse i paralelne zadatke." },
-        device_memory: { title: "Memorija uredaja (otprilike)", what: "Gruba klasa RAM-a koju preglednici koriste za procjene performansi.", how: "Cita se iz navigator.deviceMemory (ako je podrzano).", why: "Vrlo grub pokazatelj memorije; koristi se za heuristike i fingerprinting." },
-        network_hints: { title: "Mrezni signali", what: "Priblizni signali kvalitete veze poput brzine, latencije i stednje podataka.", how: "Cita se iz navigator.connection (ako je podrzano).", why: "Daje tragove o kvaliteti veze te o tome je li uredaj na mobilnoj ili zicnoj mrezi i koristi li stednju podataka." },
-        storage_estimate: { title: "Procjena pohrane", what: "Procjena zauzeca i preostalog kvotnog prostora kojim preglednik upravlja za ovu stranicu.", how: "Cita se iz navigator.storage.estimate() (ako je podrzano).", why: "Pokazuje koliko diska preglednik moze koristiti; bitno za cache, offline rad i vece aplikacije." },
-        persistent_storage: { title: "Trajna pohrana", what: "Pokazuje jesu li podaci stranice zasticeni od automatskog brisanja kada ponestane prostora.", how: "Cita se iz navigator.storage.persisted() (ako je podrzano).", why: "Ako je false, preglednik moze izbaciti spremljene podatke kad je prostor pod pritiskom." },
-        battery: { title: "Baterija", what: "Trenutne informacije o napajanju i punjenju iz baterijskog podsustava uredaja.", how: "Cita se iz navigator.getBattery() (ako je podrzano).", why: "Daje signal o energetskom stanju, osobito na prijenosnim uredajima, i moze utjecati na performanse." },
-        media_device_counts: { title: "Medijski uredaji (broj)", what: "Koliko audio i video ulaznih/izlaznih uredaja preglednik moze pobrojati.", how: "Broji se preko navigator.mediaDevices.enumerateDevices() (siguran kontekst).", why: "Otkriva periferiju poput mikrofona, kamera i izlaza; moze biti iznenadujuce prepoznatljivo." },
-        gpu_renderer: { title: "GPU renderer/proizvodac", what: "Identitet grafickog adaptera i drivera koji se moze dobiti preko WebGL-a.", how: "Cita se preko WebGL + WEBGL_debug_renderer_info (ako je dostupno).", why: "Podaci o GPU-u su vrlo pogodni za fingerprinting i cesto prate razinu performansi." },
-        local_fingerprint: { title: "Lokalni hash otiska", what: "Lokalno izracunat potpis izveden iz vise vidljivih obiljezja preglednika i uredaja.", how: "SHA-256 nad skupom gore prikazanih vrijednosti (izracun lokalno).", why: "Pokazuje koliko jedinstveno mozes izgledati i bez trazenja ikakvih dopustenja." },
-        geolocation: { title: "Geolokacija", what: "Procjena tvoje fizicke pozicije dobivena iz lokacijskih usluga.", how: "Trazi se preko navigator.geolocation.getCurrentPosition().", why: "Najcesce koristi GPS, Wi-Fi ili bazne stanice. Vrlo osjetljivo i vrlo stvarno." },
-        notifications: { title: "Obavijesti", what: "Dopustenje da stranica prikazuje sistemske obavijesti izvan same stranice.", how: "Trazi se preko Notification.requestPermission().", why: "Trajno dopustenje. Korisno za UX, ali i potencijalni kanal za spam ili zloupotrebu." },
-        clipboard_read: { title: "Citanje meduspremnika", what: "Trenutni tekstualni sadrzaj koji se nalazi u sistemskom meduspremniku.", how: "Trazi se preko navigator.clipboard.readText() (uz korisnicku gestu).", why: "Clipboard moze sadrzavati lozinke, kljuceve i privatne poruke. Izuzetno osjetljivo." },
-        camera_mic_labels: { title: "Nazivi kamere i mikrofona", what: "Nazivi spojenih uredaja za snimanje nakon sto je pristup odobren.", how: "Trazi getUserMedia, a zatim cita nazive preko enumerateDevices().", why: "Otkriva capture hardver poput slusalica ili web-kamera. Korisno za setup, ali i pogodno za fingerprinting." },
-        screen_share: { title: "Metapodaci dijeljenja zaslona", what: "Metapodaci o zaslonu, prozoru ili tabu koji odaberes za dijeljenje.", how: "Trazi se preko navigator.mediaDevices.getDisplayMedia().", why: "Pokazuje sto si odabrao za dijeljenje. Osjetljivo je i bez citanja samih piksela." },
-        bluetooth: { title: "Odabir Bluetooth uredaja", what: "Odabir obliznjih bezicnih uredaja kratkog dometa s kojima preglednik moze komunicirati.", how: "Trazi se preko navigator.bluetooth.requestDevice() (birac).", why: "Obliznji hardver otkriva puno konteksta. Mocno za IoT, neugodno za privatnost." },
-        webusb: { title: "WebUSB odabir", what: "Odabir izravno spojenih periferija izlozenih pregledniku preko USB-a.", how: "Trazi se preko navigator.usb.requestDevice() (birac).", why: "Izravan USB pristup za razvojne plocice i hardverske alate. Vrlo mocno kad je omoguceno." },
-        webserial: { title: "WebSerial odabir", what: "Odabir hardvera koji komunicira preko serijskih portova.", how: "Trazi se preko navigator.serial.requestPort() (birac).", why: "Serijske konzole za embedded uredaje poput Arduino, ESP ili routera. Odlicno za hardverski hacking." },
-        webhid: { title: "WebHID odabir", what: "Odabir generickih HID periferija poput kontrolera ili ulaznih uredaja.", how: "Trazi se preko navigator.hid.requestDevice() (birac).", why: "HID ukljucuje tipkovnice, miseve i gamepadove. Moze otkriti spojenu periferiju." },
-        file_picker: { title: "Odabir datoteka", what: "Nazivi i velicine datoteka koje izricito odaberes na uredaju.", how: "Trazi se preko showOpenFilePicker() (ti biras).", why: "Cak i metapodaci poput imena i velicine mogu otkriti kontekst. Sadrzaj se ovdje ne cita." },
-        directory_picker: { title: "Odabir mape", what: "Naziv mape koju izricito odaberes na uredaju.", how: "Trazi se preko showDirectoryPicker() (ti biras).", why: "Nazivi mapa mogu otkriti projektni ili poslovni kontekst. Ovdje prikazujemo samo naziv." },
-        contacts: { title: "Odabir kontakata", what: "Odabrani unosi osoba iz adresara uredaja.", how: "Trazi se preko navigator.contacts.select() (ako je podrzano).", why: "Drustvena mreza odnosa plus telefon i e-mail. Vrlo osjetljivo po samoj prirodi." },
-        midi: { title: "MIDI uredaji", what: "Spojena glazbena ulazna i izlazna oprema vidljiva pregledniku.", how: "Trazi se preko navigator.requestMIDIAccess() (ako je podrzano).", why: "Otkriva glazbeni hardver i periferiju. Zabavno, ali i iznenadujuce prepoznatljivo." },
-        public_ip_v4: { title: "Javna IP (IPv4)", what: "Tvoja vanjska mrezna adresa na starijem internetskom standardu.", how: "Dohvaca se s https://api.ipify.org?format=json.", why: "To je adresa koju vidi internet, a ne tvoja lokalna LAN IP adresa. Upravo nju vide serveri." },
-        public_ip_v6: { title: "Javna IP (IPv6)", what: "Tvoja vanjska mrezna adresa na novijem internetskom standardu.", how: "Dohvaca se s https://api64.ipify.org?format=json.", why: "Ako mreza podrzava IPv6, ova adresa moze biti stabilna i vrlo jedinstvena po uredaju ili mrezi." }
-    },
-    tr: {
-        secure_context: { title: "Guvenli baglam", what: "Sayfanin, kisitli web yeteneklerini acan guvenilir bir tarayici modunda calisip calismadigini gosterir.", how: "window.isSecureContext uzerinden okunur.", why: "USB, Bluetooth, clipboard ve medya gibi donanimla iliskili bircok API yalnizca HTTPS uzerinde calisir." },
-        user_agent: { title: "User-Agent", what: "Eski siteler ve sunucularla uyumluluk icin gonderilen geleneksel tarayici kimlik dizesi.", how: "navigator.userAgent uzerinden okunur.", why: "Eski ama sizdiran bir uyumluluk dizisi; genellikle isletim sistemi, tarayici surumu ve cihaz sinifi hakkinda ipucu verir." },
-        ua_ch_basic: { title: "UA-CH (temel)", what: "Marka, platform ve mobil ipuclari iceren yapilandirilmis tarayici kimligi ozeti.", how: "Destekleniyorsa navigator.userAgentData uzerinden okunur.", why: "User-Agent'tan daha yapilidir; platformu ve marka surumlerini gosterebilir." },
-        ua_ch_entropy: { title: "UA-CH (yuksek entropi)", what: "Mimari, bitlik, model ve tam surum gibi bilgileri aciga cikarabilen daha zengin istemci ipuclari kumesi.", how: "navigator.userAgentData.getHighEntropyValues() ile istenir.", why: "Bazi tarayicilarda mimari, bitlik ve model gibi daha hassas cihaz ipuclari verir." },
-        languages: { title: "Diller", what: "Tarayicinin bildirdigi tercih edilen diller listesi.", how: "navigator.languages uzerinden okunur.", why: "Cogu zaman isletim sistemi ve klavye kurulumuyla uyusur; bolgeyi ve kullanici tercihlerini sezdirebilir." },
-        timezone: { title: "Saat dilimi", what: "Sistem saatinin kullandigi adlandirilmis bolge.", how: "Intl.DateTimeFormat().resolvedOptions().timeZone uzerinden okunur.", why: "Bolgeyi tahmin etmek icin gucludur ve zaman damgalari, loglar, hata ayiklama ve gizlilik icin onemlidir." },
-        local_time: { title: "Yerel saat", what: "Cihaz saatinden uretilen anlik tarih-saat dizesi.", how: "new Date().toString() ile uretilir.", why: "Saat kaymasi ve yerel bicimlendirme hakkinda ipucu verir; zaman senkronizasyonu sorunlarini ayiklamada kullanislidir." },
-        referrer: { title: "Referrer", what: "Tarayicinin buraya gelirken geldigi sayfa veya site, eger gonderildiyse.", how: "document.referrer uzerinden okunur.", why: "Gezinme yolunu gosterir; hata ayiklama icin yararlidir ama gizlilik acisindan hassas olabilir." },
-        do_not_track: { title: "Do Not Track", what: "Daha az izleme talep eden tarayici gizlilik tercihi bayragi.", how: "navigator.doNotTrack uzerinden okunur.", why: "Her zaman dikkate alinmayan eski bir gizlilik sinyali olsa da kullanici tercihine dair ipucu verir." },
-        cookies: { title: "Cookie'ler acik", what: "Tarayicinin oturum ve durum icin kucuk site veri dosyalarina izin verip vermedigini gosterir.", how: "navigator.cookieEnabled uzerinden okunur.", why: "Oturumlar, kimlik dogrulama ve takip icin temel bir depolama kosuludur." },
-        online: { title: "Cevrim ici", what: "Tarayicinin ag erisimi olup olmadigina dair temel tahmini.", how: "navigator.onLine uzerinden okunur.", why: "Sadece bir ipucu olsa da UX ve cevrimdisi hata tespiti icin yararlidir." },
-        screen: { title: "Ekran", what: "Bagli ekranin CSS piksel cinsinden tam boyutu.", how: "screen.width / screen.height uzerinden okunur.", why: "Panel ve olceklendirme hakkinda ipucu verir; fingerprinting ve yerlesim kararlarinda sik kullanilir." },
-        viewport: { title: "Gorunum alani", what: "Tarayici penceresi icinde sayfanin su anda kullanabildigi alan.", how: "window.innerWidth / window.innerHeight uzerinden okunur.", why: "Sayfanin gercekte kullanabildigi alandir; tarayici arayuzu, zoom ve bolunmus ekranla degisir." },
-        dpr: { title: "Cihaz piksel orani", what: "CSS pikselleri ile fiziksel ekran pikselleri arasindaki oran.", how: "window.devicePixelRatio uzerinden okunur.", why: "Yuksek DPI ve olceklendirme hakkinda ipucu verir; goruntu keskinligi ve performansi etkiler." },
-        touch_points: { title: "Dokunus noktasi", what: "Cihazin ayni anda kac dokunusu destekledigini tarayiciya bildirdigi bilgi.", how: "navigator.maxTouchPoints uzerinden okunur.", why: "Dokunmatik donanim varligini gosterir; telefon, tablet veya 2'si 1 arada cihazlarin ayirt edilmesine yardimci olur." },
-        cpu_cores: { title: "CPU cekirdegi (mantiksal)", what: "Tarayicinin aciga cikardigi mantiksal is parcacigi sayisi.", how: "navigator.hardwareConcurrency uzerinden okunur.", why: "Kabaca CPU sinifini gosterir; performans ve paralel yuk kararlarini etkiler." },
-        device_memory: { title: "Cihaz bellegi (yaklasik)", what: "Tarayicilarin performans kararlari icin kullandigi kaba bir RAM sinifi.", how: "Destekleniyorsa navigator.deviceMemory uzerinden okunur.", why: "Cok kaba bir bellek gostergesidir; sezgisel kararlar ve fingerprinting icin kullanilir." },
-        network_hints: { title: "Ag ipuclari", what: "Hiz sinifi, gecikme ve veri tasarrufu durumu gibi yaklasik baglanti kalitesi sinyalleri.", how: "Destekleniyorsa navigator.connection uzerinden okunur.", why: "Mobil mi kablolu mu oldugunu ve veri tasarrufu durumunu sezdirebilen baglanti kalitesi ipuclari verir." },
-        storage_estimate: { title: "Depolama tahmini", what: "Bu site icin tarayicinin yonettigi disk kullanimina ve kalan kotaya dair tahmin.", how: "Destekleniyorsa navigator.storage.estimate() uzerinden okunur.", why: "Tarayicinin ne kadar disk kullanabildigini gosterir; onbellek, offline kullanim ve buyuk uygulamalar icin onemlidir." },
-        persistent_storage: { title: "Kalici depolama", what: "Site verilerinin depolama alani daraldiginda otomatik temizlemeye karsi korunup korunmadigi.", how: "Destekleniyorsa navigator.storage.persisted() uzerinden okunur.", why: "False ise tarayici, depolama baskisi altinda verileri silebilir." },
-        battery: { title: "Pil", what: "Cihazin pil alt sisteminden gelen guncel guc ve sarj bilgileri.", how: "Destekleniyorsa navigator.getBattery() uzerinden okunur.", why: "Ozellikle mobil ve laptoplarda guc durumuna dair ipucu verir; performans modlarini etkileyebilir." },
-        media_device_counts: { title: "Medya cihazlari (sayilar)", what: "Tarayicinin sayabildigi ses ve video giris/cikis cihazlarinin adedi.", how: "Guvenli baglamda navigator.mediaDevices.enumerateDevices() ile sayilir.", why: "Mikrofon, kamera ve cikis cihazlari gibi periferilere dair ipucu verir; sasirtici derecede ayirt edici olabilir." },
-        gpu_renderer: { title: "GPU renderer/uretici", what: "WebGL uzerinden aciga cikan grafik bagdastiricisi ve surucu kimligi.", how: "Varsa WebGL + WEBGL_debug_renderer_info ile okunur.", why: "GPU model ipuclari fingerprinting acisindan cok gucludur ve performans seviyesiyle iliskilidir." },
-        local_fingerprint: { title: "Yerel fingerprint hash'i", what: "Birden fazla gorunur tarayici ve cihaz ozelliginden turetilen yerel bir imza.", how: "Yukarida gosterilen degerler paketinin SHA-256 ozeti yerel olarak hesaplanir.", why: "Izin istemeden bile ne kadar ayirt edici gorunebilecegini gosterir." },
-        geolocation: { title: "Konum", what: "Konum servislerinden elde edilen fiziksel konum tahmini.", how: "navigator.geolocation.getCurrentPosition() ile istenir.", why: "Genellikle GPS, Wi-Fi veya baz istasyonu ucgenlemesi kullanir. Cok hassastir ve dogrudan gercek dunyaya baglanir." },
-        notifications: { title: "Bildirimler", what: "Sitenin sayfa disinda sistem duzeyinde bildirim gosterebilmesi icin gereken izin.", how: "Notification.requestPermission() ile istenir.", why: "Kalici bir izindir. UX icin yararlidir ama spam ve kotuye kullanim riski de tasir." },
-        clipboard_read: { title: "Pano okuma", what: "Sistem panosunda duran guncel metin icerigi.", how: "Kullanici hareketiyle navigator.clipboard.readText() uzerinden istenir.", why: "Pano; sifreler, anahtarlar ve ozel mesajlar icerebilir. Son derece hassastir." },
-        camera_mic_labels: { title: "Kamera ve mikrofon etiketleri", what: "Erisim verildikten sonra bagli yakalama cihazlarinin adlari.", how: "getUserMedia ister, sonra etiketleri enumerateDevices() ile okur.", why: "Kulaklik, webcam gibi yakalama donanimini gosterir. Kurulum icin yararlidir ama fingerprinting'e de aciktir." },
-        screen_share: { title: "Ekran paylasimi meta verisi", what: "Paylasmak icin sectigin ekran, pencere veya sekmeye dair meta veriler.", how: "navigator.mediaDevices.getDisplayMedia() ile istenir.", why: "Hangi yuzeyi sectigini gosterir. Pikseller okunmasa bile hassastir." },
-        bluetooth: { title: "Bluetooth cihaz secici", what: "Tarayicinin konusabildigi yakin menzilli kablosuz cihazlari secmek icin bir secici.", how: "navigator.bluetooth.requestDevice() ile istenir (secici).", why: "Yakin donanim buyuk bir baglam sizintisidir. IoT icin guclu, gizlilik icin tedirgin edici." },
-        webusb: { title: "WebUSB secici", what: "USB uzerinden tarayiciya acilan dogrudan bagli cevre birimleri icin secici.", how: "navigator.usb.requestDevice() ile istenir (secici).", why: "Gelisim kartlari ve donanim araclari icin dogrudan USB erisimi saglar. Acikken cok gucludur." },
-        webserial: { title: "WebSerial secici", what: "Seri portlar uzerinden iletisim kuran donanim icin secici.", how: "navigator.serial.requestPort() ile istenir (secici).", why: "Arduino, ESP ve router gibi cihazlarin seri konsollari icin idealdir. Donanim hackleme icin cok kullanislidir." },
-        webhid: { title: "WebHID secici", what: "Kontrol cihazlari veya giris birimleri gibi genel insan-arayuz cevreleri icin secici.", how: "navigator.hid.requestDevice() ile istenir (secici).", why: "HID; klavye, fare ve gamepad demektir. Bagli cevre birimlerini aciga cikarabilir." },
-        file_picker: { title: "Dosya secici", what: "Cihazindan bilerek sectigin dosyalarin adlari ve boyutlari.", how: "showOpenFilePicker() ile istenir (sen secersin).", why: "Dosya adi ve boyutu gibi meta veriler bile baglam sizdirabilir. Icerik burada okunmaz." },
-        directory_picker: { title: "Klasor secici", what: "Cihazindan bilerek sectigin bir klasorun adi.", how: "showDirectoryPicker() ile istenir (sen secersin).", why: "Klasor adlari proje veya sirket baglamini aciga cikarabilir. Burada sadece adi gosterilir." },
-        contacts: { title: "Kisi secici", what: "Cihaz adres defterinden secilen kisi kayitlari.", how: "Destekleniyorsa navigator.contacts.select() ile istenir.", why: "Sosyal baglantilar, telefon ve e-posta bilgilerinin aciga cikmasi anlamina gelir. Tasarimi geregi cok hassastir." },
-        midi: { title: "MIDI cihazlari", what: "Tarayicinin gorebildigi bagli muzik giris ve cikis ekipmanlari.", how: "Destekleniyorsa navigator.requestMIDIAccess() ile istenir.", why: "Muzik donanimi ve cevre birimlerine dair ipucu verir. Eglencelidir ama sasirtici derecede ayirt edicidir." },
-        public_ip_v4: { title: "Genel IP (IPv4)", what: "Eski internet yonlendirme standardindaki disa bakan ag adresin.", how: "https://api.ipify.org?format=json adresinden cekilir.", why: "Bu senin LAN IP'n degil, sunucularin gordugu internet adresindir." },
-        public_ip_v6: { title: "Genel IP (IPv6)", what: "Yeni internet yonlendirme standardindaki disa bakan ag adresin.", how: "https://api64.ipify.org?format=json adresinden cekilir.", why: "Agin IPv6 destekliyorsa bu adres cihaz veya ag bazinda daha stabil ve benzersiz olabilir." }
-    }
-}
-
-function getDataProbeUi(languageId) {
-    return DATA_PROBE_UI[languageId] || DATA_PROBE_UI.en
-}
-
-function localizeProbeDefinitions(probes, languageId, ui) {
-    const translations = DATA_PROBE_TRANSLATIONS[languageId] || {}
-    return probes.map(probe => {
-        const translated = translations[probe.id] || {}
-        const localizedProbe = {
-            ...probe,
-            title: translated.title || probe.title,
-            how: translated.how || probe.how,
-            why: translated.why || probe.why,
-            what: translated.what || probe.what || PROBE_WHAT[probe.id] || ui.statusText.explanationUnavailable
-        }
-
-        if(localizedProbe.extraAction?.label === DATA_PROBE_UI.en.buttons.sendTest) {
-            localizedProbe.extraAction = {
-                ...localizedProbe.extraAction,
-                label: ui.buttons.sendTest
-            }
-        }
-
-        if(localizedProbe.id === "public_ip_v4") {
-            localizedProbe.buttonLabel = ui.buttons.fetchPublicIPv4
-        }
-        else if(localizedProbe.id === "public_ip_v6") {
-            localizedProbe.buttonLabel = ui.buttons.fetchPublicIPv6
-        }
-
-        return localizedProbe
-    })
-}
-
 function ArticleDataProbe({ dataWrapper }) {
-    const language = useLanguage()
-    const selectedLanguageId = language.getSelectedLanguage()?.id || "en"
-    const ui = useMemo(() => getDataProbeUi(selectedLanguageId), [selectedLanguageId])
     const [unlocked, setUnlocked] = useState(false)
     const [probeStates, setProbeStates] = useState({})
     const [expanded, setExpanded] = useState({})
@@ -453,7 +74,7 @@ function ArticleDataProbe({ dataWrapper }) {
     const didInitRef = useRef(false)
     const searchConfirmTriggerRef = useRef(null)
 
-    const passiveProbeDefs = useMemo(() => ([
+    const passiveProbes = useMemo(() => ([
         {
             id: "secure_context",
             icon: "fa-solid fa-lock",
@@ -764,7 +385,7 @@ function ArticleDataProbe({ dataWrapper }) {
         },
     ]), [])
 
-    const requestProbeDefs = useMemo(() => ([
+    const requestProbes = useMemo(() => ([
         {
             id: "geolocation",
             icon: "fa-solid fa-location-dot",
@@ -1025,7 +646,7 @@ function ArticleDataProbe({ dataWrapper }) {
         },
     ]), [])
 
-    const publicIpProbeDefs = useMemo(() => ([
+    const publicIpProbes = useMemo(() => ([
         {
             id: "public_ip_v4",
             icon: "fa-solid fa-globe",
@@ -1045,18 +666,6 @@ function ArticleDataProbe({ dataWrapper }) {
             url: "https://api64.ipify.org?format=json"
         },
     ]), [])
-
-    const passiveProbes = useMemo(() => {
-        return localizeProbeDefinitions(passiveProbeDefs, selectedLanguageId, ui)
-    }, [passiveProbeDefs, selectedLanguageId, ui])
-
-    const requestProbes = useMemo(() => {
-        return localizeProbeDefinitions(requestProbeDefs, selectedLanguageId, ui)
-    }, [requestProbeDefs, selectedLanguageId, ui])
-
-    const publicIpProbes = useMemo(() => {
-        return localizeProbeDefinitions(publicIpProbeDefs, selectedLanguageId, ui)
-    }, [publicIpProbeDefs, selectedLanguageId, ui])
 
     useEffect(() => {
         if(passiveInitReady)
@@ -1153,8 +762,8 @@ function ArticleDataProbe({ dataWrapper }) {
         const query = `${title} ${queryTail}`
         const searchUrl = buildGoogleSearchUrl(query)
         const description = scopeLabel === "section" ?
-            ui.searchSectionDescription :
-            ui.searchProbeDescription
+            "This will open a new tab to research this signal group." :
+            "This will open a new tab to research this signal."
 
         if (triggerElement instanceof HTMLElement) {
             searchConfirmTriggerRef.current = triggerElement
@@ -1162,7 +771,7 @@ function ArticleDataProbe({ dataWrapper }) {
 
         setSearchConfirmTarget({
             key: `${title}:${queryTail}`,
-            title: ui.searchTitle,
+            title: "Search Google?",
             description,
             query,
             searchUrl,
@@ -1211,32 +820,31 @@ function ArticleDataProbe({ dataWrapper }) {
                 <div className={`article-data-probe-summary-chip`}>
                     <i className={`fa-solid fa-eye`}/>
                         <span className={`article-data-probe-summary-value`}>{autoCount}</span>
-                        <span className={`article-data-probe-summary-label`}>{ui.autoVisibleSignals}</span>
+                        <span className={`article-data-probe-summary-label`}>Auto-visible signals</span>
                     </div>
 
                 <div className={`article-data-probe-summary-chip`}>
                     <i className={`fa-solid fa-hand-pointer`}/>
                     <span className={`article-data-probe-summary-value`}>{requestCount}</span>
-                    <span className={`article-data-probe-summary-label`}>{ui.clickToRequestProbes}</span>
+                    <span className={`article-data-probe-summary-label`}>Click-to-request probes</span>
                 </div>
 
                 <div className={`article-data-probe-summary-chip`}>
                     <i className={`fa-solid fa-globe`}/>
                     <span className={`article-data-probe-summary-value`}>{publicCount}</span>
-                    <span className={`article-data-probe-summary-label`}>{ui.externalIpChecks}</span>
+                    <span className={`article-data-probe-summary-label`}>External IP checks</span>
                 </div>
             </div>
 
             <ProbeSection
                 icon={`fa-solid fa-globe`}
-                eyebrow={ui.sectionExternalEyebrow}
-                title={ui.sectionExternalTitle}
-                description={ui.sectionExternalDescription}
+                eyebrow={`External lookup`}
+                title={`Public IP`}
+                description={`Shows the address that outside services see. Nothing is fetched until you click one of the buttons.`}
                 count={publicCount}
                 accent={`accent-external`}
                 searchId={`public_ip`}
-                onIconClick={openSearchConfirm}
-                ui={ui}>
+                onIconClick={openSearchConfirm}>
                 <div className={`article-data-probe-grid article-data-probe-grid-compact`}>
                     {publicIpProbes.map(p => (
                         <ProbeItem key={p.id}
@@ -1248,17 +856,16 @@ function ArticleDataProbe({ dataWrapper }) {
                                    thirdParty={true}
                                    expanded={Boolean(expanded?.[p.id])}
                                    onToggleExpand={() => toggleExpanded(p.id)}
-                                   onIconClick={openSearchConfirm}
-                                   ui={ui}/>
+                                   onIconClick={openSearchConfirm}/>
                     ))}
                 </div>
             </ProbeSection>
 
             <ProbeSection
                 icon={`fa-solid fa-hand`}
-                eyebrow={ui.sectionPermissionEyebrow}
-                title={ui.sectionPermissionTitle}
-                description={ui.sectionPermissionDescription}
+                eyebrow={`Permission gated`}
+                title={`Ask for more`}
+                description={`These checks stay dormant until you unlock the section and explicitly ask for each permission or hardware chooser.`}
                 count={requestCount}
                 accent={`accent-interactive`}
                 searchId={`permission_gated`}
@@ -1266,11 +873,10 @@ function ArticleDataProbe({ dataWrapper }) {
                 actions={!unlocked ? (
                     <StandardButton variant={`contrast`}
                                     className={`article-data-probe-unlock-btn`}
-                                    label={ui.unlockInteractions}
+                                    label={`Unlock interactions`}
                                     faIcon={`fa-solid fa-unlock`}
                                     onClick={() => setUnlocked(true)}/>
-                ) : null}
-                ui={ui}>
+                ) : null}>
                 {unlocked && (
                     <>
                         <div className={`article-data-probe-grid article-data-probe-grid-fixed-two`}>
@@ -1279,7 +885,7 @@ function ArticleDataProbe({ dataWrapper }) {
                                            probe={p}
                                            state={probeStates[p.id]}
                                            showRequest={true}
-                                           requestLabel={ui.request}
+                                           requestLabel={`Request`}
                                            onRequest={() => runRequestProbe(p)}
                                            extraAction={p.extraAction ? () => runExtraAction(p) : null}
                                            extraLabel={p.extraAction?.label}
@@ -1287,33 +893,30 @@ function ArticleDataProbe({ dataWrapper }) {
                                            extraState={probeStates[`${p.id}__extra`]}
                                            expanded={Boolean(expanded?.[p.id])}
                                            onToggleExpand={() => toggleExpanded(p.id)}
-                                           onIconClick={openSearchConfirm}
-                                           ui={ui}/>
+                                           onIconClick={openSearchConfirm}/>
                             ))}
                         </div>
 
                         <ProbeListToggle expanded={requestListExpanded}
                                          visibleCount={visibleRequestProbes.length}
                                          totalCount={requestCount}
-                                         onToggle={() => toggleListExpanded("permission_gated")}
-                                         ui={ui}/>
+                                         onToggle={() => toggleListExpanded("permission_gated")}/>
                     </>
                 )}
             </ProbeSection>
 
             <ProbeSection
                 icon={`fa-solid fa-eye`}
-                eyebrow={ui.sectionPassiveEyebrow}
-                title={ui.sectionPassiveTitle}
-                description={ui.sectionPassiveDescription}
+                eyebrow={`Passive reads`}
+                title={`Visible without asking`}
+                description={`These values are exposed by the browser immediately, without prompts, and are enough to describe a device surprisingly well.`}
                 count={autoCount}
                 accent={`accent-passive`}
                 searchId={`passive_reads`}
-                onIconClick={openSearchConfirm}
-                ui={ui}>
+                onIconClick={openSearchConfirm}>
                 {!passiveInitReady && (
                     <div className={`article-data-probe-block-description text-3 mb-3`}>
-                        {ui.passiveQueuedDescription}
+                        Passive probes are queued until the browser is idle so this section does not stall page transitions.
                     </div>
                 )}
                 <div className={`article-data-probe-grid article-data-probe-grid-fixed-two`}>
@@ -1323,27 +926,24 @@ function ArticleDataProbe({ dataWrapper }) {
                                    state={probeStates[p.id]}
                                    expanded={Boolean(expanded?.[p.id])}
                                    onToggleExpand={() => toggleExpanded(p.id)}
-                                   onIconClick={openSearchConfirm}
-                                   ui={ui}/>
+                                   onIconClick={openSearchConfirm}/>
                     ))}
                 </div>
 
                 <ProbeListToggle expanded={passiveListExpanded}
                                  visibleCount={visiblePassiveProbes.length}
                                  totalCount={autoCount}
-                                 onToggle={() => toggleListExpanded("passive_reads")}
-                                 ui={ui}/>
+                                 onToggle={() => toggleListExpanded("passive_reads")}/>
             </ProbeSection>
 
             <ProbeSearchPopup target={searchConfirmTarget}
                               onCancel={closeSearchConfirm}
-                              onGo={confirmSearchAndOpen}
-                              ui={ui}/>
+                              onGo={confirmSearchAndOpen}/>
         </Article>
     )
 }
 
-function ProbeSection({ icon, eyebrow, title, description, count, accent, actions = null, children, searchId = "", onIconClick = null, ui }) {
+function ProbeSection({ icon, eyebrow, title, description, count, accent, actions = null, children, searchId = "", onIconClick = null }) {
     const clickable = Boolean(searchId && onIconClick)
     const handleActivate = (triggerElement = null) => {
         if (!clickable) return
@@ -1370,7 +970,7 @@ function ProbeSection({ icon, eyebrow, title, description, count, accent, action
                     <div className={`article-data-probe-block-icon ${clickable ? "article-data-probe-block-icon-clickable" : ""}`}
                          role={clickable ? "button" : undefined}
                          tabIndex={clickable ? 0 : undefined}
-                         aria-label={clickable ? `${ui.searchGoogleFor} ${title}` : undefined}
+                         aria-label={clickable ? `Search Google for ${title}` : undefined}
                          onClick={clickable ? handleClick : undefined}
                          onKeyDown={clickable ? handleKeyDown : undefined}>
                         <i className={icon}/>
@@ -1393,7 +993,7 @@ function ProbeSection({ icon, eyebrow, title, description, count, accent, action
                 <div className={`article-data-probe-block-controls`}>
                     <div className={`article-data-probe-block-count`}>
                         <span className={`article-data-probe-block-count-value`}>{count}</span>
-                        <span className={`article-data-probe-block-count-label`}>{ui.signals}</span>
+                        <span className={`article-data-probe-block-count-label`}>signals</span>
                     </div>
 
                     {actions}
@@ -1407,11 +1007,11 @@ function ProbeSection({ icon, eyebrow, title, description, count, accent, action
     )
 }
 
-function ProbeListToggle({ expanded, visibleCount, totalCount, onToggle, ui }) {
+function ProbeListToggle({ expanded, visibleCount, totalCount, onToggle }) {
     if (totalCount <= LIST_PREVIEW_COUNT) return null
 
     const remaining = Math.max(0, totalCount - visibleCount)
-    const label = expanded ? ui.showLess : `${ui.showMore} (${remaining})`
+    const label = expanded ? "Show less" : `Show more (${remaining})`
 
     return (
         <div className={`article-data-probe-list-footer`}>
@@ -1438,26 +1038,25 @@ function ProbeItem({
     expanded = false,
     onToggleExpand = null,
     onIconClick = null,
-    ui,
 }) {
     const status = state?.status || (showRequest ? "idle" : "pending")
     const value = state?.value || null
-    const whatText = probe?.what || PROBE_WHAT[probe?.id] || ui.statusText.explanationUnavailable
+    const whatText = probe?.what || PROBE_WHAT[probe?.id] || "Explanation unavailable."
     const clickable = Boolean(probe?.id && probe?.title && onIconClick)
 
-    const badge = status === "ok" ? ui.badges.ok :
-        status === "pending" ? ui.badges.pending :
-            status === "idle" ? ui.badges.idle :
-            status === "unsupported" ? ui.badges.unsupported :
-                ui.badges.hidden
+    const badge = status === "ok" ? "AVAILABLE" :
+        status === "pending" ? "CHECKING" :
+            status === "idle" ? "READY" :
+            status === "unsupported" ? "NOT SUPPORTED" :
+                "DENIED/HIDDEN"
     const badgeClass = status === "ok" ? "badge-ok" :
         status === "pending" ? "badge-wait" :
             status === "idle" ? "badge-ready" :
             status === "unsupported" ? "badge-unsupported" :
                 "badge-hidden"
 
-    const fullText = getDisplayText(status, value, ui, { showRequest, thirdParty })
-    const collapsedText = getCollapsedText(status, value, ui, { showRequest, thirdParty })
+    const fullText = getDisplayText(status, value, { showRequest, thirdParty })
+    const collapsedText = getCollapsedText(status, value, { showRequest, thirdParty })
     const hasExtraDetails = Boolean(extraState?.status === "ok" && extraState?.value)
     const hasCollapsedPreview = status === "ok" && fullText !== collapsedText
     const canExpand = hasCollapsedPreview || hasExtraDetails
@@ -1493,7 +1092,7 @@ function ProbeItem({
                 <div className={`article-data-probe-item-icon ${clickable ? "article-data-probe-item-icon-clickable" : ""}`}
                      role={clickable ? "button" : undefined}
                      tabIndex={clickable ? 0 : undefined}
-                     aria-label={clickable ? `${ui.searchGoogleFor} ${probe.title} (${probe.id})` : undefined}
+                     aria-label={clickable ? `Search Google for ${probe.title} (${probe.id})` : undefined}
                      onClick={clickable ? handleIconClick : undefined}
                      onKeyDown={clickable ? handleIconKeyDown : undefined}>
                     <i className={`${probe.icon}`}/>
@@ -1508,25 +1107,25 @@ function ProbeItem({
             <div className={`article-data-probe-item-body`}>
                 <div className={`article-data-probe-item-meta text-3`}>
                     <div className={`article-data-probe-item-meta-row`}>
-                        <span className={`article-data-probe-item-meta-key`}>{ui.what}</span>
+                        <span className={`article-data-probe-item-meta-key`}>What</span>
                         <span className={`article-data-probe-item-meta-value`}>{whatText}</span>
                     </div>
                     {probe?.how && (
                         <div className={`article-data-probe-item-meta-row`}>
-                            <span className={`article-data-probe-item-meta-key`}>{ui.how}</span>
+                            <span className={`article-data-probe-item-meta-key`}>How</span>
                             <span className={`article-data-probe-item-meta-value`}>{probe.how}</span>
                         </div>
                     )}
                     {probe?.why && (
                         <div className={`article-data-probe-item-meta-row`}>
-                            <span className={`article-data-probe-item-meta-key`}>{ui.why}</span>
+                            <span className={`article-data-probe-item-meta-key`}>Why</span>
                             <span className={`article-data-probe-item-meta-value`}>{probe.why}</span>
                         </div>
                     )}
                 </div>
 
                 <div className={`article-data-probe-item-value-toolbar`}>
-                    <div className={`article-data-probe-item-value-label`}>{ui.details}</div>
+                    <div className={`article-data-probe-item-value-label`}>Details</div>
 
                     <div className={`article-data-probe-item-value-actions`}>
                         {showRequest && onRequest && (
@@ -1547,7 +1146,7 @@ function ProbeItem({
 
                         {(status === "ok" && value) && (
                             <CopyButton text={value}
-                                        label={ui.copy}
+                                        label={`Copy`}
                                         variant={`pill`}
                                         buttonClassName={`article-data-probe-item-copy`}/>
                         )}
@@ -1555,7 +1154,7 @@ function ProbeItem({
                         {canExpand && onToggleExpand && (
                             <StandardButton variant={`contrast`}
                                             className={`article-data-probe-action-btn article-data-probe-expand-btn`}
-                                            label={isExpanded ? ui.showLess : ui.showMore}
+                                            label={isExpanded ? "Show less" : "Show more"}
                                             faIcon={isExpanded ? "fa-solid fa-chevron-up" : "fa-solid fa-chevron-down"}
                                             onClick={onToggleExpand}/>
                         )}
@@ -1576,7 +1175,7 @@ function ProbeItem({
 
 export default ArticleDataProbe
 
-function ProbeSearchPopup({ target, onCancel, onGo, ui }) {
+function ProbeSearchPopup({ target, onCancel, onGo }) {
     const dialogRef = useRef(null)
     const cancelButtonRef = useRef(null)
     const goButtonRef = useRef(null)
@@ -1644,7 +1243,7 @@ function ProbeSearchPopup({ target, onCancel, onGo, ui }) {
                  aria-labelledby={titleId}
                  aria-describedby={descriptionId}
                  onClick={(event) => event.stopPropagation()}>
-                <div className={`article-data-probe-search-popup-eyebrow`}>{ui.searchEyebrow}</div>
+                <div className={`article-data-probe-search-popup-eyebrow`}>External search</div>
                 <h5 id={titleId}
                     className={`article-data-probe-search-popup-title`}>{target.title}</h5>
                 <p id={descriptionId}
@@ -1657,13 +1256,13 @@ function ProbeSearchPopup({ target, onCancel, onGo, ui }) {
                             type={`button`}
                             className={`article-data-probe-search-popup-btn article-data-probe-search-popup-btn-cancel`}
                             onClick={onCancel}>
-                        {ui.cancel}
+                        Cancel
                     </button>
                     <button ref={goButtonRef}
                             type={`button`}
                             className={`article-data-probe-search-popup-btn article-data-probe-search-popup-btn-go`}
                             onClick={onGo}>
-                        {ui.go}
+                        Go
                     </button>
                 </div>
             </div>
@@ -1796,22 +1395,22 @@ function getWebglRendererInfo() {
     }
 }
 
-function getDisplayText(status, value, ui, options = {}) {
+function getDisplayText(status, value, options = {}) {
     const { showRequest = false, thirdParty = false } = options
     if (status === "ok" && value) return String(value)
     if (status === "pending") {
-        return showRequest ? ui.statusText.requestPending : ui.statusText.passivePending
+        return showRequest ? "Request in progress..." : "Collecting locally exposed values..."
     }
     if (status === "idle") {
         return thirdParty ?
-            ui.statusText.thirdPartyIdle :
-            ui.statusText.requestIdle
+            "No external request has been sent yet. Use the button to fetch it deliberately." :
+            "Waiting for your click. Nothing is requested until you trigger it."
     }
-    if (status === "unsupported") return ui.statusText.unsupported
-    return ui.hiddenText
+    if (status === "unsupported") return "This browser or context does not expose this capability."
+    return HIDDEN_TEXT
 }
 
-function getCollapsedText(status, value, ui, options = {}) {
+function getCollapsedText(status, value, options = {}) {
     if (status === "ok" && value) {
         const text = String(value)
         const lines = text.split("\n")
@@ -1826,7 +1425,7 @@ function getCollapsedText(status, value, ui, options = {}) {
         }
         return joined
     }
-    return getDisplayText(status, value, ui, options)
+    return getDisplayText(status, value, options)
 }
 
 function truncateText(text, maxChars) {

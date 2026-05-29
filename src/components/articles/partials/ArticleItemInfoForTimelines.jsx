@@ -42,6 +42,8 @@ function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateIn
     const viewport = useViewport()
     const shouldForceDateInMetaBand = forceDateInMetaBand ||
         Boolean(itemWrapper?.articleWrapper?.uniqueId?.includes("section-my-writings"))
+    const isExperienceTimeline = Boolean(itemWrapper?.articleWrapper?.uniqueId?.includes("section-experience"))
+    const isEducationTimeline = Boolean(itemWrapper?.articleWrapper?.uniqueId?.includes("section-education"))
     const isSmallScreen = !viewport.isBreakpoint("sm")
 
     const institution = itemWrapper.locales.institution
@@ -66,6 +68,20 @@ function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateIn
         })
     }
 
+    const renderDateValue = () => {
+        if(dateInterval) {
+            return (
+                <>
+                    <span dangerouslySetInnerHTML={{__html: itemWrapper.dateStartDisplay}}/>
+                    <span className={`prop-list-separator`}>→</span>
+                    <span dangerouslySetInnerHTML={{__html: itemWrapper.dateEndDisplay}}/>
+                </>
+            )
+        }
+
+        return <span dangerouslySetInnerHTML={{__html: itemWrapper.dateStartDisplay}}/>
+    }
+
     return (
         <div className={`article-timeline-item-info-for-timelines-header ${className}`}>
             <div className={`article-timeline-item-info-for-timelines-header-title`}>
@@ -78,16 +94,68 @@ function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateIn
 
             {showMeta && (
                 <div className={`article-timeline-item-info-for-timelines-header-meta-band`}>
-                    <PropList className={`article-timeline-item-info-for-timelines-header-prop-list text-1`}
-                              inlineBreakpoint={shouldForceDateInMetaBand ? null : `xl`}>
-                        {propListItems.map((item, key) => (
-                            <PropListItem key={key}
-                                          faIcon={item.faIcon}
-                                          type={item.type}
-                                          iconSpacing={isSmallScreen ? 22 : 24}
-                                          value={item.value}/>
-                        ))}
-                    </PropList>
+                    {isExperienceTimeline ? (
+                        <div className={`article-timeline-item-info-for-timelines-header-meta-grid text-1`}>
+                            <div className={`article-timeline-item-info-for-timelines-header-meta-row article-timeline-item-info-for-timelines-header-meta-row--time`}>
+                                <i className={`fa-icon fa-solid fa-clock`}/>
+                                {renderDateValue()}
+                            </div>
+
+                            {(institution || location) && (
+                                <div className={`article-timeline-item-info-for-timelines-header-meta-row article-timeline-item-info-for-timelines-header-meta-row--split`}>
+                                    <div className={`article-timeline-item-info-for-timelines-header-meta-segment article-timeline-item-info-for-timelines-header-meta-segment--location`}>
+                                        {location && (
+                                            <>
+                                                <i className={`fa-icon fa-solid fa-location-dot`}/>
+                                                <span dangerouslySetInnerHTML={{__html: location}}/>
+                                            </>
+                                        )}
+                                    </div>
+
+                                    <div className={`article-timeline-item-info-for-timelines-header-meta-segment article-timeline-item-info-for-timelines-header-meta-segment--company`}>
+                                        {institution && (
+                                            <div className={`article-timeline-item-info-for-timelines-header-meta-content article-timeline-item-info-for-timelines-header-meta-content--company`}>
+                                                <span dangerouslySetInnerHTML={{__html: institution}}/>
+                                                <i className={`fa-icon fa-solid fa-building`}/>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    ) : isEducationTimeline ? (
+                        <div className={`article-timeline-item-info-for-timelines-education-meta text-1`}>
+                            <div className={`article-timeline-item-info-for-timelines-education-meta-row article-timeline-item-info-for-timelines-education-meta-row--time`}>
+                                <i className={`fa-icon fa-regular fa-clock`}/>
+                                {renderDateValue()}
+                            </div>
+
+                            {location && (
+                                <div className={`article-timeline-item-info-for-timelines-education-meta-row article-timeline-item-info-for-timelines-education-meta-row--location`}>
+                                    <i className={`fa-icon fa-solid fa-location-dot`}/>
+                                    <span dangerouslySetInnerHTML={{__html: location}}/>
+                                </div>
+                            )}
+
+                            {institution && (
+                                <div className={`article-timeline-item-info-for-timelines-education-meta-row article-timeline-item-info-for-timelines-education-meta-row--school`}>
+                                    <i className={`fa-icon fa-solid fa-school`}/>
+                                    <span dangerouslySetInnerHTML={{__html: institution}}/>
+                                </div>
+                            )}
+                        </div>
+                    ) : (
+                        <PropList className={`article-timeline-item-info-for-timelines-header-prop-list text-1`}
+                                  inlineBreakpoint={shouldForceDateInMetaBand ? null : `xl`}>
+                            {propListItems.map((item, key) => (
+                                <PropListItem key={key}
+                                              faIcon={item.faIcon}
+                                              type={item.type}
+                                              iconSpacing={isSmallScreen ? 22 : 24}
+                                              value={item.value}/>
+                            ))}
+                        </PropList>
+                    )}
 
                     {metaEnd}
                 </div>
@@ -102,15 +170,20 @@ function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateIn
  * @return {JSX.Element}
  * @constructor
  */
-function ArticleItemInfoForTimelinesBody({ itemWrapper, className = "" }) {
+function ArticleItemInfoForTimelinesBody({ itemWrapper, className = "", isEducationTimeline = false, isEducationExpanded = false, onEducationExpand = null }) {
+    const language = useLanguage()
     const textClass = `text-3`
+    const hasList = Boolean(itemWrapper.locales.list && itemWrapper.locales.list.length > 0)
+    const educationBodyClass = isEducationTimeline ?
+        `article-timeline-item-info-for-timelines-body--education ${isEducationExpanded ? "is-education-expanded" : "is-education-collapsed"}` :
+        ``
 
     return (
-        <div className={`article-timeline-item-info-for-timelines-body ${className}`}>
+        <div className={`article-timeline-item-info-for-timelines-body ${educationBodyClass} ${className}`.trim()}>
             <div className={`article-timeline-item-info-for-timelines-body-text ${textClass} last-p-no-margin`}
                  dangerouslySetInnerHTML={{__html: itemWrapper.locales.text}}/>
 
-            {itemWrapper.locales.list && itemWrapper.locales.list.length > 0 && (
+            {hasList && (
                 <ul className={`article-timeline-item-info-for-timelines-body-list list-mobile-small-padding ${textClass}`}>
                     {itemWrapper.locales.list.map((item, key) => (
                         <li className={`article-timeline-item-info-for-timelines-body-list-item`}
@@ -118,6 +191,17 @@ function ArticleItemInfoForTimelinesBody({ itemWrapper, className = "" }) {
                             dangerouslySetInnerHTML={{__html: item}}/>
                     ))}
                 </ul>
+            )}
+
+            {isEducationTimeline && !isEducationExpanded && (
+                <div className={`article-timeline-item-info-for-timelines-body-expand-action`}>
+                    <button type={"button"}
+                            className={`article-timeline-item-info-for-timelines-body-expand-button`}
+                            onClick={() => onEducationExpand?.(itemWrapper.id)}>
+                        <span>{language.getString("see_more")}</span>
+                        <i className={`fa-solid fa-arrow-down-long`}/>
+                    </button>
+                </div>
             )}
         </div>
     )

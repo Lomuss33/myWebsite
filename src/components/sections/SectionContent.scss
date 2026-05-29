@@ -3,7 +3,7 @@
 div.section-content {
     /* Keep the section anchored higher while preserving comfortable side and bottom spacing. */
     --section-content-scale: 0.8;
-    --section-content-min-height: calc(var(--mobile-visual-viewport-height) - #{$default-card-spacing * 5});
+    --section-content-min-height: calc(100vh - #{$default-card-spacing * 5});
     --padding-top: 0.85rem;
     --padding-x: 1.35rem;
     --padding-bottom: 2.35rem;
@@ -97,11 +97,11 @@ div.section-decoration-band {
     display: block;
     flex: 0 0 var(--section-decoration-band-height);
     grid-column: 1 / -1;
-    width: 100%;
+    width: calc(100vw / var(--section-content-scale, 1));
     height: var(--section-decoration-band-height);
     min-height: var(--section-decoration-band-height);
-    margin-right: 0;
-    margin-left: 0;
+    margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
     background: var(--section-decoration-band-background);
     pointer-events: none;
 }

@@ -3,6 +3,10 @@ import React, {useEffect, useLayoutEffect, useMemo, useRef, useState} from "reac
 import Matter from "matter-js"
 
 const DEFAULT_HIGHLIGHT_PREFIXES = ["\"30under30\"", "CTO", "Mythrill"]
+const COLLISION_CATEGORIES = {
+    walls: 0x0002,
+    words: 0x0004
+}
 
 function FallingWords({
     entries,
@@ -42,6 +46,7 @@ function FallingWords({
         dragBoxHeight: 0,
         dragAngle: 0,
         dragCollisionMask: 0,
+        dragBodyScale: 1,
         pointerType: null
     })
     const [layoutVersion, setLayoutVersion] = useState(0)
@@ -68,6 +73,7 @@ function FallingWords({
         dragStateRef.current.dragBoxHeight = 0
         dragStateRef.current.dragAngle = 0
         dragStateRef.current.dragCollisionMask = 0
+        dragStateRef.current.dragBodyScale = 1
         dragStateRef.current.pointerType = null
     }
 
@@ -121,16 +127,23 @@ function FallingWords({
         dragListenersCleanupRef.current = () => {}
     }
 
+    const _clearDragPhysics = () => {
+    }
+
     const _finalizePointerInteraction = () => {
         const dragState = dragStateRef.current
         const entry = dragState.index == null ? null : wordBodiesRef.current[dragState.index]
 
         _clearDragTargetHeldClass()
         _clearDragListeners()
+        _clearDragPhysics()
 
         _releaseDragCapture()
 
         if(entry?.body) {
+            if(dragState.dragBodyScale && dragState.dragBodyScale !== 1) {
+                Matter.Body.scale(entry.body, 1 / dragState.dragBodyScale, 1 / dragState.dragBodyScale)
+            }
             entry.body.collisionFilter.mask = dragState.dragCollisionMask ?? entry.body.collisionFilter.mask
         }
 
@@ -145,6 +158,7 @@ function FallingWords({
         dragState.dragBoxHeight = 0
         dragState.dragAngle = 0
         dragState.dragCollisionMask = 0
+        dragState.dragBodyScale = 1
         dragState.pointerType = null
     }
 
@@ -240,11 +254,6 @@ function FallingWords({
         const World = Matter.World
         const Bodies = Matter.Bodies
         const Body = Matter.Body
-        const collisionCategories = {
-            walls: 0x0002,
-            words: 0x0004
-        }
-
         const engine = Engine.create({})
         engine.gravity.y = isCoarsePointer() ? 0.6 : 1
         engine.positionIterations = isCoarsePointer() ? 12 : 10
@@ -257,8 +266,8 @@ function FallingWords({
             isStatic: true,
             render: {visible: false},
             collisionFilter: {
-                category: collisionCategories.walls,
-                mask: collisionCategories.words
+                category: COLLISION_CATEGORIES.walls,
+                mask: COLLISION_CATEGORIES.words
             }
         }
 
@@ -328,8 +337,8 @@ function FallingWords({
                 slop: 0.01,
                 render: {visible: false},
                 collisionFilter: {
-                    category: collisionCategories.words,
-                    mask: collisionCategories.words | collisionCategories.walls
+                    category: COLLISION_CATEGORIES.words,
+                    mask: COLLISION_CATEGORIES.words | COLLISION_CATEGORIES.walls
                 }
             })
 
@@ -365,19 +374,23 @@ function FallingWords({
                 while(accumulator >= fixedStep) {
                     const dragState = dragStateRef.current
                     if(dragState.index != null) {
-                        const draggedEntry = wordBodies[dragState.index]
+                        const draggedEntry = wordBodiesRef.current[dragState.index]
                         if(draggedEntry) {
-                            const nextX = dragState.targetX
-                            const nextY = dragState.targetY
-                            const velocityScale = 1000 / fixedStep
-                            const velocityX = (nextX - draggedEntry.body.position.x) / velocityScale
-                            const velocityY = (nextY - draggedEntry.body.position.y) / velocityScale
+                            const dx = dragState.targetX - draggedEntry.body.position.x
+                            const dy = dragState.targetY - draggedEntry.body.position.y
+                            const distance = Math.hypot(dx, dy)
+                            if(distance > 0.01) {
+                                const pullStrength = isCoarsePointer() ? 0.0009 : 0.0012
+                                const maxPull = isCoarsePointer() ? 0.08 : 0.1
+                                const pullX = clamp(dx * pullStrength, -maxPull, maxPull)
+                                const pullY = clamp(dy * pullStrength, -maxPull, maxPull)
+                                Matter.Body.applyForce(draggedEntry.body, draggedEntry.body.position, {
+                                    x: pullX,
+                                    y: pullY
+                                })
+                            }
 
-                            Matter.Sleeping.set(draggedEntry.body, false)
-                            Matter.Body.setPosition(draggedEntry.body, { x: nextX, y: nextY })
-                            Matter.Body.setVelocity(draggedEntry.body, { x: velocityX, y: velocityY })
-                            Matter.Body.setAngle(draggedEntry.body, dragState.dragAngle || 0)
-                            Matter.Body.setAngularVelocity(draggedEntry.body, 0)
+                            Matter.Body.setAngularVelocity(draggedEntry.body, draggedEntry.body.angularVelocity * 0.95)
                         }
                     }
 
@@ -422,6 +435,7 @@ function FallingWords({
             wordBodiesRef.current = []
             _clearWordTransforms()
             _clearDragListeners()
+            _clearDragPhysics()
             _resetDragState()
         }
 
@@ -538,6 +552,7 @@ function FallingWords({
         const dragBoxHeight = entry.bodyHeight
         const dragAngle = entry.body.angle || 0
         const dragCollisionMask = entry.body.collisionFilter?.mask ?? 0
+        const dragBodyScale = isCoarsePointer() ? 1.08 : 1.06
 
         dragStateRef.current.pointerId = event.pointerId
         dragStateRef.current.index = index
@@ -551,6 +566,7 @@ function FallingWords({
         dragStateRef.current.dragBoxHeight = dragBoxHeight
         dragStateRef.current.dragAngle = dragAngle
         dragStateRef.current.dragCollisionMask = dragCollisionMask
+        dragStateRef.current.dragBodyScale = dragBodyScale
         dragStateRef.current.targetX = entry.body.position.x
         dragStateRef.current.targetY = entry.body.position.y
         dragStateRef.current.pointerType = event.pointerType || null
@@ -578,7 +594,10 @@ function FallingWords({
         }
 
         Matter.Sleeping.set(entry.body, false)
-        entry.body.collisionFilter.mask = 0x0002
+        // Keep the held word colliding with other words so it behaves like a real
+        // dragged object instead of an isolated cursor-following sprite.
+        entry.body.collisionFilter.mask = dragCollisionMask
+        Matter.Body.scale(entry.body, dragBodyScale, dragBodyScale)
         Matter.Body.setVelocity(entry.body, { x: 0, y: 0 })
         Matter.Body.setAngularVelocity(entry.body, 0)
         event.preventDefault()

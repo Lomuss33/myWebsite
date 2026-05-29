@@ -10,8 +10,8 @@ div.nav-tab-controller-wrapper {
     padding-bottom: env(safe-area-inset-bottom, 0px);
     box-sizing: border-box;
     overflow: hidden;
-    touch-action: manipulation;
-    overscroll-behavior-x: none;
+    touch-action: none;
+    overscroll-behavior: none;
 
     @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
         display: none;

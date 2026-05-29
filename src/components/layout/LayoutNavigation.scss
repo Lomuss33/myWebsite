@@ -31,7 +31,6 @@ div.layout-navigation-wrapper {
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         min-width: 0;
         height: auto;
-        min-height: var(--mobile-visual-viewport-height);
         max-height: inherit;
         flex-direction: column;
 

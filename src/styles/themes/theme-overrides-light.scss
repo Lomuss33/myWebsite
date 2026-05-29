@@ -484,12 +484,36 @@
     text-decoration-color: #2563eb;
 }
 
+[data-theme="light"] article#article-1-section-experience div.article-timeline-item-info-for-timelines-header-main h5 {
+    color: color-mix(in srgb, #0f172a 86%, #2563eb 14%);
+}
+
 [data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines-body,
 [data-theme="light"] article#article-1-section-experience div.article-timeline-item-info-for-timelines-body,
 [data-theme="light"] article#article-1-section-my-writings div.article-timeline-item-info-for-timelines-body,
 [data-theme="light"] article.article-timeline--art-photography div.article-timeline-item-info-for-timelines-body,
 [data-theme="light"] article.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-body {
     color: #334155;
+}
+
+[data-theme="light"] article#article-1-section-experience div.article-timeline-item-info-for-timelines-header-meta-grid {
+    color: #22364d;
+}
+
+[data-theme="light"] article#article-1-section-experience div.article-timeline-item-info-for-timelines-header-meta-row--time {
+    color: color-mix(in srgb, #0f172a 84%, #2563eb 16%);
+}
+
+[data-theme="light"] article#article-1-section-experience div.article-timeline-item-info-for-timelines-header-meta-row i.fa-icon {
+    color: color-mix(in srgb, #2563eb 78%, #0f172a 22%);
+}
+
+[data-theme="light"] article#article-1-section-experience div.article-timeline-item-info-for-timelines-header-meta-segment--company {
+    color: color-mix(in srgb, #0f172a 88%, #2563eb 12%);
+}
+
+[data-theme="light"] article#article-1-section-experience div.article-timeline-item-info-for-timelines-header-meta-segment--location {
+    color: color-mix(in srgb, #1e3a5f 78%, #2563eb 22%);
 }
 
 [data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines-body a,

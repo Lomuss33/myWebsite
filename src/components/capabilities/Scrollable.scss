@@ -7,7 +7,7 @@ div.scrollable-wrapper {
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         height: auto;
-        min-height: var(--mobile-visual-viewport-height);
+        min-height: 100vh;
     }
 }
 
@@ -27,7 +27,7 @@ div.scrollable {
 
 div.scrollable.scrollable-mobile-native {
     height: auto;
-    min-height: var(--mobile-visual-viewport-height);
+    min-height: 100vh;
     overflow-y: visible;
     overflow-x: clip;
     overscroll-behavior-y: auto;

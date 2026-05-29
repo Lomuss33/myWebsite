@@ -165,9 +165,9 @@ article#article-1-section-my-software {
     }
 
     h4.article-title::before {
-        width: 100%;
-        margin-right: 0;
-        margin-left: 0;
+        width: calc(100vw / var(--section-content-scale, 1));
+        margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+        margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
         height: 3px;
         background: linear-gradient(90deg, var(--software-project-title-mid), var(--software-project-title-end));
         box-shadow: 0 0 24px rgba(236, 72, 153, 0.26);
@@ -568,9 +568,9 @@ article#article-1-section-my-hardware {
     }
 
     h4.article-title::before {
-        width: 100%;
-        margin-right: 0;
-        margin-left: 0;
+        width: calc(100vw / var(--section-content-scale, 1));
+        margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+        margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
         height: 3px;
         background: linear-gradient(90deg, var(--hardware-project-title-mid), var(--hardware-project-title-end));
         box-shadow: 0 0 24px rgba(163, 230, 53, 0.22);

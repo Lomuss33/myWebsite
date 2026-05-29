@@ -69,11 +69,11 @@ article.article {
 article.article::after {
     content: "";
     display: block;
-    width: 100%;
+    width: calc(100vw / var(--section-content-scale, 1));
     height: var(--article-title-line-thickness);
     margin-top: clamp(28px, 3vw, 42px);
-    margin-right: 0;
-    margin-left: 0;
+    margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
     border-radius: 999px;
     background: linear-gradient(90deg, var(--article-title-line-mid), var(--article-title-line-end));
     box-shadow: 0 0 24px color-mix(in srgb, var(--article-title-line-mid) 24%, transparent);

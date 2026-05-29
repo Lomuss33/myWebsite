@@ -145,9 +145,9 @@ article#article-2-section-my-software {
 
     h4.article-title::before {
         flex: 0 0 auto;
-        width: 100%;
-        margin-right: 0;
-        margin-left: 0;
+        width: calc(100vw / var(--section-content-scale, 1));
+        margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+        margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
         max-width: none;
         height: 3px;
         background: linear-gradient(90deg, var(--software-rec-title-mid), var(--software-rec-title-end));
@@ -270,9 +270,9 @@ article#article-2-section-my-software {
         }
 
         h4.article-title::before {
-            width: 100%;
-            margin-right: 0;
-            margin-left: 0;
+            width: calc(100vw / var(--section-content-scale, 1));
+            margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+            margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
             height: 3px;
             margin-bottom: 10px;
         }

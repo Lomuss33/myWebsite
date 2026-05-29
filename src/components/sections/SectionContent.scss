@@ -3,7 +3,7 @@
 div.section-content {
     /* Keep the section anchored higher while preserving comfortable side and bottom spacing. */
     --section-content-scale: 0.8;
-    --section-content-min-height: calc(100vh - #{$default-card-spacing * 5});
+    --section-content-min-height: calc(var(--mobile-visual-viewport-height) - #{$default-card-spacing * 5});
     --padding-top: 0.85rem;
     --padding-x: 1.35rem;
     --padding-bottom: 2.35rem;

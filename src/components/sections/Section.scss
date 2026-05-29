@@ -26,7 +26,7 @@ section.section {
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         max-width: 100%;
         height: auto;
-        min-height: 100vh;
+        min-height: var(--mobile-visual-viewport-height);
         border-top-left-radius: 0;
         border-top-right-radius: 0;
         overflow: visible;

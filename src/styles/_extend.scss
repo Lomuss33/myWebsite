@@ -24,8 +24,8 @@
         }
         background-image: repeating-linear-gradient(
             -55deg,
-            #000,
-            #000 20px,
+            #000000,
+            #000000 20px,
             var(--theme-primary) 20px,
             var(--theme-primary) 40px
         );
@@ -51,8 +51,8 @@
         width: $thickness;
         background-image: repeating-linear-gradient(
             -55deg,
-            #000,
-            #000 20px,
+            #000000,
+            #000000 20px,
             var(--theme-primary) 20px,
             var(--theme-primary) 40px
         );
@@ -66,17 +66,17 @@
         background:
             repeating-linear-gradient(
                 -55deg,
-                #000,
-                #000 20px,
-                var(--theme-primary) 20px,
-                var(--theme-primary) 40px
+                var(--theme-primary) 0,
+                var(--theme-primary) 26px,
+                #000000 26px,
+                #000000 52px
             ) top / 100% $thickness no-repeat,
             repeating-linear-gradient(
                 -55deg,
-                #000,
-                #000 20px,
-                var(--theme-primary) 20px,
-                var(--theme-primary) 40px
+                #000000,
+                #000000 26px,
+                var(--theme-primary) 26px,
+                var(--theme-primary) 52px
             ) bottom / 100% $thickness no-repeat;
     }
 }

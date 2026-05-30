@@ -32,9 +32,9 @@ div.nav-profile-card {
             color-mix(in srgb, var(--theme-nav-surface) 92%, black 8%) 100%);
     border-bottom: 1px solid var(--theme-nav-divider);
     position: relative;
-    margin: 10px 10px 8px;
-    padding: 12px 10px 10px;
-    border-radius: calc($standard-border-radius * 1.2);
+    margin: 0;
+    padding: 14px 12px 12px;
+    border-radius: 0;
     overflow: visible;
 
     @media(min-height: 760px) {--avatar-size: 138px; --info-margin-top: 8px;}

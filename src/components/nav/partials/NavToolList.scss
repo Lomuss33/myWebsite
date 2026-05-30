@@ -155,6 +155,72 @@ div.nav-tools {
     }
 }
 
+@include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+    nav.nav-sidebar {
+        div.nav-tools {
+            --nav-tools-hazard-thickness: 4px;
+            --nav-tools-icon-box-size: 26px;
+            --nav-tools-icon-font-size: 1.42rem;
+
+            position: relative;
+            overflow: visible;
+
+            &::before,
+            &::after {
+                content: "";
+                position: absolute;
+                z-index: 3;
+                pointer-events: none;
+                background-image: repeating-linear-gradient(
+                    -55deg,
+                    var(--theme-primary) 0,
+                    var(--theme-primary) 26px,
+                    #000000 26px,
+                    #000000 52px
+                );
+            }
+
+            &::before {
+                content: none;
+            }
+
+            &::after {
+                right: 0;
+                bottom: -1px;
+                left: 0;
+                height: var(--nav-tools-hazard-thickness);
+            }
+
+            div.btn-option-picker-icon.btn-option-picker-icon-size-2 {
+                width: var(--nav-tools-icon-box-size);
+                min-width: var(--nav-tools-icon-box-size);
+                height: var(--nav-tools-icon-box-size);
+                flex: 0 0 var(--nav-tools-icon-box-size);
+
+                i.fa-icon {
+                    font-size: var(--nav-tools-icon-font-size);
+                    line-height: 1;
+                }
+            }
+
+            button.btn-option-picker-toggle.nav-tool-language-toggle {
+                div.btn-option-picker-icon.btn-option-picker-icon-size-2 img {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+    }
+
+    nav.nav-sidebar-shrink,
+    nav.nav-sidebar-short-rail {
+        div.nav-tools {
+            --nav-tools-icon-box-size: 28px;
+            --nav-tools-icon-font-size: 1.5rem;
+        }
+    }
+}
+
 div.nav-tools-item {
     display: flex;
     align-items: center;
@@ -481,10 +547,10 @@ div.nav-tools-shrink {
         }
 
         div.btn-option-picker-icon.btn-option-picker-icon-size-2 {
-            width: 20px;
-            min-width: 20px;
-            height: 20px;
-            flex: 0 0 20px;
+            width: var(--nav-tools-icon-box-size, 20px);
+            min-width: var(--nav-tools-icon-box-size, 20px);
+            height: var(--nav-tools-icon-box-size, 20px);
+            flex: 0 0 var(--nav-tools-icon-box-size, 20px);
         }
 
         img {

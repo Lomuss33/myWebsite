@@ -4,6 +4,10 @@ import React, {useEffect, useRef} from 'react'
 const FRAME_INTERVAL_MS = 40
 const TIME_SCALE = 0.242
 const TREE_SPEED_SCALE = 1.1
+const TREE_BOTTOM_OFFSET_RATIO = 0.18
+const TREE_SIDE_HEIGHT_RATIO = 0.72
+const TREE_CENTER_HEIGHT_RATIO = 0.88
+const TREE_WIDTH_SCALE = 0.8
 const MAX_DEVICE_PIXEL_RATIO = 1.15
 const BRANCH_MAX_DEVICE_PIXEL_RATIO = 1.25
 
@@ -276,9 +280,35 @@ function drawBranch(context, branch, hue, reducedMotion) {
     context.restore()
 }
 
+function updateBranchBounds(bounds, x, y) {
+    bounds.minX = Math.min(bounds.minX, x)
+    bounds.maxX = Math.max(bounds.maxX, x)
+    bounds.minY = Math.min(bounds.minY, y)
+    bounds.maxY = Math.max(bounds.maxY, y)
+}
+
+function measureBranchBounds(branch, originX = 0, originY = 0, parentAngle = 0, bounds = {
+    minX: 0,
+    maxX: 0,
+    minY: 0,
+    maxY: 0
+}) {
+    const angle = parentAngle + branch.angle
+    const endX = originX + Math.cos(angle) * branch.length
+    const endY = originY + Math.sin(angle) * branch.length
+
+    updateBranchBounds(bounds, originX, originY)
+    updateBranchBounds(bounds, endX, endY)
+
+    for(const limb of branch.limbs)
+        measureBranchBounds(limb, endX, endY, angle, bounds)
+
+    return bounds
+}
+
 function createBottomBranches(layout) {
-    const baseLength = Math.max(72, Math.min(132, layout.width * 0.094))
-    const centerY = layout.height * 0.98
+    const baseLength = 100
+    const centerY = layout.height * (1 + TREE_BOTTOM_OFFSET_RATIO)
     const sideXOffset = Math.max(0, layout.width * 0.21)
     const centerX = layout.width * 0.5
 
@@ -287,21 +317,31 @@ function createBottomBranches(layout) {
             branch: createBranch(baseLength * 0.6, 0, 0, 7),
             x: sideXOffset,
             y: centerY,
-            scale: 0.6
+            targetHeight: layout.height * TREE_SIDE_HEIGHT_RATIO
         },
         {
             branch: createBranch(baseLength * 0.544, 0, 0, 8),
             x: centerX,
             y: centerY,
-            scale: 0.78
+            targetHeight: layout.height * TREE_CENTER_HEIGHT_RATIO
         },
         {
             branch: createBranch(baseLength * 0.6, 0, 0, 7),
             x: layout.width - sideXOffset,
             y: centerY,
-            scale: 0.6
+            targetHeight: layout.height * TREE_SIDE_HEIGHT_RATIO
         }
-    ]
+    ].map((item) => {
+        const bounds = measureBranchBounds(item.branch)
+        const localHeight = Math.max(1, bounds.maxX - bounds.minX)
+        const scaleX = item.targetHeight / localHeight
+
+        return {
+            ...item,
+            scaleX,
+            scaleY: scaleX * TREE_WIDTH_SCALE
+        }
+    })
 }
 
 function resizeBottomCanvas(canvas, layout) {
@@ -354,7 +394,7 @@ function drawBottomBranches(branchState, now, reducedMotion) {
         context.save()
         context.translate(item.x, item.y)
         context.rotate(-Math.PI * 0.5)
-        context.scale(item.scale, item.scale)
+        context.scale(item.scaleX, item.scaleY)
         drawBranch(context, item.branch, hue, reducedMotion)
         context.restore()
     }

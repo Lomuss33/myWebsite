@@ -34,9 +34,8 @@ nav.nav-tab-controller {
         var(--theme-nav-surface) 58%,
         color-mix(in srgb, var(--theme-nav-surface-accent) 96%, #d9e8f6 4%) 100%);
     border-top: 1px solid var(--theme-nav-border);
-    border-bottom: 1px solid var(--theme-nav-border);
-    box-shadow:
-        0 -10px 24px rgba(15, 23, 42, 0.08);
+    border-bottom: 0;
+    box-shadow: none;
     overflow: hidden;
     border-radius: 0;
 }

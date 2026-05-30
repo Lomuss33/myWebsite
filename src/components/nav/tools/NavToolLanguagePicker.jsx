@@ -14,6 +14,7 @@ function NavToolLanguagePicker({
 }) {
     const language = useLanguage()
     const utils = useUtils()
+    const [dropdownVisible, setDropdownVisible] = React.useState(false)
 
     const supportsMultipleLanguages = language.supportsMultipleLanguages
     const availableLanguages = language.getAvailableLanguages(false)
@@ -41,6 +42,7 @@ function NavToolLanguagePicker({
             <MobileTubeMenu className={dropdownClassName}
                             menuClassName={menuClassName}
                             tooltipLabel={language.getString("select_language")}
+                            hideTooltipWhenOpen={true}
                             ariaLabel={language.getString("select_language")}
                             toggleContent={(
                                 <div className={`btn-option-picker-icon btn-option-picker-icon-size-2`}>
@@ -75,10 +77,14 @@ function NavToolLanguagePicker({
         <>
             {supportsMultipleLanguages && (
                 <Dropdown drop={dropdownDrop}
-                          className={dropdownClassName}>
+                          className={dropdownClassName}
+                          show={dropdownVisible}
+                          onToggle={(nextShow) => {
+                              setDropdownVisible(nextShow)
+                          }}>
                     <Dropdown.Toggle variant={`transparent`}
                                      className={`btn-option-picker-toggle nav-tool-language-toggle`}
-                                     data-tooltip={showTooltip ? language.getString("select_language") : null}>
+                                     data-tooltip={showTooltip ? (dropdownVisible ? "hidden" : language.getString("select_language")) : null}>
                         <span className={`btn-option-picker-toggle-row`}>
                             <div className={`btn-option-picker-icon btn-option-picker-icon-size-2`}>
                                 <img src={utils.file.resolvePath(selectedLanguage?.flagUrl)}

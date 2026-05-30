@@ -5,11 +5,10 @@ nav.nav-sidebar {
     --nav-short-rail-resume-height: 0px;
 
     display: flex;
+    align-self: stretch;
     min-height: 0;
-    height: calc(100% + var(--default-card-spacing) * 2);
-    margin-top: calc(-1 * var(--default-card-spacing));
-    margin-bottom: calc(-1 * var(--default-card-spacing));
-    margin-left: calc(-1 * var(--default-card-spacing));
+    height: 100%;
+    margin: 0;
     z-index: $z-index-sidebar;
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         display: none;
@@ -25,25 +24,18 @@ nav.nav-sidebar {
 
         display: flex;
         flex-direction: column;
-        background:
-            radial-gradient(circle at 14% 10%,
-                color-mix(in srgb, var(--theme-shell-backdrop-strong) 52%, white 48%),
-                transparent 32%),
-            radial-gradient(circle at 82% 4%,
-                color-mix(in srgb, var(--theme-shell-glow-a) 64%, transparent),
-                transparent 34%),
-            linear-gradient(180deg,
-                color-mix(in srgb, var(--theme-nav-surface) 78%, var(--theme-shell-backdrop-strong) 22%) 0%,
-                var(--theme-nav-surface) 40%,
-                color-mix(in srgb, var(--theme-nav-surface-accent) 86%, var(--theme-shell-backdrop) 14%) 100%);
-        border: 1px solid var(--theme-nav-border);
-        backdrop-filter: blur(18px) saturate(1.05);
-        box-shadow:
-            0 22px 46px var(--theme-shell-shadow),
-            0 6px 18px rgba(15, 23, 42, 0.06),
-            inset 0 1px 0 rgba(255, 255, 255, 0.82);
+        background: linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--theme-nav-surface) 92%, white 8%) 0%,
+            color-mix(in srgb, var(--theme-nav-surface-accent) 96%, black 4%) 100%
+        );
+        border: 0;
+        border-right: 1px solid var(--theme-nav-border);
         border-radius: 0;
-        isolation: isolate;
+
+        &::after {
+            content: none;
+        }
 
         > div.nav-profile-card {
             flex: 0 0 auto;
@@ -74,6 +66,28 @@ nav.nav-sidebar {
         box-shadow:
             0 10px 24px rgba(15, 23, 42, 0.10),
             0 0 0 1px var(--theme-nav-divider);
+    }
+}
+
+@include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+    nav.nav-sidebar {
+        div.nav-sidebar-card-wrapper::after {
+            content: "";
+            position: absolute;
+            top: -1px;
+            right: 0;
+            bottom: -1px;
+            width: 4px;
+            z-index: 3;
+            pointer-events: none;
+            background-image: repeating-linear-gradient(
+                -55deg,
+                #000000,
+                #000000 20px,
+                var(--theme-primary) 20px,
+                var(--theme-primary) 40px
+            );
+        }
     }
 }
 

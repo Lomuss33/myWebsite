@@ -4,6 +4,7 @@ function MobileTubeMenu({
     className = "",
     menuClassName = "",
     tooltipLabel = "",
+    hideTooltipWhenOpen = false,
     ariaLabel = "",
     toggleContent,
     children
@@ -53,6 +54,10 @@ function MobileTubeMenu({
             document.activeElement.blur()
     }
 
+    const resolvedTooltipLabel = hideTooltipWhenOpen && isOpen ?
+        "hidden" :
+        tooltipLabel
+
     return (
         <div
             ref={rootRef}
@@ -66,7 +71,7 @@ function MobileTubeMenu({
                 aria-controls={menuId}
                 aria-label={ariaLabel || tooltipLabel || undefined}
                 className={`btn-option-picker-toggle btn btn-transparent ${isOpen ? "show" : ""}`.trim()}
-                data-tooltip={tooltipLabel}
+                data-tooltip={resolvedTooltipLabel}
                 onClick={() => {
                     setIsOpen((current) => !current)
                 }}

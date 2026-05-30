@@ -10,7 +10,9 @@ div.nav-link-pills-fixed-wrapper {
     z-index: $z-index-nav-tabs;
     width: 100%;
     padding-top: var(--nav-link-pills-fixed-safe-area-top);
-    backdrop-filter: blur(10px) saturate(125%);
+    background: color-mix(in srgb, var(--theme-nav-surface) 94%, transparent 6%);
+    border-bottom: 1px solid var(--theme-nav-border);
+    backdrop-filter: none;
     overflow: hidden;
     transform: translateZ(0);
 

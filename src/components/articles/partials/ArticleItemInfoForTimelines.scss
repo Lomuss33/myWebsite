@@ -1226,14 +1226,27 @@ article#article-1-section-experience {
             grid-template-columns: minmax(0, 1fr);
         }
 
-        div.article-timeline-item-info-for-timelines-header-meta-segment--company,
+        div.article-timeline-item-info-for-timelines-header-meta-segment--company {
+            justify-content: flex-end;
+            text-align: right;
+        }
+
         div.article-timeline-item-info-for-timelines-header-meta-segment--location {
             text-align: left;
         }
 
         div.article-timeline-item-info-for-timelines-header-meta-content--company {
+            display: inline-flex;
+            align-items: flex-start;
+            justify-content: flex-end;
+            gap: clamp(0.4rem, 0.3rem + 0.2vw, 0.58rem);
+            width: auto;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: 0;
+
             span {
-                text-align: left;
+                text-align: right;
             }
         }
 
@@ -1251,28 +1264,24 @@ article#article-1-section-experience {
             gap: clamp(0.38rem, 0.3rem + 0.22vw, 0.58rem);
         }
 
-        div.article-timeline-item-info-for-timelines-header-meta-segment--company,
         div.article-timeline-item-info-for-timelines-header-meta-segment--location {
             justify-content: flex-start;
             text-align: left;
         }
 
         div.article-timeline-item-info-for-timelines-header-meta-segment--company {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+            text-align: right;
             max-width: 100%;
         }
 
         div.article-timeline-item-info-for-timelines-header-meta-content--company {
-            display: grid;
-            align-items: start;
-            justify-content: stretch;
-            width: 100%;
-            max-width: 100%;
-            margin-right: 0;
-
             span {
                 display: block;
                 max-width: 100%;
-                text-align: left;
+                text-align: right;
             }
 
             i.fa-icon {

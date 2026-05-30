@@ -29,13 +29,13 @@ div.section-content {
     @include media-breakpoint-down(md) {
         --padding-top: 0.5rem;
         --padding-x: 0.75rem;
-        --padding-bottom: 1.35rem;
+        --padding-bottom: 0;
     }
 
     @media (max-width: 380px) {
         --padding-top: 0.4rem;
         --padding-x: 0.6rem;
-        --padding-bottom: 1rem;
+        --padding-bottom: 0;
     }
 }
 

@@ -61,9 +61,6 @@ function Layout({ id, children }) {
     return (
         <div id={id}
              className={`layout`}>
-
-            <div className={`layout-background`}/>
-
             <LayoutSaltShaker/>
 
             <div ref={contentRef}

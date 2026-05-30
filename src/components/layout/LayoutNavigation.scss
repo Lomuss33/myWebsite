@@ -4,9 +4,11 @@ div.layout-navigation-wrapper {
     --mobile-nav-tabs-total-height: calc(var(--nav-tabs-height, #{$nav-tabs-height}) + env(safe-area-inset-bottom, 0px) + var(--mobile-viewport-offset-bottom, 0px));
 
     display: flex;
+    flex: 1 1 auto;
     position: relative;
-    isolation: isolate;
     align-items: stretch;
+    min-width: 0;
+    width: 100%;
     height: 100vh;
     height: 100svh;
     min-height: 100vh;
@@ -14,36 +16,18 @@ div.layout-navigation-wrapper {
     max-height: 100vh;
     max-height: 100svh;
 
-    &::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: 0;
-        background:
-            radial-gradient(circle at 12% 14%, var(--theme-shell-glow-a), transparent 20%),
-            radial-gradient(circle at 84% 12%, var(--theme-shell-glow-b), transparent 22%),
-            linear-gradient(180deg, var(--theme-shell-backdrop) 0%, transparent 64%);
-        filter: blur(18px);
-        opacity: 0.95;
-        z-index: 0;
-    }
-
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-        min-width: 0;
         height: auto;
+        min-height: var(--mobile-visual-viewport-height, 100svh);
         max-height: inherit;
         flex-direction: column;
-
-        &::before {
-            inset: 0 0 var(--mobile-nav-tabs-total-height) 0;
-            border-radius: 0;
-        }
     }
 }
 
 div.layout-navigation-wrapper > nav,
 div.layout-navigation-children-wrapper {
     position: relative;
+    min-height: 0;
 }
 
 div.layout-navigation-wrapper > nav {
@@ -55,22 +39,17 @@ div.layout-navigation-children-wrapper {
 }
  
 div.layout-navigation-children-wrapper {
+    display: flex;
     flex: 1 1 auto;
     min-width: 0;
     width: 100%;
     min-height: 100%;
     height: 100%;
-    margin-left: var(--default-card-spacing);
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
+    margin: 0;
     border-radius: 0;
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-        margin-left: 0;
-        margin-top: calc(var(--default-card-spacing) - 1px);
-        margin-right: 0;
-        margin-bottom: var(--mobile-nav-tabs-total-height);
-        border-radius: 0;
+        min-height: var(--mobile-visual-viewport-height, 100svh);
+        height: auto;
     }
 }

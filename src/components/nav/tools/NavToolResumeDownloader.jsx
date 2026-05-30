@@ -148,6 +148,7 @@ function NavToolResumeDownloader({
                             selectedOptionId={selectedOptionId}
                             onOptionSelected={_onOptionSelected}
                             tooltipLabel={showTooltip ? tooltip : null}
+                            hideTooltipWhenOpen={true}
                             dropdownDrop={dropdownDrop}
                             dropdownClassName={dropdownClassName}
                             menuClassName={menuClassName}

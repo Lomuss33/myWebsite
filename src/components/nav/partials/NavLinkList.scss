@@ -3,6 +3,10 @@
 div.nav-link-list-shell {
     @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
         @include nav-hazard-shell-frame(4px);
+
+        &::before {
+            content: none;
+        }
     }
 
     --nav-link-target-height: 48px;

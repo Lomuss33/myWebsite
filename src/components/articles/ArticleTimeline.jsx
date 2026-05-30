@@ -1,10 +1,12 @@
 import "./ArticleTimeline.scss"
 import React, {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react'
+import Scrollbar from "smooth-scrollbar"
 import Article from "./base/Article.jsx"
 import AvatarView from "../generic/AvatarView.jsx"
 import ImageView from "../generic/ImageView.jsx"
 import StandardButton from "../buttons/StandardButton.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
+import {useViewport} from "../../providers/ViewportProvider.jsx"
 import {ArticleItemInfoForTimelines, ArticleItemInfoForTimelinesHeader, ArticleItemInfoForTimelinesBody, ArticleItemInfoForTimelinesPreviewFooter} from "./partials/ArticleItemInfoForTimelines.jsx"
 import Link from "../generic/Link.jsx"
 import {useUtils} from "../../hooks/utils.js"
@@ -60,6 +62,7 @@ function ArticleTimeline({ dataWrapper, id }) {
 function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTimeline = false, isExperienceTimeline = false, isEducationTimeline = false, isDigitalExpressionTimeline = false }) {
     const language = useLanguage()
     const utils = useUtils()
+    const viewport = useViewport()
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
     const initialVisibleItems = dataWrapper.settings.maxRowsCollapseThreshold || filteredItems.length
     const [visibleItems, setVisibleItems] = useState(initialVisibleItems)
@@ -70,6 +73,7 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
         topOffsetPx: null,
         bottomOffsetPx: null
     })
+    const [experienceAvatarRightOffsetPx, setExperienceAvatarRightOffsetPx] = useState(null)
     const [expandedEducationItemIds, setExpandedEducationItemIds] = useState(() => new Set())
     const [activeOverlayItemId, setActiveOverlayItemId] = useState(null)
     const [supportsFinePointer, setSupportsFinePointer] = useState(() => {
@@ -227,6 +231,105 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
     }, [isExperienceTimeline, isEducationTimeline, visibleItemWrappers.length, selectedItemCategoryId])
 
     useLayoutEffect(() => {
+        if(!isExperienceTimeline)
+            return
+
+        const listElement = listRef.current
+        if(!listElement || typeof window === "undefined")
+            return
+
+        const scrollableElement = listElement.closest(".scrollable")
+
+        const _updateRightEdgeAlignment = () => {
+            const listRect = listElement.getBoundingClientRect()
+            const scrollbarInstance = scrollableElement ? Scrollbar.get(scrollableElement) : null
+            const scrollableRect = scrollableElement?.getBoundingClientRect()
+            const scrollableStyles = scrollableElement ? getComputedStyle(scrollableElement) : null
+            const hasPluginVerticalScroll = Boolean(scrollbarInstance && scrollbarInstance.limit?.y > 1)
+            const hasNativeVerticalScroll = Boolean(
+                scrollableElement &&
+                !scrollbarInstance &&
+                (scrollableElement.scrollHeight - scrollableElement.clientHeight) > 1
+            )
+            const pluginTrackElement = scrollableElement?.querySelector(".scrollbar-track-y")
+            const pluginTrackRect = pluginTrackElement?.getBoundingClientRect()
+            const pluginTrackIsVisible = Boolean(
+                hasPluginVerticalScroll &&
+                pluginTrackRect &&
+                pluginTrackRect.width > 0 &&
+                pluginTrackRect.height > 0
+            )
+            const pluginVisibleTrackWidthPx = scrollableStyles ?
+                Math.max(
+                    parseFloat(scrollableStyles.getPropertyValue("--scrollbar-track-width")) || 0,
+                    parseFloat(scrollableStyles.getPropertyValue("--scrollbar-thumb-width")) || 0
+                ) :
+                0
+            const viewportWidthPx = window.innerWidth
+            const visualViewportRightPx = window.visualViewport ?
+                window.visualViewport.offsetLeft + window.visualViewport.width :
+                document.documentElement.clientWidth
+            const edgeSafetyInsetPx = pluginTrackIsVisible ?
+                (viewportWidthPx >= 1400 ? 10 : 11) :
+                viewportWidthPx < 576 ?
+                    0 :
+                viewportWidthPx < 768 ?
+                    0 :
+                viewportWidthPx < 992 ?
+                    1.1 :
+                    4.5
+            const usableRightBoundaryPx = pluginTrackIsVisible ?
+                Math.max(pluginTrackRect.left, scrollableRect.right - pluginVisibleTrackWidthPx) :
+                hasNativeVerticalScroll ?
+                    document.documentElement.clientWidth :
+                    visualViewportRightPx
+
+            const firstAvatarWrapper = listElement.querySelector(".article-timeline-item-avatar-wrapper--experience")
+            const firstAvatar = firstAvatarWrapper?.querySelector(".article-timeline-item-avatar--experience")
+            const wrapperRect = firstAvatarWrapper?.getBoundingClientRect()
+            const avatarRect = firstAvatar?.getBoundingClientRect()
+            const visibleRightOvershootPx = wrapperRect && avatarRect ?
+                Math.max(0, avatarRect.right - wrapperRect.right) :
+                0
+            const nextOffsetPx = Number(Math.max(
+                0,
+                usableRightBoundaryPx - listRect.right + visibleRightOvershootPx - edgeSafetyInsetPx
+            ).toFixed(2))
+
+            setExperienceAvatarRightOffsetPx(currentValue => {
+                if(currentValue !== null && Math.abs(currentValue - nextOffsetPx) < 0.1)
+                    return currentValue
+
+                return nextOffsetPx
+            })
+        }
+
+        _updateRightEdgeAlignment()
+
+        if(typeof ResizeObserver !== "undefined") {
+            const resizeObserver = new ResizeObserver(() => _updateRightEdgeAlignment())
+            resizeObserver.observe(listElement)
+            listElement.querySelectorAll(".article-timeline-item--experience").forEach(itemElement => resizeObserver.observe(itemElement))
+            listElement.querySelectorAll(".article-timeline-item-avatar-wrapper--experience").forEach(avatarWrapper => resizeObserver.observe(avatarWrapper))
+            listElement.querySelectorAll(".article-timeline-item-avatar--experience").forEach(avatarElement => resizeObserver.observe(avatarElement))
+            const pluginTrackElement = scrollableElement?.querySelector(".scrollbar-track-y")
+            if(scrollableElement)
+                resizeObserver.observe(scrollableElement)
+            if(pluginTrackElement)
+                resizeObserver.observe(pluginTrackElement)
+            window.addEventListener("resize", _updateRightEdgeAlignment)
+
+            return () => {
+                resizeObserver.disconnect()
+                window.removeEventListener("resize", _updateRightEdgeAlignment)
+            }
+        }
+
+        window.addEventListener("resize", _updateRightEdgeAlignment)
+        return () => window.removeEventListener("resize", _updateRightEdgeAlignment)
+    }, [isExperienceTimeline, visibleItemWrappers.length, selectedItemCategoryId])
+
+    useLayoutEffect(() => {
         if(!isMyArtTimeline)
             return
 
@@ -323,6 +426,9 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
             if(Number.isFinite(timelineOffsetsPx.bottomOffsetPx))
                 style["--timeline-line-bottom-offset"] = `${timelineOffsetsPx.bottomOffsetPx}px`
 
+            if(isExperienceTimeline && Number.isFinite(experienceAvatarRightOffsetPx))
+                style["--experience-edge-reach"] = `${experienceAvatarRightOffsetPx}px`
+
             return Object.keys(style).length ? style : null
         }
 
@@ -341,7 +447,7 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
             style["--timeline-line-bottom-offset"] = `${bottomOffset}px`
 
         return style
-    }, [usesMeasuredTimelineOffsets, isExperienceTimeline, isEducationTimeline, artItemHeightsPx, timelineOffsetsPx])
+    }, [usesMeasuredTimelineOffsets, isExperienceTimeline, isEducationTimeline, artItemHeightsPx, timelineOffsetsPx, experienceAvatarRightOffsetPx])
 
     return (
         <>

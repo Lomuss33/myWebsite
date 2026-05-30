@@ -37,19 +37,18 @@ function Layout({ id, children }) {
 
             event.preventDefault()
 
-            const deltaX = event.deltaX || 0
             const deltaY = event.deltaY || 0
 
             if (cachedScrollbar) {
                 cachedScrollbar.scrollTo(
-                    cachedScrollbar.scrollLeft + deltaX,
+                    0,
                     cachedScrollbar.scrollTop + deltaY,
                     0
                 )
                 return
             }
 
-            activeScrollable.scrollLeft += deltaX
+            activeScrollable.scrollLeft = 0
             activeScrollable.scrollTop += deltaY
         }
 

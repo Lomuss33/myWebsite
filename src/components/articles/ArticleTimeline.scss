@@ -606,16 +606,20 @@ button.standard-button.btn-contrast.article-timeline-see-more-button {
 
 article#article-1-section-experience {
     ul.article-timeline-items {
-        --experience-avatar-size: 112px;
+        --experience-avatar-size: 104px;
         --experience-description-right-buffer: calc(var(--experience-avatar-size) / 2);
-        --experience-rail-width: 80px;
-        --experience-rail-anchor-width: 40px;
-        --experience-edge-gap: 10px;
+        --experience-rail-width: 72px;
         --experience-edge-reach: 0px;
+        --experience-edge-gap: 2px;
         --experience-card-overlap: calc(var(--experience-avatar-size) / 2);
-        --experience-card-right-padding-resting: calc(0.95rem + var(--experience-card-overlap));
-        --experience-card-right-padding-active: calc(0.95rem + var(--experience-card-overlap));
+        --experience-card-right-padding-resting: calc(0.85rem + var(--experience-card-overlap));
+        --experience-card-right-padding-active: calc(0.85rem + var(--experience-card-overlap));
         --experience-overlay-shift-active: calc(var(--experience-avatar-size) * 0.12);
+        --experience-overlay-shift-direct: calc(var(--experience-overlay-shift-active) * 2);
+        --experience-overlay-shift-max: calc(var(--experience-overlay-shift-active) * 3);
+        --experience-avatar-scale-resting: 1.04;
+        --experience-avatar-scale-active: 1.08;
+        --experience-avatar-scale-direct: 1.12;
         --experience-overlay-mask-start: 0%;
         --experience-overlay-mask-end: 62%;
         --experience-overlay-gradient-width-resting: calc(var(--experience-avatar-size) * 0.76);
@@ -635,10 +639,10 @@ article#article-1-section-experience {
             0 0 0 10px color-mix(in srgb, var(--theme-primary) 16%, transparent);
         --experience-avatar-filter-resting: saturate(0.94) brightness(0.98);
         --experience-avatar-filter-active: saturate(1.08) brightness(1.04);
-        --experience-avatar-filter-direct: saturate(1.16) brightness(1.08);
-        --experience-avatar-transform-resting: translate3d(0, 0, 0) scale(1);
-        --experience-avatar-transform-active: translate3d(calc(-1 * var(--experience-overlay-shift-active)), 0, 0) scale(1.04);
-        --experience-avatar-transform-direct: translate3d(calc(-2 * var(--experience-overlay-shift-active)), 0, 0) scale(1.08);
+        --experience-avatar-filter-direct: saturate(1.2) brightness(1.1);
+        --experience-avatar-transform-resting: translate3d(calc(-1 * var(--experience-overlay-shift-active)), 0, 0) scale(var(--experience-avatar-scale-resting));
+        --experience-avatar-transform-active: translate3d(calc(-1 * var(--experience-overlay-shift-direct)), 0, 0) scale(var(--experience-avatar-scale-active));
+        --experience-avatar-transform-direct: translate3d(calc(-1 * var(--experience-overlay-shift-max)), 0, 0) scale(var(--experience-avatar-scale-direct));
         --experience-card-transform-resting: translate3d(0, 0, 0);
         --experience-card-transform-active: translate3d(-4px, -2px, 0);
         --experience-card-shadow-active:
@@ -677,13 +681,39 @@ article#article-1-section-experience {
         --timeline-line-width: var(--experience-rail-width);
         --timeline-line-color: color-mix(in srgb, var(--theme-primary) 72%, var(--theme-secondary) 28%);
         --avatar-offset-merge-mode: 0px;
-        gap: 18px;
+        gap: 16px;
         overflow: visible;
+
+        @include media-breakpoint-down(sm) {
+            --experience-avatar-size: 84px;
+            --experience-rail-width: 60px;
+            --experience-edge-gap: 0px;
+            --experience-avatar-scale-resting: 1.04;
+            --experience-avatar-scale-active: 1.08;
+            --experience-avatar-scale-direct: 1.12;
+            --experience-card-right-padding-resting: calc(0.7rem + var(--experience-card-overlap));
+            --experience-card-right-padding-active: calc(0.7rem + var(--experience-card-overlap));
+            --experience-overlay-shift-active: calc(var(--experience-avatar-size) * 0.1);
+            --experience-overlay-shift-direct: calc(var(--experience-overlay-shift-active) * 2);
+            --experience-overlay-shift-max: calc(var(--experience-overlay-shift-active) * 3);
+            --experience-overlay-gradient-width-resting: calc(var(--experience-avatar-size) * 0.68);
+            --experience-overlay-gradient-width-active: calc(var(--experience-avatar-size) * 0.88);
+            --experience-overlay-opacity-resting: 0.16;
+            --experience-overlay-opacity-active: 0.28;
+            gap: 14px;
+        }
+
+        @include media-breakpoint-down(md) {
+            --experience-edge-gap: 0px;
+        }
 
         @include media-breakpoint-up(md) {
             --experience-avatar-size: 138px;
             --experience-rail-width: 80px;
-            --experience-rail-anchor-width: 40px;
+            --experience-edge-gap: 5px;
+            --experience-avatar-scale-resting: 1.04;
+            --experience-avatar-scale-active: 1.08;
+            --experience-avatar-scale-direct: 1.12;
             --experience-card-right-padding-resting: calc(1rem + var(--experience-card-overlap));
             --experience-card-right-padding-active: calc(1rem + var(--experience-card-overlap));
             --experience-overlay-shift-active: calc(var(--experience-avatar-size) * 0.14);
@@ -697,12 +727,15 @@ article#article-1-section-experience {
         @include media-breakpoint-up(xl) {
             --experience-avatar-size: 168px;
             --experience-rail-width: 96px;
-            --experience-rail-anchor-width: 48px;
-            --experience-edge-gap: 8px;
-            --experience-edge-reach: max(0px, calc((100vw - 77rem) / 2 - var(--experience-edge-gap)));
+            --experience-edge-gap: 7px;
+            --experience-avatar-scale-resting: 1.04;
+            --experience-avatar-scale-active: 1.08;
+            --experience-avatar-scale-direct: 1.12;
             --experience-card-right-padding-resting: calc(1.15rem + var(--experience-card-overlap));
             --experience-card-right-padding-active: calc(1.15rem + var(--experience-card-overlap));
             --experience-overlay-shift-active: calc(var(--experience-avatar-size) * 0.18);
+            --experience-overlay-shift-direct: calc(var(--experience-overlay-shift-active) * 2);
+            --experience-overlay-shift-max: calc(var(--experience-overlay-shift-active) * 3);
             --experience-overlay-gradient-width-resting: calc(var(--experience-avatar-size) * 0.84);
             --experience-overlay-gradient-width-active: calc(var(--experience-avatar-size) * 1.16);
             --experience-overlay-opacity-resting: 0.24;
@@ -714,7 +747,7 @@ article#article-1-section-experience {
 
     ul.article-timeline-items:before {
         left: auto;
-        right: calc(var(--experience-card-overlap) - var(--experience-rail-anchor-width) / 2 - var(--experience-edge-reach));
+        right: calc(var(--experience-card-overlap) - var(--experience-rail-width) / 2 - var(--experience-edge-reach) + var(--experience-edge-gap));
         width: var(--experience-rail-width);
         background: var(--experience-rail-background-resting);
         border-radius: 999px;
@@ -733,7 +766,7 @@ article#article-1-section-experience {
         position: relative;
         display: block;
         min-width: 0;
-        min-height: max(calc(var(--experience-avatar-size) + 8px), 100%);
+        min-height: max(calc(var(--experience-avatar-size) + 16px), 100%);
         padding-left: 0;
         padding-right: var(--experience-card-overlap);
         isolation: isolate;
@@ -743,7 +776,7 @@ article#article-1-section-experience {
     div.article-timeline-item-avatar-wrapper--experience {
         position: absolute;
         top: 50%;
-        right: calc(-1 * var(--experience-edge-reach));
+        right: calc(var(--experience-edge-gap) - var(--experience-edge-reach));
         width: var(--experience-avatar-size);
         min-width: var(--experience-avatar-size);
         height: var(--experience-avatar-size);

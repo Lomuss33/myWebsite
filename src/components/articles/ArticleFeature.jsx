@@ -111,6 +111,10 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
         itemWrapper.articleWrapper.sectionId === "my-writings" &&
         itemWrapper.articleWrapper.id === 2 &&
         itemWrapper.id === 1
+    const isWoodProductsFeature =
+        itemWrapper.articleWrapper.sectionId === "experience" &&
+        itemWrapper.articleWrapper.id === 2 &&
+        itemWrapper.id === 1
     const isHomeStyleIntro = isAboutIntro || isWritingIntro
     const articleSettings = itemWrapper.articleWrapper.settings
     const html = itemWrapper.locales.text || itemWrapper.placeholder
@@ -354,6 +358,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
     const itemClassName = [
         "article-feature-item",
         `article-feature-item-id-${itemWrapper.id}`,
+        isWoodProductsFeature ? "article-feature-item-wood-products" : "",
         isHomeStyleIntro ? "article-feature-item-home-style-intro" : "",
         isManagedSplitLayout ? "article-feature-item-layout-managed" : "",
         isTextLedSplitLayout ? "article-feature-item-layout-text-led" : "",
@@ -443,7 +448,9 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                          fontSize: `${textFontSize}px`,
                          lineHeight: `${textLineHeight}px`
                      } : undefined}>
-                    {renderVisibleBody()}
+                    <div className={`article-feature-item-text-body`}>
+                        {renderVisibleBody()}
+                    </div>
                 </div>
             </div>
         </div>

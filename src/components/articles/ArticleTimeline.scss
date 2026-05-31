@@ -1011,7 +1011,8 @@ article.article-timeline--art-digital-expression {
     ul.article-timeline-items {
         --timeline-line-width: 0px;
         --timeline-line-color: transparent;
-        --digital-card-stack-base: clamp(7rem, 9vw, 8.8rem);
+        --digital-card-stack-base: clamp(8.8rem, 11vw, 11.2rem);
+        --digital-card-stack-track: clamp(10.5rem, 24vw, 13.25rem);
         --digital-item-buffer: clamp(0.45rem, 0.9vw, 0.7rem);
         --gap-between-avatar-and-content: 0px;
         display: grid;
@@ -1022,12 +1023,14 @@ article.article-timeline--art-digital-expression {
         perspective-origin: 70% 18%;
 
         @include media-breakpoint-down(lg) {
-            --digital-card-stack-base: clamp(7rem, 22vw, 8.8rem);
+            --digital-card-stack-base: clamp(8rem, 24vw, 9.8rem);
+            --digital-card-stack-track: clamp(9.6rem, 28vw, 11.6rem);
             grid-template-columns: 1fr;
         }
 
         @include media-breakpoint-down(sm) {
             --digital-card-stack-base: clamp(5.8rem, 30vw, 7rem);
+            --digital-card-stack-track: clamp(7rem, 34vw, 8.4rem);
             --digital-item-buffer: 0.38rem;
         }
 
@@ -1043,7 +1046,7 @@ article.article-timeline--art-digital-expression {
     li.article-timeline-item {
         position: relative;
         align-items: stretch;
-        min-height: 240px;
+        min-height: 315px;
         padding: var(--digital-item-buffer);
         transform-style: preserve-3d;
         isolation: isolate;
@@ -1078,20 +1081,28 @@ article.article-timeline--art-digital-expression {
 
     div.digital-expression-layer-stack {
         position: absolute;
-        top: calc(8px + var(--digital-item-buffer));
-        right: calc(8px + var(--digital-item-buffer));
-        width: calc(var(--digital-card-stack-base) + 0.5rem);
-        height: calc(var(--digital-card-stack-base) + 0.5rem);
+        top: calc(12px + var(--digital-item-buffer));
+        right: calc(12px + var(--digital-item-buffer));
+        bottom: calc(12px + var(--digital-item-buffer));
+        width: var(--digital-card-stack-track);
+        height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.1rem;
         z-index: 5;
         transform: translateZ(26px);
         pointer-events: none;
     }
 
     a.digital-expression-layer-stack__link {
+        --digital-stack-size: 100%;
         position: relative;
         display: block;
         width: 100%;
-        height: 100%;
+        max-width: 100%;
+        aspect-ratio: 1;
+        height: auto;
         pointer-events: auto;
         outline: none;
         transform-style: preserve-3d;
@@ -1124,7 +1135,7 @@ article.article-timeline--art-digital-expression {
     }
 
     span.digital-expression-layer-stack__layer--1 {
-        width: var(--digital-card-stack-base);
+        width: var(--digital-stack-size);
         top: 8px;
         right: 8px;
         z-index: 2;
@@ -1132,7 +1143,7 @@ article.article-timeline--art-digital-expression {
     }
 
     span.digital-expression-layer-stack__layer--2 {
-        width: calc(var(--digital-card-stack-base) * 0.82);
+        width: calc(var(--digital-stack-size) * 0.82);
         top: 10px;
         right: 10px;
         z-index: 3;
@@ -1144,7 +1155,7 @@ article.article-timeline--art-digital-expression {
     }
 
     span.digital-expression-layer-stack__layer--3 {
-        width: calc(var(--digital-card-stack-base) * 0.64);
+        width: calc(var(--digital-stack-size) * 0.64);
         top: 17px;
         right: 17px;
         z-index: 4;
@@ -1156,7 +1167,7 @@ article.article-timeline--art-digital-expression {
     }
 
     span.digital-expression-layer-stack__layer--4 {
-        width: calc(var(--digital-card-stack-base) * 0.44);
+        width: calc(var(--digital-stack-size) * 0.44);
         top: 23px;
         right: 23px;
         z-index: 5;
@@ -1216,24 +1227,24 @@ article.article-timeline--art-digital-expression {
 
     li.article-timeline-item a.digital-expression-layer-stack__link:hover span.digital-expression-layer-stack__layer--1,
     li.article-timeline-item a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer--1 {
-        --centered-layer-size: var(--digital-card-stack-base);
+        --centered-layer-size: var(--digital-stack-size);
     }
 
     li.article-timeline-item a.digital-expression-layer-stack__link:hover span.digital-expression-layer-stack__layer--2,
     li.article-timeline-item a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer--2 {
-        --centered-layer-size: calc(var(--digital-card-stack-base) * 0.82);
+        --centered-layer-size: calc(var(--digital-stack-size) * 0.82);
         transform: translate3d(0, 0, var(--circle-centered-z)) scale(1.035) rotate(2deg);
     }
 
     li.article-timeline-item a.digital-expression-layer-stack__link:hover span.digital-expression-layer-stack__layer--3,
     li.article-timeline-item a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer--3 {
-        --centered-layer-size: calc(var(--digital-card-stack-base) * 0.64);
+        --centered-layer-size: calc(var(--digital-stack-size) * 0.64);
         transform: translate3d(0, 0, var(--circle-centered-z)) scale(1.04) rotate(-2deg);
     }
 
     li.article-timeline-item a.digital-expression-layer-stack__link:hover span.digital-expression-layer-stack__layer--4,
     li.article-timeline-item a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer--4 {
-        --centered-layer-size: calc(var(--digital-card-stack-base) * 0.44);
+        --centered-layer-size: calc(var(--digital-stack-size) * 0.44);
         transform: translate3d(0, 0, var(--circle-centered-z)) scale(1.05);
     }
 
@@ -1332,6 +1343,7 @@ article.article-timeline--art-digital-expression {
         div.digital-expression-layer-stack {
             top: calc(7px + var(--digital-item-buffer));
             right: calc(7px + var(--digital-item-buffer));
+            bottom: calc(7px + var(--digital-item-buffer));
         }
     }
 

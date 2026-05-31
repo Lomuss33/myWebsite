@@ -473,13 +473,16 @@
                     "preview": {
                         "links": [
                             {
-                                "href": "#my-art-ai-prompts-pinterest-coming-soon",
-                                "tooltipString": "open_website",
+                                "href": "https://de.pinterest.com/lovromusi/moje-ai-opis-slike/",
+                                "tooltipString": "See on Pinterest",
                                 "faIcon": "fa-brands fa-pinterest"
                             }
                         ],
                         "screenshots": [
-                            "/images/personal_art/tattoo_design/vrijeme_box.webp"
+                            "/images/personal_art/digital_expression/ai_prompt_01.webp",
+                            "/images/personal_art/digital_expression/ai_prompt_02.webp",
+                            "/images/personal_art/digital_expression/ai_prompt_03.webp",
+                            "/images/personal_art/digital_expression/ai_prompt_04.webp"
                         ],
                         "screenshotsAspectRatio": "1:1"
                     },
@@ -520,16 +523,15 @@
                     "preview": {
                         "links": [
                             {
-                                "href": "#my-art-favorite-infographics-pinterest-coming-soon",
-                                "tooltipString": "open_website",
+                                "href": "https://de.pinterest.com/lovromusi/fav-infographics-and-stats/",
+                                "tooltipString": "See on Pinterest",
                                 "faIcon": "fa-brands fa-pinterest"
                             }
                         ],
                         "screenshots": [
-                            "/images/personal_art/tattoo_design/elixir_god.webp",
-                            "/images/personal_art/tattoo_design/ilir_2.webp",
-                            "/images/personal_art/tattoo_design/mitski_lav.webp",
-                            "/images/personal_art/tattoo_design/zid_alien.webp"
+                            "/images/personal_art/digital_expression/favorite_infographic_01.webp",
+                            "/images/personal_art/digital_expression/favorite_infographic_02.webp",
+                            "/images/personal_art/digital_expression/favorite_infographic_03.webp"
                         ],
                         "screenshotsAspectRatio": "1:1"
                     },

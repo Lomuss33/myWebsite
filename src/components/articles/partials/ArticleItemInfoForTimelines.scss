@@ -2071,15 +2071,22 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--digital-card-stack-track, clamp(10.5rem, 24vw, 13.25rem));
+    grid-template-areas:
+        "header media"
+        "actions media"
+        "body media";
+    column-gap: clamp(0.9rem, 1.8vw, 1.35rem);
+    row-gap: clamp(0.28rem, 0.7vw, 0.5rem);
+    align-content: start;
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-header {
-    order: 1;
+    grid-area: header;
     width: 100%;
-    min-height: calc(var(--digital-card-stack-base, 9rem) * 0.44);
-    padding-right: calc(var(--digital-card-stack-base, 9rem) + 1.35rem);
+    min-height: 0;
+    padding-right: 0;
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-header-title,
@@ -2094,9 +2101,9 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-preview-footer {
-    order: 2;
-    width: calc(100% - var(--digital-card-stack-base, 9rem) - 1.35rem);
-    margin-top: 0.62rem;
+    grid-area: actions;
+    width: 100%;
+    margin-top: 0.08rem;
     margin-left: 0;
     padding-top: 0;
     justify-content: flex-start;
@@ -2127,17 +2134,31 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-body {
-    order: 3;
+    grid-area: body;
+    margin-top: 0;
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
+    article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines {
+        display: flex;
+        flex-direction: column;
+        row-gap: 0;
+    }
+
     article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-header {
+        order: 1;
         min-height: calc(var(--digital-card-stack-base, 7rem) * 0.52);
         padding-right: calc(var(--digital-card-stack-base, 7rem) + 0.9rem);
     }
 
     article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-preview-footer {
+        order: 2;
         width: calc(100% - var(--digital-card-stack-base, 7rem) - 0.9rem);
+        margin-top: 0.4rem;
+    }
+
+    article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-body {
+        order: 3;
     }
 }
 

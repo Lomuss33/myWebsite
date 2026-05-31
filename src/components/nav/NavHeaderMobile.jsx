@@ -44,17 +44,17 @@ function NavHeaderMobile({ profile, links }) {
 
     const mobileActionStackAfterInfo = (themeButtonVisible || languageButtonVisible) ? (
         <>
-            {themeButtonVisible && (
-                <div className={`nav-profile-card-mobile-action nav-profile-card-mobile-action-theme`}>
-                    <NavToolThemePicker/>
-                </div>
-            )}
-
             {languageButtonVisible && (
                 <div className={`nav-profile-card-mobile-action nav-profile-card-mobile-action-language`}>
                     <NavToolLanguagePicker mobileTubeMenu={true}
                                            dropdownClassName={`nav-profile-card-mobile-language-dropdown`}
                                            menuClassName={`nav-profile-card-mobile-language-menu`}/>
+                </div>
+            )}
+
+            {themeButtonVisible && (
+                <div className={`nav-profile-card-mobile-action nav-profile-card-mobile-action-theme`}>
+                    <NavToolThemePicker/>
                 </div>
             )}
         </>

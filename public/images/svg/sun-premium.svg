@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+    <defs>
+        <radialGradient id="sunBody" cx="38%" cy="34%" r="68%">
+            <stop offset="0%" stop-color="#fff7ed"/>
+            <stop offset="40%" stop-color="#fcd34d"/>
+            <stop offset="82%" stop-color="#f59e0b"/>
+            <stop offset="100%" stop-color="#b45309"/>
+        </radialGradient>
+        <linearGradient id="sunRay" x1="50%" y1="0%" x2="50%" y2="100%">
+            <stop offset="0%" stop-color="#fbbf24"/>
+            <stop offset="100%" stop-color="#d97706"/>
+        </linearGradient>
+        <radialGradient id="sunAura" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fde68a" stop-opacity="0.36"/>
+            <stop offset="58%" stop-color="#fbbf24" stop-opacity="0.1"/>
+            <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+        </radialGradient>
+    </defs>
+
+    <circle cx="32" cy="32" r="30" fill="url(#sunAura)"/>
+
+    <g transform="translate(32 32)" fill="url(#sunRay)">
+        <path d="M0 -28 L2.6 -17.6 L-2.6 -17.6 Z"/>
+        <path d="M0 -28 L2.6 -17.6 L-2.6 -17.6 Z" transform="rotate(45)"/>
+        <path d="M0 -28 L2.6 -17.6 L-2.6 -17.6 Z" transform="rotate(90)"/>
+        <path d="M0 -28 L2.6 -17.6 L-2.6 -17.6 Z" transform="rotate(135)"/>
+        <path d="M0 -28 L2.6 -17.6 L-2.6 -17.6 Z" transform="rotate(180)"/>
+        <path d="M0 -28 L2.6 -17.6 L-2.6 -17.6 Z" transform="rotate(225)"/>
+        <path d="M0 -28 L2.6 -17.6 L-2.6 -17.6 Z" transform="rotate(270)"/>
+        <path d="M0 -28 L2.6 -17.6 L-2.6 -17.6 Z" transform="rotate(315)"/>
+    </g>
+
+    <g transform="translate(32 32)" fill="url(#sunRay)" opacity="0.7">
+        <path d="M0 -23 L1.6 -17.6 L-1.6 -17.6 Z" transform="rotate(22.5)"/>
+        <path d="M0 -23 L1.6 -17.6 L-1.6 -17.6 Z" transform="rotate(67.5)"/>
+        <path d="M0 -23 L1.6 -17.6 L-1.6 -17.6 Z" transform="rotate(112.5)"/>
+        <path d="M0 -23 L1.6 -17.6 L-1.6 -17.6 Z" transform="rotate(157.5)"/>
+        <path d="M0 -23 L1.6 -17.6 L-1.6 -17.6 Z" transform="rotate(202.5)"/>
+        <path d="M0 -23 L1.6 -17.6 L-1.6 -17.6 Z" transform="rotate(247.5)"/>
+        <path d="M0 -23 L1.6 -17.6 L-1.6 -17.6 Z" transform="rotate(292.5)"/>
+        <path d="M0 -23 L1.6 -17.6 L-1.6 -17.6 Z" transform="rotate(337.5)"/>
+    </g>
+
+    <circle cx="32" cy="32" r="14.5" fill="url(#sunBody)"/>
+    <circle cx="32" cy="32" r="14.5" fill="none" stroke="#9a3412" stroke-width="0.5" stroke-opacity="0.34"/>
+
+    <ellipse cx="27" cy="27" rx="5.2" ry="3" fill="#ffffff" fill-opacity="0.6" transform="rotate(-32 27 27)"/>
+    <circle cx="36" cy="28.5" r="0.95" fill="#ffffff" fill-opacity="0.5"/>
+</svg>

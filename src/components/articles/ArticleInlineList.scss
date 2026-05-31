@@ -44,11 +44,14 @@ article#article-1-section-about {
         justify-content: center;
         margin-top: 16px;
         gap: 12px;
+        width: 100%;
 
         @include media-breakpoint-down(sm) {
             flex-wrap: nowrap;
+            flex-direction: row;
             align-items: stretch;
-            gap: 9px;
+            justify-content: center;
+            gap: 8px;
         }
     }
 
@@ -68,9 +71,11 @@ article#article-1-section-about {
 
         @include media-breakpoint-down(sm) {
             flex: 1 1 0;
+            width: 100%;
             min-width: 0;
-            justify-content: flex-start;
+            justify-content: center;
             padding: 0 8px 0 0;
+            border-radius: 18px;
         }
 
         &:not(:last-child)::after {
@@ -94,8 +99,10 @@ article#article-1-section-about {
             @include media-breakpoint-down(sm) {
                 width: 100%;
                 min-width: 0;
-                justify-content: flex-start;
-                font-size: clamp(0.87rem, 0.82rem + 0.2vw, 0.98rem);
+                justify-content: center;
+                gap: 7px;
+                font-size: clamp(0.79rem, 0.76rem + 0.2vw, 0.9rem);
+                padding-right: 2px;
             }
         }
     }
@@ -117,9 +124,11 @@ article#article-1-section-about {
 
         @include media-breakpoint-down(sm) {
             min-width: 0;
+            white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            white-space: nowrap;
+            line-height: 1.1;
+            text-align: center;
         }
     }
 
@@ -130,21 +139,23 @@ article#article-1-section-about {
 
     @media (max-width: 420px) {
         li.article-inline-list-item {
-            padding: 0 7px 0 0;
-            min-height: 48px;
+            padding: 0 6px 0 0;
+            min-height: 50px;
         }
 
         li.article-inline-list-item a {
-            gap: 7px;
+            gap: 6px;
         }
 
         span.article-inline-list-item-label {
-            font-size: 0.98em;
+            font-size: 0.9em;
         }
 
         i.article-inline-list-item-icon {
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
+            font-size: 0.85rem;
         }
     }
 }

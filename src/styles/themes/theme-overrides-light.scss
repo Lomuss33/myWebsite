@@ -1515,14 +1515,29 @@
 }
 
 [data-theme="light"] section#section-contact {
-    background: #ffffff;
+    --contact-accent-blue: #2563eb;
+    --contact-accent-gold: #f59e0b;
+    --contact-title-start: #111827;
+    --contact-title-mid: #0891b2;
+    --contact-title-end: #e11d48;
+    --contact-title-shadow: 0 14px 24px rgba(8, 145, 178, 0.08);
+    --contact-text-strong: #111827;
+    --contact-text-mid: #475569;
+    --contact-text-soft: #64748b;
+
+    background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.12) 0%, transparent 30%),
+        radial-gradient(circle at top right, rgba(245, 158, 11, 0.10) 0%, transparent 24%),
+        radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.07) 0%, transparent 32%),
+        linear-gradient(180deg, #ffffff 0%, #f8fbff 52%, #fff8ef 100%);
     color: #111827;
 }
 
 [data-theme="light"] section#section-contact div.section-content-border-decoration-top-left {
     border-top-color: #2563eb;
     border-left-color: #f59e0b;
-    opacity: 0.30;
+    opacity: 0.68;
+    filter: drop-shadow(0 0 14px rgba(37, 99, 235, 0.10));
 }
 
 [data-theme="light"] section#section-contact h4.article-title,
@@ -1534,14 +1549,36 @@
     color: #2563eb;
 }
 
+[data-theme="light"] section#section-contact header.section-header::before {
+    background:
+        radial-gradient(circle at 50% 8%, rgba(8, 145, 178, 0.10), transparent 54%),
+        linear-gradient(180deg, rgba(225, 29, 72, 0.07), transparent 72%);
+}
+
+[data-theme="light"] section#section-contact header.section-header::after {
+    box-shadow:
+        0 0 18px rgba(8, 145, 178, 0.09),
+        0 0 12px rgba(225, 29, 72, 0.08);
+}
+
+[data-theme="light"] section#section-contact header.section-header div.section-header-prefix {
+    border-color: rgba(37, 99, 235, 0.18);
+    background: linear-gradient(90deg, rgba(37, 99, 235, 0.08), rgba(245, 158, 11, 0.10));
+    color: #475569;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+}
+
+[data-theme="light"] section#section-contact header.section-header div.section-header-prefix i {
+    color: #0891b2;
+}
+
 [data-theme="light"] section#section-about div.section-content-border-decoration-top-left,
 [data-theme="light"] section#section-education div.section-content-border-decoration-top-left,
 [data-theme="light"] section#section-experience div.section-content-border-decoration-top-left,
 [data-theme="light"] section#section-my-software div.section-content-border-decoration-top-left,
 [data-theme="light"] section#section-my-hardware div.section-content-border-decoration-top-left,
 [data-theme="light"] section#section-my-writings div.section-content-border-decoration-top-left,
-[data-theme="light"] section#section-my-art div.section-content-border-decoration-top-left,
-[data-theme="light"] section#section-contact div.section-content-border-decoration-top-left {
+[data-theme="light"] section#section-my-art div.section-content-border-decoration-top-left {
     opacity: 0.45;
 }
 

@@ -91,7 +91,9 @@ function Collapsable({
             {Boolean(canExpand) && (
                 <div className={`collapsable-menu`}>
                     <StandardButton variant={`contrast`}
+                                    className={`see-more-button-modern`}
                                     faIcon={`fa-solid fa-caret-down`}
+                                    displayIconOnBothSides={true}
                                     label={language.getString("see_more")}
                                     tooltip={language.getString("see_more")}
                                     onClick={_expand}/>

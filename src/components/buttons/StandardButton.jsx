@@ -1,7 +1,7 @@
 import "./StandardButton.scss"
 import React from 'react'
 
-function StandardButton({ label, onClick = null, id = null, type = null, className = "", variant = "primary", faIcon = "", tooltip = "", displayIconAsSuffix = false, size = "btn-default-size", status = "btn-enabled" }) {
+function StandardButton({ label, onClick = null, id = null, type = null, className = "", variant = "primary", faIcon = "", tooltip = "", displayIconAsSuffix = false, displayIconOnBothSides = false, size = "btn-default-size", status = "btn-enabled" }) {
     const isDisabled = status === StandardButton.Status.DISABLED
 
     return (
@@ -12,13 +12,13 @@ function StandardButton({ label, onClick = null, id = null, type = null, classNa
                 disabled={isDisabled}
                 aria-disabled={isDisabled}
                 onClick={onClick}>
-            {!displayIconAsSuffix && faIcon && (
+            {(displayIconOnBothSides || !displayIconAsSuffix) && faIcon && (
                 <i className={`${faIcon} me-2`}/>
             )}
 
             <span dangerouslySetInnerHTML={{__html: label}}/>
 
-            {displayIconAsSuffix && faIcon && (
+            {(displayIconOnBothSides || displayIconAsSuffix) && faIcon && (
                 <i className={`${faIcon} ms-1`}/>
             )}
         </button>

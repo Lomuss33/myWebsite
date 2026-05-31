@@ -177,7 +177,6 @@ section#section-education article:is(
     font-size: clamp(1.76rem, 1.12rem + 1.82vw, 2.8rem)!important;
     font-weight: 900;
     line-height: 1.08;
-    padding-bottom: 0.1em;
     text-align: center;
     text-shadow: var(--education-current-title-shadow);
     text-wrap: balance;
@@ -259,7 +258,7 @@ section#section-education article:is(
     display: block;
     max-width: 100%;
     min-width: 0;
-    padding: 0 2px 0.08em;
+    padding-inline: 2px;
     overflow-wrap: anywhere;
     background: linear-gradient(135deg, var(--education-current-title-start) 0%, var(--education-current-title-mid) 48%, var(--education-current-title-end) 100%);
     background-clip: text;
@@ -528,7 +527,6 @@ section#section-experience article:is(
     font-size: clamp(1.76rem, 1.12rem + 1.82vw, 2.8rem)!important;
     font-weight: 900;
     line-height: 1.08;
-    padding-bottom: 0.1em;
     text-align: center;
     text-shadow: var(--experience-current-title-shadow);
     text-wrap: balance;
@@ -615,7 +613,7 @@ section#section-experience article:is(
     display: block;
     max-width: 100%;
     min-width: 0;
-    padding: 0 2px 0.08em;
+    padding-inline: 2px;
     overflow-wrap: anywhere;
     background: linear-gradient(135deg, var(--experience-current-title-start) 0%, var(--experience-current-title-mid) 48%, var(--experience-current-title-end) 100%);
     background-clip: text;
@@ -955,7 +953,6 @@ section#section-my-writings article:is(
     font-size: clamp(1.86rem, 1.16rem + 2vw, 3rem)!important;
     font-weight: 900;
     line-height: 1.08;
-    padding-bottom: 0.1em;
     text-align: center;
     text-shadow: var(--writings-current-title-shadow);
     text-wrap: balance;
@@ -1055,7 +1052,7 @@ section#section-my-writings article:is(
     display: block;
     max-width: 100%;
     min-width: 0;
-    padding: 0 2px 0.08em;
+    padding-inline: 2px;
     overflow-wrap: anywhere;
     background: linear-gradient(135deg, var(--writings-current-title-start) 0%, var(--writings-current-title-mid) 48%, var(--writings-current-title-end) 100%);
     background-clip: text;
@@ -1311,7 +1308,6 @@ section#section-my-art article:is(
     font-size: clamp(1.84rem, 1.14rem + 1.96vw, 2.96rem)!important;
     font-weight: 900;
     line-height: 1.08;
-    padding-bottom: 0.1em;
     text-align: center;
     text-shadow: var(--art-current-title-shadow);
     text-wrap: balance;
@@ -1408,7 +1404,7 @@ section#section-my-art article:is(
     display: block;
     max-width: 100%;
     min-width: 0;
-    padding: 0 2px 0.08em;
+    padding-inline: 2px;
     overflow-wrap: anywhere;
     background: linear-gradient(135deg, var(--art-current-title-start) 0%, var(--art-current-title-mid) 48%, var(--art-current-title-end) 100%);
     background-clip: text;
@@ -1625,6 +1621,10 @@ section#section-contact {
     --contact-page-bg-3: #0a0a0a;
     --contact-accent-blue: #4ea3ff;
     --contact-accent-gold: #facc15;
+    --contact-title-start: #f5f3ff;
+    --contact-title-mid: #67e8f9;
+    --contact-title-end: #fb7185;
+    --contact-title-shadow: 0 16px 30px rgba(103, 232, 249, 0.16);
     --contact-text-strong: #f8fafc;
     --contact-text-mid: #cbd5e1;
     --contact-text-soft: #94a3b8;
@@ -1638,9 +1638,39 @@ section#section-contact {
 }
 
 section#section-contact div.section-content-border-decoration-top-left {
+    --border-decoration-size: clamp(92px, 10vw, 138px);
+    top: clamp(8px, 1.1vw, 18px);
+    left: clamp(10px, 1.4vw, 24px);
     border-top-color: var(--contact-accent-blue);
     border-left-color: var(--contact-accent-gold);
-    opacity: 0.65;
+    border-top-width: 4px;
+    border-left-width: 4px;
+    opacity: 0.9;
+    filter: drop-shadow(0 0 18px rgba(78, 163, 255, 0.18));
+}
+
+section#section-contact div.section-content-border-decoration-top-left::before,
+section#section-contact div.section-content-border-decoration-top-left::after {
+    content: "";
+    position: absolute;
+    border-radius: 999px;
+    opacity: 0.9;
+}
+
+section#section-contact div.section-content-border-decoration-top-left::before {
+    top: -2px;
+    left: 18px;
+    width: clamp(44px, 4vw, 62px);
+    height: 4px;
+    background: linear-gradient(90deg, var(--contact-accent-blue), transparent);
+}
+
+section#section-contact div.section-content-border-decoration-top-left::after {
+    top: 18px;
+    left: -2px;
+    width: 4px;
+    height: clamp(44px, 4vw, 62px);
+    background: linear-gradient(180deg, var(--contact-accent-gold), transparent);
 }
 
 section#section-contact h4.article-title {
@@ -1653,6 +1683,139 @@ section#section-contact h4.article-title span.article-title-prefix {
 
 section#section-contact div.article-content {
     color: var(--contact-text-strong);
+}
+
+section#section-contact header.section-header {
+    position: relative;
+    gap: clamp(0.32rem, 0.7vw, 0.56rem);
+    margin: 4px auto clamp(20px, 2.8vw, 34px);
+    padding: clamp(4px, 0.5vw, 8px) clamp(10px, 2vw, 24px) 0;
+    text-align: center;
+}
+
+section#section-contact header.section-header::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto auto 50%;
+    width: min(100%, 760px);
+    height: 100%;
+    transform: translateX(-50%);
+    background:
+        radial-gradient(circle at 50% 8%, rgba(103, 232, 249, 0.14), transparent 54%),
+        linear-gradient(180deg, rgba(251, 113, 133, 0.08), transparent 72%);
+    pointer-events: none;
+    filter: blur(8px);
+}
+
+section#section-contact header.section-header::after {
+    content: "";
+    display: block;
+    width: min(100%, 680px);
+    height: 2px;
+    margin-top: 2px;
+    border-radius: 999px;
+    background:
+        linear-gradient(90deg,
+            transparent 0%,
+            rgba(34, 211, 238, 0.92) 18%,
+            rgba(244, 244, 245, 0.94) 50%,
+            rgba(251, 113, 133, 0.92) 82%,
+            transparent 100%);
+    box-shadow:
+        0 0 18px rgba(34, 211, 238, 0.16),
+        0 0 14px rgba(251, 113, 133, 0.12);
+}
+
+section#section-contact header.section-header div.section-header-prefix {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: fit-content;
+    margin: 0 auto;
+    padding: 0.26rem 0.76rem;
+    border: 1px solid color-mix(in srgb, var(--contact-accent-blue) 34%, transparent);
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(78, 163, 255, 0.12), rgba(250, 204, 21, 0.10));
+    color: var(--contact-text-mid);
+    font-size: clamp(0.84rem, 0.78rem + 0.22vw, 0.98rem);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    box-shadow: 0 10px 24px rgba(2, 6, 23, 0.18);
+}
+
+section#section-contact header.section-header div.section-header-prefix i {
+    margin-right: 0;
+    color: #67e8f9;
+    opacity: 0.96;
+}
+
+section#section-contact header.section-header h2.section-header-title {
+    display: block;
+    position: relative;
+    z-index: 1;
+    max-width: 1080px;
+    margin: 0 auto;
+    background: linear-gradient(112deg, var(--contact-title-start) 0%, #c4b5fd 18%, var(--contact-title-mid) 44%, #f9a8d4 72%, var(--contact-title-end) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    font-size: clamp(1.7rem, 1.14rem + 1.92vw, 3.2rem)!important;
+    font-weight: 950;
+    line-height: 1;
+    letter-spacing: -0.025em;
+    padding-bottom: 0.04em;
+    text-shadow: var(--contact-title-shadow);
+    text-wrap: balance;
+    overflow: visible;
+}
+
+section#section-contact header.section-header h2.section-header-title span {
+    color: inherit!important;
+}
+
+@include media-breakpoint-down(md) {
+    section#section-contact header.section-header {
+        margin-bottom: clamp(18px, 4vw, 24px);
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    section#section-contact header.section-header h2.section-header-title {
+        font-size: clamp(1.42rem, 1.06rem + 1.18vw, 1.92rem)!important;
+        line-height: 1.02;
+        padding-bottom: 0.06em;
+    }
+
+    section#section-contact header.section-header div.section-header-prefix {
+        font-size: clamp(0.76rem, 0.72rem + 0.18vw, 0.86rem);
+        padding: 0.22rem 0.58rem;
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    section#section-contact div.section-content-border-decoration-top-left {
+        display: block;
+        --border-decoration-size: 68px;
+        top: 4px;
+        left: 6px;
+        border-top-width: 3px;
+        border-left-width: 3px;
+        opacity: 0.82;
+    }
+
+    section#section-contact div.section-content-border-decoration-top-left::before {
+        left: 14px;
+        width: 34px;
+        height: 3px;
+    }
+
+    section#section-contact div.section-content-border-decoration-top-left::after {
+        top: 14px;
+        width: 3px;
+        height: 34px;
+    }
 }
 
 button.section-fullscreen-toggle {

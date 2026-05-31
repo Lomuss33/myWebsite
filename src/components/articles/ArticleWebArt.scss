@@ -1150,7 +1150,7 @@ div.article-web-art-items {
 
 @container web-art-shell (max-width: 560px) {
     div.article-web-art-items {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: 1fr;
         gap: 10px;
     }
 }

@@ -2,50 +2,50 @@
 
 article.article-complaint-form {
     color-scheme: dark;
-    --complaint-surface: #0a0f16;
-    --complaint-panel: #0f1720;
-    --complaint-panel-2: #111a25;
-    --complaint-panel-3: #15212d;
-    --complaint-panel-hover: #121b27;
-    --complaint-panel-focus: #0e1721;
-    --complaint-border: rgba(148, 163, 184, 0.16);
-    --complaint-border-hover: rgba(139, 213, 255, 0.24);
-    --complaint-border-strong: rgba(139, 213, 255, 0.40);
-    --complaint-text: #eef4fb;
-    --complaint-muted: #9badbf;
-    --complaint-accent: #8bd5ff;
-    --complaint-accent-2: #7aa7ff;
-    --complaint-accent-3: #4ade80;
-    --complaint-icon-bg: #101924;
+    --complaint-surface: linear-gradient(180deg, rgba(11, 18, 32, 0.98) 0%, rgba(7, 12, 22, 0.98) 100%);
+    --complaint-panel: color-mix(in srgb, #0b1220 94%, #1e293b 6%);
+    --complaint-panel-2: color-mix(in srgb, #0f172a 92%, #4ea3ff 8%);
+    --complaint-panel-3: color-mix(in srgb, #0f172a 88%, #facc15 12%);
+    --complaint-panel-hover: color-mix(in srgb, #0f172a 86%, #4ea3ff 14%);
+    --complaint-panel-focus: #000000;
+    --complaint-border: rgba(78, 163, 255, 0.16);
+    --complaint-border-hover: rgba(78, 163, 255, 0.26);
+    --complaint-border-strong: rgba(96, 165, 250, 0.54);
+    --complaint-text: #f8fafc;
+    --complaint-muted: #a7b4c8;
+    --complaint-accent: #4ea3ff;
+    --complaint-accent-2: #7dd3fc;
+    --complaint-accent-3: #facc15;
+    --complaint-icon-bg: color-mix(in srgb, #0b1220 94%, #1d4ed8 6%);
     --complaint-icon-color: #dbeafe;
-    --complaint-icon-border: rgba(139, 213, 255, 0.14);
-    --complaint-select-surface: linear-gradient(180deg, #3a73bf 0%, #295aa0 100%);
-    --complaint-select-surface-hover: linear-gradient(180deg, #4681d1 0%, #2f66b3 100%);
-    --complaint-select-surface-focus: linear-gradient(180deg, #5590e3 0%, #3972c3 100%);
-    --complaint-select-border: rgba(191, 219, 254, 0.38);
-    --complaint-select-border-hover: rgba(219, 234, 254, 0.52);
-    --complaint-select-border-focus: rgba(239, 246, 255, 0.72);
-    --complaint-select-text: #f2f7ff;
-    --complaint-select-shadow: 0 10px 20px rgba(2, 6, 23, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 -1px 0 rgba(15, 23, 42, 0.12);
-    --complaint-select-shadow-hover: 0 12px 24px rgba(2, 6, 23, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.20), inset 0 -1px 0 rgba(15, 23, 42, 0.16);
-    --complaint-select-shadow-focus: 0 14px 28px rgba(2, 6, 23, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.24), inset 0 -1px 0 rgba(15, 23, 42, 0.18);
-    --complaint-select-arrow-a: #d9ecff;
-    --complaint-select-arrow-b: #f8fbff;
-    --complaint-select-menu-surface: #183155;
-    --complaint-select-menu-surface-top: #21406d;
+    --complaint-icon-border: rgba(78, 163, 255, 0.14);
+    --complaint-select-surface: linear-gradient(180deg, rgba(11, 18, 32, 0.96) 0%, rgba(15, 23, 42, 0.96) 100%);
+    --complaint-select-surface-hover: linear-gradient(180deg, rgba(15, 23, 42, 0.98) 0%, rgba(8, 14, 26, 0.98) 100%);
+    --complaint-select-surface-focus: linear-gradient(180deg, rgba(17, 29, 49, 0.99) 0%, rgba(8, 14, 26, 0.99) 100%);
+    --complaint-select-border: rgba(78, 163, 255, 0.22);
+    --complaint-select-border-hover: rgba(78, 163, 255, 0.32);
+    --complaint-select-border-focus: rgba(96, 165, 250, 0.54);
+    --complaint-select-text: #f3f7fd;
+    --complaint-select-shadow: 0 12px 24px rgba(0, 0, 0, 0.24);
+    --complaint-select-shadow-hover: 0 14px 28px rgba(0, 0, 0, 0.28);
+    --complaint-select-shadow-focus: 0 14px 30px rgba(0, 0, 0, 0.30);
+    --complaint-select-arrow-a: #7dd3fc;
+    --complaint-select-arrow-b: #f8fafc;
+    --complaint-select-menu-surface: #0c1524;
+    --complaint-select-menu-surface-top: #142136;
     --complaint-select-menu-text: #eef4fb;
-    --complaint-select-menu-selected: rgba(191, 219, 254, 0.16);
-    --complaint-select-menu-hover: rgba(191, 219, 254, 0.10);
-    --complaint-select-menu-border: rgba(191, 219, 254, 0.18);
+    --complaint-select-menu-selected: rgba(78, 163, 255, 0.16);
+    --complaint-select-menu-hover: rgba(78, 163, 255, 0.10);
+    --complaint-select-menu-border: rgba(78, 163, 255, 0.16);
     --complaint-select-menu-shadow: 0 18px 30px rgba(2, 6, 23, 0.28);
-    --complaint-action-bg: linear-gradient(180deg, #3c8cff 0%, #2563eb 48%, #163ea8 100%);
-    --complaint-action-bg-hover: linear-gradient(180deg, #58a3ff 0%, #2f77ff 48%, #1d4ed8 100%);
-    --complaint-action-bg-active: linear-gradient(180deg, #2d74ea 0%, #1d4ed8 52%, #183b92 100%);
+    --complaint-action-bg: linear-gradient(180deg, rgba(78, 163, 255, 0.96) 0%, rgba(37, 99, 235, 0.96) 100%);
+    --complaint-action-bg-hover: linear-gradient(180deg, rgba(96, 165, 250, 0.98) 0%, rgba(59, 130, 246, 0.98) 100%);
+    --complaint-action-bg-active: linear-gradient(180deg, rgba(37, 99, 235, 0.98) 0%, rgba(30, 64, 175, 0.98) 100%);
     --complaint-action-text: #f8fafc;
-    --complaint-action-shadow: 0 12px 24px rgba(2, 6, 23, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.26), inset 0 -1px 0 rgba(15, 23, 42, 0.2);
-    --complaint-action-shadow-hover: 0 14px 28px rgba(2, 6, 23, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.32), inset 0 -1px 0 rgba(15, 23, 42, 0.22);
-    --complaint-action-shadow-active: 0 10px 20px rgba(2, 6, 23, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 -1px 0 rgba(15, 23, 42, 0.18);
-    --complaint-shadow: none;
+    --complaint-action-shadow: 0 12px 24px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    --complaint-action-shadow-hover: 0 14px 28px rgba(0, 0, 0, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    --complaint-action-shadow-active: 0 10px 20px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    --complaint-shadow: 0 20px 42px rgba(0, 0, 0, 0.30);
     --complaint-selection: rgba(125, 211, 252, 0.16);
     --complaint-field-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 40%);
     --complaint-feedback-row-height: 50px;
@@ -71,50 +71,50 @@ article.article-complaint-form {
 
     [data-theme="light"] & {
         color-scheme: light;
-        --complaint-surface: #f6f8fc;
+        --complaint-surface: linear-gradient(180deg, color-mix(in srgb, var(--theme-card-background) 94%, var(--theme-primary) 6%) 0%, #ffffff 100%);
         --complaint-panel: #ffffff;
-        --complaint-panel-2: #f3f6fb;
-        --complaint-panel-3: #e8eef6;
-        --complaint-panel-hover: #f6f8fc;
+        --complaint-panel-2: color-mix(in srgb, var(--theme-card-background) 90%, var(--theme-primary) 10%);
+        --complaint-panel-3: color-mix(in srgb, var(--theme-card-background) 88%, var(--theme-secondary) 12%);
+        --complaint-panel-hover: color-mix(in srgb, var(--theme-card-background) 84%, var(--theme-primary) 16%);
         --complaint-panel-focus: #ffffff;
-        --complaint-border: rgba(15, 23, 42, 0.12);
-        --complaint-border-hover: rgba(37, 99, 235, 0.16);
-        --complaint-border-strong: rgba(37, 99, 235, 0.28);
-        --complaint-text: #102033;
-        --complaint-muted: #5b687a;
+        --complaint-border: color-mix(in srgb, var(--theme-standard-borders) 68%, var(--theme-primary) 32%);
+        --complaint-border-hover: color-mix(in srgb, var(--theme-secondary) 40%, var(--complaint-border) 60%);
+        --complaint-border-strong: color-mix(in srgb, var(--theme-primary) 82%, var(--theme-secondary) 18%);
+        --complaint-text: var(--theme-texts);
+        --complaint-muted: color-mix(in srgb, var(--theme-texts) 62%, var(--theme-secondary) 38%);
         --complaint-accent: #2563eb;
-        --complaint-accent-2: #0f766e;
-        --complaint-accent-3: #0f9d8f;
+        --complaint-accent-2: #0891b2;
+        --complaint-accent-3: #f59e0b;
         --complaint-icon-bg: #f2f6fb;
         --complaint-icon-color: #1d4ed8;
         --complaint-icon-border: rgba(37, 99, 235, 0.12);
-        --complaint-select-surface: linear-gradient(180deg, #dcedff 0%, #bdd8ff 100%);
-        --complaint-select-surface-hover: linear-gradient(180deg, #e8f4ff 0%, #cce3ff 100%);
-        --complaint-select-surface-focus: linear-gradient(180deg, #f2f8ff 0%, #d6e9ff 100%);
-        --complaint-select-border: rgba(59, 130, 246, 0.34);
-        --complaint-select-border-hover: rgba(59, 130, 246, 0.48);
-        --complaint-select-border-focus: rgba(59, 130, 246, 0.62);
-        --complaint-select-text: #18417a;
-        --complaint-select-shadow: 0 10px 18px rgba(59, 130, 246, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.94), inset 0 -1px 0 rgba(59, 130, 246, 0.10);
-        --complaint-select-shadow-hover: 0 12px 22px rgba(59, 130, 246, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.98), inset 0 -1px 0 rgba(59, 130, 246, 0.12);
-        --complaint-select-shadow-focus: 0 14px 24px rgba(59, 130, 246, 0.22), inset 0 1px 0 rgba(255, 255, 255, 1), inset 0 -1px 0 rgba(59, 130, 246, 0.14);
+        --complaint-select-surface: linear-gradient(180deg, color-mix(in srgb, var(--theme-card-background) 92%, var(--theme-primary) 8%) 0%, #ffffff 100%);
+        --complaint-select-surface-hover: linear-gradient(180deg, color-mix(in srgb, var(--theme-card-background) 86%, var(--theme-primary) 14%) 0%, #ffffff 100%);
+        --complaint-select-surface-focus: linear-gradient(180deg, #ffffff 0%, color-mix(in srgb, var(--theme-card-background) 92%, var(--theme-primary) 8%) 100%);
+        --complaint-select-border: color-mix(in srgb, var(--complaint-border) 88%, var(--theme-primary) 12%);
+        --complaint-select-border-hover: color-mix(in srgb, var(--theme-primary) 54%, var(--complaint-border) 46%);
+        --complaint-select-border-focus: color-mix(in srgb, var(--theme-primary) 78%, var(--theme-secondary) 22%);
+        --complaint-select-text: #17345f;
+        --complaint-select-shadow: 0 10px 18px rgba(15, 23, 42, 0.08);
+        --complaint-select-shadow-hover: 0 12px 22px rgba(15, 23, 42, 0.10);
+        --complaint-select-shadow-focus: 0 14px 24px rgba(15, 23, 42, 0.12);
         --complaint-select-arrow-a: #2563eb;
-        --complaint-select-arrow-b: #1d4ed8;
+        --complaint-select-arrow-b: #0891b2;
         --complaint-select-menu-surface: #f8fbff;
         --complaint-select-menu-surface-top: #eef6ff;
         --complaint-select-menu-text: #17345f;
         --complaint-select-menu-selected: rgba(37, 99, 235, 0.10);
         --complaint-select-menu-hover: rgba(37, 99, 235, 0.08);
         --complaint-select-menu-border: rgba(37, 99, 235, 0.14);
-        --complaint-select-menu-shadow: 0 18px 28px rgba(37, 99, 235, 0.16);
-        --complaint-action-bg: linear-gradient(180deg, #8fd0ff 0%, #4f9cff 42%, #2563eb 100%);
-        --complaint-action-bg-hover: linear-gradient(180deg, #a9dbff 0%, #67adff 42%, #2f77ff 100%);
-        --complaint-action-bg-active: linear-gradient(180deg, #71b4ff 0%, #3b82f6 52%, #1d4ed8 100%);
+        --complaint-select-menu-shadow: 0 18px 28px rgba(15, 23, 42, 0.12);
+        --complaint-action-bg: linear-gradient(180deg, rgba(78, 163, 255, 0.94) 0%, rgba(37, 99, 235, 0.96) 100%);
+        --complaint-action-bg-hover: linear-gradient(180deg, rgba(96, 165, 250, 0.96) 0%, rgba(59, 130, 246, 0.98) 100%);
+        --complaint-action-bg-active: linear-gradient(180deg, rgba(59, 130, 246, 0.98) 0%, rgba(29, 78, 216, 0.98) 100%);
         --complaint-action-text: #f8fafc;
-        --complaint-action-shadow: 0 12px 24px rgba(37, 99, 235, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(29, 78, 216, 0.16);
-        --complaint-action-shadow-hover: 0 14px 28px rgba(37, 99, 235, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.46), inset 0 -1px 0 rgba(29, 78, 216, 0.18);
-        --complaint-action-shadow-active: 0 10px 20px rgba(37, 99, 235, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.28), inset 0 -1px 0 rgba(29, 78, 216, 0.14);
-        --complaint-shadow: none;
+        --complaint-action-shadow: 0 12px 24px rgba(37, 99, 235, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.24);
+        --complaint-action-shadow-hover: 0 14px 28px rgba(37, 99, 235, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+        --complaint-action-shadow-active: 0 10px 20px rgba(37, 99, 235, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+        --complaint-shadow: 0 16px 32px rgba(15, 23, 42, 0.10);
         --complaint-selection: rgba(37, 99, 235, 0.10);
         --complaint-field-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, transparent 40%);
         --complaint-error-border: rgba(185, 28, 28, 0.22);
@@ -143,11 +143,76 @@ article.article-complaint-form {
         position: relative;
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 14px;
+        padding: clamp(14px, 1.4vw, 18px);
+        border: 1px solid color-mix(in srgb, var(--complaint-border) 92%, transparent);
+        border-radius: 22px;
+        background: var(--complaint-surface);
+        box-shadow: var(--complaint-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.03);
         overflow: visible;
     }
 
+    form.article-complaint-form-shell::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background:
+            radial-gradient(circle at top left, color-mix(in srgb, var(--complaint-accent) 14%, transparent) 0%, transparent 30%),
+            radial-gradient(circle at top right, color-mix(in srgb, var(--complaint-accent-3) 12%, transparent) 0%, transparent 22%);
+        pointer-events: none;
+        opacity: 0.9;
+    }
+
+    div.article-complaint-form-intro-block {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        gap: 6px;
+        padding: 0.15rem 0.1rem 0;
+    }
+
+    p.article-complaint-form-intro-eyebrow,
+    p.article-complaint-form-intro-copy {
+        margin: 0;
+    }
+
+    p.article-complaint-form-intro-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+        max-width: 100%;
+        padding: 0.34rem 0.78rem;
+        border: 1px solid color-mix(in srgb, var(--complaint-accent) 24%, transparent);
+        border-radius: 999px;
+        background: linear-gradient(90deg, color-mix(in srgb, var(--complaint-accent) 14%, transparent), color-mix(in srgb, var(--complaint-accent-3) 12%, transparent));
+        color: color-mix(in srgb, var(--complaint-text) 84%, var(--complaint-muted) 16%);
+        font-size: clamp(0.78rem, 0.74rem + 0.16vw, 0.88rem);
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+    }
+
+    p.article-complaint-form-intro-eyebrow::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: linear-gradient(180deg, var(--complaint-accent-2) 0%, var(--complaint-accent-3) 100%);
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--complaint-accent) 14%, transparent);
+        flex: 0 0 auto;
+    }
+
+    p.article-complaint-form-intro-copy {
+        max-width: 62ch;
+        color: color-mix(in srgb, var(--complaint-text) 78%, var(--complaint-muted) 22%);
+        line-height: 1.5;
+    }
+
     div.article-complaint-form-main {
+        position: relative;
+        z-index: 1;
         position: relative;
         display: grid;
         grid-template-columns: minmax(0, 1.06fr) minmax(300px, 0.94fr);
@@ -160,7 +225,8 @@ article.article-complaint-form {
         align-items: stretch;
         border: 1px solid var(--complaint-border);
         border-radius: 18px;
-        background: var(--complaint-panel);
+        background: linear-gradient(180deg, color-mix(in srgb, var(--complaint-panel) 96%, white 4%) 0%, var(--complaint-panel) 100%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
         overflow: visible;
         isolation: isolate;
     }
@@ -181,7 +247,7 @@ article.article-complaint-form {
         min-width: 0;
         border: 1px solid var(--complaint-border);
         border-radius: 16px;
-        background: var(--complaint-panel-2);
+        background: linear-gradient(180deg, var(--complaint-panel-2) 0%, color-mix(in srgb, var(--complaint-panel-2) 88%, black 12%) 100%);
         box-shadow: none;
     }
 
@@ -244,7 +310,7 @@ article.article-complaint-form {
         border: 1px solid color-mix(in srgb, var(--complaint-border) 92%, transparent);
         border-radius: 14px;
         background:
-            linear-gradient(180deg, color-mix(in srgb, var(--complaint-panel-2) 88%, white 12%) 0%, var(--complaint-panel-2) 100%);
+            linear-gradient(180deg, color-mix(in srgb, var(--complaint-panel-2) 92%, white 8%) 0%, color-mix(in srgb, var(--complaint-panel-3) 94%, black 6%) 100%);
         box-shadow: inset 0 1px 0 color-mix(in srgb, white 10%, transparent);
         color: color-mix(in srgb, var(--complaint-text) 82%, var(--complaint-muted) 18%);
         font-size: clamp(0.82rem, 0.8rem + 0.14vw, 0.92rem);
@@ -285,9 +351,7 @@ article.article-complaint-form {
         padding: 0;
         border: 1px solid var(--complaint-select-border);
         border-radius: 16px;
-        background:
-            linear-gradient(90deg, color-mix(in srgb, white 16%, transparent) 0, color-mix(in srgb, white 16%, transparent) 3px, transparent 3px),
-            var(--complaint-select-surface);
+        background: var(--complaint-select-surface);
         box-shadow: var(--complaint-select-shadow);
         outline: none;
         cursor: pointer;
@@ -360,20 +424,16 @@ article.article-complaint-form {
 
     div.article-complaint-form-select-wrapper:hover > button.article-complaint-form-select-trigger {
         border-color: var(--complaint-select-border-hover);
-        background:
-            linear-gradient(90deg, color-mix(in srgb, white 22%, transparent) 0, color-mix(in srgb, white 22%, transparent) 3px, transparent 3px),
-            var(--complaint-select-surface-hover);
+        background: var(--complaint-select-surface-hover);
         box-shadow: var(--complaint-select-shadow-hover);
         transform: translateY(-1px);
-        filter: saturate(1.04);
+        filter: none;
     }
 
     div.article-complaint-form-select-wrapper:focus-within > button.article-complaint-form-select-trigger,
     div.article-complaint-form-select-wrapper-open > button.article-complaint-form-select-trigger {
         border-color: var(--complaint-select-border-focus);
-        background:
-            linear-gradient(90deg, color-mix(in srgb, white 28%, transparent) 0, color-mix(in srgb, white 28%, transparent) 3px, transparent 3px),
-            var(--complaint-select-surface-focus);
+        background: var(--complaint-select-surface-focus);
         box-shadow:
             0 0 0 2px color-mix(in srgb, var(--complaint-accent) 16%, transparent),
             var(--complaint-select-shadow-focus);
@@ -555,7 +615,7 @@ article.article-complaint-form {
         min-height: var(--complaint-feedback-row-height);
         background: var(--complaint-action-bg) !important;
         color: var(--complaint-action-text) !important;
-        border: 1px solid color-mix(in srgb, var(--complaint-accent) 28%, transparent) !important;
+        border: 1px solid color-mix(in srgb, var(--complaint-accent) 34%, transparent) !important;
         box-shadow: var(--complaint-action-shadow);
         transition:
             background 140ms ease-out,
@@ -575,7 +635,7 @@ article.article-complaint-form {
         background: var(--complaint-action-bg-hover) !important;
         border-color: color-mix(in srgb, var(--complaint-accent) 38%, transparent) !important;
         box-shadow: var(--complaint-action-shadow-hover);
-        filter: saturate(1.04);
+        filter: none;
     }
 
     div.article-complaint-form-send-button-wrapper > button.standard-button:active {
@@ -645,10 +705,16 @@ article.article-complaint-form {
     @media (max-width: 575.98px) {
         form.article-complaint-form-shell {
             gap: 10px;
+            padding: 12px;
+            border-radius: 18px;
         }
 
         div.article-complaint-form-main {
             border-radius: 16px;
+        }
+
+        p.article-complaint-form-intro-copy {
+            font-size: 0.92rem;
         }
 
         div.article-complaint-form-message-column {

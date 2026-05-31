@@ -3,6 +3,7 @@ import React, {useState} from 'react'
 import Article from "./base/Article.jsx"
 import Link from "../generic/Link.jsx"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
+import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useUtils} from "../../hooks/utils.js"
 
 /**
@@ -72,6 +73,7 @@ function ArticleInlineListItems({ dataWrapper, selectedItemCategoryId}) {
  */
 function ArticleInlineListItem({ itemWrapper }) {
     const viewport = useViewport()
+    const language = useLanguage()
     const utils = useUtils()
 
     const link = itemWrapper.link
@@ -80,16 +82,21 @@ function ArticleInlineListItem({ itemWrapper }) {
     const href = isPhoneQrAction && !shouldDirectCall ?
         `#phone-qr:open` :
         link?.href || null
-    const shouldUseShortLabel = viewport.innerWidth <= 420
-    const label = shouldUseShortLabel && itemWrapper.shortLabel ?
-        itemWrapper.shortLabel :
-        itemWrapper.locales.label || itemWrapper.label || itemWrapper.placeholder
+    const label = getInlineListItemLabel({
+        itemWrapper,
+        link,
+        language,
+        innerWidth: viewport.innerWidth,
+        shouldDirectCall
+    })
+    const ariaLabel = stripHtml(label)
 
     return (
         <li className={`article-inline-list-item text-4`}>
             <Link href={href}
                   tooltip={link?.tooltip}
-                  metadata={link?.metadata}>
+                  metadata={link?.metadata}
+                  ariaLabel={ariaLabel}>
                 <i className={`article-inline-list-item-icon ${itemWrapper.faIconWithFallback}`}
                    style={itemWrapper.faIconStyle}/>
 
@@ -101,3 +108,28 @@ function ArticleInlineListItem({ itemWrapper }) {
 }
 
 export default ArticleInlineList
+
+function getInlineListItemLabel({ itemWrapper, link, language, innerWidth, shouldDirectCall }) {
+    const defaultLabel = itemWrapper.locales.label || itemWrapper.label || itemWrapper.placeholder
+    const isCompactMobile = innerWidth <= 640
+
+    if(!isCompactMobile)
+        return defaultLabel
+
+    if(link?.action === "phone_qr")
+        return shouldDirectCall ?
+            language.getStringOrFallback("call_short", "Call") :
+            language.getStringOrFallback("scan_short", "Scan")
+
+    if(link?.href?.startsWith("mailto:"))
+        return language.getStringOrFallback("email_short", "Email")
+
+    if(link?.href?.includes("linkedin.com"))
+        return "LinkedIn"
+
+    return itemWrapper.shortLabel || defaultLabel
+}
+
+function stripHtml(value) {
+    return String(value || "").replace(/<[^>]*>/g, "").trim()
+}

@@ -31,62 +31,62 @@
 
 @use "./theme-variables-builder" as theme;
 
-$primary: #67e8f9;
-$secondary: #f472b6;
-$dark: #060b16;
-$danger: #fb7185;
-$muted: #8ba3c7;
+$primary: #f0c020;
+$secondary: #0088ba;
+$dark: #030303;
+$danger: #fdd2d2;
+$muted: #6c757d;
 
-$base-bg: #050816;
-$base-bg-light: #10213d;
-$base-bg-dark: #0c1323;
+$base-bg: #ffc800;
+$base-bg-light: #f2ff00;
+$base-bg-dark: #0088ba;
 
-$texts: #eef6ff;
-$texts-inverted: #07111f;
+$texts: #EEEEEE;
+$texts-inverted: #0088ba;
 
-$base-container-bg: #0b1324;
-$base-popover-bg: #121c31;
-$base-boards: #0f1a2f;
-$base-info-badges: #101d35;
-$empty: #081120;
-$empty-accent: #0c1730;
+$base-container-bg: #040404;
+$base-popover-bg: #202020;
+$base-boards: #0d0d0d;
+$base-info-badges: #171717;
+$empty: #050505;
+$empty-accent: #07131c;
 
-$borders: rgba(168, 191, 224, 0.30);
-$borders-nav-mobile: rgba(255, 255, 255, 0.12);
-$borders-nav-mobile-accent: rgba(103, 232, 249, 0.26);
-$scrollbar-track: #08101f;
-$scrollbar-thumb: rgba(103, 232, 249, 0.24);
+$borders: #9d9d9d;
+$borders-nav-mobile: rgba(white, 0.15);
+$borders-nav-mobile-accent: rgba(white, 0.2);
+$scrollbar-track: #090909;
+$scrollbar-thumb: #24272c;
 
 :root {
-    --theme-nav-surface: #091224;
-    --theme-nav-surface-accent: #0d1a33;
-    --theme-nav-surface-raised: #15274a;
-    --theme-nav-border: rgba(173, 216, 255, 0.14);
-    --theme-nav-divider: rgba(173, 216, 255, 0.08);
-    --theme-nav-text: rgba(244, 249, 255, 0.985);
-    --theme-nav-text-muted: rgba(191, 209, 232, 0.74);
-    --theme-nav-selected-ink: #07111f;
-    --theme-mobile-nav-separator: rgba(103, 232, 249, 0.16);
+    --theme-nav-surface: #070b16;
+    --theme-nav-surface-accent: #0d1526;
+    --theme-nav-surface-raised: #162238;
+    --theme-nav-border: rgba(255, 255, 255, 0.10);
+    --theme-nav-divider: rgba(255, 255, 255, 0.08);
+    --theme-nav-text: rgba(255, 255, 255, 0.985);
+    --theme-nav-text-muted: rgba(255, 255, 255, 0.72);
+    --theme-nav-selected-ink: #0b1220;
+    --theme-mobile-nav-separator: rgba(255, 255, 255, 0.12);
     --theme-sidebar-nav-link-color: var(--theme-nav-text);
     --theme-sidebar-nav-link-icon-opacity: 0.7;
     --theme-sidebar-nav-link-text-opacity: 0.96;
-    --theme-shell-backdrop: rgba(4, 10, 24, 0.58);
-    --theme-shell-backdrop-strong: rgba(7, 14, 31, 0.88);
-    --theme-shell-shadow: rgba(2, 6, 23, 0.42);
-    --theme-shell-glow-a: rgba(103, 232, 249, 0.24);
-    --theme-shell-glow-b: rgba(244, 114, 182, 0.18);
-    --theme-shell-glow-c: rgba(96, 165, 250, 0.16);
-    --theme-background-sky-top: #030816;
-    --theme-background-sky-middle: #08162d;
-    --theme-background-sky-bottom: #16081f;
-    --theme-background-mountain-far: rgba(96, 165, 250, 0.18);
-    --theme-background-mountain-mid: rgba(34, 74, 126, 0.30);
-    --theme-background-mountain-near: rgba(11, 21, 39, 0.86);
-    --theme-background-snow: rgba(239, 246, 255, 0.72);
-    --theme-background-rain: rgba(244, 114, 182, 0.14);
-    --theme-background-worm-head: rgba(103, 232, 249, 0.32);
-    --theme-background-worm-tail: rgba(244, 114, 182, 0.12);
-    --theme-background-vignette: rgba(0, 0, 0, 0.24);
+    --theme-shell-backdrop: rgba(5, 10, 18, 0.54);
+    --theme-shell-backdrop-strong: rgba(7, 12, 20, 0.84);
+    --theme-shell-shadow: rgba(0, 0, 0, 0.34);
+    --theme-shell-glow-a: rgba(78, 163, 255, 0.24);
+    --theme-shell-glow-b: rgba(168, 85, 247, 0.18);
+    --theme-shell-glow-c: rgba(250, 204, 21, 0.12);
+    --theme-background-sky-top: #020611;
+    --theme-background-sky-middle: #071427;
+    --theme-background-sky-bottom: #11071f;
+    --theme-background-mountain-far: rgba(105, 132, 170, 0.22);
+    --theme-background-mountain-mid: rgba(55, 83, 124, 0.32);
+    --theme-background-mountain-near: rgba(18, 30, 48, 0.82);
+    --theme-background-snow: rgba(241, 245, 249, 0.76);
+    --theme-background-rain: rgba(167, 139, 250, 0.18);
+    --theme-background-worm-head: rgba(216, 180, 255, 0.36);
+    --theme-background-worm-tail: rgba(124, 58, 237, 0.10);
+    --theme-background-vignette: rgba(0, 0, 0, 0.18);
 
     @include theme.build-theme(
         // Theme Config...

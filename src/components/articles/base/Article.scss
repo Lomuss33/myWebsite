@@ -126,13 +126,6 @@ h4.article-title {
             font-size: clamp(0.92rem, 0.88rem + 0.18vw, 1rem)!important;
         }
     }
-
-    span.article-title-text {
-        display: inline-block;
-        min-width: 0;
-        padding-bottom: 0.12em;
-        overflow: visible;
-    }
 }
 
 article.article > h4.article-title::before {

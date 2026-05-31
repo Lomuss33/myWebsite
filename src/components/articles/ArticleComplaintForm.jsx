@@ -70,8 +70,6 @@ function ArticleComplaintFormContent({ dataWrapper }) {
     const previousComplaintPopupCountRef = useRef(0)
 
     const complaintEmail = dataWrapper.locales.complaintEmailLabel || "trash@lovro-music.de"
-    const complaintTitle = dataWrapper.locales.complaintTitle || ""
-    const complaintIntro = dataWrapper.locales.complaintIntro || ""
     const complaintNote = String(dataWrapper.locales.complaintNote || "").trim()
     const complaintDestinationLabel = dataWrapper.locales.complaintDestinationLabel || "destination"
     const complaintNowhereLabel = dataWrapper.locales.complaintNowhereLabel || "nowhere"
@@ -97,7 +95,6 @@ function ArticleComplaintFormContent({ dataWrapper }) {
     const complaintPopupsTitleIdPrefix = `${dataWrapper.uniqueId}-complaint-popup`
     const errorMessage = validationError ? language.getString(validationError.errorCode) : null
     const hasComplaintNote = complaintNote.length > 0
-    const hasComplaintIntro = complaintTitle.length > 0 || complaintIntro.length > 0
 
     useEffect(() => {
         return () => {
@@ -379,22 +376,6 @@ function ArticleComplaintFormContent({ dataWrapper }) {
         <form className={`article-complaint-form-shell`}
               noValidate={true}
               onSubmit={handleSubmit}>
-            {hasComplaintIntro && (
-                <div className={`article-complaint-form-intro-block`}>
-                    {complaintTitle && (
-                        <p className={`article-complaint-form-intro-eyebrow text-2`}>
-                            {complaintTitle}
-                        </p>
-                    )}
-
-                    {complaintIntro && (
-                        <p className={`article-complaint-form-intro-copy text-3`}>
-                            {complaintIntro}
-                        </p>
-                    )}
-                </div>
-            )}
-
             <div className={`article-complaint-form-main`}>
                 <div className={`article-complaint-form-message-column`}>
                     <Textarea id={`complaint-form-textarea`}

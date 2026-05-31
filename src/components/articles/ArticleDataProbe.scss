@@ -17,20 +17,25 @@ article.article-data-probe {
     --probe-shadow: 0 18px 42px color-mix(in srgb, var(--probe-accent) 12%, transparent 88%);
     --probe-shadow-strong: 0 26px 56px color-mix(in srgb, var(--probe-accent) 18%, transparent 82%);
     --probe-inset: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-    --probe-button-radius: 12px;
-    --probe-button-text: var(--probe-text);
-    --probe-button-border: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 36%, var(--probe-line) 64%);
-    --probe-button-border-strong: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 52%, var(--probe-line) 48%);
-    --probe-button-surface-top: color-mix(in srgb, var(--probe-surface) 76%, var(--probe-item-accent, var(--probe-accent)) 24%);
-    --probe-button-surface-bottom: color-mix(in srgb, var(--probe-surface-strong) 88%, var(--probe-item-accent, var(--probe-accent)) 12%);
-    --probe-button-sheen: rgba(255, 255, 255, 0.12);
-    --probe-button-shadow: 0 10px 22px color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 14%, transparent 86%);
-    --probe-button-shadow-hover: 0 16px 30px color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 20%, transparent 80%);
-    --probe-button-ring: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 54%, transparent 46%);
-    --probe-button-inner-border: rgba(255, 255, 255, 0.08);
-    --probe-button-frame-fill: color-mix(in srgb, var(--probe-surface-strong) 78%, black 22%);
-    --probe-button-corner-accent: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 70%, white 30%);
-    --probe-button-corner-shadow: color-mix(in srgb, black 30%, transparent 70%);
+    --probe-button-radius: 14px;
+    --probe-button-text: color-mix(in srgb, var(--probe-text) 92%, white 8%);
+    --probe-button-text-hover: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 72%, white 28%);
+    --probe-button-border: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 24%, var(--probe-line) 76%);
+    --probe-button-border-strong: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 58%, white 42%);
+    --probe-button-surface-top: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 10%, var(--probe-surface) 90%);
+    --probe-button-surface-bottom: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 6%, var(--probe-surface-strong) 94%);
+    --probe-button-surface-hover-top: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 34%, var(--probe-surface) 66%);
+    --probe-button-surface-hover-bottom: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 18%, var(--probe-surface-strong) 82%);
+    --probe-button-shadow:
+        0 8px 18px color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 12%, transparent 88%),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    --probe-button-shadow-hover:
+        0 14px 28px color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 22%, transparent 78%),
+        0 0 0 1px color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 44%, transparent 56%),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    --probe-button-ring: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 42%, transparent 58%);
+    --probe-button-highlight: linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0) 58%);
+    --probe-button-highlight-hover: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0) 62%);
     --probe-popup-backdrop: rgba(2, 6, 23, 0.68);
     --probe-popup-surface: color-mix(in srgb, var(--probe-surface) 78%, #020617 22%);
     --probe-popup-border: color-mix(in srgb, var(--probe-accent) 30%, var(--probe-line) 70%);
@@ -1020,15 +1025,10 @@ article.article-data-probe {
         font-size: var(--font-size) !important;
         border-radius: var(--probe-button-radius) !important;
         min-height: 38px;
-        border: 2px solid var(--probe-button-border-strong) !important;
-        background:
-            linear-gradient(180deg, var(--probe-button-sheen), transparent 42%),
-            linear-gradient(180deg, var(--probe-button-surface-top), var(--probe-button-surface-bottom)) !important;
+        border: 1px solid var(--probe-button-border) !important;
+        background: linear-gradient(180deg, var(--probe-button-surface-top), var(--probe-button-surface-bottom)) !important;
         color: var(--probe-button-text) !important;
-        box-shadow:
-            var(--probe-button-shadow),
-            inset 0 1px 0 rgba(255, 255, 255, 0.16),
-            inset 0 -1px 0 color-mix(in srgb, black 18%, transparent 82%) !important;
+        box-shadow: var(--probe-button-shadow) !important;
         transform: translate3d(0, 0, 0) !important;
         transition:
             transform 170ms cubic-bezier(0.16, 1, 0.3, 1),
@@ -1048,43 +1048,19 @@ article.article-data-probe {
             position: absolute;
             inset: 0;
             z-index: 0;
-            background:
-                radial-gradient(circle at 18% 0%,
-                    color-mix(in srgb, var(--probe-item-accent) 22%, transparent 78%) 0%,
-                    transparent 46%
-                ),
-                linear-gradient(90deg,
-                    transparent 0%,
-                    color-mix(in srgb, var(--probe-item-accent) 18%, transparent 82%) 50%,
-                    transparent 100%
-                );
-            opacity: 0.64;
-            transform: translateX(-18%);
-            transition: opacity 170ms ease, transform 210ms cubic-bezier(0.16, 1, 0.3, 1);
+            background: var(--probe-button-highlight);
+            opacity: 0.82;
+            transition: opacity 170ms ease, background 170ms ease;
             pointer-events: none;
         }
 
         &::after {
             content: "";
             position: absolute;
-            inset: 2px;
+            inset: 0;
             z-index: 0;
-            border-radius: calc(var(--probe-button-radius) - 2px);
-            border: 1px solid transparent;
-            background:
-                linear-gradient(var(--probe-button-frame-fill), var(--probe-button-frame-fill)) padding-box,
-                linear-gradient(var(--probe-button-inner-border), var(--probe-button-inner-border)) padding-box,
-                linear-gradient(90deg, var(--probe-button-corner-accent), transparent 76%) top left / 20px 2px no-repeat,
-                linear-gradient(180deg, var(--probe-button-corner-accent), transparent 76%) top left / 2px 20px no-repeat,
-                linear-gradient(270deg, var(--probe-button-corner-accent), transparent 76%) top right / 20px 2px no-repeat,
-                linear-gradient(180deg, var(--probe-button-corner-accent), transparent 76%) top right / 2px 20px no-repeat,
-                linear-gradient(90deg, var(--probe-button-corner-accent), transparent 76%) bottom left / 20px 2px no-repeat,
-                linear-gradient(0deg, var(--probe-button-corner-accent), transparent 76%) bottom left / 2px 20px no-repeat,
-                linear-gradient(270deg, var(--probe-button-corner-accent), transparent 76%) bottom right / 20px 2px no-repeat,
-                linear-gradient(0deg, var(--probe-button-corner-accent), transparent 76%) bottom right / 2px 20px no-repeat;
-            box-shadow:
-                inset 0 1px 0 rgba(255, 255, 255, 0.04),
-                inset 0 -1px 0 var(--probe-button-corner-shadow);
+            border-radius: inherit;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
             pointer-events: none;
         }
 
@@ -1099,13 +1075,13 @@ article.article-data-probe {
             flex: 0 0 auto;
             margin: 0 !important;
             border-radius: 999px;
-            color: color-mix(in srgb, var(--probe-item-accent) 78%, var(--probe-button-text) 22%);
+            color: color-mix(in srgb, var(--probe-item-accent) 80%, white 20%);
             background:
                 linear-gradient(180deg,
-                    color-mix(in srgb, var(--probe-item-accent) 22%, var(--probe-surface) 78%),
-                    color-mix(in srgb, var(--probe-item-accent) 12%, var(--probe-surface-strong) 88%)
+                    color-mix(in srgb, var(--probe-item-accent) 16%, transparent 84%),
+                    color-mix(in srgb, var(--probe-item-accent) 8%, transparent 92%)
                 );
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
             transition: transform 170ms ease, color 170ms ease, background 170ms ease;
         }
 
@@ -1118,31 +1094,24 @@ article.article-data-probe {
         &:hover:not(:disabled) {
             transform: translate3d(0, -2px, 0) !important;
             filter: saturate(1.08) brightness(1.04);
-            border-color: color-mix(in srgb, var(--probe-item-accent) 66%, var(--probe-line) 34%) !important;
+            color: var(--probe-button-text-hover) !important;
+            border-color: var(--probe-button-border-strong) !important;
             background:
-                linear-gradient(180deg, color-mix(in srgb, var(--probe-button-sheen) 78%, white 22%), transparent 46%),
-                linear-gradient(
-                    180deg,
-                    color-mix(in srgb, var(--probe-button-surface-top) 78%, var(--probe-item-accent) 22%),
-                    color-mix(in srgb, var(--probe-button-surface-bottom) 84%, var(--probe-item-accent) 16%)
-                ) !important;
-            box-shadow:
-                var(--probe-button-shadow-hover),
-                inset 0 1px 0 rgba(255, 255, 255, 0.22),
-                inset 0 -1px 0 color-mix(in srgb, black 12%, transparent 88%) !important;
+                linear-gradient(180deg, var(--probe-button-surface-hover-top), var(--probe-button-surface-hover-bottom)) !important;
+            box-shadow: var(--probe-button-shadow-hover) !important;
 
             &::before {
-                opacity: 0.92;
-                transform: translateX(0);
+                background: var(--probe-button-highlight-hover);
+                opacity: 1;
             }
 
             i {
-                transform: translateY(-1px) scale(1.04);
-                color: var(--probe-button-text);
+                transform: translateY(-1px) scale(1.03);
+                color: var(--probe-button-text-hover);
                 background:
                     linear-gradient(180deg,
-                        color-mix(in srgb, var(--probe-item-accent) 58%, var(--probe-surface) 42%),
-                        color-mix(in srgb, var(--probe-item-accent) 34%, var(--probe-surface-strong) 66%)
+                        color-mix(in srgb, var(--probe-item-accent) 34%, transparent 66%),
+                        color-mix(in srgb, var(--probe-item-accent) 16%, transparent 84%)
                     );
             }
         }
@@ -1152,15 +1121,14 @@ article.article-data-probe {
             filter: saturate(1.02) brightness(0.98);
             box-shadow:
                 0 7px 16px color-mix(in srgb, var(--probe-item-accent) 14%, transparent 86%),
-                inset 0 2px 5px color-mix(in srgb, black 18%, transparent 82%) !important;
+                inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
         }
 
         &:focus-visible {
             outline: 0;
             box-shadow:
-                0 0 0 3px color-mix(in srgb, var(--probe-button-ring) 48%, transparent 52%),
                 var(--probe-button-shadow-hover),
-                inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+                0 0 0 3px color-mix(in srgb, var(--probe-button-ring) 54%, transparent 46%) !important;
         }
 
         @include media-breakpoint-down(sm) {
@@ -1448,24 +1416,38 @@ article#article-2-section-my-hardware {
 }
 
 [data-theme="light"] article#article-2-section-my-hardware {
-    --probe-button-text: #102033;
-    --probe-button-border: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 40%, #b8c9dc 60%);
-    --probe-button-surface-top: color-mix(in srgb, #ffffff 80%, var(--probe-item-accent, var(--probe-accent)) 20%);
-    --probe-button-surface-bottom: color-mix(in srgb, #e7f0f8 88%, var(--probe-item-accent, var(--probe-accent)) 12%);
-    --probe-button-sheen: rgba(255, 255, 255, 0.62);
-    --probe-button-shadow: 0 10px 22px color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 16%, rgba(15, 23, 42, 0.10) 84%);
-    --probe-button-shadow-hover: 0 18px 34px color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 24%, rgba(15, 23, 42, 0.16) 76%);
-    --probe-button-ring: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 46%, transparent 54%);
+    --probe-button-text: #475569;
+    --probe-button-text-hover: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 34%, #0b1324 66%);
+    --probe-button-border: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 18%, #d8e2ec 82%);
+    --probe-button-border-strong: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 70%, white 30%);
+    --probe-button-surface-top: #ffffff;
+    --probe-button-surface-bottom: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 4%, #ffffff 96%);
+    --probe-button-surface-hover-top: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 18%, #ffffff 82%);
+    --probe-button-surface-hover-bottom: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 34%, #f8fbff 66%);
+    --probe-button-shadow:
+        0 6px 16px color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 10%, transparent 90%),
+        inset 0 1px 0 rgba(255, 255, 255, 0.72);
+    --probe-button-shadow-hover:
+        0 12px 24px color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 20%, transparent 80%),
+        0 0 0 1px color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 54%, transparent 46%),
+        inset 0 1px 0 rgba(255, 255, 255, 0.82);
+    --probe-button-ring: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 34%, transparent 66%);
+    --probe-button-highlight: none;
+    --probe-button-highlight-hover: none;
 
     button.standard-button.btn-contrast.article-data-probe-action-btn.article-data-probe-expand-btn {
-        --probe-button-surface-top: color-mix(in srgb, #ffffff 88%, var(--probe-item-accent) 12%);
-        --probe-button-surface-bottom: color-mix(in srgb, #edf4fb 94%, var(--probe-item-accent) 6%);
+        --probe-button-surface-top: #ffffff;
+        --probe-button-surface-bottom: color-mix(in srgb, var(--probe-item-accent) 8%, #f8fbff 92%);
+        --probe-button-surface-hover-top: color-mix(in srgb, var(--probe-item-accent) 12%, #ffffff 88%);
+        --probe-button-surface-hover-bottom: color-mix(in srgb, var(--probe-item-accent) 24%, #f8fbff 76%);
     }
 
     button.standard-button.btn-contrast.article-data-probe-action-btn.article-data-probe-list-toggle-btn,
     div.copy-button-wrapper.article-data-probe-item-copy {
-        --probe-button-surface-top: color-mix(in srgb, #ffffff 72%, var(--probe-item-accent) 28%);
-        --probe-button-surface-bottom: color-mix(in srgb, #e2edf7 84%, var(--probe-item-accent) 16%);
+        --probe-button-surface-top: color-mix(in srgb, var(--probe-item-accent) 8%, #ffffff 92%);
+        --probe-button-surface-bottom: color-mix(in srgb, var(--probe-item-accent) 18%, #f4f9ff 82%);
+        --probe-button-surface-hover-top: color-mix(in srgb, var(--probe-item-accent) 18%, #ffffff 82%);
+        --probe-button-surface-hover-bottom: color-mix(in srgb, var(--probe-item-accent) 34%, #f4f9ff 66%);
     }
 }
 

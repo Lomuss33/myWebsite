@@ -1260,31 +1260,8 @@ article#article-1-section-experience {
     }
 
     @include media-breakpoint-down(sm) {
-        div.article-timeline-item-info-for-timelines-header-meta-band {
-            align-items: center;
-        }
-
-        div.article-timeline-item-info-for-timelines-header-meta-grid {
-            align-items: center;
-        }
-
-        div.article-timeline-item-info-for-timelines-header-meta-row--time,
         div.article-timeline-item-info-for-timelines-header-meta-row--split {
-            width: min(100%, 29rem);
-            margin-inline: auto;
-        }
-
-        div.article-timeline-item-info-for-timelines-header-meta-row--split {
-            gap: 0.5rem;
-        }
-
-        div.article-timeline-item-info-for-timelines-header-meta-segment {
-            width: 100%;
-            max-width: 100%;
-            min-height: 0;
-            padding: 0.62rem 0.78rem;
-            border-radius: 0.9rem;
-            line-height: 1.26;
+            gap: clamp(0.38rem, 0.3rem + 0.22vw, 0.58rem);
         }
 
         div.article-timeline-item-info-for-timelines-header-meta-segment--location {
@@ -1293,17 +1270,18 @@ article#article-1-section-experience {
         }
 
         div.article-timeline-item-info-for-timelines-header-meta-segment--company {
+            display: flex;
             justify-content: flex-end;
+            align-items: flex-start;
             text-align: right;
+            max-width: 100%;
         }
 
         div.article-timeline-item-info-for-timelines-header-meta-content--company {
-            align-items: flex-start;
             span {
                 display: block;
                 max-width: 100%;
                 text-align: right;
-                text-wrap: pretty;
             }
 
             i.fa-icon {
@@ -1311,8 +1289,8 @@ article#article-1-section-experience {
             }
         }
 
-        div.article-timeline-item-info-for-timelines-header-meta-segment--location span {
-            text-wrap: pretty;
+        div.article-timeline-item-info-for-timelines-header-meta-segment {
+            max-width: 100%;
         }
     }
 }
@@ -2135,64 +2113,6 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
 
     article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-preview-footer {
         width: calc(100% - var(--digital-card-stack-base, 7rem) - 0.9rem);
-    }
-}
-
-@media (max-width: 420px) {
-    article.article-timeline--art-photography div.article-timeline-item-info-for-timelines {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto;
-        row-gap: 0.9rem;
-        column-gap: 0;
-        --content-padding: 0.98rem 1rem 1rem;
-    }
-
-    article.article-timeline--art-photography div.article-timeline-item-info-for-timelines-header,
-    article.article-timeline--art-photography div.article-timeline-item-info-for-timelines-body,
-    article.article-timeline--art-photography div.article-timeline-item-info-preview-footer {
-        grid-column: 1;
-    }
-
-    article.article-timeline--art-photography div.article-timeline-item-info-preview-footer {
-        grid-row: 3;
-        min-height: 0;
-        justify-content: flex-start;
-        align-items: flex-start;
-
-        div.article-item-preview-menu,
-        div.article-item-preview-menu-button-list {
-            justify-content: flex-start;
-            align-items: center;
-            height: auto;
-        }
-
-        div.article-item-preview-menu-button-list {
-            flex-direction: row;
-            width: auto;
-            gap: 0.5rem;
-        }
-    }
-
-    article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-header {
-        min-height: 0;
-        padding-right: 0;
-        padding-top: calc(var(--digital-card-stack-base, 5.15rem) + 0.35rem);
-    }
-
-    article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-preview-footer {
-        width: 100%;
-        margin-top: 0.75rem;
-    }
-
-    article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu,
-    article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list {
-        width: 100%;
-        max-width: 100%;
-    }
-
-    article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list {
-        min-width: 0;
-        justify-content: flex-start;
     }
 }
 

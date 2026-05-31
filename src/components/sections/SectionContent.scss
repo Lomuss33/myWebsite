@@ -95,6 +95,9 @@ div.section-decoration-band {
     --section-decoration-band-height: clamp(26px, 3.2vw, 46px);
 
     display: block;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
     flex: 0 0 var(--section-decoration-band-height);
     grid-column: 1 / -1;
     width: calc(100vw / var(--section-content-scale, 1));
@@ -117,6 +120,28 @@ div.section-decoration-band-after-header {
 
 section#section-my-art div.section-content div.section-body > article#article-1-section-my-art {
     order: 10;
+}
+
+section#section-my-art div.section-content div.section-decoration-band {
+    --section-decoration-band-background:
+        linear-gradient(
+            90deg,
+            rgba(56, 189, 248, 0.92) 0%,
+            rgba(96, 165, 250, 0.92) 20%,
+            rgba(139, 92, 246, 0.92) 45%,
+            rgba(244, 114, 182, 0.92) 72%,
+            rgba(251, 191, 36, 0.92) 100%
+        );
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.22);
+}
+
+section#section-my-art div.section-content > div.section-content-elements-wrapper > header.section-header,
+section#section-my-art div.section-content > div.section-content-elements-wrapper > div.section-body,
+section#section-my-art div.section-content > div.section-content-elements-wrapper > div.section-decoration-band-page-bottom {
+    position: relative;
+    z-index: 3;
 }
 
 section#section-my-art div.section-content div.section-body > div.section-decoration-band-between-articles[data-section-decoration-band-index="1"] {
@@ -151,12 +176,43 @@ section#section-my-art div.section-content div.section-body > article#article-5-
     order: 90;
 }
 
+section#section-my-art div.section-content div.section-body > div.section-decoration-band-between-articles[data-section-decoration-band-index="1"] {
+    --section-decoration-band-background:
+        linear-gradient(90deg, rgba(34, 197, 94, 0.94), rgba(59, 130, 246, 0.94));
+}
+
+section#section-my-art div.section-content div.section-body > div.section-decoration-band-between-articles[data-section-decoration-band-index="2"] {
+    --section-decoration-band-background:
+        repeating-linear-gradient(
+            90deg,
+            rgba(56, 189, 248, 0.92) 0 16px,
+            rgba(139, 92, 246, 0.92) 16px 32px,
+            rgba(244, 114, 182, 0.92) 32px 48px
+        );
+}
+
+section#section-my-art div.section-content div.section-body > div.section-decoration-band-between-articles[data-section-decoration-band-index="3"] {
+    --section-decoration-band-background:
+        linear-gradient(90deg, rgba(34, 211, 238, 0.94), rgba(168, 85, 247, 0.94), rgba(251, 191, 36, 0.94));
+}
+
+section#section-my-art div.section-content div.section-body > div.section-decoration-band-between-articles[data-section-decoration-band-index="4"] {
+    --section-decoration-band-background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.94), rgba(255, 0, 51, 0.94) 48%, rgba(250, 204, 21, 0.94));
+}
+
 div.section-decoration-band-page-bottom {
     --section-decoration-band-height: calc(var(--section-decoration-band-between-height) * 7);
 }
 
 [data-theme="light"] section#section-my-software div.section-decoration-band {
     --section-decoration-band-background: #fff;
+}
+
+[data-theme="light"] section#section-my-art div.section-content div.section-decoration-band {
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.28),
+        inset 0 -1px 0 rgba(15, 23, 42, 0.12);
 }
 
 div.section-decoration-band + div.section-body > article.article:first-child,

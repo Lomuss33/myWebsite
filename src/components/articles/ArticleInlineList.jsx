@@ -90,26 +90,30 @@ function ArticleInlineListItems({ dataWrapper, selectedItemCategoryId }) {
         }
 
         const syncLabelMode = () => {
-            if(viewport.innerWidth > 576) {
-                setLabelMode(previousMode => previousMode === "full" ? previousMode : "full")
-                return
-            }
-
             const computedStyles = window.getComputedStyle(listElement)
-            const rowGap = parseFloat(computedStyles.columnGap || computedStyles.gap || 0)
+            const gap = parseFloat(computedStyles.columnGap || computedStyles.gap || 0)
             const listWidth = Math.round(listElement.getBoundingClientRect().width || 0)
-            const slotWidth = Math.max(0, (listWidth - rowGap * Math.max(0, itemModels.length - 1)) / Math.max(1, itemModels.length))
+            const slots = Math.max(1, itemModels.length)
+            const shortSideBuffer = parseFloat(computedStyles.getPropertyValue(`--home-contact-short-side-buffer`)) || 0
+            const isSmallViewport = window.matchMedia(`(max-width: 575.98px)`).matches
 
             let nextMode = "icon"
             for(const mode of ADAPTIVE_LABEL_MODES) {
                 const widths = measureRefs.current[mode]
-                    .slice(0, itemModels.length)
+                    .slice(0, slots)
                     .map(element => Math.ceil(element?.getBoundingClientRect()?.width || 0))
 
-                if(widths.length !== itemModels.length)
+                if(widths.length !== slots)
                     continue
 
-                if(widths.every(width => width <= slotWidth + 1)) {
+                const totalContentWidth = widths.reduce((sum, width) => sum + width, 0)
+                const totalGapWidth = gap * Math.max(0, widths.length - 1)
+                const outerBufferWidth = mode === "short" && isSmallViewport ?
+                    shortSideBuffer * 2 :
+                    0
+                const requiredWidth = totalContentWidth + totalGapWidth + outerBufferWidth
+
+                if(requiredWidth <= listWidth + 1) {
                     nextMode = mode
                     break
                 }
@@ -125,11 +129,9 @@ function ArticleInlineListItems({ dataWrapper, selectedItemCategoryId }) {
             return () => window.removeEventListener("resize", syncLabelMode)
         }
 
-        const resizeObserver = new ResizeObserver(() => {
-            syncLabelMode()
-        })
-
+        const resizeObserver = new ResizeObserver(syncLabelMode)
         resizeObserver.observe(listElement)
+
         return () => resizeObserver.disconnect()
     }, [isAdaptiveHomeBand, itemModels.length, labelSignature, viewport.innerWidth])
 
@@ -153,13 +155,13 @@ function ArticleInlineListItems({ dataWrapper, selectedItemCategoryId }) {
                             data-label-mode={mode}
                             key={mode}>
                             {itemModels.map((itemModel, index) => (
-                                <ArticleInlineListItem key={`${mode}-${index}`}
-                                                       itemModel={itemModel}
+                                <ArticleInlineListItem itemModel={itemModel}
+                                                       key={`${mode}-${index}`}
                                                        labelMode={mode}
+                                                       measureOnly={true}
                                                        measureRef={element => {
                                                            measureRefs.current[mode][index] = element
-                                                       }}
-                                                       measureOnly={true}/>
+                                                       }}/>
                             ))}
                         </ul>
                     ))}
@@ -173,7 +175,7 @@ function ArticleInlineListItems({ dataWrapper, selectedItemCategoryId }) {
  * @param {ReturnType<typeof createInlineListItemModel>} itemModel
  * @param {"full"|"short"|"icon"} labelMode
  * @param {Boolean} measureOnly
- * @param {Function} measureRef
+ * @param {Function|null} measureRef
  * @return {JSX.Element}
  * @constructor
  */
@@ -241,9 +243,7 @@ function getInlineListShortLabel({ itemWrapper, link, language, shouldDirectCall
     const defaultLabel = itemWrapper.shortLabel || itemWrapper.locales.label || itemWrapper.label || itemWrapper.placeholder || ""
 
     if(link?.action === "phone_qr")
-        return shouldDirectCall ?
-            language.getStringOrFallback("call_short", "Call") :
-            language.getStringOrFallback("scan_short", "Scan")
+        return language.getStringOrFallback("call_short", "Call")
 
     if(link?.href?.startsWith("mailto:"))
         return language.getStringOrFallback("email_short", "Email")

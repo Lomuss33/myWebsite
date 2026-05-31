@@ -33,62 +33,62 @@
 
 @use "./theme-variables-builder" as theme;
 
-$primary: #e4aa18;
-$secondary: #0f8f9a;
-$dark: #12213a;
+$primary: #f0b429;
+$secondary: #0088ba;
+$dark: #0f172a;
 $danger: #dc2626;
-$muted: #6b7280;
+$muted: #64748b;
 
-$base-bg: #f6f8fb;
+$base-bg: #f4f7fb;
 $base-bg-light: #ffffff;
-$base-bg-dark: #e4ebf3;
+$base-bg-dark: #dbe7f3;
 
-$texts: #1f2937;
+$texts: #102033;
 $texts-inverted: #ffffff;
 
-$base-container-bg: #ffffff;
-$base-container-bg-accent: #f5f7fa;
+$base-container-bg: #fbfdff;
+$base-container-bg-accent: #edf3f8;
 $base-popover-bg: #ffffff;
 $base-boards: #ffffff;
-$base-info-badges: #fff7db;
-$empty: #f8fafc;
+$base-info-badges: #edf6ff;
+$empty: #f7fbff;
 
-$borders: #d6dee8;
-$borders-nav-mobile: #dce3ec;
-$borders-nav-mobile-accent: #d5b35a;
-$scrollbar-track: rgba(31, 41, 55, 0.08);
-$scrollbar-thumb: rgba(228, 170, 24, 0.28);
+$borders: #c8d6e5;
+$borders-nav-mobile: #c8d6e5;
+$borders-nav-mobile-accent: #94a9bf;
+$scrollbar-track: rgba(15, 23, 42, 0.08);
+$scrollbar-thumb: rgba(0, 136, 186, 0.24);
 
 [data-theme="light"] {
-    --theme-nav-surface: #ffffff;
-    --theme-nav-surface-accent: #f5f7fa;
-    --theme-nav-surface-raised: #fff7db;
-    --theme-nav-border: rgba(31, 41, 55, 0.10);
-    --theme-nav-divider: rgba(31, 41, 55, 0.08);
-    --theme-nav-text: rgba(31, 41, 55, 0.98);
-    --theme-nav-text-muted: rgba(107, 114, 128, 0.82);
+    --theme-nav-surface: #f5f9fd;
+    --theme-nav-surface-accent: #ebf2f8;
+    --theme-nav-surface-raised: #dde9f4;
+    --theme-nav-border: rgba(148, 169, 191, 0.34);
+    --theme-nav-divider: rgba(148, 169, 191, 0.18);
+    --theme-nav-text: rgba(16, 32, 51, 0.98);
+    --theme-nav-text-muted: rgba(83, 101, 122, 0.72);
     --theme-nav-selected-ink: #ffffff;
-    --theme-mobile-nav-separator: rgba(31, 41, 55, 0.08);
+    --theme-mobile-nav-separator: rgba(148, 169, 191, 0.24);
     --theme-sidebar-nav-link-color: var(--theme-nav-text);
     --theme-sidebar-nav-link-icon-opacity: 0.72;
     --theme-sidebar-nav-link-text-opacity: 0.98;
-    --theme-shell-backdrop: rgba(255, 255, 255, 0.62);
-    --theme-shell-backdrop-strong: rgba(255, 255, 255, 0.90);
-    --theme-shell-shadow: rgba(31, 41, 55, 0.10);
-    --theme-shell-glow-a: rgba(228, 170, 24, 0.14);
-    --theme-shell-glow-b: rgba(255, 255, 255, 0.28);
-    --theme-shell-glow-c: rgba(15, 143, 154, 0.08);
-    --theme-background-sky-top: #ffffff;
-    --theme-background-sky-middle: #f5f8fc;
-    --theme-background-sky-bottom: #e6edf5;
-    --theme-background-mountain-far: rgba(228, 170, 24, 0.18);
-    --theme-background-mountain-mid: rgba(203, 213, 225, 0.32);
-    --theme-background-mountain-near: rgba(255, 255, 255, 0.96);
-    --theme-background-snow: rgba(255, 255, 255, 0.94);
-    --theme-background-rain: rgba(228, 170, 24, 0.08);
-    --theme-background-worm-head: rgba(228, 170, 24, 0.14);
-    --theme-background-worm-tail: rgba(15, 143, 154, 0.05);
-    --theme-background-vignette: rgba(31, 41, 55, 0.04);
+    --theme-shell-backdrop: rgba(255, 255, 255, 0.58);
+    --theme-shell-backdrop-strong: rgba(255, 255, 255, 0.88);
+    --theme-shell-shadow: rgba(15, 23, 42, 0.14);
+    --theme-shell-glow-a: rgba(14, 165, 233, 0.16);
+    --theme-shell-glow-b: rgba(192, 132, 252, 0.14);
+    --theme-shell-glow-c: rgba(251, 191, 36, 0.14);
+    --theme-background-sky-top: #f7fbff;
+    --theme-background-sky-middle: #edf4fb;
+    --theme-background-sky-bottom: #dde9f6;
+    --theme-background-mountain-far: rgba(148, 169, 191, 0.28);
+    --theme-background-mountain-mid: rgba(125, 147, 171, 0.34);
+    --theme-background-mountain-near: rgba(226, 236, 246, 0.92);
+    --theme-background-snow: rgba(255, 255, 255, 0.92);
+    --theme-background-rain: rgba(125, 147, 171, 0.18);
+    --theme-background-worm-head: rgba(168, 85, 247, 0.22);
+    --theme-background-worm-tail: rgba(148, 163, 184, 0.10);
+    --theme-background-vignette: rgba(15, 23, 42, 0.05);
 
     @include theme.build-theme(
         // Theme Config...

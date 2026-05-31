@@ -456,11 +456,14 @@ div.nav-profile-card {
         --avatar-shell-gap: clamp(4px, 1.2vw, 6px);
         --avatar-outline-size: clamp(1.2px, 0.4vw, 1.45px);
         --avatar-inner-rim-size: clamp(0.9px, 0.25vw, 1.1px);
-        --mobile-action-size: clamp(2.3rem, 9.2vw, 2.7rem);
-        --mobile-stack-gap: clamp(0.36rem, 1.7vw, 0.5rem);
-        --mobile-header-gap: clamp(0.5rem, 2.6vw, 0.9rem);
+        --mobile-action-size: clamp(2.8rem, 11.4vw, 3.25rem);
+        --mobile-action-visual-scale: 1.085;
+        --mobile-action-footprint: calc(var(--mobile-action-size) * var(--mobile-action-visual-scale));
+        --mobile-stack-gap: clamp(0.46rem, 2.1vw, 0.64rem);
+        --mobile-header-gap: clamp(0.56rem, 2.9vw, 0.96rem);
+        --mobile-header-vertical-buffer: clamp(0.22rem, 1vw, 0.34rem);
         --mobile-title-left-space: calc(var(--avatar-size) + var(--mobile-header-gap));
-        --mobile-title-right-space: clamp(0.2rem, 1.8vw, 0.55rem);
+        --mobile-title-right-space: clamp(0.28rem, 2vw, 0.62rem);
         --mobile-title-safe-gutter: max(var(--mobile-title-left-space), var(--mobile-title-right-space));
         --mobile-title-safe-width: calc(100% - (var(--mobile-title-safe-gutter) * 2));
         --mobile-title-usable-width: calc(100% - var(--mobile-title-left-space) - var(--mobile-title-right-space));
@@ -480,16 +483,20 @@ div.nav-profile-card {
             width: 100%;
             max-width: 100%;
             margin: 0;
-            min-height: var(--avatar-size);
+            padding-block: var(--mobile-header-vertical-buffer);
+            min-height: max(
+                var(--avatar-size),
+                calc((var(--mobile-action-footprint) * 2) + var(--mobile-stack-gap) + (var(--mobile-header-vertical-buffer) * 2))
+            );
             z-index: 3;
         }
 
         div.nav-profile-card-header.nav-profile-card-header-has-mobile-before-info {
-            --mobile-title-left-space: calc(var(--avatar-size) + var(--mobile-action-size) + var(--mobile-header-gap) * 2);
+            --mobile-title-left-space: calc(var(--avatar-size) + var(--mobile-action-footprint) + (var(--mobile-header-gap) * 2));
         }
 
         div.nav-profile-card-header.nav-profile-card-header-has-mobile-after-info {
-            --mobile-title-right-space: calc(var(--mobile-action-size) + var(--mobile-header-gap));
+            --mobile-title-right-space: calc(var(--mobile-action-footprint) + var(--mobile-header-gap));
         }
 
         div.nav-profile-card-media {
@@ -508,8 +515,8 @@ div.nav-profile-card {
             align-items: center;
             justify-content: center;
             gap: var(--mobile-stack-gap);
-            width: var(--mobile-action-size);
-            flex: 0 0 var(--mobile-action-size);
+            width: var(--mobile-action-footprint);
+            flex: 0 0 var(--mobile-action-footprint);
             min-width: 0;
             position: relative;
             z-index: 4;
@@ -531,7 +538,7 @@ div.nav-profile-card {
                     color-mix(in srgb, var(--theme-nav-surface) 94%, white 6%) 0%,
                     var(--theme-nav-surface-accent) 100%);
             border: 1px solid var(--theme-nav-mobile-action-edge, var(--theme-nav-divider));
-            transform: scale(1.055);
+            transform: scale(var(--mobile-action-visual-scale));
             transform-origin: center;
             transition:
                 border-color 0.18s ease,

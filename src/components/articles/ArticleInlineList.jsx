@@ -93,9 +93,10 @@ function ArticleInlineListItems({ dataWrapper, selectedItemCategoryId }) {
             const computedStyles = window.getComputedStyle(listElement)
             const gap = parseFloat(computedStyles.columnGap || computedStyles.gap || 0)
             const listWidth = Math.round(listElement.getBoundingClientRect().width || 0)
+            const paddingLeft = parseFloat(computedStyles.paddingLeft || 0)
+            const paddingRight = parseFloat(computedStyles.paddingRight || 0)
+            const availableWidth = Math.max(0, listWidth - paddingLeft - paddingRight)
             const slots = Math.max(1, itemModels.length)
-            const shortSideBuffer = parseFloat(computedStyles.getPropertyValue(`--home-contact-short-side-buffer`)) || 0
-            const isSmallViewport = window.matchMedia(`(max-width: 575.98px)`).matches
 
             let nextMode = "icon"
             for(const mode of ADAPTIVE_LABEL_MODES) {
@@ -108,12 +109,16 @@ function ArticleInlineListItems({ dataWrapper, selectedItemCategoryId }) {
 
                 const totalContentWidth = widths.reduce((sum, width) => sum + width, 0)
                 const totalGapWidth = gap * Math.max(0, widths.length - 1)
-                const outerBufferWidth = mode === "short" && isSmallViewport ?
-                    shortSideBuffer * 2 :
-                    0
-                const requiredWidth = totalContentWidth + totalGapWidth + outerBufferWidth
+                const requiredWidth = totalContentWidth + totalGapWidth
+                const slotWidth = Math.max(0, (availableWidth - totalGapWidth) / slots)
+                const fitsEqualSlots = widths.every(width => width <= slotWidth + 1)
 
-                if(requiredWidth <= listWidth + 1) {
+                if(mode === "full" && fitsEqualSlots) {
+                    nextMode = mode
+                    break
+                }
+
+                if(mode !== "full" && requiredWidth <= availableWidth + 1) {
                     nextMode = mode
                     break
                 }

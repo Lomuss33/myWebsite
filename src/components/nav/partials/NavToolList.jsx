@@ -39,7 +39,7 @@ function NavToolList({ expanded, compactRail = false }) {
     return (
         <div className={`nav-tools ${shrinkClass}`}>
             {orderedWidgets.map((item, key) => (
-                <div className={`nav-tools-item ${item === "language" ? "nav-tools-item-language" : ""} ${item === NavToolSettings.Options.DOWNLOAD_RESUME ? "nav-tools-item-resume" : ""}`}
+                <div className={`nav-tools-item ${item === "language" ? "nav-tools-item-language" : ""} ${item === NavToolSettings.Options.DOWNLOAD_RESUME ? "nav-tools-item-resume" : ""} ${item === NavToolSettings.Options.THEME ? "nav-tools-item-theme" : ""}`}
                      key={key}>
                     {item === "language" && (<NavToolLanguagePicker dropdownDrop={"up"}
                                                                     showTooltip={true}

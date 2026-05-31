@@ -8,6 +8,9 @@ const MAX_SCALE = 3.0
 const MIN_OPACITY = 0.1
 const MAX_OPACITY = 0.6
 const MAX_IDLE_TIME_IN_SECONDS = 0.5
+const TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS = 12
+const TOOLTIP_TOP_GAP_IN_PIXELS = 5
+const TOOLTIP_SIDE_GAP_IN_PIXELS = 12
 
 function MouseLayer({ active, isBlockedByOverlay, hidden }) {
     const constants = useConstants()
@@ -316,9 +319,22 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
         }
 
         if (nextLabel) {
-            const targetX = state.currentX - state.tooltipWidth / 2
-            const targetY = state.currentY - state.tooltipHeight - (CIRCLE_SIZE_IN_PIXELS * state.currentScale / 3) / 2 - 5
+            const tooltipPlacement = resolveTooltipPlacement({
+                currentX: state.currentX,
+                currentY: state.currentY,
+                tooltipWidth: state.tooltipWidth,
+                tooltipHeight: state.tooltipHeight,
+                currentScale: state.currentScale,
+                targetElementParameters: params
+            })
+            const targetX = tooltipPlacement.x
+            const targetY = tooltipPlacement.y
+
+            tooltip.classList.toggle("custom-tooltip-placement-right", tooltipPlacement.side === "right")
             tooltip.style.transform = `translate3d(${targetX}px, ${targetY}px, 0)`
+        }
+        else {
+            tooltip.classList.remove("custom-tooltip-placement-right")
         }
 
         const isScaleSettled = state.currentScale === targetScale
@@ -348,6 +364,8 @@ function resolveMouseTargetParameters({ event = null, target = null, constants }
         return null
     }
 
+    const tooltipLayoutContext = resolveTooltipLayoutContext(path)
+
     // Resolve against ancestor elements instead of the raw event target so nested
     // icons/spans inside one control do not make the cursor flicker between states.
     const explicitTarget = path.find((element) =>
@@ -357,7 +375,8 @@ function resolveMouseTargetParameters({ event = null, target = null, constants }
         return {
             type: explicitTarget.hasAttribute("data-cursor-preserve") ? "passive" : "custom",
             preserveCircle: explicitTarget.hasAttribute("data-cursor-preserve"),
-            dataTooltip: explicitTarget.getAttribute("data-tooltip") || null
+            dataTooltip: explicitTarget.getAttribute("data-tooltip") || null,
+            tooltipLayoutContext
         }
     }
 
@@ -365,7 +384,8 @@ function resolveMouseTargetParameters({ event = null, target = null, constants }
     if (semanticTarget) {
         return {
             type: semanticTarget.matches("button") ? "button" : "link",
-            dataTooltip: semanticTarget.getAttribute("data-tooltip") || null
+            dataTooltip: semanticTarget.getAttribute("data-tooltip") || null,
+            tooltipLayoutContext
         }
     }
 
@@ -375,7 +395,8 @@ function resolveMouseTargetParameters({ event = null, target = null, constants }
             return {
                 ...trackableTarget,
                 faIcon: trackableTarget.faIcon || trackableTarget.icon || null,
-                dataTooltip: element.getAttribute("data-tooltip") || null
+                dataTooltip: element.getAttribute("data-tooltip") || null,
+                tooltipLayoutContext
             }
         }
     }
@@ -406,6 +427,96 @@ function getElementPath(event, target) {
     }
 
     return path
+}
+
+function resolveTooltipLayoutContext(path) {
+    const navSidebar = path.find((element) => element.matches?.("nav.nav-sidebar"))
+    if(!navSidebar)
+        return null
+
+    const rail = navSidebar.querySelector(".nav-sidebar-card-wrapper") || navSidebar
+    const bounds = rail.getBoundingClientRect()
+    const isShortRail =
+        navSidebar.classList.contains("nav-sidebar-short-rail") ||
+        navSidebar.classList.contains("nav-sidebar-shrink")
+
+    return {
+        type: "nav-rail",
+        left: bounds.left,
+        right: bounds.right,
+        width: bounds.width,
+        thresholdFraction: isShortRail ? 0.5 : (1 / 3)
+    }
+}
+
+function resolveTooltipPlacement({
+    currentX,
+    currentY,
+    tooltipWidth,
+    tooltipHeight,
+    currentScale,
+    targetElementParameters
+}) {
+    const viewportWidth = typeof window !== "undefined" ? window.innerWidth || 0 : 0
+    const viewportHeight = typeof window !== "undefined" ? window.innerHeight || 0 : 0
+    const cursorRadius = (CIRCLE_SIZE_IN_PIXELS * currentScale / 3) / 2
+
+    const centeredTopX = currentX - tooltipWidth / 2
+    const centeredTopY = currentY - tooltipHeight - cursorRadius - TOOLTIP_TOP_GAP_IN_PIXELS
+    const topFitsFully =
+        centeredTopX >= TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS &&
+        centeredTopX + tooltipWidth <= viewportWidth - TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS &&
+        centeredTopY >= TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS
+
+    if(topFitsFully) {
+        return {
+            side: "top",
+            x: centeredTopX,
+            y: centeredTopY
+        }
+    }
+
+    const tooltipLayoutContext = targetElementParameters?.tooltipLayoutContext
+    const shouldPreferRightSide = shouldPreferRightSidePlacement(currentX, tooltipLayoutContext) || centeredTopX < TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS
+    if(shouldPreferRightSide) {
+        const sideX = Math.min(
+            currentX + cursorRadius + TOOLTIP_SIDE_GAP_IN_PIXELS,
+            Math.max(TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS, viewportWidth - tooltipWidth - TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS)
+        )
+        const sideY = clampNumber(
+            currentY - tooltipHeight / 2,
+            TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS,
+            Math.max(TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS, viewportHeight - tooltipHeight - TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS)
+        )
+
+        return {
+            side: "right",
+            x: sideX,
+            y: sideY
+        }
+    }
+
+    return {
+        side: "top",
+        x: clampNumber(
+            centeredTopX,
+            TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS,
+            Math.max(TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS, viewportWidth - tooltipWidth - TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS)
+        ),
+        y: Math.max(TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS, centeredTopY)
+    }
+}
+
+function shouldPreferRightSidePlacement(currentX, tooltipLayoutContext) {
+    if(tooltipLayoutContext?.type !== "nav-rail")
+        return false
+
+    const thresholdX = tooltipLayoutContext.left + (tooltipLayoutContext.width * tooltipLayoutContext.thresholdFraction)
+    return currentX <= thresholdX
+}
+
+function clampNumber(value, min, max) {
+    return Math.min(max, Math.max(min, value))
 }
 
 export default MouseLayer

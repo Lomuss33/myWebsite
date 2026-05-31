@@ -196,7 +196,7 @@ function NavLink({ link, active, data, onClick }) {
     const activeClass = active ?
         `nav-link-active` :
         ``
-    const tooltip = link.label
+    const tooltip = link.tooltip || link.label
 
     return (
         <GestureAwareButton className={`nav-link ${activeClass}`}

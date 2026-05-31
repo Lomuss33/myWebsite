@@ -32,6 +32,17 @@ div.custom-tooltip {
         border-color: var(--theme-standard-borders-accent-2) transparent transparent transparent;
     }
 
+    &.custom-tooltip-placement-right {
+        &::before {
+            top: 50%;
+            left: -11px;
+            margin-top: -5px;
+            margin-left: 0;
+            border-width: 5px;
+            border-color: transparent var(--theme-standard-borders-accent-2) transparent transparent;
+        }
+    }
+
     &-hidden {
         transition: none;
         opacity: 0;

@@ -366,10 +366,18 @@ section#section-about div.section-content-border-decoration-top-left {
 
 section#section-about h4.article-title {
     color: var(--about-text-strong);
+    font-size: clamp(1.56rem, 1.34rem + 0.88vw, 2.18rem)!important;
+    line-height: 1.06;
+    margin-top: 14px;
+    margin-bottom: 24px;
+    letter-spacing: -0.035em;
+    text-shadow: 0 16px 34px rgba(2, 6, 23, 0.20);
 }
 
 section#section-about h4.article-title span.article-title-prefix {
     color: var(--about-accent-blue);
+    font-size: clamp(1.62rem, 1.42rem + 0.72vw, 2.02rem)!important;
+    opacity: 1;
 }
 
 section#section-about div.article-content {

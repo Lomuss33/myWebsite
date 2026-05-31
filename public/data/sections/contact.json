@@ -4,24 +4,28 @@
       "en": {
         "title_short": "Contact",
         "title_short_nav": "Contact",
+        "title_short_tooltip": "Please",
         "title_long_prefix": "Let's get in touch",
         "title_long": "Here’s how you can {{reach me}}"
       },
       "de": {
         "title_short": "Kontakt",
         "title_short_nav": "Kontakt",
+        "title_short_tooltip": "Bitte",
         "title_long_prefix": "Lass uns in Kontakt treten",
         "title_long": "So kannst du {{mich erreichen}}"
       },
       "hr": {
         "title_short": "Kontakt",
         "title_short_nav": "Kontakt",
+        "title_short_tooltip": "Molim",
         "title_long_prefix": "Započnimo komunikaciju",
         "title_long": "Evo kako {{me možeš kontaktirati}}"
       },
       "tr": {
         "title_short": "İletişim",
         "title_short_nav": "İletişim",
+        "title_short_tooltip": "Lütfen",
         "title_long_prefix": "Haydi bağlantı kuralım",
         "title_long": "Bana {{ulaşmanın yolları}} burada"
       }

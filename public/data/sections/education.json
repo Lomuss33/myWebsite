@@ -3,25 +3,29 @@
         "locales": {
             "en": {
                 "title_short": "School",
-                "title_short_nav": "Education",
+                "title_short_nav": "Knowledge",
+                "title_short_tooltip": "Education",
                 "title_long_prefix": "Knowledge is power",
                 "title_long": "Life long learning"
             },
             "de": {
                 "title_short": "Schule",
-                "title_short_nav": "Bildung",
+                "title_short_nav": "Wissen",
+                "title_short_tooltip": "Bildung",
                 "title_long_prefix": "Wissen ist Macht",
                 "title_long": "Lebenslanges Lernen"
             },
             "hr": {
                 "title_short": "Škola",
-                "title_short_nav": "Obrazovanje",
+                "title_short_nav": "Znanje",
+                "title_short_tooltip": "Obrazovanje",
                 "title_long_prefix": "Znanje je moć",
                 "title_long": "Cjelovit životno učenje"
             },
             "tr": {
                 "title_short": "Okul",
-                "title_short_nav": "Eğitim",
+                "title_short_nav": "Bilgi",
+                "title_short_tooltip": "Eğitim",
                 "title_long_prefix": "Bilgi güçtür",
                 "title_long": "Hayat boyu öğrenme"
             }

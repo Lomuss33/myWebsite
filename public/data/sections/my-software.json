@@ -4,24 +4,28 @@
       "en": {
         "title_short": "Software & Code",
         "title_short_nav": "Software",
+        "title_short_tooltip": "Digital",
         "title_long_prefix": "Crafted with logic, creativity and iteration",
         "title_long": "{{My bits}}"
       },
       "de": {
         "title_short": "Software & Code",
         "title_short_nav": "Software",
+        "title_short_tooltip": "Digital",
         "title_long_prefix": "Erschaffen mit Logik, Kreativität und Iteration",
         "title_long": "{{Meine Bits}}"
       },
       "hr": {
         "title_short": "Softver i kod",
         "title_short_nav": "Softver",
+        "title_short_tooltip": "Digitalno",
         "title_long_prefix": "Stvorena logikom, kreativnošću i iteracijom",
         "title_long": "{{Moji bitovi}}"
       },
       "tr": {
         "title_short": "Yazılım ve Kod",
         "title_short_nav": "Yazılım",
+        "title_short_tooltip": "Dijital",
         "title_long_prefix": "Mantık, yaratıcılık ve yinelemeyle oluşturuldu",
         "title_long": "{{Benim bitler}}"
       }

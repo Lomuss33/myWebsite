@@ -388,6 +388,11 @@ function NavigationProvider({ children, sections, categories }) {
             categoryId,
             href: `#${id}`,
             label: language.getTranslation(data?.title?.locales, "title_short_nav"),
+            tooltip: language.getTranslation(
+                data?.title?.locales,
+                "title_short_tooltip",
+                language.getTranslation(data?.title?.locales, "title_short_nav")
+            ),
             faIcon,
             active: targetSection?.id === id
         }))

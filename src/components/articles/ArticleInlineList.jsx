@@ -1,10 +1,12 @@
 import "./ArticleInlineList.scss"
-import React, {useState} from 'react'
+import React, {useLayoutEffect, useRef, useState} from 'react'
 import Article from "./base/Article.jsx"
 import Link from "../generic/Link.jsx"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useUtils} from "../../hooks/utils.js"
+
+const ADAPTIVE_LABEL_MODES = ["full", "short", "icon"]
 
 /**
  * @param {ArticleDataWrapper} dataWrapper
@@ -34,8 +36,17 @@ function ArticleInlineList({ dataWrapper, id }) {
  * @return {JSX.Element}
  * @constructor
  */
-function ArticleInlineListItems({ dataWrapper, selectedItemCategoryId}) {
+function ArticleInlineListItems({ dataWrapper, selectedItemCategoryId }) {
     const viewport = useViewport()
+    const language = useLanguage()
+    const utils = useUtils()
+    const listRef = useRef(null)
+    const measureRefs = useRef({
+        full: [],
+        short: [],
+        icon: []
+    })
+    const [labelMode, setLabelMode] = useState("full")
 
     const responsiveMaxItems = viewport.getValueFromBreakpointHash({
         xxl: 5,
@@ -50,71 +61,184 @@ function ArticleInlineListItems({ dataWrapper, selectedItemCategoryId}) {
 
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
     const slicedItems = filteredItems.slice(0, maxItems)
+    const isAdaptiveHomeBand = dataWrapper.uniqueId === "article-1-section-about"
+    const itemModels = slicedItems.map(itemWrapper => createInlineListItemModel({
+        itemWrapper,
+        language,
+        utils,
+        viewport
+    }))
+    const labelSignature = itemModels
+        .map(itemModel => `${itemModel.fullLabel}|${itemModel.shortLabel}|${itemModel.iconLabel}`)
+        .join("||")
 
     const displayAsList = viewport.innerWidth < dataWrapper.settings.displayAsListIfWidthIsLowerThan
     const listClass = displayAsList ?
         `article-inline-list-items-column-mode` :
         ``
 
+    useLayoutEffect(() => {
+        if(!isAdaptiveHomeBand) {
+            setLabelMode("full")
+            return
+        }
+
+        const listElement = listRef.current
+        if(!listElement || !itemModels.length) {
+            setLabelMode("full")
+            return
+        }
+
+        const syncLabelMode = () => {
+            if(viewport.innerWidth > 576) {
+                setLabelMode(previousMode => previousMode === "full" ? previousMode : "full")
+                return
+            }
+
+            const computedStyles = window.getComputedStyle(listElement)
+            const rowGap = parseFloat(computedStyles.columnGap || computedStyles.gap || 0)
+            const listWidth = Math.round(listElement.getBoundingClientRect().width || 0)
+            const slotWidth = Math.max(0, (listWidth - rowGap * Math.max(0, itemModels.length - 1)) / Math.max(1, itemModels.length))
+
+            let nextMode = "icon"
+            for(const mode of ADAPTIVE_LABEL_MODES) {
+                const widths = measureRefs.current[mode]
+                    .slice(0, itemModels.length)
+                    .map(element => Math.ceil(element?.getBoundingClientRect()?.width || 0))
+
+                if(widths.length !== itemModels.length)
+                    continue
+
+                if(widths.every(width => width <= slotWidth + 1)) {
+                    nextMode = mode
+                    break
+                }
+            }
+
+            setLabelMode(previousMode => previousMode === nextMode ? previousMode : nextMode)
+        }
+
+        syncLabelMode()
+
+        if(typeof ResizeObserver === "undefined") {
+            window.addEventListener("resize", syncLabelMode, { passive: true })
+            return () => window.removeEventListener("resize", syncLabelMode)
+        }
+
+        const resizeObserver = new ResizeObserver(() => {
+            syncLabelMode()
+        })
+
+        resizeObserver.observe(listElement)
+        return () => resizeObserver.disconnect()
+    }, [isAdaptiveHomeBand, itemModels.length, labelSignature, viewport.innerWidth])
+
     return (
-        <ul className={`article-inline-list-items ${listClass}`}>
-            {slicedItems.map((itemWrapper, key) => (
-                <ArticleInlineListItem itemWrapper={itemWrapper}
-                                       key={key}/>
-            ))}
-        </ul>
+        <>
+            <ul className={`article-inline-list-items ${listClass}`.trim()}
+                data-label-mode={labelMode}
+                ref={listRef}>
+                {itemModels.map((itemModel, key) => (
+                    <ArticleInlineListItem itemModel={itemModel}
+                                           key={key}
+                                           labelMode={labelMode}/>
+                ))}
+            </ul>
+
+            {isAdaptiveHomeBand && (
+                <div aria-hidden={true}
+                     className={`article-inline-list-fit-measure`}>
+                    {ADAPTIVE_LABEL_MODES.map(mode => (
+                        <ul className={`article-inline-list-items article-inline-list-items-fit-measure`}
+                            data-label-mode={mode}
+                            key={mode}>
+                            {itemModels.map((itemModel, index) => (
+                                <ArticleInlineListItem key={`${mode}-${index}`}
+                                                       itemModel={itemModel}
+                                                       labelMode={mode}
+                                                       measureRef={element => {
+                                                           measureRefs.current[mode][index] = element
+                                                       }}
+                                                       measureOnly={true}/>
+                            ))}
+                        </ul>
+                    ))}
+                </div>
+            )}
+        </>
     )
 }
 
 /**
- * @param {ArticleItemDataWrapper} itemWrapper
+ * @param {ReturnType<typeof createInlineListItemModel>} itemModel
+ * @param {"full"|"short"|"icon"} labelMode
+ * @param {Boolean} measureOnly
+ * @param {Function} measureRef
  * @return {JSX.Element}
  * @constructor
  */
-function ArticleInlineListItem({ itemWrapper }) {
-    const viewport = useViewport()
-    const language = useLanguage()
-    const utils = useUtils()
-
-    const link = itemWrapper.link
-    const isPhoneQrAction = link?.action === "phone_qr"
-    const shouldDirectCall = isPhoneQrAction && utils.device.isTouchDevice() && viewport.isMobileLayout()
-    const href = isPhoneQrAction && !shouldDirectCall ?
-        `#phone-qr:open` :
-        link?.href || null
-    const label = getInlineListItemLabel({
-        itemWrapper,
-        link,
-        language,
-        innerWidth: viewport.innerWidth,
-        shouldDirectCall
-    })
-    const ariaLabel = stripHtml(label)
+function ArticleInlineListItem({ itemModel, labelMode, measureOnly = false, measureRef = null }) {
+    const label = itemModel[`${labelMode}Label`]
 
     return (
-        <li className={`article-inline-list-item text-4`}>
-            <Link href={href}
-                  tooltip={link?.tooltip}
-                  metadata={link?.metadata}
-                  ariaLabel={ariaLabel}>
-                <i className={`article-inline-list-item-icon ${itemWrapper.faIconWithFallback}`}
-                   style={itemWrapper.faIconStyle}/>
+        <li className={`article-inline-list-item text-4`}
+            data-fit-measure={measureOnly ? `true` : `false`}
+            data-label-mode={labelMode}
+            ref={measureRef}>
+            {measureOnly ?
+                <span className={`article-inline-list-item-measure-content`}>
+                    <i className={`article-inline-list-item-icon ${itemModel.iconClassName}`}
+                       style={itemModel.iconStyle}/>
 
-                <span className={`article-inline-list-item-label`}
-                      dangerouslySetInnerHTML={{__html: label}}/>
-            </Link>
+                    <span className={`article-inline-list-item-label`}
+                          dangerouslySetInnerHTML={{ __html: label }}/>
+                </span> :
+                <Link href={itemModel.href}
+                      tooltip={itemModel.tooltip}
+                      metadata={itemModel.metadata}
+                      ariaLabel={itemModel.ariaLabel}>
+                    <i className={`article-inline-list-item-icon ${itemModel.iconClassName}`}
+                       style={itemModel.iconStyle}/>
+
+                    <span className={`article-inline-list-item-label`}
+                          dangerouslySetInnerHTML={{ __html: label }}/>
+                </Link>}
         </li>
     )
 }
 
 export default ArticleInlineList
 
-function getInlineListItemLabel({ itemWrapper, link, language, innerWidth, shouldDirectCall }) {
-    const defaultLabel = itemWrapper.locales.label || itemWrapper.label || itemWrapper.placeholder
-    const isCompactMobile = innerWidth <= 640
+function createInlineListItemModel({ itemWrapper, language, utils, viewport }) {
+    const link = itemWrapper.link
+    const isPhoneQrAction = link?.action === "phone_qr"
+    const shouldDirectCall = isPhoneQrAction && utils.device.isTouchDevice() && viewport.isMobileLayout()
+    const href = isPhoneQrAction && !shouldDirectCall ?
+        `#phone-qr:open` :
+        link?.href || null
+    const fullLabel = itemWrapper.locales.label || itemWrapper.label || itemWrapper.placeholder || ""
+    const shortLabel = getInlineListShortLabel({
+        itemWrapper,
+        link,
+        language,
+        shouldDirectCall
+    })
 
-    if(!isCompactMobile)
-        return defaultLabel
+    return {
+        ariaLabel: stripHtml(fullLabel || shortLabel),
+        fullLabel,
+        shortLabel,
+        iconLabel: "",
+        href,
+        iconClassName: itemWrapper.faIconWithFallback,
+        iconStyle: itemWrapper.faIconStyle,
+        metadata: link?.metadata,
+        tooltip: link?.tooltip
+    }
+}
+
+function getInlineListShortLabel({ itemWrapper, link, language, shouldDirectCall }) {
+    const defaultLabel = itemWrapper.shortLabel || itemWrapper.locales.label || itemWrapper.label || itemWrapper.placeholder || ""
 
     if(link?.action === "phone_qr")
         return shouldDirectCall ?
@@ -125,9 +249,9 @@ function getInlineListItemLabel({ itemWrapper, link, language, innerWidth, shoul
         return language.getStringOrFallback("email_short", "Email")
 
     if(link?.href?.includes("linkedin.com"))
-        return "LinkedIn"
+        return language.getStringOrFallback("linkedin_short", "LinkedIn")
 
-    return itemWrapper.shortLabel || defaultLabel
+    return defaultLabel
 }
 
 function stripHtml(value) {

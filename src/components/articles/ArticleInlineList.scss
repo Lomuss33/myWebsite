@@ -34,6 +34,8 @@ li.article-inline-list-item {
 }
 
 article#article-1-section-about {
+    position: relative;
+
     &::after {
         margin-top: 2px;
     }
@@ -55,6 +57,24 @@ article#article-1-section-about {
         }
     }
 
+    div.article-inline-list-fit-measure {
+        position: absolute;
+        inset: 0 auto auto 0;
+        visibility: hidden;
+        pointer-events: none;
+        height: 0;
+        overflow: hidden;
+    }
+
+    ul.article-inline-list-items-fit-measure {
+        position: absolute;
+        inset: 0 auto auto 0;
+        width: auto;
+        flex-wrap: nowrap;
+        gap: 8px;
+        margin-top: 0;
+    }
+
     li.article-inline-list-item {
         margin-right: 0;
         height: auto;
@@ -73,8 +93,8 @@ article#article-1-section-about {
             flex: 1 1 0;
             width: 100%;
             min-width: 0;
-            justify-content: center;
-            padding: 0 8px 0 0;
+            justify-content: flex-start;
+            padding: 0 6px 0 0;
             border-radius: 18px;
         }
 
@@ -89,7 +109,8 @@ article#article-1-section-about {
             filter: saturate(1.04);
         }
 
-        a {
+        a,
+        span.article-inline-list-item-measure-content {
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -99,11 +120,19 @@ article#article-1-section-about {
             @include media-breakpoint-down(sm) {
                 width: 100%;
                 min-width: 0;
-                justify-content: center;
+                justify-content: flex-start;
                 gap: 7px;
                 font-size: clamp(0.79rem, 0.76rem + 0.2vw, 0.9rem);
-                padding-right: 2px;
+                padding-right: 0;
             }
+        }
+
+        &[data-fit-measure="true"] {
+            flex: 0 0 auto;
+            width: auto;
+            min-width: 0;
+            max-width: none;
+            transition: none;
         }
     }
 
@@ -128,7 +157,7 @@ article#article-1-section-about {
             overflow: hidden;
             text-overflow: ellipsis;
             line-height: 1.1;
-            text-align: center;
+            text-align: left;
         }
     }
 
@@ -156,6 +185,22 @@ article#article-1-section-about {
             height: 30px;
             min-width: 30px;
             font-size: 0.85rem;
+        }
+    }
+
+    ul.article-inline-list-items[data-label-mode="icon"] {
+        li.article-inline-list-item {
+            padding-right: 0;
+        }
+
+        li.article-inline-list-item a,
+        li.article-inline-list-item span.article-inline-list-item-measure-content {
+            justify-content: center;
+            gap: 0;
+        }
+
+        span.article-inline-list-item-label {
+            display: none;
         }
     }
 }

@@ -1260,6 +1260,20 @@ article#article-1-section-experience {
     }
 
     @include media-breakpoint-down(sm) {
+        div.article-timeline-item-info-for-timelines-header-meta-band {
+            align-items: center;
+        }
+
+        div.article-timeline-item-info-for-timelines-header-meta-grid {
+            align-items: center;
+        }
+
+        div.article-timeline-item-info-for-timelines-header-meta-row--time,
+        div.article-timeline-item-info-for-timelines-header-meta-row--split {
+            width: min(100%, 29rem);
+            margin-inline: auto;
+        }
+
         div.article-timeline-item-info-for-timelines-header-meta-row--split {
             gap: 0.5rem;
         }

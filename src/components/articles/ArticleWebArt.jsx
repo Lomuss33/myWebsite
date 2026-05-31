@@ -336,6 +336,7 @@ function ArticleWebArt({ dataWrapper, id }) {
     const [openTileIds, setOpenTileIds] = useState(() => new Set())
     const [mountedTileIds, setMountedTileIds] = useState(() => new Set())
     const [sendYoursPreviewOpen, setSendYoursPreviewOpen] = useState(false)
+    const [shouldAutoOpenAllTiles, setShouldAutoOpenAllTiles] = useState(false)
     const allTileIds = useMemo(() => {
         const ids = items.map((item) => item?.uniqueId).filter(Boolean)
         ids.push(
@@ -373,6 +374,22 @@ function ArticleWebArt({ dataWrapper, id }) {
     }, [mountedTileIds])
     const locked = showIntroCover
     const selectedLanguageId = language.selectedLanguageId || "en"
+
+    useEffect(() => {
+        if(typeof window === "undefined" || !window.matchMedia) return undefined
+
+        const mediaQuery = window.matchMedia("(pointer: coarse), (max-width: 640px)")
+        const update = () => setShouldAutoOpenAllTiles(mediaQuery.matches)
+        update()
+
+        if(mediaQuery.addEventListener) {
+            mediaQuery.addEventListener("change", update)
+            return () => mediaQuery.removeEventListener("change", update)
+        }
+
+        mediaQuery.addListener?.(update)
+        return () => mediaQuery.removeListener?.(update)
+    }, [])
 
     let submitTileLabel = language.getString("send_yours")
     if(typeof submitTileLabel === "string" && submitTileLabel.startsWith("locale:")) {
@@ -538,14 +555,14 @@ function ArticleWebArt({ dataWrapper, id }) {
         setShowIntroCover(false)
         setShouldMountTiles(true)
         setActivationIndex(items.length - 1)
-        if(openAll) {
+        if(openAll || shouldAutoOpenAllTiles) {
             openAllArtTiles()
             return
         }
         setOpenTileIds(new Set())
         setMountedTileIds(new Set())
         setSendYoursPreviewOpen(false)
-    }, [items.length, openAllArtTiles])
+    }, [items.length, openAllArtTiles, shouldAutoOpenAllTiles])
 
     useEffect(() => {
         if(typeof window === "undefined") return
@@ -5460,6 +5477,5 @@ function PatronusTile({ locked = false }) {
 }
 
 export default ArticleWebArt
-
 
 

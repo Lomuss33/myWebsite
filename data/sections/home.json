@@ -4,24 +4,28 @@
       "en": {
         "title_short": "Hello!",
         "title_short_nav": "Home",
+        "title_short_tooltip": "Start",
         "title_long_prefix": "Hello friend,",
         "title_long": "Welcome to {{my corner}} of the internet!"
       },
       "de": {
         "title_short": "Hallo!",
         "title_short_nav": "Startseite",
+        "title_short_tooltip": "Start",
         "title_long_prefix": "Hallo Freund,",
         "title_long": "Willkommen in {{meiner Ecke}} des Internets!"
       },
       "hr": {
         "title_short": "Bok!",
         "title_short_nav": "Početna",
+        "title_short_tooltip": "Početak",
         "title_long_prefix": "Bok prijatelji,",
         "title_long": "Dobrodošli u {{moj kutak}} interneta!"
       },
       "tr": {
         "title_short": "Merhaba!",
         "title_short_nav": "Anasayfa",
+        "title_short_tooltip": "Başlangıç",
         "title_long_prefix": "Merhaba arkadaşım,",
         "title_long": "İnternetteki {{köşeme}} hoş geldin!"
       }

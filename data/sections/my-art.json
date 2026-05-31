@@ -3,25 +3,29 @@
         "locales": {
             "en": {
                 "title_short": "Art & Creativity",
-                "title_short_nav": "Art",
+                "title_short_nav": "Image",
+                "title_short_tooltip": "Visual",
                 "title_long_prefix": "Drawn in color, lines and curiosity",
                 "title_long": "Here are {{my diamonds}}"
             },
             "de": {
                 "title_short": "Kunst & Kreativität",
-                "title_short_nav": "Kunst",
+                "title_short_nav": "Bild",
+                "title_short_tooltip": "Visuell",
                 "title_long_prefix": "Entstanden aus Farbe, Linien und Neugier",
                 "title_long": "Hier sind {{meine Diamanten}}"
             },
             "hr": {
                 "title_short": "Umjetnost i kreativnost",
-                "title_short_nav": "Umjetnost",
+                "title_short_nav": "Slika",
+                "title_short_tooltip": "Vizualno",
                 "title_long_prefix": "Nacrtana u bojama, linijama i znatiželji",
                 "title_long": "Evo {{mojih dijamanata}}"
             },
             "tr": {
                 "title_short": "Sanat ve Yaratıcılık",
-                "title_short_nav": "Sanat",
+                "title_short_nav": "Görsel",
+                "title_short_tooltip": "Görsel",
                 "title_long_prefix": "Renk, çizgi ve merakla çizildi",
                 "title_long": "İşte {{benim elmaslarım}}"
             }

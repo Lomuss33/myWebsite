@@ -596,6 +596,10 @@
     border-color: rgba(37, 99, 235, 0.18);
 }
 
+[data-theme="light"] article.article-timeline--art-photography div.article-timeline-item-info-preview-footer {
+    --photo-action-frame-color: #000000;
+}
+
 [data-theme="light"] article.article-skills-article-3-section-education div.article-skills-item,
 [data-theme="light"] div.article-skills-items.article-skills-items-section-my-writings div.article-skills-item {
     position: relative;

@@ -401,6 +401,7 @@ article#article-1-section-my-writings {
     a.article-timeline-item-avatar-link:focus-visible div.article-timeline-item-avatar--button {
         border-color: transparent;
         box-shadow: none;
+        font-size: clamp(3rem, calc(var(--avatar-size) / 1.55), 5.4rem);
     }
 
     div.article-timeline-item-content {

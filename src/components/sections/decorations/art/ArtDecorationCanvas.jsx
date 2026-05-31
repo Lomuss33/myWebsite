@@ -3,12 +3,19 @@ import React, {useEffect, useRef} from 'react'
 
 const CELL_STEP = 37
 const CELL_SIZE = 34
-const ANIMATION_DURATION_MS = 100
-const MIN_EXCHANGES_PER_TICK = 1000
-const MAX_EXCHANGES_PER_TICK = 2800
-const MAX_SWAP_RADIUS = 3
 const FRAME_INTERVAL_MS = 1000
 const MAX_DEVICE_PIXEL_RATIO = 1.25
+const SWAPS_PER_TICK_BASE = 220
+const SWAPS_PER_TICK_RANGE = 520
+const MAX_SWAP_RADIUS = 3
+const BAND_PALETTES = [
+    ["#38bdf8", "#60a5fa", "#8b5cf6", "#f472b6", "#fbbf24"],
+    ["#22c55e", "#59c36a", "#3b82f6", "#60a5fa"],
+    ["#38bdf8", "#60a5fa", "#8b5cf6", "#f472b6"],
+    ["#22d3ee", "#60a5fa", "#a855f7", "#fbbf24"],
+    ["#ffffff", "#ff6b81", "#ff0033", "#facc15"],
+    ["#38bdf8", "#60a5fa", "#8b5cf6", "#f472b6", "#fbbf24"]
+]
 
 function measureLayout(canvas) {
     const wrapper = canvas?.parentElement
@@ -67,111 +74,117 @@ function resizeCanvas(canvas, context, layout) {
 
     context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0)
     context.imageSmoothingEnabled = false
-
-    return pixelRatio
 }
 
-function createBandState(band) {
-    const nbx = Math.max(1, Math.ceil(band.width / CELL_STEP))
-    const nby = Math.max(1, Math.ceil(band.height / CELL_STEP))
+function getBandPalette(index) {
+    return BAND_PALETTES[index] || BAND_PALETTES[BAND_PALETTES.length - 1]
+}
 
-    if(nbx * nby < 2)
+function createBandState(band, index) {
+    const columns = Math.max(1, Math.ceil(band.width / CELL_STEP))
+    const rows = Math.max(1, Math.ceil(band.height / CELL_STEP))
+
+    if(columns * rows < 2)
         return null
 
-    const xDisp = []
-    const yDisp = []
-    let offs = (band.width - nbx * CELL_STEP) / 2
-    for(let kx = 0; kx < nbx; ++kx)
-        xDisp[kx] = offs + kx * CELL_STEP
+    const xOffsets = []
+    const yOffsets = []
+    let offset = (band.width - columns * CELL_STEP) / 2
+    for(let x = 0; x < columns; ++x)
+        xOffsets[x] = offset + x * CELL_STEP
 
-    offs = (band.height - nby * CELL_STEP) / 2
-    for(let ky = 0; ky < nby; ++ky)
-        yDisp[ky] = offs + ky * CELL_STEP
+    offset = (band.height - rows * CELL_STEP) / 2
+    for(let y = 0; y < rows; ++y)
+        yOffsets[y] = offset + y * CELL_STEP
 
-    const grid = []
-    for(let ky = 0; ky < nby; ++ky) {
-        grid[ky] = []
-        for(let kx = 0; kx < nbx; ++kx) {
-            const hue = Math.floor(300 * kx / nbx)
-            grid[ky][kx] = `hsl(${hue},100%,50%)`
+    const palette = getBandPalette(index)
+    const cells = []
+    for(let y = 0; y < rows; ++y) {
+        cells[y] = []
+        for(let x = 0; x < columns; ++x) {
+            const seed = (x + y * 2 + index) % palette.length
+            cells[y][x] = palette[seed]
         }
     }
 
     return {
+        index,
         x: band.x,
         y: band.y,
         width: band.width,
         height: band.height,
-        nbx,
-        nby,
-        xDisp,
-        yDisp,
-        grid
+        columns,
+        rows,
+        xOffsets,
+        yOffsets,
+        cells,
+        palette
     }
 }
 
-function drawCell(context, bandState, kx, ky) {
-    context.fillStyle = bandState.grid[ky][kx]
-    context.fillRect(
-        bandState.x + bandState.xDisp[kx],
-        bandState.y + bandState.yDisp[ky],
-        CELL_SIZE,
-        CELL_SIZE
-    )
+function getTilePaint(color, isLightMode) {
+    if(isLightMode) {
+        return {
+            fill: color,
+            stroke: "rgba(255, 255, 255, 0.28)"
+        }
+    }
+
+    return {
+        fill: color,
+        stroke: "rgba(255, 255, 255, 0.18)"
+    }
 }
 
-function drawBand(context, bandState) {
+function drawCell(context, bandState, cellX, cellY, isLightMode) {
+    const color = bandState.cells[cellY][cellX]
+    const paint = getTilePaint(color, isLightMode)
+    const x = bandState.x + bandState.xOffsets[cellX]
+    const y = bandState.y + bandState.yOffsets[cellY]
+
+    context.fillStyle = paint.fill
+    context.fillRect(x, y, CELL_SIZE, CELL_SIZE)
+
+    context.strokeStyle = paint.stroke
+    context.lineWidth = 1
+    context.strokeRect(x + 0.5, y + 0.5, CELL_SIZE - 1, CELL_SIZE - 1)
+}
+
+function drawBand(context, bandState, isLightMode) {
     context.save()
     context.beginPath()
     context.rect(bandState.x, bandState.y, bandState.width, bandState.height)
     context.clip()
 
-    for(let ky = 0; ky < bandState.nby; ++ky) {
-        for(let kx = 0; kx < bandState.nbx; ++kx)
-            drawCell(context, bandState, kx, ky)
+    for(let y = 0; y < bandState.rows; ++y) {
+        for(let x = 0; x < bandState.columns; ++x)
+            drawCell(context, bandState, x, y, isLightMode)
     }
 
     context.restore()
 }
 
-function easeInOutCubic(value) {
-    return value < 0.5
-        ? 4 * value * value * value
-        : 1 - Math.pow(-2 * value + 2, 3) / 2
+function getIsLightMode() {
+    return document.documentElement.getAttribute("data-theme") === "light"
 }
 
-function pickSwapTarget(bandState, phase) {
-    const kx = Math.floor(Math.random() * bandState.nbx)
-    const ky = Math.floor(Math.random() * bandState.nby)
-    const maxRadius = Math.max(1, Math.round(1 + phase * MAX_SWAP_RADIUS))
-    const useLongJump = Math.random() < phase * 0.7
-    let x
-    let y
+function pickSwapTarget(bandState) {
+    const fromX = Math.floor(Math.random() * bandState.columns)
+    const fromY = Math.floor(Math.random() * bandState.rows)
+    const radius = Math.max(1, Math.floor(Math.random() * MAX_SWAP_RADIUS) + 1)
 
-    if(useLongJump) {
-        do {
-            x = kx + Math.floor((Math.random() * (maxRadius * 2 + 1)) - maxRadius)
-            y = ky + Math.floor((Math.random() * (maxRadius * 2 + 1)) - maxRadius)
-        } while(x < 0 || x >= bandState.nbx || y < 0 || y >= bandState.nby || (x === kx && y === ky))
-    }
-    else {
-        let dir
-        do {
-            dir = Math.floor(Math.random() * 4)
-            x = kx + [1, 0, -1, 0][dir]
-            y = ky + [0, 1, 0, -1][dir]
-        } while(x < 0 || x >= bandState.nbx || y < 0 || y >= bandState.nby)
+    let toX = fromX
+    let toY = fromY
+
+    while(toX === fromX && toY === fromY) {
+        toX = fromX + Math.floor(Math.random() * (radius * 2 + 1)) - radius
+        toY = fromY + Math.floor(Math.random() * (radius * 2 + 1)) - radius
     }
 
-    return {kx, ky, x, y}
-}
+    toX = Math.max(0, Math.min(bandState.columns - 1, toX))
+    toY = Math.max(0, Math.min(bandState.rows - 1, toY))
 
-function xchgBand(context, bandState, phase) {
-    const {kx, ky, x, y} = pickSwapTarget(bandState, phase)
-
-    ;[bandState.grid[ky][kx], bandState.grid[y][x]] = [bandState.grid[y][x], bandState.grid[ky][kx]]
-    drawCell(context, bandState, kx, ky)
-    drawCell(context, bandState, x, y)
+    return {fromX, fromY, toX, toY}
 }
 
 function ArtDecorationCanvas() {
@@ -183,33 +196,17 @@ function ArtDecorationCanvas() {
         if(!canvas || !wrapper)
             return
 
-        const context = canvas.getContext("2d", { alpha: true, desynchronized: true })
+        const context = canvas.getContext("2d", {alpha: true, desynchronized: true})
         if(!context)
             return
 
         let animationFrameId = null
         let rebuildFrameId = null
-        let layout = null
         let bandStates = []
+        let layout = null
         let lastFrameTime = 0
-        let animationStartedAt = performance.now()
-        let pausedAt = null
-        let pausedMs = 0
         let isIntersecting = false
         const reducedMotionQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)") || null
-
-        const paintThemeCover = () => {
-            const isLightMode = document.documentElement.getAttribute("data-theme") === "light"
-            const coverColor = isLightMode ? "rgba(255,255,255,0.57)" : "rgba(0,0,0,0.52)"
-
-            context.save()
-            context.fillStyle = coverColor
-
-            for(const bandState of bandStates)
-                context.fillRect(bandState.x, bandState.y, bandState.width, bandState.height)
-
-            context.restore()
-        }
 
         const isReducedMotion = () => Boolean(reducedMotionQuery?.matches)
         const shouldAnimate = () => isIntersecting && !document.hidden && !isReducedMotion()
@@ -225,13 +222,11 @@ function ArtDecorationCanvas() {
             if(!layout || bandStates.length === 0)
                 return
 
+            const isLightMode = getIsLightMode()
             context.clearRect(0, 0, layout.width, layout.height)
             for(const bandState of bandStates)
-                drawBand(context, bandState)
-            paintThemeCover()
+                drawBand(context, bandState, isLightMode)
         }
-
-        const getElapsedMs = (timestamp) => timestamp - animationStartedAt - pausedMs
 
         const step = (timestamp) => {
             if(!shouldAnimate()) {
@@ -241,27 +236,32 @@ function ArtDecorationCanvas() {
 
             if(layout && bandStates.length > 0 && timestamp - lastFrameTime >= FRAME_INTERVAL_MS) {
                 lastFrameTime = timestamp
-                const phase = Math.min(1, getElapsedMs(timestamp) / ANIMATION_DURATION_MS)
-                const diffusionPhase = easeInOutCubic(phase)
-                const exchangeBudget = Math.round(
-                    MIN_EXCHANGES_PER_TICK +
-                    (MAX_EXCHANGES_PER_TICK - MIN_EXCHANGES_PER_TICK) * diffusionPhase
-                )
-                const exchangesPerBand = Math.max(1, Math.floor(exchangeBudget / bandStates.length))
+                const isLightMode = getIsLightMode()
 
                 for(const bandState of bandStates) {
+                    const swapsPerBand = Math.max(
+                        1,
+                        Math.floor((SWAPS_PER_TICK_BASE + Math.random() * SWAPS_PER_TICK_RANGE) / bandStates.length)
+                    )
+                    const dirtyCells = []
+
                     context.save()
                     context.beginPath()
                     context.rect(bandState.x, bandState.y, bandState.width, bandState.height)
                     context.clip()
 
-                    for(let i = 0; i < exchangesPerBand; ++i)
-                        xchgBand(context, bandState, diffusionPhase)
+                    for(let i = 0; i < swapsPerBand; ++i) {
+                        const {fromX, fromY, toX, toY} = pickSwapTarget(bandState)
+                        ;[bandState.cells[fromY][fromX], bandState.cells[toY][toX]] =
+                            [bandState.cells[toY][toX], bandState.cells[fromY][fromX]]
+                        dirtyCells.push([fromX, fromY], [toX, toY])
+                    }
+
+                    for(const [cellX, cellY] of dirtyCells)
+                        drawCell(context, bandState, cellX, cellY, isLightMode)
 
                     context.restore()
                 }
-
-                paintThemeCover()
             }
 
             animationFrameId = window.requestAnimationFrame(step)
@@ -284,7 +284,7 @@ function ArtDecorationCanvas() {
 
             layout = nextLayout
             resizeCanvas(canvas, context, layout)
-            bandStates = layout.bands.map(createBandState).filter(Boolean)
+            bandStates = layout.bands.map((band, index) => createBandState(band, index)).filter(Boolean)
             lastFrameTime = 0
             drawStatic()
             startLoop()
@@ -302,15 +302,8 @@ function ArtDecorationCanvas() {
 
         const handleVisibilityChange = () => {
             if(document.hidden) {
-                if(pausedAt === null)
-                    pausedAt = performance.now()
                 stopLoop()
                 return
-            }
-
-            if(pausedAt !== null) {
-                pausedMs += performance.now() - pausedAt
-                pausedAt = null
             }
 
             startLoop()
@@ -318,24 +311,21 @@ function ArtDecorationCanvas() {
 
         const resizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(scheduleRebuild)
         const mutationObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(scheduleRebuild)
-        const themeObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(() => {
-            drawStatic()
-            startLoop()
-        })
+        const themeObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(drawStatic)
         const intersectionObserver = typeof IntersectionObserver === "undefined" ? null : new IntersectionObserver((entries) => {
             isIntersecting = entries.some(entry => entry.isIntersecting)
             if(isIntersecting) startLoop()
             else stopLoop()
-        }, { rootMargin: "160px" })
+        }, {rootMargin: "160px"})
 
         resizeObserver?.observe(wrapper)
-        mutationObserver?.observe(wrapper, { childList: true })
+        mutationObserver?.observe(wrapper, {childList: true})
         const sectionBody = wrapper.querySelector(".section-body")
         if(sectionBody)
-            mutationObserver?.observe(sectionBody, { childList: true })
-        themeObserver?.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] })
+            mutationObserver?.observe(sectionBody, {childList: true})
+        themeObserver?.observe(document.documentElement, {attributes: true, attributeFilter: ["data-theme"]})
         intersectionObserver?.observe(wrapper)
-        window.addEventListener("resize", scheduleRebuild, { passive: true })
+        window.addEventListener("resize", scheduleRebuild, {passive: true})
         document.addEventListener("visibilitychange", handleVisibilityChange)
         reducedMotionQuery?.addEventListener?.("change", scheduleRebuild)
 

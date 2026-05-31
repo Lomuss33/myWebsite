@@ -1370,7 +1370,6 @@ section#section-my-art article:is(
     margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
     height: var(--art-current-title-line-top);
     background: linear-gradient(90deg, var(--art-current-title-mid), var(--art-current-title-end));
-    box-shadow: 0 0 24px color-mix(in srgb, var(--art-current-title-mid) 24%, transparent);
 }
 
 section#section-my-art article:is(

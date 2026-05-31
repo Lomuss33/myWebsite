@@ -1,5 +1,6 @@
 import "./ArticleFeature.scss"
 import React, {useEffect, useRef, useState} from 'react'
+import {layout, prepare} from "@chenglou/pretext"
 import Article from "./base/Article.jsx"
 import IllustratedManuscript from "../generic/IllustratedManuscript.jsx"
 import ImageView from "../generic/ImageView.jsx"
@@ -15,7 +16,18 @@ const FEATURE_TEXT_SCALE_EPSILON = 0.01
 const FEATURE_TEXT_RESIZE_SETTLE_MS = 160
 const FEATURE_TEXT_FIT_TOLERANCE = 4
 const MOBILE_VIEW_MEDIA_QUERY = "(max-width: 575.98px)"
+const STACKED_FEATURE_MEDIA_QUERY = "(max-width: 991.98px)"
 const ABOUT_WORD_FIT_WIDTH_RATIO = 0.94
+const WOOD_PRODUCTS_FIT_MIN_FONT_SIZE_PX = 16
+const WOOD_PRODUCTS_FIT_MAX_FONT_SIZE_PX = 22
+const WOOD_PRODUCTS_FIT_LINE_HEIGHT_RATIO = 1.62
+const WOOD_PRODUCTS_FIT_MAX_WIDTH_RATIO = 0.71
+const WOOD_PRODUCTS_FIT_MIN_WIDTH_PX = 250
+const WOOD_PRODUCTS_FIT_MAX_WIDTH_PX = 372
+const WOOD_PRODUCTS_FIT_RESERVED_HEIGHT_PX = 10
+const WOOD_PRODUCTS_FIT_BINARY_SEARCH_PRECISION_PX = 0.2
+const PREPARED_TEXT_CACHE = new Map()
+const PREPARED_TEXT_CACHE_LIMIT = 160
 
 function ArticleFeature({ dataWrapper, id }) {
     const [selectedItemCategoryId, setSelectedItemCategoryId] = useState(null)
@@ -93,10 +105,16 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
     const mediaRef = useRef(null)
     const squareContentRef = useRef(null)
     const squareMeasureRef = useRef(null)
+    const textBodyRef = useRef(null)
     const resizeFrameRef = useRef(null)
     const resizeTimeoutRef = useRef(null)
     const baseTypographyRef = useRef(null)
     const [textScale, setTextScale] = useState(1)
+    const [adaptiveLayoutState, setAdaptiveLayoutState] = useState({
+        fontSizePx: null,
+        lineHeightPx: null,
+        contentMaxWidthPx: null
+    })
     const hasAlternateImage = Boolean(itemWrapper.img && itemWrapper.imgAlt)
     const [showAlternateImage, setShowAlternateImage] = useState(false)
     const [isMobileView, setIsMobileView] = useState(() => {
@@ -129,6 +147,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
         isSquareFitLayout ||
         (isFixedViewportImageLayout && isHomeStyleIntro) ||
         Boolean(articleSettings.featureTextFitToMediaHeight)
+    const usesWoodProductsAdaptiveLayout = isWoodProductsFeature
     const defaultFitMaxScale = isHomeStyleIntro ? FEATURE_TEXT_ABOUT_INTRO_MAX_SCALE : FEATURE_TEXT_DEFAULT_MAX_SCALE
     const textFontSize = computeScaledFontSize(baseTypographyRef, textScale)
     const textLineHeight = computeScaledLineHeight(baseTypographyRef, textScale)
@@ -148,7 +167,138 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
     }, [hasAlternateImage, itemWrapper.articleWrapper.sectionId, itemWrapper.articleWrapper.id, itemWrapper.id, itemWrapper.imgAltDefaultChance])
 
     useEffect(() => {
-        if (!shouldFitTextToMediaHeight) {
+        if (!usesWoodProductsAdaptiveLayout) {
+            setAdaptiveLayoutState({
+                fontSizePx: null,
+                lineHeightPx: null,
+                contentMaxWidthPx: null
+            })
+            return
+        }
+
+        const stackedMediaQuery = window.matchMedia(STACKED_FEATURE_MEDIA_QUERY)
+        let resizeObserver = null
+
+        const syncAdaptiveLayout = () => {
+            resizeFrameRef.current = null
+
+            if (stackedMediaQuery.matches) {
+                setAdaptiveLayoutState(currentState => {
+                    if (
+                        currentState.fontSizePx === null &&
+                        currentState.lineHeightPx === null &&
+                        currentState.contentMaxWidthPx === null
+                    ) {
+                        return currentState
+                    }
+
+                    return {
+                        fontSizePx: null,
+                        lineHeightPx: null,
+                        contentMaxWidthPx: null
+                    }
+                })
+                return
+            }
+
+            const textBodyElement = textBodyRef.current
+            const textMeasureElement = squareMeasureRef.current
+            if (!textBodyElement || !textMeasureElement) return
+
+            const nextLayoutState = measureWoodProductsAdaptiveLayout({
+                containerElement: textBodyElement,
+                measurementElement: textMeasureElement,
+                html
+            })
+
+            setAdaptiveLayoutState(currentState => {
+                if (
+                    currentState.fontSizePx === nextLayoutState.fontSizePx &&
+                    currentState.lineHeightPx === nextLayoutState.lineHeightPx &&
+                    currentState.contentMaxWidthPx === nextLayoutState.contentMaxWidthPx
+                ) {
+                    return currentState
+                }
+
+                return nextLayoutState
+            })
+        }
+
+        const scheduleAdaptiveLayoutSync = (immediate = false) => {
+            if (resizeTimeoutRef.current !== null) {
+                clearTimeout(resizeTimeoutRef.current)
+                resizeTimeoutRef.current = null
+            }
+
+            const flush = () => {
+                resizeTimeoutRef.current = null
+
+                if (resizeFrameRef.current !== null) {
+                    cancelAnimationFrame(resizeFrameRef.current)
+                }
+
+                resizeFrameRef.current = requestAnimationFrame(syncAdaptiveLayout)
+            }
+
+            if (immediate) {
+                flush()
+                return
+            }
+
+            if (resizeFrameRef.current !== null) {
+                cancelAnimationFrame(resizeFrameRef.current)
+                resizeFrameRef.current = null
+            }
+
+            resizeTimeoutRef.current = setTimeout(flush, FEATURE_TEXT_RESIZE_SETTLE_MS)
+        }
+
+        if (typeof ResizeObserver === "function") {
+            resizeObserver = new ResizeObserver(() => scheduleAdaptiveLayoutSync())
+            ;[itemRef.current, mediaRef.current, textBodyRef.current].forEach(element => {
+                if (element) resizeObserver.observe(element)
+            })
+        } else {
+            window.addEventListener("resize", scheduleAdaptiveLayoutSync)
+        }
+
+        const handleViewportChange = () => scheduleAdaptiveLayoutSync(true)
+
+        if (stackedMediaQuery.addEventListener) {
+            stackedMediaQuery.addEventListener("change", handleViewportChange)
+        } else {
+            stackedMediaQuery.addListener(handleViewportChange)
+        }
+
+        scheduleAdaptiveLayoutSync(true)
+
+        return () => {
+            if (resizeObserver) {
+                resizeObserver.disconnect()
+            } else {
+                window.removeEventListener("resize", scheduleAdaptiveLayoutSync)
+            }
+
+            if (stackedMediaQuery.removeEventListener) {
+                stackedMediaQuery.removeEventListener("change", handleViewportChange)
+            } else {
+                stackedMediaQuery.removeListener(handleViewportChange)
+            }
+
+            if (resizeFrameRef.current !== null) {
+                cancelAnimationFrame(resizeFrameRef.current)
+                resizeFrameRef.current = null
+            }
+
+            if (resizeTimeoutRef.current !== null) {
+                clearTimeout(resizeTimeoutRef.current)
+                resizeTimeoutRef.current = null
+            }
+        }
+    }, [html, usesWoodProductsAdaptiveLayout])
+
+    useEffect(() => {
+        if (!shouldFitTextToMediaHeight || usesWoodProductsAdaptiveLayout) {
             setTextScale(1)
             setIsMobileView(false)
             return
@@ -311,7 +461,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                 resizeTimeoutRef.current = null
             }
         }
-    }, [html, shouldFitTextToMediaHeight, isSquareFitLayout, articleSettings.featureTextFitMaxScale, articleSettings.featureTextFitMinScale, defaultFitMaxScale])
+    }, [html, shouldFitTextToMediaHeight, isSquareFitLayout, articleSettings.featureTextFitMaxScale, articleSettings.featureTextFitMinScale, defaultFitMaxScale, usesWoodProductsAdaptiveLayout])
 
     const renderVisibleBody = () => {
         if (isAboutIntro) {
@@ -374,6 +524,23 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
         setShowAlternateImage(current => !current)
     }
 
+    const adaptiveTextStyle = usesWoodProductsAdaptiveLayout ?
+        {
+            ...(adaptiveLayoutState.fontSizePx ? {fontSize: `${adaptiveLayoutState.fontSizePx}px`} : {}),
+            ...(adaptiveLayoutState.lineHeightPx ? {lineHeight: `${adaptiveLayoutState.lineHeightPx}px`} : {})
+        } :
+        shouldFitTextToMediaHeight && !isMobileView ? {
+            fontSize: `${textFontSize}px`,
+            lineHeight: `${textLineHeight}px`
+        } :
+        undefined
+
+    const adaptiveTextContentStyle = usesWoodProductsAdaptiveLayout && adaptiveLayoutState.contentMaxWidthPx ?
+        {
+            maxWidth: `${adaptiveLayoutState.contentMaxWidthPx}px`
+        } :
+        undefined
+
     return (
         <div ref={itemRef}
              className={itemClassName}>
@@ -434,22 +601,24 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
             </div>
 
             <div className={`article-feature-item-content`}>
-                {shouldFitTextToMediaHeight && !isTextLedSplitLayout && !isMobileView && (
+                {(shouldFitTextToMediaHeight || usesWoodProductsAdaptiveLayout) && !isTextLedSplitLayout && !isMobileView && (
                     <div ref={squareMeasureRef}
                          className={`article-feature-item-text-measure-square last-p-no-margin text-3`}
                          aria-hidden={true}>
-                        <div dangerouslySetInnerHTML={{__html: html}}/>
+                        <div className={`article-feature-item-text-content`}
+                             dangerouslySetInnerHTML={{__html: html}}/>
                     </div>
                 )}
 
                 <div ref={shouldFitTextToMediaHeight ? squareContentRef : null}
                      className={`article-feature-item-text article-feature-item-text-adaptive last-p-no-margin text-3`}
-                     style={shouldFitTextToMediaHeight && !isMobileView ? {
-                         fontSize: `${textFontSize}px`,
-                         lineHeight: `${textLineHeight}px`
-                     } : undefined}>
-                    <div className={`article-feature-item-text-body`}>
-                        {renderVisibleBody()}
+                     style={adaptiveTextStyle}>
+                    <div ref={textBodyRef}
+                         className={`article-feature-item-text-body`}>
+                        <div className={`article-feature-item-text-content`}
+                             style={adaptiveTextContentStyle}>
+                            {renderVisibleBody()}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -588,6 +757,120 @@ function stripHtmlToText(html) {
     const parser = new DOMParser()
     const documentNode = parser.parseFromString(`<div>${html || ""}</div>`, "text/html")
     return documentNode.body.textContent || ""
+}
+
+function measureWoodProductsAdaptiveLayout({ containerElement, measurementElement, html }) {
+    const width = containerElement.clientWidth
+    const height = containerElement.clientHeight
+
+    if (width <= 0 || height <= 0) {
+        return {
+            fontSizePx: null,
+            lineHeightPx: null,
+            contentMaxWidthPx: null
+        }
+    }
+
+    const computedStyles = window.getComputedStyle(measurementElement)
+    const fontFamily = computedStyles.fontFamily || "sans-serif"
+    const fontWeight = computedStyles.fontWeight || "600"
+    const fontStyle = computedStyles.fontStyle || "normal"
+    const fontVariant = computedStyles.fontVariant || "normal"
+    const text = normalizeFeatureHtmlToMeasureText(html)
+    const paragraphCount = countHtmlParagraphs(html)
+    const availableHeight = Math.max(1, height - WOOD_PRODUCTS_FIT_RESERVED_HEIGHT_PX)
+    const contentMaxWidthPx = clamp(
+        Math.round(width * WOOD_PRODUCTS_FIT_MAX_WIDTH_RATIO),
+        WOOD_PRODUCTS_FIT_MIN_WIDTH_PX,
+        Math.min(WOOD_PRODUCTS_FIT_MAX_WIDTH_PX, width)
+    )
+
+    const fitsAt = fontSizePx => {
+        const lineHeightPx = fontSizePx * WOOD_PRODUCTS_FIT_LINE_HEIGHT_RATIO
+        const font = buildCanvasFont({fontStyle, fontVariant, fontWeight, fontFamily, fontSizePx})
+        const prepared = getPreparedText(text, font)
+        const layoutResult = layout(prepared, contentMaxWidthPx, lineHeightPx)
+        const paragraphGapPx = Math.max(0, paragraphCount - 1) * fontSizePx * 0.96
+        const footerAllowancePx = fontSizePx * 1.15
+        const totalHeight = layoutResult.height + paragraphGapPx + footerAllowancePx
+        return totalHeight <= availableHeight
+    }
+
+    let low = WOOD_PRODUCTS_FIT_MIN_FONT_SIZE_PX
+    let high = WOOD_PRODUCTS_FIT_MAX_FONT_SIZE_PX
+    let best = low
+
+    if (fitsAt(high)) {
+        best = high
+    } else if (!fitsAt(low)) {
+        best = low
+    } else {
+        while ((high - low) > WOOD_PRODUCTS_FIT_BINARY_SEARCH_PRECISION_PX) {
+            const mid = (low + high) / 2
+
+            if (fitsAt(mid)) {
+                best = mid
+                low = mid
+            } else {
+                high = mid
+            }
+        }
+    }
+
+    const roundedFontSizePx = roundToQuarter(best)
+    return {
+        fontSizePx: roundedFontSizePx,
+        lineHeightPx: roundToQuarter(roundedFontSizePx * WOOD_PRODUCTS_FIT_LINE_HEIGHT_RATIO),
+        contentMaxWidthPx
+    }
+}
+
+function normalizeFeatureHtmlToMeasureText(html) {
+    const parser = new DOMParser()
+    const documentNode = parser.parseFromString(`<div>${html || ""}</div>`, "text/html")
+    const paragraphs = Array.from(documentNode.body.querySelectorAll("p"))
+
+    if (!paragraphs.length) {
+        return (documentNode.body.textContent || "").replace(/\s+/g, " ").trim()
+    }
+
+    return paragraphs
+        .map(paragraph => (paragraph.textContent || "").replace(/\s+/g, " ").trim())
+        .filter(Boolean)
+        .join("\n\n")
+}
+
+function countHtmlParagraphs(html) {
+    const parser = new DOMParser()
+    const documentNode = parser.parseFromString(`<div>${html || ""}</div>`, "text/html")
+    return Math.max(1, documentNode.body.querySelectorAll("p").length || 1)
+}
+
+function getPreparedText(text, font) {
+    const cacheKey = `${font}::${text}`
+
+    if (PREPARED_TEXT_CACHE.has(cacheKey)) {
+        return PREPARED_TEXT_CACHE.get(cacheKey)
+    }
+
+    const prepared = prepare(text, font, {
+        whiteSpace: "normal",
+        wordBreak: "normal"
+    })
+    PREPARED_TEXT_CACHE.set(cacheKey, prepared)
+
+    if (PREPARED_TEXT_CACHE.size > PREPARED_TEXT_CACHE_LIMIT) {
+        const oldestKey = PREPARED_TEXT_CACHE.keys().next().value
+        if (oldestKey !== undefined) {
+            PREPARED_TEXT_CACHE.delete(oldestKey)
+        }
+    }
+
+    return prepared
+}
+
+function roundToQuarter(value) {
+    return Math.round(value * 4) / 4
 }
 
 function buildCanvasFont(style) {

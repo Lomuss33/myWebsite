@@ -16,6 +16,9 @@ div.nav-link-list-shell {
     --nav-link-padding-inline: 12px;
     --nav-link-gap: 8px;
     --nav-link-hover-scale: 1.08;
+    --nav-link-label-line-height: 1.18;
+    --nav-link-label-padding-top: 0.08em;
+    --nav-link-label-padding-bottom: 0.18em;
 
     display: flex;
     flex: 1 1 auto;
@@ -118,11 +121,16 @@ button.nav-link {
     }
 
     span {
+        display: block;
         opacity: var(--theme-sidebar-nav-link-text-opacity, 0.8);
         flex: 1 1 auto;
         min-width: 0;
+        max-width: 100%;
         font-size: var(--nav-link-font-size);
-        line-height: 1.08;
+        line-height: var(--nav-link-label-line-height);
+        padding-top: var(--nav-link-label-padding-top);
+        padding-bottom: var(--nav-link-label-padding-bottom);
+        box-sizing: border-box;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -186,16 +194,8 @@ button.nav-link-active {
     }
 
     &::before {
-        background:
-            linear-gradient(180deg,
-                color-mix(in srgb, white 18%, var(--theme-nav-selected-ink) 82%) 0%,
-                var(--theme-nav-selected-ink) 50%,
-                color-mix(in srgb, black 14%, var(--theme-nav-selected-ink) 86%) 100%);
-        box-shadow:
-            0 0 0 1px color-mix(in srgb, white 22%, transparent 78%),
-            0 0 12px color-mix(in srgb, var(--theme-nav-selected-ink) 24%, transparent 76%);
-        opacity: 1;
-        transform: translateY(-50%) scaleY(1);
+        opacity: 0;
+        transform: translateY(-50%) scaleY(0.72);
     }
 
     &::after {

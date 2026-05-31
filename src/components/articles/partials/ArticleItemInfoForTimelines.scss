@@ -279,6 +279,16 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
 article#article-1-section-my-writings div.article-timeline-item-info-for-timelines-body,
 article#article-1-section-my-writings div.article-timeline-item-info-preview-footer {
     background: transparent;
+    margin-left: clamp(0.62rem, 0.42rem + 0.7vw, 1.18rem);
+}
+
+@include media-breakpoint-down(sm) {
+    article#article-1-section-my-writings div.article-timeline-item-content,
+    article#article-1-section-my-writings div.article-timeline-item-info-for-timelines-header,
+    article#article-1-section-my-writings div.article-timeline-item-info-for-timelines-body,
+    article#article-1-section-my-writings div.article-timeline-item-info-preview-footer {
+        margin-left: clamp(0.3rem, 0.2rem + 0.45vw, 0.58rem);
+    }
 }
 
 article.article-timeline--art-photography div.article-timeline-item-info-for-timelines {
@@ -377,6 +387,7 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
 }
 
 article.article-timeline--art-photography div.article-timeline-item-info-preview-footer {
+    --photo-action-frame-color: #ffffff;
     grid-column: 2;
     grid-row: 1 / 3;
     width: 100%;
@@ -412,6 +423,8 @@ article.article-timeline--art-photography div.article-timeline-item-info-preview
         width: var(--photo-action-size);
         height: var(--photo-action-size);
         margin: 0;
+        border: 1px solid var(--photo-action-frame-color);
+        border-radius: 999px;
     }
 
     a.article-item-preview-menu-link:not(:last-child),
@@ -429,10 +442,12 @@ article.article-timeline--art-photography div.article-timeline-item-info-preview
         min-height: var(--photo-action-size);
         max-height: var(--photo-action-size);
         font-size: calc(var(--photo-action-size) / 2.45);
+        border-color: var(--photo-action-frame-color) !important;
     }
 
     button.article-item-preview-menu-website-button {
         display: none;
+        border-color: var(--photo-action-frame-color) !important;
     }
 
     button.article-item-preview-menu-website-button-compact {
@@ -2159,6 +2174,8 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
 
     article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-body {
         order: 3;
+        width: calc(100% - var(--digital-card-stack-base, 7rem) - 0.9rem);
+        max-width: calc(100% - var(--digital-card-stack-base, 7rem) - 0.9rem);
     }
 }
 

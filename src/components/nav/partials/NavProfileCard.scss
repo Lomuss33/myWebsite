@@ -663,7 +663,8 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-menu {
-            width: calc(var(--mobile-action-size) + 0.45rem);
+            width: var(--mobile-action-size);
+            padding: 0.14rem 0;
         }
 
         div.nav-profile-card-mobile-action-resume div.nav-profile-card-mobile-resume-menu {
@@ -680,7 +681,7 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-menu {
-            right: calc(100% + var(--mobile-header-gap));
+            right: calc(100% + 0.16rem);
             left: auto;
             transform-origin: right center;
         }
@@ -810,9 +811,10 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-mobile-action-language div.btn-option-picker-icon-size-2 img {
-            width: calc(var(--mobile-action-size) - 0.95rem);
-            height: calc(var(--mobile-action-size) - 0.95rem);
+            width: 100%;
+            height: 100%;
             object-fit: cover;
+            border-radius: 999px;
         }
 
         div.nav-profile-card-mobile-action-stack div.audio-button-wrapper {

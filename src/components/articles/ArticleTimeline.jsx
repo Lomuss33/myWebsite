@@ -30,6 +30,7 @@ function ArticleTimeline({ dataWrapper, id }) {
     const isEducationTimeline = useMemo(() => {
         return Boolean(dataWrapper?.uniqueId?.includes("section-education"))
     }, [dataWrapper?.uniqueId])
+    const isPhotographyTimeline = dataWrapper?.settings?.timelineVariant === "art-photography"
     const isDigitalExpressionTimeline = dataWrapper?.settings?.timelineVariant === "art-digital-expression"
     const timelineVariantClass = useMemo(() => {
         const timelineVariant = dataWrapper?.settings?.timelineVariant
@@ -48,6 +49,7 @@ function ArticleTimeline({ dataWrapper, id }) {
                                   isMyArtTimeline={isMyArtTimeline}
                                   isExperienceTimeline={isExperienceTimeline}
                                   isEducationTimeline={isEducationTimeline}
+                                  isPhotographyTimeline={isPhotographyTimeline}
                                   isDigitalExpressionTimeline={isDigitalExpressionTimeline}/>
         </Article>
     )
@@ -59,7 +61,7 @@ function ArticleTimeline({ dataWrapper, id }) {
  * @return {JSX.Element}
  * @constructor
  */
-function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTimeline = false, isExperienceTimeline = false, isEducationTimeline = false, isDigitalExpressionTimeline = false }) {
+function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTimeline = false, isExperienceTimeline = false, isEducationTimeline = false, isPhotographyTimeline = false, isDigitalExpressionTimeline = false }) {
     const language = useLanguage()
     const utils = useUtils()
     const viewport = useViewport()
@@ -460,6 +462,7 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
                                          isMyArtTimeline={isMyArtTimeline}
                                          isExperienceTimeline={isExperienceTimeline}
                                          isEducationTimeline={isEducationTimeline}
+                                         isPhotographyTimeline={isPhotographyTimeline}
                                          isEducationExpanded={expandedEducationItemIds.has(itemWrapper.id)}
                                          isDigitalExpressionTimeline={isDigitalExpressionTimeline}
                                          isOverlayActive={isExperienceTimeline && activeOverlayItemId === itemWrapper.id}
@@ -499,6 +502,7 @@ function ArticleTimelineItem({
     isMyArtTimeline = false,
     isExperienceTimeline = false,
     isEducationTimeline = false,
+    isPhotographyTimeline = false,
     isEducationExpanded = false,
     isDigitalExpressionTimeline = false,
     isOverlayActive = false,
@@ -633,6 +637,9 @@ function ArticleTimelineItem({
         "article-timeline-item-content"
     const overlayActionLabel = itemWrapper?.imageAlt || itemWrapper.locales?.title || language.getString("get_to_know_more")
     const avatarActionLabel = primaryAvatarLink?.tooltip || primaryPreviewLink?.tooltip || overlayActionLabel
+    const photographyCountryStyle = isPhotographyTimeline ?
+        getPhotographyCountryStyle(itemWrapper?.locales?.country) :
+        null
 
     const _onGalleryAvatarClick = () => {
         if(!shouldInterceptGalleryTap)
@@ -703,6 +710,8 @@ function ArticleTimelineItem({
             )}
 
             <ArticleItemInfoForTimelines className={contentClass}
+                                         itemWrapper={itemWrapper}
+                                         countryStyle={photographyCountryStyle}
                                          containerRef={contentRef}>
                 <ArticleItemInfoForTimelinesHeader itemWrapper={itemWrapper}
                                                    dateInterval={shouldShowDateInterval}
@@ -721,6 +730,30 @@ function ArticleTimelineItem({
             </ArticleItemInfoForTimelines>
         </li>
     )
+}
+
+function getPhotographyCountryStyle(country = "") {
+    const normalizedCountry = String(country).trim().toLowerCase()
+
+    if(!normalizedCountry)
+        return "default"
+
+    if(normalizedCountry.includes("macedon") || normalizedCountry.includes("mazedon") || normalizedCountry.includes("makedon"))
+        return "macedonia"
+    if(normalizedCountry.includes("greece") || normalizedCountry.includes("griechen") || normalizedCountry.includes("grčka") || normalizedCountry.includes("yunan"))
+        return "greece"
+    if(normalizedCountry.includes("bulgar") || normalizedCountry.includes("bugars"))
+        return "bulgaria"
+    if(normalizedCountry.includes("serb") || normalizedCountry.includes("srb") || normalizedCountry.includes("sırb"))
+        return "serbia"
+    if(normalizedCountry.includes("bosn"))
+        return "bosnia-herzegovina"
+    if(normalizedCountry.includes("croatia") || normalizedCountry.includes("kroat") || normalizedCountry.includes("hrvat"))
+        return "croatia"
+    if(normalizedCountry.includes("germany") || normalizedCountry.includes("deutsch") || normalizedCountry.includes("njema") || normalizedCountry.includes("almany"))
+        return "germany"
+
+    return "default"
 }
 
 function DigitalExpressionImageStack({ screenshots = [], galleryMetadata = null, label = "" }) {

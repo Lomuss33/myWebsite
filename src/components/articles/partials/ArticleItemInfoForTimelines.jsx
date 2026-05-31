@@ -15,13 +15,14 @@ import {useLanguage} from "../../../providers/LanguageProvider.jsx"
  * @return {JSX.Element}
  * @constructor
  */
-function ArticleItemInfoForTimelines({ children, itemWrapper, className = "", smallDateBadge = false, containerRef = null }) {
+function ArticleItemInfoForTimelines({ children, itemWrapper, countryStyle = null, className = "", smallDateBadge = false, containerRef = null }) {
     const dateBadgeClass = smallDateBadge ?
         `article-timeline-item-info-for-timelines-date-badge-small` :
         ``
 
     return (
         <div className={`article-timeline-item-info-for-timelines ${className} ${dateBadgeClass}`}
+             data-country-style={countryStyle || undefined}
              ref={containerRef}>
             {children}
         </div>

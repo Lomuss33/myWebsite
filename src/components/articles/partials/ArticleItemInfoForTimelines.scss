@@ -306,6 +306,15 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
     --photo-action-size: clamp(3.45rem, 6.2vw, 4.8rem);
     --photo-action-gap: clamp(0.48rem, 0.74vw, 0.72rem);
     --photo-action-rail-width: calc(var(--photo-action-size) + clamp(0.7rem, 0.8vw, 0.95rem));
+    --photo-country-frame:
+        linear-gradient(135deg,
+            rgba(56, 189, 248, 0.86) 0%,
+            rgba(14, 165, 233, 0.54) 38%,
+            rgba(245, 158, 11, 0.68) 100%);
+    --photo-country-overlay:
+        radial-gradient(circle at top right, rgba(56, 189, 248, 0.16) 0%, transparent 56%),
+        radial-gradient(circle at bottom left, rgba(245, 158, 11, 0.10) 0%, transparent 42%);
+    --photo-country-ribbon: linear-gradient(180deg, var(--card-accent), var(--card-accent-2));
 
     display: grid;
     grid-template-columns: minmax(0, 1fr) var(--photo-action-rail-width);
@@ -317,14 +326,17 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    border: 1px solid var(--card-border);
+    border: 1.5px solid transparent;
     border-radius: $standard-border-radius;
     background:
-        linear-gradient(140deg, var(--card-surface-top), var(--card-surface-bottom));
-    box-shadow: var(--card-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        linear-gradient(140deg, var(--card-surface-top), var(--card-surface-bottom)) padding-box,
+        var(--photo-country-frame) border-box;
+    box-shadow:
+        var(--card-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.04);
     transition:
         transform 180ms ease,
-        border-color 180ms ease,
         box-shadow 180ms ease,
         filter 180ms ease;
 
@@ -332,9 +344,7 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
         content: "";
         position: absolute;
         inset: 0;
-        background:
-            radial-gradient(circle at top right, rgba(56, 189, 248, 0.14) 0%, transparent 58%),
-            radial-gradient(circle at bottom left, rgba(245, 158, 11, 0.08) 0%, transparent 42%);
+        background: var(--photo-country-overlay);
         pointer-events: none;
         z-index: 0;
     }
@@ -344,7 +354,7 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
         position: absolute;
         inset: 0 auto 0 0;
         width: 4px;
-        background: linear-gradient(180deg, var(--card-accent), var(--card-accent-2));
+        background: var(--photo-country-ribbon);
         opacity: 0.92;
         pointer-events: none;
         z-index: 0;
@@ -358,8 +368,10 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
     &:hover,
     &:focus-within {
         transform: translateY(-2px);
-        border-color: color-mix(in srgb, var(--card-accent) 54%, var(--card-border) 46%);
-        box-shadow: var(--card-shadow-hover), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        box-shadow:
+            var(--card-shadow-hover),
+            inset 0 1px 0 rgba(255, 255, 255, 0.06),
+            inset 0 0 0 1px color-mix(in srgb, var(--card-accent) 32%, rgba(255, 255, 255, 0.08));
         filter: saturate(1.03);
     }
 
@@ -370,6 +382,126 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
         --photo-action-rail-width: calc(var(--photo-action-size) + 0.45rem);
         column-gap: 0.62rem;
     }
+}
+
+article.article-timeline--art-photography div.article-timeline-item-info-for-timelines[data-country-style="macedonia"] {
+    --card-accent: #facc15;
+    --card-accent-2: #ef4444;
+    --photo-country-frame:
+        conic-gradient(from 180deg at 0% 50%,
+            rgba(248, 113, 113, 0.92) 0deg,
+            rgba(239, 68, 68, 0.92) 48deg,
+            rgba(250, 204, 21, 0.92) 88deg,
+            rgba(239, 68, 68, 0.88) 132deg,
+            rgba(248, 113, 113, 0.92) 180deg,
+            rgba(239, 68, 68, 0.88) 228deg,
+            rgba(250, 204, 21, 0.92) 272deg,
+            rgba(239, 68, 68, 0.92) 320deg,
+            rgba(248, 113, 113, 0.92) 360deg);
+    --photo-country-overlay:
+        radial-gradient(circle at 11% 50%, rgba(250, 204, 21, 0.34) 0 10%, transparent 11% 100%),
+        linear-gradient(24deg, transparent 44%, rgba(250, 204, 21, 0.18) 47%, transparent 50%),
+        linear-gradient(-24deg, transparent 46%, rgba(250, 204, 21, 0.16) 49%, transparent 52%),
+        radial-gradient(circle at top right, rgba(239, 68, 68, 0.18) 0%, transparent 58%);
+    --photo-country-ribbon: linear-gradient(180deg, #facc15, #ef4444);
+}
+
+article.article-timeline--art-photography div.article-timeline-item-info-for-timelines[data-country-style="greece"] {
+    --card-accent: #60a5fa;
+    --card-accent-2: #ffffff;
+    --photo-country-frame:
+        linear-gradient(180deg,
+            #60a5fa 0 12.5%,
+            #ffffff 12.5% 25%,
+            #60a5fa 25% 37.5%,
+            #ffffff 37.5% 50%,
+            #60a5fa 50% 62.5%,
+            #ffffff 62.5% 75%,
+            #60a5fa 75% 87.5%,
+            #ffffff 87.5% 100%);
+    --photo-country-overlay:
+        linear-gradient(90deg, rgba(96, 165, 250, 0.24) 0 22%, transparent 22% 100%),
+        linear-gradient(0deg, transparent 0 32%, rgba(255, 255, 255, 0.24) 32% 40%, transparent 40% 100%),
+        linear-gradient(90deg, transparent 0 9%, rgba(255, 255, 255, 0.22) 9% 14%, transparent 14% 100%),
+        radial-gradient(circle at top right, rgba(96, 165, 250, 0.18) 0%, transparent 56%);
+    --photo-country-ribbon: linear-gradient(180deg, #ffffff, #60a5fa);
+}
+
+article.article-timeline--art-photography div.article-timeline-item-info-for-timelines[data-country-style="bulgaria"] {
+    --card-accent: #22c55e;
+    --card-accent-2: #ef4444;
+    --photo-country-frame:
+        linear-gradient(180deg,
+            #ffffff 0 33.333%,
+            #22c55e 33.333% 66.666%,
+            #ef4444 66.666% 100%);
+    --photo-country-overlay:
+        radial-gradient(circle at 84% 20%, rgba(255, 255, 255, 0.28) 0%, transparent 24%),
+        linear-gradient(135deg, rgba(34, 197, 94, 0.14) 0 42%, transparent 42% 100%),
+        linear-gradient(-135deg, rgba(239, 68, 68, 0.12) 0 26%, transparent 26% 100%);
+    --photo-country-ribbon: linear-gradient(180deg, #ffffff, #22c55e 56%, #ef4444);
+}
+
+article.article-timeline--art-photography div.article-timeline-item-info-for-timelines[data-country-style="serbia"] {
+    --card-accent: #ef4444;
+    --card-accent-2: #2563eb;
+    --photo-country-frame:
+        linear-gradient(180deg,
+            #ef4444 0 33.333%,
+            #2563eb 33.333% 66.666%,
+            #ffffff 66.666% 100%);
+    --photo-country-overlay:
+        radial-gradient(circle at 14% 22%, rgba(255, 215, 0, 0.22) 0 7%, transparent 8% 100%),
+        linear-gradient(110deg, rgba(255, 255, 255, 0.14) 0 18%, transparent 18% 100%),
+        radial-gradient(circle at top right, rgba(37, 99, 235, 0.18) 0%, transparent 54%);
+    --photo-country-ribbon: linear-gradient(180deg, #ef4444, #2563eb 62%, #ffffff);
+}
+
+article.article-timeline--art-photography div.article-timeline-item-info-for-timelines[data-country-style="bosnia-herzegovina"] {
+    --card-accent: #2563eb;
+    --card-accent-2: #facc15;
+    --photo-country-frame:
+        linear-gradient(135deg,
+            #1d4ed8 0 63%,
+            #facc15 63% 69%,
+            #1d4ed8 69% 100%);
+    --photo-country-overlay:
+        radial-gradient(circle at 76% 18%, rgba(255, 255, 255, 0.34) 0 3%, transparent 4% 100%),
+        radial-gradient(circle at 70% 28%, rgba(255, 255, 255, 0.30) 0 3%, transparent 4% 100%),
+        radial-gradient(circle at 64% 38%, rgba(255, 255, 255, 0.28) 0 3%, transparent 4% 100%),
+        radial-gradient(circle at 58% 48%, rgba(255, 255, 255, 0.24) 0 3%, transparent 4% 100%),
+        linear-gradient(135deg, transparent 0 58%, rgba(250, 204, 21, 0.2) 58% 66%, transparent 66% 100%);
+    --photo-country-ribbon: linear-gradient(180deg, #facc15, #2563eb);
+}
+
+article.article-timeline--art-photography div.article-timeline-item-info-for-timelines[data-country-style="croatia"] {
+    --card-accent: #ef4444;
+    --card-accent-2: #2563eb;
+    --photo-country-frame:
+        linear-gradient(180deg,
+            #ef4444 0 33.333%,
+            #ffffff 33.333% 66.666%,
+            #2563eb 66.666% 100%);
+    --photo-country-overlay:
+        linear-gradient(90deg, transparent 0 38%, rgba(239, 68, 68, 0.14) 38% 43%, rgba(255, 255, 255, 0.16) 43% 48%, rgba(37, 99, 235, 0.16) 48% 53%, transparent 53% 100%),
+        radial-gradient(circle at top right, rgba(37, 99, 235, 0.18) 0%, transparent 56%),
+        radial-gradient(circle at bottom left, rgba(239, 68, 68, 0.14) 0%, transparent 40%);
+    --photo-country-ribbon: linear-gradient(180deg, #ef4444, #ffffff 50%, #2563eb);
+}
+
+article.article-timeline--art-photography div.article-timeline-item-info-for-timelines[data-country-style="germany"] {
+    --card-accent: #f59e0b;
+    --card-accent-2: #ef4444;
+    --photo-country-frame:
+        linear-gradient(180deg,
+            #111827 0 33.333%,
+            #ef4444 33.333% 66.666%,
+            #f59e0b 66.666% 100%);
+    --photo-country-overlay:
+        linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0 26%, transparent 26% 100%),
+        radial-gradient(circle at 82% 18%, rgba(239, 68, 68, 0.18) 0%, transparent 24%),
+        radial-gradient(circle at bottom left, rgba(17, 24, 39, 0.22) 0%, transparent 42%);
+    --photo-country-ribbon: linear-gradient(180deg, #111827, #ef4444 58%, #f59e0b);
 }
 
 article.article-timeline--art-photography div.article-timeline-item-info-for-timelines-header,

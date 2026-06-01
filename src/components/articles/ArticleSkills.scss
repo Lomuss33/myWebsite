@@ -499,6 +499,10 @@ article.article-skills-article-3-section-education {
             transition: opacity 180ms ease;
             transform: none;
         }
+
+        div.article-skills-item-education-language div.article-skills-item-popup-body.article-skills-item-popup-body-expand {
+            transition: opacity 180ms ease, max-height 180ms ease;
+        }
     }
 
     div.article-skills-item-title-main {
@@ -558,8 +562,18 @@ article.article-skills-article-3-section-education {
         min-height: 0;
     }
 
+    div.article-skills-item-education-language div.article-skills-item-body.article-skills-item-body-expand {
+        display: flex;
+        flex-direction: column;
+    }
+
     div.article-skills-item-education-language div.article-skills-item-body-default {
         min-height: 0;
+    }
+
+    div.article-skills-item-education-language div.article-skills-item-body.article-skills-item-body-expand
+        div.article-skills-item-body-default.article-skills-item-popup-open {
+        display: none;
     }
 
     div.article-skills-item-education-language div.article-skills-item-body.article-skills-item-popup-open {
@@ -580,6 +594,23 @@ article.article-skills-article-3-section-education {
 
     div.article-skills-item-education-language div.article-skills-item-popup-body {
         z-index: 3;
+    }
+
+    div.article-skills-item-education-language div.article-skills-item-popup-body.article-skills-item-popup-body-expand {
+        position: relative;
+        inset: auto;
+        max-height: 0;
+        margin-top: 0;
+        overflow: hidden;
+        pointer-events: none;
+        transform: none;
+        transition: max-height 220ms ease, opacity 160ms ease, margin-top 180ms ease;
+    }
+
+    div.article-skills-item-education-language div.article-skills-item-popup-body.article-skills-item-popup-body-expand.article-skills-item-popup-open {
+        max-height: calc(var(--education-language-popup-expanded-height, 0px) + 2px);
+        margin-top: 6px;
+        pointer-events: auto;
     }
 
     div.article-skills-item-education-language div.article-skills-item-popup-body-inner {

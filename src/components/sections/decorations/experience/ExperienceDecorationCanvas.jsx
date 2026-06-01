@@ -10,6 +10,10 @@ const TREE_CENTER_HEIGHT_RATIO = 0.88
 const TREE_WIDTH_SCALE = 0.8
 const MAX_DEVICE_PIXEL_RATIO = 1.15
 const BRANCH_MAX_DEVICE_PIXEL_RATIO = 1.25
+const MAX_SHADER_RENDER_WIDTH = 2304
+const MAX_SHADER_RENDER_HEIGHT = 4096
+const MAX_BRANCH_RENDER_WIDTH = 2048
+const MAX_BRANCH_RENDER_HEIGHT = 2048
 
 const vertexSource = `#version 300 es
 in vec4 position;
@@ -181,7 +185,10 @@ function measureLayout(canvas) {
 }
 
 function resizeCanvas(canvas, gl, layout) {
-    const pixelRatio = Math.max(1, Math.min(MAX_DEVICE_PIXEL_RATIO, (window.devicePixelRatio || 1) * 0.75))
+    const basePixelRatio = Math.max(1, Math.min(MAX_DEVICE_PIXEL_RATIO, (window.devicePixelRatio || 1) * 0.75))
+    const widthRatioLimit = MAX_SHADER_RENDER_WIDTH / Math.max(layout.width, 1)
+    const heightRatioLimit = MAX_SHADER_RENDER_HEIGHT / Math.max(layout.height, 1)
+    const pixelRatio = Math.max(0.35, Math.min(basePixelRatio, widthRatioLimit, heightRatioLimit))
     const width = Math.max(1, Math.round(layout.width * pixelRatio))
     const height = Math.max(1, Math.round(layout.height * pixelRatio))
 
@@ -348,8 +355,11 @@ function resizeBottomCanvas(canvas, layout) {
     if(!layout.bottomBand)
         return null
 
-    const pixelRatio = Math.max(1, Math.min(BRANCH_MAX_DEVICE_PIXEL_RATIO, window.devicePixelRatio || 1))
+    const basePixelRatio = Math.max(1, Math.min(BRANCH_MAX_DEVICE_PIXEL_RATIO, window.devicePixelRatio || 1))
     const band = layout.bottomBand
+    const widthRatioLimit = MAX_BRANCH_RENDER_WIDTH / Math.max(band.width, 1)
+    const heightRatioLimit = MAX_BRANCH_RENDER_HEIGHT / Math.max(band.height, 1)
+    const pixelRatio = Math.max(0.35, Math.min(basePixelRatio, widthRatioLimit, heightRatioLimit))
     const width = Math.max(1, Math.round(band.width * pixelRatio))
     const height = Math.max(1, Math.round(band.height * pixelRatio))
 

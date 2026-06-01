@@ -15,7 +15,8 @@ function ImageView({
     loading = "lazy",
     decoding = "async",
     fetchPriority = "auto",
-    sizes = null
+    sizes = null,
+    ...restProps
 }) {
     const imageStatus = useImageStatus(src)
     const loadStatus = imageStatus.status
@@ -33,7 +34,8 @@ function ImageView({
     return (
         <div className={`image-view ${className}`}
              id={id}
-             style={style}>
+             style={style}
+             {...restProps}>
             <ImageViewContainer resolvedSrc={imageStatus.resolvedSrc}
                                 resolvedSrcSet={imageStatus.normalizedSource.srcSet}
                                 sizes={sizes || imageStatus.normalizedSource.sizes}

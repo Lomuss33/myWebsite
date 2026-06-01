@@ -285,7 +285,9 @@ function ArticleSkillsItem({ itemWrapper }) {
     const popupToggleRef = useRef(null)
     const popupInnerRef = useRef(null)
     const popupCopyRef = useRef(null)
+    const [popupExpandedHeight, setPopupExpandedHeight] = useState(0)
     const popupClass = isPopupOpen ? `article-skills-item-popup-open` : ``
+    const usesExpandablePopupLayout = isEducationLanguageCard && viewport.innerWidth >= 576
 
     if (itemWrapper.articleWrapper.settings.roundIcons) {
         avatarClasses.push(`article-skills-item-avatar-round`)
@@ -300,6 +302,7 @@ function ArticleSkillsItem({ itemWrapper }) {
             return
 
         clearEducationLanguagePopupFitVariables(popupInnerRef.current)
+        setPopupExpandedHeight(0)
     }, [isPopupOpen, popupRows])
 
     useLayoutEffect(() => {
@@ -314,6 +317,12 @@ function ArticleSkillsItem({ itemWrapper }) {
 
             if(!popupInnerEl || !popupCopyEl)
                 return
+
+            if(usesExpandablePopupLayout) {
+                clearEducationLanguagePopupFitVariables(popupInnerEl)
+                setPopupExpandedHeight(Math.ceil(popupInnerEl.scrollHeight))
+                return
+            }
 
             const innerWidth = viewport.innerWidth || window.innerWidth
             const defaultFitValues = getEducationLanguagePopupDefaults(innerWidth)
@@ -372,7 +381,7 @@ function ArticleSkillsItem({ itemWrapper }) {
         return () => {
             window.cancelAnimationFrame(frameId)
         }
-    }, [isPopupEnabled, isPopupOpen, popupRows, viewport.innerWidth])
+    }, [isPopupEnabled, isPopupOpen, popupRows, usesExpandablePopupLayout, viewport.innerWidth])
 
     useEffect(() => {
         if(!isPopupEnabled || !isPopupPinned)
@@ -466,6 +475,8 @@ function ArticleSkillsItem({ itemWrapper }) {
                                    isEducationLanguageCard={isEducationLanguageCard}
                                    isPopupOpen={isPopupOpen}
                                    isPopupEnabled={isPopupEnabled}
+                                   usesExpandablePopupLayout={usesExpandablePopupLayout}
+                                   popupExpandedHeight={popupExpandedHeight}
                                    popupRows={popupRows}
                                    popupRef={popupRef}
                                    popupInnerRef={popupInnerRef}
@@ -484,6 +495,8 @@ function ArticleSkillsItemInfo({
     isEducationLanguageCard = false,
     isPopupOpen = false,
     isPopupEnabled = false,
+    usesExpandablePopupLayout = false,
+    popupExpandedHeight = 0,
     popupRows = [],
     popupRef,
     popupInnerRef,
@@ -545,9 +558,12 @@ function ArticleSkillsItemInfo({
     )
 
     const popupBody = isPopupEnabled ? (
-        <div className={`article-skills-item-popup-body ${isPopupOpen ? `article-skills-item-popup-open` : ``}`.trim()}
+        <div className={`article-skills-item-popup-body ${usesExpandablePopupLayout ? `article-skills-item-popup-body-expand` : ``} ${isPopupOpen ? `article-skills-item-popup-open` : ``}`.trim()}
              role="note"
              aria-hidden={!isPopupOpen}
+             style={usesExpandablePopupLayout ? {
+                 "--education-language-popup-expanded-height": `${popupExpandedHeight}px`
+             } : undefined}
              ref={popupRef}>
             <div className={`article-skills-item-popup-body-inner`}
                  ref={popupInnerRef}>
@@ -598,7 +614,7 @@ function ArticleSkillsItemInfo({
             </div>
 
             {isEducationLanguageCard ? (
-                <div className={`article-skills-item-body ${isPopupOpen ? `article-skills-item-popup-open` : ``}`.trim()}>
+                <div className={`article-skills-item-body ${usesExpandablePopupLayout ? `article-skills-item-body-expand` : ``} ${isPopupOpen ? `article-skills-item-popup-open` : ``}`.trim()}>
                     <div className={`article-skills-item-body-default ${isPopupOpen ? `article-skills-item-popup-open` : ``}`.trim()}>
                         {defaultBodyContent}
                     </div>

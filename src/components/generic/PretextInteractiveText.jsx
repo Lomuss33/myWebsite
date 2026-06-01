@@ -35,7 +35,8 @@ function PretextInteractiveText({
     typographyVersion = 0,
     pointerScopeSelector = null,
     pointerScopeIgnoreX = false,
-    gravityZoneMode = "standard"
+    gravityZoneMode = "standard",
+    widthMeasurementMode = "parent_max"
 }) {
     const rootRef = useRef(null)
     const contentRef = useRef(null)
@@ -187,7 +188,7 @@ function PretextInteractiveText({
 
         const resolveStableWidth = (measuredWidth = 0) => {
             // Prefer layout widths (not affected by transforms during slide transitions).
-            const contentWidth =
+            const measuredContentWidth =
                 element.clientWidth ||
                 element.offsetWidth ||
                 element.getBoundingClientRect?.().width ||
@@ -203,7 +204,12 @@ function PretextInteractiveText({
                 rootElement.parentElement?.getBoundingClientRect?.().width ||
                 0
 
-            const best = Math.max(measuredWidth || 0, contentWidth, rootWidth, parentWidth)
+            if (widthMeasurementMode === "self_only") {
+                const bestSelfWidth = Math.max(measuredWidth || 0, measuredContentWidth, rootWidth)
+                return bestSelfWidth
+            }
+
+            const best = Math.max(measuredWidth || 0, measuredContentWidth, rootWidth, parentWidth)
             return best
         }
 
@@ -253,7 +259,7 @@ function PretextInteractiveText({
         scheduleWidthRetry()
 
         return () => observer.disconnect()
-    }, [html, typographyVersion])
+    }, [html, typographyVersion, widthMeasurementMode])
 
     useEffect(() => {
         if (!revealOnScroll || isInView) {

@@ -18,12 +18,12 @@ const FEATURE_TEXT_FIT_TOLERANCE = 4
 const MOBILE_VIEW_MEDIA_QUERY = "(max-width: 575.98px)"
 const STACKED_FEATURE_MEDIA_QUERY = "(max-width: 991.98px)"
 const ABOUT_WORD_FIT_WIDTH_RATIO = 0.94
-const WOOD_PRODUCTS_FIT_MIN_FONT_SIZE_PX = 16
-const WOOD_PRODUCTS_FIT_MAX_FONT_SIZE_PX = 22
-const WOOD_PRODUCTS_FIT_LINE_HEIGHT_RATIO = 1.62
-const WOOD_PRODUCTS_FIT_MAX_WIDTH_RATIO = 0.71
+const WOOD_PRODUCTS_FIT_MIN_FONT_SIZE_PX = 19.5
+const WOOD_PRODUCTS_FIT_MAX_FONT_SIZE_PX = 24
+const WOOD_PRODUCTS_FIT_LINE_HEIGHT_RATIO = 1.56
+const WOOD_PRODUCTS_FIT_MAX_WIDTH_RATIO = 0.92
 const WOOD_PRODUCTS_FIT_MIN_WIDTH_PX = 250
-const WOOD_PRODUCTS_FIT_MAX_WIDTH_PX = 372
+const WOOD_PRODUCTS_FIT_MAX_WIDTH_PX = 620
 const WOOD_PRODUCTS_FIT_RESERVED_HEIGHT_PX = 10
 const WOOD_PRODUCTS_FIT_BINARY_SEARCH_PRECISION_PX = 0.2
 const PREPARED_TEXT_CACHE = new Map()
@@ -129,6 +129,10 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
         itemWrapper.articleWrapper.sectionId === "my-writings" &&
         itemWrapper.articleWrapper.id === 2 &&
         itemWrapper.id === 1
+    const isWritingBookFeature =
+        itemWrapper.articleWrapper.sectionId === "my-writings" &&
+        itemWrapper.articleWrapper.id === 2 &&
+        itemWrapper.id === 2
     const isWoodProductsFeature =
         itemWrapper.articleWrapper.sectionId === "experience" &&
         itemWrapper.articleWrapper.id === 2 &&
@@ -147,7 +151,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
         isSquareFitLayout ||
         (isFixedViewportImageLayout && isHomeStyleIntro) ||
         Boolean(articleSettings.featureTextFitToMediaHeight)
-    const usesWoodProductsAdaptiveLayout = isWoodProductsFeature
+    const usesWoodProductsAdaptiveLayout = false
     const defaultFitMaxScale = isHomeStyleIntro ? FEATURE_TEXT_ABOUT_INTRO_MAX_SCALE : FEATURE_TEXT_DEFAULT_MAX_SCALE
     const textFontSize = computeScaledFontSize(baseTypographyRef, textScale)
     const textLineHeight = computeScaledLineHeight(baseTypographyRef, textScale)
@@ -484,7 +488,14 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                                         terrainVariant={"detailed"}
                                         pointerScopeSelector={".layout-content"}
                                         pointerScopeIgnoreX={true}
+                                        widthMeasurementMode={"self_only"}
                                         typographyVersion={typographyVersion}/>
+            )
+        }
+
+        if (isWoodProductsFeature) {
+            return (
+                <div dangerouslySetInnerHTML={{__html: html}}/>
             )
         }
 
@@ -496,6 +507,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                                         terrainVariant={"detailed"}
                                         pointerScopeSelector={".layout-content"}
                                         pointerScopeIgnoreX={true}
+                                        widthMeasurementMode={itemWrapper.articleWrapper.sectionId === "my-writings" ? "self_only" : "parent_max"}
                                         typographyVersion={typographyVersion}/>
             )
         }
@@ -508,6 +520,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
     const itemClassName = [
         "article-feature-item",
         `article-feature-item-id-${itemWrapper.id}`,
+        isWritingBookFeature ? "article-feature-item-writing-book" : "",
         isWoodProductsFeature ? "article-feature-item-wood-products" : "",
         isHomeStyleIntro ? "article-feature-item-home-style-intro" : "",
         isManagedSplitLayout ? "article-feature-item-layout-managed" : "",
@@ -522,6 +535,12 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
             return
 
         setShowAlternateImage(current => !current)
+    }
+
+    const floatingFramePointerProps = {
+        onPointerEnter: floatingFrame.onPointerEnter,
+        onPointerMove: floatingFrame.onPointerMove,
+        onPointerLeave: floatingFrame.onPointerLeave
     }
 
     const adaptiveTextStyle = usesWoodProductsAdaptiveLayout ?
@@ -541,18 +560,15 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
         } :
         undefined
 
-    return (
-        <div ref={itemRef}
-             className={itemClassName}>
+    const featureBody = (
+        <>
             <div ref={mediaRef}
-                 className={`article-feature-item-media`}
-                 onPointerEnter={floatingFrame.onPointerEnter}
-                 onPointerMove={floatingFrame.onPointerMove}
-                 onPointerLeave={floatingFrame.onPointerLeave}>
+                 className={`article-feature-item-media`}>
                 {itemWrapper.img ? (
                     hasAlternateImage ? (
                         <div className={`article-feature-item-image article-feature-item-image-switch floating-frame ${showAlternateImage ? "article-feature-item-image-switch-alt" : ""}`}
                              style={imageStyle}
+                             {...floatingFramePointerProps}
                              onClick={onMediaClick}
                              role="button"
                              tabIndex={0}
@@ -589,6 +605,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                                    alt={itemWrapper.imageAlt}
                                    className={`article-feature-item-image floating-frame`}
                                    style={imageStyle}
+                                   {...floatingFramePointerProps}
                                    hideSpinner={true}
                                    sizes={imageSizes}
                                    loading={isHomeStyleIntro ? "eager" : "lazy"}
@@ -596,7 +613,8 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                     )
                 ) : (
                     <div className={`article-feature-item-image article-feature-item-image-fallback floating-frame`}
-                         style={imageStyle}/>
+                         style={imageStyle}
+                         {...floatingFramePointerProps}/>
                 )}
             </div>
 
@@ -622,6 +640,17 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                     </div>
                 </div>
             </div>
+        </>
+    )
+
+    return (
+        <div ref={itemRef}
+             className={itemClassName}>
+            {isWritingBookFeature ? (
+                <div className={`article-feature-item-writing-book-shell`}>
+                    {featureBody}
+                </div>
+            ) : featureBody}
         </div>
     )
 }
@@ -895,7 +924,7 @@ function clamp(value, min, max) {
 
 function getFeatureImageSizes(sectionId, featureLayoutMode, isHomeStyleIntro) {
     if(sectionId === "experience")
-        return "(max-width: 991.98px) calc(100vw - 48px), 420px"
+        return "(max-width: 575.98px) calc(100vw - 32px), (max-width: 991.98px) 640px, 820px"
 
     if(sectionId === "my-writings")
         return "(max-width: 991.98px) calc(100vw - 48px), 560px"

@@ -78,11 +78,11 @@ article#article-2-section-experience {
     }
 
     div.article-feature-item {
-        width: min(100%, 1040px);
-        max-width: 1040px;
+        width: 100%;
+        max-width: none;
         margin-inline: auto;
-        grid-template-columns: minmax(240px, 0.88fr) minmax(0, 1.12fr);
-        gap: clamp(24px, 3vw, 42px);
+        grid-template-columns: 1fr;
+        gap: 18px;
         align-items: stretch;
         justify-content: center;
         padding: clamp(18px, 2vw, 24px);
@@ -105,8 +105,8 @@ article#article-2-section-experience {
     }
 
     div.article-feature-item-image {
-        width: 100%;
-        max-width: 420px;
+        width: min(100%, 640px);
+        max-width: none;
         height: auto;
         aspect-ratio: var(--article-feature-image-aspect-ratio, 707 / 1000);
         background-color: rgba(255, 255, 255, 0.02);
@@ -128,9 +128,10 @@ article#article-2-section-experience {
     div.article-feature-item-content {
         width: 100%;
         min-height: 100%;
-        justify-content: center;
-        align-items: center;
-        justify-self: stretch;
+        max-width: 100%;
+        justify-content: flex-start;
+        align-items: flex-start;
+        justify-self: auto;
         z-index: 1;
         background: transparent;
     }
@@ -143,8 +144,8 @@ article#article-2-section-experience {
     }
 
     div.article-feature-item-text {
-        max-width: 58ch;
-        margin-inline: auto;
+        max-width: 100%;
+        margin-inline: 0;
         color: #e2e8f0;
         background: transparent;
 
@@ -171,34 +172,46 @@ article#article-2-section-experience {
     }
 
     div.article-feature-item-text-measure-square {
-        max-width: 54ch;
+        max-width: 100%;
         background: transparent;
     }
 
     div.article-feature-item.article-feature-item-wood-products {
         position: relative;
         isolation: isolate;
-        grid-template-columns: minmax(240px, 0.88fr) minmax(320px, 0.88fr);
-    }
-
-    div.article-feature-item.article-feature-item-wood-products div.article-feature-item-media {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        width: min(100%, 1280px);
+        margin-inline: auto;
+        gap: 24px;
         align-items: stretch;
     }
 
+    div.article-feature-item.article-feature-item-wood-products div.article-feature-item-media {
+        align-items: center;
+        justify-content: center;
+        min-height: 100%;
+    }
+
     div.article-feature-item.article-feature-item-wood-products div.article-feature-item-image {
+        width: 100%;
         max-width: 100%;
         height: 100%;
-        min-height: 100%;
-        border-radius: 22px 12px 12px 22px;
+        min-height: clamp(420px, 34vw, 620px);
+        border-radius: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         img.image-view-img {
-            object-fit: cover;
-            border-radius: 22px 12px 12px 22px;
+            object-fit: contain;
+            object-position: center;
+            border-radius: 22px;
         }
     }
 
     div.article-feature-item.article-feature-item-wood-products div.article-feature-item-content {
         align-items: stretch;
+        min-height: 100%;
     }
 
     div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text {
@@ -206,8 +219,8 @@ article#article-2-section-experience {
         align-items: stretch;
         max-width: none;
         min-height: 100%;
-        font-size: clamp(1.2rem, 0.56vw + 1.05rem, 1.42rem);
-        line-height: 1.88;
+        font-size: clamp(1.12rem, 0.3vw + 1.04rem, 1.28rem);
+        line-height: 1.68;
     }
 
     div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-body {
@@ -219,11 +232,11 @@ article#article-2-section-experience {
         width: 100%;
         min-height: 100%;
         gap: 0.2rem;
-        padding: clamp(34px, 4vw, 48px) clamp(36px, 4.2vw, 52px) clamp(32px, 3.6vw, 44px) clamp(28px, 3.1vw, 38px);
-        border-radius: 12px 22px 22px 12px;
+        padding: clamp(28px, 3vw, 38px) clamp(28px, 3.2vw, 40px) clamp(28px, 3vw, 36px) clamp(24px, 2.8vw, 32px);
+        border-radius: 22px;
         color: #3f2717;
         background:
-            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 520 760' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='page' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%2399623b'/%3E%3Cstop offset='8%25' stop-color='%23b67a4d'/%3E%3Cstop offset='52%25' stop-color='%23d59e6f'/%3E%3Cstop offset='100%25' stop-color='%23a0663f'/%3E%3C/linearGradient%3E%3ClinearGradient id='sheen' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23fff3e4' stop-opacity='0.28'/%3E%3Cstop offset='28%25' stop-color='%23fff3e4' stop-opacity='0.08'/%3E%3Cstop offset='100%25' stop-color='%23512f18' stop-opacity='0.08'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='10' y='10' width='500' height='740' rx='30' fill='url(%23page)'/%3E%3Crect x='10' y='10' width='500' height='740' rx='30' fill='url(%23sheen)'/%3E%3Cpath d='M58 30c-12 120-15 235-15 350 0 115 3 230 15 350' fill='none' stroke='%23fff8f0' stroke-opacity='0.34' stroke-width='22' stroke-linecap='round'/%3E%3Cpath d='M72 28c-6 118-8 235-8 352 0 117 2 234 8 352' fill='none' stroke='%2361381f' stroke-opacity='0.16' stroke-width='5' stroke-linecap='round'/%3E%3Cpath d='M120 72h330' stroke='%23fff2e2' stroke-opacity='0.12' stroke-width='2'/%3E%3Cpath d='M120 688h330' stroke='%235d3921' stroke-opacity='0.08' stroke-width='2'/%3E%3C/svg%3E") center / 100% 100% no-repeat,
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 520 760' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='page' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%2399623b'/%3E%3Cstop offset='8%25' stop-color='%23b67a4d'/%3E%3Cstop offset='52%25' stop-color='%23d59e6f'/%3E%3Cstop offset='100%25' stop-color='%23a0663f'/%3E%3C/linearGradient%3E%3ClinearGradient id='sheen' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23fff3e4' stop-opacity='0.28'/%3E%3Cstop offset='28%25' stop-color='%23fff3e4' stop-opacity='0.08'/%3E%3Cstop offset='100%25' stop-color='%23512f18' stop-opacity='0.08'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='10' y='10' width='500' height='740' rx='30' fill='url(%23page)'/%3E%3Crect x='10' y='10' width='500' height='740' rx='30' fill='url(%23sheen)'/%3E%3Cpath d='M58 30c-12 120-15 235-15 350 0 115 3 230 15 350' fill='none' stroke='%23e3bc92' stroke-opacity='0.24' stroke-width='22' stroke-linecap='round'/%3E%3Cpath d='M72 28c-6 118-8 235-8 352 0 117 2 234 8 352' fill='none' stroke='%2361381f' stroke-opacity='0.16' stroke-width='5' stroke-linecap='round'/%3E%3Cpath d='M120 72h330' stroke='%23fff2e2' stroke-opacity='0.12' stroke-width='2'/%3E%3Cpath d='M120 688h330' stroke='%235d3921' stroke-opacity='0.08' stroke-width='2'/%3E%3C/svg%3E") center / 100% 100% no-repeat,
             linear-gradient(180deg, #c58958 0%, #aa7046 100%);
         box-shadow:
             inset 22px 0 30px rgba(72, 40, 21, 0.18),
@@ -235,8 +248,8 @@ article#article-2-section-experience {
     div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-body::before {
         content: "";
         position: absolute;
-        inset: 10px 10px 10px 4px;
-        border-radius: 10px 18px 18px 10px;
+        inset: 10px;
+        border-radius: 16px;
         border-left: 1px solid rgba(255, 244, 228, 0.28);
         border-top: 1px solid rgba(255, 244, 228, 0.18);
         border-right: 1px solid rgba(92, 57, 34, 0.14);
@@ -259,65 +272,117 @@ article#article-2-section-experience {
     div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-content {
         position: relative;
         z-index: 1;
-        width: min(100%, 27.5rem);
-        max-width: calc(100% - 0.75rem);
+        width: 100%;
+        max-width: calc(100% - 0.25rem);
     }
 
     div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-body p {
         width: 100%;
         max-width: 100%;
-        margin-bottom: 1rem;
-        color: #4a2d1a;
-        line-height: 1.88;
+        margin-bottom: 0.9rem;
+        color: #fff7ea;
+        line-height: 1.68;
         letter-spacing: 0.012em;
         font-weight: 650;
         text-wrap: pretty;
         overflow-wrap: anywhere;
         word-break: normal;
-        text-shadow: 0 1px 0 rgba(255, 247, 238, 0.1);
+        text-shadow: 0 1px 0 rgba(63, 37, 17, 0.2);
     }
 
     div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-body p:last-child {
         margin-bottom: 0;
         padding-top: 0.9rem;
         border-top: 1px solid rgba(92, 57, 34, 0.14);
-        font-size: 0.92em;
-        letter-spacing: 0.03em;
-        text-transform: uppercase;
-        color: rgba(74, 45, 26, 0.84);
+        font-size: 0.84em;
+        letter-spacing: 0.01em;
+        text-transform: none;
+        color: rgba(255, 247, 234, 0.92);
     }
 
     div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-body strong {
-        color: #2b180d;
+        color: #ffe39a;
         font-weight: 800;
     }
 
     div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-body em {
-        color: rgba(74, 45, 26, 0.74);
+        color: #ffe08a;
         font-style: normal;
-        font-weight: 600;
+        font-weight: 700;
     }
 
     div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-body a {
-        color: #2b180d;
-        text-decoration-color: rgba(43, 24, 13, 0.26);
+        color: #d24735;
+        text-decoration-color: rgba(210, 71, 53, 0.34);
         text-decoration-thickness: 0.08em;
-        font-weight: 600;
+        font-weight: 800;
+    }
+
+    div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-body p:last-child em {
+        font-size: 0.92em;
+    }
+
+    div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-body p:last-child a {
+        font-size: 1.1em;
+    }
+
+    [data-theme="dark"] article#article-2-section-experience div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-body p {
+        color: #162634;
+        text-shadow: 0 1px 0 rgba(236, 244, 255, 0.14);
+    }
+
+    [data-theme="dark"] article#article-2-section-experience div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-body p:last-child {
+        color: rgba(22, 38, 52, 0.9);
+    }
+
+    [data-theme="dark"] article#article-2-section-experience div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-body strong,
+    [data-theme="dark"] article#article-2-section-experience div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-body em {
+        color: #0f6ea8;
+    }
+
+    [data-theme="dark"] article#article-2-section-experience div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-body a {
+        color: #d24735;
+        text-decoration-color: rgba(210, 71, 53, 0.34);
+    }
+
+    @include media-breakpoint-up(xxl) {
+        div.article-feature-item.article-feature-item-wood-products {
+            width: min(100%, 1440px);
+            gap: 28px;
+        }
+
+        div.article-feature-item.article-feature-item-wood-products div.article-feature-item-image {
+            min-height: clamp(500px, 36vw, 720px);
+        }
+
+        div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text {
+            font-size: clamp(1.24rem, 0.34vw + 1.12rem, 1.42rem);
+            line-height: 1.7;
+        }
+
+        div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-body {
+            padding: clamp(32px, 3.1vw, 42px) clamp(34px, 3.4vw, 46px) clamp(30px, 3vw, 40px) clamp(28px, 2.9vw, 36px);
+        }
+
+        div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-body p {
+            line-height: 1.7;
+        }
     }
 
     @include media-breakpoint-down(xl) {
         div.article-feature-item.article-feature-item-wood-products {
-            grid-template-columns: minmax(210px, 0.8fr) minmax(0, 1fr);
-            gap: 22px;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            width: min(100%, 1180px);
+            gap: 18px;
         }
 
         div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text {
-            font-size: clamp(1.08rem, 0.26vw + 1rem, 1.2rem);
-            line-height: 1.76;
+            font-size: clamp(1rem, 0.24vw + 0.98rem, 1.12rem);
+            line-height: 1.64;
         }
 
         div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-body {
-            padding: 28px 30px 28px 22px;
+            padding: 24px 24px 24px 22px;
         }
 
         div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-body::after {
@@ -326,7 +391,23 @@ article#article-2-section-experience {
 
         div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-content {
             width: 100%;
-            max-width: min(24rem, calc(100% - 0.5rem));
+            max-width: calc(100% - 0.25rem);
+        }
+
+        div.article-feature-item.article-feature-item-wood-products div.article-feature-item-image {
+            min-height: clamp(360px, 33vw, 500px);
+        }
+    }
+
+    @include media-breakpoint-down(lg) {
+        div.article-feature-item.article-feature-item-wood-products {
+            grid-template-columns: 1fr;
+            width: 100%;
+        }
+
+        div.article-feature-item.article-feature-item-wood-products div.article-feature-item-image {
+            height: auto;
+            min-height: 0;
         }
     }
 
@@ -372,10 +453,6 @@ article#article-2-section-experience {
             max-width: 100%;
         }
 
-        div.article-feature-item.article-feature-item-wood-products {
-            grid-template-columns: 1fr;
-        }
-
         div.article-feature-item.article-feature-item-wood-products div.article-feature-item-image {
             height: auto;
             min-height: 0;
@@ -383,7 +460,7 @@ article#article-2-section-experience {
 
         div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-body {
             min-height: 0;
-            padding: 28px 24px 26px 24px;
+            padding: 24px 20px 22px 20px;
             border-radius: 18px;
         }
 
@@ -395,7 +472,7 @@ article#article-2-section-experience {
         div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-body::after {
             top: 8px;
             bottom: 8px;
-            width: 16px;
+            width: 10px;
         }
 
         div.article-feature-item.article-feature-item-wood-products div.article-feature-item-image,
@@ -405,7 +482,7 @@ article#article-2-section-experience {
 
         div.article-feature-item.article-feature-item-wood-products div.article-feature-item-text-content {
             width: 100%;
-            max-width: calc(100% - 0.25rem);
+            max-width: 100%;
         }
     }
 }
@@ -1101,6 +1178,125 @@ div.article-feature-items.article-feature-items-section-my-writings {
         span.pretext-interactive-text-fragment-highlight,
         span.pretext-interactive-text-fragment-highlight span.pretext-interactive-text-grapheme {
             animation: none;
+        }
+    }
+}
+
+article#article-2-section-my-writings {
+    div.article-feature-items.article-feature-items-section-my-writings {
+        div.article-feature-item.article-feature-item-writing-book {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        div.article-feature-item-writing-book-shell {
+            display: grid;
+            grid-template-columns: 420px minmax(0, 34rem);
+            column-gap: clamp(18px, 1.8vw, 24px);
+            width: max-content;
+            max-width: calc(100% - clamp(64px, 10vw, 240px));
+            margin-inline: auto;
+            align-items: center;
+        }
+
+        div.article-feature-item.article-feature-item-writing-book div.article-feature-item-media {
+            width: 420px;
+            min-width: 420px;
+            max-width: 420px;
+            display: flex;
+            justify-content: center;
+        }
+
+        div.article-feature-item.article-feature-item-writing-book div.article-feature-item-image,
+        div.article-feature-item.article-feature-item-writing-book div.article-feature-item-image-switch,
+        div.article-feature-item.article-feature-item-writing-book div.image-view.article-feature-item-image {
+            width: 420px;
+            min-width: 420px;
+            max-width: 420px;
+            margin: 0;
+        }
+
+        div.article-feature-item.article-feature-item-writing-book div.article-feature-item-content {
+            width: 34rem;
+            max-width: 34rem;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
+
+        div.article-feature-item.article-feature-item-writing-book div.article-feature-item-text,
+        div.article-feature-item.article-feature-item-writing-book div.pretext-interactive-text,
+        div.article-feature-item.article-feature-item-writing-book div.pretext-interactive-text-content {
+            width: 100%;
+            max-width: 34rem;
+            margin: 0;
+        }
+
+        @media (min-width: 576px) and (max-width: 991.98px) {
+            div.article-feature-item-writing-book-shell {
+                grid-template-columns: minmax(0, 1fr);
+                width: min(100%, 720px);
+                max-width: 720px;
+                margin-inline: auto;
+            }
+
+            div.article-feature-item.article-feature-item-writing-book div.article-feature-item-media {
+                width: min(100%, 640px);
+                min-width: 0;
+                max-width: 640px;
+                margin-inline: auto;
+                justify-content: center;
+            }
+
+            div.article-feature-item.article-feature-item-writing-book div.article-feature-item-image,
+            div.article-feature-item.article-feature-item-writing-book div.article-feature-item-image-switch,
+            div.article-feature-item.article-feature-item-writing-book div.image-view.article-feature-item-image {
+                width: min(100%, 640px);
+                min-width: 0;
+                max-width: 640px;
+                margin-inline: auto;
+            }
+
+            div.article-feature-item.article-feature-item-writing-book div.article-feature-item-content {
+                width: min(100%, 62ch);
+                max-width: 62ch;
+                margin-inline: auto;
+                justify-content: center;
+                align-items: center;
+            }
+
+            div.article-feature-item.article-feature-item-writing-book div.article-feature-item-text,
+            div.article-feature-item.article-feature-item-writing-book div.pretext-interactive-text,
+            div.article-feature-item.article-feature-item-writing-book div.pretext-interactive-text-content {
+                width: 100%;
+                max-width: 62ch;
+                margin-inline: auto;
+            }
+        }
+
+        @include media-breakpoint-down(sm) {
+            div.article-feature-item-writing-book-shell {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            div.article-feature-item.article-feature-item-writing-book div.article-feature-item-content {
+                width: min(calc(100% - 24px), 36rem);
+                max-width: 36rem;
+                margin-inline: auto;
+                align-items: center;
+                justify-content: center;
+            }
+
+            div.article-feature-item.article-feature-item-writing-book div.article-feature-item-text,
+            div.article-feature-item.article-feature-item-writing-book div.pretext-interactive-text,
+            div.article-feature-item.article-feature-item-writing-book div.pretext-interactive-text-content {
+                width: min(calc(100% - 24px), 36rem);
+                max-width: 36rem;
+                margin-inline: auto;
+                box-sizing: border-box;
+            }
         }
     }
 }

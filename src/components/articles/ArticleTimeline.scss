@@ -610,7 +610,7 @@ button.standard-button.btn-contrast.article-timeline-see-more-button {
 article#article-1-section-experience {
     ul.article-timeline-items {
         --experience-avatar-size: 104px;
-        --experience-description-right-buffer: calc(var(--experience-avatar-size) / 2);
+        --experience-description-right-buffer: clamp(0.7rem, 0.56rem + 0.4vw, 1.05rem);
         --experience-rail-width: 72px;
         --experience-edge-reach: 0px;
         --experience-edge-gap: 2px;
@@ -689,6 +689,7 @@ article#article-1-section-experience {
 
         @include media-breakpoint-down(sm) {
             --experience-avatar-size: 84px;
+            --experience-description-right-buffer: clamp(0.78rem, 0.62rem + 0.34vw, 1.08rem);
             --experience-rail-width: 60px;
             --experience-edge-gap: 0px;
             --experience-avatar-scale-resting: 1.04;
@@ -712,6 +713,7 @@ article#article-1-section-experience {
 
         @include media-breakpoint-up(md) {
             --experience-avatar-size: 138px;
+            --experience-description-right-buffer: clamp(1.18rem, 1rem + 0.38vw, 1.56rem);
             --experience-rail-width: 80px;
             --experience-edge-gap: 5px;
             --experience-avatar-scale-resting: 1.04;
@@ -729,6 +731,7 @@ article#article-1-section-experience {
 
         @include media-breakpoint-up(xl) {
             --experience-avatar-size: 168px;
+            --experience-description-right-buffer: clamp(1.32rem, 1.12rem + 0.34vw, 1.72rem);
             --experience-rail-width: 96px;
             --experience-edge-gap: 7px;
             --experience-avatar-scale-resting: 1.04;

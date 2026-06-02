@@ -406,6 +406,10 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
     }
 
     div.dropdown-menu.nav-tools-popup-menu {
+        --nav-tools-popup-width: max-content;
+        --nav-tools-popup-min-width: calc(100% + 160px - var(--nav-tools-popup-left-inset));
+        --nav-tools-popup-max-width: min(420px, 80vw);
+
         position: absolute !important;
         inset: auto !important;
         bottom: calc(100% + 8px) !important;
@@ -415,9 +419,9 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
         transform: none !important;
         margin: 0 !important;
 
-        width: max-content;
-        min-width: calc(100% + 160px - var(--nav-tools-popup-left-inset)); // rail width + extension past the right edge
-        max-width: min(420px, 80vw);
+        width: var(--nav-tools-popup-width);
+        min-width: var(--nav-tools-popup-min-width); // rail width + extension past the right edge
+        max-width: var(--nav-tools-popup-max-width);
         z-index: $z-index-pop-over;
 
         // Re-apply popup styling here because these menus anchor to a static
@@ -507,9 +511,9 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
 
     div.nav-tools-item-resume div.dropdown-menu.nav-tools-popup-menu,
     div.nav-short-rail-resume-band div.dropdown-menu.nav-tools-popup-menu {
-        width: max-content;
-        min-width: 11rem;
-        max-width: min(13rem, 80vw);
+        --nav-tools-popup-width: max-content;
+        --nav-tools-popup-min-width: 11rem;
+        --nav-tools-popup-max-width: min(13rem, 80vw);
         border-color: #f8aa28;
 
         &::before {
@@ -535,9 +539,14 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
     }
 
     div.nav-tools-item-language div.dropdown-menu.nav-tools-popup-menu {
+        --nav-tools-popup-width: fit-content;
+        --nav-tools-popup-min-width: 0;
+        --nav-tools-popup-max-width: min(18rem, 80vw);
+
         a.dropdown-item,
         button.dropdown-item {
             background: transparent;
+            white-space: nowrap;
 
             div.btn-option-picker-icon {
                 width: auto;
@@ -585,15 +594,22 @@ nav.nav-sidebar-short-rail div.nav-tools {
 nav.nav-sidebar-shrink div.nav-tools div.dropdown-menu.nav-tools-popup-menu,
 nav.nav-sidebar-short-rail div.nav-tools div.dropdown-menu.nav-tools-popup-menu,
 nav.nav-sidebar-short-rail div.nav-short-rail-resume-band div.dropdown-menu.nav-tools-popup-menu {
-    min-width: 280px;
+    --nav-tools-popup-min-width: 280px;
 }
 
 nav.nav-sidebar-shrink div.nav-tools div.nav-tools-item-resume div.dropdown-menu.nav-tools-popup-menu,
 nav.nav-sidebar-short-rail div.nav-tools div.nav-tools-item-resume div.dropdown-menu.nav-tools-popup-menu,
 nav.nav-sidebar-short-rail div.nav-short-rail-resume-band div.dropdown-menu.nav-tools-popup-menu {
-    width: max-content;
-    min-width: 11rem;
-    max-width: min(13rem, 80vw);
+    --nav-tools-popup-width: max-content;
+    --nav-tools-popup-min-width: 11rem;
+    --nav-tools-popup-max-width: min(13rem, 80vw);
+}
+
+nav.nav-sidebar-shrink div.nav-tools div.nav-tools-item-language div.dropdown-menu.nav-tools-popup-menu,
+nav.nav-sidebar-short-rail div.nav-tools div.nav-tools-item-language div.dropdown-menu.nav-tools-popup-menu {
+    --nav-tools-popup-width: fit-content;
+    --nav-tools-popup-min-width: 0;
+    --nav-tools-popup-max-width: min(18rem, 80vw);
 }
 
 div.nav-tools-shrink {

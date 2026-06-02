@@ -1223,7 +1223,7 @@ article#article-1-section-education ul.article-timeline-item-info-for-timelines-
 }
 
 article#article-1-section-experience {
-    --experience-description-left-buffer: clamp(0.36rem, 0.26rem + 0.28vw, 0.68rem);
+    --experience-description-left-buffer: clamp(0.26rem, 0.19rem + 0.16vw, 0.45rem);
 
     div.article-timeline-item-info-for-timelines-header-title,
     div.article-timeline-item-info-for-timelines-header-main {
@@ -1255,9 +1255,9 @@ article#article-1-section-experience {
         color: var(--card-text-mid);
         gap: clamp(0.52rem, 0.38rem + 0.28vw, 0.82rem);
         margin-top: clamp(0.28rem, 0.2rem + 0.18vw, 0.42rem);
-        width: calc(100% + var(--experience-card-right-padding));
-        max-width: none;
-        margin-right: calc(-1 * var(--experience-card-right-padding));
+        width: 100%;
+        max-width: 100%;
+        margin-right: 0;
         box-sizing: border-box;
         min-width: 0;
     }
@@ -1309,7 +1309,7 @@ article#article-1-section-experience {
         display: flex;
         align-items: flex-start;
         min-height: 100%;
-        padding: clamp(0.62rem, 0.5rem + 0.24vw, 0.8rem) clamp(0.7rem, 0.56rem + 0.3vw, 0.94rem);
+        padding: clamp(0.72rem, 0.58rem + 0.26vw, 0.92rem) clamp(0.92rem, 0.76rem + 0.36vw, 1.2rem);
         border: 1px solid color-mix(in srgb, var(--card-border) 72%, var(--card-accent) 28%);
         border-radius: clamp(0.85rem, 0.72rem + 0.24vw, 1.05rem);
         background: linear-gradient(
@@ -1372,28 +1372,40 @@ article#article-1-section-experience {
     div.article-timeline-item-info-for-timelines-body {
         margin-top: clamp(0.8rem, 0.62rem + 0.38vw, 1.1rem);
         padding-top: clamp(0.72rem, 0.58rem + 0.24vw, 0.9rem);
-        border-top: 2px solid color-mix(in srgb, var(--card-border) 64%, var(--card-accent) 36%);
+        box-sizing: border-box;
         text-align: left;
         line-height: 1.68;
 
         div.article-timeline-item-info-for-timelines-body-text {
             box-sizing: border-box;
-            width: calc(100% - var(--experience-description-right-buffer, 0px) - var(--experience-description-left-buffer));
-            max-width: none;
+            width: calc(100% - var(--experience-description-left-buffer) - (var(--experience-description-right-buffer, 0px) * 3.4));
+            max-width: calc(100% - var(--experience-description-left-buffer) - (var(--experience-description-right-buffer, 0px) * 3.4));
             margin-right: auto;
             margin-left: var(--experience-description-left-buffer);
             min-width: 0;
+            border-top: 2px solid color-mix(in srgb, var(--card-border) 64%, var(--card-accent) 36%);
+            padding-top: clamp(0.82rem, 0.68rem + 0.26vw, 1rem);
             color: color-mix(in srgb, var(--card-text-mid) 92%, var(--card-text-strong) 8%);
         }
 
         ul.article-timeline-item-info-for-timelines-body-list {
             box-sizing: border-box;
-            width: calc(100% - var(--experience-description-right-buffer, 0px) - var(--experience-description-left-buffer));
-            max-width: none;
+            width: calc(100% - var(--experience-description-left-buffer) - (var(--experience-description-right-buffer, 0px) * 3.4));
+            max-width: calc(100% - var(--experience-description-left-buffer) - (var(--experience-description-right-buffer, 0px) * 3.4));
             margin-right: auto;
             margin-left: var(--experience-description-left-buffer);
             min-width: 0;
             padding-left: 1.25em;
+        }
+
+        div.article-timeline-item-info-for-timelines-body-text + ul.article-timeline-item-info-for-timelines-body-list {
+            border-top: 0;
+            padding-top: clamp(0.55rem, 0.44rem + 0.18vw, 0.72rem);
+        }
+
+        ul.article-timeline-item-info-for-timelines-body-list:first-child {
+            border-top: 2px solid color-mix(in srgb, var(--card-border) 64%, var(--card-accent) 36%);
+            padding-top: clamp(0.82rem, 0.68rem + 0.26vw, 1rem);
         }
     }
 
@@ -1429,8 +1441,8 @@ article#article-1-section-experience {
         div.article-timeline-item-info-for-timelines-body {
             div.article-timeline-item-info-for-timelines-body-text,
             ul.article-timeline-item-info-for-timelines-body-list {
-                width: calc(100% - var(--experience-description-right-buffer, 0px) - var(--experience-description-left-buffer));
-                max-width: none;
+                width: calc(100% - var(--experience-description-left-buffer) - (var(--experience-description-right-buffer, 0px) * 3.4));
+                max-width: calc(100% - var(--experience-description-left-buffer) - (var(--experience-description-right-buffer, 0px) * 3.4));
             }
         }
     }

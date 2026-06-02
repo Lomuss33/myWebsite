@@ -114,6 +114,10 @@ article#article-1-section-education div.article-timeline-item-info-for-timelines
 }
 
 article#article-1-section-experience div.article-timeline-item-info-for-timelines {
+    &::after {
+        display: none;
+    }
+
     --card-accent: #4ea3ff;
     --card-accent-2: #facc15;
     --timeline-title-size: clamp(1.32rem, 1.14rem + 0.68vw, 1.82rem);
@@ -1360,6 +1364,7 @@ article#article-1-section-experience {
             width: calc(100% - var(--experience-description-right-buffer, 0px));
             max-width: none;
             margin-right: auto;
+            margin-left: clamp(0.3rem, 0.22rem + 0.24vw, 0.55rem);
             color: color-mix(in srgb, var(--card-text-mid) 92%, var(--card-text-strong) 8%);
         }
 
@@ -1367,6 +1372,7 @@ article#article-1-section-experience {
             width: calc(100% - var(--experience-description-right-buffer, 0px));
             max-width: none;
             margin-right: auto;
+            margin-left: clamp(0.3rem, 0.22rem + 0.24vw, 0.55rem);
             padding-left: 1.25em;
         }
     }

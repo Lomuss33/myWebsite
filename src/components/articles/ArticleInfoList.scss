@@ -446,13 +446,13 @@ article.article-info-list-home {
         div.article-info-list-item-text-bubble {
             // Anchored to info-body (which already sits below the title and its
             // underline, so the popup naturally clears them). Negative offsets
-            // extend the popup sideways and downward to reach the card's outer
-            // edges, leaving a small gap from the avatar on the left.
-            top: calc(-1 * var(--proof-bubble-bleed-top));
-            right: calc(-1 * (var(--proof-bubble-bleed-right) + var(--content-padding-inline-end)));
+            // extend the popup sideways and downward to reach the card's inner
+            // edges now that the avatar sits in its own row above the content.
+            top: calc(-1 * (var(--proof-bubble-bleed-top) + 4px));
+            right: calc(-1 * (var(--content-padding-inline-end) + 6px));
             bottom: calc(-1 * var(--proof-bubble-bleed-bottom));
-            left: calc(-1 * var(--proof-bubble-bleed-left));
-            transform: translateX(-6px) scale(0.985);
+            left: calc(-1 * (var(--content-padding-inline-start) + 6px));
+            transform: translateX(0) scale(0.985);
         }
 
         div.article-info-list-item-text-bubble-inner {
@@ -488,9 +488,37 @@ article.article-info-list-home {
         }
 
         @include media-breakpoint-down(sm) {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            grid-template-areas:
+                "avatar"
+                "content";
+            row-gap: 3px;
+
+            div.article-info-list-item-avatar-shell {
+                grid-area: avatar;
+                width: 100%;
+                justify-content: center;
+                align-items: center;
+            }
+
+            a.article-info-list-item-avatar-link,
+            button.article-info-list-item-avatar-button {
+                width: 100%;
+                justify-content: center;
+                align-self: center;
+            }
+
+            div.article-info-list-item-content.article-info-list-item-home {
+                grid-area: content;
+                min-height: 0;
+                gap: 1px;
+            }
+
             div.article-info-list-item-info-title {
                 font-size: clamp(1rem, 0.94rem + 0.14vw, 1.1rem);
                 line-height: 1.2;
+                margin-bottom: 5px;
             }
 
             div.article-info-list-item-info-title-split {
@@ -663,4 +691,3 @@ article.article-info-list-contact {
         flex: 0 0 auto;
     }
 }
-

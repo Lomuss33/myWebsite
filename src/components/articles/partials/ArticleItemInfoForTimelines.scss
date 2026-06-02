@@ -1241,6 +1241,9 @@ article#article-1-section-experience {
         color: var(--card-text-mid);
         gap: clamp(0.52rem, 0.38rem + 0.28vw, 0.82rem);
         margin-top: clamp(0.28rem, 0.2rem + 0.18vw, 0.42rem);
+        box-sizing: border-box;
+        min-width: 0;
+        padding-inline-end: var(--experience-content-safe-end, 0px);
         width: 100%;
     }
 
@@ -1281,6 +1284,8 @@ article#article-1-section-experience {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         align-items: stretch;
         gap: clamp(0.75rem, 0.56rem + 0.4vw, 1.1rem);
+        box-sizing: border-box;
+        min-width: 0;
         line-height: 1.24;
         font-size: clamp(1.02rem, 0.92rem + 0.28vw, 1.18rem);
     }
@@ -1352,21 +1357,26 @@ article#article-1-section-experience {
     div.article-timeline-item-info-for-timelines-body {
         margin-top: clamp(0.8rem, 0.62rem + 0.38vw, 1.1rem);
         padding-top: clamp(0.72rem, 0.58rem + 0.24vw, 0.9rem);
+        padding-inline-end: var(--experience-content-safe-end, 0px);
         border-top: 1px solid color-mix(in srgb, var(--card-border) 74%, var(--card-accent) 26%);
+        box-sizing: border-box;
+        min-width: 0;
         text-align: left;
         line-height: 1.68;
 
         div.article-timeline-item-info-for-timelines-body-text {
-            width: calc(100% - var(--experience-description-right-buffer, 0px));
-            max-width: none;
-            margin-right: auto;
+            box-sizing: border-box;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
             color: color-mix(in srgb, var(--card-text-mid) 92%, var(--card-text-strong) 8%);
         }
 
         ul.article-timeline-item-info-for-timelines-body-list {
-            width: calc(100% - var(--experience-description-right-buffer, 0px));
-            max-width: none;
-            margin-right: auto;
+            box-sizing: border-box;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
             padding-left: 1.25em;
         }
     }
@@ -1403,8 +1413,8 @@ article#article-1-section-experience {
         div.article-timeline-item-info-for-timelines-body {
             div.article-timeline-item-info-for-timelines-body-text,
             ul.article-timeline-item-info-for-timelines-body-list {
-                width: calc(100% - var(--experience-description-right-buffer, 0px));
-                max-width: none;
+                width: 100%;
+                max-width: 100%;
             }
         }
     }

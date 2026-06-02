@@ -465,7 +465,7 @@ article.article.article-stack-home {
         text-align: left;
         display: flex;
         flex-direction: row;
-        align-items: baseline;
+        align-items: center;
         flex-wrap: wrap;
         column-gap: 0.7rem;
         row-gap: 0.28rem;
@@ -473,8 +473,8 @@ article.article.article-stack-home {
     }
 
     div.article-stack-item-home div.article-stack-item-title-prefix {
-        font-size: clamp(0.98rem, calc(var(--avatar-size) * 0.25), 1.1rem);
-        line-height: 1.05;
+        font-size: clamp(0.94rem, calc(var(--avatar-size) * 0.23), 1.06rem);
+        line-height: 1.12;
         letter-spacing: 0.06em;
         font-weight: 700;
         color: var(--home-stack-title-prefix);
@@ -489,8 +489,8 @@ article.article.article-stack-home {
     }
 
     div.article-stack-item-home div.article-stack-item-title-main {
-        font-size: clamp(1.42rem, calc(var(--avatar-size) * 0.42), 1.98rem);
-        line-height: 1;
+        font-size: clamp(1.28rem, calc(var(--avatar-size) * 0.38), 1.76rem);
+        line-height: 1.12;
         font-weight: 850;
         letter-spacing: -0.05em;
         color: var(--home-stack-title-main);
@@ -500,6 +500,7 @@ article.article.article-stack-home {
         overflow: hidden;
         text-overflow: ellipsis;
         flex: 1 1 12rem;
+        padding-bottom: 0.04em;
     }
 
     div.article-stack-item-home div.article-stack-item-experience {

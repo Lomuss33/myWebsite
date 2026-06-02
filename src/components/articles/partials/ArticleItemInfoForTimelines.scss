@@ -18,6 +18,9 @@ div.article-timeline-item-info-for-timelines {
     --card-shadow-hover: 0 22px 48px color-mix(in srgb, var(--card-accent) 18%, transparent 82%);
     --timeline-title-rule-color: var(--card-accent);
     --timeline-detail-rule-color: var(--card-accent-2, var(--card-accent));
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
 
     @include media-breakpoint-down(lg) {
         --content-padding: clamp(0.85rem, 0.8rem + 0.18vw, 1rem) clamp(0.9rem, 0.84rem + 0.24vw, 1.1rem);

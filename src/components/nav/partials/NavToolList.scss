@@ -3,6 +3,12 @@
 div.nav-tools {
     --nav-tools-height: var(--nav-link-target-height, 48px);
 
+    // Expanded rail with stacked captions ("[icon] / Label" per tool) needs
+    // a taller row so the icon and the text label can both breathe.
+    &:has(button.btn-option-picker-toggle-with-caption) {
+        --nav-tools-height: 68px;
+    }
+
     display: flex;
     flex: 0 0 auto;
     width: 100%;
@@ -120,6 +126,51 @@ div.nav-tools {
         min-height: var(--nav-tools-height);
     }
 
+    // Captioned variant: the row should only hold the icon, leaving the
+    // remaining vertical space below for the label. Reduce horizontal
+    // padding so the label can run closer to the cell edges — important
+    // for longer words like "Language".
+    button.btn-option-picker-toggle-with-caption {
+        flex-direction: column;
+        gap: 6px;
+        padding-block: 6px;
+        padding-inline: 2px;
+
+        span.btn-option-picker-toggle-row {
+            flex: 0 0 auto;
+            height: auto;
+            min-height: 0;
+            width: auto;
+        }
+
+        span.btn-option-picker-toggle-caption {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: 0.005em;
+            text-align: center;
+            color: var(--theme-nav-text);
+            opacity: 0.94;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 100%;
+        }
+
+        &:hover span.btn-option-picker-toggle-caption {
+            color: var(--theme-primary);
+            opacity: 1;
+        }
+    }
+
+    // "Language" is the longest of the three labels — shrink its font a
+    // touch so the full word fits inside the same cell width as the others.
+    div.nav-tools-item-language button.btn-option-picker-toggle-with-caption span.btn-option-picker-toggle-caption {
+        font-size: 0.7rem;
+        letter-spacing: 0;
+    }
+
     button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption) {
         border-radius: 0;
     }
@@ -209,6 +260,16 @@ div.nav-tools {
                     height: 100%;
                 }
             }
+
+            // Captioned (expanded rail with stacked label) — shrink the flag
+            // so its visual diameter matches the theme/resume SVGs, which
+            // render at ~80% of their container.
+            button.btn-option-picker-toggle.nav-tool-language-toggle.btn-option-picker-toggle-with-caption {
+                div.btn-option-picker-icon.btn-option-picker-icon-size-2 img {
+                    width: 82%;
+                    height: 82%;
+                }
+            }
         }
     }
 
@@ -274,6 +335,21 @@ div.nav-tools-item-language {
         align-items: center;
         justify-content: center;
         flex: 1 1 auto;
+    }
+
+    // Captioned variant overrides the !important full-stretch rules above so
+    // the flag and the label can stack inside the toggle.
+    button.btn-option-picker-toggle-with-caption {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        span.btn-option-picker-toggle-row {
+            width: auto !important;
+            height: auto !important;
+            min-width: 0;
+            flex: 0 0 auto;
+        }
     }
 
     i.fa-caret-icon {

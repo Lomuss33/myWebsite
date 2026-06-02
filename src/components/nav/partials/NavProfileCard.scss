@@ -1205,6 +1205,13 @@ div.nav-tools-item-theme {
     --nav-tools-icon-font-size: 2rem;
 }
 
+// When the toggle shows a caption (expanded rail with stacked label), the
+// icon shrinks to leave vertical room for the text below it.
+nav.nav-sidebar div.nav-tools-item:has(button.btn-option-picker-toggle-with-caption) {
+    --nav-tools-icon-box-size: 30px;
+    --nav-tools-icon-font-size: 1.6rem;
+}
+
 div.nav-profile-card-mobile-action-theme,
 div.nav-tools-item-theme {
     &:has(i.fa-icon.fa-sun) {
@@ -1263,6 +1270,57 @@ div.nav-tools-item-theme {
                 drop-shadow(0 0 0.55rem rgba(96, 165, 250, 0.42));
             animation: nav-profile-card-theme-moon-wobble 2.6s ease-in-out infinite;
         }
+    }
+}
+
+// ── Resume toggle: premium SVG document icon (mobile + wide-screen) ──
+// Replaces the FA file-arrow-down glyph on the resume toggle button only
+// (menu items keep their original FA icons).
+div.nav-tools-item-resume {
+    --nav-tools-icon-box-size: 44px;
+    --nav-tools-icon-font-size: 2rem;
+}
+
+div.nav-profile-card-mobile-action-resume,
+div.nav-tools-item-resume,
+div.nav-short-rail-resume-band {
+    &:has(button.btn-option-picker-toggle i.fa-icon.fa-file-arrow-down) {
+        button.btn-option-picker-toggle i.fa-icon.fa-file-arrow-down {
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            background-image: url("/images/svg/resume-premium.svg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 84%;
+            color: transparent;
+            text-shadow: none;
+            font-size: 0 !important;
+            line-height: 0;
+            opacity: 1;
+            filter: drop-shadow(0 0 0.18rem rgba(248, 170, 40, 0.36));
+            transition:
+                filter 0.32s ease,
+                transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        button.btn-option-picker-toggle:hover i.fa-icon.fa-file-arrow-down,
+        button.btn-option-picker-toggle:focus-visible i.fa-icon.fa-file-arrow-down {
+            filter:
+                drop-shadow(0 0 0.28rem rgba(251, 191, 36, 0.78))
+                drop-shadow(0 0 0.55rem rgba(248, 170, 40, 0.4));
+            animation: nav-profile-card-resume-lift 1.8s ease-in-out infinite;
+        }
+    }
+}
+
+@keyframes nav-profile-card-resume-lift {
+    0%, 100% {
+        transform: scale(1.08) translateY(0);
+    }
+
+    50% {
+        transform: scale(1.12) translateY(-1px);
     }
 }
 

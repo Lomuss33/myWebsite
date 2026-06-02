@@ -9,11 +9,13 @@ import NavToolList from "./partials/NavToolList.jsx"
 import NavToolShrinkToggle from "./tools/NavToolShrinkToggle.jsx"
 import NavToolResumeDownloader from "./tools/NavToolResumeDownloader.jsx"
 import {useInput} from "../../providers/InputProvider.jsx"
+import {useLanguage} from "../../providers/LanguageProvider.jsx"
 
 function NavSidebar({ profile, links }) {
     const constants = useConstants()
     const viewport = useViewport()
     const input = useInput()
+    const language = useLanguage()
 
     const [expandedOption, setExpandedOption] = useState(true)
 
@@ -61,7 +63,9 @@ function NavSidebar({ profile, links }) {
                     <div className={`nav-short-rail-resume-band`}>
                         <NavToolResumeDownloader showTooltip={true}
                                                  menuClassName={"nav-tools-popup-menu"}
-                                                 toggleClassName={"nav-short-rail-resume-pill"}/>
+                                                 toggleClassName={"nav-short-rail-resume-pill"}
+                                                 toggleCaption={language.getString("nav_tool_resume")}
+                                                 toggleCaptionLayout={"inline"}/>
                     </div>
                 )}
 

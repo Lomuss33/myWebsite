@@ -3,7 +3,7 @@ import {useLanguage} from "../../../providers/LanguageProvider.jsx"
 import {useTheme} from "../../../providers/ThemeProvider.jsx"
 import OptionPickerButton from "../../buttons/OptionPickerButton.jsx"
 
-function NavToolThemePicker({ showTooltip = true }) {
+function NavToolThemePicker({ showTooltip = true, toggleCaption = null, toggleCaptionLayout = "stack" }) {
     const theme = useTheme()
     const language = useLanguage()
 
@@ -37,6 +37,8 @@ function NavToolThemePicker({ showTooltip = true }) {
                                     selectedOptionId={selectedTheme?.id}
                                     onOptionSelected={_onOptionSelected}
                                     tooltipLabel={showTooltip ? tooltipLabel : null}
+                                    toggleCaption={toggleCaption}
+                                    toggleCaptionLayout={toggleCaptionLayout}
                                     showSelectedOptionOnDropdown={true}/>
             )}
         </>

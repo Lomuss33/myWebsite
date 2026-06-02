@@ -221,12 +221,12 @@ nav.nav-sidebar-short-rail div.nav-short-rail-resume-band {
         min-width: 0;
         border: 0;
         border-radius: 0;
-        padding-inline: 12px;
+        padding-inline: 2px;
         overflow: hidden;
         display: flex;
         align-items: center;
-        justify-content: center;
-        gap: 8px;
+        justify-content: flex-start;
+        gap: 0;
         background:
             linear-gradient(180deg,
                 color-mix(in srgb, var(--theme-secondary) 16%, var(--theme-nav-surface-raised) 84%) 0%,
@@ -245,10 +245,20 @@ nav.nav-sidebar-short-rail div.nav-short-rail-resume-band {
             flex: 0 0 auto;
         }
 
+        div.btn-option-picker-icon.btn-option-picker-icon-size-2 {
+            width: 44px;
+            min-width: 44px;
+            height: 44px;
+        }
+
         span.btn-option-picker-toggle-caption {
+            font-size: 0.74rem;
+            font-weight: 600;
+            letter-spacing: 0.005em;
             white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            overflow: visible;
+            text-overflow: clip;
+            flex: 0 0 auto;
         }
 
         i.fa-icon,

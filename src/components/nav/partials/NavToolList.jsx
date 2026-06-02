@@ -43,10 +43,13 @@ function NavToolList({ expanded, compactRail = false }) {
                      key={key}>
                     {item === "language" && (<NavToolLanguagePicker dropdownDrop={"up"}
                                                                     showTooltip={true}
-                                                                    menuClassName={"nav-tools-popup-menu"}/>)}
-                    {item === NavToolSettings.Options.THEME && (<NavToolThemePicker showTooltip={true}/>)}
+                                                                    menuClassName={"nav-tools-popup-menu"}
+                                                                    toggleCaption={expanded ? language.getString("nav_tool_language") : null}/>)}
+                    {item === NavToolSettings.Options.THEME && (<NavToolThemePicker showTooltip={true}
+                                                                                    toggleCaption={expanded ? language.getString("nav_tool_theme") : null}/>)}
                     {item === NavToolSettings.Options.DOWNLOAD_RESUME && (<NavToolResumeDownloader showTooltip={true}
-                                                                                                  menuClassName={"nav-tools-popup-menu"}/>)}
+                                                                                                  menuClassName={"nav-tools-popup-menu"}
+                                                                                                  toggleCaption={expanded ? language.getString("nav_tool_resume") : null}/>)}
                 </div>
             ))}
         </div>

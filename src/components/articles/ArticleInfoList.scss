@@ -451,12 +451,11 @@ article.article-info-list-home {
         div.article-info-list-item-text-bubble {
             // Anchored to info-body (which already sits below the title and its
             // underline, so the popup naturally clears them). Negative offsets
-            // extend the popup to the same inner edges as the card shell on
-            // mobile, now that the avatar sits in its own row above the content.
-            top: calc(-1 * (var(--proof-bubble-bleed-top) + 6px));
-            right: calc(-1 * (var(--content-padding-inline-end) + var(--padding) + 4px));
+            // let the popup sit flush with the text column on desktop/tablet.
+            top: calc(-1 * var(--proof-bubble-bleed-top));
+            right: calc(-1 * var(--content-padding-inline-end));
             bottom: calc(-1 * var(--proof-bubble-bleed-bottom));
-            left: calc(-1 * (var(--content-padding-inline-start) + var(--padding)));
+            left: 0;
             transform: translateX(0) scale(0.985);
         }
 
@@ -524,6 +523,12 @@ article.article-info-list-home {
                 font-size: clamp(1rem, 0.94rem + 0.14vw, 1.1rem);
                 line-height: 1.2;
                 margin-bottom: 4px;
+            }
+
+            div.article-info-list-item-text-bubble {
+                top: calc(-1 * (var(--proof-bubble-bleed-top) + 6px));
+                right: calc(-1 * (var(--content-padding-inline-end) + var(--padding) + 4px));
+                left: calc(-1 * (var(--content-padding-inline-start) + var(--padding)));
             }
 
             div.article-info-list-item-info-title-split {

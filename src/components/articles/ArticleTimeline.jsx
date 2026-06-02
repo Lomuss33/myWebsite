@@ -84,7 +84,6 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
 
         return utils.device.canHoverWithFinePointer()
     })
-    const isMobileLayout = viewport.isMobileLayout()
     const usesMeasuredTimelineOffsets = isMyArtTimeline || isExperienceTimeline || isEducationTimeline
     const usesTapOverlay = isExperienceTimeline && !supportsFinePointer
 
@@ -241,11 +240,6 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
         if(!listElement || typeof window === "undefined")
             return
 
-        if(isMobileLayout) {
-            setExperienceAvatarRightOffsetPx(currentValue => currentValue === 0 ? currentValue : 0)
-            return
-        }
-
         const scrollableElement = listElement.closest(".scrollable")
 
         const _updateRightEdgeAlignment = () => {
@@ -335,7 +329,7 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
 
         window.addEventListener("resize", _updateRightEdgeAlignment)
         return () => window.removeEventListener("resize", _updateRightEdgeAlignment)
-    }, [isExperienceTimeline, isMobileLayout, visibleItemWrappers.length, selectedItemCategoryId])
+    }, [isExperienceTimeline, visibleItemWrappers.length, selectedItemCategoryId])
 
     useLayoutEffect(() => {
         if(!isMyArtTimeline)

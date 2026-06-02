@@ -1224,7 +1224,6 @@ article#article-1-section-education ul.article-timeline-item-info-for-timelines-
 
 article#article-1-section-experience {
     --experience-description-left-buffer: clamp(0.36rem, 0.26rem + 0.28vw, 0.68rem);
-    --experience-meta-right-compensation: clamp(0.5rem, 0.38rem + 0.42vw, 0.95rem);
 
     div.article-timeline-item-info-for-timelines-header-title,
     div.article-timeline-item-info-for-timelines-header-main {
@@ -1256,9 +1255,9 @@ article#article-1-section-experience {
         color: var(--card-text-mid);
         gap: clamp(0.52rem, 0.38rem + 0.28vw, 0.82rem);
         margin-top: clamp(0.28rem, 0.2rem + 0.18vw, 0.42rem);
-        width: calc(100% + var(--experience-meta-right-compensation));
+        width: calc(100% + var(--experience-card-right-padding));
         max-width: none;
-        margin-right: calc(-1 * var(--experience-meta-right-compensation));
+        margin-right: calc(-1 * var(--experience-card-right-padding));
         box-sizing: border-box;
         min-width: 0;
     }
@@ -1300,6 +1299,8 @@ article#article-1-section-experience {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         align-items: stretch;
         gap: clamp(0.75rem, 0.56rem + 0.4vw, 1.1rem);
+        width: 100%;
+        max-width: none;
         line-height: 1.24;
         font-size: clamp(1.02rem, 0.92rem + 0.28vw, 1.18rem);
     }
@@ -1435,8 +1436,6 @@ article#article-1-section-experience {
     }
 
     @include media-breakpoint-down(sm) {
-        --experience-meta-right-compensation: clamp(0.36rem, 0.24rem + 0.34vw, 0.68rem);
-
         div.article-timeline-item-info-for-timelines-header-meta-band {
             align-items: center;
         }
@@ -1447,7 +1446,8 @@ article#article-1-section-experience {
 
         div.article-timeline-item-info-for-timelines-header-meta-row--time,
         div.article-timeline-item-info-for-timelines-header-meta-row--split {
-            width: min(100%, 29rem);
+            width: 100%;
+            max-width: none;
             margin-inline: auto;
         }
 

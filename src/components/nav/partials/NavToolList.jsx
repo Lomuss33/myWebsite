@@ -2,36 +2,31 @@ import "./NavToolList.scss"
 import React from 'react'
 import {useLanguage} from "../../../providers/LanguageProvider.jsx"
 import {useTheme} from "../../../providers/ThemeProvider.jsx"
-import {useData} from "../../../providers/DataProvider.jsx"
 import NavToolLanguagePicker from "../tools/NavToolLanguagePicker.jsx"
 import NavToolThemePicker from "../tools/NavToolThemePicker.jsx"
-import NavToolResumeDownloader from "../tools/NavToolResumeDownloader.jsx"
 import NavToolSettings from "../tools/NavToolSettings.jsx"
 
 function NavToolList({ expanded, compactRail = false }) {
     const language = useLanguage()
     const theme = useTheme()
-    const data = useData()
-
-    const profile = data.getProfile()
 
     const shrinkClass = expanded ?
         `` :
         `nav-tools-shrink`
+    const toggleCaptionLayout = expanded && !compactRail ?
+        "inline" :
+        "stack"
 
     const widgets = [
         ...(language.supportsMultipleLanguages ? ["language"] : []),
         ...(theme.supportsMultipleThemes ? [NavToolSettings.Options.THEME] : []),
-        ...(profile.resumePdfUrl && !compactRail ? [NavToolSettings.Options.DOWNLOAD_RESUME] : []),
     ]
 
     const orderedWidgets = [
-        ...widgets.filter(item => item === NavToolSettings.Options.DOWNLOAD_RESUME),
         ...widgets.filter(item => item === "language"),
         ...widgets.filter(item =>
             item !== NavToolSettings.Options.THEME &&
-            item !== "language" &&
-            item !== NavToolSettings.Options.DOWNLOAD_RESUME
+            item !== "language"
         ),
         ...widgets.filter(item => item === NavToolSettings.Options.THEME),
     ]
@@ -44,12 +39,11 @@ function NavToolList({ expanded, compactRail = false }) {
                     {item === "language" && (<NavToolLanguagePicker dropdownDrop={"up"}
                                                                     showTooltip={true}
                                                                     menuClassName={"nav-tools-popup-menu"}
+                                                                    toggleCaptionLayout={toggleCaptionLayout}
                                                                     toggleCaption={expanded ? language.getString("nav_tool_language") : null}/>)}
                     {item === NavToolSettings.Options.THEME && (<NavToolThemePicker showTooltip={true}
+                                                                                    toggleCaptionLayout={toggleCaptionLayout}
                                                                                     toggleCaption={expanded ? language.getString("nav_tool_theme") : null}/>)}
-                    {item === NavToolSettings.Options.DOWNLOAD_RESUME && (<NavToolResumeDownloader showTooltip={true}
-                                                                                                  menuClassName={"nav-tools-popup-menu"}
-                                                                                                  toggleCaption={expanded ? language.getString("nav_tool_resume") : null}/>)}
                 </div>
             ))}
         </div>

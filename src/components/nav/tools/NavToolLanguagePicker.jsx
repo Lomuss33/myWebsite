@@ -11,7 +11,8 @@ function NavToolLanguagePicker({
     compactMenu = false,
     mobileTubeMenu = false,
     showTooltip = true,
-    toggleCaption = null
+    toggleCaption = null,
+    toggleCaptionLayout = "stack"
 }) {
     const language = useLanguage()
     const utils = useUtils()
@@ -28,6 +29,11 @@ function NavToolLanguagePicker({
             img: utils.file.resolvePath(lang.flagUrl)
         }
     })
+    const captionClass = toggleCaption ? "btn-option-picker-toggle-with-caption" : ""
+    const captionLayoutClass = toggleCaption && toggleCaptionLayout === "inline" ?
+        "btn-option-picker-toggle-caption-inline" :
+        ""
+    const toggleClasses = `btn-option-picker-toggle nav-tool-language-toggle ${captionClass} ${captionLayoutClass}`.trim()
 
     const _onOptionSelected = (optionId) => {
         const targetLanguage = availableLanguages.find(lang => lang.id === optionId)
@@ -84,7 +90,7 @@ function NavToolLanguagePicker({
                               setDropdownVisible(nextShow)
                           }}>
                     <Dropdown.Toggle variant={`transparent`}
-                                     className={`btn-option-picker-toggle nav-tool-language-toggle ${toggleCaption ? "btn-option-picker-toggle-with-caption" : ""}`}
+                                     className={toggleClasses}
                                      data-tooltip={showTooltip ? (dropdownVisible ? "hidden" : language.getString("select_language")) : null}>
                         <span className={`btn-option-picker-toggle-row`}>
                             <div className={`btn-option-picker-icon btn-option-picker-icon-size-2`}>

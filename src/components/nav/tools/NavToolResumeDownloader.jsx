@@ -15,7 +15,8 @@ function NavToolResumeDownloader({
     showTooltip = true,
     toggleCaption = null,
     toggleCaptionLayout = "stack",
-    toggleClassName = ""
+    toggleClassName = "",
+    hideCaret = false
 }) {
     const language = useLanguage()
     const utils = useUtils()
@@ -156,6 +157,7 @@ function NavToolResumeDownloader({
                             toggleCaption={toggleCaption}
                             toggleCaptionLayout={toggleCaptionLayout}
                             toggleClassName={toggleClassName}
+                            hideCaret={hideCaret}
                             menuHeader={menuHeader}/>
     )
 }

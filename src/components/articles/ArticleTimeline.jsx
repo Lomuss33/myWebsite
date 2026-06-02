@@ -616,6 +616,8 @@ function ArticleTimelineItem({
     }, [itemWrapper?.faIconStyle, isMyArtTimeline, myArtAvatarSizePx])
     const avatarSizes = isMyArtTimeline ?
         "(max-width: 575.98px) 88px, (max-width: 767.98px) 120px, (max-width: 991.98px) 144px, 168px" :
+        isExperienceTimeline ?
+            "(max-width: 575.98px) 84px, (max-width: 767.98px) 84px, (max-width: 991.98px) 164px, (max-width: 1199.98px) 192px, 182px" :
         isEducationTimeline ?
             "(max-width: 575.98px) 84px, (max-width: 767.98px) 108px, (max-width: 991.98px) 120px, 144px" :
             "(max-width: 575.98px) 42px, (max-width: 767.98px) 54px, (max-width: 991.98px) 60px, 72px"

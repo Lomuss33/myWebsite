@@ -2,12 +2,9 @@
 
 div.nav-tools {
     --nav-tools-height: var(--nav-link-target-height, 48px);
-
-    // Expanded rail with stacked captions ("[icon] / Label" per tool) needs
-    // a taller row so the icon and the text label can both breathe.
-    &:has(button.btn-option-picker-toggle-with-caption) {
-        --nav-tools-height: 68px;
-    }
+    --nav-tools-icon-box-size: 22px;
+    --nav-tools-icon-font-size: 1.2rem;
+    --nav-tools-inline-gap: 8px;
 
     display: flex;
     flex: 0 0 auto;
@@ -60,7 +57,9 @@ div.nav-tools {
         width: 100%;
         height: 100%;
         min-height: var(--nav-tools-height);
-        padding: 0 0.5rem;
+        align-items: center;
+        justify-content: center;
+        padding: 0 0.625rem;
         min-width: 0;
         border: 0;
         outline: none;
@@ -124,6 +123,10 @@ div.nav-tools {
         width: 100%;
         height: 100%;
         min-height: var(--nav-tools-height);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
     }
 
     // Captioned variant: the row should only hold the icon, leaving the
@@ -164,6 +167,31 @@ div.nav-tools {
         }
     }
 
+    button.btn-option-picker-toggle-caption-inline {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: var(--nav-tools-inline-gap);
+        padding-block: 0;
+        padding-inline: 0.625rem;
+
+        span.btn-option-picker-toggle-row {
+            flex: 0 0 auto;
+            width: auto;
+            height: auto;
+            min-height: 0;
+        }
+
+        span.btn-option-picker-toggle-caption {
+            flex: 0 1 auto;
+            min-width: 0;
+            max-width: 5.75rem;
+            font-size: 0.74rem;
+            line-height: 1;
+            text-align: left;
+        }
+    }
+
     // "Language" is the longest of the three labels — shrink its font a
     // touch so the full word fits inside the same cell width as the others.
     div.nav-tools-item-language button.btn-option-picker-toggle-with-caption span.btn-option-picker-toggle-caption {
@@ -171,17 +199,29 @@ div.nav-tools {
         letter-spacing: 0;
     }
 
-    button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption) {
+    div.btn-option-picker-icon.btn-option-picker-icon-size-2 {
+        width: var(--nav-tools-icon-box-size);
+        min-width: var(--nav-tools-icon-box-size);
+        height: var(--nav-tools-icon-box-size);
+        flex: 0 0 var(--nav-tools-icon-box-size);
+
+        i.fa-icon {
+            font-size: var(--nav-tools-icon-font-size);
+            line-height: 1;
+        }
+    }
+
+    button.btn-option-picker-toggle {
         border-radius: 0;
     }
 
-    div.dropdown.show > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption),
-    div.dropup.show > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption),
-    div.dropdown > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption).show,
-    div.dropup > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption).show,
-    button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):focus-visible,
-    div.dropdown > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):not(.show):active,
-    div.dropup > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):not(.show):active {
+    div.dropdown.show > button.btn-option-picker-toggle,
+    div.dropup.show > button.btn-option-picker-toggle,
+    div.dropdown > button.btn-option-picker-toggle.show,
+    div.dropup > button.btn-option-picker-toggle.show,
+    button.btn-option-picker-toggle:focus-visible,
+    div.dropdown > button.btn-option-picker-toggle:not(.show):active,
+    div.dropup > button.btn-option-picker-toggle:not(.show):active {
         transform: none;
         box-shadow:
             inset 0 1px 0 rgba(255, 255, 255, 0.16),
@@ -210,8 +250,8 @@ div.nav-tools {
     nav.nav-sidebar {
         div.nav-tools {
             --nav-tools-hazard-thickness: 4px;
-            --nav-tools-icon-box-size: 26px;
-            --nav-tools-icon-font-size: 1.42rem;
+            --nav-tools-icon-box-size: 22px;
+            --nav-tools-icon-font-size: 1.2rem;
 
             position: relative;
             overflow: visible;
@@ -264,10 +304,10 @@ div.nav-tools {
             // Captioned (expanded rail with stacked label) — shrink the flag
             // so its visual diameter matches the theme/resume SVGs, which
             // render at ~80% of their container.
-            button.btn-option-picker-toggle.nav-tool-language-toggle.btn-option-picker-toggle-with-caption {
+            button.btn-option-picker-toggle.nav-tool-language-toggle.btn-option-picker-toggle-caption-inline {
                 div.btn-option-picker-icon.btn-option-picker-icon-size-2 img {
-                    width: 82%;
-                    height: 82%;
+                    width: 80%;
+                    height: 80%;
                 }
             }
         }
@@ -338,9 +378,8 @@ div.nav-tools-item-language {
     }
 
     // Captioned variant overrides the !important full-stretch rules above so
-    // the flag and the label can stack inside the toggle.
+    // the flag and the label can use intrinsic sizing inside the toggle.
     button.btn-option-picker-toggle-with-caption {
-        flex-direction: column;
         align-items: center;
         justify-content: center;
 
@@ -686,13 +725,13 @@ div.nav-tools-shrink {
         }
     }
 
-    div.dropdown.show > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption),
-    div.dropup.show > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption),
-    div.dropdown > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption).show,
-    div.dropup > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption).show,
-    button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):focus-visible,
-    div.dropdown > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):not(.show):active,
-    div.dropup > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):not(.show):active {
+    div.dropdown.show > button.btn-option-picker-toggle,
+    div.dropup.show > button.btn-option-picker-toggle,
+    div.dropdown > button.btn-option-picker-toggle.show,
+    div.dropup > button.btn-option-picker-toggle.show,
+    button.btn-option-picker-toggle:focus-visible,
+    div.dropdown > button.btn-option-picker-toggle:not(.show):active,
+    div.dropup > button.btn-option-picker-toggle:not(.show):active {
         box-shadow:
             inset 0 1px 0 rgba(255, 255, 255, 0.08),
             inset 0 -3px 0 color-mix(in srgb, var(--theme-primary) 56%, transparent 44%),
@@ -727,13 +766,13 @@ div.nav-tools-shrink {
             }
         }
 
-        div.dropdown.show > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption),
-        div.dropup.show > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption),
-        div.dropdown > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption).show,
-        div.dropup > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption).show,
-        button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):focus-visible,
-        div.dropdown > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):not(.show):active,
-        div.dropup > button.btn-option-picker-toggle:not(.btn-option-picker-toggle-with-caption):not(.show):active {
+        div.dropdown.show > button.btn-option-picker-toggle,
+        div.dropup.show > button.btn-option-picker-toggle,
+        div.dropdown > button.btn-option-picker-toggle.show,
+        div.dropup > button.btn-option-picker-toggle.show,
+        button.btn-option-picker-toggle:focus-visible,
+        div.dropdown > button.btn-option-picker-toggle:not(.show):active,
+        div.dropup > button.btn-option-picker-toggle:not(.show):active {
             box-shadow:
                 inset 0 1px 0 rgba(255, 255, 255, 0.08),
                 inset 0 -3px 0 color-mix(in srgb, var(--theme-secondary) 56%, transparent 44%),

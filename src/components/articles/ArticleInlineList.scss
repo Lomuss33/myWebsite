@@ -319,6 +319,10 @@ article#article-1-section-about {
         letter-spacing: -0.02em;
     }
 
+    li.article-inline-list-item:not(:last-child)::after {
+        display: none;
+    }
+
     ul.article-inline-list-items-column-mode {
         flex-direction: row;
         align-items: stretch;

@@ -684,6 +684,8 @@ article#article-1-section-experience {
         --timeline-line-width: var(--experience-rail-width);
         --timeline-line-color: color-mix(in srgb, var(--theme-primary) 72%, var(--theme-secondary) 28%);
         --avatar-offset-merge-mode: 0px;
+        --experience-line-cap-trim: 0px;
+        --experience-avatar-vertical-offset: 0px;
         gap: 16px;
         overflow: visible;
 
@@ -712,13 +714,14 @@ article#article-1-section-experience {
         }
 
         @include media-breakpoint-up(md) {
-            --experience-avatar-size: 138px;
+            --experience-avatar-size: 164px;
             --experience-description-right-buffer: clamp(1.18rem, 1rem + 0.38vw, 1.56rem);
             --experience-rail-width: 80px;
             --experience-edge-gap: 5px;
-            --experience-avatar-scale-resting: 1.04;
-            --experience-avatar-scale-active: 1.08;
-            --experience-avatar-scale-direct: 1.12;
+            --experience-avatar-vertical-offset: calc(var(--experience-avatar-size) * 0.45);
+            --experience-avatar-scale-resting: 1.1;
+            --experience-avatar-scale-active: 1.18;
+            --experience-avatar-scale-direct: 1.28;
             --experience-card-right-padding-resting: calc(1rem + var(--experience-card-overlap));
             --experience-card-right-padding-active: calc(1rem + var(--experience-card-overlap));
             --experience-overlay-shift-active: calc(var(--experience-avatar-size) * 0.14);
@@ -726,17 +729,36 @@ article#article-1-section-experience {
             --experience-overlay-gradient-width-active: calc(var(--experience-avatar-size) * 1.08);
             --experience-overlay-opacity-resting: 0.22;
             --experience-overlay-opacity-active: 0.36;
+            --experience-line-cap-trim: 10px;
             gap: 20px;
         }
 
+        @include media-breakpoint-up(lg) {
+            --experience-avatar-size: 192px;
+            --experience-rail-width: 90px;
+            --experience-edge-gap: 6px;
+            --experience-avatar-vertical-offset: calc(var(--experience-avatar-size) * 0.45);
+            --experience-avatar-scale-resting: 1.14;
+            --experience-avatar-scale-active: 1.24;
+            --experience-avatar-scale-direct: 1.34;
+            --experience-overlay-shift-active: calc(var(--experience-avatar-size) * 0.16);
+            --experience-overlay-gradient-width-resting: calc(var(--experience-avatar-size) * 0.82);
+            --experience-overlay-gradient-width-active: calc(var(--experience-avatar-size) * 1.12);
+            --experience-overlay-opacity-resting: 0.23;
+            --experience-overlay-opacity-active: 0.38;
+            --experience-line-cap-trim: 16px;
+            gap: 21px;
+        }
+
         @include media-breakpoint-up(xl) {
-            --experience-avatar-size: 168px;
+            --experience-avatar-size: 182px;
             --experience-description-right-buffer: clamp(1.32rem, 1.12rem + 0.34vw, 1.72rem);
-            --experience-rail-width: 96px;
+            --experience-rail-width: 104px;
             --experience-edge-gap: 7px;
-            --experience-avatar-scale-resting: 1.04;
-            --experience-avatar-scale-active: 1.08;
-            --experience-avatar-scale-direct: 1.12;
+            --experience-avatar-vertical-offset: calc(var(--experience-avatar-size) * 0.45);
+            --experience-avatar-scale-resting: 1.18;
+            --experience-avatar-scale-active: 1.3;
+            --experience-avatar-scale-direct: 1.42;
             --experience-card-right-padding-resting: calc(1.15rem + var(--experience-card-overlap));
             --experience-card-right-padding-active: calc(1.15rem + var(--experience-card-overlap));
             --experience-overlay-shift-active: calc(var(--experience-avatar-size) * 0.18);
@@ -747,11 +769,14 @@ article#article-1-section-experience {
             --experience-overlay-opacity-resting: 0.24;
             --experience-overlay-opacity-active: 0.4;
             --experience-card-transform-active: translate3d(-5px, -2px, 0);
+            --experience-line-cap-trim: 22px;
             gap: 22px;
         }
     }
 
     ul.article-timeline-items:before {
+        top: calc(var(--timeline-line-top-offset, calc(var(--avatar-size)/2)) + var(--experience-line-cap-trim));
+        bottom: calc(var(--timeline-line-bottom-offset, calc(var(--avatar-size)/2)) + var(--experience-line-cap-trim));
         left: auto;
         right: calc(var(--experience-card-overlap) - var(--experience-rail-width) / 2 - var(--experience-edge-reach) + var(--experience-edge-gap));
         width: var(--experience-rail-width);
@@ -781,7 +806,7 @@ article#article-1-section-experience {
 
     div.article-timeline-item-avatar-wrapper--experience {
         position: absolute;
-        top: 50%;
+        top: calc(50% + var(--experience-avatar-vertical-offset));
         right: calc(var(--experience-edge-gap) - var(--experience-edge-reach));
         width: var(--experience-avatar-size);
         min-width: var(--experience-avatar-size);

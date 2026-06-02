@@ -7,6 +7,7 @@ import {useUtils} from "../../../hooks/utils.js"
 import ImageView from "../../generic/ImageView.jsx"
 import TextTyper from "../../generic/TextTyper.jsx"
 import AudioButton from "../../buttons/AudioButton.jsx"
+import NavToolResumeDownloader from "../tools/NavToolResumeDownloader.jsx"
 
 const PROFILE_AVATAR_SIZES = "(max-width: 991.98px) 96px, 144px"
 
@@ -51,7 +52,9 @@ function NavProfileCard({
 
     const namePronunciationIpa = language.getTranslation(safeProfile.locales, "name_pronunciation_ipa", null)
     const namePronunciationAudioUrl = language.getTranslation(safeProfile.locales, "name_pronunciation_audio_url", null)
-    const namePronunciationButtonVisible = showNameAudioButton && (namePronunciationIpa || namePronunciationAudioUrl)
+    const hasPronunciationAudio = Boolean(namePronunciationIpa || namePronunciationAudioUrl)
+    const desktopActionStackVisible = expanded && !compactRail && (hasPronunciationAudio || safeProfile.resumePdfUrl)
+    const namePronunciationButtonVisible = showNameAudioButton && !desktopActionStackVisible && hasPronunciationAudio
     const namePronunciationTooltipLabel = namePronunciationIpa ? `<span class="audio-button-tooltip-lines"><span class="audio-button-tooltip-line audio-button-tooltip-line-top">lǒːʋro  ˈmu.sit͡ɕ</span><span class="audio-button-tooltip-line audio-button-tooltip-line-bottom">LOHV-roh  muu-SEEch</span></span>` : ""
 
     const navProfileCardNameClass = [
@@ -200,6 +203,31 @@ function NavProfileCard({
                 {mobileActionStackBeforeInfo && (
                     <div className={`nav-profile-card-mobile-action-stack nav-profile-card-mobile-action-stack-middle`}>
                         {mobileActionStackBeforeInfo}
+                    </div>
+                )}
+
+                {desktopActionStackVisible && (
+                    <div className={`nav-profile-card-desktop-action-stack`}>
+                        {safeProfile.resumePdfUrl && (
+                            <div className={`nav-profile-card-desktop-action nav-profile-card-desktop-action-resume nav-tools-item-resume`}>
+                                <NavToolResumeDownloader dropdownClassName={`nav-profile-card-desktop-resume-dropdown`}
+                                                         menuClassName={`nav-profile-card-desktop-resume-menu`}
+                                                         toggleClassName={`nav-profile-card-desktop-resume-toggle`}
+                                                         hideCaret={true}
+                                                         showTooltip={true}/>
+                            </div>
+                        )}
+
+                        {hasPronunciationAudio && (
+                            <div className={`nav-profile-card-desktop-action nav-profile-card-desktop-action-audio`}>
+                                <AudioButton url={namePronunciationAudioUrl}
+                                             tooltip={namePronunciationIpa}
+                                             tooltipLabel={namePronunciationTooltipLabel}
+                                             size={AudioButton.Sizes.DEFAULT}
+                                             buttonClassName={`nav-profile-card-desktop-audio-button`}
+                                             tooltipClassName={`nav-profile-card-desktop-audio-tooltip`}/>
+                            </div>
+                        )}
                     </div>
                 )}
 

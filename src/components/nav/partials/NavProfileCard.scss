@@ -1,13 +1,13 @@
 @use "../../../styles/extend" as *;
 
 div.nav-profile-card {
-    --avatar-size: 128px;
+    --avatar-size: 118px;
     --border-size: 5px;
-    --info-margin-top: 6px;
+    --info-margin-top: 5px;
     --offset-status-circle: 14px;
     --avatar-frame-radius: calc(#{$standard-border-radius} * 2);
     --avatar-frame-top-right-radius: 0;
-    --avatar-shell-gap: 6px;
+    --avatar-shell-gap: 5px;
     --avatar-outline-size: 1.5px;
     --avatar-inner-rim-size: 1px;
     --avatar-outline-opacity: 0.94;
@@ -33,14 +33,14 @@ div.nav-profile-card {
     border-bottom: 1px solid var(--theme-nav-divider);
     position: relative;
     margin: 0;
-    padding: 14px 12px 12px;
+    padding: 10px 12px 10px;
     border-radius: 0;
     overflow: visible;
 
-    @media(min-height: 760px) {--avatar-size: 138px; --info-margin-top: 8px;}
-    @media(min-height: 800px) {--avatar-size: 144px}
-    @media(max-height: 690px) {--avatar-size: 118px}
-    @media(max-height: 650px) {--avatar-size: 110px}
+    @media(min-height: 760px) {--avatar-size: 126px; --info-margin-top: 6px;}
+    @media(min-height: 800px) {--avatar-size: 132px}
+    @media(max-height: 690px) {--avatar-size: 112px}
+    @media(max-height: 650px) {--avatar-size: 104px}
 
     &-header {
         display: flex;
@@ -411,7 +411,7 @@ div.nav-profile-card {
         margin-top: 0;
         margin-left: -10px;
         margin-right: -10px;
-        padding: 4px 14px;
+        padding: 3px 12px;
         border-radius: 0;
         background: color-mix(in srgb, var(--theme-nav-surface-accent) 78%, white 22%);
         border-top: 1px solid var(--theme-nav-divider);
@@ -449,6 +449,263 @@ div.nav-profile-card {
 
     div.nav-profile-card-mobile-action-stack {
         display: none;
+    }
+
+    div.nav-profile-card-desktop-action-stack {
+        position: absolute;
+        left: -0.48rem;
+        top: 36.8%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.02rem;
+        width: 4rem;
+        z-index: 4;
+    }
+
+    div.nav-profile-card-desktop-action {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    div.nav-profile-card-desktop-action-audio {
+        margin-top: -0.96rem;
+    }
+
+    div.nav-profile-card-desktop-action-stack div.audio-button-wrapper-size-default button.audio-button,
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button {
+        width: 3.15rem;
+        height: 3.15rem;
+        margin-left: 0;
+        color: color-mix(in srgb, #d9dee6 76%, var(--theme-primary) 24%);
+        position: relative;
+        overflow: visible;
+    }
+
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button:hover {
+        color: var(--theme-primary);
+    }
+
+    div.nav-profile-card-desktop-action-stack div.nav-profile-card-desktop-resume-dropdown {
+        width: 100%;
+        position: relative;
+    }
+
+    div.nav-profile-card-desktop-action-stack div.btn-option-picker {
+        width: 100%;
+        height: 100%;
+    }
+
+    div.nav-profile-card-desktop-action-stack div.audio-button-wrapper-size-default,
+    div.nav-profile-card-desktop-action-stack div.nav-profile-card-desktop-resume-dropdown {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    div.nav-profile-card-desktop-action-stack button.btn-option-picker-toggle {
+        width: 3.85rem;
+        height: 3.85rem;
+        min-height: 3.85rem;
+        padding: 0;
+        border-radius: 1.35rem;
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+        position: relative;
+        overflow: hidden;
+    }
+
+    div.nav-profile-card-desktop-action-stack button.btn-option-picker-toggle:hover,
+    div.nav-profile-card-desktop-action-stack div.nav-profile-card-desktop-resume-dropdown.show > button.btn-option-picker-toggle,
+    div.nav-profile-card-desktop-action-stack div.nav-profile-card-desktop-resume-dropdown > button.btn-option-picker-toggle.show {
+        background: transparent;
+        border-color: transparent;
+        box-shadow: none;
+    }
+
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-resume-toggle::after,
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-resume-toggle::before,
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-resume-toggle i.fa-caret-icon {
+        display: none !important;
+        content: none !important;
+    }
+
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button::before,
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button::after,
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-resume-toggle::before,
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-resume-toggle::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        transition:
+            transform 0.32s ease,
+            opacity 0.32s ease,
+            box-shadow 0.32s ease,
+            border-color 0.32s ease;
+    }
+
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button::before,
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button::after {
+        display: none;
+        content: none;
+    }
+
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-resume-toggle::before {
+        inset: 0.18rem;
+        border-radius: 1.15rem;
+        border: 1px solid color-mix(in srgb, #d4dae2 74%, var(--theme-primary) 26%);
+        background:
+            linear-gradient(145deg,
+                rgba(255, 255, 255, 0.08) 0%,
+                rgba(255, 255, 255, 0.02) 34%,
+                rgba(0, 0, 0, 0.06) 100%);
+        box-shadow:
+            inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+            inset 0 0.7rem 1.4rem rgba(255, 255, 255, 0.03),
+            inset 0 -0.85rem 1.25rem rgba(0, 0, 0, 0.18);
+        opacity: 0.96;
+    }
+
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-resume-toggle::after {
+        inset: 0.02rem;
+        border-radius: 1.35rem;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow:
+            0 0 0 1px rgba(8, 15, 24, 0.38),
+            0 0.8rem 1.8rem rgba(3, 7, 18, 0.24),
+            0 0 1.2rem rgba(248, 170, 40, 0.08);
+        opacity: 0.92;
+    }
+
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-resume-toggle:hover::before,
+    div.nav-profile-card-desktop-action-stack div.nav-profile-card-desktop-resume-dropdown.show > button.nav-profile-card-desktop-resume-toggle::before,
+    div.nav-profile-card-desktop-action-stack div.nav-profile-card-desktop-resume-dropdown > button.nav-profile-card-desktop-resume-toggle.show::before {
+        border-color: color-mix(in srgb, #f3c57a 78%, var(--theme-primary) 22%);
+        box-shadow:
+            inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+            inset 0 0.7rem 1.4rem rgba(255, 255, 255, 0.05),
+            inset 0 -0.95rem 1.3rem rgba(0, 0, 0, 0.22),
+            0 0 1.4rem rgba(248, 170, 40, 0.16);
+        transform: scale(1.03);
+    }
+
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-resume-toggle:hover::after,
+    div.nav-profile-card-desktop-action-stack div.nav-profile-card-desktop-resume-dropdown.show > button.nav-profile-card-desktop-resume-toggle::after,
+    div.nav-profile-card-desktop-action-stack div.nav-profile-card-desktop-resume-dropdown > button.nav-profile-card-desktop-resume-toggle.show::after {
+        box-shadow:
+            0 0 0 1px rgba(8, 15, 24, 0.42),
+            0 1rem 2rem rgba(3, 7, 18, 0.3),
+            0 0 1.8rem rgba(248, 170, 40, 0.18);
+        opacity: 1;
+    }
+
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button svg.audio-button-icon {
+        width: 78%;
+        height: 78%;
+        position: relative;
+        z-index: 2;
+        filter: none;
+    }
+
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button .triangle,
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button .circle {
+        stroke-width: 6;
+    }
+
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button {
+        border-radius: 999px;
+        transform: translateY(-5px);
+    }
+
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button:hover {
+        transform: translateY(-6px) scale(1.04);
+        filter: drop-shadow(0 0 0.45rem rgba(248, 170, 40, 0.22));
+    }
+
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button:hover .circle {
+        transform: scale(0.82);
+        transform-origin: center;
+    }
+
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-resume-toggle span.btn-option-picker-toggle-row {
+        width: auto;
+        height: auto;
+        min-height: 0;
+        position: relative;
+        z-index: 2;
+    }
+
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-resume-toggle div.btn-option-picker-icon.btn-option-picker-icon-size-2 {
+        width: 2.16rem;
+        min-width: 2.16rem;
+        height: 2.16rem;
+        flex: 0 0 2.16rem;
+    }
+
+    div.nav-profile-card-desktop-action-stack div.dropdown-menu.nav-profile-card-desktop-resume-menu {
+        position: absolute !important;
+        left: calc(100% + 0.6rem) !important;
+        top: 50% !important;
+        bottom: auto !important;
+        transform: translateY(-50%) !important;
+        margin: 0 !important;
+        min-width: 11rem;
+        max-width: min(13rem, 80vw);
+        padding: 0.36rem;
+        border-radius: 1rem;
+        border: 1px solid #f8aa28;
+        background:
+            linear-gradient(180deg,
+                color-mix(in srgb, var(--theme-nav-surface) 96%, white 4%) 0%,
+                color-mix(in srgb, var(--theme-nav-surface-accent) 94%, black 6%) 100%);
+        box-shadow:
+            0 20px 40px rgba(15, 23, 42, 0.28),
+            0 8px 18px rgba(15, 23, 42, 0.16),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(14px) saturate(1.08);
+    }
+
+    &:has(div.nav-profile-card-desktop-action-stack) {
+        div.nav-profile-card-media {
+            margin-left: 2.16rem;
+            margin-top: -0.04rem;
+            margin-bottom: 0.6rem;
+        }
+
+        div.nav-profile-card-info {
+            margin-top: -0.08rem;
+            align-items: center;
+            text-align: center;
+            padding-right: 0;
+        }
+
+        h1.nav-profile-card-name {
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+    }
+
+    div.nav-profile-card-desktop-action-stack div.dropdown-menu.nav-profile-card-desktop-resume-menu button.dropdown-item {
+        min-height: 2.32rem;
+        justify-content: flex-start;
+        gap: 0.56rem;
+        padding: 0.48rem 0.66rem;
+        border-radius: 0.8rem;
+    }
+
+    [data-theme="light"] & {
+        div.nav-profile-card-desktop-action-stack div.audio-button-wrapper-size-default button.audio-button,
+        div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button {
+            color: color-mix(in srgb, var(--theme-nav-text) 82%, var(--theme-primary) 18%);
+        }
     }
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
@@ -1199,17 +1456,8 @@ div.nav-profile-card-shrink {
 // Applies to both the mobile-header theme button and the wide-screen
 // sidebar theme button — same look across viewports.
 div.nav-tools-item-theme {
-    // Wide-screen: enlarge the theme icon slot so the premium SVG reads
-    // clearly. The icon container picks this up via its existing var().
-    --nav-tools-icon-box-size: 44px;
-    --nav-tools-icon-font-size: 2rem;
-}
-
-// When the toggle shows a caption (expanded rail with stacked label), the
-// icon shrinks to leave vertical room for the text below it.
-nav.nav-sidebar div.nav-tools-item:has(button.btn-option-picker-toggle-with-caption) {
-    --nav-tools-icon-box-size: 30px;
-    --nav-tools-icon-font-size: 1.6rem;
+    --nav-tools-icon-box-size: 24px;
+    --nav-tools-icon-font-size: 1.28rem;
 }
 
 div.nav-profile-card-mobile-action-theme,
@@ -1277,11 +1525,12 @@ div.nav-tools-item-theme {
 // Replaces the FA file-arrow-down glyph on the resume toggle button only
 // (menu items keep their original FA icons).
 div.nav-tools-item-resume {
-    --nav-tools-icon-box-size: 44px;
-    --nav-tools-icon-font-size: 2rem;
+    --nav-tools-icon-box-size: 24px;
+    --nav-tools-icon-font-size: 1.28rem;
 }
 
 div.nav-profile-card-mobile-action-resume,
+div.nav-profile-card-desktop-action-resume,
 div.nav-tools-item-resume,
 div.nav-short-rail-resume-band {
     &:has(button.btn-option-picker-toggle i.fa-icon.fa-file-arrow-down) {
@@ -1311,6 +1560,23 @@ div.nav-short-rail-resume-band {
                 drop-shadow(0 0 0.55rem rgba(248, 170, 40, 0.4));
             animation: nav-profile-card-resume-lift 1.8s ease-in-out infinite;
         }
+    }
+}
+
+div.nav-profile-card-desktop-action-resume {
+    button.btn-option-picker-toggle i.fa-icon.fa-file-arrow-down {
+        background-size: 94%;
+        filter:
+            drop-shadow(0 0 0.22rem rgba(248, 170, 40, 0.18))
+            drop-shadow(0 0 0.08rem rgba(255, 255, 255, 0.08));
+    }
+
+    button.btn-option-picker-toggle:hover i.fa-icon.fa-file-arrow-down,
+    button.btn-option-picker-toggle:focus-visible i.fa-icon.fa-file-arrow-down {
+        filter:
+            drop-shadow(0 0 0.32rem rgba(251, 191, 36, 0.82))
+            drop-shadow(0 0 0.65rem rgba(248, 170, 40, 0.42));
+        animation: nav-profile-card-resume-lift 1.6s ease-in-out infinite;
     }
 }
 

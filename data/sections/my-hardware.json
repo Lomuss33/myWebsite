@@ -339,7 +339,7 @@
                 "Arduino",
                 "Motorlar",
                 "LED",
-                "EtkileÅŸimli Sistem"
+                "Etkileşimli Sistem"
               ]
             }
           }
@@ -588,7 +588,7 @@
             },
             "hr": {
               "title": "Prilagođeni električni bicikl",
-              "text": "Prilago?eni elektri?ni bicikl s baterijom od 504 Wh (36 V, 14 Ah), okvirom od aluminija 6061, 29-in?nim gumama, hidrauli?nim disk ko?nicama i SHIMANO DEORE prijenosom s 10 brzina.",
+              "text": "Prilagođeni električni bicikl s baterijom od 504 Wh (36 V, 14 Ah), okvirom od aluminija 6061, 29-inčnim gumama, hidrauličnim disk kočnicama i SHIMANO DEORE prijenosom s 10 brzina.",
               "tags": [
                 "E-bicikl",
                 "Održiva mobilnost",
@@ -598,7 +598,7 @@
             },
             "tr": {
               "title": "Özel Elektrikli Bisiklet",
-              "text": "504 Wh bataryaya (36 V, 14 Ah), 6061 al?minyum kadroya, 29 in? lastiklere, hidrolik disk frenlere ve SHIMANO DEORE 10 vites aktarma sistemine sahip ?zel elektrikli bisiklet.",
+              "text": "504 Wh bataryaya (36 V, 14 Ah), 6061 alüminyum kadroya, 29 inç lastiklere, hidrolik disk frenlere ve SHIMANO DEORE 10 vites aktarma sistemine sahip özel elektrikli bisiklet.",
               "tags": [
                 "E-Bisiklet",
                 "Sürdürülebilir Ulaşım",

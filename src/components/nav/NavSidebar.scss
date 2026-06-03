@@ -52,6 +52,11 @@ nav.nav-sidebar {
             min-height: 0;
         }
 
+        > div.nav-sidebar-rail-stack {
+            flex: 1 1 auto;
+            min-height: 0;
+        }
+
         > div.nav-tools {
             flex: 0 0 auto;
         }
@@ -93,6 +98,7 @@ nav.nav-sidebar {
 
 nav.nav-sidebar-shrink {
     --width: 108px;
+    --nav-short-rail-profile-height: 96px;
 
     div.nav-sidebar-card-wrapper {
         width: var(--width);
@@ -102,16 +108,6 @@ nav.nav-sidebar-shrink {
     button.nav-sidebar-btn-toggle {
         top: 21px;
         right: -14px;
-    }
-}
-
-nav.nav-sidebar-short-rail {
-    --nav-short-rail-profile-height: 96px;
-    --nav-short-rail-tools-height: 64px;
-
-    div.nav-sidebar-card-wrapper {
-        width: 108px;
-        min-width: 108px;
     }
 
     div.nav-sidebar-card-wrapper > div.nav-profile-card.nav-profile-card-shrink {
@@ -178,9 +174,32 @@ nav.nav-sidebar-short-rail {
         object-position: 42% 16%;
         border-radius: 0 !important;
     }
+}
+
+nav.nav-sidebar-short-rail {
+    --nav-short-rail-density: 1;
+    --nav-short-rail-scale: 1;
+    --nav-short-rail-profile-height: 96px;
+    --nav-short-rail-row-height: 34px;
+    --nav-short-rail-tools-height: 64px;
+    --nav-short-rail-icon-box-size: calc(16px + 12px * var(--nav-short-rail-density));
+    --nav-short-rail-icon-font-size: calc(0.9rem + 0.6rem * var(--nav-short-rail-density));
+    --nav-short-rail-resume-icon-box-size: calc(22px + 18px * var(--nav-short-rail-density));
+    --nav-short-rail-resume-font-size: calc(0.52rem + 0.14rem * var(--nav-short-rail-density));
+    --nav-short-rail-resume-caption-offset: calc(-6px + 3px * var(--nav-short-rail-density));
+
+    div.nav-link-list-shell {
+        --nav-link-target-height: var(--nav-short-rail-row-height);
+    }
+
+    div.nav-profile-card-shrink {
+        --offset-status-circle: calc(5px + 5px * var(--nav-short-rail-density));
+    }
 
     div.nav-tools {
         --nav-tools-height: var(--nav-short-rail-tools-height);
+        --nav-tools-icon-box-size: var(--nav-short-rail-icon-box-size);
+        --nav-tools-icon-font-size: var(--nav-short-rail-icon-font-size);
         flex: 0 0 var(--nav-tools-height);
         padding: 0;
         height: var(--nav-tools-height);
@@ -194,11 +213,11 @@ nav.nav-sidebar-short-rail {
     }
 }
 
-nav.nav-sidebar-short-rail.nav-sidebar-short-rail-with-resume-band {
+nav.nav-sidebar.nav-sidebar-short-rail-with-resume-band {
     --nav-short-rail-resume-height: 64px;
 }
 
-nav.nav-sidebar-short-rail div.nav-short-rail-resume-band {
+nav.nav-sidebar div.nav-short-rail-resume-band {
     flex: 0 0 var(--nav-short-rail-resume-height);
     width: 100%;
     height: var(--nav-short-rail-resume-height);
@@ -221,7 +240,7 @@ nav.nav-sidebar-short-rail div.nav-short-rail-resume-band {
         min-width: 0;
         border: 0;
         border-radius: 0;
-        padding-inline: 2px;
+        padding-inline: 0 calc(2px * var(--nav-short-rail-scale, 1));
         overflow: hidden;
         display: flex;
         align-items: center;
@@ -243,22 +262,24 @@ nav.nav-sidebar-short-rail div.nav-short-rail-resume-band {
         span.btn-option-picker-toggle-row {
             width: auto;
             flex: 0 0 auto;
+            margin-left: calc(-2px + 1px * var(--nav-short-rail-scale, 1));
         }
 
         div.btn-option-picker-icon.btn-option-picker-icon-size-2 {
-            width: 44px;
-            min-width: 44px;
-            height: 44px;
+            width: var(--nav-short-rail-resume-icon-box-size, 40px);
+            min-width: var(--nav-short-rail-resume-icon-box-size, 40px);
+            height: var(--nav-short-rail-resume-icon-box-size, 40px);
         }
 
         span.btn-option-picker-toggle-caption {
-            font-size: 0.74rem;
+            font-size: var(--nav-short-rail-resume-font-size, 0.66rem);
             font-weight: 600;
             letter-spacing: 0.005em;
             white-space: nowrap;
             overflow: visible;
             text-overflow: clip;
             flex: 0 0 auto;
+            margin-left: var(--nav-short-rail-resume-caption-offset, -3px);
         }
 
         i.fa-icon,
@@ -306,7 +327,7 @@ nav.nav-sidebar-short-rail div.nav-short-rail-resume-band {
     }
 }
 
-[data-theme="dark"] nav.nav-sidebar-short-rail div.nav-short-rail-resume-band {
+[data-theme="dark"] nav.nav-sidebar div.nav-short-rail-resume-band {
     button.nav-short-rail-resume-pill {
         background:
             linear-gradient(180deg,
@@ -332,4 +353,55 @@ nav.nav-sidebar-short-rail div.nav-short-rail-resume-band {
                     color-mix(in srgb, var(--theme-secondary) 28%, black 72%) 100%);
         }
     }
+}
+
+div.nav-sidebar-rail-stack {
+    --nav-rail-separator-height: 4px;
+
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 0;
+    width: 100%;
+    background: var(--theme-nav-surface);
+    overflow: visible;
+
+    > div.nav-link-list-shell {
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+
+    > div.nav-tools {
+        flex: 0 0 auto;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+}
+
+@include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+    div.nav-sidebar-rail-stack {
+        @include nav-hazard-shell-frame(4px);
+
+        &::before {
+            content: none;
+        }
+    }
+}
+
+div.nav-rail-separator {
+    flex: 0 0 var(--nav-rail-separator-height);
+    height: var(--nav-rail-separator-height);
+    min-height: var(--nav-rail-separator-height);
+    width: 100%;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+        -55deg,
+        var(--theme-primary) 0,
+        var(--theme-primary) 26px,
+        #000000 26px,
+        #000000 52px
+    );
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        inset 0 -1px 0 rgba(15, 23, 42, 0.16);
 }

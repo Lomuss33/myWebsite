@@ -53,7 +53,9 @@ function NavProfileCard({
     const namePronunciationIpa = language.getTranslation(safeProfile.locales, "name_pronunciation_ipa", null)
     const namePronunciationAudioUrl = language.getTranslation(safeProfile.locales, "name_pronunciation_audio_url", null)
     const hasPronunciationAudio = Boolean(namePronunciationIpa || namePronunciationAudioUrl)
-    const desktopActionStackVisible = expanded && !compactRail && (hasPronunciationAudio || safeProfile.resumePdfUrl)
+    const mobileActionStackVisible = Boolean(mobileActionStackBeforeInfo || mobileActionStackAfterInfo || mobileActionStack)
+    const desktopActionStackVisible = expanded && !compactRail && !mobileActionStackVisible &&
+        (hasPronunciationAudio || safeProfile.resumePdfUrl)
     const namePronunciationButtonVisible = showNameAudioButton && !desktopActionStackVisible && hasPronunciationAudio
     const namePronunciationTooltipLabel = namePronunciationIpa ? `<span class="audio-button-tooltip-lines"><span class="audio-button-tooltip-line audio-button-tooltip-line-top">lǒːʋro  ˈmu.sit͡ɕ</span><span class="audio-button-tooltip-line audio-button-tooltip-line-bottom">LOHV-roh  muu-SEEch</span></span>` : ""
 

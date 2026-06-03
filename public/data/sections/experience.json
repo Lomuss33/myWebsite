@@ -187,7 +187,7 @@
                     },
                     "locales": {
                         "en": {
-                            "title": "Working Student — Computer Production",
+                            "title": "Working Student — Computer Service",
                             "province": "Giessen, Hesse",
                             "country": "Germany",
                             "institution": "tci - Gesellschaft für technische Informatik mbH",
@@ -208,7 +208,7 @@
                             ]
                         },
                         "de": {
-                            "title": "Werkstudent in der Computerproduktion",
+                            "title": "Werkstudent im Computer-Service",
                             "province": "Gießen, Hessen",
                             "country": "Deutschland",
                             "institution": "tci - Gesellschaft für technische Informatik mbH",
@@ -229,7 +229,7 @@
                             ]
                         },
                         "hr": {
-                            "title": "Student zaposlenik — računalna proizvodnja",
+                            "title": "Student zaposlenik — računalni servis",
                             "province": "Giessen, Hessen",
                             "country": "Njemačka",
                             "institution": "tci - Gesellschaft für technische Informatik mbH",
@@ -250,7 +250,7 @@
                             ]
                         },
                         "tr": {
-                            "title": "Bilgisayar Üretiminde Çalışan Öğrenci",
+                            "title": "Bilgisayar Servisinde Çalışan Öğrenci",
                             "province": "Giessen, Hessen",
                             "country": "Almanya",
                             "institution": "tci - Gesellschaft für technische Informatik mbH",
@@ -514,7 +514,7 @@
                     },
                     "locales": {
                         "en": {
-                            "title": "Apprenticeship — Electronic Technician for Automation Technology",
+                            "title": "Electronic Technician for Automation Technology",
                             "province": "Multiple sites",
                             "country": "Germany",
                             "institution": "Clariant AG",

@@ -15,6 +15,17 @@ export const useParser = () => {
     const language = useLanguage()
     const theme = useTheme()
 
+    const getThemedTitleTranslation = useCallback((locales, key) => {
+        const selectedThemeId = theme.getSelectedTheme()?.id
+        if(selectedThemeId) {
+            const themedTranslation = language.getTranslation(locales, `${key}_${selectedThemeId}`, null)
+            if(themedTranslation !== null)
+                return themedTranslation
+        }
+
+        return language.getTranslation(locales, key)
+    }, [language, theme])
+
     /**
      * @param {Object} section
      * @return {{prefix: String|null, title: String, navTitle: String}}
@@ -27,18 +38,18 @@ export const useParser = () => {
         return {
             title:
                 isHomeSection || isLgOrHigher ?
-                language.getTranslation(titleLocales, "title_long") :
-                language.getTranslation(titleLocales, "title_short"),
+                getThemedTitleTranslation(titleLocales, "title_long") :
+                getThemedTitleTranslation(titleLocales, "title_short"),
 
             prefix:
                 (isHomeSection || isLgOrHigher) ?
-                language.getTranslation(titleLocales, "title_long_prefix") :
+                getThemedTitleTranslation(titleLocales, "title_long_prefix") :
                 null,
 
             navTitle:
-                language.getTranslation(titleLocales, "title_short_nav")
+                getThemedTitleTranslation(titleLocales, "title_short_nav")
         }
-    }, [viewport, language])
+    }, [viewport, getThemedTitleTranslation])
 
     /**
      * @param {Object} section

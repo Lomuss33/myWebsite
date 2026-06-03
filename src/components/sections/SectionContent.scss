@@ -26,6 +26,13 @@ div.section-content {
         --padding-bottom: 1.95rem;
     }
 
+    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        /* Avoid widened transformed wrappers on mobile. Firefox Android and other mobile
+           browsers can treat the pre-transform width as page width and zoom the entire
+           layout out to fit, which makes the whole UI look tiny. */
+        --section-content-scale: 1;
+    }
+
     @include media-breakpoint-down(md) {
         --padding-top: 0.5rem;
         --padding-x: 0.75rem;

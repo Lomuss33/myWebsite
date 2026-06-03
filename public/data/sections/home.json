@@ -6,28 +6,44 @@
         "title_short_nav": "Home",
         "title_short_tooltip": "Start",
         "title_long_prefix": "Hello friend,",
-        "title_long": "Welcome to {{my corner}} of the internet!"
+        "title_long": "Welcome to {{my corner}} of the internet!",
+        "title_long_prefix_light": "Hello friend,",
+        "title_long_light": "Welcome to {{my corner}} of the internet!",
+        "title_long_prefix_dark": "Hello night owl,",
+        "title_long_dark": "Welcome to {{my moonlit corner}} of the internet!"
       },
       "de": {
         "title_short": "Hallo!",
         "title_short_nav": "Startseite",
         "title_short_tooltip": "Start",
         "title_long_prefix": "Hallo Freund,",
-        "title_long": "Willkommen in {{meiner Ecke}} des Internets!"
+        "title_long": "Willkommen in {{meiner Ecke}} des Internets!",
+        "title_long_prefix_light": "Hallo Freund,",
+        "title_long_light": "Willkommen in {{meiner Ecke}} des Internets!",
+        "title_long_prefix_dark": "Hallo Nachteule,",
+        "title_long_dark": "Willkommen in {{meiner mondbeschienenen Ecke}} des Internets!"
       },
       "hr": {
         "title_short": "Bok!",
         "title_short_nav": "Početna",
         "title_short_tooltip": "Početak",
-        "title_long_prefix": "Bok prijatelji,",
-        "title_long": "Dobrodošli u {{moj kutak}} interneta!"
+        "title_long_prefix": "Bok prijatelju,",
+        "title_long": "Dobrodošao u {{moj kutak}} interneta!",
+        "title_long_prefix_light": "Bok prijatelju,",
+        "title_long_light": "Dobrodošao u {{moj kutak}} interneta!",
+        "title_long_prefix_dark": "Bok noćna ptico,",
+        "title_long_dark": "Dobrodošao u {{moj mjesečinom obasjan kutak}} interneta!"
       },
       "tr": {
         "title_short": "Merhaba!",
         "title_short_nav": "Anasayfa",
         "title_short_tooltip": "Başlangıç",
-        "title_long_prefix": "Merhaba arkadaşım,",
-        "title_long": "İnternetteki {{köşeme}} hoş geldin!"
+        "title_long_prefix": "Merhaba dostum,",
+        "title_long": "İnternetteki {{köşeme}} hoş geldin!",
+        "title_long_prefix_light": "Merhaba dostum,",
+        "title_long_light": "İnternetteki {{köşeme}} hoş geldin!",
+        "title_long_prefix_dark": "Merhaba gece kuşu,",
+        "title_long_dark": "İnternetteki {{ay ışığıyla aydınlanan köşeme}} hoş geldin!"
       }
     }
   },

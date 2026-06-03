@@ -211,7 +211,10 @@ function ViewportProvider({ children }) {
 
     const isShortDesktopLayout = () => {
         const expandedRailWidth = 224
-        const minimumScrollableWidthForExpandedRail = 820
+        const baseMinimumScrollableWidthForExpandedRail = 1100
+        const shortDesktopHeightTarget = 820
+        const heightPenalty = Math.max(0, shortDesktopHeightTarget - innerHeight)
+        const minimumScrollableWidthForExpandedRail = baseMinimumScrollableWidthForExpandedRail + Math.round(heightPenalty * 0.9)
         const minimumViewportWidthForExpandedRail = expandedRailWidth + minimumScrollableWidthForExpandedRail
 
         return innerWidth >= bootstrapBreakpoints.lg && innerWidth < minimumViewportWidthForExpandedRail

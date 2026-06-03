@@ -25,6 +25,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # Validate locale text encoding
+      - name: Validate locale text
+        run: npm run validate:i18n
+
       # Build the project
       - name: Build project
         run: npm run build

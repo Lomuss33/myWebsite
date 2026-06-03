@@ -1448,12 +1448,23 @@ article#article-1-section-experience {
     }
 
     @include media-breakpoint-down(sm) {
+        div.article-timeline-item-info-for-timelines-header-title {
+            width: 100%;
+            max-width: 100%;
+            margin-right: 0;
+        }
+
+        div.article-timeline-item-info-for-timelines-header-main {
+            width: 100%;
+        }
+
         div.article-timeline-item-info-for-timelines-header-meta-band {
             align-items: center;
         }
 
         div.article-timeline-item-info-for-timelines-header-meta-grid {
-            align-items: center;
+            align-items: stretch;
+            margin-top: 0.3rem;
         }
 
         div.article-timeline-item-info-for-timelines-header-meta-row--time,
@@ -1464,6 +1475,7 @@ article#article-1-section-experience {
         }
 
         div.article-timeline-item-info-for-timelines-header-meta-row--split {
+            justify-items: stretch;
             gap: 0.5rem;
         }
 
@@ -1471,6 +1483,7 @@ article#article-1-section-experience {
             width: 100%;
             max-width: 100%;
             min-height: 0;
+            box-sizing: border-box;
             padding: 0.62rem 0.78rem;
             border-radius: 0.9rem;
             line-height: 1.26;
@@ -1490,6 +1503,9 @@ article#article-1-section-experience {
         }
 
         div.article-timeline-item-info-for-timelines-header-meta-content--company {
+            width: 100%;
+            max-width: 100%;
+
             span {
                 display: block;
                 max-width: 100%;
@@ -1504,6 +1520,16 @@ article#article-1-section-experience {
 
         div.article-timeline-item-info-for-timelines-header-meta-segment--location span {
             text-wrap: pretty;
+        }
+
+        div.article-timeline-item-info-for-timelines-body {
+            div.article-timeline-item-info-for-timelines-body-text,
+            ul.article-timeline-item-info-for-timelines-body-list {
+                width: 100%;
+                max-width: 100%;
+                margin-left: 0;
+                margin-right: 0;
+            }
         }
     }
 }

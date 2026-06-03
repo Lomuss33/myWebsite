@@ -42,22 +42,6 @@ div.nav-profile-card {
     @media(max-height: 690px) {--avatar-size: 112px}
     @media(max-height: 650px) {--avatar-size: 104px}
 
-    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
-        @media(max-height: 610px) {
-            --avatar-size: 96px;
-            --info-margin-top: 3px;
-            padding-top: 8px;
-            padding-bottom: 8px;
-        }
-
-        @media(max-height: 560px) {
-            --avatar-size: 88px;
-            --info-margin-top: 2px;
-            padding-top: 6px;
-            padding-bottom: 6px;
-        }
-    }
-
     &-header {
         display: flex;
         align-items: center;
@@ -367,18 +351,6 @@ div.nav-profile-card {
             line-height: 1.55rem!important;
             justify-content: center;
         }
-
-        @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
-            @media(max-height: 610px) {
-                font-size: 1.04rem!important;
-                line-height: 1.28rem!important;
-            }
-
-            @media(max-height: 560px) {
-                font-size: 0.96rem!important;
-                line-height: 1.14rem!important;
-            }
-        }
     }
 
     span.nav-profile-card-name-text {
@@ -462,22 +434,6 @@ div.nav-profile-card {
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
             font-size: 0.88rem;
             min-height: 25px;
-        }
-
-        @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
-            @media(max-height: 610px) {
-                font-size: 0.7rem;
-                min-height: 18px;
-                padding-top: 2px;
-                padding-bottom: 2px;
-            }
-
-            @media(max-height: 560px) {
-                font-size: 0.64rem;
-                min-height: 16px;
-                padding-top: 1px;
-                padding-bottom: 1px;
-            }
         }
     }
 

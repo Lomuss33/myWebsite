@@ -321,9 +321,6 @@ div.nav-tools {
 
     nav.nav-sidebar:not(.nav-sidebar-shrink):not(.nav-sidebar-short-rail) {
         div.nav-tools {
-            --nav-tools-icon-box-size: clamp(18px, calc(var(--nav-tools-height) * 0.48), 22px);
-            --nav-tools-icon-font-size: clamp(1rem, calc(var(--nav-tools-height) * 0.029rem), 1.2rem);
-
             div.nav-tools-item-language,
             div.nav-tools-item-theme {
                 button.btn-option-picker-toggle.btn-option-picker-toggle-caption-inline {

@@ -13,10 +13,10 @@ import {useLanguage} from "../../providers/LanguageProvider.jsx"
 
 const DESKTOP_RAIL_SEPARATOR_MIN_HEIGHT = 4
 const SHORT_RAIL_HEIGHT_CONFIG = {
-    profile: { compact: 48, base: 96 },
-    tools: { compact: 34, base: 64 },
-    resume: { compact: 34, base: 64 },
-    row: { compact: 16, base: 34, max: 46 }
+    profile: { min: 64, base: 96 },
+    tools: { min: 46, base: 64 },
+    resume: { min: 46, base: 64 },
+    row: { min: 22, base: 34, max: 46 }
 }
 
 function NavSidebar({ profile, links }) {
@@ -92,9 +92,9 @@ function NavSidebar({ profile, links }) {
                 return
 
             const fixedBaseHeight = profileHeight.base + toolsHeight.base + (hasResumeBand ? resumeHeight.base : 0)
-            const fixedCompactHeight = profileHeight.compact + toolsHeight.compact + (hasResumeBand ? resumeHeight.compact : 0)
+            const fixedMinHeight = profileHeight.min + toolsHeight.min + (hasResumeBand ? resumeHeight.min : 0)
             const baseTotalHeight = fixedBaseHeight + (rowHeight.base * rowCount)
-            const compactTotalHeight = fixedCompactHeight + (rowHeight.compact * rowCount)
+            const minTotalHeight = fixedMinHeight + (rowHeight.min * rowCount)
 
             let nextProfileHeight = profileHeight.base
             let nextToolsHeight = toolsHeight.base
@@ -103,31 +103,24 @@ function NavSidebar({ profile, links }) {
 
             if(availableRailHeight < baseTotalHeight) {
                 const compressionFactor = _clamp(
-                    (availableRailHeight - compactTotalHeight) / Math.max(baseTotalHeight - compactTotalHeight, 1),
+                    (availableRailHeight - minTotalHeight) / Math.max(baseTotalHeight - minTotalHeight, 1),
                     0,
                     1
                 )
 
-                nextProfileHeight = _interpolate(profileHeight.compact, profileHeight.base, compressionFactor)
-                nextToolsHeight = _interpolate(toolsHeight.compact, toolsHeight.base, compressionFactor)
+                nextProfileHeight = _interpolate(profileHeight.min, profileHeight.base, compressionFactor)
+                nextToolsHeight = _interpolate(toolsHeight.min, toolsHeight.base, compressionFactor)
                 nextResumeHeight = hasResumeBand ?
-                    _interpolate(resumeHeight.compact, resumeHeight.base, compressionFactor) :
+                    _interpolate(resumeHeight.min, resumeHeight.base, compressionFactor) :
                     0
-                nextRowHeight = _interpolate(rowHeight.compact, rowHeight.base, compressionFactor)
+                nextRowHeight = _interpolate(rowHeight.min, rowHeight.base, compressionFactor)
             } else {
                 const availableRowHeight = Math.max((availableRailHeight - fixedBaseHeight) / rowCount, rowHeight.base)
                 nextRowHeight = _clamp(availableRowHeight, rowHeight.base, rowHeight.max)
             }
 
-            const density = _clamp(
-                (nextRowHeight - rowHeight.compact) / Math.max(rowHeight.base - rowHeight.compact, 1),
-                0,
-                1
-            )
-
             // Keep the rail width fixed and only scale the vertical rhythm.
-            _setVariable("--nav-short-rail-density", density, "")
-            _setVariable("--nav-short-rail-scale", _clamp(nextRowHeight / rowHeight.base, rowHeight.compact / rowHeight.base, rowHeight.max / rowHeight.base), "")
+            _setVariable("--nav-short-rail-scale", _clamp(nextRowHeight / rowHeight.base, rowHeight.min / rowHeight.base, 1), "")
             _setVariable("--nav-short-rail-profile-height", nextProfileHeight)
             _setVariable("--nav-short-rail-row-height", nextRowHeight)
             _setVariable("--nav-short-rail-tools-height", nextToolsHeight)
@@ -145,7 +138,6 @@ function NavSidebar({ profile, links }) {
         return () => {
             resizeObserver.disconnect()
             shortRailSizeCacheRef.current = {}
-            railCard.style.removeProperty("--nav-short-rail-density")
             railCard.style.removeProperty("--nav-short-rail-scale")
             railCard.style.removeProperty("--nav-short-rail-profile-height")
             railCard.style.removeProperty("--nav-short-rail-row-height")
@@ -162,8 +154,8 @@ function NavSidebar({ profile, links }) {
 
         const rowCount = (links?.length || 0) + 1
         const rowHeightConfig = expanded ?
-            { min: 24, baseline: 42, max: 60 } :
-            { min: 22, baseline: 34, max: 50 }
+            { min: 30, baseline: 48, max: 64 } :
+            { min: 28, baseline: 40, max: 54 }
 
         const _setVariable = (name, value, unit = "px") => {
             if(!sharedRailStack)

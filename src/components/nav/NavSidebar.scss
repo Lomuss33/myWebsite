@@ -177,23 +177,22 @@ nav.nav-sidebar-shrink {
 }
 
 nav.nav-sidebar-short-rail {
-    --nav-short-rail-density: 1;
     --nav-short-rail-scale: 1;
     --nav-short-rail-profile-height: 96px;
     --nav-short-rail-row-height: 34px;
     --nav-short-rail-tools-height: 64px;
-    --nav-short-rail-icon-box-size: calc(16px + 12px * var(--nav-short-rail-density));
-    --nav-short-rail-icon-font-size: calc(0.9rem + 0.6rem * var(--nav-short-rail-density));
-    --nav-short-rail-resume-icon-box-size: calc(22px + 18px * var(--nav-short-rail-density));
-    --nav-short-rail-resume-font-size: calc(0.52rem + 0.14rem * var(--nav-short-rail-density));
-    --nav-short-rail-resume-caption-offset: calc(-6px + 3px * var(--nav-short-rail-density));
+    --nav-short-rail-icon-box-size: calc(12px + 16px * var(--nav-short-rail-scale));
+    --nav-short-rail-icon-font-size: calc(0.9rem + 0.6rem * var(--nav-short-rail-scale));
+    --nav-short-rail-resume-icon-box-size: calc(18px + 22px * var(--nav-short-rail-scale));
+    --nav-short-rail-resume-font-size: calc(0.52rem + 0.14rem * var(--nav-short-rail-scale));
+    --nav-short-rail-resume-caption-offset: calc(-5px + 2px * var(--nav-short-rail-scale));
 
     div.nav-link-list-shell {
         --nav-link-target-height: var(--nav-short-rail-row-height);
     }
 
     div.nav-profile-card-shrink {
-        --offset-status-circle: calc(5px + 5px * var(--nav-short-rail-density));
+        --offset-status-circle: calc(6px + 4px * var(--nav-short-rail-scale));
     }
 
     div.nav-tools {

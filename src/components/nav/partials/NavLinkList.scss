@@ -19,10 +19,6 @@ div.nav-link-list-shell {
     --nav-link-label-line-height: 1.18;
     --nav-link-label-padding-top: 0.08em;
     --nav-link-label-padding-bottom: 0.18em;
-    --nav-link-accent-bar-width: 4px;
-    --nav-link-accent-bar-height: 30px;
-    --nav-link-accent-dot-size: 6px;
-    --nav-link-accent-dot-offset-x: 10px;
 
     display: flex;
     flex: 1 1 auto;
@@ -82,8 +78,8 @@ button.nav-link {
         left: 0;
         top: 50%;
         bottom: auto;
-        width: var(--nav-link-accent-bar-width);
-        height: var(--nav-link-accent-bar-height);
+        width: 4px;
+        height: 30px;
         border-radius: 0 999px 999px 0;
         background:
             linear-gradient(180deg,
@@ -105,10 +101,10 @@ button.nav-link {
     &::after {
         content: "";
         position: absolute;
-        left: var(--nav-link-accent-dot-offset-x);
+        left: 10px;
         top: 50%;
-        width: var(--nav-link-accent-dot-size);
-        height: var(--nav-link-accent-dot-size);
+        width: 6px;
+        height: 6px;
         border-radius: 999px;
         background: color-mix(in srgb, white 28%, var(--theme-primary) 72%);
         box-shadow:

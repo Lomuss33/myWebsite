@@ -62,7 +62,7 @@
           "category_all": "Tüm Projeler",
           "category_educational": "Üniversite",
           "category_professional": "Profesyonel",
-          "category_personal": "KiÅŸisel"
+          "category_personal": "Kişisel"
         }
       },
       "settings": {
@@ -145,7 +145,7 @@
                 "Almanca",
                 "Hırvatça",
                 "İngilizce",
-                "KiÅŸisel Proje"
+                "Kişisel Proje"
               ]
             }
           }
@@ -361,8 +361,8 @@
               "tags": [
                 "Web Tasarım",
                 "Yenileme",
-                "DaÄŸ Evi",
-                "KiÅŸisel Proje"
+                "Dağ Evi",
+                "Kişisel Proje"
               ]
             }
           }
@@ -418,7 +418,7 @@
             },
             "hr": {
               "title": "HTML obiteljsko stablo",
-              "text": "Interaktivni projekt obiteljskog stabla izra?en u HTML-u i slo?en za jasni pregled, tako da se rodbinske veze, grane i generacije mogu lako istra?ivati izravno u pregledniku.",
+              "text": "Interaktivni projekt obiteljskog stabla izrađen u HTML-u i složen za jasan pregled, tako da se rodbinske veze, grane i generacije mogu lako istraživati izravno u pregledniku.",
               "tags": [
                 "HTML",
                 "Obiteljsko stablo",
@@ -428,12 +428,12 @@
             },
             "tr": {
               "title": "HTML Aile Ağacı",
-              "text": "HTML ile haz?rlanm?? ve netlik i?in tasarlanm?? etkile?imli aile a?ac? projesi; akrabalar?, dallar? ve ku?aklar? do?rudan taray?c?da kolayca ke?fetmeyi sa?lar.",
+              "text": "HTML ile hazırlanmış ve netlik için tasarlanmış etkileşimli aile ağacı projesi; akrabaları, dalları ve kuşakları doğrudan tarayıcıda kolayca keşfetmeyi sağlar.",
               "tags": [
                 "HTML",
                 "Aile Ağacı",
                 "Web Tasarım",
-                "KiÅŸisel Proje"
+                "Kişisel Proje"
               ]
             }
           }
@@ -495,7 +495,7 @@
               "tags": [
                 "LaTeX",
                 "Özgeçmiş",
-                "KiÅŸisel Proje"
+                "Kişisel Proje"
               ]
             }
           },
@@ -939,7 +939,7 @@
             },
             "tr": {
               "title": "Piyasa Analizi",
-              "text": "TradingView, grafikler ve analizleri [[tek bir platformda]] birleÅŸtirir."
+              "text": "TradingView, grafikler ve analizleri [[tek bir platformda]] birleştirir."
             }
           },
           "categoryId": "recommendation_group_online"
@@ -1078,7 +1078,7 @@
               "text": "FxSound daje [[jasniji zvuk]] čak i običnim zvučnicima."
             },
             "tr": {
-              "title": "Ses GeliÅŸtirme",
+              "title": "Ses Geliştirme",
               "text": "FxSound sıradan hoparlörlerden [[daha iyi ses]] elde etmenizi sağlar."
             }
           },
@@ -1218,8 +1218,8 @@
               "text": "Wireshark omogućuje da [[vidite mrežni promet]]."
             },
             "tr": {
-              "title": "AÄŸ Analizi",
-              "text": "Wireshark, aÄŸ trafiÄŸini [[paket paket]] analiz etmenizi saÄŸlar."
+              "title": "Ağ Analizi",
+              "text": "Wireshark, ağ trafiğini [[paket paket]] analiz etmenizi sağlar."
             }
           },
           "categoryId": "recommendation_group_desktop"
@@ -1288,7 +1288,7 @@
               "text": "bitchat istražuje ideju komunikacije bez centralne kontrole – zanimljiv primjer [[decentralizirane tehnologije]]."
             },
             "tr": {
-              "title": "Merkezi Olmayan MesajlaÅŸma",
+              "title": "Merkezi Olmayan Mesajlaşma",
               "text": "bitchat, merkezi kontrol olmadan iletişim fikrini araştıran ilginç bir [[merkeziyetsiz teknoloji]] örneğidir."
             }
           },
@@ -1533,7 +1533,7 @@
               "text": "Google Maps pretvara gradove u [[digitalnu kartu istraživanja]]."
             },
             "tr": {
-              "title": "Navigasyon & KeÅŸif",
+              "title": "Navigasyon & Keşif",
               "text": "Google Maps, şehirleri [[veri destekli keşiflere]] dönüştürür."
             }
           },

@@ -437,8 +437,7 @@ function resolveTooltipLayoutContext(path) {
     const rail = navSidebar.querySelector(".nav-sidebar-card-wrapper") || navSidebar
     const bounds = rail.getBoundingClientRect()
     const isShortRail =
-        navSidebar.classList.contains("nav-sidebar-short-rail") ||
-        navSidebar.classList.contains("nav-sidebar-shrink")
+        navSidebar.classList.contains("nav-sidebar-short-rail")
 
     return {
         type: "nav-rail",

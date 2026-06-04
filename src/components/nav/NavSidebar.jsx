@@ -12,11 +12,15 @@ import {useInput} from "../../providers/InputProvider.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 
 const DESKTOP_RAIL_SEPARATOR_MIN_HEIGHT = 4
+const MIN_VIEWPORT_WIDTH_FOR_EXTENDED_RAIL = 1280
+const EXTENDED_PROFILE_COMFORT_HEIGHT = 168
+const EXTENDED_ROW_COMFORT_HEIGHT = 42
+const EXTENDED_MODE_HYSTERESIS = 24
 const SHORT_RAIL_HEIGHT_CONFIG = {
-    profile: { min: 64, base: 96 },
-    tools: { min: 46, base: 64 },
-    resume: { min: 46, base: 64 },
-    row: { min: 22, base: 34, max: 46 }
+    profile: { floor: 32, base: 96 },
+    tools: { floor: 20, base: 64 },
+    resume: { floor: 20, base: 64 },
+    row: { floor: 10, base: 34, max: 46 }
 }
 
 function NavSidebar({ profile, links }) {
@@ -25,44 +29,99 @@ function NavSidebar({ profile, links }) {
     const input = useInput()
     const language = useLanguage()
 
-    const [expandedOption, setExpandedOption] = useState(true)
+    const [prefersExtendedRail, setPrefersExtendedRail] = useState(true)
+    const [measuredRailHeight, setMeasuredRailHeight] = useState(0)
+    const [heightForcesShortRail, setHeightForcesShortRail] = useState(false)
     const cardWrapperRef = useRef(null)
     const sharedRailStackRef = useRef(null)
     const sharedRailSizeCacheRef = useRef({})
     const shortRailSizeCacheRef = useRef({})
 
-    const shouldUseCompactRail = viewport.isShortDesktopLayout()
-    const shouldForceShrink = !viewport.isBreakpoint("lg") || shouldUseCompactRail
-    const expanded = !shouldForceShrink && expandedOption
-    const railIsCompact = shouldUseCompactRail || !expanded
-    const useSharedDesktopRail = viewport.isBreakpoint("lg") && !shouldUseCompactRail
-    const showCompactResumeBand = railIsCompact && Boolean(profile.resumePdfUrl)
-    const shrinkClass = expanded ?
-        `` :
-        `nav-sidebar-shrink`
-    const compactRailClass = shouldUseCompactRail ?
-        `nav-sidebar-short-rail` :
-        ``
-    const compactResumeBandClass = showCompactResumeBand ?
+    const linkCount = links?.length || 0
+    const hasResumeBand = Boolean(profile.resumePdfUrl)
+    const isDesktopBreakpoint = viewport.isBreakpoint("lg")
+    const widthForcesShortRail = viewport.innerWidth < MIN_VIEWPORT_WIDTH_FOR_EXTENDED_RAIL
+    const extendedEnterShortThreshold = EXTENDED_PROFILE_COMFORT_HEIGHT +
+        (EXTENDED_ROW_COMFORT_HEIGHT * (linkCount + 1)) +
+        DESKTOP_RAIL_SEPARATOR_MIN_HEIGHT
+    const extendedExitShortThreshold = extendedEnterShortThreshold + EXTENDED_MODE_HYSTERESIS
+    const availableDesktopRailHeight = measuredRailHeight > 0 ?
+        measuredRailHeight :
+        viewport.innerHeight
+    const forcedShortRail = isDesktopBreakpoint && (widthForcesShortRail || heightForcesShortRail)
+    const railMode = forcedShortRail ?
+        "short" :
+        (prefersExtendedRail ? "extended" : "short")
+    const railModeClass = railMode === "extended" ?
+        `nav-sidebar-extended` :
+        `nav-sidebar-short-rail`
+    const showShortRailResumeBand = railMode === "short" && hasResumeBand
+    const shortRailResumeBandClass = showShortRailResumeBand ?
         `nav-sidebar-short-rail-with-resume-band` :
         ``
+    const canToggleRail = isDesktopBreakpoint && !forcedShortRail
 
     useEffect(() => {
-        if(shouldForceShrink)
+        if(!canToggleRail)
             return
 
         const keyId = input.lastKeyPressed.id
-        if(keyId === "ArrowLeft") setExpandedOption(false)
-        else if(keyId === "ArrowRight") setExpandedOption(true)
-    }, [input.lastKeyPressed, shouldForceShrink])
+        if(keyId === "ArrowLeft")
+            setPrefersExtendedRail(false)
+        else if(keyId === "ArrowRight")
+            setPrefersExtendedRail(true)
+    }, [canToggleRail, input.lastKeyPressed])
 
     useEffect(() => {
         const railCard = cardWrapperRef.current
-        if(!shouldUseCompactRail || !railCard)
+        if(!railCard)
             return
 
-        const rowCount = Math.max(links?.length || 0, 1)
-        const hasResumeBand = showCompactResumeBand
+        const _syncMeasuredHeight = () => {
+            const nextHeight = railCard.clientHeight || 0
+            setMeasuredRailHeight((currentHeight) =>
+                currentHeight === nextHeight ? currentHeight : nextHeight
+            )
+        }
+
+        _syncMeasuredHeight()
+
+        const resizeObserver = new ResizeObserver(() => {
+            _syncMeasuredHeight()
+        })
+        resizeObserver.observe(railCard)
+
+        return () => {
+            resizeObserver.disconnect()
+        }
+    }, [])
+
+    useEffect(() => {
+        if(!isDesktopBreakpoint) {
+            setHeightForcesShortRail(false)
+            return
+        }
+
+        setHeightForcesShortRail((currentState) => {
+            const nextState = currentState ?
+                availableDesktopRailHeight < extendedExitShortThreshold :
+                availableDesktopRailHeight < extendedEnterShortThreshold
+
+            return currentState === nextState ? currentState : nextState
+        })
+    }, [
+        availableDesktopRailHeight,
+        extendedEnterShortThreshold,
+        extendedExitShortThreshold,
+        isDesktopBreakpoint
+    ])
+
+    useEffect(() => {
+        const railCard = cardWrapperRef.current
+        if(railMode !== "short" || !railCard)
+            return
+
+        const rowCount = Math.max(linkCount, 1)
         const {profile: profileHeight, tools: toolsHeight, resume: resumeHeight, row: rowHeight} = SHORT_RAIL_HEIGHT_CONFIG
 
         const _clamp = (value, min, max) => {
@@ -91,36 +150,51 @@ function NavSidebar({ profile, links }) {
             if(!availableRailHeight)
                 return
 
-            const fixedBaseHeight = profileHeight.base + toolsHeight.base + (hasResumeBand ? resumeHeight.base : 0)
-            const fixedMinHeight = profileHeight.min + toolsHeight.min + (hasResumeBand ? resumeHeight.min : 0)
-            const baseTotalHeight = fixedBaseHeight + (rowHeight.base * rowCount)
-            const minTotalHeight = fixedMinHeight + (rowHeight.min * rowCount)
+            const shortBaseFixed = profileHeight.base + toolsHeight.base + (hasResumeBand ? resumeHeight.base : 0)
+            const shortFloorFixed = profileHeight.floor + toolsHeight.floor + (hasResumeBand ? resumeHeight.floor : 0)
+            const shortBaseTotal = shortBaseFixed + (rowHeight.base * rowCount)
+            const shortFloorTotal = shortFloorFixed + (rowHeight.floor * rowCount)
 
             let nextProfileHeight = profileHeight.base
             let nextToolsHeight = toolsHeight.base
             let nextResumeHeight = hasResumeBand ? resumeHeight.base : 0
             let nextRowHeight = rowHeight.base
 
-            if(availableRailHeight < baseTotalHeight) {
+            if(availableRailHeight >= shortBaseTotal) {
+                nextRowHeight = _clamp(
+                    (availableRailHeight - shortBaseFixed) / rowCount,
+                    rowHeight.base,
+                    rowHeight.max
+                )
+            } else {
                 const compressionFactor = _clamp(
-                    (availableRailHeight - minTotalHeight) / Math.max(baseTotalHeight - minTotalHeight, 1),
+                    (availableRailHeight - shortFloorTotal) / Math.max(shortBaseTotal - shortFloorTotal, 1),
                     0,
                     1
                 )
 
-                nextProfileHeight = _interpolate(profileHeight.min, profileHeight.base, compressionFactor)
-                nextToolsHeight = _interpolate(toolsHeight.min, toolsHeight.base, compressionFactor)
+                nextProfileHeight = _interpolate(profileHeight.floor, profileHeight.base, compressionFactor)
+                nextToolsHeight = _interpolate(toolsHeight.floor, toolsHeight.base, compressionFactor)
                 nextResumeHeight = hasResumeBand ?
-                    _interpolate(resumeHeight.min, resumeHeight.base, compressionFactor) :
+                    _interpolate(resumeHeight.floor, resumeHeight.base, compressionFactor) :
                     0
-                nextRowHeight = _interpolate(rowHeight.min, rowHeight.base, compressionFactor)
-            } else {
-                const availableRowHeight = Math.max((availableRailHeight - fixedBaseHeight) / rowCount, rowHeight.base)
-                nextRowHeight = _clamp(availableRowHeight, rowHeight.base, rowHeight.max)
+                nextRowHeight = _interpolate(rowHeight.floor, rowHeight.base, compressionFactor)
+
+                if(availableRailHeight < shortFloorTotal) {
+                    const microScale = _clamp(
+                        availableRailHeight / Math.max(shortFloorTotal, 1),
+                        0,
+                        1
+                    )
+
+                    nextProfileHeight *= microScale
+                    nextToolsHeight *= microScale
+                    nextResumeHeight *= microScale
+                    nextRowHeight *= microScale
+                }
             }
 
-            // Keep the rail width fixed and only scale the vertical rhythm.
-            _setVariable("--nav-short-rail-scale", _clamp(nextRowHeight / rowHeight.base, rowHeight.min / rowHeight.base, 1), "")
+            _setVariable("--nav-short-rail-visual-density", Math.max(0, nextRowHeight / rowHeight.base), "")
             _setVariable("--nav-short-rail-profile-height", nextProfileHeight)
             _setVariable("--nav-short-rail-row-height", nextRowHeight)
             _setVariable("--nav-short-rail-tools-height", nextToolsHeight)
@@ -138,29 +212,24 @@ function NavSidebar({ profile, links }) {
         return () => {
             resizeObserver.disconnect()
             shortRailSizeCacheRef.current = {}
-            railCard.style.removeProperty("--nav-short-rail-scale")
+            railCard.style.removeProperty("--nav-short-rail-visual-density")
             railCard.style.removeProperty("--nav-short-rail-profile-height")
             railCard.style.removeProperty("--nav-short-rail-row-height")
             railCard.style.removeProperty("--nav-short-rail-tools-height")
             railCard.style.removeProperty("--nav-short-rail-resume-height")
             railCard.style.removeProperty("--nav-link-target-height")
         }
-    }, [links?.length, shouldUseCompactRail, showCompactResumeBand])
+    }, [hasResumeBand, linkCount, railMode])
 
     useEffect(() => {
         const sharedRailStack = sharedRailStackRef.current
-        if(!useSharedDesktopRail || !sharedRailStack)
+        if(railMode !== "extended" || !sharedRailStack)
             return
 
-        const rowCount = (links?.length || 0) + 1
-        const rowHeightConfig = expanded ?
-            { min: 30, baseline: 48, max: 64 } :
-            { min: 28, baseline: 40, max: 54 }
+        const rowCount = linkCount + 1
+        const rowHeightConfig = { min: 30, compactMin: 22, baseline: 48, max: 64 }
 
         const _setVariable = (name, value, unit = "px") => {
-            if(!sharedRailStack)
-                return
-
             const normalizedValue = unit === "px" ?
                 Math.round(value) :
                 Number(value.toFixed(3))
@@ -178,10 +247,14 @@ function NavSidebar({ profile, links }) {
             if(!availableRailHeight || rowCount <= 0)
                 return
 
-            const idealRowHeight = (availableRailHeight - DESKTOP_RAIL_SEPARATOR_MIN_HEIGHT) / rowCount
-            const rowHeight = Math.min(rowHeightConfig.max, Math.max(rowHeightConfig.min, idealRowHeight))
+            const shouldPreserveSeparator = (availableRailHeight / rowCount) >= rowHeightConfig.min
+            const separatorMinHeight = shouldPreserveSeparator ?
+                DESKTOP_RAIL_SEPARATOR_MIN_HEIGHT :
+                0
+            const idealRowHeight = (availableRailHeight - separatorMinHeight) / rowCount
+            const rowHeight = Math.min(rowHeightConfig.max, Math.max(rowHeightConfig.compactMin, idealRowHeight))
             const separatorHeight = Math.max(
-                DESKTOP_RAIL_SEPARATOR_MIN_HEIGHT,
+                separatorMinHeight,
                 availableRailHeight - rowHeight * rowCount
             )
 
@@ -204,9 +277,9 @@ function NavSidebar({ profile, links }) {
             sharedRailStack.style.removeProperty("--nav-tools-height")
             sharedRailStack.style.removeProperty("--nav-rail-separator-height")
         }
-    }, [expanded, links?.length, useSharedDesktopRail])
+    }, [linkCount, railMode])
 
-    const compactResumeBand = showCompactResumeBand ? (
+    const shortRailResumeBand = showShortRailResumeBand ? (
         <div className={`nav-short-rail-resume-band`}>
             <NavToolResumeDownloader showTooltip={true}
                                      menuClassName={"nav-tools-popup-menu"}
@@ -217,49 +290,36 @@ function NavSidebar({ profile, links }) {
     ) : null
 
     return (
-        <nav className={`nav-sidebar ${constants.HTML_CLASSES.scrollbarDecorator} ${shrinkClass} ${compactRailClass} ${compactResumeBandClass}`}>
+        <nav className={`nav-sidebar ${constants.HTML_CLASSES.scrollbarDecorator} ${railModeClass} ${shortRailResumeBandClass}`}>
             <Card ref={cardWrapperRef}
                   className={`nav-sidebar-card-wrapper`}>
-                {!shouldForceShrink && (
-                    <NavToolShrinkToggle expanded={expandedOption}
-                                         setExpanded={setExpandedOption}/>
+                {canToggleRail && (
+                    <NavToolShrinkToggle expanded={railMode === "extended"}
+                                         setExpanded={setPrefersExtendedRail}/>
                 )}
 
                 <NavProfileCard profile={profile}
-                                expanded={expanded}
-                                compactRail={railIsCompact}/>
+                                railMode={railMode}/>
 
-                {useSharedDesktopRail ? (
-                    <>
-                        {compactResumeBand}
+                {railMode === "extended" ? (
+                    <div ref={sharedRailStackRef}
+                         className={`nav-sidebar-rail-stack`}>
+                        <NavLinkList links={links}
+                                     railMode={railMode}/>
 
-                        <div ref={sharedRailStackRef}
-                             className={`nav-sidebar-rail-stack`}>
-                            <NavLinkList links={links}
-                                         expanded={expanded}
-                                         compactRail={railIsCompact}
-                                         shortRail={shouldUseCompactRail}
-                                         sharedRailMode={true}/>
+                        <div className={`nav-rail-separator`}
+                             aria-hidden={true}/>
 
-                            <div className={`nav-rail-separator`}
-                                 aria-hidden={`true`}/>
-
-                            <NavToolList expanded={expanded}
-                                         compactRail={railIsCompact}/>
-                        </div>
-                    </>
+                        <NavToolList railMode={railMode}/>
+                    </div>
                 ) : (
                     <>
                         <NavLinkList links={links}
-                                     expanded={expanded}
-                                     compactRail={railIsCompact}
-                                     shortRail={shouldUseCompactRail}
-                                     sharedRailMode={false}/>
+                                     railMode={railMode}/>
 
-                        {compactResumeBand}
+                        {shortRailResumeBand}
 
-                        <NavToolList expanded={expanded}
-                                     compactRail={railIsCompact}/>
+                        <NavToolList railMode={railMode}/>
                     </>
                 )}
             </Card>

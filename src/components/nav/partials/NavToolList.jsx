@@ -6,14 +6,15 @@ import NavToolLanguagePicker from "../tools/NavToolLanguagePicker.jsx"
 import NavToolThemePicker from "../tools/NavToolThemePicker.jsx"
 import NavToolSettings from "../tools/NavToolSettings.jsx"
 
-function NavToolList({ expanded, compactRail = false }) {
+function NavToolList({ railMode }) {
     const language = useLanguage()
     const theme = useTheme()
 
-    const shrinkClass = expanded ?
+    const isExtendedRail = railMode === "extended"
+    const railModeClass = isExtendedRail ?
         `` :
-        `nav-tools-shrink`
-    const toggleCaptionLayout = expanded && !compactRail ?
+        `nav-tools-short-rail`
+    const toggleCaptionLayout = isExtendedRail ?
         "inline" :
         "stack"
 
@@ -32,7 +33,7 @@ function NavToolList({ expanded, compactRail = false }) {
     ]
 
     return (
-        <div className={`nav-tools ${shrinkClass}`}>
+        <div className={`nav-tools ${railModeClass}`}>
             {orderedWidgets.map((item, key) => (
                 <div className={`nav-tools-item ${item === "language" ? "nav-tools-item-language" : ""} ${item === NavToolSettings.Options.DOWNLOAD_RESUME ? "nav-tools-item-resume" : ""} ${item === NavToolSettings.Options.THEME ? "nav-tools-item-theme" : ""}`}
                      key={key}>
@@ -40,10 +41,10 @@ function NavToolList({ expanded, compactRail = false }) {
                                                                     showTooltip={true}
                                                                     menuClassName={"nav-tools-popup-menu"}
                                                                     toggleCaptionLayout={toggleCaptionLayout}
-                                                                    toggleCaption={expanded ? language.getString("nav_tool_language") : null}/>)}
+                                                                    toggleCaption={isExtendedRail ? language.getString("nav_tool_language") : null}/>)}
                     {item === NavToolSettings.Options.THEME && (<NavToolThemePicker showTooltip={true}
                                                                                     toggleCaptionLayout={toggleCaptionLayout}
-                                                                                    toggleCaption={expanded ? language.getString("nav_tool_theme") : null}/>)}
+                                                                                    toggleCaption={isExtendedRail ? language.getString("nav_tool_theme") : null}/>)}
                 </div>
             ))}
         </div>

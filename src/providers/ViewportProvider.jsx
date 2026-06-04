@@ -209,14 +209,6 @@ function ViewportProvider({ children }) {
         return !isMobileLayout()
     }
 
-    const isShortDesktopLayout = () => {
-        const expandedRailWidth = 224
-        const minimumScrollableWidthForExpandedRail = 1024
-        const minimumViewportWidthForExpandedRail = expandedRailWidth + minimumScrollableWidthForExpandedRail
-
-        return innerWidth >= bootstrapBreakpoints.lg && innerWidth < minimumViewportWidthForExpandedRail
-    }
-
     const getValueFromBreakpointHash = (hash) => {
         for(let i in hash)
             if(isBreakpoint(i)) return hash[i]
@@ -282,7 +274,6 @@ function ViewportProvider({ children }) {
             getBreakpoint,
             isMobileLayout,
             isDesktopLayout,
-            isShortDesktopLayout,
             getValueFromBreakpointHash,
             getLayoutConstraints,
             getCustomBreakpoint,
@@ -305,7 +296,6 @@ const ViewportContext = createContext(null)
  *    getBreakpoint: Function,
  *    isMobileLayout: Function,
  *    isDesktopLayout: Function,
- *    isShortDesktopLayout: Function,
  *    getValueFromBreakpointHash: Function,
  *    getLayoutConstraints: Function,
  *    getCustomBreakpoint: Function,

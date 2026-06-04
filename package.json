@@ -6,14 +6,15 @@
     "scripts": {
         "predev": "node npm/generate-machine-cv.js",
         "dev": "vite",
-        "prebuild": "node npm/generate-machine-cv.js",
+        "prebuild": "node npm/generate-machine-cv.js && npm run validate:i18n",
         "build": "vite build",
         "cv:generate": "node npm/generate-machine-cv.js",
         "images:generate": "node npm/generate-responsive-images.js",
         "lint": "eslint .",
         "preview": "vite preview",
         "resume:make:article": "node npm/npm-resume-new-article.js",
-        "resume:clear": "node npm/npm-resume-clear.js"
+        "resume:clear": "node npm/npm-resume-clear.js",
+        "validate:i18n": "node npm/validate-i18n-text.js"
     },
     "dependencies": {
         "@chenglou/pretext": "^0.0.6",

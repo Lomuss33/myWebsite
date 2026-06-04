@@ -10,6 +10,7 @@ function NavToolResumeDownloader({
     dropdownDrop = "up",
     dropdownClassName = "",
     menuClassName = "",
+    menuPopperConfig = undefined,
     compactMenu = false,
     mobileTubeMenu = false,
     showTooltip = true,
@@ -153,6 +154,7 @@ function NavToolResumeDownloader({
                             dropdownDrop={dropdownDrop}
                             dropdownClassName={dropdownClassName}
                             menuClassName={menuClassName}
+                            menuPopperConfig={menuPopperConfig}
                             compactMenu={compactMenu}
                             toggleCaption={toggleCaption}
                             toggleCaptionLayout={toggleCaptionLayout}

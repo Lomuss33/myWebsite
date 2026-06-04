@@ -10,11 +10,20 @@ import AudioButton from "../../buttons/AudioButton.jsx"
 import NavToolResumeDownloader from "../tools/NavToolResumeDownloader.jsx"
 
 const PROFILE_AVATAR_SIZES = "(max-width: 991.98px) 96px, 144px"
+const DESKTOP_RESUME_MENU_POPPER_CONFIG = {
+    modifiers: [
+        {
+            name: "offset",
+            options: {
+                offset: [-12, 2]
+            }
+        }
+    ]
+}
 
 function NavProfileCard({
     profile,
-    expanded,
-    compactRail = false,
+    railMode,
     mobileActionStack = null,
     mobileActionStackBeforeInfo = null,
     mobileActionStackAfterInfo = null,
@@ -31,10 +40,10 @@ function NavProfileCard({
     const nameHeadingRef = useRef(null)
     const firstNameRef = useRef(null)
     const lastNameRef = useRef(null)
-
-    const expandedClass = expanded ?
+    const isExtendedRail = railMode === "extended"
+    const railModeClass = isExtendedRail ?
         `` :
-        `nav-profile-card-shrink`
+        `nav-profile-card-short-rail`
 
     const name = safeProfile.name || "Profile"
     const localizedName = language.getTranslation(safeProfile.locales, "localized_name", null) || name
@@ -54,7 +63,7 @@ function NavProfileCard({
     const namePronunciationAudioUrl = language.getTranslation(safeProfile.locales, "name_pronunciation_audio_url", null)
     const hasPronunciationAudio = Boolean(namePronunciationIpa || namePronunciationAudioUrl)
     const mobileActionStackVisible = Boolean(mobileActionStackBeforeInfo || mobileActionStackAfterInfo || mobileActionStack)
-    const desktopActionStackVisible = expanded && !compactRail && !mobileActionStackVisible &&
+    const desktopActionStackVisible = isExtendedRail && !mobileActionStackVisible &&
         (hasPronunciationAudio || safeProfile.resumePdfUrl)
     const namePronunciationButtonVisible = showNameAudioButton && !desktopActionStackVisible && hasPronunciationAudio
     const namePronunciationTooltipLabel = namePronunciationIpa ? `<span class="audio-button-tooltip-lines"><span class="audio-button-tooltip-line audio-button-tooltip-line-top">lǒːʋro  ˈmu.sit͡ɕ</span><span class="audio-button-tooltip-line audio-button-tooltip-line-bottom">LOHV-roh  muu-SEEch</span></span>` : ""
@@ -200,7 +209,7 @@ function NavProfileCard({
     }
 
     return (
-        <Card className={`nav-profile-card ${expandedClass}`}>
+        <Card className={`nav-profile-card ${railModeClass}`}>
             <div className={navProfileCardHeaderClass} ref={headerRef}>
                 {mobileActionStackBeforeInfo && (
                     <div className={`nav-profile-card-mobile-action-stack nav-profile-card-mobile-action-stack-middle`}>
@@ -213,7 +222,9 @@ function NavProfileCard({
                         {safeProfile.resumePdfUrl && (
                             <div className={`nav-profile-card-desktop-action nav-profile-card-desktop-action-resume nav-tools-item-resume`}>
                                 <NavToolResumeDownloader dropdownClassName={`nav-profile-card-desktop-resume-dropdown`}
+                                                         dropdownDrop={"end"}
                                                          menuClassName={`nav-profile-card-desktop-resume-menu`}
+                                                         menuPopperConfig={DESKTOP_RESUME_MENU_POPPER_CONFIG}
                                                          toggleClassName={`nav-profile-card-desktop-resume-toggle`}
                                                          hideCaret={true}
                                                          showTooltip={true}/>
@@ -302,22 +313,16 @@ function NavProfileCard({
                 )}
             </div>
 
-            {expanded && loveSentences?.length > 1 && (
+            {isExtendedRail && loveSentences?.length > 1 && (
                 <TextTyper strings={loveSentences}
                            id={`role-typer`}
                            randomOrder={true}
                            className={`nav-profile-card-role`}/>
             )}
 
-            {expanded && loveSentences?.length === 1 && (
+            {isExtendedRail && loveSentences?.length === 1 && (
                 <div className={`nav-profile-card-role`}>
                     {loveSentences[0]}
-                </div>
-            )}
-
-            {!expanded && !compactRail && (
-                <div className={`nav-profile-card-compact-name`}>
-                    {localizedName}
                 </div>
             )}
         </Card>

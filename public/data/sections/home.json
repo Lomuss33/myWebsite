@@ -1,4 +1,4 @@
-﻿{
+{
   "title": {
     "locales": {
       "en": {
@@ -25,25 +25,25 @@
       },
       "hr": {
         "title_short": "Bok!",
-        "title_short_nav": "Po\u010detna",
-        "title_short_tooltip": "Po\u010detak",
+        "title_short_nav": "Početna",
+        "title_short_tooltip": "Početak",
         "title_long_prefix": "Bok prijatelju,",
-        "title_long": "Dobrodo\u0161ao u {{moj kutak}} interneta!",
+        "title_long": "Dobrodošao u {{moj kutak}} interneta!",
         "title_long_prefix_light": "Bok prijatelju,",
-        "title_long_light": "Dobrodo\u0161ao u {{moj kutak}} interneta!",
-        "title_long_prefix_dark": "Bok no\u0107na ptico,",
-        "title_long_dark": "Dobrodo\u0161ao u {{moj mjese\u010dinom obasjan kutak}} interneta!"
+        "title_long_light": "Dobrodošao u {{moj kutak}} interneta!",
+        "title_long_prefix_dark": "Bok noćna ptico,",
+        "title_long_dark": "Dobrodošao u {{moj mjesečinom obasjan kutak}} interneta!"
       },
       "tr": {
         "title_short": "Merhaba!",
         "title_short_nav": "Anasayfa",
-        "title_short_tooltip": "Ba\u015flang\u0131\u00e7",
+        "title_short_tooltip": "Başlangıç",
         "title_long_prefix": "Merhaba dostum,",
-        "title_long": "\u0130nternetteki {{k\u00f6\u015feme}} ho\u015f geldin!",
+        "title_long": "İnternetteki {{köşeme}} hoş geldin!",
         "title_long_prefix_light": "Merhaba dostum,",
-        "title_long_light": "\u0130nternetteki {{k\u00f6\u015feme}} ho\u015f geldin!",
-        "title_long_prefix_dark": "Merhaba gece ku\u015fu,",
-        "title_long_dark": "\u0130nternetteki {{ay \u0131\u015f\u0131\u011f\u0131yla ayd\u0131nlanan k\u00f6\u015feme}} ho\u015f geldin!"
+        "title_long_light": "İnternetteki {{köşeme}} hoş geldin!",
+        "title_long_prefix_dark": "Merhaba gece kuşu,",
+        "title_long_dark": "İnternetteki {{ay ışığıyla aydınlanan köşeme}} hoş geldin!"
       }
     }
   },
@@ -104,13 +104,13 @@
           "title": "{{A little bit}} about me..."
         },
         "de": {
-          "title": "{{Ein bisschen}} Ã¼ber mich..."
+          "title": "{{Ein bisschen}} über mich..."
         },
         "hr": {
           "title": "{{Malo}} o meni..."
         },
         "tr": {
-          "title": "{{Biraz}} hakkÄ±nda..."
+          "title": "{{Biraz}} hakkında..."
         }
       },
       "settings": {
@@ -137,16 +137,16 @@
           },
           "locales": {
             "en": {
-              "text": "{{<a href='#education'>Lovro MusiÄ‡</a> :}} Hi, I'm an aspiring hardware engineer in the beautiful Rhein-Main area. Growing up in a small village in the Bosnian mountains as a Croatian kid, I came to this land of possibilities in my early teens. I was fascinated by the advanced and diverse German engineering culture, something I had only dreamed of on TV. I started an apprenticeship with a Swiss enterprise as an Elektroniker fÃ¼r Automatisierungstechnik, which opened a Pandora's box and shaped me into the motivated and versatile tool I am today.<p>Now go explore what I have managed to present about me. I recommend starting with my <a href='#my-software'>Software &amp; Code</a> section, or my fun <a href='#my-art:enter:article-3-section-my-art'>Web Art</a> section. If you just forgot the name of my language-learning website, visit <a class='home-link-chip' href='https://lomuss33.github.io/GermanCro/' target='_blank' rel='noopener noreferrer'>GermanCro</a>.</p>"
+              "text": "{{<a href='#education'>Lovro Musić</a> :}} Hi, I'm an aspiring hardware engineer in the beautiful Rhein-Main area. Growing up in a small village in the Bosnian mountains as a Croatian kid, I came to this land of possibilities in my early teens. I was fascinated by the advanced and diverse German engineering culture, something I had only dreamed of on TV. I started an apprenticeship with a Swiss enterprise as an Elektroniker für Automatisierungstechnik, which opened a Pandora's box and shaped me into the motivated and versatile tool I am today.<p>Now go explore what I have managed to present about me. I recommend starting with my <a href='#my-software'>Software &amp; Code</a> section, or my fun <a href='#my-art:enter:article-3-section-my-art'>Web Art</a> section. If you just forgot the name of my language-learning website, visit <a class='home-link-chip' href='https://lomuss33.github.io/GermanCro/' target='_blank' rel='noopener noreferrer'>GermanCro</a>.</p>"
             },
             "de": {
-              "text": "{{<a href='#education'>Lovro MusiÄ‡</a> :}} Hallo, ich bin ein angehender Signal-Ingenieur in der schÃ¶nen Rhein-Main-Region. Als kroatisches Kind, das in einem kleinen Dorf in den bosnischen Bergen aufwuchs, kam ich in meiner frÃ¼hen Jugend in dieses Land der MÃ¶glichkeiten. Ich war fasziniert von der fortschrittlichen und vielfÃ¤ltigen deutschen Ingenieurkultur, von der ich nur im Fernsehen getrÃ¤umt hatte. Ich begann eine Ausbildung bei einem Schweizer Unternehmen als Elektroniker fÃ¼r Automatisierungstechnik, die mir eine Pandora-Box Ã¶ffnete und mich zu dem motivierten und vielseitigen Werkzeug machte, das ich heute bin.<p>Geh jetzt los und entdecke, was ich dir bisher ueber mich praesentieren konnte. Ich empfehle dir, mit meinem Bereich <a href='#my-software'>Software &amp; Code</a> zu starten, oder mit meiner lustigen <a href='#my-art:enter:article-3-section-my-art'>Web Art</a>-Sektion. Falls du einfach den Namen meiner Sprachlern-Website vergessen hast, besuche <a class='home-link-chip' href='https://lomuss33.github.io/GermanCro/' target='_blank' rel='noopener noreferrer'>GermanCro</a>.</p>"
+              "text": "{{<a href='#education'>Lovro Musić</a> :}} Hallo, ich bin ein angehender Signal-Ingenieur in der schönen Rhein-Main-Region. Als kroatisches Kind, das in einem kleinen Dorf in den bosnischen Bergen aufwuchs, kam ich in meiner frühen Jugend in dieses Land der Möglichkeiten. Ich war fasziniert von der fortschrittlichen und vielfältigen deutschen Ingenieurkultur, von der ich nur im Fernsehen geträumt hatte. Ich begann eine Ausbildung bei einem Schweizer Unternehmen als Elektroniker für Automatisierungstechnik, die mir eine Pandora-Box öffnete und mich zu dem motivierten und vielseitigen Werkzeug machte, das ich heute bin.<p>Geh jetzt los und entdecke, was ich dir bisher ueber mich praesentieren konnte. Ich empfehle dir, mit meinem Bereich <a href='#my-software'>Software &amp; Code</a> zu starten, oder mit meiner lustigen <a href='#my-art:enter:article-3-section-my-art'>Web Art</a>-Sektion. Falls du einfach den Namen meiner Sprachlern-Website vergessen hast, besuche <a class='home-link-chip' href='https://lomuss33.github.io/GermanCro/' target='_blank' rel='noopener noreferrer'>GermanCro</a>.</p>"
             },
             "hr": {
-              "text": "{{<a href='#education'>Lovro MusiÄ‡</a> :}} Bok, ja sam buduÄ‡i inÅ¾enjer singnalizacije u prelijepoj regiji Rhein-Main. OdrastajuÄ‡i u malom selu u bosanskim planinama kao hrvatski djeÄak, doÅ¡ao sam u ovu zemlju moguÄ‡nosti u svojim ranim tinejdÅ¾erskim godinama. Bio sam fasciniran naprednom i raznolikom njemaÄkom inÅ¾enjerskom kulturom, o kojoj sam samo sanjao na televiziji. PoÄeo sam karijeru sa Å¡vicarskom firmom kao ElektroniÄar za automatizaciju, Å¡to mi je otvorilo Pandorinu kutiju i oblikovalo me u motivirani i raznovrstan alat kakav sam danas.<p>Sada idi istraÅ¾i i vidi Å¡to sam ti trenutno uspio predstaviti o sebi. PreporuÄujem da kreneÅ¡ s mojim odjeljkom <a href='#my-software'>Software &amp; Code</a>, ili s mojim zabavnim <a href='#my-art:enter:article-3-section-my-art'>Web Art</a> odjeljkom. Ako si zaboravio kako se zove moja stranica za uÄenje jezika, posjeti <a class='home-link-chip' href='https://lomuss33.github.io/GermanCro/' target='_blank' rel='noopener noreferrer'>GermanCro</a>.</p>"
+              "text": "{{<a href='#education'>Lovro Musić</a> :}} Bok, ja sam budući inženjer singnalizacije u prelijepoj regiji Rhein-Main. Odrastajući u malom selu u bosanskim planinama kao hrvatski dječak, došao sam u ovu zemlju mogućnosti u svojim ranim tinejdžerskim godinama. Bio sam fasciniran naprednom i raznolikom njemačkom inženjerskom kulturom, o kojoj sam samo sanjao na televiziji. Počeo sam karijeru sa švicarskom firmom kao Elektroničar za automatizaciju, što mi je otvorilo Pandorinu kutiju i oblikovalo me u motivirani i raznovrstan alat kakav sam danas.<p>Sada idi istraži i vidi što sam ti trenutno uspio predstaviti o sebi. Preporučujem da kreneš s mojim odjeljkom <a href='#my-software'>Software &amp; Code</a>, ili s mojim zabavnim <a href='#my-art:enter:article-3-section-my-art'>Web Art</a> odjeljkom. Ako si zaboravio kako se zove moja stranica za učenje jezika, posjeti <a class='home-link-chip' href='https://lomuss33.github.io/GermanCro/' target='_blank' rel='noopener noreferrer'>GermanCro</a>.</p>"
             },
             "tr": {
-              "text": "{{<a href='#education'>Lovro MusiÄ‡</a> :}} Merhaba, ben gÃ¼zel Rhein-Main bÃ¶lgesinde bir hÄ±rslÄ± donanÄ±m mÃ¼hendisiyim. Bosna daÄŸlarÄ±nda kÃ¼Ã§Ã¼k bir kÃ¶yde HÄ±rvat Ã§ocuÄŸu olarak bÃ¼yÃ¼yerek, ergenliÄŸimin baÅŸÄ±nda bu fÄ±rsatlar diyarÄ±na geldim. GeliÅŸmiÅŸ ve Ã§eÅŸitli Alman mÃ¼hendislik kÃ¼ltÃ¼rÃ¼ beni Ã§ok etkiledi; bunu yalnÄ±zca televizyonda hayal etmiÅŸtim. Ä°leri otomasyon teknolojinleri Ã¼zerine uzmanlaÅŸmak iÃ§in bir Ä°sviÃ§re ÅŸirketinde staj yapmaya baÅŸladÄ±m; bu deneyim beni bugÃ¼nkÃ¼ motivasyonu yÃ¼ksek ve Ã§ok yÃ¶nlÃ¼ bir alet haline getirdi.<p>Åžimdi git ve sana ÅŸu ana kadar kendim hakkÄ±nda neleri gÃ¶sterebildiÄŸimi keÅŸfet. BaÅŸlangÄ±Ã§ iÃ§in <a href='#my-software'>Software &amp; Code</a> bÃ¶lÃ¼mÃ¼mle baÅŸlamanÄ± Ã¶neririm; ya da eÄŸlenceli <a href='#my-art:enter:article-3-section-my-art'>Web Art</a> bÃ¶lÃ¼mÃ¼mÃ¼ ziyaret et. EÄŸer dil Ã¶ÄŸrenme sitemin adÄ±nÄ± unuttuysan <a class='home-link-chip' href='https://lomuss33.github.io/GermanCro/' target='_blank' rel='noopener noreferrer'>GermanCro</a>'yu ziyaret et.</p>"
+              "text": "{{<a href='#education'>Lovro Musić</a> :}} Merhaba, ben güzel Rhein-Main bölgesinde bir hırslı donanım mühendisiyim. Bosna dağlarında küçük bir köyde Hırvat çocuğu olarak büyüyerek, ergenliğimin başında bu fırsatlar diyarına geldim. Gelişmiş ve çeşitli Alman mühendislik kültürü beni çok etkiledi; bunu yalnızca televizyonda hayal etmiştim. İleri otomasyon teknolojinleri üzerine uzmanlaşmak için bir İsviçre şirketinde staj yapmaya başladım; bu deneyim beni bugünkü motivasyonu yüksek ve çok yönlü bir alet haline getirdi.<p>Şimdi git ve sana şu ana kadar kendim hakkında neleri gösterebildiğimi keşfet. Başlangıç için <a href='#my-software'>Software &amp; Code</a> bölümümle başlamanı öneririm; ya da eğlenceli <a href='#my-art:enter:article-3-section-my-art'>Web Art</a> bölümümü ziyaret et. Eğer dil öğrenme sitemin adını unuttuysan <a class='home-link-chip' href='https://lomuss33.github.io/GermanCro/' target='_blank' rel='noopener noreferrer'>GermanCro</a>'yu ziyaret et.</p>"
             }
           }
         }
@@ -164,10 +164,10 @@
           "title": "Technical skills:"
         },
         "de": {
-          "title": "Technische FÃ¤higkeiten:"
+          "title": "Technische Fähigkeiten:"
         },
         "hr": {
-          "title": "TehniÄke vjeÅ¡tine:"
+          "title": "Tehničke vještine:"
         },
         "tr": {
           "title": "Teknik beceriler:"
@@ -202,12 +202,12 @@
             },
             "hr": {
               "title": "Programiranje",
-              "text": "C, C++, Python, Java, HTML, TypeScript... vrlo brzo uÄim nove jezike i alate.",
+              "text": "C, C++, Python, Java, HTML, TypeScript... vrlo brzo učim nove jezike i alate.",
               "proofBubble": "I ova stranica je dio dokaza. Profesionalno sam krenuo sa SPS-om 2018., a danas se mogu brzo razviti u gotovo svakom jeziku; Java, C, Python, JavaScript, HTML i Go vec mi se osjecaju kao dom."
             },
             "tr": {
               "title": "Programlama",
-              "text": "C, C++, Python, Java, HTML, TypeScript... yeni dilleri ve araÃ§larÄ± hÄ±zlÄ±ca Ã¶ÄŸrenebilirim.",
+              "text": "C, C++, Python, Java, HTML, TypeScript... yeni dilleri ve araçları hızlıca öğrenebilirim.",
               "proofBubble": "Bu web sitesi bile bunun bir kaniti. Profesyonel olarak 2018'de PLC ile basladim; bugun dogru egitimle neredeyse her dile hizla uyum saglayabiliyorum. Java, C, Python, JavaScript, HTML ve Go artik bana yabanci degil."
             }
           }
@@ -244,7 +244,7 @@
               "proofBubble": "Siemens je bio prvo poglavlje. Kasnije sam kao Pruftechniker testirao svakakve PLC svjetove i rado bih se opet vratio automatizaciji."
             },
             "tr": {
-              "title": "PLC programlama ve endÃ¼striyel otomasyon",
+              "title": "PLC programlama ve endüstriyel otomasyon",
               "text": "Siemens TIA Portal (S7) deneyimi ve Janitza, Allen-Bradley ve Schneider PLC sistemleriyle pratik.",
               "proofBubble": "Siemens ilk bolumdu. Sonra, bir Pruftechniker olarak, farkli PLC dunyalarini test ettim ve otomasyona memnuniyetle geri donerim."
             }
@@ -277,13 +277,13 @@
               "proofBubble": "Als Teenager hat das waehrend meiner Ausbildung angefangen und eigentlich nie mehr aufgehoert. Ein Tag ohne an Kabel zu denken ist schon verdaechtig."
             },
             "hr": {
-              "title": "Elektroinstalacije i odrÅ¾avanje",
-              "text": "PraktiÄno iskustvo s industrijskim i kuÄ‡nim elektriÄnim instalacijama, ukljuÄujuÄ‡i montaÅ¾u, dijagnostiku i sigurnost.",
+              "title": "Elektroinstalacije i održavanje",
+              "text": "Praktično iskustvo s industrijskim i kućnim električnim instalacijama, uključujući montažu, dijagnostiku i sigurnost.",
               "proofBubble": "Poceo sam spajati stvari jos kao tinejdzer tijekom Ausbildunga i zapravo nikad nisam stao. Dan bez razmisljanja o kabelima djeluje sumnjivo."
             },
             "tr": {
-              "title": "Elektrik tesisatÄ± ve bakÄ±m",
-              "text": "EndÃ¼striyel ve ev tipi elektrik sistemlerinde kurulum, arÄ±za giderme ve gÃ¼venlik konularÄ±nda pratik deneyim.",
+              "title": "Elektrik tesisatı ve bakım",
+              "text": "Endüstriyel ve ev tipi elektrik sistemlerinde kurulum, arıza giderme ve güvenlik konularında pratik deneyim.",
               "proofBubble": "Tesisat islerine daha gencken, Ausbildung sirasinda basladim ve aslinda hic birakmadim. Kablolari dusunmeden gecen bir gun biraz supheli geliyor."
             }
           }
@@ -311,17 +311,17 @@
             },
             "de": {
               "title": "IT & Netzwerke (Level 2)",
-              "text": "FÃ¤higkeiten in Netzwerkkonfiguration, Fehlersuche, Hardware/Software-Einrichtung und Benutzersupport.",
+              "text": "Fähigkeiten in Netzwerkkonfiguration, Fehlersuche, Hardware/Software-Einrichtung und Benutzersupport.",
               "proofBubble": "Ein Teil davon begann schon beruflich vor dem Studium, aber das eigentliche Labor war zuhause. Router, Setups, Fehler beheben, nochmal von vorn."
             },
             "hr": {
-              "title": "IT i mreÅ¾e (razina 2)",
-              "text": "VjeÅ¡tine u konfiguraciji mreÅ¾a, rjeÅ¡avanju problema, postavljanju hardvera/softvera i korisniÄkoj podrÅ¡ci.",
+              "title": "IT i mreže (razina 2)",
+              "text": "Vještine u konfiguraciji mreža, rješavanju problema, postavljanju hardvera/softvera i korisničkoj podršci.",
               "proofBubble": "Dio toga poceo je profesionalno jos prije faksa, ali pravi laboratorij bio je kod kuce. Ruteri, postavke, popravci, ponovo."
             },
             "tr": {
-              "title": "BT ve aÄŸlar (Seviye 2)",
-              "text": "AÄŸ yapÄ±landÄ±rma, sorun giderme, donanÄ±m/yazÄ±lÄ±m kurulumu ve kullanÄ±cÄ± desteÄŸi becerileri.",
+              "title": "BT ve ağlar (Seviye 2)",
+              "text": "Ağ yapılandırma, sorun giderme, donanım/yazılım kurulumu ve kullanıcı desteği becerileri.",
               "proofBubble": "Bunun bir kismi universiteden once profesyonel olarak basladi ama asil laboratuvar evdeydi. Routerlar, kurulumlar, duzeltmeler, tekrar."
             }
           }
@@ -349,17 +349,17 @@
             },
             "de": {
               "title": "Machine Learning & Deep Learning",
-              "text": "VerstÃ¤ndnis zentraler ML/DL-Konzepte, Trainings-Workflows und praktischer Einsatz moderner Frameworks.",
+              "text": "Verständnis zentraler ML/DL-Konzepte, Trainings-Workflows und praktischer Einsatz moderner Frameworks.",
               "proofBubble": "Das ist immer noch so ein Feld, bei dem man kurz stehen bleibt und grinst. Schon verrueckt, in was fuer einer Welt wir leben."
             },
             "hr": {
-              "title": "Strojno uÄenje i duboko uÄenje",
-              "text": "Razumijevanje osnovnih ML/DL koncepata, procesa treniranja modela i praktiÄne primjene modernih okvira.",
+              "title": "Strojno učenje i duboko učenje",
+              "text": "Razumijevanje osnovnih ML/DL koncepata, procesa treniranja modela i praktične primjene modernih okvira.",
               "proofBubble": "To je i dalje jedno od onih podrucja zbog kojih zastanes i nasmijes se. Kakvo vrijeme za biti znatizeljan."
             },
             "tr": {
-              "title": "Makine Ã¶ÄŸrenimi ve derin Ã¶ÄŸrenme",
-              "text": "Temel ML/DL kavramlarÄ±na, model eÄŸitimi sÃ¼reÃ§lerine ve modern Ã§erÃ§evelerin pratik kullanÄ±mÄ±na hakimiyet.",
+              "title": "Makine öğrenimi ve derin öğrenme",
+              "text": "Temel ML/DL kavramlarına, model eğitimi süreçlerine ve modern çerçevelerin pratik kullanımına hakimiyet.",
               "proofBubble": "Insani durdurup gulumseten alanlardan biri olmaya devam ediyor. Merakli olmak icin ne tuhaf ve guzel bir cagda yasiyoruz."
             }
           }
@@ -387,7 +387,7 @@
             },
             "de": {
               "title": "Wissenschaftlicher Hintergrund",
-              "text": "Tiefes VerstÃ¤ndnis von Chemie, Physik und Biologie mit Schwerpunkt auf praktischen Anwendungen.",
+              "text": "Tiefes Verständnis von Chemie, Physik und Biologie mit Schwerpunkt auf praktischen Anwendungen.",
               "proofBubble": "So begegne ich der Wirklichkeit am liebsten: sauber beobachten, ehrlich pruefen und etwas lernen, das es wert ist zu behalten."
             },
             "hr": {
@@ -396,8 +396,8 @@
               "proofBubble": "Tako najradije upoznajem stvarnost: pazljivo promatram, posteno provjerim i naucim nesto sto vrijedi zadrzati."
             },
             "tr": {
-              "title": "Bilimsel altyapÄ±",
-              "text": "Kimya, fizik ve biyoloji alanlarÄ±nda derin anlayÄ±ÅŸ ve gerÃ§ek hayat uygulamalarÄ±na odak.",
+              "title": "Bilimsel altyapı",
+              "text": "Kimya, fizik ve biyoloji alanlarında derin anlayış ve gerçek hayat uygulamalarına odak.",
               "proofBubble": "Bilim, gercekle tanismayi sevdigim yoldur: dikkatle gozlemle, durustce test et, saklamaya deger bir sey ogren."
             }
           }
@@ -424,18 +424,18 @@
               "proofBubble": "I did not just use Word, Excel, and Access; I taught other people how to use them. Nothing clarifies a tool like explaining it."
             },
             "de": {
-              "title": "Datenanalyse & Microsoftâ€‘Werkzeuge",
+              "title": "Datenanalyse & Microsoft‑Werkzeuge",
               "text": "Fortgeschritten in Excel (Formeln, PivotTables, Power Query), Power BI (DAX, Dashboards) sowie sicher in Word, PowerPoint, Teams und SharePoint.",
               "proofBubble": "Ich habe Word, Excel und Access nicht nur selbst genutzt, sondern anderen auch beigebracht. Nichts klaert ein Werkzeug besser, als es zu erklaeren."
             },
             "hr": {
               "title": "Analiza podataka i Microsoft alati",
-              "text": "Napredno poznavanje Excela (formule, pivot tablice, Power Query), Power BIâ€‘ja (DAX, nadzorne ploÄe) te snaÅ¾no poznavanje Worda, PowerPointa, Teamsa i SharePointa.",
+              "text": "Napredno poznavanje Excela (formule, pivot tablice, Power Query), Power BI‑ja (DAX, nadzorne ploče) te snažno poznavanje Worda, PowerPointa, Teamsa i SharePointa.",
               "proofBubble": "Word, Excel i Access nisam samo koristio nego i poducavao druge kako ih koristiti. Nista ne razjasni alat kao kad ga moras objasniti."
             },
             "tr": {
-              "title": "Veri analizi ve Microsoft araÃ§larÄ±",
-              "text": "Ä°leri seviye Excel (formÃ¼ller, PivotTable, Power Query), Power BI (DAX, panolar) ve Word, PowerPoint, Teams, SharePointâ€™te gÃ¼Ã§lÃ¼ yetkinlik.",
+              "title": "Veri analizi ve Microsoft araçları",
+              "text": "İleri seviye Excel (formüller, PivotTable, Power Query), Power BI (DAX, panolar) ve Word, PowerPoint, Teams, SharePoint’te güçlü yetkinlik.",
               "proofBubble": "Word, Excel ve Accessi sadece kullanmadim; baskalarina da ogrettim. Bir araci anlatmak kadar netlestiren az sey vardir."
             }
           }
@@ -457,7 +457,7 @@
           "title": "Soziale Kompetenzen:"
         },
         "hr": {
-          "title": "Meke vjeÅ¡tine:"
+          "title": "Meke vještine:"
         },
         "tr": {
           "title": "Sosyal beceriler:"
@@ -486,18 +486,18 @@
               "proofBubble": "Well, you are still reading, so that helps my case. I like making technical things sound human."
             },
             "de": {
-              "title": "Kommunikation & soziale FÃ¤higkeiten",
-              "text": "AusgeprÃ¤gte zwischenmenschliche FÃ¤higkeiten und klare Kommunikation mit technischen und nicht-technischen Personen.",
+              "title": "Kommunikation & soziale Fähigkeiten",
+              "text": "Ausgeprägte zwischenmenschliche Fähigkeiten und klare Kommunikation mit technischen und nicht-technischen Personen.",
               "proofBubble": "Naja, du liest das hier immer noch, das hilft meinem Fall schon. Ich mag es, technische Dinge menschlich klingen zu lassen."
             },
             "hr": {
-              "title": "Komunikacija i druÅ¡tvene vjeÅ¡tine",
-              "text": "SnaÅ¾ne meÄ‘uljudske vjeÅ¡tine i jasna komunikacija s tehniÄkim i netehniÄkim osobama.",
+              "title": "Komunikacija i društvene vještine",
+              "text": "Snažne međuljudske vještine i jasna komunikacija s tehničkim i netehničkim osobama.",
               "proofBubble": "Pa, jos uvijek citas ovo, sto mi vec ide u prilog. Volim da tehnicke stvari zvuce ljudski."
             },
             "tr": {
-              "title": "Ä°letiÅŸim ve sosyal beceriler",
-              "text": "GÃ¼Ã§lÃ¼ kiÅŸilerarasÄ± beceriler ve teknik/teknik olmayan kiÅŸilerle aÃ§Ä±k iletiÅŸim.",
+              "title": "İletişim ve sosyal beceriler",
+              "text": "Güçlü kişilerarası beceriler ve teknik/teknik olmayan kişilerle açık iletişim.",
               "proofBubble": "Hala bunlari okuyorsun, bu bile benim lehime. Teknik seyleri insanca anlatmayi seviyorum."
             }
           }
@@ -525,17 +525,17 @@
             },
             "de": {
               "title": "Teamarbeit & Zusammenarbeit",
-              "text": "Arbeitet gerne in vielfÃ¤ltigen Teams und trÃ¤gt aktiv zu gemeinsamen Zielen bei.",
+              "text": "Arbeitet gerne in vielfältigen Teams und trägt aktiv zu gemeinsamen Zielen bei.",
               "proofBubble": "Der eigentliche Beweis steckt meist im gemeinsamen Ergebnis, nicht im Slogan. Bau etwas mit mir, dann testen wir das ordentlich."
             },
             "hr": {
               "title": "Timski rad i suradnja",
-              "text": "Ugodno mi je raditi u raznolikim timovima i aktivno doprinositi zajedniÄkim ciljevima.",
+              "text": "Ugodno mi je raditi u raznolikim timovima i aktivno doprinositi zajedničkim ciljevima.",
               "proofBubble": "Pravi dokaz obicno zivi u zajednickom rezultatu, a ne u sloganu. Napravi nesto sa mnom pa cemo to posteno testirati."
             },
             "tr": {
-              "title": "TakÄ±m Ã§alÄ±ÅŸmasÄ± ve iÅŸbirliÄŸi",
-              "text": "FarklÄ± ekiplerle Ã§alÄ±ÅŸmayÄ± seviyorum ve ortak hedeflere aktif olarak katkÄ± saÄŸlÄ±yorum.",
+              "title": "Takım çalışması ve işbirliği",
+              "text": "Farklı ekiplerle çalışmayı seviyorum ve ortak hedeflere aktif olarak katkı sağlıyorum.",
               "proofBubble": "Pravi dokaz obicno zivi u zajednickom rezultatu, ne u sloganu. Napravi nesto sa mnom pa to mozemo posteno testirati."
             }
           }
@@ -563,17 +563,17 @@
             },
             "de": {
               "title": "Lehren & Wissensweitergabe",
-              "text": "Kann komplexe Themen einfach erklÃ¤ren und andere beim Lernen unterstÃ¼tzen.",
+              "text": "Kann komplexe Themen einfach erklären und andere beim Lernen unterstützen.",
               "proofBubble": "A, B, C, D... und dann faengt der Spass an. Ich mag es, Verwirrung in einen klaren ersten Schritt zu verwandeln."
             },
             "hr": {
-              "title": "PoduÄavanje i dijeljenje znanja",
-              "text": "Mogu jednostavno objasniti sloÅ¾ene teme i pomoÄ‡i drugima u uÄenju.",
+              "title": "Podučavanje i dijeljenje znanja",
+              "text": "Mogu jednostavno objasniti složene teme i pomoći drugima u učenju.",
               "proofBubble": "A, B, C, D... i onda pocinje zabavni dio. Volim pretvoriti zbrku u cist prvi korak."
             },
             "tr": {
-              "title": "Ã–ÄŸretme ve bilgi paylaÅŸÄ±mÄ±",
-              "text": "KarmaÅŸÄ±k konularÄ± basitÃ§e aÃ§Ä±klayabiliyor ve baÅŸkalarÄ±nÄ±n Ã¶ÄŸrenmesine destek olabiliyorum.",
+              "title": "Öğretme ve bilgi paylaşımı",
+              "text": "Karmaşık konuları basitçe açıklayabiliyor ve başkalarının öğrenmesine destek olabiliyorum.",
               "proofBubble": "A, B, C, D... ve sonra eglenceli kisim baslar. Karmasayi net bir ilk adima cevirmeyi seviyorum."
             }
           }
@@ -600,18 +600,18 @@
               "proofBubble": "Back home I earned a reputation for finding the needle in the haystack. Usually after everyone else declared the haystack innocent."
             },
             "de": {
-              "title": "ProblemlÃ¶sung & analytisches Denken",
-              "text": "Systematischer Ansatz zur Fehlersuche, Ursachenanalyse und Umsetzung praktischer LÃ¶sungen.",
+              "title": "Problemlösung & analytisches Denken",
+              "text": "Systematischer Ansatz zur Fehlersuche, Ursachenanalyse und Umsetzung praktischer Lösungen.",
               "proofBubble": "Zuhause war ich irgendwann der Typ, der die Nadel im Heuhaufen findet. Meist nachdem alle anderen den Heuhaufen fuer unschuldig erklaert hatten."
             },
             "hr": {
-              "title": "RjeÅ¡avanje problema i analitiÄko razmiÅ¡ljanje",
-              "text": "Sustavan pristup dijagnostici problema, pronalaÅ¾enju uzroka i primjeni praktiÄnih rjeÅ¡enja.",
+              "title": "Rješavanje problema i analitičko razmišljanje",
+              "text": "Sustavan pristup dijagnostici problema, pronalaženju uzroka i primjeni praktičnih rješenja.",
               "proofBubble": "Kod kuce sam postao poznat kao onaj koji nade iglu u plastu sijena. Obicno nakon sto svi drugi proglase sijeno nevinim."
             },
             "tr": {
-              "title": "Problem Ã§Ã¶zme ve analitik dÃ¼ÅŸÃ¼nme",
-              "text": "SorunlarÄ± teÅŸhis etme, kÃ¶k neden bulma ve pratik Ã§Ã¶zÃ¼mler uygulamada sistematik yaklaÅŸÄ±m.",
+              "title": "Problem çözme ve analitik düşünme",
+              "text": "Sorunları teşhis etme, kök neden bulma ve pratik çözümler uygulamada sistematik yaklaşım.",
               "proofBubble": "Memlekette samanlikta ignayi bulan kisi olarak tanindim. Genelde herkes samanligin sucsuz olduguna karar verdikten sonra."
             }
           }
@@ -638,18 +638,18 @@
               "proofBubble": "2 + 2 is 4, - 1 that's 3, quick maths. New tools, new places, new rules; I adjust fast and keep moving."
             },
             "de": {
-              "title": "AnpassungsfÃ¤higkeit & schnelles Lernen",
+              "title": "Anpassungsfähigkeit & schnelles Lernen",
               "text": "Kann neue Werkzeuge, Technologien und Prozesse in wechselnden Umgebungen schnell erlernen.",
               "proofBubble": "2 plus 2 ist 4, minus 1 ist 3, quick maths. Neue Werkzeuge, neue Orte, neue Regeln; ich passe mich schnell an und mache weiter."
             },
             "hr": {
-              "title": "Prilagodljivost i brzo uÄenje",
-              "text": "Brzo usvajam nove alate, tehnologije i procese u promjenjivim okruÅ¾enjima.",
+              "title": "Prilagodljivost i brzo učenje",
+              "text": "Brzo usvajam nove alate, tehnologije i procese u promjenjivim okruženjima.",
               "proofBubble": "2 plus 2 je 4, minus 1 je 3, quick maths. Novi alati, nova mjesta, nova pravila; brzo se prilagodim i nastavim dalje."
             },
             "tr": {
-              "title": "Uyum saÄŸlama ve hÄ±zlÄ± Ã¶ÄŸrenme",
-              "text": "DeÄŸiÅŸen ortamlarda yeni araÃ§larÄ±, teknolojileri ve sÃ¼reÃ§leri hÄ±zla Ã¶ÄŸrenebilirim.",
+              "title": "Uyum sağlama ve hızlı öğrenme",
+              "text": "Değişen ortamlarda yeni araçları, teknolojileri ve süreçleri hızla öğrenebilirim.",
               "proofBubble": "2 arti 2, 4 eder; eksi 1, 3 eder, quick maths. Yeni araclar, yeni yerler, yeni kurallar; hizla uyum saglar ve devam ederim."
             }
           }
@@ -677,17 +677,17 @@
             },
             "de": {
               "title": "Schreiben & Dokumentation",
-              "text": "Akademisches und berufliches Schreiben; klare technische Dokumentation, Berichte und PrÃ¤sentationen.",
+              "text": "Akademisches und berufliches Schreiben; klare technische Dokumentation, Berichte und Präsentationen.",
               "proofBubble": "Cogito, ergo sum. Wenn ich etwas wirklich verstanden habe, kann ich es meistens auch klar aufschreiben."
             },
             "hr": {
               "title": "Pisanje i dokumentacija",
-              "text": "Akademsko i profesionalno pisanje; jasna tehniÄka dokumentacija, izvjeÅ¡taji i prezentacije.",
+              "text": "Akademsko i profesionalno pisanje; jasna tehnička dokumentacija, izvještaji i prezentacije.",
               "proofBubble": "Cogito, ergo sum. Ako nesto zaista razumijem, obicno to mogu i jasno napisati."
             },
             "tr": {
-              "title": "YazÄ±m ve dokÃ¼mantasyon",
-              "text": "Akademik ve profesyonel yazÄ±m; net teknik dokÃ¼mantasyon, rapor ve sunumlar.",
+              "title": "Yazım ve dokümantasyon",
+              "text": "Akademik ve profesyonel yazım; net teknik dokümantasyon, rapor ve sunumlar.",
               "proofBubble": "Cogito, ergo sum. Bir seyi gercekten anladiysam, onu genelde acik ve temiz bir sekilde yazabilirim."
             }
           }
@@ -715,17 +715,17 @@
             },
             "de": {
               "title": "Interkulturelle Kommunikation & Sprachen",
-              "text": "Sicher im interkulturellen Umfeld; internationale Studienâ€‘ und Ehrenamtserfahrung",
+              "text": "Sicher im interkulturellen Umfeld; internationale Studien‑ und Ehrenamtserfahrung",
               "proofBubble": "Kroatische Wurzeln, in Bosnien geboren, in Deutschland lebend und im englischen Internet unterwegs. So lernt man frueh, dass Kontext alles veraendert."
             },
             "hr": {
-              "title": "MeÄ‘ukulturalna komunikacija i jezici",
-              "text": "Ugodan rad u razliÄitim kulturama; meÄ‘unarodno iskustvo studiranja i volontiranja",
+              "title": "Međukulturalna komunikacija i jezici",
+              "text": "Ugodan rad u različitim kulturama; međunarodno iskustvo studiranja i volontiranja",
               "proofBubble": "Hrvatski korijeni, roden u Bosni, zivim u Njemackoj i sjedim na engleskom internetu. Rano sam naucio da kontekst mijenja sve."
             },
             "tr": {
-              "title": "KÃ¼ltÃ¼rler arasÄ± iletiÅŸim ve diller",
-              "text": "FarklÄ± kÃ¼ltÃ¼rlerle Ã§alÄ±ÅŸmada rahatim; uluslararasÄ± Ã¶ÄŸrenim ve gÃ¶nÃ¼llÃ¼lÃ¼k deneyimi; diller",
+              "title": "Kültürler arası iletişim ve diller",
+              "text": "Farklı kültürlerle çalışmada rahatim; uluslararası öğrenim ve gönüllülük deneyimi; diller",
               "proofBubble": "Hirvat kokenleri, Bosnada dogdum, Almanyada yasiyorum ve Ingilizce internette oturuyorum. Baglamin her seyi degistirdigini erken ogrendim."
             }
           }
@@ -748,22 +748,22 @@
           "locales": {
             "en": {
               "title": "Positive attitude & calm presence",
-              "text": "Consistently calm, respectful, and solutionâ€‘oriented; positive team presence, even under pressure.",
+              "text": "Consistently calm, respectful, and solution‑oriented; positive team presence, even under pressure.",
               "proofBubble": "One body, one soul, and preferably one constructive mood in the room. Calm energy scales better than drama."
             },
             "de": {
               "title": "Positive Haltung & ruhige Ausstrahlung",
-              "text": "Durchgehend ruhig, respektvoll und lÃ¶sungsorientiert; positive TeamprÃ¤senz, auch unter Druck.",
+              "text": "Durchgehend ruhig, respektvoll und lösungsorientiert; positive Teampräsenz, auch unter Druck.",
               "proofBubble": "Ein Koerper, eine Seele und am besten eine konstruktive Stimmung im Raum. Ruhige Energie skaliert einfach besser als Drama."
             },
             "hr": {
               "title": "Pozitivan stav i smirena prisutnost",
-              "text": "Dosljedno miran, pun poÅ¡tovanja i usmjeren na rjeÅ¡enja; pozitivan utjecaj u timu, Äak i pod pritiskom.",
+              "text": "Dosljedno miran, pun poštovanja i usmjeren na rješenja; pozitivan utjecaj u timu, čak i pod pritiskom.",
               "proofBubble": "Jedno tijelo, jedna dusa i po mogucnosti jedna konstruktivna atmosfera u prostoriji. Mirna energija skalira bolje od drame."
             },
             "tr": {
-              "title": "Pozitif tutum ve sakin duruÅŸ",
-              "text": "SÃ¼rekli sakin, saygÄ±lÄ± ve Ã§Ã¶zÃ¼m odaklÄ±; baskÄ± altÄ±nda bile takÄ±ma olumlu etki.",
+              "title": "Pozitif tutum ve sakin duruş",
+              "text": "Sürekli sakin, saygılı ve çözüm odaklı; baskı altında bile takıma olumlu etki.",
               "proofBubble": "Tek beden, tek ruh ve tercihen odada tek yapici enerji. Sakin enerji, dramadan daha iyi olceklenir."
             }
           }
@@ -782,10 +782,10 @@
           "title": "Additional skills:"
         },
         "de": {
-          "title": "ZusÃ¤tzliche FÃ¤higkeiten:"
+          "title": "Zusätzliche Fähigkeiten:"
         },
         "hr": {
-          "title": "Dodatne vjeÅ¡tine:"
+          "title": "Dodatne vještine:"
         },
         "tr": {
           "title": "Ek beceriler:"
@@ -814,18 +814,18 @@
               "proofBubble": "Come on, do not ask a Yugo if it can go. License since 18, still rolling."
             },
             "de": {
-              "title": "FÃ¼hrerschein (Klasse B, 7 Jahre)",
-              "text": "FÃ¼hrerschein der Klasse B mit 7 Jahren Fahrpraxis und Bereitschaft fÃ¼r regelmÃ¤ÃŸige Dienstreisen.",
+              "title": "Führerschein (Klasse B, 7 Jahre)",
+              "text": "Führerschein der Klasse B mit 7 Jahren Fahrpraxis und Bereitschaft für regelmäßige Dienstreisen.",
               "proofBubble": "Komm schon, frag keinen Yugo, ob er fahren kann. Fuehrerschein seit 18, laeuft immer noch."
             },
             "hr": {
-              "title": "VozaÄka dozvola (B, 7 godina)",
-              "text": "VozaÄka dozvola B kategorije sa 7 godina iskustva i spremnoÅ¡Ä‡u za poslovna putovanja.",
+              "title": "Vozačka dozvola (B, 7 godina)",
+              "text": "Vozačka dozvola B kategorije sa 7 godina iskustva i spremnošću za poslovna putovanja.",
               "proofBubble": "Ma daj, ne pitaj Yuga zna li ici. Vozacka od osamnaeste, jos uvijek ide."
             },
             "tr": {
-              "title": "SÃ¼rÃ¼cÃ¼ belgesi (B, 7 yÄ±l)",
-              "text": "7 yÄ±llÄ±k deneyime sahip B sÄ±nÄ±fÄ± sÃ¼rÃ¼cÃ¼ belgesi ve dÃ¼zenli iÅŸ seyahatlerine hazÄ±r.",
+              "title": "Sürücü belgesi (B, 7 yıl)",
+              "text": "7 yıllık deneyime sahip B sınıfı sürücü belgesi ve düzenli iş seyahatlerine hazır.",
               "proofBubble": "Hadi ama, bir Yugoya gidip gitmedigini sorma. Ehliyet 18 yasindan beri bende, hala yoldayim."
             }
           }
@@ -853,17 +853,17 @@
             },
             "de": {
               "title": "Sicherheits- & Verantwortungsbewusstsein",
-              "text": "Gewohnt sicher in Elektro- und Industrieumgebungen zu arbeiten, mit hohem VerantwortungsgefÃ¼hl.",
+              "text": "Gewohnt sicher in Elektro- und Industrieumgebungen zu arbeiten, mit hohem Verantwortungsgefühl.",
               "proofBubble": "Wer zwischen gehoernten Kuehen lebt und in der Chemieindustrie auf Rohren herumklettert, entwickelt ziemlich schnell einen echten Sicherheitsinstinkt. Verantwortung bleibt dann nichts Theoretisches."
             },
             "hr": {
               "title": "Sigurnost i odgovornost",
-              "text": "Naviknut raditi sigurno u elektro i industrijskim okruÅ¾enjima, s jakim osjeÄ‡ajem odgovornosti.",
+              "text": "Naviknut raditi sigurno u elektro i industrijskim okruženjima, s jakim osjećajem odgovornosti.",
               "proofBubble": "Kad zivis oko rogatinja i penjes se po cijevima u kemijskoj industriji, sigurnosni instinkt se izbrusi vrlo brzo. Odgovornost tada vise nije teorija."
             },
             "tr": {
-              "title": "GÃ¼venlik ve sorumluluk bilinci",
-              "text": "Elektrik ve endÃ¼striyel ortamlarda gÃ¼venli Ã§alÄ±ÅŸmaya ve yÃ¼ksek sorumluluk bilincine alÄ±ÅŸkÄ±n.",
+              "title": "Güvenlik ve sorumluluk bilinci",
+              "text": "Elektrik ve endüstriyel ortamlarda güvenli çalışmaya ve yüksek sorumluluk bilincine alışkın.",
               "proofBubble": "Boynuzlu ineklerin etrafinda yasamak ve kimya endustrisinde borulara tirmanmak guvenlik icgudusunu keskinlestiriyor. Sorumluluk cok hizli sekilde teoriden cikar."
             }
           }
@@ -890,18 +890,18 @@
               "proofBubble": "To live is to serve: first God, then self, then others. That order keeps the work honest."
             },
             "de": {
-              "title": "Arbeitsmoral & ZuverlÃ¤ssigkeit",
-              "text": "Motiviert, zuverlÃ¤ssig und engagiert, qualitativ hochwertige Arbeit zu liefern.",
+              "title": "Arbeitsmoral & Zuverlässigkeit",
+              "text": "Motiviert, zuverlässig und engagiert, qualitativ hochwertige Arbeit zu liefern.",
               "proofBubble": "Zu leben heisst zu dienen: erst Gott, dann man selbst, dann die anderen. Diese Reihenfolge haelt die Arbeit ehrlich."
             },
             "hr": {
               "title": "Radna etika i pouzdanost",
-              "text": "Motiviran, pouzdan i posveÄ‡en isporuci kvalitetnog rada.",
+              "text": "Motiviran, pouzdan i posvećen isporuci kvalitetnog rada.",
               "proofBubble": "Zivjeti znaci sluziti: prvo Bogu, zatim sebi, pa drugima. Taj red drzi rad postenim."
             },
             "tr": {
-              "title": "Ã‡alÄ±ÅŸma disiplini ve gÃ¼venilirlik",
-              "text": "Motivasyonu yÃ¼ksek, gÃ¼venilir ve kaliteli iÅŸ Ã§Ä±karmaya odaklÄ±.",
+              "title": "Çalışma disiplini ve güvenilirlik",
+              "text": "Motivasyonu yüksek, güvenilir ve kaliteli iş çıkarmaya odaklı.",
               "proofBubble": "Yasamak hizmet etmektir: once Tanri, sonra insanin kendisi, sonra baskalari. Bu sira isi durust tutar."
             }
           }
@@ -922,7 +922,7 @@
           "title": "Moj {{ljudski}} sklop"
         },
         "tr": {
-          "title": "Benim {{insani}} dÃ¼zenim"
+          "title": "Benim {{insani}} düzenim"
         }
       },
       "settings": {
@@ -949,7 +949,7 @@
               "title": "Height: 204 cm"
             },
             "de": {
-              "title": "GrÃ¶ÃŸe: 204 cm"
+              "title": "Größe: 204 cm"
             },
             "hr": {
               "title": "Visina: 204 cm"
@@ -981,7 +981,7 @@
               "title": "Gewicht: 98 kg"
             },
             "hr": {
-              "title": "TeÅ¾ina: 98 kg"
+              "title": "Težina: 98 kg"
             },
             "tr": {
               "title": "Kilo: 98 kg"
@@ -1042,7 +1042,7 @@
               "title": "Postotak vode: 61%"
             },
             "tr": {
-              "title": "Su Ä°Ã§eriÄŸi: %61"
+              "title": "Su İçeriği: %61"
             }
           }
         },
@@ -1068,7 +1068,7 @@
               "title": "Blutvolumen: 5,5 L"
             },
             "hr": {
-              "title": "KoliÄina krvi: 5,5 L"
+              "title": "Količina krvi: 5,5 L"
             },
             "tr": {
               "title": "Kan Hacmi: 5,5 L"
@@ -1100,7 +1100,7 @@
               "title": "Broj prstiju: 20/20"
             },
             "tr": {
-              "title": "Parmak SayÄ±sÄ±: 20/20"
+              "title": "Parmak Sayısı: 20/20"
             }
           }
         },
@@ -1129,7 +1129,7 @@
               "title": "Vid: 20/23"
             },
             "tr": {
-              "title": "GÃ¶rme KeskinliÄŸi: 20/23"
+              "title": "Görme Keskinliği: 20/23"
             }
           }
         },
@@ -1149,16 +1149,16 @@
           },
           "locales": {
             "en": {
-              "title": "Avg. Body Temp: 37Â°C"
+              "title": "Avg. Body Temp: 37°C"
             },
             "de": {
-              "title": "Durchschnittliche KÃ¶rpertemperatur: 37Â°C"
+              "title": "Durchschnittliche Körpertemperatur: 37°C"
             },
             "hr": {
-              "title": "ProsjeÄna tjelesna temperatura: 37Â°C"
+              "title": "Prosječna tjelesna temperatura: 37°C"
             },
             "tr": {
-              "title": "Ortalama VÃ¼cut IsÄ±sÄ±: 37Â°C"
+              "title": "Ortalama Vücut Isısı: 37°C"
             }
           }
         },
@@ -1181,13 +1181,13 @@
               "title": "Artificial Body Parts: 1"
             },
             "de": {
-              "title": "KÃ¼nstliche KÃ¶rperteile: 1"
+              "title": "Künstliche Körperteile: 1"
             },
             "hr": {
-              "title": "VjeÅ¡taÄki dijelovi tijela: 1"
+              "title": "Vještački dijelovi tijela: 1"
             },
             "tr": {
-              "title": "Yapay VÃ¼cut ParÃ§alarÄ±: 1"
+              "title": "Yapay Vücut Parçaları: 1"
             }
           }
         },
@@ -1210,13 +1210,13 @@
               "title": "Blood Vessels: 100,000 km"
             },
             "de": {
-              "title": "BlutgefÃ¤ÃŸe: 100.000 km"
+              "title": "Blutgefäße: 100.000 km"
             },
             "hr": {
-              "title": "Krvne Å¾ile: 100.000 km"
+              "title": "Krvne žile: 100.000 km"
             },
             "tr": {
-              "title": "Kan DamarlarÄ±: 100.000 km"
+              "title": "Kan Damarları: 100.000 km"
             }
           }
         },
@@ -1236,7 +1236,7 @@
           },
           "locales": {
             "en": {
-              "title": "Brainâ€™s Memory: 2.5 PB"
+              "title": "Brain’s Memory: 2.5 PB"
             },
             "de": {
               "title": "Gehirnspeicher: 2,5 PB"
@@ -1245,7 +1245,7 @@
               "title": "Memorija mozga: 2,5 PB"
             },
             "tr": {
-              "title": "Beyin HafÄ±zasÄ±: 2,5 PB"
+              "title": "Beyin Hafızası: 2,5 PB"
             }
           }
         },
@@ -1268,13 +1268,13 @@
               "title": "Shedding Skin Cells: 45,000/min"
             },
             "de": {
-              "title": "HautzellenabstoÃŸung: 45.000/Min."
+              "title": "Hautzellenabstoßung: 45.000/Min."
             },
             "hr": {
-              "title": "Gubljenje stanica koÅ¾e: 45.000/min"
+              "title": "Gubljenje stanica kože: 45.000/min"
             },
             "tr": {
-              "title": "Deri HÃ¼creleri DÃ¶kÃ¼lmesi: 45.000/dk"
+              "title": "Deri Hücreleri Dökülmesi: 45.000/dk"
             }
           }
         },
@@ -1297,10 +1297,10 @@
               "title": "Stomach Acid: Hydrochloric Acid"
             },
             "de": {
-              "title": "MagensÃ¤ure: SalzsÃ¤ure"
+              "title": "Magensäure: Salzsäure"
             },
             "hr": {
-              "title": "Å½eluÄana kiselina: klorovodiÄna kiselina"
+              "title": "Želučana kiselina: klorovodična kiselina"
             },
             "tr": {
               "title": "Mide Asidi: Hidroklorik Asit"
@@ -1358,10 +1358,10 @@
               "title": "Abstammung: 96% Neretva-Flussbecken"
             },
             "hr": {
-              "title": "Podrijetlo: 96% porjeÄje rijeke Neretve"
+              "title": "Podrijetlo: 96% porječje rijeke Neretve"
             },
             "tr": {
-              "title": "Soy: %96 Neretva Nehri HavzasÄ±"
+              "title": "Soy: %96 Neretva Nehri Havzası"
             }
           }
         },
@@ -1390,7 +1390,7 @@
               "title": "Brzina kihanja: 160 km/h"
             },
             "tr": {
-              "title": "HapÅŸÄ±rma HÄ±zÄ±: 160 km/s"
+              "title": "Hapşırma Hızı: 160 km/s"
             }
           }
         },
@@ -1416,10 +1416,10 @@
               "title": "Nervengeschwindigkeit: 431 km/h"
             },
             "hr": {
-              "title": "Brzina Å¾ivaca: 431 km/h"
+              "title": "Brzina živaca: 431 km/h"
             },
             "tr": {
-              "title": "Sinir HÄ±zÄ±: 431 km/s"
+              "title": "Sinir Hızı: 431 km/s"
             }
           }
         },
@@ -1445,7 +1445,7 @@
               "title": "Eisen: 5,2 g"
             },
             "hr": {
-              "title": "Å½eljezo: 5,2 g"
+              "title": "Željezo: 5,2 g"
             },
             "tr": {
               "title": "Demir: 5,2 g"
@@ -1477,7 +1477,7 @@
               "title": "Zlato: 0,4 g"
             },
             "tr": {
-              "title": "AltÄ±n: 0,4 g"
+              "title": "Altın: 0,4 g"
             }
           }
         },
@@ -1500,13 +1500,13 @@
               "title": "Immune System: +1 Billion Antibodies"
             },
             "de": {
-              "title": "Immunsystem: +1 Milliarde AntikÃ¶rper"
+              "title": "Immunsystem: +1 Milliarde Antikörper"
             },
             "hr": {
-              "title": "ImunoloÅ¡ki sustav: +1 milijarda antitijela"
+              "title": "Imunološki sustav: +1 milijarda antitijela"
             },
             "tr": {
-              "title": "BaÄŸÄ±ÅŸÄ±klÄ±k Sistemi: +1 Milyar Antikor"
+              "title": "Bağışıklık Sistemi: +1 Milyar Antikor"
             }
           }
         },
@@ -1526,16 +1526,16 @@
           },
           "locales": {
             "en": {
-              "title": "Favorite Feature: Blaschkoâ€™s Lines"
+              "title": "Favorite Feature: Blaschko’s Lines"
             },
             "de": {
               "title": "Lieblingsmerkmal: Blaschko-Linien"
             },
             "hr": {
-              "title": "Omiljena znaÄajka: Blaschkoove linije"
+              "title": "Omiljena značajka: Blaschkoove linije"
             },
             "tr": {
-              "title": "Favori Ã–zellik: Blaschko Ã‡izgileri"
+              "title": "Favori Özellik: Blaschko Çizgileri"
             }
           }
         },
@@ -1558,13 +1558,13 @@
               "title": "Idle Heat: 120 W"
             },
             "de": {
-              "title": "LeerlaufwÃ¤rme: 120 W"
+              "title": "Leerlaufwärme: 120 W"
             },
             "hr": {
               "title": "Toplina u mirovanju: 120 W"
             },
             "tr": {
-              "title": "BoÅŸta IsÄ±: 120 W"
+              "title": "Boşta Isı: 120 W"
             }
           }
         },
@@ -1590,10 +1590,10 @@
               "title": "Hautzyklus: 31 Tage"
             },
             "hr": {
-              "title": "Ciklus koÅ¾e: 31 dan"
+              "title": "Ciklus kože: 31 dan"
             },
             "tr": {
-              "title": "Cilt DÃ¶ngÃ¼sÃ¼: 31 GÃ¼n"
+              "title": "Cilt Döngüsü: 31 Gün"
             }
           }
         },
@@ -1630,4 +1630,3 @@
     }
   ]
 }
-

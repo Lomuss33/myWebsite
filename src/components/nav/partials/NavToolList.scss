@@ -319,7 +319,7 @@ div.nav-tools {
         }
     }
 
-    nav.nav-sidebar:not(.nav-sidebar-shrink):not(.nav-sidebar-short-rail) {
+    nav.nav-sidebar-extended {
         div.nav-tools {
             div.nav-tools-item-language,
             div.nav-tools-item-theme {
@@ -354,17 +354,10 @@ div.nav-tools {
         }
     }
 
-    nav.nav-sidebar-shrink {
-        div.nav-tools {
-            --nav-tools-icon-box-size: 28px;
-            --nav-tools-icon-font-size: 1.5rem;
-        }
-    }
-
     nav.nav-sidebar-short-rail {
         div.nav-tools {
-            --nav-tools-icon-box-size: var(--nav-short-rail-icon-box-size);
-            --nav-tools-icon-font-size: var(--nav-short-rail-icon-font-size);
+            --nav-tools-icon-box-size: var(--nav-short-rail-tool-icon-box-size);
+            --nav-tools-icon-font-size: var(--nav-short-rail-tool-icon-font-size);
         }
     }
 }
@@ -674,20 +667,18 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
 }
 
 nav.nav-sidebar-short-rail div.nav-tools {
-    --nav-tools-divider-inset: clamp(4px, calc(var(--nav-tools-height) * 0.18), 9px);
+    --nav-tools-divider-inset: var(--nav-short-rail-tool-divider-inset);
 
     justify-content: center;
 }
 
-// In short-rail (shrink) mode the rail is narrower (~108px), so push the
+// In short-rail mode the rail is narrower (~108px), so push the
 // popup further right to make sure menu labels still have room to breathe.
-nav.nav-sidebar-shrink div.nav-tools div.dropdown-menu.nav-tools-popup-menu,
 nav.nav-sidebar-short-rail div.nav-tools div.dropdown-menu.nav-tools-popup-menu,
 nav.nav-sidebar-short-rail div.nav-short-rail-resume-band div.dropdown-menu.nav-tools-popup-menu {
     --nav-tools-popup-min-width: 280px;
 }
 
-nav.nav-sidebar-shrink div.nav-tools div.nav-tools-item-resume div.dropdown-menu.nav-tools-popup-menu,
 nav.nav-sidebar-short-rail div.nav-tools div.nav-tools-item-resume div.dropdown-menu.nav-tools-popup-menu,
 nav.nav-sidebar-short-rail div.nav-short-rail-resume-band div.dropdown-menu.nav-tools-popup-menu {
     --nav-tools-popup-width: max-content;
@@ -695,14 +686,30 @@ nav.nav-sidebar-short-rail div.nav-short-rail-resume-band div.dropdown-menu.nav-
     --nav-tools-popup-max-width: min(13rem, 80vw);
 }
 
-nav.nav-sidebar-shrink div.nav-tools div.nav-tools-item-language div.dropdown-menu.nav-tools-popup-menu,
+nav.nav-sidebar-short-rail-with-resume-band div.nav-short-rail-resume-band div.dropdown-menu.nav-tools-popup-menu {
+    left: calc(100% + 0.75rem) !important;
+    top: 50% !important;
+    bottom: auto !important;
+    transform: translateY(-50%) !important;
+
+    &::before {
+        left: -6px;
+        top: 50%;
+        bottom: auto;
+        border-right: 0;
+        border-bottom: 1px solid #f8aa28;
+        border-left: 1px solid #f8aa28;
+        transform: translateY(-50%) rotate(45deg);
+    }
+}
+
 nav.nav-sidebar-short-rail div.nav-tools div.nav-tools-item-language div.dropdown-menu.nav-tools-popup-menu {
     --nav-tools-popup-width: fit-content;
     --nav-tools-popup-min-width: 0;
     --nav-tools-popup-max-width: min(18rem, 80vw);
 }
 
-div.nav-tools-shrink {
+div.nav-tools-short-rail {
     flex-direction: row;
     justify-content: center;
     align-items: stretch;

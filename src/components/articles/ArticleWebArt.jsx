@@ -380,8 +380,8 @@ function ArticleWebArt({ dataWrapper, id }) {
         submitTileLabel = {
             en: "Send yours!",
             de: "Sende deine!",
-            hr: "PoÅ¡alji svoju!",
-            tr: "Sen de gÃ¶nder!",
+            hr: "Pošalji svoju!",
+            tr: "Sen de gönder!",
         }[langId] || "Send yours!"
     }
 
@@ -392,7 +392,7 @@ function ArticleWebArt({ dataWrapper, id }) {
             en: "Click",
             de: "Klicken",
             hr: "Klikni",
-            tr: "TÄ±kla",
+            tr: "Tıkla",
         }[langId] || "Click"
     }
 

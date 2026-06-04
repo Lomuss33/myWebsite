@@ -3,57 +3,92 @@ import React, {useEffect, useRef} from 'react'
 import Nav from "../base/Nav.jsx"
 import GestureAwareButton from "../../buttons/GestureAwareButton.jsx"
 
-function NavLinkList({ links, expanded, compactRail = false, shortRail = false, sharedRailMode = false }) {
+const EXTENDED_RAIL_DENSITY_PROFILE = {
+    minRowHeight: 18,
+    baselineRowHeight: 48,
+    upscaleCeiling: 64,
+    iconWidth: { min: 30, baseline: 60, max: 72 },
+    iconSize: { min: 0.78, baseline: 1.15, max: 1.34, unit: "rem" },
+    fontSize: { min: 0.68, baseline: 0.98, max: 1.08, unit: "rem" },
+    paddingInline: { min: 4, baseline: 12, max: 16 },
+    gap: { min: 2, baseline: 8, max: 10 },
+    hoverScale: { min: 1.02, baseline: 1.08, max: 1.09, unit: "" },
+    accentBarWidth: { min: 3, baseline: 4, max: 4 },
+    accentBarHeight: { min: 16, baseline: 30, max: 34 },
+    accentDotSize: { min: 4, baseline: 6, max: 7 },
+    accentDotOffsetX: { min: 7, baseline: 10, max: 12 }
+}
+
+const EXTENDED_RAIL_VARIABLE_NAMES = [
+    "--nav-link-target-height",
+    "--nav-link-icon-width",
+    "--nav-link-icon-size",
+    "--nav-link-font-size",
+    "--nav-link-padding-inline",
+    "--nav-link-gap",
+    "--nav-link-accent-bar-width",
+    "--nav-link-accent-bar-height",
+    "--nav-link-accent-dot-size",
+    "--nav-link-accent-dot-offset-x",
+    "--nav-link-hover-scale"
+]
+
+function NavLinkList({ links, railMode }) {
     const containerRef = useRef(null)
     const lastValuesRef = useRef({})
-
-    const data = {expanded}
-    const shrinkClass = expanded ?
-        `` :
-        `nav-link-list-shrink`
-    const useCompactDensityScale = compactRail && !sharedRailMode
-    const useShortRailDensityScale = shortRail && !sharedRailMode
+    const isExtendedRail = railMode === "extended"
+    const modeClass = isExtendedRail ?
+        "nav-link-list-extended" :
+        "nav-link-list-short-rail"
+    const exactFitClass = isExtendedRail ?
+        "nav-link-list-exact-fit" :
+        ""
 
     useEffect(() => {
         const container = containerRef.current
         if(!container)
             return
-        const railCard = container.closest(".nav-sidebar-card-wrapper")
+
+        const _clearExtendedRailVariables = () => {
+            EXTENDED_RAIL_VARIABLE_NAMES.forEach((name) => {
+                container.style.removeProperty(name)
+            })
+            lastValuesRef.current = {}
+        }
+
+        if(!isExtendedRail) {
+            _clearExtendedRailVariables()
+            return
+        }
+
         const sharedRailStack = container.closest(".nav-sidebar-rail-stack")
-        const navTools = railCard?.querySelector(".nav-tools")
+        const {
+            minRowHeight,
+            baselineRowHeight,
+            upscaleCeiling,
+            iconWidth,
+            iconSize,
+            fontSize,
+            paddingInline,
+            gap,
+            hoverScale,
+            accentBarWidth,
+            accentBarHeight,
+            accentDotSize,
+            accentDotOffsetX
+        } = EXTENDED_RAIL_DENSITY_PROFILE
 
-        const useCompactRowConfig = useCompactDensityScale || useShortRailDensityScale
-        const minRowHeight = sharedRailMode ?
-            (expanded ? 30 : 28) :
-            useCompactRowConfig
-            ? (expanded ? 26 : 24)
-            : (expanded ? 30 : 28)
-        const baselineRowHeight = sharedRailMode ?
-            (expanded ? 48 : 40) :
-            useCompactRowConfig
-            ? (expanded ? 40 : 34)
-            : (expanded ? 48 : 40)
-        const upscaleCeiling = sharedRailMode ?
-            (expanded ? 64 : 54) :
-            useCompactRowConfig
-            ? (expanded ? 56 : 46)
-            : (expanded ? 64 : 54)
-
-        const _setVariable = (name, value, unit = "px", target = container, cacheScope = "container") => {
-            if(!target)
-                return
-
-            const normalizedValue = unit === "px"
-                ? Math.round(value)
-                : Number(value.toFixed(3))
+        const _setVariable = (name, value, unit = "px") => {
+            const normalizedValue = unit === "px" ?
+                Math.round(value) :
+                Number(value.toFixed(3))
             const nextSerializedValue = `${normalizedValue}${unit}`
-            const cacheKey = `${cacheScope}:${name}`
 
-            if(lastValuesRef.current[cacheKey] === nextSerializedValue)
+            if(lastValuesRef.current[name] === nextSerializedValue)
                 return
 
-            lastValuesRef.current[cacheKey] = nextSerializedValue
-            target.style.setProperty(name, nextSerializedValue)
+            lastValuesRef.current[name] = nextSerializedValue
+            container.style.setProperty(name, nextSerializedValue)
         }
 
         const _interpolate = (min, max, factor) => {
@@ -84,133 +119,90 @@ function NavLinkList({ links, expanded, compactRail = false, shortRail = false, 
             if(!amountOfItems)
                 return
 
-            const sharedRowHeight = sharedRailMode ?
-                _readPxVariable(sharedRailStack || container, "--nav-link-target-height", baselineRowHeight) :
-                useShortRailDensityScale ?
-                    _readPxVariable(railCard, "--nav-link-target-height", baselineRowHeight) :
-                (() => {
-                    const totalHeight = container.clientHeight
-                    const railHeight = railCard?.clientHeight || 0
-                    if(!totalHeight && !railHeight)
-                        return 0
-
-                    const currentToolsHeight = navTools?.clientHeight || 0
-                    const reservedCompactHeight = useCompactDensityScale ?
-                        _readPxVariable(railCard, "--nav-short-rail-profile-height") +
-                        _readPxVariable(railCard, "--nav-short-rail-resume-height") +
-                        _readPxVariable(railCard, "--nav-short-rail-tools-height") :
-                        0
-                    const compactAvailableHeight = useCompactDensityScale && railHeight > 0 ?
-                        Math.max(railHeight - reservedCompactHeight, 0) :
-                        0
-
-                    return useCompactDensityScale && railHeight > 0 ?
-                        Math.max(baselineRowHeight, compactAvailableHeight / amountOfItems) :
-                        (currentToolsHeight > 0 ? (totalHeight + currentToolsHeight) / (amountOfItems + 1) : totalHeight / amountOfItems)
-                })()
-            if(!sharedRowHeight)
+            const rowHeight = container.clientHeight > 0 ?
+                container.clientHeight / amountOfItems :
+                _readPxVariable(sharedRailStack || container, "--nav-link-target-height", baselineRowHeight)
+            if(!rowHeight)
                 return
 
             const shrinkFactor = _clamp(
-                (baselineRowHeight - sharedRowHeight) / Math.max(baselineRowHeight - minRowHeight, 1),
+                (baselineRowHeight - rowHeight) / Math.max(baselineRowHeight - minRowHeight, 1),
                 0,
                 1
             )
             const growFactor = _clamp(
-                (sharedRowHeight - baselineRowHeight) / Math.max(upscaleCeiling - baselineRowHeight, 1),
+                (rowHeight - baselineRowHeight) / Math.max(upscaleCeiling - baselineRowHeight, 1),
                 0,
                 1
             )
 
-            if(!sharedRailMode && !useShortRailDensityScale) {
-                _setVariable("--nav-link-target-height", sharedRowHeight)
-                _setVariable("--nav-link-target-height", sharedRowHeight, "px", railCard, "rail-card")
-            }
+            _setVariable("--nav-link-target-height", rowHeight)
             _setVariable(
                 "--nav-link-icon-width",
-                _getAdaptiveValue(
-                    useCompactRowConfig ? (expanded ? 34 : 22) : (expanded ? 40 : 26),
-                    useCompactRowConfig ? (expanded ? 54 : 36) : (expanded ? 60 : 40),
-                    useCompactRowConfig ? (expanded ? 64 : 44) : (expanded ? 72 : 48),
-                    shrinkFactor,
-                    growFactor
-                )
+                _getAdaptiveValue(iconWidth.min, iconWidth.baseline, iconWidth.max, shrinkFactor, growFactor)
             )
             _setVariable(
                 "--nav-link-icon-size",
-                _getAdaptiveValue(
-                    useCompactRowConfig ? (expanded ? 0.84 : 0.82) : (expanded ? 0.92 : 0.9),
-                    useCompactRowConfig ? (expanded ? 1.0 : 0.92) : (expanded ? 1.15 : 1.04),
-                    useCompactRowConfig ? (expanded ? 1.16 : 1.04) : (expanded ? 1.34 : 1.18),
-                    shrinkFactor,
-                    growFactor
-                ),
-                "rem"
+                _getAdaptiveValue(iconSize.min, iconSize.baseline, iconSize.max, shrinkFactor, growFactor),
+                iconSize.unit
             )
             _setVariable(
                 "--nav-link-font-size",
-                _getAdaptiveValue(
-                    useCompactRowConfig ? 0.7 : 0.76,
-                    useCompactRowConfig ? (expanded ? 0.88 : 0.8) : (expanded ? 0.98 : 0.88),
-                    useCompactRowConfig ? (expanded ? 0.98 : 0.88) : (expanded ? 1.08 : 0.94),
-                    shrinkFactor,
-                    growFactor
-                ),
-                "rem"
+                _getAdaptiveValue(fontSize.min, fontSize.baseline, fontSize.max, shrinkFactor, growFactor),
+                fontSize.unit
             )
             _setVariable(
                 "--nav-link-padding-inline",
-                _getAdaptiveValue(
-                    useCompactRowConfig ? (expanded ? 4 : 2) : (expanded ? 6 : 3),
-                    useCompactRowConfig ? (expanded ? 10 : 4) : (expanded ? 12 : 6),
-                    useCompactRowConfig ? (expanded ? 14 : 6) : (expanded ? 16 : 8),
-                    shrinkFactor,
-                    growFactor
-                )
+                _getAdaptiveValue(paddingInline.min, paddingInline.baseline, paddingInline.max, shrinkFactor, growFactor)
             )
             _setVariable(
                 "--nav-link-gap",
-                _getAdaptiveValue(
-                    useCompactRowConfig ? (expanded ? 2 : 0) : (expanded ? 4 : 0),
-                    useCompactRowConfig ? (expanded ? 6 : 2) : (expanded ? 8 : 4),
-                    useCompactRowConfig ? (expanded ? 8 : 4) : (expanded ? 10 : 6),
-                    shrinkFactor,
-                    growFactor
-                )
+                _getAdaptiveValue(gap.min, gap.baseline, gap.max, shrinkFactor, growFactor)
             )
-            container.style.setProperty(
+            _setVariable(
+                "--nav-link-accent-bar-width",
+                _getAdaptiveValue(accentBarWidth.min, accentBarWidth.baseline, accentBarWidth.max, shrinkFactor, growFactor)
+            )
+            _setVariable(
+                "--nav-link-accent-bar-height",
+                _getAdaptiveValue(accentBarHeight.min, accentBarHeight.baseline, accentBarHeight.max, shrinkFactor, growFactor)
+            )
+            _setVariable(
+                "--nav-link-accent-dot-size",
+                _getAdaptiveValue(accentDotSize.min, accentDotSize.baseline, accentDotSize.max, shrinkFactor, growFactor)
+            )
+            _setVariable(
+                "--nav-link-accent-dot-offset-x",
+                _getAdaptiveValue(accentDotOffsetX.min, accentDotOffsetX.baseline, accentDotOffsetX.max, shrinkFactor, growFactor)
+            )
+            _setVariable(
                 "--nav-link-hover-scale",
-                _getAdaptiveValue(
-                    useCompactRowConfig ? 1.015 : 1.03,
-                    useCompactRowConfig ? 1.05 : 1.08,
-                    useCompactRowConfig ? 1.06 : 1.09,
-                    shrinkFactor,
-                    growFactor
-                ).toFixed(3)
+                _getAdaptiveValue(hoverScale.min, hoverScale.baseline, hoverScale.max, shrinkFactor, growFactor),
+                hoverScale.unit
             )
         }
 
         _syncDensity()
+
         const resizeObserver = new ResizeObserver(() => {
             _syncDensity()
         })
 
         resizeObserver.observe(container)
-        if(sharedRailMode && sharedRailStack && sharedRailStack !== container)
+        if(sharedRailStack && sharedRailStack !== container)
             resizeObserver.observe(sharedRailStack)
 
         return () => {
             resizeObserver.disconnect()
-            if(!sharedRailMode && !useShortRailDensityScale)
-                railCard?.style.removeProperty("--nav-link-target-height")
+            _clearExtendedRailVariables()
         }
-    }, [compactRail, expanded, links.length, sharedRailMode, shortRail, useCompactDensityScale, useShortRailDensityScale])
+    }, [isExtendedRail, links.length])
 
     return (
         <div ref={containerRef}
-             className={`nav-link-list-shell ${shrinkClass}`}>
+             className={`nav-link-list-shell ${modeClass} ${exactFitClass}`.trim()}>
             <Nav links={links}
-                 data={data}
+                 data={{ railMode }}
                  tag={`nav-link-list`}
                  className={`nav-link-list`}
                  itemComponent={NavLink}/>
@@ -218,7 +210,7 @@ function NavLinkList({ links, expanded, compactRail = false, shortRail = false, 
     )
 }
 
-function NavLink({ link, active, data, onClick }) {
+function NavLink({ link, active, onClick }) {
     const activeClass = active ?
         `nav-link-active` :
         ``

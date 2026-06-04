@@ -1224,19 +1224,12 @@ article#article-1-section-education ul.article-timeline-item-info-for-timelines-
 
 article#article-1-section-experience {
     --experience-description-left-buffer: clamp(0.26rem, 0.19rem + 0.16vw, 0.45rem);
+    --experience-description-right-offset: calc(var(--experience-description-right-buffer, 0px) * 3.4);
 
     div.article-timeline-item-info-for-timelines-header-title,
     div.article-timeline-item-info-for-timelines-header-main {
         justify-content: center;
         text-align: center;
-    }
-
-    div.article-timeline-item-info-for-timelines-header-title {
-        width: calc(100% + var(--experience-card-right-padding));
-        max-width: none;
-        margin-right: calc(-1 * var(--experience-card-right-padding));
-        box-sizing: border-box;
-        min-width: 0;
     }
 
     div.article-timeline-item-info-for-timelines-header-main {
@@ -1370,32 +1363,43 @@ article#article-1-section-experience {
     }
 
     div.article-timeline-item-info-for-timelines-body {
+        position: relative;
         margin-top: clamp(0.8rem, 0.62rem + 0.38vw, 1.1rem);
         padding-top: clamp(0.72rem, 0.58rem + 0.24vw, 0.9rem);
         box-sizing: border-box;
         text-align: left;
         line-height: 1.68;
 
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 2px;
+            background: color-mix(in srgb, var(--card-border) 64%, var(--card-accent) 36%);
+        }
+
         div.article-timeline-item-info-for-timelines-body-text {
             box-sizing: border-box;
-            width: calc(100% - var(--experience-description-left-buffer) - (var(--experience-description-right-buffer, 0px) * 3.4));
-            max-width: calc(100% - var(--experience-description-left-buffer) - (var(--experience-description-right-buffer, 0px) * 3.4));
-            margin-right: auto;
-            margin-left: var(--experience-description-left-buffer);
+            width: 100%;
+            max-width: 100%;
+            margin-right: 0;
+            margin-left: 0;
+            padding-right: var(--experience-description-right-offset);
+            padding-left: var(--experience-description-left-buffer);
             min-width: 0;
-            border-top: 2px solid color-mix(in srgb, var(--card-border) 64%, var(--card-accent) 36%);
             padding-top: clamp(0.82rem, 0.68rem + 0.26vw, 1rem);
             color: color-mix(in srgb, var(--card-text-mid) 92%, var(--card-text-strong) 8%);
         }
 
         ul.article-timeline-item-info-for-timelines-body-list {
             box-sizing: border-box;
-            width: calc(100% - var(--experience-description-left-buffer) - (var(--experience-description-right-buffer, 0px) * 3.4));
-            max-width: calc(100% - var(--experience-description-left-buffer) - (var(--experience-description-right-buffer, 0px) * 3.4));
-            margin-right: auto;
-            margin-left: var(--experience-description-left-buffer);
+            width: 100%;
+            max-width: 100%;
+            margin-right: 0;
+            margin-left: 0;
             min-width: 0;
-            padding-left: 1.25em;
+            padding-right: var(--experience-description-right-offset);
+            padding-left: calc(1.25em + var(--experience-description-left-buffer));
         }
 
         div.article-timeline-item-info-for-timelines-body-text + ul.article-timeline-item-info-for-timelines-body-list {
@@ -1404,7 +1408,6 @@ article#article-1-section-experience {
         }
 
         ul.article-timeline-item-info-for-timelines-body-list:first-child {
-            border-top: 2px solid color-mix(in srgb, var(--card-border) 64%, var(--card-accent) 36%);
             padding-top: clamp(0.82rem, 0.68rem + 0.26vw, 1rem);
         }
     }
@@ -1441,19 +1444,13 @@ article#article-1-section-experience {
         div.article-timeline-item-info-for-timelines-body {
             div.article-timeline-item-info-for-timelines-body-text,
             ul.article-timeline-item-info-for-timelines-body-list {
-                width: calc(100% - var(--experience-description-left-buffer) - (var(--experience-description-right-buffer, 0px) * 3.4));
-                max-width: calc(100% - var(--experience-description-left-buffer) - (var(--experience-description-right-buffer, 0px) * 3.4));
+                width: 100%;
+                max-width: 100%;
             }
         }
     }
 
     @include media-breakpoint-down(sm) {
-        div.article-timeline-item-info-for-timelines-header-title {
-            width: 100%;
-            max-width: 100%;
-            margin-right: 0;
-        }
-
         div.article-timeline-item-info-for-timelines-header-main {
             width: 100%;
         }

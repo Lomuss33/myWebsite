@@ -437,16 +437,6 @@ div.nav-profile-card {
         }
     }
 
-    div.nav-profile-card-compact-name {
-        display: none;
-        margin-top: 5px;
-        font-size: 0.76rem;
-        line-height: 1.05;
-        max-width: 68px;
-        text-align: center;
-        color: var(--theme-texts-light);
-    }
-
     div.nav-profile-card-mobile-action-stack {
         display: none;
     }
@@ -463,6 +453,12 @@ div.nav-profile-card {
         gap: 0.02rem;
         width: 4rem;
         z-index: 4;
+    }
+
+    &:has(div.nav-profile-card-desktop-resume-dropdown.show) {
+        div.nav-profile-card-desktop-action-stack {
+            z-index: calc($z-index-sidebar + 2);
+        }
     }
 
     div.nav-profile-card-desktop-action {
@@ -650,11 +646,6 @@ div.nav-profile-card {
     }
 
     div.nav-profile-card-desktop-action-stack div.dropdown-menu.nav-profile-card-desktop-resume-menu {
-        position: absolute !important;
-        left: calc(100% + 0.6rem) !important;
-        top: 50% !important;
-        bottom: auto !important;
-        transform: translateY(-50%) !important;
         margin: 0 !important;
         min-width: 11rem;
         max-width: min(13rem, 80vw);
@@ -1391,10 +1382,10 @@ div.nav-profile-card {
     }
 }
 
-div.nav-profile-card-shrink {
-    --avatar-size: 72px;
-    --border-size: 3px;
-    --offset-status-circle: 11px;
+div.nav-profile-card-short-rail {
+    --avatar-size: var(--nav-short-rail-avatar-size, 72px);
+    --border-size: 0px;
+    --offset-status-circle: var(--nav-short-rail-status-offset, 11px);
     --avatar-shell-gap: 0px;
     --avatar-outline-size: 0px;
     --avatar-inner-rim-size: 0px;
@@ -1402,6 +1393,7 @@ div.nav-profile-card-shrink {
     width: 100%;
     align-items: center;
     justify-content: center;
+    padding: var(--nav-short-rail-profile-padding, 0px);
 
     div.nav-profile-card-media {
         padding: 0;
@@ -1436,13 +1428,6 @@ div.nav-profile-card-shrink {
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-
-    div.nav-profile-card-compact-name {
-        display: block;
-        max-width: 68px;
-        margin-left: auto;
-        margin-right: auto;
     }
 }
 

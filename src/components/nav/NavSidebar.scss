@@ -96,9 +96,29 @@ nav.nav-sidebar {
     }
 }
 
-nav.nav-sidebar-shrink {
+nav.nav-sidebar-short-rail {
     --width: 108px;
+    --nav-short-rail-visual-density: 1;
     --nav-short-rail-profile-height: 96px;
+    --nav-short-rail-row-height: 34px;
+    --nav-short-rail-tools-height: 64px;
+    --nav-short-rail-avatar-size: calc(18px + 54px * var(--nav-short-rail-visual-density));
+    --nav-short-rail-status-offset: calc(4px + 6px * var(--nav-short-rail-visual-density));
+    --nav-short-rail-profile-padding: calc(1px + 3px * var(--nav-short-rail-visual-density));
+    --nav-short-rail-link-icon-width: calc(10px + 18px * var(--nav-short-rail-visual-density));
+    --nav-short-rail-link-icon-size: calc(0.48rem + 0.40rem * var(--nav-short-rail-visual-density));
+    --nav-short-rail-link-padding-inline: calc(0px + 3px * var(--nav-short-rail-visual-density));
+    --nav-short-rail-link-accent-bar-width: calc(2px + 2px * var(--nav-short-rail-visual-density));
+    --nav-short-rail-link-accent-bar-height: calc(6px + 16px * var(--nav-short-rail-visual-density));
+    --nav-short-rail-link-accent-dot-size: calc(2px + 3px * var(--nav-short-rail-visual-density));
+    --nav-short-rail-link-accent-dot-offset-x: calc(4px + 4px * var(--nav-short-rail-visual-density));
+    --nav-short-rail-link-hover-scale: calc(1.01 + 0.04 * var(--nav-short-rail-visual-density));
+    --nav-short-rail-tool-icon-box-size: calc(10px + 18px * var(--nav-short-rail-visual-density));
+    --nav-short-rail-tool-icon-font-size: calc(0.52rem + 0.36rem * var(--nav-short-rail-visual-density));
+    --nav-short-rail-tool-divider-inset: calc(2px + 7px * var(--nav-short-rail-visual-density));
+    --nav-short-rail-resume-icon-box-size: calc(12px + 28px * var(--nav-short-rail-visual-density));
+    --nav-short-rail-resume-font-size: calc(0.38rem + 0.28rem * var(--nav-short-rail-visual-density));
+    --nav-short-rail-resume-caption-offset: calc(-2px + 3px * var(--nav-short-rail-visual-density));
 
     div.nav-sidebar-card-wrapper {
         width: var(--width);
@@ -110,9 +130,9 @@ nav.nav-sidebar-shrink {
         right: -14px;
     }
 
-    div.nav-sidebar-card-wrapper > div.nav-profile-card.nav-profile-card-shrink {
+    div.nav-sidebar-card-wrapper > div.nav-profile-card.nav-profile-card-short-rail {
         margin: 0;
-        padding: 0;
+        padding: var(--nav-short-rail-profile-padding);
         align-self: stretch;
         border-top-left-radius: inherit;
         border-top-right-radius: inherit;
@@ -120,12 +140,16 @@ nav.nav-sidebar-shrink {
         border-bottom-right-radius: 0;
     }
 
-    div.nav-profile-card-shrink {
-        --avatar-size: calc(var(--nav-short-rail-profile-height) - 4px);
+    div.nav-link-list-shell {
+        --nav-link-target-height: var(--nav-short-rail-row-height);
+    }
+
+    div.nav-profile-card-short-rail {
+        --avatar-size: var(--nav-short-rail-avatar-size);
         --border-size: 0px;
-        --offset-status-circle: 10px;
+        --offset-status-circle: var(--nav-short-rail-status-offset);
         margin: 0;
-        padding: 0;
+        padding: var(--nav-short-rail-profile-padding);
         width: 100%;
         height: var(--nav-short-rail-profile-height);
         min-height: var(--nav-short-rail-profile-height);
@@ -136,7 +160,7 @@ nav.nav-sidebar-shrink {
         border-radius: 0;
     }
 
-    div.nav-profile-card-shrink div.nav-profile-card-header {
+    div.nav-profile-card-short-rail div.nav-profile-card-header {
         position: relative;
         width: 100%;
         height: 100%;
@@ -146,59 +170,39 @@ nav.nav-sidebar-shrink {
         justify-content: center;
     }
 
-    div.nav-profile-card-shrink div.nav-profile-card-media {
+    div.nav-profile-card-short-rail div.nav-profile-card-media {
         position: absolute;
         inset: 0;
         width: 100%;
         height: 100%;
     }
 
-    div.nav-profile-card-shrink div.image-view,
-    div.nav-profile-card-shrink div.nav-profile-card-avatar-face,
-    div.nav-profile-card-shrink div.nav-profile-card-avatar-switch,
-    div.nav-profile-card-shrink img.nav-profile-card-avatar {
+    div.nav-profile-card-short-rail div.image-view,
+    div.nav-profile-card-short-rail div.nav-profile-card-avatar-face,
+    div.nav-profile-card-short-rail div.nav-profile-card-avatar-switch,
+    div.nav-profile-card-short-rail img.nav-profile-card-avatar {
         width: 100%;
         height: 100%;
         border-radius: 0 !important;
     }
 
-    div.nav-profile-card-shrink div.nav-profile-card-avatar-switch {
+    div.nav-profile-card-short-rail div.nav-profile-card-avatar-switch {
         border: 0 !important;
         box-shadow: none;
     }
 
-    div.nav-profile-card-shrink img.image-view-img {
+    div.nav-profile-card-short-rail img.image-view-img {
         width: 100%;
         height: 100%;
         object-fit: cover;
         object-position: 42% 16%;
         border-radius: 0 !important;
     }
-}
-
-nav.nav-sidebar-short-rail {
-    --nav-short-rail-scale: 1;
-    --nav-short-rail-profile-height: 96px;
-    --nav-short-rail-row-height: 34px;
-    --nav-short-rail-tools-height: 64px;
-    --nav-short-rail-icon-box-size: calc(12px + 16px * var(--nav-short-rail-scale));
-    --nav-short-rail-icon-font-size: calc(0.9rem + 0.6rem * var(--nav-short-rail-scale));
-    --nav-short-rail-resume-icon-box-size: calc(18px + 22px * var(--nav-short-rail-scale));
-    --nav-short-rail-resume-font-size: calc(0.52rem + 0.14rem * var(--nav-short-rail-scale));
-    --nav-short-rail-resume-caption-offset: calc(-5px + 2px * var(--nav-short-rail-scale));
-
-    div.nav-link-list-shell {
-        --nav-link-target-height: var(--nav-short-rail-row-height);
-    }
-
-    div.nav-profile-card-shrink {
-        --offset-status-circle: calc(6px + 4px * var(--nav-short-rail-scale));
-    }
 
     div.nav-tools {
         --nav-tools-height: var(--nav-short-rail-tools-height);
-        --nav-tools-icon-box-size: var(--nav-short-rail-icon-box-size);
-        --nav-tools-icon-font-size: var(--nav-short-rail-icon-font-size);
+        --nav-tools-icon-box-size: var(--nav-short-rail-tool-icon-box-size);
+        --nav-tools-icon-font-size: var(--nav-short-rail-tool-icon-font-size);
         flex: 0 0 var(--nav-tools-height);
         padding: 0;
         height: var(--nav-tools-height);
@@ -206,8 +210,8 @@ nav.nav-sidebar-short-rail {
         max-height: var(--nav-tools-height);
     }
 
-    div.nav-tools.nav-tools-shrink,
-    div.nav-tools.nav-tools-shrink div.nav-tools-item {
+    div.nav-tools.nav-tools-short-rail,
+    div.nav-tools.nav-tools-short-rail div.nav-tools-item {
         min-height: var(--nav-tools-height);
     }
 }
@@ -239,7 +243,7 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
         min-width: 0;
         border: 0;
         border-radius: 0;
-        padding-inline: 0 calc(2px * var(--nav-short-rail-scale, 1));
+        padding-inline: calc(1px + 2px * var(--nav-short-rail-visual-density, 1));
         overflow: hidden;
         display: flex;
         align-items: center;
@@ -261,7 +265,7 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
         span.btn-option-picker-toggle-row {
             width: auto;
             flex: 0 0 auto;
-            margin-left: calc(-2px + 1px * var(--nav-short-rail-scale, 1));
+            margin-left: calc(-1px + 1px * var(--nav-short-rail-visual-density, 1));
         }
 
         div.btn-option-picker-icon.btn-option-picker-icon-size-2 {

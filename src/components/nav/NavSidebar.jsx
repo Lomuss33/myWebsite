@@ -12,15 +12,37 @@ import {useInput} from "../../providers/InputProvider.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 
 const DESKTOP_RAIL_SEPARATOR_MIN_HEIGHT = 4
-const MIN_VIEWPORT_WIDTH_FOR_EXTENDED_RAIL = 1280
-const EXTENDED_PROFILE_COMFORT_HEIGHT = 168
-const EXTENDED_ROW_COMFORT_HEIGHT = 42
-const EXTENDED_MODE_HYSTERESIS = 24
+const WIDE_DESKTOP_THRESHOLD = 1100
+const EXTENDED_HEIGHT_RECOMMEND_PROFILE = 152
+const EXTENDED_HEIGHT_RECOMMEND_ROW = 40
+const EXTENDED_HEIGHT_RECOMMEND_SEPARATOR = 4
+const HEIGHT_RECOMMENDATION_HYSTERESIS = 20
+const EXTENDED_PROFILE_COMPRESSION_CONFIG = {
+    profileHeight: { min: 96, base: 164 },
+    avatarSize: { min: 74, base: 118 },
+    roleHeight: { min: 0, base: 28 },
+    actionScale: { min: 0.82, base: 1 },
+    paddingTop: { min: 8, base: 16 },
+    nameScale: { min: 0.84, base: 1 },
+    infoMarginTop: { min: 1, base: 5 }
+}
 const SHORT_RAIL_HEIGHT_CONFIG = {
     profile: { floor: 32, base: 96 },
     tools: { floor: 20, base: 64 },
     resume: { floor: 20, base: 64 },
     row: { floor: 10, base: 34, max: 46 }
+}
+const MANUAL_RAIL_BY_ZONE_DEFAULTS = {
+    wide: null,
+    narrowDesktop: null
+}
+
+function clampNumber(value, min, max) {
+    return Math.min(max, Math.max(min, value))
+}
+
+function lerpNumber(minimum, maximum, factor) {
+    return minimum + (maximum - minimum) * factor
 }
 
 function NavSidebar({ profile, links }) {
@@ -29,29 +51,36 @@ function NavSidebar({ profile, links }) {
     const input = useInput()
     const language = useLanguage()
 
-    const [prefersExtendedRail, setPrefersExtendedRail] = useState(true)
+    const [manualRailByZone, setManualRailByZone] = useState(MANUAL_RAIL_BY_ZONE_DEFAULTS)
     const [measuredRailHeight, setMeasuredRailHeight] = useState(0)
-    const [heightForcesShortRail, setHeightForcesShortRail] = useState(false)
+    const [heightPrefersShort, setHeightPrefersShort] = useState(false)
     const cardWrapperRef = useRef(null)
     const sharedRailStackRef = useRef(null)
     const sharedRailSizeCacheRef = useRef({})
     const shortRailSizeCacheRef = useRef({})
+    const extendedProfileSizeCacheRef = useRef({})
 
     const linkCount = links?.length || 0
     const hasResumeBand = Boolean(profile.resumePdfUrl)
     const isDesktopBreakpoint = viewport.isBreakpoint("lg")
-    const widthForcesShortRail = viewport.innerWidth < MIN_VIEWPORT_WIDTH_FOR_EXTENDED_RAIL
-    const extendedEnterShortThreshold = EXTENDED_PROFILE_COMFORT_HEIGHT +
-        (EXTENDED_ROW_COMFORT_HEIGHT * (linkCount + 1)) +
-        DESKTOP_RAIL_SEPARATOR_MIN_HEIGHT
-    const extendedExitShortThreshold = extendedEnterShortThreshold + EXTENDED_MODE_HYSTERESIS
+    const desktopWidthZone = !isDesktopBreakpoint ?
+        null :
+        (viewport.innerWidth >= WIDE_DESKTOP_THRESHOLD ? "wide" : "narrowDesktop")
+    const extendedRowCount = linkCount + 1
+    const extendedHeightRecommendThreshold = EXTENDED_HEIGHT_RECOMMEND_PROFILE +
+        (EXTENDED_HEIGHT_RECOMMEND_ROW * extendedRowCount) +
+        EXTENDED_HEIGHT_RECOMMEND_SEPARATOR
+    const extendedHeightExitThreshold = extendedHeightRecommendThreshold + HEIGHT_RECOMMENDATION_HYSTERESIS
     const availableDesktopRailHeight = measuredRailHeight > 0 ?
         measuredRailHeight :
         viewport.innerHeight
-    const forcedShortRail = isDesktopBreakpoint && (widthForcesShortRail || heightForcesShortRail)
-    const railMode = forcedShortRail ?
+    const recommendedRail = desktopWidthZone === "narrowDesktop" ?
         "short" :
-        (prefersExtendedRail ? "extended" : "short")
+        (desktopWidthZone === "wide" && heightPrefersShort ? "short" : "extended")
+    const manualRail = desktopWidthZone ? manualRailByZone[desktopWidthZone] : null
+    const railMode = desktopWidthZone ?
+        (manualRail ?? recommendedRail) :
+        "extended"
     const railModeClass = railMode === "extended" ?
         `nav-sidebar-extended` :
         `nav-sidebar-short-rail`
@@ -59,18 +88,58 @@ function NavSidebar({ profile, links }) {
     const shortRailResumeBandClass = showShortRailResumeBand ?
         `nav-sidebar-short-rail-with-resume-band` :
         ``
-    const canToggleRail = isDesktopBreakpoint && !forcedShortRail
+
+    const _setManualRailForZone = (zone, targetRail, zoneRecommendedRail) => {
+        if(!zone)
+            return
+
+        setManualRailByZone((currentState) => {
+            const nextOverride = targetRail === zoneRecommendedRail ?
+                null :
+                targetRail
+
+            if(currentState[zone] === nextOverride)
+                return currentState
+
+            return {
+                ...currentState,
+                [zone]: nextOverride
+            }
+        })
+    }
+
+    const _setManualRail = (targetRail) => {
+        _setManualRailForZone(desktopWidthZone, targetRail, recommendedRail)
+    }
+
+    const _toggleRailMode = () => {
+        const targetRail = railMode === "extended" ? "short" : "extended"
+        _setManualRail(targetRail)
+    }
 
     useEffect(() => {
-        if(!canToggleRail)
+        if(!isDesktopBreakpoint || !desktopWidthZone)
             return
 
         const keyId = input.lastKeyPressed.id
-        if(keyId === "ArrowLeft")
-            setPrefersExtendedRail(false)
-        else if(keyId === "ArrowRight")
-            setPrefersExtendedRail(true)
-    }, [canToggleRail, input.lastKeyPressed])
+        if(keyId !== "ArrowLeft" && keyId !== "ArrowRight")
+            return
+
+        const targetRail = keyId === "ArrowLeft" ? "short" : "extended"
+        setManualRailByZone((currentState) => {
+            const nextOverride = targetRail === recommendedRail ?
+                null :
+                targetRail
+
+            if(currentState[desktopWidthZone] === nextOverride)
+                return currentState
+
+            return {
+                ...currentState,
+                [desktopWidthZone]: nextOverride
+            }
+        })
+    }, [desktopWidthZone, input.lastKeyPressed, isDesktopBreakpoint, recommendedRail])
 
     useEffect(() => {
         const railCard = cardWrapperRef.current
@@ -97,23 +166,158 @@ function NavSidebar({ profile, links }) {
     }, [])
 
     useEffect(() => {
-        if(!isDesktopBreakpoint) {
-            setHeightForcesShortRail(false)
+        if(desktopWidthZone !== "wide") {
+            setHeightPrefersShort((currentState) => currentState ? false : currentState)
             return
         }
 
-        setHeightForcesShortRail((currentState) => {
+        setHeightPrefersShort((currentState) => {
             const nextState = currentState ?
-                availableDesktopRailHeight < extendedExitShortThreshold :
-                availableDesktopRailHeight < extendedEnterShortThreshold
+                availableDesktopRailHeight < extendedHeightExitThreshold :
+                availableDesktopRailHeight < extendedHeightRecommendThreshold
 
             return currentState === nextState ? currentState : nextState
         })
     }, [
         availableDesktopRailHeight,
-        extendedEnterShortThreshold,
-        extendedExitShortThreshold,
-        isDesktopBreakpoint
+        desktopWidthZone,
+        extendedHeightExitThreshold,
+        extendedHeightRecommendThreshold
+    ])
+
+    useEffect(() => {
+        if(!desktopWidthZone)
+            return
+
+        setManualRailByZone((currentState) => {
+            if(currentState[desktopWidthZone] !== recommendedRail)
+                return currentState
+
+            return {
+                ...currentState,
+                [desktopWidthZone]: null
+            }
+        })
+    }, [desktopWidthZone, recommendedRail])
+
+    useEffect(() => {
+        const railCard = cardWrapperRef.current
+        if(!railCard)
+            return
+
+        const variableNames = [
+            "--nav-extended-profile-height",
+            "--nav-extended-avatar-size",
+            "--nav-extended-role-height",
+            "--nav-extended-role-opacity",
+            "--nav-extended-action-scale",
+            "--nav-extended-padding-top",
+            "--nav-extended-name-scale",
+            "--nav-extended-info-margin-top"
+        ]
+        const _clearExtendedProfileVariables = () => {
+            variableNames.forEach((name) => {
+                railCard.style.removeProperty(name)
+            })
+            extendedProfileSizeCacheRef.current = {}
+        }
+
+        if(railMode !== "extended") {
+            _clearExtendedProfileVariables()
+            return
+        }
+
+        const compressionRange = Math.max(
+            extendedHeightExitThreshold - extendedHeightRecommendThreshold,
+            1
+        )
+        const extendedVisualCompression = clampNumber(
+            (availableDesktopRailHeight - extendedHeightRecommendThreshold) / compressionRange,
+            0,
+            1
+        )
+
+        const _setVariable = (name, value, unit = "px") => {
+            const normalizedValue = unit === "px" ?
+                Math.round(value) :
+                Number(value.toFixed(3))
+            const serializedValue = `${normalizedValue}${unit}`
+
+            if(extendedProfileSizeCacheRef.current[name] === serializedValue)
+                return
+
+            extendedProfileSizeCacheRef.current[name] = serializedValue
+            railCard.style.setProperty(name, serializedValue)
+        }
+
+        _setVariable(
+            "--nav-extended-profile-height",
+            lerpNumber(
+                EXTENDED_PROFILE_COMPRESSION_CONFIG.profileHeight.min,
+                EXTENDED_PROFILE_COMPRESSION_CONFIG.profileHeight.base,
+                extendedVisualCompression
+            )
+        )
+        _setVariable(
+            "--nav-extended-avatar-size",
+            lerpNumber(
+                EXTENDED_PROFILE_COMPRESSION_CONFIG.avatarSize.min,
+                EXTENDED_PROFILE_COMPRESSION_CONFIG.avatarSize.base,
+                extendedVisualCompression
+            )
+        )
+        _setVariable(
+            "--nav-extended-role-height",
+            lerpNumber(
+                EXTENDED_PROFILE_COMPRESSION_CONFIG.roleHeight.min,
+                EXTENDED_PROFILE_COMPRESSION_CONFIG.roleHeight.base,
+                extendedVisualCompression
+            )
+        )
+        _setVariable("--nav-extended-role-opacity", extendedVisualCompression, "")
+        _setVariable(
+            "--nav-extended-action-scale",
+            lerpNumber(
+                EXTENDED_PROFILE_COMPRESSION_CONFIG.actionScale.min,
+                EXTENDED_PROFILE_COMPRESSION_CONFIG.actionScale.base,
+                extendedVisualCompression
+            ),
+            ""
+        )
+        _setVariable(
+            "--nav-extended-padding-top",
+            lerpNumber(
+                EXTENDED_PROFILE_COMPRESSION_CONFIG.paddingTop.min,
+                EXTENDED_PROFILE_COMPRESSION_CONFIG.paddingTop.base,
+                extendedVisualCompression
+            )
+        )
+        _setVariable(
+            "--nav-extended-name-scale",
+            lerpNumber(
+                EXTENDED_PROFILE_COMPRESSION_CONFIG.nameScale.min,
+                EXTENDED_PROFILE_COMPRESSION_CONFIG.nameScale.base,
+                extendedVisualCompression
+            ),
+            ""
+        )
+        _setVariable(
+            "--nav-extended-info-margin-top",
+            lerpNumber(
+                EXTENDED_PROFILE_COMPRESSION_CONFIG.infoMarginTop.min,
+                EXTENDED_PROFILE_COMPRESSION_CONFIG.infoMarginTop.base,
+                extendedVisualCompression
+            )
+        )
+
+        return () => {
+            _clearExtendedProfileVariables()
+        }
+    }, [
+        availableDesktopRailHeight,
+        extendedHeightExitThreshold,
+        extendedHeightRecommendThreshold,
+        railMode
     ])
 
     useEffect(() => {
@@ -123,14 +327,6 @@ function NavSidebar({ profile, links }) {
 
         const rowCount = Math.max(linkCount, 1)
         const {profile: profileHeight, tools: toolsHeight, resume: resumeHeight, row: rowHeight} = SHORT_RAIL_HEIGHT_CONFIG
-
-        const _clamp = (value, min, max) => {
-            return Math.min(max, Math.max(min, value))
-        }
-
-        const _interpolate = (minimum, maximum, factor) => {
-            return minimum + (maximum - minimum) * factor
-        }
 
         const _setVariable = (name, value, unit = "px") => {
             const normalizedValue = unit === "px" ?
@@ -161,27 +357,27 @@ function NavSidebar({ profile, links }) {
             let nextRowHeight = rowHeight.base
 
             if(availableRailHeight >= shortBaseTotal) {
-                nextRowHeight = _clamp(
+                nextRowHeight = clampNumber(
                     (availableRailHeight - shortBaseFixed) / rowCount,
                     rowHeight.base,
                     rowHeight.max
                 )
             } else {
-                const compressionFactor = _clamp(
+                const compressionFactor = clampNumber(
                     (availableRailHeight - shortFloorTotal) / Math.max(shortBaseTotal - shortFloorTotal, 1),
                     0,
                     1
                 )
 
-                nextProfileHeight = _interpolate(profileHeight.floor, profileHeight.base, compressionFactor)
-                nextToolsHeight = _interpolate(toolsHeight.floor, toolsHeight.base, compressionFactor)
+                nextProfileHeight = lerpNumber(profileHeight.floor, profileHeight.base, compressionFactor)
+                nextToolsHeight = lerpNumber(toolsHeight.floor, toolsHeight.base, compressionFactor)
                 nextResumeHeight = hasResumeBand ?
-                    _interpolate(resumeHeight.floor, resumeHeight.base, compressionFactor) :
+                    lerpNumber(resumeHeight.floor, resumeHeight.base, compressionFactor) :
                     0
-                nextRowHeight = _interpolate(rowHeight.floor, rowHeight.base, compressionFactor)
+                nextRowHeight = lerpNumber(rowHeight.floor, rowHeight.base, compressionFactor)
 
                 if(availableRailHeight < shortFloorTotal) {
-                    const microScale = _clamp(
+                    const microScale = clampNumber(
                         availableRailHeight / Math.max(shortFloorTotal, 1),
                         0,
                         1
@@ -293,9 +489,9 @@ function NavSidebar({ profile, links }) {
         <nav className={`nav-sidebar ${constants.HTML_CLASSES.scrollbarDecorator} ${railModeClass} ${shortRailResumeBandClass}`}>
             <Card ref={cardWrapperRef}
                   className={`nav-sidebar-card-wrapper`}>
-                {canToggleRail && (
+                {isDesktopBreakpoint && (
                     <NavToolShrinkToggle expanded={railMode === "extended"}
-                                         setExpanded={setPrefersExtendedRail}/>
+                                         onToggle={_toggleRailMode}/>
                 )}
 
                 <NavProfileCard profile={profile}
@@ -313,14 +509,17 @@ function NavSidebar({ profile, links }) {
                         <NavToolList railMode={railMode}/>
                     </div>
                 ) : (
-                    <>
+                    <div className={`nav-short-rail-stack`}>
+                        {shortRailResumeBand}
+
                         <NavLinkList links={links}
                                      railMode={railMode}/>
 
-                        {shortRailResumeBand}
+                        <div className={`nav-short-rail-separator`}
+                             aria-hidden={true}/>
 
                         <NavToolList railMode={railMode}/>
-                    </>
+                    </div>
                 )}
             </Card>
         </nav>

@@ -23,7 +23,7 @@ const DESKTOP_RESUME_MENU_POPPER_CONFIG = {
 
 function NavProfileCard({
     profile,
-    railMode,
+    railMode = "extended",
     mobileActionStack = null,
     mobileActionStackBeforeInfo = null,
     mobileActionStackAfterInfo = null,
@@ -205,6 +205,7 @@ function NavProfileCard({
     }, [firstName, lastName])
 
     const _onMediaClicked = (event) => {
+        floatingFrame.togglePaused(event.currentTarget)
         setShowAlternateProfilePicture((current) => !current)
     }
 

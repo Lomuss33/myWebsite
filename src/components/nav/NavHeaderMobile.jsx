@@ -67,7 +67,7 @@ function NavHeaderMobile({ profile, links }) {
                                    links={links}/>
 
                 <NavProfileCard profile={profile}
-                                expanded={true}
+                                railMode={`extended`}
                                 mobileActionStackBeforeInfo={mobileActionStackBeforeInfo}
                                 mobileActionStackAfterInfo={mobileActionStackAfterInfo}
                                 showNameAudioButton={false}/>

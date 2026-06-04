@@ -1,7 +1,7 @@
 @use "../../../styles/extend" as *;
 
 div.nav-profile-card {
-    --avatar-size: 118px;
+    --avatar-size: var(--nav-extended-avatar-size, 118px);
     --border-size: 5px;
     --info-margin-top: 5px;
     --offset-status-circle: 14px;
@@ -36,11 +36,6 @@ div.nav-profile-card {
     padding: 10px 12px 10px;
     border-radius: 0;
     overflow: visible;
-
-    @media(min-height: 760px) {--avatar-size: 126px; --info-margin-top: 6px;}
-    @media(min-height: 800px) {--avatar-size: 132px}
-    @media(max-height: 690px) {--avatar-size: 112px}
-    @media(max-height: 650px) {--avatar-size: 104px}
 
     &-header {
         display: flex;
@@ -137,7 +132,7 @@ div.nav-profile-card {
                 transform 0.28s ease;
         }
 
-        &:hover {
+        &:hover:not(.floating-frame--paused) {
             --ff-translate-y: -1px;
             filter: saturate(1.04);
             background:
@@ -155,14 +150,14 @@ div.nav-profile-card {
                 inset 0 -12px 22px rgba(0, 0, 0, 0.22);
         }
 
-        &:hover::before,
+        &:hover:not(.floating-frame--paused)::before,
         &:focus-visible::before,
         &.floating-frame--active::before {
             opacity: 0.9;
             transform: scale(1.01);
         }
 
-        &:hover::after,
+        &:hover:not(.floating-frame--paused)::after,
         &:focus-visible::after,
         &.floating-frame--active::after {
             filter: grayscale(0) saturate(1.08) brightness(1.06);
@@ -242,14 +237,14 @@ div.nav-profile-card {
         }
     }
 
-    &-media:hover &-avatar-switch::after,
+    &-media:hover:not(.floating-frame--paused) &-avatar-switch::after,
     &-media:focus-visible &-avatar-switch::after,
     &-media.floating-frame--active &-avatar-switch::after {
         opacity: 0.9;
         transform: translateY(-1px);
     }
 
-    &-media:hover &-avatar-switch::before,
+    &-media:hover:not(.floating-frame--paused) &-avatar-switch::before,
     &-media:focus-visible &-avatar-switch::before,
     &-media.floating-frame--active &-avatar-switch::before {
         opacity: 0.96;
@@ -403,7 +398,9 @@ div.nav-profile-card {
         justify-content: center;
         color: var(--theme-nav-text);
         font-size: 0.76rem;
-        min-height: 20px;
+        min-height: 0;
+        height: var(--nav-extended-role-height, 28px);
+        max-height: var(--nav-extended-role-height, 28px);
         align-self: stretch;
         width: calc(100% + 20px);
         max-width: none;
@@ -411,16 +408,24 @@ div.nav-profile-card {
         margin-top: 0;
         margin-left: -10px;
         margin-right: -10px;
-        padding: 3px 12px;
+        padding: calc(3px * var(--nav-extended-role-opacity, 1)) 12px;
         border-radius: 0;
         background: color-mix(in srgb, var(--theme-nav-surface-accent) 78%, white 22%);
-        border-top: 1px solid var(--theme-nav-divider);
-        border-bottom: 1px solid var(--theme-nav-divider);
+        border-top: calc(1px * var(--nav-extended-role-opacity, 1)) solid var(--theme-nav-divider);
+        border-bottom: calc(1px * var(--nav-extended-role-opacity, 1)) solid var(--theme-nav-divider);
         border-left: 0;
         border-right: 0;
         box-shadow:
             inset 0 1px 0 rgba(255, 255, 255, 0.04),
             inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+        opacity: var(--nav-extended-role-opacity, 1);
+        overflow: hidden;
+        transition:
+            height 0.18s ease,
+            max-height 0.18s ease,
+            padding 0.18s ease,
+            border-width 0.18s ease,
+            opacity 0.18s ease;
 
         span.text-typer-span {
             width: 100%;
@@ -445,7 +450,8 @@ div.nav-profile-card {
         position: absolute;
         left: -0.48rem;
         top: 36.8%;
-        transform: translateY(-50%);
+        transform: translateY(-50%) scale(var(--nav-extended-action-scale, 1));
+        transform-origin: left center;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -453,6 +459,10 @@ div.nav-profile-card {
         gap: 0.02rem;
         width: 4rem;
         z-index: 4;
+        opacity: calc(0.4 + (0.6 * var(--nav-extended-action-scale, 1)));
+        transition:
+            transform 0.18s ease,
+            opacity 0.18s ease;
     }
 
     &:has(div.nav-profile-card-desktop-resume-dropdown.show) {

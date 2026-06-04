@@ -117,6 +117,7 @@ export function useFloatingFrame(options = null) {
         clearTimeouts()
 
         stateRef.current.targetEl = targetEl
+        targetEl.classList.remove("floating-frame--paused")
         setNeutralVars(targetEl)
         targetEl.classList.add("floating-frame--active")
         targetEl.classList.add("floating-frame--transition")
@@ -152,6 +153,7 @@ export function useFloatingFrame(options = null) {
         }
         stateRef.current.pendingEvent = null
 
+        targetEl.classList.remove("floating-frame--paused")
         targetEl.classList.add("floating-frame--transition")
 
         stateRef.current.timeouts.reset = setTimeout(() => {
@@ -165,9 +167,69 @@ export function useFloatingFrame(options = null) {
         }, resolvedOptions.leaveCleanupMs)
     }
 
+    const deactivate = (hostEl = null) => {
+        const targetEl = stateRef.current.targetEl || resolveTarget(hostEl)
+        if (!targetEl) return
+
+        clearTimeouts()
+        if (stateRef.current.rafId) {
+            cancelAnimationFrame(stateRef.current.rafId)
+            stateRef.current.rafId = null
+        }
+
+        stateRef.current.pendingEvent = null
+        stateRef.current.enabled = false
+        setNeutralVars(targetEl)
+        targetEl.classList.add("floating-frame--paused")
+        targetEl.classList.remove("floating-frame--transition")
+        targetEl.classList.remove("floating-frame--active")
+        stateRef.current.targetEl = null
+    }
+
+    const activate = (hostEl = null) => {
+        const targetEl = resolveTarget(hostEl)
+        if (!targetEl) return
+
+        clearTimeouts()
+        if (stateRef.current.rafId) {
+            cancelAnimationFrame(stateRef.current.rafId)
+            stateRef.current.rafId = null
+        }
+
+        stateRef.current.pendingEvent = null
+        stateRef.current.enabled = canHoverWithFinePointer() && !prefersReducedMotion() && !animationsSuspended()
+        stateRef.current.targetEl = targetEl
+        targetEl.classList.remove("floating-frame--paused")
+        setNeutralVars(targetEl)
+
+        if (!stateRef.current.enabled) return
+
+        targetEl.classList.add("floating-frame--active")
+        targetEl.classList.add("floating-frame--transition")
+
+        stateRef.current.timeouts.enter = setTimeout(() => {
+            targetEl.classList.remove("floating-frame--transition")
+        }, resolvedOptions.enterTransitionMs)
+    }
+
+    const togglePaused = (hostEl = null) => {
+        const targetEl = resolveTarget(hostEl) || stateRef.current.targetEl
+        if (!targetEl) return
+
+        if (targetEl.classList.contains("floating-frame--paused")) {
+            activate(hostEl || targetEl)
+            return
+        }
+
+        deactivate(hostEl || targetEl)
+    }
+
     return {
+        activate,
+        deactivate,
         onPointerEnter,
         onPointerMove,
-        onPointerLeave
+        onPointerLeave,
+        togglePaused
     }
 }

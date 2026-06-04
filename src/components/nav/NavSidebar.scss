@@ -3,6 +3,12 @@
 nav.nav-sidebar {
     --width: 224px;
     --nav-short-rail-resume-height: 0px;
+    --nav-extended-profile-height: 164px;
+    --nav-extended-avatar-size: 118px;
+    --nav-extended-role-height: 28px;
+    --nav-extended-role-opacity: 1;
+    --nav-extended-action-scale: 1;
+    --nav-extended-padding-top: 16px;
 
     display: flex;
     align-self: stretch;
@@ -40,11 +46,16 @@ nav.nav-sidebar {
         > div.nav-profile-card {
             flex: 0 0 auto;
             margin: 0;
-            padding: 16px 12px 12px;
+            padding: var(--nav-extended-padding-top) 12px 12px;
             border-top-left-radius: inherit;
             border-top-right-radius: inherit;
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
+            transition:
+                height 0.18s ease,
+                min-height 0.18s ease,
+                max-height 0.18s ease,
+                padding-top 0.18s ease;
         }
 
         > div.nav-link-list-shell {
@@ -65,12 +76,21 @@ nav.nav-sidebar {
     button.nav-sidebar-btn-toggle {
         position: absolute;
         right: -14px;
-        top: 44px;
+        top: 20px;
         z-index: calc($z-index-sidebar + 1);
         border-radius: 999px;
         box-shadow:
             0 10px 24px rgba(15, 23, 42, 0.10),
             0 0 0 1px var(--theme-nav-divider);
+    }
+}
+
+nav.nav-sidebar-extended {
+    div.nav-sidebar-card-wrapper > div.nav-profile-card {
+        justify-content: flex-start;
+        height: var(--nav-extended-profile-height);
+        min-height: var(--nav-extended-profile-height);
+        max-height: var(--nav-extended-profile-height);
     }
 }
 
@@ -123,11 +143,6 @@ nav.nav-sidebar-short-rail {
     div.nav-sidebar-card-wrapper {
         width: var(--width);
         min-width: var(--width);
-    }
-
-    button.nav-sidebar-btn-toggle {
-        top: 21px;
-        right: -14px;
     }
 
     div.nav-sidebar-card-wrapper > div.nav-profile-card.nav-profile-card-short-rail {

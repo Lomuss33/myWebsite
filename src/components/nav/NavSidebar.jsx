@@ -22,15 +22,11 @@ const EXTENDED_PROFILE_COMPRESSION_CONFIG = {
     avatarSize: { min: 74, base: 118 },
     roleHeight: { min: 0, base: 28 },
     actionScale: { min: 0.82, base: 1 },
-    paddingTop: { min: 8, base: 16 },
-    nameScale: { min: 0.84, base: 1 },
-    infoMarginTop: { min: 1, base: 5 }
+    paddingTop: { min: 8, base: 16 }
 }
 const SHORT_RAIL_HEIGHT_CONFIG = {
-    profile: { floor: 32, base: 96 },
-    tools: { floor: 20, base: 64 },
-    resume: { floor: 20, base: 64 },
-    row: { floor: 10, base: 34, max: 46 }
+    profile: { floor: 58, base: 110 },
+    row: { floor: 16, base: 34, max: 42 }
 }
 const MANUAL_RAIL_BY_ZONE_DEFAULTS = {
     wide: null,
@@ -54,6 +50,7 @@ function NavSidebar({ profile, links }) {
     const [manualRailByZone, setManualRailByZone] = useState(MANUAL_RAIL_BY_ZONE_DEFAULTS)
     const [measuredRailHeight, setMeasuredRailHeight] = useState(0)
     const [heightPrefersShort, setHeightPrefersShort] = useState(false)
+    const [stickyShortRail, setStickyShortRail] = useState(false)
     const cardWrapperRef = useRef(null)
     const sharedRailStackRef = useRef(null)
     const sharedRailSizeCacheRef = useRef({})
@@ -62,8 +59,8 @@ function NavSidebar({ profile, links }) {
 
     const linkCount = links?.length || 0
     const hasResumeBand = Boolean(profile.resumePdfUrl)
-    const isDesktopBreakpoint = viewport.isBreakpoint("lg")
-    const desktopWidthZone = !isDesktopBreakpoint ?
+    const hasRailLayout = viewport.isDesktopLayout()
+    const desktopWidthZone = !hasRailLayout ?
         null :
         (viewport.innerWidth >= WIDE_DESKTOP_THRESHOLD ? "wide" : "narrowDesktop")
     const extendedRowCount = linkCount + 1
@@ -79,7 +76,7 @@ function NavSidebar({ profile, links }) {
         (desktopWidthZone === "wide" && heightPrefersShort ? "short" : "extended")
     const manualRail = desktopWidthZone ? manualRailByZone[desktopWidthZone] : null
     const railMode = desktopWidthZone ?
-        (manualRail ?? recommendedRail) :
+        (manualRail ?? (stickyShortRail ? "short" : recommendedRail)) :
         "extended"
     const railModeClass = railMode === "extended" ?
         `nav-sidebar-extended` :
@@ -89,36 +86,33 @@ function NavSidebar({ profile, links }) {
         `nav-sidebar-short-rail-with-resume-band` :
         ``
 
-    const _setManualRailForZone = (zone, targetRail, zoneRecommendedRail) => {
+    const _setManualRailForZone = (zone, targetRail) => {
         if(!zone)
             return
 
         setManualRailByZone((currentState) => {
-            const nextOverride = targetRail === zoneRecommendedRail ?
-                null :
-                targetRail
-
-            if(currentState[zone] === nextOverride)
+            if(currentState[zone] === targetRail)
                 return currentState
 
             return {
                 ...currentState,
-                [zone]: nextOverride
+                [zone]: targetRail
             }
         })
     }
 
     const _setManualRail = (targetRail) => {
-        _setManualRailForZone(desktopWidthZone, targetRail, recommendedRail)
+        _setManualRailForZone(desktopWidthZone, targetRail)
     }
 
     const _toggleRailMode = () => {
         const targetRail = railMode === "extended" ? "short" : "extended"
+        setStickyShortRail(targetRail === "short")
         _setManualRail(targetRail)
     }
 
     useEffect(() => {
-        if(!isDesktopBreakpoint || !desktopWidthZone)
+        if(!hasRailLayout || !desktopWidthZone)
             return
 
         const keyId = input.lastKeyPressed.id
@@ -126,20 +120,17 @@ function NavSidebar({ profile, links }) {
             return
 
         const targetRail = keyId === "ArrowLeft" ? "short" : "extended"
+        setStickyShortRail(targetRail === "short")
         setManualRailByZone((currentState) => {
-            const nextOverride = targetRail === recommendedRail ?
-                null :
-                targetRail
-
-            if(currentState[desktopWidthZone] === nextOverride)
+            if(currentState[desktopWidthZone] === targetRail)
                 return currentState
 
             return {
                 ...currentState,
-                [desktopWidthZone]: nextOverride
+                [desktopWidthZone]: targetRail
             }
         })
-    }, [desktopWidthZone, input.lastKeyPressed, isDesktopBreakpoint, recommendedRail])
+    }, [desktopWidthZone, hasRailLayout, input.lastKeyPressed])
 
     useEffect(() => {
         const railCard = cardWrapperRef.current
@@ -189,16 +180,11 @@ function NavSidebar({ profile, links }) {
         if(!desktopWidthZone)
             return
 
-        setManualRailByZone((currentState) => {
-            if(currentState[desktopWidthZone] !== recommendedRail)
-                return currentState
+        if(recommendedRail !== "short" || manualRail)
+            return
 
-            return {
-                ...currentState,
-                [desktopWidthZone]: null
-            }
-        })
-    }, [desktopWidthZone, recommendedRail])
+        setStickyShortRail(true)
+    }, [desktopWidthZone, manualRail, recommendedRail])
 
     useEffect(() => {
         const railCard = cardWrapperRef.current
@@ -211,9 +197,7 @@ function NavSidebar({ profile, links }) {
             "--nav-extended-role-height",
             "--nav-extended-role-opacity",
             "--nav-extended-action-scale",
-            "--nav-extended-padding-top",
-            "--nav-extended-name-scale",
-            "--nav-extended-info-margin-top"
+            "--nav-extended-padding-top"
         ]
         const _clearExtendedProfileVariables = () => {
             variableNames.forEach((name) => {
@@ -292,23 +276,6 @@ function NavSidebar({ profile, links }) {
                 extendedVisualCompression
             )
         )
-        _setVariable(
-            "--nav-extended-name-scale",
-            lerpNumber(
-                EXTENDED_PROFILE_COMPRESSION_CONFIG.nameScale.min,
-                EXTENDED_PROFILE_COMPRESSION_CONFIG.nameScale.base,
-                extendedVisualCompression
-            ),
-            ""
-        )
-        _setVariable(
-            "--nav-extended-info-margin-top",
-            lerpNumber(
-                EXTENDED_PROFILE_COMPRESSION_CONFIG.infoMarginTop.min,
-                EXTENDED_PROFILE_COMPRESSION_CONFIG.infoMarginTop.base,
-                extendedVisualCompression
-            )
-        )
 
         return () => {
             _clearExtendedProfileVariables()
@@ -326,7 +293,10 @@ function NavSidebar({ profile, links }) {
             return
 
         const rowCount = Math.max(linkCount, 1)
-        const {profile: profileHeight, tools: toolsHeight, resume: resumeHeight, row: rowHeight} = SHORT_RAIL_HEIGHT_CONFIG
+        const {
+            profile: profileHeight,
+            row: rowHeight
+        } = SHORT_RAIL_HEIGHT_CONFIG
 
         const _setVariable = (name, value, unit = "px") => {
             const normalizedValue = unit === "px" ?
@@ -346,19 +316,16 @@ function NavSidebar({ profile, links }) {
             if(!availableRailHeight)
                 return
 
-            const shortBaseFixed = profileHeight.base + toolsHeight.base + (hasResumeBand ? resumeHeight.base : 0)
-            const shortFloorFixed = profileHeight.floor + toolsHeight.floor + (hasResumeBand ? resumeHeight.floor : 0)
-            const shortBaseTotal = shortBaseFixed + (rowHeight.base * rowCount)
-            const shortFloorTotal = shortFloorFixed + (rowHeight.floor * rowCount)
+            const controlRowCount = rowCount + 1 + (hasResumeBand ? 1 : 0)
+            const shortBaseTotal = profileHeight.base + (rowHeight.base * controlRowCount)
+            const shortFloorTotal = profileHeight.floor + (rowHeight.floor * controlRowCount)
 
             let nextProfileHeight = profileHeight.base
-            let nextToolsHeight = toolsHeight.base
-            let nextResumeHeight = hasResumeBand ? resumeHeight.base : 0
             let nextRowHeight = rowHeight.base
 
             if(availableRailHeight >= shortBaseTotal) {
                 nextRowHeight = clampNumber(
-                    (availableRailHeight - shortBaseFixed) / rowCount,
+                    (availableRailHeight - profileHeight.base) / controlRowCount,
                     rowHeight.base,
                     rowHeight.max
                 )
@@ -370,10 +337,6 @@ function NavSidebar({ profile, links }) {
                 )
 
                 nextProfileHeight = lerpNumber(profileHeight.floor, profileHeight.base, compressionFactor)
-                nextToolsHeight = lerpNumber(toolsHeight.floor, toolsHeight.base, compressionFactor)
-                nextResumeHeight = hasResumeBand ?
-                    lerpNumber(resumeHeight.floor, resumeHeight.base, compressionFactor) :
-                    0
                 nextRowHeight = lerpNumber(rowHeight.floor, rowHeight.base, compressionFactor)
 
                 if(availableRailHeight < shortFloorTotal) {
@@ -384,11 +347,12 @@ function NavSidebar({ profile, links }) {
                     )
 
                     nextProfileHeight *= microScale
-                    nextToolsHeight *= microScale
-                    nextResumeHeight *= microScale
                     nextRowHeight *= microScale
                 }
             }
+
+            const nextToolsHeight = nextRowHeight
+            const nextResumeHeight = hasResumeBand ? nextRowHeight : 0
 
             _setVariable("--nav-short-rail-visual-density", Math.max(0, nextRowHeight / rowHeight.base), "")
             _setVariable("--nav-short-rail-profile-height", nextProfileHeight)
@@ -489,7 +453,7 @@ function NavSidebar({ profile, links }) {
         <nav className={`nav-sidebar ${constants.HTML_CLASSES.scrollbarDecorator} ${railModeClass} ${shortRailResumeBandClass}`}>
             <Card ref={cardWrapperRef}
                   className={`nav-sidebar-card-wrapper`}>
-                {isDesktopBreakpoint && (
+                {hasRailLayout && (
                     <NavToolShrinkToggle expanded={railMode === "extended"}
                                          onToggle={_toggleRailMode}/>
                 )}

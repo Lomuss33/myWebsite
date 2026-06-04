@@ -57,6 +57,7 @@ nav.nav-sidebar-short-rail div.nav-link-list-shell {
     --nav-link-accent-bar-height: var(--nav-short-rail-link-accent-bar-height);
     --nav-link-accent-dot-size: var(--nav-short-rail-link-accent-dot-size);
     --nav-link-accent-dot-offset-x: var(--nav-short-rail-link-accent-dot-offset-x);
+    flex: 0 0 auto;
 }
 
 nav.nav-link-list {
@@ -234,6 +235,11 @@ button.nav-link-active {
 }
 
 div.nav-link-list-shell.nav-link-list-short-rail {
+    nav.nav-link-list {
+        flex: 0 0 auto;
+        height: auto;
+    }
+
     button.nav-link {
         flex: 0 0 var(--nav-link-target-height);
         justify-content: center;

@@ -57,6 +57,31 @@ function measureLayout(canvas) {
     }
 }
 
+function layoutsMatch(a, b) {
+    if(!a || !b)
+        return false
+
+    if(a.width !== b.width || a.height !== b.height || a.left !== b.left)
+        return false
+
+    if(a.bands.length !== b.bands.length)
+        return false
+
+    for(let i = 0; i < a.bands.length; ++i) {
+        const bandA = a.bands[i]
+        const bandB = b.bands[i]
+        if(
+            bandA.x !== bandB.x ||
+            bandA.y !== bandB.y ||
+            bandA.width !== bandB.width ||
+            bandA.height !== bandB.height
+        )
+            return false
+    }
+
+    return true
+}
+
 function resizeCanvas(canvas, context, layout) {
     const pixelRatio = Math.max(1, Math.min(MAX_DEVICE_PIXEL_RATIO, (window.devicePixelRatio || 1) * 0.75))
     const width = Math.max(1, Math.round(layout.width * pixelRatio))
@@ -202,6 +227,7 @@ function ArtDecorationCanvas() {
 
         let animationFrameId = null
         let rebuildFrameId = null
+        let rebuildRetryTimeoutId = null
         let bandStates = []
         let layout = null
         let lastFrameTime = 0
@@ -216,6 +242,23 @@ function ArtDecorationCanvas() {
                 window.cancelAnimationFrame(animationFrameId)
                 animationFrameId = null
             }
+        }
+
+        const clearRebuildRetry = () => {
+            if(rebuildRetryTimeoutId !== null) {
+                window.clearTimeout(rebuildRetryTimeoutId)
+                rebuildRetryTimeoutId = null
+            }
+        }
+
+        const queueRebuildRetry = () => {
+            if(rebuildRetryTimeoutId !== null)
+                return
+
+            rebuildRetryTimeoutId = window.setTimeout(() => {
+                rebuildRetryTimeoutId = null
+                scheduleRebuild()
+            }, 160)
         }
 
         const drawStatic = () => {
@@ -279,13 +322,27 @@ function ArtDecorationCanvas() {
 
         const rebuild = () => {
             const nextLayout = measureLayout(canvas)
-            if(!nextLayout)
+            if(!nextLayout) {
+                queueRebuildRetry()
                 return
+            }
 
+            const layoutChanged = !layoutsMatch(layout, nextLayout)
             layout = nextLayout
             resizeCanvas(canvas, context, layout)
-            bandStates = layout.bands.map((band, index) => createBandState(band, index)).filter(Boolean)
-            lastFrameTime = 0
+
+            if(layoutChanged || bandStates.length === 0) {
+                bandStates = layout.bands.map((band, index) => createBandState(band, index)).filter(Boolean)
+            }
+
+            if(bandStates.length === 0) {
+                queueRebuildRetry()
+                return
+            }
+
+            clearRebuildRetry()
+            if(layoutChanged)
+                lastFrameTime = 0
             drawStatic()
             startLoop()
         }
@@ -293,6 +350,7 @@ function ArtDecorationCanvas() {
         const scheduleRebuild = () => {
             if(rebuildFrameId !== null)
                 window.cancelAnimationFrame(rebuildFrameId)
+            clearRebuildRetry()
 
             rebuildFrameId = window.requestAnimationFrame(() => {
                 rebuildFrameId = null
@@ -326,6 +384,8 @@ function ArtDecorationCanvas() {
         themeObserver?.observe(document.documentElement, {attributes: true, attributeFilter: ["data-theme"]})
         intersectionObserver?.observe(wrapper)
         window.addEventListener("resize", scheduleRebuild, {passive: true})
+        window.addEventListener("orientationchange", scheduleRebuild, {passive: true})
+        window.visualViewport?.addEventListener("resize", scheduleRebuild, {passive: true})
         document.addEventListener("visibilitychange", handleVisibilityChange)
         reducedMotionQuery?.addEventListener?.("change", scheduleRebuild)
 
@@ -340,11 +400,14 @@ function ArtDecorationCanvas() {
             stopLoop()
             if(rebuildFrameId !== null)
                 window.cancelAnimationFrame(rebuildFrameId)
+            clearRebuildRetry()
             resizeObserver?.disconnect()
             mutationObserver?.disconnect()
             themeObserver?.disconnect()
             intersectionObserver?.disconnect()
             window.removeEventListener("resize", scheduleRebuild)
+            window.removeEventListener("orientationchange", scheduleRebuild)
+            window.visualViewport?.removeEventListener("resize", scheduleRebuild)
             document.removeEventListener("visibilitychange", handleVisibilityChange)
             reducedMotionQuery?.removeEventListener?.("change", scheduleRebuild)
         }

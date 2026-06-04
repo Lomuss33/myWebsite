@@ -13,6 +13,7 @@ function ArticleFallingWords({ dataWrapper }) {
     const language = useLanguage()
     const viewport = useViewport()
     const isMobileLayout = viewport.isMobileLayout()
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value))
 
     const entries = useMemo(() => {
         const langId = language.selectedLanguageId || "en"
@@ -40,7 +41,29 @@ function ArticleFallingWords({ dataWrapper }) {
     const stageHeight = isMobileLayout ?
         Math.max(280, Math.min(420, Math.round(viewport.innerHeight * 0.28))) :
         Math.max(400, Math.min(560, Math.round(viewport.innerHeight * 0.34)))
-    const stageFontScale = isMobileLayout ? 0.64 : 0.72
+    const stageFontScale = useMemo(() => {
+        const viewportWidth = viewport.innerWidth || 1280
+
+        if(viewportWidth <= 480)
+            return 0.48
+
+        if(viewportWidth <= 768) {
+            const progress = (viewportWidth - 480) / (768 - 480)
+            return clamp(0.48 + progress * 0.08, 0.48, 0.56)
+        }
+
+        if(viewportWidth <= 1024) {
+            const progress = (viewportWidth - 768) / (1024 - 768)
+            return clamp(0.52 + progress * 0.08, 0.52, 0.6)
+        }
+
+        if(viewportWidth <= 1440) {
+            const progress = (viewportWidth - 1024) / (1440 - 1024)
+            return clamp(0.6 + progress * 0.12, 0.6, 0.72)
+        }
+
+        return 0.72
+    }, [viewport.innerWidth])
 
     return (
         <Article

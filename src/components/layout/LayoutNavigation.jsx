@@ -8,18 +8,18 @@ import {useViewport} from "../../providers/ViewportProvider.jsx"
 function LayoutNavigation({ children, profile = null, sectionLinks = [], categoryLinks = [] }) {
     const viewport = useViewport()
 
-    const isMobileLayout = viewport.isMobileLayout()
+    const isNavigationMobileLayout = viewport.isMobileLayout()
     const targetCategoryId = categoryLinks.find(link => link.active)?.id
     const currentCategorySectionLinks = sectionLinks.filter(link => link.categoryId === targetCategoryId)
 
     return (
         <div className={`layout-navigation-wrapper`}>
-            {!isMobileLayout && (
+            {!isNavigationMobileLayout && (
                 <NavSidebar profile={profile}
                             links={sectionLinks}/>
             )}
 
-            {isMobileLayout && (
+            {isNavigationMobileLayout && (
                 <>
                     <NavHeaderMobile profile={profile}
                                      links={currentCategorySectionLinks}/>
@@ -30,7 +30,7 @@ function LayoutNavigation({ children, profile = null, sectionLinks = [], categor
                 {children}
             </div>
 
-            {isMobileLayout && (
+            {isNavigationMobileLayout && (
                 <NavTabController links={categoryLinks}/>
             )}
         </div>

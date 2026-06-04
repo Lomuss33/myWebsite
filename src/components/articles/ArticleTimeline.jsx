@@ -367,6 +367,9 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
 
     const _expand = () => {
         setVisibleItems(currentValue => {
+            if(isPhotographyTimeline)
+                return filteredItems.length
+
             return Math.min(currentValue + 3, filteredItems.length)
         })
     }

@@ -2,6 +2,7 @@
 
 div.nav-profile-card {
     --avatar-size: var(--nav-extended-avatar-size, 118px);
+    --nav-profile-card-inline-padding: 12px;
     --border-size: 5px;
     --info-margin-top: 5px;
     --offset-status-circle: 14px;
@@ -33,16 +34,18 @@ div.nav-profile-card {
     border-bottom: 1px solid var(--theme-nav-divider);
     position: relative;
     margin: 0;
-    padding: 10px 12px 10px;
+    padding: 10px var(--nav-profile-card-inline-padding) 0;
     border-radius: 0;
     overflow: visible;
 
     &-header {
         display: flex;
+        flex: 1 1 auto;
         align-items: center;
         justify-content: center;
         flex-direction: column;
         width: 100%;
+        min-height: 0;
     }
 
     &-media {
@@ -309,12 +312,14 @@ div.nav-profile-card {
         width: 100%;
         max-width: none;
         display: flex;
+        flex: 0 1 auto;
         align-items: flex-start;
         justify-content: center;
         flex-direction: column;
         text-align: left;
         padding: 0 2px 0 0;
         box-sizing: border-box;
+        min-height: 0;
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
             margin-top: 14px;
             margin-bottom: 8px;
@@ -402,12 +407,13 @@ div.nav-profile-card {
         height: var(--nav-extended-role-height, 28px);
         max-height: var(--nav-extended-role-height, 28px);
         align-self: stretch;
-        width: calc(100% + 20px);
+        width: calc(100% + (var(--nav-profile-card-inline-padding) * 2));
         max-width: none;
         text-align: center;
-        margin-top: 0;
-        margin-left: -10px;
-        margin-right: -10px;
+        margin-top: auto;
+        margin-bottom: 0;
+        margin-left: calc(var(--nav-profile-card-inline-padding) * -1);
+        margin-right: calc(var(--nav-profile-card-inline-padding) * -1);
         padding: calc(3px * var(--nav-extended-role-opacity, 1)) 12px;
         border-radius: 0;
         background: color-mix(in srgb, var(--theme-nav-surface-accent) 78%, white 22%);
@@ -419,6 +425,7 @@ div.nav-profile-card {
             inset 0 1px 0 rgba(255, 255, 255, 0.04),
             inset 0 -1px 0 rgba(0, 0, 0, 0.12);
         opacity: var(--nav-extended-role-opacity, 1);
+        flex: 0 0 auto;
         overflow: hidden;
         transition:
             height 0.18s ease,
@@ -703,6 +710,10 @@ div.nav-profile-card {
     }
 
     [data-theme="light"] & {
+        div.nav-profile-card-role {
+            background: #ffffff;
+        }
+
         div.nav-profile-card-desktop-action-stack div.audio-button-wrapper-size-default button.audio-button,
         div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button {
             color: color-mix(in srgb, var(--theme-nav-text) 82%, var(--theme-primary) 18%);
@@ -1399,6 +1410,7 @@ div.nav-profile-card-short-rail {
     --avatar-shell-gap: 0px;
     --avatar-outline-size: 0px;
     --avatar-inner-rim-size: 0px;
+    --nav-short-rail-name-height: var(--nav-short-rail-name-band-height, calc(0.62rem + 0.38rem * var(--nav-short-rail-visual-density, 1)));
     align-self: stretch;
     width: 100%;
     align-items: center;
@@ -1428,16 +1440,86 @@ div.nav-profile-card-short-rail {
         border-top-right-radius: calc($standard-border-radius * 2)!important;
     }
 
-    div.nav-profile-card-info {
-        display: none;
-    }
-
     div.nav-profile-card-header {
+        position: relative;
         width: 100%;
         min-width: 0;
+        height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+    div.nav-profile-card-media {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: calc(100% - var(--nav-short-rail-name-height));
+    }
+
+    div.nav-profile-card-avatar-switch,
+    div.nav-profile-card-avatar-face,
+    div.image-view,
+    img.image-view-img {
+        width: 100%;
+        height: 100%;
+        border-radius: 0 !important;
+    }
+
+    img.image-view-img {
+        object-fit: cover;
+        object-position: center top;
+    }
+
+    div.nav-profile-card-info {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 0;
+        min-height: var(--nav-short-rail-name-height);
+        padding: 0.04rem 0.22rem 0.12rem;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    h1.nav-profile-card-name {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        font-size: calc(0.42rem + 0.18rem * var(--nav-short-rail-visual-density, 1)) !important;
+        line-height: 1 !important;
+        letter-spacing: 0.01em;
+        text-align: center;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.22);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    span.nav-profile-card-name-text {
+        display: inline;
+        max-width: 100%;
+    }
+
+    span.nav-profile-card-name-line {
+        display: inline;
+        white-space: nowrap;
+    }
+
+    span.nav-profile-card-name-line-last {
+        margin-left: 0.22rem;
+        padding-left: 0;
+    }
+
+    span.nav-profile-card-name-audio-button {
+        display: none;
     }
 }
 
@@ -1576,6 +1658,46 @@ div.nav-profile-card-desktop-action-resume {
             drop-shadow(0 0 0.32rem rgba(251, 191, 36, 0.82))
             drop-shadow(0 0 0.65rem rgba(248, 170, 40, 0.42));
         animation: nav-profile-card-resume-lift 1.6s ease-in-out infinite;
+    }
+}
+
+[data-theme="light"] {
+    div.nav-profile-card-mobile-action-resume,
+    div.nav-profile-card-desktop-action-resume,
+    div.nav-tools-item-resume,
+    div.nav-short-rail-resume-band {
+        &:has(button.btn-option-picker-toggle i.fa-icon.fa-file-arrow-down) {
+            button.btn-option-picker-toggle i.fa-icon.fa-file-arrow-down {
+                background-image: url("/images/svg/resume-premium-light.svg");
+                filter:
+                    drop-shadow(0 0 0.18rem rgba(248, 170, 40, 0.36));
+            }
+
+            button.btn-option-picker-toggle:hover i.fa-icon.fa-file-arrow-down,
+            button.btn-option-picker-toggle:focus-visible i.fa-icon.fa-file-arrow-down {
+                background-image: url("/images/svg/resume-premium-light.svg");
+                filter:
+                    drop-shadow(0 0 0.28rem rgba(251, 191, 36, 0.78))
+                    drop-shadow(0 0 0.55rem rgba(248, 170, 40, 0.4));
+            }
+        }
+    }
+
+    div.nav-profile-card-desktop-action-resume {
+        button.btn-option-picker-toggle i.fa-icon.fa-file-arrow-down {
+            background-image: url("/images/svg/resume-premium-light.svg");
+            filter:
+                drop-shadow(0 0 0.22rem rgba(248, 170, 40, 0.18))
+                drop-shadow(0 0 0.08rem rgba(255, 255, 255, 0.08));
+        }
+
+        button.btn-option-picker-toggle:hover i.fa-icon.fa-file-arrow-down,
+        button.btn-option-picker-toggle:focus-visible i.fa-icon.fa-file-arrow-down {
+            background-image: url("/images/svg/resume-premium-light.svg");
+            filter:
+                drop-shadow(0 0 0.32rem rgba(251, 191, 36, 0.82))
+                drop-shadow(0 0 0.65rem rgba(248, 170, 40, 0.42));
+        }
     }
 }
 

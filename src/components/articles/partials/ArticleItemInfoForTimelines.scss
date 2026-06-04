@@ -301,6 +301,7 @@ article#article-1-section-my-writings div.article-timeline-item-info-preview-foo
 article.article-timeline--art-photography div.article-timeline-item-info-for-timelines {
     --card-accent: #38bdf8;
     --card-accent-2: #f59e0b;
+    --photo-country-ribbon-width: 10px;
     --card-surface-top: #0b1220;
     --card-surface-bottom: #05070d;
     --card-border: #1f2a3a;
@@ -315,12 +316,12 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
     --photo-action-rail-width: calc(var(--photo-action-size) + clamp(0.7rem, 0.8vw, 0.95rem));
     --photo-country-frame:
         linear-gradient(135deg,
-            rgba(56, 189, 248, 0.86) 0%,
-            rgba(14, 165, 233, 0.54) 38%,
-            rgba(245, 158, 11, 0.68) 100%);
+            rgba(56, 189, 248, 0.98) 0%,
+            rgba(14, 165, 233, 0.76) 38%,
+            rgba(245, 158, 11, 0.9) 100%);
     --photo-country-overlay:
-        radial-gradient(circle at top right, rgba(56, 189, 248, 0.16) 0%, transparent 56%),
-        radial-gradient(circle at bottom left, rgba(245, 158, 11, 0.10) 0%, transparent 42%);
+        radial-gradient(circle at top right, rgba(56, 189, 248, 0.28) 0%, transparent 56%),
+        radial-gradient(circle at bottom left, rgba(245, 158, 11, 0.18) 0%, transparent 42%);
     --photo-country-ribbon: linear-gradient(180deg, var(--card-accent), var(--card-accent-2));
 
     display: grid;
@@ -360,11 +361,12 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
         content: "";
         position: absolute;
         inset: 0 auto 0 0;
-        width: 4px;
+        width: var(--photo-country-ribbon-width);
         background: var(--photo-country-ribbon);
         opacity: 0.92;
         pointer-events: none;
         z-index: 0;
+        box-shadow: 0 0 26px color-mix(in srgb, var(--card-accent) 34%, transparent);
     }
 
     > * {
@@ -396,20 +398,20 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
     --card-accent-2: #ef4444;
     --photo-country-frame:
         conic-gradient(from 180deg at 0% 50%,
-            rgba(248, 113, 113, 0.92) 0deg,
-            rgba(239, 68, 68, 0.92) 48deg,
-            rgba(250, 204, 21, 0.92) 88deg,
-            rgba(239, 68, 68, 0.88) 132deg,
-            rgba(248, 113, 113, 0.92) 180deg,
-            rgba(239, 68, 68, 0.88) 228deg,
-            rgba(250, 204, 21, 0.92) 272deg,
-            rgba(239, 68, 68, 0.92) 320deg,
-            rgba(248, 113, 113, 0.92) 360deg);
+            rgba(248, 113, 113, 1) 0deg,
+            rgba(239, 68, 68, 1) 48deg,
+            rgba(250, 204, 21, 1) 88deg,
+            rgba(239, 68, 68, 0.94) 132deg,
+            rgba(248, 113, 113, 1) 180deg,
+            rgba(239, 68, 68, 0.94) 228deg,
+            rgba(250, 204, 21, 1) 272deg,
+            rgba(239, 68, 68, 1) 320deg,
+            rgba(248, 113, 113, 1) 360deg);
     --photo-country-overlay:
-        radial-gradient(circle at 11% 50%, rgba(250, 204, 21, 0.34) 0 10%, transparent 11% 100%),
-        linear-gradient(24deg, transparent 44%, rgba(250, 204, 21, 0.18) 47%, transparent 50%),
-        linear-gradient(-24deg, transparent 46%, rgba(250, 204, 21, 0.16) 49%, transparent 52%),
-        radial-gradient(circle at top right, rgba(239, 68, 68, 0.18) 0%, transparent 58%);
+        radial-gradient(circle at 11% 50%, rgba(250, 204, 21, 0.54) 0 11%, transparent 12% 100%),
+        linear-gradient(24deg, transparent 44%, rgba(250, 204, 21, 0.28) 47%, transparent 50%),
+        linear-gradient(-24deg, transparent 46%, rgba(250, 204, 21, 0.24) 49%, transparent 52%),
+        radial-gradient(circle at top right, rgba(239, 68, 68, 0.28) 0%, transparent 58%);
     --photo-country-ribbon: linear-gradient(180deg, #facc15, #ef4444);
 }
 
@@ -427,10 +429,10 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
             #60a5fa 75% 87.5%,
             #ffffff 87.5% 100%);
     --photo-country-overlay:
-        linear-gradient(90deg, rgba(96, 165, 250, 0.24) 0 22%, transparent 22% 100%),
-        linear-gradient(0deg, transparent 0 32%, rgba(255, 255, 255, 0.24) 32% 40%, transparent 40% 100%),
-        linear-gradient(90deg, transparent 0 9%, rgba(255, 255, 255, 0.22) 9% 14%, transparent 14% 100%),
-        radial-gradient(circle at top right, rgba(96, 165, 250, 0.18) 0%, transparent 56%);
+        linear-gradient(90deg, rgba(96, 165, 250, 0.36) 0 22%, transparent 22% 100%),
+        linear-gradient(0deg, transparent 0 32%, rgba(255, 255, 255, 0.34) 32% 40%, transparent 40% 100%),
+        linear-gradient(90deg, transparent 0 9%, rgba(255, 255, 255, 0.3) 9% 14%, transparent 14% 100%),
+        radial-gradient(circle at top right, rgba(96, 165, 250, 0.28) 0%, transparent 56%);
     --photo-country-ribbon: linear-gradient(180deg, #ffffff, #60a5fa);
 }
 
@@ -443,9 +445,9 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
             #22c55e 33.333% 66.666%,
             #ef4444 66.666% 100%);
     --photo-country-overlay:
-        radial-gradient(circle at 84% 20%, rgba(255, 255, 255, 0.28) 0%, transparent 24%),
-        linear-gradient(135deg, rgba(34, 197, 94, 0.14) 0 42%, transparent 42% 100%),
-        linear-gradient(-135deg, rgba(239, 68, 68, 0.12) 0 26%, transparent 26% 100%);
+        radial-gradient(circle at 84% 20%, rgba(255, 255, 255, 0.4) 0%, transparent 24%),
+        linear-gradient(135deg, rgba(34, 197, 94, 0.24) 0 42%, transparent 42% 100%),
+        linear-gradient(-135deg, rgba(239, 68, 68, 0.22) 0 26%, transparent 26% 100%);
     --photo-country-ribbon: linear-gradient(180deg, #ffffff, #22c55e 56%, #ef4444);
 }
 
@@ -458,9 +460,10 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
             #2563eb 33.333% 66.666%,
             #ffffff 66.666% 100%);
     --photo-country-overlay:
-        radial-gradient(circle at 14% 22%, rgba(255, 215, 0, 0.22) 0 7%, transparent 8% 100%),
-        linear-gradient(110deg, rgba(255, 255, 255, 0.14) 0 18%, transparent 18% 100%),
-        radial-gradient(circle at top right, rgba(37, 99, 235, 0.18) 0%, transparent 54%);
+        radial-gradient(ellipse 26% 74% at 0% 50%, rgba(255, 255, 255, 0.52) 0 55%, transparent 56% 100%),
+        radial-gradient(ellipse 22% 72% at 0% 50%, rgba(239, 68, 68, 0.34) 0 40%, transparent 41% 100%),
+        linear-gradient(110deg, rgba(255, 255, 255, 0.22) 0 18%, transparent 18% 100%),
+        radial-gradient(circle at top right, rgba(37, 99, 235, 0.3) 0%, transparent 54%);
     --photo-country-ribbon: linear-gradient(180deg, #ef4444, #2563eb 62%, #ffffff);
 }
 
@@ -473,11 +476,11 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
             #facc15 63% 69%,
             #1d4ed8 69% 100%);
     --photo-country-overlay:
-        radial-gradient(circle at 76% 18%, rgba(255, 255, 255, 0.34) 0 3%, transparent 4% 100%),
-        radial-gradient(circle at 70% 28%, rgba(255, 255, 255, 0.30) 0 3%, transparent 4% 100%),
-        radial-gradient(circle at 64% 38%, rgba(255, 255, 255, 0.28) 0 3%, transparent 4% 100%),
-        radial-gradient(circle at 58% 48%, rgba(255, 255, 255, 0.24) 0 3%, transparent 4% 100%),
-        linear-gradient(135deg, transparent 0 58%, rgba(250, 204, 21, 0.2) 58% 66%, transparent 66% 100%);
+        radial-gradient(circle at 76% 18%, rgba(255, 255, 255, 0.48) 0 3%, transparent 4% 100%),
+        radial-gradient(circle at 70% 28%, rgba(255, 255, 255, 0.42) 0 3%, transparent 4% 100%),
+        radial-gradient(circle at 64% 38%, rgba(255, 255, 255, 0.38) 0 3%, transparent 4% 100%),
+        radial-gradient(circle at 58% 48%, rgba(255, 255, 255, 0.34) 0 3%, transparent 4% 100%),
+        linear-gradient(135deg, transparent 0 58%, rgba(250, 204, 21, 0.3) 58% 66%, transparent 66% 100%);
     --photo-country-ribbon: linear-gradient(180deg, #facc15, #2563eb);
 }
 
@@ -490,9 +493,9 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
             #ffffff 33.333% 66.666%,
             #2563eb 66.666% 100%);
     --photo-country-overlay:
-        linear-gradient(90deg, transparent 0 38%, rgba(239, 68, 68, 0.14) 38% 43%, rgba(255, 255, 255, 0.16) 43% 48%, rgba(37, 99, 235, 0.16) 48% 53%, transparent 53% 100%),
-        radial-gradient(circle at top right, rgba(37, 99, 235, 0.18) 0%, transparent 56%),
-        radial-gradient(circle at bottom left, rgba(239, 68, 68, 0.14) 0%, transparent 40%);
+        linear-gradient(90deg, transparent 0 38%, rgba(239, 68, 68, 0.26) 38% 43%, rgba(255, 255, 255, 0.28) 43% 48%, rgba(37, 99, 235, 0.28) 48% 53%, transparent 53% 100%),
+        radial-gradient(circle at top right, rgba(37, 99, 235, 0.28) 0%, transparent 56%),
+        radial-gradient(circle at bottom left, rgba(239, 68, 68, 0.24) 0%, transparent 40%);
     --photo-country-ribbon: linear-gradient(180deg, #ef4444, #ffffff 50%, #2563eb);
 }
 
@@ -505,9 +508,9 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
             #ef4444 33.333% 66.666%,
             #f59e0b 66.666% 100%);
     --photo-country-overlay:
-        linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0 26%, transparent 26% 100%),
-        radial-gradient(circle at 82% 18%, rgba(239, 68, 68, 0.18) 0%, transparent 24%),
-        radial-gradient(circle at bottom left, rgba(17, 24, 39, 0.22) 0%, transparent 42%);
+        linear-gradient(135deg, rgba(245, 158, 11, 0.22) 0 26%, transparent 26% 100%),
+        radial-gradient(circle at 82% 18%, rgba(239, 68, 68, 0.28) 0%, transparent 24%),
+        radial-gradient(circle at bottom left, rgba(17, 24, 39, 0.32) 0%, transparent 42%);
     --photo-country-ribbon: linear-gradient(180deg, #111827, #ef4444 58%, #f59e0b);
 }
 
@@ -602,7 +605,7 @@ article.article-timeline--art-digital-expression div.article-timeline-item-info-
     --card-surface-bottom: #03050c;
     --card-border: rgba(70, 85, 130, 0.58);
     --card-shadow: 0 24px 52px rgba(2, 6, 23, 0.56);
-    --card-shadow-hover: 0 30px 64px rgba(34, 211, 238, 0.16);
+    --card-shadow-hover: 0 26px 56px rgba(34, 211, 238, 0.12);
     --card-text-strong: #f8fbff;
     --card-text-mid: #d4ddf4;
     --card-text-soft: #8ea3c7;
@@ -662,13 +665,13 @@ article.article-timeline--art-digital-expression div.article-timeline-item-info-
 
     &:hover,
     &:focus-within {
-        transform: translateY(-3px);
-        border-color: color-mix(in srgb, var(--card-accent) 44%, rgba(255, 255, 255, 0.18) 56%);
+        transform: translateY(-1px);
+        border-color: color-mix(in srgb, var(--card-accent) 34%, rgba(255, 255, 255, 0.18) 66%);
         box-shadow:
             var(--card-shadow-hover),
             inset 0 1px 0 rgba(255, 255, 255, 0.08),
-            0 0 0 1px rgba(34, 211, 238, 0.12);
-        filter: saturate(1.06);
+            0 0 0 1px rgba(34, 211, 238, 0.09);
+        filter: saturate(1.02);
     }
 }
 
@@ -2166,7 +2169,7 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
     --card-surface-bottom: #050015;
     --card-border: rgba(103, 232, 249, 0.24);
     --card-shadow: 0 30px 70px rgba(0, 0, 0, 0.72);
-    --card-shadow-hover: 0 36px 82px rgba(103, 232, 249, 0.20);
+    --card-shadow-hover: 0 30px 66px rgba(103, 232, 249, 0.14);
     --card-text-strong: #ffffff;
     --card-text-mid: rgba(226, 242, 255, 0.9);
     --card-text-soft: rgba(169, 190, 218, 0.78);

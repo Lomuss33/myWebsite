@@ -87,6 +87,40 @@ function ImageViewContainer({ resolvedSrc, resolvedSrcSet, sizes, width, height,
         syncFromElement(imageRef.current)
     }, [resolvedSrc, syncFromElement])
 
+    useEffect(() => {
+        const imageElement = imageRef.current
+        if(!imageElement || !resolvedSrc)
+            return undefined
+
+        let canceled = false
+        const syncLoadedImage = () => {
+            if(canceled || imageRef.current !== imageElement)
+                return
+
+            if(imageElement.complete && imageElement.naturalWidth > 0 && imageElement.naturalHeight > 0) {
+                onLoad()
+                return
+            }
+
+            if(imageElement.complete)
+                onError()
+        }
+
+        syncLoadedImage()
+
+        if(typeof imageElement.decode === "function") {
+            imageElement.decode()
+                .then(syncLoadedImage)
+                .catch(() => {})
+        }
+
+        const syncFrame = requestAnimationFrame(syncLoadedImage)
+        return () => {
+            canceled = true
+            cancelAnimationFrame(syncFrame)
+        }
+    }, [resolvedSrc, resolvedSrcSet, sizes, onLoad, onError])
+
     if(!canRenderImg || !resolvedSrc)
         return <></>
 

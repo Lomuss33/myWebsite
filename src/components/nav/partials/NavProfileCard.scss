@@ -106,36 +106,10 @@ div.nav-profile-card {
         }
 
         &::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: 3;
-            pointer-events: none;
-            padding: var(--avatar-outline-size);
-            border-radius: inherit;
-            border-top-right-radius: inherit;
-            background:
-                conic-gradient(from 180deg,
-                    rgba(59, 130, 246, 0.95) 0deg,
-                    rgba(226, 232, 240, 0.94) 52deg,
-                    rgba(244, 63, 94, 0.92) 138deg,
-                    rgba(241, 245, 249, 0.94) 224deg,
-                    rgba(59, 130, 246, 0.95) 360deg);
-            opacity: var(--avatar-outline-opacity);
-            filter: grayscale(1) saturate(0.82) brightness(0.94);
-            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-            -webkit-mask-composite: xor;
-            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-            mask-composite: exclude;
-            transform: translateZ(0) rotate(0deg);
-            animation: nav-profile-card-metal-spin 3.6s linear infinite paused;
-            transition:
-                filter 0.28s ease,
-                opacity 0.28s ease,
-                transform 0.28s ease;
+            content: none;
         }
 
-        &:hover:not(.floating-frame--paused):not([data-floating-frame-paused="true"]) {
+        &:hover:not(.floating-frame--paused) {
             --ff-translate-y: -1px;
             filter: saturate(1.04);
             background:
@@ -153,26 +127,66 @@ div.nav-profile-card {
                 inset 0 -12px 22px rgba(0, 0, 0, 0.22);
         }
 
-        &:hover:not(.floating-frame--paused):not([data-floating-frame-paused="true"])::before,
-        &:focus-visible:not(.floating-frame--paused):not([data-floating-frame-paused="true"])::before,
-        &.floating-frame--active::before,
-        &[data-floating-frame-active="true"]::before {
+        &:hover:not(.floating-frame--paused)::before,
+        &:focus-visible::before,
+        &.floating-frame--active::before {
             opacity: 0.9;
             transform: scale(1.01);
-        }
-
-        &:hover:not(.floating-frame--paused):not([data-floating-frame-paused="true"])::after,
-        &:focus-visible:not(.floating-frame--paused):not([data-floating-frame-paused="true"])::after,
-        &.floating-frame--active::after,
-        &[data-floating-frame-active="true"]::after {
-            filter: grayscale(0) saturate(1.08) brightness(1.06);
-            opacity: 1;
-            animation-play-state: running;
         }
 
         &:focus-visible {
             outline: none;
         }
+    }
+
+    &-metal-frame {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        pointer-events: none;
+        border-radius: inherit;
+        border-top-right-radius: inherit;
+    }
+
+    &-metal-frame-rotor {
+        display: block;
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        padding: var(--avatar-outline-size);
+        border-radius: inherit;
+        border-top-right-radius: inherit;
+        background:
+            conic-gradient(from 180deg,
+                rgba(59, 130, 246, 0.95) 0deg,
+                rgba(226, 232, 240, 0.94) 52deg,
+                rgba(244, 63, 94, 0.92) 138deg,
+                rgba(241, 245, 249, 0.94) 224deg,
+                rgba(59, 130, 246, 0.95) 360deg);
+        opacity: var(--avatar-outline-opacity);
+        filter: grayscale(1) saturate(0.82) brightness(0.94);
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        mask-composite: exclude;
+        transform: translateZ(0) rotate(0deg);
+        transform-origin: center;
+        will-change: transform;
+        transition:
+            filter 0.28s ease,
+            opacity 0.28s ease;
+    }
+
+    &-metal-frame-track {
+        display: none;
+    }
+
+    &-media:hover:not(.floating-frame--paused) &-metal-frame-rotor,
+    &-media:focus-visible &-metal-frame-rotor,
+    &-media.floating-frame--active &-metal-frame-rotor,
+    &-media[data-profile-frame-running="true"] &-metal-frame-rotor {
+        filter: grayscale(0) saturate(1.08) brightness(1.06);
+        opacity: 1;
     }
 
     &-avatar-switch {
@@ -242,18 +256,16 @@ div.nav-profile-card {
         }
     }
 
-    &-media:hover:not(.floating-frame--paused):not([data-floating-frame-paused="true"]) &-avatar-switch::after,
-    &-media:focus-visible:not(.floating-frame--paused):not([data-floating-frame-paused="true"]) &-avatar-switch::after,
-    &-media.floating-frame--active &-avatar-switch::after,
-    &-media[data-floating-frame-active="true"] &-avatar-switch::after {
+    &-media:hover:not(.floating-frame--paused) &-avatar-switch::after,
+    &-media:focus-visible &-avatar-switch::after,
+    &-media.floating-frame--active &-avatar-switch::after {
         opacity: 0.9;
         transform: translateY(-1px);
     }
 
-    &-media:hover:not(.floating-frame--paused):not([data-floating-frame-paused="true"]) &-avatar-switch::before,
-    &-media:focus-visible:not(.floating-frame--paused):not([data-floating-frame-paused="true"]) &-avatar-switch::before,
-    &-media.floating-frame--active &-avatar-switch::before,
-    &-media[data-floating-frame-active="true"] &-avatar-switch::before {
+    &-media:hover:not(.floating-frame--paused) &-avatar-switch::before,
+    &-media:focus-visible &-avatar-switch::before,
+    &-media.floating-frame--active &-avatar-switch::before {
         opacity: 0.96;
         filter: brightness(1.08);
     }
@@ -1423,6 +1435,14 @@ div.nav-profile-card-short-rail {
     --avatar-outline-size: 0px;
     --avatar-inner-rim-size: 0px;
     --nav-short-rail-name-height: var(--nav-short-rail-name-band-height, calc(0.62rem + 0.38rem * var(--nav-short-rail-visual-density, 1)));
+    --nav-short-rail-image-area-height: calc(var(--nav-short-rail-profile-height, 110px) - var(--nav-short-rail-name-height));
+    --nav-short-rail-image-square-size: min(100%, var(--nav-short-rail-image-area-height));
+    --nav-short-rail-metal-frame-width-ratio: 136%;
+    --nav-short-rail-metal-frame-height-ratio: 117%;
+    --nav-short-rail-frame-blue: #1d4ed8;
+    --nav-short-rail-frame-white: #f1f5f9;
+    --nav-short-rail-frame-red: #b91c1c;
+    --nav-short-rail-frame-opacity: 0.9;
     align-self: stretch;
     width: 100%;
     align-items: center;
@@ -1435,6 +1455,21 @@ div.nav-profile-card-short-rail {
         box-shadow: none;
         border-radius: 0;
         filter: none;
+        overflow: hidden;
+    }
+
+    div.nav-profile-card-media:hover:not(.floating-frame--paused) {
+        --ff-translate-y: 0px;
+        background: none;
+        box-shadow: none;
+        filter: none;
+    }
+
+    div.nav-profile-card-media:hover:not(.floating-frame--paused)::before,
+    div.nav-profile-card-media:focus-visible::before,
+    div.nav-profile-card-media.floating-frame--active::before {
+        opacity: 0;
+        transform: none;
     }
 
     div.nav-profile-card-media::before,
@@ -1465,24 +1500,102 @@ div.nav-profile-card-short-rail {
     div.nav-profile-card-media {
         position: absolute;
         top: 0;
+        bottom: auto;
         left: 0;
         right: 0;
         width: 100%;
         height: calc(100% - var(--nav-short-rail-name-height));
+        display: grid;
+        place-items: center;
     }
 
-    div.nav-profile-card-avatar-switch,
-    div.nav-profile-card-avatar-face,
-    div.image-view,
-    img.image-view-img {
+    div.nav-profile-card-avatar-switch {
+        position: relative;
+        width: auto;
+        max-width: 100%;
+        height: 100%;
+        max-height: 100%;
+        aspect-ratio: 1 / 1;
+        border-radius: 0 !important;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    div.nav-profile-card-avatar-face {
+        position: absolute;
+        inset: 0;
         width: 100%;
         height: 100%;
         border-radius: 0 !important;
     }
 
+    div.image-view,
+    div.image-view.nav-profile-card-avatar,
     img.image-view-img {
-        object-fit: cover;
-        object-position: center top;
+        display: block;
+        width: 100%;
+        height: 100%;
+        min-width: 100%;
+        min-height: 100%;
+        border-radius: 0 !important;
+    }
+
+    img.image-view-img {
+        object-fit: contain;
+        object-position: center;
+    }
+
+    div.nav-profile-card-metal-frame {
+        inset: auto;
+        left: 50%;
+        top: 50%;
+        width: auto;
+        max-width: none;
+        height: 100%;
+        max-height: none;
+        aspect-ratio: 1 / 1;
+        transform: translate(-50%, -50%);
+        border-radius: 0;
+        border-top-right-radius: 0;
+        z-index: 3;
+    }
+
+    div.nav-profile-card-metal-frame-rotor {
+        position: absolute;
+        left: -18%;
+        top: -8.5%;
+        width: var(--nav-short-rail-metal-frame-width-ratio);
+        height: var(--nav-short-rail-metal-frame-height-ratio);
+        padding: 0;
+        border-radius: 0;
+        border-top-right-radius: 0;
+        background: none;
+        -webkit-mask: none;
+        mask: none;
+        filter: none;
+    }
+
+    svg.nav-profile-card-metal-frame-track {
+        display: block;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+    }
+
+    svg.nav-profile-card-metal-frame-track path {
+        fill: none;
+        stroke-width: 1.6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-opacity: var(--nav-short-rail-frame-opacity);
+        vector-effect: non-scaling-stroke;
+    }
+
+    [data-theme="light"] & {
+        --nav-short-rail-frame-blue: #60a5fa;
+        --nav-short-rail-frame-white: #f8fafc;
+        --nav-short-rail-frame-red: #fb7185;
+        --nav-short-rail-frame-opacity: 0.96;
     }
 
     div.nav-profile-card-info {
@@ -1498,7 +1611,7 @@ div.nav-profile-card-short-rail {
         min-height: var(--nav-short-rail-name-height);
         padding: 0.18rem 0.22rem 0.04rem;
         pointer-events: none;
-        z-index: 1;
+        z-index: 4;
         box-sizing: border-box;
     }
 
@@ -1534,16 +1647,6 @@ div.nav-profile-card-short-rail {
 
     span.nav-profile-card-name-audio-button {
         display: none;
-    }
-}
-
-@keyframes nav-profile-card-metal-spin {
-    from {
-        transform: translateZ(0) rotate(0deg);
-    }
-
-    to {
-        transform: translateZ(0) rotate(360deg);
     }
 }
 

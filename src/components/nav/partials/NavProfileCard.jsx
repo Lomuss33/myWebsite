@@ -1,5 +1,5 @@
 import "./NavProfileCard.scss"
-import React, {useEffect, useRef, useState} from "react"
+import React, {useCallback, useEffect, useId, useRef, useState} from "react"
 import {Card} from "react-bootstrap"
 import {useFloatingFrame} from "../../../hooks/floatingFrame.js"
 import {useLanguage} from "../../../providers/LanguageProvider.jsx"
@@ -10,6 +10,9 @@ import AudioButton from "../../buttons/AudioButton.jsx"
 import NavToolResumeDownloader from "../tools/NavToolResumeDownloader.jsx"
 
 const PROFILE_AVATAR_SIZES = "(max-width: 991.98px) 96px, 144px"
+const PROFILE_FRAME_SPIN_DURATION_MS = 3600
+const PROFILE_FRAME_RETURN_DELAY_MS = 1000
+const PROFILE_FRAME_RETURN_DURATION_MS = 420
 const DESKTOP_RESUME_MENU_POPPER_CONFIG = {
     modifiers: [
         {
@@ -19,6 +22,18 @@ const DESKTOP_RESUME_MENU_POPPER_CONFIG = {
             }
         }
     ]
+}
+
+function normalizeFrameAngle(angle) {
+    const normalized = angle % 360
+    return normalized < 0 ? normalized + 360 : normalized
+}
+
+function profileFrameMotionSuspended() {
+    if(typeof window === "undefined") return true
+    if(window.suspendAnimations) return true
+    if(!window.matchMedia) return false
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches
 }
 
 function NavProfileCard({
@@ -36,10 +51,18 @@ function NavProfileCard({
     const alternateProfilePictureDefaultChance = normalizeDefaultChance(safeProfile.profilePictureAltDefaultChance)
     const [showAlternateProfilePicture, setShowAlternateProfilePicture] = useState(false)
     const [stackMobileName, setStackMobileName] = useState(false)
+    const metalFrameGradientId = useId()
     const headerRef = useRef(null)
+    const mediaRef = useRef(null)
+    const metalFrameRef = useRef(null)
     const nameHeadingRef = useRef(null)
     const firstNameRef = useRef(null)
     const lastNameRef = useRef(null)
+    const profileFrameAnimationRef = useRef(null)
+    const profileFrameSpinStartAngleRef = useRef(0)
+    const profileFrameRunningRef = useRef(false)
+    const profileFrameAngleRef = useRef(0)
+    const profileFrameReturnTimeoutRef = useRef(null)
     const isExtendedRail = railMode === "extended"
     const railModeClass = isExtendedRail ?
         `` :
@@ -82,11 +105,186 @@ function NavProfileCard({
 
     const secondaryProfilePictureUrl = language.parseJsonText(safeProfile.profilePictureAltUrl) || "images/contant/profil.webp"
 
+    const setProfileFrameAngle = useCallback((angle) => {
+        const metalFrameElement = metalFrameRef.current
+        const normalizedAngle = normalizeFrameAngle(angle)
+        profileFrameAngleRef.current = normalizedAngle
+        if(metalFrameElement)
+            metalFrameElement.style.transform = `translateZ(0) rotate(${normalizedAngle.toFixed(3)}deg)`
+    }, [])
+
+    const parseProfileFrameMatrixAngle = useCallback(() => {
+        const metalFrameElement = metalFrameRef.current
+        if(!metalFrameElement || typeof window === "undefined") return profileFrameAngleRef.current
+
+        const transform = window.getComputedStyle(metalFrameElement).transform
+        if(!transform || transform === "none") return profileFrameAngleRef.current
+
+        try {
+            const matrix = new DOMMatrixReadOnly(transform)
+            return normalizeFrameAngle(Math.atan2(matrix.b, matrix.a) * (180 / Math.PI))
+        } catch {
+            return profileFrameAngleRef.current
+        }
+    }, [])
+
+    const getCurrentProfileFrameAngle = useCallback(() => {
+        const animation = profileFrameAnimationRef.current
+        if(profileFrameRunningRef.current && animation) {
+            const currentTime = Number(animation.currentTime || 0)
+            const cycleProgress = ((currentTime % PROFILE_FRAME_SPIN_DURATION_MS) / PROFILE_FRAME_SPIN_DURATION_MS)
+            return normalizeFrameAngle(profileFrameSpinStartAngleRef.current + (cycleProgress * 360))
+        }
+
+        if(animation) return parseProfileFrameMatrixAngle()
+
+        return profileFrameAngleRef.current
+    }, [parseProfileFrameMatrixAngle])
+
+    const clearProfileFrameReturnTimeout = useCallback(() => {
+        if(profileFrameReturnTimeoutRef.current)
+            clearTimeout(profileFrameReturnTimeoutRef.current)
+
+        profileFrameReturnTimeoutRef.current = null
+    }, [])
+
+    const cancelProfileFrameAnimation = useCallback((captureAngle = true) => {
+        const animation = profileFrameAnimationRef.current
+        const currentAngle = captureAngle ? getCurrentProfileFrameAngle() : profileFrameAngleRef.current
+
+        if(animation)
+            animation.cancel()
+
+        profileFrameAnimationRef.current = null
+        setProfileFrameAngle(currentAngle)
+        return currentAngle
+    }, [getCurrentProfileFrameAngle, setProfileFrameAngle])
+
+    const lockProfileFrameAtDefault = useCallback(() => {
+        const mediaElement = mediaRef.current
+        const animation = profileFrameAnimationRef.current
+
+        if(animation)
+            animation.cancel()
+
+        profileFrameAnimationRef.current = null
+        profileFrameRunningRef.current = false
+        profileFrameSpinStartAngleRef.current = 0
+        mediaElement?.removeAttribute(`data-profile-frame-running`)
+        mediaElement?.setAttribute(`data-profile-frame-paused`, `true`)
+        setProfileFrameAngle(0)
+    }, [setProfileFrameAngle])
+
+    const startProfileFrameSpin = useCallback(() => {
+        const mediaElement = mediaRef.current
+        const metalFrameElement = metalFrameRef.current
+        if(!mediaElement || !metalFrameElement) return
+
+        clearProfileFrameReturnTimeout()
+        const startAngle = cancelProfileFrameAnimation(true)
+
+        if(profileFrameMotionSuspended()) {
+            lockProfileFrameAtDefault()
+            return
+        }
+
+        profileFrameRunningRef.current = true
+        profileFrameSpinStartAngleRef.current = startAngle
+        mediaElement.setAttribute(`data-profile-frame-running`, `true`)
+        mediaElement.removeAttribute(`data-profile-frame-paused`)
+
+        const animation = metalFrameElement.animate(
+            [
+                {transform: `translateZ(0) rotate(${startAngle}deg)`},
+                {transform: `translateZ(0) rotate(${startAngle + 360}deg)`}
+            ],
+            {
+                duration: PROFILE_FRAME_SPIN_DURATION_MS,
+                iterations: Infinity,
+                easing: "linear"
+            }
+        )
+
+        profileFrameAnimationRef.current = animation
+    }, [cancelProfileFrameAnimation, clearProfileFrameReturnTimeout, lockProfileFrameAtDefault])
+
+    const returnProfileFrameToDefault = useCallback(() => {
+        const mediaElement = mediaRef.current
+        const metalFrameElement = metalFrameRef.current
+        if(!mediaElement || !metalFrameElement) return
+
+        clearProfileFrameReturnTimeout()
+        const startAngle = cancelProfileFrameAnimation(true)
+        profileFrameRunningRef.current = false
+        mediaElement.removeAttribute(`data-profile-frame-running`)
+        mediaElement.setAttribute(`data-profile-frame-paused`, `true`)
+
+        if(profileFrameMotionSuspended() || startAngle < 0.001) {
+            lockProfileFrameAtDefault()
+            return
+        }
+
+        const animation = metalFrameElement.animate(
+            [
+                {transform: `translateZ(0) rotate(${startAngle}deg)`},
+                {transform: "translateZ(0) rotate(0deg)"}
+            ],
+            {
+                duration: PROFILE_FRAME_RETURN_DURATION_MS,
+                easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+                fill: "forwards"
+            }
+        )
+
+        profileFrameAnimationRef.current = animation
+        animation.finished.then(() => {
+            if(profileFrameAnimationRef.current !== animation) return
+            lockProfileFrameAtDefault()
+        }).catch(() => {})
+    }, [cancelProfileFrameAnimation, clearProfileFrameReturnTimeout, lockProfileFrameAtDefault])
+
+    const pauseProfileFrameSpin = useCallback(() => {
+        const mediaElement = mediaRef.current
+        if(!mediaElement) return
+
+        clearProfileFrameReturnTimeout()
+        const currentAngle = cancelProfileFrameAnimation(true)
+        profileFrameRunningRef.current = false
+        mediaElement.removeAttribute(`data-profile-frame-running`)
+        mediaElement.setAttribute(`data-profile-frame-paused`, `true`)
+        setProfileFrameAngle(currentAngle)
+
+        profileFrameReturnTimeoutRef.current = setTimeout(() => {
+            profileFrameReturnTimeoutRef.current = null
+            returnProfileFrameToDefault()
+        }, PROFILE_FRAME_RETURN_DELAY_MS)
+    }, [cancelProfileFrameAnimation, clearProfileFrameReturnTimeout, returnProfileFrameToDefault, setProfileFrameAngle])
+
     useEffect(() => {
         setShowAlternateProfilePicture(
             getPageLoadRandomValue("nav-profile-card:avatar") < alternateProfilePictureDefaultChance
         )
     }, [safeProfile.profilePictureAltUrl, alternateProfilePictureDefaultChance])
+
+    useEffect(() => {
+        const onDocumentClicked = () => {
+            if(profileFrameRunningRef.current)
+                pauseProfileFrameSpin()
+        }
+
+        setProfileFrameAngle(0)
+        document.addEventListener(`click`, onDocumentClicked)
+
+        return () => {
+            const mediaElement = mediaRef.current
+            document.removeEventListener(`click`, onDocumentClicked)
+            clearProfileFrameReturnTimeout()
+            cancelProfileFrameAnimation(false)
+            mediaElement?.removeAttribute(`data-profile-frame-running`)
+            mediaElement?.removeAttribute(`data-profile-frame-paused`)
+            setProfileFrameAngle(0)
+        }
+    }, [cancelProfileFrameAnimation, clearProfileFrameReturnTimeout, pauseProfileFrameSpin, setProfileFrameAngle])
 
     useEffect(() => {
         const headerElement = headerRef.current
@@ -204,9 +402,14 @@ function NavProfileCard({
         }
     }, [firstName, lastName])
 
-    const _onMediaClicked = (event) => {
-        floatingFrame.togglePaused(event.currentTarget)
+    const _onMediaClicked = () => {
+        pauseProfileFrameSpin()
         setShowAlternateProfilePicture((current) => !current)
+    }
+
+    const _onMediaPointerEnter = (event) => {
+        floatingFrame.onPointerEnter(event)
+        startProfileFrameSpin()
     }
 
     return (
@@ -246,7 +449,8 @@ function NavProfileCard({
                 )}
 
                 <div className={`nav-profile-card-media floating-frame`}
-                     onPointerEnter={floatingFrame.onPointerEnter}
+                     ref={mediaRef}
+                     onPointerEnter={_onMediaPointerEnter}
                      onPointerMove={floatingFrame.onPointerMove}
                      onPointerLeave={floatingFrame.onPointerLeave}
                      onClick={_onMediaClicked}
@@ -260,6 +464,41 @@ function NavProfileCard({
                      }}
                      aria-label={`Toggle profile picture`}
                      aria-pressed={showAlternateProfilePicture}>
+                    <div className={`nav-profile-card-metal-frame`}
+                         aria-hidden={true}>
+                        <div className={`nav-profile-card-metal-frame-rotor`}
+                             ref={metalFrameRef}>
+                            <svg className={`nav-profile-card-metal-frame-track`}
+                                 viewBox={`0 0 100 100`}
+                                 focusable={false}
+                                 aria-hidden={true}>
+                                <defs>
+                                    <linearGradient id={metalFrameGradientId}
+                                                    x1={`0`}
+                                                    y1={`0`}
+                                                    x2={`0`}
+                                                    y2={`100`}
+                                                    gradientUnits={`userSpaceOnUse`}>
+                                        <stop offset={`0%`}
+                                              stopColor={`var(--nav-short-rail-frame-red)`}/>
+                                        <stop offset={`33%`}
+                                              stopColor={`var(--nav-short-rail-frame-red)`}/>
+                                        <stop offset={`33.4%`}
+                                              stopColor={`var(--nav-short-rail-frame-white)`}/>
+                                        <stop offset={`66%`}
+                                              stopColor={`var(--nav-short-rail-frame-white)`}/>
+                                        <stop offset={`66.4%`}
+                                              stopColor={`var(--nav-short-rail-frame-blue)`}/>
+                                        <stop offset={`100%`}
+                                              stopColor={`var(--nav-short-rail-frame-blue)`}/>
+                                    </linearGradient>
+                                </defs>
+                                <path stroke={`url(#${metalFrameGradientId})`}
+                                      d={`M 50 8 C 58 15 66 8 72 16 C 78 24 88 21 88 32 C 88 41 98 45 90 52 C 82 59 91 68 80 75 C 71 81 72 92 60 88 C 51 85 45 96 38 87 C 32 79 21 84 20 72 C 19 62 8 60 15 50 C 21 42 10 34 21 27 C 30 22 27 11 38 14 C 44 16 46 5 50 8 Z`}/>
+                            </svg>
+                        </div>
+                    </div>
+
                     <div className={`nav-profile-card-avatar-switch ${showAlternateProfilePicture ? "nav-profile-card-avatar-switch-secondary" : "nav-profile-card-avatar-switch-primary"}`}>
                         <div className={`nav-profile-card-avatar-face nav-profile-card-avatar-face-front`}>
                             <ImageView src={profilePictureUrl}

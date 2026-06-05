@@ -77,6 +77,12 @@ div.section-content-elements-wrapper {
     }
 }
 
+div.section-content-elements-wrapper > header.section-header,
+div.section-content-elements-wrapper > div.section-body > article.article {
+    position: relative;
+    z-index: 5;
+}
+
 div.section-content.section-content-has-decoration-bands {
     --section-content-min-height: 0px;
     --padding-bottom: 0px;
@@ -146,6 +152,16 @@ section#section-my-art div.section-content > div.section-content-elements-wrappe
 section#section-my-art div.section-content > div.section-content-elements-wrapper > div.section-decoration-band-page-bottom {
     position: relative;
     z-index: 3;
+}
+
+@include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    section#section-my-art div.section-content > div.section-content-elements-wrapper > header.section-header {
+        z-index: 5;
+    }
+
+    section#section-my-art div.section-content > div.section-content-elements-wrapper > div.section-body {
+        z-index: auto;
+    }
 }
 
 section#section-my-art div.section-content div.section-body > div.section-decoration-band-between-articles[data-section-decoration-band-index="1"] {

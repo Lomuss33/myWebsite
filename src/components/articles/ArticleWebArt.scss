@@ -1172,6 +1172,23 @@ div.article-web-art-items {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 10px;
     }
+
+    .article-web-art-tile,
+    .article-web-art-soup-tile,
+    .article-web-art-tile-tardis,
+    .article-web-art-tile-deep {
+        background:
+            radial-gradient(circle at 22% 18%, rgba(56, 189, 248, 0.18), transparent 34%),
+            radial-gradient(circle at 82% 78%, rgba(244, 114, 182, 0.12), transparent 32%),
+            linear-gradient(135deg, #07111f 0%, #111827 54%, #1e1b4b 100%);
+    }
+
+    canvas.article-web-art-canvas,
+    canvas.article-web-art-android-bg-canvas,
+    canvas.article-web-art-android-canvas {
+        background: transparent!important;
+        mix-blend-mode: screen;
+    }
 }
 
 div.article-web-art-items-locked {

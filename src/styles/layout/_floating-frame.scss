@@ -51,19 +51,29 @@
     filter: blur(var(--ff-highlight-blur, 18px));
 }
 
-.floating-frame--transition {
+.floating-frame--transition,
+.floating-frame[data-floating-frame-transition="true"] {
     transition:
         transform 0.125s ease,
         filter 0.125s ease;
 }
 
-.floating-frame--active {
+.floating-frame.floating-frame--returning,
+.floating-frame[data-floating-frame-returning="true"] {
+    transition:
+        transform var(--ff-return-duration, 1.2s) cubic-bezier(0.22, 1, 0.36, 1),
+        filter var(--ff-return-duration, 1.2s) cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.floating-frame--active,
+.floating-frame[data-floating-frame-active="true"] {
     --ff-translate-y: var(--ff-hover-y, -1px);
     --ff-lift: var(--ff-hover-lift, 14px);
     --ff-filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.18));
 }
 
-.floating-frame--active::after {
+.floating-frame--active::after,
+.floating-frame[data-floating-frame-active="true"]::after {
     opacity: 1;
 }
 

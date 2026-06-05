@@ -12,15 +12,19 @@ function NavToolList({ railMode }) {
 
     const isExtendedRail = railMode === "extended"
     const railModeClass = isExtendedRail ?
-        `` :
+        `nav-tools-extended` :
         `nav-tools-short-rail`
     const toggleCaptionLayout = isExtendedRail ?
         "inline" :
         "stack"
 
+    const availableLanguages = language.getAvailableLanguages(false)
+    const availableThemes = theme.getAvailableThemes(false)
+    const supportsMultipleLanguages = availableLanguages.length >= 2
+    const supportsMultipleThemes = availableThemes.length >= 2
     const widgets = [
-        ...(language.supportsMultipleLanguages ? ["language"] : []),
-        ...(theme.supportsMultipleThemes ? [NavToolSettings.Options.THEME] : []),
+        ...(supportsMultipleLanguages ? ["language"] : []),
+        ...(supportsMultipleThemes ? [NavToolSettings.Options.THEME] : []),
     ]
 
     const orderedWidgets = [
@@ -31,6 +35,9 @@ function NavToolList({ railMode }) {
         ),
         ...widgets.filter(item => item === NavToolSettings.Options.THEME),
     ]
+
+    if(orderedWidgets.length === 0)
+        return null
 
     return (
         <div className={`nav-tools ${railModeClass}`}>

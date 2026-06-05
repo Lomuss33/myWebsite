@@ -9,7 +9,6 @@ import NavToolList from "./partials/NavToolList.jsx"
 import NavToolShrinkToggle from "./tools/NavToolShrinkToggle.jsx"
 import NavToolResumeDownloader from "./tools/NavToolResumeDownloader.jsx"
 import {useInput} from "../../providers/InputProvider.jsx"
-import {useLanguage} from "../../providers/LanguageProvider.jsx"
 
 const DESKTOP_RAIL_SEPARATOR_MIN_HEIGHT = 4
 const WIDE_DESKTOP_THRESHOLD = 1100
@@ -26,7 +25,7 @@ const EXTENDED_PROFILE_COMPRESSION_CONFIG = {
 }
 const SHORT_RAIL_HEIGHT_CONFIG = {
     profile: { floor: 58, base: 110 },
-    row: { floor: 16, base: 34, max: 42 }
+    row: { floor: 16, base: 34, max: 84 }
 }
 const MANUAL_RAIL_BY_ZONE_DEFAULTS = {
     wide: null,
@@ -45,7 +44,6 @@ function NavSidebar({ profile, links }) {
     const constants = useConstants()
     const viewport = useViewport()
     const input = useInput()
-    const language = useLanguage()
 
     const [manualRailByZone, setManualRailByZone] = useState(MANUAL_RAIL_BY_ZONE_DEFAULTS)
     const [measuredRailHeight, setMeasuredRailHeight] = useState(0)
@@ -443,9 +441,7 @@ function NavSidebar({ profile, links }) {
         <div className={`nav-short-rail-resume-band`}>
             <NavToolResumeDownloader showTooltip={true}
                                      menuClassName={"nav-tools-popup-menu"}
-                                     toggleClassName={"nav-short-rail-resume-pill"}
-                                     toggleCaption={language.getString("nav_tool_resume")}
-                                     toggleCaptionLayout={"inline"}/>
+                                     toggleClassName={"nav-short-rail-resume-pill"}/>
         </div>
     ) : null
 

@@ -83,6 +83,7 @@ const MINESWEEPER_COLORS = [
 ]
 
 const INITIAL_WEB_ART_ITEM_MOUNT_COUNT = 2
+const MOBILE_WEB_ART_OPEN_TILE_LIMIT = 6
 const PATRONUS_LAYER_SRCS = [
     "/images/web_art/patronus/bg.png",
     "/images/web_art/patronus/layer-1.png",
@@ -91,6 +92,51 @@ const PATRONUS_LAYER_SRCS = [
     "/images/web_art/patronus/layer-5.png",
     "/images/web_art/patronus/layer-6.png"
 ]
+
+function _isMobileWebArtLayout() {
+    if(typeof window === "undefined" || !window.matchMedia)
+        return false
+
+    return window.matchMedia("(pointer: coarse), (max-width: 767px)").matches
+}
+
+function _limitWebArtTileSetForMobile(tileIds) {
+    const next = new Set(tileIds)
+    if(!_isMobileWebArtLayout())
+        return next
+
+    while(next.size > MOBILE_WEB_ART_OPEN_TILE_LIMIT) {
+        next.delete(next.values().next().value)
+    }
+
+    return next
+}
+
+function _getOpenAllWebArtTileIds(tileIds) {
+    if(!_isMobileWebArtLayout())
+        return new Set(tileIds)
+
+    const next = new Set()
+    for(const tileId of tileIds) {
+        if(next.size >= MOBILE_WEB_ART_OPEN_TILE_LIMIT)
+            break
+        next.add(tileId)
+    }
+
+    return next
+}
+
+function _tileSetContainsAll(tileIds, targetTileIds) {
+    if(targetTileIds.size === 0)
+        return false
+
+    for(const tileId of targetTileIds) {
+        if(!tileIds.has(tileId))
+            return false
+    }
+
+    return true
+}
 
 function _createMinesweeperBoard(rows = MINESWEEPER_ROWS, cols = MINESWEEPER_COLS, mineCount = MINESWEEPER_MINES) {
     const total = rows * cols
@@ -510,7 +556,7 @@ function ArticleWebArt({ dataWrapper, id }) {
             if(current.has(uniqueId)) return current
             const next = new Set(current)
             next.add(uniqueId)
-            return next
+            return _limitWebArtTileSetForMobile(next)
         })
     }, [])
 
@@ -529,9 +575,10 @@ function ArticleWebArt({ dataWrapper, id }) {
     }, [])
 
     const openAllArtTiles = useCallback(() => {
-        setMountedTileIds(new Set(allTileIds))
-        setOpenTileIds(new Set(allTileIds))
-        setSendYoursPreviewOpen(true)
+        const nextTileIds = _getOpenAllWebArtTileIds(allTileIds)
+        setMountedTileIds(nextTileIds)
+        setOpenTileIds(new Set(nextTileIds))
+        setSendYoursPreviewOpen(!_isMobileWebArtLayout())
     }, [allTileIds])
 
     const onIntroEnter = useCallback(({ openAll = false } = {}) => {
@@ -599,7 +646,7 @@ function ArticleWebArt({ dataWrapper, id }) {
             if(current.has(uniqueId)) return current
             const next = new Set(current)
             next.add(uniqueId)
-            return next
+            return _limitWebArtTileSetForMobile(next)
         })
     }, [mountTile])
 
@@ -619,10 +666,12 @@ function ArticleWebArt({ dataWrapper, id }) {
         })
     }, [])
 
-    const areAllArtTilesOpen = allTileIds.size > 0 && openTileIds.size >= allTileIds.size
+    const openAllTargetTileIds = _getOpenAllWebArtTileIds(allTileIds)
+    const areAllArtTilesOpen = _tileSetContainsAll(openTileIds, openAllTargetTileIds)
 
     const toggleAllArtTiles = useCallback(() => {
-        if(allTileIds.size > 0 && openTileIds.size >= allTileIds.size) {
+        const nextTargetTileIds = _getOpenAllWebArtTileIds(allTileIds)
+        if(_tileSetContainsAll(openTileIds, nextTargetTileIds)) {
             setOpenTileIds(new Set())
             setMountedTileIds(new Set())
             setSendYoursPreviewOpen(false)
@@ -630,7 +679,7 @@ function ArticleWebArt({ dataWrapper, id }) {
         }
 
         openAllArtTiles()
-    }, [allTileIds, openAllArtTiles, openTileIds.size])
+    }, [allTileIds, openAllArtTiles, openTileIds])
 
     const onIntroHide = useCallback(() => {
         resetArtState()
@@ -5460,6 +5509,4 @@ function PatronusTile({ locked = false }) {
 }
 
 export default ArticleWebArt
-
-
 

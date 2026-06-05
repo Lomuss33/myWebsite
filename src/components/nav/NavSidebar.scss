@@ -122,26 +122,25 @@ nav.nav-sidebar-short-rail {
     --nav-short-rail-visual-density: 1;
     --nav-short-rail-profile-height: 110px;
     --nav-short-rail-profile-padding: 0px;
-    --nav-short-rail-name-band-height: calc(0.62rem + 0.38rem * var(--nav-short-rail-visual-density));
+    --nav-short-rail-name-band-height: clamp(1.45rem, calc(var(--nav-short-rail-row-height) * 0.42), 1.9rem);
     --nav-short-rail-row-height: 34px;
     --nav-short-rail-tools-height: var(--nav-short-rail-row-height);
     --nav-short-rail-avatar-size: calc(14px + 40px * var(--nav-short-rail-visual-density));
     --nav-short-rail-status-offset: calc(4px + 6px * var(--nav-short-rail-visual-density));
     --nav-short-rail-profile-padding: calc(1px + 3px * var(--nav-short-rail-visual-density));
-    --nav-short-rail-link-icon-width: calc(10px + 18px * var(--nav-short-rail-visual-density));
-    --nav-short-rail-link-icon-size: calc(0.48rem + 0.40rem * var(--nav-short-rail-visual-density));
+    --nav-short-rail-link-icon-width: clamp(28px, calc(var(--nav-short-rail-row-height) * 0.72), 58px);
+    --nav-short-rail-link-icon-size: clamp(1.45rem, calc(var(--nav-short-rail-row-height) * 0.72), 2.45rem);
     --nav-short-rail-link-padding-inline: calc(0px + 3px * var(--nav-short-rail-visual-density));
     --nav-short-rail-link-accent-bar-width: calc(2px + 2px * var(--nav-short-rail-visual-density));
-    --nav-short-rail-link-accent-bar-height: calc(6px + 16px * var(--nav-short-rail-visual-density));
+    --nav-short-rail-link-accent-bar-height: clamp(16px, calc(var(--nav-short-rail-row-height) * 0.42), 36px);
     --nav-short-rail-link-accent-dot-size: calc(2px + 3px * var(--nav-short-rail-visual-density));
     --nav-short-rail-link-accent-dot-offset-x: calc(4px + 4px * var(--nav-short-rail-visual-density));
     --nav-short-rail-link-hover-scale: calc(1.01 + 0.04 * var(--nav-short-rail-visual-density));
-    --nav-short-rail-tool-icon-box-size: calc(9px + 16px * var(--nav-short-rail-visual-density));
-    --nav-short-rail-tool-icon-font-size: calc(0.48rem + 0.32rem * var(--nav-short-rail-visual-density));
+    --nav-short-rail-tool-icon-box-size: clamp(26px, calc(var(--nav-short-rail-row-height) * 0.62), 52px);
+    --nav-short-rail-tool-icon-font-size: clamp(0.95rem, calc(var(--nav-short-rail-row-height) * 0.38), 1.9rem);
+    --nav-short-rail-resume-icon-box-size: clamp(32px, calc(var(--nav-short-rail-row-height) * 0.94), 58px);
+    --nav-short-rail-resume-icon-font-size: clamp(1.4rem, calc(var(--nav-short-rail-row-height) * 0.68), 2.4rem);
     --nav-short-rail-tool-divider-inset: calc(2px + 7px * var(--nav-short-rail-visual-density));
-    --nav-short-rail-resume-icon-box-size: calc(8px + 14px * var(--nav-short-rail-visual-density));
-    --nav-short-rail-resume-font-size: calc(0.32rem + 0.18rem * var(--nav-short-rail-visual-density));
-    --nav-short-rail-resume-caption-offset: 0px;
 
     div.nav-sidebar-card-wrapper {
         width: var(--width);
@@ -149,27 +148,38 @@ nav.nav-sidebar-short-rail {
     }
 
     div.nav-short-rail-stack {
-        display: flex;
+        display: grid;
         flex: 1 1 auto;
-        flex-direction: column;
+        grid-template-rows:
+            var(--nav-short-rail-resume-height)
+            auto
+            minmax(0, 1fr)
+            var(--nav-short-rail-row-height);
         min-height: 0;
         width: 100%;
         background: var(--theme-nav-surface);
         overflow: visible;
 
-        > div.nav-short-rail-resume-band,
+        > div.nav-short-rail-resume-band {
+            grid-row: 1;
+        }
+
         > div.nav-tools {
-            flex: 0 0 auto;
+            grid-row: 4;
+            align-self: end;
+            height: var(--nav-short-rail-row-height);
+            min-height: var(--nav-short-rail-row-height);
+            max-height: var(--nav-short-rail-row-height);
         }
 
         > div.nav-link-list-shell {
-            flex: 0 0 auto;
+            grid-row: 2;
             min-height: 0;
             background: transparent;
         }
 
         > div.nav-short-rail-separator {
-            flex: 1 1 auto;
+            grid-row: 3;
             min-height: 0;
         }
     }
@@ -258,7 +268,9 @@ nav.nav-sidebar-short-rail {
 
     div.nav-tools.nav-tools-short-rail,
     div.nav-tools.nav-tools-short-rail div.nav-tools-item {
+        height: var(--nav-tools-height);
         min-height: var(--nav-tools-height);
+        max-height: var(--nav-tools-height);
     }
 }
 
@@ -297,12 +309,11 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
         min-width: 0;
         border: 0;
         border-radius: 0;
-        padding-inline: calc(6px + 2px * var(--nav-short-rail-visual-density, 1));
+        padding: 0;
         overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: calc(1px + 1px * var(--nav-short-rail-visual-density, 1));
         background: transparent;
         box-shadow: none;
         transition:
@@ -311,41 +322,36 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
             color 0.18s ease;
 
         span.btn-option-picker-toggle-row {
-            width: auto;
-            flex: 0 0 auto;
-            height: auto;
+            width: 100%;
+            height: 100%;
+            flex: 1 1 auto;
             min-height: 0;
             margin-left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         div.btn-option-picker-icon.btn-option-picker-icon-size-2 {
-            width: var(--nav-short-rail-resume-icon-box-size, 40px);
-            min-width: var(--nav-short-rail-resume-icon-box-size, 40px);
-            height: var(--nav-short-rail-resume-icon-box-size, 40px);
-        }
-
-        span.btn-option-picker-toggle-caption {
-            font-size: var(--nav-short-rail-resume-font-size, 0.66rem);
-            font-weight: 600;
-            letter-spacing: -0.01em;
-            line-height: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: clip;
-            flex: 1 1 auto;
-            min-width: 0;
-            max-width: 100%;
-            text-align: left;
-            margin-left: var(--nav-short-rail-resume-caption-offset, 0px);
-        }
-
-        i.fa-icon,
-        span.btn-option-picker-toggle-caption {
-            color: color-mix(in srgb, var(--theme-nav-text) 88%, var(--theme-secondary) 12%);
+            width: var(--nav-short-rail-resume-icon-box-size);
+            min-width: var(--nav-short-rail-resume-icon-box-size);
+            height: var(--nav-short-rail-resume-icon-box-size);
+            flex: 0 0 var(--nav-short-rail-resume-icon-box-size);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         i.fa-icon {
+            font-size: var(--nav-short-rail-resume-icon-font-size);
+            line-height: 1;
+            color: color-mix(in srgb, var(--theme-nav-text) 88%, var(--theme-secondary) 12%);
             opacity: 0.92;
+            background-size: 108% !important;
+        }
+
+        span.btn-option-picker-toggle-caption {
+            display: none;
         }
 
         &::after {
@@ -362,8 +368,7 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
                 inset 0 1px 0 rgba(255, 255, 255, 0.12),
                 inset 0 -2px 0 color-mix(in srgb, var(--theme-secondary) 38%, transparent 62%);
 
-            i.fa-icon,
-            span.btn-option-picker-toggle-caption {
+            i.fa-icon {
                 color: var(--theme-secondary);
             }
         }
@@ -403,8 +408,7 @@ div.nav-short-rail-separator {
         background: transparent;
         box-shadow: none;
 
-        i.fa-icon,
-        span.btn-option-picker-toggle-caption {
+        i.fa-icon {
             color: color-mix(in srgb, var(--theme-secondary) 68%, white 32%);
         }
 
@@ -423,21 +427,29 @@ div.nav-short-rail-separator {
 div.nav-sidebar-rail-stack {
     --nav-rail-separator-height: 4px;
 
-    display: flex;
+    display: grid;
     flex: 1 1 auto;
-    flex-direction: column;
+    grid-template-rows:
+        minmax(0, 1fr)
+        var(--nav-rail-separator-height)
+        var(--nav-tools-height, var(--nav-link-target-height, 48px));
     min-height: 0;
     width: 100%;
     background: var(--theme-nav-surface);
     overflow: visible;
 
     > div.nav-link-list-shell {
-        flex: 1 1 auto;
+        grid-row: 1;
         min-height: 0;
     }
 
+    > div.nav-rail-separator {
+        grid-row: 2;
+    }
+
     > div.nav-tools {
-        flex: 0 0 auto;
+        grid-row: 3;
+        align-self: end;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
     }

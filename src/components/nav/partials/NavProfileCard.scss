@@ -135,7 +135,7 @@ div.nav-profile-card {
                 transform 0.28s ease;
         }
 
-        &:hover:not(.floating-frame--paused) {
+        &:hover:not(.floating-frame--paused):not([data-floating-frame-paused="true"]) {
             --ff-translate-y: -1px;
             filter: saturate(1.04);
             background:
@@ -153,16 +153,18 @@ div.nav-profile-card {
                 inset 0 -12px 22px rgba(0, 0, 0, 0.22);
         }
 
-        &:hover:not(.floating-frame--paused)::before,
-        &:focus-visible::before,
-        &.floating-frame--active::before {
+        &:hover:not(.floating-frame--paused):not([data-floating-frame-paused="true"])::before,
+        &:focus-visible:not(.floating-frame--paused):not([data-floating-frame-paused="true"])::before,
+        &.floating-frame--active::before,
+        &[data-floating-frame-active="true"]::before {
             opacity: 0.9;
             transform: scale(1.01);
         }
 
-        &:hover:not(.floating-frame--paused)::after,
-        &:focus-visible::after,
-        &.floating-frame--active::after {
+        &:hover:not(.floating-frame--paused):not([data-floating-frame-paused="true"])::after,
+        &:focus-visible:not(.floating-frame--paused):not([data-floating-frame-paused="true"])::after,
+        &.floating-frame--active::after,
+        &[data-floating-frame-active="true"]::after {
             filter: grayscale(0) saturate(1.08) brightness(1.06);
             opacity: 1;
             animation-play-state: running;
@@ -240,16 +242,18 @@ div.nav-profile-card {
         }
     }
 
-    &-media:hover:not(.floating-frame--paused) &-avatar-switch::after,
-    &-media:focus-visible &-avatar-switch::after,
-    &-media.floating-frame--active &-avatar-switch::after {
+    &-media:hover:not(.floating-frame--paused):not([data-floating-frame-paused="true"]) &-avatar-switch::after,
+    &-media:focus-visible:not(.floating-frame--paused):not([data-floating-frame-paused="true"]) &-avatar-switch::after,
+    &-media.floating-frame--active &-avatar-switch::after,
+    &-media[data-floating-frame-active="true"] &-avatar-switch::after {
         opacity: 0.9;
         transform: translateY(-1px);
     }
 
-    &-media:hover:not(.floating-frame--paused) &-avatar-switch::before,
-    &-media:focus-visible &-avatar-switch::before,
-    &-media.floating-frame--active &-avatar-switch::before {
+    &-media:hover:not(.floating-frame--paused):not([data-floating-frame-paused="true"]) &-avatar-switch::before,
+    &-media:focus-visible:not(.floating-frame--paused):not([data-floating-frame-paused="true"]) &-avatar-switch::before,
+    &-media.floating-frame--active &-avatar-switch::before,
+    &-media[data-floating-frame-active="true"] &-avatar-switch::before {
         opacity: 0.96;
         filter: brightness(1.08);
     }
@@ -456,15 +460,15 @@ div.nav-profile-card {
     div.nav-profile-card-desktop-action-stack {
         position: absolute;
         left: -0.48rem;
-        top: 36.8%;
+        top: 33.5%;
         transform: translateY(-50%) scale(var(--nav-extended-action-scale, 1));
         transform-origin: left center;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 0.02rem;
-        width: 4rem;
+        gap: 0.2rem;
+        width: 5.1rem;
         z-index: 4;
         opacity: calc(0.4 + (0.6 * var(--nav-extended-action-scale, 1)));
         transition:
@@ -483,16 +487,24 @@ div.nav-profile-card {
         display: flex;
         align-items: center;
         justify-content: center;
+        min-height: 4.4rem;
+    }
+
+    div.nav-profile-card-desktop-action-resume {
+        margin-top: 0;
+        transform: translateY(0.9rem);
     }
 
     div.nav-profile-card-desktop-action-audio {
-        margin-top: -0.96rem;
+        margin-top: 0.2rem;
     }
 
     div.nav-profile-card-desktop-action-stack div.audio-button-wrapper-size-default button.audio-button,
     div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button {
-        width: 3.15rem;
-        height: 3.15rem;
+        width: 4.2rem;
+        height: 4.2rem;
+        min-width: 4.2rem;
+        min-height: 4.2rem;
         margin-left: 0;
         color: color-mix(in srgb, #d9dee6 76%, var(--theme-primary) 24%);
         position: relative;
@@ -522,9 +534,9 @@ div.nav-profile-card {
     }
 
     div.nav-profile-card-desktop-action-stack button.btn-option-picker-toggle {
-        width: 3.85rem;
-        height: 3.85rem;
-        min-height: 3.85rem;
+        width: 4.9rem;
+        height: 4.9rem;
+        min-height: 4.9rem;
         padding: 0;
         border-radius: 1.35rem;
         background: transparent;
@@ -620,8 +632,8 @@ div.nav-profile-card {
     }
 
     div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button svg.audio-button-icon {
-        width: 78%;
-        height: 78%;
+        width: 72%;
+        height: 72%;
         position: relative;
         z-index: 2;
         filter: none;
@@ -656,10 +668,10 @@ div.nav-profile-card {
     }
 
     div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-resume-toggle div.btn-option-picker-icon.btn-option-picker-icon-size-2 {
-        width: 2.16rem;
-        min-width: 2.16rem;
-        height: 2.16rem;
-        flex: 0 0 2.16rem;
+        width: 2.48rem;
+        min-width: 2.48rem;
+        height: 2.48rem;
+        flex: 0 0 2.48rem;
     }
 
     div.nav-profile-card-desktop-action-stack div.dropdown-menu.nav-profile-card-desktop-resume-menu {
@@ -682,7 +694,7 @@ div.nav-profile-card {
 
     &:has(div.nav-profile-card-desktop-action-stack) {
         div.nav-profile-card-media {
-            margin-left: 2.16rem;
+            margin-left: 3rem;
             margin-top: -0.04rem;
             margin-bottom: 0.6rem;
         }
@@ -1479,13 +1491,15 @@ div.nav-profile-card-short-rail {
         right: 0;
         bottom: 0;
         display: flex;
-        align-items: center;
+        align-items: flex-end;
         justify-content: center;
         min-width: 0;
+        height: var(--nav-short-rail-name-height);
         min-height: var(--nav-short-rail-name-height);
-        padding: 0.04rem 0.22rem 0.12rem;
+        padding: 0.18rem 0.22rem 0.04rem;
         pointer-events: none;
         z-index: 1;
+        box-sizing: border-box;
     }
 
     h1.nav-profile-card-name {
@@ -1493,8 +1507,8 @@ div.nav-profile-card-short-rail {
         width: 100%;
         max-width: 100%;
         margin: 0;
-        font-size: calc(0.42rem + 0.18rem * var(--nav-short-rail-visual-density, 1)) !important;
-        line-height: 1 !important;
+        font-size: clamp(0.82rem, calc(var(--nav-short-rail-name-height) * 0.45), 1.08rem) !important;
+        line-height: 1.1 !important;
         letter-spacing: 0.01em;
         text-align: center;
         text-shadow: 0 1px 1px rgba(0, 0, 0, 0.22);

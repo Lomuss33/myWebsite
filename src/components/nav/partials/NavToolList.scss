@@ -320,34 +320,50 @@ div.nav-tools {
     }
 
     nav.nav-sidebar-extended {
-        div.nav-tools {
+        div.nav-tools.nav-tools-extended {
+            --nav-tools-icon-box-size: 30px;
+            --nav-tools-icon-font-size: 1.62rem;
+            --nav-tools-inline-gap: 9px;
+
             div.nav-tools-item-language,
             div.nav-tools-item-theme {
                 button.btn-option-picker-toggle.btn-option-picker-toggle-caption-inline {
-                    gap: 5px;
-                    padding-inline: 0.4rem;
+                    gap: var(--nav-tools-inline-gap);
+                    padding-inline: 0.25rem;
 
                     span.btn-option-picker-toggle-caption {
                         max-width: none;
                         overflow: visible;
                         text-overflow: clip;
-                        font-size: 0.6rem;
-                        letter-spacing: -0.01em;
+                        font-size: 0.84rem;
+                        font-weight: 700;
+                        letter-spacing: 0;
+                        line-height: 1;
                     }
 
                     div.btn-option-picker-icon.btn-option-picker-icon-size-2 {
                         i.fa-icon {
-                            font-size: 1.3rem;
+                            font-size: var(--nav-tools-icon-font-size);
                         }
                     }
+                }
+            }
+
+            div.nav-tools-item-theme {
+                --nav-tools-icon-box-size: 30px;
+                --nav-tools-icon-font-size: 1.62rem;
+
+                button.btn-option-picker-toggle i.fa-icon.fa-sun,
+                button.btn-option-picker-toggle i.fa-icon.fa-moon {
+                    background-size: 108% !important;
                 }
             }
 
             div.nav-tools-item-language {
                 button.btn-option-picker-toggle.nav-tool-language-toggle.btn-option-picker-toggle-caption-inline {
                     div.btn-option-picker-icon.btn-option-picker-icon-size-2 img {
-                        width: 88%;
-                        height: 88%;
+                        width: 96%;
+                        height: 96%;
                     }
                 }
             }
@@ -717,6 +733,7 @@ div.nav-tools-short-rail {
     gap: 0;
     height: var(--nav-tools-height);
     min-height: var(--nav-tools-height);
+    max-height: var(--nav-tools-height);
 
     span.btn-option-picker-toggle-caption {
         display: none;
@@ -727,7 +744,17 @@ div.nav-tools-short-rail {
         min-width: 0;
         height: 100%;
         min-height: var(--nav-tools-height);
+        max-height: var(--nav-tools-height);
         padding-inline: 0;
+
+        div.btn-option-picker,
+        div.dropdown,
+        div.dropup,
+        button.btn-option-picker-toggle {
+            height: 100%;
+            min-height: var(--nav-tools-height);
+            max-height: var(--nav-tools-height);
+        }
     }
 
     div.nav-tools-item-language {
@@ -750,6 +777,9 @@ div.nav-tools-short-rail {
     }
 
     div.nav-tools-item-theme {
+        --nav-tools-icon-box-size: var(--nav-short-rail-tool-icon-box-size);
+        --nav-tools-icon-font-size: var(--nav-short-rail-tool-icon-font-size);
+
         button.btn-option-picker-toggle {
             padding-inline: 0;
         }
@@ -766,7 +796,7 @@ div.nav-tools-short-rail {
             width: 100%;
             height: 100%;
             background-position: center;
-            background-size: 100% !important;
+            background-size: 108% !important;
         }
     }
 }

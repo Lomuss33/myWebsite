@@ -1,5 +1,3 @@
-import "swiper/swiper-bundle.css"
-import "primeicons/primeicons.css"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "./styles/app.scss"
 import {StrictMode, useEffect, useState} from 'react'

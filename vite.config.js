@@ -35,6 +35,15 @@ export default defineConfig({
             output: {
                 manualChunks(id) {
                     if (id.includes('node_modules')) {
+                        if (id.includes('matter-js'))
+                            return 'physics';
+
+                        if (id.includes('@emailjs'))
+                            return 'email';
+
+                        if (id.includes('node_modules/qrcode'))
+                            return 'qrcode';
+
                         if (id.includes('three'))
                             return 'three';
 

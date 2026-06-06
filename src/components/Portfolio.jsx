@@ -13,9 +13,11 @@ function Portfolio() {
     const language = useLanguage()
     const location = useLocation()
     const navigation = useNavigation()
+    const currentSection = navigation?.targetSection
 
     useEffect(() => {
         if(typeof window === "undefined") return
+        if(currentSection?.id !== "my-art") return
         if(navigator?.connection?.saveData) return
 
         const prefetch = () => {
@@ -30,7 +32,7 @@ function Portfolio() {
 
         const id = window.setTimeout(prefetch, 1500)
         return () => window.clearTimeout(id)
-    }, [])
+    }, [currentSection?.id])
 
     if(!data || !language || !location || !navigation) {
         return null
@@ -40,7 +42,6 @@ function Portfolio() {
     const settings = data.getSettings()
     const sections = data.getSections()
 
-    const currentSection = navigation.targetSection
     const previousSection = navigation.previousSection
     const sectionLinks = navigation.sectionLinks
     const categoryLinks = navigation.categoryLinks

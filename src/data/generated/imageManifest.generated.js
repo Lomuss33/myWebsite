@@ -191,17 +191,17 @@ const imageManifest = {
         "width": 1106,
         "height": 1106
     },
-    "/images/contant/profilePix.webp": {
-        "src": "/images/__responsive/images/contant/profilePix-w1440.webp",
-        "srcSet": "/images/__responsive/images/contant/profilePix-w160.webp 160w, /images/__responsive/images/contant/profilePix-w320.webp 320w, /images/__responsive/images/contant/profilePix-w480.webp 480w, /images/__responsive/images/contant/profilePix-w640.webp 640w, /images/__responsive/images/contant/profilePix-w960.webp 960w, /images/__responsive/images/contant/profilePix-w1280.webp 1280w, /images/__responsive/images/contant/profilePix-w1440.webp 1440w",
-        "width": 1440,
-        "height": 1440
-    },
     "/images/contant/profil_dog.webp": {
         "src": "/images/__responsive/images/contant/profil_dog-w1080.webp",
         "srcSet": "/images/__responsive/images/contant/profil_dog-w160.webp 160w, /images/__responsive/images/contant/profil_dog-w320.webp 320w, /images/__responsive/images/contant/profil_dog-w480.webp 480w, /images/__responsive/images/contant/profil_dog-w640.webp 640w, /images/__responsive/images/contant/profil_dog-w960.webp 960w, /images/__responsive/images/contant/profil_dog-w1080.webp 1080w",
         "width": 1080,
         "height": 1080
+    },
+    "/images/contant/profilePix.webp": {
+        "src": "/images/__responsive/images/contant/profilePix-w1440.webp",
+        "srcSet": "/images/__responsive/images/contant/profilePix-w160.webp 160w, /images/__responsive/images/contant/profilePix-w320.webp 320w, /images/__responsive/images/contant/profilePix-w480.webp 480w, /images/__responsive/images/contant/profilePix-w640.webp 640w, /images/__responsive/images/contant/profilePix-w960.webp 960w, /images/__responsive/images/contant/profilePix-w1280.webp 1280w, /images/__responsive/images/contant/profilePix-w1440.webp 1440w",
+        "width": 1440,
+        "height": 1440
     },
     "/images/contant/provadis_logo.webp": {
         "src": "/images/__responsive/images/contant/provadis_logo-w180.webp",
@@ -299,6 +299,12 @@ const imageManifest = {
         "width": 240,
         "height": 240
     },
+    "/images/hardware/wood-products-deutschland.webp": {
+        "src": "/images/__responsive/images/hardware/wood-products-deutschland-w1414.webp",
+        "srcSet": "/images/__responsive/images/hardware/wood-products-deutschland-w160.webp 160w, /images/__responsive/images/hardware/wood-products-deutschland-w320.webp 320w, /images/__responsive/images/hardware/wood-products-deutschland-w480.webp 480w, /images/__responsive/images/hardware/wood-products-deutschland-w640.webp 640w, /images/__responsive/images/hardware/wood-products-deutschland-w960.webp 960w, /images/__responsive/images/hardware/wood-products-deutschland-w1280.webp 1280w, /images/__responsive/images/hardware/wood-products-deutschland-w1414.webp 1414w",
+        "width": 1414,
+        "height": 2000
+    },
     "/images/private/LovroMusic2025.webp": {
         "src": "/images/__responsive/images/private/LovroMusic2025-w1717.webp",
         "srcSet": "/images/__responsive/images/private/LovroMusic2025-w160.webp 160w, /images/__responsive/images/private/LovroMusic2025-w320.webp 320w, /images/__responsive/images/private/LovroMusic2025-w480.webp 480w, /images/__responsive/images/private/LovroMusic2025-w640.webp 640w, /images/__responsive/images/private/LovroMusic2025-w960.webp 960w, /images/__responsive/images/private/LovroMusic2025-w1280.webp 1280w, /images/__responsive/images/private/LovroMusic2025-w1600.webp 1600w, /images/__responsive/images/private/LovroMusic2025-w1717.webp 1717w",
@@ -358,6 +364,48 @@ const imageManifest = {
         "srcSet": "/images/__responsive/images/personal_art/de_view-w160.webp 160w, /images/__responsive/images/personal_art/de_view-w320.webp 320w, /images/__responsive/images/personal_art/de_view-w480.webp 480w, /images/__responsive/images/personal_art/de_view-w640.webp 640w, /images/__responsive/images/personal_art/de_view-w960.webp 960w, /images/__responsive/images/personal_art/de_view-w1280.webp 1280w, /images/__responsive/images/personal_art/de_view-w1600.webp 1600w, /images/__responsive/images/personal_art/de_view-w3072.webp 3072w",
         "width": 3072,
         "height": 3072
+    },
+    "/images/personal_art/digital_expression/ai_prompt_01.webp": {
+        "src": "/images/__responsive/images/personal_art/digital_expression/ai_prompt_01-w1024.webp",
+        "srcSet": "/images/__responsive/images/personal_art/digital_expression/ai_prompt_01-w160.webp 160w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_01-w320.webp 320w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_01-w480.webp 480w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_01-w640.webp 640w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_01-w960.webp 960w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_01-w1024.webp 1024w",
+        "width": 1024,
+        "height": 1536
+    },
+    "/images/personal_art/digital_expression/ai_prompt_02.webp": {
+        "src": "/images/__responsive/images/personal_art/digital_expression/ai_prompt_02-w1122.webp",
+        "srcSet": "/images/__responsive/images/personal_art/digital_expression/ai_prompt_02-w160.webp 160w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_02-w320.webp 320w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_02-w480.webp 480w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_02-w640.webp 640w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_02-w960.webp 960w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_02-w1122.webp 1122w",
+        "width": 1122,
+        "height": 1402
+    },
+    "/images/personal_art/digital_expression/ai_prompt_03.webp": {
+        "src": "/images/__responsive/images/personal_art/digital_expression/ai_prompt_03-w1313.webp",
+        "srcSet": "/images/__responsive/images/personal_art/digital_expression/ai_prompt_03-w160.webp 160w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_03-w320.webp 320w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_03-w480.webp 480w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_03-w640.webp 640w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_03-w960.webp 960w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_03-w1280.webp 1280w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_03-w1313.webp 1313w",
+        "width": 1313,
+        "height": 1198
+    },
+    "/images/personal_art/digital_expression/ai_prompt_04.webp": {
+        "src": "/images/__responsive/images/personal_art/digital_expression/ai_prompt_04-w1536.webp",
+        "srcSet": "/images/__responsive/images/personal_art/digital_expression/ai_prompt_04-w160.webp 160w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_04-w320.webp 320w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_04-w480.webp 480w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_04-w640.webp 640w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_04-w960.webp 960w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_04-w1280.webp 1280w, /images/__responsive/images/personal_art/digital_expression/ai_prompt_04-w1536.webp 1536w",
+        "width": 1536,
+        "height": 1024
+    },
+    "/images/personal_art/digital_expression/favorite_infographic_01.webp": {
+        "src": "/images/__responsive/images/personal_art/digital_expression/favorite_infographic_01-w862.webp",
+        "srcSet": "/images/__responsive/images/personal_art/digital_expression/favorite_infographic_01-w160.webp 160w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_01-w320.webp 320w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_01-w480.webp 480w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_01-w640.webp 640w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_01-w862.webp 862w",
+        "width": 862,
+        "height": 492
+    },
+    "/images/personal_art/digital_expression/favorite_infographic_02.webp": {
+        "src": "/images/__responsive/images/personal_art/digital_expression/favorite_infographic_02-w1200.webp",
+        "srcSet": "/images/__responsive/images/personal_art/digital_expression/favorite_infographic_02-w160.webp 160w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_02-w320.webp 320w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_02-w480.webp 480w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_02-w640.webp 640w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_02-w960.webp 960w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_02-w1200.webp 1200w",
+        "width": 1200,
+        "height": 675
+    },
+    "/images/personal_art/digital_expression/favorite_infographic_03.webp": {
+        "src": "/images/__responsive/images/personal_art/digital_expression/favorite_infographic_03-w633.webp",
+        "srcSet": "/images/__responsive/images/personal_art/digital_expression/favorite_infographic_03-w160.webp 160w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_03-w320.webp 320w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_03-w480.webp 480w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_03-w633.webp 633w",
+        "width": 633,
+        "height": 523
     },
     "/images/personal_art/gre_meteora.webp": {
         "src": "/images/__responsive/images/personal_art/gre_meteora-w2421.webp",

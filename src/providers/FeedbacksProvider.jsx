@@ -4,7 +4,7 @@
  * @description This provider is responsible for managing feedbacks, modals and UI interactions.
  */
 
-import React, {createContext, useContext, useEffect, useRef, useState} from 'react'
+import React, {Suspense, createContext, lazy, useContext, useEffect, useRef, useState} from 'react'
 import {useUtils} from "../hooks/utils.js"
 import {useScheduler} from "../hooks/scheduler.js"
 import {useLanguage} from "./LanguageProvider.jsx"
@@ -15,9 +15,10 @@ import MedievalCursorLayer from "../components/mouse/MedievalCursorLayer.jsx"
 import NotificationsLayer from "../components/notifications/NotificationsLayer.jsx"
 import YoutubeVideoModal from "../components/modals/YoutubeVideoModal.jsx"
 import ConfirmationWindowModal from "../components/modals/ConfirmationWindowModal.jsx"
-import GalleryModal from "../components/modals/GalleryModal.jsx"
-import PhoneQrModal from "../components/modals/PhoneQrModal.jsx"
-import ResumeEmailModal from "../components/modals/ResumeEmailModal.jsx"
+
+const GalleryModal = lazy(() => import("../components/modals/GalleryModal.jsx"))
+const PhoneQrModal = lazy(() => import("../components/modals/PhoneQrModal.jsx"))
+const ResumeEmailModal = lazy(() => import("../components/modals/ResumeEmailModal.jsx"))
 
 const CURSOR_MODES = {
     MAGIC: "magic",
@@ -285,14 +286,26 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
                                          })
                                      }}/>
 
-            <GalleryModal target={displayingGallery}
-                          onDismiss={closeGallery}/>
+            {displayingGallery && (
+                <Suspense fallback={null}>
+                    <GalleryModal target={displayingGallery}
+                                  onDismiss={closeGallery}/>
+                </Suspense>
+            )}
 
-            <PhoneQrModal target={displayingPhoneQr}
-                          onDismiss={closePhoneQr}/>
+            {displayingPhoneQr && (
+                <Suspense fallback={null}>
+                    <PhoneQrModal target={displayingPhoneQr}
+                                  onDismiss={closePhoneQr}/>
+                </Suspense>
+            )}
 
-            <ResumeEmailModal target={displayingResumeEmail}
-                              onDismiss={closeResumeEmail}/>
+            {displayingResumeEmail && (
+                <Suspense fallback={null}>
+                    <ResumeEmailModal target={displayingResumeEmail}
+                                      onDismiss={closeResumeEmail}/>
+                </Suspense>
+            )}
 
             {children}
         </FeedbacksContext.Provider>

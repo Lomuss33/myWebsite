@@ -76,7 +76,7 @@ nav.nav-sidebar {
 
     button.nav-sidebar-btn-toggle {
         position: absolute;
-        right: -14px;
+        right: 8px;
         top: 20px;
         z-index: calc($z-index-sidebar + 1);
         border-radius: 999px;
@@ -92,6 +92,10 @@ nav.nav-sidebar-extended {
         height: auto;
         min-height: var(--nav-extended-profile-height);
         max-height: none;
+    }
+
+    div.nav-link-list-shell {
+        overflow: hidden;
     }
 }
 

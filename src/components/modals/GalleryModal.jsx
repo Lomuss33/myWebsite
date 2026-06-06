@@ -1,4 +1,5 @@
 import "./GalleryModal.scss"
+import "swiper/swiper-bundle.css"
 import React, {useEffect, useState} from 'react'
 import {ModalWrapper, ModalWrapperTitle, ModalWrapperBody} from "./base/ModalWrapper"
 import {Swiper, SwiperSlide} from 'swiper/react'

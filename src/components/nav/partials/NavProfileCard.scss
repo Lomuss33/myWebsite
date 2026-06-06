@@ -76,6 +76,8 @@ div.nav-profile-card {
             scale(var(--ff-scale, 1));
         will-change: transform;
         cursor: pointer;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
         --ff-highlight-opacity: 0.02;
         --ff-highlight-blur: 8px;
         --ff-hover-y: -0.25px;

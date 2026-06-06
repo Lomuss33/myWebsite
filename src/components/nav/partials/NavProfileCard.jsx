@@ -13,6 +13,7 @@ const PROFILE_AVATAR_SIZES = "(max-width: 991.98px) 96px, 144px"
 const PROFILE_FRAME_SPIN_DURATION_MS = 3600
 const PROFILE_FRAME_RETURN_DELAY_MS = 1000
 const PROFILE_FRAME_RETURN_DURATION_MS = 420
+const PROFILE_FRAME_TAP_SPIN_DURATION_MS = 1400
 const DESKTOP_RESUME_MENU_POPPER_CONFIG = {
     modifiers: [
         {
@@ -34,6 +35,16 @@ function profileFrameMotionSuspended() {
     if(window.suspendAnimations) return true
     if(!window.matchMedia) return false
     return window.matchMedia("(prefers-reduced-motion: reduce)").matches
+}
+
+function profileFrameUsesTapInteraction(event = null) {
+    if(event?.pointerType === "touch" || event?.pointerType === "pen")
+        return true
+
+    if(typeof window === "undefined" || !window.matchMedia)
+        return false
+
+    return window.matchMedia("(hover: none), (pointer: coarse)").matches
 }
 
 function NavProfileCard({
@@ -63,6 +74,9 @@ function NavProfileCard({
     const profileFrameRunningRef = useRef(false)
     const profileFrameAngleRef = useRef(0)
     const profileFrameReturnTimeoutRef = useRef(null)
+    const profileFrameTapSpinTimeoutRef = useRef(null)
+    const profileFrameTapClickPendingRef = useRef(false)
+    const profileFrameIgnoreNextDocumentClickRef = useRef(false)
     const isExtendedRail = railMode === "extended"
     const railModeClass = isExtendedRail ?
         `` :
@@ -148,6 +162,13 @@ function NavProfileCard({
         profileFrameReturnTimeoutRef.current = null
     }, [])
 
+    const clearProfileFrameTapSpinTimeout = useCallback(() => {
+        if(profileFrameTapSpinTimeoutRef.current)
+            clearTimeout(profileFrameTapSpinTimeoutRef.current)
+
+        profileFrameTapSpinTimeoutRef.current = null
+    }, [])
+
     const cancelProfileFrameAnimation = useCallback((captureAngle = true) => {
         const animation = profileFrameAnimationRef.current
         const currentAngle = captureAngle ? getCurrentProfileFrameAngle() : profileFrameAngleRef.current
@@ -180,6 +201,7 @@ function NavProfileCard({
         const metalFrameElement = metalFrameRef.current
         if(!mediaElement || !metalFrameElement) return
 
+        clearProfileFrameTapSpinTimeout()
         clearProfileFrameReturnTimeout()
         const startAngle = cancelProfileFrameAnimation(true)
 
@@ -206,7 +228,7 @@ function NavProfileCard({
         )
 
         profileFrameAnimationRef.current = animation
-    }, [cancelProfileFrameAnimation, clearProfileFrameReturnTimeout, lockProfileFrameAtDefault])
+    }, [cancelProfileFrameAnimation, clearProfileFrameReturnTimeout, clearProfileFrameTapSpinTimeout, lockProfileFrameAtDefault])
 
     const returnProfileFrameToDefault = useCallback(() => {
         const mediaElement = mediaRef.current
@@ -247,6 +269,7 @@ function NavProfileCard({
         const mediaElement = mediaRef.current
         if(!mediaElement) return
 
+        clearProfileFrameTapSpinTimeout()
         clearProfileFrameReturnTimeout()
         const currentAngle = cancelProfileFrameAnimation(true)
         profileFrameRunningRef.current = false
@@ -258,7 +281,21 @@ function NavProfileCard({
             profileFrameReturnTimeoutRef.current = null
             returnProfileFrameToDefault()
         }, PROFILE_FRAME_RETURN_DELAY_MS)
-    }, [cancelProfileFrameAnimation, clearProfileFrameReturnTimeout, returnProfileFrameToDefault, setProfileFrameAngle])
+    }, [cancelProfileFrameAnimation, clearProfileFrameReturnTimeout, clearProfileFrameTapSpinTimeout, returnProfileFrameToDefault, setProfileFrameAngle])
+
+    const startProfileFrameTapSpin = useCallback(() => {
+        if(profileFrameMotionSuspended()) {
+            lockProfileFrameAtDefault()
+            return
+        }
+
+        startProfileFrameSpin()
+        profileFrameTapSpinTimeoutRef.current = setTimeout(() => {
+            profileFrameTapSpinTimeoutRef.current = null
+            if(profileFrameRunningRef.current)
+                pauseProfileFrameSpin()
+        }, PROFILE_FRAME_TAP_SPIN_DURATION_MS)
+    }, [lockProfileFrameAtDefault, pauseProfileFrameSpin, startProfileFrameSpin])
 
     useEffect(() => {
         setShowAlternateProfilePicture(
@@ -268,6 +305,11 @@ function NavProfileCard({
 
     useEffect(() => {
         const onDocumentClicked = () => {
+            if(profileFrameIgnoreNextDocumentClickRef.current) {
+                profileFrameIgnoreNextDocumentClickRef.current = false
+                return
+            }
+
             if(profileFrameRunningRef.current)
                 pauseProfileFrameSpin()
         }
@@ -279,12 +321,13 @@ function NavProfileCard({
             const mediaElement = mediaRef.current
             document.removeEventListener(`click`, onDocumentClicked)
             clearProfileFrameReturnTimeout()
+            clearProfileFrameTapSpinTimeout()
             cancelProfileFrameAnimation(false)
             mediaElement?.removeAttribute(`data-profile-frame-running`)
             mediaElement?.removeAttribute(`data-profile-frame-paused`)
             setProfileFrameAngle(0)
         }
-    }, [cancelProfileFrameAnimation, clearProfileFrameReturnTimeout, pauseProfileFrameSpin, setProfileFrameAngle])
+    }, [cancelProfileFrameAnimation, clearProfileFrameReturnTimeout, clearProfileFrameTapSpinTimeout, pauseProfileFrameSpin, setProfileFrameAngle])
 
     useEffect(() => {
         const headerElement = headerRef.current
@@ -402,14 +445,29 @@ function NavProfileCard({
         }
     }, [firstName, lastName])
 
-    const _onMediaClicked = () => {
-        pauseProfileFrameSpin()
+    const _onMediaPointerDown = (event) => {
+        if(!profileFrameUsesTapInteraction(event))
+            return
+
+        profileFrameTapClickPendingRef.current = true
+        profileFrameIgnoreNextDocumentClickRef.current = true
+        startProfileFrameTapSpin()
+    }
+
+    const _onMediaClicked = (event) => {
+        if(profileFrameTapClickPendingRef.current) {
+            profileFrameTapClickPendingRef.current = false
+        } else if(!profileFrameUsesTapInteraction(event)) {
+            pauseProfileFrameSpin()
+        }
+
         setShowAlternateProfilePicture((current) => !current)
     }
 
     const _onMediaPointerEnter = (event) => {
         floatingFrame.onPointerEnter(event)
-        startProfileFrameSpin()
+        if(!profileFrameUsesTapInteraction(event))
+            startProfileFrameSpin()
     }
 
     return (
@@ -450,6 +508,7 @@ function NavProfileCard({
 
                 <div className={`nav-profile-card-media floating-frame`}
                      ref={mediaRef}
+                     onPointerDown={_onMediaPointerDown}
                      onPointerEnter={_onMediaPointerEnter}
                      onPointerMove={floatingFrame.onPointerMove}
                      onPointerLeave={floatingFrame.onPointerLeave}

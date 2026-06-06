@@ -1,5 +1,5 @@
 import "./ModalWrapper.scss"
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef} from 'react'
 import Modal from 'bootstrap/js/src/modal'
 import CircularButton from "../../buttons/CircularButton.jsx"
 import {useLanguage} from "../../../providers/LanguageProvider.jsx"
@@ -10,23 +10,38 @@ function ModalWrapper({ children, id = "", shouldDismiss, onDismiss, className =
     const viewport = useViewport()
     const utils = useUtils()
 
-    const [elModal, setElModal] = useState(null)
-    const [bsModal, setBsModal] = useState(null)
-    const [savedScrollY, setSavedScrollY] = useState(null)
+    const elModalRef = useRef(null)
+    const bsModalRef = useRef(null)
+    const savedScrollYRef = useRef(null)
+    const onDismissRef = useRef(onDismiss)
+
+    useEffect(() => {
+        onDismissRef.current = onDismiss
+    }, [onDismiss])
 
     /** @constructs **/
     useEffect(() => {
         const elModal = document.getElementById(id)
-        setElModal(elModal)
-        return () => { _destroy() }
-    }, [id])
-
-    /** @listens elModal - Create Element **/
-    useEffect(() => {
         if(!elModal)
             return
-        _create()
-    }, [elModal])
+
+        const config = {
+            backdrop: onDismiss ? true : "static",
+            keyboard: false
+        }
+
+        const bsModal = new Modal(elModal, config)
+        elModalRef.current = elModal
+        bsModalRef.current = bsModal
+
+        elModal.addEventListener('hide.bs.modal', _onWillHide)
+        elModal.addEventListener('hidden.bs.modal', _onHidden)
+        bsModal.show()
+
+        return () => {
+            _dispose()
+        }
+    }, [id])
 
     /** @listens shouldDismiss - Scroll Adjustments **/
     useEffect(() => {
@@ -34,11 +49,11 @@ function ModalWrapper({ children, id = "", shouldDismiss, onDismiss, className =
             return
 
         if(!shouldDismiss) {
-            setSavedScrollY(getViewportScrollPosition().y)
+            savedScrollYRef.current = getViewportScrollPosition().y
             utils.capabilities.scrollTo(0, false)
         }
         else {
-            utils.capabilities.scrollTo(savedScrollY || 0, true)
+            utils.capabilities.scrollTo(savedScrollYRef.current || 0, true)
         }
     }, [shouldDismiss])
 
@@ -47,31 +62,23 @@ function ModalWrapper({ children, id = "", shouldDismiss, onDismiss, className =
         if(!shouldDismiss)
             return
 
-        _destroy()
+        bsModalRef.current?.hide()
     }, [shouldDismiss])
 
-    const _create = () => {
-        const config = {
-            backdrop: onDismiss ? true : "static",
-            keyboard: false
+    const _dispose = () => {
+        const elModal = elModalRef.current
+        const bsModal = bsModalRef.current
+
+        if(elModal) {
+            elModal.removeEventListener('hide.bs.modal', _onWillHide)
+            elModal.removeEventListener('hidden.bs.modal', _onHidden)
         }
 
-        const bsModal = new Modal(elModal, config)
-        elModal.addEventListener('hide.bs.modal', _onWillHide)
-        elModal.addEventListener('hidden.bs.modal', _onHidden)
-        bsModal.show()
-        setBsModal(bsModal)
-    }
+        if(bsModal)
+            bsModal.dispose()
 
-    const _destroy = () => {
-        if(!elModal || !bsModal)
-            return
-
-        elModal.removeEventListener('hide.bs.modal', _onWillHide)
-        elModal.removeEventListener('hidden.bs.modal', _onHidden)
-        bsModal.hide()
-        bsModal.dispose()
-        setBsModal(null)
+        elModalRef.current = null
+        bsModalRef.current = null
     }
 
     const _onWillHide = () => {
@@ -81,8 +88,10 @@ function ModalWrapper({ children, id = "", shouldDismiss, onDismiss, className =
     }
 
     const _onHidden = () => {
-        if(onDismiss)
-            onDismiss()
+        _dispose()
+
+        if(onDismissRef.current)
+            onDismissRef.current()
     }
 
     return (

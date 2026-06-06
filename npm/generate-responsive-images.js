@@ -6,6 +6,7 @@ const ROOT = process.cwd()
 const PUBLIC_DIR = path.join(ROOT, "public")
 const SOURCE_DIRECTORIES = [
     "images/contant",
+    "images/hardware",
     "images/private",
     "images/personal_art",
     "images/writing/books"

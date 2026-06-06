@@ -75,6 +75,8 @@ button.nav-link {
     display: flex;
     align-items: center;
     flex: 1 1 var(--nav-link-target-height);
+    width: 100%;
+    max-width: 100%;
     min-height: var(--nav-link-target-height);
     box-sizing: border-box;
     border-top: 1px solid var(--theme-nav-divider);

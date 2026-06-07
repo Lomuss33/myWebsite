@@ -8,6 +8,7 @@ div.nav-tools {
 
     display: flex;
     flex: 0 0 auto;
+    min-width: 0;
     width: 100%;
     height: var(--nav-tools-height);
     min-height: var(--nav-tools-height);
@@ -31,6 +32,7 @@ div.nav-tools {
     div.btn-option-picker {
         display: flex;
         flex: 1 1 auto;
+        min-width: 0;
         width: 100%;
         height: 100%;
         align-self: stretch;
@@ -188,8 +190,11 @@ div.nav-tools {
             flex: 0 1 auto;
             min-width: 0;
             max-width: 5.75rem;
+            display: block;
             font-size: 0.74rem;
-            line-height: 1;
+            line-height: 1.12;
+            padding-block: 0.08em 0.14em;
+            align-self: center;
             text-align: left;
         }
     }
@@ -325,22 +330,25 @@ div.nav-tools {
         div.nav-tools.nav-tools-extended {
             --nav-tools-icon-box-size: 30px;
             --nav-tools-icon-font-size: 1.62rem;
-            --nav-tools-inline-gap: 9px;
+            --nav-tools-inline-gap: 6px;
 
             div.nav-tools-item-language,
             div.nav-tools-item-theme {
                 button.btn-option-picker-toggle.btn-option-picker-toggle-caption-inline {
                     gap: var(--nav-tools-inline-gap);
-                    padding-inline: 0.25rem;
+                    padding-inline: 0.12rem;
 
                     span.btn-option-picker-toggle-caption {
-                        max-width: none;
-                        overflow: visible;
-                        text-overflow: clip;
-                        font-size: 0.84rem;
-                        font-weight: 700;
-                        letter-spacing: 0;
-                        line-height: 1;
+                        flex: 0 1 auto;
+                        min-width: 0;
+                        max-width: 4.45rem;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        font-size: 0.68rem;
+                        font-weight: 600;
+                        letter-spacing: -0.005em;
+                        line-height: 1.14;
+                        padding-block: 0.1em 0.16em;
                     }
 
                     div.btn-option-picker-icon.btn-option-picker-icon-size-2 {
@@ -363,6 +371,12 @@ div.nav-tools {
 
             div.nav-tools-item-language {
                 button.btn-option-picker-toggle.nav-tool-language-toggle.btn-option-picker-toggle-caption-inline {
+                    span.btn-option-picker-toggle-caption {
+                        max-width: 4rem;
+                        font-size: 0.65rem;
+                        letter-spacing: -0.01em;
+                    }
+
                     div.btn-option-picker-icon.btn-option-picker-icon-size-2 img {
                         width: 96%;
                         height: 96%;

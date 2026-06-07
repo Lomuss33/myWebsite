@@ -45,8 +45,9 @@ nav.nav-sidebar {
 
         > div.nav-profile-card {
             flex: 0 0 auto;
+            min-width: 0;
             margin: 0;
-            padding: var(--nav-extended-padding-top) 12px 0;
+            padding: var(--nav-extended-padding-top) 0 0;
             border-top-left-radius: inherit;
             border-top-right-radius: inherit;
             border-bottom-left-radius: 0;
@@ -61,22 +62,25 @@ nav.nav-sidebar {
         > div.nav-link-list-shell {
             flex: 1 1 auto;
             min-height: 0;
+            min-width: 0;
         }
 
         > div.nav-short-rail-stack,
         > div.nav-sidebar-rail-stack {
             flex: 1 1 auto;
             min-height: 0;
+            min-width: 0;
         }
 
         > div.nav-tools {
             flex: 0 0 auto;
+            min-width: 0;
         }
     }
 
     button.nav-sidebar-btn-toggle {
         position: absolute;
-        right: 8px;
+        right: -14px;
         top: 20px;
         z-index: calc($z-index-sidebar + 1);
         border-radius: 999px;
@@ -467,6 +471,7 @@ div.nav-sidebar-rail-stack {
         var(--nav-rail-separator-height)
         var(--nav-tools-height, var(--nav-link-target-height, 48px));
     min-height: 0;
+    min-width: 0;
     width: 100%;
     background: var(--theme-nav-surface);
     overflow: visible;
@@ -474,15 +479,21 @@ div.nav-sidebar-rail-stack {
     > div.nav-link-list-shell {
         grid-row: 1;
         min-height: 0;
+        min-width: 0;
+        width: 100%;
     }
 
     > div.nav-rail-separator {
         grid-row: 2;
+        min-width: 0;
+        width: 100%;
     }
 
     > div.nav-tools {
         grid-row: 3;
         align-self: end;
+        min-width: 0;
+        width: 100%;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
     }

@@ -34,7 +34,7 @@ div.nav-profile-card {
     border-bottom: 1px solid var(--theme-nav-divider);
     position: relative;
     margin: 0;
-    padding: 10px var(--nav-profile-card-inline-padding) 0;
+    padding: 10px 0 0;
     border-radius: 0;
     overflow: visible;
 
@@ -45,6 +45,8 @@ div.nav-profile-card {
         justify-content: center;
         flex-direction: column;
         width: 100%;
+        padding-inline: var(--nav-profile-card-inline-padding);
+        box-sizing: border-box;
         min-height: 0;
     }
 
@@ -425,14 +427,15 @@ div.nav-profile-card {
         height: var(--nav-extended-role-height, 28px);
         max-height: var(--nav-extended-role-height, 28px);
         align-self: stretch;
-        width: calc(100% + (var(--nav-profile-card-inline-padding) * 2));
-        max-width: none;
+        width: 100%;
+        max-width: 100%;
         text-align: center;
         margin-top: auto;
         margin-bottom: 0;
-        margin-left: calc(var(--nav-profile-card-inline-padding) * -1);
-        margin-right: calc(var(--nav-profile-card-inline-padding) * -1);
+        margin-left: 0;
+        margin-right: 0;
         padding: calc(3px * var(--nav-extended-role-opacity, 1)) 12px;
+        box-sizing: border-box;
         border-radius: 0;
         background: color-mix(in srgb, var(--theme-nav-surface-accent) 78%, white 22%);
         border-top: calc(1px * var(--nav-extended-role-opacity, 1)) solid var(--theme-nav-divider);

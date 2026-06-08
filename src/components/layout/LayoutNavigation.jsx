@@ -27,7 +27,9 @@ function LayoutNavigation({ children, profile = null, sectionLinks = [], categor
             )}
 
             <div className={`layout-navigation-children-wrapper`}>
-                {children}
+                <div className={`layout-navigation-children-inner`}>
+                    {children}
+                </div>
             </div>
 
             {isNavigationMobileLayout && (

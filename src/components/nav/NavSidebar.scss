@@ -136,18 +136,18 @@ nav.nav-sidebar-short-rail {
     --nav-short-rail-avatar-size: calc(14px + 40px * var(--nav-short-rail-visual-density));
     --nav-short-rail-status-offset: calc(4px + 6px * var(--nav-short-rail-visual-density));
     --nav-short-rail-profile-padding: calc(1px + 3px * var(--nav-short-rail-visual-density));
-    --nav-short-rail-link-icon-width: clamp(28px, calc(var(--nav-short-rail-row-height) * 0.72), 58px);
-    --nav-short-rail-link-icon-size: clamp(1.45rem, calc(var(--nav-short-rail-row-height) * 0.72), 2.45rem);
+    --nav-short-rail-link-icon-width: clamp(24px, calc(var(--nav-short-rail-row-height) * 0.62), 44px);
+    --nav-short-rail-link-icon-size: clamp(1.2rem, calc(var(--nav-short-rail-row-height) * 0.54), 1.75rem);
     --nav-short-rail-link-padding-inline: calc(0px + 3px * var(--nav-short-rail-visual-density));
     --nav-short-rail-link-accent-bar-width: calc(2px + 2px * var(--nav-short-rail-visual-density));
     --nav-short-rail-link-accent-bar-height: clamp(16px, calc(var(--nav-short-rail-row-height) * 0.42), 36px);
     --nav-short-rail-link-accent-dot-size: calc(2px + 3px * var(--nav-short-rail-visual-density));
     --nav-short-rail-link-accent-dot-offset-x: calc(4px + 4px * var(--nav-short-rail-visual-density));
     --nav-short-rail-link-hover-scale: calc(1.01 + 0.04 * var(--nav-short-rail-visual-density));
-    --nav-short-rail-tool-icon-box-size: clamp(26px, calc(var(--nav-short-rail-row-height) * 0.62), 52px);
-    --nav-short-rail-tool-icon-font-size: clamp(0.95rem, calc(var(--nav-short-rail-row-height) * 0.38), 1.9rem);
-    --nav-short-rail-resume-icon-box-size: clamp(32px, calc(var(--nav-short-rail-row-height) * 0.94), 58px);
-    --nav-short-rail-resume-icon-font-size: clamp(1.4rem, calc(var(--nav-short-rail-row-height) * 0.68), 2.4rem);
+    --nav-short-rail-tool-icon-box-size: clamp(22px, calc(var(--nav-short-rail-row-height) * 0.54), 34px);
+    --nav-short-rail-tool-icon-font-size: clamp(0.84rem, calc(var(--nav-short-rail-row-height) * 0.3), 1.08rem);
+    --nav-short-rail-resume-icon-box-size: clamp(26px, calc(var(--nav-short-rail-row-height) * 0.76), 40px);
+    --nav-short-rail-resume-icon-font-size: clamp(1.16rem, calc(var(--nav-short-rail-row-height) * 0.52), 1.56rem);
     --nav-short-rail-tool-divider-inset: calc(2px + 7px * var(--nav-short-rail-visual-density));
 
     div.nav-sidebar-card-wrapper {

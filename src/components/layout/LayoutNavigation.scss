@@ -2,6 +2,9 @@
 
 div.layout-navigation-wrapper {
     --mobile-nav-tabs-total-height: calc(var(--nav-tabs-height, #{$nav-tabs-height}) + env(safe-area-inset-bottom, 0px) + var(--mobile-viewport-offset-bottom, 0px));
+    --layout-shell-content-padding-inline: 0px;
+    --layout-shell-column-gap: 0px;
+    --layout-shell-content-max-width: none;
 
     display: flex;
     flex: 1 1 auto;
@@ -16,6 +19,21 @@ div.layout-navigation-wrapper {
     max-height: 100vh;
     max-height: 100svh;
 
+    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        column-gap: 0;
+    }
+
+    @media (min-width: 1680px) {
+        --layout-shell-content-padding-inline: clamp(40px, 4.8vw, 168px);
+        --layout-shell-column-gap: clamp(28px, 2.4vw, 52px);
+        --layout-shell-content-max-width: 1220px;
+
+        column-gap: var(--layout-shell-column-gap);
+        background: var(--theme-layout-buffer, var(--theme-background));
+    }
+
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         height: auto;
         min-height: var(--mobile-visual-viewport-height, 100svh);
@@ -25,22 +43,27 @@ div.layout-navigation-wrapper {
 }
 
 div.layout-navigation-wrapper > nav,
-div.layout-navigation-children-wrapper {
+div.layout-navigation-children-wrapper,
+div.layout-navigation-children-inner {
     position: relative;
     min-height: 0;
 }
 
 div.layout-navigation-wrapper > nav {
+    grid-column: 1;
     z-index: 2;
 }
 
 div.layout-navigation-children-wrapper {
+    grid-column: 2;
     z-index: 1;
 }
  
 div.layout-navigation-children-wrapper {
     display: flex;
     flex: 1 1 auto;
+    align-items: stretch;
+    justify-content: center;
     min-width: 0;
     width: 100%;
     min-height: 100%;
@@ -51,5 +74,31 @@ div.layout-navigation-children-wrapper {
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         min-height: var(--mobile-visual-viewport-height, 100svh);
         height: auto;
+    }
+
+    @media (min-width: 1680px) {
+        padding-left: var(--layout-shell-content-padding-inline);
+        padding-right: var(--layout-shell-content-padding-inline);
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+}
+
+div.layout-navigation-children-inner {
+    display: flex;
+    flex: 1 1 auto;
+    min-width: 0;
+    width: 100%;
+    min-height: 100%;
+    height: 100%;
+
+    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        height: auto;
+    }
+
+    @media (min-width: 1680px) {
+        flex: 0 1 var(--layout-shell-content-max-width);
+        width: min(100%, var(--layout-shell-content-max-width));
+        max-width: var(--layout-shell-content-max-width);
     }
 }

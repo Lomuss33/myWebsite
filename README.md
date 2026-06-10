@@ -18,19 +18,6 @@ This repo is both:
 - GitHub Pages deployment workflow
 - custom interactive sections, including web art
 
-## 🖼️ Demo
-
-Live site: `https://lovro-music.de/`
-
-Suggested screenshots to add here:
-
-- `![Home screen](./docs/screenshots/home-placeholder.png)`
-- `![Projects section](./docs/screenshots/projects-placeholder.png)`
-- `![Mobile layout](./docs/screenshots/mobile-placeholder.png)`
-- `![Resume / CV view](./docs/screenshots/resume-placeholder.png)`
-
-If screenshots are not added yet, this section is the first thing worth improving for GitHub presentation.
-
 ## 👀 What It Is
 
 This is not a static one-page profile.
@@ -76,6 +63,17 @@ In practice:
 - **React components** decide how it renders
 - **SCSS** decides how it looks
 
+## 🧭 Sections
+
+- **Home:** intro, profile, identity, and first-contact overview
+- **Experience:** work history, timelines, and professional background
+- **Education:** academic path, training, and supporting credentials
+- **Software:** coding and web/software-related projects
+- **Hardware:** homelab, embedded, automation, and hardware-focused work
+- **Writing:** written content, language-related material, and text-based sections
+- **Art:** visual work, galleries, and custom interactive web-art pieces
+- **Contact:** direct links, resume actions, contact form, and other ways to reach me
+
 ## ⚡ Quick Start
 
 ```bash
@@ -113,31 +111,6 @@ public/
 
 - [MAINTANER.md](./MAINTANER.md) for maintainer notes and extension workflow
 - [USER_GUIDE.md](./USER_GUIDE.md) for visitor-facing behavior and QA checks
-
-## 💼 Recruiter / Interviewer Note
-
-This project is best read as a **frontend architecture + presentation system** rather than a full-stack app.
-
-What it clearly shows:
-
-- React component architecture
-- configuration-driven UI
-- localization and theming
-- frontend tooling and deployment automation
-
-What it does **not** try to claim:
-
-- backend/database work
-- high automated test coverage
-- production-grade security
-- enterprise-scale complexity
-
-## 🛣️ Roadmap
-
-- add real screenshots/GIFs to this README
-- improve repo polish and reduce generated clutter
-- add automated tests for core parsing/rendering flows
-- tighten project case studies for the strongest portfolio pieces
 
 ## 🔗 Related Files
 

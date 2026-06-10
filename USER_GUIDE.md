@@ -1,57 +1,37 @@
 # User Guide
 
-Back to the main template guide: [README.md](./README.md)
-
-Maintainer and extension notes: [MAINTANER.md](./MAINTANER.md)
+Project overview: [README.md](./README.md)  
+Maintenance and extension notes: [MAINTANER.md](./MAINTANER.md)
 
 ## Purpose
 
-This file explains how the website behaves from a visitor's point of view.
+This guide describes the visible behavior of the site from a visitor's point of view.
 
-It is about:
+Use it for:
 
-- what users can click
-- what visible controls do
-- how navigation and contact features behave
+- understanding what users can interact with
+- checking whether navigation still behaves correctly
+- verifying contact and resume features
+- manual QA after content or UI changes
 
-It is not the right file for:
+## Site Model
 
-- template setup
-- code architecture
-- adding new article types
-- changing the schema
+The site is a single-page portfolio/resume experience built from sections.
 
-For that, use [README.md](./README.md) and [MAINTANER.md](./MAINTANER.md).
-
-## What This Guide Helps You Check
-
-Use this file when you want to confirm that a customized copy of the template still behaves well for visitors.
-
-It is especially useful for:
-
-- manual QA after content changes
-- checking navigation flow
-- checking contact and resume behavior
-- checking desktop vs mobile expectations
-
-## What Kind Of Site This Is
-
-This website is a single-page portfolio/resume site made of sections.
-
-Users move through it by:
+Visitors move through it by:
 
 - opening sections from navigation
 - switching categories
 - interacting with cards, links, filters, modals, and forms
 
-Depending on the device, the layout changes between desktop and mobile presentation.
+The layout changes between desktop and mobile presentations.
 
 ## Navigation
 
 ### Section navigation
 
 - clicking a section link opens that section
-- on desktop, the main navigation appears in the sidebar
+- on desktop, primary navigation appears in the sidebar
 - on mobile, section links appear near the top of the current view
 
 ### Category navigation
@@ -64,44 +44,35 @@ Depending on the device, the layout changes between desktop and mobile presentat
 
 - the site uses URL hash navigation
 - opening a direct link to a section should land on that section
-- refreshing the page should keep the current section route
+- refreshing the page should preserve the current section route
 
 ## Profile Area
 
-### Profile card
-
-The profile area can show:
+The profile area can include:
 
 - avatar
 - name
 - rotating roles
 - status indicator
+- pronunciation audio or pronunciation text
 
-### Rotating roles
+Behavior notes:
 
 - if more than one role is configured, the role text rotates automatically
+- when visible, the status circle acts as a shortcut to the `contact` section
+- if pronunciation audio exists, the speaker control should play it
 
-### Status circle
-
-- when visible, the status circle acts as a quick shortcut to the `contact` section
-- its message explains the configured availability state
-
-### Name pronunciation
-
-- if a pronunciation audio file exists, the speaker control plays it
-- if only pronunciation text exists, the UI can still explain how the name is pronounced
-
-## Utility Tools
+## Utility Controls
 
 ### Language picker
 
-- shows the enabled languages from site settings
-- switching language updates interface text and localized content immediately
+- shows enabled languages from site settings
+- switching language updates UI strings and localized content immediately
 
 ### Theme picker
 
 - switches between configured themes, usually dark and light
-- theme changes affect colors and theme-aware UI styling
+- theme changes affect colors and theme-aware styling
 
 ### Resume control
 
@@ -116,43 +87,39 @@ If no resume PDF is configured, the site should show an error notification inste
 ### Fullscreen toggle
 
 - on supported browsers and layouts, the fullscreen button enters or exits fullscreen mode
-- if the browser or layout does not support it well, the control may be absent
+- the control may be absent where support is weak or intentionally disabled
 
 ### Cursor mode toggle
 
-On supported desktop layouts, the cursor tool can switch cursor behavior or theme presentation.
-
-If the current fork/template keeps this feature:
-
-- it is mainly a visual/interaction enhancement
-- touch devices or unsupported environments may not activate it fully
+- on supported desktop layouts, the cursor tool can switch cursor behavior or visual mode
+- on touch devices or unsupported environments, this feature may be limited or absent
 
 ## Content Interactions
 
-### Category filters inside articles
+### Filters inside articles
 
 - some article blocks show filter buttons such as `All`, `Tools`, `Web`, or other custom categories
 - these filters only change the items inside that article
-- they do not change the whole page or top-level navigation
+- they do not change the entire page or top-level navigation
 
-### Project and media preview controls
+### Project and media preview actions
 
-Cards and items may expose preview actions such as:
+Cards and items may expose actions such as:
 
 - opening a website
-- opening GitHub or docs links
+- opening GitHub or documentation links
 - opening screenshots in a gallery modal
 - opening a YouTube video modal
 
 ### External links
 
-- external links may show a confirmation step before leaving the site
-- this is meant to make it clear that the user is leaving the portfolio
+- some external links may show a confirmation step before leaving the site
+- the purpose is to make the destination explicit before redirecting the user
 
-### Copy-to-clipboard controls
+### Copy-to-clipboard actions
 
 - some contact items or handles can be copied directly
-- after copying, the site should provide visible feedback
+- the site should provide visible confirmation after copying
 
 ## Contact Section
 
@@ -174,15 +141,15 @@ Some contact entries may also support:
 - copy actions
 - Gmail compose links
 - quick chat links
-- QR-style or device-friendly phone actions
+- QR-style or phone-friendly call actions
 
 ### Contact form
 
 The contact form typically:
 
 1. validates the fields
-2. sends the message through the configured EmailJS integration
-3. shows a success state if the send worked
+2. sends the message through EmailJS
+3. shows either success feedback or an error state
 
 Expected fields:
 
@@ -193,9 +160,9 @@ Expected fields:
 
 ### Resume email flow
 
-If enabled, the site can also support a resume-by-email flow using the configured resume email settings.
+If enabled, the site can also send resume links through the configured resume email flow.
 
-## Modals And Feedback Layers
+## Modals and Feedback
 
 ### Gallery modal
 
@@ -203,7 +170,7 @@ If enabled, the site can also support a resume-by-email flow using the configure
 
 ### YouTube modal
 
-- used for project demos or embedded video content
+- used for demos or embedded video content
 
 ### Confirmation dialog
 
@@ -211,45 +178,40 @@ If enabled, the site can also support a resume-by-email flow using the configure
 
 ### Notifications
 
-- used for success, missing-file, or error feedback
+- used for success, missing-file, and error feedback
 
 ### Loading indicators
 
-- some actions can show a spinner or temporary loading state
-- examples include sending messages and queued transitions
+- some actions show a spinner or temporary loading state
+- common examples are sending messages and waiting for transitions
 
-## What Visitors Should Expect
+## Visitor Expectations
 
-From a user perspective, the site should feel like:
+From a user perspective, the site should feel:
 
-- a smooth single-page portfolio
 - section-driven rather than page-driven
 - responsive on desktop and mobile
-- content-rich but still navigable
+- content-rich but still easy to navigate
+- visually polished without blocking core interactions
 
-## Quick QA Checklist
+## QA Checklist
 
-After customizing the template, a maintainer can use this checklist:
+After content or UI changes, verify:
 
 - section navigation opens the expected section
-- category navigation stays understandable on mobile
+- category navigation remains understandable on mobile
 - language switching updates visible text correctly
 - theme switching works without broken contrast
 - resume actions point to the correct file or CV page
 - contact links open the correct destinations
 - the contact form succeeds or fails gracefully
 - project previews, galleries, and video modals still work
-- external links show the expected confirmation behavior
+- external link confirmations behave as expected
 
-## When This Guide Is Useful
+## When To Use This Guide
 
 Use this guide when you want to:
 
-- understand the live UI behavior
-- QA the visible features
-- check whether a fork/template still behaves correctly after customization
-
-If you want to change the content or extend the system, go back to:
-
-- [README.md](./README.md)
-- [MAINTANER.md](./MAINTANER.md)
+- understand live UI behavior
+- run manual QA on visible features
+- confirm that a customized copy still behaves correctly for visitors

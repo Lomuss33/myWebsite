@@ -65,14 +65,14 @@ In practice:
 
 ## 🧭 Sections
 
-- **Home:** intro, profile, identity, and first-contact overview
-- **Experience:** work history, timelines, and professional background
-- **Education:** academic path, training, and supporting credentials
-- **Software:** coding and web/software-related projects
-- **Hardware:** homelab, embedded, automation, and hardware-focused work
-- **Writing:** written content, language-related material, and text-based sections
-- **Art:** visual work, galleries, and custom interactive web-art pieces
-- **Contact:** direct links, resume actions, contact form, and other ways to reach me
+- **Home:** the landing section introduces the profile, role overview, personal branding, and the core structure of the site. It works as the first impression area and quickly orients visitors before they move into the more detailed sections.
+- **Experience:** this section presents professional history through timeline-based content, role summaries, and supporting details about previous responsibilities and practical work background.
+- **Education:** the education area covers academic studies, training, certifications, and learning milestones that support the overall technical profile.
+- **Software:** this section highlights software-oriented work such as coding projects, web projects, and technical builds related to programming and digital product creation.
+- **Hardware:** the hardware section focuses on physical systems and infrastructure-related work, including homelab experiments, embedded and automation-oriented projects, and other hands-on technical builds.
+- **Writing:** this area is used for text-focused content such as written pieces, structured language-related material, and other content that is better presented through reading than through galleries or project cards.
+- **Art:** the art section is reserved for visual and creative work, including galleries, digital experiments, and custom interactive web-art pieces that add a more personal and expressive side to the site.
+- **Contact:** the contact section brings together practical communication options such as direct links, resume actions, and contact forms so visitors can reach out through the channel that suits them best.
 
 ## ⚡ Quick Start
 
@@ -114,7 +114,6 @@ public/
 
 ## 🔗 Related Files
 
-- [README.md](./README.md)
 - [MAINTANER.md](./MAINTANER.md)
 - [USER_GUIDE.md](./USER_GUIDE.md)
 

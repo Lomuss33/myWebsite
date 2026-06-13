@@ -104,6 +104,8 @@ function AudioButton({ url = "", tooltip = "", tooltipLabel = "", size = "", but
             <button className={`audio-button playBut ${buttonClassName}`}
                     type="button"
                     id={uniqueId}
+                    data-tooltip={tooltipHtml || null}
+                    aria-label={tooltipHtml || undefined}
                     aria-pressed={status === AudioButton.Status.PLAYING}
                     onClick={_onClick}>
                 <svg className="audio-button-icon"

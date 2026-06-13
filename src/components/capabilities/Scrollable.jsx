@@ -16,16 +16,23 @@ function Scrollable({ children, id, shouldResetScroll, setShouldResetScroll, cla
         if(!shouldResetScroll)
             return
 
-        const div = document.getElementById(id)
-        setTimeout(() => {
+        const resetFrameId = window.requestAnimationFrame(() => {
+            const div = document.getElementById(id)
             if(isMobileLayout) {
-                window.scrollTo({ top: 0, behavior: "instant" })
+                window.scrollTo({ top: 0, left: 0, behavior: "auto" })
             }
-            else if(div) div.scrollTop = 0
-        }, 50)
+            else if(div) {
+                div.scrollLeft = 0
+                div.scrollTop = 0
+            }
 
-        setShouldResetScroll(false)
-    }, [shouldResetScroll, isMobileLayout])
+            setShouldResetScroll(false)
+        })
+
+        return () => {
+            window.cancelAnimationFrame(resetFrameId)
+        }
+    }, [id, shouldResetScroll, isMobileLayout, setShouldResetScroll])
 
     return (
         <div className={`scrollable-wrapper ${constants.HTML_CLASSES.scrollbarDecorator} ${className}`}>

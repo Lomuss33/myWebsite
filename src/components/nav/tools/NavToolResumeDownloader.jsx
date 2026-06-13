@@ -32,6 +32,7 @@ function NavToolResumeDownloader({
     const selectedOptionId = "resume"
     const tooltip = language.getString("resume_options")
     const menuHeader = "CV Resume:"
+    const resolvedMenuClassName = `${menuClassName} nav-resume-menu`.trim()
 
     const options = [
         {
@@ -103,7 +104,7 @@ function NavToolResumeDownloader({
     if(mobileTubeMenu) {
         return (
             <MobileTubeMenu className={dropdownClassName}
-                            menuClassName={menuClassName}
+                            menuClassName={resolvedMenuClassName}
                             tooltipLabel={tooltip}
                             ariaLabel={tooltip}
                             toggleContent={(
@@ -113,7 +114,7 @@ function NavToolResumeDownloader({
                             )}>
                 {({ closeMenu }) => (
                     <>
-                        <div className={`nav-profile-card-mobile-resume-menu-header`}>
+                        <div className={`nav-profile-card-mobile-resume-menu-header btn-option-picker-menu-header`}>
                             {menuHeader}
                         </div>
 
@@ -121,7 +122,7 @@ function NavToolResumeDownloader({
                             <button key={option.id}
                                     type={`button`}
                                     role={`menuitem`}
-                                    className={`nav-profile-card-mobile-resume-item`}
+                                    className={`nav-profile-card-mobile-resume-item btn-option-picker-menu-item dropdown-item`}
                                     aria-label={option.label}
                                     onClick={() => {
                                         closeMenu()
@@ -133,7 +134,7 @@ function NavToolResumeDownloader({
                                     <i className={`fa-icon ${option.faIcon}`}/>
                                 </div>
 
-                                <span className={`nav-profile-card-mobile-resume-item-label`}>
+                                <span className={`nav-profile-card-mobile-resume-item-label btn-option-picker-menu-item-label`}>
                                     {option.label}
                                 </span>
                             </button>
@@ -153,7 +154,7 @@ function NavToolResumeDownloader({
                             hideTooltipWhenOpen={true}
                             dropdownDrop={dropdownDrop}
                             dropdownClassName={dropdownClassName}
-                            menuClassName={menuClassName}
+                            menuClassName={resolvedMenuClassName}
                             menuPopperConfig={menuPopperConfig}
                             compactMenu={compactMenu}
                             toggleCaption={toggleCaption}

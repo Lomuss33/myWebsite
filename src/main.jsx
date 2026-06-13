@@ -1,6 +1,6 @@
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "./styles/app.scss"
-import {StrictMode, useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {createRoot} from 'react-dom/client'
 import {useConstants} from "./hooks/constants.js"
 import {useUtils} from "./hooks/utils.js"
@@ -213,13 +213,11 @@ const AppEssentialsWrapper = ({children}) => {
     }
 
     return (
-        <StrictMode>
-            <Preloader preloaderSettings={settings?.preloaderSettings}>
-                <DataProvider settings={settings}>
-                    {children}
-                </DataProvider>
-            </Preloader>
-        </StrictMode>
+        <Preloader preloaderSettings={settings?.preloaderSettings}>
+            <DataProvider settings={settings}>
+                {children}
+            </DataProvider>
+        </Preloader>
     )
 }
 

@@ -453,10 +453,9 @@ div.nav-short-rail-separator {
         &:focus-visible,
         &.show,
         &:active {
-            background:
-                linear-gradient(180deg,
-                    color-mix(in srgb, var(--theme-secondary) 16%, transparent 84%) 0%,
-                    color-mix(in srgb, var(--theme-nav-surface-raised) 72%, var(--theme-secondary) 28%) 100%);
+            i.fa-icon {
+                color: var(--theme-secondary);
+            }
         }
     }
 }

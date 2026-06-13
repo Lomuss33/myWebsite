@@ -1,5 +1,5 @@
 import "./Section.scss"
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {useScheduler} from "../../hooks/scheduler.js"
 import Scrollable from "../capabilities/Scrollable.jsx"
 import {useFeedbacks} from "../../providers/FeedbacksProvider.jsx"
@@ -12,20 +12,29 @@ import {useNavigation} from "../../providers/NavigationProvider.jsx"
 function Section({ section, visible, shouldTransition }) {
     const [status, setStatus] = useState(Section.Status.HIDDEN)
     const [shouldResetScroll, setShouldResetScroll] = useState(false)
+    const [hasRendered, setHasRendered] = useState(false)
     const navigation = useNavigation()
+    const hasInitializedForceScrollRef = useRef(false)
 
     const isHidden = status === Section.Status.HIDDEN
-    const willShow = status === Section.Status.WILL_SHOW
+    const shouldRenderSection = hasRendered || !isHidden
 
     useEffect(() => {
-        if(!willShow)
+        if(isHidden)
             return
-        setShouldResetScroll(true)
-    }, [willShow])
+
+        setHasRendered(true)
+    }, [isHidden])
 
     useEffect(() => {
-        setShouldResetScroll(true)
-    }, [navigation.shouldForceScrollToTopCount])
+        if(!hasInitializedForceScrollRef.current) {
+            hasInitializedForceScrollRef.current = true
+            return
+        }
+
+        if(visible)
+            setShouldResetScroll(true)
+    }, [navigation.shouldForceScrollToTopCount, visible])
 
     return (
         <>
@@ -35,7 +44,7 @@ function Section({ section, visible, shouldTransition }) {
                                       status={status}
                                       setStatus={setStatus}/>
 
-            {!isHidden && (
+            {shouldRenderSection && (
                 <>
                     <SectionRenderer section={section}
                                      status={status}

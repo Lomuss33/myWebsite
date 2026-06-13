@@ -1,5 +1,5 @@
 import "./SectionBody.scss"
-import React, {Suspense, lazy, useEffect, useMemo, useState} from 'react'
+import React, {Suspense, lazy, useEffect, useMemo} from 'react'
 import {useParser} from "../../hooks/parser.js"
 import ArticleNotFound from "../articles/ArticleNotFound.jsx"
 import SectionDecorationBand from "./SectionDecorationBand.jsx"
@@ -117,37 +117,7 @@ function SectionBody({ section, showDecorationBands = true }) {
     const articleDataWrappers = useMemo(() => {
         return parser.parseSectionArticles(section)
     }, [parser.parseSectionArticles, section])
-    const [visibleArticlesCount, setVisibleArticlesCount] = useState(articleDataWrappers.length)
-
-    useEffect(() => {
-        const shouldDeferSecondaryArticles = section?.id === "my-software" || section?.id === "my-hardware"
-        if(!shouldDeferSecondaryArticles || articleDataWrappers.length <= 1) {
-            setVisibleArticlesCount(articleDataWrappers.length)
-            return
-        }
-
-        setVisibleArticlesCount(1)
-
-        let timeoutId = null
-        let idleId = null
-        const revealAll = () => setVisibleArticlesCount(articleDataWrappers.length)
-
-        if(typeof window !== "undefined" && "requestIdleCallback" in window) {
-            idleId = window.requestIdleCallback(revealAll, { timeout: 500 })
-        }
-        else {
-            timeoutId = window.setTimeout(revealAll, 180)
-        }
-
-        return () => {
-            if(timeoutId !== null) window.clearTimeout(timeoutId)
-            if(idleId !== null && typeof window !== "undefined" && "cancelIdleCallback" in window) {
-                window.cancelIdleCallback(idleId)
-            }
-        }
-    }, [section?.id, articleDataWrappers.length])
-
-    const visibleArticleWrappers = articleDataWrappers.slice(0, visibleArticlesCount)
+    const visibleArticleWrappers = articleDataWrappers
 
     useEffect(() => {
         if(visibleArticleWrappers.length <= 0) return

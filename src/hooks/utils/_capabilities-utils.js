@@ -17,7 +17,7 @@ export const _capabilitiesUtils = {
      */
     scrollTo: (top, instant) => {
         const behavior = instant ?
-            "instant" :
+            "auto" :
             "smooth"
 
         window.scrollTo({

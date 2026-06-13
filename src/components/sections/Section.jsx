@@ -1,5 +1,5 @@
 import "./Section.scss"
-import React, {useEffect, useRef, useState} from 'react'
+import React, {memo, useEffect, useRef, useState} from 'react'
 import {useScheduler} from "../../hooks/scheduler.js"
 import Scrollable from "../capabilities/Scrollable.jsx"
 import {useFeedbacks} from "../../providers/FeedbacksProvider.jsx"
@@ -7,17 +7,25 @@ import {useInput} from "../../providers/InputProvider.jsx"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
 import SectionContent from "./SectionContent.jsx"
 import NavToolFullscreenToggle from "../nav/tools/NavToolFullscreenToggle.jsx"
-import {useNavigation} from "../../providers/NavigationProvider.jsx"
 
-function Section({ section, visible, shouldTransition }) {
-    const [status, setStatus] = useState(Section.Status.HIDDEN)
+const SECTION_STATUS = {
+    SHOWING: "showing",
+    SHOWN: "shown",
+    HIDING: "hiding",
+    HIDDEN: "hidden",
+    WILL_HIDE: "will-hide",
+    WILL_SHOW: "will-show"
+}
+
+const Section = memo(function Section({ section, visible, shouldTransition, forceScrollToTopCount = null }) {
+    const [status, setStatus] = useState(SECTION_STATUS.HIDDEN)
     const [shouldResetScroll, setShouldResetScroll] = useState(false)
     const [hasRendered, setHasRendered] = useState(false)
-    const navigation = useNavigation()
     const hasInitializedForceScrollRef = useRef(false)
 
-    const isHidden = status === Section.Status.HIDDEN
+    const isHidden = status === SECTION_STATUS.HIDDEN
     const shouldRenderSection = hasRendered || !isHidden
+    const shouldRenderFocusManager = status !== SECTION_STATUS.HIDDEN
 
     useEffect(() => {
         if(isHidden)
@@ -34,7 +42,7 @@ function Section({ section, visible, shouldTransition }) {
 
         if(visible)
             setShouldResetScroll(true)
-    }, [navigation.shouldForceScrollToTopCount, visible])
+    }, [forceScrollToTopCount, visible])
 
     return (
         <>
@@ -51,13 +59,15 @@ function Section({ section, visible, shouldTransition }) {
                                      shouldResetScroll={shouldResetScroll}
                                      setShouldResetScroll={setShouldResetScroll}/>
 
-                    <SectionFocusManager section={section}
-                                         status={status}/>
+                    {shouldRenderFocusManager && (
+                        <SectionFocusManager section={section}
+                                             status={status}/>
+                    )}
                 </>
             )}
         </>
     )
-}
+})
 
 function SectionRenderer({ section, status, shouldResetScroll, setShouldResetScroll}) {
     const viewport = useViewport()
@@ -101,26 +111,26 @@ function SectionTransitionManager({ section, visible, shouldTransition, status, 
 
     const _hideInstantly = () => {
         scheduler.clearAllWithTag(schedulerTag)
-        setStatus(Section.Status.HIDDEN)
+        setStatus(SECTION_STATUS.HIDDEN)
     }
 
     const _showInstantly = () => {
         scheduler.clearAllWithTag(schedulerTag)
-        setStatus(Section.Status.SHOWN)
+        setStatus(SECTION_STATUS.SHOWN)
     }
 
     const _tweenOut = () => {
         scheduler.clearAllWithTag(schedulerTag)
-        setStatus(Section.Status.WILL_HIDE)
-        scheduler.schedule(() => { setStatus(Section.Status.HIDING) }, 0, schedulerTag)
-        scheduler.schedule(() => { setStatus(Section.Status.HIDDEN) }, 420, schedulerTag)
+        setStatus(SECTION_STATUS.WILL_HIDE)
+        scheduler.schedule(() => { setStatus(SECTION_STATUS.HIDING) }, 0, schedulerTag)
+        scheduler.schedule(() => { setStatus(SECTION_STATUS.HIDDEN) }, 420, schedulerTag)
     }
 
     const _tweenIn = () => {
         scheduler.clearAllWithTag(schedulerTag)
-        setStatus(Section.Status.WILL_SHOW)
-        scheduler.schedule(() => { setStatus(Section.Status.SHOWING) }, 0, schedulerTag)
-        scheduler.schedule(() => { setStatus(Section.Status.SHOWN) }, 420, schedulerTag)
+        setStatus(SECTION_STATUS.WILL_SHOW)
+        scheduler.schedule(() => { setStatus(SECTION_STATUS.SHOWING) }, 0, schedulerTag)
+        scheduler.schedule(() => { setStatus(SECTION_STATUS.SHOWN) }, 420, schedulerTag)
     }
 }
 
@@ -131,15 +141,15 @@ function SectionFocusManager({ section, status }) {
 
     const isFocusingForbidden = viewport.isMobileLayout() ||
         feedbacks.isBlockedByOverlay() ||
-        status !== Section.Status.SHOWN
+        status !== SECTION_STATUS.SHOWN
 
     useEffect(() => {
-        if(status === Section.Status.SHOWN) _focus()
-        else if(status !== Section.Status.HIDDEN) _blur()
+        if(status === SECTION_STATUS.SHOWN) _focus()
+        else if(status !== SECTION_STATUS.HIDDEN) _blur()
     }, [status])
 
     useEffect(() => {
-        if(status !== Section.Status.SHOWN)
+        if(status !== SECTION_STATUS.SHOWN)
             return
 
         const keyId = input.lastKeyPressed?.id
@@ -172,15 +182,6 @@ function SectionFocusManager({ section, status }) {
         if(!isFocusingForbidden)
             sectionScrollableEl.blur()
     }
-}
-
-Section.Status = {
-    SHOWING: "showing",
-    SHOWN: "shown",
-    HIDING: "hiding",
-    HIDDEN: "hidden",
-    WILL_HIDE: "will-hide",
-    WILL_SHOW: "will-show"
 }
 
 export default Section

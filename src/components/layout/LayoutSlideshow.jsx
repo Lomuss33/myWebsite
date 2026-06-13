@@ -1,5 +1,5 @@
 import "./LayoutSlideshow.scss"
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import Section from "../sections/Section.jsx"
 import {useNavigation} from "../../providers/NavigationProvider.jsx"
 
@@ -7,6 +7,7 @@ function LayoutSlideshow({ sections, currentSection, previousSection }) {
     const navigation = useNavigation()
     const currentSectionId = currentSection?.id || null
     const previousSectionId = previousSection?.id || null
+    const forceScrollToTopCount = navigation.shouldForceScrollToTopCount
 
     const isTransitioning = navigation.isTransitioning()
     const transitioningClass = isTransitioning ?
@@ -20,11 +21,12 @@ function LayoutSlideshow({ sections, currentSection, previousSection }) {
 
     return (
         <div className={`layout-slideshow ${transitioningClass}`}>
-            {sections.map((section, index) => (
+            {sections.map((section) => (
                 <Section key={section.id}
                          section={section}
                          visible={section.id === currentSectionId}
-                         shouldTransition={_shouldTransition(section)}/>
+                         shouldTransition={_shouldTransition(section)}
+                         forceScrollToTopCount={section.id === currentSectionId ? forceScrollToTopCount : null}/>
             ))}
         </div>
     )

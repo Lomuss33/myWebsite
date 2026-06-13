@@ -538,7 +538,9 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
         min-width: var(--nav-tools-popup-min-width); // rail width + extension past the right edge
         max-width: var(--nav-tools-popup-max-width);
         z-index: $z-index-pop-over;
+    }
 
+    div.dropdown-menu.nav-tools-popup-menu:not(.nav-resume-menu) {
         // Re-apply popup styling here because these menus anchor to a static
         // wrapper instead of the default Bootstrap dropdown container.
         padding: 8px;
@@ -725,6 +727,9 @@ nav.nav-sidebar-short-rail-with-resume-band div.nav-short-rail-resume-band div.d
     --resume-ui-text: #f4edff;
     --resume-ui-header: #c4b5fd;
     --resume-ui-icon: #a78bfa;
+    --resume-ui-divider: rgba(167, 139, 250, 0.24);
+    --resume-ui-row-surface: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+    --resume-ui-row-border: rgba(196, 181, 253, 0.08);
     --resume-ui-hover-text: #ffffff;
     --resume-ui-hover-icon: #f0abfc;
     --resume-ui-hover-bg: linear-gradient(90deg, rgba(139, 92, 246, 0.18) 0%, rgba(217, 70, 239, 0.10) 100%);
@@ -732,10 +737,15 @@ nav.nav-sidebar-short-rail-with-resume-band div.nav-short-rail-resume-band div.d
         0 22px 44px rgba(2, 6, 23, 0.38),
         0 8px 18px rgba(2, 6, 23, 0.22),
         inset 0 1px 0 rgba(196, 181, 253, 0.12);
+    padding: 0.36rem;
+    overflow: hidden;
+    border: 1px solid var(--resume-ui-border);
+    border-radius: 1rem;
     border-color: var(--resume-ui-border);
     background: var(--resume-ui-background);
     box-shadow:
         var(--resume-ui-shadow);
+    color: var(--resume-ui-text);
     backdrop-filter: blur(14px) saturate(1.08);
 
     &::before {
@@ -757,16 +767,37 @@ nav.nav-sidebar-short-rail-with-resume-band div.nav-short-rail-resume-band div.d
     }
 
     button.dropdown-item {
+        position: relative;
         min-height: 2.32rem;
         justify-content: flex-start;
         gap: 0.56rem;
         padding: 0.48rem 0.66rem;
         border-radius: 0.8rem;
+        border: 1px solid var(--resume-ui-row-border);
+        background: var(--resume-ui-row-surface);
         color: var(--resume-ui-text);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
         transition:
-            background-color 0.18s ease,
+            background 0.18s ease,
             color 0.18s ease,
+            border-color 0.18s ease,
+            box-shadow 0.18s ease,
             transform 0.18s ease;
+
+        &:not(:last-child) {
+            margin-bottom: 0.34rem;
+
+            &::after {
+                content: "";
+                position: absolute;
+                left: 0.72rem;
+                right: 0.72rem;
+                bottom: -0.19rem;
+                height: 1px;
+                background: linear-gradient(90deg, transparent 0%, var(--resume-ui-divider) 18%, var(--resume-ui-divider) 82%, transparent 100%);
+                pointer-events: none;
+            }
+        }
 
         div.btn-option-picker-icon {
             background: transparent !important;
@@ -782,7 +813,11 @@ nav.nav-sidebar-short-rail-with-resume-band div.nav-short-rail-resume-band div.d
         &:hover,
         &:focus {
             background: var(--resume-ui-hover-bg);
+            border-color: color-mix(in srgb, var(--resume-ui-border) 52%, white 48%);
             color: var(--resume-ui-hover-text);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                0 0 0 1px color-mix(in srgb, var(--resume-ui-border) 18%, transparent 82%);
             transform: translateY(-1px);
 
             div.btn-option-picker-icon i.fa-icon {
@@ -983,6 +1018,9 @@ div.nav-tools-short-rail {
     --resume-ui-text: #0f1b2d;
     --resume-ui-header: #0f7ea8;
     --resume-ui-icon: #0f7ea8;
+    --resume-ui-divider: rgba(15, 126, 168, 0.20);
+    --resume-ui-row-surface: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.42) 100%);
+    --resume-ui-row-border: rgba(15, 126, 168, 0.10);
     --resume-ui-hover-text: #08111d;
     --resume-ui-hover-icon: #0a5f7f;
     --resume-ui-hover-bg: linear-gradient(90deg, rgba(15, 126, 168, 0.10) 0%, rgba(240, 180, 41, 0.08) 100%);

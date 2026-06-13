@@ -1,5 +1,5 @@
 import "./AudioButton.scss"
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useId, useRef, useState} from 'react'
 import {useUtils} from "../../hooks/utils.js"
 import {useFeedbacks} from "../../providers/FeedbacksProvider.jsx"
 import Tooltip from "../generic/Tooltip.jsx"
@@ -9,7 +9,7 @@ function AudioButton({ url = "", tooltip = "", tooltipLabel = "", size = "", but
     const utils = useUtils()
 
     const audioRef = useRef(null)
-    const [uniqueId] = useState(utils.string.generateUniqueRandomString("audio-button-"))
+    const uniqueId = `audio-button-${useId().replaceAll(":", "")}`
     const [status, setStatus] = useState(AudioButton.Status.NONE)
     const [isTooltipVisible, setIsTooltipVisible] = useState(false)
 

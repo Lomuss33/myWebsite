@@ -19,7 +19,7 @@ const DESKTOP_RESUME_MENU_POPPER_CONFIG = {
         {
             name: "offset",
             options: {
-                offset: [-24, 6]
+                offset: [8, -20]
             }
         }
     ]

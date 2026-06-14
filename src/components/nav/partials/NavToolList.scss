@@ -328,8 +328,8 @@ div.nav-tools {
 
     nav.nav-sidebar-extended {
         div.nav-tools.nav-tools-extended {
-            --nav-tools-icon-box-size: 30px;
-            --nav-tools-icon-font-size: 1.62rem;
+            --nav-tools-icon-box-size: 32px;
+            --nav-tools-icon-font-size: 1.72rem;
             --nav-tools-inline-gap: 6px;
 
             div.nav-tools-item-language,
@@ -341,10 +341,10 @@ div.nav-tools {
                     span.btn-option-picker-toggle-caption {
                         flex: 0 1 auto;
                         min-width: 0;
-                        max-width: 4.45rem;
+                        max-width: 4.7rem;
                         overflow: hidden;
                         text-overflow: ellipsis;
-                        font-size: 0.68rem;
+                        font-size: 0.73rem;
                         font-weight: 600;
                         letter-spacing: -0.005em;
                         line-height: 1.14;
@@ -360,8 +360,8 @@ div.nav-tools {
             }
 
             div.nav-tools-item-theme {
-                --nav-tools-icon-box-size: 30px;
-                --nav-tools-icon-font-size: 1.62rem;
+                --nav-tools-icon-box-size: 32px;
+                --nav-tools-icon-font-size: 1.72rem;
 
                 button.btn-option-picker-toggle i.fa-icon.fa-sun,
                 button.btn-option-picker-toggle i.fa-icon.fa-moon {
@@ -372,8 +372,8 @@ div.nav-tools {
             div.nav-tools-item-language {
                 button.btn-option-picker-toggle.nav-tool-language-toggle.btn-option-picker-toggle-caption-inline {
                     span.btn-option-picker-toggle-caption {
-                        max-width: 4rem;
-                        font-size: 0.65rem;
+                        max-width: 4.2rem;
+                        font-size: 0.69rem;
                         letter-spacing: -0.01em;
                     }
 
@@ -388,8 +388,17 @@ div.nav-tools {
 
     nav.nav-sidebar-short-rail {
         div.nav-tools {
-            --nav-tools-icon-box-size: var(--nav-short-rail-tool-icon-box-size);
-            --nav-tools-icon-font-size: var(--nav-short-rail-tool-icon-font-size);
+            --nav-tools-icon-box-size: 24px;
+            --nav-tools-icon-font-size: 0.94rem;
+        }
+
+        div.nav-tools-item-language {
+            --nav-tools-icon-box-size: 26px;
+        }
+
+        div.nav-tools-item-theme {
+            --nav-tools-icon-box-size: 29px;
+            --nav-tools-icon-font-size: 1.14rem;
         }
     }
 }
@@ -886,8 +895,8 @@ div.nav-tools-short-rail {
     }
 
     div.nav-tools-item-theme {
-        --nav-tools-icon-box-size: var(--nav-short-rail-tool-icon-box-size);
-        --nav-tools-icon-font-size: var(--nav-short-rail-tool-icon-font-size);
+        --nav-tools-icon-box-size: 27px;
+        --nav-tools-icon-font-size: 1.06rem;
 
         button.btn-option-picker-toggle {
             padding-inline: 0;

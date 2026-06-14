@@ -1149,16 +1149,16 @@
           },
           "locales": {
             "en": {
-              "title": "Avg. Body Temp: 37°C"
+              "title": "∅ Body Temp: 37°C"
             },
             "de": {
-              "title": "Durchschnittliche Körpertemperatur: 37°C"
+              "title": "∅ Körpertemperatur: 37°C"
             },
             "hr": {
-              "title": "Prosječna tjelesna temperatura: 37°C"
+              "title": "∅ temperatura: 37°C"
             },
             "tr": {
-              "title": "Ortalama Vücut Isısı: 37°C"
+              "title": "∅ Vücut Isısı: 37°C"
             }
           }
         },
@@ -1613,10 +1613,10 @@
           },
           "locales": {
             "en": {
-              "title": "Digestive Rhythm: 72-Hour Renewal"
+              "title": "Digestive Rhythm: 72-h Renewal"
             },
             "de": {
-              "title": "Verdauungsrhythmus: 72-Stunden-Erneuerung"
+              "title": "Verdauungsrhythmus: 72-Std.-Erneuerung"
             },
             "hr": {
               "title": "Ritam probave: 72-satna obnova"

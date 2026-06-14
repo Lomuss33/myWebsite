@@ -24,13 +24,24 @@ function LocationProvider({ children, sections, categories }) {
 
     /** @constructs **/
     useEffect(() => {
+        const previousScrollRestoration = window.history.scrollRestoration
+        if("scrollRestoration" in window.history) {
+            window.history.scrollRestoration = "manual"
+        }
+
         window.addEventListener('popstate', _onHashEvent)
         window.addEventListener('hashchange', _onHashEvent)
+        window.addEventListener('app:resume', _onAppResume)
         _resolveCurrentSection(true)
 
         return () => {
             window.removeEventListener('popstate', _onHashEvent)
             window.removeEventListener('hashchange', _onHashEvent)
+            window.removeEventListener('app:resume', _onAppResume)
+
+            if("scrollRestoration" in window.history) {
+                window.history.scrollRestoration = previousScrollRestoration || "auto"
+            }
         }
     }, [])
 
@@ -64,7 +75,14 @@ function LocationProvider({ children, sections, categories }) {
     const goToSection = (section) => {
         if(!section || activeSectionIdRef.current === section.id)
             return
-        window.location.hash = section.id
+
+        const nextHash = `#${section.id}`
+        const nextUrl = `${window.location.pathname}${window.location.search}${nextHash}`
+        if(window.location.hash !== nextHash) {
+            window.history.pushState({ sectionId: section.id }, "", nextUrl)
+        }
+
+        _resolveCurrentSection(false)
     }
 
     const goToSectionWithId = (sectionId) => {
@@ -92,6 +110,10 @@ function LocationProvider({ children, sections, categories }) {
     }
 
     const _onHashEvent = () => {
+        _resolveCurrentSection(false)
+    }
+
+    const _onAppResume = () => {
         _resolveCurrentSection(false)
     }
 

@@ -1,5 +1,5 @@
 import "./CopyButton.scss"
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useId, useState} from "react"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useScheduler} from "../../hooks/scheduler.js"
@@ -14,7 +14,7 @@ function CopyButton({ text = "", label = "", buttonClassName = "", variant = "ic
 
     const [didCopy, setDidCopy] = useState(false)
     const [forceReset, setForceReset] = useState(0)
-    const [uniqueId, setUniqueId] = useState(utils.string.generateUniqueRandomString("audio-button-"))
+    const uniqueId = `copy-button-${useId().replaceAll(":", "")}`
 
     const isTouchScreen = utils.device.isTouchDevice()
     const tooltipText = language.getString(didCopy ? "copied_to_clipboard" : "copy_to_clipboard")

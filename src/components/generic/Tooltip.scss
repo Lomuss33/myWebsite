@@ -32,15 +32,44 @@ div.custom-tooltip {
         border-color: var(--theme-standard-borders-accent-2) transparent transparent transparent;
     }
 
-    &.custom-tooltip-placement-right {
-        &::before {
-            top: 50%;
-            left: -11px;
-            margin-top: -5px;
-            margin-left: 0;
-            border-width: 5px;
-            border-color: transparent var(--theme-standard-borders-accent-2) transparent transparent;
-        }
+    &.mouse-layer-tooltip.custom-tooltip-placement-bottom::before {
+        top: auto;
+        bottom: calc(100% + 1px);
+        left: 50%;
+        right: auto;
+        margin-top: 0;
+        margin-left: -5px;
+        border-color: transparent transparent var(--theme-standard-borders-accent-2) transparent;
+    }
+
+    &.mouse-layer-tooltip.custom-tooltip-placement-top::before {
+        top: calc(100% + 1px);
+        bottom: auto;
+        left: 50%;
+        right: auto;
+        margin-top: 0;
+        margin-left: -5px;
+        border-color: var(--theme-standard-borders-accent-2) transparent transparent transparent;
+    }
+
+    &.mouse-layer-tooltip.custom-tooltip-placement-right::before {
+        top: 50%;
+        left: -11px;
+        right: auto;
+        bottom: auto;
+        margin-top: -5px;
+        margin-left: 0;
+        border-color: transparent var(--theme-standard-borders-accent-2) transparent transparent;
+    }
+
+    &.mouse-layer-tooltip.custom-tooltip-placement-left::before {
+        top: 50%;
+        left: auto;
+        right: -11px;
+        bottom: auto;
+        margin-top: -5px;
+        margin-left: 0;
+        border-color: transparent transparent transparent var(--theme-standard-borders-accent-2);
     }
 
     &-hidden {

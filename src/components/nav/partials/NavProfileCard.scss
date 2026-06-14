@@ -697,16 +697,6 @@ div.nav-profile-card {
         max-width: min(13rem, 80vw);
         padding: 0.36rem;
         border-radius: 1rem;
-        border: 1px solid #f8aa28;
-        background:
-            linear-gradient(180deg,
-                color-mix(in srgb, var(--theme-nav-surface) 96%, white 4%) 0%,
-                color-mix(in srgb, var(--theme-nav-surface-accent) 94%, black 6%) 100%);
-        box-shadow:
-            0 20px 40px rgba(15, 23, 42, 0.28),
-            0 8px 18px rgba(15, 23, 42, 0.16),
-            inset 0 1px 0 rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(14px) saturate(1.08);
     }
 
     &:has(div.nav-profile-card-desktop-action-stack) {
@@ -728,14 +718,6 @@ div.nav-profile-card {
             text-align: center;
             width: 100%;
         }
-    }
-
-    div.nav-profile-card-desktop-action-stack div.dropdown-menu.nav-profile-card-desktop-resume-menu button.dropdown-item {
-        min-height: 2.32rem;
-        justify-content: flex-start;
-        gap: 0.56rem;
-        padding: 0.48rem 0.66rem;
-        border-radius: 0.8rem;
     }
 
     [data-theme="light"] & {
@@ -939,7 +921,7 @@ div.nav-profile-card {
             margin-left: 0;
             padding: 0.32rem 0;
             border-radius: 999px;
-            border: 1px solid #f8aa28;
+            border: 1px solid var(--resume-ui-border);
             background:
                 linear-gradient(180deg,
                     color-mix(in srgb, var(--theme-nav-surface) 96%, white 4%) 0%,
@@ -972,6 +954,7 @@ div.nav-profile-card {
         div.nav-profile-card-mobile-action-resume div.nav-profile-card-mobile-resume-menu {
             left: calc(100% + var(--mobile-header-gap));
             right: auto;
+            top: calc(50% - 1.04rem);
             width: max-content;
             min-width: 9.4rem;
             max-width: min(11rem, calc(100vw - 5.25rem));
@@ -980,6 +963,8 @@ div.nav-profile-card {
             align-items: stretch;
             gap: 0.18rem;
             transform-origin: left center;
+            background: var(--resume-ui-background);
+            box-shadow: var(--resume-ui-shadow);
         }
 
         div.nav-profile-card-mobile-action-language div.nav-profile-card-mobile-language-menu {
@@ -1025,18 +1010,10 @@ div.nav-profile-card {
         div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item {
             width: 100%;
             height: auto;
-            min-height: 2.32rem;
-            justify-content: flex-start;
-            gap: 0.56rem;
-            padding: 0.48rem 0.66rem;
-            border-radius: 0.8rem;
         }
 
         div.nav-profile-card-mobile-action-language button.nav-profile-card-mobile-language-item:hover,
-        div.nav-profile-card-mobile-action-language button.nav-profile-card-mobile-language-item:focus-visible,
-        div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item:hover,
-        div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item:focus-visible {
-            background: color-mix(in srgb, var(--theme-primary) 14%, transparent 86%);
+        div.nav-profile-card-mobile-action-language button.nav-profile-card-mobile-language-item:focus-visible {
             outline: none;
             transform: scale(1.03);
         }
@@ -1048,39 +1025,6 @@ div.nav-profile-card {
             font-size: 0.96rem;
         }
 
-        div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item i.fa-icon {
-            opacity: 0.88;
-            color: var(--theme-nav-text);
-            transition: color 0.18s ease, opacity 0.18s ease, transform 0.18s ease;
-        }
-
-        span.nav-profile-card-mobile-resume-item-label {
-            display: block;
-            min-width: 0;
-            font-size: 0.7rem;
-            line-height: 1.1;
-            font-weight: 600;
-            letter-spacing: 0.01em;
-            color: var(--theme-nav-text);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            transition: color 0.18s ease;
-        }
-
-        div.nav-profile-card-mobile-resume-menu-header {
-            padding: 0.18rem 0.66rem 0.24rem;
-            font-size: 0.68rem;
-            line-height: 1.05;
-            font-weight: 700;
-            color: color-mix(in srgb, var(--theme-nav-text) 72%, var(--theme-primary) 28%);
-            letter-spacing: 0;
-            text-align: center;
-            white-space: nowrap;
-            user-select: none;
-            pointer-events: none;
-        }
-
         div.nav-profile-card-mobile-action-language button.nav-profile-card-mobile-language-item img {
             width: calc(var(--mobile-action-size) - 0.85rem);
             height: calc(var(--mobile-action-size) - 0.85rem);
@@ -1090,21 +1034,8 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-mobile-action-language button.nav-profile-card-mobile-language-item:hover img,
-        div.nav-profile-card-mobile-action-language button.nav-profile-card-mobile-language-item:focus-visible img,
-        div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item:hover i.fa-icon,
-        div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item:focus-visible i.fa-icon {
+        div.nav-profile-card-mobile-action-language button.nav-profile-card-mobile-language-item:focus-visible img {
             transform: scale(1.04);
-        }
-
-        div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item:hover i.fa-icon,
-        div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item:focus-visible i.fa-icon {
-            color: var(--theme-primary);
-            opacity: 1;
-        }
-
-        div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item:hover span.nav-profile-card-mobile-resume-item-label,
-        div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item:focus-visible span.nav-profile-card-mobile-resume-item-label {
-            color: var(--theme-primary);
         }
 
         div.nav-profile-card-mobile-action-language div.btn-option-picker-icon-size-2 {

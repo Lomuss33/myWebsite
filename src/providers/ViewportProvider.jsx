@@ -71,6 +71,7 @@ function ViewportProvider({ children }) {
     const _createListeners = () => {
         window.addEventListener('scroll', _onScroll, { passive: true })
         window.addEventListener('resize', _onResize, { passive: true })
+        window.addEventListener('app:resume', _onAppResume)
         window.visualViewport?.addEventListener('resize', _onVisualViewportChange, { passive: true })
         window.visualViewport?.addEventListener('scroll', _onVisualViewportChange, { passive: true })
 
@@ -81,6 +82,7 @@ function ViewportProvider({ children }) {
     const _destroyListeners = () => {
         window.removeEventListener('scroll', _onScroll)
         window.removeEventListener('resize', _onResize)
+        window.removeEventListener('app:resume', _onAppResume)
         window.visualViewport?.removeEventListener('resize', _onVisualViewportChange)
         window.visualViewport?.removeEventListener('scroll', _onVisualViewportChange)
 
@@ -124,6 +126,11 @@ function ViewportProvider({ children }) {
 
     const _onVisualViewportChange = () => {
         _scheduleVisualViewportSync()
+    }
+
+    const _onAppResume = () => {
+        _applyResize()
+        _onScroll()
     }
 
     const _scheduleScrollStoreNotification = () => {

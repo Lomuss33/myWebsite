@@ -328,8 +328,8 @@ div.nav-tools {
 
     nav.nav-sidebar-extended {
         div.nav-tools.nav-tools-extended {
-            --nav-tools-icon-box-size: 30px;
-            --nav-tools-icon-font-size: 1.62rem;
+            --nav-tools-icon-box-size: 32px;
+            --nav-tools-icon-font-size: 1.72rem;
             --nav-tools-inline-gap: 6px;
 
             div.nav-tools-item-language,
@@ -341,10 +341,10 @@ div.nav-tools {
                     span.btn-option-picker-toggle-caption {
                         flex: 0 1 auto;
                         min-width: 0;
-                        max-width: 4.45rem;
+                        max-width: 4.7rem;
                         overflow: hidden;
                         text-overflow: ellipsis;
-                        font-size: 0.68rem;
+                        font-size: 0.73rem;
                         font-weight: 600;
                         letter-spacing: -0.005em;
                         line-height: 1.14;
@@ -360,8 +360,8 @@ div.nav-tools {
             }
 
             div.nav-tools-item-theme {
-                --nav-tools-icon-box-size: 30px;
-                --nav-tools-icon-font-size: 1.62rem;
+                --nav-tools-icon-box-size: 32px;
+                --nav-tools-icon-font-size: 1.72rem;
 
                 button.btn-option-picker-toggle i.fa-icon.fa-sun,
                 button.btn-option-picker-toggle i.fa-icon.fa-moon {
@@ -372,8 +372,8 @@ div.nav-tools {
             div.nav-tools-item-language {
                 button.btn-option-picker-toggle.nav-tool-language-toggle.btn-option-picker-toggle-caption-inline {
                     span.btn-option-picker-toggle-caption {
-                        max-width: 4rem;
-                        font-size: 0.65rem;
+                        max-width: 4.2rem;
+                        font-size: 0.69rem;
                         letter-spacing: -0.01em;
                     }
 
@@ -388,8 +388,17 @@ div.nav-tools {
 
     nav.nav-sidebar-short-rail {
         div.nav-tools {
-            --nav-tools-icon-box-size: var(--nav-short-rail-tool-icon-box-size);
-            --nav-tools-icon-font-size: var(--nav-short-rail-tool-icon-font-size);
+            --nav-tools-icon-box-size: 24px;
+            --nav-tools-icon-font-size: 0.94rem;
+        }
+
+        div.nav-tools-item-language {
+            --nav-tools-icon-box-size: 26px;
+        }
+
+        div.nav-tools-item-theme {
+            --nav-tools-icon-box-size: 29px;
+            --nav-tools-icon-font-size: 1.14rem;
         }
     }
 }
@@ -538,7 +547,9 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
         min-width: var(--nav-tools-popup-min-width); // rail width + extension past the right edge
         max-width: var(--nav-tools-popup-max-width);
         z-index: $z-index-pop-over;
+    }
 
+    div.dropdown-menu.nav-tools-popup-menu:not(.nav-resume-menu) {
         // Re-apply popup styling here because these menus anchor to a static
         // wrapper instead of the default Bootstrap dropdown container.
         padding: 8px;
@@ -629,28 +640,6 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
         --nav-tools-popup-width: max-content;
         --nav-tools-popup-min-width: 11rem;
         --nav-tools-popup-max-width: min(13rem, 80vw);
-        border-color: #f8aa28;
-
-        &::before {
-            border-right-color: #f8aa28;
-            border-bottom-color: #f8aa28;
-        }
-
-        div.btn-option-picker-menu-header {
-            padding: 3px 12px 7px;
-            margin: 0 0 2px;
-            font-size: 0.73rem;
-            line-height: 1.05;
-            font-weight: 700;
-            color: color-mix(in srgb, var(--theme-texts) 68%, var(--theme-secondary) 32%);
-            text-align: center;
-            white-space: nowrap;
-        }
-
-        button.dropdown-item {
-            min-height: 42px;
-            padding: 9px 10px;
-        }
     }
 
     div.nav-tools-item-language div.dropdown-menu.nav-tools-popup-menu {
@@ -720,7 +709,7 @@ nav.nav-sidebar-short-rail div.nav-short-rail-resume-band div.dropdown-menu.nav-
     --nav-tools-popup-max-width: min(13rem, 80vw);
 }
 
-nav.nav-sidebar-short-rail-with-resume-band div.nav-short-rail-resume-band div.dropdown-menu.nav-tools-popup-menu {
+nav.nav-sidebar-short-rail-with-resume-band div.nav-short-rail-resume-band div.dropdown-menu.nav-tools-popup-menu.nav-resume-menu {
     left: calc(100% + 0.75rem) !important;
     top: 50% !important;
     bottom: auto !important;
@@ -731,9 +720,120 @@ nav.nav-sidebar-short-rail-with-resume-band div.nav-short-rail-resume-band div.d
         top: 50%;
         bottom: auto;
         border-right: 0;
-        border-bottom: 1px solid #f8aa28;
-        border-left: 1px solid #f8aa28;
+        border-bottom: 1px solid var(--resume-ui-border);
+        border-left: 1px solid var(--resume-ui-border);
+        background: var(--resume-ui-background);
         transform: translateY(-50%) rotate(45deg);
+    }
+}
+
+.nav-resume-menu {
+    --resume-ui-border: #8b5cf6;
+    --resume-ui-background:
+        linear-gradient(180deg,
+            color-mix(in srgb, #0b0a1f 90%, #24124a 10%) 0%,
+            color-mix(in srgb, #12081d 82%, #1b1038 18%) 100%);
+    --resume-ui-text: #f4edff;
+    --resume-ui-header: #c4b5fd;
+    --resume-ui-icon: #a78bfa;
+    --resume-ui-divider: rgba(167, 139, 250, 0.24);
+    --resume-ui-row-surface: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+    --resume-ui-row-border: rgba(196, 181, 253, 0.08);
+    --resume-ui-hover-text: #ffffff;
+    --resume-ui-hover-icon: #f0abfc;
+    --resume-ui-hover-bg: linear-gradient(90deg, rgba(139, 92, 246, 0.18) 0%, rgba(217, 70, 239, 0.10) 100%);
+    --resume-ui-shadow:
+        0 22px 44px rgba(2, 6, 23, 0.38),
+        0 8px 18px rgba(2, 6, 23, 0.22),
+        inset 0 1px 0 rgba(196, 181, 253, 0.12);
+    padding: 0.36rem;
+    overflow: hidden;
+    border: 1px solid var(--resume-ui-border);
+    border-radius: 1rem;
+    border-color: var(--resume-ui-border);
+    background: var(--resume-ui-background);
+    box-shadow:
+        var(--resume-ui-shadow);
+    color: var(--resume-ui-text);
+    backdrop-filter: blur(14px) saturate(1.08);
+
+    &::before {
+        border-right-color: var(--resume-ui-border);
+        border-bottom-color: var(--resume-ui-border);
+        background: var(--resume-ui-background);
+    }
+
+    div.btn-option-picker-menu-header {
+        padding: 3px 12px 7px;
+        margin: 0 0 2px;
+        font-size: 0.73rem;
+        line-height: 1.05;
+        font-weight: 700;
+        color: var(--resume-ui-header);
+        text-shadow: 0 1px 12px rgba(167, 139, 250, 0.22);
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    button.dropdown-item {
+        position: relative;
+        min-height: 2.32rem;
+        justify-content: flex-start;
+        gap: 0.56rem;
+        padding: 0.48rem 0.66rem;
+        border-radius: 0.8rem;
+        border: 1px solid var(--resume-ui-row-border);
+        background: var(--resume-ui-row-surface);
+        color: var(--resume-ui-text);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+        transition:
+            background 0.18s ease,
+            color 0.18s ease,
+            border-color 0.18s ease,
+            box-shadow 0.18s ease,
+            transform 0.18s ease;
+
+        &:not(:last-child) {
+            margin-bottom: 0.34rem;
+
+            &::after {
+                content: "";
+                position: absolute;
+                left: 0.72rem;
+                right: 0.72rem;
+                bottom: -0.19rem;
+                height: 1px;
+                background: linear-gradient(90deg, transparent 0%, var(--resume-ui-divider) 18%, var(--resume-ui-divider) 82%, transparent 100%);
+                pointer-events: none;
+            }
+        }
+
+        div.btn-option-picker-icon {
+            background: transparent !important;
+            box-shadow: none;
+            transition: transform 0.18s ease;
+
+            i.fa-icon {
+                color: var(--resume-ui-icon);
+                transition: color 0.18s ease, transform 0.18s ease;
+            }
+        }
+
+        &:hover,
+        &:focus {
+            background: var(--resume-ui-hover-bg);
+            border-color: color-mix(in srgb, var(--resume-ui-border) 52%, white 48%);
+            color: var(--resume-ui-hover-text);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                0 0 0 1px color-mix(in srgb, var(--resume-ui-border) 18%, transparent 82%);
+            transform: translateY(-1px);
+
+            div.btn-option-picker-icon i.fa-icon {
+                color: var(--resume-ui-hover-icon);
+                transform: scale(1.06);
+            }
+        }
     }
 }
 
@@ -795,8 +895,8 @@ div.nav-tools-short-rail {
     }
 
     div.nav-tools-item-theme {
-        --nav-tools-icon-box-size: var(--nav-short-rail-tool-icon-box-size);
-        --nav-tools-icon-font-size: var(--nav-short-rail-tool-icon-font-size);
+        --nav-tools-icon-box-size: 27px;
+        --nav-tools-icon-font-size: 1.06rem;
 
         button.btn-option-picker-toggle {
             padding-inline: 0;
@@ -918,8 +1018,29 @@ div.nav-tools-short-rail {
     }
 }
 
-[data-theme="dark"] nav.nav-sidebar div.nav-tools div.dropdown-menu.nav-tools-popup-menu,
-[data-theme="dark"] nav.nav-sidebar div.nav-short-rail-resume-band div.dropdown-menu.nav-tools-popup-menu {
+[data-theme="light"] .nav-resume-menu {
+    --resume-ui-border: #0f7ea8;
+    --resume-ui-background:
+        linear-gradient(180deg,
+            color-mix(in srgb, #fffdf6 94%, #fff0b6 6%) 0%,
+            color-mix(in srgb, #f3fbff 90%, #dff4ff 10%) 100%);
+    --resume-ui-text: #0f1b2d;
+    --resume-ui-header: #0f7ea8;
+    --resume-ui-icon: #0f7ea8;
+    --resume-ui-divider: rgba(15, 126, 168, 0.20);
+    --resume-ui-row-surface: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.42) 100%);
+    --resume-ui-row-border: rgba(15, 126, 168, 0.10);
+    --resume-ui-hover-text: #08111d;
+    --resume-ui-hover-icon: #0a5f7f;
+    --resume-ui-hover-bg: linear-gradient(90deg, rgba(15, 126, 168, 0.10) 0%, rgba(240, 180, 41, 0.08) 100%);
+    --resume-ui-shadow:
+        0 22px 44px rgba(15, 23, 42, 0.16),
+        0 8px 18px rgba(15, 23, 42, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+[data-theme="dark"] nav.nav-sidebar div.nav-tools div.dropdown-menu.nav-tools-popup-menu:not(.nav-resume-menu),
+[data-theme="dark"] nav.nav-sidebar div.nav-short-rail-resume-band div.dropdown-menu.nav-tools-popup-menu:not(.nav-resume-menu) {
     border-color: color-mix(in srgb, var(--theme-nav-divider) 68%, white 32%);
     background: color-mix(in srgb, var(--theme-nav-surface-raised) 78%, black 22%);
     box-shadow:
@@ -972,39 +1093,71 @@ div.nav-tools-short-rail {
     }
 }
 
-[data-theme="dark"] nav.nav-sidebar div.nav-tools div.nav-tools-item-resume div.dropdown-menu.nav-tools-popup-menu,
-[data-theme="dark"] nav.nav-sidebar div.nav-short-rail-resume-band div.dropdown-menu.nav-tools-popup-menu {
-    border-color: #f8aa28;
+[data-theme="dark"] .nav-resume-menu {
+    --resume-ui-shadow:
+        0 26px 52px rgba(1, 5, 16, 0.56),
+        0 10px 24px rgba(1, 5, 16, 0.34),
+        inset 0 1px 0 rgba(196, 181, 253, 0.10);
+    border-color: var(--resume-ui-border);
+    background: var(--resume-ui-background);
+    box-shadow: var(--resume-ui-shadow);
 
     &::before {
-        border-right-color: #f8aa28;
-        border-bottom-color: #f8aa28;
+        border-right-color: var(--resume-ui-border);
+        border-bottom-color: var(--resume-ui-border);
+        background: var(--resume-ui-background);
+    }
+}
+
+[data-theme="dark"] nav.nav-sidebar-short-rail div.nav-tools div.nav-tools-item-resume button.btn-option-picker-toggle,
+[data-theme="dark"] nav.nav-sidebar-short-rail div.nav-short-rail-resume-band button.btn-option-picker-toggle {
+    i.fa-icon,
+    i.fa-caret-icon,
+    span.btn-option-picker-toggle-caption {
+        color: color-mix(in srgb, var(--resume-ui-icon) 88%, white 12%);
     }
 
-    a.dropdown-item,
-    button.dropdown-item {
-        div.btn-option-picker-icon {
-            width: 24px;
-            min-width: 24px;
-            height: 24px;
-            border-radius: 999px;
-            background: transparent !important;
-            box-shadow: none;
+    &:hover {
+        background:
+            linear-gradient(180deg,
+                rgba(139, 92, 246, 0.16) 0%,
+                color-mix(in srgb, var(--theme-nav-surface-raised) 76%, #7c3aed 24%) 100%);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.07),
+            inset 0 -2px 0 rgba(139, 92, 246, 0.36),
+            inset 0 0 0 1px rgba(167, 139, 250, 0.16);
 
-            i.fa-icon {
-                font-size: 1.12rem;
-                line-height: 1;
-                color: color-mix(in srgb, var(--theme-secondary) 74%, white 26%);
-                transition: transform 0.14s ease, color 0.14s ease;
-            }
+        i.fa-icon,
+        i.fa-caret-icon,
+        span.btn-option-picker-toggle-caption {
+            color: color-mix(in srgb, var(--resume-ui-hover-icon) 80%, white 20%);
         }
+    }
+}
 
-        &:hover,
-        &:focus {
-            div.btn-option-picker-icon i.fa-icon {
-                transform: scale(1.1);
-                color: color-mix(in srgb, var(--theme-secondary) 84%, white 16%);
-            }
-        }
+[data-theme="dark"] nav.nav-sidebar-short-rail div.nav-tools div.nav-tools-item-resume div.dropdown.show > button.btn-option-picker-toggle,
+[data-theme="dark"] nav.nav-sidebar-short-rail div.nav-tools div.nav-tools-item-resume div.dropup.show > button.btn-option-picker-toggle,
+[data-theme="dark"] nav.nav-sidebar-short-rail div.nav-tools div.nav-tools-item-resume div.dropdown > button.btn-option-picker-toggle.show,
+[data-theme="dark"] nav.nav-sidebar-short-rail div.nav-tools div.nav-tools-item-resume div.dropup > button.btn-option-picker-toggle.show,
+[data-theme="dark"] nav.nav-sidebar-short-rail div.nav-tools div.nav-tools-item-resume button.btn-option-picker-toggle:focus-visible,
+[data-theme="dark"] nav.nav-sidebar-short-rail div.nav-short-rail-resume-band div.dropdown.show > button.btn-option-picker-toggle,
+[data-theme="dark"] nav.nav-sidebar-short-rail div.nav-short-rail-resume-band div.dropup.show > button.btn-option-picker-toggle,
+[data-theme="dark"] nav.nav-sidebar-short-rail div.nav-short-rail-resume-band div.dropdown > button.btn-option-picker-toggle.show,
+[data-theme="dark"] nav.nav-sidebar-short-rail div.nav-short-rail-resume-band div.dropup > button.btn-option-picker-toggle.show,
+[data-theme="dark"] nav.nav-sidebar-short-rail div.nav-short-rail-resume-band button.btn-option-picker-toggle:focus-visible {
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        inset 0 -3px 0 rgba(139, 92, 246, 0.46),
+        inset 0 0 0 1px rgba(167, 139, 250, 0.20),
+        0 0 0.9rem rgba(139, 92, 246, 0.16);
+    background:
+        linear-gradient(180deg,
+            rgba(139, 92, 246, 0.18) 0%,
+            color-mix(in srgb, var(--theme-nav-surface-raised) 70%, #7c3aed 30%) 100%);
+
+    i.fa-icon,
+    i.fa-caret-icon,
+    span.btn-option-picker-toggle-caption {
+        color: color-mix(in srgb, var(--resume-ui-hover-icon) 82%, white 18%);
     }
 }

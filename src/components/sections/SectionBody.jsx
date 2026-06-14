@@ -1,5 +1,5 @@
 import "./SectionBody.scss"
-import React, {Suspense, lazy, useEffect, useMemo, useState} from 'react'
+import React, {Suspense, lazy, useEffect, useMemo} from 'react'
 import {useParser} from "../../hooks/parser.js"
 import ArticleNotFound from "../articles/ArticleNotFound.jsx"
 import SectionDecorationBand from "./SectionDecorationBand.jsx"
@@ -23,6 +23,70 @@ function _loadArticleThread() { return import("../articles/ArticleThread.jsx") }
 function _loadArticleTimeline() { return import("../articles/ArticleTimeline.jsx") }
 function _loadArticleSecretPearls() { return import("../articles/ArticleSecretPearls.jsx") }
 function _loadArticleWebArt() { return import("../articles/ArticleWebArt.jsx") }
+
+const ARTICLE_LOADERS = {
+    ArticleCards: _loadArticleCards,
+    ArticleComplaintForm: _loadArticleComplaintForm,
+    ArticleContactForm: _loadArticleContactForm,
+    ArticleDataProbe: _loadArticleDataProbe,
+    ArticleFeature: _loadArticleFeature,
+    ArticleFacts: _loadArticleFacts,
+    ArticleFallingWords: _loadArticleFallingWords,
+    ArticleInfoList: _loadArticleInfoList,
+    ArticleInlineList: _loadArticleInlineList,
+    ArticleManuscript: _loadArticleManuscript,
+    ArticlePortfolio: _loadArticlePortfolio,
+    ArticleSkills: _loadArticleSkills,
+    ArticleStack: _loadArticleStack,
+    ArticleTestimonials: _loadArticleTestimonials,
+    ArticleText: _loadArticleText,
+    ArticleThread: _loadArticleThread,
+    ArticleTimeline: _loadArticleTimeline,
+    ArticleSecretPearls: _loadArticleSecretPearls,
+    ArticleWebArt: _loadArticleWebArt
+}
+
+const ARTICLE_COMPONENTS = {
+    ArticleCards: lazy(_loadArticleCards),
+    ArticleComplaintForm: lazy(_loadArticleComplaintForm),
+    ArticleContactForm: lazy(_loadArticleContactForm),
+    ArticleDataProbe: lazy(_loadArticleDataProbe),
+    ArticleFeature: lazy(_loadArticleFeature),
+    ArticleFacts: lazy(_loadArticleFacts),
+    ArticleFallingWords: lazy(_loadArticleFallingWords),
+    ArticleInfoList: lazy(_loadArticleInfoList),
+    ArticleInlineList: lazy(_loadArticleInlineList),
+    ArticleManuscript: lazy(_loadArticleManuscript),
+    ArticlePortfolio: lazy(_loadArticlePortfolio),
+    ArticleSkills: lazy(_loadArticleSkills),
+    ArticleStack: lazy(_loadArticleStack),
+    ArticleTestimonials: lazy(_loadArticleTestimonials),
+    ArticleText: lazy(_loadArticleText),
+    ArticleThread: lazy(_loadArticleThread),
+    ArticleTimeline: lazy(_loadArticleTimeline),
+    ArticleSecretPearls: lazy(_loadArticleSecretPearls),
+    ArticleWebArt: lazy(_loadArticleWebArt)
+}
+
+const preloadedArticleComponents = new Set()
+
+function preloadArticleComponent(componentName) {
+    const loader = ARTICLE_LOADERS[componentName]
+    if(!loader || preloadedArticleComponents.has(componentName))
+        return
+
+    preloadedArticleComponents.add(componentName)
+    loader().catch(() => {
+        preloadedArticleComponents.delete(componentName)
+    })
+}
+
+export function preloadSectionArticles(section) {
+    const articles = Array.isArray(section?.data?.articles) ? section.data.articles : []
+    for(const article of articles) {
+        preloadArticleComponent(article?.component)
+    }
+}
 
 function _scheduleIdleWork(work, timeoutMs = 900) {
     if(typeof window === "undefined") {
@@ -53,45 +117,14 @@ function SectionBody({ section, showDecorationBands = true }) {
     const articleDataWrappers = useMemo(() => {
         return parser.parseSectionArticles(section)
     }, [parser.parseSectionArticles, section])
-    const [visibleArticlesCount, setVisibleArticlesCount] = useState(articleDataWrappers.length)
-
-    useEffect(() => {
-        const shouldDeferSecondaryArticles = section?.id === "my-software" || section?.id === "my-hardware"
-        if(!shouldDeferSecondaryArticles || articleDataWrappers.length <= 1) {
-            setVisibleArticlesCount(articleDataWrappers.length)
-            return
-        }
-
-        setVisibleArticlesCount(1)
-
-        let timeoutId = null
-        let idleId = null
-        const revealAll = () => setVisibleArticlesCount(articleDataWrappers.length)
-
-        if(typeof window !== "undefined" && "requestIdleCallback" in window) {
-            idleId = window.requestIdleCallback(revealAll, { timeout: 500 })
-        }
-        else {
-            timeoutId = window.setTimeout(revealAll, 180)
-        }
-
-        return () => {
-            if(timeoutId !== null) window.clearTimeout(timeoutId)
-            if(idleId !== null && typeof window !== "undefined" && "cancelIdleCallback" in window) {
-                window.cancelIdleCallback(idleId)
-            }
-        }
-    }, [section?.id, articleDataWrappers.length])
-
-    const visibleArticleWrappers = articleDataWrappers.slice(0, visibleArticlesCount)
+    const visibleArticleWrappers = articleDataWrappers
 
     useEffect(() => {
         if(visibleArticleWrappers.length <= 0) return
 
         const preloadVisibleArticleTypes = () => {
             for(const dataWrapper of visibleArticleWrappers) {
-                const loader = SectionBody.ARTICLE_LOADERS[dataWrapper?.component]
-                loader?.()
+                preloadArticleComponent(dataWrapper?.component)
             }
         }
 
@@ -104,7 +137,7 @@ function SectionBody({ section, showDecorationBands = true }) {
     return (
         <div className={`section-body`}>
             {visibleArticleWrappers && visibleArticleWrappers.map((dataWrapper, key) => {
-                const Component = SectionBody.ARTICLES[dataWrapper.component] || ArticleNotFound
+                const Component = ARTICLE_COMPONENTS[dataWrapper.component] || ArticleNotFound
                 return (
                     <React.Fragment key={dataWrapper.uniqueId}>
                         {showDecorationBands && key > 0 && (
@@ -121,50 +154,6 @@ function SectionBody({ section, showDecorationBands = true }) {
             })}
         </div>
     )
-}
-
-SectionBody.ARTICLE_LOADERS = {
-    ArticleCards: _loadArticleCards,
-    ArticleComplaintForm: _loadArticleComplaintForm,
-    ArticleContactForm: _loadArticleContactForm,
-    ArticleDataProbe: _loadArticleDataProbe,
-    ArticleFeature: _loadArticleFeature,
-    ArticleFacts: _loadArticleFacts,
-    ArticleFallingWords: _loadArticleFallingWords,
-    ArticleInfoList: _loadArticleInfoList,
-    ArticleInlineList: _loadArticleInlineList,
-    ArticleManuscript: _loadArticleManuscript,
-    ArticlePortfolio: _loadArticlePortfolio,
-    ArticleSkills: _loadArticleSkills,
-    ArticleStack: _loadArticleStack,
-    ArticleTestimonials: _loadArticleTestimonials,
-    ArticleText: _loadArticleText,
-    ArticleThread: _loadArticleThread,
-    ArticleTimeline: _loadArticleTimeline,
-    ArticleSecretPearls: _loadArticleSecretPearls,
-    ArticleWebArt: _loadArticleWebArt
-}
-
-SectionBody.ARTICLES = {
-    ArticleCards: lazy(_loadArticleCards),
-    ArticleComplaintForm: lazy(_loadArticleComplaintForm),
-    ArticleContactForm: lazy(_loadArticleContactForm),
-    ArticleDataProbe: lazy(_loadArticleDataProbe),
-    ArticleFeature: lazy(_loadArticleFeature),
-    ArticleFacts: lazy(_loadArticleFacts),
-    ArticleFallingWords: lazy(_loadArticleFallingWords),
-    ArticleInfoList: lazy(_loadArticleInfoList),
-    ArticleInlineList: lazy(_loadArticleInlineList),
-    ArticleManuscript: lazy(_loadArticleManuscript),
-    ArticlePortfolio: lazy(_loadArticlePortfolio),
-    ArticleSkills: lazy(_loadArticleSkills),
-    ArticleStack: lazy(_loadArticleStack),
-    ArticleTestimonials: lazy(_loadArticleTestimonials),
-    ArticleText: lazy(_loadArticleText),
-    ArticleThread: lazy(_loadArticleThread),
-    ArticleTimeline: lazy(_loadArticleTimeline),
-    ArticleSecretPearls: lazy(_loadArticleSecretPearls),
-    ArticleWebArt: lazy(_loadArticleWebArt)
 }
 
 export default SectionBody

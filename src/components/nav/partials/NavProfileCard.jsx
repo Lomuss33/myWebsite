@@ -19,7 +19,7 @@ const DESKTOP_RESUME_MENU_POPPER_CONFIG = {
         {
             name: "offset",
             options: {
-                offset: [-12, 2]
+                offset: [0, -13]
             }
         }
     ]
@@ -99,6 +99,7 @@ function NavProfileCard({
     const namePronunciationIpa = language.getTranslation(safeProfile.locales, "name_pronunciation_ipa", null)
     const namePronunciationAudioUrl = language.getTranslation(safeProfile.locales, "name_pronunciation_audio_url", null)
     const hasPronunciationAudio = Boolean(namePronunciationIpa || namePronunciationAudioUrl)
+    const pronunciationTooltipLabel = language.getString("pronunciation")
     const mobileActionStackVisible = Boolean(mobileActionStackBeforeInfo || mobileActionStackAfterInfo || mobileActionStack)
     const desktopActionStackVisible = isExtendedRail && !mobileActionStackVisible &&
         (hasPronunciationAudio || safeProfile.resumePdfUrl)
@@ -497,7 +498,7 @@ function NavProfileCard({
                             <div className={`nav-profile-card-desktop-action nav-profile-card-desktop-action-audio`}>
                                 <AudioButton url={namePronunciationAudioUrl}
                                              tooltip={namePronunciationIpa}
-                                             tooltipLabel={namePronunciationTooltipLabel}
+                                             tooltipLabel={pronunciationTooltipLabel}
                                              size={AudioButton.Sizes.DEFAULT}
                                              buttonClassName={`nav-profile-card-desktop-audio-button`}
                                              tooltipClassName={`nav-profile-card-desktop-audio-tooltip`}/>

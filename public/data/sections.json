@@ -4,7 +4,7 @@
       "id": "about",
       "categoryId": "home",
       "jsonPath": "/data/sections/home.json",
-      "faIcon": "fa-solid fa-address-card"
+      "faIcon": "fa-solid fa-house"
     },
     {
       "id": "experience",

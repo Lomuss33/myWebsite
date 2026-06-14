@@ -369,6 +369,7 @@ article.article.article-stack-home {
     div.article-stack-item.article-stack-item-home {
         position: relative;
         isolation: isolate;
+        container-type: inline-size;
         overflow: visible;
         padding: var(--padding);
         min-height: var(--home-stack-card-min-height);
@@ -476,7 +477,7 @@ article.article.article-stack-home {
     }
 
     div.article-stack-item-home div.article-stack-item-title-prefix {
-        font-size: clamp(0.94rem, calc(var(--avatar-size) * 0.23), 1.06rem);
+        font-size: clamp(0.82rem, calc(0.72rem + 0.9cqi), 1.02rem);
         line-height: 1.12;
         letter-spacing: 0.06em;
         font-weight: 700;
@@ -492,8 +493,8 @@ article.article.article-stack-home {
     }
 
     div.article-stack-item-home div.article-stack-item-title-main {
-        font-size: clamp(1.28rem, calc(var(--avatar-size) * 0.38), 1.76rem);
-        line-height: 1.12;
+        font-size: clamp(1.02rem, calc(0.92rem + 2.2cqi), 1.5rem);
+        line-height: 1.08;
         font-weight: 850;
         letter-spacing: -0.05em;
         color: var(--home-stack-title-main);
@@ -503,8 +504,52 @@ article.article.article-stack-home {
         overflow: hidden;
         text-overflow: ellipsis;
         flex: 0 1 auto;
-        max-width: min(100%, 18ch);
+        max-width: min(100%, 16ch);
         padding-bottom: 0.04em;
+        text-wrap: balance;
+    }
+
+    @container (max-width: 360px) {
+        div.article-stack-item-home div.article-stack-item-title {
+            column-gap: 0.52rem;
+            row-gap: 0.22rem;
+        }
+
+        div.article-stack-item-home div.article-stack-item-title-prefix {
+            font-size: clamp(0.8rem, calc(0.74rem + 0.55cqi), 0.94rem);
+            letter-spacing: 0.05em;
+        }
+
+        div.article-stack-item-home div.article-stack-item-title-main {
+            font-size: clamp(0.98rem, calc(0.9rem + 1.5cqi), 1.28rem);
+            max-width: min(100%, 14ch);
+        }
+    }
+
+    @container (max-width: 300px) {
+        div.article-stack-item-home div.article-stack-item-title {
+            align-items: center;
+            flex-direction: column;
+            column-gap: 0;
+            row-gap: 0.14rem;
+        }
+
+        div.article-stack-item-home div.article-stack-item-title-prefix {
+            font-size: 0.78rem;
+            line-height: 1;
+            letter-spacing: 0.08em;
+            white-space: normal;
+            text-align: center;
+        }
+
+        div.article-stack-item-home div.article-stack-item-title-main {
+            font-size: clamp(0.94rem, calc(0.88rem + 1.1cqi), 1.14rem);
+            line-height: 1.05;
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+            max-width: 100%;
+        }
     }
 
     div.article-stack-item-home div.article-stack-item-experience {

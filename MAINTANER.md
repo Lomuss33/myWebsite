@@ -1,44 +1,37 @@
 # Maintainer Guide
 
-Back to the main template guide: [README.md](./README.md)
+Main overview: [README.md](./README.md)  
+Visitor behavior and QA reference: [USER_GUIDE.md](./USER_GUIDE.md)
 
-User-facing behavior guide: [USER_GUIDE.md](./USER_GUIDE.md)
-
-Note:
-
-- the filename stays `MAINTANER.md` for compatibility with the existing repo links
+Note: the filename stays `MAINTANER.md` for compatibility with existing links.
 
 ## Purpose
 
-This file is for people who maintain, extend, or adapt the template itself.
+This guide is for maintaining or extending the project itself.
 
-It is about:
+Use it for:
 
-- how the app is structured
-- where to make content, style, and code changes
-- how to add sections and article types
-- what is generated
-- what to validate before publishing
+- project structure
+- source-of-truth files
+- common maintenance tasks
+- generated outputs
+- validation steps
 
-If you only want to customize content, start with [README.md](./README.md).
+## Core Idea
 
-## What Maintainers Need To Know First
+The project is built around a simple split:
 
-This repo is built around a simple idea:
+- `public/data/*` stores content and configuration
+- `src/components/articles/*` renders section content
+- `src/providers/*` handles app-level behavior
+- `src/styles/*` controls theme and layout
 
-- JSON defines the content
-- React article components render the content
-- providers manage app behavior
-- SCSS controls the visual system
+Default rule: change the lowest layer that solves the problem.
 
-Most work should happen at the lowest layer that solves the problem:
-
-- content problem: edit `public/data/*`
-- styling problem: edit `src/styles/*`
-- rendering problem: edit `src/components/articles/*`
-- app behavior problem: edit `src/providers/*` or related hooks
-
-Do not jump into framework changes when a content or style edit is enough.
+- content change: edit `public/data/*`
+- visual change: edit `src/styles/*`
+- renderer change: edit `src/components/articles/*`
+- app behavior change: edit providers or supporting hooks
 
 ## Commands
 
@@ -51,30 +44,19 @@ Core commands:
 - `npm run cv:generate`
 - `npm run images:generate`
 
-Template/helper commands:
+Helper commands:
 
 - `npm run resume:make:article <ArticleName>`
 - `npm run resume:clear`
 
-Important note:
+Notes:
 
-- `resume:make:article` should be treated as scaffolding help, not a guaranteed complete registration flow
-- the current article system uses lazy loaders in `src/components/sections/SectionBody.jsx`, so always verify manual integration
-
-## Maintainer Priorities
-
-When you inspect a task, default to this order:
-
-1. can this be solved in `public/data/*`?
-2. if not, can it be solved in `src/styles/*`?
-3. if not, does an existing article component need adjustment?
-4. only then consider provider or app-level behavior changes
-
-This keeps template forks cheaper to maintain and easier to understand.
+- `resume:make:article` is scaffolding help, not a full registration workflow
+- article registration is controlled in `src/components/sections/SectionBody.jsx`
 
 ## Architecture Map
 
-### Bootstrap
+### App bootstrap
 
 - `src/main.jsx`
 
@@ -83,7 +65,7 @@ Responsibilities:
 - loads initial settings
 - mounts the app
 - applies environment classes
-- assembles the provider stack
+- builds the provider stack
 
 ### Providers
 
@@ -100,12 +82,12 @@ Responsibilities:
 
 - data loading
 - localization
-- responsive helpers
-- user input state
+- viewport and responsive state
+- input state
 - notifications and overlays
-- theme state
+- theme selection
 - hash-based routing
-- animated section transitions
+- section navigation
 
 ### Rendering shell
 
@@ -116,10 +98,10 @@ Responsibilities:
 
 Responsibilities:
 
-- overall shell
-- navigation chrome
-- slideshow/section switching
-- section body rendering
+- app shell
+- navigation
+- section switching
+- section rendering
 - image preloading
 
 ### Content rendering
@@ -128,23 +110,23 @@ Responsibilities:
 
 Responsibilities:
 
-- convert normalized article/item data into visible content blocks
+- render normalized section/article/item data into visible content blocks
 
 ### Data normalization
 
+- `src/hooks/parser.js`
 - `src/hooks/models/ArticleDataWrapper.js`
 - `src/hooks/models/ArticleItemDataWrapper.js`
-- `src/hooks/parser.js`
 
 Responsibilities:
 
-- normalize raw section/article/item JSON
-- provide derived properties
-- tolerate some legacy schema inputs
+- normalize raw JSON
+- provide derived fields
+- support some legacy input formats
 
-## Content Sources
+## Source Files
 
-### Primary source files
+Primary content and config files:
 
 - `public/data/settings.json`
 - `public/data/profile.json`
@@ -154,58 +136,26 @@ Responsibilities:
 - `public/data/sections/*.json`
 - `public/data/cv-machine.json`
 
-### What each one does
+What they do:
 
-`settings.json`
+- `settings.json`: languages, themes, feature toggles, preloader, developer flags
+- `profile.json`: identity, images, roles, resume path, status, pronunciation data
+- `strings.json`: shared UI strings
+- `categories.json`: top-level navigation categories
+- `sections.json`: section registry, order, category mapping, JSON paths
+- `sections/*.json`: visible section content
+- `cv-machine.json`: canonical structured CV source used by the CV generator
 
-- languages
-- themes
-- preloader
-- feature toggles
-- image cache hints
-- developer flags
+## Content Rules
 
-`profile.json`
-
-- profile identity
-- avatar and alternate avatar
-- resume PDF path
-- roles
-- status
-- pronunciation data
-
-`categories.json`
-
-- top-level navigation categories
-
-`sections.json`
-
-- section registry
-- order
-- category assignment
-- icon mapping
-- backing JSON paths
-
-`sections/*.json`
-
-- visible section content
-- article definitions
-- article items
-
-`cv-machine.json`
-
-- canonical structured CV source used by the CV generator
-
-## Content Schema Rules
-
-### Section contract
+### Section shape
 
 Each section should contain:
 
 - `title.locales`
 - `articles[]`
 
-### Article contract
+### Article shape
 
 Each article should contain:
 
@@ -215,11 +165,9 @@ Each article should contain:
 - `settings`
 - `items`
 
-`items` may be `null` for special form-like renderers, but most article types expect arrays.
+`items` may be `null` for form-like renderers, but most article types expect arrays.
 
-### Item contract
-
-Common item fields include:
+### Common item fields
 
 - `id`
 - `img`
@@ -235,18 +183,16 @@ Common item fields include:
 - `categoryId`
 - `categoryIds`
 
-### Category schema
+### Categories
 
 Preferred schema:
 
 - article `settings.categorize_by` should be an array of category ids
-- item `categoryId` or `categoryIds` should hold the actual item categories
+- items should use `categoryId` or `categoryIds`
 
-Legacy compatibility still exists for older `category`-style inputs, but new data should not introduce them.
+Legacy `category` inputs still work in some places, but new data should not introduce them.
 
-## Existing Article Types
-
-Current registered article types:
+## Registered Article Types
 
 - `ArticleCards`
 - `ArticleComplaintForm`
@@ -267,7 +213,7 @@ Current registered article types:
 - `ArticleTimeline`
 - `ArticleWebArt`
 
-Good default choices for template users:
+Common default choices:
 
 - `ArticleFeature`
 - `ArticleInfoList`
@@ -276,27 +222,27 @@ Good default choices for template users:
 - `ArticleText`
 - `ArticleTimeline`
 
-## Common Maintainer Tasks
+## Common Tasks
 
 ### Add or reorder sections
 
 1. Edit `public/data/sections.json`.
 2. Add or update the related file in `public/data/sections/`.
-3. Make sure the `categoryId` exists in `public/data/categories.json`.
+3. Make sure `categoryId` exists in `public/data/categories.json`.
 
-### Add a new content card/item
+### Add a new item
 
 1. Open the target section JSON file.
 2. Find the relevant article.
-3. Add a new item to `items`.
-4. Keep the `id` unique inside that article.
-5. Fill in only the fields that the renderer actually uses.
+3. Add a new entry to `items`.
+4. Keep the `id` unique within that article.
+5. Only add fields used by that renderer.
 
 ### Add a new article type
 
 1. Create the component in `src/components/articles/`.
-2. Add any SCSS file it needs.
-3. Register a loader in `src/components/sections/SectionBody.jsx`.
+2. Add its SCSS if needed.
+3. Register the loader in `src/components/sections/SectionBody.jsx`.
 4. Register the lazy component in `src/components/sections/SectionBody.jsx`.
 5. Reference the new `component` name from section JSON.
 
@@ -308,13 +254,13 @@ Main files:
 - `src/styles/themes/_variables-theme-light.scss`
 - `src/styles/themes/_theme-variables-builder.scss`
 
-Supporting layout/theme files:
+Supporting files:
 
 - `src/styles/layout/*`
 - `src/styles/_tokens.scss`
 - `src/styles/app.scss`
 
-### Change routing or section transitions
+### Change navigation or routing behavior
 
 Main files:
 
@@ -340,7 +286,7 @@ Main files:
 
 ## Generated Files
 
-These files are outputs:
+These files are outputs, not primary authoring surfaces:
 
 - `public/generated/machine-cv-head.html`
 - `public/generated/machine-cv-body.html`
@@ -349,15 +295,15 @@ These files are outputs:
 - `src/data/generated/imageManifest.generated.js`
 - `public/images/__responsive/**`
 
-Maintainer rule:
+Rule:
 
 - edit the source
 - regenerate the output
-- avoid treating generated files as the main authoring surface
+- do not treat generated files as the main place to make content changes
 
-## Validation Checklist
+## Validation
 
-For normal code or styling changes:
+For code or style changes:
 
 1. `npm run lint`
 2. `npm run build`
@@ -375,31 +321,28 @@ For responsive image changes:
 For content-only changes:
 
 - `npm run lint` is usually enough
-- run `npm run build` if the change touches paths, generated content, or unusual renderers
+- run `npm run build` if the change affects paths, generated outputs, or unusual renderers
 
-## Current Codebase Caveats
+## Current Caveats
 
-- the current Vite config uses `base: '/'`
-- any older note that still says `/myWebsite/` is outdated
-- `SectionBody.jsx` is the real article registry
-- lazy loading is part of the current rendering strategy
+- Vite currently uses `base: '/'`
+- `SectionBody.jsx` is the article registry
+- lazy loading is part of the rendering strategy
 - `my-software` and `my-hardware` intentionally defer some article rendering for performance
-- `LayoutImageCache` affects perceived startup and preloader timing
-- `ArticleWebArt.jsx` is custom and large; avoid touching it unless your task specifically needs it
+- `LayoutImageCache` affects startup and preloader timing
+- `ArticleWebArt.jsx` is large and custom; avoid changing it unless required
 
-## Suggested Maintainer Workflow
+## Suggested Workflow
 
-When making changes:
-
-1. identify whether the task is content, style, renderer, or platform behavior
+1. identify whether the task is content, style, renderer, or app behavior
 2. change the smallest correct layer
-3. verify whether any generated outputs must be refreshed
-4. validate with lint/build as needed
-5. update docs if behavior or maintainer workflow changed
+3. regenerate outputs if needed
+4. run the appropriate validation steps
+5. update docs if the workflow or behavior changed
 
-## Cheap Inspection Path
+## Fast Inspection Path
 
-For most maintenance tasks, read these files before scanning the rest of the repo:
+For most maintenance tasks, these files provide enough context:
 
 1. `package.json`
 2. `README.md`
@@ -408,25 +351,3 @@ For most maintenance tasks, read these files before scanning the rest of the rep
 5. the target section JSON
 6. `src/components/sections/SectionBody.jsx`
 7. the specific renderer involved
-
-## When To Update Which Doc
-
-Update [README.md](./README.md) when:
-
-- template setup changes
-- file priorities change
-- onboarding steps change
-- the "how to copy this" workflow changes
-
-Update [USER_GUIDE.md](./USER_GUIDE.md) when:
-
-- visible UI behavior changes
-- new visitor-facing controls appear
-- navigation/contact/modal behavior changes
-
-Update this file when:
-
-- architecture changes
-- extension workflow changes
-- generator workflow changes
-- maintainer caveats change

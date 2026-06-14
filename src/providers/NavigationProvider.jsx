@@ -12,7 +12,7 @@ import {useScheduler} from "../hooks/scheduler.js"
 import {useFeedbacks} from "./FeedbacksProvider.jsx"
 import {useViewport, getViewportScrollPosition} from "./ViewportProvider.jsx"
 import {useUtils} from "../hooks/utils.js"
-import {useLayout} from "../hooks/layout.js"
+import {preloadSectionArticles} from "../components/sections/SectionBody.jsx"
 
 function NavigationProvider({ children, sections, categories }) {
     const language = useLanguage()
@@ -22,15 +22,14 @@ function NavigationProvider({ children, sections, categories }) {
     const scheduler = useScheduler()
     const viewport = useViewport()
     const utils = useUtils()
-    const layout = useLayout()
 
     const [transitionStatus, setTransitionStatus] = useState(NavigationProvider.TransitionStatus.NONE)
     const [transitionEnabled, setTransitionEnabled] = useState(true)
-    const [ignoreNextLocationEvent, setIgnoreNextLocationEvent] = useState(false)
     const [resettingScrollYTo, setResettingScrollYTo] = useState(null)
-    const [shouldForceScrollToTopCount, setShouldForceScrollToTopCount] = useState(false)
+    const [shouldForceScrollToTopCount, setShouldForceScrollToTopCount] = useState(0)
     const [isAppReady, setIsAppReady] = useState(false)
     const transitionEnabledRef = useRef(true)
+    const ignoreNextLocationEventRef = useRef(false)
 
     const [targetSection, setTargetSection] = useState(null)
     const [previousSection, setPreviousSection] = useState(null)
@@ -77,6 +76,10 @@ function NavigationProvider({ children, sections, categories }) {
     const _setTransitionStatusState = (value) => {
         transitionStatusRef.current = value
         setTransitionStatus(value)
+    }
+
+    const _setIgnoreNextLocationEventState = (value) => {
+        ignoreNextLocationEventRef.current = value
     }
 
     const _setResettingScrollYToState = (value) => {
@@ -233,12 +236,12 @@ function NavigationProvider({ children, sections, categories }) {
             _setNextSectionState(null)
             _setScheduledNextSectionState(null)
 
-            setIgnoreNextLocationEvent(true)
+            _setIgnoreNextLocationEventState(true)
             location.goToSection(currentTargetSection)
 
             scheduler.clearAllWithTag("set-ignore-next-location-event")
             scheduler.schedule(() => {
-                setIgnoreNextLocationEvent(false)
+                _setIgnoreNextLocationEventState(false)
             }, 100, "set-ignore-next-location-event")
             _setTransitionStatusState(NavigationProvider.TransitionStatus.NONE)
             return
@@ -267,8 +270,8 @@ function NavigationProvider({ children, sections, categories }) {
         if(!isAppReady)
             return
 
-        if(ignoreNextLocationEvent) {
-            setIgnoreNextLocationEvent(false)
+        if(ignoreNextLocationEventRef.current) {
+            _setIgnoreNextLocationEventState(false)
             return
         }
 
@@ -309,6 +312,7 @@ function NavigationProvider({ children, sections, categories }) {
         _setTransitionEnabled(true)
         _setTargetSectionState(locationSection)
         _updateLinks(locationSection, locationSection.category)
+        preloadSectionArticles(locationSection)
     }, [isAppReady, location.getActiveSection()?.id, targetSection?.id, nextSection?.id])
 
     /** @listens !nextSection && scheduledNextSection **/
@@ -328,6 +332,8 @@ function NavigationProvider({ children, sections, categories }) {
     const navigateToSection = (section) => {
         if(!section)
             return
+
+        preloadSectionArticles(section)
 
         const targetSectionId = targetSectionRef.current?.id || null
         const nextSectionId = nextSectionRef.current?.id || null

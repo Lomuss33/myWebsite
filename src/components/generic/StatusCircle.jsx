@@ -1,11 +1,9 @@
 import "./StatusCircle.scss"
-import React, {useEffect, useState} from 'react'
-import {useUtils} from "../../hooks/utils.js"
+import React, {useId} from 'react'
 import HoverStaticTooltip from "../widgets/HoverStaticTooltip.jsx"
 
 function StatusCircle({ variant, message, size = "status-circle-size-default", className = "", onClick = null }) {
-    const utils = useUtils()
-    const [uniqueId, setUniqueId] = useState(utils.string.generateUniqueRandomString("status-circle-"))
+    const uniqueId = `status-circle-${useId().replaceAll(":", "")}`
 
     return (
         <div className={`status-circle ${className} ${size} status-circle-variant-${variant}`}

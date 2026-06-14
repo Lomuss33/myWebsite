@@ -1,6 +1,6 @@
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "./styles/app.scss"
-import {useEffect, useState} from 'react'
+import {Component, useEffect, useRef, useState} from 'react'
 import {createRoot} from 'react-dom/client'
 import {useConstants} from "./hooks/constants.js"
 import {useUtils} from "./hooks/utils.js"
@@ -47,6 +47,7 @@ const createDefaultSettings = () => ({
 
 /** Initialization Script... **/
 let container = null
+let reactRoot = null
 
 const _applyEnvironmentClasses = () => {
     if(typeof navigator === "undefined" || typeof document === "undefined") return
@@ -59,13 +60,152 @@ const _applyEnvironmentClasses = () => {
 
 _applyEnvironmentClasses()
 
-document.addEventListener('DOMContentLoaded', function() {
-    if(container)
+const _isChunkLoadError = (error) => {
+    const message = `${error?.name || ""} ${error?.message || ""}`.toLowerCase()
+    return (
+        message.includes("chunkloaderror") ||
+        message.includes("loading chunk") ||
+        message.includes("failed to fetch dynamically imported module") ||
+        message.includes("importing a module script failed")
+    )
+}
+
+const _dispatchAppLifecycleEvent = (name, detail = {}) => {
+    if(typeof window === "undefined")
+        return
+
+    window.dispatchEvent(new CustomEvent(name, {
+        detail: {
+            ...detail,
+            timestamp: Date.now()
+        }
+    }))
+}
+
+const _renderApp = () => {
+    if(reactRoot)
         return
 
     container = document.getElementById('root')
-    createRoot(document.getElementById('root')).render(<App/>)
-})
+    if(!container)
+        return
+
+    reactRoot = createRoot(container)
+    reactRoot.render(
+        <AppErrorBoundary>
+            <App/>
+        </AppErrorBoundary>
+    )
+}
+
+class AppErrorBoundary extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            error: null
+        }
+    }
+
+    static getDerivedStateFromError(error) {
+        return { error }
+    }
+
+    componentDidCatch(error, errorInfo) {
+        console.error("AppErrorBoundary", error, errorInfo)
+    }
+
+    _reloadPage = () => {
+        window.location.reload()
+    }
+
+    render() {
+        const error = this.state.error
+        if(!error)
+            return this.props.children
+
+        const isChunkLoadError = _isChunkLoadError(error)
+        const description = isChunkLoadError ?
+            "A site update or interrupted lazy load prevented this page from restoring correctly. Reload the page to fetch a fresh copy." :
+            "A runtime error prevented the page from restoring correctly. Reload the page to try again."
+
+        return (
+            <div role="alert"
+                 style={{padding: "24px", maxWidth: "640px", margin: "0 auto"}}>
+                <h1 style={{fontSize: "1.25rem", marginBottom: "0.75rem"}}>Something went wrong</h1>
+                <p style={{marginBottom: "0.75rem"}}>{description}</p>
+                <button type="button"
+                        onClick={this._reloadPage}>
+                    Reload page
+                </button>
+            </div>
+        )
+    }
+}
+
+function AppLifecycleBridge() {
+    const lastDispatchRef = useRef({ name: null, timestamp: 0 })
+
+    useEffect(() => {
+        const DUPLICATE_WINDOW_MS = 120
+
+        const dispatchLifecycleEvent = (name, detail = {}) => {
+            const now = Date.now()
+            if(
+                lastDispatchRef.current.name === name &&
+                now - lastDispatchRef.current.timestamp < DUPLICATE_WINDOW_MS
+            ) {
+                return
+            }
+
+            lastDispatchRef.current = {
+                name,
+                timestamp: now
+            }
+            _dispatchAppLifecycleEvent(name, detail)
+        }
+
+        const onPageShow = (event) => {
+            dispatchLifecycleEvent("app:resume", {
+                source: "pageshow",
+                persisted: Boolean(event?.persisted)
+            })
+        }
+
+        const onPageHide = (event) => {
+            dispatchLifecycleEvent("app:pause", {
+                source: "pagehide",
+                persisted: Boolean(event?.persisted)
+            })
+        }
+
+        const onVisibilityChange = () => {
+            if(document.visibilityState === "visible") {
+                dispatchLifecycleEvent("app:resume", {
+                    source: "visibilitychange",
+                    persisted: false
+                })
+            }
+            else {
+                dispatchLifecycleEvent("app:pause", {
+                    source: "visibilitychange",
+                    persisted: false
+                })
+            }
+        }
+
+        window.addEventListener("pageshow", onPageShow)
+        window.addEventListener("pagehide", onPageHide)
+        document.addEventListener("visibilitychange", onVisibilityChange)
+
+        return () => {
+            window.removeEventListener("pageshow", onPageShow)
+            window.removeEventListener("pagehide", onPageHide)
+            document.removeEventListener("visibilitychange", onVisibilityChange)
+        }
+    }, [])
+
+    return null
+}
 
 /**
  * This is the main app component. It wraps the content of the app with AppEssentialsWrapper and AppCapabilitiesWrapper.
@@ -74,11 +214,14 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 const App = () => {
     return (
-        <AppEssentialsWrapper>
-            <AppCapabilitiesWrapper>
-                <Portfolio/>
-            </AppCapabilitiesWrapper>
-        </AppEssentialsWrapper>
+        <>
+            <AppLifecycleBridge/>
+            <AppEssentialsWrapper>
+                <AppCapabilitiesWrapper>
+                    <Portfolio/>
+                </AppCapabilitiesWrapper>
+            </AppEssentialsWrapper>
+        </>
     )
 }
 
@@ -275,3 +418,8 @@ const AppCapabilitiesWrapper = ({ children }) => {
         </LanguageProvider>
     )
 }
+
+if(document.readyState === "loading")
+    document.addEventListener("DOMContentLoaded", _renderApp, { once: true })
+else
+    _renderApp()

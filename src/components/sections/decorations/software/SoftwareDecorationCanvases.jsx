@@ -365,6 +365,7 @@ function SoftwareDecorationCanvases() {
         let lastRainTime = 0
         let lastShaderTime = 0
         let isIntersecting = false
+        let isShaderContextLost = false
         const reducedMotionQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)") || null
 
         try {
@@ -390,11 +391,16 @@ function SoftwareDecorationCanvases() {
                 return
 
             drawRain(context, layout, columns, cellSize, true)
-            if(shaderState)
+            if(shaderState && !isShaderContextLost)
                 drawShader(shaderState, 0)
         }
 
         const step = (timestamp) => {
+            if(isShaderContextLost) {
+                stopLoop()
+                return
+            }
+
             if(!shouldAnimate()) {
                 stopLoop()
                 return
@@ -416,6 +422,11 @@ function SoftwareDecorationCanvases() {
         }
 
         const startLoop = () => {
+            if(isShaderContextLost) {
+                drawStatic()
+                return
+            }
+
             if(!shouldAnimate()) {
                 drawStatic()
                 return
@@ -435,7 +446,7 @@ function SoftwareDecorationCanvases() {
             cellSize = getVisibleCellSize() / layout.scale
             columns = createColumns(layout.rain.width, layout.rain.height, cellSize)
 
-            if(shaderState && layout.shader)
+            if(shaderState && !isShaderContextLost && layout.shader)
                 resizeWebGlCanvas(shaderCanvas, shaderState.gl, layout.shader)
 
             lastRainTime = 0
@@ -452,6 +463,31 @@ function SoftwareDecorationCanvases() {
                 rebuildFrameId = null
                 rebuild()
             })
+        }
+
+        const handleContextLost = (event) => {
+            event.preventDefault()
+            isShaderContextLost = true
+            stopLoop()
+            if(rebuildFrameId !== null) {
+                window.cancelAnimationFrame(rebuildFrameId)
+                rebuildFrameId = null
+            }
+        }
+
+        const handleContextRestored = () => {
+            isShaderContextLost = false
+
+            try {
+                shaderState = setupShader(shaderCanvas)
+            }
+            catch(error) {
+                console.error(error)
+                shaderState = null
+                return
+            }
+
+            scheduleRebuild()
         }
 
         const handleVisibilityChange = () => {
@@ -477,7 +513,10 @@ function SoftwareDecorationCanvases() {
             mutationObserver?.observe(sectionBody, { childList: true })
         intersectionObserver?.observe(wrapper)
         window.addEventListener("resize", scheduleRebuild, { passive: true })
+        window.addEventListener("app:resume", scheduleRebuild)
         document.addEventListener("visibilitychange", handleVisibilityChange)
+        shaderCanvas.addEventListener("webglcontextlost", handleContextLost)
+        shaderCanvas.addEventListener("webglcontextrestored", handleContextRestored)
         reducedMotionQuery?.addEventListener?.("change", scheduleRebuild)
 
         rebuild()
@@ -495,7 +534,10 @@ function SoftwareDecorationCanvases() {
             mutationObserver?.disconnect()
             intersectionObserver?.disconnect()
             window.removeEventListener("resize", scheduleRebuild)
+            window.removeEventListener("app:resume", scheduleRebuild)
             document.removeEventListener("visibilitychange", handleVisibilityChange)
+            shaderCanvas.removeEventListener("webglcontextlost", handleContextLost)
+            shaderCanvas.removeEventListener("webglcontextrestored", handleContextRestored)
             reducedMotionQuery?.removeEventListener?.("change", scheduleRebuild)
 
             if(shaderState?.buffer)

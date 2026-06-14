@@ -31,11 +31,13 @@ function LocationProvider({ children, sections, categories }) {
 
         window.addEventListener('popstate', _onHashEvent)
         window.addEventListener('hashchange', _onHashEvent)
+        window.addEventListener('app:resume', _onAppResume)
         _resolveCurrentSection(true)
 
         return () => {
             window.removeEventListener('popstate', _onHashEvent)
             window.removeEventListener('hashchange', _onHashEvent)
+            window.removeEventListener('app:resume', _onAppResume)
 
             if("scrollRestoration" in window.history) {
                 window.history.scrollRestoration = previousScrollRestoration || "auto"
@@ -108,6 +110,10 @@ function LocationProvider({ children, sections, categories }) {
     }
 
     const _onHashEvent = () => {
+        _resolveCurrentSection(false)
+    }
+
+    const _onAppResume = () => {
         _resolveCurrentSection(false)
     }
 

@@ -232,9 +232,9 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
                    className={`mouse-layer-circle-fa-icon mouse-layer-circle-fa-icon-hidden fa-solid fa-circle`}/>
             </div>
 
-            <div ref={tooltipRef}
+        <div ref={tooltipRef}
                  id={`mouse-layer-tooltip`}
-                 className={`custom-tooltip custom-tooltip-hidden`}>
+                 className={`custom-tooltip mouse-layer-tooltip custom-tooltip-hidden`}>
                 <span/>
             </div>
         </div>
@@ -330,11 +330,23 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
             const targetX = tooltipPlacement.x
             const targetY = tooltipPlacement.y
 
-            tooltip.classList.toggle("custom-tooltip-placement-right", tooltipPlacement.side === "right")
+            const placementClassNames = [
+                "custom-tooltip-placement-top",
+                "custom-tooltip-placement-right",
+                "custom-tooltip-placement-bottom",
+                "custom-tooltip-placement-left"
+            ]
+            tooltip.classList.remove(...placementClassNames)
+            tooltip.classList.add(`custom-tooltip-placement-${tooltipPlacement.side}`)
             tooltip.style.transform = `translate3d(${targetX}px, ${targetY}px, 0)`
         }
         else {
-            tooltip.classList.remove("custom-tooltip-placement-right")
+            tooltip.classList.remove(
+                "custom-tooltip-placement-top",
+                "custom-tooltip-placement-right",
+                "custom-tooltip-placement-bottom",
+                "custom-tooltip-placement-left"
+            )
         }
 
         const isScaleSettled = state.currentScale === targetScale
@@ -460,49 +472,104 @@ function resolveTooltipPlacement({
     const viewportHeight = typeof window !== "undefined" ? window.innerHeight || 0 : 0
     const cursorRadius = (CIRCLE_SIZE_IN_PIXELS * currentScale / 3) / 2
 
-    const centeredTopX = currentX - tooltipWidth / 2
-    const centeredTopY = currentY - tooltipHeight - cursorRadius - TOOLTIP_TOP_GAP_IN_PIXELS
-    const topFitsFully =
-        centeredTopX >= TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS &&
-        centeredTopX + tooltipWidth <= viewportWidth - TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS &&
-        centeredTopY >= TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS
+    const centeredX = currentX - tooltipWidth / 2
+    const bottomPlacementY = currentY + cursorRadius + TOOLTIP_TOP_GAP_IN_PIXELS
+    const topPlacementY = currentY - tooltipHeight - cursorRadius - TOOLTIP_TOP_GAP_IN_PIXELS
+    const rightPlacementX = currentX + cursorRadius + TOOLTIP_SIDE_GAP_IN_PIXELS
+    const leftPlacementX = currentX - tooltipWidth - cursorRadius - TOOLTIP_SIDE_GAP_IN_PIXELS
 
-    if(topFitsFully) {
+    const bottomFitsFully =
+        centeredX >= TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS &&
+        centeredX + tooltipWidth <= viewportWidth - TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS &&
+        bottomPlacementY + tooltipHeight <= viewportHeight - TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS
+    const topFitsFully =
+        centeredX >= TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS &&
+        centeredX + tooltipWidth <= viewportWidth - TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS &&
+        topPlacementY >= TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS
+    const rightFitsFully =
+        rightPlacementX + tooltipWidth <= viewportWidth - TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS
+    const leftFitsFully =
+        leftPlacementX >= TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS
+
+    const sideY = clampNumber(
+        currentY - tooltipHeight / 2,
+        TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS,
+        Math.max(TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS, viewportHeight - tooltipHeight - TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS)
+    )
+
+    const tooltipLayoutContext = targetElementParameters?.tooltipLayoutContext
+    const shouldPreferTooltipOnRight = shouldPreferRightSidePlacement(currentX, tooltipLayoutContext) || centeredX < TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS
+    const centeredOverflowsRight = centeredX + tooltipWidth > viewportWidth - TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS
+    const belowOverflowsBottom = bottomPlacementY + tooltipHeight > viewportHeight - TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS
+
+    if(shouldPreferTooltipOnRight && rightFitsFully) {
         return {
-            side: "top",
-            x: centeredTopX,
-            y: centeredTopY
+            side: "right",
+            x: rightPlacementX,
+            y: sideY
         }
     }
 
-    const tooltipLayoutContext = targetElementParameters?.tooltipLayoutContext
-    const shouldPreferRightSide = shouldPreferRightSidePlacement(currentX, tooltipLayoutContext) || centeredTopX < TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS
-    if(shouldPreferRightSide) {
-        const sideX = Math.min(
-            currentX + cursorRadius + TOOLTIP_SIDE_GAP_IN_PIXELS,
-            Math.max(TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS, viewportWidth - tooltipWidth - TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS)
-        )
-        const sideY = clampNumber(
-            currentY - tooltipHeight / 2,
-            TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS,
-            Math.max(TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS, viewportHeight - tooltipHeight - TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS)
-        )
+    if((centeredOverflowsRight || !leftFitsFully) && leftFitsFully) {
+        return {
+            side: "left",
+            x: leftPlacementX,
+            y: sideY
+        }
+    }
 
+    if(bottomFitsFully) {
+        return {
+            side: "bottom",
+            x: centeredX,
+            y: bottomPlacementY
+        }
+    }
+
+    if(belowOverflowsBottom && topFitsFully) {
+        return {
+            side: "top",
+            x: centeredX,
+            y: topPlacementY
+        }
+    }
+
+    if(shouldPreferTooltipOnRight) {
         return {
             side: "right",
-            x: sideX,
+            x: clampNumber(
+                rightPlacementX,
+                TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS,
+                Math.max(TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS, viewportWidth - tooltipWidth - TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS)
+            ),
+            y: sideY
+        }
+    }
+
+    if(centeredOverflowsRight) {
+        return {
+            side: "left",
+            x: clampNumber(
+                leftPlacementX,
+                TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS,
+                Math.max(TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS, viewportWidth - tooltipWidth - TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS)
+            ),
             y: sideY
         }
     }
 
     return {
-        side: "top",
+        side: belowOverflowsBottom ? "top" : "bottom",
         x: clampNumber(
-            centeredTopX,
+            centeredX,
             TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS,
             Math.max(TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS, viewportWidth - tooltipWidth - TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS)
         ),
-        y: Math.max(TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS, centeredTopY)
+        y: clampNumber(
+            belowOverflowsBottom ? topPlacementY : bottomPlacementY,
+            TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS,
+            Math.max(TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS, viewportHeight - tooltipHeight - TOOLTIP_VIEWPORT_MARGIN_IN_PIXELS)
+        )
     }
 }
 

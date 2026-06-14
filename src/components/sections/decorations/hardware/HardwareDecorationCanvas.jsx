@@ -318,6 +318,7 @@ function HardwareDecorationCanvas() {
         let regions = null
         let lastFrameTime = 0
         let isIntersecting = false
+        let isContextLost = false
         const reducedMotionQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)") || null
 
         try {
@@ -342,11 +343,19 @@ function HardwareDecorationCanvas() {
         }
 
         const drawStatic = () => {
+            if(isContextLost || !shaderState)
+                return
+
             if(regions)
                 drawShader(shaderState, regions, 0)
         }
 
         const step = (timestamp) => {
+            if(isContextLost || !shaderState) {
+                stopLoop()
+                return
+            }
+
             if(!shouldAnimate()) {
                 stopLoop()
                 return
@@ -361,6 +370,9 @@ function HardwareDecorationCanvas() {
         }
 
         const startLoop = () => {
+            if(isContextLost || !shaderState)
+                return
+
             if(!shouldAnimate()) {
                 drawStatic()
                 return
@@ -371,6 +383,9 @@ function HardwareDecorationCanvas() {
         }
 
         const rebuild = () => {
+            if(isContextLost || !shaderState)
+                return
+
             const layout = measureLayout(canvas)
             if(!layout)
                 return
@@ -390,6 +405,31 @@ function HardwareDecorationCanvas() {
                 rebuildFrameId = null
                 rebuild()
             })
+        }
+
+        const handleContextLost = (event) => {
+            event.preventDefault()
+            isContextLost = true
+            stopLoop()
+            if(rebuildFrameId !== null) {
+                window.cancelAnimationFrame(rebuildFrameId)
+                rebuildFrameId = null
+            }
+        }
+
+        const handleContextRestored = () => {
+            isContextLost = false
+
+            try {
+                shaderState = setupShader(canvas)
+            }
+            catch(error) {
+                console.error(error)
+                shaderState = null
+                return
+            }
+
+            scheduleRebuild()
         }
 
         const handleVisibilityChange = () => {
@@ -420,7 +460,10 @@ function HardwareDecorationCanvas() {
         themeObserver?.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] })
         intersectionObserver?.observe(wrapper)
         window.addEventListener("resize", scheduleRebuild, { passive: true })
+        window.addEventListener("app:resume", scheduleRebuild)
         document.addEventListener("visibilitychange", handleVisibilityChange)
+        canvas.addEventListener("webglcontextlost", handleContextLost)
+        canvas.addEventListener("webglcontextrestored", handleContextRestored)
         reducedMotionQuery?.addEventListener?.("change", scheduleRebuild)
 
         rebuild()
@@ -439,7 +482,10 @@ function HardwareDecorationCanvas() {
             themeObserver?.disconnect()
             intersectionObserver?.disconnect()
             window.removeEventListener("resize", scheduleRebuild)
+            window.removeEventListener("app:resume", scheduleRebuild)
             document.removeEventListener("visibilitychange", handleVisibilityChange)
+            canvas.removeEventListener("webglcontextlost", handleContextLost)
+            canvas.removeEventListener("webglcontextrestored", handleContextRestored)
             reducedMotionQuery?.removeEventListener?.("change", scheduleRebuild)
 
             if(shaderState?.buffer)

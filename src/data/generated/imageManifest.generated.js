@@ -407,6 +407,42 @@ const imageManifest = {
         "width": 633,
         "height": 523
     },
+    "/images/personal_art/digital_expression/favorite_infographic_04.webp": {
+        "src": "/images/__responsive/images/personal_art/digital_expression/favorite_infographic_04-w1100.webp",
+        "srcSet": "/images/__responsive/images/personal_art/digital_expression/favorite_infographic_04-w160.webp 160w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_04-w320.webp 320w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_04-w480.webp 480w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_04-w640.webp 640w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_04-w960.webp 960w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_04-w1100.webp 1100w",
+        "width": 1100,
+        "height": 733
+    },
+    "/images/personal_art/digital_expression/favorite_infographic_05.webp": {
+        "src": "/images/__responsive/images/personal_art/digital_expression/favorite_infographic_05-w1200.webp",
+        "srcSet": "/images/__responsive/images/personal_art/digital_expression/favorite_infographic_05-w160.webp 160w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_05-w320.webp 320w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_05-w480.webp 480w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_05-w640.webp 640w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_05-w960.webp 960w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_05-w1200.webp 1200w",
+        "width": 1200,
+        "height": 675
+    },
+    "/images/personal_art/digital_expression/favorite_infographic_06.webp": {
+        "src": "/images/__responsive/images/personal_art/digital_expression/favorite_infographic_06-w1200.webp",
+        "srcSet": "/images/__responsive/images/personal_art/digital_expression/favorite_infographic_06-w160.webp 160w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_06-w320.webp 320w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_06-w480.webp 480w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_06-w640.webp 640w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_06-w960.webp 960w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_06-w1200.webp 1200w",
+        "width": 1200,
+        "height": 1151
+    },
+    "/images/personal_art/digital_expression/favorite_infographic_07.webp": {
+        "src": "/images/__responsive/images/personal_art/digital_expression/favorite_infographic_07-w1200.webp",
+        "srcSet": "/images/__responsive/images/personal_art/digital_expression/favorite_infographic_07-w160.webp 160w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_07-w320.webp 320w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_07-w480.webp 480w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_07-w640.webp 640w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_07-w960.webp 960w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_07-w1200.webp 1200w",
+        "width": 1200,
+        "height": 675
+    },
+    "/images/personal_art/digital_expression/favorite_infographic_08.webp": {
+        "src": "/images/__responsive/images/personal_art/digital_expression/favorite_infographic_08-w1200.webp",
+        "srcSet": "/images/__responsive/images/personal_art/digital_expression/favorite_infographic_08-w160.webp 160w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_08-w320.webp 320w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_08-w480.webp 480w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_08-w640.webp 640w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_08-w960.webp 960w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_08-w1200.webp 1200w",
+        "width": 1200,
+        "height": 1045
+    },
+    "/images/personal_art/digital_expression/favorite_infographic_09.webp": {
+        "src": "/images/__responsive/images/personal_art/digital_expression/favorite_infographic_09-w1800.webp",
+        "srcSet": "/images/__responsive/images/personal_art/digital_expression/favorite_infographic_09-w160.webp 160w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_09-w320.webp 320w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_09-w480.webp 480w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_09-w640.webp 640w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_09-w960.webp 960w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_09-w1280.webp 1280w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_09-w1600.webp 1600w, /images/__responsive/images/personal_art/digital_expression/favorite_infographic_09-w1800.webp 1800w",
+        "width": 1800,
+        "height": 1168
+    },
     "/images/personal_art/gre_meteora.webp": {
         "src": "/images/__responsive/images/personal_art/gre_meteora-w2421.webp",
         "srcSet": "/images/__responsive/images/personal_art/gre_meteora-w160.webp 160w, /images/__responsive/images/personal_art/gre_meteora-w320.webp 320w, /images/__responsive/images/personal_art/gre_meteora-w480.webp 480w, /images/__responsive/images/personal_art/gre_meteora-w640.webp 640w, /images/__responsive/images/personal_art/gre_meteora-w960.webp 960w, /images/__responsive/images/personal_art/gre_meteora-w1280.webp 1280w, /images/__responsive/images/personal_art/gre_meteora-w1600.webp 1600w, /images/__responsive/images/personal_art/gre_meteora-w2421.webp 2421w",
@@ -460,6 +496,12 @@ const imageManifest = {
         "srcSet": "/images/__responsive/images/personal_art/tattoo_design/mitski_lav-w160.webp 160w, /images/__responsive/images/personal_art/tattoo_design/mitski_lav-w320.webp 320w, /images/__responsive/images/personal_art/tattoo_design/mitski_lav-w480.webp 480w, /images/__responsive/images/personal_art/tattoo_design/mitski_lav-w640.webp 640w, /images/__responsive/images/personal_art/tattoo_design/mitski_lav-w960.webp 960w, /images/__responsive/images/personal_art/tattoo_design/mitski_lav-w1083.webp 1083w",
         "width": 1083,
         "height": 1083
+    },
+    "/images/personal_art/tattoo_design/tattoo_simple_deer.webp": {
+        "src": "/images/__responsive/images/personal_art/tattoo_design/tattoo_simple_deer-w1200.webp",
+        "srcSet": "/images/__responsive/images/personal_art/tattoo_design/tattoo_simple_deer-w160.webp 160w, /images/__responsive/images/personal_art/tattoo_design/tattoo_simple_deer-w320.webp 320w, /images/__responsive/images/personal_art/tattoo_design/tattoo_simple_deer-w480.webp 480w, /images/__responsive/images/personal_art/tattoo_design/tattoo_simple_deer-w640.webp 640w, /images/__responsive/images/personal_art/tattoo_design/tattoo_simple_deer-w960.webp 960w, /images/__responsive/images/personal_art/tattoo_design/tattoo_simple_deer-w1200.webp 1200w",
+        "width": 1200,
+        "height": 2133
     },
     "/images/personal_art/tattoo_design/vrijeme_box.webp": {
         "src": "/images/__responsive/images/personal_art/tattoo_design/vrijeme_box-w2165.webp",

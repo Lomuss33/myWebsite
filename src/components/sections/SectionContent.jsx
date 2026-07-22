@@ -113,7 +113,8 @@ function SectionContent({ section }) {
                 <SectionDecorationLayer section={section}/>
 
                 {shouldShowDecorationBands && shouldHideHeader && (
-                    <SectionDecorationBand type="page-top"/>
+                    <SectionDecorationBand type="page-top"
+                                           sectionId={section?.id}/>
                 )}
 
                 {!shouldHideHeader && (
@@ -121,7 +122,8 @@ function SectionContent({ section }) {
                         <SectionHeader section={section}/>
 
                         {shouldShowDecorationBands && (
-                            <SectionDecorationBand type="after-header"/>
+                            <SectionDecorationBand type="after-header"
+                                                   sectionId={section?.id}/>
                         )}
                     </>
                 )}
@@ -130,7 +132,8 @@ function SectionContent({ section }) {
                              showDecorationBands={shouldShowDecorationBands}/>
 
                 {shouldShowDecorationBands && (
-                    <SectionDecorationBand type="page-bottom"/>
+                    <SectionDecorationBand type="page-bottom"
+                                           sectionId={section?.id}/>
                 )}
             </div>
         </div>

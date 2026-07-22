@@ -10,6 +10,7 @@ div.article-web-art-shell {
     --article-web-art-guide-radius: clamp(18px, 3cqw, 24px);
     --article-web-art-guide-rim: 2px;
     --article-web-art-shell-padding: 6px;
+    --article-web-art-stage-preview-height: 248px;
     --article-web-art-shell-border: linear-gradient(
         var(--article-web-art-guide-rotate),
         #5ddcff,
@@ -2686,15 +2687,28 @@ article#article-3-section-my-art {
     }
 
     div.article-web-art-stage {
-        max-height: 9999px;
         overflow: hidden;
-        transition: max-height 320ms ease;
+        height: auto;
+        transition: height 320ms ease;
+    }
+
+    div.article-web-art-stage-measured {
+        height: var(--article-web-art-stage-height);
     }
 
     div.article-web-art-stage-preview {
-        max-height: 248px;
         pointer-events: none;
         position: relative;
+    }
+
+    div.article-web-art-stage-preview:not(.article-web-art-stage-measured) {
+        height: var(--article-web-art-stage-preview-height);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        div.article-web-art-stage {
+            transition: none;
+        }
     }
 
     div.article-web-art-intro-cover {

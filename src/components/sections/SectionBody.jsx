@@ -142,6 +142,7 @@ function SectionBody({ section, showDecorationBands = true }) {
                     <React.Fragment key={dataWrapper.uniqueId}>
                         {showDecorationBands && key > 0 && (
                             <SectionDecorationBand type="between-articles"
+                                                   sectionId={section?.id}
                                                    index={key}/>
                         )}
 

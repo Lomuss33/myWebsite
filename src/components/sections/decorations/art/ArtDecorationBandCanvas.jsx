@@ -1,12 +1,12 @@
-import "./ArtDecorationCanvas.scss"
+import "./ArtDecorationBandCanvas.scss"
 import React, {useEffect, useRef} from 'react'
 
 const CELL_STEP = 37
 const CELL_SIZE = 34
 const FRAME_INTERVAL_MS = 1000
 const MAX_DEVICE_PIXEL_RATIO = 1.25
-const SWAPS_PER_TICK_BASE = 220
-const SWAPS_PER_TICK_RANGE = 520
+const SWAPS_PER_TICK_BASE = 34
+const SWAPS_PER_TICK_RANGE = 96
 const MAX_SWAP_RADIUS = 3
 const BAND_PALETTES = [
     ["#38bdf8", "#60a5fa", "#8b5cf6", "#f472b6", "#fbbf24"],
@@ -17,127 +17,76 @@ const BAND_PALETTES = [
     ["#38bdf8", "#60a5fa", "#8b5cf6", "#f472b6", "#fbbf24"]
 ]
 
-function measureLayout(canvas) {
-    const wrapper = canvas?.parentElement
-    if(!wrapper)
-        return null
+function getBandPaletteIndex({ index, type }) {
+    if(type === "page-bottom")
+        return BAND_PALETTES.length - 1
 
-    const wrapperRect = wrapper.getBoundingClientRect()
-    const scale = wrapper.offsetWidth > 0 ? wrapperRect.width / wrapper.offsetWidth : 1
-    const safeScale = Number.isFinite(scale) && scale > 0 ? scale : 1
-    const bandRects = Array.from(wrapper.querySelectorAll(".section-decoration-band"))
-        .map((band) => {
-            const rect = band.getBoundingClientRect()
-            return {
-                x: (rect.left - wrapperRect.left) / safeScale,
-                y: (rect.top - wrapperRect.top) / safeScale,
-                width: rect.width / safeScale,
-                height: rect.height / safeScale
-            }
-        })
-        .filter(rect => rect.width > 0 && rect.height > 0)
+    if(type === "after-header" || type === "page-top")
+        return 0
 
-    if(bandRects.length === 0)
-        return null
+    const numericIndex = Number(index)
+    if(Number.isFinite(numericIndex))
+        return Math.max(0, Math.min(BAND_PALETTES.length - 1, numericIndex))
 
-    const left = bandRects[0].x
-    const width = bandRects[0].width
-    const height = Math.max(...bandRects.map(rect => rect.y + rect.height))
-
-    return {
-        left,
-        width,
-        height,
-        bands: bandRects.map(rect => ({
-            x: rect.x - left,
-            y: rect.y,
-            width: rect.width,
-            height: rect.height
-        }))
-    }
+    return 0
 }
 
-function layoutsMatch(a, b) {
-    if(!a || !b)
-        return false
-
-    if(a.width !== b.width || a.height !== b.height || a.left !== b.left)
-        return false
-
-    if(a.bands.length !== b.bands.length)
-        return false
-
-    for(let i = 0; i < a.bands.length; ++i) {
-        const bandA = a.bands[i]
-        const bandB = b.bands[i]
-        if(
-            bandA.x !== bandB.x ||
-            bandA.y !== bandB.y ||
-            bandA.width !== bandB.width ||
-            bandA.height !== bandB.height
-        )
-            return false
-    }
-
-    return true
+function getBandPalette(paletteIndex) {
+    return BAND_PALETTES[paletteIndex] || BAND_PALETTES[BAND_PALETTES.length - 1]
 }
 
-function resizeCanvas(canvas, context, layout) {
+function resizeCanvas(canvas, context) {
+    const parent = canvas.parentElement
+    if(!parent)
+        return null
+
+    const width = Math.max(1, parent.offsetWidth || Math.round(parent.getBoundingClientRect().width) || 1)
+    const height = Math.max(1, parent.offsetHeight || Math.round(parent.getBoundingClientRect().height) || 1)
     const pixelRatio = Math.max(1, Math.min(MAX_DEVICE_PIXEL_RATIO, (window.devicePixelRatio || 1) * 0.75))
-    const width = Math.max(1, Math.round(layout.width * pixelRatio))
-    const height = Math.max(1, Math.round(layout.height * pixelRatio))
+    const canvasWidth = Math.max(1, Math.round(width * pixelRatio))
+    const canvasHeight = Math.max(1, Math.round(height * pixelRatio))
 
-    canvas.style.left = `${layout.left}px`
-    canvas.style.top = "0px"
-    canvas.style.width = `${layout.width}px`
-    canvas.style.height = `${layout.height}px`
-
-    if(canvas.width !== width)
-        canvas.width = width
-    if(canvas.height !== height)
-        canvas.height = height
+    if(canvas.width !== canvasWidth)
+        canvas.width = canvasWidth
+    if(canvas.height !== canvasHeight)
+        canvas.height = canvasHeight
 
     context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0)
     context.imageSmoothingEnabled = false
+
+    return { width, height }
 }
 
-function getBandPalette(index) {
-    return BAND_PALETTES[index] || BAND_PALETTES[BAND_PALETTES.length - 1]
-}
-
-function createBandState(band, index) {
-    const columns = Math.max(1, Math.ceil(band.width / CELL_STEP))
-    const rows = Math.max(1, Math.ceil(band.height / CELL_STEP))
+function createBandState(width, height, paletteIndex) {
+    const columns = Math.max(1, Math.ceil(width / CELL_STEP))
+    const rows = Math.max(1, Math.ceil(height / CELL_STEP))
 
     if(columns * rows < 2)
         return null
 
     const xOffsets = []
     const yOffsets = []
-    let offset = (band.width - columns * CELL_STEP) / 2
+    let offset = (width - columns * CELL_STEP) / 2
     for(let x = 0; x < columns; ++x)
         xOffsets[x] = offset + x * CELL_STEP
 
-    offset = (band.height - rows * CELL_STEP) / 2
+    offset = (height - rows * CELL_STEP) / 2
     for(let y = 0; y < rows; ++y)
         yOffsets[y] = offset + y * CELL_STEP
 
-    const palette = getBandPalette(index)
+    const palette = getBandPalette(paletteIndex)
     const cells = []
     for(let y = 0; y < rows; ++y) {
         cells[y] = []
         for(let x = 0; x < columns; ++x) {
-            const seed = (x + y * 2 + index) % palette.length
+            const seed = (x + y * 2 + paletteIndex) % palette.length
             cells[y][x] = palette[seed]
         }
     }
 
     return {
-        index,
-        x: band.x,
-        y: band.y,
-        width: band.width,
-        height: band.height,
+        width,
+        height,
         columns,
         rows,
         xOffsets,
@@ -164,8 +113,8 @@ function getTilePaint(color, isLightMode) {
 function drawCell(context, bandState, cellX, cellY, isLightMode) {
     const color = bandState.cells[cellY][cellX]
     const paint = getTilePaint(color, isLightMode)
-    const x = bandState.x + bandState.xOffsets[cellX]
-    const y = bandState.y + bandState.yOffsets[cellY]
+    const x = bandState.xOffsets[cellX]
+    const y = bandState.yOffsets[cellY]
 
     context.fillStyle = paint.fill
     context.fillRect(x, y, CELL_SIZE, CELL_SIZE)
@@ -176,17 +125,12 @@ function drawCell(context, bandState, cellX, cellY, isLightMode) {
 }
 
 function drawBand(context, bandState, isLightMode) {
-    context.save()
-    context.beginPath()
-    context.rect(bandState.x, bandState.y, bandState.width, bandState.height)
-    context.clip()
+    context.clearRect(0, 0, bandState.width, bandState.height)
 
     for(let y = 0; y < bandState.rows; ++y) {
         for(let x = 0; x < bandState.columns; ++x)
             drawCell(context, bandState, x, y, isLightMode)
     }
-
-    context.restore()
 }
 
 function getIsLightMode() {
@@ -212,13 +156,13 @@ function pickSwapTarget(bandState) {
     return {fromX, fromY, toX, toY}
 }
 
-function ArtDecorationCanvas() {
+function ArtDecorationBandCanvas({ index = null, type }) {
     const canvasRef = useRef(null)
 
     useEffect(() => {
         const canvas = canvasRef.current
-        const wrapper = canvas?.parentElement
-        if(!canvas || !wrapper)
+        const band = canvas?.parentElement
+        if(!canvas || !band)
             return
 
         const context = canvas.getContext("2d", {alpha: true, desynchronized: true})
@@ -227,11 +171,11 @@ function ArtDecorationCanvas() {
 
         let animationFrameId = null
         let rebuildFrameId = null
-        let rebuildRetryTimeoutId = null
-        let bandStates = []
-        let layout = null
+        let bandState = null
+        let dimensions = null
         let lastFrameTime = 0
         let isIntersecting = false
+        const paletteIndex = getBandPaletteIndex({ index, type })
         const reducedMotionQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)") || null
 
         const isReducedMotion = () => Boolean(reducedMotionQuery?.matches)
@@ -244,67 +188,41 @@ function ArtDecorationCanvas() {
             }
         }
 
-        const clearRebuildRetry = () => {
-            if(rebuildRetryTimeoutId !== null) {
-                window.clearTimeout(rebuildRetryTimeoutId)
-                rebuildRetryTimeoutId = null
-            }
-        }
-
-        const queueRebuildRetry = () => {
-            if(rebuildRetryTimeoutId !== null)
-                return
-
-            rebuildRetryTimeoutId = window.setTimeout(() => {
-                rebuildRetryTimeoutId = null
-                scheduleRebuild()
-            }, 160)
-        }
-
         const drawStatic = () => {
-            if(!layout || bandStates.length === 0)
+            if(!bandState)
                 return
 
-            const isLightMode = getIsLightMode()
-            context.clearRect(0, 0, layout.width, layout.height)
-            for(const bandState of bandStates)
-                drawBand(context, bandState, isLightMode)
+            drawBand(context, bandState, getIsLightMode())
         }
 
         const step = (timestamp) => {
             if(!shouldAnimate()) {
                 stopLoop()
+                drawStatic()
                 return
             }
 
-            if(layout && bandStates.length > 0 && timestamp - lastFrameTime >= FRAME_INTERVAL_MS) {
+            if(bandState && timestamp - lastFrameTime >= FRAME_INTERVAL_MS) {
                 lastFrameTime = timestamp
+                const swapCount = Math.max(
+                    1,
+                    Math.min(
+                        bandState.columns * bandState.rows,
+                        Math.floor(SWAPS_PER_TICK_BASE + Math.random() * SWAPS_PER_TICK_RANGE)
+                    )
+                )
+                const dirtyCells = []
                 const isLightMode = getIsLightMode()
 
-                for(const bandState of bandStates) {
-                    const swapsPerBand = Math.max(
-                        1,
-                        Math.floor((SWAPS_PER_TICK_BASE + Math.random() * SWAPS_PER_TICK_RANGE) / bandStates.length)
-                    )
-                    const dirtyCells = []
-
-                    context.save()
-                    context.beginPath()
-                    context.rect(bandState.x, bandState.y, bandState.width, bandState.height)
-                    context.clip()
-
-                    for(let i = 0; i < swapsPerBand; ++i) {
-                        const {fromX, fromY, toX, toY} = pickSwapTarget(bandState)
-                        ;[bandState.cells[fromY][fromX], bandState.cells[toY][toX]] =
-                            [bandState.cells[toY][toX], bandState.cells[fromY][fromX]]
-                        dirtyCells.push([fromX, fromY], [toX, toY])
-                    }
-
-                    for(const [cellX, cellY] of dirtyCells)
-                        drawCell(context, bandState, cellX, cellY, isLightMode)
-
-                    context.restore()
+                for(let i = 0; i < swapCount; ++i) {
+                    const {fromX, fromY, toX, toY} = pickSwapTarget(bandState)
+                    ;[bandState.cells[fromY][fromX], bandState.cells[toY][toX]] =
+                        [bandState.cells[toY][toX], bandState.cells[fromY][fromX]]
+                    dirtyCells.push([fromX, fromY], [toX, toY])
                 }
+
+                for(const [cellX, cellY] of dirtyCells)
+                    drawCell(context, bandState, cellX, cellY, isLightMode)
             }
 
             animationFrameId = window.requestAnimationFrame(step)
@@ -321,28 +239,20 @@ function ArtDecorationCanvas() {
         }
 
         const rebuild = () => {
-            const nextLayout = measureLayout(canvas)
-            if(!nextLayout) {
-                queueRebuildRetry()
+            const nextDimensions = resizeCanvas(canvas, context)
+            if(!nextDimensions)
                 return
-            }
 
-            const layoutChanged = !layoutsMatch(layout, nextLayout)
-            layout = nextLayout
-            resizeCanvas(canvas, context, layout)
+            const changed = !dimensions ||
+                dimensions.width !== nextDimensions.width ||
+                dimensions.height !== nextDimensions.height
 
-            if(layoutChanged || bandStates.length === 0) {
-                bandStates = layout.bands.map((band, index) => createBandState(band, index)).filter(Boolean)
-            }
-
-            if(bandStates.length === 0) {
-                queueRebuildRetry()
-                return
-            }
-
-            clearRebuildRetry()
-            if(layoutChanged)
+            dimensions = nextDimensions
+            if(changed || !bandState) {
+                bandState = createBandState(dimensions.width, dimensions.height, paletteIndex)
                 lastFrameTime = 0
+            }
+
             drawStatic()
             startLoop()
         }
@@ -350,7 +260,6 @@ function ArtDecorationCanvas() {
         const scheduleRebuild = () => {
             if(rebuildFrameId !== null)
                 window.cancelAnimationFrame(rebuildFrameId)
-            clearRebuildRetry()
 
             rebuildFrameId = window.requestAnimationFrame(() => {
                 rebuildFrameId = null
@@ -368,7 +277,6 @@ function ArtDecorationCanvas() {
         }
 
         const resizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(scheduleRebuild)
-        const mutationObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(scheduleRebuild)
         const themeObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(drawStatic)
         const intersectionObserver = typeof IntersectionObserver === "undefined" ? null : new IntersectionObserver((entries) => {
             isIntersecting = entries.some(entry => entry.isIntersecting)
@@ -376,13 +284,9 @@ function ArtDecorationCanvas() {
             else stopLoop()
         }, {rootMargin: "160px"})
 
-        resizeObserver?.observe(wrapper)
-        mutationObserver?.observe(wrapper, {childList: true})
-        const sectionBody = wrapper.querySelector(".section-body")
-        if(sectionBody)
-            mutationObserver?.observe(sectionBody, {childList: true})
+        resizeObserver?.observe(band)
         themeObserver?.observe(document.documentElement, {attributes: true, attributeFilter: ["data-theme"]})
-        intersectionObserver?.observe(wrapper)
+        intersectionObserver?.observe(band)
         window.addEventListener("resize", scheduleRebuild, {passive: true})
         window.addEventListener("orientationchange", scheduleRebuild, {passive: true})
         window.visualViewport?.addEventListener("resize", scheduleRebuild, {passive: true})
@@ -400,9 +304,7 @@ function ArtDecorationCanvas() {
             stopLoop()
             if(rebuildFrameId !== null)
                 window.cancelAnimationFrame(rebuildFrameId)
-            clearRebuildRetry()
             resizeObserver?.disconnect()
-            mutationObserver?.disconnect()
             themeObserver?.disconnect()
             intersectionObserver?.disconnect()
             window.removeEventListener("resize", scheduleRebuild)
@@ -411,15 +313,15 @@ function ArtDecorationCanvas() {
             document.removeEventListener("visibilitychange", handleVisibilityChange)
             reducedMotionQuery?.removeEventListener?.("change", scheduleRebuild)
         }
-    }, [])
+    }, [index, type])
 
     return (
         <canvas
             ref={canvasRef}
-            className="section-decoration-canvas section-decoration-canvas-art"
+            className="section-decoration-band-canvas-art"
             aria-hidden={true}
         />
     )
 }
 
-export default ArtDecorationCanvas
+export default ArtDecorationBandCanvas

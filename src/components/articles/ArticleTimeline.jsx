@@ -631,6 +631,11 @@ function ArticleTimelineItem({
         `article-timeline-item--visual-${String(itemWrapper.visualVariant).replace(/[^a-z0-9-]/gi, "").toLowerCase()}` :
         ""
     const shouldRenderDigitalImageStack = Boolean(isDigitalExpressionTimeline && canOpenGallery)
+    const shouldSwapDigitalStackOuterLayers = Boolean(
+        isDigitalExpressionTimeline &&
+        itemWrapper?.id === 2 &&
+        primaryPreviewLink?.href?.includes("tattoo-favorites-collection")
+    )
     const avatarWrapperClass = isExperienceTimeline ?
         "article-timeline-item-avatar-wrapper article-timeline-item-avatar-wrapper--experience" :
         "article-timeline-item-avatar-wrapper"
@@ -667,7 +672,8 @@ function ArticleTimelineItem({
             {shouldRenderDigitalImageStack ? (
                 <DigitalExpressionImageStack screenshots={screenshots}
                                              galleryMetadata={galleryMetadata}
-                                             label={overlayActionLabel}/>
+                                             label={overlayActionLabel}
+                                             swapOuterLayers={shouldSwapDigitalStackOuterLayers}/>
             ) : (
                 <div className={avatarWrapperClass}>
                     {canOpenGallery ? (
@@ -761,7 +767,7 @@ function getPhotographyCountryStyle(country = "") {
     return "default"
 }
 
-function DigitalExpressionImageStack({ screenshots = [], galleryMetadata = null, label = "" }) {
+function DigitalExpressionImageStack({ screenshots = [], galleryMetadata = null, label = "", swapOuterLayers = false }) {
     const language = useLanguage()
     const sourceImages = screenshots.slice(0, 4)
     const firstImage = sourceImages[0]
@@ -771,6 +777,13 @@ function DigitalExpressionImageStack({ screenshots = [], galleryMetadata = null,
 
     const layerCount = 4
     const layerImages = Array.from({ length: layerCount }, (_, index) => sourceImages[index] || firstImage)
+    if(swapOuterLayers && layerImages.length > 1) {
+        const lastIndex = layerImages.length - 1
+        const firstLayerImage = layerImages[0]
+        layerImages[0] = layerImages[lastIndex]
+        layerImages[lastIndex] = firstLayerImage
+    }
+    const primaryLayerIndex = layerImages.findIndex(src => src === firstImage)
     const sizes = "(max-width: 575.98px) 88px, (max-width: 767.98px) 104px, (max-width: 991.98px) 124px, 148px"
 
     return (
@@ -781,7 +794,7 @@ function DigitalExpressionImageStack({ screenshots = [], galleryMetadata = null,
                   tooltip={language.getString("open_gallery")}
                   ariaLabel={label}>
                 {layerImages.map((src, index) => {
-                    const isPrimaryLayer = index === 0
+                    const isPrimaryLayer = index === primaryLayerIndex
                     return (
                         <span className={`digital-expression-layer-stack__layer digital-expression-layer-stack__layer--${index + 1}`}
                               aria-hidden={!isPrimaryLayer}

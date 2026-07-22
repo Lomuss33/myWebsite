@@ -21,6 +21,7 @@ function GalleryModal({ target, onDismiss }) {
     const [activeIndex, setActiveIndex] = useState(0)
     const [didLoadInitialImages, setDidLoadInitialImages] = useState(false)
     const [imageStates, setImageStates] = useState({})
+    const [imageDimensions, setImageDimensions] = useState({})
     const [shouldDismiss, setShouldDismiss] = useState(false)
     const parameterOptions = [
         {id: "9:16", suffix: "portrait", direction: "horizontal"},
@@ -40,11 +41,23 @@ function GalleryModal({ target, onDismiss }) {
         setActiveIndex(0)
         setDidLoadInitialImages(false)
         setImageStates({})
+        setImageDimensions({})
     }, [target])
 
     useEffect(() => {
         setShouldDismiss(false)
     }, [target])
+
+    useEffect(() => {
+        if(!target || parameters.direction !== "horizontal" || typeof document === "undefined")
+            return
+
+        document.body.classList.add("gallery-modal-horizontal-open")
+
+        return () => {
+            document.body.classList.remove("gallery-modal-horizontal-open")
+        }
+    }, [target, parameters.direction])
 
     useEffect(() => {
         if(didLoadInitialImages)
@@ -81,6 +94,47 @@ function GalleryModal({ target, onDismiss }) {
         })
     }, [activeIndex, images, utils.file])
 
+    useEffect(() => {
+        if(!images.length)
+            return
+
+        let cancelled = false
+        const loaders = images.map((image, index) => {
+            const loader = new window.Image()
+            loader.decoding = "async"
+            loader.onload = () => {
+                if(cancelled || loader.naturalWidth <= 0 || loader.naturalHeight <= 0)
+                    return
+
+                setImageDimensions(previousDimensions => {
+                    const previous = previousDimensions[index]
+                    const next = {
+                        width: loader.naturalWidth,
+                        height: loader.naturalHeight
+                    }
+
+                    if(previous?.width === next.width && previous?.height === next.height)
+                        return previousDimensions
+
+                    return {
+                        ...previousDimensions,
+                        [index]: next
+                    }
+                })
+            }
+            loader.src = utils.file.resolvePath(image)
+            return loader
+        })
+
+        return () => {
+            cancelled = true
+            for(const loader of loaders) {
+                loader.onload = null
+                loader.onerror = null
+            }
+        }
+    }, [images, utils.file])
+
     if(!target)
         return <></>
 
@@ -109,6 +163,20 @@ function GalleryModal({ target, onDismiss }) {
         setShouldDismiss(true)
     }
 
+    const _onHorizontalChromeClick = (event) => {
+        if(parameters.direction !== "horizontal")
+            return
+
+        const clickedSafeControl = event.target?.closest?.(
+            ".gallery-modal-image-surface, .swiper-button-prev, .swiper-button-next"
+        )
+
+        if(clickedSafeControl)
+            return
+
+        _onClose()
+    }
+
     return (
         <ModalWrapper id={`gallery-modal`}
                       className={`${modalCustomClass} gallery-modal-${parameters.direction}`}
@@ -118,13 +186,17 @@ function GalleryModal({ target, onDismiss }) {
             <ModalWrapperTitle title={title}
                                faIcon={`fa-regular fa-image`}
                                onClose={_onClose}
-                               tooltip={"hidden"}/>
+                               tooltip={"hidden"}
+                               className={parameters.direction === "horizontal" ? `gallery-modal-dismiss-zone` : ``}
+                               onClick={parameters.direction === "horizontal" ? _onHorizontalChromeClick : null}/>
 
-            <ModalWrapperBody className={`gallery-modal-body`}>
+            <ModalWrapperBody className={`gallery-modal-body`}
+                              onClick={_onHorizontalChromeClick}>
                 {parameters.direction === "horizontal" && (
                     <GalleryModalSwiper className={visibilityClassName}
                                         images={images}
                                         type={parameters.suffix}
+                                        imageDimensions={imageDimensions}
                                         activeIndex={activeIndex}
                                         onActiveIndexChange={setActiveIndex}
                                         onImageStatus={_onImageStatus}/>
@@ -144,13 +216,14 @@ function GalleryModal({ target, onDismiss }) {
     )
 }
 
-function GalleryModalSwiper({ className, images, type, activeIndex, onActiveIndexChange, onImageStatus }) {
+function GalleryModalSwiper({ className, images, type, imageDimensions, activeIndex, onActiveIndexChange, onImageStatus }) {
     const utils = useUtils()
 
     return (
         <Swiper slidesPerView={"auto"}
                 direction={"horizontal"}
                 spaceBetween={15}
+                centeredSlides={true}
                 pagination={{clickable: true}}
                 navigation={true}
                 modules={[Pagination, Navigation]}
@@ -158,10 +231,13 @@ function GalleryModalSwiper({ className, images, type, activeIndex, onActiveInde
                 className={`gallery-swiper gallery-swiper-${type} ${className}`}>
             {images.map((image, key) => {
                 const shouldPrioritize = Math.abs(key - activeIndex) <= 1
+                const dimensions = imageDimensions?.[key]
+                const slideStyle = getGallerySlideStyle(dimensions)
 
                 return (
                     <SwiperSlide key={key}
-                                 className={`gallery-swiper-slide`}>
+                                 className={`gallery-swiper-slide`}
+                                 style={slideStyle}>
                         <GalleryModalImage className={`swiper-image`}
                                            alt={`img-` + key}
                                            src={utils.file.resolvePath(image)}
@@ -248,4 +324,17 @@ function getGalleryImageSizes(className) {
         return "(max-width: 991.98px) 100vw, 90vw"
 
     return "(max-width: 991.98px) 100vw, 70vw"
+}
+
+function getGallerySlideStyle(dimensions) {
+    const width = Number(dimensions?.width)
+    const height = Number(dimensions?.height)
+
+    if(!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0)
+        return undefined
+
+    return {
+        "--gallery-image-aspect-ratio": `${width} / ${height}`,
+        "--gallery-image-aspect-ratio-value": width / height
+    }
 }

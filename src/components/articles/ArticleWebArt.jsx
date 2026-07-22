@@ -68,6 +68,32 @@ function _scrollArticleIntoSectionView(articleId, sectionId, behavior = "smooth"
     })
 }
 
+const WEB_ART_STAGE_PREVIEW_HEIGHT = 248
+const WEB_ART_STAGE_TRANSITION_FALLBACK_MS = 460
+const WEB_ART_STAGE_PHASE = {
+    PREVIEW: "preview",
+    EXPANDING: "expanding",
+    OPEN: "open",
+    COLLAPSING: "collapsing"
+}
+
+function _prefersReducedMotion() {
+    if(typeof window === "undefined" || !window.matchMedia) return false
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches
+}
+
+function _getWebArtStagePreviewHeight(stage) {
+    if(!stage)
+        return WEB_ART_STAGE_PREVIEW_HEIGHT
+
+    const rawValue = window.getComputedStyle(stage).getPropertyValue("--article-web-art-stage-preview-height")
+    const parsedValue = Number.parseFloat(rawValue)
+    if(Number.isFinite(parsedValue) && parsedValue > 0)
+        return Math.ceil(parsedValue)
+
+    return WEB_ART_STAGE_PREVIEW_HEIGHT
+}
+
 const MINESWEEPER_ROWS = 9
 const MINESWEEPER_COLS = 9
 const MINESWEEPER_MINES = 10
@@ -374,6 +400,12 @@ function ArticleWebArt({ dataWrapper, id }) {
         return ordered
     }, [rawItems])
     const tilesWrapperRef = useRef(null)
+    const stageRef = useRef(null)
+    const stagePhaseRef = useRef(WEB_ART_STAGE_PHASE.PREVIEW)
+    const stageFrameIdsRef = useRef([])
+    const stageTransitionTimeoutRef = useRef(null)
+    const [stagePhase, setStagePhaseState] = useState(WEB_ART_STAGE_PHASE.PREVIEW)
+    const [stageHeight, setStageHeight] = useState(null)
     const [shouldMountTiles, setShouldMountTiles] = useState(false)
     const readySetRef = useRef(new Set())
     const readyTimeoutsRef = useRef(new Map())
@@ -419,6 +451,25 @@ function ArticleWebArt({ dataWrapper, id }) {
     }, [mountedTileIds])
     const locked = showIntroCover
     const selectedLanguageId = language.selectedLanguageId || "en"
+
+    const setStagePhase = useCallback((nextPhase) => {
+        stagePhaseRef.current = nextPhase
+        setStagePhaseState(nextPhase)
+    }, [])
+
+    const clearStageTransitionWork = useCallback(() => {
+        if(typeof window === "undefined")
+            return
+
+        for(const frameId of stageFrameIdsRef.current)
+            window.cancelAnimationFrame(frameId)
+        stageFrameIdsRef.current = []
+
+        if(stageTransitionTimeoutRef.current !== null) {
+            window.clearTimeout(stageTransitionTimeoutRef.current)
+            stageTransitionTimeoutRef.current = null
+        }
+    }, [])
 
     let submitTileLabel = language.getString("send_yours")
     if(typeof submitTileLabel === "string" && submitTileLabel.startsWith("locale:")) {
@@ -574,6 +625,38 @@ function ArticleWebArt({ dataWrapper, id }) {
         setSendYoursPreviewOpen(false)
     }, [])
 
+    const completeStageExpand = useCallback(() => {
+        clearStageTransitionWork()
+        setStageHeight(null)
+        setStagePhase(WEB_ART_STAGE_PHASE.OPEN)
+    }, [clearStageTransitionWork, setStagePhase])
+
+    const completeStageCollapse = useCallback(() => {
+        clearStageTransitionWork()
+        resetArtState()
+        setStageHeight(null)
+        setStagePhase(WEB_ART_STAGE_PHASE.PREVIEW)
+    }, [clearStageTransitionWork, resetArtState, setStagePhase])
+
+    const scheduleStageTransitionFallback = useCallback((phase) => {
+        if(typeof window === "undefined")
+            return
+
+        if(stageTransitionTimeoutRef.current !== null)
+            window.clearTimeout(stageTransitionTimeoutRef.current)
+
+        stageTransitionTimeoutRef.current = window.setTimeout(() => {
+            stageTransitionTimeoutRef.current = null
+            if(stagePhaseRef.current !== phase)
+                return
+
+            if(phase === WEB_ART_STAGE_PHASE.EXPANDING)
+                completeStageExpand()
+            else if(phase === WEB_ART_STAGE_PHASE.COLLAPSING)
+                completeStageCollapse()
+        }, WEB_ART_STAGE_TRANSITION_FALLBACK_MS)
+    }, [completeStageCollapse, completeStageExpand])
+
     const openAllArtTiles = useCallback(() => {
         const nextTileIds = _getOpenAllWebArtTileIds(allTileIds)
         setMountedTileIds(nextTileIds)
@@ -582,17 +665,53 @@ function ArticleWebArt({ dataWrapper, id }) {
     }, [allTileIds])
 
     const onIntroEnter = useCallback(({ openAll = false } = {}) => {
+        clearStageTransitionWork()
+        const shouldReduceMotion = _prefersReducedMotion()
+        const stage = stageRef.current
+        const previewHeight = _getWebArtStagePreviewHeight(stage)
+
+        if(shouldReduceMotion) {
+            setStageHeight(null)
+            setStagePhase(WEB_ART_STAGE_PHASE.OPEN)
+        }
+        else {
+            setStageHeight(Math.max(previewHeight, Math.ceil(stage?.offsetHeight || previewHeight)))
+            setStagePhase(WEB_ART_STAGE_PHASE.EXPANDING)
+        }
+
         setShowIntroCover(false)
         setShouldMountTiles(true)
         setActivationIndex(items.length - 1)
         if(openAll) {
             openAllArtTiles()
-            return
         }
-        setOpenTileIds(new Set())
-        setMountedTileIds(new Set())
-        setSendYoursPreviewOpen(false)
-    }, [items.length, openAllArtTiles])
+        else {
+            setOpenTileIds(new Set())
+            setMountedTileIds(new Set())
+            setSendYoursPreviewOpen(false)
+        }
+
+        if(shouldReduceMotion || typeof window === "undefined")
+            return
+
+        const firstFrameId = window.requestAnimationFrame(() => {
+            const secondFrameId = window.requestAnimationFrame(() => {
+                const nextStage = stageRef.current
+                const nextPreviewHeight = _getWebArtStagePreviewHeight(nextStage)
+                const openHeight = Math.max(
+                    nextPreviewHeight,
+                    Math.ceil(nextStage?.scrollHeight || nextStage?.offsetHeight || nextPreviewHeight)
+                )
+
+                setStageHeight(openHeight)
+                scheduleStageTransitionFallback(WEB_ART_STAGE_PHASE.EXPANDING)
+            })
+
+            stageFrameIdsRef.current.push(secondFrameId)
+        })
+
+        stageFrameIdsRef.current.push(firstFrameId)
+    }, [clearStageTransitionWork, items.length, openAllArtTiles, scheduleStageTransitionFallback, setStagePhase])
 
     useEffect(() => {
         if(typeof window === "undefined") return
@@ -682,9 +801,47 @@ function ArticleWebArt({ dataWrapper, id }) {
     }, [allTileIds, openAllArtTiles, openTileIds])
 
     const onIntroHide = useCallback(() => {
-        resetArtState()
+        clearStageTransitionWork()
         setShowIntroCover(true)
-    }, [resetArtState])
+
+        if(_prefersReducedMotion()) {
+            resetArtState()
+            setStageHeight(null)
+            setStagePhase(WEB_ART_STAGE_PHASE.PREVIEW)
+            return
+        }
+
+        const stage = stageRef.current
+        const previewHeight = _getWebArtStagePreviewHeight(stage)
+        const currentHeight = Math.max(
+            previewHeight,
+            Math.ceil(stage?.offsetHeight || stage?.scrollHeight || previewHeight)
+        )
+
+        setStageHeight(currentHeight)
+        setStagePhase(WEB_ART_STAGE_PHASE.COLLAPSING)
+
+        if(typeof window === "undefined")
+            return
+
+        const frameId = window.requestAnimationFrame(() => {
+            const nextPreviewHeight = _getWebArtStagePreviewHeight(stageRef.current)
+            setStageHeight(nextPreviewHeight)
+            scheduleStageTransitionFallback(WEB_ART_STAGE_PHASE.COLLAPSING)
+        })
+
+        stageFrameIdsRef.current.push(frameId)
+    }, [clearStageTransitionWork, resetArtState, scheduleStageTransitionFallback, setStagePhase])
+
+    const onStageTransitionEnd = useCallback((event) => {
+        if(event.target !== event.currentTarget || event.propertyName !== "height")
+            return
+
+        if(stagePhaseRef.current === WEB_ART_STAGE_PHASE.EXPANDING)
+            completeStageExpand()
+        else if(stagePhaseRef.current === WEB_ART_STAGE_PHASE.COLLAPSING)
+            completeStageCollapse()
+    }, [completeStageCollapse, completeStageExpand])
 
     const getItemTileLabel = (itemWrapper, index) => {
         const itemId = Number(itemWrapper?.id)
@@ -860,8 +1017,18 @@ function ArticleWebArt({ dataWrapper, id }) {
     ]
 
     useEffect(() => {
+        clearStageTransitionWork()
+        setStageHeight(null)
+        setStagePhase(WEB_ART_STAGE_PHASE.PREVIEW)
+        setShowIntroCover(true)
         resetArtState()
-    }, [dataWrapper.uniqueId, resetArtState])
+    }, [clearStageTransitionWork, dataWrapper.uniqueId, resetArtState, setStagePhase])
+
+    useEffect(() => {
+        return () => {
+            clearStageTransitionWork()
+        }
+    }, [clearStageTransitionWork])
 
     useEffect(() => {
         if(!shouldMountTiles) return
@@ -901,7 +1068,15 @@ function ArticleWebArt({ dataWrapper, id }) {
                                   onSecondaryAction={!showIntroCover ? toggleAllArtTiles : null}
                                   secondaryPressed={areAllArtTilesOpen}/>
 
-                <div className={`article-web-art-stage ${showIntroCover ? "article-web-art-stage-preview" : ""}`}
+                <div ref={stageRef}
+                     className={[
+                         "article-web-art-stage",
+                         showIntroCover ? "article-web-art-stage-preview" : "",
+                         stageHeight !== null ? "article-web-art-stage-measured" : "",
+                         `article-web-art-stage-${stagePhase}`
+                     ].filter(Boolean).join(" ")}
+                     style={stageHeight !== null ? { "--article-web-art-stage-height": `${stageHeight}px` } : undefined}
+                     onTransitionEnd={onStageTransitionEnd}
                      aria-hidden={showIntroCover}>
                     <div className={`article-web-art-items ${locked ? "article-web-art-items-locked" : ""}`}
                          ref={tilesWrapperRef}

@@ -106,11 +106,12 @@ function ModalWrapper({ children, id = "", shouldDismiss, onDismiss, className =
     )
 }
 
-function ModalWrapperTitle({ title, faIcon, onClose, tooltip }) {
+function ModalWrapperTitle({ title, faIcon, onClose, tooltip, className = "", onClick = null }) {
     const language = useLanguage()
 
     return (
-        <div className={`modal-header`}>
+        <div className={`modal-header ${className}`.trim()}
+             onClick={onClick}>
             <h4 className={`modal-title fw-bold`}>
                 <i className={`${faIcon} me-2 me-xl-3 text-primary`}/>
                 <span dangerouslySetInnerHTML={{__html: title}}/>
@@ -128,9 +129,10 @@ function ModalWrapperTitle({ title, faIcon, onClose, tooltip }) {
     )
 }
 
-function ModalWrapperBody({ children, className }) {
+function ModalWrapperBody({ children, className, onClick = null }) {
     return (
-        <div className={`modal-body ${className}`}>
+        <div className={`modal-body ${className}`}
+             onClick={onClick}>
             {children}
         </div>
     )

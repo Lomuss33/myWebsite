@@ -957,7 +957,7 @@ function WebArtIntroCover({ guide, buttonLabel, hidden, onEnter, secondaryButton
                                     ) : null}
 
                                     <button type={"button"}
-                                            className={`article-web-art-intro-cover-button`}
+                                            className={`article-web-art-intro-cover-button article-web-art-intro-cover-button-primary`}
                                             onClick={onEnter}
                                             onKeyDown={onKeyDown}
                                             aria-label={buttonLabel}>
@@ -985,8 +985,15 @@ function WebArtIntroCover({ guide, buttonLabel, hidden, onEnter, secondaryButton
 }
 
 function GatedWebArtTile({ label, isOpen, onToggle, shouldRender = true, children }) {
+    const onClosedTileClick = useCallback((event) => {
+        if(isOpen || event.defaultPrevented) return
+        if(event.target.closest?.("button")) return
+        onToggle?.()
+    }, [isOpen, onToggle])
+
     return (
-        <div className={`article-web-art-gated-tile ${isOpen ? "article-web-art-gated-tile-open" : "article-web-art-gated-tile-closed"}`}>
+        <div className={`article-web-art-gated-tile ${isOpen ? "article-web-art-gated-tile-open" : "article-web-art-gated-tile-closed"}`}
+             onClick={isOpen ? undefined : onClosedTileClick}>
             {shouldRender ? children : (
                 <div className={`article-web-art-tile article-web-art-tile-placeholder`}
                      aria-label={_makePlaceholderAriaLabel(label)}/>
@@ -1832,10 +1839,12 @@ function HourglassTile({ itemWrapper, index, activate, locked, onReady }) {
 
 function NoiceTile({ itemWrapper, index, activate, locked, onReady }) {
     const tileRef = useRef(null)
-    const canvasRef = useRef(null)
+    const backgroundCanvasRef = useRef(null)
+    const foregroundCanvasRef = useRef(null)
     const engineRef = useRef(null)
     const didReadyRef = useRef(false)
     const visibleRef = useRef(true)
+    const [fallbackActive, setFallbackActive] = useState(false)
 
     const reduceMotion = useMemo(() => {
         if(typeof window === "undefined" || !window.matchMedia) return false
@@ -1846,8 +1855,9 @@ function NoiceTile({ itemWrapper, index, activate, locked, onReady }) {
         if(!activate) return
 
         const tile = tileRef.current
-        const canvas = canvasRef.current
-        if(!tile || !canvas) return
+        const backgroundCanvas = backgroundCanvasRef.current
+        const foregroundCanvas = foregroundCanvasRef.current
+        if(!tile || !backgroundCanvas || !foregroundCanvas) return
 
         let canceled = false
         let engine = null
@@ -1860,24 +1870,48 @@ function NoiceTile({ itemWrapper, index, activate, locked, onReady }) {
             onReady?.(itemWrapper.uniqueId)
         }
 
+        const activateFallback = (reason) => {
+            if(canceled) return
+            setFallbackActive(true)
+            if(import.meta.env.DEV && reason) {
+                console.warn("Noice web art fallback active", reason)
+            }
+            markReady()
+        }
+
+        const commitVisibleFrame = () => {
+            if(canceled) return false
+            engine?.renderStatic?.()
+            if(engine?.hasVisibleFrame && !engine.hasVisibleFrame()) {
+                activateFallback("Canvas rendered no visible Noice frame")
+                return false
+            }
+            setFallbackActive(false)
+            markReady()
+            return true
+        }
+
         const cancelWork = _scheduleIdleWork(async () => {
             try {
                 const mod = await import("./webArt/noiceShaderEngine.js")
                 if(canceled) return
 
-                engine = mod.createNoiceShaderEngine(canvas, { reduceMotion })
+                engine = mod.createNoiceShaderEngine({
+                    backgroundCanvas,
+                    foregroundCanvas
+                }, { reduceMotion })
                 engineRef.current = engine
 
                 const updateSize = () => _syncTileEngineSize(tile, engine, Math.min(1.5, window.devicePixelRatio || 1))
 
                 updateSize()
-                engine.renderStatic?.()
+                const hasReadyFrame = commitVisibleFrame()
+                if(!hasReadyFrame) return
                 if(!locked) engine.start?.()
-                markReady()
 
                 ro = new ResizeObserver(() => {
                     updateSize()
-                    engine.renderStatic?.()
+                    engine?.renderStatic?.()
                 })
                 ro.observe(tile)
 
@@ -1898,8 +1932,7 @@ function NoiceTile({ itemWrapper, index, activate, locked, onReady }) {
                 }
             }
             catch(err) {
-                void err
-                markReady()
+                activateFallback(err)
             }
         }, { timeoutMs: 220 })
 
@@ -1925,7 +1958,7 @@ function NoiceTile({ itemWrapper, index, activate, locked, onReady }) {
     }, [locked])
 
     const pointerPosition = (event) => {
-        const surface = canvasRef.current || tileRef.current
+        const surface = tileRef.current
         if(!surface) return { x: 0.5, y: 0.5 }
         const rect = surface.getBoundingClientRect()
         return {
@@ -1944,7 +1977,7 @@ function NoiceTile({ itemWrapper, index, activate, locked, onReady }) {
     return (
         <button type={"button"}
                 ref={tileRef}
-                className={`article-web-art-tile article-web-art-tile-clickable article-web-art-tile-noice`}
+                className={`article-web-art-tile article-web-art-tile-clickable article-web-art-tile-noice ${fallbackActive ? "article-web-art-tile-noice-fallback-active" : ""}`}
                 aria-label={`Noice web art tile ${index + 1}`}
                 disabled={locked}
                 onPointerMove={locked ? undefined : ((event) => {
@@ -1968,8 +2001,17 @@ function NoiceTile({ itemWrapper, index, activate, locked, onReady }) {
                         engineRef.current?.start?.()
                     }
                 })}>
-            <canvas ref={canvasRef}
-                    className={`article-web-art-canvas`}/>
+            {fallbackActive && (
+                <div className={`article-web-art-noice-fallback`} aria-hidden={true}>
+                    <span className={`article-web-art-noice-fallback-line article-web-art-noice-fallback-line-a`}/>
+                    <span className={`article-web-art-noice-fallback-line article-web-art-noice-fallback-line-b`}/>
+                    <span className={`article-web-art-noice-fallback-line article-web-art-noice-fallback-line-c`}/>
+                </div>
+            )}
+            <canvas ref={backgroundCanvasRef}
+                    className={`article-web-art-canvas article-web-art-noice-canvas article-web-art-noice-bg-canvas ${fallbackActive ? "article-web-art-canvas-hidden" : ""}`}/>
+            <canvas ref={foregroundCanvasRef}
+                    className={`article-web-art-canvas article-web-art-noice-canvas article-web-art-noice-fg-canvas ${fallbackActive ? "article-web-art-canvas-hidden" : ""}`}/>
             <span className={`article-web-art-tile-label`}>
                 Noice
             </span>
@@ -5509,4 +5551,3 @@ function PatronusTile({ locked = false }) {
 }
 
 export default ArticleWebArt
-

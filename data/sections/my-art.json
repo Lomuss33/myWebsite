@@ -426,6 +426,7 @@
                             }
                         ],
                         "screenshots": [
+                            "/images/personal_art/tattoo_design/tattoo_simple_deer.webp",
                             "/images/personal_art/tattoo_design/cekic_vatra.webp",
                             "/images/personal_art/tattoo_design/elixir_god.webp",
                             "/images/personal_art/tattoo_design/ilir_2.webp",
@@ -531,7 +532,13 @@
                         "screenshots": [
                             "/images/personal_art/digital_expression/favorite_infographic_01.webp",
                             "/images/personal_art/digital_expression/favorite_infographic_02.webp",
-                            "/images/personal_art/digital_expression/favorite_infographic_03.webp"
+                            "/images/personal_art/digital_expression/favorite_infographic_03.webp",
+                            "/images/personal_art/digital_expression/favorite_infographic_04.webp",
+                            "/images/personal_art/digital_expression/favorite_infographic_05.webp",
+                            "/images/personal_art/digital_expression/favorite_infographic_06.webp",
+                            "/images/personal_art/digital_expression/favorite_infographic_07.webp",
+                            "/images/personal_art/digital_expression/favorite_infographic_08.webp",
+                            "/images/personal_art/digital_expression/favorite_infographic_09.webp"
                         ],
                         "screenshotsAspectRatio": "1:1"
                     },

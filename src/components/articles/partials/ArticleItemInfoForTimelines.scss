@@ -122,6 +122,13 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
     --card-accent-2: #facc15;
     --timeline-title-size: clamp(1.32rem, 1.14rem + 0.68vw, 1.82rem);
     --timeline-meta-size: clamp(1.08rem, 0.98rem + 0.3vw, 1.26rem);
+    --experience-meta-time-size: var(--timeline-meta-size);
+    --experience-meta-grid-gap: clamp(0.52rem, 0.38rem + 0.28vw, 0.82rem);
+    --experience-meta-split-gap: clamp(0.75rem, 0.56rem + 0.4vw, 1.1rem);
+    --experience-meta-segment-gap: clamp(0.4rem, 0.3rem + 0.2vw, 0.58rem);
+    --experience-meta-segment-padding-y: clamp(0.72rem, 0.58rem + 0.26vw, 0.92rem);
+    --experience-meta-segment-padding-x: clamp(0.92rem, 0.76rem + 0.36vw, 1.2rem);
+    --experience-meta-segment-radius: clamp(0.85rem, 0.72rem + 0.24vw, 1.05rem);
     --card-surface-top: #0b1220;
     --card-surface-bottom: #050810;
     --card-border: #1d2b41;
@@ -1250,7 +1257,7 @@ article#article-1-section-experience {
 
     div.article-timeline-item-info-for-timelines-header-meta-grid {
         color: var(--card-text-mid);
-        gap: clamp(0.52rem, 0.38rem + 0.28vw, 0.82rem);
+        gap: var(--experience-meta-grid-gap);
         margin-top: clamp(0.28rem, 0.2rem + 0.18vw, 0.42rem);
         width: 100%;
         max-width: 100%;
@@ -1286,7 +1293,7 @@ article#article-1-section-experience {
     div.article-timeline-item-info-for-timelines-header-meta-row--time {
         justify-content: center;
         text-align: center;
-        font-size: clamp(1.16rem, 1.04rem + 0.34vw, 1.38rem);
+        font-size: var(--experience-meta-time-size);
         font-weight: 600;
         color: color-mix(in srgb, var(--card-text-strong) 76%, var(--card-accent) 24%);
     }
@@ -1295,20 +1302,21 @@ article#article-1-section-experience {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         align-items: stretch;
-        gap: clamp(0.75rem, 0.56rem + 0.4vw, 1.1rem);
+        gap: var(--experience-meta-split-gap);
         width: 100%;
         max-width: none;
         line-height: 1.24;
-        font-size: clamp(1.02rem, 0.92rem + 0.28vw, 1.18rem);
+        font-size: var(--timeline-meta-size);
     }
 
     div.article-timeline-item-info-for-timelines-header-meta-segment {
         display: flex;
         align-items: flex-start;
+        gap: var(--experience-meta-segment-gap);
         min-height: 100%;
-        padding: clamp(0.72rem, 0.58rem + 0.26vw, 0.92rem) clamp(0.92rem, 0.76rem + 0.36vw, 1.2rem);
+        padding: var(--experience-meta-segment-padding-y) var(--experience-meta-segment-padding-x);
         border: 1px solid color-mix(in srgb, var(--card-border) 72%, var(--card-accent) 28%);
-        border-radius: clamp(0.85rem, 0.72rem + 0.24vw, 1.05rem);
+        border-radius: var(--experience-meta-segment-radius);
         background: linear-gradient(
             180deg,
             color-mix(in srgb, var(--card-surface-top) 82%, rgba(255, 255, 255, 0.04) 18%),
@@ -1342,7 +1350,7 @@ article#article-1-section-experience {
         display: inline-grid;
         grid-template-columns: minmax(0, 1fr) auto;
         align-items: start;
-        column-gap: clamp(0.4rem, 0.3rem + 0.2vw, 0.58rem);
+        column-gap: var(--experience-meta-segment-gap);
         width: 100%;
         max-width: 100%;
         margin-left: 0;
@@ -1436,7 +1444,7 @@ article#article-1-section-experience {
             display: inline-flex;
             align-items: flex-start;
             justify-content: flex-end;
-            gap: clamp(0.4rem, 0.3rem + 0.2vw, 0.58rem);
+            gap: var(--experience-meta-segment-gap);
             width: auto;
             max-width: 100%;
             margin-left: auto;
@@ -1536,6 +1544,27 @@ article#article-1-section-experience {
                 margin-right: 0;
             }
         }
+    }
+}
+
+@media (min-width: 2000px) {
+    article#article-1-section-experience {
+        --experience-description-right-text-buffer: 12%;
+    }
+
+    article#article-1-section-experience div.article-timeline-item-info-for-timelines {
+        --content-padding: clamp(0.82rem, 0.74rem + 0.18vw, 1rem) clamp(0.9rem, 0.8rem + 0.22vw, 1.12rem);
+        --timeline-title-size: clamp(1.36rem, 1.2rem + 0.28vw, 1.7rem);
+        --timeline-meta-size: clamp(1rem, 0.94rem + 0.12vw, 1.14rem);
+        --experience-meta-time-size: var(--timeline-meta-size);
+        --timeline-body-size: clamp(1.08rem, 1rem + 0.14vw, 1.28rem);
+        --timeline-badge-size: clamp(0.92rem, 0.86rem + 0.1vw, 1.06rem);
+        --experience-meta-grid-gap: clamp(0.44rem, 0.36rem + 0.12vw, 0.64rem);
+        --experience-meta-split-gap: clamp(0.58rem, 0.48rem + 0.16vw, 0.82rem);
+        --experience-meta-segment-gap: clamp(0.34rem, 0.28rem + 0.1vw, 0.48rem);
+        --experience-meta-segment-padding-y: clamp(0.58rem, 0.5rem + 0.12vw, 0.74rem);
+        --experience-meta-segment-padding-x: clamp(0.74rem, 0.64rem + 0.16vw, 0.98rem);
+        --experience-meta-segment-radius: clamp(0.72rem, 0.64rem + 0.12vw, 0.9rem);
     }
 }
 

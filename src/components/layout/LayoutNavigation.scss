@@ -5,6 +5,9 @@ div.layout-navigation-wrapper {
     --layout-shell-content-padding-inline: 0px;
     --layout-shell-column-gap: 0px;
     --layout-shell-content-max-width: none;
+    --layout-wide-scale: 1;
+    --layout-wide-nav-scale: var(--layout-wide-scale);
+    --layout-wide-content-scale: var(--layout-wide-scale);
 
     display: flex;
     flex: 1 1 auto;
@@ -26,11 +29,12 @@ div.layout-navigation-wrapper {
     }
 
     @media (min-width: 1680px) {
+        --layout-wide-scale: 0.86;
         --layout-shell-content-padding-inline: clamp(40px, 4.8vw, 168px);
         --layout-shell-column-gap: clamp(28px, 2.4vw, 52px);
         --layout-shell-content-max-width: 1220px;
 
-        column-gap: var(--layout-shell-column-gap);
+        column-gap: calc(var(--layout-shell-column-gap) * var(--layout-wide-scale));
         background: var(--theme-layout-buffer, var(--theme-background));
     }
 
@@ -77,8 +81,8 @@ div.layout-navigation-children-wrapper {
     }
 
     @media (min-width: 1680px) {
-        padding-left: var(--layout-shell-content-padding-inline);
-        padding-right: var(--layout-shell-content-padding-inline);
+        padding-left: calc(var(--layout-shell-content-padding-inline) * var(--layout-wide-scale));
+        padding-right: calc(var(--layout-shell-content-padding-inline) * var(--layout-wide-scale));
         box-sizing: border-box;
         overflow: hidden;
     }
@@ -97,8 +101,15 @@ div.layout-navigation-children-inner {
     }
 
     @media (min-width: 1680px) {
-        flex: 0 1 var(--layout-shell-content-max-width);
-        width: min(100%, var(--layout-shell-content-max-width));
-        max-width: var(--layout-shell-content-max-width);
+        flex: 0 1 calc(var(--layout-shell-content-max-width) / var(--layout-wide-content-scale));
+        width: min(
+            calc(100% / var(--layout-wide-content-scale)),
+            calc(var(--layout-shell-content-max-width) / var(--layout-wide-content-scale))
+        );
+        max-width: calc(var(--layout-shell-content-max-width) / var(--layout-wide-content-scale));
+        min-height: calc(100% / var(--layout-wide-content-scale));
+        height: calc(100% / var(--layout-wide-content-scale));
+        transform: scale(var(--layout-wide-content-scale));
+        transform-origin: top left;
     }
 }

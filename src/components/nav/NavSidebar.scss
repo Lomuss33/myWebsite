@@ -2,6 +2,8 @@
 
 nav.nav-sidebar {
     --width: 224px;
+    --nav-sidebar-layout-width: calc(var(--width) * var(--layout-wide-nav-scale, 1));
+    --nav-sidebar-source-width: calc(var(--nav-sidebar-layout-width) / var(--layout-wide-nav-scale, 1));
     --nav-short-rail-resume-height: 0px;
     --nav-extended-profile-height: 164px;
     --nav-extended-avatar-size: 118px;
@@ -18,6 +20,13 @@ nav.nav-sidebar {
     z-index: $z-index-sidebar;
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         display: none;
+    }
+
+    @media (min-width: 1680px) {
+        width: var(--nav-sidebar-layout-width);
+        min-width: var(--nav-sidebar-layout-width);
+        max-width: var(--nav-sidebar-layout-width);
+        overflow: visible;
     }
 
     div.nav-sidebar-card-wrapper {
@@ -38,6 +47,15 @@ nav.nav-sidebar {
         border: 0;
         border-right: 1px solid var(--theme-nav-border);
         border-radius: 0;
+
+        @media (min-width: 1680px) {
+            width: var(--nav-sidebar-source-width);
+            min-width: var(--nav-sidebar-source-width);
+            height: calc(100% / var(--layout-wide-nav-scale, 1));
+            min-height: calc(100% / var(--layout-wide-nav-scale, 1));
+            transform: scale(var(--layout-wide-nav-scale, 1));
+            transform-origin: top left;
+        }
 
         &::after {
             content: none;

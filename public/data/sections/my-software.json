@@ -1540,6 +1540,81 @@
           "categoryId": "recommendation_group_mobile"
         }
       ]
+    },
+    {
+      "id": 2,
+      "component": "ArticlePortfolio",
+      "locales": {
+        "en": {
+          "title": "Playable {{Projects}}"
+        },
+        "de": {
+          "title": "Spielbare {{Projekte}}"
+        },
+        "hr": {
+          "title": "Igrivi {{projekti}}"
+        },
+        "tr": {
+          "title": "Oynanabilir {{projeler}}"
+        }
+      },
+      "settings": {
+        "categorize_by": [],
+        "order_items_by": "id",
+        "order_items_sort": "asc"
+      },
+      "items": [
+        {
+          "id": 1,
+          "img": "",
+          "faIcon": "fa-solid fa-clover",
+          "faIconColors": {
+            "bg": "#10221A",
+            "bgLight": "#E8F3ED",
+            "fill": "#2E7D32",
+            "fillLight": "#1B5E20"
+          },
+          "preview": {
+            "links": [
+              {
+                "href": "https://github.com/Lomuss33/AdioBella",
+                "tooltipString": "GitHub",
+                "faIcon": "fa-brands fa-github"
+              },
+              {
+                "href": "https://lomuss33.github.io/AdioBella/",
+                "tooltipString": "open_website",
+                "faIcon": "fa-solid fa-globe"
+              }
+            ],
+            "screenshots": [],
+            "screenshotsAspectRatio": "16:9",
+            "youtubeVideo": ""
+          },
+          "locales": {
+            "en": {
+              "title": "Belot",
+              "text": "Single-player Belot card game built with a Java engine and React UI, now packaged for direct play on GitHub Pages.",
+              "tags": ["Java", "React", "TypeScript", "Card Game", "GitHub Pages"]
+            },
+            "de": {
+              "title": "Belot",
+              "text": "Einzelspieler-Belot-Kartenspiel mit Java-Engine und React-Oberfläche, jetzt für direktes Spielen auf GitHub Pages bereitgestellt.",
+              "tags": ["Java", "React", "TypeScript", "Kartenspiel", "GitHub Pages"]
+            },
+            "hr": {
+              "title": "Belot",
+              "text": "Single-player igra Belot izrađena s Java engineom i React sučeljem, sada pripremljena za izravno igranje preko GitHub Pages.",
+              "tags": ["Java", "React", "TypeScript", "Kartaška igra", "GitHub Pages"]
+            },
+            "tr": {
+              "title": "Belot",
+              "text": "Java oyun motoru ve React arayüzüyle geliştirilen tek oyunculu Belot kart oyunu, artık GitHub Pages üzerinden doğrudan oynanabiliyor.",
+              "tags": ["Java", "React", "TypeScript", "Kart Oyunu", "GitHub Pages"]
+            }
+          }
+        }
+      ]
     }
   ]
 }

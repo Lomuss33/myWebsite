@@ -1,5 +1,9 @@
 import fs from "node:fs"
 import path from "node:path"
+import {
+    getResumePdfUrlMap,
+    LEGACY_RESUME_PDF_PATH
+} from "../src/config/resumePdfConfig.js"
 
 const ROOT_DIR = process.cwd()
 const CANONICAL_CV_PATH = "public/data/cv-machine.json"
@@ -627,6 +631,7 @@ const buildResumeJson = ({ canonicalCv, projects }) => {
         website: canonicalCv.url,
         cv_url: canonicalCv.cvUrl,
         pdf_url: resumePdfUrl,
+        pdf_urls: resumePdfUrls,
         same_as: canonicalCv.sameAs,
         contact: {
             email: canonicalCv.contact.email,
@@ -708,7 +713,8 @@ const buildResumeJson = ({ canonicalCv, projects }) => {
 const canonicalCv = readJson(CANONICAL_CV_PATH)
 const profileData = readJson(PROFILE_PATH)
 const imageUrl = toAbsoluteUrl(canonicalCv.url, profileData.profilePictureUrl || "/images/contant/profilePix.webp")
-const resumePdfUrl = toAbsoluteUrl(canonicalCv.url, profileData.resumePdfUrl || "/resume.pdf")
+const resumePdfUrl = toAbsoluteUrl(canonicalCv.url, LEGACY_RESUME_PDF_PATH)
+const resumePdfUrls = getResumePdfUrlMap(canonicalCv.url)
 const projects = extractProjects(canonicalCv)
 
 writeFile(GENERATED_HEAD_PATH, buildHomeHeadHtml({ canonicalCv, imageUrl }))

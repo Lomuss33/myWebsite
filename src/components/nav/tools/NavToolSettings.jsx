@@ -1,16 +1,15 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {useLanguage} from "../../../providers/LanguageProvider.jsx"
 import OptionPickerButton from "../../buttons/OptionPickerButton.jsx"
 import {useTheme} from "../../../providers/ThemeProvider.jsx"
 import {useFeedbacks} from "../../../providers/FeedbacksProvider.jsx"
-import {useData} from "../../../providers/DataProvider.jsx"
 import {useUtils} from "../../../hooks/utils.js"
+import {getResumePdfPath} from "../../../config/resumePdfConfig.js"
 
 function NavToolSettings({ options }) {
     const theme = useTheme()
     const feedbacks = useFeedbacks()
     const language = useLanguage()
-    const data = useData()
     const utils = useUtils()
 
     const displayOptions = [{
@@ -58,8 +57,7 @@ function NavToolSettings({ options }) {
                 break
 
             case NavToolSettings.Options.DOWNLOAD_RESUME: {
-                const profile = data.getProfile()
-                const resumeUrl = profile.resumePdfUrl
+                const resumeUrl = getResumePdfPath(language.selectedLanguageId)
                 utils.file.download(resumeUrl)
                 break
             }

@@ -25,4 +25,22 @@
     <lastmod>2026-05-11</lastmod>
     <priority>0.2</priority>
   </url>
+
+  <url>
+    <loc>https://lovro-music.de/resumes/resume-en.pdf</loc>
+    <lastmod>2026-07-23</lastmod>
+    <priority>0.2</priority>
+  </url>
+
+  <url>
+    <loc>https://lovro-music.de/resumes/resume-de.pdf</loc>
+    <lastmod>2026-07-23</lastmod>
+    <priority>0.2</priority>
+  </url>
+
+  <url>
+    <loc>https://lovro-music.de/resumes/resume-hr.pdf</loc>
+    <lastmod>2026-07-23</lastmod>
+    <priority>0.2</priority>
+  </url>
 </urlset>

@@ -5,6 +5,7 @@ import OptionPickerButton from "../../buttons/OptionPickerButton.jsx"
 import {useData} from "../../../providers/DataProvider.jsx"
 import {useFeedbacks} from "../../../providers/FeedbacksProvider.jsx"
 import MobileTubeMenu from "./MobileTubeMenu.jsx"
+import {getResumePdfPath} from "../../../config/resumePdfConfig.js"
 
 function NavToolResumeDownloader({
     dropdownDrop = "up",
@@ -24,14 +25,13 @@ function NavToolResumeDownloader({
     const data = useData()
     const feedbacks = useFeedbacks()
 
-    const profile = data.getProfile()
-    const resumeUrl = profile.resumePdfUrl
+    const resumeUrl = getResumePdfPath(language.selectedLanguageId)
     const resumeEmailConfig = data.getResumeEmailConfig()
     const resumePdfUrlAbsolute = utils.file.toAbsoluteUrl(resumeUrl)
     const resumeCvUrlAbsolute = utils.file.toAbsoluteUrl("/cv/")
     const selectedOptionId = "resume"
     const tooltip = language.getString("resume_options")
-    const menuHeader = "CV Resume:"
+    const menuHeader = language.getString("resume_options")
     const resolvedMenuClassName = `${menuClassName} nav-resume-menu`.trim()
 
     const options = [
@@ -44,19 +44,19 @@ function NavToolResumeDownloader({
         {
             id: "resume_view",
             faIcon: "fa-solid fa-eye",
-            label: "Open new tab"
+            label: language.getString("view_resume")
         },
 
         {
             id: "resume_download",
             faIcon: "fa-solid fa-file-arrow-down",
-            label: "Download PDF"
+            label: language.getString("download_resume")
         },
 
         ...(resumeEmailConfig ? [{
             id: "resume_email",
             faIcon: "fa-solid fa-envelope",
-            label: "E-mail to self"
+            label: language.getString("email_resume")
         }] : [])
     ]
     const selectedOption = options.find(option => option.id === selectedOptionId) || options[0]
@@ -81,7 +81,7 @@ function NavToolResumeDownloader({
                 if(!resumePdfUrlAbsolute)
                     return
 
-                utils.url.open(resumePdfUrlAbsolute)
+                utils.file.open(resumePdfUrlAbsolute)
                 break
 
             case "resume_email":

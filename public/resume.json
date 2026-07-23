@@ -8,6 +8,11 @@
     "website": "https://lovro-music.de/",
     "cv_url": "https://lovro-music.de/cv/",
     "pdf_url": "https://lovro-music.de/resume.pdf",
+    "pdf_urls": {
+        "en": "https://lovro-music.de/resumes/resume-en.pdf",
+        "de": "https://lovro-music.de/resumes/resume-de.pdf",
+        "hr": "https://lovro-music.de/resumes/resume-hr.pdf"
+    },
     "same_as": [
         "https://lovro-music.de/",
         "https://www.linkedin.com/in/lovro-musi%C4%87/",
@@ -486,7 +491,7 @@
                 "High-Performance",
                 "Adwanced Cooling"
             ],
-            "url": "https://de.pcpartpicker.com/user/LovroMusic/saved/rXpLwP",
+            "url": "https://de.pcpartpicker.com/list/ZgQHzv",
             "github_url": "",
             "source_path": "public/data/sections/my-hardware.json"
         },

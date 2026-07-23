@@ -553,12 +553,16 @@ function ArticleTimelineItem({
             splitTitle :
             language.getString("get_to_know_more")
 
+        const shouldUseSharedHorizontalGallery = isPhotographyTimeline || isDigitalExpressionTimeline
+
         return {
             title: title,
             images: screenshots,
             aspectRatio: screenshotsAspectRatio,
+            galleryDirection: shouldUseSharedHorizontalGallery ? "horizontal" : undefined,
+            galleryFocus: shouldUseSharedHorizontalGallery ? "showcase" : undefined,
         }
-    }, [canOpenGallery, itemWrapper.locales?.title, language, screenshots, screenshotsAspectRatio, utils])
+    }, [canOpenGallery, isDigitalExpressionTimeline, isPhotographyTimeline, itemWrapper.locales?.title, language, screenshots, screenshotsAspectRatio, utils])
 
     useLayoutEffect(() => {
         if(!isMyArtTimeline && !isExperienceTimeline && !isEducationTimeline)

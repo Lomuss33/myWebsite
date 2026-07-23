@@ -7,17 +7,18 @@
     --spacing: 5px;
     --min-swiper-height: calc(100vh - var(--header-size) - var(--padding-bottom) - var(--spacing));
     --gallery-horizontal-bar-background:
-        linear-gradient(180deg, rgba(2, 6, 23, 0.74), rgba(15, 23, 42, 0.62));
+        linear-gradient(180deg, #020617, #111827);
     --gallery-horizontal-bar-border: rgba(226, 232, 240, 0.18);
+    --gallery-horizontal-middle-background: rgba(2, 6, 23, 0.05);
     --gallery-horizontal-bar-text: #f8fafc;
     --gallery-horizontal-bar-icon: #dbeafe;
     --gallery-horizontal-arrow: rgba(248, 250, 252, 0.88);
-    --gallery-horizontal-arrow-surface: rgba(2, 6, 23, 0.24);
-    --gallery-horizontal-arrow-surface-hover: rgba(15, 23, 42, 0.34);
-    --gallery-horizontal-arrow-border: rgba(248, 250, 252, 0.18);
-    --gallery-horizontal-arrow-ring: rgba(248, 250, 252, 0.11);
-    --gallery-horizontal-arrow-shadow: 0 12px 34px rgba(2, 6, 23, 0.20);
-    --gallery-horizontal-side-gradient-a: rgba(2, 6, 23, 0.28);
+    --gallery-horizontal-arrow-surface: rgba(2, 6, 23, 0.14);
+    --gallery-horizontal-arrow-surface-hover: rgba(15, 23, 42, 0.22);
+    --gallery-horizontal-arrow-border: rgba(248, 250, 252, 0.12);
+    --gallery-horizontal-arrow-ring: rgba(248, 250, 252, 0.06);
+    --gallery-horizontal-arrow-shadow: 0 10px 28px rgba(2, 6, 23, 0.10);
+    --gallery-horizontal-side-gradient-a: rgba(2, 6, 23, 0.08);
     --gallery-horizontal-side-gradient-b: rgba(2, 6, 23, 0);
 
     @supports (height: 100svh) {
@@ -42,19 +43,20 @@ body.gallery-modal-horizontal-open .modal-backdrop.show {
 [data-theme="light"] #gallery-modal {
     --gallery-horizontal-bar-background:
         linear-gradient(90deg,
-            rgba(236, 253, 245, 0.74),
-            rgba(224, 242, 254, 0.70) 42%,
-            rgba(238, 242, 255, 0.74));
+            #ecfdf5,
+            #e0f2fe 42%,
+            #eef2ff);
     --gallery-horizontal-bar-border: rgba(37, 99, 235, 0.18);
+    --gallery-horizontal-middle-background: rgba(248, 250, 252, 0.05);
     --gallery-horizontal-bar-text: #102033;
     --gallery-horizontal-bar-icon: #2563eb;
     --gallery-horizontal-arrow: rgba(15, 23, 42, 0.86);
-    --gallery-horizontal-arrow-surface: rgba(255, 255, 255, 0.30);
-    --gallery-horizontal-arrow-surface-hover: rgba(255, 255, 255, 0.46);
-    --gallery-horizontal-arrow-border: rgba(37, 99, 235, 0.18);
-    --gallery-horizontal-arrow-ring: rgba(37, 99, 235, 0.10);
-    --gallery-horizontal-arrow-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
-    --gallery-horizontal-side-gradient-a: rgba(219, 234, 254, 0.32);
+    --gallery-horizontal-arrow-surface: rgba(255, 255, 255, 0.14);
+    --gallery-horizontal-arrow-surface-hover: rgba(255, 255, 255, 0.26);
+    --gallery-horizontal-arrow-border: rgba(37, 99, 235, 0.10);
+    --gallery-horizontal-arrow-ring: rgba(37, 99, 235, 0.05);
+    --gallery-horizontal-arrow-shadow: 0 10px 24px rgba(15, 23, 42, 0.07);
+    --gallery-horizontal-side-gradient-a: rgba(219, 234, 254, 0.08);
     --gallery-horizontal-side-gradient-b: rgba(219, 234, 254, 0);
 }
 
@@ -68,7 +70,7 @@ div.gallery-modal-horizontal {
         color: var(--gallery-horizontal-bar-text);
         background: var(--gallery-horizontal-bar-background);
         border-bottom-color: var(--gallery-horizontal-bar-border);
-        box-shadow: 0 12px 28px rgba(2, 6, 23, 0.12);
+        box-shadow: 0 8px 18px rgba(2, 6, 23, 0.04);
 
         i.text-primary {
             color: var(--gallery-horizontal-bar-icon)!important;
@@ -119,9 +121,13 @@ div.gallery-modal-horizontal.gallery-modal-loading {
 
 /** ----------------- SWIPER MODAL ----------------- **/
 #gallery-modal {
+    div.gallery-swiper-dismiss-capture {
+        min-height: var(--min-swiper-height);
+    }
+
     div.gallery-swiper {
         padding: 0 0 var(--padding-bottom);
-        background: transparent;
+        background: var(--gallery-horizontal-middle-background);
         min-height: var(--min-swiper-height);
         cursor: pointer;
 
@@ -256,7 +262,7 @@ div.gallery-modal-horizontal.gallery-modal-loading {
                     border-color: color-mix(in srgb, var(--gallery-horizontal-arrow) 36%, transparent);
                     box-shadow:
                         var(--gallery-horizontal-arrow-shadow),
-                        0 0 0 9px color-mix(in srgb, var(--gallery-horizontal-arrow) 10%, transparent);
+                        0 0 0 9px color-mix(in srgb, var(--gallery-horizontal-arrow) 6%, transparent);
                     transform: scale(1.03);
                 }
             }
@@ -283,7 +289,7 @@ div.gallery-modal-horizontal.gallery-modal-loading {
         bottom: 0;
         cursor: pointer;
         border-top: 1px solid var(--gallery-horizontal-bar-border);
-        box-shadow: 0 -10px 24px rgba(2, 6, 23, 0.10);
+        box-shadow: 0 -8px 18px rgba(2, 6, 23, 0.04);
 
         display: flex;
         align-items: center;
@@ -325,6 +331,15 @@ div.gallery-modal-horizontal.gallery-modal-loading {
             width: min(calc(var(--height) * var(--gallery-image-aspect-ratio-value)), var(--gallery-slide-max-width));
             height: auto;
             max-height: var(--height);
+        }
+    }
+
+    div.gallery-swiper-showcase-focus {
+        div.swiper-slide {
+            width: calc(100vw - clamp(86px, 18vw, 260px));
+            height: var(--height);
+            max-height: var(--height);
+            aspect-ratio: auto;
         }
     }
 }

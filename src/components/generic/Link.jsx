@@ -123,7 +123,11 @@ function Link({
         feedbacks.displayGallery(
             metadata.images,
             metadata.aspectRatio || "1:1",
-            metadata.title || language.getString("gallery")
+            metadata.title || language.getString("gallery"),
+            {
+                direction: metadata.galleryDirection,
+                focus: metadata.galleryFocus
+            }
         )
     }
 

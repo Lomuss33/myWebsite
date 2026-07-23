@@ -1,6 +1,6 @@
 import "./GalleryModal.scss"
 import "swiper/swiper-bundle.css"
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {ModalWrapper, ModalWrapperTitle, ModalWrapperBody} from "./base/ModalWrapper"
 import {Swiper, SwiperSlide} from 'swiper/react'
 import {Navigation, Pagination} from "swiper/modules"
@@ -23,6 +23,7 @@ function GalleryModal({ target, onDismiss }) {
     const [imageStates, setImageStates] = useState({})
     const [imageDimensions, setImageDimensions] = useState({})
     const [shouldDismiss, setShouldDismiss] = useState(false)
+    const pointerDownRef = useRef(null)
     const parameterOptions = [
         {id: "9:16", suffix: "portrait", direction: "horizontal"},
         {id: "16:9", suffix: "landscape", direction: isMobile ? "vertical" : "horizontal"},
@@ -32,8 +33,17 @@ function GalleryModal({ target, onDismiss }) {
     const parameters = target ?
         utils.array.withId(parameterOptions, type, "default") || fallbackParameters :
         fallbackParameters
+    const galleryDirection = target?.direction === "horizontal" || target?.direction === "vertical" ?
+        target.direction :
+        parameters.direction
+    const galleryFocus = target?.focus === "showcase" ? "showcase" : "auto"
+    const resolvedParameters = {
+        ...parameters,
+        direction: galleryDirection,
+        focus: galleryFocus
+    }
 
-    const initialReadyIndices = _getInitialReadyIndices(parameters.direction, images.length)
+    const initialReadyIndices = _getInitialReadyIndices(resolvedParameters.direction, images.length)
     const shouldShowSpinner = images.length > 0 && !didLoadInitialImages
     const modalCustomClass = shouldShowSpinner ? `gallery-modal-loading` : ``
 
@@ -49,15 +59,39 @@ function GalleryModal({ target, onDismiss }) {
     }, [target])
 
     useEffect(() => {
-        if(!target || parameters.direction !== "horizontal" || typeof document === "undefined")
+        if(!target || resolvedParameters.direction !== "horizontal" || typeof document === "undefined")
             return
 
+        const handlePointerDown = (event) => {
+            pointerDownRef.current = {
+                x: event.clientX,
+                y: event.clientY
+            }
+        }
+
+        const handleClickCapture = (event) => {
+            const pointerDown = pointerDownRef.current
+            pointerDownRef.current = null
+            if(pointerDown) {
+                const deltaX = Math.abs(event.clientX - pointerDown.x)
+                const deltaY = Math.abs(event.clientY - pointerDown.y)
+                if(deltaX > 8 || deltaY > 8)
+                    return
+            }
+
+            _onHorizontalChromeClick(event)
+        }
+
         document.body.classList.add("gallery-modal-horizontal-open")
+        document.addEventListener("pointerdown", handlePointerDown, true)
+        document.addEventListener("click", handleClickCapture, true)
 
         return () => {
             document.body.classList.remove("gallery-modal-horizontal-open")
+            document.removeEventListener("pointerdown", handlePointerDown, true)
+            document.removeEventListener("click", handleClickCapture, true)
         }
-    }, [target, parameters.direction])
+    }, [target, resolvedParameters.direction])
 
     useEffect(() => {
         if(didLoadInitialImages)
@@ -164,14 +198,10 @@ function GalleryModal({ target, onDismiss }) {
     }
 
     const _onHorizontalChromeClick = (event) => {
-        if(parameters.direction !== "horizontal")
+        if(resolvedParameters.direction !== "horizontal")
             return
 
-        const clickedSafeControl = event.target?.closest?.(
-            ".gallery-modal-image-surface, .swiper-button-prev, .swiper-button-next"
-        )
-
-        if(clickedSafeControl)
+        if(isProtectedHorizontalGalleryClick(event))
             return
 
         _onClose()
@@ -179,7 +209,7 @@ function GalleryModal({ target, onDismiss }) {
 
     return (
         <ModalWrapper id={`gallery-modal`}
-                      className={`${modalCustomClass} gallery-modal-${parameters.direction}`}
+                      className={`${modalCustomClass} gallery-modal-${resolvedParameters.direction}`}
                       dialogClassName={`modal-fullscreen`}
                       shouldDismiss={shouldDismiss}
                       onDismiss={onDismiss}>
@@ -187,22 +217,24 @@ function GalleryModal({ target, onDismiss }) {
                                faIcon={`fa-regular fa-image`}
                                onClose={_onClose}
                                tooltip={"hidden"}
-                               className={parameters.direction === "horizontal" ? `gallery-modal-dismiss-zone` : ``}
-                               onClick={parameters.direction === "horizontal" ? _onHorizontalChromeClick : null}/>
+                               className={resolvedParameters.direction === "horizontal" ? `gallery-modal-dismiss-zone` : ``}
+                               onClick={resolvedParameters.direction === "horizontal" ? _onHorizontalChromeClick : null}/>
 
             <ModalWrapperBody className={`gallery-modal-body`}
                               onClick={_onHorizontalChromeClick}>
-                {parameters.direction === "horizontal" && (
+                {resolvedParameters.direction === "horizontal" && (
                     <GalleryModalSwiper className={visibilityClassName}
                                         images={images}
                                         type={parameters.suffix}
+                                        focus={resolvedParameters.focus}
                                         imageDimensions={imageDimensions}
                                         activeIndex={activeIndex}
                                         onActiveIndexChange={setActiveIndex}
-                                        onImageStatus={_onImageStatus}/>
+                                        onImageStatus={_onImageStatus}
+                                        onChromeClick={_onHorizontalChromeClick}/>
                 )}
 
-                {parameters.direction === "vertical" && (
+                {resolvedParameters.direction === "vertical" && (
                     <GalleryModalImageStack className={visibilityClassName}
                                             images={images}
                                             onImageStatus={_onImageStatus}/>
@@ -216,37 +248,41 @@ function GalleryModal({ target, onDismiss }) {
     )
 }
 
-function GalleryModalSwiper({ className, images, type, imageDimensions, activeIndex, onActiveIndexChange, onImageStatus }) {
+function GalleryModalSwiper({ className, images, type, focus, imageDimensions, activeIndex, onActiveIndexChange, onImageStatus, onChromeClick }) {
     const utils = useUtils()
+    const focusClassName = focus === "showcase" ? "gallery-swiper-showcase-focus" : ""
 
     return (
-        <Swiper slidesPerView={"auto"}
-                direction={"horizontal"}
-                spaceBetween={15}
-                centeredSlides={true}
-                pagination={{clickable: true}}
-                navigation={true}
-                modules={[Pagination, Navigation]}
-                onSlideChange={swiper => onActiveIndexChange(swiper.activeIndex)}
-                className={`gallery-swiper gallery-swiper-${type} ${className}`}>
-            {images.map((image, key) => {
-                const shouldPrioritize = Math.abs(key - activeIndex) <= 1
-                const dimensions = imageDimensions?.[key]
-                const slideStyle = getGallerySlideStyle(dimensions)
+        <div className={`gallery-swiper-dismiss-capture`}
+             onClickCapture={onChromeClick}>
+            <Swiper slidesPerView={"auto"}
+                    direction={"horizontal"}
+                    spaceBetween={15}
+                    centeredSlides={true}
+                    pagination={{clickable: true}}
+                    navigation={true}
+                    modules={[Pagination, Navigation]}
+                    onSlideChange={swiper => onActiveIndexChange(swiper.activeIndex)}
+                    className={`gallery-swiper gallery-swiper-${type} ${focusClassName} ${className}`}>
+                {images.map((image, key) => {
+                    const shouldPrioritize = Math.abs(key - activeIndex) <= 1
+                    const dimensions = imageDimensions?.[key]
+                    const slideStyle = getGallerySlideStyle(dimensions)
 
-                return (
-                    <SwiperSlide key={key}
-                                 className={`gallery-swiper-slide`}
-                                 style={slideStyle}>
-                        <GalleryModalImage className={`swiper-image`}
-                                           alt={`img-` + key}
-                                           src={utils.file.resolvePath(image)}
-                                           shouldPrioritize={shouldPrioritize}
-                                           onStatus={(status) => onImageStatus(key, status)}/>
-                    </SwiperSlide>
-                )
-            })}
-        </Swiper>
+                    return (
+                        <SwiperSlide key={key}
+                                     className={`gallery-swiper-slide`}
+                                     style={slideStyle}>
+                            <GalleryModalImage className={`swiper-image`}
+                                               alt={`img-` + key}
+                                               src={utils.file.resolvePath(image)}
+                                               shouldPrioritize={shouldPrioritize}
+                                               onStatus={(status) => onImageStatus(key, status)}/>
+                        </SwiperSlide>
+                    )
+                })}
+            </Swiper>
+        </div>
     )
 }
 
@@ -314,6 +350,62 @@ function _getInitialReadyIndices(direction, imageCount) {
         return imageCount === 1 ? [0] : [0, 1]
 
     return [0]
+}
+
+function isProtectedHorizontalGalleryClick(event) {
+    const target = event.target
+    if(!target?.closest)
+        return false
+
+    if(target.closest(".swiper-button-prev, .swiper-button-next"))
+        return true
+
+    const image = target.closest(".gallery-modal-image-surface img.image-frame-img")
+    if(!image)
+        return false
+
+    const imageBounds = getContainedImageBounds(image)
+    if(!imageBounds)
+        return false
+
+    return (
+        event.clientX >= imageBounds.left &&
+        event.clientX <= imageBounds.right &&
+        event.clientY >= imageBounds.top &&
+        event.clientY <= imageBounds.bottom
+    )
+}
+
+function getContainedImageBounds(image) {
+    const bounds = image.getBoundingClientRect()
+    const naturalWidth = image.naturalWidth || Number(image.getAttribute("width"))
+    const naturalHeight = image.naturalHeight || Number(image.getAttribute("height"))
+
+    if(!bounds.width || !bounds.height || !naturalWidth || !naturalHeight)
+        return bounds
+
+    const frameRatio = bounds.width / bounds.height
+    const imageRatio = naturalWidth / naturalHeight
+
+    if(imageRatio > frameRatio) {
+        const renderedHeight = bounds.width / imageRatio
+        const offsetY = (bounds.height - renderedHeight) / 2
+        return {
+            left: bounds.left,
+            right: bounds.right,
+            top: bounds.top + offsetY,
+            bottom: bounds.bottom - offsetY
+        }
+    }
+
+    const renderedWidth = bounds.height * imageRatio
+    const offsetX = (bounds.width - renderedWidth) / 2
+    return {
+        left: bounds.left + offsetX,
+        right: bounds.right - offsetX,
+        top: bounds.top,
+        bottom: bounds.bottom
+    }
 }
 
 function getGalleryImageSizes(className) {

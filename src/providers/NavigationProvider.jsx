@@ -29,7 +29,7 @@ function NavigationProvider({ children, sections, categories }) {
     const [shouldForceScrollToTopCount, setShouldForceScrollToTopCount] = useState(0)
     const [isAppReady, setIsAppReady] = useState(false)
     const transitionEnabledRef = useRef(true)
-    const ignoreNextLocationEventRef = useRef(false)
+    const ignoreNextLocationEventRef = useRef(null)
 
     const [targetSection, setTargetSection] = useState(null)
     const [previousSection, setPreviousSection] = useState(null)
@@ -78,8 +78,8 @@ function NavigationProvider({ children, sections, categories }) {
         setTransitionStatus(value)
     }
 
-    const _setIgnoreNextLocationEventState = (value) => {
-        ignoreNextLocationEventRef.current = value
+    const _setIgnoredLocationSectionId = (sectionId) => {
+        ignoreNextLocationEventRef.current = sectionId
     }
 
     const _setResettingScrollYToState = (value) => {
@@ -236,12 +236,12 @@ function NavigationProvider({ children, sections, categories }) {
             _setNextSectionState(null)
             _setScheduledNextSectionState(null)
 
-            _setIgnoreNextLocationEventState(true)
+            _setIgnoredLocationSectionId(currentTargetSection?.id || null)
             location.goToSection(currentTargetSection)
 
             scheduler.clearAllWithTag("set-ignore-next-location-event")
             scheduler.schedule(() => {
-                _setIgnoreNextLocationEventState(false)
+                _setIgnoredLocationSectionId(null)
             }, 100, "set-ignore-next-location-event")
             _setTransitionStatusState(NavigationProvider.TransitionStatus.NONE)
             return
@@ -270,14 +270,16 @@ function NavigationProvider({ children, sections, categories }) {
         if(!isAppReady)
             return
 
-        if(ignoreNextLocationEventRef.current) {
-            _setIgnoreNextLocationEventState(false)
-            return
-        }
-
         const locationSection = location.getActiveSection()
         if(!locationSection)
             return
+
+        const ignoredLocationSectionId = ignoreNextLocationEventRef.current
+        if(ignoredLocationSectionId) {
+            _setIgnoredLocationSectionId(null)
+            if(ignoredLocationSectionId === locationSection.id)
+                return
+        }
 
         // Let the dedicated initial seeding effect paint the first mobile section
         // without going through the transition/scroll adjustment pipeline.

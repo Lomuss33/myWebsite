@@ -5,6 +5,8 @@ div.layout-navigation-wrapper {
     --layout-shell-content-padding-inline: 0px;
     --layout-shell-column-gap: 0px;
     --layout-shell-content-max-width: none;
+    --layout-desktop-scale: 0.94;
+    --layout-ultrawide-scale: 0.86;
     --layout-wide-scale: 1;
     --layout-wide-nav-scale: var(--layout-wide-scale);
     --layout-wide-content-scale: var(--layout-wide-scale);
@@ -28,8 +30,12 @@ div.layout-navigation-wrapper {
         column-gap: 0;
     }
 
+    @include media-breakpoint-up(lg) {
+        --layout-wide-scale: var(--layout-desktop-scale);
+    }
+
     @media (min-width: 1680px) {
-        --layout-wide-scale: 0.86;
+        --layout-wide-scale: var(--layout-ultrawide-scale);
         --layout-shell-content-padding-inline: clamp(40px, 4.8vw, 168px);
         --layout-shell-column-gap: clamp(28px, 2.4vw, 52px);
         --layout-shell-content-max-width: 1220px;
@@ -80,11 +86,16 @@ div.layout-navigation-children-wrapper {
         height: auto;
     }
 
+    @include media-breakpoint-up(lg) {
+        justify-content: flex-start;
+        overflow: hidden;
+    }
+
     @media (min-width: 1680px) {
+        justify-content: center;
         padding-left: calc(var(--layout-shell-content-padding-inline) * var(--layout-wide-scale));
         padding-right: calc(var(--layout-shell-content-padding-inline) * var(--layout-wide-scale));
         box-sizing: border-box;
-        overflow: hidden;
     }
 }
 
@@ -98,6 +109,15 @@ div.layout-navigation-children-inner {
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         height: auto;
+    }
+
+    @include media-breakpoint-up(lg) {
+        flex: 0 0 calc(100% / var(--layout-wide-content-scale));
+        width: calc(100% / var(--layout-wide-content-scale));
+        min-height: calc(100% / var(--layout-wide-content-scale));
+        height: calc(100% / var(--layout-wide-content-scale));
+        transform: scale(var(--layout-wide-content-scale));
+        transform-origin: top left;
     }
 
     @media (min-width: 1680px) {

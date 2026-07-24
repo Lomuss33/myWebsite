@@ -2,7 +2,14 @@
 
 div.section-content {
     /* Keep the section anchored higher while preserving comfortable side and bottom spacing. */
-    --section-content-scale: 0.8;
+    --section-content-base-scale: 0.8;
+    --section-content-density-scale: 1;
+    --section-content-density-desktop-scale: 0.84;
+    --section-content-density-ultrawide-scale: 0.80;
+    --section-content-scale: calc(
+        var(--section-content-base-scale) *
+        var(--section-content-density-scale)
+    );
     --section-content-min-height: calc(100vh - #{$default-card-spacing * 5});
     --padding-top: 0.85rem;
     --padding-x: 1.35rem;
@@ -20,6 +27,14 @@ div.section-content {
         --padding-bottom: 2.75rem;
     }
 
+    @include media-breakpoint-up(lg) {
+        --section-content-density-scale: var(--section-content-density-desktop-scale);
+    }
+
+    @media (min-width: 1680px) {
+        --section-content-density-scale: var(--section-content-density-ultrawide-scale);
+    }
+
     @include media-breakpoint-down(xl) {
         --padding-top: 0.7rem;
         --padding-x: 1rem;
@@ -30,7 +45,8 @@ div.section-content {
         /* Avoid widened transformed wrappers on mobile. Firefox Android and other mobile
            browsers can treat the pre-transform width as page width and zoom the entire
            layout out to fit, which makes the whole UI look tiny. */
-        --section-content-scale: 1;
+        --section-content-base-scale: 1;
+        --section-content-density-scale: 1;
     }
 
     @include media-breakpoint-down(md) {

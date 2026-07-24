@@ -20,19 +20,11 @@ const SECTION_STATUS = {
 const Section = memo(function Section({ section, visible, shouldTransition, forceScrollToTopCount = null }) {
     const [status, setStatus] = useState(SECTION_STATUS.HIDDEN)
     const [shouldResetScroll, setShouldResetScroll] = useState(false)
-    const [hasRendered, setHasRendered] = useState(false)
     const hasInitializedForceScrollRef = useRef(false)
 
     const isHidden = status === SECTION_STATUS.HIDDEN
-    const shouldRenderSection = hasRendered || !isHidden
+    const shouldRenderSection = !isHidden
     const shouldRenderFocusManager = status !== SECTION_STATUS.HIDDEN
-
-    useEffect(() => {
-        if(isHidden)
-            return
-
-        setHasRendered(true)
-    }, [isHidden])
 
     useEffect(() => {
         if(!hasInitializedForceScrollRef.current) {

@@ -58,15 +58,15 @@ function HoverStaticTooltip({
         if(!shouldUseTouchBehavior || !toggleBehaviorOnTouchScreens)
             return
         setVisible(false)
-    }, [navigation.targetSection])
+    }, [navigation?.targetSection, shouldUseTouchBehavior, toggleBehaviorOnTouchScreens])
 
     /** @listens input.mouseUpStatus **/
     useEffect(() => {
-        const lastMouseTargetId = input.lastMouseTarget?.getAttribute("id")
+        const lastMouseTargetId = input?.lastMouseTarget?.getAttribute?.("id")
         if(lastMouseTargetId === targetId)
             return
         setVisible(false)
-    }, [input.mouseUpStatus])
+    }, [input?.mouseUpStatus, input?.lastMouseTarget, targetId])
 
     const _onTargetMouseEnter = () => {
         if(shouldUseTouchBehavior)

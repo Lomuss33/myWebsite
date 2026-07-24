@@ -3,8 +3,11 @@ import React from 'react'
 import ImageView from "./ImageView.jsx"
 import {useFloatingFrame} from "../../hooks/floatingFrame.js"
 
+const DEFAULT_AVATAR_SIZES = "(max-width: 575px) 64px, (max-width: 991px) 80px, 96px"
+
 function AvatarView({ src = "", alt = "", faIcon = "", iconText = "", className = "",  id = null, style = null, sizes = null }) {
     const floatingFrame = useFloatingFrame()
+    const imageSizes = sizes || DEFAULT_AVATAR_SIZES
 
     return (
         <div className={`avatar-view floating-frame ${className}`}
@@ -17,7 +20,7 @@ function AvatarView({ src = "", alt = "", faIcon = "", iconText = "", className 
                 <ImageView src={src}
                            alt={alt}
                            className={`avatar-view-image-view`}
-                           sizes={sizes}/>
+                           sizes={imageSizes}/>
             )}
 
             {!src && (

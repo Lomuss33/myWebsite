@@ -165,6 +165,8 @@ const HOME_STACK_BUBBLE_FIT_VARIABLES = [
     "--home-stack-bubble-line-height"
 ]
 
+const ART_STACK_INITIAL_ITEM_MOUNT_COUNT = 24
+
 const roundToStep = (value, precision = 2) => {
     const multiplier = 10 ** precision
     return Math.round(value * multiplier) / multiplier
@@ -258,16 +260,48 @@ function ArticleStackItems({ dataWrapper, selectedItemCategoryId, isHomeStack, i
     const theme = useTheme()
 
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
-    const refreshFlag = selectedItemCategoryId + "::" + language.getSelectedLanguage()?.id + "-" + theme.getSelectedTheme()?.id
+    const refreshSeed = selectedItemCategoryId + "::" + language.getSelectedLanguage()?.id + "-" + theme.getSelectedTheme()?.id
+    const deferredItemsKey = `${dataWrapper.uniqueId}::${refreshSeed}::${filteredItems.length}`
+    const shouldDeferCompactItems = isCompactStack && filteredItems.length > ART_STACK_INITIAL_ITEM_MOUNT_COUNT
+    const [readyDeferredItemsKey, setReadyDeferredItemsKey] = useState(null)
+    const deferredCompactItemsReady = !shouldDeferCompactItems || readyDeferredItemsKey === deferredItemsKey
+    const visibleItems = shouldDeferCompactItems && !deferredCompactItemsReady ?
+        filteredItems.slice(0, ART_STACK_INITIAL_ITEM_MOUNT_COUNT) :
+        filteredItems
+    const refreshFlag = `${refreshSeed}::${deferredCompactItemsReady ? "full" : "initial"}`
     const homeClass = isHomeStack ? `article-stack-items-home` : ``
     const compactClass = isCompactStack ? `article-stack-items-compact` : ``
     const stackClassName = `article-stack-items ${homeClass} ${compactClass}`.trim()
-    const renderedItems = filteredItems.map((itemWrapper, key) => (
+    const renderedItems = visibleItems.map((itemWrapper, key) => (
         <ArticleStackItem itemWrapper={itemWrapper}
                           isHomeStack={isHomeStack}
                           isCompactStack={isCompactStack}
                           key={key}/>
     ))
+
+    useEffect(() => {
+        if(!shouldDeferCompactItems) {
+            setReadyDeferredItemsKey(deferredItemsKey)
+            return undefined
+        }
+
+        if(typeof window === "undefined") {
+            setReadyDeferredItemsKey(deferredItemsKey)
+            return undefined
+        }
+
+        const revealDeferredItems = () => {
+            setReadyDeferredItemsKey(deferredItemsKey)
+        }
+
+        if("requestIdleCallback" in window) {
+            const idleId = window.requestIdleCallback(revealDeferredItems, { timeout: 1800 })
+            return () => window.cancelIdleCallback(idleId)
+        }
+
+        const timeoutId = window.setTimeout(revealDeferredItems, 800)
+        return () => window.clearTimeout(timeoutId)
+    }, [deferredItemsKey, shouldDeferCompactItems])
 
     if(isHomeStack) {
         return (

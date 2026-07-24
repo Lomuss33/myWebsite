@@ -158,6 +158,8 @@ article.article.article-stack-compact {
     div.article-stack-item.article-stack-item-compact {
         padding: var(--padding);
         justify-content: flex-start;
+        content-visibility: auto;
+        contain-intrinsic-size: 152px;
     }
 
     div.article-stack-item-compact div.article-stack-item-avatar {

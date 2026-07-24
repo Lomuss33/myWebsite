@@ -618,6 +618,8 @@ div.article-web-art-items {
     -webkit-tap-highlight-color: transparent;
     outline: none;
     isolation: isolate;
+    content-visibility: auto;
+    contain-intrinsic-size: 280px 280px;
 
     transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
 }

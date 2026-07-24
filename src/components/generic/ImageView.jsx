@@ -108,6 +108,12 @@ function ImageViewContainer({ resolvedSrc, resolvedSrcSet, sizes, width, height,
 
         syncLoadedImage()
 
+        if(loading === "lazy" && fetchPriority !== "high") {
+            return () => {
+                canceled = true
+            }
+        }
+
         if(typeof imageElement.decode === "function") {
             imageElement.decode()
                 .then(syncLoadedImage)
@@ -119,7 +125,7 @@ function ImageViewContainer({ resolvedSrc, resolvedSrcSet, sizes, width, height,
             canceled = true
             cancelAnimationFrame(syncFrame)
         }
-    }, [resolvedSrc, resolvedSrcSet, sizes, onLoad, onError])
+    }, [resolvedSrc, resolvedSrcSet, sizes, loading, fetchPriority, onLoad, onError])
 
     if(!canRenderImg || !resolvedSrc)
         return <></>

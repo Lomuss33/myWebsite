@@ -121,6 +121,8 @@ div.article-portfolio-item {
 
     /* Allow responsive typography based on card width */
     container-type: inline-size;
+    content-visibility: auto;
+    contain-intrinsic-size: 340px;
 
     /* Reserve space for bottom controls bar (absolute) */
     padding-bottom: calc(var(--padding-bottom) + var(--portfolio-control-height) + var(--avatar-offset));

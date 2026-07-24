@@ -692,6 +692,8 @@ article#article-1-section-experience {
         --timeline-line-color: color-mix(in srgb, var(--theme-primary) 72%, var(--theme-secondary) 28%);
         --avatar-offset-merge-mode: 0px;
         --experience-line-cap-trim: 0px;
+        --experience-line-cap-trim-top: calc(var(--experience-line-cap-trim) + var(--experience-avatar-size) * 0.55);
+        --experience-line-cap-trim-bottom: calc(var(--experience-line-cap-trim) + var(--experience-avatar-size) * 0.12);
         --experience-avatar-vertical-offset: 0px;
         gap: 16px;
         overflow: visible;
@@ -814,8 +816,8 @@ article#article-1-section-experience {
     }
 
     ul.article-timeline-items:before {
-        top: calc(var(--timeline-line-top-offset, calc(var(--avatar-size)/2)) + var(--experience-line-cap-trim));
-        bottom: calc(var(--timeline-line-bottom-offset, calc(var(--avatar-size)/2)) + var(--experience-line-cap-trim));
+        top: calc(var(--timeline-line-top-offset, calc(var(--avatar-size)/2)) + var(--experience-line-cap-trim-top));
+        bottom: calc(var(--timeline-line-bottom-offset, calc(var(--avatar-size)/2)) + var(--experience-line-cap-trim-bottom));
         left: auto;
         right: calc(var(--experience-card-overlap) - var(--experience-rail-width) / 2 - var(--experience-edge-reach) + var(--experience-edge-gap) + var(--experience-ultrawide-column-pull));
         width: var(--experience-rail-width);

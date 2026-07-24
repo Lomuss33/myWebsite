@@ -5,8 +5,8 @@ div.layout-navigation-wrapper {
     --layout-shell-content-padding-inline: 0px;
     --layout-shell-column-gap: 0px;
     --layout-shell-content-max-width: none;
-    --layout-desktop-scale: 0.94;
-    --layout-ultrawide-scale: 0.86;
+    --layout-desktop-scale: 0.90;
+    --layout-ultrawide-scale: 0.82;
     --layout-wide-scale: 1;
     --layout-wide-nav-scale: var(--layout-wide-scale);
     --layout-wide-content-scale: var(--layout-wide-scale);
@@ -36,6 +36,7 @@ div.layout-navigation-wrapper {
 
     @media (min-width: 1680px) {
         --layout-wide-scale: var(--layout-ultrawide-scale);
+        --layout-wide-nav-scale: 0.78;
         --layout-shell-content-padding-inline: clamp(40px, 4.8vw, 168px);
         --layout-shell-column-gap: clamp(28px, 2.4vw, 52px);
         --layout-shell-content-max-width: 1220px;

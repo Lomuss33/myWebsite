@@ -3,7 +3,7 @@ import React, {useEffect, useRef} from 'react'
 
 const RAIN_FRAME_INTERVAL_MS = 72
 const SHADER_FRAME_INTERVAL_MS = 84
-const REDUCED_MOTION_FRAME_INTERVAL_MS = 320
+const LOW_FRAME_RATE_INTERVAL_MS = 220
 const RAIN_MAX_DEVICE_PIXEL_RATIO = 1.25
 const SHADER_MAX_DEVICE_PIXEL_RATIO = 1.25
 const LEGACY_SOFTWARE_RAIN_CHARS = [
@@ -344,7 +344,7 @@ function drawShader(shaderState, now) {
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
 }
 
-function SoftwareDecorationCanvases({ staticMode = false }) {
+function SoftwareDecorationCanvases({ lowFrameRateMode = false }) {
     const rainCanvasRef = useRef(null)
     const shaderCanvasRef = useRef(null)
 
@@ -376,8 +376,10 @@ function SoftwareDecorationCanvases({ staticMode = false }) {
             shaderState = null
         }
 
-        const isReducedMotion = () => staticMode || Boolean(reducedMotionQuery?.matches)
+        const isReducedMotion = () => Boolean(reducedMotionQuery?.matches)
         const shouldAnimate = () => isIntersecting && !document.hidden && !isReducedMotion()
+        const getRainFrameInterval = () => lowFrameRateMode ? LOW_FRAME_RATE_INTERVAL_MS : RAIN_FRAME_INTERVAL_MS
+        const getShaderFrameInterval = () => lowFrameRateMode ? LOW_FRAME_RATE_INTERVAL_MS : SHADER_FRAME_INTERVAL_MS
 
         const stopLoop = () => {
             if(animationFrameId !== null) {
@@ -406,14 +408,14 @@ function SoftwareDecorationCanvases({ staticMode = false }) {
                 return
             }
 
-            if(context && layout && timestamp - lastRainTime >= RAIN_FRAME_INTERVAL_MS) {
-                const delta = lastRainTime === 0 ? RAIN_FRAME_INTERVAL_MS : timestamp - lastRainTime
+            if(context && layout && timestamp - lastRainTime >= getRainFrameInterval()) {
+                const delta = lastRainTime === 0 ? getRainFrameInterval() : timestamp - lastRainTime
                 lastRainTime = timestamp
                 updateColumns(columns, layout, cellSize, delta)
                 drawRain(context, layout, columns, cellSize, false)
             }
 
-            if(shaderState && timestamp - lastShaderTime >= SHADER_FRAME_INTERVAL_MS) {
+            if(shaderState && timestamp - lastShaderTime >= getShaderFrameInterval()) {
                 lastShaderTime = timestamp
                 drawShader(shaderState, timestamp)
             }
@@ -545,7 +547,7 @@ function SoftwareDecorationCanvases({ staticMode = false }) {
             if(shaderState?.program)
                 shaderState.gl.deleteProgram(shaderState.program)
         }
-    }, [staticMode])
+    }, [lowFrameRateMode])
 
     return (
         <>

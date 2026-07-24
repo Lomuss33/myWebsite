@@ -2,6 +2,9 @@ import "./ExperienceDecorationCanvas.scss"
 import React, {useEffect, useRef} from 'react'
 
 const FRAME_INTERVAL_MS = 40
+const LOW_FRAME_RATE_INTERVAL_MS = 220
+const LOW_FRAME_RATE_TIME_SCALE = 0.30
+const LOW_FRAME_RATE_BRANCH_SPEED_SCALE = 0.28
 const TIME_SCALE = 0.242
 const TREE_SPEED_SCALE = 1.1
 const TREE_BOTTOM_OFFSET_RATIO = 0.18
@@ -262,8 +265,8 @@ function createBranch(length, angle, generation, maxGeneration) {
     return branch
 }
 
-function drawBranch(context, branch, hue, reducedMotion) {
-    branch.sway += (reducedMotion ? 0.16 : 1) * TREE_SPEED_SCALE
+function drawBranch(context, branch, hue, motionScale = 1) {
+    branch.sway += motionScale * TREE_SPEED_SCALE
     context.save()
 
     branch.velocity *= 0.9
@@ -281,7 +284,7 @@ function drawBranch(context, branch, hue, reducedMotion) {
 
     if(branch.spawn > 0.6) {
         for(const limb of branch.limbs)
-            drawBranch(context, limb, hue, reducedMotion)
+            drawBranch(context, limb, hue, motionScale)
     }
 
     context.restore()
@@ -383,13 +386,13 @@ function resizeBottomCanvas(canvas, layout) {
     }
 }
 
-function drawBottomBranches(branchState, now, reducedMotion) {
+function drawBottomBranches(branchState, now, motionScale = 1) {
     if(!branchState)
         return
 
     const { context, width, height, branches } = branchState
     const restrictedHues = [24, 8, 342, 286, 236, 194]
-    const hueProgress = reducedMotion ? 4 : (now * 0.00018 * TREE_SPEED_SCALE) % restrictedHues.length
+    const hueProgress = (now * 0.00018 * TREE_SPEED_SCALE * motionScale) % restrictedHues.length
     const hueIndex = Math.floor(hueProgress)
     const hueMix = hueProgress - hueIndex
     const hueStart = restrictedHues[hueIndex]
@@ -405,14 +408,14 @@ function drawBottomBranches(branchState, now, reducedMotion) {
         context.translate(item.x, item.y)
         context.rotate(-Math.PI * 0.5)
         context.scale(item.scaleX, item.scaleY)
-        drawBranch(context, item.branch, hue, reducedMotion)
+        drawBranch(context, item.branch, hue, motionScale)
         context.restore()
     }
 
     context.restore()
 }
 
-function ExperienceDecorationCanvas({ staticMode = false }) {
+function ExperienceDecorationCanvas({ lowFrameRateMode = false }) {
     const shaderCanvasRef = useRef(null)
     const bottomCanvasRef = useRef(null)
 
@@ -444,8 +447,11 @@ function ExperienceDecorationCanvas({ staticMode = false }) {
         if(!shaderState)
             return
 
-        const isReducedMotion = () => staticMode || Boolean(reducedMotionQuery?.matches)
+        const isReducedMotion = () => Boolean(reducedMotionQuery?.matches)
         const shouldAnimate = () => isIntersecting && !document.hidden && !isReducedMotion()
+        const getFrameInterval = () => lowFrameRateMode ? LOW_FRAME_RATE_INTERVAL_MS : FRAME_INTERVAL_MS
+        const getAnimationTime = (timestamp) => lowFrameRateMode ? timestamp * LOW_FRAME_RATE_TIME_SCALE : timestamp
+        const getBranchMotionScale = () => lowFrameRateMode ? LOW_FRAME_RATE_BRANCH_SPEED_SCALE : 1
 
         const stopLoop = () => {
             if(animationFrameId !== null) {
@@ -457,7 +463,7 @@ function ExperienceDecorationCanvas({ staticMode = false }) {
         const drawStatic = () => {
             if(scissorRects.length > 0)
                 drawShader(shaderState, scissorRects, 0)
-            drawBottomBranches(bottomBranchState, 0, true)
+            drawBottomBranches(bottomBranchState, 0, 0)
         }
 
         const step = (timestamp) => {
@@ -466,10 +472,11 @@ function ExperienceDecorationCanvas({ staticMode = false }) {
                 return
             }
 
-            if(scissorRects.length > 0 && timestamp - lastFrameTime >= FRAME_INTERVAL_MS) {
+            if(scissorRects.length > 0 && timestamp - lastFrameTime >= getFrameInterval()) {
+                const animationTime = getAnimationTime(timestamp)
                 lastFrameTime = timestamp
-                drawShader(shaderState, scissorRects, timestamp)
-                drawBottomBranches(bottomBranchState, timestamp, false)
+                drawShader(shaderState, scissorRects, animationTime)
+                drawBottomBranches(bottomBranchState, animationTime, getBranchMotionScale())
             }
 
             animationFrameId = window.requestAnimationFrame(step)
@@ -568,7 +575,7 @@ function ExperienceDecorationCanvas({ staticMode = false }) {
             if(shaderState?.program)
                 shaderState.gl.deleteProgram(shaderState.program)
         }
-    }, [staticMode])
+    }, [lowFrameRateMode])
 
     return (
         <>

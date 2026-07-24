@@ -2,6 +2,8 @@ import "./EducationDecorationCanvas.scss"
 import React, {useEffect, useRef} from 'react'
 
 const FRAME_INTERVAL_MS = 96
+const LOW_FRAME_RATE_INTERVAL_MS = 180
+const LOW_FRAME_RATE_TIME_SCALE = 0.24
 const MAX_DEVICE_PIXEL_RATIO = 1.15
 const MAX_BANDS = 12
 
@@ -338,7 +340,7 @@ function drawBottomShader(shaderState, now) {
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
 }
 
-function EducationDecorationCanvas({ staticMode = false }) {
+function EducationDecorationCanvas({ lowFrameRateMode = false }) {
     const shaderCanvasRef = useRef(null)
     const bottomCanvasRef = useRef(null)
 
@@ -373,8 +375,10 @@ function EducationDecorationCanvas({ staticMode = false }) {
         if(!shaderState || !bottomShaderState)
             return
 
-        const isReducedMotion = () => staticMode || Boolean(reducedMotionQuery?.matches)
+        const isReducedMotion = () => Boolean(reducedMotionQuery?.matches)
         const shouldAnimate = () => isIntersecting && !document.hidden && !isReducedMotion()
+        const getFrameInterval = () => lowFrameRateMode ? LOW_FRAME_RATE_INTERVAL_MS : FRAME_INTERVAL_MS
+        const getAnimationTime = (timestamp) => lowFrameRateMode ? timestamp * LOW_FRAME_RATE_TIME_SCALE : timestamp
 
         const stopLoop = () => {
             if(animationFrameId !== null) {
@@ -396,11 +400,12 @@ function EducationDecorationCanvas({ staticMode = false }) {
                 return
             }
 
-            if(layout && bandUniforms && timestamp - lastFrameTime >= FRAME_INTERVAL_MS) {
+            if(layout && bandUniforms && timestamp - lastFrameTime >= getFrameInterval()) {
+                const animationTime = getAnimationTime(timestamp)
                 lastFrameTime = timestamp
-                drawShader(shaderState, layout, bandUniforms, timestamp)
+                drawShader(shaderState, layout, bandUniforms, animationTime)
                 if(hasBottomShaderLayout)
-                    drawBottomShader(bottomShaderState, timestamp)
+                    drawBottomShader(bottomShaderState, animationTime)
             }
 
             animationFrameId = window.requestAnimationFrame(step)
@@ -493,7 +498,7 @@ function EducationDecorationCanvas({ staticMode = false }) {
             if(bottomShaderState?.program)
                 bottomShaderState.gl.deleteProgram(bottomShaderState.program)
         }
-    }, [staticMode])
+    }, [lowFrameRateMode])
 
     return (
         <>

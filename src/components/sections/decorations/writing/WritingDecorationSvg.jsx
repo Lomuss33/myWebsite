@@ -2,7 +2,10 @@ import "./WritingDecorationSvg.scss"
 import React, {useEffect, useRef} from 'react'
 
 const FRAME_INTERVAL_MS = 96
+const LOW_FRAME_RATE_INTERVAL_MS = 900
+const LOW_FRAME_RATE_TIME_SCALE = 0.12
 const MAX_DEVICE_PIXEL_RATIO = 1.15
+const LOW_FRAME_RATE_MAX_DEVICE_PIXEL_RATIO = 0.55
 
 const vertexSource = `#version 300 es
 in vec4 position;
@@ -247,8 +250,8 @@ function measureLayout(canvas) {
     }
 }
 
-function resizeCanvas(canvas, gl, layout) {
-    const pixelRatio = Math.max(1, Math.min(MAX_DEVICE_PIXEL_RATIO, (window.devicePixelRatio || 1) * 0.75))
+function resizeCanvas(canvas, gl, layout, maxDevicePixelRatio = MAX_DEVICE_PIXEL_RATIO, minDevicePixelRatio = 1) {
+    const pixelRatio = Math.max(minDevicePixelRatio, Math.min(maxDevicePixelRatio, (window.devicePixelRatio || 1) * 0.75))
     const width = Math.max(1, Math.round(layout.width * pixelRatio))
     const height = Math.max(1, Math.round(layout.height * pixelRatio))
 
@@ -299,7 +302,7 @@ function drawShader(shaderState, scissorRects, now) {
     gl.disable(gl.SCISSOR_TEST)
 }
 
-function WritingDecorationSvg({ staticMode = false }) {
+function WritingDecorationSvg({ lowFrameRateMode = false }) {
     const canvasRef = useRef(null)
 
     useEffect(() => {
@@ -327,8 +330,10 @@ function WritingDecorationSvg({ staticMode = false }) {
         if(!shaderState)
             return
 
-        const isReducedMotion = () => staticMode || Boolean(reducedMotionQuery?.matches)
+        const isReducedMotion = () => Boolean(reducedMotionQuery?.matches)
         const shouldAnimate = () => isIntersecting && !document.hidden && !isReducedMotion()
+        const getFrameInterval = () => lowFrameRateMode ? LOW_FRAME_RATE_INTERVAL_MS : FRAME_INTERVAL_MS
+        const getAnimationTime = (timestamp) => lowFrameRateMode ? timestamp * LOW_FRAME_RATE_TIME_SCALE : timestamp
 
         const stopLoop = () => {
             if(animationFrameId !== null) {
@@ -348,9 +353,10 @@ function WritingDecorationSvg({ staticMode = false }) {
                 return
             }
 
-            if(scissorRects.length > 0 && timestamp - lastFrameTime >= FRAME_INTERVAL_MS) {
+            if(scissorRects.length > 0 && timestamp - lastFrameTime >= getFrameInterval()) {
+                const animationTime = getAnimationTime(timestamp)
                 lastFrameTime = timestamp
-                drawShader(shaderState, scissorRects, timestamp)
+                drawShader(shaderState, scissorRects, animationTime)
             }
 
             animationFrameId = window.requestAnimationFrame(step)
@@ -371,7 +377,13 @@ function WritingDecorationSvg({ staticMode = false }) {
             if(!layout)
                 return
 
-            const pixelRatio = resizeCanvas(canvas, shaderState.gl, layout)
+            const pixelRatio = resizeCanvas(
+                canvas,
+                shaderState.gl,
+                layout,
+                lowFrameRateMode ? LOW_FRAME_RATE_MAX_DEVICE_PIXEL_RATIO : MAX_DEVICE_PIXEL_RATIO,
+                lowFrameRateMode ? LOW_FRAME_RATE_MAX_DEVICE_PIXEL_RATIO : 1
+            )
             scissorRects = getScissorRects(layout, pixelRatio)
             lastFrameTime = 0
             drawStatic()
@@ -443,7 +455,7 @@ function WritingDecorationSvg({ staticMode = false }) {
             if(shaderState?.program)
                 shaderState.gl.deleteProgram(shaderState.program)
         }
-    }, [staticMode])
+    }, [lowFrameRateMode])
 
     return (
         <canvas

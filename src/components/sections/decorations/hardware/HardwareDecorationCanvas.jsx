@@ -2,6 +2,8 @@ import "./HardwareDecorationCanvas.scss"
 import React, {useEffect, useRef} from 'react'
 
 const FRAME_INTERVAL_MS = 72
+const LOW_FRAME_RATE_INTERVAL_MS = 280
+const LOW_FRAME_RATE_TIME_SCALE = 0.24
 const MAX_DEVICE_PIXEL_RATIO = 1.15
 
 const vertexSource = `#version 300 es
@@ -303,7 +305,7 @@ function drawShader(shaderState, regions, now) {
     gl.disable(gl.SCISSOR_TEST)
 }
 
-function HardwareDecorationCanvas({ staticMode = false }) {
+function HardwareDecorationCanvas({ lowFrameRateMode = false }) {
     const canvasRef = useRef(null)
 
     useEffect(() => {
@@ -332,8 +334,10 @@ function HardwareDecorationCanvas({ staticMode = false }) {
         if(!shaderState)
             return
 
-        const isReducedMotion = () => staticMode || Boolean(reducedMotionQuery?.matches)
+        const isReducedMotion = () => Boolean(reducedMotionQuery?.matches)
         const shouldAnimate = () => isIntersecting && !document.hidden && !isReducedMotion()
+        const getFrameInterval = () => lowFrameRateMode ? LOW_FRAME_RATE_INTERVAL_MS : FRAME_INTERVAL_MS
+        const getAnimationTime = (timestamp) => lowFrameRateMode ? timestamp * LOW_FRAME_RATE_TIME_SCALE : timestamp
 
         const stopLoop = () => {
             if(animationFrameId !== null) {
@@ -361,9 +365,10 @@ function HardwareDecorationCanvas({ staticMode = false }) {
                 return
             }
 
-            if(regions && timestamp - lastFrameTime >= FRAME_INTERVAL_MS) {
+            if(regions && timestamp - lastFrameTime >= getFrameInterval()) {
+                const animationTime = getAnimationTime(timestamp)
                 lastFrameTime = timestamp
-                drawShader(shaderState, regions, timestamp)
+                drawShader(shaderState, regions, animationTime)
             }
 
             animationFrameId = window.requestAnimationFrame(step)
@@ -493,7 +498,7 @@ function HardwareDecorationCanvas({ staticMode = false }) {
             if(shaderState?.program)
                 shaderState.gl.deleteProgram(shaderState.program)
         }
-    }, [staticMode])
+    }, [lowFrameRateMode])
 
     return (
         <canvas

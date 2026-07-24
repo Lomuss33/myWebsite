@@ -5,7 +5,7 @@ import HardwareDecorationCanvas from "./hardware/HardwareDecorationCanvas.jsx"
 import SoftwareDecorationCanvases from "./software/SoftwareDecorationCanvases.jsx"
 import WritingDecorationSvg from "./writing/WritingDecorationSvg.jsx"
 
-function shouldUseStaticDecorationsForPerformance() {
+function shouldThrottleDecorationsForPerformance() {
     if(typeof window === "undefined")
         return false
 
@@ -17,22 +17,22 @@ function shouldUseStaticDecorationsForPerformance() {
 }
 
 function SectionDecorationLayer({ section }) {
-    const staticMode = shouldUseStaticDecorationsForPerformance()
+    const lowFrameRateMode = shouldThrottleDecorationsForPerformance()
 
     if(section?.id === "education")
-        return <EducationDecorationCanvas staticMode={staticMode}/>
+        return <EducationDecorationCanvas lowFrameRateMode={lowFrameRateMode}/>
 
     if(section?.id === "experience")
-        return <ExperienceDecorationCanvas staticMode={staticMode}/>
+        return <ExperienceDecorationCanvas lowFrameRateMode={lowFrameRateMode}/>
 
     if(section?.id === "my-hardware")
-        return <HardwareDecorationCanvas staticMode={staticMode}/>
+        return <HardwareDecorationCanvas lowFrameRateMode={lowFrameRateMode}/>
 
     if(section?.id === "my-software")
-        return <SoftwareDecorationCanvases staticMode={staticMode}/>
+        return <SoftwareDecorationCanvases lowFrameRateMode={lowFrameRateMode}/>
 
     if(section?.id === "my-writings")
-        return <WritingDecorationSvg staticMode={staticMode}/>
+        return <WritingDecorationSvg lowFrameRateMode={lowFrameRateMode}/>
 
     return null
 }

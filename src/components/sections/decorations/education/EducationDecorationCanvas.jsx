@@ -338,7 +338,7 @@ function drawBottomShader(shaderState, now) {
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
 }
 
-function EducationDecorationCanvas() {
+function EducationDecorationCanvas({ staticMode = false }) {
     const shaderCanvasRef = useRef(null)
     const bottomCanvasRef = useRef(null)
 
@@ -373,7 +373,7 @@ function EducationDecorationCanvas() {
         if(!shaderState || !bottomShaderState)
             return
 
-        const isReducedMotion = () => Boolean(reducedMotionQuery?.matches)
+        const isReducedMotion = () => staticMode || Boolean(reducedMotionQuery?.matches)
         const shouldAnimate = () => isIntersecting && !document.hidden && !isReducedMotion()
 
         const stopLoop = () => {
@@ -493,7 +493,7 @@ function EducationDecorationCanvas() {
             if(bottomShaderState?.program)
                 bottomShaderState.gl.deleteProgram(bottomShaderState.program)
         }
-    }, [])
+    }, [staticMode])
 
     return (
         <>

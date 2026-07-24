@@ -70,6 +70,28 @@ const _isChunkLoadError = (error) => {
     )
 }
 
+const _tryReloadAfterChunkLoadError = (error) => {
+    if(typeof window === "undefined" || !_isChunkLoadError(error))
+        return false
+
+    const reloadKey = "app:chunk-load-error-reloaded"
+    const runtimeId = document.querySelector('script[type="module"][src*="/assets/index-"]')?.getAttribute("src") ||
+        window.location.href
+
+    try {
+        if(window.sessionStorage?.getItem(reloadKey) === runtimeId)
+            return false
+
+        window.sessionStorage?.setItem(reloadKey, runtimeId)
+    }
+    catch {
+        return false
+    }
+
+    window.location.reload()
+    return true
+}
+
 const _dispatchAppLifecycleEvent = (name, detail = {}) => {
     if(typeof window === "undefined")
         return
@@ -112,6 +134,7 @@ class AppErrorBoundary extends Component {
 
     componentDidCatch(error, errorInfo) {
         console.error("AppErrorBoundary", error, errorInfo)
+        _tryReloadAfterChunkLoadError(error)
     }
 
     _reloadPage = () => {
@@ -201,6 +224,22 @@ function AppLifecycleBridge() {
             window.removeEventListener("pageshow", onPageShow)
             window.removeEventListener("pagehide", onPageHide)
             document.removeEventListener("visibilitychange", onVisibilityChange)
+        }
+    }, [])
+
+    useEffect(() => {
+        if(typeof window === "undefined")
+            return
+
+        const onUnhandledRejection = (event) => {
+            if(_tryReloadAfterChunkLoadError(event?.reason))
+                event.preventDefault?.()
+        }
+
+        window.addEventListener("unhandledrejection", onUnhandledRejection)
+
+        return () => {
+            window.removeEventListener("unhandledrejection", onUnhandledRejection)
         }
     }, [])
 

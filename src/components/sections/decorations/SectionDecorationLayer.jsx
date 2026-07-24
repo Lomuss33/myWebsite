@@ -5,36 +5,34 @@ import HardwareDecorationCanvas from "./hardware/HardwareDecorationCanvas.jsx"
 import SoftwareDecorationCanvases from "./software/SoftwareDecorationCanvases.jsx"
 import WritingDecorationSvg from "./writing/WritingDecorationSvg.jsx"
 
-function shouldSkipDecorationsForPerformance() {
+function shouldUseStaticDecorationsForPerformance() {
     if(typeof window === "undefined")
         return false
 
-    const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches === true
     const saveData = navigator?.connection?.saveData === true
     const lowPerfClass = document?.documentElement?.classList?.contains("low-perf") === true
     const lowCoreCount = (navigator?.hardwareConcurrency || 8) <= 4
 
-    return reducedMotion || saveData || lowPerfClass || lowCoreCount
+    return saveData || lowPerfClass || lowCoreCount
 }
 
 function SectionDecorationLayer({ section }) {
-    if(shouldSkipDecorationsForPerformance())
-        return null
+    const staticMode = shouldUseStaticDecorationsForPerformance()
 
     if(section?.id === "education")
-        return <EducationDecorationCanvas/>
+        return <EducationDecorationCanvas staticMode={staticMode}/>
 
     if(section?.id === "experience")
-        return <ExperienceDecorationCanvas/>
+        return <ExperienceDecorationCanvas staticMode={staticMode}/>
 
     if(section?.id === "my-hardware")
-        return <HardwareDecorationCanvas/>
+        return <HardwareDecorationCanvas staticMode={staticMode}/>
 
     if(section?.id === "my-software")
-        return <SoftwareDecorationCanvases/>
+        return <SoftwareDecorationCanvases staticMode={staticMode}/>
 
     if(section?.id === "my-writings")
-        return <WritingDecorationSvg/>
+        return <WritingDecorationSvg staticMode={staticMode}/>
 
     return null
 }

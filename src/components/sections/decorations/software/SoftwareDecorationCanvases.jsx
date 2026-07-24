@@ -344,7 +344,7 @@ function drawShader(shaderState, now) {
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
 }
 
-function SoftwareDecorationCanvases() {
+function SoftwareDecorationCanvases({ staticMode = false }) {
     const rainCanvasRef = useRef(null)
     const shaderCanvasRef = useRef(null)
 
@@ -376,7 +376,7 @@ function SoftwareDecorationCanvases() {
             shaderState = null
         }
 
-        const isReducedMotion = () => Boolean(reducedMotionQuery?.matches)
+        const isReducedMotion = () => staticMode || Boolean(reducedMotionQuery?.matches)
         const shouldAnimate = () => isIntersecting && !document.hidden && !isReducedMotion()
 
         const stopLoop = () => {
@@ -545,7 +545,7 @@ function SoftwareDecorationCanvases() {
             if(shaderState?.program)
                 shaderState.gl.deleteProgram(shaderState.program)
         }
-    }, [])
+    }, [staticMode])
 
     return (
         <>

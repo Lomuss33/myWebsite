@@ -303,7 +303,7 @@ function drawShader(shaderState, regions, now) {
     gl.disable(gl.SCISSOR_TEST)
 }
 
-function HardwareDecorationCanvas() {
+function HardwareDecorationCanvas({ staticMode = false }) {
     const canvasRef = useRef(null)
 
     useEffect(() => {
@@ -332,7 +332,7 @@ function HardwareDecorationCanvas() {
         if(!shaderState)
             return
 
-        const isReducedMotion = () => Boolean(reducedMotionQuery?.matches)
+        const isReducedMotion = () => staticMode || Boolean(reducedMotionQuery?.matches)
         const shouldAnimate = () => isIntersecting && !document.hidden && !isReducedMotion()
 
         const stopLoop = () => {
@@ -493,7 +493,7 @@ function HardwareDecorationCanvas() {
             if(shaderState?.program)
                 shaderState.gl.deleteProgram(shaderState.program)
         }
-    }, [])
+    }, [staticMode])
 
     return (
         <canvas

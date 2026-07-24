@@ -412,7 +412,7 @@ function drawBottomBranches(branchState, now, reducedMotion) {
     context.restore()
 }
 
-function ExperienceDecorationCanvas() {
+function ExperienceDecorationCanvas({ staticMode = false }) {
     const shaderCanvasRef = useRef(null)
     const bottomCanvasRef = useRef(null)
 
@@ -444,7 +444,7 @@ function ExperienceDecorationCanvas() {
         if(!shaderState)
             return
 
-        const isReducedMotion = () => Boolean(reducedMotionQuery?.matches)
+        const isReducedMotion = () => staticMode || Boolean(reducedMotionQuery?.matches)
         const shouldAnimate = () => isIntersecting && !document.hidden && !isReducedMotion()
 
         const stopLoop = () => {
@@ -568,7 +568,7 @@ function ExperienceDecorationCanvas() {
             if(shaderState?.program)
                 shaderState.gl.deleteProgram(shaderState.program)
         }
-    }, [])
+    }, [staticMode])
 
     return (
         <>

@@ -299,7 +299,7 @@ function drawShader(shaderState, scissorRects, now) {
     gl.disable(gl.SCISSOR_TEST)
 }
 
-function WritingDecorationSvg() {
+function WritingDecorationSvg({ staticMode = false }) {
     const canvasRef = useRef(null)
 
     useEffect(() => {
@@ -327,7 +327,7 @@ function WritingDecorationSvg() {
         if(!shaderState)
             return
 
-        const isReducedMotion = () => Boolean(reducedMotionQuery?.matches)
+        const isReducedMotion = () => staticMode || Boolean(reducedMotionQuery?.matches)
         const shouldAnimate = () => isIntersecting && !document.hidden && !isReducedMotion()
 
         const stopLoop = () => {
@@ -443,7 +443,7 @@ function WritingDecorationSvg() {
             if(shaderState?.program)
                 shaderState.gl.deleteProgram(shaderState.program)
         }
-    }, [])
+    }, [staticMode])
 
     return (
         <canvas

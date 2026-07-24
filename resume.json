@@ -236,21 +236,22 @@
         {
             "id": "software-2",
             "type": "software",
-            "title": "Java Learning Project: Belot",
-            "title_de": "Java-Lernprojekt: Belot",
-            "summary": "University project focused on learning Java programming by developing a Belot card game. Implemented core game logic, user interaction, and basic AI opponents.",
-            "summary_de": "Universitätsprojekt zum Erlernen der Java-Programmierung durch die Entwicklung eines Belot-Kartenspiels. Implementierung der Spiel-Logik, Benutzerinteraktion und einfacher KI-Gegner.",
+            "title": "Belot",
+            "title_de": "Belot",
+            "summary": "Single-player Belot card game built with a Java engine and React UI, now packaged for direct play on GitHub Pages.",
+            "summary_de": "Einzelspieler-Belot-Kartenspiel mit Java-Engine und React-Oberfläche, jetzt für direktes Spielen auf GitHub Pages bereitgestellt.",
             "start_date": null,
             "end_date": null,
             "date": null,
             "tags": [
                 "Java",
-                "Learning",
+                "React",
+                "TypeScript",
                 "Card Game",
-                "University Project"
+                "GitHub Pages"
             ],
             "url": "https://lomuss33.github.io/AdioBella/",
-            "github_url": "https://github.com/Lomuss33/Projekt_Belot",
+            "github_url": "https://github.com/Lomuss33/AdioBella",
             "source_path": "public/data/sections/my-software.json"
         },
         {

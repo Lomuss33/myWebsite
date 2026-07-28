@@ -150,6 +150,7 @@ nav.nav-sidebar-short-rail {
     --nav-short-rail-profile-padding: 0px;
     --nav-short-rail-name-band-height: clamp(1.45rem, calc(var(--nav-short-rail-row-height) * 0.42), 1.9rem);
     --nav-short-rail-row-height: 34px;
+    --nav-short-rail-separator-height: 4px;
     --nav-short-rail-tools-height: var(--nav-short-rail-row-height);
     --nav-short-rail-avatar-size: calc(14px + 40px * var(--nav-short-rail-visual-density));
     --nav-short-rail-status-offset: calc(4px + 6px * var(--nav-short-rail-visual-density));
@@ -178,8 +179,8 @@ nav.nav-sidebar-short-rail {
         flex: 1 1 auto;
         grid-template-rows:
             var(--nav-short-rail-resume-height)
-            auto
             minmax(0, 1fr)
+            var(--nav-short-rail-separator-height)
             var(--nav-short-rail-row-height);
         min-height: 0;
         width: 100%;
@@ -444,6 +445,9 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
 }
 
 div.nav-short-rail-separator {
+    flex: 0 0 var(--nav-short-rail-separator-height);
+    height: var(--nav-short-rail-separator-height);
+    min-height: var(--nav-short-rail-separator-height);
     width: 100%;
     pointer-events: none;
     background-image: repeating-linear-gradient(

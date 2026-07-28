@@ -74,8 +74,7 @@ article#article-1-section-education div.article-timeline-item-info-for-timelines
     transition:
         transform 180ms ease,
         border-color 180ms ease,
-        box-shadow 180ms ease,
-        filter 180ms ease;
+        box-shadow 180ms ease;
 
     &::before {
         content: "";
@@ -109,7 +108,6 @@ article#article-1-section-education div.article-timeline-item-info-for-timelines
         transform: translateY(-2px);
         border-color: color-mix(in srgb, var(--card-accent) 56%, var(--card-border) 44%);
         box-shadow: var(--card-shadow-hover), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-        filter: saturate(1.03);
     }
 }
 

@@ -58,6 +58,8 @@ const EDUCATION_LANGUAGE_POPUP_FIT_VARIABLES = [
     "--education-language-popup-line-height"
 ]
 
+const educationLanguagePopupFitCache = new Map()
+
 const roundToStep = (value, precision = 2) => {
     const multiplier = 10 ** precision
     return Math.round(value * multiplier) / multiplier
@@ -77,6 +79,18 @@ const getEducationLanguagePopupFloors = (innerWidth) => {
     if(innerWidth < 992)
         return { ...EDUCATION_LANGUAGE_POPUP_FLOORS.tablet }
     return { ...EDUCATION_LANGUAGE_POPUP_FLOORS.desktop }
+}
+
+const getEducationLanguagePopupViewportBucket = (innerWidth) => {
+    if(innerWidth < 576)
+        return "mobile"
+    if(innerWidth < 992)
+        return "tablet"
+    return "desktop"
+}
+
+const getEducationLanguagePopupFitCacheKey = (itemWrapper, viewportBucket, popupRows) => {
+    return `${itemWrapper.uniqueId}:${viewportBucket}:${popupRows.join("|")}`
 }
 
 const clearEducationLanguagePopupFitVariables = (element) => {
@@ -288,6 +302,10 @@ function ArticleSkillsItem({ itemWrapper }) {
     const [popupExpandedHeight, setPopupExpandedHeight] = useState(0)
     const popupClass = isPopupOpen ? `article-skills-item-popup-open` : ``
     const usesExpandablePopupLayout = isEducationLanguageCard && viewport.innerWidth >= 576
+    const viewportBucket = getEducationLanguagePopupViewportBucket(viewport.innerWidth || 0)
+    const popupFitCacheKey = isPopupEnabled ?
+        getEducationLanguagePopupFitCacheKey(itemWrapper, viewportBucket, popupRows) :
+        null
 
     if (itemWrapper.articleWrapper.settings.roundIcons) {
         avatarClasses.push(`article-skills-item-avatar-round`)
@@ -320,7 +338,14 @@ function ArticleSkillsItem({ itemWrapper }) {
 
             if(usesExpandablePopupLayout) {
                 clearEducationLanguagePopupFitVariables(popupInnerEl)
-                setPopupExpandedHeight(Math.ceil(popupInnerEl.scrollHeight))
+                const nextExpandedHeight = Math.ceil(popupInnerEl.scrollHeight)
+                setPopupExpandedHeight(currentHeight => currentHeight === nextExpandedHeight ? currentHeight : nextExpandedHeight)
+                return
+            }
+
+            const cachedFitValues = educationLanguagePopupFitCache.get(popupFitCacheKey)
+            if(cachedFitValues) {
+                applyEducationLanguagePopupFitVariables(popupInnerEl, cachedFitValues)
                 return
             }
 
@@ -344,20 +369,24 @@ function ArticleSkillsItem({ itemWrapper }) {
 
             applyCurrentFitValues()
 
-            while(doesOverflow() && fitValues.fontSize > floorFitValues.fontSize + 0.001) {
+            let fontSizeIterations = 0
+            while(doesOverflow() && fitValues.fontSize > floorFitValues.fontSize + 0.001 && fontSizeIterations < 20) {
                 fitValues.fontSize = Math.max(
                     floorFitValues.fontSize,
                     roundToStep(fitValues.fontSize - 0.02)
                 )
                 applyCurrentFitValues()
+                fontSizeIterations += 1
             }
 
+            let paddingIterations = 0
             while(
                 doesOverflow() &&
                 (
                     fitValues.paddingX > floorFitValues.paddingX ||
                     fitValues.paddingY > floorFitValues.paddingY
-                )
+                ) &&
+                paddingIterations < 12
             ) {
                 if(fitValues.paddingX > floorFitValues.paddingX)
                     fitValues.paddingX = Math.max(floorFitValues.paddingX, fitValues.paddingX - 1)
@@ -365,15 +394,20 @@ function ArticleSkillsItem({ itemWrapper }) {
                     fitValues.paddingY = Math.max(floorFitValues.paddingY, fitValues.paddingY - 1)
 
                 applyCurrentFitValues()
+                paddingIterations += 1
             }
 
-            while(doesOverflow() && fitValues.lineHeight > floorFitValues.lineHeight + 0.001) {
+            let lineHeightIterations = 0
+            while(doesOverflow() && fitValues.lineHeight > floorFitValues.lineHeight + 0.001 && lineHeightIterations < 10) {
                 fitValues.lineHeight = Math.max(
                     floorFitValues.lineHeight,
                     roundToStep(fitValues.lineHeight - 0.02)
                 )
                 applyCurrentFitValues()
+                lineHeightIterations += 1
             }
+
+            educationLanguagePopupFitCache.set(popupFitCacheKey, { ...fitValues })
         }
 
         frameId = window.requestAnimationFrame(fitPopupText)
@@ -381,7 +415,7 @@ function ArticleSkillsItem({ itemWrapper }) {
         return () => {
             window.cancelAnimationFrame(frameId)
         }
-    }, [isPopupEnabled, isPopupOpen, popupRows, usesExpandablePopupLayout, viewport.innerWidth])
+    }, [isPopupEnabled, isPopupOpen, popupFitCacheKey, popupRows, usesExpandablePopupLayout, viewport.innerWidth])
 
     useEffect(() => {
         if(!isPopupEnabled || !isPopupPinned)

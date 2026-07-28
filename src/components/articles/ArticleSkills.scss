@@ -383,8 +383,7 @@ article.article-skills-article-3-section-education {
         transition:
             transform 180ms ease,
             border-color 180ms ease,
-            box-shadow 180ms ease,
-            filter 180ms ease;
+            box-shadow 180ms ease;
 
         &::before {
             content: "";
@@ -456,19 +455,16 @@ article.article-skills-article-3-section-education {
             transform: translateY(-2px);
             border-color: color-mix(in srgb, var(--skill-card-accent) 54%, var(--skill-card-border) 46%);
             box-shadow: var(--skill-card-shadow-hover), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-            filter: saturate(1.04);
         }
 
         div.article-skills-item:hover div.article-skills-item-avatar {
             transform: scale(1.03);
-            filter: brightness(1.05);
         }
     }
 
     div.article-skills-item-popup-trigger-shell:hover div.article-skills-item-avatar,
     div.article-skills-item-popup-trigger-shell.article-skills-item-popup-open div.article-skills-item-avatar {
         transform: scale(1.04);
-        filter: brightness(1.08);
     }
 
     div.article-skills-item:focus-within {
@@ -482,7 +478,7 @@ article.article-skills-article-3-section-education {
     @media (prefers-reduced-motion: reduce) {
         div.article-skills-item,
         div.article-skills-item-avatar {
-            transition: border-color 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+            transition: border-color 180ms ease, box-shadow 180ms ease;
         }
 
         div.article-skills-item:hover,
@@ -492,7 +488,6 @@ article.article-skills-article-3-section-education {
 
         div.article-skills-item:hover div.article-skills-item-avatar {
             transform: none;
-            filter: none;
         }
 
         div.article-skills-item-popup-body {

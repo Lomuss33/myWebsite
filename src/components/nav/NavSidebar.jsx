@@ -31,6 +31,34 @@ const MANUAL_RAIL_BY_ZONE_DEFAULTS = {
     wide: null,
     narrowDesktop: null
 }
+const EXTENDED_PROFILE_VARIABLE_NAMES = [
+    "--nav-extended-profile-height",
+    "--nav-extended-avatar-size",
+    "--nav-extended-role-height",
+    "--nav-extended-role-opacity",
+    "--nav-extended-action-scale",
+    "--nav-extended-padding-top"
+]
+const SHORT_RAIL_VARIABLE_NAMES = [
+    "--nav-short-rail-visual-density",
+    "--nav-short-rail-profile-height",
+    "--nav-short-rail-row-height",
+    "--nav-short-rail-tools-height",
+    "--nav-short-rail-resume-height",
+    "--nav-short-rail-separator-height",
+    "--nav-link-target-height",
+    "--nav-short-rail-link-icon-width",
+    "--nav-short-rail-link-icon-size",
+    "--nav-short-rail-tool-icon-box-size",
+    "--nav-short-rail-tool-icon-font-size",
+    "--nav-short-rail-resume-icon-box-size",
+    "--nav-short-rail-resume-icon-font-size"
+]
+const SHARED_RAIL_VARIABLE_NAMES = [
+    "--nav-link-target-height",
+    "--nav-tools-height",
+    "--nav-rail-separator-height"
+]
 
 function clampNumber(value, min, max) {
     return Math.min(max, Math.max(min, value))
@@ -38,6 +66,31 @@ function clampNumber(value, min, max) {
 
 function lerpNumber(minimum, maximum, factor) {
     return minimum + (maximum - minimum) * factor
+}
+
+function serializeCssVariableValue(value, unit = "px") {
+    const normalizedValue = unit === "px" ?
+        Math.round(value) :
+        Number(value.toFixed(3))
+
+    return `${normalizedValue}${unit}`
+}
+
+function setCachedCssVariable(element, cache, name, value, unit = "px") {
+    const serializedValue = serializeCssVariableValue(value, unit)
+
+    if(cache[name] === serializedValue)
+        return
+
+    cache[name] = serializedValue
+    element.style.setProperty(name, serializedValue)
+}
+
+function clearCachedCssVariables(element, cacheRef, variableNames) {
+    variableNames.forEach((name) => {
+        element.style.removeProperty(name)
+    })
+    cacheRef.current = {}
 }
 
 function NavSidebar({ profile, links }) {
@@ -56,7 +109,7 @@ function NavSidebar({ profile, links }) {
     const extendedProfileSizeCacheRef = useRef({})
 
     const linkCount = links?.length || 0
-    const hasResumeBand = Boolean(profile.resumePdfUrl)
+    const hasResumeBand = Boolean(profile?.resumePdfUrl)
     const hasRailLayout = viewport.isDesktopLayout()
     const desktopWidthZone = !hasRailLayout ?
         null :
@@ -189,19 +242,8 @@ function NavSidebar({ profile, links }) {
         if(!railCard)
             return
 
-        const variableNames = [
-            "--nav-extended-profile-height",
-            "--nav-extended-avatar-size",
-            "--nav-extended-role-height",
-            "--nav-extended-role-opacity",
-            "--nav-extended-action-scale",
-            "--nav-extended-padding-top"
-        ]
         const _clearExtendedProfileVariables = () => {
-            variableNames.forEach((name) => {
-                railCard.style.removeProperty(name)
-            })
-            extendedProfileSizeCacheRef.current = {}
+            clearCachedCssVariables(railCard, extendedProfileSizeCacheRef, EXTENDED_PROFILE_VARIABLE_NAMES)
         }
 
         if(railMode !== "extended") {
@@ -219,18 +261,8 @@ function NavSidebar({ profile, links }) {
             1
         )
 
-        const _setVariable = (name, value, unit = "px") => {
-            const normalizedValue = unit === "px" ?
-                Math.round(value) :
-                Number(value.toFixed(3))
-            const serializedValue = `${normalizedValue}${unit}`
-
-            if(extendedProfileSizeCacheRef.current[name] === serializedValue)
-                return
-
-            extendedProfileSizeCacheRef.current[name] = serializedValue
-            railCard.style.setProperty(name, serializedValue)
-        }
+        const _setVariable = (name, value, unit = "px") =>
+            setCachedCssVariable(railCard, extendedProfileSizeCacheRef.current, name, value, unit)
 
         _setVariable(
             "--nav-extended-profile-height",
@@ -296,18 +328,8 @@ function NavSidebar({ profile, links }) {
             row: rowHeight
         } = SHORT_RAIL_HEIGHT_CONFIG
 
-        const _setVariable = (name, value, unit = "px") => {
-            const normalizedValue = unit === "px" ?
-                Math.round(value) :
-                Number(value.toFixed(3))
-            const serializedValue = `${normalizedValue}${unit}`
-
-            if(shortRailSizeCacheRef.current[name] === serializedValue)
-                return
-
-            shortRailSizeCacheRef.current[name] = serializedValue
-            railCard.style.setProperty(name, serializedValue)
-        }
+        const _setVariable = (name, value, unit = "px") =>
+            setCachedCssVariable(railCard, shortRailSizeCacheRef.current, name, value, unit)
 
         const _syncShortRailSizing = () => {
             const availableRailHeight = railCard.clientHeight
@@ -315,15 +337,21 @@ function NavSidebar({ profile, links }) {
                 return
 
             const controlRowCount = rowCount + 1 + (hasResumeBand ? 1 : 0)
-            const shortBaseTotal = profileHeight.base + (rowHeight.base * controlRowCount)
-            const shortFloorTotal = profileHeight.floor + (rowHeight.floor * controlRowCount)
+            const availableAfterProfileFloor = Math.max(availableRailHeight - profileHeight.floor, 0)
+            const shouldPreserveSeparator =
+                (availableAfterProfileFloor / Math.max(controlRowCount + 1, 1)) >= rowHeight.floor
+            const nextSeparatorHeight = shouldPreserveSeparator ?
+                DESKTOP_RAIL_SEPARATOR_MIN_HEIGHT :
+                0
+            const shortBaseTotal = profileHeight.base + nextSeparatorHeight + (rowHeight.base * controlRowCount)
+            const shortFloorTotal = profileHeight.floor + nextSeparatorHeight + (rowHeight.floor * controlRowCount)
 
             let nextProfileHeight = profileHeight.base
             let nextRowHeight = rowHeight.base
 
             if(availableRailHeight >= shortBaseTotal) {
                 nextRowHeight = clampNumber(
-                    (availableRailHeight - profileHeight.base) / controlRowCount,
+                    (availableRailHeight - profileHeight.base - nextSeparatorHeight) / controlRowCount,
                     rowHeight.base,
                     rowHeight.max
                 )
@@ -379,6 +407,7 @@ function NavSidebar({ profile, links }) {
             _setVariable("--nav-short-rail-row-height", nextRowHeight)
             _setVariable("--nav-short-rail-tools-height", nextToolsHeight)
             _setVariable("--nav-short-rail-resume-height", nextResumeHeight)
+            _setVariable("--nav-short-rail-separator-height", nextSeparatorHeight)
             _setVariable("--nav-link-target-height", nextRowHeight)
             _setVariable(
                 "--nav-short-rail-link-icon-width",
@@ -418,19 +447,7 @@ function NavSidebar({ profile, links }) {
 
         return () => {
             resizeObserver.disconnect()
-            shortRailSizeCacheRef.current = {}
-            railCard.style.removeProperty("--nav-short-rail-visual-density")
-            railCard.style.removeProperty("--nav-short-rail-profile-height")
-            railCard.style.removeProperty("--nav-short-rail-row-height")
-            railCard.style.removeProperty("--nav-short-rail-tools-height")
-            railCard.style.removeProperty("--nav-short-rail-resume-height")
-            railCard.style.removeProperty("--nav-link-target-height")
-            railCard.style.removeProperty("--nav-short-rail-link-icon-width")
-            railCard.style.removeProperty("--nav-short-rail-link-icon-size")
-            railCard.style.removeProperty("--nav-short-rail-tool-icon-box-size")
-            railCard.style.removeProperty("--nav-short-rail-tool-icon-font-size")
-            railCard.style.removeProperty("--nav-short-rail-resume-icon-box-size")
-            railCard.style.removeProperty("--nav-short-rail-resume-icon-font-size")
+            clearCachedCssVariables(railCard, shortRailSizeCacheRef, SHORT_RAIL_VARIABLE_NAMES)
         }
     }, [hasResumeBand, linkCount, railMode])
 
@@ -439,40 +456,31 @@ function NavSidebar({ profile, links }) {
         if(railMode !== "extended" || !sharedRailStack)
             return
 
-        const rowCount = linkCount + 1
+        const linkAndToolRowCount = linkCount + 1
         const rowHeightConfig = { min: 30, compactMin: 22, baseline: 48, max: 64 }
 
-        const _setVariable = (name, value, unit = "px") => {
-            const normalizedValue = unit === "px" ?
-                Math.round(value) :
-                Number(value.toFixed(3))
-            const serializedValue = `${normalizedValue}${unit}`
-
-            if(sharedRailSizeCacheRef.current[name] === serializedValue)
-                return
-
-            sharedRailSizeCacheRef.current[name] = serializedValue
-            sharedRailStack.style.setProperty(name, serializedValue)
-        }
+        const _setVariable = (name, value, unit = "px") =>
+            setCachedCssVariable(sharedRailStack, sharedRailSizeCacheRef.current, name, value, unit)
 
         const _syncSharedRailSizing = () => {
             const availableRailHeight = sharedRailStack.clientHeight
-            if(!availableRailHeight || rowCount <= 0)
+            if(!availableRailHeight || linkAndToolRowCount <= 0)
                 return
 
-            const shouldPreserveSeparator = (availableRailHeight / rowCount) >= rowHeightConfig.min
-            const separatorMinHeight = shouldPreserveSeparator ?
+            // Keep tall-screen overflow inside the page-link grid row: the
+            // separator stays thin, while the link list receives extra space.
+            const shouldPreserveSeparator = (availableRailHeight / linkAndToolRowCount) >= rowHeightConfig.min
+            const separatorHeight = shouldPreserveSeparator ?
                 DESKTOP_RAIL_SEPARATOR_MIN_HEIGHT :
                 0
-            const idealRowHeight = (availableRailHeight - separatorMinHeight) / rowCount
-            const rowHeight = Math.min(rowHeightConfig.max, Math.max(rowHeightConfig.compactMin, idealRowHeight))
-            const separatorHeight = Math.max(
-                separatorMinHeight,
-                availableRailHeight - rowHeight * rowCount
+            const idealControlHeight = (availableRailHeight - separatorHeight) / linkAndToolRowCount
+            const controlHeight = Math.min(
+                rowHeightConfig.max,
+                Math.max(rowHeightConfig.compactMin, idealControlHeight)
             )
 
-            _setVariable("--nav-link-target-height", rowHeight)
-            _setVariable("--nav-tools-height", rowHeight)
+            _setVariable("--nav-link-target-height", controlHeight)
+            _setVariable("--nav-tools-height", controlHeight)
             _setVariable("--nav-rail-separator-height", separatorHeight)
         }
 
@@ -485,10 +493,7 @@ function NavSidebar({ profile, links }) {
 
         return () => {
             resizeObserver.disconnect()
-            sharedRailSizeCacheRef.current = {}
-            sharedRailStack.style.removeProperty("--nav-link-target-height")
-            sharedRailStack.style.removeProperty("--nav-tools-height")
-            sharedRailStack.style.removeProperty("--nav-rail-separator-height")
+            clearCachedCssVariables(sharedRailStack, sharedRailSizeCacheRef, SHARED_RAIL_VARIABLE_NAMES)
         }
     }, [linkCount, railMode])
 

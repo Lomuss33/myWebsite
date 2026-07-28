@@ -18,6 +18,7 @@ const FEATURE_TEXT_FIT_TOLERANCE = 4
 const MOBILE_VIEW_MEDIA_QUERY = "(max-width: 575.98px)"
 const STACKED_FEATURE_MEDIA_QUERY = "(max-width: 991.98px)"
 const ABOUT_WORD_FIT_WIDTH_RATIO = 0.94
+const ABOUT_PRETEXT_INLINE_END_SAFETY_PX = 64
 const WOOD_PRODUCTS_FIT_MIN_FONT_SIZE_PX = 19.5
 const WOOD_PRODUCTS_FIT_MAX_FONT_SIZE_PX = 24
 const WOOD_PRODUCTS_FIT_LINE_HEIGHT_RATIO = 1.56
@@ -476,6 +477,8 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                                         pointerScopeSelector={".layout-content"}
                                         pointerScopeIgnoreX={true}
                                         gravityZoneMode={"above_inside_below"}
+                                        widthMeasurementMode={"self_only"}
+                                        layoutInlineEndSafetyPx={ABOUT_PRETEXT_INLINE_END_SAFETY_PX}
                                         typographyVersion={typographyVersion}/>
             )
         }

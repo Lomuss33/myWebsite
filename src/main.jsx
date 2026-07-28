@@ -48,6 +48,8 @@ const createDefaultSettings = () => ({
 /** Initialization Script... **/
 let container = null
 let reactRoot = null
+const ERROR_PREVIEW_PATH = "/error-preview"
+const ERROR_PREVIEW_HASH = "#error-preview"
 
 const _applyEnvironmentClasses = () => {
     if(typeof navigator === "undefined" || typeof document === "undefined") return
@@ -90,6 +92,35 @@ const _tryReloadAfterChunkLoadError = (error) => {
 
     window.location.reload()
     return true
+}
+
+const _getBaseRelativePathname = () => {
+    if(typeof window === "undefined")
+        return "/"
+
+    const baseUrl = import.meta.env.BASE_URL || "/"
+    const basePath = new URL(baseUrl, window.location.origin).pathname
+    const pathname = window.location.pathname
+    const relativePathname = basePath !== "/" && pathname.startsWith(basePath) ?
+        `/${pathname.slice(basePath.length)}` :
+        pathname
+
+    return relativePathname.replace(/\/+$/, "") || "/"
+}
+
+const _isErrorPreviewRoute = () => {
+    if(typeof window === "undefined")
+        return false
+
+    return _getBaseRelativePathname() === ERROR_PREVIEW_PATH ||
+        window.location.hash === ERROR_PREVIEW_HASH
+}
+
+const _goHome = () => {
+    if(typeof window === "undefined")
+        return
+
+    window.location.assign(`${import.meta.env.BASE_URL || "/"}#home`)
 }
 
 const _dispatchAppLifecycleEvent = (name, detail = {}) => {
@@ -141,6 +172,10 @@ class AppErrorBoundary extends Component {
         window.location.reload()
     }
 
+    _goHome = () => {
+        _goHome()
+    }
+
     render() {
         const error = this.state.error
         if(!error)
@@ -148,21 +183,63 @@ class AppErrorBoundary extends Component {
 
         const isChunkLoadError = _isChunkLoadError(error)
         const description = isChunkLoadError ?
-            "A site update or interrupted lazy load prevented this page from restoring correctly. Reload the page to fetch a fresh copy." :
-            "A runtime error prevented the page from restoring correctly. Reload the page to try again."
+            "A site update or interrupted lazy-loaded file stopped the page from restoring. Reload to fetch the latest files and continue." :
+            "The app stopped while restoring this page. Reloading starts a fresh session and usually clears the issue."
 
         return (
-            <div role="alert"
-                 style={{padding: "24px", maxWidth: "640px", margin: "0 auto"}}>
-                <h1 style={{fontSize: "1.25rem", marginBottom: "0.75rem"}}>Something went wrong</h1>
-                <p style={{marginBottom: "0.75rem"}}>{description}</p>
-                <button type="button"
-                        onClick={this._reloadPage}>
-                    Reload page
-                </button>
-            </div>
+            <AppErrorFallback description={description}
+                              onReload={this._reloadPage}
+                              onGoHome={this._goHome}/>
         )
     }
+}
+
+function AppErrorFallback({ description, onReload, onGoHome }) {
+    return (
+        <div className={`app-error-boundary`}
+             role={`alert`}
+             aria-labelledby={`app-error-boundary-title`}
+             aria-describedby={`app-error-boundary-description`}>
+            <div className={`app-error-boundary__ambient`}
+                 aria-hidden={`true`}/>
+
+            <main className={`app-error-boundary__panel`}>
+                <div className={`app-error-boundary__topline`}>
+                    <span className={`app-error-boundary__accent`}
+                          aria-hidden={`true`}/>
+
+                    <div className={`app-error-boundary__status`}>
+                        <span className={`app-error-boundary__mark`}
+                              aria-hidden={`true`}>
+                            <span/>
+                        </span>
+                        <p className={`app-error-boundary__eyebrow`}>Runtime issue</p>
+                    </div>
+                </div>
+
+                <h1 id={`app-error-boundary-title`}>Recovery paused</h1>
+                <p id={`app-error-boundary-description`}>{description}</p>
+
+                <div className={`app-error-boundary__actions`}>
+                    <button className={`app-error-boundary__button app-error-boundary__button--primary`}
+                            type={`button`}
+                            onClick={onReload}>
+                        <i className={`fa-solid fa-rotate-right`}
+                           aria-hidden={`true`}/>
+                        <span>Reload page</span>
+                    </button>
+
+                    <button className={`app-error-boundary__button app-error-boundary__button--secondary`}
+                            type={`button`}
+                            onClick={onGoHome}>
+                        <i className={`fa-solid fa-house`}
+                           aria-hidden={`true`}/>
+                        <span>Go home</span>
+                    </button>
+                </div>
+            </main>
+        </div>
+    )
 }
 
 function AppLifecycleBridge() {
@@ -252,6 +329,14 @@ function AppLifecycleBridge() {
  * @constructor
  */
 const App = () => {
+    if(_isErrorPreviewRoute()) {
+        return (
+            <AppErrorFallback description={`The app stopped while restoring this page. Reloading starts a fresh session and usually clears the issue.`}
+                              onReload={() => window.location.reload()}
+                              onGoHome={_goHome}/>
+        )
+    }
+
     return (
         <>
             <AppLifecycleBridge/>

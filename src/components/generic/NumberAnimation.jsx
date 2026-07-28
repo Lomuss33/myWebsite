@@ -1,54 +1,71 @@
 import "./NumberAnimation.scss"
-import React, {useEffect, useState} from 'react'
-import {useScheduler} from "../../hooks/scheduler.js"
+import React, {useEffect, useRef, useState} from 'react'
 
-function NumberAnimation({ targetValue, id, initialValue = 0, updateDelay = 10, format = `{n}`, className = "" }) {
-    const scheduler = useScheduler()
-
-    const [currentValue, setCurrentValue] = useState(initialValue)
+function NumberAnimation({ targetValue, id, initialValue = 0, updateDelay = 10, durationMs = 700, format = `{n}`, className = "" }) {
+    const [currentValue, setCurrentValue] = useState(() => normalizeNumber(initialValue))
+    const currentValueRef = useRef(normalizeNumber(initialValue))
     const displayValue = format.replace(/{n}/g, currentValue.toString())
 
     useEffect(() => {
-        scheduler.clearAllWithTag(id)
+        const normalizedTarget = normalizeNumber(targetValue)
+        const normalizedDurationMs = Math.max(0, Number(durationMs) || 0)
+        const startValue = currentValueRef.current
 
-        if(targetValue === currentValue) {
-            setCurrentValue(targetValue)
+        if(startValue === normalizedTarget || normalizedDurationMs === 0 || prefersReducedMotion()) {
+            currentValueRef.current = normalizedTarget
+            setCurrentValue(normalizedTarget)
             return
         }
 
-        const direction = targetValue > currentValue ? 1 : -1
-        const step = Math.max(1, Math.ceil(Math.abs(targetValue - currentValue) / updateDelay))
+        let animationFrameId = null
+        const startedAt = performance.now()
 
-        let value = currentValue
-        let lastTickTime = new Date().getTime()
-        let tickInterval = 1000/30
+        const step = (timestamp) => {
+            const progress = Math.min(1, (timestamp - startedAt) / normalizedDurationMs)
+            const easedProgress = easeOutCubic(progress)
+            const nextValue = normalizeNumber(startValue + (normalizedTarget - startValue) * easedProgress)
 
-        scheduler.interval(() => {
-            const now = new Date().getTime()
-            const elapsed = now - lastTickTime
-            lastTickTime = now
+            currentValueRef.current = nextValue
+            setCurrentValue(nextValue)
 
-            const dt = elapsed / tickInterval
-            value += direction * Math.max(1, Math.round(step * dt))
-
-            const hasReachedTarget = direction > 0 ?
-                value >= targetValue :
-                value <= targetValue
-
-            if(hasReachedTarget) {
-                setCurrentValue(targetValue)
-                scheduler.clearAllWithTag(id)
+            if(progress < 1) {
+                animationFrameId = window.requestAnimationFrame(step)
                 return
             }
 
-            setCurrentValue(value)
-        }, tickInterval, id)
-    }, [currentValue, id, scheduler, targetValue, updateDelay])
+            currentValueRef.current = normalizedTarget
+            setCurrentValue(normalizedTarget)
+        }
+
+        animationFrameId = window.requestAnimationFrame(step)
+
+        return () => {
+            if(animationFrameId !== null)
+                window.cancelAnimationFrame(animationFrameId)
+        }
+    }, [durationMs, id, targetValue, updateDelay])
 
     return (
         <span className={`number-animation ${className}`}
               dangerouslySetInnerHTML={{__html: displayValue}}/>
     )
+}
+
+function normalizeNumber(value) {
+    const numericValue = Number(value)
+    if(!Number.isFinite(numericValue))
+        return 0
+
+    return Math.round(numericValue)
+}
+
+function easeOutCubic(value) {
+    return 1 - Math.pow(1 - value, 3)
+}
+
+function prefersReducedMotion() {
+    return typeof window !== "undefined" &&
+        window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches
 }
 
 export default NumberAnimation

@@ -36,7 +36,8 @@ function PretextInteractiveText({
     pointerScopeSelector = null,
     pointerScopeIgnoreX = false,
     gravityZoneMode = "standard",
-    widthMeasurementMode = "parent_max"
+    widthMeasurementMode = "parent_max",
+    layoutInlineEndSafetyPx = 0
 }) {
     const rootRef = useRef(null)
     const contentRef = useRef(null)
@@ -69,6 +70,10 @@ function PretextInteractiveText({
     const [tapRippleNow, setTapRippleNow] = useState(0)
     const [revealCycle, setRevealCycle] = useState(0)
     const [, setFrameVersion] = useState(0)
+    const normalizedLayoutInlineEndSafetyPx = Math.max(
+        0,
+        Number(layoutInlineEndSafetyPx) || 0
+    )
 
     const paragraphs = useMemo(() => {
         return parseInteractiveHtml(html)
@@ -78,17 +83,19 @@ function PretextInteractiveText({
         return createWaveProfile(terrainVariant)
     }, [terrainVariant])
 
+    const layoutWidth = Math.max(1, contentWidth - normalizedLayoutInlineEndSafetyPx)
+
     const layout = useMemo(() => {
-        return layoutInteractiveParagraphs(paragraphs, typography, contentWidth)
-    }, [contentWidth, paragraphs, typography])
+        return layoutInteractiveParagraphs(paragraphs, typography, layoutWidth)
+    }, [layoutWidth, paragraphs, typography])
 
     const effectiveLineHeight = typography?.lineHeight || 0
     const contentSize = useMemo(() => {
         return {
-            width: contentWidth,
+            width: layoutWidth,
             height: layout.totalHeight
         }
-    }, [contentWidth, layout.totalHeight])
+    }, [layoutWidth, layout.totalHeight])
 
     const visibleGraphemes = useMemo(() => {
         if (effectVariant !== "gravitySweep") return []
@@ -259,7 +266,7 @@ function PretextInteractiveText({
         scheduleWidthRetry()
 
         return () => observer.disconnect()
-    }, [html, typographyVersion, widthMeasurementMode])
+    }, [html, typographyVersion, widthMeasurementMode, normalizedLayoutInlineEndSafetyPx])
 
     useEffect(() => {
         if (!revealOnScroll || isInView) {

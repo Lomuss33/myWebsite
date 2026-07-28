@@ -593,7 +593,7 @@ div.article-web-art-intro-cover-open {
 
 div.article-web-art-items {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
     position: relative;
 
@@ -1191,6 +1191,20 @@ div.article-web-art-items {
     backdrop-filter: blur(8px);
 }
 
+@media (pointer: coarse), (max-width: 767px) {
+    .article-web-art-gated-tile-pill-open {
+        top: 6px;
+        left: 6px;
+        min-width: 44px;
+        min-height: 24px;
+        padding: 0 8px;
+        font-size: 0.66rem;
+        border-width: 1px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.22);
+        backdrop-filter: blur(5px);
+    }
+}
+
 .article-web-art-gated-tile-open {
     .article-web-art-gated-tile-sheet {
         opacity: 0;
@@ -1261,7 +1275,13 @@ div.article-web-art-items {
 
 @media (min-width: 992px) {
     div.article-web-art-items {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@container web-art-shell (min-width: 1280px) {
+    div.article-web-art-items {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
     }
 }
 
@@ -1940,7 +1960,7 @@ div.article-web-art-items-locked {
 }
 
 .article-web-art-tile-goldfish {
-    cursor: default;
+    cursor: pointer;
     background:
         url("/images/web_art/goldfish/oceanscene.jpg") 50% 50%,
         linear-gradient(to top, #7f7fd5, #86a8e7, #91eae4);
@@ -1949,6 +1969,7 @@ div.article-web-art-items-locked {
     perspective: 800px;
     transform-style: preserve-3d;
     contain: paint;
+    touch-action: none;
     --fish-scale: 0.48;
     --fish-z: 170px;
 
@@ -1987,6 +2008,7 @@ div.article-web-art-items-locked {
     inset: 0;
     overflow: hidden;
     transform-style: preserve-3d;
+    pointer-events: none;
 }
 
 .fish-wrapper {
@@ -2013,6 +2035,7 @@ div.article-web-art-items-locked {
 }
 
 .fish-parts {
+    transition: 250ms;
     transform-style: preserve-3d;
     animation: swimmingAnimation 1000ms infinite alternate ease-in-out;
 
@@ -2026,7 +2049,6 @@ div.article-web-art-items-locked {
         background-repeat: no-repeat;
         background-image: url("/images/web_art/goldfish/goldfish-sprite.png");
         background-size: 520px 387px;
-        transform-style: preserve-3d;
     }
 }
 

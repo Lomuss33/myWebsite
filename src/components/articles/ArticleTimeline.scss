@@ -1070,6 +1070,53 @@ article.article-timeline--art-photography {
         align-items: center;
     }
 
+    @include media-breakpoint-up(md) {
+        ul.article-timeline-items {
+            --photography-row-size: clamp(13rem, 17vw, 18rem);
+            --photography-card-width: min(
+                clamp(41.5rem, 65vw, 54.5rem),
+                calc(100vw - var(--photography-row-size) - var(--gap-between-avatar-and-content) - clamp(3rem, 6vw, 5rem))
+            );
+            --avatar-size: var(--photography-row-size);
+            width: fit-content;
+            max-width: calc(100% - clamp(1.25rem, 4vw, 3.5rem));
+            margin-inline: auto;
+            padding-right: clamp(0.7rem, 1.8vw, 1.4rem);
+        }
+
+        li.article-timeline-item {
+            width: fit-content;
+            max-width: 100%;
+        }
+
+        div.article-timeline-item-avatar-wrapper {
+            width: var(--photography-row-size);
+            min-width: var(--photography-row-size);
+            align-items: center;
+        }
+
+        a.article-timeline-item-avatar-link,
+        button.article-timeline-item-avatar-button-reset {
+            width: var(--photography-row-size);
+            height: var(--photography-row-size);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        div.article-timeline-item-avatar {
+            width: var(--photography-row-size)!important;
+            height: var(--photography-row-size)!important;
+        }
+
+        div.article-timeline-item-content {
+            flex: 0 0 var(--photography-card-width);
+            width: var(--photography-card-width);
+            max-width: var(--photography-card-width);
+            min-height: var(--photography-row-size);
+        }
+    }
+
     div.article-timeline-item-avatar {
         border-color: rgba(56, 189, 248, 0.52);
         box-shadow:
@@ -1084,6 +1131,7 @@ article.article-timeline--art-photography {
 
     div.article-timeline-item-avatar.article-timeline-item-avatar--button {
         border-color: rgba(245, 158, 11, 0.62);
+        --ff-hover-lift: 10px;
     }
 
     a.article-timeline-item-avatar-link:hover div.article-timeline-item-avatar--button {

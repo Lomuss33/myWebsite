@@ -6,6 +6,7 @@ const LOW_FRAME_RATE_INTERVAL_MS = 180
 const LOW_FRAME_RATE_TIME_SCALE = 0.24
 const MAX_DEVICE_PIXEL_RATIO = 1.15
 const MAX_BANDS = 12
+const MAX_RENDERED_BAND_CANVASES = 6
 
 const vertexSource = `#version 300 es
 in vec4 position;
@@ -60,12 +61,14 @@ precision highp float;
 out vec4 O;
 uniform float time;
 uniform vec2 resolution;
+uniform vec2 patternResolution;
+uniform vec2 patternOffset;
 uniform float darkMode;
 uniform int bandCount;
 uniform vec4 bands[12];
 
-#define FC gl_FragCoord.xy
-#define R resolution
+#define FC (gl_FragCoord.xy+patternOffset)
+#define R patternResolution
 #define T time
 #define S smoothstep
 #define MN min(R.x,R.y)
@@ -197,6 +200,8 @@ function setupShader(canvas, source = fragmentSource) {
     gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0)
 
     program.resolution = gl.getUniformLocation(program, "resolution")
+    program.patternResolution = gl.getUniformLocation(program, "patternResolution")
+    program.patternOffset = gl.getUniformLocation(program, "patternOffset")
     program.time = gl.getUniformLocation(program, "time")
     program.darkMode = gl.getUniformLocation(program, "darkMode")
     program.bandCount = gl.getUniformLocation(program, "bandCount")
@@ -254,15 +259,44 @@ function measureLayout(canvas) {
     }
 }
 
-function resizeCanvas(canvas, gl, layout) {
-    const pixelRatio = Math.max(1, Math.min(MAX_DEVICE_PIXEL_RATIO, (window.devicePixelRatio || 1) * 0.75))
-    const width = Math.max(1, Math.round(layout.width * pixelRatio))
-    const height = Math.max(1, Math.round(layout.height * pixelRatio))
+function createLayoutSignature(layout) {
+    const bottomBandSignature = layout.bottomBand ?
+        `${roundLayoutValue(layout.bottomBand.left)},${roundLayoutValue(layout.bottomBand.top)},${roundLayoutValue(layout.bottomBand.width)},${roundLayoutValue(layout.bottomBand.height)}` :
+        "none"
+    const bandSignature = layout.bands
+        .map(band => `${roundLayoutValue(band.x)},${roundLayoutValue(band.y)},${roundLayoutValue(band.width)},${roundLayoutValue(band.height)}`)
+        .join("|")
 
-    canvas.style.left = `${layout.left}px`
-    canvas.style.top = "0px"
-    canvas.style.width = `${layout.width}px`
-    canvas.style.height = `${layout.height}px`
+    return [
+        roundLayoutValue(layout.left),
+        roundLayoutValue(layout.width),
+        roundLayoutValue(layout.height),
+        bottomBandSignature,
+        bandSignature
+    ].join(";")
+}
+
+function roundLayoutValue(value) {
+    return Math.round((Number(value) || 0) * 100) / 100
+}
+
+function getCanvasPixelRatio(layout) {
+    const devicePixelRatio = window.devicePixelRatio || 1
+    const scaledPixelRatio = devicePixelRatio * (layout.scale || 1)
+
+    return Math.max(0.5, Math.min(MAX_DEVICE_PIXEL_RATIO, scaledPixelRatio))
+}
+
+function resizeBandCanvas(canvas, gl, layout, band) {
+    const pixelRatio = getCanvasPixelRatio(layout)
+    const width = Math.max(1, Math.round(band.width * pixelRatio))
+    const height = Math.max(1, Math.round(band.height * pixelRatio))
+
+    canvas.style.left = `${layout.left + band.x}px`
+    canvas.style.top = `${band.y}px`
+    canvas.style.width = `${band.width}px`
+    canvas.style.height = `${band.height}px`
+    canvas.style.display = "block"
 
     if(canvas.width !== width)
         canvas.width = width
@@ -271,14 +305,24 @@ function resizeCanvas(canvas, gl, layout) {
 
     gl.viewport(0, 0, width, height)
 
-    return pixelRatio
+    return {
+        pixelRatio,
+        patternResolution: {
+            width: Math.max(1, Math.round(layout.width * pixelRatio)),
+            height: Math.max(1, Math.round(layout.height * pixelRatio))
+        },
+        patternOffset: {
+            x: Math.round(band.x * pixelRatio),
+            y: Math.round((layout.height - band.y - band.height) * pixelRatio)
+        }
+    }
 }
 
 function resizeBottomCanvas(canvas, gl, layout) {
     if(!layout.bottomBand)
         return null
 
-    const pixelRatio = Math.max(1, Math.min(MAX_DEVICE_PIXEL_RATIO, (window.devicePixelRatio || 1) * 0.75))
+    const pixelRatio = getCanvasPixelRatio(layout)
     const band = layout.bottomBand
     const width = Math.max(1, Math.round(band.width * pixelRatio))
     const height = Math.max(1, Math.round(band.height * pixelRatio))
@@ -297,10 +341,11 @@ function resizeBottomCanvas(canvas, gl, layout) {
     return true
 }
 
-function getBandUniforms(layout, pixelRatio) {
+function getBandUniforms(layout, pixelRatio, bandIndex = null) {
     const values = new Float32Array(MAX_BANDS * 4)
+    const bands = bandIndex === null ? layout.bands : [layout.bands[bandIndex]].filter(Boolean)
 
-    layout.bands.forEach((band, index) => {
+    bands.forEach((band, index) => {
         const offset = index * 4
         values[offset] = band.x * pixelRatio
         values[offset + 1] = (layout.height - band.y - band.height) * pixelRatio
@@ -311,16 +356,27 @@ function getBandUniforms(layout, pixelRatio) {
     return values
 }
 
-function drawShader(shaderState, layout, bandUniforms, now) {
+function drawShader(shaderState, layout, bandUniforms, now, bandCount = Math.min(layout.bands.length, MAX_BANDS), renderMetrics = null) {
     const { gl, program, buffer } = shaderState
-    const bandCount = Math.min(layout.bands.length, MAX_BANDS)
     const isDarkMode = document.documentElement.getAttribute("data-theme") !== "light"
+    const patternResolution = renderMetrics?.patternResolution || {
+        width: gl.canvas.width,
+        height: gl.canvas.height
+    }
+    const patternOffset = renderMetrics?.patternOffset || {
+        x: 0,
+        y: 0
+    }
 
     gl.clearColor(0, 0, 0, 0)
     gl.clear(gl.COLOR_BUFFER_BIT)
     gl.useProgram(program)
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
     gl.uniform2f(program.resolution, gl.canvas.width, gl.canvas.height)
+    if(program.patternResolution)
+        gl.uniform2f(program.patternResolution, patternResolution.width, patternResolution.height)
+    if(program.patternOffset)
+        gl.uniform2f(program.patternOffset, patternOffset.x, patternOffset.y)
     gl.uniform1f(program.time, now * 0.001)
     gl.uniform1f(program.darkMode, isDarkMode ? 1 : 0)
     gl.uniform1i(program.bandCount, bandCount)
@@ -341,38 +397,41 @@ function drawBottomShader(shaderState, now) {
 }
 
 function EducationDecorationCanvas({ lowFrameRateMode = false }) {
-    const shaderCanvasRef = useRef(null)
+    const bandCanvasRefs = useRef([])
     const bottomCanvasRef = useRef(null)
 
     useEffect(() => {
-        const shaderCanvas = shaderCanvasRef.current
+        const bandCanvases = bandCanvasRefs.current.filter(Boolean)
         const bottomCanvas = bottomCanvasRef.current
-        const wrapper = shaderCanvas?.parentElement
-        if(!shaderCanvas || !bottomCanvas || !wrapper)
+        const wrapper = bottomCanvas?.parentElement || bandCanvases[0]?.parentElement
+        if(bandCanvases.length === 0 || !bottomCanvas || !wrapper)
             return
 
         let animationFrameId = null
         let rebuildFrameId = null
         let layout = null
-        let shaderState = null
+        let bandShaderStates = []
+        let bandRenderStates = []
         let bottomShaderState = null
-        let bandUniforms = null
         let hasBottomShaderLayout = false
+        let lastLayoutSignature = null
         let lastFrameTime = 0
         let isIntersecting = false
+        let delayedRebuildId = null
+        let observedBandElements = []
         const reducedMotionQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)") || null
 
         try {
-            shaderState = setupShader(shaderCanvas)
+            bandShaderStates = bandCanvases.map(canvas => setupShader(canvas))
             bottomShaderState = setupShader(bottomCanvas, bottomFragmentSource)
         }
         catch(error) {
             console.error(error)
-            shaderState = null
+            bandShaderStates = []
             bottomShaderState = null
         }
 
-        if(!shaderState || !bottomShaderState)
+        if(bandShaderStates.length === 0 || !bottomShaderState)
             return
 
         const isReducedMotion = () => Boolean(reducedMotionQuery?.matches)
@@ -388,8 +447,10 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
         }
 
         const drawStatic = () => {
-            if(layout && bandUniforms)
-                drawShader(shaderState, layout, bandUniforms, 0)
+            if(layout)
+                bandRenderStates.forEach(renderState => {
+                    drawShader(renderState.shaderState, layout, renderState.bandUniforms, 0, 1, renderState.metrics)
+                })
             if(hasBottomShaderLayout)
                 drawBottomShader(bottomShaderState, 0)
         }
@@ -400,10 +461,12 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
                 return
             }
 
-            if(layout && bandUniforms && timestamp - lastFrameTime >= getFrameInterval()) {
+            if(layout && bandRenderStates.length > 0 && timestamp - lastFrameTime >= getFrameInterval()) {
                 const animationTime = getAnimationTime(timestamp)
                 lastFrameTime = timestamp
-                drawShader(shaderState, layout, bandUniforms, animationTime)
+                bandRenderStates.forEach(renderState => {
+                    drawShader(renderState.shaderState, layout, renderState.bandUniforms, animationTime, 1, renderState.metrics)
+                })
                 if(hasBottomShaderLayout)
                     drawBottomShader(bottomShaderState, animationTime)
             }
@@ -421,28 +484,76 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
                 animationFrameId = window.requestAnimationFrame(step)
         }
 
-        const rebuild = () => {
-            const nextLayout = measureLayout(shaderCanvas)
+        const rebuild = (forceRedraw = false) => {
+            const nextLayout = measureLayout(bottomCanvas)
             if(!nextLayout)
                 return
 
+            const nextLayoutSignature = createLayoutSignature(nextLayout)
+            if(!forceRedraw && nextLayoutSignature === lastLayoutSignature) {
+                startLoop()
+                return
+            }
+
+            lastLayoutSignature = nextLayoutSignature
             layout = nextLayout
-            const pixelRatio = resizeCanvas(shaderCanvas, shaderState.gl, layout)
-            bandUniforms = getBandUniforms(layout, pixelRatio)
+            bandRenderStates = layout.bands.slice(0, Math.min(layout.bands.length, bandShaderStates.length)).map((band, index) => {
+                const canvas = bandCanvases[index]
+                const shaderState = bandShaderStates[index]
+                const metrics = resizeBandCanvas(canvas, shaderState.gl, layout, band)
+
+                return {
+                    shaderState,
+                    metrics,
+                    bandUniforms: getBandUniforms(layout, metrics.pixelRatio, index)
+                }
+            })
+            bandCanvases.slice(bandRenderStates.length).forEach(canvas => {
+                canvas.width = 1
+                canvas.height = 1
+                canvas.style.display = "none"
+            })
             hasBottomShaderLayout = resizeBottomCanvas(bottomCanvas, bottomShaderState.gl, layout) === true
             lastFrameTime = 0
             drawStatic()
             startLoop()
         }
 
-        const scheduleRebuild = () => {
+        const syncBandObservers = (resizeObserver) => {
+            if(!resizeObserver)
+                return false
+
+            const nextBandElements = Array.from(wrapper.querySelectorAll(".section-decoration-band"))
+            const hasSameBandElements = observedBandElements.length === nextBandElements.length &&
+                observedBandElements.every((element, index) => element === nextBandElements[index])
+
+            if(hasSameBandElements)
+                return false
+
+            observedBandElements.forEach(element => resizeObserver.unobserve(element))
+            nextBandElements.forEach(element => resizeObserver.observe(element))
+            observedBandElements = nextBandElements
+            return true
+        }
+
+        const scheduleRebuild = (forceRedraw = false) => {
             if(rebuildFrameId !== null)
                 window.cancelAnimationFrame(rebuildFrameId)
 
             rebuildFrameId = window.requestAnimationFrame(() => {
                 rebuildFrameId = null
-                rebuild()
+                rebuild(forceRedraw)
             })
+        }
+
+        const scheduleDelayedRebuild = () => {
+            if(delayedRebuildId !== null)
+                window.clearTimeout(delayedRebuildId)
+
+            delayedRebuildId = window.setTimeout(() => {
+                delayedRebuildId = null
+                scheduleRebuild()
+            }, 180)
         }
 
         const handleVisibilityChange = () => {
@@ -452,9 +563,14 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
             }
             startLoop()
         }
+        const handleWindowResize = () => scheduleRebuild()
+        const handleReducedMotionChange = () => scheduleRebuild(true)
 
-        const resizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(scheduleRebuild)
-        const mutationObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(scheduleRebuild)
+        const resizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => scheduleRebuild())
+        const mutationObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(() => {
+            if(!resizeObserver || syncBandObservers(resizeObserver))
+                scheduleRebuild()
+        })
         const intersectionObserver = typeof IntersectionObserver === "undefined" ? null : new IntersectionObserver((entries) => {
             isIntersecting = entries.some(entry => entry.isIntersecting)
             if(isIntersecting) startLoop()
@@ -462,16 +578,18 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
         }, { rootMargin: "160px" })
 
         resizeObserver?.observe(wrapper)
+        syncBandObservers(resizeObserver)
         mutationObserver?.observe(wrapper, { childList: true })
         const sectionBody = wrapper.querySelector(".section-body")
         if(sectionBody)
             mutationObserver?.observe(sectionBody, { childList: true })
         intersectionObserver?.observe(wrapper)
-        window.addEventListener("resize", scheduleRebuild, { passive: true })
+        window.addEventListener("resize", handleWindowResize, { passive: true })
         document.addEventListener("visibilitychange", handleVisibilityChange)
-        reducedMotionQuery?.addEventListener?.("change", scheduleRebuild)
+        reducedMotionQuery?.addEventListener?.("change", handleReducedMotionChange)
 
         rebuild()
+        scheduleDelayedRebuild()
 
         if(!intersectionObserver) {
             isIntersecting = true
@@ -482,17 +600,21 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
             stopLoop()
             if(rebuildFrameId !== null)
                 window.cancelAnimationFrame(rebuildFrameId)
+            if(delayedRebuildId !== null)
+                window.clearTimeout(delayedRebuildId)
             resizeObserver?.disconnect()
             mutationObserver?.disconnect()
             intersectionObserver?.disconnect()
-            window.removeEventListener("resize", scheduleRebuild)
+            window.removeEventListener("resize", handleWindowResize)
             document.removeEventListener("visibilitychange", handleVisibilityChange)
-            reducedMotionQuery?.removeEventListener?.("change", scheduleRebuild)
+            reducedMotionQuery?.removeEventListener?.("change", handleReducedMotionChange)
 
-            if(shaderState?.buffer)
-                shaderState.gl.deleteBuffer(shaderState.buffer)
-            if(shaderState?.program)
-                shaderState.gl.deleteProgram(shaderState.program)
+            bandShaderStates.forEach(shaderState => {
+                if(shaderState?.buffer)
+                    shaderState.gl.deleteBuffer(shaderState.buffer)
+                if(shaderState?.program)
+                    shaderState.gl.deleteProgram(shaderState.program)
+            })
             if(bottomShaderState?.buffer)
                 bottomShaderState.gl.deleteBuffer(bottomShaderState.buffer)
             if(bottomShaderState?.program)
@@ -502,14 +624,24 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
 
     return (
         <>
-            <canvas
-                ref={shaderCanvasRef}
-                className="section-decoration-canvas section-decoration-canvas-education"
-                aria-hidden={true}
-            />
+            {Array.from({ length: MAX_RENDERED_BAND_CANVASES }).map((_, index) => (
+                <canvas
+                    key={index}
+                    ref={(element) => {
+                        if(element)
+                            bandCanvasRefs.current[index] = element
+                    }}
+                    className="section-decoration-canvas section-decoration-canvas-education section-decoration-canvas-education-band"
+                    width={1}
+                    height={1}
+                    aria-hidden={true}
+                />
+            ))}
             <canvas
                 ref={bottomCanvasRef}
                 className="section-decoration-canvas section-decoration-canvas-education-bottom"
+                width={1}
+                height={1}
                 aria-hidden={true}
             />
         </>

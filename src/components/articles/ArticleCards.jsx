@@ -40,6 +40,7 @@ function ArticleCards({ dataWrapper, id }) {
 function ArticleCardsItems({ dataWrapper, selectedItemCategoryId }) {
     const constants = useConstants()
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
+    const shouldUseStaticCards = dataWrapper.sectionId === "education" && filteredItems.length <= 2
     const slideCount = Math.max(1, filteredItems.length)
     const breakpoints = Object.fromEntries(
         Object.entries(constants.SWIPER_BREAKPOINTS_FOR_THREE_SLIDES).map(([breakpoint, value]) => ([
@@ -50,6 +51,17 @@ function ArticleCardsItems({ dataWrapper, selectedItemCategoryId }) {
             }
         ]))
     )
+
+    if(shouldUseStaticCards) {
+        return (
+            <div className={`article-cards-items article-cards-items-static article-cards-items-static-education`}>
+                {filteredItems.map((itemWrapper, key) => (
+                    <ArticleCardsItem itemWrapper={itemWrapper}
+                                      key={key}/>
+                ))}
+            </div>
+        )
+    }
 
     return (
         <Swipeable className={`article-cards-items`}
@@ -70,6 +82,13 @@ function ArticleCardsItems({ dataWrapper, selectedItemCategoryId }) {
  * @constructor
  */
 function ArticleCardsItem({ itemWrapper }) {
+    if(isEducationCertificationCard(itemWrapper))
+        return <ArticleEducationCertificationCard itemWrapper={itemWrapper}/>
+
+    return <ArticleCardsGenericItem itemWrapper={itemWrapper}/>
+}
+
+function ArticleCardsGenericItem({ itemWrapper }) {
     const viewport = useViewport()
     const largeTexts = viewport.isMobileLayout()
 
@@ -118,6 +137,110 @@ function ArticleCardsItem({ itemWrapper }) {
             </div>
         </div>
     )
+}
+
+function ArticleEducationCertificationCard({ itemWrapper }) {
+    const meta = getEducationCertificationMeta(itemWrapper)
+    const certificationFields = [
+        {
+            label: "Issuer",
+            value: meta.issuer
+        },
+        {
+            label: "Target",
+            value: itemWrapper.dateStartDisplay || meta.dateFallback
+        },
+        {
+            label: "Focus",
+            value: meta.focus
+        }
+    ].filter(field => field.value)
+    const certificationAvatar = (
+        <AvatarView src={itemWrapper.img}
+                    faIcon={itemWrapper.faIcon}
+                    style={itemWrapper.faIconStyle}
+                    alt={itemWrapper.imageAlt}
+                    className={`article-cards-item-avatar article-cards-item-education-certification-avatar`}/>
+    )
+
+    return (
+        <div className={`article-cards-item article-cards-item-education-certification article-cards-item-education-certification-${meta.tone}`}>
+            <div className={`article-cards-item-education-certification-frame`}>
+                {itemWrapper.link && itemWrapper.link.href ? (
+                    <Link href={itemWrapper.link.href}
+                          className={`article-cards-item-education-certification-avatar-link`}>
+                        {certificationAvatar}
+                    </Link>
+                ) : certificationAvatar}
+
+                <div className={`article-cards-item-education-certification-title-block`}>
+                    <h6 className={`article-cards-item-content-title article-cards-item-education-certification-title`}
+                        dangerouslySetInnerHTML={{__html: itemWrapper.locales.title || itemWrapper.placeholder}}/>
+                </div>
+
+                <div className={`article-cards-item-education-certification-description`}>
+                    <span dangerouslySetInnerHTML={{__html: itemWrapper.locales.text}}/>
+                </div>
+
+                <div className={`article-cards-item-education-certification-fields`}>
+                    {certificationFields.map(field => (
+                        <EducationCertificationField key={field.label}
+                                                     label={field.label}
+                                                     value={field.value}/>
+                    ))}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+function EducationCertificationField({ label, value }) {
+    if(!value)
+        return null
+
+    return (
+        <div className={`article-cards-item-education-certification-field`}>
+            <span className={`article-cards-item-education-certification-field-label`}>
+                {label}
+            </span>
+            <span className={`article-cards-item-education-certification-field-value`}
+                  dangerouslySetInnerHTML={{__html: value}}/>
+        </div>
+    )
+}
+
+function isEducationCertificationCard(itemWrapper) {
+    return itemWrapper?.articleWrapper?.sectionId === "education" &&
+        itemWrapper?.articleWrapper?.id === 2
+}
+
+function getEducationCertificationMeta(itemWrapper) {
+    const title = String(itemWrapper?.locales?.title || "").replace(/<[^>]*>/g, "").toLowerCase()
+
+    if(title.includes("aevo")) {
+        return {
+            tone: "aevo",
+            issuer: "IHK",
+            focus: "Apprentice training",
+            dateFallback: "Sep 2026"
+        }
+    }
+
+    if(title.includes("ccna")) {
+        return {
+            tone: "ccna",
+            issuer: "Cisco",
+            focus: "Networking",
+            dateFallback: "Dec 2026"
+        }
+    }
+
+    return {
+        tone: "default",
+        issuer: "Certification Body",
+        focus: "Professional growth",
+        dateFallback: null
+    }
 }
 
 export default ArticleCards

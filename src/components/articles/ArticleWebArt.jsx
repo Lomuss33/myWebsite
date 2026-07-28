@@ -399,11 +399,16 @@ function ArticleWebArt({ dataWrapper, id }) {
 
         return ordered
     }, [rawItems])
+    const shellRef = useRef(null)
     const tilesWrapperRef = useRef(null)
     const stageRef = useRef(null)
     const stagePhaseRef = useRef(WEB_ART_STAGE_PHASE.PREVIEW)
     const stageFrameIdsRef = useRef([])
     const stageTransitionTimeoutRef = useRef(null)
+    const tileElementsRef = useRef(new Map())
+    const openTileIdsRef = useRef(new Set())
+    const scrollCloseTimeoutsRef = useRef(new Map())
+    const desktopCloseTimeoutRef = useRef(null)
     const [stagePhase, setStagePhaseState] = useState(WEB_ART_STAGE_PHASE.PREVIEW)
     const [stageHeight, setStageHeight] = useState(null)
     const [shouldMountTiles, setShouldMountTiles] = useState(false)
@@ -451,6 +456,16 @@ function ArticleWebArt({ dataWrapper, id }) {
     }, [mountedTileIds])
     const locked = showIntroCover
     const selectedLanguageId = language.selectedLanguageId || "en"
+
+    useEffect(() => {
+        openTileIdsRef.current = openTileIds
+    }, [openTileIds])
+
+    const registerTileElement = useCallback((tileId, node) => {
+        if(!tileId) return
+        if(node) tileElementsRef.current.set(tileId, node)
+        else tileElementsRef.current.delete(tileId)
+    }, [])
 
     const setStagePhase = useCallback((nextPhase) => {
         stagePhaseRef.current = nextPhase
@@ -609,6 +624,18 @@ function ArticleWebArt({ dataWrapper, id }) {
             next.add(uniqueId)
             return _limitWebArtTileSetForMobile(next)
         })
+    }, [])
+
+    const closeAllOpenTiles = useCallback(() => {
+        setOpenTileIds((current) => {
+            if(!current.size) return current
+            return new Set()
+        })
+        setMountedTileIds((current) => {
+            if(!current.size) return current
+            return new Set()
+        })
+        setSendYoursPreviewOpen(false)
     }, [])
 
     const resetArtState = useCallback(() => {
@@ -791,14 +818,164 @@ function ArticleWebArt({ dataWrapper, id }) {
     const toggleAllArtTiles = useCallback(() => {
         const nextTargetTileIds = _getOpenAllWebArtTileIds(allTileIds)
         if(_tileSetContainsAll(openTileIds, nextTargetTileIds)) {
-            setOpenTileIds(new Set())
-            setMountedTileIds(new Set())
-            setSendYoursPreviewOpen(false)
+            closeAllOpenTiles()
             return
         }
 
         openAllArtTiles()
-    }, [allTileIds, openAllArtTiles, openTileIds])
+    }, [allTileIds, closeAllOpenTiles, openAllArtTiles, openTileIds])
+
+    useEffect(() => {
+        if(typeof window === "undefined") return
+        if(!shouldMountTiles || showIntroCover || !openTileIds.size) return
+
+        const observedEntries = Array.from(openTileIds)
+            .map((tileId) => [tileId, tileElementsRef.current.get(tileId)])
+            .filter(([, node]) => Boolean(node))
+
+        if(!observedEntries.length) return
+
+        const clearPendingClose = (tileId) => {
+            const timeoutId = scrollCloseTimeoutsRef.current.get(tileId)
+            if(timeoutId == null) return
+
+            window.clearTimeout(timeoutId)
+            scrollCloseTimeoutsRef.current.delete(tileId)
+        }
+
+        const scheduleClose = (tileId) => {
+            if(scrollCloseTimeoutsRef.current.has(tileId)) return
+
+            const timeoutId = window.setTimeout(() => {
+                scrollCloseTimeoutsRef.current.delete(tileId)
+                if(openTileIdsRef.current.has(tileId)) closeTile(tileId)
+            }, 220)
+
+            scrollCloseTimeoutsRef.current.set(tileId, timeoutId)
+        }
+
+        const clearAllPendingCloses = () => {
+            for(const timeoutId of scrollCloseTimeoutsRef.current.values())
+                window.clearTimeout(timeoutId)
+            scrollCloseTimeoutsRef.current.clear()
+        }
+
+        const scrollRoot = _isMobileWebArtLayout()
+            ? null
+            : document.getElementById(`scrollable-${dataWrapper.sectionId}`)
+
+        if("IntersectionObserver" in window) {
+            const nodeToId = new Map(observedEntries.map(([tileId, node]) => [node, tileId]))
+            const observer = new IntersectionObserver((entries) => {
+                for(const entry of entries) {
+                    const tileId = nodeToId.get(entry.target)
+                    if(!tileId) continue
+
+                    const isFarAway = !entry.isIntersecting || entry.intersectionRatio <= 0.02
+                    if(isFarAway) scheduleClose(tileId)
+                    else clearPendingClose(tileId)
+                }
+            }, {
+                root: scrollRoot,
+                rootMargin: "18% 0px 18% 0px",
+                threshold: [0, 0.02, 0.08]
+            })
+
+            for(const [, node] of observedEntries)
+                observer.observe(node)
+
+            return () => {
+                observer.disconnect()
+                clearAllPendingCloses()
+            }
+        }
+
+        let frameId = null
+        const checkVisibility = () => {
+            frameId = null
+            const rootRect = scrollRoot?.getBoundingClientRect?.()
+            const rootTop = rootRect?.top ?? 0
+            const rootBottom = rootRect?.bottom ?? window.innerHeight
+            const rootHeight = Math.max(1, rootRect?.height ?? window.innerHeight)
+            const margin = rootHeight * 0.18
+
+            for(const [tileId, node] of observedEntries) {
+                const rect = node.getBoundingClientRect()
+                const isFarAway = rect.bottom < rootTop - margin || rect.top > rootBottom + margin
+                if(isFarAway) scheduleClose(tileId)
+                else clearPendingClose(tileId)
+            }
+        }
+
+        const scheduleVisibilityCheck = () => {
+            if(frameId == null)
+                frameId = window.requestAnimationFrame(checkVisibility)
+        }
+
+        const scrollTarget = scrollRoot || window
+        scrollTarget.addEventListener("scroll", scheduleVisibilityCheck, { passive: true })
+        window.addEventListener("resize", scheduleVisibilityCheck, { passive: true })
+        scheduleVisibilityCheck()
+
+        return () => {
+            scrollTarget.removeEventListener("scroll", scheduleVisibilityCheck)
+            window.removeEventListener("resize", scheduleVisibilityCheck)
+            if(frameId != null) window.cancelAnimationFrame(frameId)
+            clearAllPendingCloses()
+        }
+    }, [shouldMountTiles, showIntroCover, openTileIds, closeTile, dataWrapper.sectionId])
+
+    useEffect(() => {
+        if(typeof window === "undefined" || !window.matchMedia) return
+        if(showIntroCover || !openTileIds.size) return
+        if(!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return
+
+        const shell = shellRef.current
+        if(!shell) return
+
+        const clearDesktopClose = () => {
+            if(desktopCloseTimeoutRef.current == null) return
+
+            window.clearTimeout(desktopCloseTimeoutRef.current)
+            desktopCloseTimeoutRef.current = null
+        }
+
+        const scheduleDesktopClose = () => {
+            clearDesktopClose()
+            desktopCloseTimeoutRef.current = window.setTimeout(() => {
+                desktopCloseTimeoutRef.current = null
+                if(openTileIdsRef.current.size) closeAllOpenTiles()
+            }, 180)
+        }
+
+        const onPointerEnter = () => clearDesktopClose()
+        const onPointerLeaveShell = (event) => {
+            if(event.relatedTarget && shell.contains(event.relatedTarget)) return
+            scheduleDesktopClose()
+        }
+        const onWindowPointerOut = (event) => {
+            if(event.relatedTarget === null) scheduleDesktopClose()
+        }
+        const onBlur = () => scheduleDesktopClose()
+        const onVisibilityChange = () => {
+            if(document.hidden) scheduleDesktopClose()
+        }
+
+        shell.addEventListener("pointerenter", onPointerEnter)
+        shell.addEventListener("pointerleave", onPointerLeaveShell)
+        window.addEventListener("pointerout", onWindowPointerOut, { passive: true })
+        window.addEventListener("blur", onBlur)
+        document.addEventListener("visibilitychange", onVisibilityChange)
+
+        return () => {
+            clearDesktopClose()
+            shell.removeEventListener("pointerenter", onPointerEnter)
+            shell.removeEventListener("pointerleave", onPointerLeaveShell)
+            window.removeEventListener("pointerout", onWindowPointerOut)
+            window.removeEventListener("blur", onBlur)
+            document.removeEventListener("visibilitychange", onVisibilityChange)
+        }
+    }, [showIntroCover, openTileIds, closeAllOpenTiles])
 
     const onIntroHide = useCallback(() => {
         clearStageTransitionWork()
@@ -877,13 +1054,15 @@ function ArticleWebArt({ dataWrapper, id }) {
         const shouldRenderTile = mountedTileIds.has(tileId) || isOpen
         return (
             <GatedWebArtTile key={tileId}
+                             tileId={tileId}
                              label={getItemTileLabel(itemWrapper, index)}
                              isOpen={isOpen}
                              onToggle={() => {
                                  if(isOpen) closeTile(tileId)
                                  else openTile(tileId)
                              }}
-                             shouldRender={shouldRenderTile}>
+                             shouldRender={shouldRenderTile}
+                             tileRefCallback={registerTileElement}>
                 {shouldRenderTile && (
                     <WebArtTile itemWrapper={itemWrapper}
                                 index={index}
@@ -960,7 +1139,7 @@ function ArticleWebArt({ dataWrapper, id }) {
             key: "ambient-goldfish",
             tileId: "ambient-goldfish",
             label: "Fish",
-            render: (isOpen) => <GoldfishTile locked={locked || !isOpen} />
+            render: (isOpen) => <GoldfishTile readyId={"ambient-goldfish"} locked={locked || !isOpen} onReady={onTileReady}/>
         },
         {
             key: "ambient-patronus",
@@ -973,13 +1152,15 @@ function ArticleWebArt({ dataWrapper, id }) {
         const shouldRenderTile = mountedTileIds.has(tileId) || isOpen
         return (
             <GatedWebArtTile key={key}
+                             tileId={tileId}
                              label={label}
                              isOpen={isOpen}
                              onToggle={() => {
                                  if(isOpen) closeTile(tileId)
                                  else openTile(tileId)
                              }}
-                             shouldRender={shouldRenderTile}>
+                             shouldRender={shouldRenderTile}
+                             tileRefCallback={registerTileElement}>
                 {shouldRenderTile && render(isOpen)}
             </GatedWebArtTile>
         )
@@ -1059,7 +1240,8 @@ function ArticleWebArt({ dataWrapper, id }) {
                  className={`article-web-art`}
                  selectedItemCategoryId={selectedItemCategoryId}
                  setSelectedItemCategoryId={setSelectedItemCategoryId}>
-            <div className={`article-web-art-shell`}>
+            <div className={`article-web-art-shell`}
+                 ref={shellRef}>
                 <WebArtIntroCover guide={introCopy.guide}
                                   buttonLabel={showIntroCover ? introCopy.button : introHideLabel}
                                   hidden={!showIntroCover}
@@ -1159,7 +1341,16 @@ function WebArtIntroCover({ guide, buttonLabel, hidden, onEnter, secondaryButton
     )
 }
 
-function GatedWebArtTile({ label, isOpen, onToggle, shouldRender = true, children }) {
+function GatedWebArtTile({ tileId, label, isOpen, onToggle, shouldRender = true, children, tileRefCallback = null }) {
+    const rootRef = useRef(null)
+
+    useEffect(() => {
+        tileRefCallback?.(tileId, rootRef.current)
+        return () => {
+            tileRefCallback?.(tileId, null)
+        }
+    }, [tileId, tileRefCallback])
+
     const onClosedTileClick = useCallback((event) => {
         if(isOpen || event.defaultPrevented) return
         if(event.target.closest?.("button")) return
@@ -1168,6 +1359,7 @@ function GatedWebArtTile({ label, isOpen, onToggle, shouldRender = true, childre
 
     return (
         <div className={`article-web-art-gated-tile ${isOpen ? "article-web-art-gated-tile-open" : "article-web-art-gated-tile-closed"}`}
+             ref={rootRef}
              onClick={isOpen ? undefined : onClosedTileClick}>
             {shouldRender ? children : (
                 <div className={`article-web-art-tile article-web-art-tile-placeholder`}
@@ -5350,7 +5542,7 @@ function SendYourFunAnimationTile({ label, clickLabel, previewRequested = false 
     )
 }
 
-function GoldfishTile({ locked = false }) {
+function GoldfishTile({ readyId, locked = false, onReady }) {
     const tileRef = useRef(null)
     const reduceMotion = useMemo(() => {
         if(typeof window === "undefined" || !window.matchMedia) return false
@@ -5365,6 +5557,11 @@ function GoldfishTile({ locked = false }) {
     const releaseRafRef = useRef(null)
     const burstRafRef = useRef(null)
     const burstTimeoutRef = useRef(null)
+    const animationsRef = useRef([])
+
+    useEffect(() => {
+        onReady?.(readyId)
+    }, [onReady, readyId])
 
     useEffect(() => {
         const tile = tileRef.current
@@ -5376,6 +5573,9 @@ function GoldfishTile({ locked = false }) {
         }
 
         const collectAnimations = () => {
+            if(animationsRef.current.length)
+                return animationsRef.current.filter((animation) => animation.playState !== "idle")
+
             const nodes = tile.querySelectorAll(
                 ".fish-wrapper, .fish-parts, .fish-top-fin, .fish-back-bottom-fin, .fish-back-fin, .fish-front-bottom-fin"
             )
@@ -5384,50 +5584,56 @@ function GoldfishTile({ locked = false }) {
                 const anims = node.getAnimations ? node.getAnimations() : []
                 for(const a of anims) all.push(a)
             }
-            return all
+            animationsRef.current = all
+            return animationsRef.current
         }
 
-          const setRate = (rate) => {
-              const r = Math.max(1, Math.min(5.2, Number(rate) || 1))
-              rateRef.current = r
+        const setRate = (rate) => {
+            const r = Math.max(1, Math.min(5.2, Number(rate) || 1))
+            rateRef.current = r
             const anims = collectAnimations()
             for(const a of anims) {
-                a.playbackRate = r
-              }
-          }
+                a.playbackRate = a.animationName === "wiggle-end" ? Math.min(r, 2.6) : r
+            }
+        }
 
-          const clearBurst = () => {
-              if(burstRafRef.current != null) cancelAnimationFrame(burstRafRef.current)
-              if(burstTimeoutRef.current != null) window.clearTimeout(burstTimeoutRef.current)
-              burstRafRef.current = null
-              burstTimeoutRef.current = null
-          }
+        const clearBurst = () => {
+            if(burstRafRef.current != null) cancelAnimationFrame(burstRafRef.current)
+            if(burstTimeoutRef.current != null) window.clearTimeout(burstTimeoutRef.current)
+            burstRafRef.current = null
+            burstTimeoutRef.current = null
+        }
 
-          const triggerClickBurst = () => {
-              clearBurst()
-              setRate(5.2)
-              burstTimeoutRef.current = window.setTimeout(() => {
-                  const from = rateRef.current
-                  const start = performance.now()
-                  const dur = 320
-                  const burstRelease = () => {
-                      const t = (performance.now() - start) / dur
-                      const k = smoothstep01(t)
-                      setRate(from + (1 - from) * k)
-                      if(t < 1) burstRafRef.current = requestAnimationFrame(burstRelease)
-                      else burstRafRef.current = null
-                  }
-                  burstRafRef.current = requestAnimationFrame(burstRelease)
-                  burstTimeoutRef.current = null
-              }, 2000)
-          }
+        const triggerClickBurst = () => {
+            clearBurst()
+            setRate(5.2)
+            burstTimeoutRef.current = window.setTimeout(() => {
+                const from = rateRef.current
+                const start = performance.now()
+                const dur = 320
+                const burstRelease = () => {
+                    const t = (performance.now() - start) / dur
+                    const k = smoothstep01(t)
+                    setRate(from + (1 - from) * k)
+                    if(t < 1) burstRafRef.current = requestAnimationFrame(burstRelease)
+                    else burstRafRef.current = null
+                }
+                burstRafRef.current = requestAnimationFrame(burstRelease)
+                burstTimeoutRef.current = null
+            }, 2000)
+        }
 
-          const stopHold = () => {
-              holdRef.current = false
-              pointerIdRef.current = null
-              tile.classList.remove("article-web-art-tile-goldfish-held")
-              if(rafRef.current != null) cancelAnimationFrame(rafRef.current)
-              rafRef.current = null
+        const stopHold = () => {
+            const pointerId = pointerIdRef.current
+            holdRef.current = false
+            pointerIdRef.current = null
+            tile.classList.remove("article-web-art-tile-goldfish-held")
+            if(rafRef.current != null) cancelAnimationFrame(rafRef.current)
+            rafRef.current = null
+
+            if(pointerId != null && tile.hasPointerCapture?.(pointerId)) {
+                try { tile.releasePointerCapture(pointerId) } catch (err) { void err }
+            }
 
             const from = rateRef.current
             const dur = 360
@@ -5444,6 +5650,11 @@ function GoldfishTile({ locked = false }) {
             releaseRafRef.current = requestAnimationFrame(tickRelease)
         }
 
+        const cancelHold = () => {
+            if(!holdRef.current) return
+            stopHold()
+        }
+
         const tick = () => {
             if(!holdRef.current) return
             const t = performance.now() - holdStartRef.current
@@ -5452,13 +5663,15 @@ function GoldfishTile({ locked = false }) {
             rafRef.current = requestAnimationFrame(tick)
         }
 
-          const onPointerDown = (e) => {
-              if(reduceMotion || locked) return
-              if(e.button != null && e.button !== 0) return
-              clearBurst()
-              holdRef.current = true
-              holdStartRef.current = performance.now()
-              pointerIdRef.current = e.pointerId
+        const onPointerDown = (e) => {
+            if(reduceMotion || locked) return
+            if(e.button != null && e.button !== 0) return
+            if(holdRef.current && pointerIdRef.current !== e.pointerId) return
+
+            clearBurst()
+            holdRef.current = true
+            holdStartRef.current = performance.now()
+            pointerIdRef.current = e.pointerId
             tile.classList.add("article-web-art-tile-goldfish-held")
 
             try { tile.setPointerCapture(e.pointerId) } catch (err) { void err }
@@ -5469,20 +5682,23 @@ function GoldfishTile({ locked = false }) {
             if(rafRef.current == null) rafRef.current = requestAnimationFrame(tick)
         }
 
-          const onPointerUp = () => {
-              const heldForMs = performance.now() - holdStartRef.current
-              stopHold()
-              if(heldForMs < 220) {
-                  triggerClickBurst()
-              }
-          }
-
-        const onPointerCancel = () => {
+        const onPointerUp = (e) => {
+            if(pointerIdRef.current !== e.pointerId) return
+            const heldForMs = performance.now() - holdStartRef.current
             stopHold()
+            if(heldForMs < 220) {
+                triggerClickBurst()
+            }
         }
 
-        const onLostCapture = () => {
-            stopHold()
+        const onPointerCancel = (e) => {
+            if(pointerIdRef.current !== e.pointerId) return
+            cancelHold()
+        }
+
+        const onLostCapture = (e) => {
+            if(pointerIdRef.current !== e.pointerId) return
+            cancelHold()
         }
 
         tile.addEventListener("pointerdown", onPointerDown)
@@ -5490,17 +5706,18 @@ function GoldfishTile({ locked = false }) {
         tile.addEventListener("pointercancel", onPointerCancel)
         tile.addEventListener("lostpointercapture", onLostCapture)
 
-          return () => {
-              tile.removeEventListener("pointerdown", onPointerDown)
-              tile.removeEventListener("pointerup", onPointerUp)
-              tile.removeEventListener("pointercancel", onPointerCancel)
-              tile.removeEventListener("lostpointercapture", onLostCapture)
-              stopHold()
-              clearBurst()
-              if(releaseRafRef.current != null) cancelAnimationFrame(releaseRafRef.current)
-              releaseRafRef.current = null
-          }
-      }, [locked, reduceMotion])
+        return () => {
+            tile.removeEventListener("pointerdown", onPointerDown)
+            tile.removeEventListener("pointerup", onPointerUp)
+            tile.removeEventListener("pointercancel", onPointerCancel)
+            tile.removeEventListener("lostpointercapture", onLostCapture)
+            cancelHold()
+            clearBurst()
+            if(releaseRafRef.current != null) cancelAnimationFrame(releaseRafRef.current)
+            releaseRafRef.current = null
+            animationsRef.current = []
+        }
+    }, [locked, reduceMotion])
 
     useEffect(() => {
         const tile = tileRef.current

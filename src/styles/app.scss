@@ -1,5 +1,6 @@
 @use "./theme-runtime";
 @use "./themes/theme-overrides-light";
+@use "./app-error-boundary";
 @use "./bootstrap-runtime";
 @use "./root-flags";
 @use "./layout/page";

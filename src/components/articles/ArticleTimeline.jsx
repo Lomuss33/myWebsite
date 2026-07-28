@@ -12,7 +12,6 @@ import Link from "../generic/Link.jsx"
 import {useUtils} from "../../hooks/utils.js"
 
 const FINE_POINTER_MEDIA_QUERY = "(hover: hover) and (pointer: fine)"
-
 /**
  * @param {ArticleDataWrapper} dataWrapper
  * @param {Number} id
@@ -84,7 +83,8 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
 
         return utils.device.canHoverWithFinePointer()
     })
-    const usesMeasuredTimelineOffsets = isMyArtTimeline || isExperienceTimeline || isEducationTimeline
+    const usesTimelineLineOffsets = isMyArtTimeline || isExperienceTimeline || isEducationTimeline
+    const usesArtItemHeightMeasurement = isMyArtTimeline
     const usesTapOverlay = isExperienceTimeline && !supportsFinePointer
 
     useEffect(() => {
@@ -162,11 +162,11 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
     }, [usesTapOverlay, activeOverlayItemId])
 
     useEffect(() => {
-        if(!usesMeasuredTimelineOffsets)
+        if(!usesArtItemHeightMeasurement)
             return
 
         setArtItemHeightsPx(Array(visibleItemWrappers.length).fill(null))
-    }, [usesMeasuredTimelineOffsets, visibleItemWrappers.length, selectedItemCategoryId])
+    }, [usesArtItemHeightMeasurement, visibleItemWrappers.length, selectedItemCategoryId])
 
     useLayoutEffect(() => {
         if(!isExperienceTimeline && !isEducationTimeline)
@@ -403,7 +403,7 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
     }, [isEducationTimeline])
 
     const _onMyArtItemHeightChange = useCallback((itemIndex, heightPx) => {
-        if(!usesMeasuredTimelineOffsets)
+        if(!usesArtItemHeightMeasurement)
             return
 
         if(!Number.isFinite(heightPx) || heightPx <= 0)
@@ -420,7 +420,7 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
             nextHeights[itemIndex] = heightPx
             return nextHeights
         })
-    }, [usesMeasuredTimelineOffsets])
+    }, [usesArtItemHeightMeasurement])
 
     const timelineLineOffsetsStyle = useMemo(() => {
         const style = {}
@@ -437,7 +437,7 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
             return Object.keys(style).length ? style : null
         }
 
-        if(!usesMeasuredTimelineOffsets)
+        if(!usesTimelineLineOffsets)
             return null
 
         const firstHeight = artItemHeightsPx[0]
@@ -452,7 +452,7 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
             style["--timeline-line-bottom-offset"] = `${bottomOffset}px`
 
         return style
-    }, [usesMeasuredTimelineOffsets, isExperienceTimeline, isEducationTimeline, artItemHeightsPx, timelineOffsetsPx, experienceAvatarRightOffsetPx])
+    }, [usesTimelineLineOffsets, isExperienceTimeline, isEducationTimeline, artItemHeightsPx, timelineOffsetsPx, experienceAvatarRightOffsetPx])
 
     return (
         <>
@@ -470,8 +470,8 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
                                          isDigitalExpressionTimeline={isDigitalExpressionTimeline}
                                          isOverlayActive={isExperienceTimeline && activeOverlayItemId === itemWrapper.id}
                                          usesTapOverlay={usesTapOverlay}
-                                         avatarColumnSizePx={avatarColumnSizePx}
-                                         onMyArtItemHeightChange={_onMyArtItemHeightChange}
+                                         avatarColumnSizePx={isMyArtTimeline ? avatarColumnSizePx : null}
+                                         onMyArtItemHeightChange={isMyArtTimeline ? _onMyArtItemHeightChange : null}
                                          onOverlayActivate={_activateOverlay}
                                          onOverlayToggle={_toggleOverlay}
                                          onEducationExpand={_expandEducationItem}
@@ -565,10 +565,10 @@ function ArticleTimelineItem({
     }, [canOpenGallery, isDigitalExpressionTimeline, isPhotographyTimeline, itemWrapper.locales?.title, language, screenshots, screenshotsAspectRatio, utils])
 
     useLayoutEffect(() => {
-        if(!isMyArtTimeline && !isExperienceTimeline && !isEducationTimeline)
+        if(!isMyArtTimeline)
             return
 
-        const el = (isExperienceTimeline || isEducationTimeline) ? itemRef.current : contentRef.current
+        const el = contentRef.current
         if(!el)
             return
 
@@ -579,9 +579,6 @@ function ArticleTimelineItem({
             if(Number.isFinite(heightPx) && heightPx > 0) {
                 onMyArtItemHeightChange?.(itemIndex, heightPx)
             }
-
-            if(!isMyArtTimeline)
-                return
 
             const computedAvatarSize = Math.round(heightPx * 0.7)
             const clampedAvatarSize = (Number.isFinite(avatarColumnSizePx) && avatarColumnSizePx > 0) ?
@@ -604,7 +601,7 @@ function ArticleTimelineItem({
 
         window.addEventListener("resize", _compute)
         return () => window.removeEventListener("resize", _compute)
-    }, [isMyArtTimeline, isExperienceTimeline, isEducationTimeline, itemIndex, avatarColumnSizePx, onMyArtItemHeightChange, isEducationExpanded])
+    }, [isMyArtTimeline, itemIndex, avatarColumnSizePx, onMyArtItemHeightChange])
 
     const avatarStyle = useMemo(() => {
         const baseStyle = itemWrapper?.faIconStyle && typeof itemWrapper.faIconStyle === "object" ?

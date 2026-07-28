@@ -46,13 +46,18 @@ function SectionContent({ section }) {
 
         let animationFrameId = null
         let delayedUpdateId = null
+        let isUpdateScheduled = false
         const scheduleBottomCollapseUpdate = () => {
-            if(animationFrameId !== null)
-                window.cancelAnimationFrame(animationFrameId)
+            if(isUpdateScheduled)
+                return
+
             if(delayedUpdateId !== null)
                 window.clearTimeout(delayedUpdateId)
 
+            isUpdateScheduled = true
             animationFrameId = window.requestAnimationFrame(() => {
+                animationFrameId = null
+                isUpdateScheduled = false
                 updateBottomCollapse()
                 delayedUpdateId = window.setTimeout(updateBottomCollapse, 120)
             })
@@ -78,9 +83,6 @@ function SectionContent({ section }) {
 
         resizeObserver.observe(contentEl)
         mutationObserver?.observe(contentEl, { childList: true })
-        const sectionBodyEl = contentEl.querySelector(".section-body")
-        if(sectionBodyEl)
-            mutationObserver?.observe(sectionBodyEl, { childList: true })
         window.addEventListener("resize", scheduleBottomCollapseUpdate)
 
         return () => {

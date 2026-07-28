@@ -4,28 +4,28 @@
             "en": {
                 "title_short": "Art & Creativity",
                 "title_short_nav": "Image",
-                "title_short_tooltip": "Visual",
+                "title_short_tooltip": "Visual hobbies",
                 "title_long_prefix": "Drawn in color, lines and curiosity",
                 "title_long": "Here are {{my diamonds}}"
             },
             "de": {
                 "title_short": "Kunst & Kreativität",
                 "title_short_nav": "Bild",
-                "title_short_tooltip": "Visuell",
+                "title_short_tooltip": "Visuelle Hobbys",
                 "title_long_prefix": "Entstanden aus Farbe, Linien und Neugier",
                 "title_long": "Hier sind {{meine Diamanten}}"
             },
             "hr": {
                 "title_short": "Umjetnost i kreativnost",
                 "title_short_nav": "Slika",
-                "title_short_tooltip": "Vizualno",
+                "title_short_tooltip": "Vizualni hobiji",
                 "title_long_prefix": "Nacrtana u bojama, linijama i znatiželji",
                 "title_long": "Evo {{mojih dijamanata}}"
             },
             "tr": {
                 "title_short": "Sanat ve Yaratıcılık",
                 "title_short_nav": "Görsel",
-                "title_short_tooltip": "Görsel",
+                "title_short_tooltip": "Görsel hobiler",
                 "title_long_prefix": "Renk, çizgi ve merakla çizildi",
                 "title_long": "İşte {{benim elmaslarım}}"
             }
@@ -52,7 +52,7 @@
             "settings": {
                 "max_rows_collapse_threshold": 3,
                 "order_items_by": "date",
-                "order_items_sort": "desc",
+                "order_items_sort": "asc",
                 "timeline_variant": "art-photography"
             },
             "items": [
@@ -78,25 +78,25 @@
                     },
                     "locales": {
                         "en": {
-                            "title": "Macedonia — VSCO Album",
+                            "title": "Macedonia - VSCO Album",
                             "country": "Macedonia",
                             "text": "Mountains, monasteries, city life and landscapes.",
                             "medium": "Photography"
                         },
                         "de": {
-                            "title": "Mazedonien — VSCO-Album",
+                            "title": "Mazedonien - VSCO-Album",
                             "country": "Mazedonien",
                             "text": "Berge, Klöster, Stadtleben und Landschaften.",
                             "medium": "Fotografie"
                         },
                         "hr": {
-                            "title": "Makedonija — VSCO album",
+                            "title": "Makedonija - VSCO album",
                             "country": "Makedonija",
                             "text": "Planine, samostani, gradski život i krajolici.",
                             "medium": "Fotografija"
                         },
                         "tr": {
-                            "title": "Makedonya — VSCO albümü",
+                            "title": "Makedonya - VSCO albümü",
                             "country": "Makedonya",
                             "text": "Dağlar, manastırlar, şehir hayatı ve manzaralar.",
                             "medium": "Fotoğrafçılık"
@@ -124,25 +124,25 @@
                     },
                     "locales": {
                         "en": {
-                            "title": "Greece — VSCO Album",
+                            "title": "Greece - VSCO Album",
                             "country": "Greece",
                             "text": "Blue seas, islands, and sun-drenched villages.",
                             "medium": "Photography"
                         },
                         "de": {
-                            "title": "Griechenland — VSCO-Album",
+                            "title": "Griechenland - VSCO-Album",
                             "country": "Griechenland",
                             "text": "Blaue Meere, Inseln und sonnenverwöhnte Dörfer.",
                             "medium": "Fotografie"
                         },
                         "hr": {
-                            "title": "Grčka — VSCO album",
+                            "title": "Grčka - VSCO album",
                             "country": "Grčka",
                             "text": "Plava mora, otoci i suncem okupana sela.",
                             "medium": "Fotografija"
                         },
                         "tr": {
-                            "title": "Yunanistan — VSCO albümü",
+                            "title": "Yunanistan - VSCO albümü",
                             "country": "Yunanistan",
                             "text": "Mavi denizler, adalar ve güneşle yıkanmış köyler.",
                             "medium": "Fotoğrafçılık"
@@ -171,25 +171,25 @@
                     },
                     "locales": {
                         "en": {
-                            "title": "Bulgaria — VSCO Album",
+                            "title": "Bulgaria - VSCO Album",
                             "country": "Bulgaria",
                             "text": "Urban and Black Sea — contemporary and classic moments.",
                             "medium": "Photography"
                         },
                         "de": {
-                            "title": "Bulgarien — VSCO-Album",
+                            "title": "Bulgarien - VSCO-Album",
                             "country": "Bulgarien",
                             "text": "Stadt und Schwarzes Meer — zeitgenössische und klassische Momente.",
                             "medium": "Fotografie"
                         },
                         "hr": {
-                            "title": "Bugarska — VSCO album",
+                            "title": "Bugarska - VSCO album",
                             "country": "Bugarska",
                             "text": "Grad i Crno more — suvremeni i klasični trenuci.",
                             "medium": "Fotografija"
                         },
                         "tr": {
-                            "title": "Bulgaristan — VSCO albümü",
+                            "title": "Bulgaristan - VSCO albümü",
                             "country": "Bulgaristan",
                             "text": "Şehir ve Karadeniz — modern ve klasik anlar.",
                             "medium": "Fotoğrafçılık"
@@ -217,25 +217,25 @@
                     },
                     "locales": {
                         "en": {
-                            "title": "Serbia — VSCO Album",
+                            "title": "Serbia - VSCO Album",
                             "country": "Serbia",
                             "text": "Belgrade, brutalism, neighborhoods, and night views.",
                             "medium": "Photography"
                         },
                         "de": {
-                            "title": "Serbien — VSCO-Album",
+                            "title": "Serbien - VSCO-Album",
                             "country": "Serbien",
                             "text": "Belgrad, Brutalismus, Viertel und Nachtansichten.",
                             "medium": "Fotografie"
                         },
                         "hr": {
-                            "title": "Srbija — VSCO album",
+                            "title": "Srbija - VSCO album",
                             "country": "Srbija",
                             "text": "Beograd, brutalizam, kvartovi i noćni prizori.",
                             "medium": "Fotografija"
                         },
                         "tr": {
-                            "title": "Sırbistan — VSCO albümü",
+                            "title": "Sırbistan - VSCO albümü",
                             "country": "Sırbistan",
                             "text": "Belgrad, brutalist mimari, mahalleler ve gece manzaraları.",
                             "medium": "Fotoğrafçılık"
@@ -263,25 +263,25 @@
                     },
                     "locales": {
                         "en": {
-                            "title": "Bosnia — VSCO Album",
+                            "title": "Bosnia - VSCO Album",
                             "country": "Bosnia and Herzegovina",
                             "text": "Sarajevo, bridges and rivers—history and modern life.",
                             "medium": "Photography"
                         },
                         "de": {
-                            "title": "Bosnien — VSCO-Album",
+                            "title": "Bosnien - VSCO-Album",
                             "country": "Bosnien und Herzegowina",
                             "text": "Sarajevo, Brücken und Flüsse—Geschichte und modernes Leben.",
                             "medium": "Fotografie"
                         },
                         "hr": {
-                            "title": "Bosna — VSCO album",
+                            "title": "Bosna - VSCO album",
                             "country": "Bosna i Hercegovina",
                             "text": "Sarajevo, mostovi i rijeke—povijest i suvremeni život.",
                             "medium": "Fotografija"
                         },
                         "tr": {
-                            "title": "Bosna — VSCO albümü",
+                            "title": "Bosna - VSCO albümü",
                             "country": "Bosna-Hersek",
                             "text": "Saraybosna, köprüler ve nehirler—tarih ile modern yaşamın buluşması.",
                             "medium": "Fotoğrafçılık"
@@ -310,25 +310,25 @@
                     },
                     "locales": {
                         "en": {
-                            "title": "Croatia — VSCO Album",
+                            "title": "Croatia - VSCO Album",
                             "country": "Croatia",
                             "text": "Islands, Adriatic color, street moments from Split to Dubrovnik.",
                             "medium": "Photography"
                         },
                         "de": {
-                            "title": "Kroatien — VSCO-Album",
+                            "title": "Kroatien - VSCO-Album",
                             "country": "Kroatien",
                             "text": "Inseln, Adriatische Farben und Straßenszenen von Split bis Dubrovnik.",
                             "medium": "Fotografie"
                         },
                         "hr": {
-                            "title": "Hrvatska — VSCO album",
+                            "title": "Hrvatska - VSCO album",
                             "country": "Hrvatska",
                             "text": "Otoci, boje Jadrana i ulični trenuci od Splita do Dubrovnika.",
                             "medium": "Fotografija"
                         },
                         "tr": {
-                            "title": "Hırvatistan — VSCO albümü",
+                            "title": "Hırvatistan - VSCO albümü",
                             "country": "Hırvatistan",
                             "text": "Adalar, Adriyatik renkleri ve Split’ten Dubrovnik’e uzanan sokak anları.",
                             "medium": "Fotoğrafçılık"
@@ -359,25 +359,25 @@
                     },
                     "locales": {
                         "en": {
-                            "title": "Germany — VSCO Album",
+                            "title": "Germany - VSCO Album",
                             "country": "Germany",
                             "text": "Urban Hessen, culture, skylines, and city parks.",
                             "medium": "Photography"
                         },
                         "de": {
-                            "title": "Deutschland — VSCO-Album",
+                            "title": "Deutschland - VSCO-Album",
                             "country": "Deutschland",
                             "text": "Urbanes Hessen, Kultur, Skylines und Stadtparks.",
                             "medium": "Fotografie"
                         },
                         "hr": {
-                            "title": "Njemačka — VSCO album",
+                            "title": "Njemačka - VSCO album",
                             "country": "Njemačka",
                             "text": "Urbani Hessen, kultura, gradski horizonti i parkovi.",
                             "medium": "Fotografija"
                         },
                         "tr": {
-                            "title": "Almanya — VSCO albümü",
+                            "title": "Almanya - VSCO albümü",
                             "country": "Almanya",
                             "text": "Kentsel Hessen, kültür, gökdelen siluetleri ve şehir parkları.",
                             "medium": "Fotoğrafçılık"

@@ -4,28 +4,28 @@
       "en": {
         "title_short": "Hardware & Making",
         "title_short_nav": "Hardware",
-        "title_short_tooltip": "Physical",
+        "title_short_tooltip": "Physical projects",
         "title_long_prefix": "Built with tools, patience and precision",
         "title_long": "Here are {{my silicons}}"
       },
       "de": {
         "title_short": "Hardware & Basteln",
         "title_short_nav": "Hardware",
-        "title_short_tooltip": "Physisch",
+        "title_short_tooltip": "Physische Projekte",
         "title_long_prefix": "Gebaut mit Werkzeugen, Geduld und Präzision",
         "title_long": "Hier sind {{meine Siliziume}}"
       },
       "hr": {
         "title_short": "Hardver i izrada",
         "title_short_nav": "Hardver",
-        "title_short_tooltip": "Fizičko",
+        "title_short_tooltip": "Fizički projekti",
         "title_long_prefix": "Izrađena s alatom, strpljenjem i preciznošću",
         "title_long": "Evo {{mojih silicija}}"
       },
       "tr": {
         "title_short": "Donanım ve Yapım",
         "title_short_nav": "Donanım",
-        "title_short_tooltip": "Fiziksel",
+        "title_short_tooltip": "Fiziksel projeler",
         "title_long_prefix": "Alet, sabır ve hassasiyetle inşa edildi",
         "title_long": "İşte {{benim silisyumlarım}}"
       }
@@ -615,19 +615,19 @@
       "component": "ArticleDataProbe",
       "locales": {
         "en": {
-          "title": "Hardware Fingerprint Explorer",
+          "title": "Hardware Tracking Explorer",
           "description": "An experimental browser tool that lets you see what a site can learn about your device, browser, network, and system before and after you grant permissions."
         },
         "de": {
-          "title": "Explorer für Hardware-Fingerabdrücke",
+          "title": "Hardware-Tracking-Explorer",
           "description": "Ein experimentelles Browser-Tool, das zeigt, was eine Website über Gerät, Browser, Netzwerk und System erkennen kann, bevor und nachdem Berechtigungen erteilt werden."
         },
         "hr": {
-          "title": "Istraživač hardverskog otiska",
+          "title": "Istraživač hardverskog praćenja",
           "description": "Eksperimentalni alat u pregledniku koji prikazuje što stranica može saznati o uređaju, pregledniku, mreži i sustavu prije i nakon dodjele dopuštenja."
         },
         "tr": {
-          "title": "Donanım Parmak İzi Gezgini",
+          "title": "Donanım Takip Gezgini",
           "description": "Bir sitenin izinlerden önce ve sonra cihaz, tarayıcı, ağ ve sistem hakkında neleri öğrenebildiğini gösteren deneysel bir tarayıcı aracı."
         }
       },

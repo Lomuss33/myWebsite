@@ -675,19 +675,19 @@
                     },
                     "locales": {
                       "en": {
-                        "title": "{{AEVO}} Certification (Incoming)",
+                        "title": "{{AEVO}} Certification",
                         "text": "The IHK AEVO qualification is planned for July 2026, with certification expected in September 2026. It authorizes me as a certified instructor to train apprentices in Germany."
                       },
                       "de": {
-                        "title": "{{AEVO}}-Zertifikat (Anstehend)",
+                        "title": "{{AEVO}}-Zertifikat",
                         "text": "Die IHK-AEVO-Qualifikation ist fuer Juli 2026 geplant, das Zertifikat wird im September 2026 erwartet. Sie berechtigt mich als zertifizierten Ausbilder zur Ausbildung von Auszubildenden in Deutschland."
                       },
                       "hr": {
-                        "title": "{{AEVO}} certifikat (Nadolazeci)",
+                        "title": "{{AEVO}} certifikat",
                         "text": "IHK AEVO kvalifikacija planirana je za srpanj 2026., a certifikat se ocekuje u rujnu 2026. Time se stjece ovlast za strucno osposobljavanje pripravnika u Njemackoj."
                       },
                       "tr": {
-                        "title": "{{AEVO}} sertifikasi (Yaklasan)",
+                        "title": "{{AEVO}} sertifikasi",
                         "text": "IHK AEVO yeterliligi Temmuz 2026 icin planlandi, sertifikanin ise Eylul 2026'da gelmesi bekleniyor. Bu belge Almanya'da cirak egitimi verebilen sertifikali bir egitici olma yetkisi saglar."
                       }
                     }
@@ -704,28 +704,28 @@
                     },
                     "date": {
                         "year": 2026,
-                        "month": 6
+                        "month": 12
                     },
                     "link": {
-                        "href": "",
-                        "tooltipString": ""
+                        "href": "https://learningnetwork.cisco.com/s/ccna-exam-topics",
+                        "tooltipString": "open_website"
                     },
                     "locales": {
                       "en": {
-                        "title": "{{CCNA}} Certification (Incoming)",
-                        "text": "Preparing for the Cisco CCNA exam with a target date of June 2026, focused on network fundamentals, security, and automation."
+                        "title": "{{CCNA}} Certification",
+                        "text": "Preparing for the Cisco CCNA exam with a target date of December 2026, focused on network fundamentals, security, and automation."
                       },
                       "de": {
-                        "title": "{{CCNA}}-Zertifikat (Anstehend)",
-                        "text": "Vorbereitung auf die Cisco-CCNA-Prüfung mit geplantem Termin im Juni 2026; Schwerpunkt auf Netzwerkgrundlagen, Sicherheit und Automatisierung."
+                        "title": "{{CCNA}}-Zertifikat",
+                        "text": "Vorbereitung auf die Cisco-CCNA-Prüfung mit geplantem Termin im Dezember 2026; Schwerpunkt auf Netzwerkgrundlagen, Sicherheit und Automatisierung."
                       },
                       "hr": {
-                        "title": "{{CCNA}} certifikat (Nadolazeci)",
-                        "text": "Pripremam se za Cisco CCNA ispit s planiranim rokom u lipnju 2026., s fokusom na mrežne osnove, sigurnost i automatizaciju."
+                        "title": "{{CCNA}} certifikat",
+                        "text": "Pripremam se za Cisco CCNA ispit s planiranim rokom u prosincu 2026., s fokusom na mrežne osnove, sigurnost i automatizaciju."
                       },
                       "tr": {
-                        "title": "{{CCNA}} sertifikasi (Yaklasan)",
-                        "text": "Haziran 2026 hedefli Cisco CCNA sınavına hazırlanıyorum; odak alanlarım ağ temelleri, güvenlik ve otomasyon."
+                        "title": "{{CCNA}} sertifikasi",
+                        "text": "Aralık 2026 hedefli Cisco CCNA sınavına hazırlanıyorum; odak alanlarım ağ temelleri, güvenlik ve otomasyon."
                       }
                     }
                 }

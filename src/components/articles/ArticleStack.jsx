@@ -19,7 +19,7 @@ const HOME_STACK_POPUP_COPY = {
         6: "Full manual input support. Handy for typing, wiring, fixing, and ambitious ideas.",
         7: "Close enough to sharp to catch details, patterns, and the tiny issue that breaks the nice-looking system.",
         8: "Thermally stable, pleasantly warm, and not prone to dramatic overheating under normal load.",
-        9: "One upgrade in the chassis. Small number, but it keeps the system moving in the right direction.",
+        9: "Joke answer: it is just a dental implant that cost me an arm and a leg. No chips inside me, unless we are talking potato chips.",
         10: "A lot of internal cabling, honestly. Respect to the original biological routing team.",
         11: "Generous storage, with the usual human indexing: brilliant connections, selective recall, and the occasional mystery.",
         12: "Quiet background maintenance. The body likes fast refresh cycles and shipping updates without a big announcement.",
@@ -45,7 +45,7 @@ const HOME_STACK_POPUP_COPY = {
         6: "Volle Hand-Eingabe vorhanden. Praktisch zum Tippen, Verdrahten, Reparieren und Anpacken.",
         7: "Nahe genug an scharf, um Details, Muster und den winzigen Fehler zu sehen, der alles kaputt macht.",
         8: "Thermisch stabil, angenehm warm und bei normaler Last nicht zu Drama-Neigung.",
-        9: "Ein Upgrade im Chassis. Kleine Zahl, aber sie hält das System in die richtige Richtung.",
+        9: "Kleiner Scherz: Es ist nur ein Zahnimplantat, das mich ein Vermögen gekostet hat. Keine Chips in mir, außer wir reden über Kartoffelchips.",
         10: "Ehrlich gesagt ziemlich viel interne Verkabelung. Respekt an das biologische Routing-Team.",
         11: "Großzügiger Speicher mit typischer Menschen-Indexierung: geniale Verknüpfungen, selektives Erinnern und gelegentliche Rätsel.",
         12: "Stille Hintergrundwartung. Der Körper mag schnelle Refresh-Zyklen und Updates ohne großes Tamtam.",
@@ -71,7 +71,7 @@ const HOME_STACK_POPUP_COPY = {
         6: "Puna ručna upravljačka podrška. Korisno za tipkanje, spajanje, popravljanje i velike ideje.",
         7: "Dovoljno oštro za detalje, uzorke i onaj sitni problem koji sruši lijepu cjelinu.",
         8: "Toplinski stabilan, ugodno topao i bez sklonosti drami pri normalnom opterećenju.",
-        9: "Jedna nadogradnja u šasiji. Malo, ali dovoljno da sustav ide u pravom smjeru.",
+        9: "Mala šala: to je samo zubni implantat koji me koštao ruku i nogu. Nema čipova u meni, osim ako pričamo o čipsu.",
         10: "Iskreno, ima dosta unutarnjeg kabliranja. Respect originalnom biološkom timu za routanje.",
         11: "Dosta memorije, uz uobičajeni ljudski indeks: genijalne veze, selektivno pamćenje i pokoja misterija.",
         12: "Tiho pozadinsko održavanje. Tijelo voli brze cikluse osvježavanja i ažuriranja bez pompe.",
@@ -97,7 +97,7 @@ const HOME_STACK_POPUP_COPY = {
         6: "Tam el girişi desteği. Yazmak, kablolamak, tamir etmek ve büyük fikirler için kullanışlı.",
         7: "Detayları, kalıpları ve güzel görünen sistemi bozan minicik sorunu yakalayacak kadar keskin.",
         8: "Isıl olarak dengeli, hoş sıcak ve normal yükte dramatik ısınmaya meyilli değil.",
-        9: "Şaside bir yükseltme. Sayı küçük ama sistemi doğru yönde tutmaya yetiyor.",
+        9: "Küçük bir şaka: sadece bana çok pahalıya mal olan bir diş implantı. İçimde çip yok, patates cipsinden bahsetmiyorsak tabii.",
         10: "Dürüst olmak gerekirse bayağı iç kablolama var. Orijinal biyolojik yönlendirme ekibine saygı.",
         11: "Cömert bir bellek alanı; parlak bağlantılar, seçici hatırlama ve ara sıra gizemli geri çağırma.",
         12: "Sessiz arka plan bakımı. Vücut hızlı yenileme döngülerini ve duyuru yapmadan güncelleme çıkarmayı seviyor.",
@@ -274,6 +274,7 @@ function ArticleStackItems({ dataWrapper, selectedItemCategoryId, isHomeStack, i
     const stackClassName = `article-stack-items ${homeClass} ${compactClass}`.trim()
     const renderedItems = visibleItems.map((itemWrapper, key) => (
         <ArticleStackItem itemWrapper={itemWrapper}
+                          articleId={dataWrapper.uniqueId}
                           isHomeStack={isHomeStack}
                           isCompactStack={isCompactStack}
                           key={key}/>
@@ -337,12 +338,16 @@ function ArticleStackItems({ dataWrapper, selectedItemCategoryId, isHomeStack, i
  * @return {JSX.Element}
  * @constructor
  */
-function ArticleStackItem({ itemWrapper, isHomeStack, isCompactStack }) {
+function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack }) {
     const language = useLanguage()
     const viewport = useViewport()
     const selectedLanguageId = language.getSelectedLanguage()?.id || "en"
     const title = itemWrapper.locales.title || itemWrapper.placeholder
     const segmentedTitle = _splitTitle(title)
+    const displaySegmentedTitle = articleId === "article-4-section-my-art" ? {
+        ...segmentedTitle,
+        value: _breakTitleAfterSecondWord(segmentedTitle.value)
+    } : segmentedTitle
     const homeClass = isHomeStack ? `article-stack-item-home` : ``
     const compactClass = isCompactStack ? `article-stack-item-compact` : ``
     const linkHref = itemWrapper.link?.href
@@ -548,13 +553,13 @@ function ArticleStackItem({ itemWrapper, isHomeStack, isCompactStack }) {
 
             <div className={`article-stack-item-home-content`}>
                 <div className={`article-stack-item-title`}>
-                    {segmentedTitle.prefix && (
+                    {displaySegmentedTitle.prefix && (
                         <div className={`article-stack-item-title-prefix`}
-                             dangerouslySetInnerHTML={{__html: segmentedTitle.prefix}}/>
+                             dangerouslySetInnerHTML={{__html: displaySegmentedTitle.prefix}}/>
                     )}
 
                     <div className={`article-stack-item-title-main`}
-                         dangerouslySetInnerHTML={{__html: segmentedTitle.value}}/>
+                         dangerouslySetInnerHTML={{__html: displaySegmentedTitle.value}}/>
                 </div>
 
                 <div className={`article-stack-item-home-content-body ${bubbleClass}`.trim()}>
@@ -567,13 +572,13 @@ function ArticleStackItem({ itemWrapper, isHomeStack, isCompactStack }) {
             {avatar}
 
             <div className={`article-stack-item-title`}>
-                {segmentedTitle.prefix && (
+                {displaySegmentedTitle.prefix && (
                     <div className={`article-stack-item-title-prefix`}
-                         dangerouslySetInnerHTML={{__html: segmentedTitle.prefix}}/>
+                         dangerouslySetInnerHTML={{__html: displaySegmentedTitle.prefix}}/>
                 )}
 
                 <div className={`article-stack-item-title-main`}
-                     dangerouslySetInnerHTML={{__html: segmentedTitle.value}}/>
+                     dangerouslySetInnerHTML={{__html: displaySegmentedTitle.value}}/>
             </div>
 
             {defaultBodyContent}
@@ -626,6 +631,29 @@ function _splitTitle(title) {
         prefix: normalizedTitle.slice(0, separatorIndex).trim(),
         value: normalizedTitle.slice(separatorIndex + 1).trim()
     }
+}
+
+function _breakTitleAfterSecondWord(titleHtml) {
+    const normalizedTitle = titleHtml || ""
+    const anchorMatch = normalizedTitle.match(/^(<a\b[^>]*>)([\s\S]*?)(<\/a>)$/i)
+
+    if(anchorMatch) {
+        return `${anchorMatch[1]}${_breakPlainTitleAfterSecondWord(anchorMatch[2])}${anchorMatch[3]}`
+    }
+
+    return _breakPlainTitleAfterSecondWord(normalizedTitle)
+}
+
+function _breakPlainTitleAfterSecondWord(titleText) {
+    const words = String(titleText || "").trim().split(/\s+/).filter(Boolean)
+
+    if(words.length <= 2)
+        return titleText
+
+    const firstLine = words.slice(0, 2).join(" ")
+    const secondLine = words.slice(2).join(" ")
+
+    return `${firstLine}<br/><span class="article-stack-item-title-continuation">${secondLine}</span>`
 }
 
 export default ArticleStack

@@ -7,6 +7,8 @@ ul.article-timeline-items {
     --timeline-line-width: 4px;
     --gap-between-avatar-and-content: 16px;
     --avatar-offset-merge-mode: 6px;
+    --timeline-line-top-trim: 0px;
+    --timeline-line-bottom-trim: 0px;
 
     @include media-breakpoint-down(lg) {
         --min-gap-between-items: 18px;
@@ -44,16 +46,16 @@ ul.article-timeline-items {
 ul.article-timeline-items:before {
     position: absolute;
     content: "";
-    top: var(--timeline-line-top-offset, calc(var(--avatar-size)/2));
-    bottom: var(--timeline-line-bottom-offset, calc(var(--avatar-size)/2));
+    top: calc(var(--timeline-line-top-offset, calc(var(--avatar-size)/2)) + var(--timeline-line-top-trim));
+    bottom: calc(var(--timeline-line-bottom-offset, calc(var(--avatar-size)/2)) + var(--timeline-line-bottom-trim));
     width: var(--timeline-line-width);
     background-color: var(--theme-timeline-line-color);
     left: calc(var(--avatar-size)/2 - var(--timeline-line-width)/2);
     z-index: 0;
 
     @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
-        top: calc(var(--timeline-line-top-offset, calc(var(--avatar-size)/2)) - var(--avatar-offset-merge-mode));
-        bottom: calc(var(--timeline-line-bottom-offset, calc(var(--avatar-size)/2)) - var(--avatar-offset-merge-mode));
+        top: calc(var(--timeline-line-top-offset, calc(var(--avatar-size)/2)) + var(--timeline-line-top-trim) - var(--avatar-offset-merge-mode));
+        bottom: calc(var(--timeline-line-bottom-offset, calc(var(--avatar-size)/2)) + var(--timeline-line-bottom-trim) - var(--avatar-offset-merge-mode));
     }
 }
 
@@ -189,6 +191,16 @@ article.article-timeline--my-art {
         align-items: stretch;
     }
 
+    div.collapsable-menu {
+        margin-top: clamp(2.6rem, 5vw, 4.75rem);
+    }
+
+    @include media-breakpoint-down(md) {
+        div.collapsable-menu {
+            margin-top: clamp(2rem, 8vw, 3rem);
+        }
+    }
+
     div.article-timeline-item-avatar-wrapper {
         align-items: center;
     }
@@ -211,24 +223,26 @@ article.article-timeline--my-art {
 
 article#article-1-section-education {
     ul.article-timeline-items {
-        --avatar-size: 144px;
+        --avatar-size: 188px;
         --avatar-border-width: 4px;
         --timeline-line-width: 4px;
-        --gap-between-avatar-and-content: 20px;
+        --gap-between-avatar-and-content: 24px;
+        --timeline-line-top-trim: clamp(18px, calc(var(--avatar-size) * 0.16), 30px);
+        --timeline-line-bottom-trim: clamp(18px, calc(var(--avatar-size) * 0.16), 30px);
 
         @include media-breakpoint-down(lg) {
-            --avatar-size: 120px;
-            --gap-between-avatar-and-content: 18px;
+            --avatar-size: 156px;
+            --gap-between-avatar-and-content: 22px;
         }
 
         @include media-breakpoint-down(md) {
-            --avatar-size: 108px;
-            --gap-between-avatar-and-content: 16px;
+            --avatar-size: 140px;
+            --gap-between-avatar-and-content: 20px;
         }
 
         @include media-breakpoint-down(sm) {
-            --avatar-size: 84px;
-            --gap-between-avatar-and-content: 14px;
+            --avatar-size: 110px;
+            --gap-between-avatar-and-content: 16px;
             --avatar-offset-merge-mode: 0px;
         }
     }
@@ -704,6 +718,8 @@ article#article-1-section-experience {
             --experience-rail-width: 60px;
             --experience-edge-gap: 0px;
             --experience-avatar-vertical-offset: 0px;
+            --experience-line-cap-trim-top: calc(var(--experience-avatar-size) * -0.18);
+            --experience-line-cap-trim-bottom: calc(var(--experience-avatar-size) * -0.18);
             --experience-card-overlap: calc(var(--experience-avatar-size) * 0.34);
             --experience-avatar-scale-resting: 1.04;
             --experience-avatar-scale-active: 1.08;
@@ -1072,27 +1088,46 @@ article.article-timeline--art-photography {
 
     @include media-breakpoint-up(md) {
         ul.article-timeline-items {
-            --photography-row-size: clamp(13rem, 17vw, 18rem);
+            --photography-row-size: clamp(11rem, 14.45vw, 15.3rem);
+            --photo-action-size: calc((var(--photography-row-size) - var(--photo-action-gap)) / 2);
+            --photo-action-gap: clamp(0.48rem, 0.74vw, 0.72rem);
+            --photo-action-rail-width: calc(var(--photo-action-size) + clamp(0.7rem, 0.8vw, 0.95rem));
+            --photography-side-buffer: clamp(1rem, 3.2vw, 3.25rem);
             --photography-card-width: min(
-                clamp(41.5rem, 65vw, 54.5rem),
-                calc(100vw - var(--photography-row-size) - var(--gap-between-avatar-and-content) - clamp(3rem, 6vw, 5rem))
+                clamp(33rem, 52vw, 43.5rem),
+                calc(100vw - var(--photography-row-size) - var(--photo-action-rail-width) - (var(--gap-between-avatar-and-content) * 2) - clamp(3rem, 6vw, 5rem))
             );
             --avatar-size: var(--photography-row-size);
-            width: fit-content;
-            max-width: calc(100% - clamp(1.25rem, 4vw, 3.5rem));
+            width: min(100%, 104rem);
+            max-width: calc(100% - (var(--photography-side-buffer) * 2));
             margin-inline: auto;
-            padding-right: clamp(0.7rem, 1.8vw, 1.4rem);
+            align-items: stretch;
+
+            &::before {
+                display: none;
+            }
         }
 
         li.article-timeline-item {
             width: fit-content;
             max-width: 100%;
+            align-items: stretch;
+            gap: var(--gap-between-avatar-and-content);
+        }
+
+        li.article-timeline-item:nth-child(odd) {
+            align-self: flex-start;
+        }
+
+        li.article-timeline-item:nth-child(even) {
+            align-self: flex-end;
         }
 
         div.article-timeline-item-avatar-wrapper {
             width: var(--photography-row-size);
             min-width: var(--photography-row-size);
             align-items: center;
+            order: 1;
         }
 
         a.article-timeline-item-avatar-link,
@@ -1114,6 +1149,52 @@ article.article-timeline--art-photography {
             width: var(--photography-card-width);
             max-width: var(--photography-card-width);
             min-height: var(--photography-row-size);
+            margin-left: 0!important;
+            order: 2;
+        }
+
+        div.article-timeline-item-info-preview-footer {
+            flex: 0 0 var(--photo-action-rail-width);
+            width: var(--photo-action-rail-width);
+            min-width: var(--photo-action-rail-width);
+            min-height: var(--photography-row-size);
+            margin: 0;
+            order: 3;
+        }
+
+        li.article-timeline-item:nth-child(even) {
+            div.article-timeline-item-info-for-timelines {
+                text-align: right;
+            }
+
+            div.article-timeline-item-info-for-timelines-header-main {
+                justify-content: flex-end;
+
+                h5 {
+                    flex-grow: 0;
+                }
+            }
+
+            div.article-timeline-item-info-for-timelines-header-meta-band,
+            ul.article-timeline-item-info-for-timelines-header-prop-list {
+                justify-content: flex-end;
+            }
+
+            ul.article-timeline-item-info-for-timelines-header-prop-list {
+                margin-left: auto;
+            }
+
+            div.article-timeline-item-info-for-timelines-body {
+                align-items: flex-end;
+            }
+
+            div.article-timeline-item-info-preview-footer {
+                order: 1;
+            }
+
+            div.article-timeline-item-avatar-wrapper {
+                order: 3;
+            }
         }
     }
 

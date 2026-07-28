@@ -3,29 +3,29 @@
         "locales": {
             "en": {
                 "title_short": "Experience",
-                "title_short_nav": "Experience",
-                "title_short_tooltip": "Work",
+                "title_short_nav": "Work",
+                "title_short_tooltip": "Experience",
                 "title_long_prefix": "A never-ending story of",
                 "title_long": "{{Building}} and {{Learning}}"
             },
             "de": {
                 "title_short": "Erfahrung",
-                "title_short_nav": "Erfahrung",
-                "title_short_tooltip": "Arbeit",
+                "title_short_nav": "Arbeit",
+                "title_short_tooltip": "Erfahrung",
                 "title_long_prefix": "Eine niemals endende Geschichte von",
                 "title_long": "{{Bauen}} und {{Lernen}}"
             },
             "hr": {
                 "title_short": "Iskustvo",
-                "title_short_nav": "Iskustvo",
-                "title_short_tooltip": "Rad",
+                "title_short_nav": "Rad",
+                "title_short_tooltip": "Iskustvo",
                 "title_long_prefix": "Nikad završna priča o",
                 "title_long": "{{Gradnji}} i {{učenju}}"
             },
             "tr": {
                 "title_short": "Deneyim",
-                "title_short_nav": "Deneyim",
-                "title_short_tooltip": "İş",
+                "title_short_nav": "İş",
+                "title_short_tooltip": "Deneyim",
                 "title_long_prefix": "Sonsuz bir hikaye",
                 "title_long": "İnşa {{etmek}} ve {{öğrenmek}}"
             }

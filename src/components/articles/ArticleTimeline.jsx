@@ -623,7 +623,7 @@ function ArticleTimelineItem({
         isExperienceTimeline ?
             "(min-width: 2000px) 184px, (max-width: 575.98px) 96px, (max-width: 767.98px) 104px, (max-width: 991.98px) 164px, (max-width: 1199.98px) 192px, 208px" :
         isEducationTimeline ?
-            "(max-width: 575.98px) 84px, (max-width: 767.98px) 108px, (max-width: 991.98px) 120px, 144px" :
+            "(max-width: 575.98px) 110px, (max-width: 767.98px) 140px, (max-width: 991.98px) 156px, 188px" :
             "(max-width: 575.98px) 42px, (max-width: 767.98px) 54px, (max-width: 991.98px) 60px, 72px"
     const shouldInterceptGalleryTap = Boolean(isExperienceTimeline && usesTapOverlay && !isOverlayActive)
     const experienceItemClass = isExperienceTimeline ? "article-timeline-item--experience" : ""
@@ -646,6 +646,9 @@ function ArticleTimelineItem({
     const contentClass = isExperienceTimeline ?
         "article-timeline-item-content article-timeline-item-content--experience" :
         "article-timeline-item-content"
+    const previewFooter = !isWritingsTimeline && !isPhotographyTimeline ? (
+        <ArticleItemInfoForTimelinesPreviewFooter itemWrapper={itemWrapper}/>
+    ) : null
     const overlayActionLabel = itemWrapper?.imageAlt || itemWrapper.locales?.title || language.getString("get_to_know_more")
     const avatarActionLabel = primaryAvatarLink?.tooltip || primaryPreviewLink?.tooltip || overlayActionLabel
     const photographyCountryStyle = isPhotographyTimeline ?
@@ -729,6 +732,7 @@ function ArticleTimelineItem({
                                                    dateInterval={shouldShowDateInterval}
                                                    metaEnd={writingPreviewFooter}
                                                    forceDateInMetaBand={isWritingsTimeline}
+                                                   dateOnlyMeta={isPhotographyTimeline}
                                                    showMeta={!isDigitalExpressionTimeline}/>
 
                 <ArticleItemInfoForTimelinesBody itemWrapper={itemWrapper}
@@ -736,10 +740,17 @@ function ArticleTimelineItem({
                                                  isEducationExpanded={isEducationExpanded}
                                                  onEducationExpand={onEducationExpand}/>
 
-                {!isWritingsTimeline && (
-                    <ArticleItemInfoForTimelinesPreviewFooter itemWrapper={itemWrapper}/>
+                {previewFooter}
+                {isPhotographyTimeline && !isWritingsTimeline && (
+                    <ArticleItemInfoForTimelinesPreviewFooter itemWrapper={itemWrapper}
+                                                              className={`article-timeline-item-info-preview-footer--mobile-card`}/>
                 )}
             </ArticleItemInfoForTimelines>
+
+            {isPhotographyTimeline && !isWritingsTimeline && (
+                <ArticleItemInfoForTimelinesPreviewFooter itemWrapper={itemWrapper}
+                                                          className={`article-timeline-item-info-preview-footer--outside`}/>
+            )}
         </li>
     )
 }

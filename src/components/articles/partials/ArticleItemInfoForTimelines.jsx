@@ -36,10 +36,11 @@ function ArticleItemInfoForTimelines({ children, itemWrapper, countryStyle = nul
  * @param {JSX.Element|null} metaEnd
  * @param {Boolean} forceDateInMetaBand
  * @param {Boolean} showMeta
+ * @param {Boolean} dateOnlyMeta
  * @return {JSX.Element}
  * @constructor
  */
-function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateInterval = false, metaEnd = null, forceDateInMetaBand = false, showMeta = true }) {
+function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateInterval = false, metaEnd = null, forceDateInMetaBand = false, showMeta = true, dateOnlyMeta = false }) {
     const viewport = useViewport()
     const shouldForceDateInMetaBand = forceDateInMetaBand ||
         Boolean(itemWrapper?.articleWrapper?.uniqueId?.includes("section-my-writings"))
@@ -61,7 +62,7 @@ function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateIn
         value: dateInterval ? [itemWrapper.dateStartDisplay, itemWrapper.dateEndDisplay] : [itemWrapper.dateStartDisplay]
     })
 
-    if(institution || location) {
+    if(!dateOnlyMeta && (institution || location)) {
         propListItems.push({
             faIcon: `fa-regular fa-building`,
             type: institution && location ? PropListItem.Types.DUO : PropListItem.Types.SINGLE,

@@ -398,6 +398,100 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
     }
 }
 
+@include media-breakpoint-up(md) {
+    article.article-timeline--art-photography div.article-timeline-item-info-for-timelines {
+        --timeline-title-size: clamp(1.32rem, 1.08rem + 0.68vw, 1.78rem);
+        --timeline-meta-size: clamp(1.05rem, 0.9rem + 0.42vw, 1.32rem);
+        --timeline-body-size: clamp(1.22rem, 1.02rem + 0.58vw, 1.6rem);
+        --header-gap: 0;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 3fr);
+        row-gap: clamp(0.35rem, 0.5vw, 0.62rem);
+        align-items: stretch;
+    }
+
+    article.article-timeline--art-photography div.article-timeline-item-info-for-timelines-header {
+        display: contents;
+    }
+
+    article.article-timeline--art-photography div.article-timeline-item-info-for-timelines-header-title {
+        grid-column: 1;
+        grid-row: 1;
+        align-self: end;
+        min-width: 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    article.article-timeline--art-photography div.article-timeline-item-info-for-timelines-header-main {
+        align-items: flex-end;
+        min-width: 0;
+    }
+
+    article.article-timeline--art-photography div.article-timeline-item-info-for-timelines-header-main h5 {
+        flex-basis: auto;
+        width: 100%;
+        max-width: 100%;
+        line-height: 1.05;
+        white-space: nowrap;
+    }
+
+    article.article-timeline--art-photography div.article-timeline-item-info-for-timelines-header-meta-band {
+        grid-column: 1;
+        grid-row: 2;
+        align-self: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    article.article-timeline--art-photography ul.article-timeline-item-info-for-timelines-header-prop-list {
+        font-weight: 600;
+        line-height: 1.18;
+    }
+
+    article.article-timeline--art-photography div.article-timeline-item-info-preview-footer--mobile-card {
+        display: none;
+    }
+
+    article.article-timeline--art-photography div.article-timeline-item-info-preview-footer--outside {
+        display: flex;
+        height: var(--photography-row-size);
+        min-height: var(--photography-row-size);
+        align-self: stretch;
+
+        div.article-item-preview-menu,
+        div.article-item-preview-menu-button-list {
+            height: 100%;
+        }
+
+        div.article-item-preview-menu-button-list {
+            justify-content: space-between;
+        }
+
+        a.article-item-preview-menu-link {
+            flex-basis: var(--photo-action-size);
+            width: var(--photo-action-size);
+            height: var(--photo-action-size);
+        }
+
+        button.article-item-preview-menu-circular-button,
+        button.article-item-preview-menu-website-button-compact {
+            width: var(--photo-action-size);
+            height: var(--photo-action-size);
+            min-width: var(--photo-action-size);
+            max-width: var(--photo-action-size);
+            min-height: var(--photo-action-size);
+            max-height: var(--photo-action-size);
+        }
+    }
+}
+
+@include media-breakpoint-down(md) {
+    article.article-timeline--art-photography div.article-timeline-item-info-preview-footer--outside {
+        display: none;
+    }
+}
+
 article.article-timeline--art-photography div.article-timeline-item-info-for-timelines[data-country-style="macedonia"] {
     --card-accent: #facc15;
     --card-accent-2: #ef4444;
@@ -531,6 +625,15 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
 
 article.article-timeline--art-photography div.article-timeline-item-info-for-timelines-body {
     grid-row: 2;
+}
+
+@include media-breakpoint-up(md) {
+    article.article-timeline--art-photography div.article-timeline-item-info-for-timelines-body {
+        grid-row: 3;
+        justify-content: center;
+        margin-top: 0;
+        line-height: 1.46;
+    }
 }
 
 article.article-timeline--art-photography div.article-timeline-item-info-preview-footer {

@@ -45,6 +45,7 @@ function ArticleItemPreviewMenu({ itemWrapper, className = "", spaceBetween }) {
                         <>
                             {validLinks.map((link, key) => (
                                 <ItemPreviewMenuCustomLinkButton link={link}
+                                                                 itemWrapper={itemWrapper}
                                                                  key={key}/>
                             ))}
                         </>
@@ -66,6 +67,7 @@ function ArticleItemPreviewMenu({ itemWrapper, className = "", spaceBetween }) {
                         })
                         .map((link, key) => (
                             <ItemPreviewMenuCustomLinkButton link={link}
+                                                             itemWrapper={itemWrapper}
                                                              key={key}/>
                         ))}
                 </div>
@@ -112,6 +114,13 @@ function ItemPreviewMenuGalleryButton({ itemWrapper }) {
 
     const screenshots = itemWrapper.preview?.screenshots
     const screenshotsAspectRatio = itemWrapper.preview?.screenshotsAspectRatio
+    const isPhotographyTimeline = itemWrapper?.articleWrapper?.settings?.timelineVariant === "art-photography"
+    const actionLabel = isPhotographyTimeline ?
+        "Open local photo album" :
+        language.getString("open_gallery")
+    const actionIcon = isPhotographyTimeline ?
+        "fa-regular fa-folder-open" :
+        "fa-solid fa-camera"
 
     const splitTitle = utils.string.extractFirstPart(itemWrapper.locales.title || "")
     const title = splitTitle.length < 35 ?
@@ -131,22 +140,24 @@ function ItemPreviewMenuGalleryButton({ itemWrapper }) {
         <Link href={"#gallery:open"}
               metadata={metadata}
               className={`article-item-preview-menu-link`}
-              tooltip={language.getString("watch_video")}>
+              tooltip={actionLabel}
+              ariaLabel={actionLabel}>
             <CircularButton variant={CircularButton.Variants.DARK}
                             size={CircularButton.Sizes.EXTRA_EXTRA_LARGE}
                             className={`article-item-preview-menu-circular-button`}
-                            tooltip={language.getString("open_gallery")}
-                            faIcon={`fa-solid fa-camera`}/>
+                            tooltip={actionLabel}
+                            faIcon={actionIcon}/>
         </Link>
     )
 }
 
-function ItemPreviewMenuCustomLinkButton({ link }) {
+function ItemPreviewMenuCustomLinkButton({ link, itemWrapper }) {
     const href = link.href
-    const tooltip = link.tooltip
-    const faIcon = link.faIcon
+    const presentation = getCustomLinkPresentation(link, itemWrapper)
+    const tooltip = presentation.tooltip
+    const faIcon = presentation.faIcon
     const isWebsiteAction = Boolean(link.isWebsiteAction)
-    const label = link.label || "visit Online"
+    const label = presentation.label
     const linkClassName = isWebsiteAction ?
         `article-item-preview-menu-link article-item-preview-menu-link-website` :
         `article-item-preview-menu-link`
@@ -154,7 +165,8 @@ function ItemPreviewMenuCustomLinkButton({ link }) {
     return (
         <Link href={href}
               className={linkClassName}
-              tooltip={tooltip}>
+              tooltip={tooltip}
+              ariaLabel={tooltip || label}>
             {isWebsiteAction ? (
                 <>
                     <StandardButton variant={`dark`}
@@ -186,4 +198,44 @@ export default ArticleItemPreviewMenu
 
 function isNonEmptyHref(href) {
     return typeof href === "string" && href.trim().length > 0
+}
+
+function getCustomLinkPresentation(link, itemWrapper) {
+    const isPhotographyTimeline = itemWrapper?.articleWrapper?.settings?.timelineVariant === "art-photography"
+    const siteName = isPhotographyTimeline ?
+        getExternalAlbumSiteName(link?.href) :
+        null
+    const isExternalAlbum = Boolean(siteName)
+    const label = isExternalAlbum ?
+        `${siteName} album` :
+        (link.label || "visit Online")
+    const tooltip = isExternalAlbum ?
+        `Open ${siteName} album` :
+        link.tooltip
+    const faIcon = isExternalAlbum ?
+        "fa-solid fa-arrow-up-right-from-square" :
+        link.faIcon
+
+    return {
+        label,
+        tooltip,
+        faIcon
+    }
+}
+
+function getExternalAlbumSiteName(href) {
+    if(typeof href !== "string" || !href.trim())
+        return null
+
+    try {
+        const hostName = new URL(href).hostname.replace(/^www\./, "")
+
+        if(hostName.includes("vsco.co"))
+            return "VSCO"
+
+        return hostName.split(".")[0]?.toUpperCase() || null
+    }
+    catch {
+        return null
+    }
 }

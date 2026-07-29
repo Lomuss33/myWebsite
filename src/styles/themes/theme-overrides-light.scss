@@ -1,14 +1,6 @@
-[data-theme="light"] {
-    --section-page-bg-light:
-        radial-gradient(circle at top left, rgba(37, 99, 235, 0.10) 0%, transparent 30%),
-        radial-gradient(circle at top right, rgba(245, 158, 11, 0.10) 0%, transparent 26%),
-        linear-gradient(180deg, #fbfdff 0%, #f8fafc 48%, #eef4fb 100%);
-}
-
 [data-theme="light"] section#section-about {
     --about-accent-blue: #7c3aed;
     --about-accent-gold: #ef4444;
-    background: var(--section-page-bg-light);
     color: #0f172a;
 }
 
@@ -49,7 +41,6 @@
     --education-title-end: #059669;
     --education-title-shadow: 0 14px 28px rgba(124, 58, 237, 0.13);
 
-    background: var(--section-page-bg-light);
     color: #0f172a;
 }
 
@@ -107,7 +98,6 @@
     --experience-title-end: #6d28d9;
     --experience-title-shadow: 0 14px 28px rgba(225, 29, 72, 0.12);
 
-    background: var(--section-page-bg-light);
     color: #0f172a;
 }
 
@@ -160,7 +150,6 @@
 }
 
 [data-theme="light"] section#section-my-software {
-    background: var(--section-page-bg-light);
     color: #0f172a;
 }
 
@@ -180,7 +169,6 @@
 }
 
 [data-theme="light"] section#section-my-hardware {
-    background: var(--section-page-bg-light);
     color: #0f172a;
 }
 
@@ -207,7 +195,6 @@
     --writings-title-alt-end: #6d28d9;
     --writings-title-shadow: 0 14px 28px rgba(180, 83, 9, 0.12);
 
-    background: var(--section-page-bg-light);
     color: #0f172a;
 }
 
@@ -248,7 +235,6 @@
 }
 
 [data-theme="light"] section#section-my-art {
-    background: var(--section-page-bg-light);
     color: #0f172a;
 }
 
@@ -1493,34 +1479,6 @@
     border-color: rgba(14, 165, 233, 0.28);
     color: #0f172a;
     box-shadow: 0 12px 24px rgba(15, 23, 42, 0.14), 0 0 0 1px rgba(255, 255, 255, 0.84);
-}
-
-[data-theme="light"] section#section-about {
-    background: var(--section-page-bg-light);
-}
-
-[data-theme="light"] section#section-education {
-    background: var(--section-page-bg-light);
-}
-
-[data-theme="light"] section#section-experience {
-    background: var(--section-page-bg-light);
-}
-
-[data-theme="light"] section#section-my-software {
-    background: var(--section-page-bg-light);
-}
-
-[data-theme="light"] section#section-my-hardware {
-    background: var(--section-page-bg-light);
-}
-
-[data-theme="light"] section#section-my-writings {
-    background: var(--section-page-bg-light);
-}
-
-[data-theme="light"] section#section-my-art {
-    background: var(--section-page-bg-light);
 }
 
 [data-theme="light"] section#section-contact {

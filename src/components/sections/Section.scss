@@ -2,10 +2,11 @@
 
 section.section {
     --section-page-bg-dark:
-        radial-gradient(circle at top left, rgba(78, 163, 255, 0.18) 0%, transparent 32%),
-        radial-gradient(circle at top right, rgba(250, 204, 21, 0.10) 0%, transparent 28%),
-        radial-gradient(circle at bottom right, rgba(78, 163, 255, 0.08) 0%, transparent 26%),
-        linear-gradient(180deg, #05070d 0%, #0a1020 46%, #111827 100%);
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, #101b31 94%, #12233d 6%) 0%,
+            color-mix(in srgb, #06101d 92%, #0b1628 8%) 100%
+        );
 
     grid-row-start: 1;
     grid-column-start: 1;
@@ -32,10 +33,18 @@ section.section {
     }
 }
 
+[data-theme="light"] section.section {
+    --section-page-bg-light:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, #ecf3fa 82%, #c9dff1 18%) 0%,
+            color-mix(in srgb, #ffffff 96%, #f6fafe 4%) 100%
+        );
+
+    background: var(--section-page-bg-light);
+}
+
 section#section-education {
-    --education-page-bg: #05070d;
-    --education-page-bg-2: #08111d;
-    --education-page-bg-3: #0d1422;
     --education-accent-blue: #4ea3ff;
     --education-accent-gold: #facc15;
     --education-title-start: #f8fafc;
@@ -46,7 +55,6 @@ section#section-education {
     --education-text-mid: #cbd5e1;
     --education-text-soft: #94a3b8;
 
-    background: var(--section-page-bg-dark);
     color: var(--education-text-strong);
 }
 
@@ -343,16 +351,12 @@ section#section-education article:is(
 }
 
 section#section-about {
-    --about-page-bg: #05070d;
-    --about-page-bg-2: #0a1020;
-    --about-page-bg-3: #111827;
     --about-accent-blue: #4ea3ff;
     --about-accent-gold: #facc15;
     --about-text-strong: #f8fafc;
     --about-text-mid: #cbd5e1;
     --about-text-soft: #94a3b8;
 
-    background: var(--section-page-bg-dark);
     color: var(--about-text-strong);
 }
 
@@ -383,9 +387,6 @@ section#section-about div.article-content {
 }
 
 section#section-experience {
-    --experience-page-bg: #04060b;
-    --experience-page-bg-2: #090f1b;
-    --experience-page-bg-3: #111827;
     --experience-accent-blue: #4ea3ff;
     --experience-accent-gold: #facc15;
     --experience-title-start: #fff7ed;
@@ -396,7 +397,6 @@ section#section-experience {
     --experience-text-mid: #cbd5e1;
     --experience-text-soft: #94a3b8;
 
-    background: var(--section-page-bg-dark);
     color: var(--experience-text-strong);
 }
 
@@ -707,16 +707,12 @@ section#section-experience article:is(
 }
 
 section#section-my-software {
-    --software-page-bg: #04060b;
-    --software-page-bg-2: #0b1020;
-    --software-page-bg-3: #111827;
     --software-accent-blue: #4ea3ff;
     --software-accent-gold: #facc15;
     --software-text-strong: #f8fafc;
     --software-text-mid: #cbd5e1;
     --software-text-soft: #94a3b8;
 
-    background: var(--section-page-bg-dark);
     color: var(--software-text-strong);
 }
 
@@ -739,9 +735,6 @@ section#section-my-software div.article-content {
 }
 
 section#section-my-hardware {
-    --hardware-page-bg: #030407;
-    --hardware-page-bg-2: #08111d;
-    --hardware-page-bg-3: #121826;
     --hardware-accent-blue: #38bdf8;
     --hardware-accent-amber: #f59e0b;
     --hardware-accent-red: #ef4444;
@@ -749,7 +742,6 @@ section#section-my-hardware {
     --hardware-text-mid: #d1d5db;
     --hardware-text-soft: #94a3b8;
 
-    background: var(--section-page-bg-dark);
     color: var(--hardware-text-strong);
 }
 
@@ -820,9 +812,6 @@ section#section-my-hardware header.section-header h2.section-header-title {
 }
 
 section#section-my-writings {
-    --writings-page-bg: #030406;
-    --writings-page-bg-2: #090f1a;
-    --writings-page-bg-3: #131a27;
     --writings-accent-blue: #38bdf8;
     --writings-accent-gold: #f59e0b;
     --writings-accent-red: #ef4444;
@@ -836,7 +825,6 @@ section#section-my-writings {
     --writings-text-mid: #eef6ff;
     --writings-text-soft: #dbeafe;
 
-    background: var(--section-page-bg-dark);
     color: var(--writings-text-strong);
 }
 
@@ -1219,9 +1207,6 @@ section#section-my-writings article:is(
 }
 
 section#section-my-art {
-    --art-page-bg: #030406;
-    --art-page-bg-2: #090f1a;
-    --art-page-bg-3: #121a28;
     --art-accent-blue: #38bdf8;
     --art-accent-amber: #f59e0b;
     --art-accent-rose: #fb7185;
@@ -1233,7 +1218,6 @@ section#section-my-art {
     --art-text-mid: #d1d5db;
     --art-text-soft: #94a3b8;
 
-    background: var(--section-page-bg-dark);
     color: var(--art-text-strong);
 }
 

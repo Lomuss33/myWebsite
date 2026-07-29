@@ -1,6 +1,12 @@
 @use "../../styles/extend" as *;
 
 section.section {
+    --section-page-bg-dark:
+        radial-gradient(circle at top left, rgba(78, 163, 255, 0.18) 0%, transparent 32%),
+        radial-gradient(circle at top right, rgba(250, 204, 21, 0.10) 0%, transparent 28%),
+        radial-gradient(circle at bottom right, rgba(78, 163, 255, 0.08) 0%, transparent 26%),
+        linear-gradient(180deg, #05070d 0%, #0a1020 46%, #111827 100%);
+
     grid-row-start: 1;
     grid-column-start: 1;
 
@@ -14,7 +20,7 @@ section.section {
     margin: 0;
     overflow: hidden;
 
-    background-color: var(--theme-card-background);
+    background: var(--section-page-bg-dark);
     border: 0;
     border-radius: 0;
     backdrop-filter: none;
@@ -40,11 +46,7 @@ section#section-education {
     --education-text-mid: #cbd5e1;
     --education-text-soft: #94a3b8;
 
-    background:
-        radial-gradient(circle at top left, rgba(78, 163, 255, 0.18) 0%, transparent 32%),
-        radial-gradient(circle at top right, rgba(250, 204, 21, 0.12) 0%, transparent 28%),
-        radial-gradient(circle at bottom right, rgba(78, 163, 255, 0.10) 0%, transparent 26%),
-        linear-gradient(180deg, var(--education-page-bg) 0%, var(--education-page-bg-2) 44%, var(--education-page-bg-3) 100%);
+    background: var(--section-page-bg-dark);
     color: var(--education-text-strong);
 }
 
@@ -350,11 +352,7 @@ section#section-about {
     --about-text-mid: #cbd5e1;
     --about-text-soft: #94a3b8;
 
-    background:
-        radial-gradient(circle at top left, rgba(78, 163, 255, 0.18) 0%, transparent 32%),
-        radial-gradient(circle at top right, rgba(250, 204, 21, 0.10) 0%, transparent 28%),
-        radial-gradient(circle at bottom right, rgba(78, 163, 255, 0.08) 0%, transparent 26%),
-        linear-gradient(180deg, var(--about-page-bg) 0%, var(--about-page-bg-2) 46%, var(--about-page-bg-3) 100%);
+    background: var(--section-page-bg-dark);
     color: var(--about-text-strong);
 }
 
@@ -398,11 +396,7 @@ section#section-experience {
     --experience-text-mid: #cbd5e1;
     --experience-text-soft: #94a3b8;
 
-    background:
-        radial-gradient(circle at top left, rgba(78, 163, 255, 0.14) 0%, transparent 31%),
-        radial-gradient(circle at top right, rgba(250, 204, 21, 0.08) 0%, transparent 26%),
-        radial-gradient(circle at bottom left, rgba(78, 163, 255, 0.06) 0%, transparent 28%),
-        linear-gradient(180deg, var(--experience-page-bg) 0%, var(--experience-page-bg-2) 46%, var(--experience-page-bg-3) 100%);
+    background: var(--section-page-bg-dark);
     color: var(--experience-text-strong);
 }
 
@@ -722,11 +716,7 @@ section#section-my-software {
     --software-text-mid: #cbd5e1;
     --software-text-soft: #94a3b8;
 
-    background:
-        radial-gradient(circle at top left, rgba(78, 163, 255, 0.16) 0%, transparent 32%),
-        radial-gradient(circle at top right, rgba(250, 204, 21, 0.10) 0%, transparent 26%),
-        radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.08) 0%, transparent 28%),
-        linear-gradient(180deg, var(--software-page-bg) 0%, var(--software-page-bg-2) 46%, var(--software-page-bg-3) 100%);
+    background: var(--section-page-bg-dark);
     color: var(--software-text-strong);
 }
 
@@ -759,11 +749,7 @@ section#section-my-hardware {
     --hardware-text-mid: #d1d5db;
     --hardware-text-soft: #94a3b8;
 
-    background:
-        radial-gradient(circle at top left, rgba(56, 189, 248, 0.16) 0%, transparent 32%),
-        radial-gradient(circle at top right, rgba(245, 158, 11, 0.10) 0%, transparent 28%),
-        radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.08) 0%, transparent 26%),
-        linear-gradient(180deg, var(--hardware-page-bg) 0%, var(--hardware-page-bg-2) 46%, var(--hardware-page-bg-3) 100%);
+    background: var(--section-page-bg-dark);
     color: var(--hardware-text-strong);
 }
 
@@ -850,11 +836,7 @@ section#section-my-writings {
     --writings-text-mid: #eef6ff;
     --writings-text-soft: #dbeafe;
 
-    background:
-        radial-gradient(circle at top left, rgba(56, 189, 248, 0.16) 0%, transparent 32%),
-        radial-gradient(circle at top right, rgba(245, 158, 11, 0.12) 0%, transparent 28%),
-        radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.08) 0%, transparent 26%),
-        linear-gradient(180deg, var(--writings-page-bg) 0%, var(--writings-page-bg-2) 44%, var(--writings-page-bg-3) 100%);
+    background: var(--section-page-bg-dark);
     color: var(--writings-text-strong);
 }
 
@@ -1251,11 +1233,7 @@ section#section-my-art {
     --art-text-mid: #d1d5db;
     --art-text-soft: #94a3b8;
 
-    background:
-        radial-gradient(circle at top left, rgba(56, 189, 248, 0.18) 0%, transparent 30%),
-        radial-gradient(circle at top right, rgba(245, 158, 11, 0.12) 0%, transparent 28%),
-        radial-gradient(circle at bottom right, rgba(251, 113, 133, 0.08) 0%, transparent 26%),
-        linear-gradient(180deg, var(--art-page-bg) 0%, var(--art-page-bg-2) 46%, var(--art-page-bg-3) 100%);
+    background: var(--section-page-bg-dark);
     color: var(--art-text-strong);
 }
 

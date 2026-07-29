@@ -14,6 +14,11 @@ div.article-portfolio-items {
     --portfolio-controls-gap: 10px;
     --portfolio-controls-separation: 12px;
     --portfolio-card-intrinsic-size: 280px;
+    --portfolio-card-title-size: clamp(1.18rem, 0.95rem + 0.72vw, 1.56rem);
+    --portfolio-card-title-line-height: 1.12;
+    --portfolio-card-category-size: clamp(0.82rem, 0.76rem + 0.18vw, 0.96rem);
+    --portfolio-card-description-size: clamp(0.94rem, 0.86rem + 0.24vw, 1.06rem);
+    --portfolio-card-description-line-height: 1.48;
     /*
       Minimum comfortable card width so the visit-online pill + left actions
       can coexist without overlap. The grid will reduce columns automatically.
@@ -42,6 +47,11 @@ div.article-portfolio-items {
         --padding: 15px 14px 14px;
         --padding-bottom: 14px;
         --avatar-offset: 10px;
+        --portfolio-card-title-size: clamp(1.24rem, 5.15vw, 1.46rem);
+        --portfolio-card-title-line-height: 1.12;
+        --portfolio-card-category-size: clamp(0.84rem, 3.7vw, 0.94rem);
+        --portfolio-card-description-size: clamp(0.98rem, 4.15vw, 1.08rem);
+        --portfolio-card-description-line-height: 1.5;
         /* On small screens, avoid moving docks to the top (keeps layout stable) */
         --avoid-cap: 24px;
     }
@@ -124,9 +134,6 @@ div.article-portfolio-item {
     container-type: inline-size;
     content-visibility: auto;
     contain-intrinsic-size: var(--portfolio-card-intrinsic-size);
-
-    /* Reserve space for bottom controls bar (absolute) */
-    padding-bottom: calc(var(--padding-bottom) + var(--portfolio-control-height) + var(--avatar-offset));
 
 }
 
@@ -233,40 +240,12 @@ article#article-1-section-my-software {
         gap: 7px;
 
         h5.article-portfolio-item-title-main {
-            font-size: 0.94rem;
-            line-height: 1.08;
             letter-spacing: 0.005em;
         }
 
         div.article-portfolio-item-title-category {
-            font-size: clamp(0.88rem, 1.95cqw, 1.04rem);
             line-height: 1.2;
         }
-    }
-
-    @supports (container-type: inline-size) {
-        div.article-portfolio-item-title h5.article-portfolio-item-title-main {
-            font-size: clamp(0.84rem, 3.7cqw, 1.08rem);
-        }
-    }
-
-    @supports (container-type: inline-size) {
-        @container (max-width: 260px) {
-            div.article-portfolio-item-title h5.article-portfolio-item-title-main {
-                font-size: clamp(0.74rem, 3.35cqw, 0.94rem);
-            }
-        }
-
-        @container (max-width: 230px) {
-            div.article-portfolio-item-title h5.article-portfolio-item-title-main {
-                font-size: clamp(0.68rem, 3.15cqw, 0.86rem);
-            }
-        }
-    }
-
-    div.article-portfolio-item-body div.article-portfolio-item-body-description {
-        font-size: clamp(0.84rem, 0.8rem + 0.16vw, 0.94rem);
-        line-height: 1.52;
     }
 
     li.article-portfolio-item-body-tag {
@@ -636,40 +615,12 @@ article#article-1-section-my-hardware {
         gap: 7px;
 
         h5.article-portfolio-item-title-main {
-            font-size: 0.94rem;
-            line-height: 1.08;
             letter-spacing: 0.005em;
         }
 
         div.article-portfolio-item-title-category {
-            font-size: clamp(0.88rem, 1.95cqw, 1.04rem);
             line-height: 1.2;
         }
-    }
-
-    @supports (container-type: inline-size) {
-        div.article-portfolio-item-title h5.article-portfolio-item-title-main {
-            font-size: clamp(0.84rem, 3.7cqw, 1.08rem);
-        }
-    }
-
-    @supports (container-type: inline-size) {
-        @container (max-width: 260px) {
-            div.article-portfolio-item-title h5.article-portfolio-item-title-main {
-                font-size: clamp(0.74rem, 3.35cqw, 0.94rem);
-            }
-        }
-
-        @container (max-width: 230px) {
-            div.article-portfolio-item-title h5.article-portfolio-item-title-main {
-                font-size: clamp(0.68rem, 3.15cqw, 0.86rem);
-            }
-        }
-    }
-
-    div.article-portfolio-item-body div.article-portfolio-item-body-description {
-        font-size: clamp(0.84rem, 0.8rem + 0.16vw, 0.94rem);
-        line-height: 1.52;
     }
 
     li.article-portfolio-item-body-tag {
@@ -884,17 +835,41 @@ article#article-1-section-my-hardware {
 
 }
 
-/* Dock wrappers are absolutely positioned and static */
+div.article-portfolio-item-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--portfolio-controls-separation);
+    margin-top: auto;
+    padding-top: clamp(16px, 3vw, 24px);
+    min-width: 0;
+    position: relative;
+    z-index: 3;
+
+    @include media-breakpoint-down(sm) {
+        flex-wrap: wrap;
+        align-items: stretch;
+
+        div.article-portfolio-item-actions,
+        div.article-portfolio-item-visit-dock {
+            min-width: 0;
+        }
+
+        a.article-portfolio-item-control-btn-visit {
+            flex: 1 1 auto;
+            min-width: min(210px, 100%);
+        }
+    }
+}
+
 div.article-portfolio-item-actions,
 div.article-portfolio-item-visit-dock {
-    position: absolute;
+    position: relative;
     z-index: 3;
 }
 
-/* Separate bottom docks */
 div.article-portfolio-item-actions {
-    left: var(--avatar-offset);
-    bottom: var(--avatar-offset);
+    flex: 0 0 auto;
 }
 
 div.article-portfolio-item-actions-grid {
@@ -904,22 +879,10 @@ div.article-portfolio-item-actions-grid {
 }
 
 div.article-portfolio-item-visit-dock {
-    right: var(--avatar-offset);
-    bottom: var(--avatar-offset);
-
-    /*
-      Ensure the right dock never overlaps the left dock:
-      max width = full card width minus offsets minus left-dock width minus separation gap.
-
-      Left dock width = (#buttons * height) + (#gaps * gap).
-      Counts are set as CSS vars on the card via inline style.
-    */
-    max-width: calc(
-        100% - (var(--avatar-offset) * 2)
-        - (var(--portfolio-left-controls-count) * var(--portfolio-control-height))
-        - (var(--portfolio-left-controls-gap-count) * var(--portfolio-controls-gap))
-        - var(--portfolio-controls-separation)
-    );
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: flex-end;
+    min-width: 0;
 }
 
 a.article-portfolio-item-control-btn,
@@ -1116,23 +1079,13 @@ div.article-portfolio-item-title {
         color: var(--portfolio-item-title-color);
         text-shadow: var(--portfolio-item-title-shadow);
         margin-bottom: 0;
-        line-height: 1.06;
-
-        /* Fallback (no container queries): keep it small */
-        font-size: 0.58rem;
-
-        /* Always fully visible */
+        font-size: var(--portfolio-card-title-size);
+        line-height: var(--portfolio-card-title-line-height);
         white-space: normal;
         overflow: visible;
-        text-overflow: clip;
-
-        /* Modern wrapping for narrow cards and long tokens */
         overflow-wrap: anywhere;
         word-break: normal;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 3;
-        overflow: hidden;
+        text-wrap: balance;
     }
 
     div.article-portfolio-item-title-category {
@@ -1143,37 +1096,14 @@ div.article-portfolio-item-title {
         display: inline-flex;
         align-items: center;
 
-        font-size: clamp(0.72rem, 1.35cqw, 0.86rem);
+        font-size: var(--portfolio-card-category-size);
         line-height: 1.25;
         font-weight: 600;
         letter-spacing: 0.01em;
     }
 }
 
-/* Container-query driven sizing: adapt to actual card width */
 @supports (container-type: inline-size) {
-    div.article-portfolio-item-title {
-        h5.article-portfolio-item-title-main {
-            /* Prefer smaller titles; allow tiny only when cards are narrow */
-            font-size: clamp(0.46rem, 2.45cqw, 0.60rem);
-        }
-    }
-}
-
-/* Extra tightening for the 3-per-row narrow cards (~227px) */
-@supports (container-type: inline-size) {
-    @container (max-width: 260px) {
-        div.article-portfolio-item-title h5.article-portfolio-item-title-main {
-            font-size: clamp(0.44rem, 2.30cqw, 0.56rem);
-        }
-    }
-
-    @container (max-width: 230px) {
-        div.article-portfolio-item-title h5.article-portfolio-item-title-main {
-            font-size: clamp(0.42rem, 2.15cqw, 0.52rem);
-        }
-    }
-
     @container (max-width: 320px) {
         a.article-portfolio-item-control-btn-visit {
             width: var(--portfolio-control-height);
@@ -1197,7 +1127,7 @@ div.article-portfolio-item-title {
 
 div.article-portfolio-item-body {
     margin-top: 10px;
-    flex-grow: 1;
+    flex: 0 0 auto;
     min-height: 0;
     min-width: 0;
     width: 100%;
@@ -1205,19 +1135,13 @@ div.article-portfolio-item-body {
     div.article-portfolio-item-body-description {
         margin-top: 0;
         color: inherit;
-        font-size: clamp(0.77rem, 0.75rem + 0.12vw, 0.85rem);
-        line-height: 1.45;
-
-        /* Full word tokens only */
-        overflow-wrap: normal;
+        display: block;
+        overflow: visible;
+        font-size: var(--portfolio-card-description-size);
+        line-height: var(--portfolio-card-description-line-height);
+        overflow-wrap: anywhere;
         word-break: normal;
         hyphens: none;
-
-        /* Controlled growth: clamp lines so card height doesn't jump */
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 4;
-        overflow: hidden;
 
         &,
         & :where(a, span, strong, em, b, i, small, code, mark) {
@@ -1228,19 +1152,6 @@ div.article-portfolio-item-body {
             text-decoration-color: currentColor;
         }
     }
-
-    div.article-portfolio-item-body-description-fit {
-        font-size: var(--pretext-fit-font-size, clamp(0.77rem, 0.75rem + 0.12vw, 0.85rem));
-        line-height: var(--pretext-fit-line-height, 1.45);
-        display: block;
-        block-size: var(--portfolio-description-box-height, clamp(6.5rem, 11vw, 8.15rem));
-        overflow: hidden;
-        text-overflow: clip;
-        white-space: normal;
-        overflow-wrap: normal;
-        word-break: normal;
-        hyphens: none;
-    }
 }
 
 article#article-1-section-my-software,
@@ -1248,27 +1159,25 @@ article#article-1-section-my-hardware {
     div.article-portfolio-item-title,
     div.article-portfolio-item-body,
     ul.article-portfolio-item-body-tags,
-    div.article-portfolio-item-footer {
+    div.article-portfolio-item-footer,
+    div.article-portfolio-item-controls {
         position: relative;
         z-index: 1;
     }
 
     div.article-portfolio-item-body {
         margin-top: 8px;
-        --portfolio-description-box-height: clamp(5.9rem, 9.8vw, 7.35rem);
     }
 
     @include media-breakpoint-down(lg) {
         div.article-portfolio-item-body {
             margin-top: 8px;
-            --portfolio-description-box-height: clamp(5.55rem, 12.8vw, 6.85rem);
         }
     }
 
     @include media-breakpoint-down(sm) {
         div.article-portfolio-item-body {
             margin-top: 7px;
-            --portfolio-description-box-height: clamp(5.15rem, 16.8vw, 6.3rem);
         }
     }
 }
@@ -1308,22 +1217,20 @@ article#article-1-section-my-hardware {
         gap: 4px;
 
         h5.article-portfolio-item-title-main {
-            font-size: clamp(1.48rem, 1.12rem + 1.16vw, 2.18rem);
-            line-height: 1.09;
+            font-size: var(--portfolio-card-title-size);
+            line-height: var(--portfolio-card-title-line-height);
             font-weight: 800;
             letter-spacing: -0.024em;
             text-wrap: balance;
             overflow-wrap: anywhere;
             word-break: normal;
             padding-bottom: 0.08em;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            overflow: hidden;
+            white-space: normal;
+            overflow: visible;
         }
 
         div.article-portfolio-item-title-category {
-            font-size: clamp(0.9rem, 0.84rem + 0.28vw, 1.08rem);
+            font-size: var(--portfolio-card-category-size);
             line-height: 1.1;
             font-weight: 700;
             letter-spacing: 0.01em;
@@ -1331,31 +1238,10 @@ article#article-1-section-my-hardware {
         }
     }
 
-    div.article-portfolio-item-body div.article-portfolio-item-body-description-fit {
-        font-size: var(--pretext-fit-font-size, clamp(0.88rem, 0.84rem + 0.18vw, 0.98rem));
-        line-height: var(--pretext-fit-line-height, 1.38);
+    div.article-portfolio-item-body div.article-portfolio-item-body-description {
+        font-size: var(--portfolio-card-description-size);
+        line-height: var(--portfolio-card-description-line-height);
         opacity: 0.96;
-    }
-
-    @supports (container-type: inline-size) {
-        div.article-portfolio-item-title h5.article-portfolio-item-title-main {
-            font-size: clamp(1.42rem, 5.8cqw, 2.08rem);
-        }
-
-        div.article-portfolio-item-title div.article-portfolio-item-title-category {
-            font-size: clamp(0.86rem, 2.2cqw, 1rem);
-        }
-    }
-
-    @container (max-width: 340px) {
-        div.article-portfolio-item-title h5.article-portfolio-item-title-main {
-            font-size: clamp(1.22rem, 4.9cqw, 1.56rem);
-            line-height: 1.1;
-        }
-
-        div.article-portfolio-item-title div.article-portfolio-item-title-category {
-            font-size: clamp(0.82rem, 2.05cqw, 0.94rem);
-        }
     }
 
     ul.article-portfolio-item-body-tags {
@@ -1374,23 +1260,6 @@ article#article-1-section-my-software {
 
     div.article-portfolio-item-body {
         flex-grow: 0;
-        --portfolio-description-box-height: clamp(4.25rem, 5.8vw, 5.35rem);
-    }
-
-    div.article-portfolio-item-body div.article-portfolio-item-body-description-fit {
-        line-height: var(--pretext-fit-line-height, 1.34);
-    }
-
-    @include media-breakpoint-down(lg) {
-        div.article-portfolio-item-body {
-            --portfolio-description-box-height: clamp(4.45rem, 9.6vw, 5.75rem);
-        }
-    }
-
-    @include media-breakpoint-down(sm) {
-        div.article-portfolio-item-body {
-            --portfolio-description-box-height: clamp(4.85rem, 18vw, 6.15rem);
-        }
     }
 }
 
@@ -1401,22 +1270,5 @@ article#article-1-section-my-hardware {
 
     div.article-portfolio-item-body {
         flex-grow: 0;
-        --portfolio-description-box-height: clamp(5.25rem, 7.2vw, 6.65rem);
-    }
-
-    div.article-portfolio-item-body div.article-portfolio-item-body-description-fit {
-        line-height: var(--pretext-fit-line-height, 1.36);
-    }
-
-    @include media-breakpoint-down(lg) {
-        div.article-portfolio-item-body {
-            --portfolio-description-box-height: clamp(5.65rem, 13vw, 7.25rem);
-        }
-    }
-
-    @include media-breakpoint-down(sm) {
-        div.article-portfolio-item-body {
-            --portfolio-description-box-height: clamp(6.35rem, 31vw, 8.4rem);
-        }
     }
 }

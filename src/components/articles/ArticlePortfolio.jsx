@@ -7,8 +7,6 @@ import AvatarView from "../generic/AvatarView.jsx"
 import ArticleItemPreviewMenu from "./partials/ArticleItemPreviewMenu.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import Link from "../generic/Link.jsx"
-import PretextFitText from "../generic/PretextFitText.jsx"
-import {_stringUtils} from "../../hooks/utils/_string-utils.js"
 
 /**
  * @param {ArticleDataWrapper} dataWrapper
@@ -41,10 +39,10 @@ function ArticlePortfolio({ dataWrapper, id }) {
 function ArticlePortfolioItems({ dataWrapper, selectedItemCategoryId }) {
     const language = useLanguage()
     const viewport = useViewport()
-    const shouldUseAdaptiveDescription = shouldUseAdaptivePortfolioArticle(dataWrapper)
+    const usesFeaturedPortfolioGrid = shouldUseFeaturedPortfolioGrid(dataWrapper)
 
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
-    const itemsPerRow = shouldUseAdaptiveDescription ?
+    const itemsPerRow = usesFeaturedPortfolioGrid ?
         viewport.isBreakpoint("lg") ?
             2 :
             1 :
@@ -103,21 +101,27 @@ function ArticlePortfolioItem({ itemWrapper }) {
         return icon.includes("fa-file") || href.includes("docs.google.com") || href.includes("readthedocs") || href.includes("/docs")
     }) || null
     const controlAvatarStyle = getTransparentControlAvatarStyle(itemWrapper?.faIconStyle)
-    const actionsCount = Number(Boolean(githubLink)) + Number(Boolean(docsLink))
-    const leftControlsGapCount = Math.max(0, actionsCount - 1)
 
     return (
-        <div className={`article-portfolio-item ${portfolioToneClass}`}
-             style={{
-                 "--portfolio-left-controls-count": actionsCount,
-                 "--portfolio-left-controls-gap-count": leftControlsGapCount
-             }}
-             >
-            <ArticlePortfolioItemTitle itemWrapper={itemWrapper}
-                                       />
+        <div className={`article-portfolio-item ${portfolioToneClass}`}>
+            <ArticlePortfolioItemTitle itemWrapper={itemWrapper}/>
             <ArticlePortfolioItemBody itemWrapper={itemWrapper}/>
             <ArticlePortfolioItemFooter itemWrapper={itemWrapper}/>
+            <ArticlePortfolioItemControls githubLink={githubLink}
+                                          docsLink={docsLink}
+                                          websiteLink={websiteLink}
+                                          itemWrapper={itemWrapper}
+                                          controlAvatarStyle={controlAvatarStyle}/>
+        </div>
+    )
+}
 
+function ArticlePortfolioItemControls({ githubLink, docsLink, websiteLink, itemWrapper, controlAvatarStyle }) {
+    if(!githubLink && !docsLink && !websiteLink)
+        return <></>
+
+    return (
+        <div className={`article-portfolio-item-controls`}>
             {(githubLink || docsLink) && (
                 <div className={`article-portfolio-item-actions`}>
                     <div className={`article-portfolio-item-actions-grid`}>
@@ -139,8 +143,8 @@ function ArticlePortfolioItem({ itemWrapper }) {
                 </div>
             )}
 
-            <div className={`article-portfolio-item-visit-dock`}>
-                {websiteLink ? (
+            {websiteLink && (
+                <div className={`article-portfolio-item-visit-dock`}>
                     <Link href={websiteLink.href}
                           tooltip={websiteLink.tooltip || "Visit online"}
                           className={`article-portfolio-item-control-btn article-portfolio-item-control-btn-visit`}>
@@ -154,17 +158,8 @@ function ArticlePortfolioItem({ itemWrapper }) {
                                     alt={itemWrapper.imageAlt}
                                     className={`article-portfolio-item-control-avatar`}/>
                     </Link>
-                ) : (
-                    <div className={`article-portfolio-item-control-btn-avatar-only`}
-                         data-tooltip={`No public link`}>
-                        <AvatarView src={itemWrapper.img}
-                                    faIcon={itemWrapper.faIcon}
-                                    style={controlAvatarStyle}
-                                    alt={itemWrapper.imageAlt}
-                                    className={`article-portfolio-item-control-avatar`}/>
-                    </div>
-                )}
-            </div>
+                </div>
+            )}
         </div>
     )
 }
@@ -192,20 +187,10 @@ function ArticlePortfolioItemTitle({ itemWrapper }) {
  * @constructor
  */
 function ArticlePortfolioItemBody({ itemWrapper }) {
-    const shouldUseAdaptiveFit = shouldUseAdaptivePortfolioDescription(itemWrapper)
-
     return (
         <div className={`article-portfolio-item-body`}>
-            {shouldUseAdaptiveFit ? (
-                <PretextFitText text={_stringUtils.stripHTMLTags(itemWrapper.locales.text)}
-                                minFontSizePx={11}
-                                maxFontSizePx={20}
-                                lineHeightRatio={1.38}
-                                className={`article-portfolio-item-body-description article-portfolio-item-body-description-fit text-2`}/>
-            ) : (
-                <div className={`article-portfolio-item-body-description text-2`}
-                     dangerouslySetInnerHTML={{__html: itemWrapper.locales.text}}/>
-            )}
+            <div className={`article-portfolio-item-body-description text-2`}
+                 dangerouslySetInnerHTML={{__html: itemWrapper.locales.text}}/>
         </div>
     )
 }
@@ -239,12 +224,7 @@ function isNonEmptyHref(href) {
     return typeof href === "string" && href.trim().length > 0
 }
 
-function shouldUseAdaptivePortfolioDescription(itemWrapper) {
-    const articleWrapper = itemWrapper?.articleWrapper
-    return shouldUseAdaptivePortfolioArticle(articleWrapper)
-}
-
-function shouldUseAdaptivePortfolioArticle(articleWrapper) {
+function shouldUseFeaturedPortfolioGrid(articleWrapper) {
     const sectionId = articleWrapper?.sectionId
     return articleWrapper?.id === 1 && (sectionId === "my-software" || sectionId === "my-hardware")
 }

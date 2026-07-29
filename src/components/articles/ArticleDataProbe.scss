@@ -498,42 +498,6 @@ article.article-data-probe {
         }
     }
 
-    div.article-data-probe-block-count {
-        min-width: 96px;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 2px;
-        padding: 11px 12px;
-        border-radius: 16px;
-        background:
-            linear-gradient(180deg,
-                color-mix(in srgb, var(--probe-accent) 10%, var(--probe-surface) 90%),
-                var(--probe-surface-strong)
-            );
-        border: 1px solid var(--probe-line);
-        box-shadow: var(--probe-shadow), var(--probe-inset);
-
-        @include media-breakpoint-down(md) {
-            align-items: flex-start;
-        }
-    }
-
-    span.article-data-probe-block-count-value {
-        color: var(--probe-text);
-        font-size: 1.15rem;
-        line-height: 1;
-        font-weight: 900;
-    }
-
-    span.article-data-probe-block-count-label {
-        color: var(--probe-text-muted);
-        font-size: 0.74rem;
-        font-weight: 800;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-    }
-
     div.article-data-probe-block-body {
         min-width: 0;
     }
@@ -736,7 +700,7 @@ article.article-data-probe {
     }
 
     div.article-data-probe-item.item-third-party {
-        --probe-item-accent: var(--theme-secondary);
+        --probe-item-accent: var(--probe-accent);
         background:
             linear-gradient(180deg,
                 color-mix(in srgb, var(--probe-item-accent) 6%, var(--probe-surface) 94%),
@@ -1196,6 +1160,10 @@ article#article-2-section-my-hardware {
     --probe-popup-query-bg: color-mix(in srgb, var(--probe-accent) 11%, #08101d 89%);
     --probe-popup-query-border: color-mix(in srgb, var(--probe-accent) 24%, #334155 76%);
     --probe-popup-cancel-bg: color-mix(in srgb, #111827 84%, transparent 16%);
+    --probe-visible-risk: #ef4444;
+    --probe-hidden-safe: #22c55e;
+    --probe-request-ok: #60a5fa;
+    --probe-request-failed: #ef4444;
 
     h4.article-title {
         display: flex;
@@ -1266,7 +1234,6 @@ article#article-2-section-my-hardware {
     div.article-data-probe-summary-chip,
     section.article-data-probe-block,
     div.article-data-probe-item,
-    div.article-data-probe-block-count,
     div.article-data-probe-item-meta,
     pre.article-data-probe-item-value {
         border-color: color-mix(in srgb, #38bdf8 18%, #334155 82%);
@@ -1279,11 +1246,60 @@ article#article-2-section-my-hardware {
     }
 
     section.article-data-probe-block.accent-passive {
-        --probe-accent: #38bdf8;
+        --probe-accent: var(--probe-visible-risk);
+        --probe-accent-soft: color-mix(in srgb, var(--probe-visible-risk) 11%, transparent 89%);
+        --probe-line: color-mix(in srgb, #334155 78%, var(--probe-visible-risk) 22%);
+    }
+
+    section.article-data-probe-block.accent-passive div.article-data-probe-item.status-hidden,
+    section.article-data-probe-block.accent-passive div.article-data-probe-item.status-error,
+    section.article-data-probe-block.accent-passive div.article-data-probe-item.status-unsupported {
+        --probe-item-accent: var(--probe-hidden-safe);
+    }
+
+    section.article-data-probe-block.accent-passive div.article-data-probe-item.status-hidden div.article-data-probe-item-badge.badge-hidden,
+    section.article-data-probe-block.accent-passive div.article-data-probe-item.status-error div.article-data-probe-item-badge.badge-hidden,
+    section.article-data-probe-block.accent-passive div.article-data-probe-item.status-unsupported div.article-data-probe-item-badge.badge-unsupported {
+        background:
+            linear-gradient(180deg,
+                color-mix(in srgb, var(--probe-hidden-safe) 46%, var(--probe-surface-strong) 54%),
+                color-mix(in srgb, var(--probe-hidden-safe) 28%, var(--probe-surface) 72%)
+            );
+        border-color: color-mix(in srgb, var(--probe-hidden-safe) 58%, var(--probe-line) 42%);
     }
 
     section.article-data-probe-block.accent-interactive {
         --probe-accent: #f59e0b;
+    }
+
+    section.article-data-probe-block.accent-interactive div.article-data-probe-item.status-ok {
+        --probe-item-accent: var(--probe-request-ok);
+    }
+
+    section.article-data-probe-block.accent-interactive div.article-data-probe-item.status-hidden,
+    section.article-data-probe-block.accent-interactive div.article-data-probe-item.status-error,
+    section.article-data-probe-block.accent-interactive div.article-data-probe-item.status-unsupported {
+        --probe-item-accent: var(--probe-request-failed);
+    }
+
+    section.article-data-probe-block.accent-interactive div.article-data-probe-item.status-ok div.article-data-probe-item-badge.badge-ok {
+        background:
+            linear-gradient(180deg,
+                color-mix(in srgb, var(--probe-request-ok) 54%, var(--probe-surface-strong) 46%),
+                color-mix(in srgb, var(--probe-request-ok) 34%, var(--probe-surface) 66%)
+            );
+        border-color: color-mix(in srgb, var(--probe-request-ok) 58%, var(--probe-line) 42%);
+    }
+
+    section.article-data-probe-block.accent-interactive div.article-data-probe-item.status-hidden div.article-data-probe-item-badge.badge-hidden,
+    section.article-data-probe-block.accent-interactive div.article-data-probe-item.status-error div.article-data-probe-item-badge.badge-hidden,
+    section.article-data-probe-block.accent-interactive div.article-data-probe-item.status-unsupported div.article-data-probe-item-badge.badge-unsupported {
+        background:
+            linear-gradient(180deg,
+                color-mix(in srgb, var(--probe-request-failed) 58%, var(--probe-surface-strong) 42%),
+                color-mix(in srgb, var(--probe-request-failed) 36%, var(--probe-surface) 64%)
+            );
+        border-color: color-mix(in srgb, var(--probe-request-failed) 62%, var(--probe-line) 38%);
     }
 
     section.article-data-probe-block.accent-external {
@@ -1334,11 +1350,6 @@ article#article-2-section-my-hardware {
         margin-top: 4px;
         font-size: clamp(0.92rem, 0.88rem + 0.12vw, 0.98rem);
         line-height: 1.5;
-    }
-
-    div.article-data-probe-block-count {
-        padding: 9px 10px;
-        min-width: 88px;
     }
 
     div.article-data-probe-grid {
@@ -1448,6 +1459,30 @@ article#article-2-section-my-hardware {
         --probe-button-surface-bottom: color-mix(in srgb, var(--probe-item-accent) 18%, #f4f9ff 82%);
         --probe-button-surface-hover-top: color-mix(in srgb, var(--probe-item-accent) 18%, #ffffff 82%);
         --probe-button-surface-hover-bottom: color-mix(in srgb, var(--probe-item-accent) 34%, #f4f9ff 66%);
+    }
+
+    section.article-data-probe-block.accent-passive div.article-data-probe-item.status-hidden div.article-data-probe-item-badge.badge-hidden,
+    section.article-data-probe-block.accent-passive div.article-data-probe-item.status-error div.article-data-probe-item-badge.badge-hidden,
+    section.article-data-probe-block.accent-passive div.article-data-probe-item.status-unsupported div.article-data-probe-item-badge.badge-unsupported {
+        color: #064e3b;
+        background:
+            linear-gradient(180deg,
+                color-mix(in srgb, #22c55e 20%, #ffffff 80%),
+                color-mix(in srgb, #16a34a 14%, #f0fdf4 86%)
+            );
+        border-color: color-mix(in srgb, #16a34a 42%, #d8e2ec 58%);
+    }
+
+    section.article-data-probe-block.accent-passive div.article-data-probe-item.status-hidden div.article-data-probe-item-icon,
+    section.article-data-probe-block.accent-passive div.article-data-probe-item.status-error div.article-data-probe-item-icon,
+    section.article-data-probe-block.accent-passive div.article-data-probe-item.status-unsupported div.article-data-probe-item-icon {
+        color: #064e3b;
+        background:
+            linear-gradient(145deg,
+                color-mix(in srgb, #22c55e 34%, #ffffff 66%),
+                color-mix(in srgb, #16a34a 22%, #ecfdf5 78%)
+            );
+        border-color: color-mix(in srgb, #16a34a 44%, #d8e2ec 56%);
     }
 }
 

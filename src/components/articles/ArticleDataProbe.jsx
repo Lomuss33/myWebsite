@@ -841,7 +841,6 @@ function ArticleDataProbe({ dataWrapper }) {
                 eyebrow={`External lookup`}
                 title={`Public IP`}
                 description={`Shows the address that outside services see. Nothing is fetched until you click one of the buttons.`}
-                count={publicCount}
                 accent={`accent-external`}
                 searchId={`public_ip`}
                 onIconClick={openSearchConfirm}>
@@ -866,7 +865,6 @@ function ArticleDataProbe({ dataWrapper }) {
                 eyebrow={`Permission gated`}
                 title={`Ask for more`}
                 description={`These checks stay dormant until you unlock the section and explicitly ask for each permission or hardware chooser.`}
-                count={requestCount}
                 accent={`accent-interactive`}
                 searchId={`permission_gated`}
                 onIconClick={openSearchConfirm}
@@ -910,7 +908,6 @@ function ArticleDataProbe({ dataWrapper }) {
                 eyebrow={`Passive reads`}
                 title={`Visible without asking`}
                 description={`These values are exposed by the browser immediately, without prompts, and are enough to describe a device surprisingly well.`}
-                count={autoCount}
                 accent={`accent-passive`}
                 searchId={`passive_reads`}
                 onIconClick={openSearchConfirm}>
@@ -943,7 +940,7 @@ function ArticleDataProbe({ dataWrapper }) {
     )
 }
 
-function ProbeSection({ icon, eyebrow, title, description, count, accent, actions = null, children, searchId = "", onIconClick = null }) {
+function ProbeSection({ icon, eyebrow, title, description, accent, actions = null, children, searchId = "", onIconClick = null }) {
     const clickable = Boolean(searchId && onIconClick)
     const handleActivate = (triggerElement = null) => {
         if (!clickable) return
@@ -990,14 +987,11 @@ function ProbeSection({ icon, eyebrow, title, description, count, accent, action
                     </div>
                 </div>
 
-                <div className={`article-data-probe-block-controls`}>
-                    <div className={`article-data-probe-block-count`}>
-                        <span className={`article-data-probe-block-count-value`}>{count}</span>
-                        <span className={`article-data-probe-block-count-label`}>signals</span>
+                {actions && (
+                    <div className={`article-data-probe-block-controls`}>
+                        {actions}
                     </div>
-
-                    {actions}
-                </div>
+                )}
             </div>
 
             <div className={`article-data-probe-block-body`}>
@@ -1087,7 +1081,7 @@ function ProbeItem({
     }
 
     return (
-        <div className={`article-data-probe-item ${thirdParty ? "item-third-party" : ""} ${isExpanded ? "item-expanded" : ""}`}>
+        <div className={`article-data-probe-item status-${status} ${thirdParty ? "item-third-party" : ""} ${isExpanded ? "item-expanded" : ""}`}>
             <div className={`article-data-probe-item-head`}>
                 <div className={`article-data-probe-item-icon ${clickable ? "article-data-probe-item-icon-clickable" : ""}`}
                      role={clickable ? "button" : undefined}

@@ -191,17 +191,17 @@ const imageManifest = {
         "width": 1106,
         "height": 1106
     },
-    "/images/contant/profil_dog.webp": {
-        "src": "/images/__responsive/images/contant/profil_dog-w1080.webp",
-        "srcSet": "/images/__responsive/images/contant/profil_dog-w160.webp 160w, /images/__responsive/images/contant/profil_dog-w320.webp 320w, /images/__responsive/images/contant/profil_dog-w480.webp 480w, /images/__responsive/images/contant/profil_dog-w640.webp 640w, /images/__responsive/images/contant/profil_dog-w960.webp 960w, /images/__responsive/images/contant/profil_dog-w1080.webp 1080w",
-        "width": 1080,
-        "height": 1080
-    },
     "/images/contant/profilePix.webp": {
         "src": "/images/__responsive/images/contant/profilePix-w1440.webp",
         "srcSet": "/images/__responsive/images/contant/profilePix-w160.webp 160w, /images/__responsive/images/contant/profilePix-w320.webp 320w, /images/__responsive/images/contant/profilePix-w480.webp 480w, /images/__responsive/images/contant/profilePix-w640.webp 640w, /images/__responsive/images/contant/profilePix-w960.webp 960w, /images/__responsive/images/contant/profilePix-w1280.webp 1280w, /images/__responsive/images/contant/profilePix-w1440.webp 1440w",
         "width": 1440,
         "height": 1440
+    },
+    "/images/contant/profil_dog.webp": {
+        "src": "/images/__responsive/images/contant/profil_dog-w1080.webp",
+        "srcSet": "/images/__responsive/images/contant/profil_dog-w160.webp 160w, /images/__responsive/images/contant/profil_dog-w320.webp 320w, /images/__responsive/images/contant/profil_dog-w480.webp 480w, /images/__responsive/images/contant/profil_dog-w640.webp 640w, /images/__responsive/images/contant/profil_dog-w960.webp 960w, /images/__responsive/images/contant/profil_dog-w1080.webp 1080w",
+        "width": 1080,
+        "height": 1080
     },
     "/images/contant/provadis_logo.webp": {
         "src": "/images/__responsive/images/contant/provadis_logo-w180.webp",

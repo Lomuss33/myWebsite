@@ -246,9 +246,9 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
     --card-border: transparent;
     --card-shadow: none;
     --card-shadow-hover: none;
-    --card-text-strong: var(--theme-texts);
-    --card-text-mid: var(--theme-texts-light-1);
-    --card-text-soft: var(--theme-texts-light-2);
+    --card-text-strong: var(--writings-text-strong, var(--theme-texts));
+    --card-text-mid: var(--writings-text-mid, var(--theme-texts-light-1));
+    --card-text-soft: var(--writings-text-soft, var(--theme-texts-light-2));
 
     display: flex;
     flex-direction: column;
@@ -2073,6 +2073,54 @@ article.article-timeline--art-digital-expression div.article-timeline-item-info-
 article#article-1-section-my-writings div.article-timeline-item-info-preview-footer {
     div.article-item-preview-menu-button {
         border-color: color-mix(in srgb, var(--card-accent) 36%, var(--card-border) 64%);
+    }
+}
+
+article#article-1-section-my-writings div.article-timeline-item-info-preview-footer {
+    button.article-item-preview-menu-circular-button,
+    button.article-item-preview-menu-website-button-compact {
+        border: var(--timeline-rule-thickness) solid color-mix(in srgb, var(--timeline-rule-color) 42%, rgba(255, 255, 255, 0.18) 58%) !important;
+        background:
+            linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(6, 9, 16, 0.96)) !important;
+        color: var(--writings-text-strong, #f8fafc) !important;
+        box-shadow:
+            0 8px 18px rgba(0, 0, 0, 0.24),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    }
+
+    button.article-item-preview-menu-website-button {
+        border: var(--timeline-rule-thickness) solid color-mix(in srgb, var(--timeline-rule-color) 48%, rgba(255, 255, 255, 0.16) 52%) !important;
+        border-radius: 12px !important;
+        background:
+            linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(6, 9, 16, 0.96)) !important;
+        color: var(--writings-text-strong, #f8fafc) !important;
+        font-weight: 800 !important;
+        box-shadow:
+            0 10px 22px rgba(0, 0, 0, 0.24),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    }
+}
+
+[data-theme="light"] article#article-1-section-my-writings div.article-timeline-item-info-preview-footer {
+    button.article-item-preview-menu-circular-button,
+    button.article-item-preview-menu-website-button-compact {
+        border-color: color-mix(in srgb, var(--timeline-rule-color) 48%, #cbd5e1 52%) !important;
+        background:
+            linear-gradient(180deg, #ffffff, color-mix(in srgb, var(--timeline-rule-color) 8%, #f8fafc 92%)) !important;
+        color: #0f172a !important;
+        box-shadow:
+            0 5px 12px rgba(15, 23, 42, 0.08),
+            inset 0 1px 0 rgba(255, 255, 255, 0.92) !important;
+    }
+
+    button.article-item-preview-menu-website-button {
+        border-color: color-mix(in srgb, var(--timeline-rule-color) 42%, #cbd5e1 58%) !important;
+        background:
+            linear-gradient(180deg, #ffffff, color-mix(in srgb, var(--timeline-rule-color) 7%, #f8fafc 93%)) !important;
+        color: #0f172a !important;
+        box-shadow:
+            0 6px 14px rgba(15, 23, 42, 0.08),
+            inset 0 1px 0 rgba(255, 255, 255, 0.94) !important;
     }
 }
 

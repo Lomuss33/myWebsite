@@ -415,10 +415,23 @@ article#article-1-section-my-writings {
     div.article-timeline-item-avatar.article-timeline-item-avatar--button,
     a.article-timeline-item-avatar-link:hover div.article-timeline-item-avatar--button,
     a.article-timeline-item-avatar-link:focus-visible div.article-timeline-item-avatar--button {
-        border-color: transparent;
-        box-shadow: none;
+        border: var(--timeline-line-width) solid transparent;
+        background:
+            linear-gradient(#060b16, #060b16) padding-box,
+            var(--timeline-writing-gradient) border-box;
+        box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.10) inset,
+            0 12px 28px rgba(0, 0, 0, 0.30);
         font-size: clamp(2.2rem, calc(var(--avatar-size) * 0.46), 3.6rem);
         line-height: 1;
+    }
+
+    a.article-timeline-item-avatar-link:hover div.article-timeline-item-avatar--button,
+    a.article-timeline-item-avatar-link:focus-visible div.article-timeline-item-avatar--button {
+        box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.14) inset,
+            0 16px 34px rgba(0, 0, 0, 0.36),
+            0 0 0 calc(var(--timeline-line-width) / 2) color-mix(in srgb, var(--theme-primary) 18%, transparent);
     }
 
     div.article-timeline-item-avatar .avatar-icon-view,
@@ -448,7 +461,7 @@ button.standard-button.btn-contrast.article-timeline-see-more-button {
     min-height: 4rem;
     margin-inline: auto;
     padding: 0.95rem 1.7rem !important;
-    border: 2px solid var(--timeline-see-more-edge) !important;
+    border: var(--timeline-line-width, 3px) solid var(--timeline-see-more-edge) !important;
     border-radius: 1.4rem !important;
     font-size: clamp(1rem, 0.92rem + 0.28vw, 1.16rem) !important;
     font-weight: 800 !important;
@@ -595,35 +608,43 @@ button.standard-button.btn-contrast.article-timeline-see-more-button {
 
 [data-theme="dark"] button.standard-button.btn-contrast.article-timeline-see-more-button {
     --timeline-see-more-edge: #f6c453;
-    --timeline-see-more-surface-top: #203459;
-    --timeline-see-more-surface-mid: #151f37;
-    --timeline-see-more-surface-bottom: #0d1528;
-    --timeline-see-more-text: #fff3d1;
+    --timeline-see-more-surface-top: #17243d;
+    --timeline-see-more-surface-mid: #111a2e;
+    --timeline-see-more-surface-bottom: #0b1220;
+    --timeline-see-more-text: #f8fafc;
     --std-btn-border: var(--timeline-see-more-edge);
     border-color: var(--timeline-see-more-edge) !important;
+    transform: none;
     box-shadow:
-        0 18px 30px rgba(0, 0, 0, 0.32),
-        0 5px 0 rgba(138, 90, 0, 0.42),
-        0 0 0 1px rgba(246, 196, 83, 0.26),
-        0 0 24px rgba(212, 160, 23, 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        0 10px 22px rgba(0, 0, 0, 0.24),
+        inset 0 1px 0 rgba(255, 255, 255, 0.10);
 
     &:hover:not([disabled]) {
+        transform: translateY(-1px);
         box-shadow:
-            0 24px 38px rgba(0, 0, 0, 0.38),
-            0 6px 0 rgba(138, 90, 0, 0.48),
-            0 0 0 1px rgba(246, 196, 83, 0.34),
-            0 0 30px rgba(212, 160, 23, 0.20),
+            0 14px 28px rgba(0, 0, 0, 0.30),
+            0 0 0 1px rgba(246, 196, 83, 0.22),
             inset 0 1px 0 rgba(255, 255, 255, 0.14);
     }
 
     &:active:not([disabled]) {
+        transform: translateY(0);
         box-shadow:
-            0 10px 18px rgba(0, 0, 0, 0.28),
-            0 3px 0 rgba(138, 90, 0, 0.40),
-            0 0 0 1px rgba(246, 196, 83, 0.24),
-            0 0 18px rgba(212, 160, 23, 0.12),
+            0 7px 16px rgba(0, 0, 0, 0.24),
             inset 0 1px 0 rgba(255, 255, 255, 0.10);
+    }
+}
+
+[data-theme="light"] article#article-1-section-my-writings {
+    div.article-timeline-item-avatar.article-timeline-item-avatar--button,
+    a.article-timeline-item-avatar-link:hover div.article-timeline-item-avatar--button,
+    a.article-timeline-item-avatar-link:focus-visible div.article-timeline-item-avatar--button {
+        background:
+            linear-gradient(#ffffff, #eef6ff) padding-box,
+            var(--timeline-writing-gradient) border-box;
+        box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.78) inset,
+            0 10px 24px rgba(15, 23, 42, 0.14);
     }
 }
 

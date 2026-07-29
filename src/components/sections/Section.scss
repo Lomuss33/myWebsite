@@ -847,8 +847,8 @@ section#section-my-writings {
     --writings-title-alt-end: #a78bfa;
     --writings-title-shadow: 0 16px 34px rgba(245, 158, 11, 0.18);
     --writings-text-strong: #f8fafc;
-    --writings-text-mid: #d1d5db;
-    --writings-text-soft: #94a3b8;
+    --writings-text-mid: #eef6ff;
+    --writings-text-soft: #dbeafe;
 
     background:
         radial-gradient(circle at top left, rgba(56, 189, 248, 0.16) 0%, transparent 32%),
@@ -856,6 +856,16 @@ section#section-my-writings {
         radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.08) 0%, transparent 26%),
         linear-gradient(180deg, var(--writings-page-bg) 0%, var(--writings-page-bg-2) 44%, var(--writings-page-bg-3) 100%);
     color: var(--writings-text-strong);
+}
+
+[data-theme="light"] section#section-my-writings {
+    --writings-text-strong: #0f172a;
+    --writings-text-mid: #0f172a;
+    --writings-text-soft: #1e293b;
+    --writings-title-start: #0f172a;
+    --writings-title-mid: #b45309;
+    --writings-title-end: #2563eb;
+    --writings-title-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
 }
 
 section#section-my-writings div.section-content-border-decoration-top-left {
@@ -945,6 +955,29 @@ section#section-my-writings article#article-6-section-my-writings {
     --writings-current-title-shadow: 0 16px 34px rgba(239, 68, 68, 0.18);
 }
 
+[data-theme="light"] section#section-my-writings article:is(
+    #article-1-section-my-writings,
+    #article-2-section-my-writings,
+    #article-3-section-my-writings,
+    #article-4-section-my-writings,
+    #article-5-section-my-writings,
+    #article-6-section-my-writings
+) {
+    --writings-current-title-start: #0f172a;
+    --writings-current-title-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="light"] section#section-my-writings article#article-3-section-my-writings {
+    --writings-current-title-mid: #92400e;
+    --writings-current-title-end: #7c2d12;
+}
+
+[data-theme="light"] section#section-my-writings article#article-5-section-my-writings,
+[data-theme="light"] section#section-my-writings article#article-6-section-my-writings {
+    --writings-current-title-mid: #b91c1c;
+    --writings-current-title-end: #92400e;
+}
+
 section#section-my-writings article:is(
     #article-1-section-my-writings,
     #article-2-section-my-writings,
@@ -960,7 +993,7 @@ section#section-my-writings article:is(
     gap: 12px;
     width: 100%;
     margin: 0 auto clamp(24px, 3vw, 34px);
-    font-size: clamp(1.86rem, 1.16rem + 2vw, 3rem)!important;
+    font-size: clamp(1.58rem, 1.08rem + 1.42vw, 2.36rem)!important;
     font-weight: 900;
     line-height: 1.08;
     padding-bottom: 0.1em;
@@ -978,7 +1011,7 @@ section#section-my-writings article:is(
     #article-6-section-my-writings
 ) h4.article-title {
     margin-top: clamp(30px, 4vw, 46px);
-    font-size: clamp(1.68rem, 1.1rem + 1.58vw, 2.54rem)!important;
+    font-size: clamp(1.44rem, 1.02rem + 1.12vw, 2.08rem)!important;
 }
 
 section#section-my-writings article:is(
@@ -1110,7 +1143,7 @@ section#section-my-writings article:is(
         gap: 10px;
         width: 100%;
         margin-bottom: 26px;
-        font-size: clamp(1.48rem, 1.12rem + 1.34vw, 2.06rem)!important;
+        font-size: clamp(1.32rem, 1.04rem + 0.92vw, 1.74rem)!important;
         line-height: 1.08;
     }
 
@@ -1169,7 +1202,7 @@ section#section-my-writings article:is(
         gap: 9px;
         width: 100%;
         margin-bottom: 22px;
-        font-size: clamp(1.34rem, 1.08rem + 1vw, 1.68rem)!important;
+        font-size: clamp(1.18rem, 1rem + 0.68vw, 1.42rem)!important;
     }
 
 }
@@ -1600,15 +1633,6 @@ section#section-my-art div.section-body {
         width: min(62vw, 220px);
     }
 
-    section#section-my-hardware,
-    section#section-my-writings,
-    section#section-my-art {
-        background:
-            radial-gradient(circle at top left, rgba(78, 163, 255, 0.16) 0%, transparent 32%),
-            radial-gradient(circle at top right, rgba(250, 204, 21, 0.10) 0%, transparent 26%),
-            radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.08) 0%, transparent 28%),
-            linear-gradient(180deg, #04060b 0%, #0b1020 46%, #111827 100%);
-    }
 }
 
 @include media-breakpoint-down(sm) {

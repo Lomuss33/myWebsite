@@ -1191,8 +1191,11 @@ div.article-feature-items.article-feature-items-section-my-writings {
     }
 }
 
-article#article-2-section-my-writings {
-    div.article-feature-items.article-feature-items-section-my-writings {
+div.article-feature-items.article-feature-items-section-my-writings {
+        --article-writing-book-media-width: 504px;
+        --article-writing-book-media-height: 378px;
+        --article-writing-book-text-width: 34rem;
+
         div.article-feature-item.article-feature-item-writing-book {
             display: flex;
             justify-content: center;
@@ -1201,7 +1204,7 @@ article#article-2-section-my-writings {
 
         div.article-feature-item-writing-book-shell {
             display: grid;
-            grid-template-columns: 420px minmax(0, 34rem);
+            grid-template-columns: var(--article-writing-book-media-width) minmax(0, var(--article-writing-book-text-width));
             column-gap: clamp(18px, 1.8vw, 24px);
             width: max-content;
             max-width: calc(100% - clamp(64px, 10vw, 240px));
@@ -1210,25 +1213,44 @@ article#article-2-section-my-writings {
         }
 
         div.article-feature-item.article-feature-item-writing-book div.article-feature-item-media {
-            width: 420px;
-            min-width: 420px;
-            max-width: 420px;
+            width: var(--article-writing-book-media-width);
+            min-width: var(--article-writing-book-media-width);
+            max-width: var(--article-writing-book-media-width);
+            height: var(--article-writing-book-media-height);
             display: flex;
+            align-items: center;
             justify-content: center;
         }
 
         div.article-feature-item.article-feature-item-writing-book div.article-feature-item-image,
         div.article-feature-item.article-feature-item-writing-book div.article-feature-item-image-switch,
         div.article-feature-item.article-feature-item-writing-book div.image-view.article-feature-item-image {
-            width: 420px;
-            min-width: 420px;
-            max-width: 420px;
+            width: var(--article-writing-book-media-width);
+            min-width: var(--article-writing-book-media-width);
+            max-width: var(--article-writing-book-media-width);
+            height: var(--article-writing-book-media-height);
             margin: 0;
         }
 
+        div.article-feature-item.article-feature-item-writing-book:has(div.article-feature-item-content-image-preview-trigger:hover) {
+            div.article-feature-item-image-switch {
+                div.article-feature-item-image-face-front {
+                    opacity: 0;
+                    transform: scale(0.97) translateY(-4px);
+                    filter: blur(1px);
+                }
+
+                div.article-feature-item-image-face-back {
+                    opacity: 1;
+                    transform: scale(1) translateY(0);
+                    filter: blur(0);
+                }
+            }
+        }
+
         div.article-feature-item.article-feature-item-writing-book div.article-feature-item-content {
-            width: 34rem;
-            max-width: 34rem;
+            width: var(--article-writing-book-text-width);
+            max-width: var(--article-writing-book-text-width);
             display: flex;
             align-items: flex-start;
             justify-content: flex-start;
@@ -1238,7 +1260,7 @@ article#article-2-section-my-writings {
         div.article-feature-item.article-feature-item-writing-book div.pretext-interactive-text,
         div.article-feature-item.article-feature-item-writing-book div.pretext-interactive-text-content {
             width: 100%;
-            max-width: 34rem;
+            max-width: var(--article-writing-book-text-width);
             margin: 0;
         }
 
@@ -1251,9 +1273,10 @@ article#article-2-section-my-writings {
             }
 
             div.article-feature-item.article-feature-item-writing-book div.article-feature-item-media {
-                width: min(100%, 640px);
+                width: min(100%, var(--article-writing-book-media-width));
                 min-width: 0;
-                max-width: 640px;
+                max-width: var(--article-writing-book-media-width);
+                height: auto;
                 margin-inline: auto;
                 justify-content: center;
             }
@@ -1261,15 +1284,16 @@ article#article-2-section-my-writings {
             div.article-feature-item.article-feature-item-writing-book div.article-feature-item-image,
             div.article-feature-item.article-feature-item-writing-book div.article-feature-item-image-switch,
             div.article-feature-item.article-feature-item-writing-book div.image-view.article-feature-item-image {
-                width: min(100%, 640px);
+                width: min(100%, var(--article-writing-book-media-width));
                 min-width: 0;
-                max-width: 640px;
+                max-width: var(--article-writing-book-media-width);
+                height: auto;
                 margin-inline: auto;
             }
 
             div.article-feature-item.article-feature-item-writing-book div.article-feature-item-content {
-                width: min(100%, 62ch);
-                max-width: 62ch;
+                width: min(100%, var(--article-writing-book-text-width));
+                max-width: var(--article-writing-book-text-width);
                 margin-inline: auto;
                 justify-content: center;
                 align-items: center;
@@ -1279,7 +1303,7 @@ article#article-2-section-my-writings {
             div.article-feature-item.article-feature-item-writing-book div.pretext-interactive-text,
             div.article-feature-item.article-feature-item-writing-book div.pretext-interactive-text-content {
                 width: 100%;
-                max-width: 62ch;
+                max-width: var(--article-writing-book-text-width);
                 margin-inline: auto;
             }
         }
@@ -1291,8 +1315,8 @@ article#article-2-section-my-writings {
             }
 
             div.article-feature-item.article-feature-item-writing-book div.article-feature-item-content {
-                width: min(calc(100% - 24px), 36rem);
-                max-width: 36rem;
+                width: min(calc(100% - 24px), var(--article-writing-book-text-width));
+                max-width: var(--article-writing-book-text-width);
                 margin-inline: auto;
                 align-items: center;
                 justify-content: center;
@@ -1301,11 +1325,10 @@ article#article-2-section-my-writings {
             div.article-feature-item.article-feature-item-writing-book div.article-feature-item-text,
             div.article-feature-item.article-feature-item-writing-book div.pretext-interactive-text,
             div.article-feature-item.article-feature-item-writing-book div.pretext-interactive-text-content {
-                width: min(calc(100% - 24px), 36rem);
-                max-width: 36rem;
+                width: min(calc(100% - 24px), var(--article-writing-book-text-width));
+                max-width: var(--article-writing-book-text-width);
                 margin-inline: auto;
                 box-sizing: border-box;
             }
         }
-    }
 }

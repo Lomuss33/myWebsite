@@ -532,6 +532,18 @@ const imageManifest = {
         "srcSet": "/images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante-w160.webp 160w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante-w320.webp 320w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante-w480.webp 480w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante-w640.webp 640w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante-w960.webp 960w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante-w1280.webp 1280w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante-w1536.webp 1536w",
         "width": 1536,
         "height": 1024
+    },
+    "/images/writing/books/the-dragon-box/jeronim_i_ante_frame_1.webp": {
+        "src": "/images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_1-w1448.webp",
+        "srcSet": "/images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_1-w160.webp 160w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_1-w320.webp 320w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_1-w480.webp 480w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_1-w640.webp 640w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_1-w960.webp 960w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_1-w1280.webp 1280w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_1-w1448.webp 1448w",
+        "width": 1448,
+        "height": 1086
+    },
+    "/images/writing/books/the-dragon-box/jeronim_i_ante_frame_2.webp": {
+        "src": "/images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_2-w1448.webp",
+        "srcSet": "/images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_2-w160.webp 160w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_2-w320.webp 320w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_2-w480.webp 480w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_2-w640.webp 640w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_2-w960.webp 960w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_2-w1280.webp 1280w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_2-w1448.webp 1448w",
+        "width": 1448,
+        "height": 1086
     }
 }
 

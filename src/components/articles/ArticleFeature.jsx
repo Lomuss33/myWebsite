@@ -109,8 +109,14 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
     const textBodyRef = useRef(null)
     const resizeFrameRef = useRef(null)
     const resizeTimeoutRef = useRef(null)
+    const writingBookMeasureFrameRef = useRef(null)
+    const writingBookMeasureTimeoutRef = useRef(null)
     const baseTypographyRef = useRef(null)
     const [textScale, setTextScale] = useState(1)
+    const [writingBookMediaSize, setWritingBookMediaSize] = useState({
+        widthPx: null,
+        heightPx: null
+    })
     const [adaptiveLayoutState, setAdaptiveLayoutState] = useState({
         fontSizePx: null,
         lineHeightPx: null,
@@ -132,8 +138,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
         itemWrapper.id === 1
     const isWritingBookFeature =
         itemWrapper.articleWrapper.sectionId === "my-writings" &&
-        itemWrapper.articleWrapper.id === 2 &&
-        itemWrapper.id === 2
+        itemWrapper.visualVariant === "writing_book_frame_switch"
     const isWoodProductsFeature =
         itemWrapper.articleWrapper.sectionId === "experience" &&
         itemWrapper.articleWrapper.id === 2 &&
@@ -468,6 +473,149 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
         }
     }, [html, shouldFitTextToMediaHeight, isSquareFitLayout, articleSettings.featureTextFitMaxScale, articleSettings.featureTextFitMinScale, defaultFitMaxScale, usesWoodProductsAdaptiveLayout])
 
+    useEffect(() => {
+        if (!isWritingBookFeature) {
+            setWritingBookMediaSize({
+                widthPx: null,
+                heightPx: null
+            })
+            return
+        }
+
+        const stackedMediaQuery = window.matchMedia(STACKED_FEATURE_MEDIA_QUERY)
+        let resizeObserver = null
+
+        const resetMeasuredSize = () => {
+            setWritingBookMediaSize(currentSize => {
+                if (currentSize.widthPx === null && currentSize.heightPx === null) {
+                    return currentSize
+                }
+
+                return {
+                    widthPx: null,
+                    heightPx: null
+                }
+            })
+        }
+
+        const syncWritingBookMediaSize = () => {
+            writingBookMeasureFrameRef.current = null
+
+            if (stackedMediaQuery.matches) {
+                resetMeasuredSize()
+                return
+            }
+
+            const textElement = textBodyRef.current
+            if (!textElement)
+                return
+
+            const measuredHeight = Math.ceil(
+                textElement.scrollHeight ||
+                textElement.offsetHeight ||
+                textElement.getBoundingClientRect().height ||
+                0
+            )
+
+            if (!measuredHeight) {
+                resetMeasuredSize()
+                return
+            }
+
+            const measuredWidth = Math.round(measuredHeight * 4 / 3)
+
+            setWritingBookMediaSize(currentSize => {
+                if (
+                    currentSize.widthPx === measuredWidth &&
+                    currentSize.heightPx === measuredHeight
+                ) {
+                    return currentSize
+                }
+
+                return {
+                    widthPx: measuredWidth,
+                    heightPx: measuredHeight
+                }
+            })
+        }
+
+        const scheduleWritingBookMediaSizeSync = (immediate = false) => {
+            if (writingBookMeasureTimeoutRef.current !== null) {
+                clearTimeout(writingBookMeasureTimeoutRef.current)
+                writingBookMeasureTimeoutRef.current = null
+            }
+
+            const flush = () => {
+                writingBookMeasureTimeoutRef.current = null
+
+                if (writingBookMeasureFrameRef.current !== null) {
+                    cancelAnimationFrame(writingBookMeasureFrameRef.current)
+                }
+
+                writingBookMeasureFrameRef.current = requestAnimationFrame(syncWritingBookMediaSize)
+            }
+
+            if (immediate) {
+                flush()
+                return
+            }
+
+            writingBookMeasureTimeoutRef.current = setTimeout(flush, FEATURE_TEXT_RESIZE_SETTLE_MS)
+        }
+
+        const observedElements = [
+            itemRef.current,
+            textBodyRef.current,
+            textBodyRef.current?.querySelector(".article-feature-item-text-content"),
+            textBodyRef.current?.querySelector(".pretext-interactive-text-content")
+        ].filter(Boolean)
+
+        const handleWindowResize = () => scheduleWritingBookMediaSizeSync()
+        if (typeof ResizeObserver === "function") {
+            resizeObserver = new ResizeObserver(() => scheduleWritingBookMediaSizeSync())
+            observedElements.forEach(element => resizeObserver.observe(element))
+        } else {
+            window.addEventListener("resize", handleWindowResize)
+        }
+
+        const handleViewportChange = () => scheduleWritingBookMediaSizeSync(true)
+
+        if (stackedMediaQuery.addEventListener) {
+            stackedMediaQuery.addEventListener("change", handleViewportChange)
+        } else {
+            stackedMediaQuery.addListener(handleViewportChange)
+        }
+
+        scheduleWritingBookMediaSizeSync(true)
+        const settleTimeout = window.setTimeout(() => scheduleWritingBookMediaSizeSync(true), FEATURE_TEXT_RESIZE_SETTLE_MS)
+
+        return () => {
+            clearTimeout(settleTimeout)
+
+            if (resizeObserver) {
+                resizeObserver.disconnect()
+            } else {
+                window.removeEventListener("resize", handleWindowResize)
+            }
+
+            if (stackedMediaQuery.removeEventListener) {
+                stackedMediaQuery.removeEventListener("change", handleViewportChange)
+            } else {
+                stackedMediaQuery.removeListener(handleViewportChange)
+            }
+
+            if (writingBookMeasureFrameRef.current !== null) {
+                cancelAnimationFrame(writingBookMeasureFrameRef.current)
+                writingBookMeasureFrameRef.current = null
+            }
+
+            if (writingBookMeasureTimeoutRef.current !== null) {
+                clearTimeout(writingBookMeasureTimeoutRef.current)
+                writingBookMeasureTimeoutRef.current = null
+            }
+        }
+    }, [html, isWritingBookFeature, typographyVersion])
+
     const renderVisibleBody = () => {
         if (isAboutIntro) {
             return (
@@ -532,6 +680,10 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
         isSquareFitLayout ? "article-feature-item-layout-square-fit" : "",
         (isManagedSplitLayout || isTextLedSplitLayout || isFixedViewportImageLayout || isSquareFitLayout) ? `article-feature-item-stack-${featureStackOrder}` : ""
     ].filter(Boolean).join(" ")
+    const itemStyle = isWritingBookFeature && writingBookMediaSize.widthPx && writingBookMediaSize.heightPx ? {
+        "--article-writing-book-media-width": `${writingBookMediaSize.widthPx}px`,
+        "--article-writing-book-media-height": `${writingBookMediaSize.heightPx}px`
+    } : undefined
 
     const onMediaClick = () => {
         if(!hasAlternateImage)
@@ -539,6 +691,27 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
 
         setShowAlternateImage(current => !current)
     }
+
+    const shouldPreviewAlternateImageOnTextHover = isWritingBookFeature && hasAlternateImage
+    const showTextHoverImagePreview = (event) => {
+        if(event?.pointerType === "touch")
+            return
+
+        setShowAlternateImage(current => current ? current : true)
+    }
+    const resetTextHoverImagePreview = (event) => {
+        if(event?.pointerType === "touch")
+            return
+
+        setShowAlternateImage(false)
+    }
+    const textHoverImagePreviewProps = shouldPreviewAlternateImageOnTextHover ? {
+        onPointerEnter: showTextHoverImagePreview,
+        onPointerMove: showTextHoverImagePreview,
+        onPointerLeave: resetTextHoverImagePreview,
+        onMouseEnter: showTextHoverImagePreview,
+        onMouseLeave: resetTextHoverImagePreview
+    } : {}
 
     const floatingFramePointerProps = {
         onPointerEnter: floatingFrame.onPointerEnter,
@@ -621,7 +794,8 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                 )}
             </div>
 
-            <div className={`article-feature-item-content`}>
+            <div className={`article-feature-item-content ${shouldPreviewAlternateImageOnTextHover ? "article-feature-item-content-image-preview-trigger" : ""}`}
+                 {...textHoverImagePreviewProps}>
                 {(shouldFitTextToMediaHeight || usesWoodProductsAdaptiveLayout) && !isTextLedSplitLayout && !isMobileView && (
                     <div ref={squareMeasureRef}
                          className={`article-feature-item-text-measure-square last-p-no-margin text-3`}
@@ -648,7 +822,8 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
 
     return (
         <div ref={itemRef}
-             className={itemClassName}>
+             className={itemClassName}
+             style={itemStyle}>
             {isWritingBookFeature ? (
                 <div className={`article-feature-item-writing-book-shell`}>
                     {featureBody}

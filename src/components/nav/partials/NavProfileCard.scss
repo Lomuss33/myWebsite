@@ -1619,7 +1619,7 @@ div.nav-profile-card-short-rail {
     }
 
     svg.nav-profile-card-metal-frame-track path.nav-profile-card-metal-frame-wave-side {
-        stroke-width: 10.8;
+        stroke-width: 13.2;
     }
 
     div.nav-profile-card-media:hover:not(.floating-frame--paused) svg.nav-profile-card-metal-frame-track g.nav-profile-card-metal-frame-wave,
@@ -2003,15 +2003,23 @@ div.nav-profile-card-desktop-action-resume {
 
 @keyframes nav-profile-card-metal-frame-side-pulse {
     0%, 100% {
-        stroke-width: 10.8;
+        stroke-width: 13.2;
     }
 
-    46% {
-        stroke-width: 14.2;
+    18% {
+        stroke-width: 9.6;
     }
 
-    74% {
-        stroke-width: 9.2;
+    44% {
+        stroke-width: 18.4;
+    }
+
+    67% {
+        stroke-width: 11.4;
+    }
+
+    84% {
+        stroke-width: 16.2;
     }
 }
 
@@ -2030,7 +2038,7 @@ div.nav-profile-card-desktop-action-resume {
     }
 
     div.nav-profile-card-short-rail svg.nav-profile-card-metal-frame-track path.nav-profile-card-metal-frame-wave-side {
-        stroke-width: 11.4;
+        stroke-width: 13.8;
     }
 
     div.nav-profile-card-short-rail div.nav-profile-card-media:hover:not(.floating-frame--paused) div.nav-profile-card-frame-emblem,
@@ -2070,5 +2078,19 @@ div.nav-profile-card-desktop-action-resume {
 
     50% {
         transform: scale(1.08) rotate(7deg);
+    }
+}
+
+[data-theme="dark"] div.nav-profile-card {
+    h1.nav-profile-card-name span.nav-profile-card-name-line,
+    div.nav-profile-card-role span.text-typer-span-dynamic {
+        color: #ffffff !important;
+    }
+}
+
+[data-theme="light"] div.nav-profile-card {
+    h1.nav-profile-card-name span.nav-profile-card-name-line,
+    div.nav-profile-card-role span.text-typer-span-dynamic {
+        color: #000000 !important;
     }
 }

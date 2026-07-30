@@ -160,8 +160,8 @@ nav.nav-sidebar-short-rail {
     --nav-short-rail-avatar-size: calc(14px + 40px * var(--nav-short-rail-visual-density));
     --nav-short-rail-status-offset: calc(4px + 6px * var(--nav-short-rail-visual-density));
     --nav-short-rail-profile-padding: calc(1px + 3px * var(--nav-short-rail-visual-density));
-    --nav-short-rail-link-icon-width: clamp(24px, calc(var(--nav-short-rail-row-height) * 0.62), 44px);
-    --nav-short-rail-link-icon-size: clamp(1.2rem, calc(var(--nav-short-rail-row-height) * 0.54), 1.75rem);
+    --nav-short-rail-link-icon-width: 40px;
+    --nav-short-rail-link-icon-size: 2.03rem;
     --nav-short-rail-link-padding-inline: calc(0px + 3px * var(--nav-short-rail-visual-density));
     --nav-short-rail-link-accent-bar-width: calc(2px + 2px * var(--nav-short-rail-visual-density));
     --nav-short-rail-link-accent-bar-height: clamp(16px, calc(var(--nav-short-rail-row-height) * 0.42), 36px);

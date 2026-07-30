@@ -281,3 +281,17 @@ div.nav-link-list-shell.nav-link-list-exact-fit {
         height: auto;
     }
 }
+
+[data-theme="dark"] nav.nav-sidebar div.nav-link-list-shell button.nav-link:not(.nav-link-active) {
+    i {
+        color: color-mix(in srgb, var(--theme-nav-text) 68%, white 32%);
+        opacity: 0.98;
+    }
+}
+
+[data-theme="light"] nav.nav-sidebar div.nav-link-list-shell button.nav-link:not(.nav-link-active) {
+    i {
+        color: color-mix(in srgb, var(--theme-nav-text) 58%, black 42%);
+        opacity: 0.96;
+    }
+}

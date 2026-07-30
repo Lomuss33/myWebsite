@@ -118,28 +118,28 @@ const HOME_STACK_POPUP_COPY = {
 
 const HOME_STACK_BUBBLE_DEFAULTS = {
     desktop: {
-        fontSize: 1.48,
+        fontSize: 1.3,
         paddingX: 4,
         paddingY: 5,
-        lineHeight: 1.14
-    },
-    tablet: {
-        fontSize: 1.34,
-        paddingX: 4,
-        paddingY: 4,
         lineHeight: 1.12
     },
+    tablet: {
+        fontSize: 1.2,
+        paddingX: 4,
+        paddingY: 4,
+        lineHeight: 1.1
+    },
     mobile: {
-        fontSize: 1.12,
+        fontSize: 1,
         paddingX: 5,
         paddingY: 3,
-        lineHeight: 1.1
+        lineHeight: 1.08
     }
 }
 
 const HOME_STACK_BUBBLE_FLOORS = {
     desktop: {
-        fontSize: 1.08,
+        fontSize: 0.98,
         paddingX: 4,
         paddingY: 2,
         lineHeight: 1.05
@@ -151,7 +151,7 @@ const HOME_STACK_BUBBLE_FLOORS = {
         lineHeight: 1.04
     },
     mobile: {
-        fontSize: 0.84,
+        fontSize: 0.82,
         paddingX: 3,
         paddingY: 1,
         lineHeight: 1.03
@@ -219,6 +219,17 @@ const getBubbleAvailableBox = (element) => {
         width: Math.max(0, element.clientWidth - horizontalPadding),
         height: Math.max(0, element.clientHeight - verticalPadding)
     }
+}
+
+const isBubbleTextTooTall = (copyElement, innerElement) => {
+    if(!copyElement)
+        return false
+
+    const availableBox = getBubbleAvailableBox(innerElement)
+    if(!availableBox.height)
+        return false
+
+    return copyElement.scrollHeight > availableBox.height * 0.72
 }
 
 /**
@@ -430,6 +441,18 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
             }
 
             while(doesOverflow() && fitValues.fontSize > floorFitValues.fontSize + 0.001) {
+                fitValues.fontSize = Math.max(
+                    floorFitValues.fontSize,
+                    roundToStep(fitValues.fontSize - 0.02)
+                )
+                applyCurrentFitValues()
+            }
+
+            while(
+                !doesOverflow() &&
+                isBubbleTextTooTall(bubbleCopyEl, bubbleInnerEl) &&
+                fitValues.fontSize > floorFitValues.fontSize + 0.001
+            ) {
                 fitValues.fontSize = Math.max(
                     floorFitValues.fontSize,
                     roundToStep(fitValues.fontSize - 0.02)

@@ -875,14 +875,17 @@
         "feature_split_min_width": 760,
         "feature_split_height_tolerance": 6,
         "feature_interactive_item_ids": [2],
-        "feature_image_aspect_ratio": "3 / 2",
-        "feature_image_mobile_aspect_ratio": "3 / 2"
+        "feature_image_aspect_ratio": "4 / 3",
+        "feature_image_mobile_aspect_ratio": "4 / 3"
       },
       "items": [
         {
           "id": 2,
           "label": "Jeronim i Ante",
-          "img": "/images/writing/books/the-dragon-box/jeronim_i_ante.webp",
+          "visual_variant": "writing_book_frame_switch",
+          "img": "/images/writing/books/the-dragon-box/jeronim_i_ante_frame_1.webp",
+          "imgAlt": "/images/writing/books/the-dragon-box/jeronim_i_ante_frame_2.webp",
+          "imgAltDefaultChance": 0,
           "locales": {
             "en": {
               "text": "<p>The candle between them trembles, its small flame illuminating not just their hands, but the weight of something being decided. One, wrapped in fur and earth, carries the wild hills with him; the other, pale-haired and sharp-eyed, bears a different fire&mdash;one of words, belief, and quiet defiance. Between them lies a stack of worn parchment, inked with lines that seem to whisper rather than speak. Their hands do not rest&mdash;one accuses, one explains, one hesitates, one almost reaches&mdash;as if the truth itself cannot sit still. Food cools beside them, untouched, as though even hunger has stepped aside for what is unfolding. At the edge, a traveler's bag lies half-open, its scrolls and herbs hinting that this meeting was never meant to be ordinary. And in that narrow pool of light, you begin to sense it&mdash;this is not a conversation, but the quiet beginning of something that will not stay hidden for long.</p>"

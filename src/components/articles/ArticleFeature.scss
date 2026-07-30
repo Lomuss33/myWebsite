@@ -22,7 +22,7 @@ article#article-2-section-about {
     div.article-feature-item {
         border: 1px solid rgba(78, 163, 255, 0.18);
         border-radius: 18px;
-        padding: 16px;
+        padding: 4px 8px;
         background:
             linear-gradient(140deg, rgba(15, 23, 42, 0.94), rgba(6, 9, 16, 0.94));
         box-shadow: 0 18px 42px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -30,7 +30,12 @@ article#article-2-section-about {
 
     div.article-feature-item-content {
         border-radius: 14px;
-        padding: 2px 0 2px 4px;
+        padding: 0;
+    }
+
+    div.pretext-interactive-text {
+        box-sizing: border-box;
+        padding: 3px 8px;
     }
 
     div.article-feature-item-text,
@@ -66,7 +71,11 @@ article#article-2-section-about {
 
     @include media-breakpoint-down(lg) {
         div.article-feature-item {
-            padding: 14px;
+            padding: 4px 7px;
+        }
+
+        div.pretext-interactive-text {
+            padding: 3px 7px;
         }
     }
 }

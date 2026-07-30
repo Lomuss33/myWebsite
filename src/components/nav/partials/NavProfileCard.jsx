@@ -63,6 +63,7 @@ function NavProfileCard({
     const [showAlternateProfilePicture, setShowAlternateProfilePicture] = useState(false)
     const [stackMobileName, setStackMobileName] = useState(false)
     const metalFrameGradientId = useId()
+    const profileFrameEmblemClipId = `${metalFrameGradientId}-emblem-clip`
     const headerRef = useRef(null)
     const mediaRef = useRef(null)
     const metalFrameRef = useRef(null)
@@ -524,12 +525,117 @@ function NavProfileCard({
                      }}
                      aria-label={`Toggle profile picture`}
                      aria-pressed={showAlternateProfilePicture}>
+                    <div className={`nav-profile-card-avatar-switch ${showAlternateProfilePicture ? "nav-profile-card-avatar-switch-secondary" : "nav-profile-card-avatar-switch-primary"}`}>
+                        <div className={`nav-profile-card-avatar-face nav-profile-card-avatar-face-front`}>
+                            <ImageView src={profilePictureUrl}
+                                       className={`nav-profile-card-avatar`}
+                                       hideSpinner={true}
+                                       alt={name}
+                                       loading={`eager`}
+                                       sizes={PROFILE_AVATAR_SIZES}/>
+                        </div>
+
+                        <div className={`nav-profile-card-avatar-face nav-profile-card-avatar-face-back`}>
+                            <ImageView src={secondaryProfilePictureUrl}
+                                       className={`nav-profile-card-avatar`}
+                                       hideSpinner={true}
+                                       alt={name}
+                                       loading={`eager`}
+                                       fetchPriority={`low`}
+                                       sizes={PROFILE_AVATAR_SIZES}/>
+                        </div>
+                    </div>
+
+                    <div className={`nav-profile-card-frame-emblem`}
+                         aria-hidden={true}>
+                        <svg className={`nav-profile-card-frame-emblem-svg`}
+                             viewBox={`0 0 260 310`}
+                             focusable={false}
+                             aria-hidden={true}>
+                            <defs>
+                                <clipPath id={profileFrameEmblemClipId}>
+                                    <path d={`M 35 84 L 225 84 L 248 124 C 233 144 231 179 242 206 C 226 254 186 268 151 268 C 135 276 130 287 130 302 C 130 287 125 276 109 268 C 74 268 34 254 18 206 C 29 179 27 144 12 124 Z`}/>
+                                </clipPath>
+                            </defs>
+                            <path className={`nav-profile-card-frame-emblem-shadow`}
+                                  d={`M 28 77 L 232 77 L 258 123 C 242 145 239 178 252 207 C 234 264 189 279 156 279 C 140 285 131 297 130 310 C 129 297 120 285 104 279 C 71 279 26 264 8 207 C 21 178 18 145 2 123 Z`}/>
+                            <path className={`nav-profile-card-frame-emblem-gold`}
+                                  d={`M 28 76 L 232 76 L 258 122 C 242 144 239 177 252 206 C 234 263 189 278 156 278 C 140 284 131 296 130 309 C 129 296 120 284 104 278 C 71 278 26 263 8 206 C 21 177 18 144 2 122 Z`}/>
+                            <path className={`nav-profile-card-frame-emblem-white`}
+                                  d={`M 35 84 L 225 84 L 248 124 C 233 144 231 179 242 206 C 226 254 186 268 151 268 C 135 276 130 287 130 302 C 130 287 125 276 109 268 C 74 268 34 254 18 206 C 29 179 27 144 12 124 Z`}/>
+                            <g clipPath={`url(#${profileFrameEmblemClipId})`}>
+                                <rect className={`nav-profile-card-frame-emblem-check-white`}
+                                      x={`28`}
+                                      y={`88`}
+                                      width={`204`}
+                                      height={`172`}/>
+                                <rect className={`nav-profile-card-frame-emblem-check-red`}
+                                      x={`69`}
+                                      y={`88`}
+                                      width={`41`}
+                                      height={`43`}/>
+                                <rect className={`nav-profile-card-frame-emblem-check-red`}
+                                      x={`151`}
+                                      y={`88`}
+                                      width={`41`}
+                                      height={`43`}/>
+                                <rect className={`nav-profile-card-frame-emblem-check-red`}
+                                      x={`28`}
+                                      y={`131`}
+                                      width={`41`}
+                                      height={`43`}/>
+                                <rect className={`nav-profile-card-frame-emblem-check-red`}
+                                      x={`110`}
+                                      y={`131`}
+                                      width={`41`}
+                                      height={`43`}/>
+                                <rect className={`nav-profile-card-frame-emblem-check-red`}
+                                      x={`192`}
+                                      y={`131`}
+                                      width={`41`}
+                                      height={`43`}/>
+                                <rect className={`nav-profile-card-frame-emblem-check-red`}
+                                      x={`69`}
+                                      y={`174`}
+                                      width={`41`}
+                                      height={`43`}/>
+                                <rect className={`nav-profile-card-frame-emblem-check-red`}
+                                      x={`151`}
+                                      y={`174`}
+                                      width={`41`}
+                                      height={`43`}/>
+                                <rect className={`nav-profile-card-frame-emblem-check-red`}
+                                      x={`28`}
+                                      y={`217`}
+                                      width={`41`}
+                                      height={`43`}/>
+                                <rect className={`nav-profile-card-frame-emblem-check-red`}
+                                      x={`110`}
+                                      y={`217`}
+                                      width={`41`}
+                                      height={`43`}/>
+                                <rect className={`nav-profile-card-frame-emblem-check-red`}
+                                      x={`192`}
+                                      y={`217`}
+                                      width={`41`}
+                                      height={`43`}/>
+                            </g>
+                            <path className={`nav-profile-card-frame-emblem-crown-fill`}
+                                  d={`M 54 18 L 206 18 L 218 72 L 42 72 Z`}/>
+                            <path className={`nav-profile-card-frame-emblem-crown-line`}
+                                  d={`M 61 62 L 72 29 L 91 58 L 102 29 L 122 58 L 130 28 L 143 58 L 158 29 L 176 58 L 190 30 L 201 62 Z`}/>
+                            <path className={`nav-profile-card-frame-emblem-gold-line`}
+                                  d={`M 54 18 L 206 18 L 218 72 L 42 72 Z`}/>
+                        </svg>
+                    </div>
+
                     <div className={`nav-profile-card-metal-frame`}
                          aria-hidden={true}>
                         <div className={`nav-profile-card-metal-frame-rotor`}
                              ref={metalFrameRef}>
                             <svg className={`nav-profile-card-metal-frame-track`}
-                                 viewBox={`0 0 100 100`}
+                                 viewBox={`0 0 124 100`}
+                                 preserveAspectRatio={`none`}
                                  focusable={false}
                                  aria-hidden={true}>
                                 <defs>
@@ -553,30 +659,39 @@ function NavProfileCard({
                                               stopColor={`var(--nav-short-rail-frame-blue)`}/>
                                     </linearGradient>
                                 </defs>
-                                <path stroke={`url(#${metalFrameGradientId})`}
-                                      d={`M 50 8 C 58 15 66 8 72 16 C 78 24 88 21 88 32 C 88 41 98 45 90 52 C 82 59 91 68 80 75 C 71 81 72 92 60 88 C 51 85 45 96 38 87 C 32 79 21 84 20 72 C 19 62 8 60 15 50 C 21 42 10 34 21 27 C 30 22 27 11 38 14 C 44 16 46 5 50 8 Z`}/>
+                                <g className={`nav-profile-card-metal-frame-wave`}>
+                                    <path className={`nav-profile-card-metal-frame-wave-edge`}
+                                          stroke={`url(#${metalFrameGradientId})`}
+                                          d={`M 8 9 C 22 2 30 16 43 9`}/>
+                                    <path className={`nav-profile-card-metal-frame-wave-edge`}
+                                          stroke={`url(#${metalFrameGradientId})`}
+                                          d={`M 43 9 C 58 2 67 16 81 9`}/>
+                                    <path className={`nav-profile-card-metal-frame-wave-edge`}
+                                          stroke={`url(#${metalFrameGradientId})`}
+                                          d={`M 81 9 C 97 2 108 17 116 10`}/>
+                                    <path className={`nav-profile-card-metal-frame-wave-side`}
+                                          stroke={`url(#${metalFrameGradientId})`}
+                                          d={`M 116 10 C 129 25 104 32 117 47`}/>
+                                    <path className={`nav-profile-card-metal-frame-wave-side`}
+                                          stroke={`url(#${metalFrameGradientId})`}
+                                          d={`M 117 47 C 130 62 103 69 116 90`}/>
+                                    <path className={`nav-profile-card-metal-frame-wave-edge`}
+                                          stroke={`url(#${metalFrameGradientId})`}
+                                          d={`M 116 90 C 101 98 93 84 78 91`}/>
+                                    <path className={`nav-profile-card-metal-frame-wave-edge`}
+                                          stroke={`url(#${metalFrameGradientId})`}
+                                          d={`M 78 91 C 62 98 53 84 39 91`}/>
+                                    <path className={`nav-profile-card-metal-frame-wave-edge`}
+                                          stroke={`url(#${metalFrameGradientId})`}
+                                          d={`M 39 91 C 24 98 15 84 8 90`}/>
+                                    <path className={`nav-profile-card-metal-frame-wave-side`}
+                                          stroke={`url(#${metalFrameGradientId})`}
+                                          d={`M 8 90 C -5 72 20 65 7 50`}/>
+                                    <path className={`nav-profile-card-metal-frame-wave-side`}
+                                          stroke={`url(#${metalFrameGradientId})`}
+                                          d={`M 7 50 C -5 33 20 25 8 9`}/>
+                                </g>
                             </svg>
-                        </div>
-                    </div>
-
-                    <div className={`nav-profile-card-avatar-switch ${showAlternateProfilePicture ? "nav-profile-card-avatar-switch-secondary" : "nav-profile-card-avatar-switch-primary"}`}>
-                        <div className={`nav-profile-card-avatar-face nav-profile-card-avatar-face-front`}>
-                            <ImageView src={profilePictureUrl}
-                                       className={`nav-profile-card-avatar`}
-                                       hideSpinner={true}
-                                       alt={name}
-                                       loading={`eager`}
-                                       sizes={PROFILE_AVATAR_SIZES}/>
-                        </div>
-
-                        <div className={`nav-profile-card-avatar-face nav-profile-card-avatar-face-back`}>
-                            <ImageView src={secondaryProfilePictureUrl}
-                                       className={`nav-profile-card-avatar`}
-                                       hideSpinner={true}
-                                       alt={name}
-                                       loading={`eager`}
-                                       fetchPriority={`low`}
-                                       sizes={PROFILE_AVATAR_SIZES}/>
                         </div>
                     </div>
                 </div>

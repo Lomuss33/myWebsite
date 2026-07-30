@@ -17,6 +17,7 @@ function NavToolLanguagePicker({
     const language = useLanguage()
     const utils = useUtils()
     const [dropdownVisible, setDropdownVisible] = React.useState(false)
+    const closeTimerRef = React.useRef(null)
 
     const supportsMultipleLanguages = language.supportsMultipleLanguages
     const availableLanguages = language.getAvailableLanguages(false)
@@ -35,10 +36,34 @@ function NavToolLanguagePicker({
         ""
     const toggleClasses = `btn-option-picker-toggle nav-tool-language-toggle ${captionClass} ${captionLayoutClass}`.trim()
 
+    const _clearCloseTimer = React.useCallback(() => {
+        if(closeTimerRef.current) {
+            window.clearTimeout(closeTimerRef.current)
+            closeTimerRef.current = null
+        }
+    }, [])
+
+    const _scheduleCloseTimer = React.useCallback(() => {
+        _clearCloseTimer()
+
+        closeTimerRef.current = window.setTimeout(() => {
+            setDropdownVisible(false)
+            closeTimerRef.current = null
+        }, 3000)
+    }, [_clearCloseTimer])
+
+    React.useEffect(() => {
+        return () => {
+            _clearCloseTimer()
+        }
+    }, [_clearCloseTimer])
+
     const _onOptionSelected = (optionId) => {
         const targetLanguage = availableLanguages.find(lang => lang.id === optionId)
         if(targetLanguage) {
+            _clearCloseTimer()
             language.setSelectedLanguage(targetLanguage)
+            setDropdownVisible(false)
         }
     }
 
@@ -87,10 +112,13 @@ function NavToolLanguagePicker({
                           className={dropdownClassName}
                           show={dropdownVisible}
                           onToggle={(nextShow) => {
+                              _clearCloseTimer()
                               setDropdownVisible(nextShow)
                           }}>
                     <Dropdown.Toggle variant={`transparent`}
                                      className={toggleClasses}
+                                     onMouseEnter={_clearCloseTimer}
+                                     onMouseLeave={_scheduleCloseTimer}
                                      data-tooltip={showTooltip ? (dropdownVisible ? "hidden" : language.getString("select_language")) : null}>
                         <span className={`btn-option-picker-toggle-row`}>
                             <div className={`btn-option-picker-icon btn-option-picker-icon-size-2`}>
@@ -107,7 +135,9 @@ function NavToolLanguagePicker({
                         )}
                     </Dropdown.Toggle>
 
-                    <Dropdown.Menu className={menuClassName}>
+                    <Dropdown.Menu className={menuClassName}
+                                   onMouseEnter={_clearCloseTimer}
+                                   onMouseLeave={_scheduleCloseTimer}>
                         {options
                             .filter(option => option.id !== selectedLanguage?.id)
                             .map((option, key) => (

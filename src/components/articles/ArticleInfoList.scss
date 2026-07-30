@@ -547,6 +547,108 @@ article.article-info-list-home {
     }
 }
 
+article#article-3-section-about.article-info-list-home,
+article#article-4-section-about.article-info-list-home,
+article#article-5-section-about.article-info-list-home {
+    --home-skill-description-color: color-mix(in srgb, #dbeafe 74%, #fde68a 26%);
+    --home-skill-description-shadow: 0 1px 0 rgba(0, 0, 0, 0.22);
+
+    [data-theme="light"] & {
+        --home-skill-description-color: color-mix(in srgb, #17324d 82%, #9a5b00 18%);
+        --home-skill-description-shadow: none;
+        --home-skill-popup-text-color: color-mix(in srgb, #0f172a 88%, #92400e 12%);
+    }
+
+    div.article-info-list-items.article-info-list-items-home,
+    div.article-info-list-items.article-info-list-items-home.article-info-list-items-shrink {
+        --content-padding-inline-start: 10px;
+        --content-padding-inline-end: 10px;
+        --content-padding-block: 9px;
+        --home-skill-text-right-guard: 22px;
+        --home-skill-title-font-size: clamp(1.36rem, 1.08rem + 0.92vw, 1.72rem);
+        --home-skill-title-line-height: 1.08;
+        --home-skill-description-font-size: clamp(1.12rem, 1rem + 0.34vw, 1.26rem);
+        --home-skill-description-line-height: 1.28;
+        --proof-bubble-padding-x: 10px;
+        --proof-bubble-padding-y: 7px;
+        --proof-bubble-font-size: clamp(1.12rem, 1rem + 0.32vw, 1.22rem);
+        --proof-bubble-line-height: 1.22;
+        --proof-bubble-bleed-bottom: 12px;
+    }
+
+    div.article-info-list-item.article-info-list-item-home {
+        div.article-info-list-item-content.article-info-list-item-home {
+            align-items: stretch;
+            gap: 3px;
+        }
+
+        div.article-info-list-item-info-title {
+            box-sizing: border-box;
+            font-size: var(--home-skill-title-font-size) !important;
+            line-height: var(--home-skill-title-line-height) !important;
+            margin-bottom: 5px;
+            padding-right: var(--home-skill-text-right-guard);
+            padding-bottom: 4px;
+            text-wrap: balance;
+        }
+
+        div.article-info-list-item-info-body {
+            min-height: 4.15em;
+        }
+
+        div.article-info-list-item-info-text {
+            box-sizing: border-box;
+            align-items: flex-start;
+            padding-right: var(--home-skill-text-right-guard);
+            color: var(--home-skill-description-color) !important;
+            font-size: var(--home-skill-description-font-size) !important;
+            font-weight: 500;
+            line-height: var(--home-skill-description-line-height) !important;
+            text-shadow: var(--home-skill-description-shadow);
+            overflow-wrap: anywhere;
+            text-wrap: pretty;
+        }
+
+        div.article-info-list-item-text-bubble-inner {
+            color: var(--home-skill-popup-text-color, color-mix(in srgb, #f8fafc 82%, #fde68a 18%));
+            font-size: var(--proof-bubble-font-size) !important;
+            line-height: var(--proof-bubble-line-height) !important;
+        }
+
+        div.article-info-list-item-text-bubble-copy {
+            font-weight: 520;
+            letter-spacing: 0;
+        }
+    }
+
+    @include media-breakpoint-down(lg) {
+        div.article-info-list-items.article-info-list-items-home,
+        div.article-info-list-items.article-info-list-items-home.article-info-list-items-shrink {
+            --home-skill-text-right-guard: 18px;
+            --home-skill-title-font-size: clamp(1.24rem, 1.08rem + 0.42vw, 1.46rem);
+            --home-skill-description-font-size: clamp(1.04rem, 0.96rem + 0.2vw, 1.14rem);
+            --home-skill-description-line-height: 1.26;
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        div.article-info-list-items.article-info-list-items-home,
+        div.article-info-list-items.article-info-list-items-home.article-info-list-items-shrink {
+            --content-padding-inline-start: 8px;
+            --content-padding-inline-end: 8px;
+            --content-padding-block: 7px;
+            --home-skill-text-right-guard: 12px;
+            --home-skill-title-font-size: clamp(1.08rem, 1rem + 0.24vw, 1.2rem);
+            --home-skill-description-font-size: clamp(0.94rem, 0.88rem + 0.14vw, 1.02rem);
+            --home-skill-description-line-height: 1.26;
+            --proof-bubble-padding-x: 7px;
+            --proof-bubble-padding-y: 5px;
+            --proof-bubble-font-size: clamp(0.9rem, 0.84rem + 0.14vw, 0.98rem);
+            --proof-bubble-line-height: 1.18;
+        }
+    }
+}
+
 
 
 /** ------------- CONTACT LAYOUT ------------------- **/

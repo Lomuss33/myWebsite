@@ -63,22 +63,93 @@ const PROOF_BUBBLE_FIT_VARIABLES = [
     "--proof-bubble-line-height"
 ]
 
+const HOME_SKILL_PROOF_BUBBLE_ARTICLE_IDS = new Set([
+    "article-3-section-about",
+    "article-4-section-about",
+    "article-5-section-about"
+])
+
+const HOME_SKILL_PROOF_BUBBLE_DEFAULTS = {
+    desktop: {
+        fontSize: 1.18,
+        paddingX: 10,
+        paddingY: 7,
+        lineHeight: 1.24
+    },
+    compact: {
+        fontSize: 1.1,
+        paddingX: 9,
+        paddingY: 7,
+        lineHeight: 1.22
+    },
+    tablet: {
+        fontSize: 1.02,
+        paddingX: 8,
+        paddingY: 6,
+        lineHeight: 1.2
+    },
+    mobile: {
+        fontSize: 0.92,
+        paddingX: 7,
+        paddingY: 5,
+        lineHeight: 1.18
+    }
+}
+
+const HOME_SKILL_PROOF_BUBBLE_FLOORS = {
+    desktop: {
+        fontSize: 0.98,
+        paddingX: 7,
+        paddingY: 5,
+        lineHeight: 1.16
+    },
+    tablet: {
+        fontSize: 0.86,
+        paddingX: 6,
+        paddingY: 4,
+        lineHeight: 1.14
+    },
+    mobile: {
+        fontSize: 0.78,
+        paddingX: 5,
+        paddingY: 4,
+        lineHeight: 1.12
+    }
+}
+
 const roundToStep = (value, precision = 2) => {
     const multiplier = 10 ** precision
     return Math.round(value * multiplier) / multiplier
 }
 
-const getProofBubbleDefaults = (innerWidth) => {
+const getProofBubbleViewportBucket = (innerWidth) => {
     if(innerWidth < 576)
-        return { ...PROOF_BUBBLE_DEFAULTS.mobile }
+        return "mobile"
     if(innerWidth < 768)
-        return { ...PROOF_BUBBLE_DEFAULTS.tablet }
+        return "tablet"
     if(innerWidth < 1200)
-        return { ...PROOF_BUBBLE_DEFAULTS.compact }
-    return { ...PROOF_BUBBLE_DEFAULTS.desktop }
+        return "compact"
+    return "desktop"
 }
 
-const getProofBubbleFloors = (innerWidth) => {
+const getProofBubbleDefaults = (innerWidth, articleId = null) => {
+    const bucket = getProofBubbleViewportBucket(innerWidth)
+    const defaults = HOME_SKILL_PROOF_BUBBLE_ARTICLE_IDS.has(articleId) ?
+        HOME_SKILL_PROOF_BUBBLE_DEFAULTS :
+        PROOF_BUBBLE_DEFAULTS
+
+    return { ...defaults[bucket] }
+}
+
+const getProofBubbleFloors = (innerWidth, articleId = null) => {
+    if(HOME_SKILL_PROOF_BUBBLE_ARTICLE_IDS.has(articleId)) {
+        if(innerWidth < 576)
+            return { ...HOME_SKILL_PROOF_BUBBLE_FLOORS.mobile }
+        if(innerWidth < 992)
+            return { ...HOME_SKILL_PROOF_BUBBLE_FLOORS.tablet }
+        return { ...HOME_SKILL_PROOF_BUBBLE_FLOORS.desktop }
+    }
+
     if(innerWidth < 576)
         return { ...PROOF_BUBBLE_FLOORS.mobile }
     if(innerWidth < 992)
@@ -239,8 +310,10 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
             if(!bubbleInnerEl || !bubbleCopyEl)
                 return
 
-            const defaultFitValues = getProofBubbleDefaults(viewport.innerWidth || window.innerWidth)
-            const floorFitValues = getProofBubbleFloors(viewport.innerWidth || window.innerWidth)
+            const articleId = itemWrapper.articleWrapper.uniqueId
+            const viewportWidth = viewport.innerWidth || window.innerWidth
+            const defaultFitValues = getProofBubbleDefaults(viewportWidth, articleId)
+            const floorFitValues = getProofBubbleFloors(viewportWidth, articleId)
             const fitValues = { ...defaultFitValues }
 
             const doesOverflow = () => {

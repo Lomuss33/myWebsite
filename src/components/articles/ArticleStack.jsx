@@ -118,43 +118,43 @@ const HOME_STACK_POPUP_COPY = {
 
 const HOME_STACK_BUBBLE_DEFAULTS = {
     desktop: {
-        fontSize: 1.02,
-        paddingX: 16,
-        paddingY: 14,
-        lineHeight: 1.45
+        fontSize: 1.48,
+        paddingX: 4,
+        paddingY: 5,
+        lineHeight: 1.14
     },
     tablet: {
-        fontSize: 0.96,
-        paddingX: 14,
-        paddingY: 12,
-        lineHeight: 1.4
+        fontSize: 1.34,
+        paddingX: 4,
+        paddingY: 4,
+        lineHeight: 1.12
     },
     mobile: {
-        fontSize: 0.9,
-        paddingX: 13,
-        paddingY: 12,
-        lineHeight: 1.36
+        fontSize: 1.12,
+        paddingX: 5,
+        paddingY: 3,
+        lineHeight: 1.1
     }
 }
 
 const HOME_STACK_BUBBLE_FLOORS = {
     desktop: {
-        fontSize: 0.86,
-        paddingX: 10,
-        paddingY: 8,
-        lineHeight: 1.26
+        fontSize: 1.08,
+        paddingX: 4,
+        paddingY: 2,
+        lineHeight: 1.05
     },
     tablet: {
-        fontSize: 0.78,
-        paddingX: 8,
-        paddingY: 7,
-        lineHeight: 1.2
+        fontSize: 0.96,
+        paddingX: 4,
+        paddingY: 2,
+        lineHeight: 1.04
     },
     mobile: {
-        fontSize: 0.72,
-        paddingX: 7,
-        paddingY: 6,
-        lineHeight: 1.16
+        fontSize: 0.84,
+        paddingX: 3,
+        paddingY: 1,
+        lineHeight: 1.03
     }
 }
 
@@ -406,14 +406,6 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
 
             applyCurrentFitValues()
 
-            while(doesOverflow() && fitValues.fontSize > floorFitValues.fontSize + 0.001) {
-                fitValues.fontSize = Math.max(
-                    floorFitValues.fontSize,
-                    roundToStep(fitValues.fontSize - 0.02)
-                )
-                applyCurrentFitValues()
-            }
-
             while(
                 doesOverflow() &&
                 (
@@ -433,6 +425,14 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
                 fitValues.lineHeight = Math.max(
                     floorFitValues.lineHeight,
                     roundToStep(fitValues.lineHeight - 0.02)
+                )
+                applyCurrentFitValues()
+            }
+
+            while(doesOverflow() && fitValues.fontSize > floorFitValues.fontSize + 0.001) {
+                fitValues.fontSize = Math.max(
+                    floorFitValues.fontSize,
+                    roundToStep(fitValues.fontSize - 0.02)
                 )
                 applyCurrentFitValues()
             }

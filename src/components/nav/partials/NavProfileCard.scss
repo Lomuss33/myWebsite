@@ -1387,12 +1387,15 @@ div.nav-profile-card-short-rail {
     --nav-short-rail-frame-blue: #1d4ed8;
     --nav-short-rail-frame-white: #f1f5f9;
     --nav-short-rail-frame-red: #b91c1c;
-    --nav-short-rail-frame-opacity: 0.9;
+    --nav-short-rail-frame-opacity: 0.96;
     align-self: stretch;
     width: 100%;
     align-items: center;
     justify-content: center;
     padding: var(--nav-short-rail-profile-padding, 0px);
+    position: relative;
+    overflow: visible;
+    z-index: 8;
 
     div.nav-profile-card-media {
         padding: 0;
@@ -1400,7 +1403,8 @@ div.nav-profile-card-short-rail {
         box-shadow: none;
         border-radius: 0;
         filter: none;
-        overflow: hidden;
+        overflow: visible;
+        z-index: 5;
     }
 
     div.nav-profile-card-media:hover:not(.floating-frame--paused) {
@@ -1440,6 +1444,8 @@ div.nav-profile-card-short-rail {
         display: flex;
         align-items: center;
         justify-content: center;
+        overflow: visible;
+        z-index: 8;
     }
 
     div.nav-profile-card-media {
@@ -1452,6 +1458,9 @@ div.nav-profile-card-short-rail {
         height: calc(100% - var(--nav-short-rail-name-height));
         display: grid;
         place-items: center;
+        isolation: isolate;
+        overflow: visible;
+        z-index: 20;
     }
 
     div.nav-profile-card-avatar-switch {
@@ -1463,7 +1472,9 @@ div.nav-profile-card-short-rail {
         aspect-ratio: 1 / 1;
         border-radius: 0 !important;
         overflow: hidden;
-        z-index: 1;
+        transform: translateZ(0);
+        transform-style: flat;
+        z-index: 2;
     }
 
     div.nav-profile-card-avatar-face {
@@ -1472,6 +1483,61 @@ div.nav-profile-card-short-rail {
         width: 100%;
         height: 100%;
         border-radius: 0 !important;
+    }
+
+    div.nav-profile-card-frame-emblem {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: min(76px, 84%);
+        aspect-ratio: 260 / 310;
+        opacity: 0;
+        pointer-events: none;
+        transform: translate(-50%, -50%) translateZ(54px) scale(0.02);
+        transform-origin: center;
+        z-index: 48;
+        filter:
+            drop-shadow(0 2px 3px rgba(2, 6, 23, 0.3))
+            drop-shadow(0 0 4px rgba(255, 255, 255, 0.18));
+    }
+
+    svg.nav-profile-card-frame-emblem-svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        overflow: visible;
+    }
+
+    .nav-profile-card-frame-emblem-shadow {
+        fill: rgba(2, 6, 23, 0.28);
+    }
+
+    .nav-profile-card-frame-emblem-gold,
+    .nav-profile-card-frame-emblem-crown-fill {
+        fill: #d8ad6a;
+    }
+
+    .nav-profile-card-frame-emblem-white,
+    .nav-profile-card-frame-emblem-check-white {
+        fill: #fffaf0;
+    }
+
+    .nav-profile-card-frame-emblem-check-red {
+        fill: #e40000;
+    }
+
+    .nav-profile-card-frame-emblem-gold-line,
+    .nav-profile-card-frame-emblem-crown-line {
+        fill: none;
+        stroke: #fff7e3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 7;
+    }
+
+    .nav-profile-card-frame-emblem-gold-line {
+        stroke: #c9954a;
+        stroke-width: 8;
     }
 
     div.image-view,
@@ -1492,25 +1558,27 @@ div.nav-profile-card-short-rail {
 
     div.nav-profile-card-metal-frame {
         inset: auto;
-        left: 50%;
-        top: 50%;
-        width: auto;
+        left: 0;
+        top: 0;
+        width: 100%;
         max-width: none;
         height: 100%;
         max-height: none;
-        aspect-ratio: 1 / 1;
-        transform: translate(-50%, -50%);
+        aspect-ratio: auto;
+        transform: translateZ(72px);
         border-radius: 0;
         border-top-right-radius: 0;
-        z-index: 3;
+        pointer-events: none;
+        z-index: 60;
     }
 
     div.nav-profile-card-metal-frame-rotor {
         position: absolute;
-        left: -18%;
-        top: -8.5%;
-        width: var(--nav-short-rail-metal-frame-width-ratio);
-        height: var(--nav-short-rail-metal-frame-height-ratio);
+        inset: auto;
+        left: 0;
+        top: -8%;
+        width: 100%;
+        height: 116%;
         padding: 0;
         border-radius: 0;
         border-top-right-radius: 0;
@@ -1527,20 +1595,120 @@ div.nav-profile-card-short-rail {
         overflow: visible;
     }
 
+    svg.nav-profile-card-metal-frame-track g.nav-profile-card-metal-frame-wave {
+        transform-box: view-box;
+        transform-origin: center;
+        transform: rotate(0deg);
+    }
+
     svg.nav-profile-card-metal-frame-track path {
         fill: none;
-        stroke-width: 1.6;
         stroke-linecap: round;
-        stroke-linejoin: round;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 3;
         stroke-opacity: var(--nav-short-rail-frame-opacity);
         vector-effect: non-scaling-stroke;
+        filter:
+            drop-shadow(0 0 2px color-mix(in srgb, var(--nav-short-rail-frame-white) 72%, transparent))
+            drop-shadow(0 0 5px color-mix(in srgb, var(--nav-short-rail-frame-blue) 42%, transparent))
+            drop-shadow(0 0 6px color-mix(in srgb, var(--nav-short-rail-frame-red) 34%, transparent));
+    }
+
+    svg.nav-profile-card-metal-frame-track path.nav-profile-card-metal-frame-wave-edge {
+        stroke-width: 3.2;
+    }
+
+    svg.nav-profile-card-metal-frame-track path.nav-profile-card-metal-frame-wave-side {
+        stroke-width: 10.8;
+    }
+
+    div.nav-profile-card-media:hover:not(.floating-frame--paused) svg.nav-profile-card-metal-frame-track g.nav-profile-card-metal-frame-wave,
+    div.nav-profile-card-media:focus-visible svg.nav-profile-card-metal-frame-track g.nav-profile-card-metal-frame-wave,
+    div.nav-profile-card-media.floating-frame--active svg.nav-profile-card-metal-frame-track g.nav-profile-card-metal-frame-wave,
+    div.nav-profile-card-media[data-profile-frame-running="true"] svg.nav-profile-card-metal-frame-track g.nav-profile-card-metal-frame-wave {
+        animation: nav-profile-card-metal-frame-spin 3.6s linear infinite;
+    }
+
+    div.nav-profile-card-media:hover:not(.floating-frame--paused) div.nav-profile-card-frame-emblem,
+    div.nav-profile-card-media:focus-visible div.nav-profile-card-frame-emblem,
+    div.nav-profile-card-media.floating-frame--active div.nav-profile-card-frame-emblem,
+    div.nav-profile-card-media[data-profile-frame-running="true"] div.nav-profile-card-frame-emblem {
+        animation:
+            nav-profile-card-frame-emblem-emerge 10s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+            nav-profile-card-frame-emblem-heartbeat 1s ease-in-out 10s infinite;
+    }
+
+    div.nav-profile-card-media[data-profile-frame-paused="true"] div.nav-profile-card-frame-emblem {
+        animation: none;
+        opacity: 0;
+        transform: translate(-50%, -50%) translateZ(54px) scale(0.02);
+    }
+
+    div.nav-profile-card-media:hover:not(.floating-frame--paused) svg.nav-profile-card-metal-frame-track path.nav-profile-card-metal-frame-wave-edge,
+    div.nav-profile-card-media:focus-visible svg.nav-profile-card-metal-frame-track path.nav-profile-card-metal-frame-wave-edge,
+    div.nav-profile-card-media.floating-frame--active svg.nav-profile-card-metal-frame-track path.nav-profile-card-metal-frame-wave-edge,
+    div.nav-profile-card-media[data-profile-frame-running="true"] svg.nav-profile-card-metal-frame-track path.nav-profile-card-metal-frame-wave-edge {
+        animation: nav-profile-card-metal-frame-edge-pulse 1.65s ease-in-out infinite;
+    }
+
+    div.nav-profile-card-media:hover:not(.floating-frame--paused) svg.nav-profile-card-metal-frame-track path.nav-profile-card-metal-frame-wave-side,
+    div.nav-profile-card-media:focus-visible svg.nav-profile-card-metal-frame-track path.nav-profile-card-metal-frame-wave-side,
+    div.nav-profile-card-media.floating-frame--active svg.nav-profile-card-metal-frame-track path.nav-profile-card-metal-frame-wave-side,
+    div.nav-profile-card-media[data-profile-frame-running="true"] svg.nav-profile-card-metal-frame-track path.nav-profile-card-metal-frame-wave-side {
+        animation: nav-profile-card-metal-frame-side-pulse 1.65s ease-in-out infinite;
+    }
+
+    div.nav-profile-card-media[data-profile-frame-paused="true"] svg.nav-profile-card-metal-frame-track g.nav-profile-card-metal-frame-wave {
+        animation: none;
+        transform: rotate(0deg);
+    }
+
+    div.nav-profile-card-media[data-profile-frame-paused="true"] svg.nav-profile-card-metal-frame-track path.nav-profile-card-metal-frame-wave-edge,
+    div.nav-profile-card-media[data-profile-frame-paused="true"] svg.nav-profile-card-metal-frame-track path.nav-profile-card-metal-frame-wave-side {
+        animation: none;
+    }
+
+    svg.nav-profile-card-metal-frame-track path:nth-child(2) {
+        animation-delay: -0.18s;
+    }
+
+    svg.nav-profile-card-metal-frame-track path:nth-child(3) {
+        animation-delay: -0.36s;
+    }
+
+    svg.nav-profile-card-metal-frame-track path:nth-child(4) {
+        animation-delay: -0.54s;
+    }
+
+    svg.nav-profile-card-metal-frame-track path:nth-child(5) {
+        animation-delay: -0.72s;
+    }
+
+    svg.nav-profile-card-metal-frame-track path:nth-child(6) {
+        animation-delay: -0.9s;
+    }
+
+    svg.nav-profile-card-metal-frame-track path:nth-child(7) {
+        animation-delay: -1.08s;
+    }
+
+    svg.nav-profile-card-metal-frame-track path:nth-child(8) {
+        animation-delay: -1.26s;
+    }
+
+    svg.nav-profile-card-metal-frame-track path:nth-child(9) {
+        animation-delay: -1.44s;
+    }
+
+    svg.nav-profile-card-metal-frame-track path:nth-child(10) {
+        animation-delay: -1.62s;
     }
 
     [data-theme="light"] & {
         --nav-short-rail-frame-blue: #60a5fa;
         --nav-short-rail-frame-white: #f8fafc;
         --nav-short-rail-frame-red: #fb7185;
-        --nav-short-rail-frame-opacity: 0.96;
+        --nav-short-rail-frame-opacity: 0.98;
     }
 
     div.nav-profile-card-info {
@@ -1760,6 +1928,118 @@ div.nav-profile-card-desktop-action-resume {
                 drop-shadow(0 0 0.32rem rgba(251, 191, 36, 0.82))
                 drop-shadow(0 0 0.65rem rgba(248, 170, 40, 0.42));
         }
+    }
+}
+
+@keyframes nav-profile-card-metal-frame-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes nav-profile-card-frame-emblem-emerge {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) translateZ(54px) scale(0.02);
+    }
+
+    16% {
+        opacity: 0.34;
+        transform: translate(-50%, -50%) translateZ(54px) scale(0.09);
+    }
+
+    58% {
+        opacity: 0.82;
+        transform: translate(-50%, -50%) translateZ(54px) scale(0.64);
+    }
+
+    100% {
+        opacity: 0.98;
+        transform: translate(-50%, -50%) translateZ(54px) scale(1);
+    }
+}
+
+@keyframes nav-profile-card-frame-emblem-heartbeat {
+    0%, 100% {
+        opacity: 0.98;
+        transform: translate(-50%, -50%) translateZ(54px) scale(1);
+    }
+
+    16% {
+        opacity: 1;
+        transform: translate(-50%, -50%) translateZ(54px) scale(1.075);
+    }
+
+    32% {
+        transform: translate(-50%, -50%) translateZ(54px) scale(0.985);
+    }
+
+    52% {
+        transform: translate(-50%, -50%) translateZ(54px) scale(1.035);
+    }
+
+    68% {
+        transform: translate(-50%, -50%) translateZ(54px) scale(1);
+    }
+}
+
+@keyframes nav-profile-card-metal-frame-edge-pulse {
+    0%, 100% {
+        stroke-width: 3.2;
+    }
+
+    42% {
+        stroke-width: 4.8;
+    }
+
+    72% {
+        stroke-width: 2.6;
+    }
+}
+
+@keyframes nav-profile-card-metal-frame-side-pulse {
+    0%, 100% {
+        stroke-width: 10.8;
+    }
+
+    46% {
+        stroke-width: 14.2;
+    }
+
+    74% {
+        stroke-width: 9.2;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    div.nav-profile-card-short-rail svg.nav-profile-card-metal-frame-track g.nav-profile-card-metal-frame-wave {
+        animation: none;
+    }
+
+    div.nav-profile-card-short-rail svg.nav-profile-card-metal-frame-track path.nav-profile-card-metal-frame-wave-edge,
+    div.nav-profile-card-short-rail svg.nav-profile-card-metal-frame-track path.nav-profile-card-metal-frame-wave-side {
+        animation: none;
+    }
+
+    div.nav-profile-card-short-rail svg.nav-profile-card-metal-frame-track path.nav-profile-card-metal-frame-wave-edge {
+        stroke-width: 3.4;
+    }
+
+    div.nav-profile-card-short-rail svg.nav-profile-card-metal-frame-track path.nav-profile-card-metal-frame-wave-side {
+        stroke-width: 11.4;
+    }
+
+    div.nav-profile-card-short-rail div.nav-profile-card-media:hover:not(.floating-frame--paused) div.nav-profile-card-frame-emblem,
+    div.nav-profile-card-short-rail div.nav-profile-card-media:focus-visible div.nav-profile-card-frame-emblem,
+    div.nav-profile-card-short-rail div.nav-profile-card-media.floating-frame--active div.nav-profile-card-frame-emblem,
+    div.nav-profile-card-short-rail div.nav-profile-card-media[data-profile-frame-running="true"] div.nav-profile-card-frame-emblem {
+        animation: none;
+        opacity: 0.98;
+        transform: translate(-50%, -50%) translateZ(54px) scale(1);
     }
 }
 

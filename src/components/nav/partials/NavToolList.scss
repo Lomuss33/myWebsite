@@ -388,17 +388,22 @@ div.nav-tools {
 
     nav.nav-sidebar-short-rail {
         div.nav-tools {
-            --nav-tools-icon-box-size: 24px;
-            --nav-tools-icon-font-size: 0.94rem;
+            --nav-tools-icon-box-size: 34px;
+            --nav-tools-icon-font-size: 1.32rem;
         }
 
         div.nav-tools-item-language {
-            --nav-tools-icon-box-size: 26px;
+            --nav-tools-icon-box-size: 36px;
         }
 
         div.nav-tools-item-theme {
-            --nav-tools-icon-box-size: 29px;
-            --nav-tools-icon-font-size: 1.14rem;
+            --nav-tools-icon-box-size: 42px;
+            --nav-tools-icon-font-size: 1.73rem;
+
+            button.btn-option-picker-toggle i.fa-icon.fa-sun,
+            button.btn-option-picker-toggle i.fa-icon.fa-moon {
+                background-size: 112% !important;
+            }
         }
     }
 }
@@ -546,7 +551,7 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
         width: var(--nav-tools-popup-width);
         min-width: var(--nav-tools-popup-min-width); // rail width + extension past the right edge
         max-width: var(--nav-tools-popup-max-width);
-        z-index: $z-index-pop-over;
+        z-index: calc($z-index-pop-over + 4);
     }
 
     div.dropdown-menu.nav-tools-popup-menu:not(.nav-resume-menu) {
@@ -555,13 +560,19 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
         padding: 8px;
         overflow: hidden;
         border-radius: 16px;
-        border: 1px solid color-mix(in srgb, var(--theme-standard-borders) 82%, white 18%);
-        background: color-mix(in srgb, var(--theme-pop-ups-background) 94%, white 6%);
+        border: 1px solid color-mix(in srgb, var(--theme-standard-borders) 70%, white 30%);
+        background:
+            linear-gradient(180deg,
+                color-mix(in srgb, var(--theme-pop-ups-background) 86%, white 14%) 0%,
+                color-mix(in srgb, var(--theme-pop-ups-background) 96%, var(--theme-primary) 4%) 100%);
         color: var(--theme-texts);
-        backdrop-filter: blur(14px) saturate(1.02);
+        backdrop-filter: blur(18px) saturate(1.12);
         box-shadow:
-            0 18px 40px rgba(15, 23, 42, 0.14),
-            0 4px 14px rgba(15, 23, 42, 0.08);
+            0 34px 72px rgba(15, 23, 42, 0.24),
+            0 16px 32px rgba(15, 23, 42, 0.16),
+            0 5px 14px rgba(15, 23, 42, 0.12),
+            0 0 0 1px rgba(255, 255, 255, 0.34) inset,
+            0 1px 0 rgba(255, 255, 255, 0.72) inset;
 
         &::before {
             content: "";
@@ -580,51 +591,186 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
         a.dropdown-item,
         button.dropdown-item {
             position: relative;
+            isolation: isolate;
+            overflow: hidden;
             color: var(--theme-texts);
-            min-height: 44px;
+            min-height: 48px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 11px;
             font-size: 0.89rem;
-            font-weight: 500;
+            font-weight: 700;
             margin: 0;
-            padding: 10px 12px;
-            border-radius: 10px;
-            background: transparent;
+            padding: 10px 13px 10px 12px;
+            border: 1px solid color-mix(in srgb, var(--theme-standard-borders) 56%, transparent 44%);
+            border-radius: 12px;
+            background:
+                linear-gradient(180deg,
+                    rgba(255, 255, 255, 0.84) 0%,
+                    rgba(255, 255, 255, 0.48) 48%,
+                    color-mix(in srgb, var(--theme-primary) 8%, transparent 92%) 100%);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.82),
+                inset 0 -1px 0 color-mix(in srgb, var(--theme-primary) 14%, transparent 86%),
+                0 1px 2px rgba(15, 23, 42, 0.08),
+                0 8px 18px rgba(15, 23, 42, 0.06);
             transition:
-                background 0.16s ease,
-                color 0.16s ease;
+                background 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease;
+
+            &::before,
+            &::after {
+                content: "";
+                position: absolute;
+                pointer-events: none;
+                transition:
+                    opacity 0.22s ease,
+                    transform 0.22s ease;
+            }
+
+            &::before {
+                inset: 1px;
+                z-index: -2;
+                border-radius: 10px;
+                background:
+                    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.82) 0, rgba(255, 255, 255, 0) 30%),
+                    linear-gradient(135deg,
+                        color-mix(in srgb, var(--theme-primary) 18%, transparent 82%) 0%,
+                        transparent 42%,
+                        color-mix(in srgb, var(--theme-links) 12%, transparent 88%) 100%);
+                opacity: 0.68;
+            }
+
+            &::after {
+                top: -70%;
+                bottom: -70%;
+                left: -40%;
+                z-index: -1;
+                width: 38%;
+                border-radius: 999px;
+                background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.52) 48%, transparent 100%);
+                opacity: 0;
+                transform: translateX(-120%) rotate(18deg);
+            }
 
             div.btn-option-picker-icon {
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
-                width: 28px;
-                min-width: 28px;
-                height: 28px;
-                border-radius: 8px;
-                background: color-mix(in srgb, var(--theme-primary) 9%, transparent 91%);
+                width: 30px;
+                min-width: 30px;
+                height: 30px;
+                border: 1px solid color-mix(in srgb, var(--theme-primary) 30%, transparent 70%);
+                border-radius: 10px;
+                background:
+                    linear-gradient(180deg,
+                        color-mix(in srgb, var(--theme-primary) 18%, white 82%) 0%,
+                        color-mix(in srgb, var(--theme-primary) 10%, transparent 90%) 100%);
+                box-shadow:
+                    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+                    0 7px 14px color-mix(in srgb, var(--theme-primary) 16%, transparent 84%);
+                transition:
+                    background 0.2s ease,
+                    border-color 0.2s ease,
+                    box-shadow 0.2s ease,
+                    transform 0.2s ease;
 
                 i.fa-icon {
                     color: color-mix(in srgb, var(--theme-texts) 80%, var(--theme-primary) 20%);
                     opacity: 1;
+                    transition:
+                        color 0.2s ease,
+                        transform 0.2s ease;
                 }
             }
 
             span.btn-option-picker-menu-item-label {
                 letter-spacing: 0;
+                text-shadow: 0 1px 0 rgba(255, 255, 255, 0.36);
             }
 
             &:not(:last-child) {
-                margin-bottom: 2px;
+                margin-bottom: 6px;
             }
 
-            &:hover, &:focus {
-                background: color-mix(in srgb, var(--theme-primary) 10%, transparent 90%);
+            &:hover, &:focus, &:focus-visible {
+                border-color: color-mix(in srgb, var(--theme-primary) 48%, white 52%);
+                background:
+                    linear-gradient(180deg,
+                        rgba(255, 255, 255, 0.96) 0%,
+                        color-mix(in srgb, var(--theme-primary) 15%, white 85%) 54%,
+                        color-mix(in srgb, var(--theme-primary) 22%, transparent 78%) 100%);
                 color: var(--theme-texts);
+                box-shadow:
+                    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+                    inset 0 -2px 0 color-mix(in srgb, var(--theme-primary) 36%, transparent 64%),
+                    0 0 0 2px color-mix(in srgb, var(--theme-primary) 13%, transparent 87%),
+                    0 10px 22px rgba(15, 23, 42, 0.12),
+                    0 3px 8px color-mix(in srgb, var(--theme-primary) 20%, transparent 80%);
+                transform: translateY(-2px);
+
+                &::before {
+                    opacity: 1;
+                    transform: scale(1.02);
+                }
+
+                &::after {
+                    opacity: 1;
+                    transform: translateX(420%) rotate(18deg);
+                }
 
                 div.btn-option-picker-icon {
-                    background: color-mix(in srgb, var(--theme-primary) 16%, transparent 84%);
+                    border-color: color-mix(in srgb, var(--theme-primary) 62%, white 38%);
+                    background:
+                        linear-gradient(180deg,
+                            color-mix(in srgb, var(--theme-primary) 34%, white 66%) 0%,
+                            color-mix(in srgb, var(--theme-primary) 24%, transparent 76%) 100%);
+                    box-shadow:
+                        inset 0 1px 0 rgba(255, 255, 255, 0.82),
+                        0 9px 18px color-mix(in srgb, var(--theme-primary) 28%, transparent 72%);
+                    transform: translateX(2px) scale(1.06);
+
+                    i.fa-icon {
+                        color: var(--theme-primary);
+                        transform: scale(1.08);
+                    }
+                }
+            }
+
+            &:active {
+                box-shadow:
+                    inset 0 2px 5px rgba(15, 23, 42, 0.12),
+                    inset 0 -1px 0 rgba(255, 255, 255, 0.6);
+                transform: translateY(0);
+            }
+
+            &.btn-option-picker-menu-item-selected {
+                border-color: color-mix(in srgb, var(--theme-primary) 68%, white 32%);
+                background:
+                    linear-gradient(180deg,
+                        color-mix(in srgb, var(--theme-primary) 82%, white 18%) 0%,
+                        var(--theme-primary) 100%) !important;
+                color: var(--theme-texts-inv) !important;
+                box-shadow:
+                    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+                    inset 0 -2px 0 rgba(15, 23, 42, 0.14),
+                    0 10px 22px color-mix(in srgb, var(--theme-primary) 30%, transparent 70%);
+
+                div.btn-option-picker-icon {
+                    border-color: rgba(255, 255, 255, 0.34);
+                    background: rgba(255, 255, 255, 0.18);
+                    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24);
+
+                    i.fa-icon {
+                        color: var(--theme-texts-inv);
+                    }
+                }
+
+                span.btn-option-picker-menu-item-label {
+                    text-shadow: 0 1px 8px rgba(15, 23, 42, 0.24);
                 }
             }
         }
@@ -649,31 +795,37 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
 
         a.dropdown-item,
         button.dropdown-item {
-            background: transparent;
             white-space: nowrap;
 
             div.btn-option-picker-icon {
                 width: auto;
                 min-width: 0;
                 height: auto;
+                border: 0;
                 border-radius: 0;
                 background: transparent !important;
                 box-shadow: none;
             }
 
             img {
-                width: 24px;
-                height: 24px;
+                width: 36px;
+                height: 36px;
+                border: 0;
                 border-radius: 999px;
+                box-shadow: none;
                 transition: transform 0.14s ease;
             }
 
             &:hover,
             &:focus {
-                background: color-mix(in srgb, var(--theme-links) 10%, transparent 90%);
+                background:
+                    linear-gradient(180deg,
+                        rgba(255, 255, 255, 0.96) 0%,
+                        color-mix(in srgb, var(--theme-links) 14%, white 86%) 54%,
+                        color-mix(in srgb, var(--theme-links) 18%, transparent 82%) 100%);
 
                 img {
-                    transform: scale(1.1);
+                    transform: scale(1.08);
                 }
             }
         }
@@ -895,8 +1047,8 @@ div.nav-tools-short-rail {
     }
 
     div.nav-tools-item-theme {
-        --nav-tools-icon-box-size: 27px;
-        --nav-tools-icon-font-size: 1.06rem;
+        --nav-tools-icon-box-size: 42px;
+        --nav-tools-icon-font-size: 1.73rem;
 
         button.btn-option-picker-toggle {
             padding-inline: 0;
@@ -914,7 +1066,7 @@ div.nav-tools-short-rail {
             width: 100%;
             height: 100%;
             background-position: center;
-            background-size: 131% !important;
+            background-size: 112% !important;
         }
     }
 }
@@ -1057,9 +1209,36 @@ div.nav-tools-short-rail {
     a.dropdown-item,
     button.dropdown-item {
         color: color-mix(in srgb, var(--theme-nav-text) 92%, white 8%);
+        border-color: color-mix(in srgb, var(--theme-nav-divider) 56%, white 18%);
+        background:
+            linear-gradient(180deg,
+                color-mix(in srgb, var(--theme-nav-surface-raised) 82%, white 8%) 0%,
+                color-mix(in srgb, var(--theme-nav-surface-raised) 76%, black 24%) 52%,
+                color-mix(in srgb, var(--theme-secondary) 10%, transparent 90%) 100%);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            inset 0 -1px 0 color-mix(in srgb, var(--theme-secondary) 16%, transparent 84%),
+            0 1px 2px rgba(0, 0, 0, 0.18),
+            0 10px 20px rgba(0, 0, 0, 0.16);
+
+        &::before {
+            background:
+                radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.14) 0, rgba(255, 255, 255, 0) 30%),
+                linear-gradient(135deg,
+                    color-mix(in srgb, var(--theme-secondary) 20%, transparent 80%) 0%,
+                    transparent 44%,
+                    color-mix(in srgb, var(--theme-primary) 12%, transparent 88%) 100%);
+        }
 
         div.btn-option-picker-icon {
-            background: color-mix(in srgb, var(--theme-secondary) 16%, transparent 84%);
+            border-color: color-mix(in srgb, var(--theme-secondary) 34%, white 10%);
+            background:
+                linear-gradient(180deg,
+                    color-mix(in srgb, var(--theme-secondary) 20%, var(--theme-nav-surface-raised) 80%) 0%,
+                    color-mix(in srgb, var(--theme-secondary) 12%, transparent 88%) 100%);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.09),
+                0 8px 16px color-mix(in srgb, var(--theme-secondary) 20%, transparent 80%);
 
             i.fa-icon {
                 color: color-mix(in srgb, var(--theme-secondary) 68%, white 32%);
@@ -1068,11 +1247,26 @@ div.nav-tools-short-rail {
 
         &:hover,
         &:focus {
-            background: color-mix(in srgb, var(--theme-secondary) 16%, var(--theme-nav-surface-raised) 84%);
+            border-color: color-mix(in srgb, var(--theme-secondary) 58%, white 22%);
+            background:
+                linear-gradient(180deg,
+                    color-mix(in srgb, var(--theme-nav-surface-raised) 72%, white 12%) 0%,
+                    color-mix(in srgb, var(--theme-secondary) 18%, var(--theme-nav-surface-raised) 82%) 54%,
+                    color-mix(in srgb, var(--theme-secondary) 28%, transparent 72%) 100%);
             color: var(--theme-nav-text);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.12),
+                inset 0 -2px 0 color-mix(in srgb, var(--theme-secondary) 38%, transparent 62%),
+                0 0 0 2px color-mix(in srgb, var(--theme-secondary) 14%, transparent 86%),
+                0 14px 26px rgba(0, 0, 0, 0.22),
+                0 4px 10px color-mix(in srgb, var(--theme-secondary) 18%, transparent 82%);
 
             div.btn-option-picker-icon {
-                background: color-mix(in srgb, var(--theme-secondary) 22%, transparent 78%);
+                border-color: color-mix(in srgb, var(--theme-secondary) 64%, white 24%);
+                background:
+                    linear-gradient(180deg,
+                        color-mix(in srgb, var(--theme-secondary) 34%, var(--theme-nav-surface-raised) 66%) 0%,
+                        color-mix(in srgb, var(--theme-secondary) 22%, transparent 78%) 100%);
             }
         }
     }
@@ -1083,12 +1277,18 @@ div.nav-tools-short-rail {
     a.dropdown-item,
     button.dropdown-item {
         div.btn-option-picker-icon {
+            border: 0;
             background: transparent !important;
+            box-shadow: none;
         }
 
         &:hover,
         &:focus {
-            background: color-mix(in srgb, var(--theme-secondary) 16%, var(--theme-nav-surface-raised) 84%);
+            background:
+                linear-gradient(180deg,
+                    color-mix(in srgb, var(--theme-nav-surface-raised) 72%, white 12%) 0%,
+                    color-mix(in srgb, var(--theme-secondary) 18%, var(--theme-nav-surface-raised) 82%) 54%,
+                    color-mix(in srgb, var(--theme-secondary) 28%, transparent 72%) 100%);
         }
     }
 }

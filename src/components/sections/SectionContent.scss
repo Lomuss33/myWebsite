@@ -5,8 +5,8 @@ div.section-content {
     --section-content-base-scale: 0.8;
     --section-content-density-scale: 1;
 
-    --section-content-density-desktop-scale: 0.64;
-    --section-content-density-ultrawide-scale: 0.62;
+    --section-content-density-desktop-scale: 1.24;
+    --section-content-density-ultrawide-scale: 0.72;
     --section-content-scale: calc(
         var(--section-content-base-scale) *
         var(--section-content-density-scale)

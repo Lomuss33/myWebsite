@@ -36,10 +36,10 @@ div.layout-navigation-wrapper {
 
     @media (min-width: 1440px) { 
         --layout-wide-scale: var(--layout-ultrawide-scale);
-        --layout-wide-nav-scale: 0.78;
+        --layout-wide-nav-scale: 0.91;
         --layout-shell-content-padding-inline: clamp(40px, 4.8vw, 168px);
         --layout-shell-column-gap: clamp(28px, 2.4vw, 52px);
-        --layout-shell-content-max-width: 1220px;
+        --layout-shell-content-max-width: 1620px;
 
         column-gap: calc(var(--layout-shell-column-gap) * var(--layout-wide-scale));
         background: var(--theme-layout-buffer, var(--theme-background));

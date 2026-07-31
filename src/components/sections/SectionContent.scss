@@ -1,11 +1,11 @@
 @use "../../styles/extend" as *;
 
 div.section-content {
-    /* Keep the section anchored higher while preserving comfortable side and bottom spacing. */
+    /* Keep desktop and UHD layout density neutral; mobile overrides below preserve small-screen sizing. */
     --section-content-base-scale: 0.8;
     --section-content-density-scale: 1;
-    --section-content-density-desktop-scale: 0.84;
-    --section-content-density-ultrawide-scale: 0.80;
+    --section-content-density-desktop-scale: 1;
+    --section-content-density-ultrawide-scale: 1;
     --section-content-scale: calc(
         var(--section-content-base-scale) *
         var(--section-content-density-scale)

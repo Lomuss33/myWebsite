@@ -118,8 +118,15 @@ function PretextFitText({
 export default PretextFitText
 
 function measureBestFit({ element, measurementElement, text, minFontSizePx, maxFontSizePx, lineHeightRatio, singleLine }) {
-    const width = element.clientWidth
-    const height = element.clientHeight
+    const computedStyles = window.getComputedStyle(element)
+    const paddingInline =
+        resolvePixelValue(computedStyles.paddingLeft) +
+        resolvePixelValue(computedStyles.paddingRight)
+    const paddingBlock =
+        resolvePixelValue(computedStyles.paddingTop) +
+        resolvePixelValue(computedStyles.paddingBottom)
+    const width = Math.max(0, element.clientWidth - paddingInline)
+    const height = Math.max(0, element.clientHeight - paddingBlock)
 
     if(width <= 0 || height <= 0) {
         return buildFitState(maxFontSizePx, lineHeightRatio)
@@ -130,7 +137,6 @@ function measureBestFit({ element, measurementElement, text, minFontSizePx, maxF
         return buildFitState(maxFontSizePx, lineHeightRatio)
     }
 
-    const computedStyles = window.getComputedStyle(element)
     const fontFamily = computedStyles.fontFamily || "sans-serif"
     const fontWeight = computedStyles.fontWeight || "400"
     const fontStyle = computedStyles.fontStyle || "normal"
@@ -164,7 +170,7 @@ function measureBestFit({ element, measurementElement, text, minFontSizePx, maxF
 
         const font = buildCanvasFont({ fontStyle, fontVariant, fontWeight, fontFamily, fontSizePx })
         const prepared = getPreparedText(normalizedText, font, { whiteSpace, wordBreak })
-        const result = layout(prepared, width, lineHeight)
+        const result = layout(prepared, availableWidth, lineHeight)
         return result.height <= height
     }
 
@@ -193,6 +199,11 @@ function measureBestFit({ element, measurementElement, text, minFontSizePx, maxF
     }
 
     return buildFitState(best, lineHeightRatio)
+}
+
+function resolvePixelValue(value) {
+    const numericValue = Number.parseFloat(value)
+    return Number.isFinite(numericValue) ? numericValue : 0
 }
 
 function buildCanvasFont({ fontStyle, fontVariant, fontWeight, fontFamily, fontSizePx }) {

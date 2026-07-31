@@ -1192,9 +1192,12 @@ div.article-feature-items.article-feature-items-section-my-writings {
 }
 
 div.article-feature-items.article-feature-items-section-my-writings {
-        --article-writing-book-media-width: 504px;
-        --article-writing-book-media-height: 378px;
-        --article-writing-book-text-width: 34rem;
+        --article-writing-book-media-width: clamp(504px, 38vw, 672px);
+        --article-writing-book-media-height: clamp(378px, 28.5vw, 504px);
+        --article-writing-book-text-width: clamp(34rem, 36vw, 42rem);
+        --article-writing-book-gap: clamp(18px, 1.8vw, 26px);
+        --article-writing-book-font-size: clamp(1.34rem, 0.42vw + 1.18rem, 1.72rem);
+        --article-writing-book-line-height: 1.44;
 
         div.article-feature-item.article-feature-item-writing-book {
             display: flex;
@@ -1205,9 +1208,9 @@ div.article-feature-items.article-feature-items-section-my-writings {
         div.article-feature-item-writing-book-shell {
             display: grid;
             grid-template-columns: var(--article-writing-book-media-width) minmax(0, var(--article-writing-book-text-width));
-            column-gap: clamp(18px, 1.8vw, 24px);
+            column-gap: var(--article-writing-book-gap);
             width: max-content;
-            max-width: calc(100% - clamp(64px, 10vw, 240px));
+            max-width: min(100%, calc(var(--article-writing-book-media-width) + var(--article-writing-book-text-width) + var(--article-writing-book-gap)));
             margin-inline: auto;
             align-items: center;
         }
@@ -1264,12 +1267,23 @@ div.article-feature-items.article-feature-items-section-my-writings {
             margin: 0;
         }
 
+        div.article-feature-item.article-feature-item-writing-book div.article-feature-item-text {
+            font-size: var(--article-writing-book-font-size);
+            line-height: var(--article-writing-book-line-height);
+        }
+
         @media (min-width: 576px) and (max-width: 991.98px) {
+            --article-writing-book-media-width: min(100%, 640px);
+            --article-writing-book-text-width: min(100%, 40rem);
+            --article-writing-book-font-size: clamp(1.16rem, 0.6vw + 1.02rem, 1.34rem);
+            --article-writing-book-line-height: 1.5;
+
             div.article-feature-item-writing-book-shell {
                 grid-template-columns: minmax(0, 1fr);
                 width: min(100%, 720px);
                 max-width: 720px;
                 margin-inline: auto;
+                row-gap: 18px;
             }
 
             div.article-feature-item.article-feature-item-writing-book div.article-feature-item-media {
@@ -1305,29 +1319,58 @@ div.article-feature-items.article-feature-items-section-my-writings {
                 width: 100%;
                 max-width: var(--article-writing-book-text-width);
                 margin-inline: auto;
+                padding-inline: 0;
+                box-sizing: border-box;
             }
         }
 
         @include media-breakpoint-down(sm) {
+            --article-writing-book-media-width: min(100%, calc(100vw - 24px));
+            --article-writing-book-text-width: 100%;
+            --article-writing-book-font-size: clamp(1.04rem, 1.8vw + 0.92rem, 1.2rem);
+            --article-writing-book-line-height: 1.5;
+
             div.article-feature-item-writing-book-shell {
+                grid-template-columns: minmax(0, 1fr);
+                row-gap: 16px;
                 width: 100%;
                 max-width: 100%;
             }
 
-            div.article-feature-item.article-feature-item-writing-book div.article-feature-item-content {
-                width: min(calc(100% - 24px), var(--article-writing-book-text-width));
-                max-width: var(--article-writing-book-text-width);
+            div.article-feature-item.article-feature-item-writing-book div.article-feature-item-media {
+                width: var(--article-writing-book-media-width);
+                min-width: 0;
+                max-width: var(--article-writing-book-media-width);
+                height: auto;
                 margin-inline: auto;
-                align-items: center;
                 justify-content: center;
+            }
+
+            div.article-feature-item.article-feature-item-writing-book div.article-feature-item-image,
+            div.article-feature-item.article-feature-item-writing-book div.article-feature-item-image-switch,
+            div.article-feature-item.article-feature-item-writing-book div.image-view.article-feature-item-image {
+                width: var(--article-writing-book-media-width);
+                min-width: 0;
+                max-width: var(--article-writing-book-media-width);
+                height: auto;
+                margin-inline: auto;
+            }
+
+            div.article-feature-item.article-feature-item-writing-book div.article-feature-item-content {
+                width: var(--article-writing-book-text-width);
+                max-width: none;
+                margin-inline: auto;
+                align-items: stretch;
+                justify-content: stretch;
             }
 
             div.article-feature-item.article-feature-item-writing-book div.article-feature-item-text,
             div.article-feature-item.article-feature-item-writing-book div.pretext-interactive-text,
             div.article-feature-item.article-feature-item-writing-book div.pretext-interactive-text-content {
-                width: min(calc(100% - 24px), var(--article-writing-book-text-width));
-                max-width: var(--article-writing-book-text-width);
+                width: var(--article-writing-book-text-width);
+                max-width: none;
                 margin-inline: auto;
+                padding-inline: 0;
                 box-sizing: border-box;
             }
         }

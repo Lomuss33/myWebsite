@@ -2,6 +2,7 @@ import "./ArticleFallingWords.scss"
 import React, {useMemo} from "react"
 import Article from "./base/Article.jsx"
 import FallingWords from "../generic/FallingWords.jsx"
+import PretextFitText from "../generic/PretextFitText.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
 import {FALLING_WORDS_I18N} from "../../data/fallingWordsI18n.js"
@@ -72,9 +73,13 @@ function ArticleFallingWords({ dataWrapper }) {
             dataWrapper={dataWrapper}
             className={`article-falling-words`}
         >
-            <div className={`article-falling-words-hint text-2`}>
-                {hintText}
-            </div>
+            <PretextFitText
+                text={hintText}
+                className={`article-falling-words-hint text-2`}
+                minFontSizePx={15}
+                maxFontSizePx={30}
+                lineHeightRatio={1.24}
+            />
 
             <FallingWords
                 entries={entries.length ? entries : undefined}

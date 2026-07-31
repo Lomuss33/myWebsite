@@ -4,6 +4,7 @@ nav.nav-sidebar {
     --width: 224px;
     --nav-sidebar-layout-width: calc(var(--width) * var(--layout-wide-nav-scale, 1));
     --nav-sidebar-source-width: calc(var(--nav-sidebar-layout-width) / var(--layout-wide-nav-scale, 1));
+    --nav-sidebar-toggle-top: 20px;
     --nav-short-rail-resume-height: 0px;
     --nav-extended-profile-height: 164px;
     --nav-extended-avatar-size: 118px;
@@ -100,8 +101,8 @@ nav.nav-sidebar {
     button.nav-sidebar-btn-toggle {
         position: absolute;
         right: -14px;
-        top: 20px;
-        z-index: calc($z-index-sidebar + 1);
+        top: var(--nav-sidebar-toggle-top);
+        z-index: 160;
         border-radius: 999px;
         box-shadow:
             0 10px 24px rgba(15, 23, 42, 0.10),
@@ -114,6 +115,8 @@ nav.nav-sidebar:has(div.dropdown-menu.nav-tools-popup-menu.show) {
 }
 
 nav.nav-sidebar-extended {
+    --nav-sidebar-toggle-top: calc(var(--nav-extended-profile-height) + var(--nav-extended-padding-top) - 16px);
+
     div.nav-sidebar-card-wrapper > div.nav-profile-card {
         justify-content: flex-start;
         height: auto;
@@ -135,7 +138,7 @@ nav.nav-sidebar-extended {
             right: 0;
             bottom: -1px;
             width: 4px;
-            z-index: 3;
+            z-index: 130;
             pointer-events: none;
             background-image: repeating-linear-gradient(
                 -55deg,
@@ -150,6 +153,7 @@ nav.nav-sidebar-extended {
 
 nav.nav-sidebar-short-rail {
     --width: 108px;
+    --nav-sidebar-toggle-top: calc(var(--nav-short-rail-profile-height) + (var(--nav-short-rail-resume-height) / 2) - 16px);
     --nav-short-rail-visual-density: 1;
     --nav-short-rail-profile-height: 110px;
     --nav-short-rail-profile-padding: 0px;

@@ -278,6 +278,7 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
     const homeClass = isHomeInfoList ? `article-info-list-item-home` : ``
     const pressedClass = isPressed ? `article-info-list-item-pressed` : ``
     const bubbleClass = isBubbleOpen ? `article-info-list-item-avatar-bubble-open` : ``
+    const bubbleItemOpenClass = isBubbleOpen ? `article-info-list-item-bubble-open` : ``
 
     const baseTextSize = isHomeInfoList
         ? (itemWrapper.locales.text ? 1 : 2)
@@ -456,7 +457,7 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
     }
 
     return (
-        <div className={`article-info-list-item ${hoverClass} ${pressedClass} ${homeClass}`}>
+        <div className={`article-info-list-item ${hoverClass} ${pressedClass} ${bubbleItemOpenClass} ${homeClass}`}>
             <div className={`article-info-list-item-avatar-shell ${bubbleClass}`}
                  onMouseEnter={handleBubbleMouseEnter}
                  onMouseLeave={handleBubbleMouseLeave}>

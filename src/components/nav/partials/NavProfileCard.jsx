@@ -64,6 +64,10 @@ function NavProfileCard({
     const [stackMobileName, setStackMobileName] = useState(false)
     const metalFrameGradientId = useId()
     const profileFrameEmblemClipId = `${metalFrameGradientId}-emblem-clip`
+    const metalFrameLiquidFilterId = `${metalFrameGradientId}-liquid-filter`
+    const metalFrameLiquidPathA = `M 5 10 C 18 4 29 15 42 9 C 56 3 68 16 82 9 C 98 2 112 16 119 10 C 128 24 110 34 119 49 C 128 64 110 74 119 90 C 106 98 94 85 80 91 C 64 98 53 84 39 91 C 24 98 13 85 5 90 C -4 74 14 64 5 50 C -4 34 14 24 5 10 Z M 20 18 C 35 21 48 14 62 18 C 76 22 90 14 104 18 C 101 32 108 41 104 50 C 101 59 108 71 104 82 C 90 78 75 86 62 82 C 48 78 34 86 20 82 C 23 70 16 59 20 50 C 23 40 16 30 20 18 Z`
+    const metalFrameLiquidPathB = `M 5 10 C 21 16 31 3 44 10 C 58 17 69 3 84 10 C 100 17 111 4 119 10 C 110 25 128 35 119 50 C 110 65 128 75 119 90 C 103 84 92 98 78 90 C 64 82 51 98 37 90 C 22 82 12 97 5 90 C 14 75 -4 65 5 50 C 14 35 -4 25 5 10 Z M 20 18 C 32 14 48 23 62 18 C 76 13 91 22 104 18 C 108 31 101 41 104 50 C 108 59 101 70 104 82 C 91 87 75 77 62 82 C 48 87 34 77 20 82 C 16 69 23 60 20 50 C 16 40 23 31 20 18 Z`
+    const metalFrameLiquidPathC = `M 5 10 C 19 2 31 17 43 10 C 56 2 68 17 82 10 C 99 3 111 18 119 10 C 132 26 106 35 119 50 C 132 65 106 74 119 90 C 105 100 94 83 79 91 C 63 100 52 83 38 91 C 23 99 12 83 5 90 C -8 73 18 64 5 50 C -8 36 18 25 5 10 Z M 20 18 C 34 23 48 13 62 18 C 76 23 90 13 104 18 C 99 32 110 41 104 50 C 99 58 110 71 104 82 C 90 77 76 87 62 82 C 48 77 34 87 20 82 C 25 69 14 58 20 50 C 25 41 14 31 20 18 Z`
     const headerRef = useRef(null)
     const mediaRef = useRef(null)
     const metalFrameRef = useRef(null)
@@ -82,6 +86,7 @@ function NavProfileCard({
     const railModeClass = isExtendedRail ?
         `` :
         `nav-profile-card-short-rail`
+    const profileFrameLiquidMotionEnabled = !profileFrameMotionSuspended()
 
     const name = safeProfile.name || "Profile"
     const localizedName = language.getTranslation(safeProfile.locales, "localized_name", null) || name
@@ -658,38 +663,65 @@ function NavProfileCard({
                                         <stop offset={`100%`}
                                               stopColor={`var(--nav-short-rail-frame-blue)`}/>
                                     </linearGradient>
+                                    <filter id={metalFrameLiquidFilterId}
+                                            x={`-18%`}
+                                            y={`-18%`}
+                                            width={`136%`}
+                                            height={`136%`}
+                                            colorInterpolationFilters={`sRGB`}>
+                                        <feTurbulence type={`fractalNoise`}
+                                                      baseFrequency={`0.012 0.055`}
+                                                      numOctaves={`2`}
+                                                      seed={`7`}
+                                                      result={`liquidNoise`}>
+                                            {profileFrameLiquidMotionEnabled && (
+                                                <animate attributeName={`baseFrequency`}
+                                                         values={`0.010 0.050; 0.018 0.072; 0.011 0.058; 0.015 0.046; 0.010 0.050`}
+                                                         dur={`11s`}
+                                                         repeatCount={`indefinite`}/>
+                                            )}
+                                        </feTurbulence>
+                                        <feDisplacementMap in={`SourceGraphic`}
+                                                           in2={`liquidNoise`}
+                                                           scale={`1.8`}
+                                                           xChannelSelector={`R`}
+                                                           yChannelSelector={`G`}/>
+                                    </filter>
                                 </defs>
                                 <g className={`nav-profile-card-metal-frame-wave`}>
-                                    <path className={`nav-profile-card-metal-frame-wave-edge`}
-                                          stroke={`url(#${metalFrameGradientId})`}
-                                          d={`M 8 9 C 22 2 30 16 43 9`}/>
-                                    <path className={`nav-profile-card-metal-frame-wave-edge`}
-                                          stroke={`url(#${metalFrameGradientId})`}
-                                          d={`M 43 9 C 58 2 67 16 81 9`}/>
-                                    <path className={`nav-profile-card-metal-frame-wave-edge`}
-                                          stroke={`url(#${metalFrameGradientId})`}
-                                          d={`M 81 9 C 97 2 108 17 116 10`}/>
-                                    <path className={`nav-profile-card-metal-frame-wave-side`}
-                                          stroke={`url(#${metalFrameGradientId})`}
-                                          d={`M 116 10 C 129 25 104 32 117 47`}/>
-                                    <path className={`nav-profile-card-metal-frame-wave-side`}
-                                          stroke={`url(#${metalFrameGradientId})`}
-                                          d={`M 117 47 C 130 62 103 69 116 90`}/>
-                                    <path className={`nav-profile-card-metal-frame-wave-edge`}
-                                          stroke={`url(#${metalFrameGradientId})`}
-                                          d={`M 116 90 C 101 98 93 84 78 91`}/>
-                                    <path className={`nav-profile-card-metal-frame-wave-edge`}
-                                          stroke={`url(#${metalFrameGradientId})`}
-                                          d={`M 78 91 C 62 98 53 84 39 91`}/>
-                                    <path className={`nav-profile-card-metal-frame-wave-edge`}
-                                          stroke={`url(#${metalFrameGradientId})`}
-                                          d={`M 39 91 C 24 98 15 84 8 90`}/>
-                                    <path className={`nav-profile-card-metal-frame-wave-side`}
-                                          stroke={`url(#${metalFrameGradientId})`}
-                                          d={`M 8 90 C -5 72 20 65 7 50`}/>
-                                    <path className={`nav-profile-card-metal-frame-wave-side`}
-                                          stroke={`url(#${metalFrameGradientId})`}
-                                          d={`M 7 50 C -5 33 20 25 8 9`}/>
+                                    <path className={`nav-profile-card-metal-frame-liquid-shadow`}
+                                          d={metalFrameLiquidPathA}
+                                          fillRule={`evenodd`}>
+                                        {profileFrameLiquidMotionEnabled && (
+                                            <animate attributeName={`d`}
+                                                     values={`${metalFrameLiquidPathA}; ${metalFrameLiquidPathB}; ${metalFrameLiquidPathC}; ${metalFrameLiquidPathA}`}
+                                                     dur={`9.6s`}
+                                                     repeatCount={`indefinite`}/>
+                                        )}
+                                    </path>
+                                    <path className={`nav-profile-card-metal-frame-liquid-shell`}
+                                          d={metalFrameLiquidPathA}
+                                          fill={`url(#${metalFrameGradientId})`}
+                                          fillRule={`evenodd`}
+                                          filter={profileFrameLiquidMotionEnabled ? `url(#${metalFrameLiquidFilterId})` : undefined}>
+                                        {profileFrameLiquidMotionEnabled && (
+                                            <animate attributeName={`d`}
+                                                     values={`${metalFrameLiquidPathA}; ${metalFrameLiquidPathB}; ${metalFrameLiquidPathC}; ${metalFrameLiquidPathA}`}
+                                                     dur={`9.6s`}
+                                                     repeatCount={`indefinite`}/>
+                                        )}
+                                    </path>
+                                    <path className={`nav-profile-card-metal-frame-liquid-edge`}
+                                          d={metalFrameLiquidPathA}
+                                          fill={`none`}
+                                          stroke={`url(#${metalFrameGradientId})`}>
+                                        {profileFrameLiquidMotionEnabled && (
+                                            <animate attributeName={`d`}
+                                                     values={`${metalFrameLiquidPathA}; ${metalFrameLiquidPathB}; ${metalFrameLiquidPathC}; ${metalFrameLiquidPathA}`}
+                                                     dur={`9.6s`}
+                                                     repeatCount={`indefinite`}/>
+                                        )}
+                                    </path>
                                 </g>
                             </svg>
                         </div>

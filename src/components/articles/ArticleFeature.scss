@@ -1251,6 +1251,28 @@ div.article-feature-items.article-feature-items-section-my-writings {
             }
         }
 
+        div.article-feature-item.article-feature-item-writing-book div.article-feature-item-image-face {
+            transition: none;
+            transform: none;
+            filter: none;
+        }
+
+        div.article-feature-item.article-feature-item-writing-book div.article-feature-item-image-face-front,
+        div.article-feature-item.article-feature-item-writing-book div.article-feature-item-image-switch-alt div.article-feature-item-image-face-back,
+        div.article-feature-item.article-feature-item-writing-book:has(div.article-feature-item-content-image-preview-trigger:hover) div.article-feature-item-image-face-back {
+            opacity: 1;
+            transform: none;
+            filter: none;
+        }
+
+        div.article-feature-item.article-feature-item-writing-book div.article-feature-item-image-face-back,
+        div.article-feature-item.article-feature-item-writing-book div.article-feature-item-image-switch-alt div.article-feature-item-image-face-front,
+        div.article-feature-item.article-feature-item-writing-book:has(div.article-feature-item-content-image-preview-trigger:hover) div.article-feature-item-image-face-front {
+            opacity: 0;
+            transform: none;
+            filter: none;
+        }
+
         div.article-feature-item.article-feature-item-writing-book div.article-feature-item-content {
             width: var(--article-writing-book-text-width);
             max-width: var(--article-writing-book-text-width);

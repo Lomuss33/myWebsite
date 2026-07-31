@@ -195,11 +195,6 @@ function PretextInteractiveText({
 
         const resolveStableWidth = (measuredWidth = 0) => {
             // Prefer layout widths (not affected by transforms during slide transitions).
-            const measuredContentWidth =
-                element.clientWidth ||
-                element.offsetWidth ||
-                element.getBoundingClientRect?.().width ||
-                0
             const rootWidth =
                 rootElement.clientWidth ||
                 rootElement.offsetWidth ||
@@ -212,11 +207,15 @@ function PretextInteractiveText({
                 0
 
             if (widthMeasurementMode === "self_only") {
-                const bestSelfWidth = Math.max(measuredWidth || 0, measuredContentWidth, rootWidth)
-                return bestSelfWidth
+                return (
+                    rootWidth ||
+                    Math.min(measuredWidth || 0, parentWidth || measuredWidth || 0) ||
+                    parentWidth ||
+                    0
+                )
             }
 
-            const best = Math.max(measuredWidth || 0, measuredContentWidth, rootWidth, parentWidth)
+            const best = Math.max(measuredWidth || 0, rootWidth, parentWidth)
             return best
         }
 
@@ -260,7 +259,8 @@ function PretextInteractiveText({
         observer.observe(element)
         observer.observe(rootElement)
         // On html/lang changes, keep last good width and retry in case layout shifts.
-        if (lastGoodWidthRef.current >= MIN_STABLE_WIDTH) {
+        // In self-only mode, reusing an old width can preserve a previously overflowing line.
+        if (widthMeasurementMode !== "self_only" && lastGoodWidthRef.current >= MIN_STABLE_WIDTH) {
             setContentWidth(lastGoodWidthRef.current)
         }
         scheduleWidthRetry()

@@ -518,6 +518,10 @@ function FallingWords({
         _closeSelection()
     }
 
+    const onModalTextPointerUp = (event) => {
+        event.stopPropagation()
+    }
+
     const _closeSelection = () => {
         const index = selectedIndexRef.current
         if(index === null) return
@@ -713,14 +717,19 @@ function FallingWords({
                         className={`falling-words-modal-card`}
                         role={`dialog`}
                         aria-modal={true}
-                        onClick={(event) => event.stopPropagation()}
-                        onPointerUp={(event) => event.stopPropagation()}
+                        onPointerUp={_closeSelection}
                     >
-                        <div className={`falling-words-modal-title text-1`}>
-                            {effectiveEntries[selectedIndex]?.word || ""}
-                        </div>
-                        <div className={`falling-words-modal-definition text-2`}>
-                            {effectiveEntries[selectedIndex]?.definition || definitionFallbackText}
+                        <div
+                            className={`falling-words-modal-copy-zone`}
+                            onClick={(event) => event.stopPropagation()}
+                            onPointerUp={onModalTextPointerUp}
+                        >
+                            <div className={`falling-words-modal-title text-1`}>
+                                {effectiveEntries[selectedIndex]?.word || ""}
+                            </div>
+                            <div className={`falling-words-modal-definition text-2`}>
+                                {effectiveEntries[selectedIndex]?.definition || definitionFallbackText}
+                            </div>
                         </div>
                     </div>
                 </div>

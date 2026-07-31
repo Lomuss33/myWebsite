@@ -53,7 +53,8 @@ article.article-falling-words {
 }
 
 article#article-2-section-my-writings {
-    width: min(100%, 1280px);
+    width: min(calc(100vw / var(--section-content-scale, 1) - clamp(28px, 8vw, 320px)), 1760px);
+    max-width: none;
     margin-inline: auto;
 
     div.article-falling-words-hint {
@@ -149,6 +150,13 @@ article#article-2-section-my-writings {
     }
 
     div.falling-words-modal-card {
+        width: min(820px, calc(100% - 28px));
+        min-height: min(270px, calc(100% - 28px));
+        padding: clamp(26px, 2.6vw, 36px) clamp(28px, 3.4vw, 48px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         border-color: rgba(56, 189, 248, 0.26);
         background: linear-gradient(180deg, rgba(11, 18, 32, 0.98), rgba(5, 7, 13, 0.98));
     }
@@ -165,7 +173,7 @@ article#article-2-section-my-writings {
     }
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-        width: min(100%, 760px);
+        width: min(calc(100vw / var(--section-content-scale, 1) - 28px), 960px);
 
         div.article-falling-words-hint {
             height: clamp(86px, 10vw, 104px);
@@ -216,6 +224,13 @@ article#article-2-section-my-writings {
 
         div.falling-words.article-falling-words-stage {
             min-height: clamp(360px, 96vw, 460px);
+        }
+
+        div.falling-words-modal-card {
+            width: calc(100% - 16px);
+            min-height: min(200px, calc(100% - 16px));
+            max-height: calc(100% - 16px);
+            padding: 20px 16px;
         }
     }
 }

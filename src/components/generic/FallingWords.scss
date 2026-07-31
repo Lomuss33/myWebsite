@@ -138,6 +138,11 @@ div.falling-words-modal-card {
     }
 }
 
+div.falling-words-modal-copy-zone {
+    width: 100%;
+    user-select: text;
+}
+
 div.falling-words-modal-title {
     color: var(--theme-texts);
     font-weight: 900;

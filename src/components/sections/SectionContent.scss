@@ -1,12 +1,11 @@
 @use "../../styles/extend" as *;
 
 div.section-content {
-    /* Keep desktop and UHD layout density neutral; mobile overrides below preserve small-screen sizing. */
+    /* Scale only the inner content, not the outer section/page shell. */
     --section-content-base-scale: 0.8;
     --section-content-density-scale: 1;
-
-    --section-content-density-desktop-scale: 0.76;
-    --section-content-density-ultrawide-scale: 0.73;
+    --section-content-density-desktop-scale: 0.936;
+    --section-content-density-ultrawide-scale: 0.7125;
     --section-content-scale: calc(
         var(--section-content-base-scale) *
         var(--section-content-density-scale)
@@ -32,7 +31,7 @@ div.section-content {
         --section-content-density-scale: var(--section-content-density-desktop-scale);
     }
 
-    @media (min-width: 1366px) {
+    @media (min-width: 1420px) {
         --section-content-density-scale: var(--section-content-density-ultrawide-scale);
     }
 
@@ -52,13 +51,13 @@ div.section-content {
 
     @include media-breakpoint-down(md) {
         --padding-top: 0.5rem;
-        --padding-x: 0.75rem;
+        --padding-x: 0;
         --padding-bottom: 0;
     }
 
     @media (max-width: 380px) {
         --padding-top: 0.4rem;
-        --padding-x: 0.6rem;
+        --padding-x: 0;
         --padding-bottom: 0;
     }
 }

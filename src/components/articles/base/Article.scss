@@ -156,7 +156,7 @@ div.article-content {
     /* Keep a small, consistent side buffer inside section cards. */
     margin: 0 8px;
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-        margin: 0 6px;
+        margin: 0;
     }
 }
 

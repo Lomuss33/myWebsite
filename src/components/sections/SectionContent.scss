@@ -1,11 +1,11 @@
 @use "../../styles/extend" as *;
 
 div.section-content {
-    /* Scale only the inner content, not the outer section/page shell. */
+    /* Keep the section anchored higher while preserving comfortable side and bottom spacing. */
     --section-content-base-scale: 0.8;
     --section-content-density-scale: 1;
-    --section-content-density-desktop-scale: 0.936;
-    --section-content-density-ultrawide-scale: 0.7125;
+    --section-content-density-desktop-scale: 0.84;
+    --section-content-density-ultrawide-scale: 0.80;
     --section-content-scale: calc(
         var(--section-content-base-scale) *
         var(--section-content-density-scale)
@@ -31,7 +31,7 @@ div.section-content {
         --section-content-density-scale: var(--section-content-density-desktop-scale);
     }
 
-    @media (min-width: 1420px) {
+    @media (min-width: 1680px) {
         --section-content-density-scale: var(--section-content-density-ultrawide-scale);
     }
 
@@ -51,13 +51,13 @@ div.section-content {
 
     @include media-breakpoint-down(md) {
         --padding-top: 0.5rem;
-        --padding-x: 0;
+        --padding-x: 0.75rem;
         --padding-bottom: 0;
     }
 
     @media (max-width: 380px) {
         --padding-top: 0.4rem;
-        --padding-x: 0;
+        --padding-x: 0.6rem;
         --padding-bottom: 0;
     }
 }

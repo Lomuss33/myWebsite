@@ -765,9 +765,7 @@ article#article-1-section-experience {
             --experience-avatar-size: 164px;
             --experience-description-right-buffer: clamp(1.18rem, 1rem + 0.38vw, 1.56rem);
             --experience-rail-width: 80px;
-            --experience-edge-reach: 0px;
             --experience-edge-gap: 5px;
-            --experience-ultrawide-column-pull: clamp(18px, 1.75vw, 26px);
             --experience-avatar-vertical-offset: calc(var(--experience-avatar-size) * 0.45);
             --experience-avatar-scale-resting: 1.1;
             --experience-avatar-scale-active: 1.18;
@@ -787,7 +785,6 @@ article#article-1-section-experience {
             --experience-avatar-size: 192px;
             --experience-rail-width: 90px;
             --experience-edge-gap: 6px;
-            --experience-ultrawide-column-pull: clamp(20px, 1.6vw, 28px);
             --experience-avatar-vertical-offset: calc(var(--experience-avatar-size) * 0.45);
             --experience-avatar-scale-resting: 1.14;
             --experience-avatar-scale-active: 1.24;
@@ -806,7 +803,6 @@ article#article-1-section-experience {
             --experience-description-right-buffer: clamp(1.32rem, 1.12rem + 0.34vw, 1.72rem);
             --experience-rail-width: 104px;
             --experience-edge-gap: 7px;
-            --experience-ultrawide-column-pull: clamp(23px, 1.5vw, 31px);
             --experience-avatar-vertical-offset: calc(var(--experience-avatar-size) * 0.45);
             --experience-avatar-scale-resting: 1.18;
             --experience-avatar-scale-active: 1.3;
@@ -827,7 +823,7 @@ article#article-1-section-experience {
 
         @media (min-width: 1600px) {
             --experience-edge-reach: 0px;
-            --experience-ultrawide-column-pull: clamp(28px, 1.25vw, 34px);
+            --experience-ultrawide-column-pull: clamp(40px, 1.7vw, 58px);
         }
 
         @media (min-width: 2000px) {
@@ -836,7 +832,7 @@ article#article-1-section-experience {
             --experience-rail-width: 88px;
             --experience-edge-gap: 5px;
             --experience-edge-reach: 0px;
-            --experience-ultrawide-column-pull: clamp(28px, 1.25vw, 34px);
+            --experience-ultrawide-column-pull: clamp(40px, 1.7vw, 58px);
             --experience-avatar-vertical-offset: calc(var(--experience-avatar-size) * 0.42);
             --experience-avatar-scale-resting: 1.08;
             --experience-avatar-scale-active: 1.14;

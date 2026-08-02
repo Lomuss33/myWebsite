@@ -39,10 +39,21 @@ div.nav-link-list-shell {
 }
 
 @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
-    div.nav-sidebar-rail-stack > div.nav-link-list-shell {
+    div.nav-sidebar-rail-stack > div.nav-link-list-shell,
+    nav.nav-sidebar-short-rail div.nav-link-list-shell {
         &::after {
             content: none;
         }
+    }
+}
+
+nav.nav-sidebar-extended div.nav-link-list-shell {
+    button.nav-link {
+        border-top-color: var(--nav-rail-control-divider, var(--theme-nav-divider));
+    }
+
+    button.nav-link:last-child {
+        border-bottom: 1px solid var(--nav-rail-control-divider, var(--theme-nav-divider));
     }
 }
 
@@ -238,6 +249,32 @@ button.nav-link-active {
     }
 }
 
+nav.nav-sidebar-extended div.nav-link-list-shell,
+div.nav-link-list-shell.nav-link-list-short-rail {
+    button.nav-link {
+        border-top-color: var(--nav-page-control-divider, var(--theme-nav-divider));
+    }
+
+    button.nav-link:not(.nav-link-active):not(:hover) {
+        box-shadow:
+            inset 0 1px 0 var(--nav-page-control-divider-highlight, rgba(255, 255, 255, 0.08));
+    }
+
+    button.nav-link:last-child {
+        border-bottom: 1px solid var(--nav-page-control-divider, var(--theme-nav-divider));
+    }
+}
+
+nav.nav-sidebar-extended div.nav-link-list-shell {
+    --nav-page-control-divider: var(--nav-rail-control-divider, var(--theme-nav-divider));
+    --nav-page-control-divider-highlight: var(--nav-rail-control-divider-highlight, rgba(255, 255, 255, 0.08));
+}
+
+div.nav-link-list-shell.nav-link-list-short-rail {
+    --nav-page-control-divider: var(--nav-short-rail-control-divider, var(--theme-nav-divider));
+    --nav-page-control-divider-highlight: var(--nav-short-rail-control-divider-highlight, rgba(255, 255, 255, 0.08));
+}
+
 div.nav-link-list-shell.nav-link-list-short-rail {
     nav.nav-link-list {
         flex: 1 1 auto;
@@ -250,6 +287,7 @@ div.nav-link-list-shell.nav-link-list-short-rail {
         height: auto;
         justify-content: center;
         padding: 0 var(--nav-link-padding-inline);
+        border-top-color: var(--nav-short-rail-control-divider, var(--theme-nav-divider));
 
         span {
             display: none;
@@ -268,6 +306,14 @@ div.nav-link-list-shell.nav-link-list-short-rail {
             right: auto;
         }
     }
+
+    button.nav-link:last-child {
+        border-bottom: 1px solid var(--nav-short-rail-control-divider, var(--theme-nav-divider));
+    }
+}
+
+nav.nav-sidebar-short-rail div.nav-link-list-shell.nav-link-list-short-rail button.nav-link:last-child {
+    border-bottom: 0;
 }
 
 div.nav-link-list-shell.nav-link-list-exact-fit {

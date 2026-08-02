@@ -155,7 +155,7 @@ nav.nav-sidebar-short-rail {
     --nav-short-rail-profile-padding: 0px;
     --nav-short-rail-name-band-height: clamp(1.45rem, calc(var(--nav-short-rail-row-height) * 0.42), 1.9rem);
     --nav-short-rail-row-height: 34px;
-    --nav-short-rail-separator-height: 4px;
+    --nav-short-rail-separator-height: 2px;
     --nav-short-rail-tools-height: 46px;
     --nav-short-rail-avatar-size: calc(14px + 40px * var(--nav-short-rail-visual-density));
     --nav-short-rail-status-offset: calc(4px + 6px * var(--nav-short-rail-visual-density));
@@ -191,6 +191,9 @@ nav.nav-sidebar-short-rail {
         width: 100%;
         background: var(--theme-nav-surface);
         overflow: visible;
+
+        --nav-short-rail-control-divider: color-mix(in srgb, var(--theme-nav-divider) 72%, var(--theme-nav-text) 28%);
+        --nav-short-rail-control-divider-highlight: color-mix(in srgb, white 42%, transparent 58%);
 
         > div.nav-short-rail-resume-band {
             grid-row: 1;
@@ -376,6 +379,7 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
         inset 0 1px 0 rgba(255, 255, 255, 0.08),
         inset 0 -1px 0 rgba(15, 23, 42, 0.08);
     border-top: 1px solid var(--theme-nav-divider);
+    border-bottom: 1px solid var(--nav-short-rail-control-divider, var(--theme-nav-divider));
 
     div.btn-option-picker,
     div.dropdown,
@@ -482,9 +486,6 @@ div.nav-short-rail-separator {
         #000000 26px,
         #000000 52px
     );
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.08),
-        inset 0 -1px 0 rgba(15, 23, 42, 0.16);
 }
 
 [data-theme="dark"] nav.nav-sidebar div.nav-short-rail-resume-band {
@@ -509,6 +510,8 @@ div.nav-short-rail-separator {
 
 div.nav-sidebar-rail-stack {
     --nav-rail-separator-height: 4px;
+    --nav-rail-control-divider: color-mix(in srgb, var(--theme-nav-divider) 72%, var(--theme-nav-text) 28%);
+    --nav-rail-control-divider-highlight: color-mix(in srgb, white 42%, transparent 58%);
 
     display: grid;
     flex: 1 1 auto;

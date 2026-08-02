@@ -331,6 +331,18 @@ div.nav-tools {
             --nav-tools-icon-box-size: 32px;
             --nav-tools-icon-font-size: 1.72rem;
             --nav-tools-inline-gap: 6px;
+            border-top-color: var(--nav-rail-control-divider, var(--theme-nav-divider));
+            border-bottom: 1px solid var(--nav-rail-control-divider, var(--theme-nav-divider));
+            box-shadow:
+                inset 0 1px 0 var(--nav-rail-control-divider-highlight, rgba(255, 255, 255, 0.08)),
+                inset 0 -1px 0 rgba(15, 23, 42, 0.08);
+
+            div.nav-tools-item:not(:first-child)::before {
+                top: 0;
+                bottom: 0;
+                background: var(--nav-rail-control-divider, var(--theme-nav-divider));
+                box-shadow: 1px 0 0 var(--nav-rail-control-divider-highlight, rgba(255, 255, 255, 0.08));
+            }
 
             div.nav-tools-item-language,
             div.nav-tools-item-theme {
@@ -845,6 +857,17 @@ nav.nav-sidebar-short-rail div.nav-tools {
     --nav-tools-divider-inset: var(--nav-short-rail-tool-divider-inset);
 
     justify-content: center;
+    border-top-color: transparent;
+    border-bottom: 1px solid var(--nav-short-rail-control-divider, var(--theme-nav-divider));
+    box-shadow:
+        inset 0 -1px 0 rgba(15, 23, 42, 0.08);
+}
+
+nav.nav-sidebar-short-rail div.nav-tools div.nav-tools-item:not(:first-child)::before {
+    top: 0;
+    bottom: 0;
+    background: var(--nav-short-rail-control-divider, var(--theme-nav-divider));
+    box-shadow: 1px 0 0 var(--nav-short-rail-control-divider-highlight, rgba(255, 255, 255, 0.08));
 }
 
 // In short-rail mode the rail is narrower (~108px), so push the

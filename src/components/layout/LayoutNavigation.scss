@@ -2,11 +2,11 @@
 
 div.layout-navigation-wrapper {
     --mobile-nav-tabs-total-height: calc(var(--nav-tabs-height, #{$nav-tabs-height}) + env(safe-area-inset-bottom, 0px) + var(--mobile-viewport-offset-bottom, 0px));
-    --layout-rail-compact-width: 108px;
+    --layout-rail-compact-width: 113.4px;
     --layout-rail-wide-desktop-width:
-        clamp(270px, 18vw, 350px);
+        clamp(230.85px, 15.39vw, 299.25px);
     --layout-rail-wide-ultrawide-width:
-        clamp(290px, 15vw, 370px);
+        clamp(247.95px, 12.825vw, 316.35px);
     --layout-rail-current-width:
         var(--layout-rail-wide-desktop-width);
     --layout-page-max-width: none;

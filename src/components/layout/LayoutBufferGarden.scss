@@ -1,0 +1,26 @@
+@use "../../styles/extend" as *;
+
+canvas.layout-buffer-garden {
+    display: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 1;
+}
+
+@media
+    (min-width: 1680px),
+    (min-width: 1360px) and (min-aspect-ratio: 2 / 1) {
+    canvas.layout-buffer-garden {
+        display: block;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    canvas.layout-buffer-garden {
+        opacity: 0.82;
+    }
+}

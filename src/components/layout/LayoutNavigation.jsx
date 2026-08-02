@@ -1,5 +1,6 @@
 import "./LayoutNavigation.scss"
 import React from 'react'
+import LayoutBufferGarden from "./LayoutBufferGarden.jsx"
 import NavSidebar from "../nav/NavSidebar.jsx"
 import NavTabController from "../nav/NavTabController.jsx"
 import NavHeaderMobile from "../nav/NavHeaderMobile.jsx"
@@ -14,6 +15,8 @@ function LayoutNavigation({ children, profile = null, sectionLinks = [], categor
 
     return (
         <div className={`layout-navigation-wrapper`}>
+            <LayoutBufferGarden />
+
             {!isNavigationMobileLayout && (
                 <NavSidebar profile={profile}
                             links={sectionLinks}/>

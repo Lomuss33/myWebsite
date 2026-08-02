@@ -5,13 +5,9 @@ import CircularButton from "../../buttons/CircularButton.jsx"
 function NavToolShrinkToggle({ expanded, onToggle }) {
     const language = useLanguage()
 
-    const faIcon = expanded ?
-        "fa-solid fa-caret-left" :
-        "fa-solid fa-caret-right"
-
     return (
         <CircularButton onClick={onToggle}
-                        faIcon={faIcon}
+                        faIcon={"fa-solid fa-play"}
                         size={CircularButton.Sizes.DEFAULT}
                         variant={CircularButton.Variants.BLEND}
                         tooltip={language.getString("toggle_sidebar")}

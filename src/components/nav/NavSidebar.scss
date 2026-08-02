@@ -95,14 +95,38 @@ nav.nav-sidebar {
     }
 
     button.nav-sidebar-btn-toggle {
+        --nav-sidebar-toggle-icon-color: #000000;
+        --nav-sidebar-toggle-icon-hover-color: #6b7280;
+        --nav-sidebar-toggle-ring-color: #8a8f98;
+        --nav-sidebar-toggle-ring-hover-color: #000000;
+
         position: absolute;
         right: -14px;
         top: var(--nav-sidebar-toggle-top);
         z-index: 160;
+        color: var(--nav-sidebar-toggle-icon-color);
+        border-color: var(--nav-sidebar-toggle-ring-color);
         border-radius: 999px;
         box-shadow:
             0 10px 24px rgba(15, 23, 42, 0.10),
-            0 0 0 1px var(--theme-nav-divider);
+            0 0 0 1px var(--nav-sidebar-toggle-ring-color);
+
+        i {
+            color: currentColor;
+            opacity: 1;
+        }
+
+        &:hover {
+            color: var(--nav-sidebar-toggle-icon-hover-color);
+            border-color: var(--nav-sidebar-toggle-ring-hover-color);
+            box-shadow:
+                0 10px 24px rgba(15, 23, 42, 0.10),
+                0 0 0 1px var(--nav-sidebar-toggle-ring-hover-color);
+
+            i {
+                opacity: 1;
+            }
+        }
     }
 }
 
@@ -168,10 +192,6 @@ nav.nav-sidebar-short-rail {
     --nav-short-rail-link-accent-dot-size: calc(2px + 3px * var(--nav-short-rail-visual-density));
     --nav-short-rail-link-accent-dot-offset-x: calc(4px + 4px * var(--nav-short-rail-visual-density));
     --nav-short-rail-link-hover-scale: calc(1.01 + 0.04 * var(--nav-short-rail-visual-density));
-    --nav-short-rail-tool-icon-box-size: clamp(22px, calc(var(--nav-short-rail-row-height) * 0.54), 34px);
-    --nav-short-rail-tool-icon-font-size: clamp(0.84rem, calc(var(--nav-short-rail-row-height) * 0.3), 1.08rem);
-    --nav-short-rail-resume-icon-box-size: clamp(26px, calc(var(--nav-short-rail-row-height) * 0.76), 40px);
-    --nav-short-rail-resume-icon-font-size: clamp(1.16rem, calc(var(--nav-short-rail-row-height) * 0.52), 1.56rem);
     --nav-short-rail-tool-divider-inset: calc(2px + 7px * var(--nav-short-rail-visual-density));
 
     div.nav-sidebar-card-wrapper {
@@ -341,8 +361,8 @@ nav.nav-sidebar-short-rail {
 
     div.nav-tools {
         --nav-tools-height: var(--nav-short-rail-tools-height);
-        --nav-tools-icon-box-size: var(--nav-short-rail-tool-icon-box-size);
-        --nav-tools-icon-font-size: var(--nav-short-rail-tool-icon-font-size);
+        --nav-tools-icon-box-size: var(--nav-short-rail-link-icon-width);
+        --nav-tools-icon-font-size: var(--nav-short-rail-link-icon-size);
         flex: 0 0 var(--nav-tools-height);
         padding: 0;
         height: var(--nav-tools-height);
@@ -363,6 +383,8 @@ nav.nav-sidebar.nav-sidebar-short-rail-with-resume-band {
 }
 
 nav.nav-sidebar div.nav-short-rail-resume-band {
+    --nav-short-rail-resume-divider-offset: 5px;
+
     flex: 0 0 var(--nav-short-rail-resume-height);
     width: 100%;
     height: var(--nav-short-rail-resume-height);
@@ -380,6 +402,25 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
         inset 0 -1px 0 rgba(15, 23, 42, 0.08);
     border-top: 1px solid var(--theme-nav-divider);
     border-bottom: 1px solid var(--nav-short-rail-control-divider, var(--theme-nav-divider));
+
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        z-index: 3;
+        height: var(--nav-short-rail-separator-height);
+        pointer-events: none;
+    }
+
+    &::before {
+        top: 0;
+    }
+
+    &::after {
+        bottom: calc(var(--nav-short-rail-resume-divider-offset) * -1);
+    }
 
     div.btn-option-picker,
     div.dropdown,
@@ -418,17 +459,17 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
         }
 
         div.btn-option-picker-icon.btn-option-picker-icon-size-2 {
-            width: var(--nav-short-rail-resume-icon-box-size);
-            min-width: var(--nav-short-rail-resume-icon-box-size);
-            height: var(--nav-short-rail-resume-icon-box-size);
-            flex: 0 0 var(--nav-short-rail-resume-icon-box-size);
+            width: var(--nav-short-rail-link-icon-width);
+            min-width: var(--nav-short-rail-link-icon-width);
+            height: var(--nav-short-rail-link-icon-size);
+            flex: 0 0 var(--nav-short-rail-link-icon-width);
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         i.fa-icon {
-            font-size: var(--nav-short-rail-resume-icon-font-size);
+            font-size: var(--nav-short-rail-link-icon-size);
             line-height: 1;
             color: color-mix(in srgb, var(--theme-nav-text) 88%, var(--theme-secondary) 12%);
             opacity: 0.92;
@@ -479,6 +520,11 @@ div.nav-short-rail-separator {
     min-height: var(--nav-short-rail-separator-height);
     width: 100%;
     pointer-events: none;
+}
+
+div.nav-short-rail-separator,
+nav.nav-sidebar-short-rail div.nav-short-rail-resume-band::before,
+nav.nav-sidebar div.nav-short-rail-resume-band::after {
     background-image: repeating-linear-gradient(
         -55deg,
         var(--theme-primary) 0,

@@ -360,8 +360,9 @@ div.nav-profile-card {
         margin-left: 0;
         margin-right: 0;
         margin-bottom: 2px;
-        font-size: 1.15rem!important;
-        line-height: 1.48rem!important;
+        font-size: calc(1.15rem + 6px)!important;
+        line-height: calc(1.48rem + 6px)!important;
+        letter-spacing: 0.09em;
         width: fit-content;
         max-width: 100%;
 
@@ -462,6 +463,8 @@ div.nav-profile-card {
 
         span.text-typer-span-dynamic {
             text-align: center;
+            font-size: calc(1em + 1px);
+            transform: translateY(2px);
         }
 
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
@@ -1382,6 +1385,8 @@ div.nav-profile-card-short-rail {
     --nav-short-rail-name-height: var(--nav-short-rail-name-band-height, calc(0.62rem + 0.38rem * var(--nav-short-rail-visual-density, 1)));
     --nav-short-rail-image-area-height: calc(var(--nav-short-rail-profile-height, 110px) - var(--nav-short-rail-name-height));
     --nav-short-rail-image-square-size: min(100%, var(--nav-short-rail-image-area-height));
+    --nav-short-rail-name-bottom-gap: 3px;
+    --nav-short-rail-name-lower-offset: 3px;
     --nav-short-rail-metal-frame-width-ratio: 136%;
     --nav-short-rail-metal-frame-height-ratio: 117%;
     --nav-short-rail-frame-blue: #1d4ed8;
@@ -1670,7 +1675,7 @@ div.nav-profile-card-short-rail {
         min-width: 0;
         height: var(--nav-short-rail-name-height);
         min-height: var(--nav-short-rail-name-height);
-        padding: 0.18rem 0.22rem 0.04rem;
+        padding: 0.18rem 0.22rem var(--nav-short-rail-name-bottom-gap);
         pointer-events: none;
         z-index: 90;
         box-sizing: border-box;
@@ -1681,14 +1686,15 @@ div.nav-profile-card-short-rail {
         width: 100%;
         max-width: 100%;
         margin: 0;
-        font-size: clamp(0.82rem, calc(var(--nav-short-rail-name-height) * 0.45), 1.08rem) !important;
+        font-size: clamp(calc(0.82rem + 1px), calc((var(--nav-short-rail-name-height) * 0.45) + 1px), calc(1.08rem + 1px)) !important;
         line-height: 1.1 !important;
-        letter-spacing: 0.01em;
+        letter-spacing: 0.04em;
         text-align: center;
         text-shadow: 0 1px 1px rgba(0, 0, 0, 0.22);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        transform: translateY(var(--nav-short-rail-name-lower-offset));
     }
 
     span.nav-profile-card-name-text {
@@ -1714,11 +1720,6 @@ div.nav-profile-card-short-rail {
 // ── Theme toggle: premium SVG sun/moon icons (mobile + wide-screen) ──
 // Applies to both the mobile-header theme button and the wide-screen
 // sidebar theme button — same look across viewports.
-div.nav-tools-item-theme {
-    --nav-tools-icon-box-size: 24px;
-    --nav-tools-icon-font-size: 1.28rem;
-}
-
 div.nav-profile-card-mobile-action-theme,
 div.nav-tools-item-theme {
     &:has(i.fa-icon.fa-sun) {
@@ -1783,11 +1784,6 @@ div.nav-tools-item-theme {
 // ── Resume toggle: premium SVG document icon (mobile + wide-screen) ──
 // Replaces the FA file-arrow-down glyph on the resume toggle button only
 // (menu items keep their original FA icons).
-div.nav-tools-item-resume {
-    --nav-tools-icon-box-size: 24px;
-    --nav-tools-icon-font-size: 1.28rem;
-}
-
 div.nav-profile-card-mobile-action-resume,
 div.nav-profile-card-desktop-action-resume,
 div.nav-tools-item-resume,
@@ -1908,6 +1904,24 @@ div.nav-profile-card-desktop-action-resume {
     100% {
         opacity: 0.98;
         transform: translate(-50%, -50%) translateZ(54px) scale(0.5);
+    }
+}
+
+div.nav-tools-item-theme {
+    button.btn-option-picker-toggle i.fa-icon.fa-sun,
+    button.btn-option-picker-toggle i.fa-icon.fa-moon {
+        width: var(--nav-tools-icon-font-size, 1.05rem);
+        height: var(--nav-tools-icon-font-size, 1.05rem);
+        background-size: contain;
+    }
+}
+
+div.nav-tools-item-resume,
+div.nav-short-rail-resume-band {
+    button.btn-option-picker-toggle i.fa-icon.fa-file-arrow-down {
+        width: var(--nav-tools-icon-font-size, var(--nav-short-rail-link-icon-size, 1.05rem));
+        height: var(--nav-tools-icon-font-size, var(--nav-short-rail-link-icon-size, 1.05rem));
+        background-size: contain;
     }
 }
 

@@ -49,9 +49,16 @@ function NavLinkList({ links, railMode }) {
         if(!container)
             return
 
+        const sharedRailStack = container.closest(".nav-sidebar-rail-stack")
+        const variableTargets = sharedRailStack && sharedRailStack !== container ?
+            [container, sharedRailStack] :
+            [container]
+
         const _clearExtendedRailVariables = () => {
             EXTENDED_RAIL_VARIABLE_NAMES.forEach((name) => {
-                container.style.removeProperty(name)
+                variableTargets.forEach((target) => {
+                    target.style.removeProperty(name)
+                })
             })
             lastValuesRef.current = {}
         }
@@ -61,7 +68,6 @@ function NavLinkList({ links, railMode }) {
             return
         }
 
-        const sharedRailStack = container.closest(".nav-sidebar-rail-stack")
         const {
             minRowHeight,
             baselineRowHeight,
@@ -88,7 +94,9 @@ function NavLinkList({ links, railMode }) {
                 return
 
             lastValuesRef.current[name] = nextSerializedValue
-            container.style.setProperty(name, nextSerializedValue)
+            variableTargets.forEach((target) => {
+                target.style.setProperty(name, nextSerializedValue)
+            })
         }
 
         const _interpolate = (min, max, factor) => {

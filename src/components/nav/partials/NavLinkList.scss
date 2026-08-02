@@ -341,3 +341,13 @@ div.nav-link-list-shell.nav-link-list-exact-fit {
         opacity: 0.96;
     }
 }
+
+nav.nav-sidebar-extended div.nav-link-list-shell button.nav-link span {
+    color: #000000 !important;
+    opacity: 1;
+}
+
+[data-theme="dark"] nav.nav-sidebar-extended div.nav-link-list-shell button.nav-link span {
+    color: #ffffff !important;
+    opacity: 1;
+}

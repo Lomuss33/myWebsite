@@ -40,6 +40,7 @@ const EXTENDED_PROFILE_VARIABLE_NAMES = [
     "--nav-extended-padding-top"
 ]
 const SHORT_RAIL_VARIABLE_NAMES = [
+    "--nav-sidebar-toggle-top",
     "--nav-short-rail-visual-density",
     "--nav-short-rail-profile-height",
     "--nav-short-rail-row-height",
@@ -48,11 +49,7 @@ const SHORT_RAIL_VARIABLE_NAMES = [
     "--nav-short-rail-separator-height",
     "--nav-link-target-height",
     "--nav-short-rail-link-icon-width",
-    "--nav-short-rail-link-icon-size",
-    "--nav-short-rail-tool-icon-box-size",
-    "--nav-short-rail-tool-icon-font-size",
-    "--nav-short-rail-resume-icon-box-size",
-    "--nav-short-rail-resume-icon-font-size"
+    "--nav-short-rail-link-icon-size"
 ]
 const SHARED_RAIL_VARIABLE_NAMES = [
     "--nav-link-target-height",
@@ -379,11 +376,10 @@ function NavSidebar({ profile, links }) {
 
             const nextToolsHeight = nextRowHeight
             const nextResumeHeight = hasResumeBand ? nextRowHeight : 0
+            const nextToggleTop = nextProfileHeight + (nextResumeHeight / 2) - 16
             const nextVisualDensity = Math.max(0, nextRowHeight / rowHeight.base)
             const railWidth = railCard.clientWidth || 108
             const linkButtonWidth = railWidth
-            const toolButtonWidth = Math.max((railWidth - 2) / 2, 1)
-            const resumeButtonWidth = railWidth
             const shrinkFactor = clampNumber(
                 (rowHeight.base - nextRowHeight) / Math.max(rowHeight.base - rowHeight.floor, 1),
                 0,
@@ -402,6 +398,7 @@ function NavSidebar({ profile, links }) {
                 return Math.min(heightDrivenValue, widthCap)
             }
 
+            _setVariable("--nav-sidebar-toggle-top", nextToggleTop)
             _setVariable("--nav-short-rail-visual-density", nextVisualDensity, "")
             _setVariable("--nav-short-rail-profile-height", nextProfileHeight)
             _setVariable("--nav-short-rail-row-height", nextRowHeight)
@@ -416,24 +413,6 @@ function NavSidebar({ profile, links }) {
             _setVariable(
                 "--nav-short-rail-link-icon-size",
                 getAdaptiveValue(0.92, 1.2, 1.55, (linkButtonWidth * 0.0185)),
-                "rem"
-            )
-            _setVariable(
-                "--nav-short-rail-tool-icon-box-size",
-                getAdaptiveValue(15, 22, 28, toolButtonWidth * 0.58)
-            )
-            _setVariable(
-                "--nav-short-rail-tool-icon-font-size",
-                getAdaptiveValue(0.72, 0.84, 1.02, toolButtonWidth * 0.021),
-                "rem"
-            )
-            _setVariable(
-                "--nav-short-rail-resume-icon-box-size",
-                getAdaptiveValue(18, 26, 34, resumeButtonWidth * 0.34)
-            )
-            _setVariable(
-                "--nav-short-rail-resume-icon-font-size",
-                getAdaptiveValue(0.9, 1.16, 1.42, resumeButtonWidth * 0.0215),
                 "rem"
             )
         }

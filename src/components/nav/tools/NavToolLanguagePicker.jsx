@@ -35,6 +35,9 @@ function NavToolLanguagePicker({
         "btn-option-picker-toggle-caption-inline" :
         ""
     const toggleClasses = `btn-option-picker-toggle nav-tool-language-toggle ${captionClass} ${captionLayoutClass}`.trim()
+    const alternateToggleLanguages = toggleCaption && toggleCaptionLayout === "inline" ?
+        availableLanguages.filter(lang => lang.id !== selectedLanguage?.id) :
+        []
 
     const _clearCloseTimer = React.useCallback(() => {
         if(closeTimerRef.current) {
@@ -131,6 +134,17 @@ function NavToolLanguagePicker({
                         {toggleCaption && (
                             <span className={`btn-option-picker-toggle-caption`}>
                                 {toggleCaption}
+                            </span>
+                        )}
+
+                        {alternateToggleLanguages.length > 0 && (
+                            <span className={`nav-tool-language-alt-flags`}
+                                  aria-hidden={`true`}>
+                                {alternateToggleLanguages.map((lang) => (
+                                    <img key={lang.id}
+                                         src={utils.file.resolvePath(lang.flagUrl)}
+                                         alt={``}/>
+                                ))}
                             </span>
                         )}
                     </Dropdown.Toggle>

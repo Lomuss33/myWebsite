@@ -9,9 +9,8 @@ div.layout-navigation-wrapper {
         clamp(360px, 19vw, 460px);
     --layout-rail-current-width:
         var(--layout-rail-wide-desktop-width);
-    --layout-shell-content-padding-inline: 0px;
+    --layout-page-max-width: none;
     --layout-shell-column-gap: 0px;
-    --layout-shell-content-max-width: none;
     --layout-desktop-scale: 0.90;
     --layout-ultrawide-scale: 0.82;
     --layout-wide-scale: 1;
@@ -47,16 +46,16 @@ div.layout-navigation-wrapper {
         (min-width: 1360px) and (min-aspect-ratio: 2 / 1) {
         --layout-rail-current-width:
             var(--layout-rail-wide-ultrawide-width);
+        --layout-page-max-width: 1320px;
+
+        background: var(--theme-layout-buffer, var(--theme-background));
     }
 
     @media (min-width: 1680px) {
         --layout-wide-scale: var(--layout-ultrawide-scale);
-        --layout-shell-content-padding-inline: clamp(40px, 4.8vw, 168px);
         --layout-shell-column-gap: clamp(28px, 2.4vw, 52px);
-        --layout-shell-content-max-width: 1220px;
 
         column-gap: calc(var(--layout-shell-column-gap) * var(--layout-wide-scale));
-        background: var(--theme-layout-buffer, var(--theme-background));
     }
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
@@ -113,10 +112,10 @@ div.layout-navigation-children-wrapper {
         overflow: hidden;
     }
 
-    @media (min-width: 1680px) {
+    @media
+        (min-width: 1680px),
+        (min-width: 1360px) and (min-aspect-ratio: 2 / 1) {
         justify-content: center;
-        padding-left: calc(var(--layout-shell-content-padding-inline) * var(--layout-wide-scale));
-        padding-right: calc(var(--layout-shell-content-padding-inline) * var(--layout-wide-scale));
         box-sizing: border-box;
     }
 }
@@ -126,8 +125,10 @@ div.layout-navigation-children-inner {
     flex: 1 1 auto;
     min-width: 0;
     width: 100%;
+    max-width: var(--layout-page-max-width);
     min-height: 100%;
     height: 100%;
+    margin-inline: auto;
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         height: auto;
@@ -142,16 +143,18 @@ div.layout-navigation-children-inner {
         transform-origin: top left;
     }
 
-    @media (min-width: 1680px) {
-        flex: 0 1 calc(var(--layout-shell-content-max-width) / var(--layout-wide-content-scale));
+    @media
+        (min-width: 1680px),
+        (min-width: 1360px) and (min-aspect-ratio: 2 / 1) {
+        flex: 0 1 calc(var(--layout-page-max-width) / var(--layout-wide-content-scale));
         width: min(
             calc(100% / var(--layout-wide-content-scale)),
-            calc(var(--layout-shell-content-max-width) / var(--layout-wide-content-scale))
+            calc(var(--layout-page-max-width) / var(--layout-wide-content-scale))
         );
-        max-width: calc(var(--layout-shell-content-max-width) / var(--layout-wide-content-scale));
+        max-width: calc(var(--layout-page-max-width) / var(--layout-wide-content-scale));
         min-height: calc(100% / var(--layout-wide-content-scale));
         height: calc(100% / var(--layout-wide-content-scale));
         transform: scale(var(--layout-wide-content-scale));
-        transform-origin: top left;
+        transform-origin: top center;
     }
 }

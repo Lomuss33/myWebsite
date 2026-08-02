@@ -7,7 +7,9 @@ import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useUtils} from "../../hooks/utils.js"
 
 const ADAPTIVE_LABEL_MODES = ["full", "short", "icon"]
-const HOME_CONTACT_FULL_SIDE_BUFFER_RATIO = 0.20
+const HOME_CONTACT_FULL_SIDE_BUFFER_RATIO = 0.015
+const HOME_CONTACT_FULL_SIDE_BUFFER_MIN = 0
+const HOME_CONTACT_FULL_SIDE_BUFFER_MAX = 24
 const HOME_CONTACT_SHORT_SIDE_BUFFER_RATIO = 0.045
 const HOME_CONTACT_SHORT_SIDE_BUFFER_MIN = 14
 const HOME_CONTACT_SHORT_SIDE_BUFFER_MAX = 38
@@ -310,7 +312,11 @@ function getHomeContactModeLayout({ mode, listWidth }) {
     if(mode === "full") {
         return {
             mode,
-            sideBuffer: Math.round(listWidth * HOME_CONTACT_FULL_SIDE_BUFFER_RATIO)
+            sideBuffer: clampNumber(
+                Math.round(listWidth * HOME_CONTACT_FULL_SIDE_BUFFER_RATIO),
+                HOME_CONTACT_FULL_SIDE_BUFFER_MIN,
+                HOME_CONTACT_FULL_SIDE_BUFFER_MAX
+            )
         }
     }
 

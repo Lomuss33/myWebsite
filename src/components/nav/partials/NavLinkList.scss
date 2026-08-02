@@ -23,6 +23,8 @@ div.nav-link-list-shell {
     --nav-link-accent-bar-height: 30px;
     --nav-link-accent-dot-size: 6px;
     --nav-link-accent-dot-offset-x: 10px;
+    --nav-control-separator-color: #ffffff;
+    --nav-control-separator-width: 2px;
 
     display: flex;
     flex: 1 1 auto;
@@ -53,7 +55,7 @@ nav.nav-sidebar-extended div.nav-link-list-shell {
     }
 
     button.nav-link:last-child {
-        border-bottom: 1px solid var(--nav-rail-control-divider, var(--theme-nav-divider));
+        border-bottom: var(--nav-control-separator-width) solid var(--nav-rail-control-divider, var(--theme-nav-divider));
     }
 }
 
@@ -253,6 +255,7 @@ nav.nav-sidebar-extended div.nav-link-list-shell,
 div.nav-link-list-shell.nav-link-list-short-rail {
     button.nav-link {
         border-top-color: var(--nav-page-control-divider, var(--theme-nav-divider));
+        border-top-width: var(--nav-control-separator-width);
     }
 
     button.nav-link:not(.nav-link-active):not(:hover) {
@@ -261,13 +264,13 @@ div.nav-link-list-shell.nav-link-list-short-rail {
     }
 
     button.nav-link:last-child {
-        border-bottom: 1px solid var(--nav-page-control-divider, var(--theme-nav-divider));
+        border-bottom: var(--nav-control-separator-width) solid var(--nav-page-control-divider, var(--theme-nav-divider));
     }
 }
 
 nav.nav-sidebar-extended div.nav-link-list-shell {
-    --nav-page-control-divider: var(--nav-rail-control-divider, var(--theme-nav-divider));
-    --nav-page-control-divider-highlight: var(--nav-rail-control-divider-highlight, rgba(255, 255, 255, 0.08));
+    --nav-page-control-divider: var(--nav-control-separator-color);
+    --nav-page-control-divider-highlight: transparent;
 }
 
 div.nav-link-list-shell.nav-link-list-short-rail {
@@ -288,6 +291,7 @@ div.nav-link-list-shell.nav-link-list-short-rail {
         justify-content: center;
         padding: 0 var(--nav-link-padding-inline);
         border-top-color: var(--nav-short-rail-control-divider, var(--theme-nav-divider));
+        border-top-width: var(--nav-control-separator-width);
 
         span {
             display: none;
@@ -308,7 +312,7 @@ div.nav-link-list-shell.nav-link-list-short-rail {
     }
 
     button.nav-link:last-child {
-        border-bottom: 1px solid var(--nav-short-rail-control-divider, var(--theme-nav-divider));
+        border-bottom: var(--nav-control-separator-width) solid var(--nav-short-rail-control-divider, var(--theme-nav-divider));
     }
 }
 
@@ -343,6 +347,14 @@ div.nav-link-list-shell.nav-link-list-exact-fit {
     }
 }
 
+[data-theme="dark"] nav.nav-sidebar div.nav-link-list-shell {
+    --nav-control-separator-color: #ffffff;
+}
+
+[data-theme="light"] nav.nav-sidebar div.nav-link-list-shell {
+    --nav-control-separator-color: #000000;
+}
+
 nav.nav-sidebar-extended div.nav-link-list-shell button.nav-link span {
     color: #000000 !important;
     opacity: 1;
@@ -351,4 +363,42 @@ nav.nav-sidebar-extended div.nav-link-list-shell button.nav-link span {
 [data-theme="dark"] nav.nav-sidebar-extended div.nav-link-list-shell button.nav-link span {
     color: #ffffff !important;
     opacity: 1;
+}
+
+[data-theme="dark"] div.nav-link-list-shell {
+    --nav-control-separator-color: #ffffff;
+    --nav-page-control-divider: #ffffff;
+    --nav-rail-control-divider: #ffffff;
+    --nav-short-rail-control-divider: #ffffff;
+    --nav-page-control-divider-highlight: transparent;
+    --nav-rail-control-divider-highlight: transparent;
+    --nav-short-rail-control-divider-highlight: transparent;
+}
+
+[data-theme="light"] div.nav-link-list-shell {
+    --nav-control-separator-color: #000000;
+    --nav-page-control-divider: #000000;
+    --nav-rail-control-divider: #000000;
+    --nav-short-rail-control-divider: #000000;
+    --nav-page-control-divider-highlight: transparent;
+    --nav-rail-control-divider-highlight: transparent;
+    --nav-short-rail-control-divider-highlight: transparent;
+}
+
+[data-theme] div.nav-link-list-shell button.nav-link {
+    border-top-width: var(--nav-control-separator-width);
+    border-top-color: var(--nav-control-separator-color)!important;
+}
+
+[data-theme] div.nav-link-list-shell button.nav-link:last-child {
+    border-bottom-color: var(--nav-control-separator-color)!important;
+    border-bottom-width: var(--nav-control-separator-width);
+}
+
+[data-theme] nav.nav-sidebar-short-rail div.nav-link-list-shell.nav-link-list-short-rail button.nav-link:last-child {
+    border-bottom: 0 !important;
+}
+
+[data-theme] nav.nav-sidebar-extended div.nav-sidebar-rail-stack div.nav-link-list-shell button.nav-link:last-child {
+    border-bottom: 0 !important;
 }

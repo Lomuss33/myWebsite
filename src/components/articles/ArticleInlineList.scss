@@ -40,7 +40,8 @@ article#article-1-section-about {
     --home-contact-pill-radius: 999px;
     --home-contact-pill-icon-gap: 8px;
     --home-contact-band-separator-buffer: clamp(11px, 2.1vw, 17px);
-    --home-contact-band-gap: clamp(10px, 2.2vw, 18px);
+    --home-contact-band-gap: clamp(4px, 0.8vw, 10px);
+    --home-contact-band-max-width: 1520px;
     --home-contact-mode-side-buffer: 0px;
     --home-contact-text-color: #f8fafc;
     position: relative;
@@ -63,9 +64,9 @@ article#article-1-section-about {
         margin-top: 13px;
         margin-bottom: var(--home-contact-band-separator-buffer);
         gap: var(--home-contact-band-gap);
-        width: calc(100% + 16px);
-        margin-left: -8px;
-        margin-right: -8px;
+        width: min(100%, var(--home-contact-band-max-width));
+        margin-left: auto;
+        margin-right: auto;
         padding-inline: 0;
 
         @include media-breakpoint-down(sm) {
@@ -76,9 +77,7 @@ article#article-1-section-about {
         }
 
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-            width: calc(100% + 12px);
-            margin-left: -6px;
-            margin-right: -6px;
+            width: 100%;
         }
     }
 

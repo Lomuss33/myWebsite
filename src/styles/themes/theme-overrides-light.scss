@@ -19,6 +19,14 @@
     color: #7c3aed;
 }
 
+[data-theme="light"] section.section header.section-header div.section-header-prefix {
+    color: #1e293b;
+}
+
+[data-theme="light"] section.section header.section-header div.section-header-prefix i {
+    color: #334155;
+}
+
 [data-theme="light"] section#section-about header.section-header.section-header-home div.section-header-prefix {
     color: #312e81;
 }
@@ -40,6 +48,7 @@
     --education-title-mid: #7c3aed;
     --education-title-end: #059669;
     --education-title-shadow: 0 14px 28px rgba(124, 58, 237, 0.13);
+    --education-text-mid: #334155;
 
     color: #0f172a;
 }
@@ -97,6 +106,7 @@
     --experience-title-mid: #e11d48;
     --experience-title-end: #6d28d9;
     --experience-title-shadow: 0 14px 28px rgba(225, 29, 72, 0.12);
+    --experience-text-mid: #334155;
 
     color: #0f172a;
 }

@@ -5,12 +5,12 @@
         "title_short": "Hello!",
         "title_short_nav": "Home",
         "title_short_tooltip": "Start",
-        "title_long_prefix": "Portfolio overview",
-        "title_long": "Welcome to {{my digital portfolio}}.",
-        "title_long_prefix_light": "Portfolio overview",
-        "title_long_light": "Welcome to {{my digital portfolio}}.",
-        "title_long_prefix_dark": "Portfolio overview",
-        "title_long_dark": "Welcome to {{my digital portfolio}}."
+        "title_long_prefix": "Hello friend,",
+        "title_long": "Welcome to {{my corner}} of the internet!",
+        "title_long_prefix_light": "Hello friend,",
+        "title_long_light": "Welcome to {{my corner}} of the internet!",
+        "title_long_prefix_dark": "Hello night owl,",
+        "title_long_dark": "Welcome to {{my moonlit corner}} of the internet!"
       },
       "de": {
         "title_short": "Hallo!",

@@ -133,14 +133,28 @@ header.section-header.section-header-home h2.section-header-title {
     white-space: normal;
     text-shadow: 0 14px 28px rgba(2, 6, 23, 0.18);
 
+    span.text-primary {
+        font-size: var(--section-header-title-size);
+        line-height: 1.08;
+        letter-spacing: var(--section-header-title-tracking);
+    }
+
     @include media-breakpoint-down(md) {
         font-size: var(--section-header-home-title-size-md)!important;
         line-height: 1.06;
+
+        span.text-primary {
+            font-size: var(--section-header-title-size-md);
+        }
     }
 
     @include media-breakpoint-down(sm) {
         margin: 0 4px;
         font-size: var(--section-header-home-title-size-sm)!important;
         line-height: 1.08;
+
+        span.text-primary {
+            font-size: var(--section-header-title-size-sm);
+        }
     }
 }

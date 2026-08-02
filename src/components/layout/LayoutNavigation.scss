@@ -2,13 +2,19 @@
 
 div.layout-navigation-wrapper {
     --mobile-nav-tabs-total-height: calc(var(--nav-tabs-height, #{$nav-tabs-height}) + env(safe-area-inset-bottom, 0px) + var(--mobile-viewport-offset-bottom, 0px));
+    --layout-rail-compact-width: 108px;
+    --layout-rail-wide-desktop-width:
+        clamp(270px, 18vw, 350px);
+    --layout-rail-wide-ultrawide-width:
+        clamp(360px, 19vw, 460px);
+    --layout-rail-current-width:
+        var(--layout-rail-wide-desktop-width);
     --layout-shell-content-padding-inline: 0px;
     --layout-shell-column-gap: 0px;
     --layout-shell-content-max-width: none;
     --layout-desktop-scale: 0.90;
     --layout-ultrawide-scale: 0.82;
     --layout-wide-scale: 1;
-    --layout-wide-nav-scale: var(--layout-wide-scale);
     --layout-wide-content-scale: var(--layout-wide-scale);
 
     display: flex;
@@ -26,7 +32,9 @@ div.layout-navigation-wrapper {
 
     @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
         display: grid;
-        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-columns:
+            var(--layout-rail-current-width)
+            minmax(0, 1fr);
         column-gap: 0;
     }
 
@@ -34,9 +42,15 @@ div.layout-navigation-wrapper {
         --layout-wide-scale: var(--layout-desktop-scale);
     }
 
+    @media
+        (min-width: 1680px),
+        (min-width: 1360px) and (min-aspect-ratio: 2 / 1) {
+        --layout-rail-current-width:
+            var(--layout-rail-wide-ultrawide-width);
+    }
+
     @media (min-width: 1680px) {
         --layout-wide-scale: var(--layout-ultrawide-scale);
-        --layout-wide-nav-scale: 0.78;
         --layout-shell-content-padding-inline: clamp(40px, 4.8vw, 168px);
         --layout-shell-column-gap: clamp(28px, 2.4vw, 52px);
         --layout-shell-content-max-width: 1220px;
@@ -53,6 +67,11 @@ div.layout-navigation-wrapper {
     }
 }
 
+div.layout-navigation-wrapper:has(> nav.nav-sidebar-short-rail) {
+    --layout-rail-current-width:
+        var(--layout-rail-compact-width);
+}
+
 div.layout-navigation-wrapper > nav,
 div.layout-navigation-children-wrapper,
 div.layout-navigation-children-inner {
@@ -62,6 +81,8 @@ div.layout-navigation-children-inner {
 
 div.layout-navigation-wrapper > nav {
     grid-column: 1;
+    width: 100%;
+    min-width: 0;
     z-index: 2;
 }
 

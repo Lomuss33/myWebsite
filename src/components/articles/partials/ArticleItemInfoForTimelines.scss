@@ -118,15 +118,18 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
 
     --card-accent: #4ea3ff;
     --card-accent-2: #facc15;
-    --timeline-title-size: clamp(1.32rem, 1.14rem + 0.68vw, 1.82rem);
-    --timeline-meta-size: clamp(1.08rem, 0.98rem + 0.3vw, 1.26rem);
+    --content-padding: 1.08rem 1.25rem;
+    --timeline-title-size: clamp(1.32rem, 1.1rem + 1.22cqi, 2rem);
+    --timeline-meta-size: clamp(0.92rem, 0.78rem + 0.42cqi, 1.26rem);
+    --timeline-body-size: clamp(1.08rem, 0.88rem + 1.28cqi, 1.58rem);
     --experience-meta-time-size: var(--timeline-meta-size);
-    --experience-meta-grid-gap: clamp(0.52rem, 0.38rem + 0.28vw, 0.82rem);
-    --experience-meta-split-gap: clamp(0.75rem, 0.56rem + 0.4vw, 1.1rem);
-    --experience-meta-segment-gap: clamp(0.4rem, 0.3rem + 0.2vw, 0.58rem);
-    --experience-meta-segment-padding-y: clamp(0.72rem, 0.58rem + 0.26vw, 0.92rem);
-    --experience-meta-segment-padding-x: clamp(0.92rem, 0.76rem + 0.36vw, 1.2rem);
-    --experience-meta-segment-radius: clamp(0.85rem, 0.72rem + 0.24vw, 1.05rem);
+    --experience-meta-grid-gap: 0.62rem;
+    --experience-meta-split-gap: 0.78rem;
+    --experience-meta-segment-gap: 0.45rem;
+    --experience-meta-segment-padding-y: 0.72rem;
+    --experience-meta-segment-padding-x: 0.9rem;
+    --experience-meta-segment-radius: 0.92rem;
+    --experience-description-right-offset: max(15cqi, calc(var(--experience-description-right-buffer, 0px) * 3.4));
     --card-surface-top: #0b1220;
     --card-surface-bottom: #050810;
     --card-border: #1d2b41;
@@ -140,6 +143,8 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
     flex-direction: column;
     width: 100%;
     padding: var(--content-padding);
+    container-name: experience-timeline-card;
+    container-type: inline-size;
     position: relative;
     isolation: isolate;
     overflow: hidden;
@@ -198,8 +203,7 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
 }
 
 @include media-breakpoint-up(xl) {
-    article#article-1-section-education div.article-timeline-item-info-for-timelines,
-    article#article-1-section-experience div.article-timeline-item-info-for-timelines {
+    article#article-1-section-education div.article-timeline-item-info-for-timelines {
         --timeline-title-size: clamp(1.56rem, 1.4rem + 0.66vw, 2rem);
         --timeline-meta-size: clamp(1.2rem, 1.12rem + 0.26vw, 1.36rem);
         --timeline-body-size: clamp(1.4rem, 1.31rem + 0.32vw, 1.58rem);
@@ -1334,9 +1338,7 @@ article#article-1-section-education ul.article-timeline-item-info-for-timelines-
 }
 
 article#article-1-section-experience {
-    --experience-description-left-buffer: clamp(0.26rem, 0.19rem + 0.16vw, 0.45rem);
-    --experience-description-right-text-buffer: 15%;
-    --experience-description-right-offset: max(var(--experience-description-right-text-buffer), calc(var(--experience-description-right-buffer, 0px) * 3.4));
+    --experience-description-left-buffer: 0.33rem;
 
     div.article-timeline-item-info-for-timelines-header-title,
     div.article-timeline-item-info-for-timelines-header-main {
@@ -1359,7 +1361,7 @@ article#article-1-section-experience {
     div.article-timeline-item-info-for-timelines-header-meta-grid {
         color: var(--card-text-mid);
         gap: var(--experience-meta-grid-gap);
-        margin-top: clamp(0.28rem, 0.2rem + 0.18vw, 0.42rem);
+        margin-top: 0.36rem;
         width: 100%;
         max-width: 100%;
         margin-right: 0;
@@ -1477,8 +1479,8 @@ article#article-1-section-experience {
 
     div.article-timeline-item-info-for-timelines-body {
         position: relative;
-        margin-top: clamp(0.8rem, 0.62rem + 0.38vw, 1.1rem);
-        padding-top: clamp(0.72rem, 0.58rem + 0.24vw, 0.9rem);
+        margin-top: 0.95rem;
+        padding-top: 0.78rem;
         box-sizing: border-box;
         text-align: left;
         line-height: 1.68;
@@ -1500,7 +1502,7 @@ article#article-1-section-experience {
             padding-right: var(--experience-description-right-offset);
             padding-left: var(--experience-description-left-buffer);
             min-width: 0;
-            padding-top: clamp(0.82rem, 0.68rem + 0.26vw, 1rem);
+            padding-top: 0.9rem;
             color: color-mix(in srgb, var(--card-text-mid) 92%, var(--card-text-strong) 8%);
         }
 
@@ -1517,17 +1519,15 @@ article#article-1-section-experience {
 
         div.article-timeline-item-info-for-timelines-body-text + ul.article-timeline-item-info-for-timelines-body-list {
             border-top: 0;
-            padding-top: clamp(0.55rem, 0.44rem + 0.18vw, 0.72rem);
+            padding-top: 0.6rem;
         }
 
         ul.article-timeline-item-info-for-timelines-body-list:first-child {
-            padding-top: clamp(0.82rem, 0.68rem + 0.26vw, 1rem);
+            padding-top: 0.9rem;
         }
     }
 
     @include media-breakpoint-down(md) {
-        --experience-description-right-text-buffer: 10%;
-
         div.article-timeline-item-info-for-timelines-header-meta-row--split {
             grid-template-columns: minmax(0, 1fr);
         }
@@ -1566,8 +1566,6 @@ article#article-1-section-experience {
     }
 
     @include media-breakpoint-down(sm) {
-        --experience-description-right-text-buffer: 6%;
-
         div.article-timeline-item-info-for-timelines-header-main {
             width: 100%;
         }
@@ -1650,22 +1648,22 @@ article#article-1-section-experience {
 
 @media (min-width: 2000px) {
     article#article-1-section-experience {
-        --experience-description-right-text-buffer: 12%;
+        --experience-description-left-buffer: 0.33rem;
     }
 
     article#article-1-section-experience div.article-timeline-item-info-for-timelines {
-        --content-padding: clamp(0.82rem, 0.74rem + 0.18vw, 1rem) clamp(0.9rem, 0.8rem + 0.22vw, 1.12rem);
-        --timeline-title-size: clamp(1.36rem, 1.2rem + 0.28vw, 1.7rem);
-        --timeline-meta-size: clamp(1rem, 0.94rem + 0.12vw, 1.14rem);
+        --content-padding: 1.08rem 1.25rem;
+        --timeline-title-size: clamp(1.32rem, 1.1rem + 1.22cqi, 2rem);
+        --timeline-meta-size: clamp(0.92rem, 0.78rem + 0.42cqi, 1.26rem);
         --experience-meta-time-size: var(--timeline-meta-size);
-        --timeline-body-size: clamp(1.08rem, 1rem + 0.14vw, 1.28rem);
-        --timeline-badge-size: clamp(0.92rem, 0.86rem + 0.1vw, 1.06rem);
-        --experience-meta-grid-gap: clamp(0.44rem, 0.36rem + 0.12vw, 0.64rem);
-        --experience-meta-split-gap: clamp(0.58rem, 0.48rem + 0.16vw, 0.82rem);
-        --experience-meta-segment-gap: clamp(0.34rem, 0.28rem + 0.1vw, 0.48rem);
-        --experience-meta-segment-padding-y: clamp(0.58rem, 0.5rem + 0.12vw, 0.74rem);
-        --experience-meta-segment-padding-x: clamp(0.74rem, 0.64rem + 0.16vw, 0.98rem);
-        --experience-meta-segment-radius: clamp(0.72rem, 0.64rem + 0.12vw, 0.9rem);
+        --timeline-body-size: clamp(1.08rem, 0.88rem + 1.28cqi, 1.58rem);
+        --timeline-badge-size: clamp(0.92rem, 0.82rem + 0.32cqi, 1.28rem);
+        --experience-meta-grid-gap: 0.62rem;
+        --experience-meta-split-gap: 0.78rem;
+        --experience-meta-segment-gap: 0.45rem;
+        --experience-meta-segment-padding-y: 0.72rem;
+        --experience-meta-segment-padding-x: 0.9rem;
+        --experience-meta-segment-radius: 0.92rem;
     }
 }
 

@@ -115,7 +115,7 @@ div.section-content.section-content-has-decoration-bands.section-content-hide-he
 }
 
 div.section-content.section-content-has-decoration-bands header.section-header {
-    margin-bottom: 0!important;
+    margin-bottom: clamp(8px, 1vw, 14px)!important;
 }
 
 div.section-decoration-band {

@@ -114,6 +114,7 @@ nav.nav-sidebar {
         i {
             color: currentColor;
             opacity: 1;
+            transform: none;
         }
 
         &:hover {
@@ -127,6 +128,21 @@ nav.nav-sidebar {
                 opacity: 1;
             }
         }
+
+        &.nav-sidebar-btn-toggle-target-short {
+            i {
+                transform: scaleX(-1);
+            }
+        }
+    }
+}
+
+[data-theme="dark"] nav.nav-sidebar {
+    button.nav-sidebar-btn-toggle {
+        --nav-sidebar-toggle-icon-color: #6b7280;
+        --nav-sidebar-toggle-icon-hover-color: #000000;
+        --nav-sidebar-toggle-ring-color: #000000;
+        --nav-sidebar-toggle-ring-hover-color: #8a8f98;
     }
 }
 
@@ -573,6 +589,8 @@ div.nav-sidebar-rail-stack {
 
     > div.nav-link-list-shell {
         grid-row: 1;
+        position: relative;
+        z-index: 1;
         min-height: 0;
         min-width: 0;
         width: 100%;
@@ -580,12 +598,16 @@ div.nav-sidebar-rail-stack {
 
     > div.nav-rail-separator {
         grid-row: 2;
+        position: relative;
+        z-index: 4;
         min-width: 0;
         width: 100%;
     }
 
     > div.nav-tools {
         grid-row: 3;
+        position: relative;
+        z-index: 2;
         align-self: end;
         min-width: 0;
         width: 100%;

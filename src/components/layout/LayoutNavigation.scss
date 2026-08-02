@@ -6,7 +6,7 @@ div.layout-navigation-wrapper {
     --layout-rail-wide-desktop-width:
         clamp(270px, 18vw, 350px);
     --layout-rail-wide-ultrawide-width:
-        clamp(360px, 19vw, 460px);
+        clamp(290px, 15vw, 370px);
     --layout-rail-current-width:
         var(--layout-rail-wide-desktop-width);
     --layout-page-max-width: none;
@@ -38,7 +38,7 @@ div.layout-navigation-wrapper {
         (min-width: 1360px) and (min-aspect-ratio: 2 / 1) {
         --layout-rail-current-width:
             var(--layout-rail-wide-ultrawide-width);
-        --layout-page-max-width: 1320px;
+        --layout-page-max-width: 1080px;
 
         background: var(--theme-layout-buffer, var(--theme-background));
     }

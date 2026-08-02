@@ -1,9 +1,7 @@
 @use "../../styles/extend" as *;
 
 nav.nav-sidebar {
-    --width: 224px;
-    --nav-sidebar-layout-width: calc(var(--width) * var(--layout-wide-nav-scale, 1));
-    --nav-sidebar-source-width: calc(var(--nav-sidebar-layout-width) / var(--layout-wide-nav-scale, 1));
+    --width: 100%;
     --nav-sidebar-toggle-top: 20px;
     --nav-short-rail-resume-height: 0px;
     --nav-extended-profile-height: 164px;
@@ -25,9 +23,9 @@ nav.nav-sidebar {
     }
 
     @include media-breakpoint-up(lg) {
-        width: var(--nav-sidebar-layout-width);
-        min-width: var(--nav-sidebar-layout-width);
-        max-width: var(--nav-sidebar-layout-width);
+        width: 100%;
+        min-width: 0;
+        max-width: none;
         overflow: visible;
     }
 
@@ -51,12 +49,10 @@ nav.nav-sidebar {
         border-radius: 0;
 
         @include media-breakpoint-up(lg) {
-            width: var(--nav-sidebar-source-width);
-            min-width: var(--nav-sidebar-source-width);
-            height: calc(100% / var(--layout-wide-nav-scale, 1));
-            min-height: calc(100% / var(--layout-wide-nav-scale, 1));
-            transform: scale(var(--layout-wide-nav-scale, 1));
-            transform-origin: top left;
+            width: 100%;
+            min-width: 0;
+            height: 100%;
+            min-height: 0;
         }
 
         &::after {
@@ -152,7 +148,7 @@ nav.nav-sidebar-extended {
 }
 
 nav.nav-sidebar-short-rail {
-    --width: 108px;
+    --width: 100%;
     --nav-sidebar-toggle-top: calc(var(--nav-short-rail-profile-height) + (var(--nav-short-rail-resume-height) / 2) - 16px);
     --nav-short-rail-visual-density: 1;
     --nav-short-rail-profile-height: 110px;

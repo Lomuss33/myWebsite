@@ -2,14 +2,15 @@
 
 div.layout-navigation-wrapper {
     --mobile-nav-tabs-total-height: calc(var(--nav-tabs-height, #{$nav-tabs-height}) + env(safe-area-inset-bottom, 0px) + var(--mobile-viewport-offset-bottom, 0px));
-    --layout-shell-content-padding-inline: 0px;
+    --layout-rail-compact-width: 108px;
+    --layout-rail-wide-desktop-width:
+        clamp(270px, 18vw, 350px);
+    --layout-rail-wide-ultrawide-width:
+        clamp(360px, 19vw, 460px);
+    --layout-rail-current-width:
+        var(--layout-rail-wide-desktop-width);
+    --layout-page-max-width: none;
     --layout-shell-column-gap: 0px;
-    --layout-shell-content-max-width: none;
-    --layout-desktop-scale: 0.90;
-    --layout-ultrawide-scale: 0.82;
-    --layout-wide-scale: 1;
-    --layout-wide-nav-scale: var(--layout-wide-scale);
-    --layout-wide-content-scale: var(--layout-wide-scale);
 
     display: flex;
     flex: 1 1 auto;
@@ -26,23 +27,24 @@ div.layout-navigation-wrapper {
 
     @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
         display: grid;
-        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-columns:
+            var(--layout-rail-current-width)
+            minmax(0, 1fr);
         column-gap: 0;
     }
 
-    @include media-breakpoint-up(lg) {
-        --layout-wide-scale: var(--layout-desktop-scale);
+    @media
+        (min-width: 1680px),
+        (min-width: 1360px) and (min-aspect-ratio: 2 / 1) {
+        --layout-rail-current-width:
+            var(--layout-rail-wide-ultrawide-width);
+        --layout-page-max-width: 1320px;
+
+        background: var(--theme-layout-buffer, var(--theme-background));
     }
 
     @media (min-width: 1680px) {
-        --layout-wide-scale: var(--layout-ultrawide-scale);
-        --layout-wide-nav-scale: 0.78;
-        --layout-shell-content-padding-inline: clamp(40px, 4.8vw, 168px);
         --layout-shell-column-gap: clamp(28px, 2.4vw, 52px);
-        --layout-shell-content-max-width: 1220px;
-
-        column-gap: calc(var(--layout-shell-column-gap) * var(--layout-wide-scale));
-        background: var(--theme-layout-buffer, var(--theme-background));
     }
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
@@ -51,6 +53,11 @@ div.layout-navigation-wrapper {
         max-height: inherit;
         flex-direction: column;
     }
+}
+
+div.layout-navigation-wrapper:has(> nav.nav-sidebar-short-rail) {
+    --layout-rail-current-width:
+        var(--layout-rail-compact-width);
 }
 
 div.layout-navigation-wrapper > nav,
@@ -62,6 +69,8 @@ div.layout-navigation-children-inner {
 
 div.layout-navigation-wrapper > nav {
     grid-column: 1;
+    width: 100%;
+    min-width: 0;
     z-index: 2;
 }
 
@@ -92,10 +101,10 @@ div.layout-navigation-children-wrapper {
         overflow: hidden;
     }
 
-    @media (min-width: 1680px) {
-        justify-content: center;
-        padding-left: calc(var(--layout-shell-content-padding-inline) * var(--layout-wide-scale));
-        padding-right: calc(var(--layout-shell-content-padding-inline) * var(--layout-wide-scale));
+    @media
+        (min-width: 1680px),
+        (min-width: 1360px) and (min-aspect-ratio: 2 / 1) {
+        justify-content: flex-start;
         box-sizing: border-box;
     }
 }
@@ -105,32 +114,39 @@ div.layout-navigation-children-inner {
     flex: 1 1 auto;
     min-width: 0;
     width: 100%;
+    max-width: var(--layout-page-max-width);
     min-height: 100%;
     height: 100%;
+    margin-inline: auto;
+    transform: none;
+    transform-origin: initial;
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         height: auto;
     }
 
     @include media-breakpoint-up(lg) {
-        flex: 0 0 calc(100% / var(--layout-wide-content-scale));
-        width: calc(100% / var(--layout-wide-content-scale));
-        min-height: calc(100% / var(--layout-wide-content-scale));
-        height: calc(100% / var(--layout-wide-content-scale));
-        transform: scale(var(--layout-wide-content-scale));
-        transform-origin: top left;
+        flex: 1 1 auto;
+        width: 100%;
+        min-height: 100%;
+        height: 100%;
     }
 
-    @media (min-width: 1680px) {
-        flex: 0 1 calc(var(--layout-shell-content-max-width) / var(--layout-wide-content-scale));
-        width: min(
-            calc(100% / var(--layout-wide-content-scale)),
-            calc(var(--layout-shell-content-max-width) / var(--layout-wide-content-scale))
+    @media
+        (min-width: 1680px),
+        (min-width: 1360px) and (min-aspect-ratio: 2 / 1) {
+        flex: 0 1 var(--layout-page-max-width);
+        width: min(100%, var(--layout-page-max-width));
+        max-width: var(--layout-page-max-width);
+        min-height: 100%;
+        height: 100%;
+        margin-left: max(
+            0px,
+            calc(
+                ((100vw - var(--layout-page-max-width)) / 2) -
+                var(--layout-rail-current-width)
+            )
         );
-        max-width: calc(var(--layout-shell-content-max-width) / var(--layout-wide-content-scale));
-        min-height: calc(100% / var(--layout-wide-content-scale));
-        height: calc(100% / var(--layout-wide-content-scale));
-        transform: scale(var(--layout-wide-content-scale));
-        transform-origin: top left;
+        margin-right: 0;
     }
 }

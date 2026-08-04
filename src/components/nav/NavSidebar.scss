@@ -55,6 +55,7 @@ nav.nav-sidebar {
             min-height: 0;
         }
 
+        &::before,
         &::after {
             content: none;
         }
@@ -167,6 +168,24 @@ nav.nav-sidebar-extended {
 
 @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
     nav.nav-sidebar {
+        div.nav-sidebar-card-wrapper::before {
+            content: "";
+            position: absolute;
+            right: 0;
+            bottom: -1px;
+            left: 0;
+            height: 4px;
+            z-index: 10;
+            pointer-events: none;
+            background-image: repeating-linear-gradient(
+                -55deg,
+                #000000,
+                #000000 26px,
+                var(--theme-primary) 26px,
+                var(--theme-primary) 52px
+            );
+        }
+
         div.nav-sidebar-card-wrapper::after {
             content: "";
             position: absolute;
@@ -174,7 +193,7 @@ nav.nav-sidebar-extended {
             right: 0;
             bottom: -1px;
             width: 4px;
-            z-index: 130;
+            z-index: 10;
             pointer-events: none;
             background-image: repeating-linear-gradient(
                 -55deg,
@@ -435,7 +454,7 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
         position: absolute;
         left: 0;
         right: 0;
-        z-index: 3;
+        z-index: 1;
         height: var(--nav-short-rail-resume-divider-height);
         pointer-events: none;
     }
@@ -615,7 +634,7 @@ div.nav-sidebar-rail-stack {
     > div.nav-rail-separator {
         grid-row: 2;
         position: relative;
-        z-index: 4;
+        z-index: 2;
         min-width: 0;
         width: 100%;
     }

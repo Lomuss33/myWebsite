@@ -12,7 +12,7 @@
         content: "";
         position: absolute;
         #{$edge}: 0;
-        z-index: 3;
+        z-index: 1;
         @if $edge == left or $edge == right {
             top: 0;
             bottom: 0;
@@ -40,7 +40,7 @@
     &::after {
         content: "";
         position: absolute;
-        z-index: 3;
+        z-index: 1;
         pointer-events: none;
     }
 

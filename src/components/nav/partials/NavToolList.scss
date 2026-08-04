@@ -274,7 +274,7 @@ div.nav-tools {
             &::after {
                 content: "";
                 position: absolute;
-                z-index: 3;
+                z-index: 1;
                 pointer-events: none;
                 background-image: repeating-linear-gradient(
                     -55deg,

@@ -19,6 +19,14 @@
     color: #7c3aed;
 }
 
+[data-theme="light"] section.section header.section-header div.section-header-prefix {
+    color: #1e293b;
+}
+
+[data-theme="light"] section.section header.section-header div.section-header-prefix i {
+    color: #334155;
+}
+
 [data-theme="light"] section#section-about header.section-header.section-header-home div.section-header-prefix {
     color: #312e81;
 }
@@ -40,6 +48,7 @@
     --education-title-mid: #7c3aed;
     --education-title-end: #059669;
     --education-title-shadow: 0 14px 28px rgba(124, 58, 237, 0.13);
+    --education-text-mid: #334155;
 
     color: #0f172a;
 }
@@ -97,6 +106,7 @@
     --experience-title-mid: #e11d48;
     --experience-title-end: #6d28d9;
     --experience-title-shadow: 0 14px 28px rgba(225, 29, 72, 0.12);
+    --experience-text-mid: #334155;
 
     color: #0f172a;
 }
@@ -319,19 +329,22 @@
             #ffffff 38%,
             color-mix(in srgb, var(--home-contact-pill-accent-2) 22%, #f8fafc 78%) 100%),
         linear-gradient(180deg, #ffffff, #f3f8ff);
+}
+
+[data-theme="light"] article#article-1-section-about li.article-inline-list-item .article-inline-list-item-pill {
     box-shadow:
         0 16px 32px rgba(15, 23, 42, 0.10),
         0 0 0 1px color-mix(in srgb, var(--home-contact-pill-accent) 10%, transparent 90%),
-        inset 0 1px 0 rgba(255, 255, 255, 0.92);
+        inset 0 1px 0 rgba(255, 255, 255, 0.92) !important;
 }
 
-[data-theme="light"] article#article-1-section-about li.article-inline-list-item:hover,
-[data-theme="light"] article#article-1-section-about li.article-inline-list-item:focus-within {
+[data-theme="light"] article#article-1-section-about li.article-inline-list-item:not([data-fit-measure="true"]) .article-inline-list-item-control:hover .article-inline-list-item-pill,
+[data-theme="light"] article#article-1-section-about li.article-inline-list-item:not([data-fit-measure="true"]) .article-inline-list-item-control:focus-visible .article-inline-list-item-pill {
     box-shadow:
         0 20px 38px rgba(15, 23, 42, 0.12),
         0 0 0 1px color-mix(in srgb, var(--home-contact-pill-accent) 14%, transparent 86%),
         0 0 26px color-mix(in srgb, var(--home-contact-pill-accent) 14%, transparent 86%),
-        inset 0 1px 0 rgba(255, 255, 255, 0.96);
+        inset 0 1px 0 rgba(255, 255, 255, 0.96) !important;
 }
 
 [data-theme="light"] article#article-1-section-about span.article-inline-list-item-label {
@@ -340,7 +353,7 @@
 }
 
 [data-theme="light"] article#article-1-section-about i.article-inline-list-item-icon {
-    color: color-mix(in srgb, var(--home-contact-pill-accent) 74%, #0f172a 26%);
+    color: #000000 !important;
     background:
         linear-gradient(180deg,
             color-mix(in srgb, var(--home-contact-pill-accent) 16%, white 84%) 0%,

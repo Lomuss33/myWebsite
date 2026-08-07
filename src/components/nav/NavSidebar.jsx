@@ -24,8 +24,8 @@ const EXTENDED_PROFILE_COMPRESSION_CONFIG = {
     paddingTop: { min: 8, base: 16 }
 }
 const SHORT_RAIL_HEIGHT_CONFIG = {
-    profile: { floor: 58, base: 110 },
-    row: { floor: 16, base: 34, max: 84 }
+    profile: { floor: 96, base: EXTENDED_PROFILE_COMPRESSION_CONFIG.profileHeight.base },
+    row: { floor: 16, base: 34, max: 64 }
 }
 const MANUAL_RAIL_BY_ZONE_DEFAULTS = {
     wide: null,
@@ -347,8 +347,9 @@ function NavSidebar({ profile, links }) {
             let nextRowHeight = rowHeight.base
 
             if(availableRailHeight >= shortBaseTotal) {
+                const idealControlHeight = (availableRailHeight - profileHeight.base - nextSeparatorHeight) / controlRowCount
                 nextRowHeight = clampNumber(
-                    (availableRailHeight - profileHeight.base - nextSeparatorHeight) / controlRowCount,
+                    idealControlHeight,
                     rowHeight.base,
                     rowHeight.max
                 )

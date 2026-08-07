@@ -1,6 +1,24 @@
 @use "../../styles/extend" as *;
 
 header.section-header {
+    --section-header-prefix-size: clamp(1.02rem, 0.94rem + 0.26vw, 1.18rem);
+    --section-header-prefix-size-mobile: clamp(0.86rem, 0.82rem + 0.2vw, 0.98rem);
+    --section-header-prefix-tracking: 0.12em;
+    --section-header-home-prefix-tracking: 0.30em;
+    --section-header-title-size: clamp(1.94rem, 1.46rem + 1.9vw, 3rem);
+    --section-header-title-size-md: clamp(1.4rem, 1.12rem + 1.18vw, 1.9rem);
+    --section-header-title-size-sm: clamp(1.27rem, 1.04rem + 0.9vw, 1.58rem);
+    --section-header-title-tracking: 0.06em;
+    --section-header-home-title-tracking: 0.15em;
+    --section-header-home-prefix-size: clamp(1.3rem, 1.17rem + 0.44vw, 1.59rem);
+    --section-header-home-prefix-size-sm: clamp(1.09rem, 1.04rem + 0.31vw, 1.25rem);
+    --section-header-home-title-size: clamp(2.74rem, 1.99rem + 2.52vw, 4.94rem);
+    --section-header-home-title-size-md: clamp(2.14rem, 1.56rem + 1.75vw, 3.02rem);
+    --section-header-home-title-size-sm: clamp(1.75rem, 1.37rem + 1.39vw, 2.33rem);
+    --section-header-feature-title-size: clamp(2.36rem, 1.42rem + 2.95vw, 4.78rem);
+    --section-header-feature-title-size-md: clamp(1.96rem, 1.28rem + 2.32vw, 2.98rem);
+    --section-header-feature-title-size-sm: clamp(1.62rem, 1.2rem + 1.76vw, 2.26rem);
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,10 +37,10 @@ header.section-header.section-header-home div.section-header-prefix {
     align-items: center;
     justify-content: center;
     gap: 0.6rem;
-    font-size: clamp(1rem, 0.9rem + 0.34vw, 1.22rem);
-    font-weight: 800;
+    font-size: var(--section-header-home-prefix-size);
+    font-weight: 850;
     line-height: 1.02;
-    letter-spacing: 0.06em;
+    letter-spacing: var(--section-header-home-prefix-tracking);
     text-transform: uppercase;
     opacity: 1;
     text-align: center;
@@ -31,78 +49,112 @@ header.section-header.section-header-home div.section-header-prefix {
         margin-right: 0;
         opacity: 0.92;
         font-size: 0.92em;
+        letter-spacing: 0;
+        flex: 0 0 auto;
+    }
+
+    span {
+        letter-spacing: inherit;
     }
 
     @include media-breakpoint-down(sm) {
         gap: 0.42rem;
-        font-size: clamp(0.84rem, 0.8rem + 0.24vw, 0.96rem);
+        font-size: var(--section-header-home-prefix-size-sm);
     }
 }
 
 div.section-header-prefix {
     font-family: $headings-font-family;
-    font-weight: bold;
+    font-weight: 850;
     color: var(--theme-muted);
-    font-size: 1rem;
+    font-size: var(--section-header-prefix-size);
     line-height: 1.1;
+    letter-spacing: var(--section-header-prefix-tracking);
+    text-transform: uppercase;
+    text-wrap: balance;
+    max-width: 100%;
+    box-sizing: border-box;
 
     @include media-breakpoint-down(md) {
-        font-size: 0.9rem;
+        font-size: var(--section-header-prefix-size-mobile);
     }
 
     i {
         opacity: 0.75;
         margin-right: 6px;
+        letter-spacing: 0;
+        flex: 0 0 auto;
+    }
+
+    span {
+        letter-spacing: inherit;
     }
 }
 
 h2.section-header-title {
     margin: 0 16px;
     text-align: center;
-    font-weight: bold;
-    font-size: 1.62rem!important;
-    line-height: 1.04;
+    font-weight: 850;
+    font-size: var(--section-header-title-size)!important;
+    line-height: 1.08;
+    letter-spacing: var(--section-header-title-tracking);
     text-wrap: balance;
+    max-width: min(100%, 980px);
+    box-sizing: border-box;
 
     @include media-breakpoint-down(xl) {
-        font-size: 1.48rem!important;
+        font-size: var(--section-header-title-size)!important;
     }
 
     @include media-breakpoint-down(lg) {
         color: var(--theme-primary);
         margin-top: 2px;
-        font-size: 1.32rem!important;
+        font-size: var(--section-header-title-size-md)!important;
     }
 
     @include media-breakpoint-down(md) {
         margin: 0 10px;
-        font-size: 1.16rem!important;
+        font-size: var(--section-header-title-size-md)!important;
     }
 
     @include media-breakpoint-down(sm) {
         margin: 0 6px;
-        font-size: 1.06rem!important;
+        font-size: var(--section-header-title-size-sm)!important;
     }
 }
 
 header.section-header.section-header-home h2.section-header-title {
     margin: 0 auto;
     max-width: 100%;
-    font-size: clamp(2.28rem, 1.66rem + 2.1vw, 4.12rem)!important;
-    line-height: 0.96;
-    letter-spacing: -0.05em;
+    font-size: var(--section-header-home-title-size)!important;
+    line-height: 1.04;
+    letter-spacing: var(--section-header-home-title-tracking);
     text-wrap: balance;
     white-space: normal;
-    text-shadow: 0 18px 38px rgba(2, 6, 23, 0.20);
+    text-shadow: 0 14px 28px rgba(2, 6, 23, 0.18);
+
+    span.text-primary {
+        font-size: var(--section-header-title-size);
+        line-height: 1.08;
+        letter-spacing: var(--section-header-title-tracking);
+    }
 
     @include media-breakpoint-down(md) {
-        font-size: clamp(1.78rem, 1.3rem + 1.46vw, 2.52rem)!important;
-        line-height: 1;
+        font-size: var(--section-header-home-title-size-md)!important;
+        line-height: 1.06;
+
+        span.text-primary {
+            font-size: var(--section-header-title-size-md);
+        }
     }
 
     @include media-breakpoint-down(sm) {
         margin: 0 4px;
-        font-size: clamp(1.46rem, 1.14rem + 1.16vw, 1.94rem)!important;
-        line-height: 1.02;
+        font-size: var(--section-header-home-title-size-sm)!important;
+        line-height: 1.08;
+
+        span.text-primary {
+            font-size: var(--section-header-title-size-sm);
+        }
     }
 }

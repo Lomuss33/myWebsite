@@ -33,6 +33,18 @@ section.section {
     }
 }
 
+div.layout-slideshow > section.section {
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+
+    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        height: auto;
+        min-height: 100%;
+        overflow: visible;
+    }
+}
+
 [data-theme="light"] section.section {
     --section-page-bg-light:
         linear-gradient(
@@ -104,8 +116,8 @@ section#section-education header.section-header div.section-header-prefix {
     border-radius: 999px;
     background: linear-gradient(90deg, rgba(192, 132, 252, 0.10), rgba(52, 211, 153, 0.09));
     color: var(--education-text-mid);
-    font-size: clamp(0.9rem, 0.82rem + 0.26vw, 1.06rem);
-    letter-spacing: 0.03em;
+    font-size: var(--section-header-prefix-size);
+    letter-spacing: var(--section-header-prefix-tracking);
     text-transform: uppercase;
 }
 
@@ -122,10 +134,10 @@ section#section-education header.section-header h2.section-header-title {
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
-    font-size: clamp(2.12rem, 1.28rem + 2.72vw, 4.35rem)!important;
+    font-size: var(--section-header-feature-title-size)!important;
     font-weight: 950;
     line-height: 1.06;
-    letter-spacing: 0;
+    letter-spacing: var(--section-header-title-tracking);
     padding-bottom: 0.1em;
     text-shadow: var(--education-title-shadow);
     text-wrap: balance;
@@ -293,12 +305,12 @@ section#section-education article:is(
 
     section#section-education header.section-header div.section-header-prefix {
         padding: 0.2rem 0.58rem;
-        font-size: clamp(0.76rem, 0.72rem + 0.2vw, 0.88rem);
+        font-size: var(--section-header-prefix-size-mobile);
     }
 
     section#section-education header.section-header h2.section-header-title {
         max-width: 620px;
-        font-size: clamp(1.82rem, 1.18rem + 2.2vw, 2.7rem)!important;
+        font-size: var(--section-header-feature-title-size-md)!important;
         line-height: 1.08;
     }
 
@@ -336,7 +348,7 @@ section#section-education article:is(
     }
 
     section#section-education header.section-header h2.section-header-title {
-        font-size: clamp(1.52rem, 1.12rem + 1.68vw, 2.08rem)!important;
+        font-size: var(--section-header-feature-title-size-sm)!important;
     }
 
     section#section-education article:is(
@@ -447,8 +459,8 @@ section#section-experience header.section-header div.section-header-prefix {
     border-radius: 999px;
     background: linear-gradient(90deg, rgba(251, 113, 133, 0.10), rgba(139, 92, 246, 0.09));
     color: var(--experience-text-mid);
-    font-size: clamp(0.9rem, 0.82rem + 0.26vw, 1.06rem);
-    letter-spacing: 0.03em;
+    font-size: var(--section-header-prefix-size);
+    letter-spacing: var(--section-header-prefix-tracking);
     text-transform: uppercase;
 }
 
@@ -465,10 +477,10 @@ section#section-experience header.section-header h2.section-header-title {
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
-    font-size: clamp(2.12rem, 1.28rem + 2.72vw, 4.35rem)!important;
+    font-size: var(--section-header-feature-title-size)!important;
     font-weight: 950;
     line-height: 1.06;
-    letter-spacing: 0;
+    letter-spacing: var(--section-header-title-tracking);
     padding-bottom: 0.1em;
     text-shadow: var(--experience-title-shadow);
     text-wrap: balance;
@@ -641,12 +653,12 @@ section#section-experience article:is(
 
     section#section-experience header.section-header div.section-header-prefix {
         padding: 0.2rem 0.58rem;
-        font-size: clamp(0.76rem, 0.72rem + 0.2vw, 0.88rem);
+        font-size: var(--section-header-prefix-size-mobile);
     }
 
     section#section-experience header.section-header h2.section-header-title {
         max-width: 620px;
-        font-size: clamp(1.82rem, 1.18rem + 2.2vw, 2.7rem)!important;
+        font-size: var(--section-header-feature-title-size-md)!important;
         line-height: 1.08;
     }
 
@@ -688,7 +700,7 @@ section#section-experience article:is(
     }
 
     section#section-experience header.section-header h2.section-header-title {
-        font-size: clamp(1.52rem, 1.12rem + 1.68vw, 2.08rem)!important;
+        font-size: var(--section-header-feature-title-size-sm)!important;
     }
 
     section#section-experience article:is(
@@ -770,17 +782,17 @@ section#section-my-hardware header.section-header {
 }
 
 section#section-my-hardware header.section-header div.section-header-prefix {
-    font-size: clamp(0.92rem, 0.84rem + 0.24vw, 1.08rem);
+    font-size: var(--section-header-prefix-size);
     line-height: 1.28;
-    letter-spacing: 0.02em;
+    letter-spacing: var(--section-header-prefix-tracking);
 }
 
 section#section-my-hardware header.section-header h2.section-header-title {
     max-width: 980px;
     margin: 0 auto;
-    font-size: clamp(2.18rem, 1.34rem + 2.74vw, 4.42rem)!important;
+    font-size: var(--section-header-feature-title-size)!important;
     line-height: 0.98;
-    letter-spacing: 0;
+    letter-spacing: var(--section-header-title-tracking);
 }
 
 @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
@@ -790,13 +802,13 @@ section#section-my-hardware header.section-header h2.section-header-title {
     }
 
     section#section-my-hardware header.section-header div.section-header-prefix {
-        font-size: clamp(0.78rem, 0.74rem + 0.2vw, 0.9rem);
+        font-size: var(--section-header-prefix-size-mobile);
         line-height: 1.24;
     }
 
     section#section-my-hardware header.section-header h2.section-header-title {
         max-width: 620px;
-        font-size: clamp(1.88rem, 1.22rem + 2.24vw, 2.78rem)!important;
+        font-size: var(--section-header-feature-title-size-md)!important;
         line-height: 1.02;
     }
 }
@@ -807,7 +819,7 @@ section#section-my-hardware header.section-header h2.section-header-title {
     }
 
     section#section-my-hardware header.section-header h2.section-header-title {
-        font-size: clamp(1.58rem, 1.14rem + 1.72vw, 2.14rem)!important;
+        font-size: var(--section-header-feature-title-size-sm)!important;
     }
 }
 
@@ -863,17 +875,17 @@ section#section-my-writings header.section-header {
 }
 
 section#section-my-writings header.section-header div.section-header-prefix {
-    font-size: clamp(0.92rem, 0.84rem + 0.24vw, 1.08rem);
+    font-size: var(--section-header-prefix-size);
     line-height: 1.28;
-    letter-spacing: 0.02em;
+    letter-spacing: var(--section-header-prefix-tracking);
 }
 
 section#section-my-writings header.section-header h2.section-header-title {
     max-width: 980px;
     margin: 0 auto;
-    font-size: clamp(2.18rem, 1.34rem + 2.74vw, 4.42rem)!important;
+    font-size: var(--section-header-feature-title-size)!important;
     line-height: 0.98;
-    letter-spacing: 0;
+    letter-spacing: var(--section-header-title-tracking);
 }
 
 section#section-my-writings article:is(
@@ -1092,13 +1104,13 @@ section#section-my-writings article:is(
     }
 
     section#section-my-writings header.section-header div.section-header-prefix {
-        font-size: clamp(0.78rem, 0.74rem + 0.2vw, 0.9rem);
+        font-size: var(--section-header-prefix-size-mobile);
         line-height: 1.24;
     }
 
     section#section-my-writings header.section-header h2.section-header-title {
         max-width: 620px;
-        font-size: clamp(1.88rem, 1.22rem + 2.24vw, 2.78rem)!important;
+        font-size: var(--section-header-feature-title-size-md)!important;
         line-height: 1.02;
     }
 
@@ -1158,7 +1170,7 @@ section#section-my-writings article:is(
     }
 
     section#section-my-writings header.section-header h2.section-header-title {
-        font-size: clamp(1.58rem, 1.14rem + 1.72vw, 2.14rem)!important;
+        font-size: var(--section-header-feature-title-size-sm)!important;
     }
 
     section#section-my-writings article:is(
@@ -1648,8 +1660,8 @@ section#section-contact div.article-content {
     color: var(--contact-text-strong);
 }
 
-button.section-fullscreen-toggle {
-    position: absolute;
+section.section > button.circular-button.section-fullscreen-toggle {
+    position: absolute!important;
     top: 10px;
     // Keep just enough clearance from the custom scrollbar hit-area.
     right: 18px;
@@ -1753,3 +1765,4 @@ section.section {
         will-change: auto;
     }
 }
+

@@ -109,6 +109,7 @@ function NavProfileCard({
     const mobileActionStackVisible = Boolean(mobileActionStackBeforeInfo || mobileActionStackAfterInfo || mobileActionStack)
     const desktopActionStackVisible = isExtendedRail && !mobileActionStackVisible &&
         (hasPronunciationAudio || safeProfile.resumePdfUrl)
+    const shortRailTickerVisible = !isExtendedRail && loveSentences.length > 0
     const namePronunciationButtonVisible = showNameAudioButton && !desktopActionStackVisible && hasPronunciationAudio
     const namePronunciationTooltipLabel = namePronunciationIpa ? `<span class="audio-button-tooltip-lines"><span class="audio-button-tooltip-line audio-button-tooltip-line-top">lǒːʋro  ˈmu.sit͡ɕ</span><span class="audio-button-tooltip-line audio-button-tooltip-line-bottom">LOHV-roh  muu-SEEch</span></span>` : ""
 
@@ -753,6 +754,10 @@ function NavProfileCard({
                     </h1>
                 </div>
 
+                {shortRailTickerVisible && (
+                    <NavProfileCardShortRailTicker sentences={loveSentences}/>
+                )}
+
                 {(mobileActionStackAfterInfo || mobileActionStack) && (
                     <div className={`nav-profile-card-mobile-action-stack nav-profile-card-mobile-action-stack-right`}>
                         {mobileActionStackAfterInfo || mobileActionStack}
@@ -777,6 +782,39 @@ function NavProfileCard({
 }
 
 export default NavProfileCard
+
+function NavProfileCardShortRailTicker({sentences}) {
+    const tickerItems = sentences
+        .map((sentence) => String(sentence || "").trim())
+        .filter(Boolean)
+
+    if(!tickerItems.length)
+        return null
+
+    return (
+        <div className={`nav-profile-card-short-rail-ticker`} aria-hidden={true}>
+            <div className={`nav-profile-card-short-rail-ticker-track`}>
+                <span className={`nav-profile-card-short-rail-ticker-sequence`}>
+                    {tickerItems.map((sentence, index) => (
+                        <span className={`nav-profile-card-short-rail-ticker-item`}
+                              key={`${sentence}-${index}`}>
+                            {sentence}
+                        </span>
+                    ))}
+                </span>
+
+                <span className={`nav-profile-card-short-rail-ticker-sequence`}>
+                    {tickerItems.map((sentence, index) => (
+                        <span className={`nav-profile-card-short-rail-ticker-item`}
+                              key={`${sentence}-repeat-${index}`}>
+                            {sentence}
+                        </span>
+                    ))}
+                </span>
+            </div>
+        </div>
+    )
+}
 
 function normalizeDefaultChance(value, fallback = 0) {
     const numericValue = Number(value)

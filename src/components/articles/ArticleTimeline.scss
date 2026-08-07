@@ -651,7 +651,7 @@ button.standard-button.btn-contrast.article-timeline-see-more-button {
 article#article-1-section-experience {
     ul.article-timeline-items {
         --experience-avatar-size: 104px;
-        --experience-description-right-buffer: clamp(0.7rem, 0.56rem + 0.4vw, 1.05rem);
+        --experience-description-right-buffer: 0.95rem;
         --experience-rail-width: 72px;
         --experience-edge-reach: var(--experience-edge-reach-measured, 0px);
         --experience-edge-gap: 2px;
@@ -735,7 +735,7 @@ article#article-1-section-experience {
 
         @include media-breakpoint-down(sm) {
             --experience-avatar-size: clamp(84px, 20vw, 96px);
-            --experience-description-right-buffer: clamp(0.78rem, 0.62rem + 0.34vw, 1.08rem);
+            --experience-description-right-buffer: 0.98rem;
             --experience-rail-width: 60px;
             --experience-edge-gap: 0px;
             --experience-avatar-vertical-offset: 0px;
@@ -763,7 +763,7 @@ article#article-1-section-experience {
 
         @include media-breakpoint-up(md) {
             --experience-avatar-size: 164px;
-            --experience-description-right-buffer: clamp(1.18rem, 1rem + 0.38vw, 1.56rem);
+            --experience-description-right-buffer: 1.35rem;
             --experience-rail-width: 80px;
             --experience-edge-gap: 5px;
             --experience-avatar-vertical-offset: calc(var(--experience-avatar-size) * 0.45);
@@ -800,7 +800,7 @@ article#article-1-section-experience {
 
         @include media-breakpoint-up(xl) {
             --experience-avatar-size: 208px;
-            --experience-description-right-buffer: clamp(1.32rem, 1.12rem + 0.34vw, 1.72rem);
+            --experience-description-right-buffer: 1.5rem;
             --experience-rail-width: 104px;
             --experience-edge-gap: 7px;
             --experience-avatar-vertical-offset: calc(var(--experience-avatar-size) * 0.45);
@@ -828,7 +828,7 @@ article#article-1-section-experience {
 
         @media (min-width: 2000px) {
             --experience-avatar-size: 184px;
-            --experience-description-right-buffer: clamp(1.12rem, 0.98rem + 0.22vw, 1.4rem);
+            --experience-description-right-buffer: 1.35rem;
             --experience-rail-width: 88px;
             --experience-edge-gap: 5px;
             --experience-edge-reach: 0px;

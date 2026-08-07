@@ -127,9 +127,10 @@ function NavLinkList({ links, railMode }) {
             if(!amountOfItems)
                 return
 
-            const rowHeight = container.clientHeight > 0 ?
+            const measuredRowHeight = container.clientHeight > 0 ?
                 container.clientHeight / amountOfItems :
                 _readPxVariable(sharedRailStack || container, "--nav-link-target-height", baselineRowHeight)
+            const rowHeight = _clamp(measuredRowHeight, minRowHeight, upscaleCeiling)
             if(!rowHeight)
                 return
 

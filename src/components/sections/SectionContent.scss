@@ -2,10 +2,10 @@
 
 div.section-content {
     /* Keep the section anchored higher while preserving comfortable side and bottom spacing. */
-    --section-content-base-scale: 0.58;
+    --section-content-base-scale: 0.68;
     --section-content-density-scale: 1;
-    --section-content-density-desktop-scale: 0.84;
-    --section-content-density-ultrawide-scale: 0.80;
+    --section-content-density-desktop-scale: 0.74;
+    --section-content-density-ultrawide-scale: 0.64;
     --section-content-scale: calc(
         var(--section-content-base-scale) *
         var(--section-content-density-scale)
@@ -115,7 +115,7 @@ div.section-content.section-content-has-decoration-bands.section-content-hide-he
 }
 
 div.section-content.section-content-has-decoration-bands header.section-header {
-    margin-bottom: 0!important;
+    margin-bottom: clamp(8px, 1vw, 14px)!important;
 }
 
 div.section-decoration-band {

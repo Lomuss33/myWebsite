@@ -55,6 +55,7 @@ nav.nav-sidebar {
             min-height: 0;
         }
 
+        &::before,
         &::after {
             content: none;
         }
@@ -114,6 +115,7 @@ nav.nav-sidebar {
         i {
             color: currentColor;
             opacity: 1;
+            transform: none;
         }
 
         &:hover {
@@ -127,6 +129,21 @@ nav.nav-sidebar {
                 opacity: 1;
             }
         }
+
+        &.nav-sidebar-btn-toggle-target-short {
+            i {
+                transform: scaleX(-1);
+            }
+        }
+    }
+}
+
+[data-theme="dark"] nav.nav-sidebar {
+    button.nav-sidebar-btn-toggle {
+        --nav-sidebar-toggle-icon-color: #6b7280;
+        --nav-sidebar-toggle-icon-hover-color: #000000;
+        --nav-sidebar-toggle-ring-color: #000000;
+        --nav-sidebar-toggle-ring-hover-color: #8a8f98;
     }
 }
 
@@ -151,6 +168,24 @@ nav.nav-sidebar-extended {
 
 @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
     nav.nav-sidebar {
+        div.nav-sidebar-card-wrapper::before {
+            content: "";
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            z-index: 10;
+            pointer-events: none;
+            background-image: repeating-linear-gradient(
+                -55deg,
+                #000000,
+                #000000 26px,
+                var(--theme-primary) 26px,
+                var(--theme-primary) 52px
+            );
+        }
+
         div.nav-sidebar-card-wrapper::after {
             content: "";
             position: absolute;
@@ -158,7 +193,7 @@ nav.nav-sidebar-extended {
             right: 0;
             bottom: -1px;
             width: 4px;
-            z-index: 130;
+            z-index: 10;
             pointer-events: none;
             background-image: repeating-linear-gradient(
                 -55deg,
@@ -178,8 +213,10 @@ nav.nav-sidebar-short-rail {
     --nav-short-rail-profile-height: 110px;
     --nav-short-rail-profile-padding: 0px;
     --nav-short-rail-name-band-height: clamp(1.45rem, calc(var(--nav-short-rail-row-height) * 0.42), 1.9rem);
+    --nav-short-rail-ticker-height: clamp(10px, calc(var(--nav-short-rail-row-height) * 0.32), 14px);
+    --nav-short-rail-profile-lift: clamp(4px, calc(var(--nav-short-rail-row-height) * 0.15), 7px);
     --nav-short-rail-row-height: 34px;
-    --nav-short-rail-separator-height: 2px;
+    --nav-short-rail-separator-height: 4px;
     --nav-short-rail-tools-height: 46px;
     --nav-short-rail-avatar-size: calc(14px + 40px * var(--nav-short-rail-visual-density));
     --nav-short-rail-status-offset: calc(4px + 6px * var(--nav-short-rail-visual-density));
@@ -260,7 +297,7 @@ nav.nav-sidebar-short-rail {
         --avatar-size: var(--nav-short-rail-avatar-size);
         --border-size: 0px;
         --offset-status-circle: var(--nav-short-rail-status-offset);
-        --nav-short-rail-image-area-height: calc(var(--nav-short-rail-profile-height) - var(--nav-short-rail-name-band-height));
+        --nav-short-rail-image-area-height: calc(var(--nav-short-rail-profile-height) - var(--nav-short-rail-name-band-height) - var(--nav-short-rail-ticker-height));
         --nav-short-rail-image-square-size: min(100%, var(--nav-short-rail-image-area-height));
         margin: 0;
         padding: 0;
@@ -290,23 +327,24 @@ nav.nav-sidebar-short-rail {
 
     div.nav-profile-card-short-rail div.nav-profile-card-media {
         position: absolute;
-        top: 0;
+        top: calc(var(--nav-short-rail-profile-lift) * -1);
         left: 0;
         right: 0;
         width: 100%;
-        height: calc(100% - var(--nav-short-rail-name-band-height));
+        height: var(--nav-short-rail-image-area-height);
         display: grid;
         place-items: center;
         isolation: isolate;
+        container-type: inline-size;
         overflow: visible;
         z-index: 20;
     }
 
     div.nav-profile-card-short-rail div.nav-profile-card-avatar-switch {
         position: relative;
-        width: auto;
+        width: min(100cqw, var(--nav-short-rail-image-area-height));
         max-width: 100%;
-        height: 100%;
+        height: min(100cqw, var(--nav-short-rail-image-area-height));
         max-height: 100%;
         aspect-ratio: 1 / 1;
         border-radius: 0 !important;
@@ -320,8 +358,14 @@ nav.nav-sidebar-short-rail {
     }
 
     div.nav-profile-card-short-rail div.nav-profile-card-metal-frame {
+        left: 50%;
+        top: 50%;
+        width: min(100cqw, var(--nav-short-rail-image-area-height));
+        height: min(100cqw, var(--nav-short-rail-image-area-height));
+        max-height: 100%;
+        aspect-ratio: 1 / 1;
         pointer-events: none;
-        transform: translateZ(72px);
+        transform: translate(-50%, -50%) translateZ(72px);
         z-index: 80;
     }
 
@@ -383,7 +427,8 @@ nav.nav-sidebar.nav-sidebar-short-rail-with-resume-band {
 }
 
 nav.nav-sidebar div.nav-short-rail-resume-band {
-    --nav-short-rail-resume-divider-offset: 5px;
+    --nav-short-rail-resume-divider-offset: 2px;
+    --nav-short-rail-resume-divider-height: 4px;
 
     flex: 0 0 var(--nav-short-rail-resume-height);
     width: 100%;
@@ -401,7 +446,7 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
         inset 0 1px 0 rgba(255, 255, 255, 0.08),
         inset 0 -1px 0 rgba(15, 23, 42, 0.08);
     border-top: 1px solid var(--theme-nav-divider);
-    border-bottom: 1px solid var(--nav-short-rail-control-divider, var(--theme-nav-divider));
+    border-bottom: 0;
 
     &::before,
     &::after {
@@ -409,8 +454,8 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
         position: absolute;
         left: 0;
         right: 0;
-        z-index: 3;
-        height: var(--nav-short-rail-separator-height);
+        z-index: 1;
+        height: var(--nav-short-rail-resume-divider-height);
         pointer-events: none;
     }
 
@@ -520,9 +565,15 @@ div.nav-short-rail-separator {
     min-height: var(--nav-short-rail-separator-height);
     width: 100%;
     pointer-events: none;
+    background-image: repeating-linear-gradient(
+        -55deg,
+        var(--theme-primary) 0,
+        var(--theme-primary) 26px,
+        #000000 26px,
+        #000000 52px
+    );
 }
 
-div.nav-short-rail-separator,
 nav.nav-sidebar-short-rail div.nav-short-rail-resume-band::before,
 nav.nav-sidebar div.nav-short-rail-resume-band::after {
     background-image: repeating-linear-gradient(
@@ -573,6 +624,8 @@ div.nav-sidebar-rail-stack {
 
     > div.nav-link-list-shell {
         grid-row: 1;
+        position: relative;
+        z-index: 1;
         min-height: 0;
         min-width: 0;
         width: 100%;
@@ -580,12 +633,16 @@ div.nav-sidebar-rail-stack {
 
     > div.nav-rail-separator {
         grid-row: 2;
+        position: relative;
+        z-index: 2;
         min-width: 0;
         width: 100%;
     }
 
     > div.nav-tools {
         grid-row: 3;
+        position: relative;
+        z-index: 2;
         align-self: end;
         min-width: 0;
         width: 100%;
@@ -617,7 +674,5 @@ div.nav-rail-separator {
         #000000 26px,
         #000000 52px
     );
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.08),
-        inset 0 -1px 0 rgba(15, 23, 42, 0.16);
+    box-shadow: none;
 }

@@ -5,6 +5,8 @@ div.nav-tools {
     --nav-tools-icon-box-size: var(--nav-link-icon-width, 50px);
     --nav-tools-icon-font-size: var(--nav-link-icon-size, 1.05rem);
     --nav-tools-inline-gap: 8px;
+    --nav-tools-separator-color: #ffffff;
+    --nav-tools-separator-width: 2px;
 
     display: flex;
     flex: 0 0 auto;
@@ -16,7 +18,7 @@ div.nav-tools {
     align-items: center;
     justify-content: space-between;
     gap: 0;
-    border-top: 1px solid var(--theme-nav-divider);
+    border-top: var(--nav-tools-separator-width) solid var(--theme-nav-divider);
     border-bottom-left-radius: calc($standard-border-radius * 1.8);
     border-bottom-right-radius: calc($standard-border-radius * 1.8);
     overflow: visible;
@@ -272,7 +274,7 @@ div.nav-tools {
             &::after {
                 content: "";
                 position: absolute;
-                z-index: 3;
+                z-index: 1;
                 pointer-events: none;
                 background-image: repeating-linear-gradient(
                     -55deg,
@@ -337,17 +339,18 @@ div.nav-tools {
             --nav-tools-icon-font-size: var(--nav-link-icon-size, 1.05rem);
             --nav-tools-icon-box-size: calc(var(--nav-tools-icon-font-size) + 0.28rem);
             --nav-tools-decoration-size: calc(var(--nav-tools-height) * 1.1);
-            border-top-color: var(--nav-rail-control-divider, var(--theme-nav-divider));
-            border-bottom: 1px solid var(--nav-rail-control-divider, var(--theme-nav-divider));
+            border-top-color: var(--nav-tools-separator-color);
+            border-bottom: var(--nav-tools-separator-width) solid var(--nav-tools-separator-color);
             box-shadow:
-                inset 0 1px 0 var(--nav-rail-control-divider-highlight, rgba(255, 255, 255, 0.08)),
+                inset 0 1px 0 transparent,
                 inset 0 -1px 0 rgba(15, 23, 42, 0.08);
 
             div.nav-tools-item:not(:first-child)::before {
                 top: 0;
                 bottom: 0;
-                background: var(--nav-rail-control-divider, var(--theme-nav-divider));
-                box-shadow: 1px 0 0 var(--nav-rail-control-divider-highlight, rgba(255, 255, 255, 0.08));
+                width: var(--nav-tools-separator-width);
+                background: var(--nav-tools-separator-color);
+                box-shadow: none;
             }
 
             div.nav-tools-item-language,
@@ -416,7 +419,7 @@ div.nav-tools {
 
             div.nav-tools-item-language {
                 span.btn-option-picker-toggle-row {
-                    left: 0.28rem;
+                    left: 0;
                     bottom: 0.2rem;
                     width: 20% !important;
                     height: auto !important;
@@ -427,7 +430,7 @@ div.nav-tools {
                 span.nav-tool-language-alt-flags {
                     position: absolute;
                     top: 0;
-                    right: 0.16rem;
+                    right: 0;
                     bottom: 0;
                     z-index: 1;
                     display: grid;
@@ -470,7 +473,7 @@ div.nav-tools {
 
                 button.btn-option-picker-toggle i.fa-icon.fa-sun,
                 button.btn-option-picker-toggle i.fa-icon.fa-moon {
-                    background-position: center;
+                    background-position: 45% 35%;
                     background-size: contain !important;
                 }
             }
@@ -517,8 +520,8 @@ div.nav-tools-item {
         left: 0;
         top: var(--nav-tools-divider-inset);
         bottom: var(--nav-tools-divider-inset);
-        width: 1px;
-        background: color-mix(in srgb, var(--theme-nav-divider) 78%, transparent 22%);
+        width: var(--nav-tools-separator-width);
+        background: var(--nav-tools-separator-color);
         pointer-events: none;
     }
 }
@@ -1134,9 +1137,9 @@ div.nav-tools-short-rail {
             flex: 1 1 auto;
         }
 
-        img {
-            width: var(--nav-tools-icon-font-size, 1rem);
-            height: var(--nav-tools-icon-font-size, 1rem);
+        button.btn-option-picker-toggle.nav-tool-language-toggle div.btn-option-picker-icon.btn-option-picker-icon-size-2 img {
+            width: calc(var(--nav-tools-icon-font-size, 1rem) * 0.85);
+            height: calc(var(--nav-tools-icon-font-size, 1rem) * 0.85);
             object-fit: cover;
         }
     }
@@ -1155,9 +1158,9 @@ div.nav-tools-short-rail {
 
         button.btn-option-picker-toggle i.fa-icon.fa-sun,
         button.btn-option-picker-toggle i.fa-icon.fa-moon {
-            width: var(--nav-tools-icon-font-size, 1rem);
-            height: var(--nav-tools-icon-font-size, 1rem);
-            background-position: center;
+            width: calc(var(--nav-tools-icon-font-size, 1rem) * 1.2) !important;
+            height: calc(var(--nav-tools-icon-font-size, 1rem) * 1.2) !important;
+            background-position: 45% 35%;
             background-size: contain !important;
         }
     }
@@ -1166,7 +1169,7 @@ div.nav-tools-short-rail {
 nav.nav-sidebar-extended div.nav-tools.nav-tools-extended div.nav-tools-item-language {
     button.btn-option-picker-toggle.nav-tool-language-toggle.btn-option-picker-toggle-caption-inline {
         > span.btn-option-picker-toggle-row {
-            left: 0.28rem;
+            left: 0;
             bottom: 0.2rem;
             width: calc(var(--nav-tools-height) * 0.48) !important;
             height: calc(var(--nav-tools-height) * 0.48) !important;
@@ -1197,6 +1200,14 @@ nav.nav-sidebar-extended div.nav-tools.nav-tools-extended {
             opacity: 1;
         }
     }
+}
+
+[data-theme="dark"] nav.nav-sidebar div.nav-tools {
+    --nav-tools-separator-color: #ffffff;
+}
+
+[data-theme="light"] nav.nav-sidebar div.nav-tools {
+    --nav-tools-separator-color: #000000;
 }
 
 [data-theme="dark"] div.nav-tools {
@@ -1488,4 +1499,43 @@ nav.nav-sidebar-extended div.nav-tools.nav-tools-extended {
     span.btn-option-picker-toggle-caption {
         color: color-mix(in srgb, var(--resume-ui-hover-icon) 82%, white 18%);
     }
+}
+
+[data-theme="dark"] div.nav-tools {
+    --nav-tools-separator-color: #ffffff;
+}
+
+[data-theme="light"] div.nav-tools {
+    --nav-tools-separator-color: #000000;
+}
+
+[data-theme] div.nav-tools {
+    border-top-color: var(--nav-tools-separator-color)!important;
+    border-top-width: var(--nav-tools-separator-width);
+}
+
+[data-theme] div.nav-tools.nav-tools-extended,
+[data-theme] div.nav-tools.nav-tools-short-rail {
+    border-bottom-color: var(--nav-tools-separator-color)!important;
+    border-bottom-width: var(--nav-tools-separator-width);
+}
+
+[data-theme] div.nav-tools div.nav-tools-item:not(:first-child)::before {
+    width: var(--nav-tools-separator-width);
+    background: var(--nav-tools-separator-color)!important;
+    box-shadow: none!important;
+}
+
+[data-theme] nav.nav-sidebar-short-rail div.nav-tools.nav-tools-short-rail {
+    border-top: 0 !important;
+    border-bottom: 0 !important;
+    box-shadow: none;
+
+    &::after {
+        content: none;
+    }
+}
+
+[data-theme] nav.nav-sidebar-extended div.nav-sidebar-rail-stack div.nav-tools.nav-tools-extended {
+    border-top: 0 !important;
 }

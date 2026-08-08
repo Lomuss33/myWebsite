@@ -104,7 +104,7 @@ nav.nav-sidebar {
         position: absolute;
         right: -14px;
         top: var(--nav-sidebar-toggle-top);
-        z-index: 160;
+        z-index: calc($z-index-sidebar + 1);
         color: var(--nav-sidebar-toggle-icon-color);
         border-color: var(--nav-sidebar-toggle-ring-color);
         border-radius: 999px;

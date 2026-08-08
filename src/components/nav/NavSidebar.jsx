@@ -8,7 +8,6 @@ import NavLinkList from "./partials/NavLinkList.jsx"
 import NavToolList from "./partials/NavToolList.jsx"
 import NavToolShrinkToggle from "./tools/NavToolShrinkToggle.jsx"
 import NavToolResumeDownloader from "./tools/NavToolResumeDownloader.jsx"
-import {useInput} from "../../providers/InputProvider.jsx"
 
 const DESKTOP_RAIL_SEPARATOR_MIN_HEIGHT = 4
 const WIDE_DESKTOP_THRESHOLD = 1100
@@ -93,12 +92,9 @@ function clearCachedCssVariables(element, cacheRef, variableNames) {
 function NavSidebar({ profile, links }) {
     const constants = useConstants()
     const viewport = useViewport()
-    const input = useInput()
 
     const [manualRailByZone, setManualRailByZone] = useState(MANUAL_RAIL_BY_ZONE_DEFAULTS)
     const [measuredRailHeight, setMeasuredRailHeight] = useState(0)
-    const [heightPrefersShort, setHeightPrefersShort] = useState(false)
-    const [stickyShortRail, setStickyShortRail] = useState(false)
     const cardWrapperRef = useRef(null)
     const sharedRailStackRef = useRef(null)
     const sharedRailSizeCacheRef = useRef({})
@@ -119,12 +115,9 @@ function NavSidebar({ profile, links }) {
     const availableDesktopRailHeight = measuredRailHeight > 0 ?
         measuredRailHeight :
         viewport.innerHeight
-    const recommendedRail = desktopWidthZone === "narrowDesktop" ?
-        "short" :
-        (desktopWidthZone === "wide" && heightPrefersShort ? "short" : "extended")
     const manualRail = desktopWidthZone ? manualRailByZone[desktopWidthZone] : null
     const railMode = desktopWidthZone ?
-        (manualRail ?? (stickyShortRail ? "short" : recommendedRail)) :
+        (manualRail ?? "extended") :
         "extended"
     const railModeClass = railMode === "extended" ?
         `nav-sidebar-extended` :
@@ -155,30 +148,8 @@ function NavSidebar({ profile, links }) {
 
     const _toggleRailMode = () => {
         const targetRail = railMode === "extended" ? "short" : "extended"
-        setStickyShortRail(targetRail === "short")
         _setManualRail(targetRail)
     }
-
-    useEffect(() => {
-        if(!hasRailLayout || !desktopWidthZone)
-            return
-
-        const keyId = input.lastKeyPressed.id
-        if(keyId !== "ArrowLeft" && keyId !== "ArrowRight")
-            return
-
-        const targetRail = keyId === "ArrowLeft" ? "short" : "extended"
-        setStickyShortRail(targetRail === "short")
-        setManualRailByZone((currentState) => {
-            if(currentState[desktopWidthZone] === targetRail)
-                return currentState
-
-            return {
-                ...currentState,
-                [desktopWidthZone]: targetRail
-            }
-        })
-    }, [desktopWidthZone, hasRailLayout, input.lastKeyPressed])
 
     useEffect(() => {
         const railCard = cardWrapperRef.current
@@ -203,36 +174,6 @@ function NavSidebar({ profile, links }) {
             resizeObserver.disconnect()
         }
     }, [])
-
-    useEffect(() => {
-        if(desktopWidthZone !== "wide") {
-            setHeightPrefersShort((currentState) => currentState ? false : currentState)
-            return
-        }
-
-        setHeightPrefersShort((currentState) => {
-            const nextState = currentState ?
-                availableDesktopRailHeight < extendedHeightExitThreshold :
-                availableDesktopRailHeight < extendedHeightRecommendThreshold
-
-            return currentState === nextState ? currentState : nextState
-        })
-    }, [
-        availableDesktopRailHeight,
-        desktopWidthZone,
-        extendedHeightExitThreshold,
-        extendedHeightRecommendThreshold
-    ])
-
-    useEffect(() => {
-        if(!desktopWidthZone)
-            return
-
-        if(recommendedRail !== "short" || manualRail)
-            return
-
-        setStickyShortRail(true)
-    }, [desktopWidthZone, manualRail, recommendedRail])
 
     useEffect(() => {
         const railCard = cardWrapperRef.current

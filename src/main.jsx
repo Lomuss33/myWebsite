@@ -4,7 +4,7 @@ import {Component, useEffect, useRef, useState} from 'react'
 import {createRoot} from 'react-dom/client'
 import {useConstants} from "./hooks/constants.js"
 import {useUtils} from "./hooks/utils.js"
-import {initStartupGuide} from "./hooks/startupGuide.js"
+import {destroyStartupGuide, initStartupGuide} from "./hooks/startupGuide.js"
 import Preloader from "./components/loaders/Preloader.jsx"
 import DataProvider, {useData} from "./providers/DataProvider.jsx"
 import LanguageProvider from "./providers/LanguageProvider.jsx"
@@ -514,6 +514,7 @@ const AppCapabilitiesWrapper = ({ children }) => {
 
     useEffect(() => {
         initStartupGuide()
+        return destroyStartupGuide
     }, [])
 
     return (

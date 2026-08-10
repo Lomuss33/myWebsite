@@ -1,5 +1,6 @@
 const APP_READY_CLASS = "body-theme"
 const HOME_SECTION_SELECTOR = "section#section-about.section-shown"
+const HOME_STATE_OBSERVE_ROOT_SELECTOR = "#root"
 const STORAGE_PREFERENCES_KEY = "storage-preferences"
 const DESKTOP_TARGET_SELECTOR = ".nav-tools"
 const DESKTOP_RAIL_SELECTOR = ".nav-sidebar-card-wrapper"
@@ -26,13 +27,6 @@ const GUIDE_HINT_LABELS = {
     },
 }
 
-const GUIDE_LABELS = {
-    en: "Tap here",
-    de: "bitte berühre es",
-    hr: "Dodirni ovdje",
-    tr: "lütfen dokun",
-}
-
 const APP_READY_TIMEOUT_MS = 10000
 const DOCUMENT_COMPLETE_TIMEOUT_MS = 10000
 const INITIAL_SHOW_DELAY_MS = 1100
@@ -53,7 +47,17 @@ const MAX_TARGET_RADIUS_RATIO = 0.38
 const TARGET_RADIUS_PADDING_PX = 14
 const GUIDE_PAUSE_MS = 220
 
+function prefersReducedMotion() {
+    return typeof window.matchMedia === "function"
+        && window.matchMedia("(prefers-reduced-motion: reduce)").matches
+}
+
 let controller = null
+
+export function destroyStartupGuide() {
+    if(controller)
+        destroyController(controller)
+}
 
 export function initStartupGuide() {
     if(controller)
@@ -85,9 +89,7 @@ function createController() {
         hasAttemptedInitialShow: false,
         hasShownGuideAtLeastOnce: false,
         initialMovementDistance: 0,
-        dismissMovementDistance: 0,
         lastPointerPosition: null,
-        lastInteractionAt: performance.now(),
         inactivityReplayTimeoutId: null,
         initialShowTimeoutId: null,
         nextInactivityReplayMs: INACTIVITY_REPLAY_START_MS,
@@ -208,7 +210,9 @@ function registerGlobalListeners(state) {
 }
 
 function observeDomChanges(state) {
-    const observerTarget = document.body || document.documentElement
+    const observerTarget = document.querySelector(HOME_STATE_OBSERVE_ROOT_SELECTOR)
+        || document.body
+        || document.documentElement
     if(!observerTarget)
         return
 
@@ -236,7 +240,6 @@ function syncHomeState(state) {
     if(!isHomeActive) {
         state.lastPointerPosition = null
         state.initialMovementDistance = 0
-        state.dismissMovementDistance = 0
         clearTrackedTimeout(state, state.initialShowTimeoutId)
         state.initialShowTimeoutId = null
         clearTrackedTimeout(state, state.inactivityReplayTimeoutId)
@@ -251,9 +254,7 @@ function syncHomeState(state) {
     }
 
     if(didChange) {
-        state.lastInteractionAt = performance.now()
         state.lastPointerPosition = null
-        state.dismissMovementDistance = 0
     }
 
     if(!state.hasAttemptedInitialShow) {
@@ -337,9 +338,7 @@ function handleMouseMove(state, event) {
 }
 
 function handleInteraction(state, { dismissVisibleGuide }) {
-    state.lastInteractionAt = performance.now()
-
-    if(state.isVisible && dismissVisibleGuide) {
+    if((state.isVisible || state.isAnimating) && dismissVisibleGuide) {
         hideGuide(state)
     }
 
@@ -361,7 +360,6 @@ async function showGuide(state) {
     setGuideLayoutMode(state, guideTargets.layoutMode)
 
     state.isAnimating = true
-    state.dismissMovementDistance = 0
 
     const startSpotlight = {
         x: window.innerWidth / 2,
@@ -376,44 +374,59 @@ async function showGuide(state) {
         return
     }
 
+    const useSimpleFade = guideTargets.layoutMode === "mobile" || prefersReducedMotion()
+
     applySpotlight(state, startSpotlight)
     if(!await waitForNextFrame(state))
         return
 
     setOverlayOpacityTransition(state, FADE_IN_MS, "ease-out")
-    applySpotlight(state, {
-        ...startSpotlight,
-        opacity: 1,
-    })
-    if(!await waitForDuration(state, FADE_IN_MS))
-        return
 
-    let currentSpotlight = {
-        ...startSpotlight,
-        opacity: 1,
-    }
-
-    for(const step of spotlightSteps) {
-        if(!await animateSpotlight(state, {
-            from: currentSpotlight,
-            to: step.spotlight,
-            durationMs: step.durationMs
-        })) {
+    if(useSimpleFade) {
+        const finalSpotlight = spotlightSteps[spotlightSteps.length - 1].spotlight
+        applySpotlight(state, {
+            ...finalSpotlight,
+            opacity: 1,
+        })
+        if(!await waitForDuration(state, FADE_IN_MS))
             return
+    }
+    else {
+        applySpotlight(state, {
+            ...startSpotlight,
+            opacity: 1,
+        })
+        if(!await waitForDuration(state, FADE_IN_MS))
+            return
+
+        let currentSpotlight = {
+            ...startSpotlight,
+            opacity: 1,
         }
 
-        currentSpotlight = step.spotlight
+        for(const step of spotlightSteps) {
+            if(!await animateSpotlight(state, {
+                from: currentSpotlight,
+                to: step.spotlight,
+                durationMs: step.durationMs
+            })) {
+                return
+            }
 
-        if(step.pauseMs > 0 && !await waitForDuration(state, step.pauseMs))
-            return
+            currentSpotlight = step.spotlight
+
+            if(step.pauseMs > 0 && !await waitForDuration(state, step.pauseMs))
+                return
+        }
     }
 
     state.isAnimating = false
     state.isVisible = true
-    state.dismissMovementDistance = 0
     clearTrackedTimeout(state, state.inactivityReplayTimeoutId)
     state.inactivityReplayTimeoutId = null
-    startAmbientMotion(state, guideTargets)
+
+    if(!useSimpleFade)
+        startAmbientMotion(state, guideTargets)
 
     if(state.hasShownGuideAtLeastOnce) {
         state.nextInactivityReplayMs += INACTIVITY_REPLAY_STEP_MS
@@ -718,19 +731,6 @@ function resolveMobileSpotlightSteps({ topRect, bottomRect }) {
         durationMs: Math.round(TRAVEL_MS * 0.5),
         pauseMs: GUIDE_PAUSE_MS,
     }]
-}
-
-function breatheSpotlight(spotlight, elapsedMs, baseOpacity = 0.9) {
-    if(!spotlight)
-        return null
-
-    const glow = (Math.sin((elapsedMs * 0.00105) + 0.45) + 1) / 2
-    return {
-        x: spotlight.x,
-        y: spotlight.y,
-        radius: spotlight.radius + interpolate(-3, 4, glow),
-        opacity: baseOpacity + (glow * 0.08),
-    }
 }
 
 function compactSpotlightSteps(steps) {

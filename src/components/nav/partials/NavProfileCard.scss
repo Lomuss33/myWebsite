@@ -2,6 +2,10 @@
 
 div.nav-profile-card {
     --avatar-size: var(--nav-extended-avatar-size, 118px);
+    --nav-profile-card-desktop-action-size: clamp(2.5rem, 5.5svh, 4rem);
+    --nav-profile-card-desktop-action-gap: clamp(0.5rem, 1svh, 0.85rem);
+    --nav-profile-card-desktop-action-gutter: clamp(0.45rem, 0.8vw, 0.75rem);
+    --nav-profile-card-desktop-action-lane: calc(var(--nav-profile-card-desktop-action-size) + (var(--nav-profile-card-desktop-action-gutter) * 2));
     --nav-profile-card-inline-padding: 12px;
     --border-size: 5px;
     --info-margin-top: 5px;
@@ -478,17 +482,18 @@ div.nav-profile-card {
     }
 
     div.nav-profile-card-desktop-action-stack {
-        position: absolute;
-        left: -0.48rem;
-        top: 33.5%;
-        transform: translateY(-50%) scale(var(--nav-extended-action-scale, 1));
-        transform-origin: left center;
-        display: flex;
-        flex-direction: column;
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         align-items: center;
-        justify-content: center;
-        gap: 0.2rem;
-        width: 5.1rem;
+        justify-items: center;
+        gap: var(--nav-profile-card-desktop-action-gap);
+        width: min(100%, 10rem);
+        margin: clamp(0.2rem, 0.6svh, 0.45rem) auto 0;
+        padding-inline: clamp(0.3rem, 0.6svh, 0.5rem);
+        box-sizing: border-box;
+        transform: scale(var(--nav-extended-action-scale, 1));
+        transform-origin: center;
         z-index: 4;
         opacity: calc(0.4 + (0.6 * var(--nav-extended-action-scale, 1)));
         transition:
@@ -507,24 +512,24 @@ div.nav-profile-card {
         display: flex;
         align-items: center;
         justify-content: center;
-        min-height: 4.4rem;
+        min-height: var(--nav-profile-card-desktop-action-size);
     }
 
     div.nav-profile-card-desktop-action-resume {
         margin-top: 0;
-        transform: translateY(0.9rem);
+        transform: none;
     }
 
     div.nav-profile-card-desktop-action-audio {
-        margin-top: 0.2rem;
+        margin-top: 0;
     }
 
     div.nav-profile-card-desktop-action-stack div.audio-button-wrapper-size-default button.audio-button,
     div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button {
-        width: 4.2rem;
-        height: 4.2rem;
-        min-width: 4.2rem;
-        min-height: 4.2rem;
+        width: var(--nav-profile-card-desktop-action-size);
+        height: var(--nav-profile-card-desktop-action-size);
+        min-width: var(--nav-profile-card-desktop-action-size);
+        min-height: var(--nav-profile-card-desktop-action-size);
         margin-left: 0;
         color: color-mix(in srgb, #d9dee6 76%, var(--theme-primary) 24%);
         position: relative;
@@ -554,9 +559,9 @@ div.nav-profile-card {
     }
 
     div.nav-profile-card-desktop-action-stack button.btn-option-picker-toggle {
-        width: 4.9rem;
-        height: 4.9rem;
-        min-height: 4.9rem;
+        width: var(--nav-profile-card-desktop-action-size);
+        height: var(--nav-profile-card-desktop-action-size);
+        min-height: var(--nav-profile-card-desktop-action-size);
         padding: 0;
         border-radius: 1.35rem;
         background: transparent;
@@ -666,11 +671,11 @@ div.nav-profile-card {
 
     div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button {
         border-radius: 999px;
-        transform: translateY(-5px);
+        transform: none;
     }
 
     div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button:hover {
-        transform: translateY(-6px) scale(1.04);
+        transform: scale(1.04);
         filter: drop-shadow(0 0 0.45rem rgba(248, 170, 40, 0.22));
     }
 
@@ -704,9 +709,9 @@ div.nav-profile-card {
 
     &:has(div.nav-profile-card-desktop-action-stack) {
         div.nav-profile-card-media {
-            margin-left: 3rem;
+            margin-left: 0;
             margin-top: -0.04rem;
-            margin-bottom: 0.6rem;
+            margin-bottom: clamp(0.15rem, 0.4svh, 0.35rem);
         }
 
         div.nav-profile-card-info {
@@ -1375,6 +1380,79 @@ div.nav-profile-card {
     }
 }
 
+@include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+    nav.nav-sidebar-extended div.nav-profile-card:not(.nav-profile-card-short-rail) {
+        container-name: nav-extended-profile-card;
+        container-type: size;
+    }
+
+    // Tall cards distribute the image, name, and controls with equal outer and inner space.
+    nav.nav-sidebar-extended div.nav-profile-card:not(.nav-profile-card-short-rail):has(div.nav-profile-card-desktop-action-stack) {
+        > div.nav-profile-card-header {
+            justify-content: space-evenly;
+        }
+
+        > div.nav-profile-card-header > div.nav-profile-card-media,
+        > div.nav-profile-card-header > div.nav-profile-card-info,
+        > div.nav-profile-card-header > div.nav-profile-card-desktop-action-stack {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+    }
+
+    // A square or wider card shares the top row between controls and image.
+    @container nav-extended-profile-card (min-aspect-ratio: 1 / 1) {
+        nav.nav-sidebar-extended div.nav-profile-card-header {
+            display: grid;
+            grid-template-columns: var(--nav-profile-card-desktop-action-lane) minmax(0, 1fr);
+            grid-template-rows: minmax(0, 1fr) auto;
+            column-gap: var(--nav-profile-card-desktop-action-gutter);
+            row-gap: clamp(0.25rem, 0.7svh, 0.5rem);
+            align-items: center;
+            justify-items: center;
+            padding-inline: var(--nav-profile-card-inline-padding);
+        }
+
+        nav.nav-sidebar-extended div.nav-profile-card-media {
+            grid-column: 2;
+            grid-row: 1;
+            align-self: center;
+            justify-self: center;
+        }
+
+        nav.nav-sidebar-extended div.nav-profile-card-info {
+            grid-column: 1 / -1;
+            grid-row: 2;
+            align-self: center;
+            justify-self: stretch;
+            width: 100%;
+        }
+
+        nav.nav-sidebar-extended div.nav-profile-card-desktop-action-stack {
+            position: relative;
+            left: auto;
+            top: auto;
+            grid-column: 1;
+            grid-row: 1;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            grid-auto-rows: minmax(var(--nav-profile-card-desktop-action-size), auto);
+            gap: var(--nav-profile-card-desktop-action-gap);
+            align-self: center;
+            justify-self: center;
+            width: var(--nav-profile-card-desktop-action-size);
+            margin: 0;
+            padding: 0;
+            transform: scale(var(--nav-extended-action-scale, 1));
+            transform-origin: center;
+        }
+
+        nav.nav-sidebar-extended div.nav-profile-card-desktop-action {
+            width: var(--nav-profile-card-desktop-action-size);
+        }
+    }
+}
+
 div.nav-profile-card-short-rail {
     --avatar-size: var(--nav-short-rail-avatar-size, 72px);
     --border-size: 0px;
@@ -1383,11 +1461,15 @@ div.nav-profile-card-short-rail {
     --avatar-outline-size: 0px;
     --avatar-inner-rim-size: 0px;
     --nav-short-rail-name-height: var(--nav-short-rail-name-band-height, calc(0.62rem + 0.38rem * var(--nav-short-rail-visual-density, 1)));
-    --nav-short-rail-ticker-height: clamp(10px, calc(var(--nav-short-rail-row-height, 34px) * 0.32), 14px);
+    --nav-short-rail-ticker-height: clamp(18px, calc(var(--nav-short-rail-row-height, 34px) * 0.5), 24px);
     --nav-short-rail-ticker-gap: 1.7rem;
     --nav-short-rail-ticker-duration: 240s;
     --nav-short-rail-profile-lift: clamp(4px, calc(var(--nav-short-rail-row-height, 34px) * 0.15), 7px);
-    --nav-short-rail-image-area-height: calc(var(--nav-short-rail-profile-height, 110px) - var(--nav-short-rail-name-height) - var(--nav-short-rail-ticker-height));
+    --nav-short-rail-image-zone-height: calc(100svh / 12);
+    --nav-short-rail-text-zone-height: calc(100svh / 12);
+    --nav-short-rail-image-top-buffer: clamp(4px, 0.5svh, 7px);
+    --nav-short-rail-ticker-bottom-buffer: 0px;
+    --nav-short-rail-image-area-height: var(--nav-short-rail-image-zone-height);
     --nav-short-rail-image-square-size: min(100%, var(--nav-short-rail-image-area-height));
     --nav-short-rail-name-bottom-gap: 0px;
     --nav-short-rail-name-lower-offset: 0px;
@@ -1459,7 +1541,7 @@ div.nav-profile-card-short-rail {
 
     div.nav-profile-card-media {
         position: absolute;
-        top: calc(var(--nav-short-rail-profile-lift) * -1);
+        top: var(--nav-short-rail-image-top-buffer);
         bottom: auto;
         left: 0;
         right: 0;
@@ -1475,10 +1557,10 @@ div.nav-profile-card-short-rail {
 
     div.nav-profile-card-avatar-switch {
         position: relative;
-        width: min(100cqw, var(--nav-short-rail-image-area-height));
+        width: 100cqw;
         max-width: 100%;
-        height: min(100cqw, var(--nav-short-rail-image-area-height));
-        max-height: 100%;
+        height: 100cqw;
+        max-height: none;
         aspect-ratio: 1 / 1;
         border-radius: 0 !important;
         overflow: hidden;
@@ -1570,10 +1652,10 @@ div.nav-profile-card-short-rail {
         inset: auto;
         left: 50%;
         top: 50%;
-        width: min(100cqw, var(--nav-short-rail-image-area-height));
+        width: 100cqw;
         max-width: none;
-        height: min(100cqw, var(--nav-short-rail-image-area-height));
-        max-height: 100%;
+        height: 100cqw;
+        max-height: none;
         aspect-ratio: 1 / 1;
         transform: translate(-50%, -50%) translateZ(72px);
         border-radius: 0;
@@ -1673,13 +1755,14 @@ div.nav-profile-card-short-rail {
         position: absolute;
         left: 0;
         right: 0;
-        bottom: var(--nav-short-rail-ticker-height);
+        top: var(--nav-short-rail-image-zone-height);
+        bottom: auto;
         display: flex;
         align-items: center;
         justify-content: center;
         min-width: 0;
-        height: var(--nav-short-rail-name-height);
-        min-height: var(--nav-short-rail-name-height);
+        height: calc(var(--nav-short-rail-text-zone-height) - var(--nav-short-rail-ticker-height) - var(--nav-short-rail-ticker-bottom-buffer));
+        min-height: calc(var(--nav-short-rail-text-zone-height) - var(--nav-short-rail-ticker-height) - var(--nav-short-rail-ticker-bottom-buffer));
         padding: 0.16rem 0.22rem;
         pointer-events: none;
         z-index: 90;
@@ -1690,7 +1773,7 @@ div.nav-profile-card-short-rail {
         position: absolute;
         left: 0;
         right: 0;
-        bottom: 0;
+        bottom: var(--nav-short-rail-ticker-bottom-buffer);
         z-index: 88;
         height: var(--nav-short-rail-ticker-height);
         min-height: var(--nav-short-rail-ticker-height);
@@ -1728,7 +1811,7 @@ div.nav-profile-card-short-rail {
 
     span.nav-profile-card-short-rail-ticker-item {
         flex: 0 0 auto;
-        font-size: 0.5rem;
+        font-size: 1rem;
         line-height: 1;
         font-weight: 800;
         letter-spacing: 0.12em;
@@ -1743,30 +1826,46 @@ div.nav-profile-card-short-rail {
         width: 100%;
         max-width: 100%;
         margin: 0;
-        font-size: clamp(calc(0.82rem + 1px), calc((var(--nav-short-rail-name-height) * 0.45) + 1px), calc(1.08rem + 1px)) !important;
-        line-height: 1.1 !important;
-        letter-spacing: 0.04em;
+        font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+        font-size: clamp(1.15rem, 2.15svh, 1.55rem) !important;
+        font-style: italic;
+        font-weight: 800;
+        line-height: 0.92 !important;
+        letter-spacing: 0.075em;
         text-align: center;
-        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.22);
+        text-shadow:
+            0 1px 0 rgba(255, 255, 255, 0.12),
+            0 2px 2px rgba(0, 0, 0, 0.34);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        transform: translateY(var(--nav-short-rail-name-lower-offset));
+        transform: translateY(var(--nav-short-rail-name-lower-offset)) scaleY(1.14);
+        transform-origin: center;
     }
 
     span.nav-profile-card-name-text {
-        display: inline;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
         max-width: 100%;
     }
 
     span.nav-profile-card-name-line {
-        display: inline;
+        display: block;
         white-space: nowrap;
     }
 
+    span.nav-profile-card-name-line-first {
+        align-self: flex-start;
+        text-align: left;
+    }
+
     span.nav-profile-card-name-line-last {
-        margin-left: 0.22rem;
+        align-self: flex-end;
+        margin-left: 0;
         padding-left: 0;
+        text-align: right;
     }
 
     span.nav-profile-card-name-audio-button {

@@ -487,33 +487,6 @@ function NavProfileCard({
                     </div>
                 )}
 
-                {desktopActionStackVisible && (
-                    <div className={`nav-profile-card-desktop-action-stack`}>
-                        {safeProfile.resumePdfUrl && (
-                            <div className={`nav-profile-card-desktop-action nav-profile-card-desktop-action-resume nav-tools-item-resume`}>
-                                <NavToolResumeDownloader dropdownClassName={`nav-profile-card-desktop-resume-dropdown`}
-                                                         dropdownDrop={"end"}
-                                                         menuClassName={`nav-profile-card-desktop-resume-menu`}
-                                                         menuPopperConfig={DESKTOP_RESUME_MENU_POPPER_CONFIG}
-                                                         toggleClassName={`nav-profile-card-desktop-resume-toggle`}
-                                                         hideCaret={true}
-                                                         showTooltip={true}/>
-                            </div>
-                        )}
-
-                        {hasPronunciationAudio && (
-                            <div className={`nav-profile-card-desktop-action nav-profile-card-desktop-action-audio`}>
-                                <AudioButton url={namePronunciationAudioUrl}
-                                             tooltip={namePronunciationIpa}
-                                             tooltipLabel={pronunciationTooltipLabel}
-                                             size={AudioButton.Sizes.DEFAULT}
-                                             buttonClassName={`nav-profile-card-desktop-audio-button`}
-                                             tooltipClassName={`nav-profile-card-desktop-audio-tooltip`}/>
-                            </div>
-                        )}
-                    </div>
-                )}
-
                 <div className={`nav-profile-card-media floating-frame`}
                      ref={mediaRef}
                      onPointerDown={_onMediaPointerDown}
@@ -753,6 +726,33 @@ function NavProfileCard({
                         </span>
                     </h1>
                 </div>
+
+                {desktopActionStackVisible && (
+                    <div className={`nav-profile-card-desktop-action-stack`}>
+                        {safeProfile.resumePdfUrl && (
+                            <div className={`nav-profile-card-desktop-action nav-profile-card-desktop-action-resume nav-tools-item-resume`}>
+                                <NavToolResumeDownloader dropdownClassName={`nav-profile-card-desktop-resume-dropdown`}
+                                                         dropdownDrop={"end"}
+                                                         menuClassName={`nav-profile-card-desktop-resume-menu`}
+                                                         menuPopperConfig={DESKTOP_RESUME_MENU_POPPER_CONFIG}
+                                                         toggleClassName={`nav-profile-card-desktop-resume-toggle`}
+                                                         hideCaret={true}
+                                                         showTooltip={true}/>
+                            </div>
+                        )}
+
+                        {hasPronunciationAudio && (
+                            <div className={`nav-profile-card-desktop-action nav-profile-card-desktop-action-audio`}>
+                                <AudioButton url={namePronunciationAudioUrl}
+                                             tooltip={namePronunciationIpa}
+                                             tooltipLabel={pronunciationTooltipLabel}
+                                             size={AudioButton.Sizes.DEFAULT}
+                                             buttonClassName={`nav-profile-card-desktop-audio-button`}
+                                             tooltipClassName={`nav-profile-card-desktop-audio-tooltip`}/>
+                            </div>
+                        )}
+                    </div>
+                )}
 
                 {shortRailTickerVisible && (
                     <NavProfileCardShortRailTicker sentences={loveSentences}/>

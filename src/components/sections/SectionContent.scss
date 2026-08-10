@@ -2,10 +2,8 @@
 
 div.section-content {
     /* Keep the section anchored higher while preserving comfortable side and bottom spacing. */
-    --section-content-base-scale: 0.68;
+    --section-content-base-scale: 0.78;
     --section-content-density-scale: 1;
-    --section-content-density-desktop-scale: 0.74;
-    --section-content-density-ultrawide-scale: 0.64;
     --section-content-scale: calc(
         var(--section-content-base-scale) *
         var(--section-content-density-scale)
@@ -27,12 +25,8 @@ div.section-content {
         --padding-bottom: 2.75rem;
     }
 
-    @include media-breakpoint-up(lg) {
-        --section-content-density-scale: var(--section-content-density-desktop-scale);
-    }
-
-    @media (min-width: 1680px) {
-        --section-content-density-scale: var(--section-content-density-ultrawide-scale);
+    @media (min-width: 1680px) and (min-height: 900px) {
+        --section-content-base-scale: 1;
     }
 
     @include media-breakpoint-down(xl) {

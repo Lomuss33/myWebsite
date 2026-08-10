@@ -5,6 +5,14 @@
 
 @forward "./bootstrap-api";
 
+@mixin media-layout-ultrawide {
+    @media
+        (min-width: 1680px),
+        (min-width: 1360px) and (min-aspect-ratio: 2 / 1) {
+        @content;
+    }
+}
+
 @mixin nav-selected-edge($edge, $thickness: 6px) {
     position: relative;
 

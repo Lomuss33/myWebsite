@@ -6,7 +6,7 @@ div.layout-navigation-wrapper {
     --layout-rail-wide-desktop-width:
         clamp(230.85px, 15.39vw, 299.25px);
     --layout-rail-wide-ultrawide-width:
-        clamp(247.95px, 12.825vw, 316.35px);
+        clamp(300px, 10vw, 420px);
     --layout-rail-current-width:
         var(--layout-rail-wide-desktop-width);
     --layout-page-max-width: none;
@@ -33,12 +33,10 @@ div.layout-navigation-wrapper {
         column-gap: 0;
     }
 
-    @media
-        (min-width: 1680px),
-        (min-width: 1360px) and (min-aspect-ratio: 2 / 1) {
+    @include media-layout-ultrawide {
         --layout-rail-current-width:
             var(--layout-rail-wide-ultrawide-width);
-        --layout-page-max-width: 1080px;
+        --layout-page-max-width: 1404px;
 
         background: var(--theme-layout-buffer, var(--theme-background));
     }
@@ -101,9 +99,7 @@ div.layout-navigation-children-wrapper {
         overflow: hidden;
     }
 
-    @media
-        (min-width: 1680px),
-        (min-width: 1360px) and (min-aspect-ratio: 2 / 1) {
+    @include media-layout-ultrawide {
         justify-content: flex-start;
         box-sizing: border-box;
     }
@@ -132,9 +128,7 @@ div.layout-navigation-children-inner {
         height: 100%;
     }
 
-    @media
-        (min-width: 1680px),
-        (min-width: 1360px) and (min-aspect-ratio: 2 / 1) {
+    @include media-layout-ultrawide {
         flex: 0 1 var(--layout-page-max-width);
         width: min(100%, var(--layout-page-max-width));
         max-width: var(--layout-page-max-width);

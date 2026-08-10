@@ -224,6 +224,15 @@ article#article-3-section-experience {
             --experience-card-rail-max-width: 100%;
             gap: 14px;
         }
+
+        @media (min-width: 1440px) {
+            --experience-card-max-width: min(100%, 1320px);
+            --experience-card-inner-max-width: min(100%, 1140px);
+            --experience-card-prose-max-width: min(100%, 80ch);
+            --experience-card-intro-max-width: min(100%, 54ch);
+            --experience-card-rail-max-width: min(100%, 940px);
+            --experience-flow-card-gap: clamp(16px, 1.55vw, 28px);
+        }
     }
 
     div.article-text-item.article-text-item-flow-card {
@@ -373,6 +382,25 @@ article#article-3-section-experience {
         max-width: min(100%, 26ch);
     }
 
+    @media (min-width: 1440px) {
+        p.article-text-flow-card-eyebrow {
+            font-size: 0.82rem;
+        }
+
+        h3.article-text-flow-card-heading {
+            font-size: clamp(1.68rem, 1.34vw + 1.1rem, 2.56rem);
+            max-width: min(100%, 30ch);
+        }
+
+        span.article-text-flow-card-axis-label {
+            font-size: clamp(1.04rem, 0.4vw + 0.9rem, 1.28rem);
+        }
+
+        span.article-text-flow-card-impact-pill {
+            font-size: 1rem;
+        }
+    }
+
     div.article-text-item-flow-card[data-flow-card-index="2"] h3.article-text-flow-card-heading {
         white-space: pre-line;
         text-align: center;
@@ -473,6 +501,15 @@ article#article-3-section-experience {
     p.pretext-draggable-inline-icon-text-paragraph {
         font-size: clamp(1.01rem, 0.22vw + 0.98rem, 1.12rem);
         line-height: 1.68;
+    }
+
+    @media (min-width: 1440px) {
+        p.pretext-draggable-inline-icon-text-intro,
+        div.pretext-draggable-inline-icon-text-body,
+        p.pretext-draggable-inline-icon-text-paragraph {
+            font-size: clamp(1.1rem, 0.38vw + 0.98rem, 1.26rem);
+            line-height: 1.72;
+        }
     }
 
     p.pretext-draggable-inline-icon-text-intro {

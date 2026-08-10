@@ -11,9 +11,7 @@ canvas.layout-buffer-garden {
     opacity: 1;
 }
 
-@media
-    (min-width: 1680px),
-    (min-width: 1360px) and (min-aspect-ratio: 2 / 1) {
+@include media-layout-ultrawide {
     canvas.layout-buffer-garden {
         display: block;
     }

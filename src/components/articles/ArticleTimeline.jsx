@@ -195,10 +195,21 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
             }
 
             const listRect = listElement.getBoundingClientRect()
+            const articleRect = listElement.closest("article")?.getBoundingClientRect()
             const firstRect = avatarElements[0].getBoundingClientRect()
             const lastRect = avatarElements[avatarElements.length - 1].getBoundingClientRect()
-            const topOffsetPx = Math.max(0, Math.round((firstRect.top - listRect.top) + firstRect.height / 2))
-            const bottomOffsetPx = Math.max(0, Math.round(listRect.bottom - (lastRect.top + lastRect.height / 2)))
+            const firstExperienceItem = isExperienceTimeline ?
+                listElement.querySelector(".article-timeline-item--experience") :
+                null
+            const firstExperienceItemRect = firstExperienceItem?.getBoundingClientRect()
+            const topOffsetPx = firstExperienceItemRect ?
+                Math.max(0, Math.round(
+                    (firstExperienceItemRect.top - listRect.top) + firstExperienceItemRect.height * (2 / 3)
+                )) :
+                Math.max(0, Math.round((firstRect.top - listRect.top) + firstRect.height / 2))
+            const bottomOffsetPx = isExperienceTimeline ?
+                Math.max(0, Math.round((articleRect?.bottom ?? listRect.bottom) - listRect.bottom)) :
+                Math.max(0, Math.round(listRect.bottom - (lastRect.top + lastRect.height / 2)))
 
             setTimelineOffsetsPx(currentValue => {
                 if(currentValue.topOffsetPx === topOffsetPx && currentValue.bottomOffsetPx === bottomOffsetPx)

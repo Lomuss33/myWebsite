@@ -853,13 +853,16 @@ article#article-1-section-experience {
     }
 
     ul.article-timeline-items:before {
-        top: calc(var(--timeline-line-top-offset, calc(var(--avatar-size)/2)) + var(--experience-line-cap-trim-top));
-        bottom: calc(var(--timeline-line-bottom-offset, calc(var(--avatar-size)/2)) + var(--experience-line-cap-trim-bottom));
+        // The rail grows upward from the bottom of the timeline. Its top endpoint
+        // is measured from the first card rather than from the floating avatar,
+        // whose breakpoint-dependent position made the rail jump while resizing.
+        top: var(--timeline-line-top-offset, calc(var(--avatar-size) / 2));
+        bottom: calc(-1 * var(--timeline-line-bottom-offset, 0px));
         left: auto;
         right: calc(var(--experience-card-overlap) - var(--experience-rail-width) / 2 - var(--experience-edge-reach) + var(--experience-edge-gap) + var(--experience-ultrawide-column-pull));
         width: var(--experience-rail-width);
         background: var(--experience-rail-background-resting);
-        border-radius: 999px;
+        border-radius: 999px 999px 0 0;
         box-shadow: var(--experience-rail-shadow-resting);
         z-index: 0;
         opacity: 0.98;

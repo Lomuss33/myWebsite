@@ -168,6 +168,14 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
         --experience-description-right-offset: max(15cqi, calc(var(--experience-description-right-buffer, 0px) * 3.4));
     }
 
+    @include media-breakpoint-down(md) {
+        --content-padding: 0.82rem 0.86rem;
+    }
+
+    @include media-breakpoint-down(sm) {
+        --content-padding: 0.76rem 0.72rem;
+    }
+
     &::before {
         content: "";
         position: absolute;

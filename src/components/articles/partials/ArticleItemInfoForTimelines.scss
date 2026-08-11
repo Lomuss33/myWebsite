@@ -119,9 +119,10 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
     --card-accent: #4ea3ff;
     --card-accent-2: #facc15;
     --content-padding: 1.08rem 1.25rem;
-    --timeline-title-size: clamp(1.32rem, 1.1rem + 1.22cqi, 2rem);
-    --timeline-meta-size: clamp(0.92rem, 0.78rem + 0.42cqi, 1.26rem);
-    --timeline-body-size: clamp(1.08rem, 0.88rem + 1.28cqi, 1.58rem);
+    // Keep usable values on older Android browsers that do not understand cqi.
+    --timeline-title-size: clamp(1.32rem, 1.18rem + 0.7vw, 2rem);
+    --timeline-meta-size: clamp(0.92rem, 0.86rem + 0.2vw, 1.26rem);
+    --timeline-body-size: clamp(1.08rem, 1rem + 0.34vw, 1.58rem);
     --experience-meta-time-size: var(--timeline-meta-size);
     --experience-meta-grid-gap: 0.62rem;
     --experience-meta-split-gap: 0.78rem;
@@ -129,7 +130,7 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
     --experience-meta-segment-padding-y: 0.72rem;
     --experience-meta-segment-padding-x: 0.9rem;
     --experience-meta-segment-radius: 0.92rem;
-    --experience-description-right-offset: max(15cqi, calc(var(--experience-description-right-buffer, 0px) * 3.4));
+    --experience-description-right-offset: max(3rem, calc(var(--experience-description-right-buffer, 0px) * 3.4));
     --card-surface-top: #0b1220;
     --card-surface-bottom: #050810;
     --card-border: #1d2b41;
@@ -159,6 +160,13 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
         border-color 180ms ease,
         box-shadow 180ms ease,
         filter 180ms ease;
+
+    @supports (width: 1cqi) {
+        --timeline-title-size: clamp(1.32rem, 1.1rem + 1.22cqi, 2rem);
+        --timeline-meta-size: clamp(0.92rem, 0.78rem + 0.42cqi, 1.26rem);
+        --timeline-body-size: clamp(1.08rem, 0.88rem + 1.28cqi, 1.58rem);
+        --experience-description-right-offset: max(15cqi, calc(var(--experience-description-right-buffer, 0px) * 3.4));
+    }
 
     &::before {
         content: "";
@@ -1653,17 +1661,20 @@ article#article-1-section-experience {
 
     article#article-1-section-experience div.article-timeline-item-info-for-timelines {
         --content-padding: 1.08rem 1.25rem;
-        --timeline-title-size: clamp(1.32rem, 1.1rem + 1.22cqi, 2rem);
-        --timeline-meta-size: clamp(0.92rem, 0.78rem + 0.42cqi, 1.26rem);
         --experience-meta-time-size: var(--timeline-meta-size);
-        --timeline-body-size: clamp(1.08rem, 0.88rem + 1.28cqi, 1.58rem);
-        --timeline-badge-size: clamp(0.92rem, 0.82rem + 0.32cqi, 1.28rem);
         --experience-meta-grid-gap: 0.62rem;
         --experience-meta-split-gap: 0.78rem;
         --experience-meta-segment-gap: 0.45rem;
         --experience-meta-segment-padding-y: 0.72rem;
         --experience-meta-segment-padding-x: 0.9rem;
         --experience-meta-segment-radius: 0.92rem;
+
+        @supports (width: 1cqi) {
+            --timeline-title-size: clamp(1.32rem, 1.1rem + 1.22cqi, 2rem);
+            --timeline-meta-size: clamp(0.92rem, 0.78rem + 0.42cqi, 1.26rem);
+            --timeline-body-size: clamp(1.08rem, 0.88rem + 1.28cqi, 1.58rem);
+            --timeline-badge-size: clamp(0.92rem, 0.82rem + 0.32cqi, 1.28rem);
+        }
     }
 }
 
@@ -1968,14 +1979,14 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
 
 @include media-breakpoint-down(md) {
     article#article-1-section-experience ul.article-timeline-item-info-for-timelines-body-list {
-        font-size: 0.86rem;
+        font-size: 0.9rem;
         line-height: 1.62;
     }
 }
 
 @include media-breakpoint-down(sm) {
     article#article-1-section-experience ul.article-timeline-item-info-for-timelines-body-list {
-        font-size: 0.78rem;
+        font-size: 0.86rem;
         line-height: 1.58;
     }
 }

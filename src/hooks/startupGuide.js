@@ -7,6 +7,7 @@ const DESKTOP_RAIL_SELECTOR = ".nav-sidebar-card-wrapper"
 const DESKTOP_RESUME_BAND_SELECTOR = ".nav-short-rail-resume-band"
 const MOBILE_TOP_TARGET_SELECTOR = ".nav-link-pills-fixed-wrapper-shown"
 const MOBILE_BOTTOM_TARGET_SELECTOR = ".nav-tab-controller-wrapper"
+const ACTIVE_DIALOG_SELECTOR = '[role="dialog"][aria-modal="true"], .modal.show'
 
 const GUIDE_HINT_LABELS = {
     en: {
@@ -207,6 +208,17 @@ function registerGlobalListeners(state) {
     addWindowListener(state, "click", () => {
         handleInteraction(state, { dismissVisibleGuide: true })
     }, { passive: true })
+
+    addWindowListener(state, "focusin", () => {
+        handleInteraction(state, { dismissVisibleGuide: true })
+    }, { passive: true })
+
+    addDocumentListener(state, "visibilitychange", () => {
+        if(document.hidden)
+            hideGuide(state, { immediate: true })
+        else if(state.isHomeActive)
+            scheduleInactivityReplay(state)
+    })
 }
 
 function observeDomChanges(state) {
@@ -274,7 +286,7 @@ function scheduleInitialShow(state) {
         state.initialShowTimeoutId = null
         state.hasAttemptedInitialShow = true
 
-        if(!state.isHomeActive || state.isVisible || state.isAnimating)
+        if(!canShowGuide(state))
             return
 
         if(state.initialMovementDistance > INITIAL_MOVEMENT_THRESHOLD_PX) {
@@ -288,7 +300,7 @@ function scheduleInitialShow(state) {
 }
 
 function scheduleInactivityReplay(state) {
-    if(state.destroyed || !state.isHomeActive || state.isVisible || state.isAnimating)
+    if(state.destroyed || !state.isHomeActive || state.isVisible || state.isAnimating || document.hidden)
         return
 
     const replayDelayMs = state.nextInactivityReplayMs
@@ -296,8 +308,10 @@ function scheduleInactivityReplay(state) {
     state.inactivityReplayTimeoutId = trackTimeout(state, async () => {
         state.inactivityReplayTimeoutId = null
 
-        if(!state.isHomeActive || state.isVisible || state.isAnimating)
+        if(!canShowGuide(state)) {
+            scheduleInactivityReplay(state)
             return
+        }
 
         await showGuide(state)
         if(!state.isVisible)
@@ -347,7 +361,7 @@ function handleInteraction(state, { dismissVisibleGuide }) {
 }
 
 async function showGuide(state) {
-    if(state.destroyed || !state.isHomeActive || state.isVisible || state.isAnimating)
+    if(!canShowGuide(state))
         return
 
     const guideTargets = resolveGuideTargets()
@@ -358,6 +372,8 @@ async function showGuide(state) {
     if(!root)
         return
     setGuideLayoutMode(state, guideTargets.layoutMode)
+    const isReplay = state.hasShownGuideAtLeastOnce
+    state.root.toggleAttribute("data-replay", isReplay)
 
     state.isAnimating = true
 
@@ -374,7 +390,9 @@ async function showGuide(state) {
         return
     }
 
-    const useSimpleFade = guideTargets.layoutMode === "mobile" || prefersReducedMotion()
+    const useSimpleFade = guideTargets.layoutMode === "mobile" || prefersReducedMotion() || isReplay
+    const finalSpotlight = spotlightSteps[spotlightSteps.length - 1].spotlight
+    applyLabelPosition(state, guideTargets.layoutMode, finalSpotlight)
 
     applySpotlight(state, startSpotlight)
     if(!await waitForNextFrame(state))
@@ -383,7 +401,6 @@ async function showGuide(state) {
     setOverlayOpacityTransition(state, FADE_IN_MS, "ease-out")
 
     if(useSimpleFade) {
-        const finalSpotlight = spotlightSteps[spotlightSteps.length - 1].spotlight
         applySpotlight(state, {
             ...finalSpotlight,
             opacity: 1,
@@ -518,6 +535,36 @@ function setGuideLayoutMode(state, layoutMode) {
         return
 
     state.root.setAttribute("data-layout", layoutMode === "mobile" ? "mobile" : "desktop")
+}
+
+function applyLabelPosition(state, layoutMode, spotlight) {
+    if(!state.root || !spotlight)
+        return
+
+    if(layoutMode === "mobile") {
+        state.root.style.setProperty("--startup-guide-label-x", "50vw")
+        state.root.style.setProperty("--startup-guide-label-y", "50vh")
+        state.root.setAttribute("data-label-side", "center")
+        return
+    }
+
+    const horizontalMargin = 24
+    const labelX = clamp(spotlight.x + spotlight.radius + 22, 150, window.innerWidth - horizontalMargin)
+    const labelY = clamp(spotlight.y, 64, window.innerHeight - 64)
+    state.root.style.setProperty("--startup-guide-label-x", `${roundTo(labelX, 2)}px`)
+    state.root.style.setProperty("--startup-guide-label-y", `${roundTo(labelY, 2)}px`)
+    state.root.setAttribute("data-label-side", "right")
+}
+
+function canShowGuide(state) {
+    if(state.destroyed || !state.isHomeActive || state.isVisible || state.isAnimating || document.hidden)
+        return false
+
+    if(document.querySelector(ACTIVE_DIALOG_SELECTOR))
+        return false
+
+    const activeElement = document.activeElement
+    return !activeElement?.matches?.("input, textarea, select, [contenteditable='true']")
 }
 
 function getGuideLabel(layoutMode) {
@@ -934,7 +981,12 @@ function waitForDuration(state, durationMs) {
 
 function addWindowListener(state, type, handler, options = {}) {
     window.addEventListener(type, handler, options)
-    state.eventListeners.push({ type, handler, options })
+    state.eventListeners.push({ target: window, type, handler, options })
+}
+
+function addDocumentListener(state, type, handler, options = {}) {
+    document.addEventListener(type, handler, options)
+    state.eventListeners.push({ target: document, type, handler, options })
 }
 
 function addCleanupHook(state, callback) {
@@ -986,7 +1038,7 @@ function destroyController(state) {
     }
 
     for(const listener of state.eventListeners)
-        window.removeEventListener(listener.type, listener.handler, listener.options)
+        listener.target.removeEventListener(listener.type, listener.handler, listener.options)
     state.eventListeners = []
 
     removeGuideElements(state)

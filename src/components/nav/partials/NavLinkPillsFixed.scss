@@ -1,6 +1,8 @@
 @use "../../../styles/extend" as *;
 
 div.nav-link-pills-fixed-wrapper {
+    @include nav-selected-edge(top);
+
     --nav-link-pills-fixed-safe-area-top: env(safe-area-inset-top, 0px);
 
     position: fixed;

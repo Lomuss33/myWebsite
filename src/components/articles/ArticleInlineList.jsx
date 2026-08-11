@@ -13,6 +13,7 @@ const HOME_CONTACT_FULL_SIDE_BUFFER_MAX = 24
 const HOME_CONTACT_SHORT_SIDE_BUFFER_RATIO = 0.045
 const HOME_CONTACT_SHORT_SIDE_BUFFER_MIN = 14
 const HOME_CONTACT_SHORT_SIDE_BUFFER_MAX = 38
+const HOME_CONTACT_EDGELESS_MAX_BAND_WIDTH = 420
 const DEFAULT_HOME_CONTACT_LAYOUT = {
     mode: "full",
     sideBuffer: 0
@@ -127,7 +128,6 @@ function ArticleInlineListItems({ dataWrapper, selectedItemCategoryId }) {
                     listWidth
                 })
                 const requiredWidth = totalContentWidth + totalGapWidth + (layout.sideBuffer * 2)
-
                 if(requiredWidth <= listWidth + 1) {
                     nextLayout = layout
                     break
@@ -323,7 +323,7 @@ function getHomeContactModeLayout({ mode, listWidth }) {
     if(mode === "short") {
         return {
             mode,
-            sideBuffer: clampNumber(
+            sideBuffer: listWidth <= HOME_CONTACT_EDGELESS_MAX_BAND_WIDTH ? 0 : clampNumber(
                 Math.round(listWidth * HOME_CONTACT_SHORT_SIDE_BUFFER_RATIO),
                 HOME_CONTACT_SHORT_SIDE_BUFFER_MIN,
                 HOME_CONTACT_SHORT_SIDE_BUFFER_MAX

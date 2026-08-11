@@ -31,14 +31,14 @@
 @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
     :root {
         --default-card-spacing: #{$default-card-spacing-mobile};
-        --nav-tabs-height: #{$nav-tabs-height-mobile};
+        --nav-tabs-height: max(#{$nav-tabs-height-mobile}, 10dvh);
         --nav-pills-height: #{$nav-pills-height-mobile};
     }
 }
 
 @include media-breakpoint-down(sm) {
     :root {
-        --nav-tabs-height: #{$nav-tabs-height-mobile-compact};
+        --nav-tabs-height: max(#{$nav-tabs-height-mobile-compact}, 10dvh);
         --nav-pills-height: #{$nav-pills-height-compressed};
     }
 }

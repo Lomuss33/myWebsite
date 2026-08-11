@@ -387,6 +387,25 @@ article#article-1-section-about {
     }
 
     @media (max-width: 420px) {
+        ul.article-inline-list-items[data-label-mode="short"] {
+            li.article-inline-list-item .article-inline-list-item-pill {
+                grid-template-columns: 30px minmax(0, max-content);
+                padding-right: 2px;
+            }
+
+            i.article-inline-list-item-icon {
+                --home-contact-icon-glyph-offset-x: 0px;
+                width: 30px;
+                min-width: 30px;
+                flex-basis: 30px;
+            }
+
+            span.article-inline-list-item-label {
+                padding-left: 3px;
+                padding-right: 0;
+            }
+        }
+
         li.article-inline-list-item .article-inline-list-item-pill {
             padding-right: 6px;
         }

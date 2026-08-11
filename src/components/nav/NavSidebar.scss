@@ -641,10 +641,39 @@ nav.nav-sidebar div.nav-short-rail-resume-band::after {
 @media (max-height: 360px) {
     nav.nav-sidebar-short-rail {
         --nav-short-rail-resume-height: 0px;
+        --nav-sidebar-toggle-top: 8px;
 
         div.nav-short-rail-resume-band {
             display: none;
         }
+    }
+}
+
+// Extended-rail profile content follows the same progressive height budget.
+@media (min-height: 1100px) {
+    nav.nav-sidebar-extended {
+        --nav-extended-profile-height: calc(325svh / 12);
+    }
+}
+
+@media (max-height: 800px) {
+    nav.nav-sidebar-extended {
+        --nav-extended-role-height: 0px;
+        --nav-extended-role-opacity: 0;
+    }
+}
+
+@media (max-height: 440px) {
+    nav.nav-sidebar-extended {
+        --nav-extended-profile-height: max(44px, calc(100svh / 12));
+        --nav-extended-padding-top: 0px;
+    }
+}
+
+@media (max-height: 360px) {
+    nav.nav-sidebar-extended {
+        --nav-extended-profile-height: 0px;
+        --nav-sidebar-toggle-top: 8px;
     }
 }
 

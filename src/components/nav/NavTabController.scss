@@ -1,6 +1,8 @@
 @use "../../styles/extend" as *;
 
 div.nav-tab-controller-wrapper {
+    @include nav-selected-edge(bottom);
+
     position: fixed;
     z-index: $z-index-nav-tabs;
     left: 0;

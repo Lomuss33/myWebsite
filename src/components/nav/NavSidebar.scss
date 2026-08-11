@@ -339,7 +339,7 @@ nav.nav-sidebar-short-rail {
 
     div.nav-profile-card-short-rail div.nav-profile-card-media {
         position: absolute;
-        top: var(--nav-short-rail-image-top-buffer);
+        top: 0;
         left: 0;
         right: 0;
         width: 100%;
@@ -354,9 +354,9 @@ nav.nav-sidebar-short-rail {
 
     div.nav-profile-card-short-rail div.nav-profile-card-avatar-switch {
         position: relative;
-        width: 100cqw;
+        width: min(100cqw, max(0px, calc(var(--nav-short-rail-image-area-height) - var(--nav-short-rail-image-top-buffer) - var(--nav-short-rail-image-top-buffer))));
         max-width: 100%;
-        height: 100cqw;
+        height: min(100cqw, max(0px, calc(var(--nav-short-rail-image-area-height) - var(--nav-short-rail-image-top-buffer) - var(--nav-short-rail-image-top-buffer))));
         max-height: none;
         aspect-ratio: 1 / 1;
         border-radius: 0 !important;
@@ -372,8 +372,8 @@ nav.nav-sidebar-short-rail {
     div.nav-profile-card-short-rail div.nav-profile-card-metal-frame {
         left: 50%;
         top: 50%;
-        width: 100cqw;
-        height: 100cqw;
+        width: min(100cqw, max(0px, calc(var(--nav-short-rail-image-area-height) - var(--nav-short-rail-image-top-buffer) - var(--nav-short-rail-image-top-buffer))));
+        height: min(100cqw, max(0px, calc(var(--nav-short-rail-image-area-height) - var(--nav-short-rail-image-top-buffer) - var(--nav-short-rail-image-top-buffer))));
         max-height: none;
         aspect-ratio: 1 / 1;
         pointer-events: none;
@@ -613,6 +613,37 @@ nav.nav-sidebar div.nav-short-rail-resume-band::after {
             i.fa-icon {
                 color: var(--theme-secondary);
             }
+        }
+    }
+}
+
+// Short-rail content yields progressively as viewport height becomes constrained.
+@media (max-height: 960px) {
+    nav.nav-sidebar-short-rail {
+        --nav-short-rail-ticker-height: 0px;
+    }
+}
+
+@media (max-height: 560px) {
+    nav.nav-sidebar-short-rail {
+        --nav-short-rail-profile-height: var(--nav-short-rail-image-zone-height);
+        --nav-short-rail-text-zone-height: 0px;
+    }
+}
+
+@media (max-height: 440px) {
+    nav.nav-sidebar-short-rail {
+        --nav-short-rail-profile-height: 0px;
+        --nav-short-rail-image-zone-height: 0px;
+    }
+}
+
+@media (max-height: 360px) {
+    nav.nav-sidebar-short-rail {
+        --nav-short-rail-resume-height: 0px;
+
+        div.nav-short-rail-resume-band {
+            display: none;
         }
     }
 }

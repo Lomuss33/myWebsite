@@ -1461,14 +1461,8 @@ div.nav-profile-card-short-rail {
     --avatar-outline-size: 0px;
     --avatar-inner-rim-size: 0px;
     --nav-short-rail-name-height: var(--nav-short-rail-name-band-height, calc(0.62rem + 0.38rem * var(--nav-short-rail-visual-density, 1)));
-    --nav-short-rail-ticker-height: clamp(18px, calc(var(--nav-short-rail-row-height, 34px) * 0.5), 24px);
     --nav-short-rail-ticker-gap: 1.7rem;
     --nav-short-rail-ticker-duration: 240s;
-    --nav-short-rail-profile-lift: clamp(4px, calc(var(--nav-short-rail-row-height, 34px) * 0.15), 7px);
-    --nav-short-rail-image-zone-height: calc(100svh / 12);
-    --nav-short-rail-text-zone-height: calc(100svh / 12);
-    --nav-short-rail-image-top-buffer: clamp(4px, 0.5svh, 7px);
-    --nav-short-rail-ticker-bottom-buffer: 0px;
     --nav-short-rail-image-area-height: var(--nav-short-rail-image-zone-height);
     --nav-short-rail-image-square-size: min(100%, var(--nav-short-rail-image-area-height));
     --nav-short-rail-name-bottom-gap: 0px;
@@ -1763,6 +1757,7 @@ div.nav-profile-card-short-rail {
         min-width: 0;
         height: calc(var(--nav-short-rail-text-zone-height) - var(--nav-short-rail-ticker-height) - var(--nav-short-rail-ticker-bottom-buffer));
         min-height: calc(var(--nav-short-rail-text-zone-height) - var(--nav-short-rail-ticker-height) - var(--nav-short-rail-ticker-bottom-buffer));
+        margin: 0;
         padding: 0.16rem 0.22rem;
         pointer-events: none;
         z-index: 90;
@@ -1869,6 +1864,41 @@ div.nav-profile-card-short-rail {
     }
 
     span.nav-profile-card-name-audio-button {
+        display: none;
+    }
+}
+
+@media (max-height: 960px) {
+    div.nav-profile-card-short-rail div.nav-profile-card-short-rail-ticker {
+        display: none;
+    }
+}
+
+@media (max-height: 720px) {
+    div.nav-profile-card-short-rail {
+        span.nav-profile-card-name-line-last {
+            display: none;
+        }
+
+        span.nav-profile-card-name-text {
+            align-items: center;
+        }
+
+        span.nav-profile-card-name-line-first {
+            align-self: center;
+            text-align: center;
+        }
+    }
+}
+
+@media (max-height: 560px) {
+    div.nav-profile-card-short-rail div.nav-profile-card-info {
+        display: none;
+    }
+}
+
+@media (max-height: 440px) {
+    div.nav-profile-card-short-rail {
         display: none;
     }
 }

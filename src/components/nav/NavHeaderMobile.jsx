@@ -16,7 +16,7 @@ function NavHeaderMobile({ profile, links }) {
 
     const namePronunciationIpa = language.getTranslation(safeProfile.locales, "name_pronunciation_ipa", null)
     const namePronunciationAudioUrl = language.getTranslation(safeProfile.locales, "name_pronunciation_audio_url", null)
-    const namePronunciationButtonVisible = Boolean(namePronunciationIpa || namePronunciationAudioUrl)
+    const namePronunciationButtonVisible = Boolean(namePronunciationAudioUrl)
     const resumeButtonVisible = Boolean(safeProfile.resumePdfUrl)
     const themeButtonVisible = Boolean(theme.supportsMultipleThemes)
     const languageButtonVisible = Boolean(language.supportsMultipleLanguages)

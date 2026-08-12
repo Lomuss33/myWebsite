@@ -14,6 +14,9 @@ const PROFILE_FRAME_SPIN_DURATION_MS = 3600
 const PROFILE_FRAME_RETURN_DELAY_MS = 1000
 const PROFILE_FRAME_RETURN_DURATION_MS = 420
 const PROFILE_FRAME_TAP_SPIN_DURATION_MS = 1400
+const SHORT_RAIL_TICKER_LANE_COUNT = 8
+const SHORT_RAIL_TICKER_SEQUENCE_COUNT = 4
+const SHORT_RAIL_TICKER_PIXELS_PER_SECOND = 26.4
 const DESKTOP_RESUME_MENU_POPPER_CONFIG = {
     modifiers: [
         {
@@ -104,7 +107,7 @@ function NavProfileCard({
 
     const namePronunciationIpa = language.getTranslation(safeProfile.locales, "name_pronunciation_ipa", null)
     const namePronunciationAudioUrl = language.getTranslation(safeProfile.locales, "name_pronunciation_audio_url", null)
-    const hasPronunciationAudio = Boolean(namePronunciationIpa || namePronunciationAudioUrl)
+    const hasPronunciationAudio = Boolean(namePronunciationAudioUrl)
     const pronunciationTooltipLabel = language.getString("pronunciation")
     const mobileActionStackVisible = Boolean(mobileActionStackBeforeInfo || mobileActionStackAfterInfo || mobileActionStack)
     const desktopActionStackVisible = isExtendedRail && !mobileActionStackVisible &&
@@ -729,6 +732,17 @@ function NavProfileCard({
 
                 {desktopActionStackVisible && (
                     <div className={`nav-profile-card-desktop-action-stack`}>
+                        {hasPronunciationAudio && (
+                            <div className={`nav-profile-card-desktop-action nav-profile-card-desktop-action-audio`}>
+                                <AudioButton url={namePronunciationAudioUrl}
+                                             tooltip={namePronunciationIpa}
+                                             tooltipLabel={pronunciationTooltipLabel}
+                                             size={AudioButton.Sizes.DEFAULT}
+                                             buttonClassName={`nav-profile-card-desktop-audio-button`}
+                                             tooltipClassName={`nav-profile-card-desktop-audio-tooltip`}/>
+                            </div>
+                        )}
+
                         {safeProfile.resumePdfUrl && (
                             <div className={`nav-profile-card-desktop-action nav-profile-card-desktop-action-resume nav-tools-item-resume`}>
                                 <NavToolResumeDownloader dropdownClassName={`nav-profile-card-desktop-resume-dropdown`}
@@ -738,17 +752,6 @@ function NavProfileCard({
                                                          toggleClassName={`nav-profile-card-desktop-resume-toggle`}
                                                          hideCaret={true}
                                                          showTooltip={true}/>
-                            </div>
-                        )}
-
-                        {hasPronunciationAudio && (
-                            <div className={`nav-profile-card-desktop-action nav-profile-card-desktop-action-audio`}>
-                                <AudioButton url={namePronunciationAudioUrl}
-                                             tooltip={namePronunciationIpa}
-                                             tooltipLabel={pronunciationTooltipLabel}
-                                             size={AudioButton.Sizes.DEFAULT}
-                                             buttonClassName={`nav-profile-card-desktop-audio-button`}
-                                             tooltipClassName={`nav-profile-card-desktop-audio-tooltip`}/>
                             </div>
                         )}
                     </div>
@@ -784,28 +787,80 @@ function NavProfileCard({
 export default NavProfileCard
 
 function NavProfileCardShortRailTicker({sentences}) {
+    const tickerRef = useRef(null)
+    const sequenceRef = useRef(null)
     const tickerItems = sentences
         .map((sentence) => String(sentence || "").trim())
         .filter(Boolean)
+    const forwardSeparator = `   \u2192   `
+    const backwardSeparator = `   \u2190   `
+    const forwardTickerText = `${tickerItems.join(forwardSeparator)}${forwardSeparator}`
+    const backwardTickerText = `${tickerItems.join(backwardSeparator)}${backwardSeparator}`
+
+    useEffect(() => {
+        const tickerElement = tickerRef.current
+        const sequenceElement = sequenceRef.current
+        if(!tickerElement || !sequenceElement)
+            return
+
+        let disposed = false
+
+        const measureTicker = () => {
+            if(disposed)
+                return
+
+            const sequenceWidth = sequenceElement.getBoundingClientRect().width
+            const laneWidth = tickerElement.getBoundingClientRect().width
+            if(sequenceWidth <= 0 || laneWidth <= 0)
+                return
+
+            tickerElement.style.setProperty(`--nav-short-rail-ticker-sequence-shift`, `${sequenceWidth * -1}px`)
+            tickerElement.style.setProperty(`--nav-short-rail-ticker-sequence-double-shift`, `${sequenceWidth * -2}px`)
+            tickerElement.style.setProperty(`--nav-short-rail-ticker-duration`, `${sequenceWidth / SHORT_RAIL_TICKER_PIXELS_PER_SECOND}s`)
+
+            tickerElement.querySelectorAll(`.nav-profile-card-short-rail-ticker-lane`).forEach((lane, laneIndex) => {
+                const pairIndex = Math.floor(laneIndex / 2)
+                lane.style.setProperty(`--nav-short-rail-ticker-lane-offset`, `${pairIndex * laneWidth * 2}px`)
+            })
+
+            tickerElement.dataset.tickerReady = `true`
+        }
+
+        delete tickerElement.dataset.tickerReady
+
+        const resizeObserver = typeof ResizeObserver === `function` ?
+            new ResizeObserver(measureTicker) :
+            null
+
+        resizeObserver?.observe(tickerElement)
+        resizeObserver?.observe(sequenceElement)
+        window.addEventListener(`resize`, measureTicker)
+        document.fonts?.addEventListener?.(`loadingdone`, measureTicker)
+        document.fonts?.ready?.then(measureTicker).catch(() => {})
+        measureTicker()
+
+        return () => {
+            disposed = true
+            resizeObserver?.disconnect()
+            window.removeEventListener(`resize`, measureTicker)
+            document.fonts?.removeEventListener?.(`loadingdone`, measureTicker)
+        }
+    }, [forwardTickerText, backwardTickerText])
 
     if(!tickerItems.length)
         return null
 
     return (
-        <div className={`nav-profile-card-short-rail-ticker`} aria-hidden={true}>
-            {[0, 1, 2].map((laneIndex) => (
+        <div className={`nav-profile-card-short-rail-ticker`} ref={tickerRef} aria-hidden={true}>
+            {Array.from({length: SHORT_RAIL_TICKER_LANE_COUNT}, (_, laneIndex) => (
                 <div className={`nav-profile-card-short-rail-ticker-lane nav-profile-card-short-rail-ticker-lane-${laneIndex + 1}`}
                      key={`ticker-lane-${laneIndex}`}>
                     <div className={`nav-profile-card-short-rail-ticker-track`}>
-                        {[0, 1].map((sequenceIndex) => (
+                        {Array.from({length: SHORT_RAIL_TICKER_SEQUENCE_COUNT}, (_, sequenceIndex) => (
                             <span className={`nav-profile-card-short-rail-ticker-sequence`}
+                                  ref={laneIndex === 0 && sequenceIndex === 0 ? sequenceRef : undefined}
                                   key={`ticker-sequence-${sequenceIndex}`}>
-                                {tickerItems.map((sentence, itemIndex) => (
-                                    <span className={`nav-profile-card-short-rail-ticker-item`}
-                                          key={`${sentence}-${sequenceIndex}-${itemIndex}`}>
-                                        {sentence}
-                                    </span>
-                                ))}
+                                {laneIndex % 2 === 0 ? forwardTickerText : backwardTickerText}
                             </span>
                         ))}
                     </div>

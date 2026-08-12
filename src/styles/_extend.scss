@@ -5,11 +5,54 @@
 
 @forward "./bootstrap-api";
 
+// Extended profile-card states share one source of truth across the rail and
+// card styles so their transitions cannot drift apart.
+$nav-extended-profile-tall-min-height: 1100px;
+$nav-extended-profile-extra-tall-min-height: 1600px;
+$nav-extended-profile-max-height: 480px;
+$nav-extended-role-visible-min-height: 620px;
+
 @mixin media-layout-ultrawide {
     @media
         (min-width: 1680px),
         (min-width: 1360px) and (min-aspect-ratio: 2 / 1) {
         @content;
+    }
+}
+
+// Horizontal animated bands use the same isolated edge overlays. Consumers
+// only provide width and theme colors, keeping the fade geometry consistent.
+@mixin nav-horizontal-edge-fades($z-index: 4) {
+    position: relative;
+    isolation: isolate;
+
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: var(--nav-horizontal-edge-fade-width);
+        z-index: $z-index;
+        pointer-events: none;
+    }
+
+    &::before {
+        left: 0;
+        background: linear-gradient(
+            90deg,
+            var(--nav-horizontal-edge-fade-left-color) 0%,
+            transparent 100%
+        );
+    }
+
+    &::after {
+        right: 0;
+        background: linear-gradient(
+            270deg,
+            var(--nav-horizontal-edge-fade-right-color) 0%,
+            transparent 100%
+        );
     }
 }
 

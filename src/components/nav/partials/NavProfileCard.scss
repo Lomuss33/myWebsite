@@ -17,6 +17,7 @@ div.nav-profile-card {
     --avatar-inner-rim-size: 1px;
     --avatar-outline-opacity: 0.94;
     --avatar-inner-rim-opacity: 0.84;
+    --nav-profile-flowing-band-surface: color-mix(in srgb, var(--theme-nav-surface-accent) 78%, white 22%);
     --avatar-shell-shadow:
         0 18px 34px rgba(2, 6, 23, 0.26),
         0 8px 18px rgba(15, 23, 42, 0.16),
@@ -419,6 +420,12 @@ div.nav-profile-card {
     }
 
     div.nav-profile-card-role {
+        --nav-horizontal-edge-fade-width: clamp(1.25rem, 10cqi, 2.25rem);
+        --nav-horizontal-edge-fade-left-color: rgba(255, 255, 255, 0.78);
+        --nav-horizontal-edge-fade-right-color: rgba(255, 255, 255, 0.78);
+
+        @include nav-horizontal-edge-fades;
+
         display: flex;
         align-items: center;
         justify-content: center;
@@ -438,7 +445,7 @@ div.nav-profile-card {
         padding: calc(3px * var(--nav-extended-role-opacity, 1)) 12px;
         box-sizing: border-box;
         border-radius: 0;
-        background: color-mix(in srgb, var(--theme-nav-surface-accent) 78%, white 22%);
+        background: var(--nav-profile-flowing-band-surface);
         border-top: calc(1px * var(--nav-extended-role-opacity, 1)) solid var(--theme-nav-divider);
         border-bottom: calc(1px * var(--nav-extended-role-opacity, 1)) solid var(--theme-nav-divider);
         border-left: 0;
@@ -790,8 +797,11 @@ div.nav-profile-card {
     }
 
     [data-theme="light"] & {
+        --nav-profile-flowing-band-surface: #ffffff;
+
         div.nav-profile-card-role {
-            background: #ffffff;
+            --nav-horizontal-edge-fade-left-color: rgba(0, 0, 0, 0.72);
+            --nav-horizontal-edge-fade-right-color: rgba(0, 0, 0, 0.72);
         }
 
         div.nav-profile-card-desktop-action-stack div.audio-button-wrapper-size-default button.audio-button,
@@ -1477,6 +1487,7 @@ div.nav-profile-card {
     nav.nav-sidebar-extended div.nav-profile-card-info {
         align-items: center;
         justify-content: center;
+        padding-block: clamp(0.16rem, 0.5svh, 0.32rem);
         padding-inline: 0;
         text-align: center;
     }
@@ -1486,17 +1497,26 @@ div.nav-profile-card {
         width: 100%;
         max-width: 100%;
         margin-inline: 0;
-        font-size: clamp(1rem, 5cqi, 1.18rem) !important;
-        line-height: 1.14 !important;
-        letter-spacing: 0.025em;
+        font-family: "Great Vibes", "Alex Brush", "IM Fell English", "Iowan Old Style", "Book Antiqua", Palatino, Georgia, serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: clamp(1.48rem, min(10.8cqi, 4.9svh), 2.2rem) !important;
+        line-height: 1.04 !important;
+        letter-spacing: 0.002em;
+        font-feature-settings: "calt" 1, "liga" 1, "dlig" 1, "swsh" 1;
+        text-rendering: optimizeLegibility;
+        transform: scaleX(1.04);
+        transform-origin: center;
         text-align: center;
         white-space: nowrap;
     }
 
     nav.nav-sidebar-extended span.nav-profile-card-name-text {
         display: inline-flex;
+        flex-direction: row;
         align-items: center;
         justify-content: center;
+        width: auto;
         min-width: 0;
         max-width: 100%;
         white-space: nowrap;
@@ -1507,7 +1527,12 @@ div.nav-profile-card {
         white-space: nowrap;
     }
 
-    // State 1: standard rail. The image and two-row action column share the top band.
+    nav.nav-sidebar-extended span.nav-profile-card-name-line-last {
+        margin-left: 0.35em;
+    }
+
+    // State 1: standard rail. Keep the controls beside the portrait and give
+    // the name the complete row below; the portrait is never isolated.
     nav.nav-sidebar-extended div.nav-profile-card-header {
         display: grid;
         grid-template-columns: var(--nav-profile-card-desktop-action-size) minmax(0, 1fr);
@@ -1535,6 +1560,7 @@ div.nav-profile-card {
         grid-area: info;
         align-self: stretch;
         justify-self: stretch;
+        min-width: 0;
         width: 100%;
     }
 
@@ -1559,50 +1585,79 @@ div.nav-profile-card {
         flex: 0 0 var(--nav-profile-card-desktop-action-size);
     }
 
-    // State 2: wider rail. Keep the image prominent and move the controls underneath.
-    @container nav-extended-rail (min-width: 330px) {
+    // The profile card is 25% of the rail. Condense the title only where the
+    // fixed-height card cannot safely fit the portrait/control band plus title.
+    @container nav-extended-rail (max-height: 700px) {
+        nav.nav-sidebar-extended div.nav-profile-card-header {
+            padding-top: 2px;
+            padding-bottom: 0;
+        }
+
+        nav.nav-sidebar-extended h1.nav-profile-card-name {
+            font-size: 0.95rem !important;
+            line-height: 1 !important;
+        }
+    }
+
+    // State 2: tall rail. The name receives its own full-width row and scales
+    // from the usable rail width instead of retaining the compact size.
+    @container nav-extended-rail (min-height: #{$nav-extended-profile-tall-min-height}) {
         nav.nav-sidebar-extended div.nav-profile-card-header {
             grid-template-columns: minmax(0, 1fr);
-            grid-template-rows: auto auto auto;
+            grid-template-rows: auto auto minmax(max-content, 1fr);
             grid-template-areas:
                 "media"
                 "actions"
                 "info";
-            align-content: start;
-            justify-content: start;
-            justify-items: center;
-            row-gap: clamp(0.42rem, 0.9svh, 0.68rem);
             column-gap: 0;
-            padding-inline: clamp(0.35rem, 2cqi, 0.65rem);
+            row-gap: clamp(0.32rem, 0.75svh, 0.55rem);
         }
 
         nav.nav-sidebar-extended div.nav-profile-card-desktop-action-stack {
+            grid-area: actions;
             display: flex;
-            flex-direction: row;
+            flex-flow: row nowrap;
             align-items: center;
             justify-content: center;
             width: auto;
-            gap: var(--nav-profile-card-desktop-action-gap);
+            margin: 0;
             padding: 0;
             transform: none;
         }
 
-        nav.nav-sidebar-extended div.nav-profile-card-desktop-action {
-            flex: 0 0 var(--nav-profile-card-desktop-action-size);
-        }
-
         nav.nav-sidebar-extended div.nav-profile-card-info {
-            align-self: start;
+            align-self: stretch;
+            min-height: max-content;
         }
 
         nav.nav-sidebar-extended h1.nav-profile-card-name {
-            font-size: clamp(1rem, 4.5cqi, 1.1rem) !important;
-            letter-spacing: 0.02em;
+            font-size: clamp(1.65rem, 12cqi, 2.75rem) !important;
+        }
+
+        nav.nav-sidebar-extended span.nav-profile-card-name-text {
+            display: inline-flex;
+            flex-direction: row;
+            width: auto;
+        }
+
+        nav.nav-sidebar-extended span.nav-profile-card-name-line-last {
+            margin-left: 0.35em;
+        }
+
+    }
+
+    // Extra-tall rails can use two control rows and avoid leaving a large empty
+    // name band beneath an unnecessarily compressed avatar/control row.
+    @container nav-extended-rail (min-height: #{$nav-extended-profile-extra-tall-min-height}) {
+        nav.nav-sidebar-extended div.nav-profile-card-desktop-action-stack {
+            flex-direction: column;
+            width: var(--nav-profile-card-desktop-action-size);
         }
     }
 
-    // The animated role fits once the rail has enough height for the complete top layout.
-    @container nav-extended-rail (max-height: 570px) {
+    // Monotonic visibility: once the rail reaches the safe text-band height, no
+    // later width or height state hides the animated role band again.
+    @container nav-extended-rail (max-height: #{$nav-extended-role-visible-min-height - 1px}) {
         nav.nav-sidebar-extended div.nav-profile-card-role {
             display: none;
         }
@@ -1623,9 +1678,53 @@ div.nav-profile-card {
         }
     }
 
-    @container nav-extended-rail (min-width: 330px) and (max-height: 520px) {
+    // Wide-but-short rails have enough horizontal room to retain the name.
+    // Use one compact band instead of applying the narrow-rail hide fallback.
+    @container nav-extended-rail (min-width: 330px) and (min-height: 441px) and (max-height: 700px) {
         nav.nav-sidebar-extended div.nav-profile-card-header {
-            grid-template-areas: "audio media resume";
+            grid-template-columns: 30% 20% 50%;
+            grid-template-rows: auto;
+            grid-template-areas: "actions info media";
+            align-content: center;
+            column-gap: 0;
+            padding-inline: 0;
+            padding-block: 2px 0;
+        }
+
+        nav.nav-sidebar-extended div.nav-profile-card-info {
+            display: flex;
+            align-self: stretch;
+            justify-self: center;
+            justify-content: center;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav.nav-sidebar-extended h1.nav-profile-card-name {
+            align-items: stretch;
+            height: 100%;
+            margin: 0;
+            font-size: clamp(1.05rem, min(7cqi, 3.4svh), 1.65rem) !important;
+            line-height: 1 !important;
+        }
+
+        nav.nav-sidebar-extended span.nav-profile-card-name-text {
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 auto;
+            justify-content: space-evenly;
+            width: 100%;
+            height: 100%;
+        }
+
+        nav.nav-sidebar-extended span.nav-profile-card-name-line-first {
+            order: 2;
+        }
+
+        nav.nav-sidebar-extended span.nav-profile-card-name-line-last {
+            order: 1;
+            margin-left: 0;
         }
     }
 
@@ -1651,9 +1750,12 @@ div.nav-profile-card-short-rail {
     --avatar-outline-size: 0px;
     --avatar-inner-rim-size: 0px;
     --nav-short-rail-name-size: clamp(1rem, min(22cqi, 3svh), 1.72rem);
-    --nav-short-rail-ticker-gap: 1.4rem;
-    --nav-short-rail-ticker-duration: 110s;
+    --nav-short-rail-ticker-duration: 320s;
     --nav-short-rail-ticker-lane-height: clamp(18px, 2.3svh, 23px);
+    --nav-short-rail-ticker-lane-gap: calc(var(--nav-short-rail-ticker-lane-height) * 0.5);
+    --nav-short-rail-ticker-band-step: calc(var(--nav-short-rail-ticker-lane-height) + var(--nav-short-rail-ticker-lane-gap));
+    --nav-short-rail-ticker-edge-fade-width: clamp(0.44rem, 4.8cqi, 0.8rem);
+    --nav-short-rail-ticker-visible-lanes: 1;
     --nav-short-rail-frame-blue: #1d4ed8;
     --nav-short-rail-frame-white: #f1f5f9;
     --nav-short-rail-frame-red: #b91c1c;
@@ -1731,7 +1833,7 @@ div.nav-profile-card-short-rail {
         aspect-ratio: 1 / 1;
         display: block;
         isolation: isolate;
-        overflow: visible;
+        overflow: hidden;
         z-index: 20;
     }
 
@@ -1947,54 +2049,47 @@ div.nav-profile-card-short-rail {
     }
 
     div.nav-profile-card-short-rail-ticker {
+        --nav-horizontal-edge-fade-width: var(--nav-short-rail-ticker-edge-fade-width);
+        --nav-short-rail-ticker-dark-edge: rgba(2, 6, 23, 0.336);
+        --nav-short-rail-ticker-light-edge: rgba(255, 255, 255, 0.304);
+
         grid-column: 1;
         grid-row: 3;
         position: relative;
         z-index: 88;
         display: grid;
         grid-template-columns: minmax(0, 1fr);
+        row-gap: var(--nav-short-rail-ticker-lane-gap);
         width: 100%;
-        height: auto;
+        height: calc(
+            (var(--nav-short-rail-ticker-lane-height) * var(--nav-short-rail-ticker-visible-lanes)) +
+            (var(--nav-short-rail-ticker-lane-gap) * (var(--nav-short-rail-ticker-visible-lanes) - 1)) +
+            2px
+        );
         min-height: 0;
+        box-sizing: border-box;
         overflow: hidden;
         pointer-events: none;
-        background: color-mix(in srgb, var(--theme-nav-surface-accent) 78%, white 22%);
-        border-top: 1px solid var(--theme-nav-divider);
-        border-bottom: 1px solid var(--theme-nav-divider);
+        opacity: 0;
+        background: var(--nav-profile-flowing-band-surface);
+        border-top: 1px solid color-mix(in srgb, var(--theme-nav-divider) 82%, transparent 18%);
+        border-bottom: 1px solid color-mix(in srgb, var(--theme-nav-divider) 82%, transparent 18%);
+        border-inline: 1px solid color-mix(in srgb, var(--theme-nav-divider) 58%, transparent 42%);
         box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.04),
-            inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+            inset 0 1px 0 rgba(255, 255, 255, 0.06),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.18),
+            0 0 0 1px rgba(255, 255, 255, 0.02);
         color: var(--theme-nav-text);
+        transition: none;
     }
 
-    div.nav-profile-card-short-rail-ticker::before,
-    div.nav-profile-card-short-rail-ticker::after {
-        content: "";
-        position: absolute;
-        z-index: 3;
-        display: none;
-        width: calc(var(--nav-short-rail-ticker-lane-height) * 0.72);
-        height: var(--nav-short-rail-ticker-lane-height);
-        pointer-events: none;
-        border: 2px solid color-mix(in srgb, var(--theme-primary) 52%, var(--theme-nav-divider) 48%);
-        opacity: 0.62;
-    }
-
-    div.nav-profile-card-short-rail-ticker::before {
-        top: calc(var(--nav-short-rail-ticker-lane-height) * 0.5);
-        right: -2px;
-        border-left: 0;
-        border-radius: 0 999px 999px 0;
-    }
-
-    div.nav-profile-card-short-rail-ticker::after {
-        top: calc(var(--nav-short-rail-ticker-lane-height) * 1.5);
-        left: -2px;
-        border-right: 0;
-        border-radius: 999px 0 0 999px;
+    div.nav-profile-card-short-rail-ticker[data-ticker-ready="true"] {
+        opacity: 1;
     }
 
     div.nav-profile-card-short-rail-ticker-lane {
+        @include nav-horizontal-edge-fades;
+
         position: relative;
         display: flex;
         align-items: center;
@@ -2004,50 +2099,55 @@ div.nav-profile-card-short-rail {
         overflow: hidden;
     }
 
-    div.nav-profile-card-short-rail-ticker-lane + div.nav-profile-card-short-rail-ticker-lane {
-        border-top: 1px solid color-mix(in srgb, var(--theme-nav-divider) 72%, transparent 28%);
+    div.nav-profile-card-short-rail-ticker-lane:nth-child(odd) {
+        --nav-horizontal-edge-fade-left-color: var(--nav-short-rail-ticker-dark-edge);
+        --nav-horizontal-edge-fade-right-color: var(--nav-short-rail-ticker-light-edge);
+        background: var(--nav-profile-flowing-band-surface);
     }
 
-    div.nav-profile-card-short-rail-ticker-lane-2,
-    div.nav-profile-card-short-rail-ticker-lane-3 {
-        display: none;
+    div.nav-profile-card-short-rail-ticker-lane:nth-child(even) {
+        --nav-horizontal-edge-fade-left-color: var(--nav-short-rail-ticker-light-edge);
+        --nav-horizontal-edge-fade-right-color: var(--nav-short-rail-ticker-dark-edge);
+        background: var(--nav-profile-flowing-band-surface);
+    }
+
+    div.nav-profile-card-short-rail-ticker-lane + div.nav-profile-card-short-rail-ticker-lane {
+        border-top: 1px solid color-mix(in srgb, var(--theme-nav-divider) 72%, transparent 28%);
     }
 
     div.nav-profile-card-short-rail-ticker-track {
         display: inline-flex;
         align-items: center;
-        gap: var(--nav-short-rail-ticker-gap);
+        gap: 0;
         width: max-content;
         min-width: max-content;
-        padding-left: 100%;
-        animation: nav-profile-card-short-rail-ticker-scroll var(--nav-short-rail-ticker-duration) linear infinite;
+        animation-duration: var(--nav-short-rail-ticker-duration);
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
         will-change: transform;
     }
 
-    div.nav-profile-card-short-rail-ticker-lane-2 div.nav-profile-card-short-rail-ticker-track {
-        animation-direction: reverse;
+    div.nav-profile-card-short-rail-ticker-lane:nth-child(odd) div.nav-profile-card-short-rail-ticker-track {
+        animation-name: nav-profile-card-short-rail-ticker-forward;
     }
 
-    div.nav-profile-card-short-rail-ticker-lane-3 div.nav-profile-card-short-rail-ticker-track {
-        animation-delay: calc(var(--nav-short-rail-ticker-duration) * -0.18);
+    div.nav-profile-card-short-rail-ticker-lane:nth-child(even) div.nav-profile-card-short-rail-ticker-track {
+        animation-name: nav-profile-card-short-rail-ticker-backward;
     }
 
     span.nav-profile-card-short-rail-ticker-sequence {
-        display: inline-flex;
-        align-items: center;
-        gap: var(--nav-short-rail-ticker-gap);
+        display: inline-block;
         flex: 0 0 auto;
+        width: max-content;
         min-width: max-content;
-    }
-
-    span.nav-profile-card-short-rail-ticker-item {
-        flex: 0 0 auto;
-        font-size: 1rem;
+        font-size: 0.66rem;
         line-height: 1;
         font-weight: 800;
-        letter-spacing: 0.12em;
+        letter-spacing: 0.09em;
         text-transform: uppercase;
         white-space: nowrap;
+        font-kerning: none;
+        font-variant-ligatures: none;
         opacity: 0.78;
         text-shadow: 0 1px 0 rgba(255, 255, 255, 0.16);
     }
@@ -2107,31 +2207,49 @@ div.nav-profile-card-short-rail {
     }
 }
 
-@media (min-height: 960px) {
+@media (min-height: 760px) {
     div.nav-profile-card-short-rail {
-        div.nav-profile-card-short-rail-ticker-lane-2 {
-            display: flex;
-        }
-
-        div.nav-profile-card-short-rail-ticker::before {
-            display: block;
-        }
+        --nav-short-rail-ticker-visible-lanes: 2;
     }
 }
 
-@media (min-height: 1200px) {
+@media (min-height: 900px) {
     div.nav-profile-card-short-rail {
-        div.nav-profile-card-short-rail-ticker-lane-3 {
-            display: flex;
-        }
-
-        div.nav-profile-card-short-rail-ticker::after {
-            display: block;
-        }
+        --nav-short-rail-ticker-visible-lanes: 3;
     }
 }
 
-@media (max-height: 640px) {
+@media (min-height: 1040px) {
+    div.nav-profile-card-short-rail {
+        --nav-short-rail-ticker-visible-lanes: 4;
+    }
+}
+
+@media (min-height: 1180px) {
+    div.nav-profile-card-short-rail {
+        --nav-short-rail-ticker-visible-lanes: 5;
+    }
+}
+
+@media (min-height: 1320px) {
+    div.nav-profile-card-short-rail {
+        --nav-short-rail-ticker-visible-lanes: 6;
+    }
+}
+
+@media (min-height: 1460px) {
+    div.nav-profile-card-short-rail {
+        --nav-short-rail-ticker-visible-lanes: 7;
+    }
+}
+
+@media (min-height: 1600px) {
+    div.nav-profile-card-short-rail {
+        --nav-short-rail-ticker-visible-lanes: 8;
+    }
+}
+
+@media (max-height: 560px) {
     div.nav-profile-card-short-rail div.nav-profile-card-short-rail-ticker {
         display: none;
     }
@@ -2147,13 +2265,23 @@ div.nav-profile-card-short-rail {
     }
 }
 
-@keyframes nav-profile-card-short-rail-ticker-scroll {
+@keyframes nav-profile-card-short-rail-ticker-forward {
     from {
-        transform: translateX(0);
+        transform: translate3d(calc(var(--nav-short-rail-ticker-sequence-shift) + var(--nav-short-rail-ticker-lane-offset)), 0, 0);
     }
 
     to {
-        transform: translateX(-50%);
+        transform: translate3d(calc(var(--nav-short-rail-ticker-sequence-double-shift) + var(--nav-short-rail-ticker-lane-offset)), 0, 0);
+    }
+}
+
+@keyframes nav-profile-card-short-rail-ticker-backward {
+    from {
+        transform: translate3d(calc(var(--nav-short-rail-ticker-sequence-shift) - var(--nav-short-rail-ticker-lane-offset)), 0, 0);
+    }
+
+    to {
+        transform: translate3d(calc(0px - var(--nav-short-rail-ticker-lane-offset)), 0, 0);
     }
 }
 

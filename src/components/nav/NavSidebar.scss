@@ -4,7 +4,10 @@ nav.nav-sidebar {
     --width: 100%;
     --nav-sidebar-toggle-top: 20px;
     --nav-short-rail-resume-height: 0px;
-    --nav-extended-profile-height: calc(300svh / 12);
+    --nav-extended-profile-height: min(
+        calc(300svh / 12),
+        #{$nav-extended-profile-max-height}
+    );
     --nav-extended-avatar-size: clamp(76px, 10svh, 142px);
     --nav-extended-role-height: clamp(22px, 3svh, 32px);
     --nav-extended-role-opacity: 1;
@@ -220,9 +223,8 @@ nav.nav-sidebar-extended {
 
 nav.nav-sidebar-short-rail {
     --width: 100%;
-    --nav-sidebar-toggle-top: calc(var(--nav-short-rail-profile-height, 0px) + (var(--nav-short-rail-resume-height) / 2) - 16px);
+    --nav-sidebar-toggle-top: 20px;
     --nav-short-rail-visual-density: 1;
-    --nav-short-rail-profile-height: auto;
     --nav-short-rail-profile-padding: 0px;
     --nav-short-rail-row-height: clamp(22px, 4.5svh, 64px);
     --nav-short-rail-separator-height: 4px;
@@ -531,13 +533,6 @@ nav.nav-sidebar div.nav-short-rail-resume-band::after {
         div.nav-short-rail-resume-band {
             display: none;
         }
-    }
-}
-
-// Extended-rail profile content follows the same progressive height budget.
-@media (min-height: 1100px) {
-    nav.nav-sidebar-extended {
-        --nav-extended-profile-height: calc(325svh / 12);
     }
 }
 

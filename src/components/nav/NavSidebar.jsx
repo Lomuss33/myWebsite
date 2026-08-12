@@ -1,5 +1,5 @@
 import "./NavSidebar.scss"
-import React, {useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {Card} from "react-bootstrap"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
 import {useConstants} from "../../hooks/constants.js"
@@ -18,6 +18,7 @@ const MANUAL_RAIL_BY_ZONE_DEFAULTS = {
 function NavSidebar({ profile, links }) {
     const constants = useConstants()
     const viewport = useViewport()
+    const sidebarCardWrapperRef = useRef(null)
 
     const [manualRailByZone, setManualRailByZone] = useState(MANUAL_RAIL_BY_ZONE_DEFAULTS)
 
@@ -70,9 +71,45 @@ function NavSidebar({ profile, links }) {
         </div>
     ) : null
 
+    useEffect(() => {
+        const wrapper = sidebarCardWrapperRef.current
+        if(!wrapper || railMode !== "short")
+            return
+
+        const profileCard = wrapper.querySelector(`.nav-profile-card-short-rail`)
+        const resumeBand = wrapper.querySelector(`.nav-short-rail-resume-band`)
+        if(!profileCard)
+            return
+
+        const updateTogglePosition = () => {
+            const profileHeight = profileCard.getBoundingClientRect().height
+            const resumeHeight = resumeBand?.getBoundingClientRect().height || 0
+            const toggleTop = Math.max(0, profileHeight + (resumeHeight / 2) - 16)
+            wrapper.style.setProperty(`--nav-sidebar-toggle-top`, `${toggleTop}px`)
+        }
+
+        updateTogglePosition()
+
+        const resizeObserver = typeof ResizeObserver === "function" ?
+            new ResizeObserver(updateTogglePosition) :
+            null
+
+        resizeObserver?.observe(profileCard)
+        if(resumeBand)
+            resizeObserver?.observe(resumeBand)
+
+        window.addEventListener(`resize`, updateTogglePosition)
+
+        return () => {
+            resizeObserver?.disconnect()
+            window.removeEventListener(`resize`, updateTogglePosition)
+            wrapper.style.removeProperty(`--nav-sidebar-toggle-top`)
+        }
+    }, [railMode, showShortRailResumeBand])
+
     return (
         <nav className={`nav-sidebar ${constants.HTML_CLASSES.scrollbarDecorator} ${railModeClass} ${shortRailResumeBandClass}`}>
-            <Card className={`nav-sidebar-card-wrapper`}>
+            <Card className={`nav-sidebar-card-wrapper`} ref={sidebarCardWrapperRef}>
                 {hasRailLayout && (
                     <NavToolShrinkToggle expanded={railMode === "extended"}
                                          onToggle={_toggleRailMode}/>

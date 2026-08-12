@@ -99,7 +99,7 @@ div.layout-navigation-children-wrapper {
 
     @include media-breakpoint-up(lg) {
         justify-content: flex-start;
-        overflow: hidden;
+        overflow: visible;
     }
 
     @include media-layout-ultrawide {

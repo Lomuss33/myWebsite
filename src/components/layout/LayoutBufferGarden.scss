@@ -1,7 +1,7 @@
 @use "../../styles/extend" as *;
 
 canvas.layout-buffer-garden {
-    display: none;
+    display: block;
     position: absolute;
     inset: 0;
     width: 100%;
@@ -9,12 +9,6 @@ canvas.layout-buffer-garden {
     z-index: 0;
     pointer-events: none;
     opacity: 1;
-}
-
-@include media-layout-ultrawide {
-    canvas.layout-buffer-garden {
-        display: block;
-    }
 }
 
 @media (prefers-reduced-motion: reduce) {

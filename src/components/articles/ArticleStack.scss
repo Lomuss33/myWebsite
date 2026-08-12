@@ -785,6 +785,7 @@ article.article.article-stack-home {
 
 article#article-6-section-about.article-stack-home {
     div.article-stack-items.article-stack-items-home {
+        --stack-columns: 3;
         --home-stack-card-min-height: 238px;
         --home-stack-bubble-font-size: 1.3rem;
         --home-stack-bubble-line-height: 1.12;
@@ -884,6 +885,7 @@ article#article-6-section-about.article-stack-home {
 
     @container (max-width: 560px) {
         div.article-stack-items.article-stack-items-home {
+            --stack-columns: 1;
             --home-stack-card-pad-x: 5px;
             --home-stack-card-gap: 1px;
             --home-stack-icon-reserve: calc((var(--avatar-size) - var(--home-stack-avatar-outset)) + var(--home-stack-card-gap));

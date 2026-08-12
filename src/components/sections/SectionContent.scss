@@ -2,7 +2,7 @@
 
 div.section-content {
     /* Keep the section anchored higher while preserving comfortable side and bottom spacing. */
-    --section-content-base-scale: 0.78;
+    --section-content-base-scale: 0.52;
     --section-content-density-scale: 1;
     --section-content-scale: calc(
         var(--section-content-base-scale) *
@@ -16,6 +16,8 @@ div.section-content {
 
     position: relative;
     width: 100%;
+    max-width: none;
+    margin-inline: 0;
     padding: var(--padding);
     min-height: var(--section-content-min-height);
 
@@ -25,8 +27,8 @@ div.section-content {
         --padding-bottom: 2.75rem;
     }
 
-    @media (min-width: 1680px) and (min-height: 900px) {
-        --section-content-base-scale: 1;
+    @include media-layout-ultrawide {
+        --section-content-base-scale: 0.52;
     }
 
     @include media-breakpoint-down(xl) {
@@ -57,7 +59,7 @@ div.section-content {
 }
 
 div.section-content-border-decoration {
-    --border-decoration-size: 70px;
+    --border-decoration-size: clamp(34px, 4.2vw, 70px);
 
     display: inline-block;
     position: absolute;
@@ -65,8 +67,8 @@ div.section-content-border-decoration {
     height: var(--border-decoration-size);
     z-index: 0;
 
-    @include media-breakpoint-down(lg) {
-        display: none;
+    @include media-breakpoint-down(md) {
+        --border-decoration-size: clamp(24px, 6vw, 44px);
     }
 }
 

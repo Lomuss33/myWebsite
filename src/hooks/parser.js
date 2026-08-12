@@ -34,16 +34,17 @@ export const useParser = () => {
         const isLgOrHigher = viewport.isBreakpoint("lg")
         const titleLocales = section.data?.title?.locales || {}
         const isHomeSection = section?.id === "about"
+        const getHomeSectionTranslation = (key) => language.getTranslation(titleLocales, key)
 
         return {
             title:
                 isHomeSection || isLgOrHigher ?
-                getThemedTitleTranslation(titleLocales, "title_long") :
+                (isHomeSection ? getHomeSectionTranslation("title_long") : getThemedTitleTranslation(titleLocales, "title_long")) :
                 getThemedTitleTranslation(titleLocales, "title_short"),
 
             prefix:
                 (isHomeSection || isLgOrHigher) ?
-                getThemedTitleTranslation(titleLocales, "title_long_prefix") :
+                (isHomeSection ? getHomeSectionTranslation("title_long_prefix") : getThemedTitleTranslation(titleLocales, "title_long_prefix")) :
                 null,
 
             navTitle:

@@ -9,7 +9,7 @@ div.layout-navigation-wrapper {
         clamp(300px, 10vw, 420px);
     --layout-rail-current-width:
         var(--layout-rail-wide-desktop-width);
-    --layout-page-max-width: none;
+    --layout-page-max-width: 960px;
     --layout-shell-column-gap: 0px;
 
     display: flex;
@@ -24,6 +24,11 @@ div.layout-navigation-wrapper {
     min-height: 100svh;
     max-height: 100vh;
     max-height: 100svh;
+    background:
+        radial-gradient(circle at 12% 12%, rgba(103, 232, 249, 0.08) 0%, transparent 24%),
+        radial-gradient(circle at 84% 18%, rgba(244, 114, 182, 0.06) 0%, transparent 22%),
+        radial-gradient(circle at 50% 100%, rgba(96, 165, 250, 0.06) 0%, transparent 30%),
+        linear-gradient(180deg, var(--theme-background-sky-top, var(--theme-background)) 0%, var(--theme-background-sky-middle, var(--theme-background)) 46%, var(--theme-background-sky-bottom, var(--theme-background)) 100%);
 
     @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
         display: grid;
@@ -36,9 +41,7 @@ div.layout-navigation-wrapper {
     @include media-layout-ultrawide {
         --layout-rail-current-width:
             var(--layout-rail-wide-ultrawide-width);
-        --layout-page-max-width: 1404px;
-
-        background: var(--theme-layout-buffer, var(--theme-background));
+        --layout-page-max-width: 960px;
     }
 
     @media (min-width: 1680px) {

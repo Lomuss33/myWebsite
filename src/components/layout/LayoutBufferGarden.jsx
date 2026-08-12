@@ -1,9 +1,6 @@
 import "./LayoutBufferGarden.scss"
 import React, {useEffect, useRef} from 'react'
 
-const ULTRAWIDE_MEDIA =
-    "(min-width: 1680px), (min-width: 1360px) and (min-aspect-ratio: 2 / 1)"
-
 const MIN_VISIBLE_BUFFER_WIDTH = 24
 const NORMAL_TARGET_AREA_PER_FLOWER = 8500
 const REDUCED_TARGET_AREA_PER_FLOWER = 18000
@@ -569,7 +566,6 @@ function LayoutBufferGarden() {
         if(!context || !wrapper)
             return undefined
 
-        const ultrawideQuery = window.matchMedia?.(ULTRAWIDE_MEDIA) || null
         const reducedMotionQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)") || null
         let animationFrameId = null
         let rebuildFrameId = null
@@ -594,14 +590,6 @@ function LayoutBufferGarden() {
             startedAt: performance.now(),
         }
 
-        const isUltrawide = () => {
-            if(ultrawideQuery)
-                return ultrawideQuery.matches
-
-            return window.innerWidth >= 1680 ||
-                (window.innerWidth >= 1360 && window.innerWidth / window.innerHeight >= 2)
-        }
-
         const isReducedMotion = () => reducedMotionQuery?.matches === true
 
         const getPixelRatio = (reducedMotion, lowPerf) => {
@@ -616,15 +604,13 @@ function LayoutBufferGarden() {
             const wrapperRect = wrapper.getBoundingClientRect()
             const nav = wrapper.querySelector("nav.nav-sidebar")
             const page = wrapper.querySelector(".layout-navigation-children-inner")
-            const navRect = nav?.getBoundingClientRect()
-            const pageRect = page?.getBoundingClientRect()
             const width = Math.max(0, wrapperRect.width)
             const height = Math.max(0, wrapperRect.height)
 
             observeElement(nav)
             observeElement(page)
 
-            if(!navRect || !pageRect || width <= 0 || height <= 0) {
+            if(width <= 0 || height <= 0) {
                 return {
                     width,
                     height,
@@ -632,35 +618,17 @@ function LayoutBufferGarden() {
                 }
             }
 
-            const navRight = clamp(navRect.right - wrapperRect.left, 0, width)
-            const pageLeft = clamp(pageRect.left - wrapperRect.left, 0, width)
-            const pageRight = clamp(pageRect.right - wrapperRect.left, 0, width)
-            const regions = []
-            const leftWidth = Math.max(0, pageLeft - navRight)
-            const rightWidth = Math.max(0, width - pageRight)
-
-            if(leftWidth >= MIN_VISIBLE_BUFFER_WIDTH) {
-                regions.push({
-                    x: navRight,
-                    y: 0,
-                    width: leftWidth,
-                    height,
-                })
-            }
-
-            if(rightWidth >= MIN_VISIBLE_BUFFER_WIDTH) {
-                regions.push({
-                    x: pageRight,
-                    y: 0,
-                    width: rightWidth,
-                    height,
-                })
-            }
-
             return {
                 width,
                 height,
-                regions,
+                regions: [
+                    {
+                        x: 0,
+                        y: 0,
+                        width,
+                        height,
+                    },
+                ],
             }
         }
 
@@ -714,7 +682,7 @@ function LayoutBufferGarden() {
         }
 
         const rebuild = (force = false) => {
-            const active = isUltrawide()
+            const active = true
             const measurements = measureRegions()
             const isLightTheme = getIsLightTheme()
             const reducedMotion = isReducedMotion()
@@ -824,7 +792,6 @@ function LayoutBufferGarden() {
             return () => query.removeListener(listener)
         }
 
-        const removeUltrawideListener = addMediaListener(ultrawideQuery, () => scheduleRebuild(true))
         const removeReducedMotionListener = addMediaListener(reducedMotionQuery, () => scheduleRebuild(true))
         const onWindowResize = () => scheduleRebuild()
 
@@ -864,7 +831,6 @@ function LayoutBufferGarden() {
 
             resizeObserver?.disconnect()
             themeObserver?.disconnect()
-            removeUltrawideListener()
             removeReducedMotionListener()
             window.removeEventListener("resize", onWindowResize)
             document.removeEventListener("visibilitychange", onVisibilityChange)

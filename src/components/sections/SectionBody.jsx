@@ -1,5 +1,4 @@
-import "./SectionBody.scss"
-import React, {Suspense, lazy, useEffect, useMemo} from 'react'
+import React, {lazy, useEffect, useMemo} from 'react'
 import {useParser} from "../../hooks/parser.js"
 import ArticleNotFound from "../articles/ArticleNotFound.jsx"
 import SectionDecorationBand from "./SectionDecorationBand.jsx"
@@ -103,15 +102,6 @@ function _scheduleIdleWork(work, timeoutMs = 900) {
     return () => window.clearTimeout(timeoutId)
 }
 
-function SectionBodyFallbackArticle() {
-    return (
-        <article className={`article article-spacing-default article-section-body-fallback`}
-                 aria-hidden={true}>
-            <div className={`article-content article-section-body-fallback-content`}/>
-        </article>
-    )
-}
-
 function SectionBody({ section, showDecorationBands = true }) {
     const parser = useParser()
     const articleDataWrappers = useMemo(() => {
@@ -146,10 +136,8 @@ function SectionBody({ section, showDecorationBands = true }) {
                                                    index={key}/>
                         )}
 
-                        <Suspense fallback={<SectionBodyFallbackArticle />}>
-                            <Component dataWrapper={dataWrapper}
-                                       id={key}/>
-                        </Suspense>
+                        <Component dataWrapper={dataWrapper}
+                                   id={key}/>
                     </React.Fragment>
                 )
             })}

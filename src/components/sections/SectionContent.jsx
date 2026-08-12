@@ -1,11 +1,12 @@
 import "./SectionContent.scss"
-import React, {useLayoutEffect, useRef, useState} from 'react'
+import React, {Suspense, useLayoutEffect, useRef, useState} from 'react'
 import SectionHeader from "./SectionHeader.jsx"
 import SectionBody from "./SectionBody.jsx"
 import SectionDecorationBand from "./SectionDecorationBand.jsx"
 import SectionDecorationLayer from "./decorations/SectionDecorationLayer.jsx"
+import SectionLoadingPlaceholder from "./SectionLoadingPlaceholder.jsx"
 
-function SectionContent({ section }) {
+function SectionContent({ section, shouldRenderContent = true }) {
     const contentRef = useRef(null)
     const lastLayoutMetricsRef = useRef({
         bottomCollapse: null,
@@ -98,8 +99,11 @@ function SectionContent({ section }) {
 
     const decorationClassName = [
         shouldShowDecorationBands ? "section-content-has-decoration-bands" : "",
-        shouldHideHeader ? "section-content-hide-header" : ""
+        shouldHideHeader ? "section-content-hide-header" : "",
+        shouldRenderContent ? "section-content-page-ready" : "section-content-page-loading"
     ].filter(Boolean).join(" ")
+
+    const loadingPlaceholder = <SectionLoadingPlaceholder section={section}/>
 
     return (
         <div className={`section-content ${decorationClassName}`.trim()}
@@ -112,31 +116,35 @@ function SectionContent({ section }) {
             <div className={`section-content-elements-wrapper`}
                  ref={contentRef}
                  style={{ "--section-content-collapse": `${bottomCollapse}px` }}>
-                <SectionDecorationLayer section={section}/>
+                {shouldRenderContent ? (
+                    <Suspense fallback={loadingPlaceholder}>
+                        <SectionDecorationLayer section={section}/>
 
-                {shouldShowDecorationBands && shouldHideHeader && (
-                    <SectionDecorationBand type="page-top"
-                                           sectionId={section?.id}/>
-                )}
-
-                {!shouldHideHeader && (
-                    <>
-                        <SectionHeader section={section}/>
-
-                        {shouldShowDecorationBands && (
-                            <SectionDecorationBand type="after-header"
+                        {shouldShowDecorationBands && shouldHideHeader && (
+                            <SectionDecorationBand type="page-top"
                                                    sectionId={section?.id}/>
                         )}
-                    </>
-                )}
 
-                <SectionBody section={section}
-                             showDecorationBands={shouldShowDecorationBands}/>
+                        {!shouldHideHeader && (
+                            <>
+                                <SectionHeader section={section}/>
 
-                {shouldShowDecorationBands && (
-                    <SectionDecorationBand type="page-bottom"
-                                           sectionId={section?.id}/>
-                )}
+                                {shouldShowDecorationBands && (
+                                    <SectionDecorationBand type="after-header"
+                                                           sectionId={section?.id}/>
+                                )}
+                            </>
+                        )}
+
+                        <SectionBody section={section}
+                                     showDecorationBands={shouldShowDecorationBands}/>
+
+                        {shouldShowDecorationBands && (
+                            <SectionDecorationBand type="page-bottom"
+                                                   sectionId={section?.id}/>
+                        )}
+                    </Suspense>
+                ) : loadingPlaceholder}
             </div>
         </div>
     )

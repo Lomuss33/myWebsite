@@ -90,10 +90,15 @@
 }
 
 @mixin nav-selected-button {
-    background: var(--theme-primary)!important;
+    background:
+        linear-gradient(135deg,
+            var(--theme-nav-selected-surface) 0%,
+            var(--theme-nav-selected-surface-accent) 100%)!important;
     user-select: none;
     pointer-events: none;
-    box-shadow: none;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.32),
+        0 8px 20px var(--theme-nav-selected-shadow);
 
     i,
     span {

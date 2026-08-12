@@ -21,9 +21,12 @@ function NavLinkPillsLink({ link, active, onClick }) {
     const activeClass = active ?
         `nav-link-pills-link-active` :
         ``
+    const visitedClass = link.visited ?
+        `nav-link-pills-link-visited` :
+        ``
 
     return (
-        <GestureAwareButton className={`nav-link-pills-link ${activeClass}`}
+        <GestureAwareButton className={`nav-link-pills-link ${visitedClass} ${activeClass}`.trim()}
                             ariaPressed={active}
                             onClick={onClick}>
             <i className={`${link.faIcon}`}/>

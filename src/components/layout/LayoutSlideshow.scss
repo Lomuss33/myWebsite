@@ -1,6 +1,8 @@
 @use "../../styles/extend" as *;
 
 div.layout-slideshow {
+    --section-transition-duration: 760ms;
+
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr);
@@ -11,6 +13,8 @@ div.layout-slideshow {
     padding: 0;
     overflow-x: hidden;
     overflow-y: hidden;
+    position: relative;
+    isolation: isolate;
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         grid-template-rows: auto;
@@ -26,5 +30,138 @@ div.layout-slideshow {
 div.layout-slideshow-transitioning {
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         overflow: hidden;
+    }
+}
+
+div.layout-slideshow-transition-guide {
+    position: absolute;
+    inset: 0;
+    z-index: 40;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+span.layout-slideshow-transition-progress {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #0284c7 0%, #38bdf8 34%, #fbbf24 69%, #f97316 100%);
+    box-shadow:
+        0 0 12px rgba(56, 189, 248, 0.46),
+        0 3px 14px rgba(251, 191, 36, 0.24);
+    transform: scaleX(0);
+    animation: layout-slideshow-transition-progress var(--section-transition-duration) cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+div.layout-slideshow-transition-guide-forward span.layout-slideshow-transition-progress {
+    transform-origin: left center;
+}
+
+div.layout-slideshow-transition-guide-backward span.layout-slideshow-transition-progress {
+    transform-origin: right center;
+    background: linear-gradient(90deg, #f97316 0%, #fbbf24 31%, #38bdf8 66%, #0284c7 100%);
+}
+
+span.layout-slideshow-transition-destination {
+    position: absolute;
+    top: clamp(12px, 2.1vh, 22px);
+    left: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    max-width: min(calc(100% - 32px), 520px);
+    min-height: 38px;
+    padding: 0.48rem 0.9rem;
+    border: 1px solid color-mix(in srgb, var(--theme-nav-border) 74%, #38bdf8 26%);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--theme-nav-surface) 88%, transparent 12%);
+    color: var(--theme-nav-text);
+    box-shadow:
+        0 12px 30px rgba(2, 6, 23, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(14px) saturate(1.2);
+    font-size: clamp(0.76rem, 0.71rem + 0.18vw, 0.9rem);
+    font-weight: 850;
+    line-height: 1.1;
+    letter-spacing: 0.045em;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    animation: layout-slideshow-transition-destination var(--section-transition-duration) cubic-bezier(0.16, 1, 0.3, 1) both;
+
+    i {
+        flex: 0 0 auto;
+        color: #38bdf8;
+        filter: drop-shadow(0 0 7px rgba(56, 189, 248, 0.34));
+    }
+
+    > span:last-child {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+div.layout-slideshow-transition-guide-forward span.layout-slideshow-transition-destination {
+    --transition-destination-start-x: 28px;
+    --transition-destination-end-x: -12px;
+}
+
+div.layout-slideshow-transition-guide-backward span.layout-slideshow-transition-destination {
+    --transition-destination-start-x: -28px;
+    --transition-destination-end-x: 12px;
+}
+
+span.layout-slideshow-transition-direction {
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0284c7, #38bdf8);
+    color: #ffffff;
+    font-size: 0.9rem;
+    line-height: 1;
+    box-shadow: 0 5px 12px rgba(2, 132, 199, 0.24);
+}
+
+@keyframes layout-slideshow-transition-progress {
+    0% { opacity: 0; transform: scaleX(0); }
+    12% { opacity: 1; }
+    78% { opacity: 1; transform: scaleX(1); }
+    100% { opacity: 0; transform: scaleX(1); }
+}
+
+@keyframes layout-slideshow-transition-destination {
+    0% {
+        opacity: 0;
+        transform: translate3d(calc(-50% + var(--transition-destination-start-x)), -8px, 0) scale(0.94);
+    }
+    18% {
+        opacity: 1;
+        transform: translate3d(-50%, 0, 0) scale(1);
+    }
+    68% {
+        opacity: 1;
+        transform: translate3d(-50%, 0, 0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(calc(-50% + var(--transition-destination-end-x)), -4px, 0) scale(0.98);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    div.layout-slideshow {
+        --section-transition-duration: 140ms;
+    }
+
+    span.layout-slideshow-transition-destination {
+        display: none;
     }
 }

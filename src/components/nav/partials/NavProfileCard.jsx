@@ -793,25 +793,24 @@ function NavProfileCardShortRailTicker({sentences}) {
 
     return (
         <div className={`nav-profile-card-short-rail-ticker`} aria-hidden={true}>
-            <div className={`nav-profile-card-short-rail-ticker-track`}>
-                <span className={`nav-profile-card-short-rail-ticker-sequence`}>
-                    {tickerItems.map((sentence, index) => (
-                        <span className={`nav-profile-card-short-rail-ticker-item`}
-                              key={`${sentence}-${index}`}>
-                            {sentence}
-                        </span>
-                    ))}
-                </span>
-
-                <span className={`nav-profile-card-short-rail-ticker-sequence`}>
-                    {tickerItems.map((sentence, index) => (
-                        <span className={`nav-profile-card-short-rail-ticker-item`}
-                              key={`${sentence}-repeat-${index}`}>
-                            {sentence}
-                        </span>
-                    ))}
-                </span>
-            </div>
+            {[0, 1, 2].map((laneIndex) => (
+                <div className={`nav-profile-card-short-rail-ticker-lane nav-profile-card-short-rail-ticker-lane-${laneIndex + 1}`}
+                     key={`ticker-lane-${laneIndex}`}>
+                    <div className={`nav-profile-card-short-rail-ticker-track`}>
+                        {[0, 1].map((sequenceIndex) => (
+                            <span className={`nav-profile-card-short-rail-ticker-sequence`}
+                                  key={`ticker-sequence-${sequenceIndex}`}>
+                                {tickerItems.map((sentence, itemIndex) => (
+                                    <span className={`nav-profile-card-short-rail-ticker-item`}
+                                          key={`${sentence}-${sequenceIndex}-${itemIndex}`}>
+                                        {sentence}
+                                    </span>
+                                ))}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+            ))}
         </div>
     )
 }

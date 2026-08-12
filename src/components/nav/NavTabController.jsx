@@ -19,9 +19,12 @@ function NavTabControllerLink({ link, active, onClick }) {
     const activeClass = active ?
         `nav-tab-controller-link-active` :
         ``
+    const visitedClass = link.visited ?
+        `nav-tab-controller-link-visited` :
+        ``
 
     return (
-        <GestureAwareButton className={`nav-tab-controller-link ${activeClass}`}
+        <GestureAwareButton className={`nav-tab-controller-link ${visitedClass} ${activeClass}`.trim()}
                             ariaPressed={active}
                             onClick={onClick}>
             <i className={`${link.faIcon}`}/>

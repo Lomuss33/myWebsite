@@ -1696,6 +1696,10 @@ section.section {
     &-will-hide {
         z-index: $z-index-section-inactive;
         transition: none;
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+        filter: none;
+        clip-path: inset(0 0 0 0);
         -webkit-user-select: none;
         user-select: none;
         pointer-events: none;
@@ -1705,22 +1709,16 @@ section.section {
     &-hiding {
         z-index: $z-index-section-inactive;
         transition:
-            0.34s opacity cubic-bezier(0.4, 0, 1, 1),
-            0.34s transform cubic-bezier(0.2, 0, 0.1, 1);
+            0.58s opacity cubic-bezier(0.4, 0, 1, 1),
+            0.7s transform cubic-bezier(0.22, 0.72, 0.18, 1),
+            0.58s filter ease-out;
         -webkit-user-select: none;
         user-select: none;
         pointer-events: none;
         will-change: opacity, transform;
 
-        opacity: 0;
-        transform: translate3d(-24px, 0, 0) scale(0.975);
-        @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-            width: calc(100% - 8px);
-            transition:
-                0.26s opacity cubic-bezier(0.4, 0, 1, 1),
-                0.26s transform cubic-bezier(0.2, 0, 0.1, 1);
-            transform: translate3d(0, 32px, 0) scale(0.985);
-        }
+        opacity: 0.16;
+        filter: saturate(0.72) brightness(0.82) blur(2px);
     }
 
     &-hidden {
@@ -1734,27 +1732,23 @@ section.section {
     &-will-show {
         z-index: $z-index-section-active;
         transition: none;
-        opacity: 0;
-        will-change: opacity, transform;
-
-        transform: translate3d(36px, 0, 0) scale(0.985);
-        @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-            transform: translate3d(0, 36px, 0) scale(0.99);
-        }
+        opacity: 0.58;
+        filter: saturate(0.82) brightness(0.9);
+        will-change: opacity, transform, clip-path, filter;
     }
 
     &-showing {
         z-index: $z-index-section-active;
         opacity: 1;
         transition:
-            0.38s opacity cubic-bezier(0.16, 1, 0.3, 1),
-            0.38s transform cubic-bezier(0.16, 1, 0.3, 1);
-        will-change: opacity, transform;
-        @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-            transition:
-                0.3s opacity cubic-bezier(0.16, 1, 0.3, 1),
-                0.3s transform cubic-bezier(0.16, 1, 0.3, 1);
-        }
+            0.62s opacity cubic-bezier(0.16, 1, 0.3, 1),
+            0.76s transform cubic-bezier(0.16, 1, 0.3, 1),
+            0.76s clip-path cubic-bezier(0.16, 1, 0.3, 1),
+            0.68s filter ease-out;
+        transform: translate3d(0, 0, 0) scale(1);
+        clip-path: inset(0 0 0 0);
+        filter: none;
+        will-change: opacity, transform, clip-path, filter;
     }
 
     &-shown {
@@ -1762,7 +1756,71 @@ section.section {
         transition: none;
         opacity: 1;
         transform: translate3d(0, 0, 0) scale(1);
+        clip-path: inset(0 0 0 0);
+        filter: none;
         will-change: auto;
+    }
+}
+
+div.layout-slideshow-direction-forward {
+    > section.section-hiding {
+        transform: translate3d(-4.5%, 0, 0) scale(0.982);
+    }
+
+    > section.section-will-show {
+        transform: translate3d(4.5%, 0, 0) scale(0.988);
+        clip-path: inset(0 0 0 100%);
+    }
+}
+
+div.layout-slideshow-direction-backward {
+    > section.section-hiding {
+        transform: translate3d(4.5%, 0, 0) scale(0.982);
+    }
+
+    > section.section-will-show {
+        transform: translate3d(-4.5%, 0, 0) scale(0.988);
+        clip-path: inset(0 100% 0 0);
+    }
+}
+
+@include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    div.layout-slideshow-direction-forward {
+        > section.section-hiding {
+            transform: translate3d(0, -28px, 0) scale(0.988);
+        }
+
+        > section.section-will-show {
+            transform: translate3d(0, 34px, 0) scale(0.992);
+            clip-path: inset(100% 0 0 0);
+        }
+    }
+
+    div.layout-slideshow-direction-backward {
+        > section.section-hiding {
+            transform: translate3d(0, 28px, 0) scale(0.988);
+        }
+
+        > section.section-will-show {
+            transform: translate3d(0, -34px, 0) scale(0.992);
+            clip-path: inset(0 0 100% 0);
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    section.section-will-hide,
+    section.section-hiding,
+    section.section-will-show,
+    section.section-showing {
+        transform: none!important;
+        clip-path: inset(0 0 0 0)!important;
+        filter: none!important;
+    }
+
+    section.section-hiding,
+    section.section-showing {
+        transition: opacity 0.14s linear!important;
     }
 }
 

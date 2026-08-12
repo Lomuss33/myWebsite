@@ -5,6 +5,7 @@ import Scrollable from "../capabilities/Scrollable.jsx"
 import {useFeedbacks} from "../../providers/FeedbacksProvider.jsx"
 import {useInput} from "../../providers/InputProvider.jsx"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
+import {useConstants} from "../../hooks/constants.js"
 import SectionContent from "./SectionContent.jsx"
 import NavToolFullscreenToggle from "../nav/tools/NavToolFullscreenToggle.jsx"
 
@@ -20,6 +21,7 @@ const SECTION_STATUS = {
 const Section = memo(function Section({ section, visible, shouldTransition, forceScrollToTopCount = null }) {
     const [status, setStatus] = useState(SECTION_STATUS.HIDDEN)
     const [shouldResetScroll, setShouldResetScroll] = useState(false)
+    const [hasPresentedContent, setHasPresentedContent] = useState(false)
     const hasInitializedForceScrollRef = useRef(false)
 
     const isHidden = status === SECTION_STATUS.HIDDEN
@@ -36,6 +38,13 @@ const Section = memo(function Section({ section, visible, shouldTransition, forc
             setShouldResetScroll(true)
     }, [forceScrollToTopCount, visible])
 
+    useEffect(() => {
+        if(hasPresentedContent || !visible || status !== SECTION_STATUS.SHOWN)
+            return
+
+        setHasPresentedContent(true)
+    }, [hasPresentedContent, status, visible])
+
     return (
         <>
             <SectionTransitionManager section={section}
@@ -48,6 +57,7 @@ const Section = memo(function Section({ section, visible, shouldTransition, forc
                 <>
                     <SectionRenderer section={section}
                                      status={status}
+                                     shouldRenderContent={hasPresentedContent}
                                      shouldResetScroll={shouldResetScroll}
                                      setShouldResetScroll={setShouldResetScroll}/>
 
@@ -61,7 +71,7 @@ const Section = memo(function Section({ section, visible, shouldTransition, forc
     )
 })
 
-function SectionRenderer({ section, status, shouldResetScroll, setShouldResetScroll}) {
+function SectionRenderer({ section, status, shouldRenderContent, shouldResetScroll, setShouldResetScroll}) {
     const viewport = useViewport()
     const layoutConstraints = viewport.getLayoutConstraints()
     const canToggleFullscreen = layoutConstraints.canToggleFullscreen
@@ -79,7 +89,8 @@ function SectionRenderer({ section, status, shouldResetScroll, setShouldResetScr
                         className={`section-scrollable`}
                         shouldResetScroll={shouldResetScroll}
                         setShouldResetScroll={setShouldResetScroll}>
-                <SectionContent section={section}/>
+                <SectionContent section={section}
+                                shouldRenderContent={shouldRenderContent}/>
             </Scrollable>
         </section>
     )
@@ -87,6 +98,7 @@ function SectionRenderer({ section, status, shouldResetScroll, setShouldResetScr
 
 function SectionTransitionManager({ section, visible, shouldTransition, status, setStatus }) {
     const scheduler = useScheduler()
+    const constants = useConstants()
 
     const schedulerTag = section?.id + "-transition"
 
@@ -115,14 +127,26 @@ function SectionTransitionManager({ section, visible, shouldTransition, status, 
         scheduler.clearAllWithTag(schedulerTag)
         setStatus(SECTION_STATUS.WILL_HIDE)
         scheduler.schedule(() => { setStatus(SECTION_STATUS.HIDING) }, 0, schedulerTag)
-        scheduler.schedule(() => { setStatus(SECTION_STATUS.HIDDEN) }, 420, schedulerTag)
+        scheduler.schedule(() => {
+            setStatus(SECTION_STATUS.HIDDEN)
+        }, _getTransitionDuration(), schedulerTag)
     }
 
     const _tweenIn = () => {
         scheduler.clearAllWithTag(schedulerTag)
         setStatus(SECTION_STATUS.WILL_SHOW)
         scheduler.schedule(() => { setStatus(SECTION_STATUS.SHOWING) }, 0, schedulerTag)
-        scheduler.schedule(() => { setStatus(SECTION_STATUS.SHOWN) }, 420, schedulerTag)
+        scheduler.schedule(() => {
+            setStatus(SECTION_STATUS.SHOWN)
+        }, _getTransitionDuration(), schedulerTag)
+    }
+
+    const _getTransitionDuration = () => {
+        const prefersReducedMotion = typeof window !== "undefined" &&
+            window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+        return prefersReducedMotion ?
+            constants.SECTION_TRANSITION_REDUCED_TIME :
+            constants.SECTION_TRANSITION_TOTAL_TIME
     }
 }
 

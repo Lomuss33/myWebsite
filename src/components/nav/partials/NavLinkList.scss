@@ -24,7 +24,7 @@ div.nav-link-list-shell {
     --nav-link-accent-dot-size: 6px;
     --nav-link-accent-dot-offset-x: 10px;
     --nav-control-separator-color: #ffffff;
-    --nav-control-separator-width: 2px;
+    --nav-control-separator-width: 1px;
 
     display: flex;
     flex: 1 1 auto;
@@ -181,8 +181,47 @@ button.nav-link {
     }
 }
 
+button.nav-link:not(.nav-link-active):not(.nav-link-visited) {
+    background:
+        linear-gradient(90deg,
+            var(--theme-nav-unvisited-surface) 0%,
+            var(--theme-nav-unvisited-surface-accent) 100%);
+    color: var(--theme-nav-unvisited-ink);
+    box-shadow:
+        inset 0 0 0 1px var(--theme-nav-unvisited-border);
+
+    i,
+    span {
+        color: var(--theme-nav-unvisited-ink);
+    }
+}
+
+button.nav-link-visited:not(.nav-link-active) {
+    background:
+        linear-gradient(90deg,
+            var(--theme-nav-visited-surface) 0%,
+            var(--theme-nav-visited-surface-accent) 100%);
+    color: var(--theme-nav-visited-ink);
+    box-shadow:
+        inset 0 0 0 1px var(--theme-nav-visited-border),
+        inset 4px 0 0 var(--theme-nav-visited-marker);
+
+    i,
+    span {
+        color: var(--theme-nav-visited-ink);
+    }
+
+    &::after {
+        background: color-mix(in srgb, white 28%, var(--theme-nav-visited-ink) 72%);
+        opacity: 0.76;
+        transform: translateY(-50%) scale(0.82);
+        box-shadow:
+            0 0 9px color-mix(in srgb, var(--theme-nav-visited-border) 68%, transparent 32%);
+    }
+}
+
 @media (hover: hover) and (pointer: fine) {
-    button.nav-link:hover {
+    button.nav-link:not(.nav-link-active):hover {
         background:
             linear-gradient(90deg,
                 color-mix(in srgb, var(--theme-nav-surface-raised) 78%, white 22%) 0%,
@@ -192,13 +231,13 @@ button.nav-link {
             0 8px 18px rgba(15, 23, 42, 0.05);
 
         i {
-            color: var(--theme-primary);
+            color: var(--theme-nav-hover-ink);
             opacity: 0.9;
             scale: var(--nav-link-hover-scale);
         }
 
         span {
-            color: var(--theme-primary);
+            color: var(--theme-nav-hover-ink);
             opacity: 1;
         }
 
@@ -217,14 +256,14 @@ button.nav-link {
 button.nav-link-active {
     background:
         linear-gradient(90deg,
-            color-mix(in srgb, var(--theme-primary) 66%, white 34%) 0%,
-            color-mix(in srgb, var(--theme-primary) 88%, #ffb56d 12%) 100%)!important;
-    border-top-color: var(--theme-primary);
+            var(--theme-nav-selected-surface) 0%,
+            var(--theme-nav-selected-surface-accent) 100%)!important;
+    border-top-color: var(--theme-nav-selected-surface-accent);
     user-select: none;
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.34),
         inset 0 -1px 0 rgba(15, 23, 42, 0.08),
-        0 10px 24px rgba(240, 180, 41, 0.18);
+        0 10px 24px var(--theme-nav-selected-shadow);
 
     i {
         color: var(--theme-nav-selected-ink)!important;
@@ -258,8 +297,9 @@ div.nav-link-list-shell.nav-link-list-short-rail {
         border-top-width: var(--nav-control-separator-width);
     }
 
-    button.nav-link:not(.nav-link-active):not(:hover) {
+    button.nav-link:not(.nav-link-active):not(.nav-link-visited):not(:hover) {
         box-shadow:
+            inset 0 0 0 1px var(--theme-nav-unvisited-border),
             inset 0 1px 0 var(--nav-page-control-divider-highlight, rgba(255, 255, 255, 0.08));
     }
 
@@ -348,11 +388,11 @@ div.nav-link-list-shell.nav-link-list-exact-fit {
 }
 
 [data-theme="dark"] nav.nav-sidebar div.nav-link-list-shell {
-    --nav-control-separator-color: #ffffff;
+    --nav-control-separator-color: #203a4d;
 }
 
 [data-theme="light"] nav.nav-sidebar div.nav-link-list-shell {
-    --nav-control-separator-color: #000000;
+    --nav-control-separator-color: #b8cce4;
 }
 
 nav.nav-sidebar-extended div.nav-link-list-shell button.nav-link span {
@@ -365,21 +405,35 @@ nav.nav-sidebar-extended div.nav-link-list-shell button.nav-link span {
     opacity: 1;
 }
 
+[data-theme] nav.nav-sidebar-extended div.nav-link-list-shell button.nav-link-active {
+    i,
+    span {
+        color: var(--theme-nav-selected-ink)!important;
+    }
+}
+
+[data-theme] nav.nav-sidebar-extended div.nav-link-list-shell button.nav-link-visited:not(.nav-link-active) {
+    i,
+    span {
+        color: var(--theme-nav-visited-ink)!important;
+    }
+}
+
 [data-theme="dark"] div.nav-link-list-shell {
-    --nav-control-separator-color: #ffffff;
-    --nav-page-control-divider: #ffffff;
-    --nav-rail-control-divider: #ffffff;
-    --nav-short-rail-control-divider: #ffffff;
+    --nav-control-separator-color: #203a4d;
+    --nav-page-control-divider: #203a4d;
+    --nav-rail-control-divider: #203a4d;
+    --nav-short-rail-control-divider: #203a4d;
     --nav-page-control-divider-highlight: transparent;
     --nav-rail-control-divider-highlight: transparent;
     --nav-short-rail-control-divider-highlight: transparent;
 }
 
 [data-theme="light"] div.nav-link-list-shell {
-    --nav-control-separator-color: #000000;
-    --nav-page-control-divider: #000000;
-    --nav-rail-control-divider: #000000;
-    --nav-short-rail-control-divider: #000000;
+    --nav-control-separator-color: #b8cce4;
+    --nav-page-control-divider: #b8cce4;
+    --nav-rail-control-divider: #b8cce4;
+    --nav-short-rail-control-divider: #b8cce4;
     --nav-page-control-divider-highlight: transparent;
     --nav-rail-control-divider-highlight: transparent;
     --nav-short-rail-control-divider-highlight: transparent;

@@ -137,12 +137,46 @@ nav.nav-link-pills > button.nav-link-pills-link + button.nav-link-pills-link {
     border-left: 1px solid var(--theme-nav-divider);
 }
 
+button.nav-link-pills-link:not(.nav-link-pills-link-active):not(.nav-link-pills-link-visited) {
+    background:
+        linear-gradient(180deg,
+            var(--theme-nav-unvisited-surface-accent) 0%,
+            var(--theme-nav-unvisited-surface) 100%)!important;
+    color: var(--theme-nav-unvisited-ink);
+    box-shadow:
+        inset 0 0 0 1px var(--theme-nav-unvisited-border);
+
+    i,
+    span {
+        color: var(--theme-nav-unvisited-ink);
+        opacity: 0.9;
+    }
+}
+
+button.nav-link-pills-link-visited:not(.nav-link-pills-link-active) {
+    background:
+        linear-gradient(180deg,
+            var(--theme-nav-visited-surface-accent) 0%,
+            var(--theme-nav-visited-surface) 100%)!important;
+    color: var(--theme-nav-visited-ink);
+    box-shadow:
+        inset 0 0 0 1px var(--theme-nav-visited-border),
+        inset 0 -3px 0 var(--theme-nav-visited-marker);
+
+    i,
+    span {
+        color: var(--theme-nav-visited-ink);
+        opacity: 1;
+    }
+}
+
 @media (hover: hover) and (pointer: fine) {
-    button.nav-link-pills-link:hover {
+    button.nav-link-pills-link:hover,
+    button.nav-link-pills-link:not(.nav-link-pills-link-active):hover {
         background:
             linear-gradient(180deg,
                 color-mix(in srgb, var(--theme-nav-surface-raised) 76%, white 24%) 0%,
-                var(--theme-nav-surface-raised) 100%);
+                var(--theme-nav-surface-raised) 100%)!important;
         color: var(--theme-nav-text);
         box-shadow:
             inset 0 0 0 1px color-mix(in srgb, var(--theme-primary) 18%, var(--theme-nav-divider) 82%),

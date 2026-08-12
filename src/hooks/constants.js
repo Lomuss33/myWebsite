@@ -31,7 +31,10 @@ export const useConstants = () => {
     const PRODUCTION_MODE = MODE === "production"
 
     /** @const */
-    const SECTION_TRANSITION_TOTAL_TIME = 420
+    const SECTION_TRANSITION_TOTAL_TIME = 760
+
+    /** @const */
+    const SECTION_TRANSITION_REDUCED_TIME = 140
 
     /** @const */
     const SWIPER_BREAKPOINTS_FOR_THREE_SLIDES = {
@@ -64,6 +67,7 @@ export const useConstants = () => {
         MODE,
         PRODUCTION_MODE,
         SECTION_TRANSITION_TOTAL_TIME,
+        SECTION_TRANSITION_REDUCED_TIME,
         SWIPER_BREAKPOINTS_FOR_THREE_SLIDES,
         SWIPER_BREAKPOINTS_FOR_FOUR_SLIDES,
         TRACKABLE_CLASSES

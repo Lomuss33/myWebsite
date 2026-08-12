@@ -28,13 +28,9 @@ div.nav-profile-card {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background:
-        radial-gradient(circle at 50% 0%,
-            rgba(56, 189, 248, 0.08),
-            transparent 56%),
-        linear-gradient(180deg,
-            color-mix(in srgb, var(--theme-nav-surface) 96%, white 4%) 0%,
-            color-mix(in srgb, var(--theme-nav-surface) 92%, black 8%) 100%);
+    background: linear-gradient(180deg,
+        var(--theme-nav-surface) 0%,
+        var(--theme-nav-surface-accent) 100%);
     border-bottom: 1px solid var(--theme-nav-divider);
     position: relative;
     margin: 0;
@@ -671,21 +667,6 @@ div.nav-profile-card {
         stroke-width: 6;
     }
 
-    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button {
-        border-radius: 999px;
-        transform: none;
-    }
-
-    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button:hover {
-        transform: scale(1.04);
-        filter: drop-shadow(0 0 0.45rem rgba(248, 170, 40, 0.22));
-    }
-
-    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button:hover .circle {
-        transform: scale(0.82);
-        transform-origin: center;
-    }
-
     div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-resume-toggle span.btn-option-picker-toggle-row {
         width: auto;
         height: auto;
@@ -707,6 +688,81 @@ div.nav-profile-card {
         max-width: min(13rem, 80vw);
         padding: 0.36rem;
         border-radius: 1rem;
+    }
+
+    // Extended controls use the same unified circular treatment as mobile.
+    div.nav-profile-card-desktop-action-stack > div.nav-profile-card-desktop-action {
+        width: var(--nav-profile-card-desktop-action-size);
+        height: var(--nav-profile-card-desktop-action-size);
+        min-width: var(--nav-profile-card-desktop-action-size);
+        min-height: var(--nav-profile-card-desktop-action-size);
+        flex: 0 0 var(--nav-profile-card-desktop-action-size);
+        overflow: visible;
+        border: 1px solid var(--theme-nav-mobile-action-edge, var(--theme-nav-action-border));
+        border-radius: 999px;
+        background:
+            linear-gradient(180deg,
+                var(--theme-nav-action-surface) 0%,
+                var(--theme-nav-action-surface-accent) 100%);
+        box-shadow:
+            0 8px 20px rgba(2, 6, 23, 0.20),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        transition:
+            border-color 0.18s ease,
+            box-shadow 0.18s ease;
+    }
+
+    div.nav-profile-card-desktop-action-stack > div.nav-profile-card-desktop-action:hover,
+    div.nav-profile-card-desktop-action-stack > div.nav-profile-card-desktop-action:focus-within {
+        border-color: #f8aa28;
+        box-shadow:
+            0 10px 24px rgba(248, 170, 40, 0.16),
+            inset 0 0 0 1px rgba(248, 170, 40, 0.14),
+            inset 0 1px 0 rgba(255, 255, 255, 0.10);
+    }
+
+    div.nav-profile-card-desktop-action-stack div.audio-button-wrapper-size-default,
+    div.nav-profile-card-desktop-action-stack div.nav-profile-card-desktop-resume-dropdown,
+    div.nav-profile-card-desktop-action-stack div.btn-option-picker {
+        width: 100%;
+        height: 100%;
+    }
+
+    div.nav-profile-card-desktop-action-stack div.audio-button-wrapper-size-default button.audio-button,
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button,
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-resume-toggle {
+        width: 100%;
+        height: 100%;
+        min-width: 100%;
+        min-height: 100%;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button::before,
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button::after,
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-resume-toggle::before,
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-resume-toggle::after {
+        display: none;
+        content: none;
+    }
+
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button svg.audio-button-icon,
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-resume-toggle span.btn-option-picker-toggle-row,
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-resume-toggle div.btn-option-picker-icon.btn-option-picker-icon-size-2 {
+        width: 100%;
+        height: 100%;
+        min-width: 100%;
+        min-height: 100%;
+        flex: 0 0 100%;
+    }
+
+    div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button svg.audio-button-icon {
+        padding: 0;
     }
 
     &:has(div.nav-profile-card-desktop-action-stack) {
@@ -832,9 +888,9 @@ div.nav-profile-card {
             border-radius: 999px;
             background:
                 linear-gradient(180deg,
-                    color-mix(in srgb, var(--theme-nav-surface) 94%, white 6%) 0%,
-                    var(--theme-nav-surface-accent) 100%);
-            border: 1px solid var(--theme-nav-mobile-action-edge, var(--theme-nav-divider));
+                    var(--theme-nav-action-surface) 0%,
+                    var(--theme-nav-action-surface-accent) 100%);
+            border: 1px solid var(--theme-nav-mobile-action-edge, var(--theme-nav-action-border));
             transform: scale(var(--mobile-action-visual-scale));
             transform-origin: center;
             transition:
@@ -1503,32 +1559,40 @@ div.nav-profile-card {
         flex: 0 0 var(--nav-profile-card-desktop-action-size);
     }
 
-    // State 2: very-wide rail. Play, image, and resume form one balanced row.
+    // State 2: wider rail. Keep the image prominent and move the controls underneath.
     @container nav-extended-rail (min-width: 330px) {
         nav.nav-sidebar-extended div.nav-profile-card-header {
-            grid-template-columns: auto auto auto;
+            grid-template-columns: minmax(0, 1fr);
+            grid-template-rows: auto auto auto;
             grid-template-areas:
-                "audio media resume"
-                "info info info";
-            justify-content: center;
-            column-gap: clamp(1rem, 5cqi, 1.6rem);
+                "media"
+                "actions"
+                "info";
+            align-content: start;
+            justify-content: start;
+            justify-items: center;
+            row-gap: clamp(0.42rem, 0.9svh, 0.68rem);
+            column-gap: 0;
             padding-inline: clamp(0.35rem, 2cqi, 0.65rem);
         }
 
         nav.nav-sidebar-extended div.nav-profile-card-desktop-action-stack {
-            display: contents;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: auto;
+            gap: var(--nav-profile-card-desktop-action-gap);
+            padding: 0;
+            transform: none;
         }
 
-        nav.nav-sidebar-extended div.nav-profile-card-desktop-action-audio {
-            grid-area: audio;
-            align-self: center;
-            justify-self: start;
+        nav.nav-sidebar-extended div.nav-profile-card-desktop-action {
+            flex: 0 0 var(--nav-profile-card-desktop-action-size);
         }
 
-        nav.nav-sidebar-extended div.nav-profile-card-desktop-action-resume {
-            grid-area: resume;
-            align-self: center;
-            justify-self: end;
+        nav.nav-sidebar-extended div.nav-profile-card-info {
+            align-self: start;
         }
 
         nav.nav-sidebar-extended h1.nav-profile-card-name {
@@ -1586,27 +1650,22 @@ div.nav-profile-card-short-rail {
     --avatar-shell-gap: 0px;
     --avatar-outline-size: 0px;
     --avatar-inner-rim-size: 0px;
-    --nav-short-rail-name-height: var(--nav-short-rail-name-band-height, calc(0.62rem + 0.38rem * var(--nav-short-rail-visual-density, 1)));
-    --nav-short-rail-ticker-gap: 1.7rem;
-    --nav-short-rail-ticker-duration: 240s;
-    --nav-short-rail-image-area-height: var(--nav-short-rail-image-zone-height);
-    --nav-short-rail-image-square-size: min(100%, var(--nav-short-rail-image-area-height));
-    --nav-short-rail-name-bottom-gap: 0px;
-    --nav-short-rail-name-lower-offset: 0px;
-    --nav-short-rail-metal-frame-width-ratio: 136%;
-    --nav-short-rail-metal-frame-height-ratio: 117%;
+    --nav-short-rail-name-size: clamp(1rem, min(22cqi, 3svh), 1.72rem);
+    --nav-short-rail-ticker-gap: 1.4rem;
+    --nav-short-rail-ticker-duration: 110s;
+    --nav-short-rail-ticker-lane-height: clamp(18px, 2.3svh, 23px);
     --nav-short-rail-frame-blue: #1d4ed8;
     --nav-short-rail-frame-white: #f1f5f9;
     --nav-short-rail-frame-red: #b91c1c;
     --nav-short-rail-frame-opacity: 0.96;
+    display: block;
     align-self: stretch;
     width: 100%;
-    align-items: center;
-    justify-content: center;
     padding: var(--nav-short-rail-profile-padding, 0px);
     position: relative;
     overflow: visible;
     z-index: 8;
+    container-type: inline-size;
 
     div.nav-profile-card-media {
         padding: 0;
@@ -1651,37 +1710,40 @@ div.nav-profile-card-short-rail {
         position: relative;
         width: 100%;
         min-width: 0;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        height: auto;
+        min-height: 0;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto auto auto;
+        align-items: stretch;
+        justify-items: stretch;
+        padding: 0;
         overflow: visible;
         z-index: 8;
     }
 
     div.nav-profile-card-media {
-        position: absolute;
-        top: var(--nav-short-rail-image-top-buffer);
-        bottom: auto;
-        left: 0;
-        right: 0;
+        grid-column: 1;
+        grid-row: 1;
+        position: relative;
         width: 100%;
-        height: var(--nav-short-rail-image-area-height);
-        display: grid;
-        place-items: center;
+        height: auto;
+        aspect-ratio: 1 / 1;
+        display: block;
         isolation: isolate;
-        container-type: inline-size;
         overflow: visible;
         z-index: 20;
     }
 
     div.nav-profile-card-avatar-switch {
-        position: relative;
-        width: 100cqw;
+        position: absolute;
+        inset: 0;
+        width: 100% !important;
+        min-width: 100% !important;
         max-width: 100%;
-        height: 100cqw;
-        max-height: none;
-        aspect-ratio: 1 / 1;
+        height: 100% !important;
+        min-height: 100% !important;
+        max-height: 100%;
         border-radius: 0 !important;
         overflow: hidden;
         transform: translateZ(0);
@@ -1764,20 +1826,17 @@ div.nav-profile-card-short-rail {
     }
 
     img.image-view-img {
-        object-fit: contain;
+        object-fit: cover;
         object-position: center;
     }
 
     div.nav-profile-card-metal-frame {
-        inset: auto;
-        left: 50%;
-        top: 50%;
-        width: 100cqw;
-        max-width: none;
-        height: 100cqw;
-        max-height: none;
-        aspect-ratio: 1 / 1;
-        transform: translate(-50%, -50%) translateZ(72px);
+        inset: 0;
+        width: 100%;
+        max-width: 100%;
+        height: 100%;
+        max-height: 100%;
+        transform: translateZ(72px);
         border-radius: 0;
         border-top-right-radius: 0;
         pointer-events: none;
@@ -1786,11 +1845,9 @@ div.nav-profile-card-short-rail {
 
     div.nav-profile-card-metal-frame-rotor {
         position: absolute;
-        inset: auto;
-        left: 0;
-        top: -12%;
-        width: 100%;
-        height: 124%;
+        inset: -7% -6%;
+        width: auto;
+        height: auto;
         padding: 0;
         border-radius: 0;
         border-top-right-radius: 0;
@@ -1872,34 +1929,33 @@ div.nav-profile-card-short-rail {
     }
 
     div.nav-profile-card-info {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: var(--nav-short-rail-image-zone-height);
-        bottom: auto;
+        grid-column: 1;
+        grid-row: 2;
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
+        width: 100%;
         min-width: 0;
-        height: calc(var(--nav-short-rail-text-zone-height) - var(--nav-short-rail-ticker-height) - var(--nav-short-rail-ticker-bottom-buffer));
-        min-height: calc(var(--nav-short-rail-text-zone-height) - var(--nav-short-rail-ticker-height) - var(--nav-short-rail-ticker-bottom-buffer));
+        height: auto;
+        min-height: 0;
         margin: 0;
-        padding: 0.16rem 0.22rem;
+        padding: clamp(0.28rem, 0.58svh, 0.44rem) clamp(0.22rem, 4cqi, 0.38rem);
         pointer-events: none;
         z-index: 90;
         box-sizing: border-box;
     }
 
     div.nav-profile-card-short-rail-ticker {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: var(--nav-short-rail-ticker-bottom-buffer);
+        grid-column: 1;
+        grid-row: 3;
+        position: relative;
         z-index: 88;
-        height: var(--nav-short-rail-ticker-height);
-        min-height: var(--nav-short-rail-ticker-height);
-        display: flex;
-        align-items: center;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        width: 100%;
+        height: auto;
+        min-height: 0;
         overflow: hidden;
         pointer-events: none;
         background: color-mix(in srgb, var(--theme-nav-surface-accent) 78%, white 22%);
@@ -1911,6 +1967,52 @@ div.nav-profile-card-short-rail {
         color: var(--theme-nav-text);
     }
 
+    div.nav-profile-card-short-rail-ticker::before,
+    div.nav-profile-card-short-rail-ticker::after {
+        content: "";
+        position: absolute;
+        z-index: 3;
+        display: none;
+        width: calc(var(--nav-short-rail-ticker-lane-height) * 0.72);
+        height: var(--nav-short-rail-ticker-lane-height);
+        pointer-events: none;
+        border: 2px solid color-mix(in srgb, var(--theme-primary) 52%, var(--theme-nav-divider) 48%);
+        opacity: 0.62;
+    }
+
+    div.nav-profile-card-short-rail-ticker::before {
+        top: calc(var(--nav-short-rail-ticker-lane-height) * 0.5);
+        right: -2px;
+        border-left: 0;
+        border-radius: 0 999px 999px 0;
+    }
+
+    div.nav-profile-card-short-rail-ticker::after {
+        top: calc(var(--nav-short-rail-ticker-lane-height) * 1.5);
+        left: -2px;
+        border-right: 0;
+        border-radius: 999px 0 0 999px;
+    }
+
+    div.nav-profile-card-short-rail-ticker-lane {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-width: 0;
+        height: var(--nav-short-rail-ticker-lane-height);
+        overflow: hidden;
+    }
+
+    div.nav-profile-card-short-rail-ticker-lane + div.nav-profile-card-short-rail-ticker-lane {
+        border-top: 1px solid color-mix(in srgb, var(--theme-nav-divider) 72%, transparent 28%);
+    }
+
+    div.nav-profile-card-short-rail-ticker-lane-2,
+    div.nav-profile-card-short-rail-ticker-lane-3 {
+        display: none;
+    }
+
     div.nav-profile-card-short-rail-ticker-track {
         display: inline-flex;
         align-items: center;
@@ -1920,6 +2022,14 @@ div.nav-profile-card-short-rail {
         padding-left: 100%;
         animation: nav-profile-card-short-rail-ticker-scroll var(--nav-short-rail-ticker-duration) linear infinite;
         will-change: transform;
+    }
+
+    div.nav-profile-card-short-rail-ticker-lane-2 div.nav-profile-card-short-rail-ticker-track {
+        animation-direction: reverse;
+    }
+
+    div.nav-profile-card-short-rail-ticker-lane-3 div.nav-profile-card-short-rail-ticker-track {
+        animation-delay: calc(var(--nav-short-rail-ticker-duration) * -0.18);
     }
 
     span.nav-profile-card-short-rail-ticker-sequence {
@@ -1948,11 +2058,11 @@ div.nav-profile-card-short-rail {
         max-width: 100%;
         margin: 0;
         font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
-        font-size: clamp(1.15rem, 2.15svh, 1.55rem) !important;
+        font-size: var(--nav-short-rail-name-size) !important;
         font-style: italic;
         font-weight: 800;
-        line-height: 0.92 !important;
-        letter-spacing: 0.075em;
+        line-height: 0.9 !important;
+        letter-spacing: clamp(0.025em, 0.7cqi, 0.075em);
         text-align: center;
         text-shadow:
             0 1px 0 rgba(255, 255, 255, 0.12),
@@ -1960,16 +2070,17 @@ div.nav-profile-card-short-rail {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        transform: translateY(var(--nav-short-rail-name-lower-offset)) scaleY(1.14);
+        transform: scaleY(1.08);
         transform-origin: center;
     }
 
     span.nav-profile-card-name-text {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: clamp(0.02rem, 0.14svh, 0.08rem);
         width: 100%;
         max-width: 100%;
+        min-width: 0;
     }
 
     span.nav-profile-card-name-line {
@@ -1978,12 +2089,14 @@ div.nav-profile-card-short-rail {
     }
 
     span.nav-profile-card-name-line-first {
-        align-self: flex-start;
+        justify-self: start;
+        max-width: 100%;
         text-align: left;
     }
 
     span.nav-profile-card-name-line-last {
-        align-self: flex-end;
+        justify-self: end;
+        max-width: 100%;
         margin-left: 0;
         padding-left: 0;
         text-align: right;
@@ -1994,38 +2107,43 @@ div.nav-profile-card-short-rail {
     }
 }
 
-@media (max-height: 960px) {
+@media (min-height: 960px) {
+    div.nav-profile-card-short-rail {
+        div.nav-profile-card-short-rail-ticker-lane-2 {
+            display: flex;
+        }
+
+        div.nav-profile-card-short-rail-ticker::before {
+            display: block;
+        }
+    }
+}
+
+@media (min-height: 1200px) {
+    div.nav-profile-card-short-rail {
+        div.nav-profile-card-short-rail-ticker-lane-3 {
+            display: flex;
+        }
+
+        div.nav-profile-card-short-rail-ticker::after {
+            display: block;
+        }
+    }
+}
+
+@media (max-height: 640px) {
     div.nav-profile-card-short-rail div.nav-profile-card-short-rail-ticker {
         display: none;
     }
 }
 
-@media (max-height: 720px) {
+@media (max-height: 520px) {
     div.nav-profile-card-short-rail {
-        span.nav-profile-card-name-line-last {
-            display: none;
+        --nav-short-rail-name-size: clamp(0.94rem, min(20cqi, 3.2svh), 1.3rem);
+
+        div.nav-profile-card-info {
+            padding-block: 0.22rem;
         }
-
-        span.nav-profile-card-name-text {
-            align-items: center;
-        }
-
-        span.nav-profile-card-name-line-first {
-            align-self: center;
-            text-align: center;
-        }
-    }
-}
-
-@media (max-height: 560px) {
-    div.nav-profile-card-short-rail div.nav-profile-card-info {
-        display: none;
-    }
-}
-
-@media (max-height: 440px) {
-    div.nav-profile-card-short-rail {
-        display: none;
     }
 }
 
@@ -2140,23 +2258,6 @@ div.nav-short-rail-resume-band {
     }
 }
 
-div.nav-profile-card-desktop-action-resume {
-    button.btn-option-picker-toggle i.fa-icon.fa-file-arrow-down {
-        background-size: 94%;
-        filter:
-            drop-shadow(0 0 0.22rem rgba(248, 170, 40, 0.18))
-            drop-shadow(0 0 0.08rem rgba(255, 255, 255, 0.08));
-    }
-
-    button.btn-option-picker-toggle:hover i.fa-icon.fa-file-arrow-down,
-    button.btn-option-picker-toggle:focus-visible i.fa-icon.fa-file-arrow-down {
-        filter:
-            drop-shadow(0 0 0.32rem rgba(251, 191, 36, 0.82))
-            drop-shadow(0 0 0.65rem rgba(248, 170, 40, 0.42));
-        animation: nav-profile-card-resume-lift 1.6s ease-in-out infinite;
-    }
-}
-
 [data-theme="light"] {
     div.nav-profile-card-mobile-action-resume,
     div.nav-profile-card-desktop-action-resume,
@@ -2179,22 +2280,6 @@ div.nav-profile-card-desktop-action-resume {
         }
     }
 
-    div.nav-profile-card-desktop-action-resume {
-        button.btn-option-picker-toggle i.fa-icon.fa-file-arrow-down {
-            background-image: url("/images/svg/resume-premium-light.svg");
-            filter:
-                drop-shadow(0 0 0.22rem rgba(248, 170, 40, 0.18))
-                drop-shadow(0 0 0.08rem rgba(255, 255, 255, 0.08));
-        }
-
-        button.btn-option-picker-toggle:hover i.fa-icon.fa-file-arrow-down,
-        button.btn-option-picker-toggle:focus-visible i.fa-icon.fa-file-arrow-down {
-            background-image: url("/images/svg/resume-premium-light.svg");
-            filter:
-                drop-shadow(0 0 0.32rem rgba(251, 191, 36, 0.82))
-                drop-shadow(0 0 0.65rem rgba(248, 170, 40, 0.42));
-        }
-    }
 }
 
 @keyframes nav-profile-card-metal-frame-spin {

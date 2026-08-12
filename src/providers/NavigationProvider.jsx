@@ -38,6 +38,7 @@ function NavigationProvider({ children, sections, categories }) {
 
     const [sectionLinks, setSectionLinks] = useState([])
     const [categoryLinks, setCategoryLinks] = useState([])
+    const [visitedLinkHrefs, setVisitedLinkHrefs] = useState(() => new Set())
     const targetSectionRef = useRef(null)
     const previousSectionRef = useRef(null)
     const nextSectionRef = useRef(null)
@@ -131,7 +132,27 @@ function NavigationProvider({ children, sections, categories }) {
      */
     useEffect(() => {
         _updateLinks(targetSection, targetSection?.category)
-    }, [sections, categories, language.getSelectedLanguage()?.id])
+    }, [sections, categories, language.getSelectedLanguage()?.id, visitedLinkHrefs])
+
+    /** Keep navigation history in memory for the lifetime of this page session. */
+    useEffect(() => {
+        if(!targetSection)
+            return
+
+        const visitedHrefs = [
+            `#${targetSection.id}`,
+            targetSection.category?.id ? `#cat:${targetSection.category.id}` : null
+        ].filter(Boolean)
+
+        setVisitedLinkHrefs((currentHrefs) => {
+            if(visitedHrefs.every((href) => currentHrefs.has(href)))
+                return currentHrefs
+
+            const nextHrefs = new Set(currentHrefs)
+            visitedHrefs.forEach((href) => nextHrefs.add(href))
+            return nextHrefs
+        })
+    }, [targetSection?.id, targetSection?.category?.id])
 
     /**
      * @listens viewport.getBreakpoint()
@@ -171,9 +192,14 @@ function NavigationProvider({ children, sections, categories }) {
 
         _setTransitionStatusState(NavigationProvider.TransitionStatus.RUNNING)
         scheduler.clearAllWithTag("transition-to-next-section")
+        const prefersReducedMotion = typeof window !== "undefined" &&
+            window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+        const transitionDuration = prefersReducedMotion ?
+            constants.SECTION_TRANSITION_REDUCED_TIME :
+            constants.SECTION_TRANSITION_TOTAL_TIME
         scheduler.schedule(() => {
             _setTransitionStatusState(NavigationProvider.TransitionStatus.FINISHING)
-        }, constants.SECTION_TRANSITION_TOTAL_TIME, "transition-to-next-section")
+        }, transitionDuration, "transition-to-next-section")
     }
 
     const _adjustScrollBeforeTransition = () => {
@@ -402,7 +428,8 @@ function NavigationProvider({ children, sections, categories }) {
                 language.getTranslation(data?.title?.locales, "title_short_nav")
             ),
             faIcon,
-            active: targetSection?.id === id
+            active: targetSection?.id === id,
+            visited: visitedLinkHrefs.has(`#${id}`)
         }))
 
         const categoryLinks = categories.map(({ id, faIcon, locales }) => ({
@@ -410,7 +437,8 @@ function NavigationProvider({ children, sections, categories }) {
             href: `#cat:${id}`,
             label: language.getTranslation(locales, "title"),
             faIcon,
-            active: targetCategory?.id === id
+            active: targetCategory?.id === id,
+            visited: visitedLinkHrefs.has(`#cat:${id}`)
         }))
 
         setSectionLinks(sectionLinks)

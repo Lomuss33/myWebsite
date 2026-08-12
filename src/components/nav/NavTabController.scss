@@ -88,8 +88,39 @@ button.nav-tab-controller-link {
     }
 }
 
+button.nav-tab-controller-link:not(.nav-tab-controller-link-active):not(.nav-tab-controller-link-visited) {
+    background:
+        linear-gradient(180deg,
+            var(--theme-nav-unvisited-surface-accent) 0%,
+            var(--theme-nav-unvisited-surface) 100%);
+    color: var(--theme-nav-unvisited-ink);
+
+    i,
+    span {
+        color: var(--theme-nav-unvisited-ink);
+        opacity: 0.9;
+    }
+}
+
+button.nav-tab-controller-link-visited:not(.nav-tab-controller-link-active) {
+    background:
+        linear-gradient(180deg,
+            var(--theme-nav-visited-surface-accent) 0%,
+            var(--theme-nav-visited-surface) 100%);
+    color: var(--theme-nav-visited-ink);
+    box-shadow:
+        inset 0 0 0 1px var(--theme-nav-visited-border),
+        inset 0 -3px 0 var(--theme-nav-visited-marker);
+
+    i,
+    span {
+        color: var(--theme-nav-visited-ink);
+        opacity: 1;
+    }
+}
+
 @media (hover: hover) and (pointer: fine) {
-    button.nav-tab-controller-link:hover {
+    button.nav-tab-controller-link:not(.nav-tab-controller-link-active):hover {
         background: color-mix(in srgb, var(--theme-nav-surface-raised) 72%, transparent 28%);
         color: var(--theme-nav-text);
         box-shadow:

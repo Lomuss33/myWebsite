@@ -37,20 +37,12 @@ nav.nav-header-mobile {
 [data-theme="light"] {
     nav.nav-header-mobile {
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-            --theme-nav-surface: #f6fafe;
-            --theme-nav-surface-accent: #ecf3fa;
-            --theme-nav-surface-raised: #dfeaf6;
-            --theme-nav-border: rgba(148, 169, 191, 0.30);
-            --theme-nav-divider: rgba(148, 169, 191, 0.18);
-            --theme-nav-text: rgba(16, 32, 51, 0.98);
-            --theme-nav-text-muted: rgba(83, 101, 122, 0.72);
-            --theme-nav-selected-ink: #ffffff;
-            --theme-nav-mobile-action-edge: rgba(0, 0, 0, 0.78);
+            --theme-nav-mobile-action-edge: rgba(37, 99, 235, 0.28);
 
             div.nav-header-mobile-card-wrapper {
                 background: linear-gradient(180deg,
-                    color-mix(in srgb, var(--theme-nav-surface) 78%, white 22%) 0%,
-                    color-mix(in srgb, var(--theme-nav-surface-accent) 82%, #c9dff1 18%) 100%);
+                    var(--theme-nav-surface) 0%,
+                    var(--theme-nav-surface-accent) 100%);
                 border-color: var(--theme-nav-border);
                 box-shadow: none;
             }
@@ -61,20 +53,12 @@ nav.nav-header-mobile {
 [data-theme="dark"] {
     nav.nav-header-mobile {
         @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-            --theme-nav-surface: #08111f;
-            --theme-nav-surface-accent: #101b31;
-            --theme-nav-surface-raised: #162746;
-            --theme-nav-border: rgba(120, 168, 220, 0.24);
-            --theme-nav-divider: rgba(120, 168, 220, 0.14);
-            --theme-nav-text: rgba(245, 249, 255, 0.985);
-            --theme-nav-text-muted: rgba(198, 213, 232, 0.74);
-            --theme-nav-selected-ink: #08111f;
-            --theme-nav-mobile-action-edge: rgba(255, 255, 255, 0.82);
+            --theme-nav-mobile-action-edge: rgba(103, 232, 249, 0.24);
 
             div.nav-header-mobile-card-wrapper {
                 background: linear-gradient(180deg,
-                    color-mix(in srgb, var(--theme-nav-surface) 92%, #0f1a2e 8%) 0%,
-                    color-mix(in srgb, var(--theme-nav-surface-accent) 94%, #12233d 6%) 100%);
+                    var(--theme-nav-surface) 0%,
+                    var(--theme-nav-surface-accent) 100%);
                 border-color: var(--theme-nav-border);
                 box-shadow: none;
             }

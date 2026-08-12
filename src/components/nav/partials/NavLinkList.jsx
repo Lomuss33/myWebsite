@@ -223,10 +223,13 @@ function NavLink({ link, active, onClick }) {
     const activeClass = active ?
         `nav-link-active` :
         ``
+    const visitedClass = link.visited ?
+        `nav-link-visited` :
+        ``
     const tooltip = link.tooltip || link.label
 
     return (
-        <GestureAwareButton className={`nav-link ${activeClass}`}
+        <GestureAwareButton className={`nav-link ${visitedClass} ${activeClass}`.trim()}
                             hrefToolTip={link.href}
                             tooltip={tooltip}
                             onClick={onClick}>

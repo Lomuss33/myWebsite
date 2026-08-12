@@ -43,8 +43,8 @@ nav.nav-sidebar {
         flex-direction: column;
         background: linear-gradient(
             180deg,
-            color-mix(in srgb, var(--theme-nav-surface) 92%, white 8%) 0%,
-            color-mix(in srgb, var(--theme-nav-surface-accent) 96%, black 4%) 100%
+            var(--theme-nav-surface) 0%,
+            var(--theme-nav-surface-accent) 100%
         );
         border: 0;
         border-right: 1px solid var(--theme-nav-border);
@@ -220,17 +220,10 @@ nav.nav-sidebar-extended {
 
 nav.nav-sidebar-short-rail {
     --width: 100%;
-    --nav-sidebar-toggle-top: calc(var(--nav-short-rail-profile-height) + (var(--nav-short-rail-resume-height) / 2) - 16px);
+    --nav-sidebar-toggle-top: calc(var(--nav-short-rail-profile-height, 0px) + (var(--nav-short-rail-resume-height) / 2) - 16px);
     --nav-short-rail-visual-density: 1;
-    --nav-short-rail-profile-height: calc(200svh / 12);
-    --nav-short-rail-image-zone-height: calc(100svh / 12);
-    --nav-short-rail-text-zone-height: calc(100svh / 12);
-    --nav-short-rail-image-top-buffer: clamp(4px, 0.5svh, 7px);
-    --nav-short-rail-ticker-bottom-buffer: 0px;
+    --nav-short-rail-profile-height: auto;
     --nav-short-rail-profile-padding: 0px;
-    --nav-short-rail-name-band-height: clamp(1.45rem, calc(var(--nav-short-rail-row-height) * 0.42), 1.9rem);
-    --nav-short-rail-ticker-height: clamp(18px, calc(var(--nav-short-rail-row-height) * 0.5), 24px);
-    --nav-short-rail-profile-lift: clamp(4px, calc(var(--nav-short-rail-row-height) * 0.15), 7px);
     --nav-short-rail-row-height: clamp(22px, 4.5svh, 64px);
     --nav-short-rail-separator-height: 4px;
     --nav-short-rail-tools-height: calc(100svh / 12);
@@ -293,7 +286,7 @@ nav.nav-sidebar-short-rail {
     }
 
     div.nav-sidebar-card-wrapper > div.nav-profile-card.nav-profile-card-short-rail {
-        flex: 0 0 var(--nav-short-rail-profile-height);
+        flex: 0 0 auto;
         margin: 0;
         padding: 0;
         align-self: stretch;
@@ -314,110 +307,18 @@ nav.nav-sidebar-short-rail {
         --avatar-size: var(--nav-short-rail-avatar-size);
         --border-size: 0px;
         --offset-status-circle: var(--nav-short-rail-status-offset);
-        --nav-short-rail-image-area-height: var(--nav-short-rail-image-zone-height);
-        --nav-short-rail-image-square-size: min(100%, var(--nav-short-rail-image-area-height));
         margin: 0;
         padding: 0;
         width: 100%;
-        height: var(--nav-short-rail-profile-height);
-        min-height: var(--nav-short-rail-profile-height);
-        max-height: var(--nav-short-rail-profile-height);
+        height: auto;
+        min-height: 0;
+        max-height: none;
         align-items: center;
         justify-content: center;
         position: relative;
         overflow: visible;
         border-radius: 0;
         z-index: 8;
-    }
-
-    div.nav-profile-card-short-rail div.nav-profile-card-header {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        min-width: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: visible;
-        z-index: 8;
-    }
-
-    div.nav-profile-card-short-rail div.nav-profile-card-media {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        height: var(--nav-short-rail-image-area-height);
-        display: grid;
-        place-items: center;
-        isolation: isolate;
-        container-type: inline-size;
-        overflow: visible;
-        z-index: 20;
-    }
-
-    div.nav-profile-card-short-rail div.nav-profile-card-avatar-switch {
-        position: relative;
-        width: min(100cqw, max(0px, calc(var(--nav-short-rail-image-area-height) - var(--nav-short-rail-image-top-buffer) - var(--nav-short-rail-image-top-buffer))));
-        max-width: 100%;
-        height: min(100cqw, max(0px, calc(var(--nav-short-rail-image-area-height) - var(--nav-short-rail-image-top-buffer) - var(--nav-short-rail-image-top-buffer))));
-        max-height: none;
-        aspect-ratio: 1 / 1;
-        border-radius: 0 !important;
-        overflow: hidden;
-        z-index: 2;
-    }
-
-    div.nav-profile-card-short-rail div.nav-profile-card-frame-emblem {
-        pointer-events: none;
-        z-index: 48;
-    }
-
-    div.nav-profile-card-short-rail div.nav-profile-card-metal-frame {
-        left: 50%;
-        top: 50%;
-        width: min(100cqw, max(0px, calc(var(--nav-short-rail-image-area-height) - var(--nav-short-rail-image-top-buffer) - var(--nav-short-rail-image-top-buffer))));
-        height: min(100cqw, max(0px, calc(var(--nav-short-rail-image-area-height) - var(--nav-short-rail-image-top-buffer) - var(--nav-short-rail-image-top-buffer))));
-        max-height: none;
-        aspect-ratio: 1 / 1;
-        pointer-events: none;
-        transform: translate(-50%, -50%) translateZ(72px);
-        z-index: 80;
-    }
-
-    div.nav-profile-card-short-rail div.nav-profile-card-avatar-face {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        border-radius: 0 !important;
-    }
-
-    div.nav-profile-card-short-rail div.image-view,
-    div.nav-profile-card-short-rail img.nav-profile-card-avatar {
-        display: block;
-        width: 100%;
-        height: 100%;
-        min-width: 100%;
-        min-height: 100%;
-        border-radius: 0 !important;
-    }
-
-    div.nav-profile-card-short-rail div.nav-profile-card-avatar-switch {
-        border: 0 !important;
-        box-shadow: none;
-    }
-
-    div.nav-profile-card-short-rail img.image-view-img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        min-width: 100%;
-        min-height: 100%;
-        object-fit: contain;
-        object-position: center;
-        border-radius: 0 !important;
     }
 
     div.nav-tools {
@@ -457,8 +358,8 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
     overflow: visible;
     background:
         linear-gradient(180deg,
-            color-mix(in srgb, var(--theme-nav-surface-accent) 94%, white 6%) 0%,
-            var(--theme-nav-surface-accent) 100%);
+            var(--theme-nav-tool-surface) 0%,
+            var(--theme-nav-tool-surface-accent) 100%);
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.08),
         inset 0 -1px 0 rgba(15, 23, 42, 0.08);
@@ -619,27 +520,6 @@ nav.nav-sidebar div.nav-short-rail-resume-band::after {
                 color: var(--theme-secondary);
             }
         }
-    }
-}
-
-// Short-rail content yields progressively as viewport height becomes constrained.
-@media (max-height: 960px) {
-    nav.nav-sidebar-short-rail {
-        --nav-short-rail-ticker-height: 0px;
-    }
-}
-
-@media (max-height: 560px) {
-    nav.nav-sidebar-short-rail {
-        --nav-short-rail-profile-height: var(--nav-short-rail-image-zone-height);
-        --nav-short-rail-text-zone-height: 0px;
-    }
-}
-
-@media (max-height: 440px) {
-    nav.nav-sidebar-short-rail {
-        --nav-short-rail-profile-height: 0px;
-        --nav-short-rail-image-zone-height: 0px;
     }
 }
 

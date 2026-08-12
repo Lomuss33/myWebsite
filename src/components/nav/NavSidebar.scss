@@ -6,10 +6,10 @@ nav.nav-sidebar {
     --nav-short-rail-resume-height: 0px;
     --nav-extended-profile-height: calc(300svh / 12);
     --nav-extended-avatar-size: clamp(76px, 10svh, 142px);
-    --nav-extended-role-height: clamp(18px, 2.6svh, 28px);
+    --nav-extended-role-height: clamp(22px, 3svh, 32px);
     --nav-extended-role-opacity: 1;
     --nav-extended-action-scale: 1;
-    --nav-extended-padding-top: clamp(8px, 1.5svh, 16px);
+    --nav-extended-padding-top: clamp(4px, 0.75svh, 8px);
     --nav-extended-row-height: clamp(30px, 5svh, 64px);
     --nav-extended-tools-height: calc(100svh / 12);
 
@@ -150,6 +150,11 @@ nav.nav-sidebar:has(div.dropdown-menu.nav-tools-popup-menu.show) {
 
 nav.nav-sidebar-extended {
     --nav-sidebar-toggle-top: calc(var(--nav-extended-profile-height) - 16px);
+
+    div.nav-sidebar-card-wrapper {
+        container-name: nav-extended-rail;
+        container-type: size;
+    }
 
     div.nav-sidebar-card-wrapper > div.nav-profile-card {
         justify-content: flex-start;
@@ -653,27 +658,6 @@ nav.nav-sidebar div.nav-short-rail-resume-band::after {
 @media (min-height: 1100px) {
     nav.nav-sidebar-extended {
         --nav-extended-profile-height: calc(325svh / 12);
-    }
-}
-
-@media (max-height: 800px) {
-    nav.nav-sidebar-extended {
-        --nav-extended-role-height: 0px;
-        --nav-extended-role-opacity: 0;
-    }
-}
-
-@media (max-height: 440px) {
-    nav.nav-sidebar-extended {
-        --nav-extended-profile-height: max(44px, calc(100svh / 12));
-        --nav-extended-padding-top: 0px;
-    }
-}
-
-@media (max-height: 360px) {
-    nav.nav-sidebar-extended {
-        --nav-extended-profile-height: 0px;
-        --nav-sidebar-toggle-top: 8px;
     }
 }
 

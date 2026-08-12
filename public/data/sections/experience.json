@@ -1,33 +1,35 @@
 {
-    "title": {
-        "locales": {
-            "en": {
-                "title_short": "Experience",
-                "title_short_nav": "Work",
-                "title_short_tooltip": "Experience",
-                "title_long_prefix": "A never-ending story of",
-                "title_long": "{{Building}} and {{Learning}}"
-            },
-            "de": {
-                "title_short": "Erfahrung",
-                "title_short_nav": "Arbeit",
-                "title_short_tooltip": "Erfahrung",
-                "title_long_prefix": "Eine niemals endende Geschichte von",
-                "title_long": "{{Bauen}} und {{Lernen}}"
-            },
-            "hr": {
-                "title_short": "Iskustvo",
-                "title_short_nav": "Rad",
-                "title_short_tooltip": "Iskustvo",
-                "title_long_prefix": "Nikad završna priča o",
-                "title_long": "{{Gradnji}} i {{učenju}}"
-            },
-            "tr": {
-                "title_short": "Deneyim",
-                "title_short_nav": "İş",
-                "title_short_tooltip": "Deneyim",
-                "title_long_prefix": "Sonsuz bir hikaye",
-                "title_long": "İnşa {{etmek}} ve {{öğrenmek}}"
+    {
+        "title": {
+            "locales": {
+                "en": {
+                    "title_short": "Experience",
+                    "title_short_nav": "Work",
+                    "title_short_tooltip": "Experience",
+                    "title_long_prefix": "A never-ending story of",
+                    "title_long": "{{Constructing}} and {{Processing}}"
+                },
+                "de": {
+                    "title_short": "Erfahrung",
+                    "title_short_nav": "Arbeit",
+                    "title_short_tooltip": "Erfahrung",
+                    "title_long_prefix": "Eine niemals endende Geschichte von",
+                    "title_long": "{{Konstruieren}} und {{Verarbeiten}}"
+                },
+                "hr": {
+                    "title_short": "Iskustvo",
+                    "title_short_nav": "Rad",
+                    "title_short_tooltip": "Iskustvo",
+                    "title_long_prefix": "Nikad završna priča o",
+                    "title_long": "{{Konstruiranju}} i {{obradi}}"
+                },
+                "tr": {
+                    "title_short": "Deneyim",
+                    "title_short_nav": "İş",
+                    "title_short_tooltip": "Deneyim",
+                    "title_long_prefix": "Sonsuz bir hikaye",
+                    "title_long": "İnşa {{etmek}} ve {{işlemek}}"
+                }
             }
         }
     },
@@ -732,7 +734,9 @@
                 "feature_text_fit_to_media_height": false,
                 "feature_text_fit_min_scale": 0.78,
                 "feature_text_fit_max_scale": 1,
-                "feature_interactive_item_ids": [1]
+                "feature_interactive_item_ids": [
+                    1
+                ]
             },
             "items": [
                 {

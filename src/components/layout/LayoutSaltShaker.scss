@@ -108,7 +108,7 @@ div.layout-salt-shaker-wrapper.layout-salt-shaker-paused svg #layout-salt-shaker
 @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
     div.layout-salt-shaker-wrapper {
         width: 44px;
-        bottom: calc(#{$nav-tabs-height} + 6px);
+        bottom: calc(var(--mobile-nav-tabs-total-height, var(--nav-tabs-height)) + 6px);
     }
 
     button.layout-salt-shaker {

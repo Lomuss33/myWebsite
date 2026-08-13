@@ -939,7 +939,7 @@ nav.nav-sidebar-short-rail div.nav-tools {
 }
 
 nav.nav-sidebar-short-rail div.nav-tools div.nav-tools-item:not(:first-child)::before {
-    top: 0;
+    top: var(--nav-tools-divider-inset);
     bottom: 0;
     background: var(--nav-short-rail-control-divider, var(--theme-nav-divider));
     box-shadow: 1px 0 0 var(--nav-short-rail-control-divider-highlight, rgba(255, 255, 255, 0.08));

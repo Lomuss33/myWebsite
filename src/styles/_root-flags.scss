@@ -31,14 +31,18 @@
 @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
     :root {
         --default-card-spacing: #{$default-card-spacing-mobile};
-        --nav-tabs-height: max(#{$nav-tabs-height-mobile}, 10dvh);
+        --mobile-nav-row-height: calc(var(--mobile-visual-viewport-height, 100dvh) / 10);
+        --mobile-nav-item-icon-size: clamp(0.9rem, calc(var(--mobile-nav-row-height) * 0.22), 1.18rem);
+        --mobile-nav-item-label-size: clamp(0.68rem, calc(var(--mobile-nav-row-height) * 0.16), 0.84rem);
+        --mobile-nav-item-gap: clamp(2px, calc(var(--mobile-nav-row-height) * 0.06), 0.32rem);
+        --mobile-nav-item-padding-block: clamp(3px, calc(var(--mobile-nav-row-height) * 0.08), 0.68rem);
+        --nav-tabs-height: var(--mobile-nav-row-height);
         --nav-pills-height: #{$nav-pills-height-mobile};
     }
 }
 
 @include media-breakpoint-down(sm) {
     :root {
-        --nav-tabs-height: max(#{$nav-tabs-height-mobile-compact}, 10dvh);
         --nav-pills-height: #{$nav-pills-height-compressed};
     }
 }

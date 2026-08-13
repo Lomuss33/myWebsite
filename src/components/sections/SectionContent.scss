@@ -125,11 +125,14 @@ div.section-decoration-band {
     z-index: 1;
     flex: 0 0 var(--section-decoration-band-height);
     grid-column: 1 / -1;
-    width: calc(100vw / var(--section-content-scale, 1));
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     height: var(--section-decoration-band-height);
     min-height: var(--section-decoration-band-height);
-    margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
-    margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    margin-right: 0;
+    margin-left: 0;
+    box-sizing: border-box;
     background: var(--section-decoration-band-background);
     pointer-events: none;
 }

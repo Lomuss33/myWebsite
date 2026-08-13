@@ -329,6 +329,17 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
             })
             const targetX = tooltipPlacement.x
             const targetY = tooltipPlacement.y
+            const anchorInset = 10
+            const anchorX = clampNumber(
+                state.currentX - targetX,
+                anchorInset,
+                Math.max(anchorInset, state.tooltipWidth - anchorInset)
+            )
+            const anchorY = clampNumber(
+                state.currentY - targetY,
+                anchorInset,
+                Math.max(anchorInset, state.tooltipHeight - anchorInset)
+            )
 
             const placementClassNames = [
                 "custom-tooltip-placement-top",
@@ -338,6 +349,8 @@ function MouseLayer({ active, isBlockedByOverlay, hidden }) {
             ]
             tooltip.classList.remove(...placementClassNames)
             tooltip.classList.add(`custom-tooltip-placement-${tooltipPlacement.side}`)
+            tooltip.style.setProperty("--mouse-tooltip-anchor-x", `${anchorX}px`)
+            tooltip.style.setProperty("--mouse-tooltip-anchor-y", `${anchorY}px`)
             tooltip.style.transform = `translate3d(${targetX}px, ${targetY}px, 0)`
         }
         else {

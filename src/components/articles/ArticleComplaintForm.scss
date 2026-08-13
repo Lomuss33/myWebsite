@@ -19,9 +19,9 @@ article.article-complaint-form {
     --complaint-icon-bg: #101924;
     --complaint-icon-color: #dbeafe;
     --complaint-icon-border: rgba(139, 213, 255, 0.14);
-    --complaint-select-surface: linear-gradient(180deg, #3a73bf 0%, #295aa0 100%);
-    --complaint-select-surface-hover: linear-gradient(180deg, #4681d1 0%, #2f66b3 100%);
-    --complaint-select-surface-focus: linear-gradient(180deg, #5590e3 0%, #3972c3 100%);
+    --complaint-select-surface: linear-gradient(145deg, #7c3aed 0%, #5b21b6 54%, #3b1b78 100%);
+    --complaint-select-surface-hover: linear-gradient(145deg, #9254f7 0%, #6d32ca 54%, #47218d 100%);
+    --complaint-select-surface-focus: linear-gradient(145deg, #9f67ff 0%, #7540d5 54%, #4d2698 100%);
     --complaint-select-border: rgba(191, 219, 254, 0.38);
     --complaint-select-border-hover: rgba(219, 234, 254, 0.52);
     --complaint-select-border-focus: rgba(239, 246, 255, 0.72);
@@ -38,9 +38,9 @@ article.article-complaint-form {
     --complaint-select-menu-hover: rgba(191, 219, 254, 0.10);
     --complaint-select-menu-border: rgba(191, 219, 254, 0.18);
     --complaint-select-menu-shadow: 0 18px 30px rgba(2, 6, 23, 0.28);
-    --complaint-action-bg: linear-gradient(180deg, #3c8cff 0%, #2563eb 48%, #163ea8 100%);
-    --complaint-action-bg-hover: linear-gradient(180deg, #58a3ff 0%, #2f77ff 48%, #1d4ed8 100%);
-    --complaint-action-bg-active: linear-gradient(180deg, #2d74ea 0%, #1d4ed8 52%, #183b92 100%);
+    --complaint-action-bg: linear-gradient(135deg, #16c9d8 0%, #1687e8 46%, #2952d6 100%);
+    --complaint-action-bg-hover: linear-gradient(135deg, #35e0e5 0%, #329cf4 46%, #3c64e8 100%);
+    --complaint-action-bg-active: linear-gradient(135deg, #0fb0c0 0%, #1175d3 52%, #2447ba 100%);
     --complaint-action-text: #f8fafc;
     --complaint-action-shadow: 0 12px 24px rgba(2, 6, 23, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.26), inset 0 -1px 0 rgba(15, 23, 42, 0.2);
     --complaint-action-shadow-hover: 0 14px 28px rgba(2, 6, 23, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.32), inset 0 -1px 0 rgba(15, 23, 42, 0.22);
@@ -88,18 +88,18 @@ article.article-complaint-form {
         --complaint-icon-bg: #f2f6fb;
         --complaint-icon-color: #1d4ed8;
         --complaint-icon-border: rgba(37, 99, 235, 0.12);
-        --complaint-select-surface: linear-gradient(180deg, #dcedff 0%, #bdd8ff 100%);
-        --complaint-select-surface-hover: linear-gradient(180deg, #e8f4ff 0%, #cce3ff 100%);
-        --complaint-select-surface-focus: linear-gradient(180deg, #f2f8ff 0%, #d6e9ff 100%);
-        --complaint-select-border: rgba(59, 130, 246, 0.34);
-        --complaint-select-border-hover: rgba(59, 130, 246, 0.48);
-        --complaint-select-border-focus: rgba(59, 130, 246, 0.62);
-        --complaint-select-text: #18417a;
-        --complaint-select-shadow: 0 10px 18px rgba(59, 130, 246, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.94), inset 0 -1px 0 rgba(59, 130, 246, 0.10);
-        --complaint-select-shadow-hover: 0 12px 22px rgba(59, 130, 246, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.98), inset 0 -1px 0 rgba(59, 130, 246, 0.12);
-        --complaint-select-shadow-focus: 0 14px 24px rgba(59, 130, 246, 0.22), inset 0 1px 0 rgba(255, 255, 255, 1), inset 0 -1px 0 rgba(59, 130, 246, 0.14);
-        --complaint-select-arrow-a: #2563eb;
-        --complaint-select-arrow-b: #1d4ed8;
+        --complaint-select-surface: linear-gradient(145deg, #f0e9ff 0%, #ddd0ff 54%, #c8b4f7 100%);
+        --complaint-select-surface-hover: linear-gradient(145deg, #f7f2ff 0%, #e6dcff 54%, #d2c0fb 100%);
+        --complaint-select-surface-focus: linear-gradient(145deg, #fbf9ff 0%, #ece4ff 54%, #dacbff 100%);
+        --complaint-select-border: rgba(109, 40, 217, 0.30);
+        --complaint-select-border-hover: rgba(109, 40, 217, 0.46);
+        --complaint-select-border-focus: rgba(109, 40, 217, 0.62);
+        --complaint-select-text: #4c1d95;
+        --complaint-select-shadow: 0 10px 18px rgba(109, 40, 217, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.94), inset 0 -1px 0 rgba(109, 40, 217, 0.10);
+        --complaint-select-shadow-hover: 0 12px 22px rgba(109, 40, 217, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.98), inset 0 -1px 0 rgba(109, 40, 217, 0.12);
+        --complaint-select-shadow-focus: 0 14px 24px rgba(109, 40, 217, 0.22), inset 0 1px 0 rgba(255, 255, 255, 1), inset 0 -1px 0 rgba(109, 40, 217, 0.14);
+        --complaint-select-arrow-a: #6d28d9;
+        --complaint-select-arrow-b: #4c1d95;
         --complaint-select-menu-surface: #f8fbff;
         --complaint-select-menu-surface-top: #eef6ff;
         --complaint-select-menu-text: #17345f;
@@ -158,9 +158,13 @@ article.article-complaint-form {
         column-gap: 0;
         row-gap: 8px;
         align-items: stretch;
-        border: 1px solid var(--complaint-border);
+        border: 1px solid color-mix(in srgb, var(--complaint-accent) 28%, var(--complaint-border));
         border-radius: 18px;
-        background: var(--complaint-panel);
+        background:
+            radial-gradient(circle at 92% 8%, color-mix(in srgb, #8b5cf6 11%, transparent), transparent 34%),
+            radial-gradient(circle at 4% 98%, color-mix(in srgb, var(--complaint-accent) 9%, transparent), transparent 31%),
+            var(--complaint-panel);
+        box-shadow: 0 22px 54px rgba(2, 6, 23, 0.28), inset 0 1px 0 rgba(255,255,255,.055);
         overflow: visible;
         isolation: isolate;
     }
@@ -179,20 +183,28 @@ article.article-complaint-form {
         min-height: 0;
         height: 100%;
         min-width: 0;
-        border: 1px solid var(--complaint-border);
+        border: 1px solid color-mix(in srgb, var(--complaint-accent) 24%, var(--complaint-border));
         border-radius: 16px;
         background: var(--complaint-panel-2);
-        box-shadow: none;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.045), 0 10px 28px rgba(2,6,23,.16);
+        transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
     }
 
     div.article-complaint-form-message-column > div.input-field-wrapper:not(.input-field-wrapper-focused):hover {
         border-color: var(--complaint-border-hover);
         background: var(--complaint-panel-hover);
+        transform: translateY(-1px);
+        box-shadow: 0 14px 32px rgba(2,6,23,.21), inset 0 1px 0 rgba(255,255,255,.06);
+    }
+
+    div.article-complaint-form-message-column > div.input-field-wrapper.input-field-wrapper-focused {
+        border-color: var(--complaint-border-strong);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--complaint-accent) 13%, transparent), 0 16px 34px rgba(2,6,23,.23);
     }
 
     div.article-complaint-form-message-column > div.input-field-wrapper div.input-group-text {
         border: 0;
-        background: var(--complaint-icon-bg);
+        background: linear-gradient(180deg, color-mix(in srgb, var(--complaint-accent) 18%, var(--complaint-icon-bg)), var(--complaint-icon-bg));
         color: var(--complaint-icon-color);
         border-right: 1px solid var(--complaint-border);
         box-shadow: none;
@@ -241,11 +253,12 @@ article.article-complaint-form {
         box-sizing: border-box;
         min-height: 0;
         padding: clamp(0.7rem, 0.66rem + 0.2vw, 0.9rem) clamp(0.82rem, 0.76rem + 0.22vw, 0.98rem);
-        border: 1px solid color-mix(in srgb, var(--complaint-border) 92%, transparent);
+        border: 1px solid color-mix(in srgb, #a78bfa 24%, var(--complaint-border));
+        border-left: 4px solid #8b5cf6;
         border-radius: 14px;
         background:
             linear-gradient(180deg, color-mix(in srgb, var(--complaint-panel-2) 88%, white 12%) 0%, var(--complaint-panel-2) 100%);
-        box-shadow: inset 0 1px 0 color-mix(in srgb, white 10%, transparent);
+        box-shadow: inset 0 1px 0 color-mix(in srgb, white 10%, transparent), 0 10px 24px rgba(2,6,23,.13);
         color: color-mix(in srgb, var(--complaint-text) 82%, var(--complaint-muted) 18%);
         font-size: clamp(0.82rem, 0.8rem + 0.14vw, 0.92rem);
         font-weight: 500;
@@ -343,6 +356,16 @@ article.article-complaint-form {
         text-overflow: ellipsis;
     }
 
+    button.article-complaint-form-select-trigger::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(105deg, transparent 25%, rgba(255,255,255,.26) 47%, transparent 69%);
+        transform: translateX(-120%);
+        transition: transform 520ms cubic-bezier(.2,.75,.2,1);
+        pointer-events: none;
+    }
+
     span.article-complaint-form-select-caret {
         position: absolute;
         right: 1.05rem;
@@ -366,6 +389,10 @@ article.article-complaint-form {
         box-shadow: var(--complaint-select-shadow-hover);
         transform: translateY(-1px);
         filter: saturate(1.04);
+    }
+
+    div.article-complaint-form-select-wrapper:hover > button.article-complaint-form-select-trigger::before {
+        transform: translateX(120%);
     }
 
     div.article-complaint-form-select-wrapper:focus-within > button.article-complaint-form-select-trigger,
@@ -404,6 +431,7 @@ article.article-complaint-form {
         scrollbar-gutter: stable;
         z-index: 12;
         transform-origin: center top;
+        animation: complaint-menu-arrive 190ms cubic-bezier(.2,.8,.2,1) both;
     }
 
     button.article-complaint-form-select-option {
@@ -414,7 +442,7 @@ article.article-complaint-form {
         width: 100%;
         min-width: 0;
         padding: 0.88rem 0.95rem;
-        border: 0;
+        border: 1px solid transparent;
         border-radius: 14px;
         background: transparent;
         color: var(--complaint-select-menu-text);
@@ -428,7 +456,8 @@ article.article-complaint-form {
     button.article-complaint-form-select-option:hover,
     button.article-complaint-form-select-option:focus-visible {
         background: var(--complaint-select-menu-hover);
-        transform: translateX(1px);
+        border-color: color-mix(in srgb, var(--complaint-select-menu-text) 12%, transparent);
+        transform: translateX(4px);
         outline: none;
     }
 
@@ -438,6 +467,7 @@ article.article-complaint-form {
 
     button.article-complaint-form-select-option-selected {
         background: var(--complaint-select-menu-selected);
+        border-color: color-mix(in srgb, var(--complaint-select-menu-text) 18%, transparent);
     }
 
     span.article-complaint-form-select-option-label {
@@ -536,6 +566,8 @@ article.article-complaint-form {
     }
 
     div.article-complaint-form-send-button-wrapper > button.standard-button.article-complaint-form-send-button {
+        position: relative;
+        overflow: hidden;
         min-width: 0;
         display: flex;
         justify-content: center;
@@ -547,15 +579,15 @@ article.article-complaint-form {
         border-radius: var(--complaint-bottom-radius);
         padding: 0.78rem 1rem;
         font-size: 0.9rem;
-        font-weight: 700;
-        text-transform: none;
-        letter-spacing: 0.01em;
+        font-weight: 850;
+        text-transform: uppercase;
+        letter-spacing: 0.075em;
         white-space: normal;
         line-height: 1.1;
         min-height: var(--complaint-feedback-row-height);
         background: var(--complaint-action-bg) !important;
         color: var(--complaint-action-text) !important;
-        border: 1px solid color-mix(in srgb, var(--complaint-accent) 28%, transparent) !important;
+        border: 1px solid color-mix(in srgb, #67e8f9 62%, white 14%) !important;
         box-shadow: var(--complaint-action-shadow);
         transition:
             background 140ms ease-out,
@@ -565,22 +597,52 @@ article.article-complaint-form {
             filter 140ms ease-out;
     }
 
+    div.article-complaint-form-send-button-wrapper > button.standard-button.article-complaint-form-send-button::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(105deg, transparent 22%, rgba(255,255,255,.32) 46%, transparent 70%);
+        transform: translateX(-120%);
+        transition: transform 560ms cubic-bezier(.2,.8,.2,1);
+        pointer-events: none;
+    }
+
     div.article-complaint-form-send-button-wrapper > button.standard-button {
         width: 100%;
     }
 
     div.article-complaint-form-send-button-wrapper > button.standard-button:hover,
     div.article-complaint-form-send-button-wrapper > button.standard-button:focus-visible {
-        transform: translateY(-1px);
+        transform: translateY(-3px) scale(1.008);
         background: var(--complaint-action-bg-hover) !important;
         border-color: color-mix(in srgb, var(--complaint-accent) 38%, transparent) !important;
         box-shadow: var(--complaint-action-shadow-hover);
-        filter: saturate(1.04);
+        filter: saturate(1.12) brightness(1.04);
+    }
+
+    div.article-complaint-form-send-button-wrapper > button.standard-button:hover::before,
+    div.article-complaint-form-send-button-wrapper > button.standard-button:focus-visible::before {
+        transform: translateX(120%);
     }
 
     div.article-complaint-form-send-button-wrapper > button.standard-button:active {
         background: var(--complaint-action-bg-active) !important;
         box-shadow: var(--complaint-action-shadow-active);
+        transform: translateY(0) scale(0.985);
+    }
+
+    @keyframes complaint-menu-arrive {
+        from { opacity: 0; transform: translateY(-8px) scale(.98); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        button.article-complaint-form-select-trigger::before,
+        div.article-complaint-form-select-menu,
+        div.article-complaint-form-send-button-wrapper > button.standard-button::before {
+            animation: none !important;
+            transition-duration: 0.01ms !important;
+        }
     }
 
     @media (max-width: 991.98px) {

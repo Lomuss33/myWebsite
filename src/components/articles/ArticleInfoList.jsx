@@ -457,7 +457,8 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
     }
 
     return (
-        <div className={`article-info-list-item ${hoverClass} ${pressedClass} ${bubbleItemOpenClass} ${homeClass}`}>
+        <div className={`article-info-list-item ${hoverClass} ${pressedClass} ${bubbleItemOpenClass} ${homeClass}`}
+             style={isContactInfoList ? {"--contact-accent": itemWrapper.faIconStyle?.color || "#60a5fa"} : undefined}>
             <div className={`article-info-list-item-avatar-shell ${bubbleClass}`}
                  onMouseEnter={handleBubbleMouseEnter}
                  onMouseLeave={handleBubbleMouseLeave}>

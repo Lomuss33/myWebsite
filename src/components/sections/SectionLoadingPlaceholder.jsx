@@ -16,9 +16,7 @@ function SectionLoadingPlaceholder({ section }) {
              role="status"
              aria-live="polite"
              aria-label={`${loadingLabel}: ${plainTitle}`}>
-            <div className="section-loading-placeholder-glow" aria-hidden="true"/>
-
-            <header className="section-loading-placeholder-header">
+            <div className="section-loading-placeholder-status">
                 <span className="section-loading-placeholder-icon" aria-hidden="true">
                     <i className={sectionLink?.faIcon || section?.faIcon || "fa-solid fa-layer-group"}/>
                 </span>
@@ -27,23 +25,7 @@ function SectionLoadingPlaceholder({ section }) {
                     <span className="section-loading-placeholder-kicker">{loadingLabel}</span>
                     <strong dangerouslySetInnerHTML={{__html: title}}/>
                 </span>
-            </header>
-
-            <div className="section-loading-placeholder-progress" aria-hidden="true">
-                <span/>
-            </div>
-
-            <div className="section-loading-placeholder-grid" aria-hidden="true">
-                {[0, 1, 2].map((index) => (
-                    <div className={`section-loading-placeholder-card section-loading-placeholder-card-${index + 1}`}
-                         key={index}>
-                        <span className="section-loading-placeholder-card-mark"/>
-                        <span className="section-loading-placeholder-line section-loading-placeholder-line-title"/>
-                        <span className="section-loading-placeholder-line"/>
-                        <span className="section-loading-placeholder-line section-loading-placeholder-line-short"/>
-                        <span className="section-loading-placeholder-card-footer"/>
-                    </div>
-                ))}
+                <span className="section-loading-placeholder-pulse" aria-hidden="true"/>
             </div>
         </div>
     )

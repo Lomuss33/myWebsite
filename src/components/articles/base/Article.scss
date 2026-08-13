@@ -2,6 +2,9 @@
 
 article.article {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     --article-separator-thickness-scale: 2;
     --article-title-line-mid: var(
         --education-current-title-mid,
@@ -69,11 +72,14 @@ article.article {
 article.article::after {
     content: "";
     display: block;
-    width: calc(100vw / var(--section-content-scale, 1));
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     height: var(--article-title-line-thickness);
     margin-top: clamp(28px, 3vw, 42px);
-    margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
-    margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+    margin-right: 0;
+    margin-left: 0;
+    box-sizing: border-box;
     border-radius: 999px;
     background: linear-gradient(90deg, var(--article-title-line-mid), var(--article-title-line-end));
     box-shadow: 0 0 24px color-mix(in srgb, var(--article-title-line-mid) 24%, transparent);
@@ -155,6 +161,9 @@ div.article-content {
 
     /* Keep a small, consistent side buffer inside section cards. */
     margin: 0 8px;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         margin: 0 6px;
     }

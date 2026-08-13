@@ -101,24 +101,27 @@ button.nav-link-pills-link {
         height: 100%;
         min-height: var(--nav-tabs-height);
         flex-direction: column;
-        gap: 0.32rem;
-        padding: 0.68rem 0.42rem 0.62rem;
+        gap: var(--mobile-nav-item-gap);
+        padding: var(--mobile-nav-item-padding-block) 0.42rem;
         background: transparent;
         overflow: hidden;
 
         i {
             opacity: 0.68;
-            font-size: 1.18rem;
+            font-size: var(--mobile-nav-item-icon-size);
             margin-top: 0;
         }
 
         span {
             opacity: 0.84;
-            font-size: 0.84rem;
+            max-width: 100%;
+            overflow: hidden;
+            font-size: var(--mobile-nav-item-label-size);
             line-height: 1;
             margin-top: 0;
             text-align: center;
-            white-space: normal;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
 }

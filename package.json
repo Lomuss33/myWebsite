@@ -21,6 +21,7 @@
         "@emailjs/browser": "^4.4.1",
         "@fortawesome/fontawesome-free": "^6.7.2",
         "bootstrap": "^5.3.8",
+        "leaflet": "^1.9.4",
         "matter-js": "^0.20.0",
         "motion": "^12.43.0",
         "primeicons": "^7.0.0",

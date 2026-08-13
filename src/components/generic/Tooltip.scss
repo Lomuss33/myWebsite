@@ -6,15 +6,18 @@ div.custom-tooltip {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
+    line-height: 1.25;
+    white-space: nowrap;
 
     user-select: none;
     pointer-events: none;
 
-    padding: 0.2rem 1rem;
+    padding: 0.05rem 0.25rem;
 
-    background-color: var(--theme-pop-ups-background);
+    background-color: color-mix(in srgb, var(--theme-pop-ups-background) 70%, transparent);
     color: var(--theme-texts);
-    font-size: 0.9rem;
+    font-size: 0.6rem;
     border-radius: $standard-border-radius;
     border: 2px solid var(--theme-standard-borders-accent-2);
 
@@ -25,7 +28,7 @@ div.custom-tooltip {
         content: '';
         position: absolute;
         top: calc(100% + 1px);
-        left: 50%;
+        left: var(--mouse-tooltip-anchor-x, 50%);
         margin-left: -5px;
         border-width: 5px;
         border-style: solid;
@@ -35,7 +38,7 @@ div.custom-tooltip {
     &.mouse-layer-tooltip.custom-tooltip-placement-bottom::before {
         top: auto;
         bottom: calc(100% + 1px);
-        left: 50%;
+        left: var(--mouse-tooltip-anchor-x, 50%);
         right: auto;
         margin-top: 0;
         margin-left: -5px;
@@ -45,7 +48,7 @@ div.custom-tooltip {
     &.mouse-layer-tooltip.custom-tooltip-placement-top::before {
         top: calc(100% + 1px);
         bottom: auto;
-        left: 50%;
+        left: var(--mouse-tooltip-anchor-x, 50%);
         right: auto;
         margin-top: 0;
         margin-left: -5px;
@@ -53,7 +56,7 @@ div.custom-tooltip {
     }
 
     &.mouse-layer-tooltip.custom-tooltip-placement-right::before {
-        top: 50%;
+        top: var(--mouse-tooltip-anchor-y, 50%);
         left: -11px;
         right: auto;
         bottom: auto;
@@ -63,7 +66,7 @@ div.custom-tooltip {
     }
 
     &.mouse-layer-tooltip.custom-tooltip-placement-left::before {
-        top: 50%;
+        top: var(--mouse-tooltip-anchor-y, 50%);
         left: auto;
         right: -11px;
         bottom: auto;

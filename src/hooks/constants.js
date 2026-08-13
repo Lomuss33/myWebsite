@@ -31,7 +31,7 @@ export const useConstants = () => {
     const PRODUCTION_MODE = MODE === "production"
 
     /** @const */
-    const SECTION_TRANSITION_TOTAL_TIME = 760
+    const SECTION_TRANSITION_TOTAL_TIME = 560
 
     /** @const */
     const SECTION_TRANSITION_REDUCED_TIME = 140

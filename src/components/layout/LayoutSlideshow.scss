@@ -1,7 +1,7 @@
 @use "../../styles/extend" as *;
 
 div.layout-slideshow {
-    --section-transition-duration: 2220ms;
+    --section-transition-duration: 560ms;
     --adjacent-button-size: 48px;
     --adjacent-button-hit-width: 52px;
     --adjacent-button-hit-height: 116px;
@@ -18,7 +18,7 @@ div.layout-slideshow {
     height: 100%;
     min-height: 0;
     padding: 0;
-    overflow-x: visible;
+    overflow-x: clip;
     overflow-y: hidden;
     position: relative;
     isolation: isolate;
@@ -45,9 +45,9 @@ div.layout-slideshow {
 }
 
 div.layout-slideshow-adjacent-controls {
-    --adjacent-button-size: 48px;
-    --adjacent-button-hit-width: 52px;
-    --adjacent-button-hit-height: 116px;
+    --adjacent-button-size: clamp(44px, 7.5svh, 64px);
+    --adjacent-button-hit-width: clamp(52px, 8.5svh, 72px);
+    --adjacent-button-hit-height: clamp(86px, 15svh, 132px);
     --adjacent-button-rail-width: 7px;
     --adjacent-button-rail-height: 66px;
     --adjacent-button-outside-shift: 0px;
@@ -56,7 +56,21 @@ div.layout-slideshow-adjacent-controls {
     inset: 0;
     z-index: calc(#{$z-index-pop-over} + 10);
     overflow: visible;
+    opacity: var(--adjacent-control-opacity, 0);
     pointer-events: none;
+    transition: opacity 160ms ease;
+
+    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        display: none;
+    }
+
+    @media (min-width: 768px) and (max-width: 1199.98px) {
+        --adjacent-button-size: clamp(42px, 7.5svh, 52px);
+        --adjacent-button-hit-width: clamp(48px, 8.5svh, 60px);
+        --adjacent-button-hit-height: clamp(78px, 15svh, 104px);
+        --adjacent-button-rail-width: 5px;
+        --adjacent-button-rail-height: 46px;
+    }
 
     @media (min-width: 1200px) and (min-height: 620px) {
         --adjacent-button-outside-shift: 58px;
@@ -70,8 +84,110 @@ div.layout-slideshow-adjacent-controls {
 }
 
 div.layout-slideshow-transitioning {
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    overflow: hidden;
+}
+
+div.layout-slideshow-paper-sheet {
+    display: none;
+
+    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+        --paper-sheet-surface:
+            color-mix(in srgb, var(--theme-card-background) 92%, var(--theme-background) 8%);
+        --paper-sheet-ink:
+            color-mix(in srgb, var(--theme-nav-divider) 42%, transparent);
+
+        position: absolute;
+        inset: 0;
+        z-index: calc(#{$z-index-section-active} + 2);
+        display: block;
         overflow: hidden;
+        border-left: 1px solid color-mix(in srgb, var(--theme-standard-borders-accent) 48%, transparent);
+        border-radius: 12px 0 0 12px;
+        background:
+            linear-gradient(90deg,
+                color-mix(in srgb, var(--theme-standard-borders-accent) 8%, transparent) 0,
+                transparent 42px),
+            repeating-linear-gradient(180deg,
+                transparent 0,
+                transparent 42px,
+                var(--paper-sheet-ink) 43px,
+                transparent 44px),
+            var(--paper-sheet-surface);
+        box-shadow:
+            -20px 0 38px -24px rgba(2, 6, 23, 0.58),
+            inset 1px 0 0 color-mix(in srgb, white 14%, transparent);
+        contain: paint;
+        pointer-events: none;
+        backface-visibility: hidden;
+        will-change: transform;
+    }
+}
+
+span.layout-slideshow-paper-sheet-edge {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: clamp(24px, 4vw, 54px);
+    width: 2px;
+    background: linear-gradient(180deg,
+        transparent,
+        color-mix(in srgb, var(--theme-primary) 22%, transparent) 18%,
+        color-mix(in srgb, var(--theme-primary) 22%, transparent) 82%,
+        transparent);
+    opacity: 0.7;
+}
+
+div.layout-slideshow-paper-sheet-covering {
+    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+        animation: layout-slideshow-paper-cover 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+}
+
+div.layout-slideshow-paper-sheet-revealing {
+    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+        animation: layout-slideshow-paper-reveal 540ms cubic-bezier(0.4, 0, 0.2, 1) both;
+    }
+}
+
+@include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+    div.layout-slideshow-transitioning > section.section-will-hide,
+    div.layout-slideshow-transitioning > section.section-hiding,
+    div.layout-slideshow-paper-switching > section.section-will-hide,
+    div.layout-slideshow-paper-switching > section.section-hiding {
+        opacity: 1;
+        transform: none;
+        box-shadow: none;
+    }
+
+    div.layout-slideshow-paper-revealing > section.section-shown {
+        animation: layout-slideshow-new-paper-settle 540ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+}
+
+@keyframes layout-slideshow-paper-cover {
+    0% {
+        transform: perspective(1800px) translate3d(104%, 0, 0) rotateY(-2.2deg);
+    }
+    100% {
+        transform: perspective(1800px) translate3d(0, 0, 0) rotateY(0deg);
+    }
+}
+
+@keyframes layout-slideshow-paper-reveal {
+    0% {
+        transform: perspective(1800px) translate3d(0, 0, 0) rotateY(0deg);
+    }
+    100% {
+        transform: perspective(1800px) translate3d(104%, 0, 0) rotateY(-1.6deg);
+    }
+}
+
+@keyframes layout-slideshow-new-paper-settle {
+    0% {
+        transform: translate3d(10px, 0, 0) scale(0.997);
+    }
+    100% {
+        transform: translate3d(0, 0, 0) scale(1);
     }
 }
 
@@ -82,7 +198,9 @@ button.layout-slideshow-adjacent-button {
     --adjacent-button-panel-rotate-y: var(--adjacent-button-panel-closed-rotate-y);
     --adjacent-button-panel-opacity: 1;
     --adjacent-button-panel-glow-opacity: 0.18;
-    --adjacent-button-icon-opacity: 0;
+    --adjacent-button-icon-opacity: 1;
+    --adjacent-button-icon-default-opacity: 1;
+    --adjacent-button-icon-target-opacity: 0;
     --adjacent-button-rail-opacity: 0.66;
     --adjacent-button-rail-scale-y: 1;
     --adjacent-button-rail-core:
@@ -132,7 +250,8 @@ button.layout-slideshow-adjacent-button {
         --adjacent-button-panel-rotate-y: 0deg;
         --adjacent-button-panel-opacity: 1;
         --adjacent-button-panel-glow-opacity: 0.78;
-        --adjacent-button-icon-opacity: 1;
+        --adjacent-button-icon-default-opacity: 0;
+        --adjacent-button-icon-target-opacity: 1;
         --adjacent-button-rail-opacity: 1;
         --adjacent-button-rail-scale-y: 0.7;
     }
@@ -167,7 +286,7 @@ button.layout-slideshow-adjacent-button {
         --adjacent-button-hit-width: 48px;
 
         top: auto;
-        bottom: calc(#{$nav-tabs-height-mobile-compact} + 10px);
+        bottom: calc(var(--mobile-nav-tabs-total-height, var(--nav-tabs-height)) + 10px);
         margin-top: 0;
     }
 
@@ -343,9 +462,11 @@ span.layout-slideshow-adjacent-panel-inner {
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        position: absolute;
+        inset: 0;
         font-size: 1rem;
         line-height: 1;
-        opacity: var(--adjacent-button-icon-opacity);
+        opacity: var(--adjacent-button-icon-default-opacity);
         transform: scale(0.88);
         transition:
             opacity 160ms ease,
@@ -356,33 +477,25 @@ span.layout-slideshow-adjacent-panel-inner {
 button.layout-slideshow-adjacent-button:hover:not(:disabled),
 button.layout-slideshow-adjacent-button:focus-visible:not(:disabled),
 button.layout-slideshow-adjacent-button-open:not(:disabled) {
-    span.layout-slideshow-adjacent-panel-inner i {
+    span.layout-slideshow-adjacent-panel-icon-default {
+        opacity: 0;
+        transform: scale(0.82);
+    }
+
+    span.layout-slideshow-adjacent-panel-icon-target {
+        opacity: var(--adjacent-button-icon-target-opacity);
         transform: scale(1);
+    }
+
+    span.layout-slideshow-adjacent-panel-icon-default,
+    span.layout-slideshow-adjacent-panel-icon-target {
+        z-index: 1;
     }
 }
 
 button.layout-slideshow-adjacent-button-previous:not(:hover):not(:focus-visible):not(.layout-slideshow-adjacent-button-open) {
-    span.layout-slideshow-adjacent-panel-inner i {
+    span.layout-slideshow-adjacent-panel-icon-default {
         transform: translateX(3px) scale(0.88);
-    }
-}
-
-span.layout-slideshow-adjacent-target-mark {
-    right: -4px;
-    bottom: -4px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 19px;
-    height: 19px;
-    border: 1px solid color-mix(in srgb, var(--theme-primary) 48%, transparent);
-    background: color-mix(in srgb, var(--theme-card-background) 84%, transparent);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.24);
-    transform: translateZ(6px);
-
-    i {
-        font-size: 0.58rem;
-        opacity: 0.86;
     }
 }
 
@@ -470,6 +583,270 @@ button.layout-slideshow-adjacent-button-next:focus-visible:not(:disabled) span.l
     height: calc(var(--adjacent-button-size) * 1.3);
 }
 
+@media (min-width: 768px) and (max-width: 1199.98px) {
+    span.layout-slideshow-adjacent-panel-coin {
+        width: 5px;
+        height: 46px;
+    }
+
+    span.layout-slideshow-adjacent-panel-icon i {
+        width: 16px;
+        height: 16px;
+
+        font-size: 0.5rem;
+    }
+}
+
+// Edge navigation: a stable hit target containing a single coin-flip surface.
+// Keeping position, scale and rotation on separate layers prevents vertical drift.
+div.layout-slideshow-adjacent-controls button.layout-slideshow-adjacent-button {
+    --adjacent-arrow-fill: rgba(41, 123, 135, 0.22);
+    --adjacent-arrow-border: rgba(69, 154, 164, 0.32);
+    --adjacent-arrow-highlight: rgba(221, 255, 252, 0.2);
+    --adjacent-control-ink: #276e78;
+    --adjacent-coin-size: clamp(44px, 7.5svh, 64px);
+    --adjacent-pill-width: clamp(5px, 0.85svh, 8px);
+    --adjacent-pill-height: calc(var(--adjacent-coin-size) * 0.78);
+    --adjacent-pill-gap-x: calc(var(--adjacent-coin-size) * 0.075);
+    --adjacent-pill-upper-angle: -18deg;
+    --adjacent-pill-lower-angle: 18deg;
+    --adjacent-coin-scale: 1;
+    --adjacent-coin-turn: 88deg;
+    --adjacent-face-opacity: 0;
+    --adjacent-chevron-opacity: 0.62;
+    --adjacent-arrow-opacity: 0.68;
+    --adjacent-target-opacity: 0;
+    --adjacent-visual-opacity: 0.55;
+
+    top: calc(var(--adjacent-control-center-y) - (var(--adjacent-button-hit-height) / 2));
+    z-index: calc(#{$z-index-pop-over} + 20);
+    margin: 0;
+    perspective: 700px;
+    perspective-origin: center;
+    color: var(--adjacent-control-ink);
+    opacity: 1;
+    transition: none;
+
+    &:disabled {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    &:hover:not(:disabled),
+    &:focus-visible:not(:disabled) {
+        --adjacent-coin-scale: 1.3;
+        --adjacent-coin-turn: 0deg;
+        --adjacent-face-opacity: 1;
+        --adjacent-chevron-opacity: 0;
+        --adjacent-arrow-opacity: 0;
+        --adjacent-target-opacity: 1;
+        --adjacent-visual-opacity: 0.78;
+    }
+
+    &:active:not(:disabled) {
+        --adjacent-coin-scale: 1.22;
+    }
+}
+
+div.layout-slideshow-adjacent-controls button.layout-slideshow-adjacent-button-previous {
+    --adjacent-pill-gap-x: calc(var(--adjacent-coin-size) * -0.075);
+    --adjacent-pill-upper-angle: 18deg;
+    --adjacent-pill-lower-angle: -18deg;
+}
+
+div.layout-slideshow-adjacent-controls span.layout-slideshow-adjacent-panel {
+    top: 50%;
+    width: var(--adjacent-coin-size);
+    height: var(--adjacent-coin-size);
+    opacity: var(--adjacent-visual-opacity);
+    transform: translate3d(0, -50%, 0);
+    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+div.layout-slideshow-adjacent-controls button.layout-slideshow-adjacent-button:hover:not(:disabled) span.layout-slideshow-adjacent-panel,
+div.layout-slideshow-adjacent-controls button.layout-slideshow-adjacent-button:focus-visible:not(:disabled) span.layout-slideshow-adjacent-panel {
+    transform: translate3d(var(--adjacent-button-open-shift-x), -50%, 0);
+}
+
+div.layout-slideshow-adjacent-controls span.layout-slideshow-adjacent-rest-arrow {
+    position: absolute;
+    inset: 0;
+    z-index: 12;
+    opacity: var(--adjacent-arrow-opacity);
+    transform: translateX(calc(-1 * var(--adjacent-pill-gap-x)));
+    transition: opacity 130ms ease;
+
+    > span {
+        position: absolute;
+        left: calc(50% + var(--adjacent-pill-gap-x));
+        width: var(--adjacent-pill-width);
+        height: var(--adjacent-pill-height);
+        border: 1px solid var(--adjacent-arrow-border);
+        border-radius: 999px;
+        background: var(--adjacent-arrow-fill);
+        box-shadow:
+            0 5px 13px rgba(0, 0, 0, 0.13),
+            inset 0 1px 0 var(--adjacent-arrow-highlight);
+    }
+
+    > span:first-child {
+        bottom: 50%;
+        transform: translateX(-50%) rotate(var(--adjacent-pill-upper-angle));
+        transform-origin: 50% 100%;
+    }
+
+    > span:last-child {
+        top: 50%;
+        transform: translateX(-50%) rotate(var(--adjacent-pill-lower-angle));
+        transform-origin: 50% 0;
+    }
+}
+
+div.layout-slideshow-adjacent-controls span.layout-slideshow-adjacent-panel-coin {
+    top: 50%;
+    left: 50%;
+    width: var(--adjacent-coin-size);
+    height: var(--adjacent-coin-size);
+    overflow: visible;
+    transform: translate3d(-50%, -50%, 0) rotateY(var(--adjacent-coin-turn)) scale(var(--adjacent-coin-scale));
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: transform 460ms cubic-bezier(0.2, 0.9, 0.2, 1.15);
+
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        left: calc(50% + var(--adjacent-pill-gap-x));
+        z-index: 8;
+        width: var(--adjacent-pill-width);
+        height: var(--adjacent-pill-height);
+        border: 1px solid var(--adjacent-arrow-border);
+        border-radius: 999px;
+        background: var(--adjacent-arrow-fill);
+        box-shadow:
+            0 5px 13px rgba(0, 0, 0, 0.13),
+            inset 0 1px 0 var(--adjacent-arrow-highlight);
+        opacity: 0;
+        transform-origin: 50% 50%;
+        transition: opacity 110ms ease;
+    }
+
+    &::before {
+        bottom: 50%;
+        transform-origin: 50% 100%;
+        transform: translate3d(-50%, 0, 5px) rotateY(calc(-1 * var(--adjacent-coin-turn))) rotateZ(var(--adjacent-pill-upper-angle));
+    }
+
+    &::after {
+        top: 50%;
+        transform-origin: 50% 0;
+        transform: translate3d(-50%, 0, 5px) rotateY(calc(-1 * var(--adjacent-coin-turn))) rotateZ(var(--adjacent-pill-lower-angle));
+    }
+}
+
+[data-theme="dark"] div.layout-slideshow-adjacent-controls button.layout-slideshow-adjacent-button {
+    --adjacent-arrow-fill: rgba(45, 212, 191, 0.14);
+    --adjacent-arrow-border: rgba(103, 232, 249, 0.21);
+    --adjacent-arrow-highlight: rgba(204, 251, 241, 0.2);
+    --adjacent-control-ink: #99f6e4;
+    --adjacent-button-glow: rgba(45, 212, 191, 0.3);
+    --adjacent-button-surface-hot: color-mix(in srgb, var(--theme-card-background) 72%, #2dd4bf 28%);
+}
+
+[data-theme="light"] div.layout-slideshow-adjacent-controls button.layout-slideshow-adjacent-button {
+    --adjacent-arrow-fill: rgba(234, 88, 12, 0.08);
+    --adjacent-arrow-border: rgba(194, 65, 12, 0.17);
+    --adjacent-arrow-highlight: rgba(255, 255, 255, 0.46);
+    --adjacent-control-ink: #9a3412;
+    --adjacent-button-glow: rgba(249, 115, 22, 0.22);
+    --adjacent-button-surface-hot: color-mix(in srgb, var(--theme-card-background) 82%, #f97316 18%);
+}
+
+div.layout-slideshow-adjacent-controls span.layout-slideshow-adjacent-panel-shadow,
+div.layout-slideshow-adjacent-controls span.layout-slideshow-adjacent-panel-back,
+div.layout-slideshow-adjacent-controls span.layout-slideshow-adjacent-panel-ring,
+div.layout-slideshow-adjacent-controls span.layout-slideshow-adjacent-panel-sheen {
+    opacity: var(--adjacent-face-opacity);
+    transition: opacity 140ms ease;
+}
+
+div.layout-slideshow-adjacent-controls span.layout-slideshow-adjacent-panel-back {
+    box-shadow:
+        0 14px 30px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 color-mix(in srgb, white 28%, transparent),
+        inset 0 -9px 18px color-mix(in srgb, black 16%, transparent);
+}
+
+div.layout-slideshow-adjacent-controls span.layout-slideshow-adjacent-panel-sheen {
+    inset: 2px;
+    overflow: hidden;
+    background: linear-gradient(125deg, color-mix(in srgb, white 28%, transparent), transparent 42%);
+}
+
+div.layout-slideshow-adjacent-controls span.layout-slideshow-adjacent-panel-inner {
+    inset: 9px;
+    opacity: 1;
+}
+
+div.layout-slideshow-adjacent-controls i.layout-slideshow-adjacent-panel-icon {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    width: auto;
+    height: auto;
+    color: currentColor;
+    font-size: clamp(0.9rem, 2svh, 1.18rem);
+    line-height: 1;
+    transform: none;
+    transition: opacity 150ms ease, transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+div.layout-slideshow-adjacent-controls i.layout-slideshow-adjacent-panel-icon-default {
+    z-index: 10;
+    opacity: var(--adjacent-chevron-opacity);
+    transform: rotateY(calc(-1 * var(--adjacent-coin-turn))) scale(0.92);
+}
+
+div.layout-slideshow-adjacent-controls i.layout-slideshow-adjacent-panel-icon-target {
+    z-index: 11;
+    opacity: var(--adjacent-target-opacity);
+    transform: scale(calc(0.82 + (var(--adjacent-target-opacity) * 0.18)));
+}
+
+div.layout-slideshow-adjacent-controls button.layout-slideshow-adjacent-button:focus-visible {
+    outline: none;
+
+    span.layout-slideshow-adjacent-panel-ring {
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme-primary) 38%, transparent);
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1199.98px) {
+    div.layout-slideshow-adjacent-controls button.layout-slideshow-adjacent-button {
+        --adjacent-coin-size: clamp(42px, 7.5svh, 52px);
+        --adjacent-pill-width: clamp(4px, 0.78svh, 6px);
+        --adjacent-pill-gap-x: calc(var(--adjacent-coin-size) * 0.07);
+    }
+
+    div.layout-slideshow-adjacent-controls button.layout-slideshow-adjacent-button-previous {
+        --adjacent-pill-gap-x: calc(var(--adjacent-coin-size) * -0.07);
+    }
+
+    div.layout-slideshow-adjacent-controls i.layout-slideshow-adjacent-panel-icon {
+        font-size: clamp(0.82rem, 1.8svh, 1rem);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    div.layout-slideshow-adjacent-controls span.layout-slideshow-adjacent-panel,
+    div.layout-slideshow-adjacent-controls span.layout-slideshow-adjacent-panel-coin,
+    div.layout-slideshow-adjacent-controls i.layout-slideshow-adjacent-panel-icon {
+        transition-duration: 120ms;
+    }
+}
+
 span.layout-slideshow-adjacent-button-label {
     position: absolute;
     width: 1px;
@@ -501,7 +878,6 @@ span.layout-slideshow-adjacent-button-label {
         transform: translateX(330%) rotate(18deg);
     }
 }
-
 div.layout-slideshow-transition-guide {
     position: absolute;
     inset: 0;
@@ -546,8 +922,7 @@ span.layout-slideshow-transition-destination {
     text-align: center;
     white-space: nowrap;
     overflow: visible;
-    animation: layout-slideshow-transition-destination var(--section-transition-duration) cubic-bezier(0.16, 1, 0.3, 1) both;
-    transform: translate3d(-50%, 14px, 0);
+    transform: translate3d(-50%, 0, 0);
     isolation: isolate;
 
     @include media-breakpoint-down(sm) {
@@ -557,7 +932,7 @@ span.layout-slideshow-transition-destination {
         min-height: clamp(46px, 11vw, 54px);
         padding: clamp(0.68rem, 2vw, 0.8rem) clamp(0.92rem, 3.5vw, 1.12rem);
         font-size: clamp(0.8rem, 2.6vw, 0.92rem);
-        transform: translate3d(-50%, 12px, 0);
+        transform: translate3d(-50%, 0, 0);
     }
 }
 
@@ -691,14 +1066,12 @@ span.layout-slideshow-transition-label {
     text-overflow: ellipsis;
 }
 
-div.layout-slideshow-transition-guide-forward span.layout-slideshow-transition-destination {
-    --transition-destination-start-x: 28px;
-    --transition-destination-end-x: -12px;
+div.layout-slideshow-transition-guide-visible span.layout-slideshow-transition-destination {
+    animation: layout-slideshow-transition-destination-enter 360ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-div.layout-slideshow-transition-guide-backward span.layout-slideshow-transition-destination {
-    --transition-destination-start-x: -28px;
-    --transition-destination-end-x: 12px;
+div.layout-slideshow-transition-guide-leaving span.layout-slideshow-transition-destination {
+    animation: layout-slideshow-transition-destination-leave 420ms cubic-bezier(0.4, 0, 1, 1) both;
 }
 
 span.layout-slideshow-transition-direction {
@@ -747,31 +1120,70 @@ span.layout-slideshow-transition-destination > i {
     --transition-sheen: rgba(255, 255, 255, 0.48);
 }
 
-@keyframes layout-slideshow-transition-destination {
+@keyframes layout-slideshow-transition-destination-enter {
     0% {
         opacity: 0;
-        transform: translate3d(calc(-50% + var(--transition-destination-start-x)), 20px, 0) scale(0.92);
+        transform: translate3d(-50%, 18px, 0) scale(0.94);
     }
-    14% {
+    100% {
         opacity: 1;
-        transform: translate3d(-50%, 2px, 0) scale(0.96);
+        transform: translate3d(-50%, 0, 0) scale(1);
     }
-    78% {
+}
+
+@keyframes layout-slideshow-transition-destination-leave {
+    0% {
         opacity: 1;
-        transform: translate3d(-50%, 2px, 0) scale(0.96);
+        transform: translate3d(-50%, 0, 0) scale(1);
     }
     100% {
         opacity: 0;
-        transform: translate3d(calc(-50% + var(--transition-destination-end-x)), 14px, 0) scale(0.94);
+        transform: translate3d(-50%, 54px, 0) scale(0.96);
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
+    div.layout-slideshow-paper-sheet-covering {
+        animation: layout-slideshow-paper-reduced-enter 140ms linear both;
+    }
+
+    div.layout-slideshow-paper-sheet-revealing {
+        animation: layout-slideshow-paper-reduced-leave 140ms linear both;
+    }
+
+    div.layout-slideshow-paper-revealing > section.section-shown {
+        animation: none;
+    }
+
     div.layout-slideshow {
         --section-transition-duration: 140ms;
     }
 
-    span.layout-slideshow-transition-destination {
-        display: none;
+    div.layout-slideshow-transition-guide-visible span.layout-slideshow-transition-destination {
+        animation: layout-slideshow-transition-destination-reduced-enter 140ms linear both;
     }
+
+    div.layout-slideshow-transition-guide-leaving span.layout-slideshow-transition-destination {
+        animation: layout-slideshow-transition-destination-reduced-leave 140ms linear both;
+    }
+}
+
+@keyframes layout-slideshow-paper-reduced-enter {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes layout-slideshow-paper-reduced-leave {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes layout-slideshow-transition-destination-reduced-enter {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes layout-slideshow-transition-destination-reduced-leave {
+    from { opacity: 1; }
+    to { opacity: 0; }
 }

@@ -175,9 +175,11 @@ article#article-1-section-my-software {
     }
 
     h4.article-title::before {
-        width: calc(100vw / var(--section-content-scale, 1));
-        margin-right: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
-        margin-left: calc((100% - (100vw / var(--section-content-scale, 1))) / 2);
+        width: 100%;
+        max-width: 100%;
+        margin-right: 0;
+        margin-left: 0;
+        box-sizing: border-box;
         height: 3px;
         background: linear-gradient(90deg, var(--software-project-title-mid), var(--software-project-title-end));
         box-shadow: 0 0 24px rgba(236, 72, 153, 0.26);

@@ -7,9 +7,12 @@
 
 // Extended profile-card states share one source of truth across the rail and
 // card styles so their transitions cannot drift apart.
-$nav-extended-profile-tall-min-height: 1100px;
-$nav-extended-profile-extra-tall-min-height: 1600px;
+$nav-extended-profile-single-band-max-height: 760px;
+$nav-extended-profile-narrow-row-min-width: 1360px;
+$nav-extended-profile-tall-min-height: 2300px;
+$nav-extended-profile-extra-tall-min-height: 3000px;
 $nav-extended-profile-max-height: 480px;
+$nav-extended-profile-collapse-max-height: 440px;
 $nav-extended-role-visible-min-height: 620px;
 
 @mixin media-layout-ultrawide {

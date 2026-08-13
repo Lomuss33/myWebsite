@@ -11,6 +11,8 @@ function _loadArticleFeature() { return import("../articles/ArticleFeature.jsx")
 function _loadArticleFacts() { return import("../articles/ArticleFacts.jsx") }
 function _loadArticleFallingWords() { return import("../articles/ArticleFallingWords.jsx") }
 function _loadArticleInfoList() { return import("../articles/ArticleInfoList.jsx") }
+function _loadArticleLocationCompare() { return import("../articles/ArticleLocationCompare.jsx") }
+function _loadArticleLookAtThisGraph() { return import("../articles/ArticleLookAtThisGraph.jsx") }
 function _loadArticleInlineList() { return import("../articles/ArticleInlineList.jsx") }
 function _loadArticleManuscript() { return import("../articles/ArticleManuscript.jsx") }
 function _loadArticlePortfolio() { return import("../articles/ArticlePortfolio.jsx") }
@@ -32,6 +34,8 @@ const ARTICLE_LOADERS = {
     ArticleFacts: _loadArticleFacts,
     ArticleFallingWords: _loadArticleFallingWords,
     ArticleInfoList: _loadArticleInfoList,
+    ArticleLocationCompare: _loadArticleLocationCompare,
+    ArticleLookAtThisGraph: _loadArticleLookAtThisGraph,
     ArticleInlineList: _loadArticleInlineList,
     ArticleManuscript: _loadArticleManuscript,
     ArticlePortfolio: _loadArticlePortfolio,
@@ -54,6 +58,8 @@ const ARTICLE_COMPONENTS = {
     ArticleFacts: lazy(_loadArticleFacts),
     ArticleFallingWords: lazy(_loadArticleFallingWords),
     ArticleInfoList: lazy(_loadArticleInfoList),
+    ArticleLocationCompare: lazy(_loadArticleLocationCompare),
+    ArticleLookAtThisGraph: lazy(_loadArticleLookAtThisGraph),
     ArticleInlineList: lazy(_loadArticleInlineList),
     ArticleManuscript: lazy(_loadArticleManuscript),
     ArticlePortfolio: lazy(_loadArticlePortfolio),

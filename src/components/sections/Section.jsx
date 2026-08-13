@@ -19,6 +19,7 @@ const SECTION_STATUS = {
 }
 
 const Section = memo(function Section({ section, visible, shouldTransition, forceScrollToTopCount = null }) {
+    const viewport = useViewport()
     const [status, setStatus] = useState(SECTION_STATUS.HIDDEN)
     const [shouldResetScroll, setShouldResetScroll] = useState(false)
     const [hasPresentedContent, setHasPresentedContent] = useState(false)
@@ -39,11 +40,25 @@ const Section = memo(function Section({ section, visible, shouldTransition, forc
     }, [forceScrollToTopCount, visible])
 
     useEffect(() => {
-        if(hasPresentedContent || !visible || status !== SECTION_STATUS.SHOWN)
+        if(hasPresentedContent || !visible)
             return
 
-        setHasPresentedContent(true)
-    }, [hasPresentedContent, status, visible])
+        if(status === SECTION_STATUS.SHOWN) {
+            setHasPresentedContent(true)
+            return
+        }
+
+        if(status !== SECTION_STATUS.SHOWING || !viewport.isDesktopLayout())
+            return
+
+        // Give the compositor one clean frame to place the paper mask before
+        // mounting potentially expensive destination articles underneath it.
+        const prepareContentTimer = window.setTimeout(() => {
+            setHasPresentedContent(true)
+        }, 120)
+
+        return () => window.clearTimeout(prepareContentTimer)
+    }, [hasPresentedContent, status, visible, viewport.getBreakpoint()])
 
     return (
         <>

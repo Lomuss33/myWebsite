@@ -229,24 +229,24 @@
           "copyToClipboardButton": false,
           "locales": {
             "en": {
-              "title": "PLC programming & industrial automation",
-              "text": "Experience with Siemens TIA Portal (S7) and practice with Janitza, Allen-Bradley, and Schneider PLC systems.",
-              "proofBubble": "Siemens was the opening chapter. Later, as a Pruftechniker, I tested all kinds of PLC worlds and would gladly jump back into automation."
+              "title": "Industrial automation",
+              "text": "From PLC logic to the factory floor: experienced with Siemens TIA Portal (S7), plus Janitza, Allen-Bradley, and Schneider systems.",
+              "proofBubble": "Siemens opened the door in 2018. Since then I have programmed, commissioned, tested, and troubleshot across different PLC worlds—and I still enjoy making machines think."
             },
             "de": {
-              "title": "SPS-Programmierung & Automatisierungstechnik",
-              "text": "Erfahrung mit Siemens TIA Portal (S7) sowie Praxis mit Janitza-, Allen-Bradley- und Schneider-SPS-Systemen.",
-              "proofBubble": "Siemens war das erste Kapitel. Spaeter habe ich als Pruftechniker die verschiedensten SPS-Welten getestet und wuerde jederzeit gern wieder in die Automation einsteigen."
+              "title": "Industrieautomation",
+              "text": "Von der SPS-Logik bis in die Anlage: erfahren mit Siemens TIA Portal (S7) sowie Janitza-, Allen-Bradley- und Schneider-Systemen.",
+              "proofBubble": "Siemens öffnete mir 2018 die Tür. Seitdem habe ich in verschiedenen SPS-Welten programmiert, in Betrieb genommen, geprüft und Fehler gesucht – und bringe Maschinen noch immer gern zum Denken."
             },
             "hr": {
-              "title": "PLC programiranje i industrijska automatizacija",
-              "text": "Iskustvo s Siemens TIA Portalom (S7) te praksa s Janitza, Allen-Bradley i Schneider PLC sustavima.",
-              "proofBubble": "Siemens je bio prvo poglavlje. Kasnije sam kao Pruftechniker testirao svakakve PLC svjetove i rado bih se opet vratio automatizaciji."
+              "title": "Industrijska automatizacija",
+              "text": "Od PLC logike do tvorničkog pogona: iskustvo sa Siemens TIA Portalom (S7) te sustavima Janitza, Allen-Bradley i Schneider.",
+              "proofBubble": "Siemens mi je 2018. otvorio vrata. Otad sam u različitim PLC okruženjima programirao, puštao sustave u pogon, ispitivao i tražio kvarove – i još uvijek rado učim strojeve razmišljati."
             },
             "tr": {
-              "title": "PLC programlama ve endüstriyel otomasyon",
-              "text": "Siemens TIA Portal (S7) deneyimi ve Janitza, Allen-Bradley ve Schneider PLC sistemleriyle pratik.",
-              "proofBubble": "Siemens ilk bolumdu. Sonra, bir Pruftechniker olarak, farkli PLC dunyalarini test ettim ve otomasyona memnuniyetle geri donerim."
+              "title": "Endüstriyel otomasyon",
+              "text": "PLC mantığından fabrika sahasına: Siemens TIA Portal (S7) ile deneyim; Janitza, Allen-Bradley ve Schneider sistemlerinde pratik.",
+              "proofBubble": "Siemens 2018'de kapıyı açtı. O günden beri farklı PLC dünyalarında programlama, devreye alma, test ve arıza teşhisi yaptım; makinelere düşünmeyi öğretmek hâlâ hoşuma gidiyor."
             }
           }
         },
@@ -267,24 +267,24 @@
           "copyToClipboardButton": false,
           "locales": {
             "en": {
-              "title": "Electrical installation & maintenance",
-              "text": "Hands-on experience with industrial and residential electrical systems, including installation, troubleshooting, and safety.",
-              "proofBubble": "I started wiring things as a teenager during my Ausbildung and never really stopped. A day without thinking about cables is suspicious."
+              "title": "Electrical work",
+              "text": "Confident hands-on work on industrial and residential systems—from clean installations and safe maintenance to stubborn fault finding.",
+              "proofBubble": "I started wiring professionally as a teenager during my Ausbildung and never really stopped. Give me a schematic, a meter, and a difficult fault; that is where experience becomes visible."
             },
             "de": {
-              "title": "Elektroinstallation & Wartung",
-              "text": "Praktische Erfahrung mit industriellen und privaten Elektroanlagen, inklusive Installation, Fehlersuche und Sicherheit.",
-              "proofBubble": "Als Teenager hat das waehrend meiner Ausbildung angefangen und eigentlich nie mehr aufgehoert. Ein Tag ohne an Kabel zu denken ist schon verdaechtig."
+              "title": "Elektroarbeiten",
+              "text": "Sichere Praxis an Industrie- und Hausanlagen – von sauberer Installation und Wartung bis zur hartnäckigen Fehlersuche.",
+              "proofBubble": "Schon als Teenager habe ich während meiner Ausbildung professionell verdrahtet und nie wirklich aufgehört. Gib mir einen Schaltplan, ein Messgerät und einen kniffligen Fehler – dort wird Erfahrung sichtbar."
             },
             "hr": {
-              "title": "Elektroinstalacije i održavanje",
-              "text": "Praktično iskustvo s industrijskim i kućnim električnim instalacijama, uključujući montažu, dijagnostiku i sigurnost.",
-              "proofBubble": "Poceo sam spajati stvari jos kao tinejdzer tijekom Ausbildunga i zapravo nikad nisam stao. Dan bez razmisljanja o kabelima djeluje sumnjivo."
+              "title": "Elektro radovi",
+              "text": "Siguran praktičan rad na industrijskim i kućnim sustavima – od uredne montaže i održavanja do uporne dijagnostike kvarova.",
+              "proofBubble": "Profesionalno sam počeo ožičavati još kao tinejdžer tijekom Ausbildunga i nikad zapravo nisam stao. Dajte mi shemu, mjerni instrument i tvrdoglav kvar – tu se iskustvo najbolje vidi."
             },
             "tr": {
-              "title": "Elektrik tesisatı ve bakım",
-              "text": "Endüstriyel ve ev tipi elektrik sistemlerinde kurulum, arıza giderme ve güvenlik konularında pratik deneyim.",
-              "proofBubble": "Tesisat islerine daha gencken, Ausbildung sirasinda basladim ve aslinda hic birakmadim. Kablolari dusunmeden gecen bir gun biraz supheli geliyor."
+              "title": "Elektrik işleri",
+              "text": "Endüstriyel ve konut sistemlerinde güvenli uygulama: temiz kurulumdan bakıma ve inatçı arızaları bulmaya kadar.",
+              "proofBubble": "Ausbildung sırasında, daha gençken profesyonel kablolamaya başladım ve hiç bırakmadım. Bana bir şema, ölçü aleti ve zorlu bir arıza verin; deneyim en iyi orada görünür."
             }
           }
         },
@@ -343,24 +343,24 @@
           "copyToClipboardButton": false,
           "locales": {
             "en": {
-              "title": "Machine learning & deep learning",
-              "text": "Understanding of core ML/DL concepts, model training workflows, and practical use of modern frameworks.",
-              "proofBubble": "Still one of those fields that makes you pause and grin. What a world to be curious in."
+              "title": "Machine & deep learning",
+              "text": "Strong foundations in ML and deep learning, from preparing data and training models to evaluating results with modern frameworks.",
+              "proofBubble": "I enjoy the whole journey: turning an ambitious idea into an experiment, questioning the metrics, and pushing until the model earns its confidence."
             },
             "de": {
-              "title": "Machine Learning & Deep Learning",
-              "text": "Verständnis zentraler ML/DL-Konzepte, Trainings-Workflows und praktischer Einsatz moderner Frameworks.",
-              "proofBubble": "Das ist immer noch so ein Feld, bei dem man kurz stehen bleibt und grinst. Schon verrueckt, in was fuer einer Welt wir leben."
+              "title": "Machine & Deep Learning",
+              "text": "Starkes Fundament in ML und Deep Learning – von Datenaufbereitung und Modelltraining bis zur fundierten Auswertung mit modernen Frameworks.",
+              "proofBubble": "Mich begeistert der ganze Weg: aus einer ambitionierten Idee ein Experiment machen, Kennzahlen kritisch hinterfragen und weiterarbeiten, bis das Modell sein Vertrauen verdient."
             },
             "hr": {
-              "title": "Strojno učenje i duboko učenje",
-              "text": "Razumijevanje osnovnih ML/DL koncepata, procesa treniranja modela i praktične primjene modernih okvira.",
-              "proofBubble": "To je i dalje jedno od onih podrucja zbog kojih zastanes i nasmijes se. Kakvo vrijeme za biti znatizeljan."
+              "title": "Strojno i duboko učenje",
+              "text": "Čvrsti temelji u strojnom i dubokom učenju – od pripreme podataka i treniranja modela do ozbiljne evaluacije modernim okvirima.",
+              "proofBubble": "Uživam u cijelom putu: ambicioznu ideju pretvoriti u eksperiment, propitati metrike i gurati dalje dok model ne zasluži svoje samopouzdanje."
             },
             "tr": {
-              "title": "Makine öğrenimi ve derin öğrenme",
-              "text": "Temel ML/DL kavramlarına, model eğitimi süreçlerine ve modern çerçevelerin pratik kullanımına hakimiyet.",
-              "proofBubble": "Insani durdurup gulumseten alanlardan biri olmaya devam ediyor. Merakli olmak icin ne tuhaf ve guzel bir cagda yasiyoruz."
+              "title": "Makine ve derin öğrenme",
+              "text": "Veri hazırlama ve model eğitiminden modern çerçevelerle sonuç değerlendirmeye uzanan güçlü makine ve derin öğrenme temeli.",
+              "proofBubble": "Tüm yolculuğu seviyorum: iddialı bir fikri deneye dönüştürmek, metrikleri sorgulamak ve model güvenini hak edene kadar ilerlemek."
             }
           }
         },
@@ -404,7 +404,7 @@
         },
         {
           "id": 7,
-          "faIcon": "fa-brands fa-microsoft",
+          "faIcon": "fa-solid fa-chart-line",
           "faIconColors": {
             "bg": "",
             "bgLight": "",
@@ -419,24 +419,54 @@
           "copyToClipboardButton": false,
           "locales": {
             "en": {
-              "title": "Data analysis & Microsoft tools",
-              "text": "Advanced Excel (formulas, PivotTables, Power Query), Power BI (DAX, dashboards), and strong proficiency with Word, PowerPoint, Teams, and SharePoint.",
-              "proofBubble": "I did not just use Word, Excel, and Access; I taught other people how to use them. Nothing clarifies a tool like explaining it."
+              "title": "Data analysis",
+              "text": "Turning complex data into useful decisions with Databricks, Azure, Spark, KNIME, Python, SQL, and visual analytics.",
+              "proofBubble": "I like data work with a destination: build a reliable pipeline, find the signal hiding in the noise, and explain the result so clearly that people can act on it."
             },
             "de": {
-              "title": "Datenanalyse & Microsoft‑Werkzeuge",
-              "text": "Fortgeschritten in Excel (Formeln, PivotTables, Power Query), Power BI (DAX, Dashboards) sowie sicher in Word, PowerPoint, Teams und SharePoint.",
-              "proofBubble": "Ich habe Word, Excel und Access nicht nur selbst genutzt, sondern anderen auch beigebracht. Nichts klaert ein Werkzeug besser, als es zu erklaeren."
+              "title": "Datenanalyse",
+              "text": "Komplexe Daten mit Databricks, Azure, Spark, KNIME, Python, SQL und visueller Analyse in brauchbare Entscheidungen verwandeln.",
+              "proofBubble": "Ich mag Datenarbeit mit einem klaren Ziel: verlässliche Pipelines bauen, das Signal im Rauschen finden und Ergebnisse so erklären, dass Menschen danach handeln können."
             },
             "hr": {
-              "title": "Analiza podataka i Microsoft alati",
-              "text": "Napredno poznavanje Excela (formule, pivot tablice, Power Query), Power BI‑ja (DAX, nadzorne ploče) te snažno poznavanje Worda, PowerPointa, Teamsa i SharePointa.",
-              "proofBubble": "Word, Excel i Access nisam samo koristio nego i poducavao druge kako ih koristiti. Nista ne razjasni alat kao kad ga moras objasniti."
+              "title": "Analiza podataka",
+              "text": "Pretvaranje složenih podataka u korisne odluke uz Databricks, Azure, Spark, KNIME, Python, SQL i vizualnu analitiku.",
+              "proofBubble": "Volim analizu s jasnim ciljem: izgraditi pouzdan podatkovni tok, pronaći signal skriven u šumu i objasniti rezultat tako jasno da se prema njemu može djelovati."
             },
             "tr": {
-              "title": "Veri analizi ve Microsoft araçları",
-              "text": "İleri seviye Excel (formüller, PivotTable, Power Query), Power BI (DAX, panolar) ve Word, PowerPoint, Teams, SharePoint’te güçlü yetkinlik.",
-              "proofBubble": "Word, Excel ve Accessi sadece kullanmadim; baskalarina da ogrettim. Bir araci anlatmak kadar netlestiren az sey vardir."
+              "title": "Veri analizi",
+              "text": "Databricks, Azure, Spark, KNIME, Python, SQL ve görsel analitik ile karmaşık verileri işe yarayan kararlara dönüştürme.",
+              "proofBubble": "Hedefi olan veri işlerini seviyorum: güvenilir bir veri hattı kurmak, gürültüdeki sinyali bulmak ve sonucu insanların harekete geçebileceği kadar açık anlatmak."
+            }
+          }
+        },
+        {
+          "id": 8,
+          "faIcon": "fa-brands fa-microsoft",
+          "faIconColors": { "bg": "", "bgLight": "", "fill": "", "fillLight": "" },
+          "label": null,
+          "link": { "href": null, "tooltipString": null },
+          "copyToClipboardButton": false,
+          "locales": {
+            "en": {
+              "title": "Microsoft tools",
+              "text": "Advanced Excel and Power BI, polished Word and PowerPoint, capable Access solutions, and collaborative SharePoint workflows.",
+              "proofBubble": "I have used Excel, Word, and Access deeply enough to teach them. From formulas and DAX to presentations and shared processes, I turn the Office toolbox into an efficient working system."
+            },
+            "de": {
+              "title": "Microsoft-Werkzeuge",
+              "text": "Fortgeschrittenes Excel und Power BI, professionelles Word und PowerPoint, durchdachte Access-Lösungen und kollaborative SharePoint-Workflows.",
+              "proofBubble": "Excel, Word und Access habe ich so intensiv genutzt, dass ich sie anderen beigebracht habe. Von Formeln und DAX bis zu Präsentationen und gemeinsamen Prozessen mache ich aus dem Office-Werkzeugkasten ein effizientes Arbeitssystem."
+            },
+            "hr": {
+              "title": "Microsoft alati",
+              "text": "Napredni Excel i Power BI, uglađeni Word i PowerPoint, sposobna Access rješenja te suradnički SharePoint procesi.",
+              "proofBubble": "Excel, Word i Access koristio sam dovoljno duboko da ih podučavam drugima. Od formula i DAX-a do prezentacija i zajedničkih procesa, Office alate pretvaram u učinkovit radni sustav."
+            },
+            "tr": {
+              "title": "Microsoft araçları",
+              "text": "İleri düzey Excel ve Power BI, özenli Word ve PowerPoint, yetkin Access çözümleri ve iş birliğine dayalı SharePoint süreçleri.",
+              "proofBubble": "Excel, Word ve Access'i başkalarına öğretecek kadar derin kullandım. Formüller ve DAX'tan sunumlara ve ortak süreçlere kadar Office araçlarını verimli bir çalışma sistemine dönüştürüyorum."
             }
           }
         }
@@ -765,6 +795,59 @@
               "title": "Pozitif tutum ve sakin duruş",
               "text": "Sürekli sakin, saygılı ve çözüm odaklı; baskı altında bile takıma olumlu etki.",
               "proofBubble": "Tek beden, tek ruh ve tercihen odada tek yapici enerji. Sakin enerji, dramadan daha iyi olceklenir."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "component": "ArticleNameOrigins",
+      "locales": {},
+      "settings": {
+        "order_items_by": "id",
+        "order_items_sort": "asc"
+      },
+      "items": [
+        {
+          "id": 1,
+          "locales": {
+            "en": {
+              "title": "Prezime Musić — značenje i podrijetlo",
+              "text": "Prezime Musić rasprostranjeno je širom Hrvatske, Bosne i Hercegovine, Srbije i Crne Gore. Može potjecati od skraćenog osobnog imena ili nadimka Musa, varijante imena Mojsije, koje se tumači kao „izvučen iz vode“ ili „dijete“."
+            },
+            "de": {
+              "title": "Prezime Musić — značenje i podrijetlo",
+              "text": "Prezime Musić rasprostranjeno je širom Hrvatske, Bosne i Hercegovine, Srbije i Crne Gore. Može potjecati od skraćenog osobnog imena ili nadimka Musa, varijante imena Mojsije, koje se tumači kao „izvučen iz vode“ ili „dijete“."
+            },
+            "hr": {
+              "title": "Prezime Musić — značenje i podrijetlo",
+              "text": "Prezime Musić rasprostranjeno je širom Hrvatske, Bosne i Hercegovine, Srbije i Crne Gore. Može potjecati od skraćenog osobnog imena ili nadimka Musa, varijante imena Mojsije, koje se tumači kao „izvučen iz vode“ ili „dijete“."
+            },
+            "tr": {
+              "title": "Prezime Musić — značenje i podrijetlo",
+              "text": "Prezime Musić rasprostranjeno je širom Hrvatske, Bosne i Hercegovine, Srbije i Crne Gore. Može potjecati od skraćenog osobnog imena ili nadimka Musa, varijante imena Mojsije, koje se tumači kao „izvučen iz vode“ ili „dijete“."
+            }
+          }
+        },
+        {
+          "id": 2,
+          "locales": {
+            "en": {
+              "title": "Ime Lovro — značenje i podrijetlo",
+              "text": "Lovro je zapadnoslavensko i južnoslavensko ime, osobito čisto i popularno u Hrvatskoj i Sloveniji. Nastalo je kao skraćena varijanta latinskog imena Laurentius (Lovre, Lovro, Lavrentije). Dolazi od latinske riječi laurus — lovor, odnosno lovorov vijenac — pa preneseno znači „onaj koji je okićen lovorovim vijencem“: pobjednik, slavan, veličanstven ili predodređen za uspjeh."
+            },
+            "de": {
+              "title": "Ime Lovro — značenje i podrijetlo",
+              "text": "Lovro je zapadnoslavensko i južnoslavensko ime, osobito čisto i popularno u Hrvatskoj i Sloveniji. Nastalo je kao skraćena varijanta latinskog imena Laurentius (Lovre, Lovro, Lavrentije). Dolazi od latinske riječi laurus — lovor, odnosno lovorov vijenac — pa preneseno znači „onaj koji je okićen lovorovim vijencem“: pobjednik, slavan, veličanstven ili predodređen za uspjeh."
+            },
+            "hr": {
+              "title": "Ime Lovro — značenje i podrijetlo",
+              "text": "Lovro je zapadnoslavensko i južnoslavensko ime, osobito čisto i popularno u Hrvatskoj i Sloveniji. Nastalo je kao skraćena varijanta latinskog imena Laurentius (Lovre, Lovro, Lavrentije). Dolazi od latinske riječi laurus — lovor, odnosno lovorov vijenac — pa preneseno znači „onaj koji je okićen lovorovim vijencem“: pobjednik, slavan, veličanstven ili predodređen za uspjeh."
+            },
+            "tr": {
+              "title": "Ime Lovro — značenje i podrijetlo",
+              "text": "Lovro je zapadnoslavensko i južnoslavensko ime, osobito čisto i popularno u Hrvatskoj i Sloveniji. Nastalo je kao skraćena varijanta latinskog imena Laurentius (Lovre, Lovro, Lavrentije). Dolazi od latinske riječi laurus — lovor, odnosno lovorov vijenac — pa preneseno znači „onaj koji je okićen lovorovim vijencem“: pobjednik, slavan, veličanstven ili predodređen za uspjeh."
             }
           }
         }

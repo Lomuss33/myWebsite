@@ -2,6 +2,7 @@
 
 article.article.article-stack {
     container-type: inline-size;
+    container-name: article-stack;
 }
 
 div.article-stack-items {
@@ -18,29 +19,29 @@ div.article-stack-items {
     column-gap: var(--gap);
     width: 100%;
 
-    @container (max-width: 1180px) {
+    @container article-stack (max-width: 1180px) {
         --stack-columns: 4;
     }
 
-    @container (max-width: 980px) {
+    @container article-stack (max-width: 980px) {
         --avatar-size: 70px;
         --gap: 8px;
     }
 
-    @container (max-width: 840px) {
+    @container article-stack (max-width: 840px) {
         --stack-columns: 3;
         --avatar-size: 65px;
         --gap: 7px;
     }
 
-    @container (max-width: 560px) {
+    @container article-stack (max-width: 560px) {
         --stack-columns: 2;
         --avatar-size: 60px;
         --gap: 7px;
         --padding: 10px 20px;
     }
 
-    @container (max-width: 420px) {
+    @container article-stack (max-width: 420px) {
         --avatar-size: 60px;
         --padding: 15px 15px;
         --gap: 4px;
@@ -123,13 +124,13 @@ article.article.article-stack-compact {
         --padding: 12px 14px;
         --card-height: 152px;
 
-        @container (max-width: 920px) {
+        @container article-stack (max-width: 920px) {
             --stack-columns: 4;
             --avatar-size: 56px;
             --card-height: 144px;
         }
 
-        @container (max-width: 660px) {
+        @container article-stack (max-width: 660px) {
             --stack-columns: 3;
             --gap: 10px;
             --avatar-size: 52px;
@@ -137,7 +138,7 @@ article.article.article-stack-compact {
             --card-height: 132px;
         }
 
-        @container (max-width: 460px) {
+        @container article-stack (max-width: 460px) {
             --stack-columns: 2;
             --gap: 8px;
             --avatar-size: 48px;
@@ -202,6 +203,8 @@ article.article.article-stack-compact {
 }
 
 article.article.article-stack-home {
+    --home-stack-title-spread: 0px;
+
     --home-stack-card-surface: linear-gradient(135deg, rgba(18, 27, 49, 0.96), rgba(8, 14, 29, 0.98));
     --home-stack-card-surface-glow-a: rgba(56, 189, 248, 0.16);
     --home-stack-card-surface-glow-b: rgba(244, 114, 182, 0.12);
@@ -309,7 +312,7 @@ article.article.article-stack-home {
         margin-inline: auto;
         box-sizing: border-box;
 
-        @container (max-width: 1180px) {
+        @container article-stack (max-width: 1180px) {
             --stack-columns: 3;
             --gap: 66px;
             --avatar-size: 112px;
@@ -319,7 +322,7 @@ article.article.article-stack-home {
             --home-stack-card-min-height: 184px;
         }
 
-        @container (max-width: 980px) {
+        @container article-stack (max-width: 980px) {
             --stack-columns: 3;
             --avatar-size: 102px;
             --gap: 60px;
@@ -332,7 +335,7 @@ article.article.article-stack-home {
             --home-stack-card-min-height: 176px;
         }
 
-        @container (max-width: 840px) {
+        @container article-stack (max-width: 840px) {
             --stack-columns: 2;
             --avatar-size: 96px;
             --gap: 58px;
@@ -345,9 +348,9 @@ article.article.article-stack-home {
             --home-stack-card-min-height: 168px;
         }
 
-        @container (max-width: 560px) {
+        @container article-stack (max-width: 560px) {
             --stack-columns: 2;
-            --avatar-size: 68px;
+            --avatar-size: 86px;
             --gap: 42px;
             --padding: 13px 12px;
             --home-stack-card-pad-y: 16px;
@@ -389,8 +392,8 @@ article.article.article-stack-home {
             }
         }
 
-        @container (max-width: 420px) {
-            --avatar-size: 58px;
+        @container article-stack (max-width: 420px) {
+            --avatar-size: 82px;
             --padding: 12px 8px;
             --gap: 34px;
             --home-stack-card-pad-y: 14px;
@@ -423,7 +426,7 @@ article.article.article-stack-home {
             }
         }
 
-        @container (max-width: 180px) {
+        @container article-stack (max-width: 180px) {
             div.article-stack-item-home div.article-stack-item-title {
                 grid-template-columns: 1fr;
                 row-gap: 0.12rem;
@@ -494,6 +497,8 @@ article.article.article-stack-home {
 
     div.article-stack-item-home-trigger {
         position: absolute;
+        /* Keep the interactive avatar above the in-card details panel. */
+        z-index: 4;
         top: 50%;
         left: calc(var(--home-stack-avatar-outset) * -1);
         transform: translateY(-50%);
@@ -647,7 +652,7 @@ article.article.article-stack-home {
         font-variant-numeric: tabular-nums;
     }
 
-    @container (max-width: 360px) {
+    @container article-stack (max-width: 360px) {
         div.article-stack-item-home div.article-stack-item-title {
             grid-template-columns: 1fr;
             column-gap: 0;
@@ -667,7 +672,7 @@ article.article.article-stack-home {
         }
     }
 
-    @container (max-width: 300px) {
+    @container article-stack (max-width: 300px) {
         div.article-stack-item-home div.article-stack-item-title {
             align-items: center;
             column-gap: 0;
@@ -776,17 +781,21 @@ article.article.article-stack-home {
         font-weight: 540;
     }
 
-    @container (max-width: 560px) {
+    @container article-stack (max-width: 560px) {
         div.article-stack-item-home-content {
             min-height: 0;
         }
     }
 }
 
-article#article-6-section-about.article-stack-home {
+/* The article's generated numeric id changes as home sections are reordered.
+ * Scope the enhanced Human Stack layout by its stable component classes. */
+article.article.article-stack-home {
     div.article-stack-items.article-stack-items-home {
         --stack-columns: 3;
-        --home-stack-card-min-height: 238px;
+        /* One continuous scale: compact on phones, roomy on desktop, capped on ultrawide. */
+        --avatar-size: clamp(78px, calc(50px + 5cqi), 172px);
+        --home-stack-card-min-height: clamp(178px, calc(140px + 6cqi), 330px);
         --home-stack-bubble-font-size: 1.3rem;
         --home-stack-bubble-line-height: 1.12;
         --home-stack-bubble-icon-reserve: calc((var(--avatar-size) - var(--home-stack-avatar-outset)) + 12px);
@@ -817,25 +826,27 @@ article#article-6-section-about.article-stack-home {
         max-width: none;
         margin-left: -30px;
         margin-right: -6px;
-        row-gap: clamp(2.2rem, calc(var(--avatar-size) * 0.064), 3.6rem);
+        row-gap: clamp(0.7rem, calc(var(--avatar-size) * 0.09), 1.05rem);
         overflow: visible;
     }
 
     div.article-stack-item-home div.article-stack-item-title-prefix {
         max-width: 100%;
-        font-size: clamp(1.64rem, calc(var(--avatar-size) * 0.22), 2.05rem);
+        font-size: clamp(1.35rem, calc(var(--avatar-size) * 0.25), 2.9rem);
         line-height: 0.94;
         opacity: 0.94;
         overflow-wrap: anywhere;
         text-wrap: balance;
+        translate: 0 calc(0px - var(--home-stack-title-spread));
     }
 
     div.article-stack-item-home div.article-stack-item-title-main {
         max-width: 100%;
-        font-size: clamp(2.18rem, calc(var(--avatar-size) * 0.33), 3rem);
+        font-size: clamp(2rem, calc(var(--avatar-size) * 0.42), 4.8rem);
         line-height: 0.94;
         overflow-wrap: anywhere;
         text-wrap: balance;
+        translate: 0 var(--home-stack-title-spread);
     }
 
     div.article-stack-item-home-bubble-inner {
@@ -852,7 +863,9 @@ article#article-6-section-about.article-stack-home {
         hyphens: auto;
     }
 
-    @container (max-width: 1180px) {
+    @container article-stack (max-width: 1180px) {
+        --home-stack-title-spread: 4px;
+
         div.article-stack-items.article-stack-items-home {
             --home-stack-card-pad-x: 8px;
             --home-stack-card-gap: 2px;
@@ -860,7 +873,9 @@ article#article-6-section-about.article-stack-home {
         }
     }
 
-    @container (max-width: 980px) {
+    @container article-stack (max-width: 980px) {
+        --home-stack-title-spread: 8px;
+
         div.article-stack-items.article-stack-items-home {
             --home-stack-card-pad-x: 7px;
             --home-stack-card-gap: 2px;
@@ -868,7 +883,9 @@ article#article-6-section-about.article-stack-home {
         }
     }
 
-    @container (max-width: 640px) {
+    @container article-stack (max-width: 640px) {
+        --home-stack-title-spread: 14px;
+
         div.article-stack-items.article-stack-items-home {
             --home-stack-card-pad-x: 6px;
             --home-stack-card-gap: 2px;
@@ -883,7 +900,9 @@ article#article-6-section-about.article-stack-home {
         }
     }
 
-    @container (max-width: 560px) {
+    @container article-stack (max-width: 560px) {
+        --home-stack-title-spread: 18px;
+
         div.article-stack-items.article-stack-items-home {
             --stack-columns: 1;
             --home-stack-card-pad-x: 5px;
@@ -904,7 +923,7 @@ article#article-6-section-about.article-stack-home {
             width: calc(100% + 34px);
             margin-left: -28px;
             margin-right: -6px;
-            row-gap: 2.48rem;
+            row-gap: 0.65rem;
         }
 
         div.article-stack-item-home div.article-stack-item-title-prefix {
@@ -917,7 +936,9 @@ article#article-6-section-about.article-stack-home {
         }
     }
 
-    @container (max-width: 420px) {
+    @container article-stack (max-width: 420px) {
+        --home-stack-title-spread: 22px;
+
         div.article-stack-items.article-stack-items-home {
             --home-stack-card-pad-x: 6px;
             --home-stack-card-gap: 3px;
@@ -937,7 +958,7 @@ article#article-6-section-about.article-stack-home {
             width: calc(100% + 28px);
             margin-left: -23px;
             margin-right: -5px;
-            row-gap: 1.92rem;
+            row-gap: 0.55rem;
         }
 
         div.article-stack-item-home div.article-stack-item-title-prefix {
@@ -951,7 +972,9 @@ article#article-6-section-about.article-stack-home {
         }
     }
 
-    @container (max-width: 360px) {
+    @container article-stack (max-width: 360px) {
+        --home-stack-title-spread: 24px;
+
         div.article-stack-items.article-stack-items-home {
             --home-stack-card-pad-x: 5px;
             --home-stack-card-gap: 2px;
@@ -963,7 +986,7 @@ article#article-6-section-about.article-stack-home {
             width: calc(100% + 24px);
             margin-left: -20px;
             margin-right: -4px;
-            row-gap: 2.88rem;
+            row-gap: 0.45rem;
         }
 
         div.article-stack-item-home div.article-stack-item-title-prefix {
@@ -976,7 +999,9 @@ article#article-6-section-about.article-stack-home {
         }
     }
 
-    @container (max-width: 300px) {
+    @container article-stack (max-width: 300px) {
+        --home-stack-title-spread: 26px;
+
         div.article-stack-items.article-stack-items-home {
             --home-stack-card-pad-x: 4px;
             --home-stack-card-gap: 1px;
@@ -988,7 +1013,7 @@ article#article-6-section-about.article-stack-home {
             width: calc(100% + 20px);
             margin-left: -17px;
             margin-right: -3px;
-            row-gap: 2.72rem;
+            row-gap: 0.4rem;
         }
 
         div.article-stack-item-home div.article-stack-item-title-prefix {
@@ -1000,6 +1025,58 @@ article#article-6-section-about.article-stack-home {
             font-size: clamp(1.48rem, 14cqw, 1.88rem);
             line-height: 0.96;
         }
+    }
+}
+
+/* Viewport-driven spreading avoids the card's own inline-size container from
+ * making phone typography behave like an ultra-narrow embedded widget. */
+@media (max-width: 1200px) {
+    article.article.article-stack-home {
+        --home-stack-title-spread: 6px;
+    }
+}
+
+@media (max-width: 980px) {
+    article.article.article-stack-home {
+        --home-stack-title-spread: 12px;
+    }
+}
+
+@media (max-width: 640px) {
+    article.article.article-stack-home {
+        --home-stack-title-spread: 20px;
+    }
+}
+
+@media (max-width: 560px) {
+    article.article.article-stack-home {
+        --home-stack-title-spread: 28px;
+
+        div.article-stack-item-home div.article-stack-item-title {
+            row-gap: 0.5rem;
+        }
+    }
+}
+
+@media (max-width: 420px) {
+    article.article.article-stack-home {
+        --home-stack-title-spread: 34px;
+
+        div.article-stack-item-home div.article-stack-item-title {
+            row-gap: 0.35rem;
+        }
+    }
+}
+
+/* Stakeholder scale: deliberately restrained on narrow screens, then a
+ * steeper viewport-driven ramp so wide and ultrawide layouts use their space. */
+article.article.article-stack-home {
+    div.article-stack-item-home div.article-stack-item-title-prefix {
+        font-size: clamp(13px, calc(-2px + 2.3dvw), 54px);
+    }
+
+    div.article-stack-item-home div.article-stack-item-title-main {
+        font-size: clamp(21px, calc(-5px + 3.8dvw), 88px);
     }
 }
 
@@ -1017,21 +1094,21 @@ article#article-4-section-my-art {
             min-height: 0;
         }
 
-        @container (max-width: 920px) {
+        @container article-stack (max-width: 920px) {
             --stack-columns: 5;
             --gap: 15px;
             --avatar-size: 128px;
             --padding: clamp(10px, 5%, 14px);
         }
 
-        @container (max-width: 660px) {
+        @container article-stack (max-width: 660px) {
             --stack-columns: 4;
             --gap: 13px;
             --avatar-size: 118px;
             --padding: clamp(9px, 5%, 13px);
         }
 
-        @container (max-width: 460px) {
+        @container article-stack (max-width: 460px) {
             --stack-columns: 4;
             --gap: 10px;
             --avatar-size: 104px;

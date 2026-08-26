@@ -13,6 +13,17 @@ div.section-content {
     --padding-x: 1.35rem;
     --padding-bottom: 2.35rem;
     --padding: var(--padding-top) var(--padding-x) var(--padding-bottom);
+    /* Single source of truth for horizontal page decorations. Descendants live
+       inside the scaled wrapper, while this padding lives outside it. */
+    --section-decoration-bleed-inline: calc(
+        var(--padding-x) / var(--section-content-scale)
+    );
+    --section-decoration-full-width: calc(
+        100% + (2 * var(--section-decoration-bleed-inline))
+    );
+    --section-decoration-full-margin-inline: calc(
+        -1 * var(--section-decoration-bleed-inline)
+    );
 
     position: relative;
     width: 100%;
@@ -73,6 +84,12 @@ div.section-content-border-decoration {
 }
 
 div.section-content-border-decoration-top-left {
+    /* This is a page-edge rule with a short vertical corner, not a square.
+       Pinning both inline edges prevents the horizontal rule from inheriting
+       the old 70px corner-size cap. */
+    right: 0;
+    left: 0;
+    width: auto;
     border-top: 3px dashed var(--theme-primary);
     border-left: 3px dashed var(--theme-primary);
 }
@@ -118,23 +135,36 @@ div.section-decoration-band {
     --section-decoration-band-background: #000;
     --section-decoration-band-between-height: clamp(28px, 3.4vw, 48px);
     --section-decoration-band-height: clamp(26px, 3.2vw, 46px);
-
     display: block;
     position: relative;
     overflow: hidden;
     z-index: 1;
     flex: 0 0 var(--section-decoration-band-height);
     grid-column: 1 / -1;
-    width: 100%;
-    max-width: 100%;
+    width: var(--section-decoration-full-width);
+    max-width: none;
     min-width: 0;
     height: var(--section-decoration-band-height);
     min-height: var(--section-decoration-band-height);
-    margin-right: 0;
-    margin-left: 0;
+    margin-right: var(--section-decoration-full-margin-inline);
+    margin-left: var(--section-decoration-full-margin-inline);
     box-sizing: border-box;
     background: var(--section-decoration-band-background);
     pointer-events: none;
+}
+
+/* Full-bleed contract for every page-level article separator. Article renderers
+   are lazy-loaded and some of their local styles historically reintroduced
+   fixed 168-380px widths. These declarations intentionally win that cascade so
+   a separator cannot silently shrink when a different renderer is mounted. */
+div.section-content.section-content-has-decoration-bands article.article > h4.article-title::before,
+div.section-content.section-content-has-decoration-bands article.article > h4.article-title::after {
+    width: var(--section-decoration-full-width)!important;
+    max-width: none!important;
+    margin-right: var(--section-decoration-full-margin-inline)!important;
+    margin-left: var(--section-decoration-full-margin-inline)!important;
+    box-sizing: border-box;
+    flex: 0 0 auto;
 }
 
 div.section-content.section-content-page-ready > div.section-content-elements-wrapper {

@@ -1702,9 +1702,11 @@ div.nav-profile-card {
         }
     }
 
-    // State 3: final visible state. All four persistent profile elements share
-    // one compact band; none disappears independently before the whole card.
-    @container nav-extended-rail (min-height: #{$nav-extended-profile-collapse-max-height + 1px}) and (max-height: #{$nav-extended-profile-single-band-max-height}) {
+    // State 3: final visible state. A short rail may use one compact band only
+    // when it is also wide enough for the controls, complete name, and portrait.
+    // Height alone is not enough: at narrower widths the standard stacked state
+    // preserves each element's breathing room.
+    @container nav-extended-rail (min-width: #{$nav-extended-profile-single-band-min-width}) and (min-height: #{$nav-extended-profile-collapse-max-height + 1px}) and (max-height: #{$nav-extended-profile-single-band-max-height}) {
         nav.nav-sidebar-extended div.nav-profile-card-header {
             grid-template-columns: max-content max-content max-content;
             grid-template-rows: auto;
@@ -1778,40 +1780,62 @@ div.nav-profile-card {
         }
     }
 
-    // Width safety is based on the rail itself. If the portrait cannot fit
-    // without crossing the rail edge, remove it and reflow the surviving items.
-    @container nav-extended-rail (max-width: 13.5rem) {
-        nav.nav-sidebar-extended div.nav-profile-card-media {
-            display: none;
+    // A rail that is short but not wide enough for the single band uses its
+    // vertical budget efficiently: a compact button column and portrait share
+    // the top band, while the complete name owns the second row.
+    @container nav-extended-rail (max-width: #{$nav-extended-profile-single-band-min-width}) and (min-height: #{$nav-extended-profile-collapse-max-height + 1px}) and (max-height: #{$nav-extended-profile-single-band-max-height}) {
+        nav.nav-sidebar-extended div.nav-profile-card:not(.nav-profile-card-short-rail) {
+            --nav-profile-card-desktop-action-size: clamp(2.5rem, 10cqi, 3.25rem);
         }
 
-        @media (min-width: #{$nav-extended-profile-narrow-row-min-width}) {
-            nav.nav-sidebar-extended div.nav-profile-card-desktop-action-stack {
-                display: flex;
-                flex-flow: row nowrap;
-                align-items: center;
-                justify-content: space-evenly;
-                justify-self: stretch;
-                gap: var(--nav-profile-card-desktop-action-gutter);
-                width: 100%;
-                height: var(--nav-profile-card-desktop-action-size);
-            }
+        nav.nav-sidebar-extended div.nav-profile-card-header {
+            grid-template-columns: max-content max-content;
+            grid-template-rows: auto minmax(0, 1fr);
+            grid-template-areas:
+                "actions media"
+                "info info";
+            align-content: start;
+            justify-content: space-evenly;
+            padding-inline: var(--nav-profile-card-inline-padding);
+        }
+
+        nav.nav-sidebar-extended div.nav-profile-card-desktop-action-stack {
+            flex-flow: column nowrap;
+            justify-content: center;
+            justify-self: center;
+            gap: clamp(0.4rem, 2cqi, 0.65rem);
+            width: var(--nav-profile-card-desktop-action-size);
+            height: auto;
+        }
+    }
+
+    // Narrow rails retain the portrait and place the compact control pair beneath
+    // it. This keeps the visual hierarchy intact instead of making the controls
+    // compete with the portrait for the same horizontal lane.
+    @container nav-extended-rail (max-width: 17rem) and (min-height: #{$nav-extended-profile-single-band-max-height + 1px}) {
+        nav.nav-sidebar-extended div.nav-profile-card:not(.nav-profile-card-short-rail) {
+            --nav-profile-card-desktop-action-size: clamp(2.45rem, 19cqi, 3rem);
         }
 
         nav.nav-sidebar-extended div.nav-profile-card-header {
             grid-template-columns: minmax(0, 1fr);
+            grid-template-rows: auto minmax(0, 1fr) auto;
             grid-template-areas:
+                "media"
                 "actions"
                 "info";
+            justify-content: center;
+            row-gap: clamp(0.18rem, 1.2cqi, 0.35rem);
         }
-    }
 
-    @container nav-extended-rail (max-width: 13.5rem) and (min-height: #{$nav-extended-profile-collapse-max-height + 1px}) and (max-height: #{$nav-extended-profile-single-band-max-height}) {
-        nav.nav-sidebar-extended div.nav-profile-card-header {
-            grid-template-columns: max-content max-content;
-            grid-template-rows: auto;
-            grid-template-areas: "actions info";
-            justify-content: space-evenly;
+        nav.nav-sidebar-extended div.nav-profile-card-desktop-action-stack {
+            flex-flow: row nowrap;
+            justify-content: center;
+            justify-self: center;
+            gap: clamp(0.28rem, 2.4cqi, 0.45rem);
+            width: auto;
+            height: var(--nav-profile-card-desktop-action-size);
+            align-self: center;
         }
     }
 

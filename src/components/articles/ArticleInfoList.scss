@@ -313,7 +313,7 @@ article.article-info-list-home {
         --grid-template-columns: repeat(2, minmax(0, 1fr));
         --grid-row-gap: 10px;
         --grid-column-gap: 10px;
-        --avatar-size: 72px;
+        --avatar-size: 80px;
         --min-height: calc(var(--avatar-size) + 34px);
         --padding: 5px;
         --content-padding-inline-start: 14px;
@@ -341,7 +341,7 @@ article.article-info-list-home {
 
         @include media-breakpoint-down(xl) {
             --grid-template-columns: repeat(2, minmax(0, 1fr));
-            --avatar-size: 68px;
+            --avatar-size: 76px;
             --content-padding-inline-start: 13px;
             --content-padding-inline-end: 15px;
             --content-padding-block: 13px;
@@ -355,7 +355,7 @@ article.article-info-list-home {
 
         @include media-breakpoint-down(lg) {
             --grid-template-columns: repeat(2, minmax(0, 1fr));
-            --avatar-size: 64px;
+            --avatar-size: 72px;
             --content-padding-inline-start: 12px;
             --content-padding-inline-end: 14px;
             --content-padding-block: 12px;
@@ -369,7 +369,7 @@ article.article-info-list-home {
 
         @include media-breakpoint-down(md) {
             --grid-template-columns: repeat(2, minmax(0, 1fr));
-            --avatar-size: 60px;
+            --avatar-size: 68px;
             --content-padding-inline-start: 11px;
             --content-padding-inline-end: 13px;
             --content-padding-block: 11px;
@@ -382,12 +382,12 @@ article.article-info-list-home {
         }
 
         @include media-breakpoint-down(sm) {
-            --grid-template-columns: repeat(2, minmax(0, 1fr));
-            --avatar-size: 54px;
-            --padding: 4px;
-            --content-padding-inline-start: 10px;
-            --content-padding-inline-end: 11px;
-            --content-padding-block: 10px;
+            --grid-template-columns: minmax(0, 1fr);
+            --avatar-size: 72px;
+            --padding: 6px;
+            --content-padding-inline-start: 14px;
+            --content-padding-inline-end: 14px;
+            --content-padding-block: 13px;
             --proof-bubble-bleed-left: 3px;
             --proof-bubble-bleed-right: 19px;
             --proof-bubble-bleed-top: 2px;
@@ -535,29 +535,25 @@ article.article-info-list-home {
         }
 
         @include media-breakpoint-down(sm) {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr);
-            grid-template-areas:
-                "avatar"
-                "content";
-            row-gap: 1px;
+            display: flex;
+            align-items: stretch;
 
             div.article-info-list-item-avatar-shell {
-                grid-area: avatar;
-                width: 100%;
-                justify-content: center;
-                align-items: center;
+                flex: 0 0 auto;
+                width: auto;
+                justify-content: flex-start;
+                align-items: stretch;
             }
 
             a.article-info-list-item-avatar-link,
             button.article-info-list-item-avatar-button {
-                width: 100%;
-                justify-content: center;
-                align-self: center;
+                width: auto;
+                justify-content: flex-start;
+                align-self: stretch;
             }
 
             div.article-info-list-item-content.article-info-list-item-home {
-                grid-area: content;
+                flex: 1 1 auto;
                 min-height: 0;
                 gap: 0;
             }
@@ -590,9 +586,10 @@ article.article-info-list-home {
     }
 }
 
-article#article-3-section-about.article-info-list-home,
-article#article-4-section-about.article-info-list-home,
-article#article-5-section-about.article-info-list-home {
+// Shared presentation for every home-page skill list. Keeping this on the
+// reusable component class prevents newly added/reordered skill articles from
+// silently falling back to the smaller base style.
+article.article-info-list-home {
     --home-skill-description-color: color-mix(in srgb, #dbeafe 74%, #fde68a 26%);
     --home-skill-description-shadow: 0 1px 0 rgba(0, 0, 0, 0.22);
 
@@ -630,9 +627,30 @@ article#article-5-section-about.article-info-list-home {
             font-size: var(--home-skill-title-font-size) !important;
             line-height: var(--home-skill-title-line-height) !important;
             margin-bottom: 5px;
-            padding-right: var(--home-skill-text-right-guard);
+            padding-inline: var(--home-skill-text-right-guard);
             padding-bottom: 4px;
+            text-align: center;
             text-wrap: balance;
+
+            > span {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        div.article-info-list-item-info-title-split {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.2em 0.55rem;
+        }
+
+        span.article-info-list-item-info-title-main,
+        span.article-info-list-item-info-title-rest {
+            flex: 0 1 auto;
+            justify-self: auto;
+            text-align: center;
         }
 
         div.article-info-list-item-info-body {
@@ -641,12 +659,14 @@ article#article-5-section-about.article-info-list-home {
 
         div.article-info-list-item-info-text {
             box-sizing: border-box;
-            align-items: flex-start;
-            padding-right: var(--home-skill-text-right-guard);
+            align-items: center;
+            justify-content: center;
+            padding-inline: var(--home-skill-text-right-guard);
             color: var(--home-skill-description-color) !important;
             font-size: var(--home-skill-description-font-size) !important;
             font-weight: 500;
             line-height: var(--home-skill-description-line-height) !important;
+            text-align: center;
             text-shadow: var(--home-skill-description-shadow);
             overflow-wrap: anywhere;
             text-wrap: pretty;

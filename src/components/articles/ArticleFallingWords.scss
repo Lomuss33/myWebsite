@@ -53,8 +53,8 @@ article.article-falling-words {
 }
 
 article#article-2-section-my-writings {
-    width: min(calc(100vw / var(--section-content-scale, 1) - clamp(28px, 8vw, 320px)), 1760px);
-    max-width: none;
+    width: min(100%, 1760px);
+    max-width: 100%;
     margin-inline: auto;
 
     div.article-falling-words-hint {
@@ -173,7 +173,7 @@ article#article-2-section-my-writings {
     }
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-        width: min(calc(100vw / var(--section-content-scale, 1) - 28px), 960px);
+        width: min(100%, 960px);
 
         div.article-falling-words-hint {
             height: clamp(86px, 10vw, 104px);

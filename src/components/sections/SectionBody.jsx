@@ -15,6 +15,7 @@ function _loadArticleLocationCompare() { return import("../articles/ArticleLocat
 function _loadArticleLookAtThisGraph() { return import("../articles/ArticleLookAtThisGraph.jsx") }
 function _loadArticleInlineList() { return import("../articles/ArticleInlineList.jsx") }
 function _loadArticleManuscript() { return import("../articles/ArticleManuscript.jsx") }
+function _loadArticleNameOrigins() { return import("../articles/ArticleNameOrigins.jsx") }
 function _loadArticlePortfolio() { return import("../articles/ArticlePortfolio.jsx") }
 function _loadArticleSkills() { return import("../articles/ArticleSkills.jsx") }
 function _loadArticleStack() { return import("../articles/ArticleStack.jsx") }
@@ -38,6 +39,7 @@ const ARTICLE_LOADERS = {
     ArticleLookAtThisGraph: _loadArticleLookAtThisGraph,
     ArticleInlineList: _loadArticleInlineList,
     ArticleManuscript: _loadArticleManuscript,
+    ArticleNameOrigins: _loadArticleNameOrigins,
     ArticlePortfolio: _loadArticlePortfolio,
     ArticleSkills: _loadArticleSkills,
     ArticleStack: _loadArticleStack,
@@ -62,6 +64,7 @@ const ARTICLE_COMPONENTS = {
     ArticleLookAtThisGraph: lazy(_loadArticleLookAtThisGraph),
     ArticleInlineList: lazy(_loadArticleInlineList),
     ArticleManuscript: lazy(_loadArticleManuscript),
+    ArticleNameOrigins: lazy(_loadArticleNameOrigins),
     ArticlePortfolio: lazy(_loadArticlePortfolio),
     ArticleSkills: lazy(_loadArticleSkills),
     ArticleStack: lazy(_loadArticleStack),
@@ -113,7 +116,16 @@ function SectionBody({ section, showDecorationBands = true }) {
     const articleDataWrappers = useMemo(() => {
         return parser.parseSectionArticles(section)
     }, [parser.parseSectionArticles, section])
-    const visibleArticleWrappers = articleDataWrappers
+    // Keep the compact name-origin panel directly below the current final Home article.
+    const visibleArticleWrappers = useMemo(() => {
+        if(section?.id !== "about")
+            return articleDataWrappers
+
+        return [...articleDataWrappers].sort((firstArticle, secondArticle) => {
+            return Number(firstArticle.component === "ArticleNameOrigins") -
+                Number(secondArticle.component === "ArticleNameOrigins")
+        })
+    }, [articleDataWrappers, section?.id])
 
     useEffect(() => {
         if(visibleArticleWrappers.length <= 0) return

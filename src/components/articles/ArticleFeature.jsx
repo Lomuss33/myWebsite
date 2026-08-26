@@ -522,19 +522,26 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                 return
             }
 
-            const measuredWidth = Math.round(measuredHeight * 4 / 3)
+            const itemElement = itemRef.current
+            const shellElement = itemElement?.querySelector(".article-feature-item-writing-book-shell")
+            const columnGap = shellElement ? parseFloat(getComputedStyle(shellElement).columnGap) || 0 : 0
+            const availableMediaWidth = itemElement ?
+                Math.max(0, itemElement.clientWidth - textElement.offsetWidth - columnGap) :
+                Number.POSITIVE_INFINITY
+            const measuredWidth = Math.round(Math.min(measuredHeight * 4 / 3, availableMediaWidth))
+            const renderedHeight = Math.round(measuredWidth * 3 / 4)
 
             setWritingBookMediaSize(currentSize => {
                 if (
                     currentSize.widthPx === measuredWidth &&
-                    currentSize.heightPx === measuredHeight
+                    currentSize.heightPx === renderedHeight
                 ) {
                     return currentSize
                 }
 
                 return {
                     widthPx: measuredWidth,
-                    heightPx: measuredHeight
+                    heightPx: renderedHeight
                 }
             })
         }

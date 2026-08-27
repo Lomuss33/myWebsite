@@ -16,11 +16,13 @@ function FallingWords({
     fontScale = 1,
     highlightPrefixes = DEFAULT_HIGHLIGHT_PREFIXES,
     definitionFallbackText = "Definition coming soon.",
+    wordSearchPrefix = "how to learn",
     className = ""
 }) {
     const clamp = (value, min, max) => Math.min(max, Math.max(min, value))
 
     const containerRef = useRef(null)
+    const modalCopyZoneRef = useRef(null)
     const wordRefs = useRef([])
     const rafRef = useRef(null)
     const cleanupRef = useRef(() => {})
@@ -533,6 +535,18 @@ function FallingWords({
         setSelectedIndex(null)
     }
 
+    useEffect(() => {
+        if(selectedIndex === null) return
+
+        const closeOnOutsidePointerDown = (event) => {
+            if(modalCopyZoneRef.current?.contains(event.target)) return
+            _closeSelection()
+        }
+
+        document.addEventListener("pointerdown", closeOnOutsidePointerDown, true)
+        return () => document.removeEventListener("pointerdown", closeOnOutsidePointerDown, true)
+    }, [selectedIndex])
+
     const onPointerDown = (event) => {
         if(selectedIndexRef.current !== null) return
         if(event.pointerType === "mouse" && event.button !== 0) return
@@ -720,13 +734,19 @@ function FallingWords({
                         onPointerUp={_closeSelection}
                     >
                         <div
+                            ref={modalCopyZoneRef}
                             className={`falling-words-modal-copy-zone`}
                             onClick={(event) => event.stopPropagation()}
                             onPointerUp={onModalTextPointerUp}
                         >
-                            <div className={`falling-words-modal-title text-1`}>
+                            <a
+                                className={`falling-words-modal-title text-1`}
+                                href={`https://www.google.com/search?q=${encodeURIComponent(`${wordSearchPrefix}: ${effectiveEntries[selectedIndex]?.word || ""}`)}`}
+                                target={`_blank`}
+                                rel={`noopener noreferrer`}
+                            >
                                 {effectiveEntries[selectedIndex]?.word || ""}
-                            </div>
+                            </a>
                             <div className={`falling-words-modal-definition text-2`}>
                                 {effectiveEntries[selectedIndex]?.definition || definitionFallbackText}
                             </div>

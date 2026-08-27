@@ -161,7 +161,7 @@ article#article-2-section-my-writings {
         background: linear-gradient(180deg, rgba(11, 18, 32, 0.98), rgba(5, 7, 13, 0.98));
     }
 
-    div.falling-words-modal-title {
+    a.falling-words-modal-title {
         color: #f8fafc;
         font-size: clamp(1.04rem, 0.98rem + 0.18vw, 1.14rem);
     }
@@ -223,7 +223,7 @@ article#article-2-section-my-writings {
         }
 
         div.falling-words.article-falling-words-stage {
-            min-height: clamp(360px, 96vw, 460px);
+            min-height: clamp(230px, 70vw, 300px);
         }
 
         div.falling-words-modal-card {
@@ -263,7 +263,7 @@ article#article-2-section-my-writings {
         background: linear-gradient(180deg, #ffffff, color-mix(in srgb, var(--theme-boards-background) 96%, var(--theme-empty) 4%));
     }
 
-    div.falling-words-modal-title {
+    a.falling-words-modal-title {
         color: color-mix(in srgb, var(--theme-texts) 88%, var(--theme-primary) 12%);
         font-size: clamp(1.34rem, 1.2rem + 0.44vw, 1.68rem);
     }
@@ -283,7 +283,7 @@ article#article-2-section-my-writings {
             border-radius: 16px;
         }
 
-        div.falling-words-modal-title {
+        a.falling-words-modal-title {
             font-size: clamp(1rem, 0.92rem + 0.28vw, 1.16rem);
         }
 
@@ -360,7 +360,7 @@ article#article-2-section-my-writings {
         background: linear-gradient(180deg, rgba(11, 18, 32, 0.98), rgba(5, 7, 13, 0.98));
     }
 
-    div.falling-words-modal-title {
+    a.falling-words-modal-title {
         color: #f8fafc;
         font-size: clamp(1.34rem, 1.2rem + 0.44vw, 1.68rem);
     }
@@ -381,7 +381,7 @@ article#article-2-section-my-writings {
             border-radius: 16px;
         }
 
-        div.falling-words-modal-title {
+        a.falling-words-modal-title {
             font-size: clamp(1rem, 0.92rem + 0.28vw, 1.16rem);
         }
 

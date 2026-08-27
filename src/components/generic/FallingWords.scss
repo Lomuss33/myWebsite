@@ -143,13 +143,22 @@ div.falling-words-modal-copy-zone {
     user-select: text;
 }
 
-div.falling-words-modal-title {
+a.falling-words-modal-title {
+    display: inline-block;
     color: var(--theme-texts);
+    text-decoration: underline;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.14em;
     font-weight: 900;
     letter-spacing: 0.01em;
     margin-bottom: 14px;
     font-size: clamp(1.68rem, 1.08rem + 1.9vw, 2.9rem);
     line-height: 1.08;
+
+    &:hover,
+    &:focus-visible {
+        color: var(--theme-primary);
+    }
 
     @include media-breakpoint-down(sm) {
         margin-bottom: 10px;

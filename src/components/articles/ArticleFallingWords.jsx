@@ -10,6 +10,13 @@ import {FALLING_WORDS_I18N} from "../../data/fallingWordsI18n.js"
 const DEFAULT_WORDS =
     "Psychology, Biology, Sociology, Theology, Anthropology, Ecology, Geology, Meteorology, Neurology, Oncology, Epidemiology, Archaeology, Etymology, Pharmacology, Cosmology, Astrology, Zoology, Botany, Criminology, Eschatology, Technology, Cryptology, Ontology, Terminology, Methodology, Epidemiology, Topology, Chronology, Genealogy, Numerology, Symbology, Typology, Phraseology, Morphology, Phonology, Lexicology, Graphology, Radiology, Neurology, Pathology, Cardiology, Dermatology, Endocrinology, Immunology, Microbiology, Virology, Paleontology, Oceanography, Hydrology, Seismology, Volcanology, Limnology, Ichthyology, Entomology, Mycology, Hematology, Nephrology, Urology, Rheumatology, Pathology, Radiology, Toxicology, Parasitology, Cytology, Histology, Phonology, Morphology, Lexicology, Semiology, Typology"
 
+const WORD_SEARCH_PREFIXES = {
+    en: "how to learn",
+    de: "wie lernen",
+    hr: "kako naučiti",
+    tr: "nasıl öğrenilir"
+}
+
 function ArticleFallingWords({ dataWrapper }) {
     const language = useLanguage()
     const viewport = useViewport()
@@ -39,8 +46,9 @@ function ArticleFallingWords({ dataWrapper }) {
 
     const fallbackText = language.getString("definition_coming_soon")
     const hintText = language.getString("click_word_definition")
+    const wordSearchPrefix = WORD_SEARCH_PREFIXES[language.selectedLanguageId] || WORD_SEARCH_PREFIXES.en
     const stageHeight = isMobileLayout ?
-        Math.max(280, Math.min(420, Math.round(viewport.innerHeight * 0.28))) :
+        Math.max(230, Math.min(300, Math.round(viewport.innerHeight * 0.24))) :
         Math.max(400, Math.min(560, Math.round(viewport.innerHeight * 0.34)))
     const stageFontScale = useMemo(() => {
         const viewportWidth = viewport.innerWidth || 1280
@@ -63,7 +71,8 @@ function ArticleFallingWords({ dataWrapper }) {
             return clamp(0.6 + progress * 0.12, 0.6, 0.72)
         }
 
-        return 0.72
+        const largeDesktopProgress = (viewportWidth - 1440) / 480
+        return clamp(0.72 + largeDesktopProgress * 0.06, 0.72, 0.8)
     }, [viewport.innerWidth])
 
     return (
@@ -89,6 +98,7 @@ function ArticleFallingWords({ dataWrapper }) {
                 fontScale={stageFontScale}
                 highlightPrefixes={[]}
                 definitionFallbackText={fallbackText}
+                wordSearchPrefix={wordSearchPrefix}
                 className={`article-falling-words-stage`}
             />
         </Article>

@@ -889,6 +889,8 @@ div.article-portfolio-item-visit-dock {
     display: flex;
     justify-content: flex-end;
     min-width: 0;
+    container-type: inline-size;
+    container-name: portfolio-visit-dock;
 }
 
 a.article-portfolio-item-control-btn,
@@ -957,6 +959,7 @@ a.article-portfolio-item-control-btn-visit {
     padding-left: 12px;
     padding-right: 6px;
     min-width: 0;
+    overflow: hidden;
     background:
         linear-gradient(
             135deg,
@@ -980,6 +983,13 @@ a.article-portfolio-item-control-btn-github {
 
     i.fa-icon {
         color: var(--portfolio-control-shell-github-icon-color);
+        width: 78%;
+        height: 78%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: calc(var(--portfolio-control-height) * 0.72) !important;
+        line-height: 1;
     }
 }
 
@@ -990,6 +1000,8 @@ a.article-portfolio-item-control-btn-docs {
 }
 
 span.article-portfolio-item-control-btn-label {
+    flex: 1 1 auto;
+    min-width: 0;
     font-size: clamp(0.70rem, 1.65cqw, 0.86rem);
     font-weight: 800;
     letter-spacing: 0.04em;
@@ -1002,6 +1014,7 @@ span.article-portfolio-item-control-btn-label {
 }
 
 i.article-portfolio-item-control-btn-external-icon {
+    flex: 0 0 auto;
     font-size: 0.95em;
     opacity: 0.9;
     color: var(--portfolio-control-shell-icon-color);
@@ -1110,22 +1123,37 @@ div.article-portfolio-item-title {
 }
 
 @supports (container-type: inline-size) {
-    @container (max-width: 320px) {
+    /* Medium: preserve the complete semantic label and reveal as much as fits. */
+    @container portfolio-visit-dock (max-width: 260px) {
+        a.article-portfolio-item-control-btn-visit {
+            width: 100%;
+            min-width: 0;
+            padding-right: 12px;
+        }
+
+        a.article-portfolio-item-control-btn-visit div.article-portfolio-item-control-avatar {
+            display: none;
+        }
+    }
+
+    /* Tight: retain a visible action glyph and the full accessible name. */
+    @container portfolio-visit-dock (max-width: 150px) {
         a.article-portfolio-item-control-btn-visit {
             width: var(--portfolio-control-height);
+            min-width: var(--portfolio-control-height);
+            max-width: var(--portfolio-control-height);
+            margin-left: auto;
             padding-left: 0;
             padding-right: 0;
             justify-content: center;
-            border-radius: 999px;
         }
 
-        a.article-portfolio-item-control-btn-visit span.article-portfolio-item-control-btn-label,
-        a.article-portfolio-item-control-btn-visit div.article-portfolio-item-control-avatar {
+        a.article-portfolio-item-control-btn-visit span.article-portfolio-item-control-btn-label {
             display: none;
         }
 
         a.article-portfolio-item-control-btn-visit i.article-portfolio-item-control-btn-external-icon {
-            font-size: 1rem;
+            font-size: calc(var(--portfolio-control-height) * 0.38);
             opacity: 1;
         }
     }
@@ -1434,7 +1462,10 @@ article#article-1-section-my-hardware div.article-portfolio-item {
             min-height: 92px;
             padding: 16px 10px;
             font-size: clamp(1.82rem, 7.4vw, 2.25rem) !important;
-            background: linear-gradient(90deg, rgba(15, 23, 42, 0.2), rgba(255, 255, 255, 0.045), rgba(15, 23, 42, 0.2));
+            background:
+                radial-gradient(ellipse at 50% 48%, rgba(255, 255, 255, 0.075) 0%, rgba(255, 255, 255, 0.025) 38%, transparent 74%),
+                linear-gradient(180deg, transparent 0%, rgba(15, 23, 42, 0.18) 24%, rgba(15, 23, 42, 0.18) 70%, transparent 100%);
+            background-repeat: no-repeat;
         }
 
         div.article-portfolio-item-title {
@@ -1456,6 +1487,16 @@ article#article-1-section-my-hardware div.article-portfolio-item {
             }
         }
 
+        div.article-portfolio-items {
+            gap: 20px;
+        }
+
+        div.article-portfolio-item {
+            /* Larger mobile copy must define the real card height immediately. */
+            content-visibility: visible;
+            contain-intrinsic-size: none;
+        }
+
         div.article-portfolio-item-body {
             margin-top: 16px;
 
@@ -1463,6 +1504,69 @@ article#article-1-section-my-hardware div.article-portfolio-item {
                 font-size: clamp(1rem, 4.25vw, 1.1rem);
                 line-height: 1.55;
             }
+        }
+
+        div.article-portfolio-item-controls {
+            display: grid;
+            grid-template-columns: auto minmax(0, 1fr);
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: auto;
+            padding-top: 18px;
+        }
+
+        div.article-portfolio-item-actions,
+        div.article-portfolio-item-actions-grid {
+            min-width: 0;
+        }
+
+        div.article-portfolio-item-visit-dock {
+            width: 100%;
+            min-width: 0;
+
+            &:only-child {
+                grid-column: 1 / -1;
+            }
+        }
+
+        a.article-portfolio-item-control-btn-visit {
+            width: 100%;
+            min-width: 0;
+            max-width: 100%;
+        }
+
+        span.article-portfolio-item-control-btn-label {
+            font-size: clamp(0.76rem, 3.2vw, 0.88rem);
+        }
+    }
+}
+
+@media (max-width: 350px) {
+    article#article-1-section-my-software,
+    article#article-1-section-my-hardware {
+        div.article-portfolio-item-controls {
+            gap: 8px;
+        }
+
+        div.article-portfolio-item-actions-grid {
+            gap: 7px;
+        }
+
+        a.article-portfolio-item-control-btn-visit {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+    }
+}
+
+@media (max-width: 575.98px) and (hover: none) and (pointer: coarse) {
+    article#article-1-section-my-software,
+    article#article-1-section-my-hardware {
+        div.article-portfolio-item:hover,
+        a.article-portfolio-item-control-btn:hover {
+            transform: none;
+            filter: none;
         }
     }
 }

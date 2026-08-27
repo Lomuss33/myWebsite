@@ -120,6 +120,8 @@ function ArticlePortfolioItemControls({ githubLink, docsLink, websiteLink, itemW
     if(!githubLink && !docsLink && !websiteLink)
         return <></>
 
+    const websiteActionLabel = websiteLink?.label || "VISIT ONLINE"
+
     return (
         <div className={`article-portfolio-item-controls`}>
             {(githubLink || docsLink) && (
@@ -147,10 +149,11 @@ function ArticlePortfolioItemControls({ githubLink, docsLink, websiteLink, itemW
                 <div className={`article-portfolio-item-visit-dock`}>
                     <Link href={websiteLink.href}
                           tooltip={websiteLink.tooltip || "Visit online"}
+                          ariaLabel={websiteActionLabel}
                           className={`article-portfolio-item-control-btn article-portfolio-item-control-btn-visit`}>
                         <i className={`fa-solid fa-arrow-up-right-from-square article-portfolio-item-control-btn-external-icon`}/>
                         <span className={`article-portfolio-item-control-btn-label`}>
-                            {websiteLink.label || "VISIT ONLINE"}
+                            {websiteActionLabel}
                         </span>
                         <AvatarView src={itemWrapper.img}
                                     faIcon={itemWrapper.faIcon}

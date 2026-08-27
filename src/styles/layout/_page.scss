@@ -6,6 +6,15 @@
 @use "../extend" as *;
 
 html {
+    // The document is the native scroll owner on mobile and is fixed on the
+    // desktop layout. Never let its platform scrollbar reserve page width.
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         font-size: 15px;
     }
@@ -22,9 +31,24 @@ body,
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+
+    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        // Unlike `hidden`, `clip` does not turn a visible vertical axis into an
+        // implicit `auto` scrolling container. This leaves one mobile scroller:
+        // the browser viewport rooted at `html`.
+        overflow-x: clip;
+        overflow-y: visible;
+    }
 }
 
 body {
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+
     overflow-x: hidden!important;
     touch-action: manipulation;
     width: 100%;
@@ -35,6 +59,11 @@ body {
         inset: 0;
         height: 100dvh;
         overflow-y: hidden!important;
+    }
+
+    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        overflow-x: clip!important;
+        overflow-y: visible;
     }
 }
 

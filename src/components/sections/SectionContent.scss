@@ -19,8 +19,7 @@ div.section-content {
         var(--padding-x) / var(--section-content-scale)
     );
     --section-decoration-full-width: calc(
-        var(--section-decoration-layout-width, 100%) +
-        (2 * var(--section-decoration-bleed-inline))
+        100% + (2 * var(--section-decoration-bleed-inline))
     );
     --section-decoration-full-margin-inline: calc(
         -1 * var(--section-decoration-bleed-inline)
@@ -136,6 +135,8 @@ div.section-decoration-band {
     --section-decoration-band-background: #000;
     --section-decoration-band-between-height: clamp(28px, 3.4vw, 48px);
     --section-decoration-band-height: clamp(26px, 3.2vw, 46px);
+    --section-decoration-edge-start: var(--theme-primary);
+    --section-decoration-edge-end: var(--theme-secondary);
     display: block;
     position: relative;
     overflow: hidden;
@@ -154,11 +155,66 @@ div.section-decoration-band {
     pointer-events: none;
 }
 
+div.section-decoration-boundary {
+    --section-decoration-edge-start: var(--theme-primary);
+    --section-decoration-edge-end: var(--theme-secondary);
+    display: block;
+    position: relative;
+    z-index: auto;
+    grid-column: 1 / -1;
+    width: var(--section-decoration-full-width);
+    max-width: none;
+    min-width: 0;
+    margin-right: var(--section-decoration-full-margin-inline);
+    margin-left: var(--section-decoration-full-margin-inline);
+    box-sizing: border-box;
+}
+
+section#section-education div.section-decoration-boundary {
+    --section-decoration-edge-start: #0284c7;
+    --section-decoration-edge-end: #f59e0b;
+}
+
+section#section-experience div.section-decoration-boundary {
+    --section-decoration-edge-start: #22d3ee;
+    --section-decoration-edge-end: #fb7185;
+}
+
+section#section-my-software div.section-decoration-boundary {
+    --section-decoration-edge-start: #22c55e;
+    --section-decoration-edge-end: #38bdf8;
+}
+
+section#section-my-hardware div.section-decoration-boundary {
+    --section-decoration-edge-start: #38bdf8;
+    --section-decoration-edge-end: #f59e0b;
+}
+
+section#section-my-writings div.section-decoration-boundary {
+    --section-decoration-edge-start: #f59e0b;
+    --section-decoration-edge-end: #38bdf8;
+}
+
+section#section-my-art div.section-decoration-boundary {
+    --section-decoration-edge-start: #60a5fa;
+    --section-decoration-edge-end: #f472b6;
+}
+
+div.section-decoration-boundary > div.section-decoration-band {
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+}
+
+div.section-decoration-line {
+    display: none;
+}
+
 /* Full-bleed contract for every article boundary, including Home/Contact,
    manuscripts, and the rule immediately before each decoration band. Each
    article owns exactly one top and one bottom separator with equal thickness. */
 div.section-content article.article > h4.article-title {
-    width: var(--section-decoration-layout-width, 100%)!important;
+    width: 100%!important;
     max-width: none!important;
     margin-right: 0!important;
     margin-left: 0!important;
@@ -208,12 +264,12 @@ div.section-content article.article > h4.article-title::after {
 
 div.section-content.section-content-page-ready > div.section-content-elements-wrapper {
     > header.section-header,
-    > div.section-decoration-band,
+    > div.section-decoration-boundary,
     > div.section-body {
         animation: section-content-ready-reveal 0.52s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
-    > div.section-decoration-band {
+    > div.section-decoration-boundary {
         animation-delay: 45ms;
     }
 
@@ -237,7 +293,7 @@ div.section-content.section-content-page-ready > div.section-content-elements-wr
 @media (prefers-reduced-motion: reduce) {
     div.section-content.section-content-page-ready > div.section-content-elements-wrapper {
         > header.section-header,
-        > div.section-decoration-band,
+        > div.section-decoration-boundary,
         > div.section-body {
             animation: none;
         }
@@ -258,6 +314,8 @@ section#section-my-art div.section-content div.section-body > article#article-1-
 }
 
 section#section-my-art div.section-content div.section-decoration-band {
+    --section-decoration-edge-start: #60a5fa;
+    --section-decoration-edge-end: #f472b6;
     --section-decoration-band-background:
         linear-gradient(
             90deg,
@@ -271,7 +329,7 @@ section#section-my-art div.section-content div.section-decoration-band {
 
 section#section-my-art div.section-content > div.section-content-elements-wrapper > header.section-header,
 section#section-my-art div.section-content > div.section-content-elements-wrapper > div.section-body,
-section#section-my-art div.section-content > div.section-content-elements-wrapper > div.section-decoration-band-page-bottom {
+section#section-my-art div.section-content > div.section-content-elements-wrapper > div.section-decoration-boundary-page-bottom {
     position: relative;
     z-index: 3;
 }
@@ -286,7 +344,7 @@ section#section-my-art div.section-content > div.section-content-elements-wrappe
     }
 }
 
-section#section-my-art div.section-content div.section-body > div.section-decoration-band-between-articles[data-section-decoration-band-index="1"] {
+section#section-my-art div.section-content div.section-body > div.section-decoration-boundary-between-articles[data-section-decoration-band-index="1"] {
     order: 20;
 }
 
@@ -294,7 +352,7 @@ section#section-my-art div.section-content div.section-body > article#article-3-
     order: 30;
 }
 
-section#section-my-art div.section-content div.section-body > div.section-decoration-band-between-articles[data-section-decoration-band-index="2"] {
+section#section-my-art div.section-content div.section-body > div.section-decoration-boundary-between-articles[data-section-decoration-band-index="2"] {
     order: 40;
 }
 
@@ -302,7 +360,7 @@ section#section-my-art div.section-content div.section-body > article#article-2-
     order: 50;
 }
 
-section#section-my-art div.section-content div.section-body > div.section-decoration-band-between-articles[data-section-decoration-band-index="3"] {
+section#section-my-art div.section-content div.section-body > div.section-decoration-boundary-between-articles[data-section-decoration-band-index="3"] {
     order: 60;
 }
 
@@ -310,7 +368,7 @@ section#section-my-art div.section-content div.section-body > article#article-4-
     order: 70;
 }
 
-section#section-my-art div.section-content div.section-body > div.section-decoration-band-between-articles[data-section-decoration-band-index="4"] {
+section#section-my-art div.section-content div.section-body > div.section-decoration-boundary-between-articles[data-section-decoration-band-index="4"] {
     order: 80;
 }
 
@@ -323,26 +381,36 @@ div.section-decoration-band-page-bottom {
 }
 
 section#section-education div.section-decoration-band {
+    --section-decoration-edge-start: #0284c7;
+    --section-decoration-edge-end: #f59e0b;
     --section-decoration-band-background:
         linear-gradient(90deg, #0284c7 0%, #0ea5e9 38%, #f59e0b 68%, #34d399 100%);
 }
 
 section#section-experience div.section-decoration-band {
+    --section-decoration-edge-start: #22d3ee;
+    --section-decoration-edge-end: #fb7185;
     --section-decoration-band-background:
         linear-gradient(90deg, #0891b2 0%, #22d3ee 34%, #fb7185 62%, #8b5cf6 100%);
 }
 
 section#section-my-hardware div.section-decoration-band {
+    --section-decoration-edge-start: #38bdf8;
+    --section-decoration-edge-end: #f59e0b;
     --section-decoration-band-background:
         linear-gradient(90deg, #030407 0%, #38bdf8 24%, #f59e0b 58%, #ef4444 100%);
 }
 
 section#section-my-software div.section-decoration-band {
+    --section-decoration-edge-start: #22c55e;
+    --section-decoration-edge-end: #38bdf8;
     --section-decoration-band-background:
         linear-gradient(90deg, #020617 0%, #16a34a 28%, #22c55e 56%, #38bdf8 100%);
 }
 
 section#section-my-writings div.section-decoration-band {
+    --section-decoration-edge-start: #f59e0b;
+    --section-decoration-edge-end: #38bdf8;
     --section-decoration-band-background:
         linear-gradient(90deg, #7c2d12 0%, #f59e0b 36%, #38bdf8 72%, #f8fafc 100%);
 }
@@ -352,12 +420,62 @@ section#section-my-writings div.section-decoration-band {
         linear-gradient(90deg, #ffffff 0%, #bbf7d0 28%, #86efac 56%, #bae6fd 100%);
 }
 
-div.section-decoration-band + div.section-body > article.article:first-child,
-div.section-body > div.section-decoration-band + article.article {
+@include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    /* Keep mobile band boundaries in the wrapper's stacking context. Persisted
+       reveal transforms create nested stacking contexts that let animated
+       canvases cover or visually relocate the edge lines after navigation. */
+    div.section-content.section-content-page-ready > div.section-content-elements-wrapper {
+        > div.section-decoration-boundary,
+        > div.section-body {
+            animation: none!important;
+            translate: none!important;
+        }
+    }
+
+    div.section-content-border-decoration-top-left {
+        display: none;
+    }
+
+    div.section-content.section-content-has-decoration-bands header.section-header::after {
+        content: none!important;
+        display: none!important;
+    }
+
+    div.section-decoration-line {
+        position: relative;
+        z-index: 6;
+        display: block;
+        width: 100%;
+        height: 6px;
+        min-height: 6px;
+        border-radius: 0;
+        background: linear-gradient(
+            90deg,
+            var(--section-decoration-edge-start),
+            var(--section-decoration-edge-end)
+        );
+        pointer-events: none;
+    }
+
+    div.section-decoration-boundary-after-header,
+    div.section-decoration-boundary-page-top,
+    div.section-decoration-boundary-between-articles {
+        margin-bottom: 12px;
+    }
+
+    div.section-content.section-content-has-decoration-bands article.article::after,
+    div.section-content.section-content-has-decoration-bands article.article > h4.article-title::before {
+        content: none!important;
+        display: none!important;
+    }
+}
+
+div.section-decoration-boundary + div.section-body > article.article:first-child,
+div.section-body > div.section-decoration-boundary + article.article {
     margin-top: 0!important;
 }
 
-div.section-decoration-band + div.section-body > article.article:first-child > h4.article-title,
-div.section-body > div.section-decoration-band + article.article > h4.article-title {
+div.section-decoration-boundary + div.section-body > article.article:first-child > h4.article-title,
+div.section-body > div.section-decoration-boundary + article.article > h4.article-title {
     margin-top: 0!important;
 }

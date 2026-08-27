@@ -10,12 +10,10 @@ function SectionContent({ section, shouldRenderContent = true }) {
     const contentRef = useRef(null)
     const lastLayoutMetricsRef = useRef({
         bottomCollapse: null,
-        renderedContentHeight: null,
-        contentLayoutWidth: null
+        renderedContentHeight: null
     })
     const [bottomCollapse, setBottomCollapse] = useState(0)
     const [renderedContentHeight, setRenderedContentHeight] = useState(0)
-    const [contentLayoutWidth, setContentLayoutWidth] = useState(0)
     const shouldHideHeader = section?.hideHeader === true
     const shouldShowDecorationBands = section?.id !== "about" && section?.id !== "contact"
 
@@ -26,7 +24,6 @@ function SectionContent({ section, shouldRenderContent = true }) {
 
         const updateBottomCollapse = () => {
             const layoutHeight = contentEl.offsetHeight || 0
-            const layoutWidth = contentEl.offsetWidth || 0
             const renderedHeight = contentEl.getBoundingClientRect().height || 0
             const collapse = Math.max(0, Math.ceil(layoutHeight - renderedHeight))
             const sectionContentEl = contentEl.closest(".section-content")
@@ -45,10 +42,6 @@ function SectionContent({ section, shouldRenderContent = true }) {
             if(previousMetrics.renderedContentHeight !== nextRenderedContentHeight) {
                 previousMetrics.renderedContentHeight = nextRenderedContentHeight
                 setRenderedContentHeight(nextRenderedContentHeight)
-            }
-            if(previousMetrics.contentLayoutWidth !== layoutWidth) {
-                previousMetrics.contentLayoutWidth = layoutWidth
-                setContentLayoutWidth(layoutWidth)
             }
         }
 
@@ -116,10 +109,7 @@ function SectionContent({ section, shouldRenderContent = true }) {
         <div className={`section-content ${decorationClassName}`.trim()}
              style={{
                  "--section-content-collapse": `${bottomCollapse}px`,
-                 "--section-content-rendered-height": `${renderedContentHeight}px`,
-                 ...(contentLayoutWidth > 0 ? {
-                     "--section-decoration-layout-width": `${contentLayoutWidth}px`
-                 } : {})
+                 "--section-content-rendered-height": `${renderedContentHeight}px`
              }}>
             <div className={`section-content-border-decoration section-content-border-decoration-top-left`}/>
 

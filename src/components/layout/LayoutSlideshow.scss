@@ -84,7 +84,17 @@ div.layout-slideshow-adjacent-controls {
 }
 
 div.layout-slideshow-transitioning {
-    overflow: hidden;
+    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+        overflow: hidden;
+    }
+
+    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        // The window remains the mobile scroll owner throughout a section
+        // switch. Do not let the transient state replace visible overflow with
+        // a second clipped scrolling boundary.
+        overflow-x: clip;
+        overflow-y: visible;
+    }
 }
 
 div.layout-slideshow-paper-sheet {

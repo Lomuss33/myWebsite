@@ -36,7 +36,7 @@ div.scrollable.scrollable-mobile-native {
 }
 
 div.scrollable.scrollable-mobile-native > div.scrollable-content {
-    padding-bottom: calc(var(--mobile-nav-tabs-total-height, var(--nav-tabs-height, 0px)) + 1rem);
+    padding-bottom: var(--mobile-nav-tabs-total-height, var(--nav-tabs-height, 0px));
 }
 
 /** Plugin customization **/

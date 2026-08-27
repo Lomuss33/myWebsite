@@ -4,6 +4,7 @@ import LayoutBufferGarden from "./LayoutBufferGarden.jsx"
 import NavSidebar from "../nav/NavSidebar.jsx"
 import NavTabController from "../nav/NavTabController.jsx"
 import NavHeaderMobile from "../nav/NavHeaderMobile.jsx"
+import NavLinkPillsFixed from "../nav/partials/NavLinkPillsFixed.jsx"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
 
 function LayoutNavigation({ children, profile = null, sectionLinks = [], categoryLinks = [] }) {
@@ -24,8 +25,9 @@ function LayoutNavigation({ children, profile = null, sectionLinks = [], categor
 
             {isNavigationMobileLayout && (
                 <>
-                    <NavHeaderMobile profile={profile}
-                                     links={currentCategorySectionLinks}/>
+                    <NavHeaderMobile profile={profile}/>
+                    <NavLinkPillsFixed id={`nav-link-pills-menu`}
+                                       links={currentCategorySectionLinks}/>
                 </>
             )}
 

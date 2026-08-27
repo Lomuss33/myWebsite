@@ -1,12 +1,25 @@
 @use "../../../styles/extend" as *;
 
+div.nav-link-pills-sticky-slot {
+    position: relative;
+    flex: 0 0 var(--nav-link-pills-slot-height, var(--nav-tabs-height));
+    align-self: stretch;
+    width: 100%;
+    height: var(--nav-link-pills-slot-height, var(--nav-tabs-height));
+    z-index: $z-index-nav-tabs;
+
+    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+        display: none;
+    }
+}
+
 div.nav-link-pills-fixed-wrapper {
     @include nav-selected-edge(top);
 
     --nav-link-pills-fixed-safe-area-top: env(safe-area-inset-top, 0px);
 
-    position: fixed;
-    top: var(--mobile-viewport-offset-top, 0px);
+    position: absolute;
+    top: 0;
     left: 0;
     right: 0;
     z-index: $z-index-nav-tabs;
@@ -16,11 +29,17 @@ div.nav-link-pills-fixed-wrapper {
     border-bottom: 1px solid var(--theme-nav-border);
     backdrop-filter: none;
     overflow: hidden;
-    transform: translateZ(0);
 
     @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
         display: none;
     }
+}
+
+div.nav-link-pills-fixed-wrapper-stuck {
+    position: fixed;
+    top: var(--mobile-viewport-offset-top, 0px);
+    left: 0;
+    right: 0;
 }
 
 div.nav-link-pills-fixed-wrapper-shown {

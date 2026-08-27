@@ -4,12 +4,11 @@ import NavProfileCard from "./partials/NavProfileCard.jsx"
 import NavToolLanguagePicker from "./tools/NavToolLanguagePicker.jsx"
 import NavToolThemePicker from "./tools/NavToolThemePicker.jsx"
 import NavToolResumeDownloader from "./tools/NavToolResumeDownloader.jsx"
-import NavLinkPillsFixed from "./partials/NavLinkPillsFixed.jsx"
 import AudioButton from "../buttons/AudioButton.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useTheme} from "../../providers/ThemeProvider.jsx"
 
-function NavHeaderMobile({ profile, links }) {
+function NavHeaderMobile({ profile }) {
     const language = useLanguage()
     const theme = useTheme()
     const safeProfile = profile || {}
@@ -63,14 +62,12 @@ function NavHeaderMobile({ profile, links }) {
     return (
         <nav className={`nav-header-mobile`}>
             <div className={`nav-header-mobile-card-wrapper`}>
-                <NavLinkPillsFixed id={`nav-link-pills-menu`}
-                                   links={links}/>
-
                 <NavProfileCard profile={profile}
                                 railMode={`extended`}
                                 mobileActionStackBeforeInfo={mobileActionStackBeforeInfo}
                                 mobileActionStackAfterInfo={mobileActionStackAfterInfo}
                                 showNameAudioButton={false}/>
+
             </div>
         </nav>
     )

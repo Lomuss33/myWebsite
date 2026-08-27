@@ -4,7 +4,7 @@ import React from 'react'
 import {Swiper, SwiperSlide} from "swiper/react"
 import {Pagination, Autoplay} from "swiper/modules"
 
-function Swipeable({ children, breakpoints, className = "", slidesPerView = 3, spaceBetween = 20, loop = false, autoPlayDelay = 10000 }) {
+function Swipeable({ children, breakpoints, breakpointsBase = "window", className = "", slidesPerView = 3, spaceBetween = 20, loop = false, autoPlayDelay = 10000 }) {
     const slides = React.Children.toArray(children)
 
     const maxSlidesPerView = Math.max(
@@ -28,6 +28,7 @@ function Swipeable({ children, breakpoints, className = "", slidesPerView = 3, s
                 loop={effectiveLoop}
                 loopAdditionalSlides={effectiveLoop ? maxSlidesPerView : 0}
                 breakpoints={breakpoints}
+                breakpointsBase={breakpointsBase}
                 autoplay={{
                     delay: autoPlayDelay,
                     disableOnInteraction: false

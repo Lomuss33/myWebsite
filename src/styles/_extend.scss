@@ -59,7 +59,7 @@ $nav-extended-role-visible-min-height: 620px;
     }
 }
 
-@mixin nav-selected-edge($edge, $thickness: 6px) {
+@mixin nav-selected-edge($edge, $thickness: 6px, $phase-offset: 0px) {
     position: relative;
 
     &::after {
@@ -83,6 +83,11 @@ $nav-extended-role-visible-min-height: 620px;
             var(--theme-primary) 20px,
             var(--theme-primary) 40px
         );
+        @if $edge == left or $edge == right {
+            background-position: 0 $phase-offset;
+        } @else {
+            background-position: $phase-offset 0;
+        }
         pointer-events: none;
     }
 }

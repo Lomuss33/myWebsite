@@ -80,13 +80,17 @@ function ArticleTestimonialsItems({ dataWrapper, selectedItemCategoryId }) {
 function ArticleTestimonialsCarousel({ items }) {
     const slideCount = Math.max(1, items.length)
     const breakpoints = {
-        0:    { id: "bp-0", slidesPerView: Math.min(2, slideCount) },
-        1050: { id: "bp-1", slidesPerView: Math.min(3, slideCount) }
+        0:    { id: "bp-0", slidesPerView: 1, spaceBetween: 12 },
+        360:  { id: "bp-1", slidesPerView: Math.min(2, slideCount), spaceBetween: 14 },
+        800:  { id: "bp-2", slidesPerView: Math.min(3, slideCount), spaceBetween: 28 },
+        1100: { id: "bp-3", slidesPerView: Math.min(3, slideCount), spaceBetween: 42 },
+        1350: { id: "bp-4", slidesPerView: Math.min(3, slideCount), spaceBetween: 58 }
     }
 
     return (
         <Swipeable className={`article-testimonials-items`}
                    breakpoints={breakpoints}
+                   breakpointsBase={`container`}
                    slidesPerView={Math.min(3, slideCount)}
                    spaceBetween={16}
                    loop={true}>

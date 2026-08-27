@@ -1,7 +1,9 @@
 @use "../../styles/extend" as *;
 
 div.nav-tab-controller-wrapper {
-    @include nav-selected-edge(bottom);
+    // Offset the lower stripe phase so the two horizontal edges begin on
+    // opposite colors, matching the alternating desktop rail treatment.
+    @include nav-selected-edge(bottom, 6px, 35px);
 
     position: fixed;
     z-index: $z-index-nav-tabs;

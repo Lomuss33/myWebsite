@@ -19,7 +19,8 @@ div.section-content {
         var(--padding-x) / var(--section-content-scale)
     );
     --section-decoration-full-width: calc(
-        100% + (2 * var(--section-decoration-bleed-inline))
+        var(--section-decoration-layout-width, 100%) +
+        (2 * var(--section-decoration-bleed-inline))
     );
     --section-decoration-full-margin-inline: calc(
         -1 * var(--section-decoration-bleed-inline)
@@ -156,6 +157,14 @@ div.section-decoration-band {
 /* Full-bleed contract for every article boundary, including Home/Contact,
    manuscripts, and the rule immediately before each decoration band. Each
    article owns exactly one top and one bottom separator with equal thickness. */
+div.section-content article.article > h4.article-title {
+    width: var(--section-decoration-layout-width, 100%)!important;
+    max-width: none!important;
+    margin-right: 0!important;
+    margin-left: 0!important;
+    align-self: stretch;
+}
+
 div.section-content article.article::after,
 div.section-content article.article > h4.article-title::before {
     width: var(--section-decoration-full-width)!important;
@@ -175,6 +184,26 @@ div.section-content article.article > h4.article-title::before {
 div.section-content article.article > h4.article-title::after {
     content: none!important;
     display: none!important;
+}
+
+/* Animated canvases can measure the wider loading placeholder just before the
+   mobile route finishes settling. Keep their horizontal geometry CSS-locked to
+   the live section grid; JavaScript remains responsible only for height and
+   drawing-buffer resolution. Art canvases are excluded because each is already
+   contained directly by its correctly sized band. */
+@include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    canvas.section-decoration-canvas-education,
+    canvas.section-decoration-canvas-education-bottom,
+    canvas.section-decoration-canvas-experience,
+    canvas.section-decoration-canvas-experience-bottom,
+    canvas.section-decoration-canvas-hardware,
+    canvas.section-decoration-canvas-software,
+    canvas.section-decoration-canvas-software-bottom,
+    canvas.section-decoration-canvas-writing {
+        left: var(--section-decoration-full-margin-inline)!important;
+        width: var(--section-decoration-full-width)!important;
+        max-width: none!important;
+    }
 }
 
 div.section-content.section-content-page-ready > div.section-content-elements-wrapper {

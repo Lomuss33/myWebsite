@@ -3,6 +3,7 @@
 div.article-portfolio-items {
     --item-gap: 28px;
     --padding: 20px 20px 18px;
+    --portfolio-inline-padding: 20px;
     --padding-bottom: 18px;
     --avatar-size: 82px;
     --avatar-border-size: 5px;
@@ -28,6 +29,7 @@ div.article-portfolio-items {
     @include media-breakpoint-down(lg) {
         --item-gap: 22px;
         --padding: 18px 18px 16px;
+        --portfolio-inline-padding: 18px;
         --padding-bottom: 16px;
         --avatar-size: 78px;
         --avatar-offset: 14px;
@@ -36,6 +38,7 @@ div.article-portfolio-items {
     @include media-breakpoint-down(md) {
         --item-gap: 18px;
         --padding: 16px 16px 15px;
+        --portfolio-inline-padding: 16px;
         --padding-bottom: 15px;
         --avatar-size: 74px;
         --avatar-offset: 12px;
@@ -45,6 +48,7 @@ div.article-portfolio-items {
         --avatar-size: 70px;
         --margin-top: 5px;
         --padding: 15px 14px 14px;
+        --portfolio-inline-padding: 14px;
         --padding-bottom: 14px;
         --avatar-offset: 10px;
         --portfolio-card-title-size: clamp(1.24rem, 5.15vw, 1.46rem);
@@ -1293,6 +1297,172 @@ article#article-1-section-my-hardware {
             --portfolio-card-title-size: clamp(1.34rem, 0.96rem + 0.88vw, 1.78rem);
             --portfolio-card-category-size: clamp(0.92rem, 0.76rem + 0.18vw, 1.04rem);
             --portfolio-card-description-size: clamp(1.04rem, 0.9rem + 0.26vw, 1.16rem);
+        }
+    }
+}
+
+/**
+ * Featured hardware/software readability pass.
+ * Keep the existing cards and controls, but give every project a strong,
+ * full-width masthead and make the desktop typography comfortable to scan.
+ */
+article#article-1-section-my-software,
+article#article-1-section-my-hardware {
+    div.article-portfolio-item-title {
+        align-items: flex-start;
+        width: auto;
+        min-height: 112px;
+        margin: calc(var(--portfolio-inline-padding) * -1) calc(var(--portfolio-inline-padding) * -1) 0;
+        padding: 22px var(--portfolio-inline-padding) 0;
+        justify-content: center;
+        overflow: hidden;
+        border-bottom: 1px solid var(--portfolio-title-band-border);
+        background:
+            linear-gradient(90deg, var(--portfolio-title-band-accent), transparent 72%),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(2, 6, 23, 0.24));
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.09),
+            0 12px 28px rgba(2, 6, 23, 0.18);
+
+        &::after {
+            content: "";
+            position: absolute;
+            right: -8%;
+            bottom: 0;
+            width: 58%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--portfolio-title-band-border));
+            box-shadow: 0 0 18px var(--portfolio-title-band-accent);
+        }
+
+        h5.article-portfolio-item-title-main {
+            font-size: clamp(1.72rem, 1.18rem + 1.05vw, 2.28rem) !important;
+            line-height: 1.08;
+            letter-spacing: -0.03em;
+        }
+
+        div.article-portfolio-item-title-category {
+            align-self: stretch;
+            justify-content: center;
+            width: auto;
+            margin: 10px calc(var(--portfolio-inline-padding) * -1) 0;
+            padding: 9px var(--portfolio-inline-padding) 10px;
+            border-top: 1px solid color-mix(in srgb, var(--portfolio-title-band-border) 44%, transparent);
+            border-bottom: 0;
+            background:
+                radial-gradient(circle at 50% 0%, var(--portfolio-category-band-highlight), transparent 66%),
+                linear-gradient(90deg,
+                    var(--portfolio-category-band-edge) 0%,
+                    var(--portfolio-category-band-color) 18%,
+                    var(--portfolio-category-band-color) 82%,
+                    var(--portfolio-category-band-edge) 100%);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.075),
+                inset 0 8px 18px rgba(255, 255, 255, 0.025),
+                0 -5px 16px rgba(2, 6, 23, 0.12);
+            font-size: clamp(1rem, 0.86rem + 0.3vw, 1.18rem) !important;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: 0.085em;
+            text-align: center;
+            text-transform: uppercase;
+            text-shadow: 0 0 14px var(--portfolio-title-band-accent);
+        }
+    }
+
+    div.article-portfolio-item-body {
+        margin-top: 18px;
+
+        div.article-portfolio-item-body-description {
+            font-size: clamp(1.08rem, 0.94rem + 0.3vw, 1.24rem);
+            line-height: 1.58;
+        }
+    }
+
+    a.article-portfolio-item-control-btn-icon i.fa-icon {
+        font-size: clamp(1.28rem, 3.7cqw, 1.65rem);
+    }
+}
+
+article#article-1-section-my-software div.article-portfolio-item {
+    --portfolio-title-band-accent: color-mix(in srgb, var(--software-card-accent-strong) 34%, transparent);
+    --portfolio-title-band-border: color-mix(in srgb, var(--software-card-accent-strong) 78%, white 22%);
+    --portfolio-category-band-color: color-mix(in srgb, var(--software-card-accent) 58%, rgba(8, 13, 28, 0.88));
+    --portfolio-category-band-edge: color-mix(in srgb, var(--software-card-accent-strong) 32%, rgba(5, 9, 22, 0.94));
+    --portfolio-category-band-highlight: color-mix(in srgb, var(--software-card-accent-strong) 24%, transparent);
+}
+
+article#article-1-section-my-hardware div.article-portfolio-item {
+    --portfolio-title-band-accent: color-mix(in srgb, var(--hardware-card-accent-strong) 32%, transparent);
+    --portfolio-title-band-border: color-mix(in srgb, var(--hardware-card-accent-strong) 76%, white 24%);
+    --portfolio-category-band-color: color-mix(in srgb, var(--hardware-card-accent) 56%, rgba(7, 15, 25, 0.9));
+    --portfolio-category-band-edge: color-mix(in srgb, var(--hardware-card-accent-strong) 30%, rgba(4, 11, 20, 0.95));
+    --portfolio-category-band-highlight: color-mix(in srgb, var(--hardware-card-accent-strong) 22%, transparent);
+}
+
+/* Decorative card tones must never reduce copy contrast in dark mode. */
+article#article-1-section-my-software div.article-portfolio-item,
+article#article-1-section-my-hardware div.article-portfolio-item {
+    --portfolio-item-text-color: #ffffff;
+    --portfolio-item-title-color: #ffffff;
+    --portfolio-item-category-color: #ffffff;
+    --portfolio-tag-text-color: #ffffff;
+    --portfolio-control-shell-text-color: #ffffff;
+    --portfolio-control-shell-label-color: #ffffff;
+    color: #ffffff;
+
+    div.article-portfolio-item-title-category,
+    div.article-portfolio-item-body-description,
+    li.article-portfolio-item-body-tag {
+        color: #ffffff;
+    }
+}
+
+@include media-breakpoint-up(xl) {
+    article#article-1-section-my-software,
+    article#article-1-section-my-hardware {
+        h4.article-title {
+            font-size: clamp(3rem, 2rem + 2.25vw, 4.25rem) !important;
+        }
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    article#article-1-section-my-software,
+    article#article-1-section-my-hardware {
+        h4.article-title {
+            min-height: 92px;
+            padding: 16px 10px;
+            font-size: clamp(1.82rem, 7.4vw, 2.25rem) !important;
+            background: linear-gradient(90deg, rgba(15, 23, 42, 0.2), rgba(255, 255, 255, 0.045), rgba(15, 23, 42, 0.2));
+        }
+
+        div.article-portfolio-item-title {
+            min-height: 106px;
+            padding-top: 20px;
+            padding-bottom: 0;
+
+            h5.article-portfolio-item-title-main {
+                font-size: clamp(1.55rem, 6.7vw, 1.9rem) !important;
+                line-height: 1.08;
+            }
+
+            div.article-portfolio-item-title-category {
+                font-size: clamp(0.94rem, 4vw, 1.08rem) !important;
+                margin-top: 9px;
+                padding-top: 8px;
+                padding-bottom: 9px;
+                letter-spacing: 0.07em;
+            }
+        }
+
+        div.article-portfolio-item-body {
+            margin-top: 16px;
+
+            div.article-portfolio-item-body-description {
+                font-size: clamp(1rem, 4.25vw, 1.1rem);
+                line-height: 1.55;
+            }
         }
     }
 }

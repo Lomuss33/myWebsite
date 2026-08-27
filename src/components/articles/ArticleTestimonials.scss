@@ -222,7 +222,7 @@ article#article-2-section-my-software {
         overflow: hidden;
         border: 1px solid rgba(78, 163, 255, 0.18);
         background:
-            linear-gradient(140deg, rgba(11, 18, 32, 0.96), rgba(5, 8, 16, 0.96));
+            linear-gradient(140deg, #05070b, #000000);
         box-shadow: 0 16px 36px rgba(0, 0, 0, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.04);
 
         &::before {
@@ -238,7 +238,7 @@ article#article-2-section-my-software {
 
     div.balloon {
         background: transparent;
-        color: #e2e8f0;
+        color: #ffffff;
         font-size: clamp(0.92rem, 0.88rem + 0.14vw, 1rem);
         line-height: 1.62;
     }
@@ -384,6 +384,119 @@ article#article-2-section-my-software {
         h5.article-testimonials-group-title::before,
         h5.article-testimonials-group-title::after {
             display: none;
+        }
+    }
+}
+
+/*
+ * Desktop recommendations use the carousel's real content width (rather than
+ * the window width), so this article can live comfortably in narrow or wide
+ * desktop shells without forcing three undersized cards into the row.
+ * Mobile rules above remain unchanged.
+ */
+@include media-breakpoint-up(lg) {
+    article#article-2-section-my-software {
+        --software-rec-desktop-content-width: 1320px;
+
+        width: 100%;
+
+        h4.article-title {
+            margin-bottom: 20px;
+            font-size: clamp(2.8rem, 2rem + 2.2vw, 4rem) !important;
+            line-height: 1.04;
+        }
+
+        p.article-testimonials-intro {
+            width: min(100%, var(--software-rec-desktop-content-width));
+            padding: 1.1rem clamp(1.25rem, 2.4vw, 1.8rem);
+            margin-bottom: clamp(38px, 4vw, 54px);
+            font-size: clamp(1.22rem, 1.04rem + 0.34vw, 1.38rem);
+            line-height: 1.66;
+        }
+
+        div.article-testimonials-groups {
+            width: min(100%, var(--software-rec-desktop-content-width));
+            margin-right: auto;
+            margin-left: auto;
+            gap: clamp(42px, 4vw, 58px);
+        }
+
+        section.article-testimonials-group {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        h5.article-testimonials-group-title {
+            width: 100%;
+            margin-bottom: 22px;
+            font-size: clamp(1.48rem, 1.12rem + 0.72vw, 1.88rem) !important;
+            line-height: 1.2;
+            white-space: normal;
+            text-wrap: balance;
+        }
+
+        h5.article-testimonials-group-title span {
+            min-width: 0;
+            white-space: normal;
+        }
+
+        h5.article-testimonials-group-title::before,
+        h5.article-testimonials-group-title::after {
+            flex-basis: clamp(38px, 8vw, 110px);
+            min-width: 24px;
+        }
+
+        div.article-testimonials-items {
+            --testimonial-balloon-min-height: clamp(222px, 18vw, 264px);
+            --testimonial-balloon-padding: clamp(1.4rem, 2.25vw, 1.9rem);
+            --testimonial-avatar-size: clamp(98px, 8vw, 112px);
+            --testimonial-avatar-border-size: 7px;
+
+            height: auto;
+            padding-right: clamp(4px, 0.7vw, 10px);
+            padding-left: clamp(4px, 0.7vw, 10px);
+        }
+
+        div.article-testimonials-item-balloon {
+            height: 100%;
+            border-radius: 18px;
+            background: linear-gradient(145deg, #05070a 0%, #000000 100%);
+            border-color: rgba(125, 211, 252, 0.28);
+        }
+
+        div.balloon {
+            align-items: center;
+            color: #ffffff;
+            font-size: clamp(1.62rem, 1.28rem + 0.62vw, 1.92rem);
+            font-weight: 500;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        div.balloon-quote,
+        div.balloon-quote span {
+            color: #ffffff;
+        }
+
+        div.article-testimonials-item-info {
+            margin-top: 24px;
+        }
+
+        a.article-testimonials-item-name {
+            max-width: 100%;
+            font-size: clamp(1.24rem, 1.04rem + 0.34vw, 1.4rem);
+            line-height: 1.3;
+            text-align: center;
+            overflow-wrap: anywhere;
+        }
+
+        div.article-testimonials-item-role {
+            max-width: 100%;
+            margin-top: 5px;
+            font-size: clamp(1.14rem, 0.98rem + 0.3vw, 1.28rem);
+            line-height: 1.42;
+            text-align: center;
+            overflow-wrap: anywhere;
         }
     }
 }

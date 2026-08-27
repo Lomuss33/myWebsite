@@ -1302,8 +1302,82 @@
 [data-theme="light"] article#article-2-section-my-software div.article-testimonials-item-balloon,
 [data-theme="light"] article#article-2-section-my-software div.balloon {
     background: linear-gradient(180deg, #ffffff, #f6f9fd);
-    color: #0f172a;
+    color: #000000;
     border-color: rgba(37, 99, 235, 0.14);
+}
+
+[data-theme="light"] article#article-2-section-my-software div.balloon-quote,
+[data-theme="light"] article#article-2-section-my-software div.balloon-quote span {
+    color: #000000;
+}
+
+/* High-contrast project cards: accents tint the surface, never the copy. */
+[data-theme="light"] article#article-1-section-my-software div.article-portfolio-item {
+    --portfolio-light-card-accent: var(--software-card-accent);
+    --portfolio-light-card-accent-strong: var(--software-card-accent-strong);
+}
+
+[data-theme="light"] article#article-1-section-my-hardware div.article-portfolio-item {
+    --portfolio-light-card-accent: var(--hardware-card-accent);
+    --portfolio-light-card-accent-strong: var(--hardware-card-accent-strong);
+}
+
+[data-theme="light"] article#article-1-section-my-software div.article-portfolio-item,
+[data-theme="light"] article#article-1-section-my-hardware div.article-portfolio-item {
+    --portfolio-item-text-color: #000000;
+    --portfolio-item-title-color: #000000;
+    --portfolio-item-category-color: #000000;
+    --portfolio-tag-text-color: #000000;
+    --portfolio-control-shell-text-color: #000000;
+    --portfolio-control-shell-label-color: #000000;
+    --portfolio-title-band-accent: color-mix(in srgb, var(--portfolio-light-card-accent-strong) 28%, transparent);
+    --portfolio-title-band-border: color-mix(in srgb, var(--portfolio-light-card-accent-strong) 68%, #111111 32%);
+    --portfolio-category-band-color: color-mix(in srgb, var(--portfolio-light-card-accent) 46%, #ffffff 54%);
+    --portfolio-category-band-edge: color-mix(in srgb, var(--portfolio-light-card-accent-strong) 28%, #f8fafc 72%);
+    --portfolio-category-band-highlight: rgba(255, 255, 255, 0.72);
+    color: #000000;
+    border-color: color-mix(in srgb, var(--portfolio-light-card-accent) 64%, #64748b 36%);
+    background:
+        linear-gradient(145deg,
+            #ffffff 0%,
+            color-mix(in srgb, var(--portfolio-light-card-accent) 14%, #ffffff 86%) 52%,
+            color-mix(in srgb, var(--portfolio-light-card-accent-strong) 11%, #ffffff 89%) 100%);
+    box-shadow:
+        0 18px 42px rgba(15, 23, 42, 0.13),
+        inset 0 1px 0 #ffffff;
+
+    &::before {
+        background:
+            radial-gradient(circle at 92% 4%, color-mix(in srgb, var(--portfolio-light-card-accent-strong) 22%, transparent), transparent 48%),
+            radial-gradient(circle at 5% 94%, color-mix(in srgb, var(--portfolio-light-card-accent) 18%, transparent), transparent 44%),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.66), transparent 36%);
+    }
+
+    &::after {
+        opacity: 0.42;
+    }
+
+    div.article-portfolio-item-title {
+        background:
+            linear-gradient(90deg, color-mix(in srgb, var(--portfolio-light-card-accent) 24%, #ffffff 76%), transparent 74%),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(226, 232, 240, 0.5));
+        box-shadow:
+            inset 0 1px 0 #ffffff,
+            0 10px 24px rgba(15, 23, 42, 0.11);
+    }
+
+    h5.article-portfolio-item-title-main,
+    div.article-portfolio-item-title-category,
+    div.article-portfolio-item-body-description,
+    li.article-portfolio-item-body-tag {
+        color: #000000;
+        text-shadow: none;
+    }
+
+    li.article-portfolio-item-body-tag {
+        background: rgba(255, 255, 255, 0.76);
+        border-color: color-mix(in srgb, var(--portfolio-light-card-accent) 56%, #94a3b8 44%);
+    }
 }
 
 [data-theme="light"] article#article-2-section-my-software div.balloon-triangle {

@@ -22,7 +22,8 @@ nav.nav-link-pills {
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         &#nav-link-pills-menu {
-            @include nav-selected-edge(bottom);
+            // Pair with the fixed wrapper's top edge using the opposite phase.
+            @include nav-selected-edge(bottom, 6px, 35px);
 
             min-height: var(--nav-tabs-height);
             height: var(--nav-tabs-height);

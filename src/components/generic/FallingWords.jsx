@@ -264,6 +264,11 @@ function FallingWords({
         engineRef.current = engine
 
         const wallThickness = 200
+        // Keep the visible stage unchanged while giving the physics world one
+        // additional stage-height above it. Words can leave through the visual
+        // top edge, remain simulated offscreen, and fall back into view.
+        const worldTop = -containerHeight
+        const worldHeight = containerHeight * 2
         const params = {
             isStatic: true,
             render: {visible: false},
@@ -282,21 +287,21 @@ function FallingWords({
         )
         const wallLeft = Bodies.rectangle(
             -wallThickness / 2,
-            containerHeight / 2,
+            worldTop + worldHeight / 2,
             wallThickness,
-            containerHeight + wallThickness * 2,
+            worldHeight + wallThickness * 2,
             params
         )
         const wallRight = Bodies.rectangle(
             width + wallThickness / 2,
-            containerHeight / 2,
+            worldTop + worldHeight / 2,
             wallThickness,
-            containerHeight + wallThickness * 2,
+            worldHeight + wallThickness * 2,
             params
         )
         const ceiling = Bodies.rectangle(
             width / 2,
-            -wallThickness / 2,
+            worldTop - wallThickness / 2,
             width + wallThickness * 2,
             wallThickness,
             params
@@ -662,6 +667,7 @@ function FallingWords({
         const borderTop = container.clientTop || 0
         const innerWidth = container.clientWidth || rect.width
         const innerHeight = container.clientHeight || rect.height
+        const worldTop = -innerHeight
         const pointerX = event.clientX - rect.left - borderLeft
         const pointerY = event.clientY - rect.top - borderTop
         const desiredCenterX = pointerX - dragState.anchorOffsetX
@@ -685,7 +691,7 @@ function FallingWords({
         )
         const nextY = clamp(
             desiredCenterY,
-            halfAabbH,
+            worldTop + halfAabbH,
             Math.max(halfAabbH, innerHeight - halfAabbH)
         )
         dragState.targetX = nextX

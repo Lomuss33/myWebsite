@@ -798,31 +798,31 @@ article#article-1-section-my-hardware {
     }
 
     div.article-portfolio-item.hardware-tone-slate-copper {
-        --hardware-card-accent: rgba(251, 146, 60, 0.34);
-        --hardware-card-accent-strong: rgba(192, 132, 252, 0.46);
-        --hardware-card-title-category: #fdba74;
-        --hardware-card-label: #d8b4fe;
-        --hardware-card-sheen-1: rgba(251, 146, 60, 0.22);
-        --hardware-card-sheen-2: rgba(192, 132, 252, 0.14);
-        --hardware-card-ambient-1: rgba(249, 115, 22, 0.18);
-        --hardware-card-ambient-2: rgba(168, 85, 247, 0.12);
-        --hardware-card-control-bg-top: rgba(54, 28, 52, 0.92);
-        --hardware-card-control-bg-bottom: rgba(25, 14, 31, 0.98);
-        background: linear-gradient(180deg, rgba(43, 24, 49, 0.98), rgba(21, 12, 28, 0.98));
+        --hardware-card-accent: rgba(251, 146, 60, 0.42);
+        --hardware-card-accent-strong: rgba(244, 63, 94, 0.50);
+        --hardware-card-title-category: #fed7aa;
+        --hardware-card-label: #fda4af;
+        --hardware-card-sheen-1: rgba(249, 115, 22, 0.28);
+        --hardware-card-sheen-2: rgba(244, 63, 94, 0.18);
+        --hardware-card-ambient-1: rgba(234, 88, 12, 0.22);
+        --hardware-card-ambient-2: rgba(225, 29, 72, 0.14);
+        --hardware-card-control-bg-top: rgba(70, 31, 18, 0.94);
+        --hardware-card-control-bg-bottom: rgba(35, 13, 19, 0.98);
+        background: linear-gradient(155deg, rgba(73, 32, 17, 0.99), rgba(55, 14, 25, 0.98));
     }
 
     div.article-portfolio-item.hardware-tone-gunmetal {
-        --hardware-card-accent: rgba(217, 70, 239, 0.34);
-        --hardware-card-accent-strong: rgba(96, 165, 250, 0.46);
+        --hardware-card-accent: rgba(192, 132, 252, 0.42);
+        --hardware-card-accent-strong: rgba(99, 102, 241, 0.52);
         --hardware-card-title-category: #f5d0fe;
         --hardware-card-label: #93c5fd;
-        --hardware-card-sheen-1: rgba(217, 70, 239, 0.24);
-        --hardware-card-sheen-2: rgba(96, 165, 250, 0.14);
-        --hardware-card-ambient-1: rgba(192, 38, 211, 0.18);
-        --hardware-card-ambient-2: rgba(59, 130, 246, 0.12);
-        --hardware-card-control-bg-top: rgba(45, 20, 57, 0.92);
-        --hardware-card-control-bg-bottom: rgba(22, 10, 31, 0.98);
-        background: linear-gradient(180deg, rgba(35, 16, 47, 0.98), rgba(16, 9, 25, 0.98));
+        --hardware-card-sheen-1: rgba(168, 85, 247, 0.30);
+        --hardware-card-sheen-2: rgba(79, 70, 229, 0.20);
+        --hardware-card-ambient-1: rgba(147, 51, 234, 0.24);
+        --hardware-card-ambient-2: rgba(67, 56, 202, 0.16);
+        --hardware-card-control-bg-top: rgba(48, 24, 72, 0.94);
+        --hardware-card-control-bg-bottom: rgba(20, 15, 46, 0.98);
+        background: linear-gradient(150deg, rgba(48, 21, 70, 0.99), rgba(20, 18, 58, 0.98));
     }
 
     div.article-portfolio-item.hardware-tone-workshop-steel {
@@ -1044,9 +1044,18 @@ div.article-portfolio-item-control-avatar {
     .avatar-icon-view {
         width: 100%;
         height: 100%;
+        overflow: hidden;
+        line-height: 1 !important;
         text-shadow:
             0 1px 0 rgba(255, 255, 255, 0.10),
             0 0 18px color-mix(in srgb, var(--portfolio-control-avatar-color) 26%, transparent);
+
+        i,
+        i.fa-icon {
+            max-width: 100%;
+            max-height: 100%;
+            line-height: 1 !important;
+        }
     }
 }
 
@@ -1341,11 +1350,13 @@ article#article-1-section-my-hardware {
         width: auto;
         min-height: 112px;
         margin: calc(var(--portfolio-inline-padding) * -1) calc(var(--portfolio-inline-padding) * -1) 0;
-        padding: 22px var(--portfolio-inline-padding) 0;
-        justify-content: center;
+        padding: 18px var(--portfolio-inline-padding) 0;
+        justify-content: flex-start;
         overflow: hidden;
         border-bottom: 1px solid var(--portfolio-title-band-border);
         background:
+            radial-gradient(circle at 0 0, var(--portfolio-title-band-accent) 0%, transparent 34%),
+            radial-gradient(circle at 100% 0, color-mix(in srgb, var(--portfolio-title-band-border) 18%, transparent) 0%, transparent 30%),
             linear-gradient(90deg, var(--portfolio-title-band-accent), transparent 72%),
             linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(2, 6, 23, 0.24));
         box-shadow:
@@ -1363,17 +1374,53 @@ article#article-1-section-my-hardware {
             box-shadow: 0 0 18px var(--portfolio-title-band-accent);
         }
 
+        div.article-portfolio-item-title-heading {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(10px, 2.2cqw, 18px);
+            width: 100%;
+            min-height: 88px;
+
+            &::before,
+            &::after {
+                content: "";
+                flex: 1 1 54px;
+                min-width: 10px;
+                max-width: 72px;
+                height: 2px;
+                border-radius: 999px;
+                opacity: 0.86;
+                box-shadow: 0 0 12px var(--portfolio-title-band-accent);
+            }
+
+            &::before {
+                background: linear-gradient(90deg, transparent, var(--portfolio-title-band-border));
+            }
+
+            &::after {
+                background: linear-gradient(90deg, var(--portfolio-title-band-border), transparent);
+            }
+        }
+
         h5.article-portfolio-item-title-main {
-            font-size: clamp(1.72rem, 1.18rem + 1.05vw, 2.28rem) !important;
-            line-height: 1.08;
-            letter-spacing: -0.03em;
+            min-width: 0;
+            max-width: min(100%, 26ch);
+            margin: 0;
+            font-size: clamp(1.58rem, 1.1rem + 0.92vw, 2.14rem) !important;
+            line-height: 1.1;
+            letter-spacing: -0.028em;
+            text-wrap: pretty;
+            text-align: center;
+            overflow-wrap: anywhere;
         }
 
         div.article-portfolio-item-title-category {
             align-self: stretch;
             justify-content: center;
             width: auto;
-            margin: 10px calc(var(--portfolio-inline-padding) * -1) 0;
+            margin: 12px calc(var(--portfolio-inline-padding) * -1) 0;
             padding: 9px var(--portfolio-inline-padding) 10px;
             border-top: 1px solid color-mix(in srgb, var(--portfolio-title-band-border) 44%, transparent);
             border-bottom: 0;
@@ -1470,17 +1517,29 @@ article#article-1-section-my-hardware div.article-portfolio-item {
 
         div.article-portfolio-item-title {
             min-height: 106px;
-            padding-top: 20px;
+            padding-top: 14px;
             padding-bottom: 0;
 
+            div.article-portfolio-item-title-heading {
+                gap: 9px;
+                min-height: 76px;
+
+                &::before,
+                &::after {
+                    flex-basis: 24px;
+                    min-width: 6px;
+                    max-width: 38px;
+                }
+            }
+
             h5.article-portfolio-item-title-main {
-                font-size: clamp(1.55rem, 6.7vw, 1.9rem) !important;
-                line-height: 1.08;
+                font-size: clamp(1.38rem, 6.2vw, 1.72rem) !important;
+                line-height: 1.1;
             }
 
             div.article-portfolio-item-title-category {
                 font-size: clamp(0.94rem, 4vw, 1.08rem) !important;
-                margin-top: 9px;
+                margin-top: 10px;
                 padding-top: 8px;
                 padding-bottom: 9px;
                 letter-spacing: 0.07em;

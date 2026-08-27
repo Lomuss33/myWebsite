@@ -31,10 +31,10 @@
 @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
     :root {
         --default-card-spacing: #{$default-card-spacing-mobile};
-        // Preserve the roomy, viewport-proportional mobile bands while keeping
-        // them independent from Android/iOS browser-chrome changes. `svh` is
-        // stable as the address and tool bars expand or collapse.
-        --mobile-nav-row-height: clamp(72px, 10svh, 144px);
+        // Keep compact phones at the proven 72px baseline, then grow both nav
+        // rails more decisively with the stable viewport height. The cap keeps
+        // tall devices comfortable without letting navigation dominate them.
+        --mobile-nav-row-height: clamp(72px, calc(16svh - 43.2px), 108px);
         --mobile-nav-item-icon-size: clamp(1.3rem, calc(var(--mobile-nav-row-height) * 0.28), 2.25rem);
         --mobile-nav-item-label-size: clamp(0.82rem, calc(var(--mobile-nav-row-height) * 0.145), 1.15rem);
         --mobile-nav-item-gap: clamp(0.28rem, calc(var(--mobile-nav-row-height) * 0.055), 0.62rem);

@@ -13,6 +13,12 @@ function LayoutNavigation({ children, profile = null, sectionLinks = [], categor
     const isNavigationMobileLayout = viewport.isMobileLayout()
     const targetCategoryId = categoryLinks.find(link => link.active)?.id
     const currentCategorySectionLinks = sectionLinks.filter(link => link.categoryId === targetCategoryId)
+    const isOverviewCategory = targetCategoryId === "home" || targetCategoryId === "contact"
+    const overviewSectionLinks = sectionLinks.filter(link =>
+        link.categoryId !== "home" && link.categoryId !== "contact"
+    )
+    const mobilePillLinks = isOverviewCategory ? overviewSectionLinks : currentCategorySectionLinks
+    const mobilePillClassName = isOverviewCategory ? "nav-link-pills-overview" : ""
 
     return (
         <div className={`layout-navigation-wrapper`}>
@@ -27,7 +33,9 @@ function LayoutNavigation({ children, profile = null, sectionLinks = [], categor
                 <>
                     <NavHeaderMobile profile={profile}/>
                     <NavLinkPillsFixed id={`nav-link-pills-menu`}
-                                       links={currentCategorySectionLinks}/>
+                                       className={mobilePillClassName}
+                                       sticky={!isOverviewCategory}
+                                       links={mobilePillLinks}/>
                 </>
             )}
 

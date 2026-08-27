@@ -17,6 +17,7 @@ html {
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
         font-size: 15px;
+        overflow-y: auto;
     }
 
     @media (max-width: 380px) {
@@ -37,7 +38,6 @@ body,
         // implicit `auto` scrolling container. This leaves one mobile scroller:
         // the browser viewport rooted at `html`.
         overflow-x: clip;
-        overflow-y: visible;
     }
 }
 

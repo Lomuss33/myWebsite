@@ -175,8 +175,10 @@ function ArticlePortfolioItemControls({ githubLink, docsLink, websiteLink, itemW
 function ArticlePortfolioItemTitle({ itemWrapper }) {
     return (
         <div className={`article-portfolio-item-title`}>
-            <h5 className={`article-portfolio-item-title-main`}
-                dangerouslySetInnerHTML={{__html: itemWrapper.locales.title || itemWrapper.placeholder}}/>
+            <div className={`article-portfolio-item-title-heading`}>
+                <h5 className={`article-portfolio-item-title-main`}
+                    dangerouslySetInnerHTML={{__html: itemWrapper.locales.title || itemWrapper.placeholder}}/>
+            </div>
 
             <div className={`article-portfolio-item-title-category text-2`}
                  dangerouslySetInnerHTML={{__html: itemWrapper.category?.label }}/>
@@ -233,14 +235,14 @@ function shouldUseFeaturedPortfolioGrid(articleWrapper) {
 }
 
 const HARDWARE_TONE_BY_ITEM_ID = {
-    1: "hardware-tone-rack-steel",
-    4: "hardware-tone-conveyor-steel",
-    5: "hardware-tone-forged-iron",
-    7: "hardware-tone-varnished-wood",
-    8: "hardware-tone-brushed-aluminum",
-    10: "hardware-tone-slate-copper",
-    22: "hardware-tone-gunmetal",
-    11: "hardware-tone-workshop-steel"
+    1: "hardware-tone-workshop-steel",
+    4: "hardware-tone-gunmetal",
+    5: "hardware-tone-slate-copper",
+    7: "hardware-tone-brushed-aluminum",
+    8: "hardware-tone-varnished-wood",
+    10: "hardware-tone-forged-iron",
+    22: "hardware-tone-conveyor-steel",
+    11: "hardware-tone-rack-steel"
 }
 
 const SOFTWARE_PROJECT_TONE_BY_ITEM_ID = {

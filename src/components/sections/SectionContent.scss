@@ -210,6 +210,14 @@ div.section-decoration-line {
     display: none;
 }
 
+/* Give article content a consistent closing breath before the next structural
+   separator. This spacing lives on the boundary, so the bottom band can still
+   remain perfectly flush with the mobile navigation rail. */
+div.section-decoration-boundary-between-articles,
+div.section-decoration-boundary-page-bottom {
+    margin-top: clamp(28px, 3vw, 42px);
+}
+
 /* Full-bleed contract for every article boundary, including Home/Contact,
    manuscripts, and the rule immediately before each decoration band. Each
    article owns exactly one top and one bottom separator with equal thickness. */
@@ -461,6 +469,11 @@ section#section-my-writings div.section-decoration-band {
     div.section-decoration-boundary-page-top,
     div.section-decoration-boundary-between-articles {
         margin-bottom: 12px;
+    }
+
+    div.section-decoration-boundary-between-articles,
+    div.section-decoration-boundary-page-bottom {
+        margin-top: clamp(32px, 4svh, 40px);
     }
 
     div.section-content.section-content-has-decoration-bands article.article::after,

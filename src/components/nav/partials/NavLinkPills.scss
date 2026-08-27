@@ -125,6 +125,21 @@ button.nav-link-pills-link {
             white-space: nowrap;
         }
     }
+
+    nav#nav-link-pills-menu.nav-link-pills-overview > button.nav-link-pills-link {
+        gap: clamp(0.18rem, 1vw, 0.32rem);
+        padding-inline: clamp(0.08rem, 0.8vw, 0.24rem);
+
+        i {
+            font-size: clamp(1rem, 4.2vw, 1.5rem);
+        }
+
+        span {
+            width: 100%;
+            font-size: clamp(0.56rem, 2.15vw, 0.76rem);
+            letter-spacing: 0;
+        }
+    }
 }
 
 nav.nav-link-pills > button.nav-link-pills-link:first-child {

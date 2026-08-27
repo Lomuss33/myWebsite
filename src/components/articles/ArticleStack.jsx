@@ -130,10 +130,16 @@ const HOME_STACK_BUBBLE_DEFAULTS = {
         lineHeight: 1.1
     },
     mobile: {
-        fontSize: 1,
-        paddingX: 5,
-        paddingY: 3,
-        lineHeight: 1.08
+        fontSize: 0.9,
+        paddingX: 4,
+        paddingY: 2,
+        lineHeight: 1.12
+    },
+    compact: {
+        fontSize: 0.82,
+        paddingX: 3,
+        paddingY: 1,
+        lineHeight: 1.1
     }
 }
 
@@ -151,10 +157,16 @@ const HOME_STACK_BUBBLE_FLOORS = {
         lineHeight: 1.04
     },
     mobile: {
-        fontSize: 0.82,
+        fontSize: 0.74,
         paddingX: 3,
         paddingY: 1,
-        lineHeight: 1.03
+        lineHeight: 1.06
+    },
+    compact: {
+        fontSize: 0.7,
+        paddingX: 2,
+        paddingY: 1,
+        lineHeight: 1.04
     }
 }
 
@@ -165,6 +177,11 @@ const HOME_STACK_BUBBLE_FIT_VARIABLES = [
     "--home-stack-bubble-line-height"
 ]
 
+const HOME_STACK_TITLE_FIT_VARIABLES = [
+    "--home-stack-title-prefix-fit-size",
+    "--home-stack-title-main-fit-size"
+]
+
 const ART_STACK_INITIAL_ITEM_MOUNT_COUNT = 24
 
 const roundToStep = (value, precision = 2) => {
@@ -173,6 +190,8 @@ const roundToStep = (value, precision = 2) => {
 }
 
 const getHomeStackBubbleDefaults = (innerWidth) => {
+    if(innerWidth < 360)
+        return { ...HOME_STACK_BUBBLE_DEFAULTS.compact }
     if(innerWidth < 576)
         return { ...HOME_STACK_BUBBLE_DEFAULTS.mobile }
     if(innerWidth < 992)
@@ -181,6 +200,8 @@ const getHomeStackBubbleDefaults = (innerWidth) => {
 }
 
 const getHomeStackBubbleFloors = (innerWidth) => {
+    if(innerWidth < 360)
+        return { ...HOME_STACK_BUBBLE_FLOORS.compact }
     if(innerWidth < 576)
         return { ...HOME_STACK_BUBBLE_FLOORS.mobile }
     if(innerWidth < 992)
@@ -205,6 +226,68 @@ const applyHomeStackBubbleFitVariables = (element, fitValues) => {
     element.style.setProperty("--home-stack-bubble-padding-x", `${Math.round(fitValues.paddingX)}px`)
     element.style.setProperty("--home-stack-bubble-padding-y", `${Math.round(fitValues.paddingY)}px`)
     element.style.setProperty("--home-stack-bubble-line-height", `${roundToStep(fitValues.lineHeight)}`)
+}
+
+const fitHomeStackTitle = ({ titleElement, prefixElement, mainElement }) => {
+    if(!titleElement || !mainElement)
+        return
+
+    HOME_STACK_TITLE_FIT_VARIABLES.forEach(variableName => {
+        titleElement.style.removeProperty(variableName)
+    })
+
+    const prefixBaseSize = prefixElement ? parseFloat(window.getComputedStyle(prefixElement).fontSize) : 0
+    const mainBaseSize = parseFloat(window.getComputedStyle(mainElement).fontSize)
+    if(!mainBaseSize || !titleElement.clientWidth || !titleElement.clientHeight)
+        return
+
+    const applyScale = (scale) => {
+        if(prefixElement)
+            titleElement.style.setProperty("--home-stack-title-prefix-fit-size", `${roundToStep(prefixBaseSize * scale)}px`)
+        titleElement.style.setProperty("--home-stack-title-main-fit-size", `${roundToStep(mainBaseSize * scale)}px`)
+    }
+
+    const fits = () => {
+        const titleRect = titleElement.getBoundingClientRect()
+        const children = [prefixElement, mainElement].filter(Boolean)
+        const tolerance = 1
+
+        return titleElement.scrollWidth <= titleElement.clientWidth + tolerance &&
+            titleElement.scrollHeight <= titleElement.clientHeight + tolerance &&
+            children.every(element => {
+                const rect = element.getBoundingClientRect()
+                return rect.left >= titleRect.left - tolerance &&
+                    rect.right <= titleRect.right + tolerance &&
+                    rect.top >= titleRect.top - tolerance &&
+                    rect.bottom <= titleRect.bottom + tolerance
+            })
+    }
+
+    if(fits())
+        return
+
+    let low = 0.62
+    let high = 1
+    let best = low
+
+    applyScale(low)
+    if(!fits())
+        return
+
+    while(high - low > 0.01) {
+        const candidate = (low + high) / 2
+        applyScale(candidate)
+
+        if(fits()) {
+            best = candidate
+            low = candidate
+        }
+        else {
+            high = candidate
+        }
+    }
+
+    applyScale(best)
 }
 
 const getBubbleAvailableBox = (element) => {
@@ -283,12 +366,12 @@ function ArticleStackItems({ dataWrapper, selectedItemCategoryId, isHomeStack, i
     const homeClass = isHomeStack ? `article-stack-items-home` : ``
     const compactClass = isCompactStack ? `article-stack-items-compact` : ``
     const stackClassName = `article-stack-items ${homeClass} ${compactClass}`.trim()
-    const renderedItems = visibleItems.map((itemWrapper, key) => (
+    const renderedItems = visibleItems.map((itemWrapper) => (
         <ArticleStackItem itemWrapper={itemWrapper}
                           articleId={dataWrapper.uniqueId}
                           isHomeStack={isHomeStack}
                           isCompactStack={isCompactStack}
-                          key={key}/>
+                          key={itemWrapper.uniqueId || itemWrapper.id}/>
     ))
 
     useEffect(() => {
@@ -375,6 +458,10 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
     const bubbleToggleRef = useRef(null)
     const bubbleInnerRef = useRef(null)
     const bubbleCopyRef = useRef(null)
+    const cardRef = useRef(null)
+    const titleRef = useRef(null)
+    const titlePrefixRef = useRef(null)
+    const titleMainRef = useRef(null)
     const bubbleClass = isBubbleOpen ? `article-stack-item-home-bubble-open` : ``
 
     useEffect(() => {
@@ -383,6 +470,51 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
 
         clearHomeStackBubbleFitVariables(bubbleInnerRef.current)
     }, [isBubbleOpen, bubbleMarkup])
+
+    useLayoutEffect(() => {
+        if(!isHomeStack)
+            return
+
+        const cardElement = cardRef.current
+        const titleElement = titleRef.current
+        if(!cardElement || !titleElement)
+            return
+
+        let frameId = null
+        let cancelled = false
+
+        const scheduleFit = () => {
+            if(cancelled || frameId !== null)
+                return
+
+            frameId = window.requestAnimationFrame(() => {
+                frameId = null
+                fitHomeStackTitle({
+                    titleElement,
+                    prefixElement: titlePrefixRef.current,
+                    mainElement: titleMainRef.current
+                })
+            })
+        }
+
+        scheduleFit()
+        document.fonts?.ready?.then(scheduleFit)
+
+        const resizeObserver = typeof ResizeObserver === "function" ? new ResizeObserver(scheduleFit) : null
+        if(resizeObserver)
+            resizeObserver.observe(cardElement)
+        else
+            window.addEventListener("resize", scheduleFit, { passive: true })
+
+        return () => {
+            cancelled = true
+            if(frameId !== null)
+                window.cancelAnimationFrame(frameId)
+            resizeObserver?.disconnect()
+            if(!resizeObserver)
+                window.removeEventListener("resize", scheduleFit)
+        }
+    }, [displaySegmentedTitle.prefix, displaySegmentedTitle.value, isHomeStack, selectedLanguageId, viewport.innerWidth])
 
     useLayoutEffect(() => {
         if(!isHomeBubbleEnabled || !isBubbleOpen)
@@ -541,8 +673,10 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
             <div className={`article-stack-item-home-bubble-inner`}
                  ref={bubbleInnerRef}>
                 <div className={`article-stack-item-home-bubble-copy`}
-                     ref={bubbleCopyRef}
-                     dangerouslySetInnerHTML={{__html: bubbleMarkup}}/>
+                     ref={bubbleCopyRef}>
+                    <div className={`article-stack-item-home-bubble-copy-content`}
+                         dangerouslySetInnerHTML={{__html: bubbleMarkup}}/>
+                </div>
             </div>
         </div>
     ) : null
@@ -563,6 +697,7 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
 
     const content = isHomeStack ? (
         <div className={`article-stack-item ${homeClass} ${compactClass} ${bubbleClass}`.trim()}
+             ref={cardRef}
              onMouseLeave={handleBubbleMouseLeave}>
             <div className={`article-stack-item-home-trigger`}>
                 <ArticleStackHomeBubble itemWrapper={itemWrapper}
@@ -575,13 +710,16 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
             </div>
 
             <div className={`article-stack-item-home-content`}>
-                <div className={`article-stack-item-title`}>
+                <div className={`article-stack-item-title`}
+                     ref={titleRef}>
                     {displaySegmentedTitle.prefix && (
                         <div className={`article-stack-item-title-prefix`}
+                             ref={titlePrefixRef}
                              dangerouslySetInnerHTML={{__html: displaySegmentedTitle.prefix}}/>
                     )}
 
                     <div className={`article-stack-item-title-main`}
+                         ref={titleMainRef}
                          dangerouslySetInnerHTML={{__html: displaySegmentedTitle.value}}/>
                 </div>
 

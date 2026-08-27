@@ -10,20 +10,20 @@ const STORIES = [
         meta: "Surname · A line that reaches outward",
         trail: ["Musić", "Musa", "Moses"],
         blocks: [
-            "Names once lived in memory: whose child, which household, which village. In Musić, the South Slavic suffix -ić carries the patronymic idea of “the young one” or “descendant of”; here, the line points back to Musa.",
-            "After the Council of Trent mandated parish registers in 1563, baptisms and marriages gave family names a more durable paper trail. The council did not create Musić—record-keeping helped names like it remain traceable across centuries.",
-            "That is the power I claim from it: a name linked to Moses and Musa—courage to begin, faith reaching across three world religions, and the resolve to step forward. Don Ivan Musić carried that resolve into the Herzegovinian uprising of 1875."
+            "Musić is a South Slavic surname built with the suffix -ić. The suffix began as a diminutive and developed a patronymic function, commonly marking a younger member or descendant of a family line. The base may be the personal name or nickname Musa, but surname etymology is rarely proved by spelling alone; several unrelated families can form the same surname independently.",
+            "Musa is the Arabic form of Moses, one of the central figures shared by Judaism, Christianity, and Islam. This explains why names derived from Musa occur across different religious and ethnic communities in the Balkans. The surname therefore reflects a region where Slavic language, Ottoman-era naming, and several religious traditions interacted for centuries.",
+            "Written records made such family names easier to trace. The Council of Trent required Catholic parishes to register baptisms and marriages in 1563, while later civil systems standardized inherited surnames more firmly. One notable bearer was the Catholic priest and vojvoda Don Ivan Musić, a leader in the Herzegovinian uprising against Ottoman rule from 1875 to 1878—an uprising that became part of the wider Eastern Crisis."
         ]
     },
     {
         id: "given",
         name: "Lovro",
         meta: "Given name · A line carried home",
-        trail: ["Laurentius", "Laurenciji", "Lovrencij", "Lovrenc", "Lovren", "Lovre", "Lovro"],
+        trail: ["Laurentius", "Lawrence", "Laurent", "Lorenzo", "Lorenz", "Lovre", "Lovro"],
         blocks: [
-            "Laurus nobilis is the evergreen bay laurel: its aromatic leaves flavour food, while its branches were woven into wreaths for poets, commanders, and victors. A useful plant became a lasting Roman symbol of honour and achievement.",
-            "Saint Laurentius gave the old Roman name a moral lineage. A deacon who served Rome’s poor, he was martyred under Valerian in 258. The name reaches me through another lineage too: my grandfather, his grandfather, and generations before them.",
-            "In today’s English-shaped world, Lovro is unusual without being difficult: compact, phonetic, and confident on first contact. It belongs unmistakably to home, yet it does not need translation to travel."
+            "Lovro is a Croatian and Slovene form in the large European name family descended from the Latin Laurentius. Strictly translated, Laurentius meant “a person from Laurentum,” an ancient town near Rome. Laurentum itself was traditionally associated with laurus, the Latin word for laurel, which is why the name later acquired the familiar meaning “laurelled” or “crowned with laurel.”",
+            "The evergreen bay laurel, Laurus nobilis, was both useful and symbolic. Its leaves were used in food and medicine, while Greek and Roman wreaths honoured athletic victors, military success, poets, and public achievement. That symbolism survives in words such as “laureate” and in the expression “resting on one’s laurels”: the plant became shorthand for distinction earned and publicly recognized.",
+            "The name spread through Europe largely because of Saint Lawrence of Rome. Lawrence was a deacon responsible for charitable resources and support for the poor; he was martyred during Emperor Valerian’s persecution in 258. Latin Laurentius then developed into regional forms including Lawrence, Laurent, Lorenzo, Lorenz, Lovre, and Lovro. In my family, Lovro also passed through my grandfather and earlier generations, joining this wider history to a direct family tradition."
         ]
     }
 ]

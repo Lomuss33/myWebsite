@@ -788,6 +788,19 @@ article.article.article-stack-home {
     }
 }
 
+/* Touch browsers cannot use the pointer-driven tilt. Keeping every avatar on
+ * a permanent 3D compositor layer wastes memory and can delay its first paint
+ * on Android until an interaction invalidates that layer. Render touch avatars
+ * in the normal paint flow; fine pointers retain the full floating effect. */
+@media (hover: none), (pointer: coarse) {
+    article.article.article-stack-home div.article-stack-item-avatar.floating-frame {
+        transform: none;
+        transform-style: flat;
+        will-change: auto;
+        filter: none;
+    }
+}
+
 /* The article's generated numeric id changes as home sections are reordered.
  * Scope the enhanced Human Stack layout by its stable component classes. */
 article.article.article-stack-home {
@@ -798,7 +811,12 @@ article.article.article-stack-home {
         --home-stack-card-min-height: clamp(178px, calc(140px + 6cqi), 330px);
         --home-stack-bubble-font-size: 1.3rem;
         --home-stack-bubble-line-height: 1.12;
-        --home-stack-bubble-icon-reserve: calc((var(--avatar-size) - var(--home-stack-avatar-outset)) + 12px);
+        --home-stack-bubble-clearance: clamp(10px, calc(var(--avatar-size) * 0.1), 16px);
+        --home-stack-bubble-safe-inset: calc(
+            var(--avatar-size) -
+            var(--home-stack-avatar-outset) +
+            var(--home-stack-bubble-clearance)
+        );
     }
 
     div.article-stack-item.article-stack-item-home {
@@ -822,45 +840,62 @@ article.article.article-stack-home {
         align-items: center;
         min-height: 100%;
         max-height: 100%;
-        width: calc(100% + 36px);
-        max-width: none;
-        margin-left: -30px;
-        margin-right: -6px;
+        width: 100%;
+        max-width: 100%;
+        margin-inline: 0;
         row-gap: clamp(0.7rem, calc(var(--avatar-size) * 0.09), 1.05rem);
         overflow: visible;
     }
 
     div.article-stack-item-home div.article-stack-item-title-prefix {
         max-width: 100%;
-        font-size: clamp(1.35rem, calc(var(--avatar-size) * 0.25), 2.9rem);
+        font-size: var(--home-stack-title-prefix-fit-size, clamp(1.35rem, calc(var(--avatar-size) * 0.25), 2.9rem));
         line-height: 0.94;
         opacity: 0.94;
-        overflow-wrap: anywhere;
+        overflow-wrap: normal;
+        word-break: normal;
+        hyphens: none;
         text-wrap: balance;
         translate: 0 calc(0px - var(--home-stack-title-spread));
     }
 
     div.article-stack-item-home div.article-stack-item-title-main {
         max-width: 100%;
-        font-size: clamp(2rem, calc(var(--avatar-size) * 0.42), 4.8rem);
+        font-size: var(--home-stack-title-main-fit-size, clamp(2rem, calc(var(--avatar-size) * 0.42), 4.8rem));
         line-height: 0.94;
-        overflow-wrap: anywhere;
+        overflow-wrap: normal;
+        word-break: normal;
+        hyphens: none;
         text-wrap: balance;
         translate: 0 var(--home-stack-title-spread);
     }
 
     div.article-stack-item-home-bubble-inner {
+        align-items: stretch;
         padding:
             var(--home-stack-bubble-padding-y, max(5px, calc(var(--home-stack-card-pad-y) - 21px)))
-            var(--home-stack-bubble-padding-right, max(9px, calc(var(--home-stack-card-pad-x) - 7px)))
+            var(--home-stack-bubble-padding-x, max(9px, calc(var(--home-stack-card-pad-x) - 7px)))
             var(--home-stack-bubble-padding-y, max(5px, calc(var(--home-stack-card-pad-y) - 21px)))
-            calc(var(--home-stack-bubble-icon-reserve, var(--home-stack-icon-reserve)) + var(--home-stack-bubble-padding-left, max(2px, calc(var(--home-stack-card-pad-x) - 14px))));
+            calc(var(--home-stack-bubble-safe-inset) + var(--home-stack-bubble-padding-x, 0px));
     }
 
     div.article-stack-item-home-bubble-copy {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 100%;
         min-width: 0;
+        margin: 0;
+        text-align: center;
         overflow-wrap: anywhere;
         hyphens: auto;
+    }
+
+    div.article-stack-item-home-bubble-copy-content {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
     }
 
     @container article-stack (max-width: 1180px) {
@@ -890,7 +925,6 @@ article.article.article-stack-home {
             --home-stack-card-pad-x: 6px;
             --home-stack-card-gap: 2px;
             --home-stack-icon-reserve: calc((var(--avatar-size) - var(--home-stack-avatar-outset)) + var(--home-stack-card-gap));
-            --home-stack-bubble-icon-reserve: calc((var(--avatar-size) - var(--home-stack-avatar-outset)) + 4px);
             --home-stack-card-min-height: 224px;
         }
 
@@ -908,10 +942,9 @@ article.article.article-stack-home {
             --home-stack-card-pad-x: 5px;
             --home-stack-card-gap: 1px;
             --home-stack-icon-reserve: calc((var(--avatar-size) - var(--home-stack-avatar-outset)) + var(--home-stack-card-gap));
-            --home-stack-bubble-icon-reserve: calc((var(--avatar-size) - var(--home-stack-avatar-outset)) + 6px);
             --home-stack-card-min-height: 210px;
-            --home-stack-bubble-font-size: 1.08rem;
-            --home-stack-bubble-line-height: 1.1;
+            --home-stack-bubble-font-size: 0.92rem;
+            --home-stack-bubble-line-height: 1.12;
         }
 
         div.article-stack-item.article-stack-item-home {
@@ -920,9 +953,6 @@ article.article.article-stack-home {
         }
 
         div.article-stack-item-home div.article-stack-item-title {
-            width: calc(100% + 34px);
-            margin-left: -28px;
-            margin-right: -6px;
             row-gap: 0.65rem;
         }
 
@@ -943,10 +973,9 @@ article.article.article-stack-home {
             --home-stack-card-pad-x: 6px;
             --home-stack-card-gap: 3px;
             --home-stack-icon-reserve: calc((var(--avatar-size) - var(--home-stack-avatar-outset)) + var(--home-stack-card-gap));
-            --home-stack-bubble-icon-reserve: calc((var(--avatar-size) - var(--home-stack-avatar-outset)) + 3px);
             --home-stack-card-min-height: 188px;
-            --home-stack-bubble-font-size: 0.98rem;
-            --home-stack-bubble-line-height: 1.08;
+            --home-stack-bubble-font-size: 0.84rem;
+            --home-stack-bubble-line-height: 1.1;
         }
 
         div.article-stack-item.article-stack-item-home {
@@ -955,9 +984,6 @@ article.article.article-stack-home {
         }
 
         div.article-stack-item-home div.article-stack-item-title {
-            width: calc(100% + 28px);
-            margin-left: -23px;
-            margin-right: -5px;
             row-gap: 0.55rem;
         }
 
@@ -979,13 +1005,9 @@ article.article.article-stack-home {
             --home-stack-card-pad-x: 5px;
             --home-stack-card-gap: 2px;
             --home-stack-icon-reserve: calc((var(--avatar-size) - var(--home-stack-avatar-outset)) + var(--home-stack-card-gap));
-            --home-stack-bubble-icon-reserve: calc((var(--avatar-size) - var(--home-stack-avatar-outset)) + 2px);
         }
 
         div.article-stack-item-home div.article-stack-item-title {
-            width: calc(100% + 24px);
-            margin-left: -20px;
-            margin-right: -4px;
             row-gap: 0.45rem;
         }
 
@@ -1006,13 +1028,9 @@ article.article.article-stack-home {
             --home-stack-card-pad-x: 4px;
             --home-stack-card-gap: 1px;
             --home-stack-icon-reserve: calc((var(--avatar-size) - var(--home-stack-avatar-outset)) + var(--home-stack-card-gap));
-            --home-stack-bubble-icon-reserve: calc((var(--avatar-size) - var(--home-stack-avatar-outset)) + 1px);
         }
 
         div.article-stack-item-home div.article-stack-item-title {
-            width: calc(100% + 20px);
-            margin-left: -17px;
-            margin-right: -3px;
             row-gap: 0.4rem;
         }
 
@@ -1072,11 +1090,11 @@ article.article.article-stack-home {
  * steeper viewport-driven ramp so wide and ultrawide layouts use their space. */
 article.article.article-stack-home {
     div.article-stack-item-home div.article-stack-item-title-prefix {
-        font-size: clamp(13px, calc(-2px + 2.3dvw), 54px);
+        font-size: var(--home-stack-title-prefix-fit-size, clamp(13px, calc(-2px + 2.3dvw), 54px));
     }
 
     div.article-stack-item-home div.article-stack-item-title-main {
-        font-size: clamp(21px, calc(-5px + 3.8dvw), 88px);
+        font-size: var(--home-stack-title-main-fit-size, calc(clamp(21px, calc(-5px + 3.8dvw), 88px) - 2px));
     }
 }
 

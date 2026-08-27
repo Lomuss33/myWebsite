@@ -153,13 +153,11 @@ div.section-decoration-band {
     pointer-events: none;
 }
 
-/* Full-bleed contract for every page-level separator, including Home/Contact,
-   title ornaments, manuscript dividers, and the rule immediately before each
-   decoration band. Lazy-loaded article styles historically reintroduced fixed
-   168-380px widths, so these declarations intentionally win that cascade. */
+/* Full-bleed contract for every article boundary, including Home/Contact,
+   manuscripts, and the rule immediately before each decoration band. Each
+   article owns exactly one top and one bottom separator with equal thickness. */
 div.section-content article.article::after,
-div.section-content article.article > h4.article-title::before,
-div.section-content article.article > h4.article-title::after {
+div.section-content article.article > h4.article-title::before {
     width: var(--section-decoration-full-width)!important;
     max-width: none!important;
     margin-right: var(--section-decoration-full-margin-inline)!important;
@@ -167,6 +165,16 @@ div.section-content article.article > h4.article-title::after {
     box-sizing: border-box;
     border-radius: 0!important;
     flex: 0 0 auto;
+    height: var(--article-title-line-thickness)!important;
+    min-height: var(--article-title-line-thickness)!important;
+}
+
+/* Older article renderers add a second, thinner line directly below the title.
+   The article footer already provides the matching bottom boundary, so keeping
+   this pseudo-element creates doubled lines and inconsistent 1/2/6px weights. */
+div.section-content article.article > h4.article-title::after {
+    content: none!important;
+    display: none!important;
 }
 
 div.section-content.section-content-page-ready > div.section-content-elements-wrapper {

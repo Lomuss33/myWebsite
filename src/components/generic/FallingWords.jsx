@@ -257,7 +257,7 @@ function FallingWords({
         const Bodies = Matter.Bodies
         const Body = Matter.Body
         const engine = Engine.create({})
-        engine.gravity.y = isCoarsePointer() ? 0.6 : 1
+        engine.gravity.y = isCoarsePointer() ? 0.44 : 0.72
         engine.positionIterations = isCoarsePointer() ? 12 : 10
         engine.velocityIterations = isCoarsePointer() ? 10 : 8
         engine.constraintIterations = isCoarsePointer() ? 5 : 4
@@ -367,9 +367,18 @@ function FallingWords({
         const maxAccumulatedTime = fixedStep * 5
         let lastTime = performance.now()
         let accumulator = 0
+        let lastRenderedSelectedIndex = null
         const tick = (time) => {
+            if(document.hidden) {
+                lastTime = time
+                accumulator = 0
+                rafRef.current = requestAnimationFrame(tick)
+                return
+            }
+
             const delta = Math.max(0, time - lastTime) || fixedStep
             lastTime = time
+            let didStepPhysics = false
 
             if(selectedIndexRef.current === null) {
                 accumulator = Math.min(accumulator + delta, maxAccumulatedTime)
@@ -397,6 +406,7 @@ function FallingWords({
                     }
 
                     Matter.Engine.update(engine, fixedStep)
+                    didStepPhysics = true
                     accumulator -= fixedStep
                 }
             }
@@ -405,16 +415,19 @@ function FallingWords({
             }
 
             const activeSelectedIndex = selectedIndexRef.current
-            for(let i = 0; i < wordBodies.length; i += 1) {
-                const entry = wordBodies[i]
-                if(!entry) continue
+            if(didStepPhysics || activeSelectedIndex !== lastRenderedSelectedIndex) {
+                for(let i = 0; i < wordBodies.length; i += 1) {
+                    const entry = wordBodies[i]
+                    if(!entry) continue
 
-                const {body, el, bodyWidth, bodyHeight} = entry
-                const x = body.position.x
-                const y = body.position.y
-                const isSelected = activeSelectedIndex === i
-                const scale = isSelected ? 1.25 : 1
-                el.style.transform = `translate3d(${x}px, ${y}px, 0) translate3d(-50%, -50%, 0) rotate(${body.angle}rad) scale(${scale})`
+                    const {body, el} = entry
+                    const x = body.position.x
+                    const y = body.position.y
+                    const isSelected = activeSelectedIndex === i
+                    const scale = isSelected ? 1.25 : 1
+                    el.style.transform = `translate3d(${x}px, ${y}px, 0) translate3d(-50%, -50%, 0) rotate(${body.angle}rad) scale(${scale})`
+                }
+                lastRenderedSelectedIndex = activeSelectedIndex
             }
 
             rafRef.current = requestAnimationFrame(tick)
@@ -739,16 +752,47 @@ function FallingWords({
                             onClick={(event) => event.stopPropagation()}
                             onPointerUp={onModalTextPointerUp}
                         >
-                            <a
-                                className={`falling-words-modal-title text-1`}
-                                href={`https://www.google.com/search?q=${encodeURIComponent(`${wordSearchPrefix}: ${effectiveEntries[selectedIndex]?.word || ""}`)}`}
-                                target={`_blank`}
-                                rel={`noopener noreferrer`}
-                            >
-                                {effectiveEntries[selectedIndex]?.word || ""}
-                            </a>
+                            <div className={`falling-words-modal-heading`}>
+                                <a
+                                    className={`falling-words-modal-title text-1`}
+                                    href={`https://www.google.com/search?q=${encodeURIComponent(`${wordSearchPrefix}: ${effectiveEntries[selectedIndex]?.word || ""}`)}`}
+                                    target={`_blank`}
+                                    rel={`noopener noreferrer`}
+                                >
+                                    <span className={`falling-words-modal-title-word`}>
+                                        {effectiveEntries[selectedIndex]?.word || ""}
+                                    </span>
+                                    <span className={`falling-words-modal-link-cue`} aria-hidden={`true`}>
+                                        <span className={`falling-words-modal-link-cue-label`}>Google</span>
+                                        <span className={`falling-words-modal-link-cue-icon`}>↗</span>
+                                    </span>
+                                </a>
+                            </div>
                             <div className={`falling-words-modal-definition text-2`}>
-                                {effectiveEntries[selectedIndex]?.definition || definitionFallbackText}
+                                <span className={`falling-words-modal-definition-mark`} aria-hidden={`true`}>“</span>
+                                <span className={`falling-words-modal-definition-text`}>
+                                    {effectiveEntries[selectedIndex]?.definition || definitionFallbackText}
+                                </span>
+                            </div>
+                            <div className={`falling-words-modal-search-links`}>
+                                <a
+                                    className={`falling-words-modal-search-link falling-words-modal-search-link-duckduckgo`}
+                                    href={`https://duckduckgo.com/?q=${encodeURIComponent(`beginners guide to ${effectiveEntries[selectedIndex]?.word || ""}`)}`}
+                                    target={`_blank`}
+                                    rel={`noopener noreferrer`}
+                                >
+                                    <span>DuckDuckGo</span>
+                                    <span aria-hidden={`true`}>Beginner’s guide ↗</span>
+                                </a>
+                                <a
+                                    className={`falling-words-modal-search-link falling-words-modal-search-link-archive`}
+                                    href={`https://archive.org/search?query=${encodeURIComponent(effectiveEntries[selectedIndex]?.word || "")}`}
+                                    target={`_blank`}
+                                    rel={`noopener noreferrer`}
+                                >
+                                    <span>Internet Archive</span>
+                                    <span aria-hidden={`true`}>Books &amp; texts ↗</span>
+                                </a>
                             </div>
                         </div>
                     </div>

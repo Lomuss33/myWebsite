@@ -30,6 +30,13 @@ header.section-header {
 header.section-header.section-header-home {
     gap: 0.52rem;
     margin-bottom: 14px;
+
+    @include media-breakpoint-down(md) {
+        // Give the mobile heading breathing room below the decorative rule,
+        // while pulling the following actions closer to the heading.
+        margin-top: clamp(14px, 3vw, 22px);
+        margin-bottom: 4px;
+    }
 }
 
 header.section-header.section-header-home div.section-header-prefix {

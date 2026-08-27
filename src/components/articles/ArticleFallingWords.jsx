@@ -17,11 +17,37 @@ const WORD_SEARCH_PREFIXES = {
     tr: "nasıl öğrenilir"
 }
 
+const WORD_FONT_SCALE_STOPS = [
+    // The base word size already grows with viewport width. These multipliers
+    // keep the resulting text comfortably readable without over-scaling it.
+    [320, 0.75],
+    [480, 0.76],
+    [768, 0.78],
+    [1024, 0.73],
+    [1440, 0.71],
+    [1920, 0.73],
+    [2560, 0.77]
+]
+
+const interpolateScale = (width, stops) => {
+    if(width <= stops[0][0]) return stops[0][1]
+
+    for(let index = 1; index < stops.length; index += 1) {
+        const [upperWidth, upperScale] = stops[index]
+        const [lowerWidth, lowerScale] = stops[index - 1]
+        if(width > upperWidth) continue
+
+        const progress = (width - lowerWidth) / (upperWidth - lowerWidth)
+        return lowerScale + (upperScale - lowerScale) * progress
+    }
+
+    return stops.at(-1)[1]
+}
+
 function ArticleFallingWords({ dataWrapper }) {
     const language = useLanguage()
     const viewport = useViewport()
     const isMobileLayout = viewport.isMobileLayout()
-    const clamp = (value, min, max) => Math.min(max, Math.max(min, value))
 
     const entries = useMemo(() => {
         const langId = language.selectedLanguageId || "en"
@@ -50,30 +76,10 @@ function ArticleFallingWords({ dataWrapper }) {
     const stageHeight = isMobileLayout ?
         Math.max(230, Math.min(300, Math.round(viewport.innerHeight * 0.24))) :
         Math.max(400, Math.min(560, Math.round(viewport.innerHeight * 0.34)))
-    const stageFontScale = useMemo(() => {
-        const viewportWidth = viewport.innerWidth || 1280
-
-        if(viewportWidth <= 480)
-            return 0.48
-
-        if(viewportWidth <= 768) {
-            const progress = (viewportWidth - 480) / (768 - 480)
-            return clamp(0.48 + progress * 0.08, 0.48, 0.56)
-        }
-
-        if(viewportWidth <= 1024) {
-            const progress = (viewportWidth - 768) / (1024 - 768)
-            return clamp(0.52 + progress * 0.08, 0.52, 0.6)
-        }
-
-        if(viewportWidth <= 1440) {
-            const progress = (viewportWidth - 1024) / (1440 - 1024)
-            return clamp(0.6 + progress * 0.12, 0.6, 0.72)
-        }
-
-        const largeDesktopProgress = (viewportWidth - 1440) / 480
-        return clamp(0.72 + largeDesktopProgress * 0.06, 0.72, 0.8)
-    }, [viewport.innerWidth])
+    const stageFontScale = useMemo(
+        () => interpolateScale(viewport.innerWidth || 1280, WORD_FONT_SCALE_STOPS),
+        [viewport.innerWidth]
+    )
 
     return (
         <Article
@@ -85,8 +91,8 @@ function ArticleFallingWords({ dataWrapper }) {
             <PretextFitText
                 text={hintText}
                 className={`article-falling-words-hint text-2`}
-                minFontSizePx={15}
-                maxFontSizePx={30}
+                minFontSizePx={16}
+                maxFontSizePx={24}
                 lineHeightRatio={1.24}
             />
 

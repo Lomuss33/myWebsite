@@ -1,5 +1,5 @@
 import "./Collapsable.scss"
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react'
 import {useUtils} from "../../hooks/utils.js"
 import StandardButton from "../buttons/StandardButton.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
@@ -18,7 +18,7 @@ function Collapsable({
     const utils = useUtils()
     const language = useLanguage()
 
-    const [visibleItems, setVisibleItems] = useState(0)
+    const [visibleItems, setVisibleItems] = useState(() => initialVisibleItems || (initialVisibleRows ? 1 : 0))
     const [columnCount, setColumnCount] = useState(1)
     const contentRef = useRef(null)
 
@@ -38,7 +38,7 @@ function Collapsable({
         _updateVisibleItemsCount(initialAmount)
     }, [id, resolvedBreakpointId, resolvedInitialVisibleItems, totalItems])
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const contentElement = contentRef.current
         if(!contentElement || typeof window === "undefined")
             return
@@ -50,9 +50,12 @@ function Collapsable({
 
         updateColumnCount()
 
-        const resizeObserver = new ResizeObserver(() => {
-            updateColumnCount()
-        })
+        if(typeof ResizeObserver === "undefined") {
+            window.addEventListener("resize", updateColumnCount, { passive: true })
+            return () => window.removeEventListener("resize", updateColumnCount)
+        }
+
+        const resizeObserver = new ResizeObserver(updateColumnCount)
         resizeObserver.observe(contentElement)
 
         return () => {

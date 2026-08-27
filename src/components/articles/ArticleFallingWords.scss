@@ -196,18 +196,18 @@ article#article-2-section-my-writings {
         width: 100%;
 
         div.article-falling-words-hint {
-            height: clamp(126px, 31vw, 150px);
+            height: clamp(92px, 26vw, 104px);
             margin-bottom: 14px;
-            padding: 48px 16px 16px;
-            font-size: var(--pretext-fit-font-size, clamp(0.98rem, 0.76rem + 1vw, 1.12rem));
+            padding: 12px 14px 12px 60px;
+            font-size: var(--pretext-fit-font-size, clamp(1rem, 0.9rem + 0.5vw, 1.12rem));
             line-height: var(--pretext-fit-line-height, 1.28);
             border-radius: 12px;
 
             &::before {
-                inset: 12px auto auto 14px;
+                inset: 50% auto auto 14px;
                 width: 30px;
                 height: 30px;
-                transform: none;
+                transform: translateY(-50%);
                 border-radius: 8px;
                 font-size: 0.96rem;
                 box-shadow:
@@ -216,9 +216,7 @@ article#article-2-section-my-writings {
             }
 
             &::after {
-                inset: 25px 56px auto auto;
-                width: min(44vw, 132px);
-                box-shadow: none;
+                display: none;
             }
         }
 
@@ -392,6 +390,41 @@ article#article-2-section-my-writings {
 
         span.falling-word.falling-word-held {
             filter: none;
+        }
+    }
+}
+
+// Definition content hierarchy. The modal card itself deliberately remains
+// unchanged; these rules only organize and size the content within it.
+article#article-2-section-my-writings {
+    div.falling-words-modal-copy-zone {
+        width: min(100%, 700px);
+        margin-inline: auto;
+    }
+
+    a.falling-words-modal-title {
+        margin: 0;
+        font-size: clamp(1.9rem, 1.48rem + 1.08vw, 2.5rem);
+        line-height: 1.08;
+    }
+
+    div.falling-words-modal-definition {
+        font-size: clamp(1.14rem, 1.02rem + 0.4vw, 1.34rem);
+        line-height: 1.7;
+    }
+
+    @include media-breakpoint-down(sm) {
+        div.falling-words-modal-copy-zone {
+            gap: 14px;
+        }
+
+        a.falling-words-modal-title {
+            font-size: clamp(1.34rem, 1.14rem + 0.94vw, 1.58rem);
+        }
+
+        div.falling-words-modal-definition {
+            font-size: clamp(1rem, 0.92rem + 0.4vw, 1.12rem);
+            line-height: 1.62;
         }
     }
 }

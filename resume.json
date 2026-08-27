@@ -260,8 +260,8 @@
         {
             "id": "software-2",
             "type": "software",
-            "title": "Belot",
-            "title_de": "Belot",
+            "title": "Belot Card Game",
+            "title_de": "Belot-Kartenspiel",
             "summary": "Single-player Belot card game built with a Java engine and React UI, now packaged for direct play on GitHub Pages.",
             "summary_de": "Einzelspieler-Belot-Kartenspiel mit Java-Engine und React-Oberfläche, jetzt für direktes Spielen auf GitHub Pages bereitgestellt.",
             "start_date": null,

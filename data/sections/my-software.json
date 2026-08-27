@@ -180,7 +180,7 @@
           },
           "locales": {
             "en": {
-              "title": "Belot",
+              "title": "Belot Card Game",
               "text": "Single-player Belot card game built with a Java engine and React UI, now packaged for direct play on GitHub Pages.",
               "tags": [
                 "Java",
@@ -191,7 +191,7 @@
               ]
             },
             "de": {
-              "title": "Belot",
+              "title": "Belot-Kartenspiel",
               "text": "Einzelspieler-Belot-Kartenspiel mit Java-Engine und React-Oberfläche, jetzt für direktes Spielen auf GitHub Pages bereitgestellt.",
               "tags": [
                 "Java",
@@ -202,7 +202,7 @@
               ]
             },
             "hr": {
-              "title": "Belot",
+              "title": "Kartaška igra Belot",
               "text": "Single-player igra Belot izrađena s Java engineom i React sučeljem, sada pripremljena za izravno igranje preko GitHub Pages.",
               "tags": [
                 "Java",
@@ -213,7 +213,7 @@
               ]
             },
             "tr": {
-              "title": "Belot",
+              "title": "Belot Kart Oyunu",
               "text": "Java oyun motoru ve React arayüzüyle geliştirilen tek oyunculu Belot kart oyunu, artık GitHub Pages üzerinden doğrudan oynanabiliyor.",
               "tags": [
                 "Java",

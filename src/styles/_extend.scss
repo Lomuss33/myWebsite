@@ -72,8 +72,10 @@ $nav-extended-role-visible-min-height: 620px;
             bottom: 0;
             width: $thickness;
         } @else {
-            left: 0;
-            right: 0;
+            // Overscan into the parent's clipped area so fractional mobile
+            // viewport widths cannot expose a one-pixel gap at either edge.
+            left: -2px;
+            right: -2px;
             height: $thickness;
         }
         background-image: repeating-linear-gradient(
@@ -87,6 +89,8 @@ $nav-extended-role-visible-min-height: 620px;
             background-position: 0 $phase-offset;
         } @else {
             background-position: $phase-offset 0;
+            background-origin: border-box;
+            background-clip: border-box;
         }
         pointer-events: none;
     }

@@ -422,9 +422,15 @@ div.nav-profile-card {
     }
 
     div.nav-profile-card-role {
-        --nav-horizontal-edge-fade-width: clamp(1.25rem, 10cqi, 2.25rem);
-        --nav-horizontal-edge-fade-left-color: rgba(255, 255, 255, 0.78);
-        --nav-horizontal-edge-fade-right-color: rgba(255, 255, 255, 0.78);
+        --nav-horizontal-edge-fade-width: clamp(4.5rem, 23cqi, 8rem);
+        --nav-horizontal-edge-fade-left-color: var(--nav-profile-flowing-band-surface);
+        --nav-horizontal-edge-fade-right-color: var(--nav-profile-flowing-band-surface);
+        --nav-profile-role-edge-lip: color-mix(in srgb, var(--nav-profile-flowing-band-surface) 78%, black 22%);
+        --nav-profile-role-edge-trough: color-mix(in srgb, var(--nav-profile-flowing-band-surface) 92%, black 8%);
+        --nav-profile-role-edge-ridge: color-mix(in srgb, var(--nav-profile-flowing-band-surface) 96%, white 4%);
+        --nav-profile-role-edge-veil-strong: color-mix(in srgb, var(--nav-profile-flowing-band-surface) 94%, transparent);
+        --nav-profile-role-edge-veil-soft: color-mix(in srgb, var(--nav-profile-flowing-band-surface) 42%, transparent);
+        --nav-profile-role-edge-shadow: color-mix(in srgb, black 46%, transparent);
 
         @include nav-horizontal-edge-fades;
 
@@ -447,7 +453,13 @@ div.nav-profile-card {
         padding: calc(3px * var(--nav-extended-role-opacity, 1)) 12px;
         box-sizing: border-box;
         border-radius: 0;
-        background: var(--nav-profile-flowing-band-surface);
+        background:
+            linear-gradient(
+                180deg,
+                color-mix(in srgb, var(--nav-profile-flowing-band-surface) 94%, white 6%) 0%,
+                var(--nav-profile-flowing-band-surface) 46%,
+                color-mix(in srgb, var(--nav-profile-flowing-band-surface) 94%, black 6%) 100%
+            );
         border-top: calc(1px * var(--nav-extended-role-opacity, 1)) solid var(--theme-nav-divider);
         border-bottom: calc(1px * var(--nav-extended-role-opacity, 1)) solid var(--theme-nav-divider);
         border-left: 0;
@@ -465,9 +477,59 @@ div.nav-profile-card {
             border-width 0.18s ease,
             opacity 0.18s ease;
 
+        /* Long, surface-matched side tunnels. Their depth is concentrated at
+           the outer lip and then released gradually toward the open center, so
+           moving type appears to travel behind the card instead of meeting a
+           short decorative cap. */
+        &::before {
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--nav-profile-role-edge-lip) 0%,
+                    var(--nav-profile-role-edge-trough) 10%,
+                    var(--nav-profile-role-edge-ridge) 23%,
+                    var(--nav-profile-role-edge-veil-strong) 48%,
+                    var(--nav-profile-role-edge-veil-soft) 76%,
+                    transparent 100%
+                );
+            box-shadow:
+                inset 2px 0 0 color-mix(in srgb, var(--theme-nav-divider) 48%, transparent),
+                inset 12px 0 18px -16px var(--nav-profile-role-edge-shadow);
+        }
+
+        &::after {
+            background:
+                linear-gradient(
+                    270deg,
+                    var(--nav-profile-role-edge-lip) 0%,
+                    var(--nav-profile-role-edge-trough) 10%,
+                    var(--nav-profile-role-edge-ridge) 23%,
+                    var(--nav-profile-role-edge-veil-strong) 48%,
+                    var(--nav-profile-role-edge-veil-soft) 76%,
+                    transparent 100%
+                );
+            box-shadow:
+                inset -2px 0 0 color-mix(in srgb, var(--theme-nav-divider) 48%, transparent),
+                inset -12px 0 18px -16px var(--nav-profile-role-edge-shadow);
+        }
+
         span.text-typer-span {
             width: 100%;
             justify-content: center;
+            -webkit-mask-image: linear-gradient(
+                90deg,
+                transparent 0,
+                #000 var(--nav-horizontal-edge-fade-width),
+                #000 calc(100% - var(--nav-horizontal-edge-fade-width)),
+                transparent 100%
+            );
+            mask-image: linear-gradient(
+                90deg,
+                transparent 0,
+                #000 var(--nav-horizontal-edge-fade-width),
+                #000 calc(100% - var(--nav-horizontal-edge-fade-width)),
+                transparent 100%
+            );
         }
 
         span.text-typer-span-dynamic {
@@ -802,8 +864,14 @@ div.nav-profile-card {
         --nav-profile-flowing-band-surface: #ffffff;
 
         div.nav-profile-card-role {
-            --nav-horizontal-edge-fade-left-color: rgba(0, 0, 0, 0.72);
-            --nav-horizontal-edge-fade-right-color: rgba(0, 0, 0, 0.72);
+            --nav-horizontal-edge-fade-left-color: var(--nav-profile-flowing-band-surface);
+            --nav-horizontal-edge-fade-right-color: var(--nav-profile-flowing-band-surface);
+            --nav-profile-role-edge-lip: color-mix(in srgb, var(--nav-profile-flowing-band-surface) 91%, black 9%);
+            --nav-profile-role-edge-trough: color-mix(in srgb, var(--nav-profile-flowing-band-surface) 97%, black 3%);
+            --nav-profile-role-edge-ridge: var(--nav-profile-flowing-band-surface);
+            --nav-profile-role-edge-veil-strong: color-mix(in srgb, var(--nav-profile-flowing-band-surface) 82%, transparent);
+            --nav-profile-role-edge-veil-soft: color-mix(in srgb, var(--nav-profile-flowing-band-surface) 28%, transparent);
+            --nav-profile-role-edge-shadow: color-mix(in srgb, black 20%, transparent);
         }
 
         div.nav-profile-card-desktop-action-stack div.audio-button-wrapper-size-default button.audio-button,
@@ -1398,18 +1466,20 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-role {
+            --nav-profile-mobile-role-height: clamp(40px, 5.4svh, 48px);
+
             position: relative;
             z-index: 1;
             justify-content: center;
             text-align: center;
-            min-height: 0;
+            min-height: var(--nav-profile-mobile-role-height);
             margin-top: 2px;
             width: calc(100% + (var(--nav-profile-card-inline-padding) * 2));
             max-width: calc(100% + (var(--nav-profile-card-inline-padding) * 2));
             margin-left: calc(var(--nav-profile-card-inline-padding) * -1);
             margin-right: calc(var(--nav-profile-card-inline-padding) * -1);
-            height: 32px;
-            max-height: 32px;
+            height: var(--nav-profile-mobile-role-height);
+            max-height: var(--nav-profile-mobile-role-height);
             padding-top: 4px;
             padding-bottom: 4px;
             box-sizing: border-box;

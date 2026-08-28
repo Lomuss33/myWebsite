@@ -710,6 +710,44 @@ article.article-info-list-home {
             --proof-bubble-line-height: 1.18;
         }
     }
+
+    /* Keep proof panels, long translated titles and square buttons inside the
+       card on 320–380px devices. Wider breakpoints retain the roomy sizing. */
+    @media (max-width: 380px) {
+        div.article-info-list-items.article-info-list-items-home,
+        div.article-info-list-items.article-info-list-items-home.article-info-list-items-shrink {
+            --avatar-size: 64px;
+            --padding: 4px;
+            --content-padding-inline-start: 10px;
+            --content-padding-inline-end: 10px;
+            --content-padding-block: 10px;
+            --home-skill-text-right-guard: 4px;
+            --proof-bubble-bleed-left: 0px;
+            --proof-bubble-bleed-right: 0px;
+            --proof-bubble-bleed-top: 0px;
+            --proof-bubble-bleed-bottom: 0px;
+            --proof-bubble-padding-x: 8px;
+            --proof-bubble-padding-y: 7px;
+        }
+
+        div.article-info-list-item.article-info-list-item-home {
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        div.article-info-list-item-info-title,
+        div.article-info-list-item-info-body,
+        div.article-info-list-item-info-text,
+        div.article-info-list-item-text-bubble {
+            min-width: 0;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        div.article-info-list-item-info-title {
+            overflow-wrap: anywhere;
+        }
+    }
 }
 
 

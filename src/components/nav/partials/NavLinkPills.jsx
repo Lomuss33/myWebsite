@@ -27,7 +27,7 @@ function NavLinkPillsLink({ link, active, onClick }) {
 
     return (
         <GestureAwareButton className={`nav-link-pills-link ${visitedClass} ${activeClass}`.trim()}
-                            ariaPressed={active}
+                            ariaCurrent={active ? "page" : null}
                             onClick={onClick}>
             <i className={`${link.faIcon}`}/>
             <span dangerouslySetInnerHTML={{__html: link.label}}/>

@@ -1241,3 +1241,42 @@ article#article-4-section-my-art {
         color: #cbd5e1;
     }
 }
+
+/* Final narrow-phone override: placed after the visual variants so it wins
+   against the desktop fluid-scale declarations above. */
+@media (max-width: 380px) {
+    article.article.article-stack-home {
+        overflow-x: hidden;
+
+        div.article-stack-items.article-stack-items-home {
+            --stack-columns: 1;
+            --avatar-size: 72px;
+            --gap: 18px;
+            --home-stack-avatar-outset: 30px;
+            --home-stack-card-gap: 8px;
+            --home-stack-icon-reserve: calc((var(--avatar-size) - var(--home-stack-avatar-outset)) + var(--home-stack-card-gap));
+            --home-stack-card-min-height: 142px;
+            --home-stack-card-pad-x: 10px;
+            --home-stack-card-pad-y: 14px;
+            --home-stack-bubble-font-size: 0.9rem;
+            padding-left: var(--home-stack-avatar-outset);
+            min-width: 0;
+            max-width: 100%;
+        }
+
+        div.article-stack-item.article-stack-item-home {
+            min-width: 0;
+            padding-top: 18px;
+            padding-bottom: 18px;
+        }
+
+        div.article-stack-item-home div.article-stack-item-title-prefix {
+            font-size: 0.94rem;
+        }
+
+        div.article-stack-item-home div.article-stack-item-title-main {
+            font-size: 1.48rem;
+            overflow-wrap: anywhere;
+        }
+    }
+}

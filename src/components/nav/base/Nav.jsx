@@ -32,10 +32,10 @@ function Nav({ links, itemComponent, id = null, className = "", tag, data = {} }
     return (
         <nav className={`nav-base ${className}`}
              id={id}>
-            {links.map((link, key) => {
+            {links.map((link) => {
                 const Component = itemComponent
                 return (
-                    <Component key={key}
+                    <Component key={link.id}
                                link={link}
                                active={_isActive(link)}
                                data={data}

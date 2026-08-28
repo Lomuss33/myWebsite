@@ -532,6 +532,49 @@ article#article-1-section-about {
     }
 }
 
+/* Deterministic fallback for older narrow mobile browsers. The JavaScript fit
+   mode normally reaches the same icon-only result, but this prevents late font
+   loading or Firefox rounding from leaving three truncated labels in one row. */
+@media (max-width: 340px) {
+    article#article-1-section-about {
+        ul.article-inline-list-items:not(.article-inline-list-items-fit-measure) {
+            width: 100%;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        li.article-inline-list-item:not([data-fit-measure="true"]) {
+            min-width: 0;
+            min-height: 44px;
+        }
+
+        li.article-inline-list-item:not([data-fit-measure="true"]) .article-inline-list-item-control,
+        li.article-inline-list-item:not([data-fit-measure="true"]) .article-inline-list-item-pill {
+            width: 100%;
+            min-width: 0;
+            min-height: 44px;
+            justify-content: center;
+        }
+
+        li.article-inline-list-item:not([data-fit-measure="true"]) .article-inline-list-item-pill {
+            display: flex;
+            padding-inline: 0;
+        }
+
+        li.article-inline-list-item:not([data-fit-measure="true"]) span.article-inline-list-item-label {
+            display: none;
+        }
+
+        li.article-inline-list-item:not([data-fit-measure="true"]) i.article-inline-list-item-icon {
+            width: 32px;
+            min-width: 32px;
+            flex-basis: 32px;
+            border-right: 0;
+            border-radius: 999px;
+        }
+    }
+}
+
 i.article-inline-list-item-icon {
     padding: $item-padding;
     margin: 0 $item-padding;

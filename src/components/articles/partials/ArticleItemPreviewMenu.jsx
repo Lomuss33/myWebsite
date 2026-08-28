@@ -13,13 +13,20 @@ import {useUtils} from "../../../hooks/utils.js"
  * @return {JSX.Element}
  * @constructor
  */
-function ArticleItemPreviewMenu({ itemWrapper, className = "", spaceBetween }) {
+function ArticleItemPreviewMenu({ itemWrapper, className = "", spaceBetween, excludePrimaryAction = false }) {
     const utils = useUtils()
 
     const hasScreenshotsOrVideo = itemWrapper.preview?.hasScreenshotsOrYoutubeVideo
+    const hasGallery = Boolean(itemWrapper.preview?.screenshots?.length)
     const hasLinks = itemWrapper.preview?.hasLinks
     const links = itemWrapper.preview?.links || []
     const validLinks = links.filter(link => isNonEmptyHref(link?.href))
+    const primaryLink = validLinks.find(link => link?.faIcon === (itemWrapper.faIcon || itemWrapper.faIconWithFallback)) ||
+        validLinks[0] ||
+        null
+    const menuLinks = excludePrimaryAction && !hasGallery && primaryLink ?
+        validLinks.filter(link => link !== primaryLink) :
+        validLinks
     const orderedLinks = links.slice().sort((a, b) => {
         return Number(a.isWebsiteAction) - Number(b.isWebsiteAction)
     })
@@ -40,10 +47,10 @@ function ArticleItemPreviewMenu({ itemWrapper, className = "", spaceBetween }) {
             {(hasScreenshotsOrVideo || !spaceBetween) && (
                 <div className={`article-item-preview-menu-button-list`}>
                     <ItemPreviewMenuYoutubeButton itemWrapper={itemWrapper}/>
-                    <ItemPreviewMenuGalleryButton itemWrapper={itemWrapper}/>
+                    {(!excludePrimaryAction || !hasGallery) && <ItemPreviewMenuGalleryButton itemWrapper={itemWrapper}/>}
                     {hasLinks && !spaceBetween && (
                         <>
-                            {validLinks.map((link, key) => (
+                            {menuLinks.map((link, key) => (
                                 <ItemPreviewMenuCustomLinkButton link={link}
                                                                  itemWrapper={itemWrapper}
                                                                  key={key}/>
@@ -55,7 +62,7 @@ function ArticleItemPreviewMenu({ itemWrapper, className = "", spaceBetween }) {
 
             {hasLinks && spaceBetween && (
                 <div className={`article-item-preview-menu-button-list ${linksListClass}`}>
-                    {validLinks
+                    {menuLinks
                         // In portfolio cards, the website action is promoted into the avatar dock.
                         // Keep it here in non-spaceBetween layouts (e.g. modal/compact menus).
                         .filter(link => {

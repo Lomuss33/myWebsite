@@ -3,7 +3,7 @@
 div.nav-tab-controller-wrapper {
     // Offset the lower stripe phase so the two horizontal edges begin on
     // opposite colors, matching the alternating desktop rail treatment.
-    @include nav-selected-edge(bottom, 6px, 35px);
+    @include nav-selected-edge(bottom, 6px, 40px);
 
     position: fixed;
     z-index: $z-index-nav-tabs;
@@ -148,5 +148,17 @@ button.nav-tab-controller-link-active {
 }
 
 nav.nav-tab-controller > button.nav-tab-controller-link + button.nav-tab-controller-link {
-    box-shadow: inset 1px 0 0 var(--theme-nav-divider);
+    border-left: 1px solid var(--theme-nav-divider);
+}
+
+button.nav-tab-controller-link:focus-visible {
+    z-index: 2;
+    outline: 2px solid color-mix(in srgb, var(--theme-primary) 82%, white 18%)!important;
+    outline-offset: -4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    button.nav-tab-controller-link {
+        transition: none;
+    }
 }

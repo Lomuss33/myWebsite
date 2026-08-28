@@ -78,6 +78,55 @@ article#article-2-section-about {
             padding: 3px 7px;
         }
     }
+
+    /* Old 320–360px Android engines are less forgiving of animated inline
+       fragments extending a few pixels beyond their measured line box. Keep
+       the desktop treatment, but make the biography card intrinsically safe
+       on narrow phones. */
+    @media (max-width: 380px) {
+        div.article-feature-item {
+            min-width: 0;
+            max-width: 100%;
+            padding-inline: 4px;
+            overflow: hidden;
+        }
+
+        div.article-feature-item-media,
+        div.article-feature-item-content,
+        div.article-feature-item-text,
+        div.article-feature-item-text-content,
+        div.pretext-interactive-text,
+        div.pretext-interactive-text-content,
+        div.pretext-interactive-text-paragraph,
+        div.pretext-interactive-text-line {
+            min-width: 0;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        div.pretext-interactive-text {
+            /* The line renderer already reserves its own glyph tolerance.
+               Extra inline padding can push the final word outside a 320px
+               Firefox line box, so use the card's padding as the gutter. */
+            padding-inline: 0;
+        }
+
+        div.article-feature-item-image,
+        div.article-feature-item-image-switch {
+            max-width: calc(100% - 8px);
+        }
+    }
+
+    @media (max-width: 380px) and (hover: none),
+           (max-width: 380px) and (pointer: coarse) {
+        div.pretext-interactive-text-line,
+        span.pretext-interactive-text-fragment,
+        a.pretext-interactive-text-fragment,
+        span.pretext-interactive-text-grapheme {
+            transform: none !important;
+            will-change: auto;
+        }
+    }
 }
 
 article#article-2-section-experience {

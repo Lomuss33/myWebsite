@@ -1362,6 +1362,28 @@ article#article-1-section-my-hardware {
         box-shadow:
             inset 0 1px 0 rgba(255, 255, 255, 0.09),
             0 12px 28px rgba(2, 6, 23, 0.18);
+        isolation: isolate;
+        transition:
+            border-color 280ms ease,
+            box-shadow 320ms ease,
+            filter 320ms ease,
+            background-position 520ms ease;
+
+        &::before {
+            content: "";
+            position: absolute;
+            z-index: 0;
+            top: -35%;
+            bottom: -35%;
+            left: -48%;
+            width: 32%;
+            pointer-events: none;
+            opacity: 0;
+            transform: skewX(-18deg) translateX(-120%);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16), transparent);
+            filter: blur(1px);
+            transition: transform 620ms cubic-bezier(0.2, 0.75, 0.2, 1), opacity 180ms ease;
+        }
 
         &::after {
             content: "";
@@ -1372,6 +1394,7 @@ article#article-1-section-my-hardware {
             height: 3px;
             background: linear-gradient(90deg, transparent, var(--portfolio-title-band-border));
             box-shadow: 0 0 18px var(--portfolio-title-band-accent);
+            transition: width 360ms ease, opacity 260ms ease, box-shadow 320ms ease;
         }
 
         div.article-portfolio-item-title-heading {
@@ -1382,6 +1405,7 @@ article#article-1-section-my-hardware {
             gap: clamp(10px, 2.2cqw, 18px);
             width: 100%;
             min-height: 88px;
+            z-index: 2;
 
             &::before,
             &::after {
@@ -1393,6 +1417,8 @@ article#article-1-section-my-hardware {
                 border-radius: 999px;
                 opacity: 0.86;
                 box-shadow: 0 0 12px var(--portfolio-title-band-accent);
+                transform-origin: center;
+                transition: transform 320ms ease, opacity 260ms ease, box-shadow 320ms ease;
             }
 
             &::before {
@@ -1414,9 +1440,12 @@ article#article-1-section-my-hardware {
             text-wrap: pretty;
             text-align: center;
             overflow-wrap: anywhere;
+            transition: transform 280ms ease, text-shadow 320ms ease, letter-spacing 280ms ease;
         }
 
         div.article-portfolio-item-title-category {
+            position: relative;
+            z-index: 2;
             align-self: stretch;
             justify-content: center;
             width: auto;
@@ -1445,6 +1474,53 @@ article#article-1-section-my-hardware {
         }
     }
 
+    div.article-portfolio-item:hover div.article-portfolio-item-title,
+    div.article-portfolio-item:focus-within div.article-portfolio-item-title {
+        border-bottom-color: color-mix(in srgb, var(--portfolio-title-band-border) 86%, white 14%);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.15),
+            inset 0 0 34px var(--portfolio-title-band-accent),
+            0 15px 32px rgba(2, 6, 23, 0.24);
+        filter: saturate(1.12) brightness(1.035);
+
+        &::before {
+            opacity: 1;
+            transform: skewX(-18deg) translateX(560%);
+        }
+
+        &::after {
+            width: 76%;
+            opacity: 1;
+            box-shadow: 0 0 25px var(--portfolio-title-band-border);
+        }
+
+        div.article-portfolio-item-title-heading::before,
+        div.article-portfolio-item-title-heading::after {
+            transform: scaleX(1.12);
+            opacity: 1;
+            box-shadow: 0 0 18px var(--portfolio-title-band-border);
+        }
+
+        h5.article-portfolio-item-title-main {
+            transform: translateY(-1px);
+            letter-spacing: -0.018em;
+            text-shadow: 0 0 20px var(--portfolio-title-band-accent);
+        }
+    }
+
+    div.article-portfolio-item:active div.article-portfolio-item-title {
+        filter: saturate(1.18) brightness(1.06);
+
+        div.article-portfolio-item-title-heading::before,
+        div.article-portfolio-item-title-heading::after {
+            transform: scaleX(0.9);
+        }
+
+        h5.article-portfolio-item-title-main {
+            transform: scale(0.985);
+        }
+    }
+
     div.article-portfolio-item-body {
         margin-top: 18px;
 
@@ -1456,6 +1532,25 @@ article#article-1-section-my-hardware {
 
     a.article-portfolio-item-control-btn-icon i.fa-icon {
         font-size: clamp(1.28rem, 3.7cqw, 1.65rem);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    article#article-1-section-my-software,
+    article#article-1-section-my-hardware {
+        div.article-portfolio-item-title,
+        div.article-portfolio-item-title::before,
+        div.article-portfolio-item-title::after,
+        div.article-portfolio-item-title-heading::before,
+        div.article-portfolio-item-title-heading::after,
+        h5.article-portfolio-item-title-main {
+            transition: none !important;
+        }
+
+        div.article-portfolio-item:hover div.article-portfolio-item-title::before,
+        div.article-portfolio-item:focus-within div.article-portfolio-item-title::before {
+            opacity: 0;
+        }
     }
 }
 
@@ -1516,13 +1611,13 @@ article#article-1-section-my-hardware div.article-portfolio-item {
         }
 
         div.article-portfolio-item-title {
-            min-height: 106px;
-            padding-top: 14px;
+            min-height: 0;
+            padding-top: 10px;
             padding-bottom: 0;
 
             div.article-portfolio-item-title-heading {
                 gap: 9px;
-                min-height: 76px;
+                min-height: 0;
 
                 &::before,
                 &::after {
@@ -1539,7 +1634,7 @@ article#article-1-section-my-hardware div.article-portfolio-item {
 
             div.article-portfolio-item-title-category {
                 font-size: clamp(0.94rem, 4vw, 1.08rem) !important;
-                margin-top: 10px;
+                margin-top: 6px;
                 padding-top: 8px;
                 padding-bottom: 9px;
                 letter-spacing: 0.07em;
@@ -1547,13 +1642,18 @@ article#article-1-section-my-hardware div.article-portfolio-item {
         }
 
         div.article-portfolio-items {
-            gap: 20px;
+            gap: 14px;
         }
 
         div.article-portfolio-item {
             /* Larger mobile copy must define the real card height immediately. */
             content-visibility: visible;
             contain-intrinsic-size: none;
+            margin-top: 2px;
+        }
+
+        div.article-category-filter {
+            margin-bottom: 12px !important;
         }
 
         div.article-portfolio-item-body {
@@ -1626,6 +1726,202 @@ article#article-1-section-my-hardware div.article-portfolio-item {
         a.article-portfolio-item-control-btn:hover {
             transform: none;
             filter: none;
+        }
+    }
+}
+
+/*
+ * Non-mobile compensation for the scaled desktop section shell. Typography
+ * and controls use card-relative sizing, but remain bounded at both ends.
+ */
+@include media-breakpoint-up(sm) {
+    article#article-1-section-my-software,
+    article#article-1-section-my-hardware {
+        div.article-portfolio-items {
+            --portfolio-card-title-size: clamp(1.72rem, 4cqw, 2.42rem);
+            --portfolio-card-category-size: clamp(1.06rem, 2.35cqw, 1.28rem);
+            --portfolio-card-description-size: clamp(1.28rem, 2.8cqw, 1.58rem);
+            --portfolio-card-description-line-height: 1.56;
+            --portfolio-control-height: clamp(64px, 9.5cqw, 78px);
+        }
+
+        div.article-portfolio-item-title {
+            min-height: 0;
+            padding-top: 5px;
+
+            div.article-portfolio-item-title-heading {
+                gap: clamp(7px, 1.4cqw, 12px);
+                min-height: 0;
+
+                &::before,
+                &::after {
+                    flex: 1 8 48px;
+                    min-width: 0;
+                    max-width: 58px;
+                }
+            }
+
+            h5.article-portfolio-item-title-main {
+                flex: 0 1 auto;
+                width: auto;
+                max-width: 100%;
+                font-size: var(--portfolio-card-title-size) !important;
+                line-height: 1.08;
+                text-wrap: pretty;
+            }
+
+            div.article-portfolio-item-title-category {
+                margin-top: 5px;
+                font-size: var(--portfolio-card-category-size) !important;
+            }
+        }
+
+        div.article-portfolio-item-body div.article-portfolio-item-body-description {
+            font-size: var(--portfolio-card-description-size);
+            line-height: var(--portfolio-card-description-line-height);
+        }
+
+        li.article-portfolio-item-body-tag {
+            font-size: clamp(0.78rem, 1.7cqw, 0.92rem) !important;
+            padding: 4px 8px;
+        }
+
+        span.article-portfolio-item-control-btn-label {
+            font-size: clamp(0.92rem, 2cqw, 1.12rem);
+        }
+
+        i.article-portfolio-item-control-btn-external-icon {
+            font-size: clamp(1rem, 2.2cqw, 1.22rem);
+        }
+    }
+}
+
+/*
+ * Canonical article-title system for both project collections.
+ * One continuous scale replaces the former small/large modes; decoration is
+ * text-relative and therefore cannot be clipped by a fixed title box.
+ */
+article#article-1-section-my-software {
+    --portfolio-project-title-start: var(--software-project-title-start);
+    --portfolio-project-title-mid: var(--software-project-title-mid);
+    --portfolio-project-title-end: var(--software-project-title-end);
+    --portfolio-project-title-shadow: var(--software-project-title-shadow);
+}
+
+article#article-1-section-my-hardware {
+    --portfolio-project-title-start: var(--hardware-project-title-start);
+    --portfolio-project-title-mid: var(--hardware-project-title-mid);
+    --portfolio-project-title-end: var(--hardware-project-title-end);
+    --portfolio-project-title-shadow: var(--hardware-project-title-shadow);
+}
+
+article#article-1-section-my-software,
+article#article-1-section-my-hardware {
+    h4.article-title {
+        display: flex;
+        width: 100%;
+        min-height: 0;
+        margin: 0 auto clamp(12px, 1.4vw, 18px);
+        padding: clamp(4px, 0.6vw, 8px) 0;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(6px, 0.7vw, 9px);
+        overflow: visible;
+        background: none;
+        box-shadow: none;
+        font-size: clamp(2rem, 1.42rem + 2.15vw, 4.2rem) !important;
+        font-weight: 900;
+        line-height: 1.05;
+        text-align: center;
+        text-shadow: var(--portfolio-project-title-shadow);
+    }
+
+    h4.article-title::before,
+    h4.article-title::after {
+        content: "";
+        display: block;
+        flex: 0 0 auto;
+        margin: 0 auto;
+        border-radius: 999px;
+        opacity: 0.9;
+    }
+
+    h4.article-title::before {
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, var(--portfolio-project-title-mid) 12%, var(--portfolio-project-title-end) 88%, transparent);
+        box-shadow: 0 0 22px color-mix(in srgb, var(--portfolio-project-title-mid) 28%, transparent);
+    }
+
+    h4.article-title::after {
+        width: min(62%, 380px);
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--portfolio-project-title-mid), var(--portfolio-project-title-end), transparent);
+    }
+
+    h4.article-title span.article-title-prefix {
+        display: none;
+    }
+
+    h4.article-title span.article-title-text {
+        position: relative;
+        z-index: 0;
+        display: block;
+        width: auto;
+        max-width: 100%;
+        min-width: 0;
+        padding: 0.08em clamp(4px, 0.5vw, 8px) 0.12em;
+        overflow: visible;
+        overflow-wrap: normal;
+        word-break: normal;
+        text-wrap: balance;
+        isolation: isolate;
+        background: linear-gradient(135deg, var(--portfolio-project-title-start) 0%, var(--portfolio-project-title-mid) 48%, var(--portfolio-project-title-end) 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+    h4.article-title span.article-title-text::before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        inset: -0.42em -1.05em;
+        pointer-events: none;
+        border-radius: 50%;
+        background:
+            radial-gradient(ellipse at 38% 50%, color-mix(in srgb, var(--portfolio-project-title-mid) 16%, transparent) 0%, transparent 66%),
+            radial-gradient(ellipse at 66% 50%, color-mix(in srgb, var(--portfolio-project-title-end) 14%, transparent) 0%, transparent 68%);
+        filter: blur(3px);
+    }
+
+    h4.article-title span.article-title-text span {
+        color: inherit !important;
+    }
+}
+
+@media (max-width: 575.98px) {
+    article#article-1-section-my-software,
+    article#article-1-section-my-hardware {
+        margin-top: 6px;
+
+        h4.article-title {
+            margin-bottom: 8px;
+            padding: 2px 0;
+            gap: 5px;
+        }
+    }
+}
+
+@media (max-width: 420px) {
+    article#article-1-section-my-software,
+    article#article-1-section-my-hardware {
+        h4.article-title {
+            font-size: clamp(1.9rem, 8.1vw, 2.18rem) !important;
+        }
+
+        h4.article-title::after {
+            width: min(58%, 190px);
         }
     }
 }

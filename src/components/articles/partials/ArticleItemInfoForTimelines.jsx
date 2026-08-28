@@ -240,17 +240,26 @@ function ArticleItemInfoForTimelinesTagsFooter({ itemWrapper, className = "" }) 
  * @return {JSX.Element}
  * @constructor
  */
-function ArticleItemInfoForTimelinesPreviewFooter({ itemWrapper, className = "" }) {
+function ArticleItemInfoForTimelinesPreviewFooter({ itemWrapper, className = "", excludePrimaryAction = false }) {
     const hasScreenshotsOrVideo = itemWrapper.preview?.hasScreenshotsOrYoutubeVideo
     const hasLinks = itemWrapper.preview?.hasLinks
+    const hasGallery = Boolean(itemWrapper.preview?.screenshots?.length)
+    const hasVideo = Boolean(itemWrapper.preview?.youtubeVideo)
+    const validLinkCount = (itemWrapper.preview?.links || []).filter(link =>
+        typeof link?.href === "string" && link.href.trim().length > 0
+    ).length
+    const hasAdditionalAction = hasVideo || (hasGallery ? validLinkCount > 0 : validLinkCount > 1)
 
     if(!hasScreenshotsOrVideo && !hasLinks)
+        return <></>
+    if(excludePrimaryAction && !hasAdditionalAction)
         return <></>
 
     return (
         <div className={`article-timeline-item-info-preview-footer ${className}`}>
             <ArticleItemPreviewMenu itemWrapper={itemWrapper}
-                                    spaceBetween={false}/>
+                                    spaceBetween={false}
+                                    excludePrimaryAction={excludePrimaryAction}/>
         </div>
     )
 }

@@ -258,7 +258,8 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
     --timeline-meta-size: clamp(0.92rem, 0.86rem + 0.2vw, 1.04rem);
     --timeline-body-size: clamp(1.04rem, 0.98rem + 0.24vw, 1.16rem);
     --timeline-rule-color: var(--card-accent);
-    --timeline-rule-width: 85%;
+    --timeline-frame-padding: clamp(1.75rem, 1.35rem + 1.15vw, 2.5rem);
+    --timeline-rule-width: 100%;
     --timeline-rule-thickness: 2px;
     --timeline-rule-background: color-mix(in srgb, var(--timeline-rule-color) 82%, transparent 18%);
     --card-surface-top: transparent;
@@ -273,7 +274,7 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding: clamp(1.75rem, 1.35rem + 1.15vw, 2.5rem);
+    padding: var(--timeline-frame-padding);
     position: relative;
     isolation: isolate;
     overflow: visible;

@@ -51,7 +51,7 @@ div.nav-link-pills-fixed-wrapper-hidden {
 div.nav-link-pills-placeholder {
     // Match the two-edge construction of the button-based mobile nav: the
     // wrapper owns the top phase and the placeholder owns the offset bottom.
-    @include nav-selected-edge(bottom, 6px, 35px);
+    @include nav-selected-edge(bottom, 6px, 40px);
 
     display: flex;
     align-items: center;

@@ -450,6 +450,11 @@ function ArticleTimelineItem({
         <ArticleItemInfoForTimelinesPreviewFooter itemWrapper={itemWrapper}
                                                   className={`article-timeline-item-info-preview-footer--meta-end`}/>
     ) : null
+    const writingMobilePreviewFooter = isWritingsTimeline ? (
+        <ArticleItemInfoForTimelinesPreviewFooter itemWrapper={itemWrapper}
+                                                  excludePrimaryAction={true}
+                                                  className={`article-timeline-item-info-preview-footer--mobile-avatar`}/>
+    ) : null
 
     const galleryMetadata = useMemo(() => {
         if(!canOpenGallery)
@@ -630,6 +635,8 @@ function ArticleTimelineItem({
                     )}
                 </div>
             )}
+
+            {writingMobilePreviewFooter}
 
             <ArticleItemInfoForTimelines className={contentClass}
                                          itemWrapper={itemWrapper}

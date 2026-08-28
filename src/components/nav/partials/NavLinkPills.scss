@@ -21,9 +21,9 @@ nav.nav-link-pills {
     border-radius: 0;
 
     @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-        &#nav-link-pills-menu {
+        &.nav-link-pills-mobile {
             // Pair with the fixed wrapper's top edge using the opposite phase.
-            @include nav-selected-edge(bottom, 6px, 35px);
+            @include nav-selected-edge(bottom, 6px, 40px);
 
             min-height: var(--nav-tabs-height);
             height: var(--nav-tabs-height);
@@ -98,7 +98,7 @@ button.nav-link-pills-link {
 }
 
 @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-    nav#nav-link-pills-menu.nav-link-pills > button.nav-link-pills-link {
+    nav.nav-link-pills-mobile > button.nav-link-pills-link {
         height: 100%;
         min-height: var(--nav-tabs-height);
         flex-direction: column;
@@ -126,7 +126,7 @@ button.nav-link-pills-link {
         }
     }
 
-    nav#nav-link-pills-menu.nav-link-pills-overview > button.nav-link-pills-link {
+    nav.nav-link-pills-mobile.nav-link-pills-overview > button.nav-link-pills-link {
         gap: clamp(0.18rem, 1vw, 0.32rem);
         padding-inline: clamp(0.08rem, 0.8vw, 0.24rem);
 
@@ -190,7 +190,6 @@ button.nav-link-pills-link-visited:not(.nav-link-pills-link-active) {
 }
 
 @media (hover: hover) and (pointer: fine) {
-    button.nav-link-pills-link:hover,
     button.nav-link-pills-link:not(.nav-link-pills-link-active):hover {
         background:
             linear-gradient(180deg,
@@ -214,4 +213,16 @@ button.nav-link-pills-link-visited:not(.nav-link-pills-link-active) {
 
 button.nav-link-pills-link-active {
     @include nav-selected-button;
+}
+
+button.nav-link-pills-link:focus-visible {
+    z-index: 2;
+    outline: 2px solid color-mix(in srgb, var(--theme-primary) 82%, white 18%);
+    outline-offset: -4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    button.nav-link-pills-link {
+        transition: none;
+    }
 }

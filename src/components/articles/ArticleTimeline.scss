@@ -282,6 +282,7 @@ article#article-1-section-my-writings {
         --gap-between-avatar-and-content: 22px;
         --timeline-edge-buffer: clamp(2px, 0.4vw, 5px);
         --timeline-edge-clearance: calc(var(--avatar-size) / 2 + var(--timeline-edge-buffer));
+        --timeline-text-mobile-edge-buffer: clamp(6px, 2.2vw, 10px);
         box-sizing: border-box;
         width: 100%;
         padding-right: var(--timeline-edge-clearance);
@@ -319,26 +320,32 @@ article#article-1-section-my-writings {
 
     li.article-timeline-item:nth-child(6n + 1) {
         --timeline-writing-gradient: linear-gradient(to bottom, #ef4444 0%, #f97316 100%);
+        --timeline-rail-entry-color: #f97316;
     }
 
     li.article-timeline-item:nth-child(6n + 2) {
         --timeline-writing-gradient: linear-gradient(to bottom left, #f97316 0%, #facc15 50%, #22c55e 100%);
+        --timeline-rail-entry-color: #22c55e;
     }
 
     li.article-timeline-item:nth-child(6n + 3) {
         --timeline-writing-gradient: linear-gradient(to bottom right, #22c55e 0%, #06b6d4 50%, #2563eb 100%);
+        --timeline-rail-entry-color: #2563eb;
     }
 
     li.article-timeline-item:nth-child(6n + 4) {
         --timeline-writing-gradient: linear-gradient(to bottom left, #2563eb 0%, #7c3aed 50%, #c026d3 100%);
+        --timeline-rail-entry-color: #c026d3;
     }
 
     li.article-timeline-item:nth-child(6n + 5) {
         --timeline-writing-gradient: linear-gradient(to bottom right, #c026d3 0%, #e11d48 50%, #ef4444 100%);
+        --timeline-rail-entry-color: #ef4444;
     }
 
     li.article-timeline-item:nth-child(6n) {
         --timeline-writing-gradient: linear-gradient(to bottom left, #ef4444 0%, #f97316 50%, #facc15 100%);
+        --timeline-rail-entry-color: #facc15;
     }
 
     li.article-timeline-item:first-child div.article-timeline-item-content {
@@ -367,6 +374,28 @@ article#article-1-section-my-writings {
         position: absolute;
         top: calc(-1 * var(--avatar-size) / 2);
         z-index: 3;
+    }
+
+    div.article-timeline-item-info-preview-footer--mobile-avatar {
+        display: none;
+    }
+
+    li.article-timeline-item:nth-child(odd) div.article-timeline-item-info-for-timelines-header-title::after,
+    li.article-timeline-item:nth-child(odd) div.article-timeline-item-info-for-timelines-body::before {
+        background: linear-gradient(
+            to right,
+            color-mix(in srgb, var(--timeline-rail-entry-color) 66%, transparent),
+            var(--timeline-rail-entry-color)
+        );
+    }
+
+    li.article-timeline-item:nth-child(even) div.article-timeline-item-info-for-timelines-header-title::after,
+    li.article-timeline-item:nth-child(even) div.article-timeline-item-info-for-timelines-body::before {
+        background: linear-gradient(
+            to left,
+            color-mix(in srgb, var(--timeline-rail-entry-color) 66%, transparent),
+            var(--timeline-rail-entry-color)
+        );
     }
 
     li.article-timeline-item:first-child div.article-timeline-item-avatar-wrapper {
@@ -448,6 +477,184 @@ article#article-1-section-my-writings {
         @include media-breakpoint-down(sm) {
             margin-left: 0 !important;
         }
+    }
+
+    // Keep the decorative frame at its original full width. Only its textual
+    // children change measure and alignment; buttons and all frame borders stay
+    // on the established timeline geometry.
+    @include media-breakpoint-down(sm) {
+        div.article-timeline-item-info-preview-footer--meta-end {
+            display: none;
+        }
+
+        div.article-timeline-item-info-preview-footer--mobile-avatar {
+            --mobile-secondary-button-size: calc(var(--avatar-size) * 0.66);
+            --timeline-secondary-button-gradient: linear-gradient(
+                to bottom,
+                var(--timeline-rail-entry-color) 0%,
+                color-mix(in srgb, var(--timeline-rail-entry-color) 90%, #0f172a 10%) 100%
+            );
+            position: absolute;
+            top: calc(var(--avatar-size) / 2);
+            z-index: 4;
+            display: flex;
+            width: var(--mobile-secondary-button-size);
+            margin: 0 !important;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            box-shadow: none;
+
+            div.article-item-preview-menu,
+            div.article-item-preview-menu-button-list {
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                gap: 0;
+            }
+
+            a.article-item-preview-menu-link {
+                margin: 0;
+                width: var(--mobile-secondary-button-size);
+                height: var(--mobile-secondary-button-size);
+            }
+
+            button.article-item-preview-menu-circular-button,
+            button.article-item-preview-menu-website-button-compact {
+                width: var(--mobile-secondary-button-size) !important;
+                height: var(--mobile-secondary-button-size) !important;
+                min-width: var(--mobile-secondary-button-size) !important;
+                min-height: var(--mobile-secondary-button-size) !important;
+                border: 3px solid transparent !important;
+                border-radius: 999px !important;
+                background:
+                    linear-gradient(#060b16, #060b16) padding-box,
+                    var(--timeline-secondary-button-gradient) border-box !important;
+                color: #f8fafc !important;
+                box-shadow:
+                    0 0 0 1px rgba(255, 255, 255, 0.08) inset,
+                    0 7px 16px rgba(0, 0, 0, 0.24) !important;
+                font-size: calc(var(--avatar-size) * 0.23) !important;
+            }
+        }
+
+        li.article-timeline-item:first-child div.article-timeline-item-info-preview-footer--mobile-avatar {
+            top: var(--avatar-size);
+        }
+
+        li.article-timeline-item:nth-child(odd) div.article-timeline-item-info-preview-footer--mobile-avatar {
+            left: 100%;
+            transform: translateX(-50%);
+        }
+
+        li.article-timeline-item:nth-child(even) div.article-timeline-item-info-preview-footer--mobile-avatar {
+            right: 100%;
+            transform: translateX(50%);
+        }
+
+        li.article-timeline-item:nth-child(odd) div.article-timeline-item-info-for-timelines-header-title::after,
+        li.article-timeline-item:nth-child(odd) div.article-timeline-item-info-for-timelines-body::before {
+            width: calc(100% + var(--timeline-frame-padding));
+        }
+
+        li.article-timeline-item:nth-child(even) div.article-timeline-item-info-for-timelines-header-title::after,
+        li.article-timeline-item:nth-child(even) div.article-timeline-item-info-for-timelines-body::before {
+            left: calc(-1 * var(--timeline-frame-padding));
+            width: calc(100% + var(--timeline-frame-padding));
+        }
+
+        div.article-timeline-item-info-for-timelines {
+            --timeline-text-mobile-outset: calc(
+                var(--timeline-edge-clearance) - var(--timeline-text-mobile-edge-buffer) +
+                clamp(1.75rem, 1.35rem + 1.15vw, 2.5rem)
+            );
+            // The next alternating button overlaps the row boundary by half its
+            // diameter. Reserve that footprint below the text instead of
+            // letting the expanded copy run underneath it.
+            padding-bottom: calc(
+                clamp(1.75rem, 1.35rem + 1.15vw, 2.5rem) + var(--avatar-size) / 2
+            ) !important;
+        }
+
+        li.article-timeline-item div.article-timeline-item-info-for-timelines-header,
+        li.article-timeline-item div.article-timeline-item-info-for-timelines-body {
+            width: calc(100% + var(--timeline-text-mobile-outset));
+            max-width: none;
+        }
+
+        li.article-timeline-item:nth-child(odd) div.article-timeline-item-info-for-timelines-header,
+        li.article-timeline-item:nth-child(odd) div.article-timeline-item-info-for-timelines-body {
+            margin-left: calc(-1 * var(--timeline-text-mobile-outset)) !important;
+            margin-right: 0;
+        }
+
+        li.article-timeline-item:nth-child(even) div.article-timeline-item-info-for-timelines-header,
+        li.article-timeline-item:nth-child(even) div.article-timeline-item-info-for-timelines-body {
+            margin-left: 0 !important;
+            margin-right: calc(-1 * var(--timeline-text-mobile-outset));
+        }
+
+    }
+
+    @include media-breakpoint-up(md) {
+        li.article-timeline-item div.article-timeline-item-info-for-timelines-header,
+        li.article-timeline-item div.article-timeline-item-info-for-timelines-body {
+            width: min(82%, 70rem);
+            max-width: min(82%, 70rem);
+        }
+
+        li.article-timeline-item:nth-child(odd) div.article-timeline-item-info-for-timelines-header,
+        li.article-timeline-item:nth-child(odd) div.article-timeline-item-info-for-timelines-body {
+            margin-left: auto !important;
+            margin-right: 0;
+        }
+
+        li.article-timeline-item:nth-child(even) div.article-timeline-item-info-for-timelines-header,
+        li.article-timeline-item:nth-child(even) div.article-timeline-item-info-for-timelines-body {
+            margin-left: clamp(0.5rem, 0.35rem + 0.3vw, 0.72rem) !important;
+            margin-right: auto;
+        }
+
+        li.article-timeline-item:nth-child(odd) div.article-timeline-item-info-for-timelines-header-title::after,
+        li.article-timeline-item:nth-child(odd) div.article-timeline-item-info-for-timelines-body::before {
+            width: calc(100% + var(--timeline-frame-padding));
+        }
+
+        li.article-timeline-item:nth-child(even) div.article-timeline-item-info-for-timelines-header-title::after,
+        li.article-timeline-item:nth-child(even) div.article-timeline-item-info-for-timelines-body::before {
+            left: calc(-1 * (var(--timeline-frame-padding) + clamp(0.5rem, 0.35rem + 0.3vw, 0.72rem)));
+            width: calc(100% + var(--timeline-frame-padding) + clamp(0.5rem, 0.35rem + 0.3vw, 0.72rem));
+        }
+    }
+}
+
+// The shared preview-menu theme styles are intentionally strong. These more
+// specific rules make the mobile satellite actions true scaled siblings of the
+// writing timeline's primary button in both themes.
+[data-theme="dark"] article#article-1-section-my-writings
+div.article-timeline-item-info-preview-footer.article-timeline-item-info-preview-footer--mobile-avatar {
+    button.article-item-preview-menu-circular-button,
+    button.article-item-preview-menu-website-button-compact {
+        border: 3px solid transparent !important;
+        background:
+            linear-gradient(#060b16, #060b16) padding-box,
+            var(--timeline-secondary-button-gradient) border-box !important;
+        color: #eef6ff !important;
+    }
+}
+
+[data-theme="light"] article#article-1-section-my-writings
+div.article-timeline-item-info-preview-footer.article-timeline-item-info-preview-footer--mobile-avatar {
+    button.article-item-preview-menu-circular-button,
+    button.article-item-preview-menu-website-button-compact {
+        border: 3px solid transparent !important;
+        background:
+            linear-gradient(#ffffff, #eef6ff) padding-box,
+            var(--timeline-secondary-button-gradient) border-box !important;
+        color: #2563eb !important;
+        box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.9) inset,
+            0 7px 16px rgba(15, 23, 42, 0.16) !important;
     }
 }
 

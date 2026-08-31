@@ -100,7 +100,6 @@ div.section-content-elements-wrapper {
     width: calc(100% / var(--section-content-scale));
     transform: scale(var(--section-content-scale));
     transform-origin: top left;
-    margin-bottom: calc(var(--section-content-collapse, 0px) * -1);
     @include media-breakpoint-down(lg) {
         padding: 0;
     }
@@ -117,6 +116,8 @@ div.section-content.section-content-has-decoration-bands {
     --padding-bottom: 0px;
 
     height: var(--section-content-rendered-height, auto);
+    min-height: var(--section-content-rendered-height, auto);
+    overflow: hidden;
 }
 
 div.section-content.section-content-has-decoration-bands.section-content-hide-header {
@@ -128,7 +129,7 @@ div.section-content.section-content-has-decoration-bands.section-content-hide-he
 }
 
 div.section-content.section-content-has-decoration-bands header.section-header {
-    margin-bottom: clamp(8px, 1vw, 14px)!important;
+    margin-bottom: 0!important;
 }
 
 div.section-decoration-band {
@@ -210,12 +211,12 @@ div.section-decoration-line {
     display: none;
 }
 
-/* Give article content a consistent closing breath before the next structural
-   separator. This spacing lives on the boundary, so the bottom band can still
-   remain perfectly flush with the mobile navigation rail. */
+/* Decoration boundaries must stay visually flush with the article/title
+   separators around them. The content rhythm already comes from the article
+   footer line spacing and the title block itself. */
 div.section-decoration-boundary-between-articles,
 div.section-decoration-boundary-page-bottom {
-    margin-top: clamp(28px, 3vw, 42px);
+    margin-top: 0;
 }
 
 /* Full-bleed contract for every article boundary, including Home/Contact,
@@ -385,7 +386,10 @@ section#section-my-art div.section-content div.section-body > article#article-5-
 }
 
 div.section-decoration-band-page-bottom {
-    --section-decoration-band-height: calc(var(--section-decoration-band-between-height) * 7);
+    --section-decoration-band-height: calc(
+        (var(--section-decoration-band-between-height) * 7) +
+        var(--section-decoration-band-safe-bottom, 0px)
+    );
 }
 
 section#section-education div.section-decoration-band {
@@ -429,6 +433,10 @@ section#section-my-writings div.section-decoration-band {
 }
 
 @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    div.section-content.section-content-has-decoration-bands {
+        --section-decoration-band-safe-bottom: var(--mobile-nav-tabs-total-height, var(--nav-tabs-height, 0px));
+    }
+
     /* Keep mobile band boundaries in the wrapper's stacking context. Persisted
        reveal transforms create nested stacking contexts that let animated
        canvases cover or visually relocate the edge lines after navigation. */
@@ -468,12 +476,12 @@ section#section-my-writings div.section-decoration-band {
     div.section-decoration-boundary-after-header,
     div.section-decoration-boundary-page-top,
     div.section-decoration-boundary-between-articles {
-        margin-bottom: 12px;
+        margin-bottom: 0;
     }
 
     div.section-decoration-boundary-between-articles,
     div.section-decoration-boundary-page-bottom {
-        margin-top: clamp(32px, 4svh, 40px);
+        margin-top: 0;
     }
 
     div.section-content.section-content-has-decoration-bands article.article::after,

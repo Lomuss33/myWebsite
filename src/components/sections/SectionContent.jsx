@@ -8,11 +8,7 @@ import SectionLoadingPlaceholder from "./SectionLoadingPlaceholder.jsx"
 
 function SectionContent({ section, shouldRenderContent = true }) {
     const contentRef = useRef(null)
-    const lastLayoutMetricsRef = useRef({
-        bottomCollapse: null,
-        renderedContentHeight: null
-    })
-    const [bottomCollapse, setBottomCollapse] = useState(0)
+    const lastRenderedContentHeightRef = useRef(null)
     const [renderedContentHeight, setRenderedContentHeight] = useState(0)
     const shouldHideHeader = section?.hideHeader === true
     const shouldShowDecorationBands = section?.id !== "about" && section?.id !== "contact"
@@ -21,26 +17,22 @@ function SectionContent({ section, shouldRenderContent = true }) {
         const contentEl = contentRef.current
         if(!contentEl)
             return
+        const sectionContentEl = contentEl.closest(".section-content")
 
-        const updateBottomCollapse = () => {
-            const layoutHeight = contentEl.offsetHeight || 0
-            const renderedHeight = contentEl.getBoundingClientRect().height || 0
-            const collapse = Math.max(0, Math.ceil(layoutHeight - renderedHeight))
-            const sectionContentEl = contentEl.closest(".section-content")
-            const bottomBandEl = contentEl.querySelector(".section-decoration-band-page-bottom")
-            const contentVisualHeight = sectionContentEl && bottomBandEl ?
-                bottomBandEl.getBoundingClientRect().bottom - sectionContentEl.getBoundingClientRect().top :
-                renderedHeight
+        const updateRenderedContentHeight = () => {
+            if(!sectionContentEl)
+                return
+
+            const measuredBoundaryEl =
+                contentEl.querySelector(".section-decoration-boundary-page-bottom") ||
+                contentEl.lastElementChild
+            const fallbackBottom = contentEl.getBoundingClientRect().bottom
+            const measuredBottom = measuredBoundaryEl?.getBoundingClientRect?.().bottom || fallbackBottom
+            const contentVisualHeight = measuredBottom - sectionContentEl.getBoundingClientRect().top
 
             const nextRenderedContentHeight = Math.max(0, Math.ceil(contentVisualHeight))
-            const previousMetrics = lastLayoutMetricsRef.current
-
-            if(previousMetrics.bottomCollapse !== collapse) {
-                previousMetrics.bottomCollapse = collapse
-                setBottomCollapse(collapse)
-            }
-            if(previousMetrics.renderedContentHeight !== nextRenderedContentHeight) {
-                previousMetrics.renderedContentHeight = nextRenderedContentHeight
+            if(lastRenderedContentHeightRef.current !== nextRenderedContentHeight) {
+                lastRenderedContentHeightRef.current = nextRenderedContentHeight
                 setRenderedContentHeight(nextRenderedContentHeight)
             }
         }
@@ -48,7 +40,7 @@ function SectionContent({ section, shouldRenderContent = true }) {
         let animationFrameId = null
         let delayedUpdateId = null
         let isUpdateScheduled = false
-        const scheduleBottomCollapseUpdate = () => {
+        const scheduleRenderedHeightUpdate = () => {
             if(isUpdateScheduled)
                 return
 
@@ -59,17 +51,17 @@ function SectionContent({ section, shouldRenderContent = true }) {
             animationFrameId = window.requestAnimationFrame(() => {
                 animationFrameId = null
                 isUpdateScheduled = false
-                updateBottomCollapse()
-                delayedUpdateId = window.setTimeout(updateBottomCollapse, 120)
+                updateRenderedContentHeight()
+                delayedUpdateId = window.setTimeout(updateRenderedContentHeight, 120)
             })
         }
 
-        updateBottomCollapse()
+        updateRenderedContentHeight()
 
         if(typeof ResizeObserver === "undefined") {
-            window.addEventListener("resize", scheduleBottomCollapseUpdate)
+            window.addEventListener("resize", scheduleRenderedHeightUpdate)
             return () => {
-                window.removeEventListener("resize", scheduleBottomCollapseUpdate)
+                window.removeEventListener("resize", scheduleRenderedHeightUpdate)
                 if(animationFrameId !== null)
                     window.cancelAnimationFrame(animationFrameId)
                 if(delayedUpdateId !== null)
@@ -78,18 +70,32 @@ function SectionContent({ section, shouldRenderContent = true }) {
         }
 
         const resizeObserver = new ResizeObserver(() => {
-            scheduleBottomCollapseUpdate()
+            scheduleRenderedHeightUpdate()
         })
-        const mutationObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(scheduleBottomCollapseUpdate)
+        const mutationObserver = typeof MutationObserver === "undefined" ? null :
+            new MutationObserver(scheduleRenderedHeightUpdate)
 
         resizeObserver.observe(contentEl)
-        mutationObserver?.observe(contentEl, { childList: true })
-        window.addEventListener("resize", scheduleBottomCollapseUpdate)
+        resizeObserver.observe(sectionContentEl)
+        mutationObserver?.observe(contentEl, {
+            subtree: true,
+            childList: true,
+            attributes: true,
+            characterData: true
+        })
+        window.addEventListener("resize", scheduleRenderedHeightUpdate)
+        window.addEventListener("load", scheduleRenderedHeightUpdate)
+        window.addEventListener("app:resume", scheduleRenderedHeightUpdate)
+        document.fonts?.ready?.then?.(() => {
+            scheduleRenderedHeightUpdate()
+        })
 
         return () => {
             resizeObserver.disconnect()
             mutationObserver?.disconnect()
-            window.removeEventListener("resize", scheduleBottomCollapseUpdate)
+            window.removeEventListener("resize", scheduleRenderedHeightUpdate)
+            window.removeEventListener("load", scheduleRenderedHeightUpdate)
+            window.removeEventListener("app:resume", scheduleRenderedHeightUpdate)
             if(animationFrameId !== null)
                 window.cancelAnimationFrame(animationFrameId)
             if(delayedUpdateId !== null)
@@ -108,14 +114,12 @@ function SectionContent({ section, shouldRenderContent = true }) {
     return (
         <div className={`section-content ${decorationClassName}`.trim()}
              style={{
-                 "--section-content-collapse": `${bottomCollapse}px`,
                  "--section-content-rendered-height": `${renderedContentHeight}px`
              }}>
             <div className={`section-content-border-decoration section-content-border-decoration-top-left`}/>
 
             <div className={`section-content-elements-wrapper`}
-                 ref={contentRef}
-                 style={{ "--section-content-collapse": `${bottomCollapse}px` }}>
+                 ref={contentRef}>
                 {shouldRenderContent ? (
                     <Suspense fallback={loadingPlaceholder}>
                         <SectionDecorationLayer section={section}/>

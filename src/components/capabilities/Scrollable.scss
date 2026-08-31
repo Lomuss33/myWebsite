@@ -39,6 +39,10 @@ div.scrollable.scrollable-mobile-native > div.scrollable-content {
     padding-bottom: var(--mobile-nav-tabs-total-height, var(--nav-tabs-height, 0px));
 }
 
+div.scrollable-wrapper.section-scrollable-decorated div.scrollable.scrollable-mobile-native > div.scrollable-content {
+    padding-bottom: 0;
+}
+
 /** Plugin customization **/
 div.scrollable-with-plugin {
     // Slim but easy-to-grab scrollbar.

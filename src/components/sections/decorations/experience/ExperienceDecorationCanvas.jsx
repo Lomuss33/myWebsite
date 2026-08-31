@@ -428,12 +428,14 @@ function ExperienceDecorationCanvas({ lowFrameRateMode = false }) {
 
         let animationFrameId = null
         let rebuildFrameId = null
+        let delayedRebuildId = null
         let layout = null
         let shaderState = null
         let scissorRects = []
         let bottomBranchState = null
         let lastFrameTime = 0
         let isIntersecting = false
+        let observedBandElements = []
         const reducedMotionQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)") || null
 
         try {
@@ -520,6 +522,33 @@ function ExperienceDecorationCanvas({ lowFrameRateMode = false }) {
             })
         }
 
+        const scheduleDelayedRebuild = () => {
+            if(delayedRebuildId !== null)
+                window.clearTimeout(delayedRebuildId)
+
+            delayedRebuildId = window.setTimeout(() => {
+                delayedRebuildId = null
+                scheduleRebuild()
+            }, 180)
+        }
+
+        const syncBandObservers = (resizeObserver) => {
+            if(!resizeObserver)
+                return false
+
+            const nextBandElements = Array.from(wrapper.querySelectorAll(".section-decoration-band"))
+            const hasSameBandElements = observedBandElements.length === nextBandElements.length &&
+                observedBandElements.every((element, index) => element === nextBandElements[index])
+
+            if(hasSameBandElements)
+                return false
+
+            observedBandElements.forEach(element => resizeObserver.unobserve(element))
+            nextBandElements.forEach(element => resizeObserver.observe(element))
+            observedBandElements = nextBandElements
+            return true
+        }
+
         const handleVisibilityChange = () => {
             if(document.hidden) {
                 stopLoop()
@@ -528,8 +557,15 @@ function ExperienceDecorationCanvas({ lowFrameRateMode = false }) {
             startLoop()
         }
 
-        const resizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(scheduleRebuild)
-        const mutationObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(scheduleRebuild)
+        const handleWindowLoad = () => scheduleDelayedRebuild()
+        const handleAppResume = () => scheduleDelayedRebuild()
+
+        const resizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => scheduleRebuild())
+        const mutationObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(() => {
+            if(!resizeObserver || syncBandObservers(resizeObserver))
+                scheduleRebuild()
+            scheduleDelayedRebuild()
+        })
         const themeObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(() => {
             drawStatic()
             startLoop()
@@ -541,6 +577,7 @@ function ExperienceDecorationCanvas({ lowFrameRateMode = false }) {
         }, { rootMargin: "160px" })
 
         resizeObserver?.observe(wrapper)
+        syncBandObservers(resizeObserver)
         mutationObserver?.observe(wrapper, { childList: true })
         const sectionBody = wrapper.querySelector(".section-body")
         if(sectionBody)
@@ -548,10 +585,16 @@ function ExperienceDecorationCanvas({ lowFrameRateMode = false }) {
         themeObserver?.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] })
         intersectionObserver?.observe(wrapper)
         window.addEventListener("resize", scheduleRebuild, { passive: true })
+        window.addEventListener("load", handleWindowLoad)
+        window.addEventListener("app:resume", handleAppResume)
         document.addEventListener("visibilitychange", handleVisibilityChange)
         reducedMotionQuery?.addEventListener?.("change", scheduleRebuild)
+        document.fonts?.ready?.then?.(() => {
+            scheduleDelayedRebuild()
+        })
 
         rebuild()
+        scheduleDelayedRebuild()
 
         if(!intersectionObserver) {
             isIntersecting = true
@@ -562,13 +605,18 @@ function ExperienceDecorationCanvas({ lowFrameRateMode = false }) {
             stopLoop()
             if(rebuildFrameId !== null)
                 window.cancelAnimationFrame(rebuildFrameId)
+            if(delayedRebuildId !== null)
+                window.clearTimeout(delayedRebuildId)
             resizeObserver?.disconnect()
             mutationObserver?.disconnect()
             themeObserver?.disconnect()
             intersectionObserver?.disconnect()
             window.removeEventListener("resize", scheduleRebuild)
+            window.removeEventListener("load", handleWindowLoad)
+            window.removeEventListener("app:resume", handleAppResume)
             document.removeEventListener("visibilitychange", handleVisibilityChange)
             reducedMotionQuery?.removeEventListener?.("change", scheduleRebuild)
+            observedBandElements = []
 
             if(shaderState?.buffer)
                 shaderState.gl.deleteBuffer(shaderState.buffer)

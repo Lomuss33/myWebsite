@@ -117,7 +117,7 @@ div.section-content.section-content-has-decoration-bands {
     --section-content-min-height: 0px;
     --padding-bottom: 0px;
     --section-content-terminal-reserve: 0px;
-    --section-article-separator-buffer-top: clamp(12px, 1.3vw, 18px);
+    --section-article-separator-buffer-top: clamp(14px, 1.5vw, 22px);
     --section-article-separator-buffer-bottom: clamp(18px, 2vw, 28px);
 }
 
@@ -257,7 +257,7 @@ div.section-content.section-content-has-decoration-bands article.article > h4.ar
 }
 
 div.section-content.section-content-has-decoration-bands div.section-body > article.article {
-    padding-top: var(--section-article-separator-buffer-top);
+    padding-top: 0;
     padding-bottom: var(--section-article-separator-buffer-bottom);
 }
 
@@ -522,12 +522,12 @@ div.section-body > div.section-decoration-boundary + article.article {
 
 div.section-decoration-boundary + div.section-body > article.article:first-child > h4.article-title,
 div.section-body > div.section-decoration-boundary + article.article > h4.article-title {
-    margin-top: 0!important;
+    margin-top: var(--section-article-separator-buffer-top)!important;
 }
 
 @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
     div.section-content.section-content-has-decoration-bands {
-        --section-article-separator-buffer-top: 12px;
+        --section-article-separator-buffer-top: 14px;
         --section-article-separator-buffer-bottom: 20px;
     }
 }

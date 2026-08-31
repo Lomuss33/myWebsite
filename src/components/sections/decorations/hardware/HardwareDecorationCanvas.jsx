@@ -316,11 +316,13 @@ function HardwareDecorationCanvas({ lowFrameRateMode = false }) {
 
         let animationFrameId = null
         let rebuildFrameId = null
+        let delayedRebuildId = null
         let shaderState = null
         let regions = null
         let lastFrameTime = 0
         let isIntersecting = false
         let isContextLost = false
+        let observedBandElements = []
         const reducedMotionQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)") || null
 
         try {
@@ -412,6 +414,33 @@ function HardwareDecorationCanvas({ lowFrameRateMode = false }) {
             })
         }
 
+        const scheduleDelayedRebuild = () => {
+            if(delayedRebuildId !== null)
+                window.clearTimeout(delayedRebuildId)
+
+            delayedRebuildId = window.setTimeout(() => {
+                delayedRebuildId = null
+                scheduleRebuild()
+            }, 180)
+        }
+
+        const syncBandObservers = (resizeObserver) => {
+            if(!resizeObserver)
+                return false
+
+            const nextBandElements = Array.from(wrapper.querySelectorAll(".section-decoration-band"))
+            const hasSameBandElements = observedBandElements.length === nextBandElements.length &&
+                observedBandElements.every((element, index) => element === nextBandElements[index])
+
+            if(hasSameBandElements)
+                return false
+
+            observedBandElements.forEach(element => resizeObserver.unobserve(element))
+            nextBandElements.forEach(element => resizeObserver.observe(element))
+            observedBandElements = nextBandElements
+            return true
+        }
+
         const handleContextLost = (event) => {
             event.preventDefault()
             isContextLost = true
@@ -445,8 +474,15 @@ function HardwareDecorationCanvas({ lowFrameRateMode = false }) {
             startLoop()
         }
 
-        const resizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(scheduleRebuild)
-        const mutationObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(scheduleRebuild)
+        const handleWindowLoad = () => scheduleDelayedRebuild()
+        const handleAppResume = () => scheduleDelayedRebuild()
+
+        const resizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => scheduleRebuild())
+        const mutationObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(() => {
+            if(!resizeObserver || syncBandObservers(resizeObserver))
+                scheduleRebuild()
+            scheduleDelayedRebuild()
+        })
         const themeObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(() => {
             drawStatic()
             startLoop()
@@ -458,6 +494,7 @@ function HardwareDecorationCanvas({ lowFrameRateMode = false }) {
         }, { rootMargin: "160px" })
 
         resizeObserver?.observe(wrapper)
+        syncBandObservers(resizeObserver)
         mutationObserver?.observe(wrapper, { childList: true })
         const sectionBody = wrapper.querySelector(".section-body")
         if(sectionBody)
@@ -465,13 +502,18 @@ function HardwareDecorationCanvas({ lowFrameRateMode = false }) {
         themeObserver?.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] })
         intersectionObserver?.observe(wrapper)
         window.addEventListener("resize", scheduleRebuild, { passive: true })
-        window.addEventListener("app:resume", scheduleRebuild)
+        window.addEventListener("load", handleWindowLoad)
+        window.addEventListener("app:resume", handleAppResume)
         document.addEventListener("visibilitychange", handleVisibilityChange)
         canvas.addEventListener("webglcontextlost", handleContextLost)
         canvas.addEventListener("webglcontextrestored", handleContextRestored)
         reducedMotionQuery?.addEventListener?.("change", scheduleRebuild)
+        document.fonts?.ready?.then?.(() => {
+            scheduleDelayedRebuild()
+        })
 
         rebuild()
+        scheduleDelayedRebuild()
 
         if(!intersectionObserver) {
             isIntersecting = true
@@ -482,16 +524,20 @@ function HardwareDecorationCanvas({ lowFrameRateMode = false }) {
             stopLoop()
             if(rebuildFrameId !== null)
                 window.cancelAnimationFrame(rebuildFrameId)
+            if(delayedRebuildId !== null)
+                window.clearTimeout(delayedRebuildId)
             resizeObserver?.disconnect()
             mutationObserver?.disconnect()
             themeObserver?.disconnect()
             intersectionObserver?.disconnect()
             window.removeEventListener("resize", scheduleRebuild)
-            window.removeEventListener("app:resume", scheduleRebuild)
+            window.removeEventListener("load", handleWindowLoad)
+            window.removeEventListener("app:resume", handleAppResume)
             document.removeEventListener("visibilitychange", handleVisibilityChange)
             canvas.removeEventListener("webglcontextlost", handleContextLost)
             canvas.removeEventListener("webglcontextrestored", handleContextRestored)
             reducedMotionQuery?.removeEventListener?.("change", scheduleRebuild)
+            observedBandElements = []
 
             if(shaderState?.buffer)
                 shaderState.gl.deleteBuffer(shaderState.buffer)

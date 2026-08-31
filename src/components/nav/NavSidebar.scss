@@ -160,6 +160,8 @@ nav.nav-sidebar-extended {
     }
 
     div.nav-sidebar-card-wrapper > div.nav-profile-card {
+        container-name: nav-profile-card;
+        container-type: size;
         justify-content: flex-start;
         flex-basis: var(--nav-extended-profile-height);
         height: var(--nav-extended-profile-height);

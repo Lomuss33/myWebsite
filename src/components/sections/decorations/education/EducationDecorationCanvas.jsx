@@ -565,11 +565,14 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
         }
         const handleWindowResize = () => scheduleRebuild()
         const handleReducedMotionChange = () => scheduleRebuild(true)
+        const handleWindowLoad = () => scheduleDelayedRebuild()
+        const handleAppResume = () => scheduleDelayedRebuild()
 
         const resizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => scheduleRebuild())
         const mutationObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(() => {
             if(!resizeObserver || syncBandObservers(resizeObserver))
                 scheduleRebuild()
+            scheduleDelayedRebuild()
         })
         const intersectionObserver = typeof IntersectionObserver === "undefined" ? null : new IntersectionObserver((entries) => {
             isIntersecting = entries.some(entry => entry.isIntersecting)
@@ -585,8 +588,13 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
             mutationObserver?.observe(sectionBody, { childList: true })
         intersectionObserver?.observe(wrapper)
         window.addEventListener("resize", handleWindowResize, { passive: true })
+        window.addEventListener("load", handleWindowLoad)
+        window.addEventListener("app:resume", handleAppResume)
         document.addEventListener("visibilitychange", handleVisibilityChange)
         reducedMotionQuery?.addEventListener?.("change", handleReducedMotionChange)
+        document.fonts?.ready?.then?.(() => {
+            scheduleDelayedRebuild()
+        })
 
         rebuild()
         scheduleDelayedRebuild()
@@ -606,6 +614,8 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
             mutationObserver?.disconnect()
             intersectionObserver?.disconnect()
             window.removeEventListener("resize", handleWindowResize)
+            window.removeEventListener("load", handleWindowLoad)
+            window.removeEventListener("app:resume", handleAppResume)
             document.removeEventListener("visibilitychange", handleVisibilityChange)
             reducedMotionQuery?.removeEventListener?.("change", handleReducedMotionChange)
 

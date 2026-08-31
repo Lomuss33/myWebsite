@@ -23,12 +23,16 @@ function SectionContent({ section, shouldRenderContent = true }) {
             if(!sectionContentEl)
                 return
 
+            const terminalReserve = Number.parseFloat(
+                window.getComputedStyle(sectionContentEl).getPropertyValue("--section-content-terminal-reserve")
+            ) || 0
             const measuredBoundaryEl =
                 contentEl.querySelector(".section-decoration-boundary-page-bottom") ||
                 contentEl.lastElementChild
             const fallbackBottom = contentEl.getBoundingClientRect().bottom
             const measuredBottom = measuredBoundaryEl?.getBoundingClientRect?.().bottom || fallbackBottom
-            const contentVisualHeight = measuredBottom - sectionContentEl.getBoundingClientRect().top
+            const contentVisualHeight =
+                (measuredBottom - sectionContentEl.getBoundingClientRect().top) + terminalReserve
 
             const nextRenderedContentHeight = Math.max(0, Math.ceil(contentVisualHeight))
             if(lastRenderedContentHeightRef.current !== nextRenderedContentHeight) {
@@ -105,6 +109,7 @@ function SectionContent({ section, shouldRenderContent = true }) {
 
     const decorationClassName = [
         shouldShowDecorationBands ? "section-content-has-decoration-bands" : "",
+        !shouldShowDecorationBands ? "section-content-no-decoration-bands" : "",
         shouldHideHeader ? "section-content-hide-header" : "",
         shouldRenderContent ? "section-content-page-ready" : "section-content-page-loading"
     ].filter(Boolean).join(" ")

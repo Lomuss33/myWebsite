@@ -24,6 +24,8 @@ div.section-content {
     --section-decoration-full-margin-inline: calc(
         -1 * var(--section-decoration-bleed-inline)
     );
+    --section-decoration-band-safe-bottom: 0px;
+    --section-content-terminal-reserve: 0px;
 
     position: relative;
     width: 100%;
@@ -114,9 +116,21 @@ div.section-content-elements-wrapper > div.section-body > article.article {
 div.section-content.section-content-has-decoration-bands {
     --section-content-min-height: 0px;
     --padding-bottom: 0px;
+    --section-content-terminal-reserve: 0px;
+    --section-article-separator-buffer-top: clamp(12px, 1.3vw, 18px);
+    --section-article-separator-buffer-bottom: clamp(18px, 2vw, 28px);
+}
 
+div.section-content.section-content-no-decoration-bands {
+    --section-content-terminal-reserve: calc(
+        (var(--section-decoration-band-between-height, clamp(28px, 3.4vw, 48px)) * 7) +
+        var(--section-decoration-band-safe-bottom, 0px)
+    );
+}
+
+div.section-content.section-content-page-ready {
     height: var(--section-content-rendered-height, auto);
-    min-height: var(--section-content-rendered-height, auto);
+    min-height: max(var(--section-content-rendered-height, 0px), var(--section-content-min-height));
     overflow: hidden;
 }
 
@@ -209,6 +223,42 @@ div.section-decoration-boundary > div.section-decoration-band {
 
 div.section-decoration-line {
     display: none;
+}
+
+/* Decorated sections should never depend on article content, pseudo-element
+   sizing, or breakpoint-specific ownership for their separator rhythm. The
+   boundary component owns every separator around every decorative band across
+   all viewports; article and header pseudo-lines are suppressed instead. */
+div.section-content.section-content-has-decoration-bands {
+    --section-decoration-line-height: 6px;
+}
+
+div.section-content.section-content-has-decoration-bands div.section-decoration-line {
+    position: relative;
+    z-index: 6;
+    display: block;
+    width: 100%;
+    height: var(--section-decoration-line-height);
+    min-height: var(--section-decoration-line-height);
+    border-radius: 0;
+    background: linear-gradient(
+        90deg,
+        var(--section-decoration-edge-start),
+        var(--section-decoration-edge-end)
+    );
+    pointer-events: none;
+}
+
+div.section-content.section-content-has-decoration-bands header.section-header::after,
+div.section-content.section-content-has-decoration-bands article.article::after,
+div.section-content.section-content-has-decoration-bands article.article > h4.article-title::before {
+    content: none!important;
+    display: none!important;
+}
+
+div.section-content.section-content-has-decoration-bands div.section-body > article.article {
+    padding-top: var(--section-article-separator-buffer-top);
+    padding-bottom: var(--section-article-separator-buffer-bottom);
 }
 
 /* Decoration boundaries must stay visually flush with the article/title
@@ -452,27 +502,6 @@ section#section-my-writings div.section-decoration-band {
         display: none;
     }
 
-    div.section-content.section-content-has-decoration-bands header.section-header::after {
-        content: none!important;
-        display: none!important;
-    }
-
-    div.section-decoration-line {
-        position: relative;
-        z-index: 6;
-        display: block;
-        width: 100%;
-        height: 6px;
-        min-height: 6px;
-        border-radius: 0;
-        background: linear-gradient(
-            90deg,
-            var(--section-decoration-edge-start),
-            var(--section-decoration-edge-end)
-        );
-        pointer-events: none;
-    }
-
     div.section-decoration-boundary-after-header,
     div.section-decoration-boundary-page-top,
     div.section-decoration-boundary-between-articles {
@@ -484,11 +513,6 @@ section#section-my-writings div.section-decoration-band {
         margin-top: 0;
     }
 
-    div.section-content.section-content-has-decoration-bands article.article::after,
-    div.section-content.section-content-has-decoration-bands article.article > h4.article-title::before {
-        content: none!important;
-        display: none!important;
-    }
 }
 
 div.section-decoration-boundary + div.section-body > article.article:first-child,
@@ -499,4 +523,11 @@ div.section-body > div.section-decoration-boundary + article.article {
 div.section-decoration-boundary + div.section-body > article.article:first-child > h4.article-title,
 div.section-body > div.section-decoration-boundary + article.article > h4.article-title {
     margin-top: 0!important;
+}
+
+@include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    div.section-content.section-content-has-decoration-bands {
+        --section-article-separator-buffer-top: 12px;
+        --section-article-separator-buffer-bottom: 20px;
+    }
 }

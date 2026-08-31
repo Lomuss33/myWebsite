@@ -6,8 +6,9 @@ article.article-manuscript {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: min(100%, 980px);
-    margin-inline: auto;
+    width: 100%;
+    max-width: 100%;
+    margin-inline: 0;
 
     div.article-content {
         width: 100%;
@@ -16,7 +17,7 @@ article.article-manuscript {
 }
 
 div.article-manuscript-stage {
-    width: 100%;
+    width: min(100%, 900px);
     max-width: 900px;
     margin: 2px auto 0;
 }

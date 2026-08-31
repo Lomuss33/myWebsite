@@ -1213,17 +1213,10 @@ section#section-my-writings article:is(
 
         > article#article-6-section-my-writings {
             grid-column: 1 / -1;
-            justify-self: center;
-            width: min(100%, 880px);
+            justify-self: stretch;
+            width: 100%;
         }
 
-    }
-
-}
-
-@include media-breakpoint-up(lg) {
-    section#section-my-writings article#article-6-section-my-writings {
-        width: min(100%, 980px);
     }
 
 }

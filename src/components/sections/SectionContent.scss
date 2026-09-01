@@ -562,8 +562,19 @@ section#section-my-writings div.section-decoration-band {
 }
 
 @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    div.section-content {
+        --section-separator-line-height: var(--section-separator-visual-height);
+        --section-separator-line-overlap: calc(var(--section-separator-line-height) / 2);
+        --section-separator-edge-bleed: 0px;
+    }
+
     div.section-content.section-content-has-decoration-bands {
         --section-decoration-band-safe-bottom: var(--mobile-nav-tabs-total-height, var(--nav-tabs-height, 0px));
+    }
+
+    div.section-content.section-content-has-decoration-bands div.section-decoration-line {
+        left: 0;
+        width: 100%;
     }
 
     /* Keep mobile band boundaries in the wrapper's stacking context. Persisted

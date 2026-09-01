@@ -761,9 +761,10 @@ div.nav-profile-card {
 
     div.nav-profile-card-desktop-action-stack div.dropdown-menu.nav-profile-card-desktop-resume-menu {
         margin: 0 !important;
-        min-width: 11rem;
-        max-width: min(13rem, 80vw);
-        padding: 0.36rem;
+        width: var(--resume-menu-width);
+        min-width: 0;
+        max-width: var(--resume-menu-width);
+        padding: 0.3rem;
         border-radius: 1rem;
         margin-left: 0.76rem !important;
     }
@@ -1122,13 +1123,16 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-mobile-action-resume div.nav-profile-card-mobile-resume-menu {
+            --resume-menu-width: min(9.45rem, calc(100vw - 1rem));
+            --resume-menu-side-column: 1.1rem;
+
             left: calc(100% + var(--mobile-header-gap));
             right: auto;
             top: calc(50% - 0.92rem);
-            width: max-content;
-            min-width: 9.4rem;
-            max-width: min(11rem, calc(100vw - 5.25rem));
-            padding: 0.36rem;
+            width: var(--resume-menu-width);
+            min-width: 0;
+            max-width: var(--resume-menu-width);
+            padding: 0.3rem;
             border-radius: 1rem;
             align-items: stretch;
             gap: 0.18rem;
@@ -1178,8 +1182,17 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-mobile-action-resume button.nav-profile-card-mobile-resume-item {
+            display: grid;
+            grid-template-columns:
+                var(--resume-menu-side-column)
+                minmax(0, 1fr)
+                var(--resume-menu-side-column);
             width: 100%;
             height: auto;
+        }
+
+        div.nav-profile-card-mobile-action-resume span.nav-profile-card-mobile-resume-item-label {
+            font-size: 0.7rem;
         }
 
         div.nav-profile-card-mobile-action-language button.nav-profile-card-mobile-language-item:hover,
@@ -1280,7 +1293,7 @@ div.nav-profile-card {
             order: 2;
             position: relative;
             inset: auto;
-            align-self: stretch;
+            align-self: center;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1309,9 +1322,11 @@ div.nav-profile-card {
             height: auto;
             min-width: 0;
             max-width: 100%;
+            padding-block: 0.25em 0.12em;
+            box-sizing: border-box;
             overflow: clip;
             font-size: clamp(1.3rem, 7.4cqi, 3.05rem) !important;
-            line-height: 0.92 !important;
+            line-height: 1 !important;
             letter-spacing: -0.03em;
             text-wrap: balance;
             transform: none;
@@ -1346,7 +1361,7 @@ div.nav-profile-card {
             line-height: 0.94;
             flex: 0 1 auto;
             min-width: 0;
-            overflow: clip;
+            overflow: visible;
             transition:
                 row-gap 0.22s cubic-bezier(.22, .7, .2, 1),
                 line-height 0.22s cubic-bezier(.22, .7, .2, 1);
@@ -1426,7 +1441,7 @@ div.nav-profile-card {
             h1.nav-profile-card-name {
                 font-size: clamp(1.2rem, 6.8cqi, 2.16rem) !important;
                 letter-spacing: -0.022em;
-                line-height: 0.9 !important;
+                line-height: 1 !important;
             }
 
             h1.nav-profile-card-name-with-audio-button {
@@ -1529,9 +1544,9 @@ div.nav-profile-card {
             min-height: 0;
         }
 
-        > div.nav-profile-card-header > div.nav-profile-card-media,
-        > div.nav-profile-card-header > div.nav-profile-card-info,
-        > div.nav-profile-card-header > div.nav-profile-card-desktop-action-stack {
+        > div.nav-profile-card-header > div.nav-profile-card-main-row > div.nav-profile-card-media,
+        > div.nav-profile-card-header > div.nav-profile-card-main-row > div.nav-profile-card-info,
+        > div.nav-profile-card-header > div.nav-profile-card-main-row > div.nav-profile-card-desktop-action-stack {
             margin-top: 0;
             margin-bottom: 0;
         }
@@ -1540,9 +1555,10 @@ div.nav-profile-card {
     nav.nav-sidebar-extended div.nav-profile-card-info {
         align-items: center;
         justify-content: center;
-        padding-block: clamp(0.28rem, 3.2%, 0.68rem);
+        padding-block: 0;
         padding-inline: 0;
         text-align: center;
+        overflow: clip;
     }
 
     nav.nav-sidebar-extended h1.nav-profile-card-name {
@@ -1553,8 +1569,8 @@ div.nav-profile-card {
         font-family: "Great Vibes", "Alex Brush", "IM Fell English", "Iowan Old Style", "Book Antiqua", Palatino, Georgia, serif;
         font-style: normal;
         font-weight: 400;
-        font-size: clamp(1.75rem, min(16.5cqi, 7.4svh), 3.15rem) !important;
-        line-height: 0.96 !important;
+        font-size: clamp(1.75rem, min(16.5cqi, 23cqh, 7.4svh), 3.15rem) !important;
+        line-height: 1 !important;
         letter-spacing: 0.001em;
         font-feature-settings: "calt" 1, "liga" 1, "dlig" 1, "swsh" 1;
         text-rendering: optimizeLegibility;
@@ -1562,6 +1578,9 @@ div.nav-profile-card {
         transform-origin: center;
         text-align: center;
         white-space: nowrap;
+        padding-block: 0.25em 0.12em;
+        box-sizing: border-box;
+        overflow: clip;
     }
 
     nav.nav-sidebar-extended span.nav-profile-card-name-text {
@@ -1569,7 +1588,7 @@ div.nav-profile-card {
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        transform: translateY(clamp(1px, 2.2%, 4px));
+        transform: none;
         width: auto;
         min-width: 0;
         max-width: 100%;
@@ -1609,7 +1628,7 @@ div.nav-profile-card {
             clamp(0.45rem, 4cqi, 1rem)
             max-content
             minmax(0, 1fr);
-        grid-template-rows: auto minmax(0, 1fr) auto;
+        grid-template-rows: minmax(auto, 1fr) max-content auto;
         grid-template-areas:
             ". actions . media ."
             "info info info info info"
@@ -1681,18 +1700,18 @@ div.nav-profile-card {
     // controls, first name, surname, and the flowing role band.
     @container nav-profile-card (min-height: #{$nav-extended-profile-stacked-min-height}) {
         nav.nav-sidebar-extended div.nav-profile-card-header {
-            --avatar-size: clamp(3.8rem, min(34cqi, 38cqh), 5.5rem);
+            --avatar-size: clamp(3.8rem, min(34cqi, 28cqh), 5.5rem);
             --nav-profile-card-desktop-action-size: clamp(2rem, min(18cqi, 22cqh), 2.75rem);
 
             grid-template-columns: minmax(0, 1fr);
-            grid-template-rows: auto auto minmax(max-content, 1fr) auto;
+            grid-template-rows: minmax(auto, 1fr) auto max-content auto;
             grid-template-areas:
                 "media"
                 "actions"
                 "info"
                 "role";
             column-gap: 0;
-            row-gap: clamp(0.32rem, 0.75svh, 0.55rem);
+            row-gap: clamp(0.25rem, 1.5cqh, 0.55rem);
         }
 
         nav.nav-sidebar-extended div.nav-profile-card-desktop-action-stack {
@@ -1715,9 +1734,9 @@ div.nav-profile-card {
         }
 
         nav.nav-sidebar-extended h1.nav-profile-card-name {
-            font-size: clamp(1.9rem, min(18.5cqi, 8.1svh), 3.45rem) !important;
-            line-height: 0.95 !important;
-            transform: scaleX(1.075);
+            font-size: clamp(1.6rem, min(18.5cqi, 10cqh), 3rem) !important;
+            line-height: 1 !important;
+            transform: none;
         }
 
         nav.nav-sidebar-extended span.nav-profile-card-name-text {
@@ -1726,7 +1745,7 @@ div.nav-profile-card {
             align-items: center;
             justify-content: center;
             width: 100%;
-            transform: translateY(clamp(1px, 1.9%, 4px));
+            transform: none;
             row-gap: clamp(0.18rem, 0.65svh, 0.52rem);
         }
 
@@ -1746,7 +1765,7 @@ div.nav-profile-card {
     // portrait, control, name, and role footprint fits without compression.
     @container nav-profile-card (min-height: #{$nav-extended-profile-role-min-height}) {
         nav.nav-sidebar-extended div.nav-profile-card-header {
-            --avatar-size: clamp(4.5rem, 38cqi, 6rem);
+            --avatar-size: clamp(4rem, min(38cqi, 28cqh), 6rem);
         }
 
         nav.nav-sidebar-extended div.nav-profile-card-desktop-action-stack {
@@ -1826,7 +1845,7 @@ div.nav-profile-card {
             justify-content: flex-end;
             width: 100%;
             font-size: clamp(1.18rem, min(8.4cqi, 4.6svh), 1.65rem) !important;
-            line-height: 0.88 !important;
+            line-height: 1 !important;
             transform: none;
             white-space: normal;
         }
@@ -1890,7 +1909,7 @@ div.nav-profile-card {
 
         nav.nav-sidebar-extended h1.nav-profile-card-name {
             font-size: clamp(1.28rem, min(10.2cqi, 4.9svh), 1.9rem) !important;
-            line-height: 0.9 !important;
+            line-height: 1 !important;
             transform: none;
         }
 

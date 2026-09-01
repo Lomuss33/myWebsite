@@ -870,9 +870,9 @@ nav.nav-sidebar div.nav-short-rail-resume-band {
 
     div.nav-tools-item-resume div.dropdown-menu.nav-tools-popup-menu,
     div.nav-short-rail-resume-band div.dropdown-menu.nav-tools-popup-menu {
-        --nav-tools-popup-width: max-content;
-        --nav-tools-popup-min-width: 11rem;
-        --nav-tools-popup-max-width: min(13rem, 80vw);
+        --nav-tools-popup-width: var(--resume-menu-width);
+        --nav-tools-popup-min-width: 0;
+        --nav-tools-popup-max-width: var(--resume-menu-width);
     }
 
     div.nav-tools-item-language div.dropdown-menu.nav-tools-popup-menu {
@@ -954,9 +954,9 @@ nav.nav-sidebar-short-rail div.nav-short-rail-resume-band div.dropdown-menu.nav-
 
 nav.nav-sidebar-short-rail div.nav-tools div.nav-tools-item-resume div.dropdown-menu.nav-tools-popup-menu,
 nav.nav-sidebar-short-rail div.nav-short-rail-resume-band div.dropdown-menu.nav-tools-popup-menu {
-    --nav-tools-popup-width: max-content;
-    --nav-tools-popup-min-width: 11rem;
-    --nav-tools-popup-max-width: min(13rem, 80vw);
+    --nav-tools-popup-width: var(--resume-menu-width);
+    --nav-tools-popup-min-width: 0;
+    --nav-tools-popup-max-width: var(--resume-menu-width);
 }
 
 nav.nav-sidebar-short-rail-with-resume-band div.nav-short-rail-resume-band div.dropdown-menu.nav-tools-popup-menu.nav-resume-menu {
@@ -978,25 +978,30 @@ nav.nav-sidebar-short-rail-with-resume-band div.nav-short-rail-resume-band div.d
 }
 
 .nav-resume-menu {
+    --resume-menu-width: min(10.25rem, calc(100vw - 1rem));
+    --resume-menu-side-column: 1.25rem;
     --resume-ui-border: color-mix(in srgb, var(--theme-primary) 52%, var(--theme-secondary) 48%);
     --resume-ui-background:
         radial-gradient(circle at 16% 14%,
-            color-mix(in srgb, var(--theme-primary) 14%, transparent 86%) 0%,
-            transparent 34%),
+            color-mix(in srgb, var(--theme-primary) 18%, transparent 82%) 0%,
+            transparent 38%),
         radial-gradient(circle at 88% 20%,
-            color-mix(in srgb, #fbbf24 12%, transparent 88%) 0%,
-            transparent 30%),
+            color-mix(in srgb, #fbbf24 18%, transparent 82%) 0%,
+            transparent 34%),
+        radial-gradient(circle at 58% 100%,
+            color-mix(in srgb, var(--theme-secondary) 14%, transparent 86%) 0%,
+            transparent 42%),
         linear-gradient(180deg,
-            color-mix(in srgb, var(--theme-nav-surface) 92%, #08111d 8%) 0%,
-            color-mix(in srgb, var(--theme-nav-surface-raised) 86%, #020617 14%) 100%);
+            color-mix(in srgb, var(--theme-nav-surface) 88%, #08111d 12%) 0%,
+            color-mix(in srgb, var(--theme-nav-surface-raised) 82%, #020617 18%) 100%);
     --resume-ui-text: color-mix(in srgb, var(--theme-nav-text) 94%, white 6%);
     --resume-ui-header: color-mix(in srgb, var(--theme-primary) 52%, #fbbf24 48%);
     --resume-ui-icon: color-mix(in srgb, var(--theme-primary) 66%, var(--theme-secondary) 34%);
     --resume-ui-divider: color-mix(in srgb, var(--theme-primary) 20%, transparent 80%);
     --resume-ui-row-surface:
         linear-gradient(180deg,
-            color-mix(in srgb, white 5%, transparent 95%) 0%,
-            color-mix(in srgb, var(--theme-nav-surface-raised) 76%, transparent 24%) 100%);
+            color-mix(in srgb, white 10%, transparent 90%) 0%,
+            color-mix(in srgb, var(--theme-nav-surface-raised) 68%, transparent 32%) 100%);
     --resume-ui-row-border: color-mix(in srgb, var(--theme-nav-divider) 72%, var(--theme-primary) 28%);
     --resume-ui-hover-text: #ffffff;
     --resume-ui-hover-icon: color-mix(in srgb, #fbbf24 58%, var(--theme-primary) 42%);
@@ -1009,7 +1014,11 @@ nav.nav-sidebar-short-rail-with-resume-band div.nav-short-rail-resume-band div.d
         0 22px 44px rgba(2, 6, 23, 0.38),
         0 8px 18px rgba(2, 6, 23, 0.22),
         inset 0 1px 0 rgba(255, 255, 255, 0.10);
-    padding: 0.36rem;
+    width: var(--resume-menu-width);
+    min-width: 0;
+    max-width: var(--resume-menu-width);
+    padding: 0.26rem;
+    box-sizing: border-box;
     overflow: hidden;
     border: 1px solid var(--resume-ui-border);
     border-radius: 1rem;
@@ -1027,7 +1036,7 @@ nav.nav-sidebar-short-rail-with-resume-band div.nav-short-rail-resume-band div.d
     }
 
     div.btn-option-picker-menu-header {
-        padding: 0.18rem 0.48rem 0.38rem;
+        padding: 0.14rem 0.34rem 0.3rem;
         margin: 0 0 2px;
         font-size: 0.68rem;
         line-height: 1.18;
@@ -1042,16 +1051,23 @@ nav.nav-sidebar-short-rail-with-resume-band div.nav-short-rail-resume-band div.d
 
     button.dropdown-item {
         position: relative;
-        display: flex;
-        align-items: flex-start;
+        display: grid;
+        grid-template-columns:
+            var(--resume-menu-side-column)
+            minmax(0, 1fr)
+            var(--resume-menu-side-column);
+        align-items: center;
+        justify-items: center;
+        width: 100%;
         min-height: 0;
-        justify-content: flex-start;
-        gap: 0.44rem;
-        padding: 0.42rem 0.5rem;
+        gap: 0;
+        padding: 0.3rem 0.35rem;
+        box-sizing: border-box;
         border-radius: 0.8rem;
         border: 1px solid var(--resume-ui-row-border);
         background: var(--resume-ui-row-surface);
         color: var(--resume-ui-text);
+        text-align: left;
         white-space: normal;
         overflow-wrap: anywhere;
         box-shadow:
@@ -1065,14 +1081,14 @@ nav.nav-sidebar-short-rail-with-resume-band div.nav-short-rail-resume-band div.d
             transform 0.18s ease;
 
         &:not(:last-child) {
-            margin-bottom: 0.34rem;
+            margin-bottom: 0.24rem;
 
             &::after {
                 content: "";
                 position: absolute;
-                left: 0.72rem;
-                right: 0.72rem;
-                bottom: -0.19rem;
+                left: 0.44rem;
+                right: 0.44rem;
+                bottom: -0.14rem;
                 height: 1px;
                 background: linear-gradient(90deg, transparent 0%, var(--resume-ui-divider) 18%, var(--resume-ui-divider) 82%, transparent 100%);
                 pointer-events: none;
@@ -1080,6 +1096,10 @@ nav.nav-sidebar-short-rail-with-resume-band div.nav-short-rail-resume-band div.d
         }
 
         div.btn-option-picker-icon {
+            grid-column: 1;
+            width: var(--resume-menu-side-column);
+            min-width: var(--resume-menu-side-column);
+            height: var(--resume-menu-side-column);
             background: transparent !important;
             box-shadow: none;
             flex: 0 0 auto;
@@ -1110,14 +1130,18 @@ nav.nav-sidebar-short-rail-with-resume-band div.nav-short-rail-resume-band div.d
     }
 
     span.btn-option-picker-menu-item-label {
-        flex: 1 1 auto;
+        grid-column: 2;
+        width: 100%;
         min-width: 0;
         margin-left: 0 !important;
-        font-size: 0.8rem;
-        line-height: 1.18;
+        font-size: 0.76rem;
+        line-height: 1.1;
+        text-align: center;
         white-space: normal;
-        text-wrap: pretty;
-        overflow-wrap: anywhere;
+        text-wrap: balance;
+        overflow: visible;
+        overflow-wrap: normal;
+        text-overflow: clip;
     }
 }
 
@@ -1346,27 +1370,28 @@ nav.nav-sidebar-extended div.nav-tools.nav-tools-extended {
 [data-theme="light"] .nav-resume-menu {
     --resume-ui-border: color-mix(in srgb, var(--theme-secondary) 62%, var(--theme-primary) 38%);
     --resume-ui-background:
-        radial-gradient(circle at 14% 14%, rgba(240, 180, 41, 0.16) 0%, transparent 30%),
-        radial-gradient(circle at 88% 18%, rgba(0, 136, 186, 0.12) 0%, transparent 28%),
+        radial-gradient(circle at 14% 14%, rgba(240, 180, 41, 0.22) 0%, transparent 34%),
+        radial-gradient(circle at 88% 18%, rgba(0, 136, 186, 0.16) 0%, transparent 32%),
+        radial-gradient(circle at 55% 100%, rgba(255, 168, 212, 0.14) 0%, transparent 42%),
         linear-gradient(180deg,
-            color-mix(in srgb, #fffef8 94%, #fff3cf 6%) 0%,
-            color-mix(in srgb, #f4fbff 90%, #dff4ff 10%) 100%);
+            color-mix(in srgb, #fffef8 90%, #fff3cf 10%) 0%,
+            color-mix(in srgb, #f4fbff 84%, #dff4ff 16%) 100%);
     --resume-ui-text: #0f1b2d;
     --resume-ui-header: color-mix(in srgb, var(--theme-secondary) 74%, #0f172a 26%);
     --resume-ui-icon: color-mix(in srgb, var(--theme-secondary) 68%, var(--theme-primary) 32%);
     --resume-ui-divider: rgba(15, 126, 168, 0.18);
     --resume-ui-row-surface:
         linear-gradient(180deg,
-            rgba(255, 255, 255, 0.82) 0%,
-            color-mix(in srgb, #edf6ff 72%, white 28%) 100%);
+            rgba(255, 255, 255, 0.9) 0%,
+            color-mix(in srgb, #edf6ff 62%, white 38%) 100%);
     --resume-ui-row-border: color-mix(in srgb, var(--theme-secondary) 14%, #c8d6e5 86%);
     --resume-ui-hover-text: #08111d;
     --resume-ui-hover-icon: color-mix(in srgb, var(--theme-secondary) 62%, #a34800 38%);
     --resume-ui-hover-bg:
         linear-gradient(90deg,
-            rgba(15, 126, 168, 0.10) 0%,
-            rgba(240, 180, 41, 0.12) 54%,
-            rgba(15, 126, 168, 0.06) 100%);
+            rgba(15, 126, 168, 0.12) 0%,
+            rgba(240, 180, 41, 0.18) 54%,
+            rgba(255, 168, 212, 0.10) 100%);
     --resume-ui-shadow:
         0 22px 44px rgba(15, 23, 42, 0.16),
         0 8px 18px rgba(15, 23, 42, 0.10),
@@ -1480,6 +1505,15 @@ nav.nav-sidebar-extended div.nav-tools.nav-tools-extended {
     --resume-ui-header: color-mix(in srgb, #fbbf24 46%, var(--theme-primary) 54%);
     --resume-ui-icon: color-mix(in srgb, var(--theme-primary) 72%, white 28%);
     --resume-ui-divider: color-mix(in srgb, var(--theme-primary) 28%, transparent 72%);
+    --resume-ui-row-surface:
+        linear-gradient(180deg,
+            color-mix(in srgb, white 12%, transparent 88%) 0%,
+            color-mix(in srgb, var(--theme-nav-surface-raised) 60%, transparent 40%) 100%);
+    --resume-ui-hover-bg:
+        linear-gradient(90deg,
+            color-mix(in srgb, var(--theme-primary) 22%, transparent 78%) 0%,
+            color-mix(in srgb, #fbbf24 20%, transparent 80%) 48%,
+            color-mix(in srgb, var(--theme-secondary) 18%, transparent 82%) 100%);
     --resume-ui-shadow:
         0 26px 52px rgba(1, 5, 16, 0.56),
         0 10px 24px rgba(1, 5, 16, 0.34),

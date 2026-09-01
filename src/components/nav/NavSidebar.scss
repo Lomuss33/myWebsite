@@ -183,6 +183,21 @@ nav.nav-sidebar-extended {
     }
 }
 
+// The outer rail owns allocation. A card cannot hide itself from a query on
+// its own container, so the rail releases the profile slot at the final safe
+// height before any compact content can touch the navigation below.
+@container nav-extended-rail (max-height: #{$nav-extended-profile-collapse-max-height * 4}) {
+    nav.nav-sidebar-extended {
+        div.nav-sidebar-card-wrapper > div.nav-profile-card:not(.nav-profile-card-short-rail) {
+            display: none;
+        }
+
+        button.nav-sidebar-btn-toggle {
+            top: 8px;
+        }
+    }
+}
+
 @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
     nav.nav-sidebar {
         div.nav-sidebar-card-wrapper::before {

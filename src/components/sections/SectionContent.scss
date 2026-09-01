@@ -26,8 +26,14 @@ div.section-content {
     );
     --section-decoration-band-safe-bottom: 0px;
     --section-content-terminal-reserve: 0px;
-    --section-separator-line-height: 6px;
-    --section-separator-band-inset: var(--section-separator-line-height);
+    --section-separator-visual-height: 2px;
+    --section-separator-line-height: calc(
+        var(--section-separator-visual-height) /
+        max(var(--section-content-scale), 0.001)
+    );
+    --section-separator-line-overlap: calc(var(--section-separator-line-height) / 2);
+    --section-separator-band-inset: 0px;
+    --section-separator-edge-bleed: calc(1px / max(var(--section-content-scale), 0.001));
 
     position: relative;
     width: 100%;
@@ -121,6 +127,7 @@ div.section-content.section-content-has-decoration-bands {
     --section-content-terminal-reserve: 0px;
     --section-article-separator-buffer-top: clamp(14px, 1.5vw, 22px);
     --section-article-separator-buffer-bottom: clamp(18px, 2vw, 28px);
+    --section-header-separator-buffer-bottom: clamp(10px, 1.3vw, 18px);
 }
 
 div.section-content.section-content-no-decoration-bands {
@@ -145,7 +152,7 @@ div.section-content.section-content-has-decoration-bands.section-content-hide-he
 }
 
 div.section-content.section-content-has-decoration-bands header.section-header {
-    margin-bottom: 0!important;
+    margin-bottom: var(--section-header-separator-buffer-bottom)!important;
 }
 
 div.section-decoration-band {
@@ -175,11 +182,9 @@ div.section-decoration-band {
 div.section-decoration-boundary {
     --section-decoration-edge-start: var(--theme-primary);
     --section-decoration-edge-end: var(--theme-secondary);
-    display: grid;
+    display: block;
     position: relative;
     z-index: auto;
-    grid-template-columns: minmax(0, 1fr);
-    align-items: stretch;
     grid-column: 1 / -1;
     width: var(--section-decoration-full-width);
     max-width: none;
@@ -187,6 +192,9 @@ div.section-decoration-boundary {
     margin-right: var(--section-decoration-full-margin-inline);
     margin-left: var(--section-decoration-full-margin-inline);
     box-sizing: border-box;
+    font-size: 0;
+    line-height: 0;
+    overflow: visible;
 }
 
 section#section-education div.section-decoration-boundary {
@@ -237,11 +245,26 @@ div.section-content.section-content-has-decoration-bands {
     --section-decoration-line-height: var(--section-separator-line-height);
 }
 
+div.section-content.section-content-has-decoration-bands div.section-decoration-boundary-after-header,
+div.section-content.section-content-has-decoration-bands div.section-decoration-boundary-between-articles,
+div.section-content.section-content-has-decoration-bands div.section-decoration-boundary-page-bottom {
+    padding-top: var(--section-separator-line-overlap);
+}
+
+div.section-content.section-content-has-decoration-bands div.section-decoration-boundary-after-header,
+div.section-content.section-content-has-decoration-bands div.section-decoration-boundary-between-articles,
+div.section-content.section-content-has-decoration-bands div.section-decoration-boundary-page-top {
+    padding-bottom: var(--section-separator-line-overlap);
+}
+
 div.section-content.section-content-has-decoration-bands div.section-decoration-line {
-    position: relative;
+    position: absolute;
+    left: calc(-1 * var(--section-separator-edge-bleed));
+    right: auto;
     z-index: 6;
     display: block;
-    width: 100%;
+    width: calc(100% + (2 * var(--section-separator-edge-bleed)));
+    max-width: none;
     height: var(--section-decoration-line-height);
     min-height: var(--section-decoration-line-height);
     border-radius: 0;
@@ -251,6 +274,50 @@ div.section-content.section-content-has-decoration-bands div.section-decoration-
         var(--section-decoration-edge-end)
     );
     pointer-events: none;
+}
+
+div.section-content.section-content-has-decoration-bands div.section-decoration-line-before-band {
+    top: 0;
+    mask-image: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 1) 0%,
+        rgba(0, 0, 0, 0.96) 42%,
+        rgba(0, 0, 0, 0.58) 72%,
+        rgba(0, 0, 0, 0) 100%
+    );
+    -webkit-mask-image: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 1) 0%,
+        rgba(0, 0, 0, 0.96) 42%,
+        rgba(0, 0, 0, 0.58) 72%,
+        rgba(0, 0, 0, 0) 100%
+    );
+}
+
+div.section-content.section-content-has-decoration-bands div.section-decoration-line-after-band {
+    bottom: 0;
+    mask-image: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 1) 0%,
+        rgba(0, 0, 0, 0.96) 42%,
+        rgba(0, 0, 0, 0.58) 72%,
+        rgba(0, 0, 0, 0) 100%
+    );
+    -webkit-mask-image: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 1) 0%,
+        rgba(0, 0, 0, 0.96) 42%,
+        rgba(0, 0, 0, 0.58) 72%,
+        rgba(0, 0, 0, 0) 100%
+    );
+}
+
+div.section-content.section-content-has-decoration-bands div.section-decoration-boundary-page-bottom {
+    padding-bottom: 0;
+}
+
+div.section-content.section-content-has-decoration-bands div.section-decoration-boundary-page-bottom div.section-decoration-line-after-band {
+    display: none!important;
 }
 
 div.section-content.section-content-has-decoration-bands header.section-header::after,
@@ -444,6 +511,14 @@ div.section-decoration-band-page-bottom {
         (var(--section-decoration-band-between-height) * 7) +
         var(--section-decoration-band-safe-bottom, 0px)
     );
+}
+
+div.section-content.section-content-has-decoration-bands.section-content-page-ready > div.section-content-elements-wrapper {
+    > div.section-decoration-boundary,
+    > div.section-body {
+        animation: none!important;
+        translate: none!important;
+    }
 }
 
 section#section-education div.section-decoration-band {

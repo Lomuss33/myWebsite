@@ -5,15 +5,14 @@
 
 @forward "./bootstrap-api";
 
-// Extended profile-card states share one source of truth across the rail and
-// card styles so their transitions cannot drift apart.
-$nav-extended-profile-single-band-max-height: 145px;
-$nav-extended-profile-single-band-min-width: 34rem;
-$nav-extended-profile-tall-min-height: 210px;
-$nav-extended-profile-extra-tall-min-height: 280px;
+// Ordered profile-card fit budgets. Each state owns a non-overlapping height
+// range so shrinking the rail can only remove content, never reintroduce it.
+$nav-extended-profile-compact-max-height: 124px;
+$nav-extended-profile-paired-max-height: 169px;
+$nav-extended-profile-stacked-min-height: 170px;
+$nav-extended-profile-role-min-height: 240px;
 $nav-extended-profile-max-height: 480px;
 $nav-extended-profile-collapse-max-height: 92px;
-$nav-extended-role-visible-min-height: 172px;
 
 @mixin media-layout-ultrawide {
     @media

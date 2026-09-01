@@ -4,7 +4,10 @@ import ArtDecorationBandCanvas from "./decorations/art/ArtDecorationBandCanvas.j
 function SectionDecorationBand({ index = null, sectionId = null, type }) {
     const dataAttributes = index === null ? {} : { "data-section-decoration-band-index": index }
     const shouldRenderArtCanvas = sectionId === "my-art"
-    const showLineBefore = type === "after-header" || type === "between-articles" || type === "page-bottom"
+    const shouldHidePageTopLineBefore = type === "page-top" &&
+        ["my-software", "my-hardware", "my-writings", "my-art"].includes(sectionId)
+    const showLineBefore = (type === "after-header" || type === "between-articles" || type === "page-bottom") &&
+        !shouldHidePageTopLineBefore
     const showLineAfter = type === "after-header" || type === "between-articles" || type === "page-top"
 
     return (

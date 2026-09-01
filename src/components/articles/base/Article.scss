@@ -56,17 +56,7 @@ article.article {
             )
         )
     );
-    --article-title-line-base-thickness: var(
-        --education-current-title-line-top,
-        var(
-            --experience-current-title-line-top,
-            var(--art-current-title-line-top, 3px)
-        )
-    );
-    --article-title-line-thickness: calc(
-        var(--article-title-line-base-thickness) +
-        var(--article-title-line-base-thickness)
-    );
+    --article-title-line-thickness: var(--section-separator-line-height, 6px);
 }
 
 article.article::after {

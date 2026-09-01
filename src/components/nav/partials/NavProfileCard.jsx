@@ -757,6 +757,19 @@ function NavProfileCard({
                     </div>
                 )}
 
+                {isExtendedRail && loveSentences?.length > 1 && (
+                    <TextTyper strings={loveSentences}
+                               id={`role-typer`}
+                               randomOrder={true}
+                               className={`nav-profile-card-role`}/>
+                )}
+
+                {isExtendedRail && loveSentences?.length === 1 && (
+                    <div className={`nav-profile-card-role`}>
+                        {loveSentences[0]}
+                    </div>
+                )}
+
                 {shortRailTickerVisible && (
                     <NavProfileCardShortRailTicker sentences={loveSentences}/>
                 )}
@@ -767,19 +780,6 @@ function NavProfileCard({
                     </div>
                 )}
             </div>
-
-            {isExtendedRail && loveSentences?.length > 1 && (
-                <TextTyper strings={loveSentences}
-                           id={`role-typer`}
-                           randomOrder={true}
-                           className={`nav-profile-card-role`}/>
-            )}
-
-            {isExtendedRail && loveSentences?.length === 1 && (
-                <div className={`nav-profile-card-role`}>
-                    {loveSentences[0]}
-                </div>
-            )}
         </Card>
     )
 }

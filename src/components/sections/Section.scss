@@ -100,7 +100,7 @@ section#section-education header.section-header::after {
     width: var(--section-decoration-full-width);
     margin-right: var(--section-decoration-full-margin-inline);
     margin-left: var(--section-decoration-full-margin-inline);
-    height: 2px;
+    height: var(--section-separator-line-height);
     margin-top: 2px;
     border-radius: 999px;
     background: linear-gradient(90deg, transparent, var(--education-title-mid), var(--education-title-end), transparent);
@@ -159,8 +159,6 @@ section#section-education article:is(
     --education-current-title-mid: var(--education-title-mid);
     --education-current-title-end: var(--education-title-end);
     --education-current-title-shadow: var(--education-title-shadow);
-    --education-current-title-line-top: 3px;
-    --education-current-title-line-bottom: 1px;
 }
 
 section#section-education article#article-1-section-education {
@@ -168,7 +166,6 @@ section#section-education article#article-1-section-education {
     --education-current-title-mid: #0ea5e9;
     --education-current-title-end: #f59e0b;
     --education-current-title-shadow: 0 16px 34px rgba(14, 165, 233, 0.22);
-    --education-current-title-line-top: 4px;
 }
 
 section#section-education article#article-2-section-education {
@@ -183,7 +180,6 @@ section#section-education article#article-3-section-education {
     --education-current-title-mid: #f9a8d4;
     --education-current-title-end: #5eead4;
     --education-current-title-shadow: 0 16px 34px rgba(249, 168, 212, 0.18);
-    --education-current-title-line-bottom: 2px;
 }
 
 section#section-education article:is(
@@ -238,7 +234,7 @@ section#section-education article:is(
     #article-3-section-education
 ) h4.article-title::before {
     width: var(--section-decoration-full-width);
-    height: var(--education-current-title-line-top);
+    height: var(--section-separator-line-height);
     margin-right: var(--section-decoration-full-margin-inline);
     margin-left: var(--section-decoration-full-margin-inline);
     background: linear-gradient(90deg, var(--education-current-title-mid), var(--education-current-title-end));
@@ -253,7 +249,7 @@ section#section-education article:is(
     width: var(--section-decoration-full-width);
     margin-right: var(--section-decoration-full-margin-inline);
     margin-left: var(--section-decoration-full-margin-inline);
-    height: var(--education-current-title-line-bottom);
+    height: var(--section-separator-line-height);
     background: linear-gradient(90deg, transparent, var(--education-current-title-mid), var(--education-current-title-end), transparent);
 }
 
@@ -446,7 +442,7 @@ section#section-experience header.section-header::after {
     width: var(--section-decoration-full-width);
     margin-right: var(--section-decoration-full-margin-inline);
     margin-left: var(--section-decoration-full-margin-inline);
-    height: 2px;
+    height: var(--section-separator-line-height);
     margin-top: 2px;
     border-radius: 999px;
     background: linear-gradient(90deg, transparent, var(--experience-title-mid), var(--experience-title-end), transparent);
@@ -506,8 +502,6 @@ section#section-experience article:is(
     --experience-current-title-mid: var(--experience-title-mid);
     --experience-current-title-end: var(--experience-title-end);
     --experience-current-title-shadow: var(--experience-title-shadow);
-    --experience-current-title-line-top: 3px;
-    --experience-current-title-line-bottom: 1px;
 }
 
 section#section-experience article#article-1-section-experience {
@@ -515,7 +509,6 @@ section#section-experience article#article-1-section-experience {
     --experience-current-title-mid: #22d3ee;
     --experience-current-title-end: #facc15;
     --experience-current-title-shadow: 0 16px 34px rgba(34, 211, 238, 0.20);
-    --experience-current-title-line-top: 4px;
 }
 
 section#section-experience article#article-2-section-experience {
@@ -530,7 +523,6 @@ section#section-experience article#article-3-section-experience {
     --experience-current-title-mid: #e5e7eb;
     --experience-current-title-end: #38bdf8;
     --experience-current-title-shadow: 0 16px 34px rgba(56, 189, 248, 0.18);
-    --experience-current-title-line-bottom: 2px;
 }
 
 section#section-experience article:is(
@@ -590,7 +582,7 @@ section#section-experience article:is(
     #article-3-section-experience
 ) h4.article-title::before {
     width: var(--section-decoration-full-width);
-    height: var(--experience-current-title-line-top);
+    height: var(--section-separator-line-height);
     margin-right: var(--section-decoration-full-margin-inline);
     margin-left: var(--section-decoration-full-margin-inline);
     background: linear-gradient(90deg, var(--experience-current-title-mid), var(--experience-current-title-end));
@@ -605,7 +597,7 @@ section#section-experience article:is(
     width: var(--section-decoration-full-width);
     margin-right: var(--section-decoration-full-margin-inline);
     margin-left: var(--section-decoration-full-margin-inline);
-    height: var(--experience-current-title-line-bottom);
+    height: var(--section-separator-line-height);
     background: linear-gradient(90deg, transparent, var(--experience-current-title-mid), var(--experience-current-title-end), transparent);
 }
 
@@ -1057,8 +1049,8 @@ section#section-my-writings article:is(
     width: var(--section-decoration-full-width);
     margin-right: var(--section-decoration-full-margin-inline);
     margin-left: var(--section-decoration-full-margin-inline);
-    height: calc(var(--article-title-line-thickness) / 3);
-    min-height: 2px;
+    height: var(--article-title-line-thickness);
+    min-height: var(--article-title-line-thickness);
     background: linear-gradient(90deg, transparent, var(--writings-current-title-mid), var(--writings-current-title-end), transparent);
 }
 
@@ -1265,8 +1257,6 @@ section#section-my-art article:is(
     --art-current-title-mid: var(--art-title-mid);
     --art-current-title-end: var(--art-title-end);
     --art-current-title-shadow: var(--art-title-shadow);
-    --art-current-title-line-top: 3px;
-    --art-current-title-line-bottom: 1px;
 }
 
 section#section-my-art article#article-1-section-my-art {
@@ -1281,7 +1271,6 @@ section#section-my-art article#article-2-section-my-art {
     --art-current-title-mid: #22c55e;
     --art-current-title-end: #3b82f6;
     --art-current-title-shadow: 0 16px 34px rgba(59, 130, 246, 0.20);
-    --art-current-title-line-top: 4px;
     --art-rgb-my: #f8fafc;
     --art-rgb-red: #ff4d5a;
     --art-rgb-green: #2ee66b;
@@ -1300,7 +1289,6 @@ section#section-my-art article#article-4-section-my-art {
     --art-current-title-mid: #ff0033;
     --art-current-title-end: #facc15;
     --art-current-title-shadow: 0 18px 36px rgba(255, 0, 51, 0.22);
-    --art-current-title-line-bottom: 2px;
 }
 
 section#section-my-art article#article-5-section-my-art {
@@ -1308,8 +1296,6 @@ section#section-my-art article#article-5-section-my-art {
     --art-current-title-mid: #dbeafe;
     --art-current-title-end: #facc15;
     --art-current-title-shadow: 0 18px 36px rgba(219, 234, 254, 0.18);
-    --art-current-title-line-top: 4px;
-    --art-current-title-line-bottom: 2px;
 }
 
 section#section-my-art article:is(
@@ -1378,7 +1364,7 @@ section#section-my-art article:is(
     width: var(--section-decoration-full-width);
     margin-right: var(--section-decoration-full-margin-inline);
     margin-left: var(--section-decoration-full-margin-inline);
-    height: var(--art-current-title-line-top);
+    height: var(--section-separator-line-height);
     background: linear-gradient(90deg, var(--art-current-title-mid), var(--art-current-title-end));
 }
 
@@ -1392,7 +1378,7 @@ section#section-my-art article:is(
     width: var(--section-decoration-full-width);
     margin-right: var(--section-decoration-full-margin-inline);
     margin-left: var(--section-decoration-full-margin-inline);
-    height: var(--art-current-title-line-bottom);
+    height: var(--section-separator-line-height);
     background: linear-gradient(90deg, transparent, var(--art-current-title-mid), var(--art-current-title-end), transparent);
 }
 

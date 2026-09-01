@@ -7,6 +7,7 @@ const LOW_FRAME_RATE_TIME_SCALE = 0.24
 const MAX_DEVICE_PIXEL_RATIO = 1.15
 const MAX_BANDS = 12
 const MAX_RENDERED_BAND_CANVASES = 6
+const DEFAULT_BAND_EDGE_INSET = 6
 
 const vertexSource = `#version 300 es
 in vec4 position;
@@ -210,6 +211,24 @@ function setupShader(canvas, source = fragmentSource) {
     return { gl, program, buffer }
 }
 
+function resolveBandEdgeInset(referenceElement) {
+    const sectionContent = referenceElement?.closest?.(".section-content")
+    const cssInset = Number.parseFloat(
+        sectionContent ? window.getComputedStyle(sectionContent).getPropertyValue("--section-separator-band-inset") : ""
+    )
+
+    return Number.isFinite(cssInset) ? cssInset : DEFAULT_BAND_EDGE_INSET
+}
+
+function insetBandRect(rect) {
+    const inset = Math.min(resolveBandEdgeInset(rect.element), Math.max(0, (rect.height - 2) / 2))
+    return {
+        ...rect,
+        y: rect.y + inset,
+        height: Math.max(1, rect.height - (inset * 2))
+    }
+}
+
 function measureLayout(canvas) {
     const wrapper = canvas?.parentElement
     if(!wrapper)
@@ -221,13 +240,13 @@ function measureLayout(canvas) {
     const bandRects = Array.from(wrapper.querySelectorAll(".section-decoration-band"))
         .map((band) => {
             const rect = band.getBoundingClientRect()
-            return {
+            return insetBandRect({
                 element: band,
                 x: (rect.left - wrapperRect.left) / safeScale,
                 y: (rect.top - wrapperRect.top) / safeScale,
                 width: rect.width / safeScale,
                 height: rect.height / safeScale
-            }
+            })
         })
         .filter(rect => rect.width > 0 && rect.height > 0)
 

@@ -6,6 +6,7 @@ const SHADER_FRAME_INTERVAL_MS = 84
 const LOW_FRAME_RATE_INTERVAL_MS = 220
 const RAIN_MAX_DEVICE_PIXEL_RATIO = 1.25
 const SHADER_MAX_DEVICE_PIXEL_RATIO = 1.25
+const DEFAULT_BAND_EDGE_INSET = 6
 const LEGACY_SOFTWARE_RAIN_CHARS = [
     ..."ã‚¢ã‚¤ã‚¦ã‚¨ã‚ªã‚«ã‚­ã‚¯ã‚±ã‚³ã‚µã‚·ã‚¹ã‚»ã‚½ã‚¿ãƒãƒ„ãƒ†ãƒˆãƒŠãƒ‹ãƒŒãƒãƒŽãƒãƒ’ãƒ•ãƒ˜ãƒ›ãƒžãƒŸãƒ ãƒ¡ãƒ¢ãƒ¤ãƒ¦ãƒ¨ãƒ©ãƒªãƒ«ãƒ¬ãƒ­ãƒ¯ãƒ²ãƒ³",
     ..."0123456789",
@@ -147,6 +148,24 @@ function createShaderProgram(gl) {
     return program
 }
 
+function resolveBandEdgeInset(referenceElement) {
+    const sectionContent = referenceElement?.closest?.(".section-content")
+    const cssInset = Number.parseFloat(
+        sectionContent ? window.getComputedStyle(sectionContent).getPropertyValue("--section-separator-band-inset") : ""
+    )
+
+    return Number.isFinite(cssInset) ? cssInset : DEFAULT_BAND_EDGE_INSET
+}
+
+function insetBandRect(rect) {
+    const inset = Math.min(resolveBandEdgeInset(rect.element), Math.max(0, (rect.height - 2) / 2))
+    return {
+        ...rect,
+        y: rect.y + inset,
+        height: Math.max(1, rect.height - (inset * 2))
+    }
+}
+
 function measureLayout(rainCanvas, shaderCanvas) {
     const wrapper = rainCanvas?.parentElement
     if(!wrapper)
@@ -159,13 +178,13 @@ function measureLayout(rainCanvas, shaderCanvas) {
     const bandRects = bandElements
         .map((band) => {
             const rect = band.getBoundingClientRect()
-            return {
+            return insetBandRect({
                 element: band,
                 x: (rect.left - wrapperRect.left) / safeScale,
                 y: (rect.top - wrapperRect.top) / safeScale,
                 width: rect.width / safeScale,
                 height: rect.height / safeScale
-            }
+            })
         })
         .filter(rect => rect.width > 0 && rect.height > 0)
 

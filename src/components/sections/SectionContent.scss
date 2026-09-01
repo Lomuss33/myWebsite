@@ -26,6 +26,8 @@ div.section-content {
     );
     --section-decoration-band-safe-bottom: 0px;
     --section-content-terminal-reserve: 0px;
+    --section-separator-line-height: 6px;
+    --section-separator-band-inset: var(--section-separator-line-height);
 
     position: relative;
     width: 100%;
@@ -173,9 +175,11 @@ div.section-decoration-band {
 div.section-decoration-boundary {
     --section-decoration-edge-start: var(--theme-primary);
     --section-decoration-edge-end: var(--theme-secondary);
-    display: block;
+    display: grid;
     position: relative;
     z-index: auto;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
     grid-column: 1 / -1;
     width: var(--section-decoration-full-width);
     max-width: none;
@@ -230,7 +234,7 @@ div.section-decoration-line {
    boundary component owns every separator around every decorative band across
    all viewports; article and header pseudo-lines are suppressed instead. */
 div.section-content.section-content-has-decoration-bands {
-    --section-decoration-line-height: 6px;
+    --section-decoration-line-height: var(--section-separator-line-height);
 }
 
 div.section-content.section-content-has-decoration-bands div.section-decoration-line {

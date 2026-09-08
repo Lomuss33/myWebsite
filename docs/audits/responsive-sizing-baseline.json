@@ -1,0 +1,1342 @@
+{
+  "date": "2026-09-08",
+  "commit": "ae07396",
+  "environment": {
+    "url": "http://localhost:5173",
+    "engine": "Chromium",
+    "deviceScaleFactor": 1,
+    "main": {
+      "language": "en",
+      "theme": "dark",
+      "reducedMotion": true
+    },
+    "focused": {
+      "touch": true,
+      "mobileEmulation": true,
+      "languages": [
+        "en",
+        "de",
+        "hr",
+        "tr"
+      ]
+    }
+  },
+  "notes": [
+    "All dimensions use CSS pixels.",
+    "Effective input font is computed font multiplied by the shared section transform scale.",
+    "Layout observations are not a conformance verdict.",
+    "Raw article-overflow flags can include deliberate decoration bleed; they are omitted from this compact baseline.",
+    "The complete local measurements and screenshots are in C:/Users/LovroPC/AppData/Local/Temp/website-sizing-audit-20260908/"
+  ],
+  "pageErrors": [],
+  "layoutSamples": [
+    {
+      "route": "#about",
+      "viewport": [
+        280,
+        653
+      ],
+      "rootFont": "14px",
+      "mode": "mobile",
+      "pageWidth": 280,
+      "sidebarWidth": null,
+      "sectionScale": 1,
+      "mobileHeaderHeight": 128.7,
+      "mobileSectionStripHeight": 72,
+      "mobileBottomBarHeight": 72,
+      "documentWidth": 280,
+      "documentScrollWidth": 280
+    },
+    {
+      "route": "#about",
+      "viewport": [
+        320,
+        480
+      ],
+      "rootFont": "14px",
+      "mode": "mobile",
+      "pageWidth": 320,
+      "sidebarWidth": null,
+      "sectionScale": 1,
+      "mobileHeaderHeight": 138,
+      "mobileSectionStripHeight": 72,
+      "mobileBottomBarHeight": 72,
+      "documentWidth": 320,
+      "documentScrollWidth": 320
+    },
+    {
+      "route": "#about",
+      "viewport": [
+        320,
+        568
+      ],
+      "rootFont": "14px",
+      "mode": "mobile",
+      "pageWidth": 320,
+      "sidebarWidth": null,
+      "sectionScale": 1,
+      "mobileHeaderHeight": 138,
+      "mobileSectionStripHeight": 72,
+      "mobileBottomBarHeight": 72,
+      "documentWidth": 320,
+      "documentScrollWidth": 320
+    },
+    {
+      "route": "#about",
+      "viewport": [
+        360,
+        800
+      ],
+      "rootFont": "14px",
+      "mode": "mobile",
+      "pageWidth": 360,
+      "sidebarWidth": null,
+      "sectionScale": 1,
+      "mobileHeaderHeight": 152.3,
+      "mobileSectionStripHeight": 84.8,
+      "mobileBottomBarHeight": 84.8,
+      "documentWidth": 360,
+      "documentScrollWidth": 360
+    },
+    {
+      "route": "#about",
+      "viewport": [
+        390,
+        844
+      ],
+      "rootFont": "15px",
+      "mode": "mobile",
+      "pageWidth": 390,
+      "sidebarWidth": null,
+      "sectionScale": 1,
+      "mobileHeaderHeight": 163,
+      "mobileSectionStripHeight": 91.8,
+      "mobileBottomBarHeight": 91.8,
+      "documentWidth": 390,
+      "documentScrollWidth": 390
+    },
+    {
+      "route": "#about",
+      "viewport": [
+        568,
+        320
+      ],
+      "rootFont": "15px",
+      "mode": "mobile",
+      "pageWidth": 568,
+      "sidebarWidth": null,
+      "sectionScale": 1,
+      "mobileHeaderHeight": 175.2,
+      "mobileSectionStripHeight": 72,
+      "mobileBottomBarHeight": 72,
+      "documentWidth": 568,
+      "documentScrollWidth": 568
+    },
+    {
+      "route": "#about",
+      "viewport": [
+        768,
+        1024
+      ],
+      "rootFont": "16px",
+      "mode": "desktop",
+      "pageWidth": 537.2,
+      "sidebarWidth": 230.8,
+      "sectionScale": 0.62,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 768,
+      "documentScrollWidth": 768
+    },
+    {
+      "route": "#about",
+      "viewport": [
+        820,
+        1180
+      ],
+      "rootFont": "16px",
+      "mode": "desktop",
+      "pageWidth": 589.2,
+      "sidebarWidth": 230.8,
+      "sectionScale": 0.62,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 820,
+      "documentScrollWidth": 820
+    },
+    {
+      "route": "#about",
+      "viewport": [
+        1024,
+        1366
+      ],
+      "rootFont": "16px",
+      "mode": "desktop",
+      "pageWidth": 793.2,
+      "sidebarWidth": 230.8,
+      "sectionScale": 0.62,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 1024,
+      "documentScrollWidth": 1024
+    },
+    {
+      "route": "#about",
+      "viewport": [
+        1080,
+        1920
+      ],
+      "rootFont": "16px",
+      "mode": "desktop",
+      "pageWidth": 849.2,
+      "sidebarWidth": 230.8,
+      "sectionScale": 0.62,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 1080,
+      "documentScrollWidth": 1080
+    },
+    {
+      "route": "#about",
+      "viewport": [
+        1366,
+        768
+      ],
+      "rootFont": "16px",
+      "mode": "desktop",
+      "pageWidth": 960,
+      "sidebarWidth": 230.8,
+      "sectionScale": 0.62,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 1366,
+      "documentScrollWidth": 1366
+    },
+    {
+      "route": "#about",
+      "viewport": [
+        1440,
+        900
+      ],
+      "rootFont": "16px",
+      "mode": "desktop",
+      "pageWidth": 960,
+      "sidebarWidth": 230.8,
+      "sectionScale": 0.62,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 1440,
+      "documentScrollWidth": 1440
+    },
+    {
+      "route": "#about",
+      "viewport": [
+        1679,
+        1050
+      ],
+      "rootFont": "16px",
+      "mode": "desktop",
+      "pageWidth": 960,
+      "sidebarWidth": 258.4,
+      "sectionScale": 0.62,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 1679,
+      "documentScrollWidth": 1679
+    },
+    {
+      "route": "#about",
+      "viewport": [
+        1680,
+        1050
+      ],
+      "rootFont": "16px",
+      "mode": "desktop-with-ultrawide-css",
+      "pageWidth": 960,
+      "sidebarWidth": 340,
+      "sectionScale": 0.52,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 1680,
+      "documentScrollWidth": 1680
+    },
+    {
+      "route": "#about",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "rootFont": "16px",
+      "mode": "desktop-with-ultrawide-css",
+      "pageWidth": 960,
+      "sidebarWidth": 340,
+      "sectionScale": 0.52,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 1920,
+      "documentScrollWidth": 1920
+    },
+    {
+      "route": "#about",
+      "viewport": [
+        1920,
+        3840
+      ],
+      "rootFont": "16px",
+      "mode": "desktop-with-ultrawide-css",
+      "pageWidth": 960,
+      "sidebarWidth": 340,
+      "sectionScale": 0.52,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 1920,
+      "documentScrollWidth": 1920
+    },
+    {
+      "route": "#about",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "rootFont": "16px",
+      "mode": "desktop-with-ultrawide-css",
+      "pageWidth": 960,
+      "sidebarWidth": 340,
+      "sectionScale": 0.52,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 2560,
+      "documentScrollWidth": 2560
+    },
+    {
+      "route": "#about",
+      "viewport": [
+        3440,
+        1440
+      ],
+      "rootFont": "16px",
+      "mode": "desktop-with-ultrawide-css",
+      "pageWidth": 960,
+      "sidebarWidth": 412.8,
+      "sectionScale": 0.52,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 3440,
+      "documentScrollWidth": 3440
+    },
+    {
+      "route": "#about",
+      "viewport": [
+        5120,
+        1440
+      ],
+      "rootFont": "16px",
+      "mode": "desktop-with-ultrawide-css",
+      "pageWidth": 960,
+      "sidebarWidth": 420,
+      "sectionScale": 0.52,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 5120,
+      "documentScrollWidth": 5120
+    },
+    {
+      "route": "#about",
+      "viewport": [
+        7680,
+        2160
+      ],
+      "rootFont": "16px",
+      "mode": "desktop-with-ultrawide-css",
+      "pageWidth": 960,
+      "sidebarWidth": 420,
+      "sectionScale": 0.52,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 7680,
+      "documentScrollWidth": 7680
+    },
+    {
+      "route": "#experience",
+      "viewport": [
+        320,
+        568
+      ],
+      "rootFont": "14px",
+      "mode": "mobile",
+      "pageWidth": 320,
+      "sidebarWidth": null,
+      "sectionScale": 1,
+      "mobileHeaderHeight": 138,
+      "mobileSectionStripHeight": 72,
+      "mobileBottomBarHeight": 72,
+      "documentWidth": 320,
+      "documentScrollWidth": 320
+    },
+    {
+      "route": "#experience",
+      "viewport": [
+        768,
+        1024
+      ],
+      "rootFont": "16px",
+      "mode": "desktop",
+      "pageWidth": 537.2,
+      "sidebarWidth": 230.8,
+      "sectionScale": 0.62,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 768,
+      "documentScrollWidth": 768
+    },
+    {
+      "route": "#experience",
+      "viewport": [
+        3440,
+        1440
+      ],
+      "rootFont": "16px",
+      "mode": "desktop-with-ultrawide-css",
+      "pageWidth": 960,
+      "sidebarWidth": 412.8,
+      "sectionScale": 0.52,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 3440,
+      "documentScrollWidth": 3440
+    },
+    {
+      "route": "#education",
+      "viewport": [
+        320,
+        568
+      ],
+      "rootFont": "14px",
+      "mode": "mobile",
+      "pageWidth": 320,
+      "sidebarWidth": null,
+      "sectionScale": 1,
+      "mobileHeaderHeight": 138,
+      "mobileSectionStripHeight": 72,
+      "mobileBottomBarHeight": 72,
+      "documentWidth": 320,
+      "documentScrollWidth": 320
+    },
+    {
+      "route": "#education",
+      "viewport": [
+        768,
+        1024
+      ],
+      "rootFont": "16px",
+      "mode": "desktop",
+      "pageWidth": 537.2,
+      "sidebarWidth": 230.8,
+      "sectionScale": 0.62,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 768,
+      "documentScrollWidth": 768
+    },
+    {
+      "route": "#education",
+      "viewport": [
+        3440,
+        1440
+      ],
+      "rootFont": "16px",
+      "mode": "desktop-with-ultrawide-css",
+      "pageWidth": 960,
+      "sidebarWidth": 412.8,
+      "sectionScale": 0.52,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 3440,
+      "documentScrollWidth": 3440
+    },
+    {
+      "route": "#my-software",
+      "viewport": [
+        320,
+        568
+      ],
+      "rootFont": "14px",
+      "mode": "mobile",
+      "pageWidth": 320,
+      "sidebarWidth": null,
+      "sectionScale": 1,
+      "mobileHeaderHeight": 138,
+      "mobileSectionStripHeight": 72,
+      "mobileBottomBarHeight": 72,
+      "documentWidth": 320,
+      "documentScrollWidth": 320
+    },
+    {
+      "route": "#my-software",
+      "viewport": [
+        768,
+        1024
+      ],
+      "rootFont": "16px",
+      "mode": "desktop",
+      "pageWidth": 537.2,
+      "sidebarWidth": 230.8,
+      "sectionScale": 0.62,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 768,
+      "documentScrollWidth": 768
+    },
+    {
+      "route": "#my-software",
+      "viewport": [
+        3440,
+        1440
+      ],
+      "rootFont": "16px",
+      "mode": "desktop-with-ultrawide-css",
+      "pageWidth": 960,
+      "sidebarWidth": 412.8,
+      "sectionScale": 0.52,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 3440,
+      "documentScrollWidth": 3440
+    },
+    {
+      "route": "#my-hardware",
+      "viewport": [
+        320,
+        568
+      ],
+      "rootFont": "14px",
+      "mode": "mobile",
+      "pageWidth": 320,
+      "sidebarWidth": null,
+      "sectionScale": 1,
+      "mobileHeaderHeight": 138,
+      "mobileSectionStripHeight": 72,
+      "mobileBottomBarHeight": 72,
+      "documentWidth": 320,
+      "documentScrollWidth": 320
+    },
+    {
+      "route": "#my-hardware",
+      "viewport": [
+        768,
+        1024
+      ],
+      "rootFont": "16px",
+      "mode": "desktop",
+      "pageWidth": 537.2,
+      "sidebarWidth": 230.8,
+      "sectionScale": 0.62,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 768,
+      "documentScrollWidth": 768
+    },
+    {
+      "route": "#my-hardware",
+      "viewport": [
+        3440,
+        1440
+      ],
+      "rootFont": "16px",
+      "mode": "desktop-with-ultrawide-css",
+      "pageWidth": 960,
+      "sidebarWidth": 412.8,
+      "sectionScale": 0.52,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 3440,
+      "documentScrollWidth": 3440
+    },
+    {
+      "route": "#my-writings",
+      "viewport": [
+        320,
+        568
+      ],
+      "rootFont": "14px",
+      "mode": "mobile",
+      "pageWidth": 320,
+      "sidebarWidth": null,
+      "sectionScale": 1,
+      "mobileHeaderHeight": 138,
+      "mobileSectionStripHeight": 72,
+      "mobileBottomBarHeight": 72,
+      "documentWidth": 320,
+      "documentScrollWidth": 320
+    },
+    {
+      "route": "#my-writings",
+      "viewport": [
+        768,
+        1024
+      ],
+      "rootFont": "16px",
+      "mode": "desktop",
+      "pageWidth": 537.2,
+      "sidebarWidth": 230.8,
+      "sectionScale": 0.62,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 768,
+      "documentScrollWidth": 768
+    },
+    {
+      "route": "#my-writings",
+      "viewport": [
+        3440,
+        1440
+      ],
+      "rootFont": "16px",
+      "mode": "desktop-with-ultrawide-css",
+      "pageWidth": 960,
+      "sidebarWidth": 412.8,
+      "sectionScale": 0.52,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 3440,
+      "documentScrollWidth": 3440
+    },
+    {
+      "route": "#my-art",
+      "viewport": [
+        320,
+        568
+      ],
+      "rootFont": "14px",
+      "mode": "mobile",
+      "pageWidth": 320,
+      "sidebarWidth": null,
+      "sectionScale": 1,
+      "mobileHeaderHeight": 138,
+      "mobileSectionStripHeight": 72,
+      "mobileBottomBarHeight": 72,
+      "documentWidth": 320,
+      "documentScrollWidth": 320
+    },
+    {
+      "route": "#my-art",
+      "viewport": [
+        768,
+        1024
+      ],
+      "rootFont": "16px",
+      "mode": "desktop",
+      "pageWidth": 537.2,
+      "sidebarWidth": 230.8,
+      "sectionScale": 0.62,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 768,
+      "documentScrollWidth": 768
+    },
+    {
+      "route": "#my-art",
+      "viewport": [
+        3440,
+        1440
+      ],
+      "rootFont": "16px",
+      "mode": "desktop-with-ultrawide-css",
+      "pageWidth": 960,
+      "sidebarWidth": 412.8,
+      "sectionScale": 0.52,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 3440,
+      "documentScrollWidth": 3440
+    },
+    {
+      "route": "#contact",
+      "viewport": [
+        320,
+        568
+      ],
+      "rootFont": "14px",
+      "mode": "mobile",
+      "pageWidth": 320,
+      "sidebarWidth": null,
+      "sectionScale": 1,
+      "mobileHeaderHeight": 138,
+      "mobileSectionStripHeight": 72,
+      "mobileBottomBarHeight": 72,
+      "documentWidth": 320,
+      "documentScrollWidth": 320
+    },
+    {
+      "route": "#contact",
+      "viewport": [
+        768,
+        1024
+      ],
+      "rootFont": "16px",
+      "mode": "desktop",
+      "pageWidth": 537.2,
+      "sidebarWidth": 230.8,
+      "sectionScale": 0.62,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 768,
+      "documentScrollWidth": 768
+    },
+    {
+      "route": "#contact",
+      "viewport": [
+        3440,
+        1440
+      ],
+      "rootFont": "16px",
+      "mode": "desktop-with-ultrawide-css",
+      "pageWidth": 960,
+      "sidebarWidth": 412.8,
+      "sectionScale": 0.52,
+      "mobileHeaderHeight": null,
+      "mobileSectionStripHeight": null,
+      "mobileBottomBarHeight": null,
+      "documentWidth": 3440,
+      "documentScrollWidth": 3440
+    }
+  ],
+  "focusedSamples": [
+    {
+      "language": "en",
+      "route": "about",
+      "viewport": [
+        320,
+        568
+      ],
+      "title": {
+        "text": "Welcome to my corner of the internet!",
+        "box": {
+          "x": 8.390625,
+          "y": 251.65625,
+          "w": 303.21875,
+          "h": 19.203125,
+          "cw": 303,
+          "sw": 325,
+          "font": "15.04px",
+          "whiteSpace": "nowrap"
+        },
+        "textBounds": {
+          "x": 8.390625,
+          "right": 333.40625,
+          "width": 325.015625
+        }
+      },
+      "inputs": [],
+      "copyButtons": [],
+      "sendButtons": [],
+      "documentScrollWidth": 320
+    },
+    {
+      "language": "en",
+      "route": "about",
+      "viewport": [
+        568,
+        320
+      ],
+      "title": {
+        "text": "Welcome to my corner of the internet!",
+        "box": {
+          "x": 32.6875,
+          "y": 295.890625,
+          "w": 502.609375,
+          "h": 27.859375,
+          "cw": 503,
+          "sw": 503,
+          "font": "25.8px",
+          "whiteSpace": "nowrap"
+        },
+        "textBounds": {
+          "x": 32.6875,
+          "right": 535.296875,
+          "width": 502.609375
+        }
+      },
+      "inputs": [],
+      "copyButtons": [],
+      "sendButtons": [],
+      "documentScrollWidth": 568
+    },
+    {
+      "language": "en",
+      "route": "about",
+      "viewport": [
+        767,
+        1024
+      ],
+      "title": {
+        "text": "Welcome to my corner of the internet!",
+        "box": {
+          "x": 81.234375,
+          "y": 347.828125,
+          "w": 604.53125,
+          "h": 32.515625,
+          "cw": 605,
+          "sw": 605,
+          "font": "30.68px",
+          "whiteSpace": "nowrap"
+        },
+        "textBounds": {
+          "x": 81.234375,
+          "right": 685.765625,
+          "width": 604.53125
+        }
+      },
+      "inputs": [],
+      "copyButtons": [],
+      "sendButtons": [],
+      "documentScrollWidth": 767
+    },
+    {
+      "language": "en",
+      "route": "about",
+      "viewport": [
+        768,
+        1024
+      ],
+      "title": {
+        "text": "Welcome to my corner of the internet!",
+        "box": {
+          "x": 283.685302734375,
+          "y": 29.012500762939453,
+          "w": 431.4619140625,
+          "h": 25.41031265258789,
+          "cw": 696,
+          "sw": 696,
+          "font": "32.256px",
+          "whiteSpace": "nowrap"
+        },
+        "textBounds": {
+          "x": 283.685302734375,
+          "right": 715.147216796875,
+          "width": 431.4619140625
+        }
+      },
+      "inputs": [],
+      "copyButtons": [],
+      "sendButtons": [],
+      "documentScrollWidth": 768
+    },
+    {
+      "language": "en",
+      "route": "contact",
+      "viewport": [
+        320,
+        568
+      ],
+      "title": {
+        "text": "Contact",
+        "box": {
+          "x": 121.75,
+          "y": 215.625,
+          "w": 76.5,
+          "h": 19.203125,
+          "cw": 77,
+          "sw": 77,
+          "font": "17.78px",
+          "whiteSpace": "normal"
+        },
+        "textBounds": {
+          "x": 121.75,
+          "right": 198.25,
+          "width": 76.5
+        }
+      },
+      "inputs": [
+        {
+          "type": "text",
+          "placeholder": "Name *",
+          "box": {
+            "x": 70.390625,
+            "y": 1180.671875,
+            "w": 233.21875,
+            "h": 50,
+            "cw": 233,
+            "sw": 233,
+            "font": "11.06px",
+            "whiteSpace": "normal"
+          }
+        },
+        {
+          "type": "email",
+          "placeholder": "E-mail *",
+          "box": {
+            "x": 70.390625,
+            "y": 1244.671875,
+            "w": 233.21875,
+            "h": 50,
+            "cw": 233,
+            "sw": 233,
+            "font": "11.06px",
+            "whiteSpace": "normal"
+          }
+        },
+        {
+          "type": "text",
+          "placeholder": "Subject *",
+          "box": {
+            "x": 70.390625,
+            "y": 1308.671875,
+            "w": 233.21875,
+            "h": 50,
+            "cw": 233,
+            "sw": 233,
+            "font": "11.06px",
+            "whiteSpace": "normal"
+          }
+        },
+        {
+          "type": "textarea",
+          "placeholder": "Message *",
+          "box": {
+            "x": 15.390625,
+            "y": 1424.671875,
+            "w": 287.21875,
+            "h": 196,
+            "cw": 287,
+            "sw": 287,
+            "font": "11.06px",
+            "whiteSpace": "pre-wrap"
+          }
+        },
+        {
+          "type": "textarea",
+          "placeholder": "complaint",
+          "box": {
+            "x": 82.984375,
+            "y": 3185.9375,
+            "w": 208.03125,
+            "h": 198,
+            "cw": 208,
+            "sw": 208,
+            "font": "11.06px",
+            "whiteSpace": "pre-wrap"
+          }
+        }
+      ],
+      "copyButtons": [
+        {
+          "x": 101.390625,
+          "y": 367.609375,
+          "w": 164.140625,
+          "h": 32,
+          "cw": 162,
+          "sw": 162,
+          "font": "12.88px",
+          "whiteSpace": "normal"
+        },
+        {
+          "x": 101.390625,
+          "y": 493.671875,
+          "w": 115.65625,
+          "h": 32,
+          "cw": 114,
+          "sw": 114,
+          "font": "12.88px",
+          "whiteSpace": "normal"
+        }
+      ],
+      "sendButtons": [
+        {
+          "x": 91.078125,
+          "y": 1606.671875,
+          "w": 137.84375,
+          "h": 38.359375,
+          "cw": 138,
+          "sw": 138,
+          "font": "11.76px",
+          "whiteSpace": "normal"
+        }
+      ],
+      "documentScrollWidth": 320
+    },
+    {
+      "language": "en",
+      "route": "contact",
+      "viewport": [
+        1366,
+        768
+      ],
+      "title": {
+        "text": "Here’s how you can reach me",
+        "box": {
+          "x": 555.165283203125,
+          "y": 32.32468795776367,
+          "w": 486.49658203125,
+          "h": 32.13344192504883,
+          "cw": 785,
+          "sw": 785,
+          "font": "48px",
+          "whiteSpace": "normal"
+        },
+        "textBounds": {
+          "x": 555.165283203125,
+          "right": 1041.661865234375,
+          "width": 486.49658203125
+        }
+      },
+      "inputs": [
+        {
+          "type": "text",
+          "placeholder": "Name *",
+          "box": {
+            "x": 385.8956298828125,
+            "y": 388.1756286621094,
+            "w": 408.18280029296875,
+            "h": 40.29998779296875,
+            "cw": 658,
+            "sw": 658,
+            "font": "14.88px",
+            "whiteSpace": "normal"
+          }
+        },
+        {
+          "type": "email",
+          "placeholder": "E-mail *",
+          "box": {
+            "x": 385.8956298828125,
+            "y": 437.1556396484375,
+            "w": 408.18280029296875,
+            "h": 40.29998779296875,
+            "cw": 658,
+            "sw": 658,
+            "font": "14.88px",
+            "whiteSpace": "normal"
+          }
+        },
+        {
+          "type": "text",
+          "placeholder": "Subject *",
+          "box": {
+            "x": 385.8956298828125,
+            "y": 486.1356201171875,
+            "w": 408.18280029296875,
+            "h": 40.300048828125,
+            "cw": 658,
+            "sw": 658,
+            "font": "14.88px",
+            "whiteSpace": "normal"
+          }
+        },
+        {
+          "type": "textarea",
+          "placeholder": "Message *",
+          "box": {
+            "x": 802.138427734375,
+            "y": 414.21563720703125,
+            "w": 447.86279296875,
+            "h": 138.260009765625,
+            "cw": 722,
+            "sw": 722,
+            "font": "14.88px",
+            "whiteSpace": "pre-wrap"
+          }
+        },
+        {
+          "type": "textarea",
+          "placeholder": "complaint",
+          "box": {
+            "x": 395.81561279296875,
+            "y": 1450.2550048828125,
+            "w": 418.6065673828125,
+            "h": 122.760009765625,
+            "cw": 675,
+            "sw": 675,
+            "font": "14.88px",
+            "whiteSpace": "pre-wrap"
+          }
+        }
+      ],
+      "copyButtons": [
+        {
+          "x": 656.2349853515625,
+          "y": 135.767822265625,
+          "w": 126.0634765625,
+          "h": 22.9302978515625,
+          "cw": 201,
+          "sw": 201,
+          "font": "16.32px",
+          "whiteSpace": "normal"
+        },
+        {
+          "x": 1150.869140625,
+          "y": 135.767822265625,
+          "w": 87.97216796875,
+          "h": 22.9302978515625,
+          "cw": 140,
+          "sw": 140,
+          "font": "16.32px",
+          "whiteSpace": "normal"
+        }
+      ],
+      "sendButtons": [
+        {
+          "x": 741.4268798828125,
+          "y": 546.275634765625,
+          "w": 113.983154296875,
+          "h": 31.939697265625,
+          "cw": 184,
+          "sw": 184,
+          "font": "14.72px",
+          "whiteSpace": "normal"
+        }
+      ],
+      "documentScrollWidth": 1366
+    },
+    {
+      "language": "en",
+      "route": "contact",
+      "viewport": [
+        3440,
+        1440
+      ],
+      "title": {
+        "text": "Here’s how you can reach me",
+        "box": {
+          "x": 1515.9637451171875,
+          "y": 29.71500015258789,
+          "w": 408.0294189453125,
+          "h": 26.95062255859375,
+          "cw": 785,
+          "sw": 785,
+          "font": "48px",
+          "whiteSpace": "normal"
+        },
+        "textBounds": {
+          "x": 1515.9637451171875,
+          "right": 1923.9931640625,
+          "width": 408.0294189453125
+        }
+      },
+      "inputs": [
+        {
+          "type": "text",
+          "placeholder": "Name *",
+          "box": {
+            "x": 1300.05810546875,
+            "y": 329.0481262207031,
+            "w": 416.284423828125,
+            "h": 33.79998779296875,
+            "cw": 801,
+            "sw": 801,
+            "font": "14.88px",
+            "whiteSpace": "normal"
+          }
+        },
+        {
+          "type": "email",
+          "placeholder": "E-mail *",
+          "box": {
+            "x": 1300.05810546875,
+            "y": 370.12811279296875,
+            "w": 416.284423828125,
+            "h": 33.79998779296875,
+            "cw": 801,
+            "sw": 801,
+            "font": "14.88px",
+            "whiteSpace": "normal"
+          }
+        },
+        {
+          "type": "text",
+          "placeholder": "Subject *",
+          "box": {
+            "x": 1300.05810546875,
+            "y": 411.2080993652344,
+            "w": 416.284423828125,
+            "h": 33.800018310546875,
+            "cw": 801,
+            "sw": 801,
+            "font": "14.88px",
+            "whiteSpace": "normal"
+          }
+        },
+        {
+          "type": "textarea",
+          "placeholder": "Message *",
+          "box": {
+            "x": 1723.1025390625,
+            "y": 350.88812255859375,
+            "w": 449.564453125,
+            "h": 115.95999145507812,
+            "cw": 865,
+            "sw": 865,
+            "font": "14.88px",
+            "whiteSpace": "pre-wrap"
+          }
+        },
+        {
+          "type": "textarea",
+          "placeholder": "complaint",
+          "box": {
+            "x": 1308.378173828125,
+            "y": 1303.7718505859375,
+            "w": 429.463134765625,
+            "h": 102.9599609375,
+            "cw": 826,
+            "sw": 826,
+            "font": "14.88px",
+            "whiteSpace": "pre-wrap"
+          }
+        }
+      ],
+      "copyButtons": [
+        {
+          "x": 1600.73193359375,
+          "y": 116.48187255859375,
+          "w": 105.7305908203125,
+          "h": 19.23187255859375,
+          "cw": 201,
+          "sw": 201,
+          "font": "16.32px",
+          "whiteSpace": "normal"
+        },
+        {
+          "x": 2089.523681640625,
+          "y": 116.48187255859375,
+          "w": 73.783203125,
+          "h": 19.23187255859375,
+          "cw": 140,
+          "sw": 140,
+          "font": "16.32px",
+          "whiteSpace": "normal"
+        }
+      ],
+      "sendButtons": [
+        {
+          "x": 1668.762451171875,
+          "y": 461.6481018066406,
+          "w": 102.431884765625,
+          "h": 28.616241455078125,
+          "cw": 197,
+          "sw": 197,
+          "font": "15.36px",
+          "whiteSpace": "normal"
+        }
+      ],
+      "documentScrollWidth": 3440
+    },
+    {
+      "language": "de",
+      "route": "about",
+      "viewport": [
+        320,
+        568
+      ],
+      "title": {
+        "text": "Willkommen in meiner Ecke des Internets!",
+        "box": {
+          "x": 8.390625,
+          "y": 251.65625,
+          "w": 303.21875,
+          "h": 19.203125,
+          "cw": 303,
+          "sw": 363,
+          "font": "15.04px",
+          "whiteSpace": "nowrap"
+        },
+        "textBounds": {
+          "x": 8.390625,
+          "right": 371.453125,
+          "width": 363.0625
+        }
+      },
+      "inputs": [],
+      "copyButtons": [],
+      "sendButtons": [],
+      "documentScrollWidth": 320
+    },
+    {
+      "language": "hr",
+      "route": "about",
+      "viewport": [
+        320,
+        568
+      ],
+      "title": {
+        "text": "Dobrodošao u moj kutak interneta!",
+        "box": {
+          "x": 10.359375,
+          "y": 251.65625,
+          "w": 299.296875,
+          "h": 19.203125,
+          "cw": 299,
+          "sw": 299,
+          "font": "15.04px",
+          "whiteSpace": "nowrap"
+        },
+        "textBounds": {
+          "x": 10.359375,
+          "right": 309.65625,
+          "width": 299.296875
+        }
+      },
+      "inputs": [],
+      "copyButtons": [],
+      "sendButtons": [],
+      "documentScrollWidth": 320
+    },
+    {
+      "language": "tr",
+      "route": "about",
+      "viewport": [
+        320,
+        568
+      ],
+      "title": {
+        "text": "İnternetteki köşeme hoş geldin!",
+        "box": {
+          "x": 24.796875,
+          "y": 251.65625,
+          "w": 270.390625,
+          "h": 19.203125,
+          "cw": 270,
+          "sw": 270,
+          "font": "15.04px",
+          "whiteSpace": "nowrap"
+        },
+        "textBounds": {
+          "x": 24.796875,
+          "right": 295.1875,
+          "width": 270.390625
+        }
+      },
+      "inputs": [],
+      "copyButtons": [],
+      "sendButtons": [],
+      "documentScrollWidth": 320
+    }
+  ]
+}

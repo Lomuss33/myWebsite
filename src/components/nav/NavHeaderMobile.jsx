@@ -20,14 +20,11 @@ function NavHeaderMobile({ profile }) {
     const themeButtonVisible = Boolean(theme.supportsMultipleThemes)
     const languageButtonVisible = Boolean(language.supportsMultipleLanguages)
 
-    const mobileActionStackBeforeInfo = (namePronunciationButtonVisible || resumeButtonVisible) ? (
+    const mobileActionStackBeforeInfo = (themeButtonVisible || resumeButtonVisible) ? (
         <>
-            {namePronunciationButtonVisible && (
-                <div className={`nav-profile-card-mobile-action nav-profile-card-mobile-action-audio`}>
-                    <AudioButton url={namePronunciationAudioUrl}
-                                 tooltip={namePronunciationIpa}
-                                 tooltipLabel={namePronunciationIpa}
-                                 size={AudioButton.Sizes.DEFAULT}/>
+            {themeButtonVisible && (
+                <div className={`nav-profile-card-mobile-action nav-profile-card-mobile-action-theme`}>
+                    <NavToolThemePicker/>
                 </div>
             )}
 
@@ -41,8 +38,17 @@ function NavHeaderMobile({ profile }) {
         </>
     ) : null
 
-    const mobileActionStackAfterInfo = (themeButtonVisible || languageButtonVisible) ? (
+    const mobileActionStackAfterInfo = (namePronunciationButtonVisible || languageButtonVisible) ? (
         <>
+            {namePronunciationButtonVisible && (
+                <div className={`nav-profile-card-mobile-action nav-profile-card-mobile-action-audio`}>
+                    <AudioButton url={namePronunciationAudioUrl}
+                                 tooltip={namePronunciationIpa}
+                                 tooltipLabel={namePronunciationIpa}
+                                 size={AudioButton.Sizes.DEFAULT}/>
+                </div>
+            )}
+
             {languageButtonVisible && (
                 <div className={`nav-profile-card-mobile-action nav-profile-card-mobile-action-language`}>
                     <NavToolLanguagePicker mobileTubeMenu={true}
@@ -51,11 +57,7 @@ function NavHeaderMobile({ profile }) {
                 </div>
             )}
 
-            {themeButtonVisible && (
-                <div className={`nav-profile-card-mobile-action nav-profile-card-mobile-action-theme`}>
-                    <NavToolThemePicker/>
-                </div>
-            )}
+
         </>
     ) : null
 

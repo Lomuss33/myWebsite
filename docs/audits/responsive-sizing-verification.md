@@ -89,3 +89,9 @@ Added the portrait-left / actions-over-name-right band, followed by name-left/ac
 ## Balance profile controls and protect the name
 
 Paired layouts now use explicit portrait/control tracks with equal 6px gaps, preventing the animated text or name from stretching the upper band. The portrait can use more available room within the existing fit limits. Single-band and name/actions layouts use 36px profile controls; navigation keeps its separate 44px minimum. The sidebar toggle is fixed at 44px and positioned entirely outside the profile card so it cannot cover the name. Removed inherited top padding and tightened containment tolerance.
+
+## Mobile name/portrait composition
+
+Mobile-only stylesheet places the first name left of the portrait and surname right, with small inner gaps and symmetric outer control groups. At container widths of 32rem and above, control pairs become horizontal. Emergency widths up to approximately 240px use a separate balanced control row below the name/portrait band. Avatar framing remains intact; existing navigation-band heights and bottom-content clearance remain in use.
+
+Focused Firefox checks passed at 240x568, 320x568, 568x320, 768x1024 and 1920x3840. Assertions cover containment, non-overlap, name order, control direction, document overflow and bottom-nav visibility. Lint and build passed. Real mobile browser chrome and virtual keyboards remain device checks.

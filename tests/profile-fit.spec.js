@@ -5,37 +5,42 @@ test('profile reflows inside its allocated box and yields to navigation', async 
     await page.goto('/#my-software')
     const rail=page.locator('.nav-sidebar-extended .nav-sidebar-card-wrapper')
     await expect(rail).toBeVisible()
+    await page.waitForFunction(() => document.fonts.status === "loaded")
     const states=new Set()
-    for(const [width,height] of [[191,583],[191,620],[288,1200],[288,1440],[288,1920],[180,900],[340,700],[180,480],[130,768],[100,900],[288,300],[288,1440]]) {
+    for(const [width,height] of [[340,520],[300,500],[191,480],[191,470],[60,900],[191,583],[191,620],[288,1200],[288,1440],[288,1920],[180,900],[340,700],[180,480],[130,768],[100,900],[288,300],[288,1440]]) {
         await rail.evaluate((e,{width,height})=>{
             e.style.setProperty('width',width+'px','important')
             e.style.setProperty('min-width',width+'px','important')
             e.style.setProperty('height',height+'px','important')
         },{width,height})
-        await page.waitForTimeout(200)
-        if(height<=480||width<112) await expect(rail.locator(".nav-profile-card")).toHaveAttribute("data-profile-layout","hidden")
+        await page.waitForTimeout(400)
+        if(height<=300||width<64) await expect(rail.locator(".nav-profile-card")).toHaveAttribute("data-profile-layout","hidden")
         if(width===288 && height>=1200) {
             await expect(rail.locator('.nav-profile-card')).toHaveAttribute('data-profile-layout',height>=1440?'stacked-column-role':'stacked-role')
             await expect(rail.locator('.nav-profile-card-role')).toBeVisible()
             const shape=await rail.locator('.nav-profile-card-media').boundingBox()
             expect(Math.abs(shape.width-shape.height)).toBeLessThan(2)
         }
+        if(width===340 && height===520) await expect(rail.locator('.nav-profile-card')).toHaveAttribute('data-profile-layout','side-band')
+        if(width===300 && height===500) await expect(rail.locator('.nav-profile-card')).toHaveAttribute('data-profile-layout','name-actions')
+        if(height===470) await expect(rail.locator('.nav-profile-card')).toHaveAttribute('data-profile-layout','name-only')
         const result=await rail.evaluate(e=>{
             const card=e.querySelector('.nav-profile-card')
             const box=card.getBoundingClientRect()
             const parts=[...card.querySelectorAll('.nav-profile-card-media,.nav-profile-card-info,.nav-profile-card-desktop-action-stack,.nav-profile-card-role')].map(n=>n.getBoundingClientRect()).filter(r=>r.width&&r.height)
             return {
                 state:card.dataset.profileLayout,
+                bounds: [box.toJSON(),...parts.map(r=>r.toJSON())],
                 inside:parts.every(r=>r.left>=box.left-1&&r.right<=box.right+1&&r.top>=box.top-1&&r.bottom<=box.bottom+1),
                 separate:parts.every((a,i)=>parts.slice(i+1).every(b=>Math.min(a.right,b.right)-Math.max(a.left,b.left)<=1||Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)<=1)),
                 buttons:[...e.querySelectorAll('button.nav-link')].map(n=>n.getBoundingClientRect().height)
             }
         })
         states.add(result.state)
-        expect(result.inside,`${width}x${height} containment`).toBe(true)
+        expect(result.inside,`${width}x${height} containment ${JSON.stringify(result.bounds)}`).toBe(true)
         expect(result.separate,`${width}x${height} overlap`).toBe(true)
         for(const h of result.buttons) expect(h).toBeGreaterThanOrEqual(43.5)
-        if(height<=480||width<112) expect(result.state).toBe('hidden')
+        if(height<=300||width<64) expect(result.state).toBe('hidden')
     }
     expect(states.has('hidden')).toBe(true)
     expect(states.size).toBeGreaterThanOrEqual(3)

@@ -75,3 +75,17 @@ A focused Firefox regression passed across ten rail width/height cases, includin
 Corrected the previous profile regressions: restored the portrait's original inline-flex internal composition (the replacement grid/block formatting stretched its decorative layers), restored the 25% rail-height allowance with a 480px ceiling, and restored the flowing script name. Tall cards now prioritize stacked portrait/controls/name layouts, including one-row or two-row controls. The animated sentence band occupies the bottom row whenever the measured layout fits. Short cards still yield to navigation.
 
 The focused Firefox test now covers twelve size cases and explicitly checks tall layout selection, visible sentence bands and square portraits, in addition to containment and non-overlap. Visual inspection confirmed normal and tall profile arrangements. Lint and production build passed.
+
+## Remove surplus profile spacing
+
+After selecting a fitting arrangement, the controller now measures its natural row height and returns unused space to navigation. The selected portrait size is held steady during this measurement to avoid container-height feedback. It checks the trimmed layout again and retains the previous safe allocation if trimming would cause overflow or overlap.
+
+The tall 1920px-height check retained the stacked portrait, two control rows, name and sentence band in 351px rather than consuming the entire 480px allowance. The twelve-case profile regression and lint passed.
+
+## Additional compact profile arrangements
+
+Added the portrait-left / actions-over-name-right band, followed by name-left/actions-right, name-only and hidden fallback. Paired portrait/name layouts now choose horizontal or vertical actions; horizontal pairs spread across the remaining width. The final spacious stage permits only 8% profile-control growth. Seventeen focused cases passed, including assertions for the new stages; lint and build passed. Next sizing work is described in `profile-element-sizing-plan.md`.
+
+## Balance profile controls and protect the name
+
+Paired layouts now use explicit portrait/control tracks with equal 6px gaps, preventing the animated text or name from stretching the upper band. The portrait can use more available room within the existing fit limits. Single-band and name/actions layouts use 36px profile controls; navigation keeps its separate 44px minimum. The sidebar toggle is fixed at 44px and positioned entirely outside the profile card so it cannot cover the name. Removed inherited top padding and tightened containment tolerance.

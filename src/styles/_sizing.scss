@@ -236,3 +236,17 @@ html:is([data-layout="normal"], [data-layout="ultrawide"]) {
         }
     }
 }
+
+// Keep the rail toggle outside the profile's text and independent of its fit state.
+html[data-layout] nav.nav-sidebar button.nav-sidebar-btn-toggle {
+    width: 2.75rem !important;
+    height: 2.75rem !important;
+    min-width: 2.75rem !important;
+    min-height: 2.75rem !important;
+    max-width: 2.75rem !important;
+    max-height: 2.75rem !important;
+    right: -2.875rem;
+    font-size: 1rem !important;
+    transform: none !important;
+    scale: 1 !important;
+}

@@ -3,10 +3,10 @@
 @include layout-desktop {
     nav.nav-sidebar-extended div.nav-profile-card[data-profile-layout] {
         display: block;
-        padding: 0;
+        padding: 0 !important;
         min-width: 0;
-        --nav-profile-card-desktop-action-size: 2.75rem;
-        --avatar-size: clamp(3rem, min(32cqi, 35cqh), 6rem);
+        --nav-profile-card-desktop-action-size: calc(2.75rem * var(--profile-growth, 1));
+        --avatar-size: clamp(3rem, min(32cqi, 35cqh), calc(6rem * var(--profile-growth, 1)));
         &[data-profile-layout="hidden"] { display: none; }
         .nav-profile-card-main-row { display: contents; }
         div.nav-profile-card-header {
@@ -52,12 +52,49 @@
             align-self: center; justify-self: center;
         }
         &[data-profile-layout^="paired"] {
+            --avatar-size: clamp(3rem, min(40cqi, 45cqh), calc(6rem * var(--profile-growth, 1)));
             div.nav-profile-card-header {
-                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+                grid-template-columns: calc(var(--avatar-size) + 2 * var(--avatar-shell-gap)) calc(2 * var(--nav-profile-card-desktop-action-size) + 0.375rem);
+                justify-content: center;
                 grid-template-rows: minmax(max-content, 1fr) max-content;
                 grid-template-areas: "media actions" "info info";
             }
             div.nav-profile-card-media { display: inline-flex; }
+        }
+        &[data-profile-layout^="paired"] div.nav-profile-card-desktop-action-stack {
+            width: max-content; flex-flow: row nowrap; justify-content: center; gap: 0.375rem;
+        }
+        &[data-profile-layout^="paired-column"] div.nav-profile-card-header {
+            grid-template-columns: calc(var(--avatar-size) + 2 * var(--avatar-shell-gap)) var(--nav-profile-card-desktop-action-size);
+        }
+        &[data-profile-layout^="paired-column"] div.nav-profile-card-desktop-action-stack {
+            flex-direction: column; justify-content: center; gap: 0.375rem;
+        }
+        &[data-profile-layout="side-band"] {
+            --nav-profile-card-desktop-action-size: 2.25rem;
+            div.nav-profile-card-header {
+                grid-template-columns: max-content minmax(0, 1fr);
+                grid-template-rows: max-content max-content;
+                grid-template-areas: "media actions" "media info";
+            }
+            div.nav-profile-card-media { display: inline-flex; }
+            div.nav-profile-card-desktop-action-stack { width: max-content; flex-wrap: nowrap; justify-content: center; gap: 0.375rem; }
+            h1.nav-profile-card-name { font-size: clamp(1.125rem, 8cqi, 1.6rem) !important; }
+        }
+        &[data-profile-layout="name-actions"] {
+            --nav-profile-card-desktop-action-size: 2.25rem;
+            div.nav-profile-card-header {
+                grid-template-columns: minmax(0, 1fr) max-content;
+                grid-template-rows: max-content;
+                grid-template-areas: "info actions";
+            }
+            div.nav-profile-card-desktop-action-stack { flex-wrap: nowrap; }
+            h1.nav-profile-card-name { font-size: clamp(1.125rem, 8cqi, 1.6rem) !important; }
+        }
+        &[data-profile-layout="name-only"] {
+            div.nav-profile-card-header { grid-template-rows: max-content; grid-template-areas: "info"; }
+            div.nav-profile-card-desktop-action-stack { display: none; }
+            h1.nav-profile-card-name { font-size: clamp(1.125rem, 10cqi, 1.6rem) !important; }
         }
         &[data-profile-layout^="stacked"] {
             div.nav-profile-card-header {
@@ -66,7 +103,8 @@
             }
             div.nav-profile-card-media { display: inline-flex; }
         }
-        &[data-profile-layout="paired-role"] div.nav-profile-card-header {
+        &[data-profile-layout="paired-role"] div.nav-profile-card-header,
+        &[data-profile-layout="paired-column-role"] div.nav-profile-card-header {
             grid-template-rows: minmax(max-content, 1fr) max-content max-content;
             grid-template-areas: "media actions" "info info" "role role";
         }
@@ -85,7 +123,9 @@
             div.nav-profile-card-header { padding-bottom: 0; }
             div.nav-profile-card-role {
                 display: flex; align-self: end;
-                width: calc(100% + 1rem); max-width: none;
+                width: 100cqi; max-width: none;
+                justify-self: center;
+                --nav-horizontal-edge-fade-width: clamp(8px, 4cqi, 14px);
                 --nav-extended-role-opacity: 1;
                 --nav-extended-role-height: 1.75rem;
             }

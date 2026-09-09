@@ -37,7 +37,7 @@ button.article-item-preview-menu-website-button {
     border: 1px solid var(--theme-opacity-border-accent);
     font-weight: 500;
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         width: min(100%, 10.25rem);
         flex-basis: 10.25rem;
         padding-top: 0.64rem;

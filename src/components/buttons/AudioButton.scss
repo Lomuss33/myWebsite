@@ -170,7 +170,7 @@ div.audio-button-wrapper-size-dynamic-for-nav-title {
         width: 2.15rem;
         height: 2.15rem;
         margin-left: 0.4rem;
-        @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        @include layout-mobile {
             width: 2.05rem;
             height: 2.05rem;
             margin-left: 0.3rem;

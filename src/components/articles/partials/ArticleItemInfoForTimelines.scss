@@ -22,15 +22,15 @@ div.article-timeline-item-info-for-timelines {
     min-width: 0;
     max-width: 100%;
 
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         --content-padding: clamp(0.85rem, 0.8rem + 0.18vw, 1rem) clamp(0.9rem, 0.84rem + 0.24vw, 1.1rem);
     }
 
-    @include media-breakpoint-down(md) {
+    @include content-breakpoint-down(md) {
         --content-padding: 0.85rem 0.95rem;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         --content-padding: 0.8rem 0.9rem;
     }
 }
@@ -168,11 +168,11 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
         --experience-description-right-offset: max(15cqi, calc(var(--experience-description-right-buffer, 0px) * 3.4));
     }
 
-    @include media-breakpoint-down(md) {
+    @include content-breakpoint-down(md) {
         --content-padding: 0.82rem 0.86rem;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         --content-padding: 0.76rem 0.72rem;
     }
 
@@ -218,7 +218,7 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
     }
 }
 
-@include media-breakpoint-up(xl) {
+@include content-breakpoint-up(xl) {
     article#article-1-section-education div.article-timeline-item-info-for-timelines {
         --timeline-title-size: clamp(1.56rem, 1.4rem + 0.66vw, 2rem);
         --timeline-meta-size: clamp(1.2rem, 1.12rem + 0.26vw, 1.36rem);
@@ -315,7 +315,7 @@ article#article-1-section-my-writings div.article-timeline-item-info-preview-foo
     margin-left: clamp(0.62rem, 0.42rem + 0.7vw, 1.18rem);
 }
 
-@include media-breakpoint-down(sm) {
+@include content-breakpoint-down(sm) {
     article#article-1-section-my-writings div.article-timeline-item-content,
     article#article-1-section-my-writings div.article-timeline-item-info-for-timelines-header,
     article#article-1-section-my-writings div.article-timeline-item-info-for-timelines-body,
@@ -410,7 +410,7 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
         filter: saturate(1.03);
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         --content-padding: 1rem 1.08rem 0.98rem 1.28rem;
         --photo-action-size: clamp(3.2rem, 16vw, 3.75rem);
         --photo-action-gap: 0.44rem;
@@ -419,7 +419,7 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
     }
 }
 
-@include media-breakpoint-up(md) {
+@include content-breakpoint-up(md) {
     article.article-timeline--art-photography div.article-timeline-item-info-for-timelines {
         --timeline-title-size: clamp(1.32rem, 1.08rem + 0.68vw, 1.78rem);
         --timeline-meta-size: clamp(1.05rem, 0.9rem + 0.42vw, 1.32rem);
@@ -507,7 +507,7 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
     }
 }
 
-@include media-breakpoint-down(md) {
+@include content-breakpoint-down(md) {
     article.article-timeline--art-photography div.article-timeline-item-info-preview-footer--outside {
         display: none;
     }
@@ -648,7 +648,7 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
     grid-row: 2;
 }
 
-@include media-breakpoint-up(md) {
+@include content-breakpoint-up(md) {
     article.article-timeline--art-photography div.article-timeline-item-info-for-timelines-body {
         grid-row: 3;
         justify-content: center;
@@ -962,7 +962,7 @@ article.article-timeline--art-digital-expression li.article-timeline-item div.ar
         text-shadow: none;
     }
 
-        @include media-breakpoint-down(sm) {
+        @include content-breakpoint-down(sm) {
         padding: clamp(0.92rem, 0.8rem + 0.5vw, 1.08rem) 0.9rem 0.88rem;
         border-radius: 34px;
 
@@ -1045,7 +1045,7 @@ article.article-timeline--art-digital-expression li.article-timeline-item--visua
             0 0 24px rgba(251, 191, 36, 0.22);
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         border-radius: 34px;
     }
 }
@@ -1112,7 +1112,7 @@ article.article-timeline--art-digital-expression li.article-timeline-item--visua
         border-color: rgba(255, 255, 255, 0.78) !important;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         border-radius: 38px;
     }
 }
@@ -1183,7 +1183,7 @@ article.article-timeline--art-digital-expression li.article-timeline-item--visua
         border-color: rgba(255, 255, 255, 0.7) !important;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         border-radius: 30px;
     }
 }
@@ -1544,7 +1544,7 @@ article#article-1-section-experience {
         }
     }
 
-    @include media-breakpoint-down(md) {
+    @include content-breakpoint-down(md) {
         div.article-timeline-item-info-for-timelines-header-meta-row--split {
             grid-template-columns: minmax(0, 1fr);
         }
@@ -1582,7 +1582,7 @@ article#article-1-section-experience {
         }
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         div.article-timeline-item-info-for-timelines-header-main {
             width: 100%;
         }
@@ -1663,7 +1663,7 @@ article#article-1-section-experience {
     }
 }
 
-@media (min-width: 2000px) {
+@container (min-width: 2000px) {
     article#article-1-section-experience {
         --experience-description-left-buffer: 0.33rem;
     }
@@ -1827,7 +1827,7 @@ article#article-1-section-education {
         border-radius: 999px;
         background: transparent;
         color: color-mix(in srgb, var(--card-text-strong) 82%, var(--card-accent) 18%);
-        font-size: 0.86rem;
+        font-size: 0.875rem;
         font-weight: 700;
         letter-spacing: 0.015em;
         box-shadow: none;
@@ -1986,16 +1986,16 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
     }
 }
 
-@include media-breakpoint-down(md) {
+@include content-breakpoint-down(md) {
     article#article-1-section-experience ul.article-timeline-item-info-for-timelines-body-list {
         font-size: 0.9rem;
         line-height: 1.62;
     }
 }
 
-@include media-breakpoint-down(sm) {
+@include content-breakpoint-down(sm) {
     article#article-1-section-experience ul.article-timeline-item-info-for-timelines-body-list {
-        font-size: 0.86rem;
+        font-size: 0.875rem;
         line-height: 1.58;
     }
 }
@@ -2235,7 +2235,7 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
         justify-content: flex-start;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         align-items: flex-start;
 
         ul.article-timeline-item-info-for-timelines-header-prop-list {
@@ -2250,7 +2250,7 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
         }
     }
 
-    @media (max-width: 430px) {
+    @container (max-width: 430px) {
         flex-wrap: wrap;
         row-gap: clamp(0.7rem, 3.8vw, 0.95rem);
 
@@ -2641,7 +2641,7 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
     margin-top: 0;
 }
 
-@include media-breakpoint-down(md) {
+@include content-breakpoint-down(md) {
     article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines {
         display: flex;
         flex-direction: column;

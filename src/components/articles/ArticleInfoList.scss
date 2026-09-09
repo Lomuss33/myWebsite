@@ -22,25 +22,25 @@ div.article-info-list-items {
         display: flex;
     }
 
-    @include media-breakpoint-down(xxl) {
+    @include content-breakpoint-down(xxl) {
         --avatar-size: 75px;
         --content-padding: 18px 25px;
     }
-    @include media-breakpoint-down(xl) {
+    @include content-breakpoint-down(xl) {
         --grid-template-columns: repeat(1, 1fr);
         --avatar-size: 70px;
     }
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         --grid-template-columns: repeat(1, 1fr);
         --avatar-size: 65px;
         --content-padding: 15px 20px;
     }
-    @include media-breakpoint-down(md) {
+    @include content-breakpoint-down(md) {
         --grid-row-gap: 10px;
         --padding: 5px;
         --avatar-size: 65px;
     }
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         --avatar-size: 65px;
         --padding: 4px;
         --content-padding: 8px 20px;
@@ -157,7 +157,7 @@ div.article-info-list-item {
         border: 1px solid rgba(148, 163, 184, 0.22);
         box-shadow: 0 12px 26px rgba(0, 0, 0, 0.22);
         color: #e2e8f0;
-        font-size: clamp(0.6rem, 0.52rem + 0.16vw, 0.78rem);
+        font-size: clamp(0.875rem, 0.875rem + 0.16vw, 0.875rem);
         line-height: 1.18;
         letter-spacing: -0.01em;
         text-align: left;
@@ -287,18 +287,18 @@ div.article-info-list-items-shrink {
     --grid-template-columns: repeat(2, 1fr);
     --avatar-size: 70px;
     --content-padding: 15px 20px;
-    @include media-breakpoint-down(xl) {
+    @include content-breakpoint-down(xl) {
         --grid-template-columns: repeat(1, 1fr);
         --avatar-size: 60px;
         --content-padding: 12px 20px;
     }
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         --grid-template-columns: repeat(1, 1fr);
     }
-    @include media-breakpoint-down(md) {
+    @include content-breakpoint-down(md) {
         --avatar-size: 55px;
     }
-    @include media-breakpoint-down(md) {
+    @include content-breakpoint-down(md) {
         --avatar-size: 50px;
         --content-padding: 8px 20px;
         --grid-template-columns: repeat(1, 1fr);
@@ -335,11 +335,11 @@ article.article-info-list-home {
             display: flex;
         }
 
-        @include media-breakpoint-down(xxl) {
+        @include content-breakpoint-down(xxl) {
             --grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
-        @include media-breakpoint-down(xl) {
+        @include content-breakpoint-down(xl) {
             --grid-template-columns: repeat(2, minmax(0, 1fr));
             --avatar-size: 76px;
             --content-padding-inline-start: 13px;
@@ -349,11 +349,11 @@ article.article-info-list-home {
             --proof-bubble-bleed-right: 24px;
             --proof-bubble-bleed-top: 4px;
             --proof-bubble-bleed-bottom: 19px;
-            --proof-bubble-font-size: clamp(0.94rem, 0.86rem + 0.18vw, 1.04rem);
+            --proof-bubble-font-size: clamp(0.94rem, 0.875rem + 0.18vw, 1.04rem);
             --proof-bubble-line-height: 1.42;
         }
 
-        @include media-breakpoint-down(lg) {
+        @include content-breakpoint-down(lg) {
             --grid-template-columns: repeat(2, minmax(0, 1fr));
             --avatar-size: 72px;
             --content-padding-inline-start: 12px;
@@ -363,11 +363,11 @@ article.article-info-list-home {
             --proof-bubble-bleed-right: 23px;
             --proof-bubble-bleed-top: 4px;
             --proof-bubble-bleed-bottom: 18px;
-            --proof-bubble-font-size: clamp(0.9rem, 0.84rem + 0.16vw, 1rem);
+            --proof-bubble-font-size: clamp(0.9rem, 0.875rem + 0.16vw, 1rem);
             --proof-bubble-line-height: 1.4;
         }
 
-        @include media-breakpoint-down(md) {
+        @include content-breakpoint-down(md) {
             --grid-template-columns: repeat(2, minmax(0, 1fr));
             --avatar-size: 68px;
             --content-padding-inline-start: 11px;
@@ -377,11 +377,11 @@ article.article-info-list-home {
             --proof-bubble-bleed-right: 22px;
             --proof-bubble-bleed-top: 4px;
             --proof-bubble-bleed-bottom: 17px;
-            --proof-bubble-font-size: clamp(0.86rem, 0.81rem + 0.13vw, 0.94rem);
+            --proof-bubble-font-size: clamp(0.875rem, 0.875rem + 0.13vw, 0.94rem);
             --proof-bubble-line-height: 1.36;
         }
 
-        @include media-breakpoint-down(sm) {
+        @include content-breakpoint-down(sm) {
             --grid-template-columns: minmax(0, 1fr);
             --avatar-size: 72px;
             --padding: 6px;
@@ -394,7 +394,7 @@ article.article-info-list-home {
             --proof-bubble-bleed-bottom: 15px;
             --proof-bubble-padding-x: 10px;
             --proof-bubble-padding-y: 8px;
-            --proof-bubble-font-size: clamp(0.82rem, 0.78rem + 0.1vw, 0.9rem);
+            --proof-bubble-font-size: clamp(0.875rem, 0.875rem + 0.1vw, 0.9rem);
             --proof-bubble-line-height: 1.32;
         }
     }
@@ -534,7 +534,7 @@ article.article-info-list-home {
             overflow-wrap: break-word;
         }
 
-        @include media-breakpoint-down(sm) {
+        @include content-breakpoint-down(sm) {
             display: flex;
             align-items: stretch;
 
@@ -579,7 +579,7 @@ article.article-info-list-home {
             }
 
             div.article-info-list-item-info-text {
-                font-size: clamp(0.9rem, 0.85rem + 0.12vw, 0.98rem);
+                font-size: clamp(0.9rem, 0.875rem + 0.12vw, 0.98rem);
                 line-height: 1.46;
             }
         }
@@ -684,7 +684,7 @@ article.article-info-list-home {
         }
     }
 
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         div.article-info-list-items.article-info-list-items-home,
         div.article-info-list-items.article-info-list-items-home.article-info-list-items-shrink {
             --home-skill-text-right-guard: 18px;
@@ -694,7 +694,7 @@ article.article-info-list-home {
         }
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         div.article-info-list-items.article-info-list-items-home,
         div.article-info-list-items.article-info-list-items-home.article-info-list-items-shrink {
             --content-padding-inline-start: 8px;
@@ -706,14 +706,14 @@ article.article-info-list-home {
             --home-skill-description-line-height: 1.26;
             --proof-bubble-padding-x: 7px;
             --proof-bubble-padding-y: 5px;
-            --proof-bubble-font-size: clamp(0.9rem, 0.84rem + 0.14vw, 0.98rem);
+            --proof-bubble-font-size: clamp(0.9rem, 0.875rem + 0.14vw, 0.98rem);
             --proof-bubble-line-height: 1.18;
         }
     }
 
     /* Keep proof panels, long translated titles and square buttons inside the
        card on 320–380px devices. Wider breakpoints retain the roomy sizing. */
-    @media (max-width: 380px) {
+    @container (max-width: 380px) {
         div.article-info-list-items.article-info-list-items-home,
         div.article-info-list-items.article-info-list-items-home.article-info-list-items-shrink {
             --avatar-size: 64px;
@@ -785,15 +785,15 @@ article.article-info-list-contact {
         --grid-template-columns: repeat(2, minmax(0, 1fr));
         --avatar-size: 72px;
 
-        @include media-breakpoint-down(lg) {
+        @include content-breakpoint-down(lg) {
             --avatar-size: 66px;
         }
 
-        @include media-breakpoint-down(sm) {
+        @include content-breakpoint-down(sm) {
             --avatar-size: 60px;
         }
 
-        @include media-breakpoint-down(md) {
+        @include content-breakpoint-down(md) {
             --grid-template-columns: repeat(1, minmax(0, 1fr));
         }
     }
@@ -847,7 +847,7 @@ article.article-info-list-contact {
             border-radius: 999px;
             background: color-mix(in srgb, var(--contact-accent) 14%, rgba(8,14,26,.82));
             color: color-mix(in srgb, var(--contact-accent) 76%, white 24%);
-            font-size: 0.78rem;
+            font-size: 0.875rem;
             font-weight: 900;
             line-height: 1;
             opacity: 0.68;
@@ -856,7 +856,7 @@ article.article-info-list-contact {
             pointer-events: none;
         }
 
-        @include media-breakpoint-down(sm) {
+        @include content-breakpoint-down(sm) {
             padding: 14px 14px 14px 12px;
             column-gap: 14px;
         }
@@ -984,7 +984,7 @@ article.article-info-list-contact {
         align-items: baseline;
         gap: 10px;
         min-width: 0;
-        font-size: clamp(0.92rem, 0.85rem + 0.2vw, 1.02rem);
+        font-size: clamp(0.92rem, 0.875rem + 0.2vw, 1.02rem);
         line-height: 1.4;
 
         > span {

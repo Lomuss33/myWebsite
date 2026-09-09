@@ -12,7 +12,7 @@ div.article-feature-item {
     gap: 28px;
     align-items: stretch;
 
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         grid-template-columns: 1fr;
         gap: 18px;
     }
@@ -69,7 +69,7 @@ article#article-2-section-about {
         }
     }
 
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         div.article-feature-item {
             padding: 4px 7px;
         }
@@ -83,7 +83,7 @@ article#article-2-section-about {
        fragments extending a few pixels beyond their measured line box. Keep
        the desktop treatment, but make the biography card intrinsically safe
        on narrow phones. */
-    @media (max-width: 380px) {
+    @container (max-width: 380px) {
         div.article-feature-item {
             min-width: 0;
             max-width: 100%;
@@ -403,7 +403,7 @@ article#article-2-section-experience {
         text-decoration-color: rgba(210, 71, 53, 0.34);
     }
 
-    @include media-breakpoint-up(xxl) {
+    @include content-breakpoint-up(xxl) {
         div.article-feature-item.article-feature-item-wood-products {
             width: min(100%, 1440px);
             gap: 28px;
@@ -427,7 +427,7 @@ article#article-2-section-experience {
         }
     }
 
-    @include media-breakpoint-down(xl) {
+    @include content-breakpoint-down(xl) {
         div.article-feature-item.article-feature-item-wood-products {
             grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
             width: min(100%, 1180px);
@@ -457,7 +457,7 @@ article#article-2-section-experience {
         }
     }
 
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         div.article-feature-item.article-feature-item-wood-products {
             grid-template-columns: 1fr;
             width: 100%;
@@ -469,7 +469,7 @@ article#article-2-section-experience {
         }
     }
 
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         div.article-feature-items.article-feature-items-section-experience {
             display: flex;
         }
@@ -562,7 +562,7 @@ div.article-feature-item-image {
         object-fit: cover;
     }
 
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         aspect-ratio: var(--article-feature-image-mobile-aspect-ratio, 16 / 9);
     }
 }
@@ -689,7 +689,7 @@ div.article-feature-item.article-feature-item-layout-text-led {
         height: auto;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         grid-template-columns: 1fr;
         gap: 18px;
 
@@ -759,7 +759,7 @@ div.article-feature-item.article-feature-item-layout-fixed-vh-image {
         min-height: var(--article-feature-image-viewport-height, 35vh);
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         grid-template-columns: 1fr;
         gap: 18px;
 
@@ -869,7 +869,7 @@ div.article-feature-item.article-feature-item-layout-fixed-vh-image.article-feat
         inset: 0 auto auto 0;
     }
 
-    @include media-breakpoint-up(xxl) {
+    @include content-breakpoint-up(xxl) {
         --article-feature-image-effective-size: min(var(--article-feature-image-viewport-height, 30vw), 360px);
         gap: clamp(18px, 1.8vw, 28px);
         grid-template-columns: fit-content(var(--article-feature-image-effective-size)) minmax(0, 1fr);
@@ -883,12 +883,12 @@ div.article-feature-item.article-feature-item-layout-fixed-vh-image.article-feat
         }
     }
 
-    @include media-breakpoint-down(md) {
+    @include content-breakpoint-down(md) {
         max-width: 100%;
         gap: 20px;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         grid-template-columns: 1fr;
 
         div.article-feature-item-media {
@@ -948,7 +948,7 @@ div.article-feature-item.article-feature-item-layout-square-fit {
         height: 100%;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         grid-template-columns: 1fr;
         gap: 18px;
 
@@ -987,7 +987,7 @@ div.article-feature-item.article-feature-item-layout-managed {
         align-items: flex-start;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         grid-template-columns: 1fr;
         gap: 18px;
 
@@ -1044,7 +1044,7 @@ div.article-feature-items.article-feature-items-section-my-writings {
         align-items: center;
     }
 
-    @include media-breakpoint-up(xxl) {
+    @include content-breakpoint-up(xxl) {
         div.article-feature-item {
             grid-template-columns: minmax(280px, 0.82fr) minmax(360px, 1.18fr);
             gap: clamp(18px, 2vw, 28px);
@@ -1164,7 +1164,7 @@ div.article-feature-items.article-feature-items-section-my-writings {
         }
     }
 
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         div.article-feature-embed.article-feature-embed-illustrated-manuscript {
             div.illustrated-manuscript {
                 min-height: clamp(328px, 78vw, 546px);
@@ -1212,7 +1212,7 @@ div.article-feature-items.article-feature-items-section-my-writings {
         }
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         div.article-feature-item.article-feature-item-id-2 {
             align-items: stretch;
 
@@ -1404,7 +1404,7 @@ div.article-feature-items.article-feature-items-section-my-writings {
             }
         }
 
-        @include media-breakpoint-down(sm) {
+        @include content-breakpoint-down(sm) {
             --article-writing-book-media-width: min(70vw, 448px);
             --article-writing-book-text-width: 100%;
             --article-writing-book-stacked-gutter: 4px;

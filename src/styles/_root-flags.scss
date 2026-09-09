@@ -6,7 +6,6 @@
 @use "./extend" as *;
 
 :root {
-    --max-breakpoint-for-tabbed-interface: #{$max-breakpoint-for-tabbed-interface};
     --default-card-spacing: #{$default-card-spacing};
     --nav-tabs-height: #{$nav-tabs-height};
     --nav-pills-height: #{$nav-pills-height};
@@ -28,24 +27,13 @@
     --form-focus-attach-color: var(--theme-texts-inv);
 }
 
-@include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-    :root {
-        --default-card-spacing: #{$default-card-spacing-mobile};
-        // Keep compact phones at the proven 72px baseline, then grow both nav
-        // rails more decisively with the stable viewport height. The cap keeps
-        // tall devices comfortable without letting navigation dominate them.
-        --mobile-nav-row-height: clamp(72px, calc(16svh - 43.2px), 108px);
-        --mobile-nav-item-icon-size: clamp(1.3rem, calc(var(--mobile-nav-row-height) * 0.28), 2.25rem);
-        --mobile-nav-item-label-size: clamp(0.82rem, calc(var(--mobile-nav-row-height) * 0.145), 1.15rem);
-        --mobile-nav-item-gap: clamp(0.28rem, calc(var(--mobile-nav-row-height) * 0.055), 0.62rem);
-        --mobile-nav-item-padding-block: clamp(0.38rem, calc(var(--mobile-nav-row-height) * 0.075), 0.78rem);
-        --nav-tabs-height: var(--mobile-nav-row-height);
-        --nav-pills-height: #{$nav-pills-height-mobile};
-    }
-}
-
-@include media-breakpoint-down(sm) {
-    :root {
-        --nav-pills-height: #{$nav-pills-height-compressed};
-    }
+html[data-layout="mobile"] {
+    --default-card-spacing: 0.5rem;
+    --mobile-nav-row-height: clamp(3.25rem, calc(3rem + 0.5svh), 3.5rem);
+    --mobile-nav-item-icon-size: 1.2rem;
+    --mobile-nav-item-label-size: 0.875rem;
+    --mobile-nav-item-gap: 0.2rem;
+    --mobile-nav-item-padding-block: 0.35rem;
+    --nav-tabs-height: var(--mobile-nav-row-height);
+    --nav-pills-height: var(--mobile-nav-row-height);
 }

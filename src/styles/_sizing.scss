@@ -1,0 +1,238 @@
+// Shared rendered-size contracts. Artwork keeps its own internal coordinate system.
+:root {
+    --size-body: clamp(1rem, 0.96rem + 0.15vw, 1.125rem);
+    --size-label: 0.875rem;
+    --size-target: 2.75rem;
+    --size-gutter: clamp(0.75rem, 2%, 2rem);
+    --size-gap: clamp(0.75rem, 1.5vw, 1.5rem);
+    --size-reading: 68ch;
+}
+
+html[data-layout] {
+    :is(input.form-input, textarea.form-textarea, button.standard-button) {
+        font-size: 1rem !important;
+        line-height: 1.5;
+        min-height: var(--size-target);
+    }
+    button.standard-button {
+        max-width: 100%;
+        height: auto;
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+    :is(button.circular-button, button.copy-button) {
+        min-width: var(--size-target) !important;
+        min-height: var(--size-target) !important;
+        max-height: none !important;
+    }
+    button.circular-button {
+        width: var(--size-target) !important;
+        height: var(--size-target) !important;
+        max-width: none !important;
+        font-size: 1rem !important;
+    }
+    button.copy-button { font-size: 0.9375rem; }
+
+    header.section-header.section-header-home h2.section-header-title {
+        font-size: clamp(1.35rem, 1.05rem + 1.4vw, 2.75rem) !important;
+        white-space: normal;
+        text-wrap: balance;
+        overflow-wrap: anywhere;
+        line-height: 1.2;
+        span.text-primary { font-size: inherit; }
+    }
+    :is(h1, h2, h3, h4, h5, h6) { overflow-wrap: anywhere; }
+
+    article.article { container-type: inline-size; }
+    :is(.article-text p, .name-origin p) { max-inline-size: var(--size-reading); }
+    :is(.article-text p, .name-origin-story-mobile) { font-size: var(--size-body); line-height: 1.6; }
+    :is(.article-portfolio-items, .article-info-list-items, .article-cards-items-static, .article-skills-columns-2) {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+        gap: var(--size-gap);
+    }
+    .article-portfolio-items > * { min-width: 0; width: 100%; max-width: 100%; }
+    .article-info-list-item { height: auto; min-width: 0; }
+    :is(.article-info-list-item-content, .article-portfolio-item-content) { min-width: 0; }
+    .article-item-preview-menu { flex-wrap: wrap; }
+
+    .modal-dialog { max-width: min(var(--bs-modal-width, 50rem), calc(100% - 1rem)); margin-inline: auto; }
+    .modal-dialog.modal-fullscreen { width: 100%; max-width: 100%; margin: 0; }
+    .modal-fullscreen .modal-content { max-height: var(--mobile-visual-viewport-height, 100dvh); }
+    .modal-content { max-height: calc(var(--mobile-visual-viewport-height, 100dvh) - 1rem); overflow-y: auto; }
+    .modal-body { min-height: 0; overflow-y: auto; }
+    :is(.modal-header, .modal-footer) { flex-shrink: 0; }
+    .modal-header { flex-wrap: wrap; gap: 0.5rem; }
+}
+
+@container (max-width: 40rem) {
+    html[data-layout] :is(.article-skills-items-2-per-row, .article-skills-items-3-per-row) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    html[data-layout] .article-contact-form .row > * { width: 100%; flex: 0 0 100%; }
+}
+
+html[data-layout="mobile"] {
+    --mobile-nav-row-height: 3.75rem;
+    .nav-header-mobile { max-width: 60rem; margin-inline: auto; }
+    .nav-header-mobile .nav-profile-card {
+        --avatar-size: clamp(3rem, 12vw, 4rem);
+        --mobile-action-size: 2.75rem;
+        --mobile-action-visual-scale: 1;
+        --mobile-stack-gap: 0.25rem;
+        --nav-profile-mobile-role-height: 1.75rem;
+    }
+    .nav-header-mobile .nav-profile-card-main-row { max-width: 44rem; margin-inline: auto; }
+    :is(.nav-tab-controller, .nav-link-pills-mobile) { max-width: 60rem; margin-inline: auto; }
+    .nav-tab-controller-wrapper { background: var(--theme-nav-surface); }
+    .nav-tab-controller-link { min-width: 0; padding-inline: 0.2rem; }
+    .nav-tab-controller-link span { white-space: normal; font-size: 0.875rem; overflow-wrap: anywhere; }
+    nav.nav-link-pills-mobile { overflow-x: auto; scrollbar-width: none; scroll-padding-inline: 0.5rem; }
+    nav.nav-link-pills-mobile > button.nav-link-pills-link {
+        flex: 1 0 auto;
+        width: auto;
+        min-width: 6rem;
+        padding-inline: 0.75rem;
+        span { overflow: visible; text-overflow: clip; white-space: nowrap; }
+    }
+    nav.nav-link-pills-mobile.nav-link-pills-overview > button.nav-link-pills-link {
+        padding-inline: 0.75rem;
+        span { font-size: 0.875rem; width: auto; }
+    }
+    .scrollable-content { padding-bottom: calc(var(--mobile-nav-tabs-total-height) + 1rem) !important; }
+    .section-content { min-height: 0; }
+}
+
+@media (max-height: 30rem) {
+    html[data-layout="mobile"] {
+        --mobile-nav-row-height: 3rem;
+        :is(button.nav-tab-controller-link, button.nav-link-pills-link) {
+            flex-direction: row;
+            gap: 0.3rem;
+            padding-block: 0.5rem;
+        }
+        nav.nav-link-pills-mobile > button.nav-link-pills-link {
+            flex-basis: 7rem;
+            flex-direction: row;
+            span { width: auto; }
+        }
+    }
+    html[data-layout="mobile"] .nav-header-mobile .nav-profile-card {
+        padding-top: 0;
+        .nav-profile-card-role { display: none; }
+        .nav-profile-card-main-row { padding-block: 0.2rem; }
+        .nav-profile-card-media { display: none; }
+    }
+}
+
+html[data-layout] {
+    .section-content { container-type: inline-size; }
+    article.article .article-feature-items-section-about .article-feature-item-text {
+        max-width: var(--size-reading);
+        font-size: var(--size-body);
+        line-height: 1.6;
+    }
+    article.article .article-feature-items-section-about .pretext-interactive-text { max-width: var(--size-reading); }
+    .article-portfolio-items-adaptive { grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); }
+}
+@media (max-height: 30rem) {
+    html[data-layout=mobile] nav.nav-header-mobile div.nav-profile-card {
+        .nav-profile-card-mobile-action-stack {
+            flex-direction: row;
+            flex-basis: auto;
+            width: auto;
+        }
+        .nav-profile-card-role { display: none; }
+        .nav-profile-card-media { display: none; }
+        .nav-profile-card-info { padding-block: 0; }
+        .nav-profile-card-main-row { min-height: 3rem; }
+    }
+}
+
+html[data-layout] {
+    div.category-filter {
+        --category-filter-font-size: 0.875rem;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
+        button { min-height: var(--size-target); }
+        .category-filter-button-label { font-size: 0.875rem; white-space: normal; }
+    }
+    article.article .article-stack-items:not(.article-stack-items-home) {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+        gap: var(--size-gap);
+    }
+    article.article .article-stack-item-title-continuation {
+        font-size: 0.875rem !important;
+        line-height: 1.4;
+        white-space: normal;
+    }
+    article.article .article-feature-item-text {
+        height: auto;
+        max-height: none;
+        overflow-wrap: anywhere;
+    }
+    article.article .location-compare-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        > * { flex: 1 1 16rem; min-width: 0; }
+    }
+    article.article .location-compare-preset-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 7rem), 1fr));
+    }
+    article.article .location-compare-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        button { flex: 1 1 7rem; min-height: var(--size-target); height: auto; max-height: none; }
+    }
+    article.article :is(.location-compare-actions button, .location-compare-preset) {
+        padding: 0.5rem;
+        span, em { white-space: normal; overflow: visible; line-height: 1.3; }
+    }
+    article.article .location-compare-label { min-height: 5rem; height: auto; }
+}
+
+// Desktop density is expressed in real component dimensions, not a page transform.
+html:is([data-layout="normal"], [data-layout="ultrawide"]) {
+    --size-gap: clamp(0.75rem, 1.1vw, 1.125rem);
+    --size-body: 1rem;
+
+    section:is(#section-about, #section-experience, #section-education, #section-my-software, #section-my-hardware, #section-my-writings, #section-my-art, #section-contact) {
+        .section-content { --padding-x: 1rem; --padding-bottom: 2rem; }
+        header.section-header {
+            --section-header-title-size: clamp(1.75rem, 1.3rem + 1.5vw, 2.55rem);
+            --section-header-feature-title-size: clamp(2rem, 1.3rem + 2.3vw, 3.75rem);
+            margin-bottom: 1.5rem;
+        }
+        header.section-header-home h2.section-header-title {
+            font-size: clamp(1.5rem, 1rem + 1.2vw, 2.35rem) !important;
+        }
+        article.article {
+            margin-top: 0.875rem;
+            &::after { margin-top: 1.5rem; }
+            h4.article-title {
+                font-size: clamp(1.125rem, 1rem + 0.3vw, 1.35rem) !important;
+                margin-bottom: 0.875rem;
+            }
+        }
+        .article-portfolio-items {
+            --padding: 16px 16px 14px;
+            --portfolio-inline-padding: 16px;
+            --avatar-size: 68px;
+            --portfolio-controls-gap: 8px;
+            --portfolio-card-title-size: clamp(1.125rem, 1rem + 0.3vw, 1.35rem);
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+            gap: var(--size-gap);
+        }
+        .article-info-list-items {
+            --avatar-size: 68px;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 1fr));
+        }
+        .article-feature-items { gap: 1.25rem; }
+        .article-feature-item { gap: 1.25rem; }
+        .article-feature-items-section-about .article-feature-item-image {
+            max-height: 28rem;
+            img { object-fit: contain; }
+        }
+    }
+}

@@ -7,10 +7,10 @@ import ImageView from "../generic/ImageView.jsx"
 import PretextInteractiveText from "../generic/PretextInteractiveText.jsx"
 import {useFloatingFrame} from "../../hooks/floatingFrame.js"
 
-const FEATURE_TEXT_DEFAULT_MIN_SCALE = 0.74
+const FEATURE_TEXT_DEFAULT_MIN_SCALE = 1
 const FEATURE_TEXT_DEFAULT_MAX_SCALE = 1
 const FEATURE_TEXT_ABOUT_INTRO_MAX_SCALE = 1.2
-const FEATURE_TEXT_HARD_MAX_SCALE = 2.4
+const FEATURE_TEXT_HARD_MAX_SCALE = 1.25
 const FEATURE_TEXT_FIT_SEARCH_STEPS = 7
 const FEATURE_TEXT_SCALE_EPSILON = 0.01
 const FEATURE_TEXT_RESIZE_SETTLE_MS = 160
@@ -842,7 +842,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
 
 function computeScaledFontSize(baseTypographyRef, textScale) {
     const baseFontSize = baseTypographyRef.current?.fontSize || 16
-    return Math.max(10, baseFontSize * textScale)
+    return Math.max(parseFloat(getComputedStyle(document.documentElement).fontSize) || 16, baseFontSize, baseFontSize * textScale)
 }
 
 function computeScaledLineHeight(baseTypographyRef, textScale) {
@@ -938,7 +938,7 @@ function findBestFitScale({
 }
 
 function measureScaledTextHeight(element, scale, baseFontSize, baseLineHeight) {
-    element.style.fontSize = `${Math.max(10, baseFontSize * scale)}px`
+    element.style.fontSize = `${Math.max(baseFontSize, baseFontSize * scale)}px`
     element.style.lineHeight = `${Math.max(baseFontSize * scale * 1.2, baseLineHeight * scale)}px`
     return element.offsetHeight
 }

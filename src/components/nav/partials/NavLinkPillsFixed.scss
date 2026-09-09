@@ -11,7 +11,7 @@ div.nav-link-pills-sticky-slot {
     z-index: $z-index-nav-tabs;
     isolation: isolate;
 
-    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+    @include layout-desktop {
         display: none;
     }
 }
@@ -35,7 +35,7 @@ div.nav-link-pills-fixed-wrapper {
     transform: translateZ(0);
     backface-visibility: hidden;
 
-    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+    @include layout-desktop {
         display: none;
     }
 }

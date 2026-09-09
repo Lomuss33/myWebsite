@@ -23,7 +23,7 @@ div.row-form-submit {
     text-align: center;
     margin-top: 20px;
     margin-bottom: 10px;
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         margin-top: 16px;
         margin-bottom: 8px;
     }

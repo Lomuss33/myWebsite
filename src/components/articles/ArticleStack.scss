@@ -433,7 +433,7 @@ article.article.article-stack-home {
             }
 
             div.article-stack-item-home div.article-stack-item-title-prefix {
-                font-size: 0.72rem;
+                font-size: 0.875rem;
             }
 
             div.article-stack-item-home div.article-stack-item-title-main {
@@ -974,7 +974,7 @@ article.article.article-stack-home {
             --home-stack-card-gap: 3px;
             --home-stack-icon-reserve: calc((var(--avatar-size) - var(--home-stack-avatar-outset)) + var(--home-stack-card-gap));
             --home-stack-card-min-height: 188px;
-            --home-stack-bubble-font-size: 0.84rem;
+            --home-stack-bubble-font-size: 0.875rem;
             --home-stack-bubble-line-height: 1.1;
         }
 
@@ -1048,25 +1048,25 @@ article.article.article-stack-home {
 
 /* Viewport-driven spreading avoids the card's own inline-size container from
  * making phone typography behave like an ultra-narrow embedded widget. */
-@media (max-width: 1200px) {
+@container (max-width: 1200px) {
     article.article.article-stack-home {
         --home-stack-title-spread: 6px;
     }
 }
 
-@media (max-width: 980px) {
+@container (max-width: 980px) {
     article.article.article-stack-home {
         --home-stack-title-spread: 12px;
     }
 }
 
-@media (max-width: 640px) {
+@container (max-width: 640px) {
     article.article.article-stack-home {
         --home-stack-title-spread: 20px;
     }
 }
 
-@media (max-width: 560px) {
+@container (max-width: 560px) {
     article.article.article-stack-home {
         --home-stack-title-spread: 28px;
 
@@ -1076,7 +1076,7 @@ article.article.article-stack-home {
     }
 }
 
-@media (max-width: 420px) {
+@container (max-width: 420px) {
     article.article.article-stack-home {
         --home-stack-title-spread: 34px;
 
@@ -1244,7 +1244,7 @@ article#article-4-section-my-art {
 
 /* Final narrow-phone override: placed after the visual variants so it wins
    against the desktop fluid-scale declarations above. */
-@media (max-width: 380px) {
+@container (max-width: 380px) {
     article.article.article-stack-home {
         overflow-x: hidden;
 

@@ -4,6 +4,7 @@
  */
 
 @forward "./bootstrap-api";
+@forward "./layout-modes";
 
 // Ordered profile-card fit budgets. Each state owns a non-overlapping height
 // range so shrinking the rail can only remove content, never reintroduce it.
@@ -14,13 +15,6 @@ $nav-extended-profile-role-min-height: 240px;
 $nav-extended-profile-max-height: 480px;
 $nav-extended-profile-collapse-max-height: 92px;
 
-@mixin media-layout-ultrawide {
-    @media
-        (min-width: 1680px),
-        (min-width: 1360px) and (min-aspect-ratio: 2 / 1) {
-        @content;
-    }
-}
 
 // Horizontal animated bands use the same isolated edge overlays. Consumers
 // only provide width and theme colors, keeping the fade geometry consistent.

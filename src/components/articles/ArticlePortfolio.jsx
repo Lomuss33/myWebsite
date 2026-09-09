@@ -42,16 +42,7 @@ function ArticlePortfolioItems({ dataWrapper, selectedItemCategoryId }) {
     const usesFeaturedPortfolioGrid = shouldUseFeaturedPortfolioGrid(dataWrapper)
 
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
-    const itemsPerRow = usesFeaturedPortfolioGrid ?
-        viewport.isBreakpoint("lg") ?
-            2 :
-            1 :
-        viewport.isBreakpoint("xxl") ?
-        3 :
-        viewport.isBreakpoint("lg") ?
-            2 :
-            1
-    const itemsPerRowClass = `article-portfolio-items-${itemsPerRow}-per-row`
+    const itemsPerRowClass = `article-portfolio-items-adaptive`
 
     const refreshFlag = dataWrapper.categories?.length ?
         selectedItemCategoryId + "-" + language.getSelectedLanguage()?.id :

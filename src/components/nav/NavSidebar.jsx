@@ -9,6 +9,8 @@ import NavToolList from "./partials/NavToolList.jsx"
 import NavToolShrinkToggle from "./tools/NavToolShrinkToggle.jsx"
 import NavToolResumeDownloader from "./tools/NavToolResumeDownloader.jsx"
 
+import {useSidebarProfileLayout} from "./useSidebarProfileLayout.js"
+
 const WIDE_DESKTOP_THRESHOLD = 1100
 const MANUAL_RAIL_BY_ZONE_DEFAULTS = {
     wide: null,
@@ -34,6 +36,8 @@ function NavSidebar({ profile, links }) {
     const railModeClass = railMode === "extended" ?
         `nav-sidebar-extended` :
         `nav-sidebar-short-rail`
+    useSidebarProfileLayout(sidebarCardWrapperRef, railMode, links.length)
+
     const showShortRailResumeBand = railMode === "short" && hasResumeBand
     const shortRailResumeBandClass = showShortRailResumeBand ?
         `nav-sidebar-short-rail-with-resume-band` :

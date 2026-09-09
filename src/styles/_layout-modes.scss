@@ -1,0 +1,42 @@
+@use "./bootstrap-api" as bp;
+@use "sass:selector";
+@use "sass:list";
+@use "sass:string";
+
+// Match root/theme anchors on the root itself; scope other selectors below it.
+@mixin scope($condition) {
+    $root: ':where(html#{$condition})';
+    @if & {
+        $selectors: ();
+        @each $complex in & {
+            $first: list.nth($complex, 1);
+            $scoped: selector.nest($root, $complex);
+            @if $first == html or $first == ':root' or string.index('#{$first}', '[data-theme=') == 1 {
+                $scoped: '#{selector.unify($root, $first)}';
+                @if list.length($complex) > 1 {
+                    @for $i from 2 through list.length($complex) {
+                        $scoped: '#{$scoped} #{list.nth($complex, $i)}';
+                    }
+                }
+            }
+            $selectors: list.append($selectors, $scoped, comma);
+        }
+        @at-root #{$selectors} { @content; }
+    } @else {
+        #{$root} { @content; }
+    }
+}
+
+@mixin layout-mobile { @include scope('[data-layout=mobile]') { @content; } }
+@mixin layout-desktop { @include scope(':is([data-layout=normal], [data-layout=ultrawide])') { @content; } }
+@mixin media-layout-ultrawide { @include scope('[data-layout=ultrawide]') { @content; } }
+
+// Article breakpoints measure the actual content slot, not the whole window.
+@mixin content-breakpoint-down($name) {
+    @container (max-width: #{bp.breakpoint-max($name, bp.$grid-breakpoints)}) { @content; }
+    @supports not (container-type: inline-size) { @include bp.media-breakpoint-down($name) { @content; } }
+}
+@mixin content-breakpoint-up($name) {
+    @container (min-width: #{bp.breakpoint-min($name, bp.$grid-breakpoints)}) { @content; }
+    @supports not (container-type: inline-size) { @include bp.media-breakpoint-up($name) { @content; } }
+}

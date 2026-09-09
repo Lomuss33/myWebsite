@@ -2,22 +2,12 @@
 
 div.section-content {
     /* Keep the section anchored higher while preserving comfortable side and bottom spacing. */
-    --section-content-base-scale: 0.62;
-    --section-content-density-scale: 1;
-    --section-content-scale: calc(
-        var(--section-content-base-scale) *
-        var(--section-content-density-scale)
-    );
     --section-content-min-height: calc(100vh - #{$default-card-spacing * 5});
     --padding-top: 0.85rem;
     --padding-x: 1.35rem;
     --padding-bottom: 2.35rem;
     --padding: var(--padding-top) var(--padding-x) var(--padding-bottom);
-    /* Single source of truth for horizontal page decorations. Descendants live
-       inside the scaled wrapper, while this padding lives outside it. */
-    --section-decoration-bleed-inline: calc(
-        var(--padding-x) / var(--section-content-scale)
-    );
+    --section-decoration-bleed-inline: var(--padding-x);
     --section-decoration-full-width: calc(
         100% + (2 * var(--section-decoration-bleed-inline))
     );
@@ -27,13 +17,10 @@ div.section-content {
     --section-decoration-band-safe-bottom: 0px;
     --section-content-terminal-reserve: 0px;
     --section-separator-visual-height: 2px;
-    --section-separator-line-height: calc(
-        var(--section-separator-visual-height) /
-        max(var(--section-content-scale), 0.001)
-    );
+    --section-separator-line-height: var(--section-separator-visual-height);
     --section-separator-line-overlap: calc(var(--section-separator-line-height) / 2);
     --section-separator-band-inset: 0px;
-    --section-separator-edge-bleed: calc(1px / max(var(--section-content-scale), 0.001));
+    --section-separator-edge-bleed: 1px;
 
     position: relative;
     width: 100%;
@@ -42,15 +29,12 @@ div.section-content {
     padding: var(--padding);
     min-height: var(--section-content-min-height);
 
-    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+    @include layout-desktop {
         --section-content-min-height: calc(100dvh - #{$default-card-spacing * 2});
         --padding-top: 0.95rem;
         --padding-bottom: 2.75rem;
     }
 
-    @include media-layout-ultrawide {
-        --section-content-base-scale: 0.52;
-    }
 
     @include media-breakpoint-down(xl) {
         --padding-top: 0.7rem;
@@ -58,13 +42,7 @@ div.section-content {
         --padding-bottom: 1.95rem;
     }
 
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-        /* Avoid widened transformed wrappers on mobile. Firefox Android and other mobile
-           browsers can treat the pre-transform width as page width and zoom the entire
-           layout out to fit, which makes the whole UI look tiny. */
-        --section-content-base-scale: 1;
-        --section-content-density-scale: 1;
-    }
+
 
     @include media-breakpoint-down(md) {
         --padding-top: 0.5rem;
@@ -107,8 +85,8 @@ div.section-content-border-decoration-top-left {
 div.section-content-elements-wrapper {
     position: relative;
     padding: 4px 0 0 0;
-    width: calc(100% / var(--section-content-scale));
-    transform: scale(var(--section-content-scale));
+    width: 100%;
+    transform: none;
     transform-origin: top left;
     @include media-breakpoint-down(lg) {
         padding: 0;
@@ -138,8 +116,9 @@ div.section-content.section-content-no-decoration-bands {
 }
 
 div.section-content.section-content-page-ready {
-    height: var(--section-content-rendered-height, auto);
-    min-height: max(var(--section-content-rendered-height, 0px), var(--section-content-min-height));
+    height: auto;
+    min-height: var(--section-content-min-height);
+    display: flow-root;
     overflow: hidden;
 }
 
@@ -377,7 +356,7 @@ div.section-content article.article > h4.article-title::after {
    the live section grid; JavaScript remains responsible only for height and
    drawing-buffer resolution. Art canvases are excluded because each is already
    contained directly by its correctly sized band. */
-@include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+@include layout-mobile {
     canvas.section-decoration-canvas-education,
     canvas.section-decoration-canvas-education-bottom,
     canvas.section-decoration-canvas-experience,
@@ -464,7 +443,7 @@ section#section-my-art div.section-content > div.section-content-elements-wrappe
     z-index: 3;
 }
 
-@include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+@include layout-mobile {
     section#section-my-art div.section-content > div.section-content-elements-wrapper > header.section-header {
         z-index: 5;
     }
@@ -561,7 +540,7 @@ section#section-my-writings div.section-decoration-band {
         linear-gradient(90deg, #ffffff 0%, #bbf7d0 28%, #86efac 56%, #bae6fd 100%);
 }
 
-@include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+@include layout-mobile {
     div.section-content {
         --section-separator-line-height: var(--section-separator-visual-height);
         --section-separator-line-overlap: calc(var(--section-separator-line-height) / 2);
@@ -615,7 +594,7 @@ div.section-body > div.section-decoration-boundary + article.article > h4.articl
     margin-top: var(--section-article-separator-buffer-top)!important;
 }
 
-@include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+@include layout-mobile {
     div.section-content.section-content-has-decoration-bands {
         --section-article-separator-buffer-top: 14px;
         --section-article-separator-buffer-bottom: 20px;

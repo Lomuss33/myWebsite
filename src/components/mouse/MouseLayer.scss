@@ -11,7 +11,7 @@ div.mouse-layer {
     pointer-events: none;
     user-select: none;
 
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         display: none;
     }
 }

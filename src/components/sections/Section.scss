@@ -26,7 +26,7 @@ section.section {
     border-radius: 0;
     backdrop-filter: none;
     contain: paint;
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         height: auto;
         min-height: 100%;
         overflow: visible;
@@ -38,7 +38,7 @@ div.layout-slideshow > section.section {
     min-height: 0;
     overflow: hidden;
 
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         height: auto;
         min-height: 100%;
         overflow: visible;
@@ -297,7 +297,7 @@ section#section-education article:is(
     color: inherit!important;
 }
 
-@include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+@include layout-mobile {
     section#section-education header.section-header {
         gap: 0.42rem;
         margin-bottom: 34px;
@@ -645,7 +645,7 @@ section#section-experience article:is(
     color: inherit!important;
 }
 
-@include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+@include layout-mobile {
     section#section-experience header.section-header {
         gap: 0.42rem;
         margin-bottom: 34px;
@@ -795,7 +795,7 @@ section#section-my-hardware header.section-header h2.section-header-title {
     letter-spacing: var(--section-header-title-tracking);
 }
 
-@include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+@include layout-mobile {
     section#section-my-hardware header.section-header {
         gap: 0.42rem;
         margin-bottom: 34px;
@@ -1099,7 +1099,7 @@ section#section-my-writings article:is(
     color: inherit!important;
 }
 
-@include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+@include layout-mobile {
     section#section-my-writings header.section-header {
         gap: 0.42rem;
         margin-bottom: 34px;
@@ -1557,7 +1557,7 @@ section#section-my-art div.section-body {
     }
 }
 
-@include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+@include layout-mobile {
     section#section-my-art article:is(
         #article-1-section-my-art,
         #article-2-section-my-art,
@@ -1769,7 +1769,7 @@ div.layout-slideshow-direction-backward {
 }
 
 
-@include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+@include layout-mobile {
     div.layout-slideshow-direction-forward {
         > section.section-hiding {
             transform: perspective(1400px) translate3d(-24px, 0, 0) rotateY(1deg);

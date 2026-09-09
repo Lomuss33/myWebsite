@@ -4,8 +4,8 @@ div.section-loading-placeholder {
     display: grid;
     place-items: center;
     width: 100%;
-    min-height: calc(clamp(420px, 70svh, 760px) / var(--section-content-scale, 1));
-    padding: calc(clamp(24px, 5vw, 56px) / var(--section-content-scale, 1));
+    min-height: calc(clamp(420px, 70svh, 760px));
+    padding: calc(clamp(24px, 5vw, 56px));
     color: var(--theme-nav-text);
     background: transparent;
 }
@@ -15,17 +15,17 @@ div.section-loading-placeholder-status {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
-    gap: calc(clamp(1.1rem, 2.4vw, 1.7rem) / var(--section-content-scale, 1));
+    gap: calc(clamp(1.1rem, 2.4vw, 1.7rem));
     width: min(
-        calc(100% / var(--section-content-scale, 1)),
-        calc(640px / var(--section-content-scale, 1))
+        calc(100%),
+        calc(640px)
     );
     padding:
-        calc(clamp(1.4rem, 3vw, 2rem) / var(--section-content-scale, 1))
-        calc(clamp(1.4rem, 3.8vw, 2.4rem) / var(--section-content-scale, 1));
+        calc(clamp(1.4rem, 3vw, 2rem))
+        calc(clamp(1.4rem, 3.8vw, 2.4rem));
     overflow: hidden;
     border: 1px solid color-mix(in srgb, var(--theme-nav-divider) 72%, transparent);
-    border-radius: calc(22px / var(--section-content-scale, 1));
+    border-radius: calc(22px);
     background:
         linear-gradient(135deg,
             color-mix(in srgb, var(--theme-primary) 7%, transparent),
@@ -37,9 +37,9 @@ div.section-loading-placeholder-status {
         content: "";
         position: absolute;
         top: 0;
-        left: calc(clamp(1.4rem, 3.8vw, 2.4rem) / var(--section-content-scale, 1));
-        right: calc(clamp(1.4rem, 3.8vw, 2.4rem) / var(--section-content-scale, 1));
-        height: calc(2px / var(--section-content-scale, 1));
+        left: calc(clamp(1.4rem, 3.8vw, 2.4rem));
+        right: calc(clamp(1.4rem, 3.8vw, 2.4rem));
+        height: calc(2px);
         background: linear-gradient(90deg,
             transparent,
             color-mix(in srgb, var(--theme-primary) 70%, var(--theme-nav-text)),
@@ -51,13 +51,13 @@ div.section-loading-placeholder-status {
 span.section-loading-placeholder-icon {
     display: grid;
     place-items: center;
-    width: calc(clamp(64px, 7vw, 82px) / var(--section-content-scale, 1));
-    height: calc(clamp(64px, 7vw, 82px) / var(--section-content-scale, 1));
+    width: calc(clamp(64px, 7vw, 82px));
+    height: calc(clamp(64px, 7vw, 82px));
     border: 1px solid color-mix(in srgb, var(--theme-primary) 24%, transparent);
-    border-radius: calc(20px / var(--section-content-scale, 1));
+    border-radius: calc(20px);
     background: color-mix(in srgb, var(--theme-primary) 10%, transparent);
     color: color-mix(in srgb, var(--theme-primary) 78%, var(--theme-nav-text));
-    font-size: calc(clamp(1.45rem, 1rem + 1.25vw, 2.1rem) / var(--section-content-scale, 1));
+    font-size: calc(clamp(1.45rem, 1rem + 1.25vw, 2.1rem));
 }
 
 span.section-loading-placeholder-copy {
@@ -69,7 +69,7 @@ span.section-loading-placeholder-copy {
     strong {
         overflow: hidden;
         color: var(--theme-nav-text);
-        font-size: calc(clamp(1.65rem, 1.15rem + 1.65vw, 2.65rem) / var(--section-content-scale, 1));
+        font-size: calc(clamp(1.65rem, 1.15rem + 1.65vw, 2.65rem));
         font-weight: 800;
         line-height: 1.08;
         letter-spacing: -0.025em;
@@ -80,7 +80,7 @@ span.section-loading-placeholder-copy {
 
 span.section-loading-placeholder-kicker {
     color: var(--theme-nav-text-muted);
-    font-size: calc(clamp(0.76rem, 0.7rem + 0.2vw, 0.9rem) / var(--section-content-scale, 1));
+    font-size: calc(clamp(0.76rem, 0.7rem + 0.2vw, 0.9rem));
     font-weight: 750;
     letter-spacing: 0.12em;
     line-height: 1.2;
@@ -88,8 +88,8 @@ span.section-loading-placeholder-kicker {
 }
 
 span.section-loading-placeholder-pulse {
-    width: calc(11px / var(--section-content-scale, 1));
-    height: calc(11px / var(--section-content-scale, 1));
+    width: calc(11px);
+    height: calc(11px);
     box-shadow: 0 0 0 6px color-mix(in srgb, var(--theme-primary) 10%, transparent);
     border-radius: 50%;
     background: color-mix(in srgb, var(--theme-primary) 78%, var(--theme-nav-text));
@@ -97,25 +97,25 @@ span.section-loading-placeholder-pulse {
     animation: section-loading-placeholder-pulse 1.35s ease-in-out infinite;
 }
 
-@include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+@include layout-mobile {
     div.section-loading-placeholder {
         min-height: clamp(360px, 62svh, 620px);
-        padding-inline: calc(clamp(18px, 5vw, 32px) / var(--section-content-scale, 1));
+        padding-inline: calc(clamp(18px, 5vw, 32px));
     }
 
     div.section-loading-placeholder-status {
         grid-template-columns: auto minmax(0, 1fr);
         width: min(
-            calc(100% / var(--section-content-scale, 1)),
-            calc(560px / var(--section-content-scale, 1))
+            calc(100%),
+            calc(560px)
         );
-        padding: calc(1.25rem / var(--section-content-scale, 1));
+        padding: calc(1.25rem);
     }
 
     span.section-loading-placeholder-pulse {
         position: absolute;
-        right: calc(1.25rem / var(--section-content-scale, 1));
-        bottom: calc(1.25rem / var(--section-content-scale, 1));
+        right: calc(1.25rem);
+        bottom: calc(1.25rem);
     }
 }
 

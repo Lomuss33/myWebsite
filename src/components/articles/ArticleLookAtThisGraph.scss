@@ -46,7 +46,7 @@ p.look-graph-description {
     min-width: 0;
     margin: 0;
     color: var(--look-graph-muted);
-    font-size: clamp(0.9rem, 0.86rem + 0.12vw, 1rem);
+    font-size: clamp(0.9rem, 0.875rem + 0.12vw, 1rem);
     line-height: 1.55;
     overflow-wrap: anywhere;
 }
@@ -65,7 +65,7 @@ div.look-graph-layout-control {
 span.look-graph-layout-label {
     margin: 0 2px 5px 0;
     color: var(--look-graph-muted);
-    font-size: 0.69rem;
+    font-size: 0.875rem;
     font-weight: 700;
     line-height: 1;
     letter-spacing: 0.08em;
@@ -109,7 +109,7 @@ span.look-graph-lever-end {
     position: absolute;
     top: 50%;
     color: var(--look-graph-muted);
-    font-size: 0.63rem;
+    font-size: 0.875rem;
     font-weight: 800;
     line-height: 1;
     transform: translateY(-50%);
@@ -142,7 +142,7 @@ span.look-graph-lever-handle {
     border-radius: 8px;
     background: linear-gradient(145deg, rgba(14, 116, 144, 0.88), rgba(30, 64, 175, 0.88));
     color: #f8fafc;
-    font-size: 0.7rem;
+    font-size: 0.875rem;
     font-weight: 750;
     line-height: 1;
     white-space: nowrap;
@@ -152,7 +152,7 @@ span.look-graph-lever-handle {
 
     i {
         flex: 0 0 auto;
-        font-size: 0.67rem;
+        font-size: 0.875rem;
     }
 
     span {
@@ -230,7 +230,7 @@ button.look-graph-panel-arrow {
     border-radius: 8px;
     background: rgba(15, 23, 42, 0.46);
     color: var(--look-graph-muted);
-    font-size: 0.74rem;
+    font-size: 0.875rem;
     line-height: 1;
     transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
 
@@ -269,7 +269,7 @@ div.look-graph-panel-heading {
 
     strong {
         color: var(--look-graph-text);
-        font-size: clamp(0.83rem, 0.8rem + 0.12vw, 0.94rem);
+        font-size: clamp(0.875rem, 0.875rem + 0.12vw, 0.94rem);
         font-weight: 750;
         line-height: 1.2;
     }
@@ -277,7 +277,7 @@ div.look-graph-panel-heading {
     span {
         margin-top: 3px;
         color: var(--look-graph-muted);
-        font-size: clamp(0.66rem, 0.64rem + 0.08vw, 0.73rem);
+        font-size: clamp(0.875rem, 0.875rem + 0.08vw, 0.875rem);
         line-height: 1.15;
     }
 }
@@ -320,7 +320,7 @@ canvas.look-graph-canvas {
     }
 }
 
-@include media-breakpoint-down(sm) {
+@include content-breakpoint-down(sm) {
     div.look-graph-intro-row {
         margin-bottom: 14px;
     }
@@ -351,14 +351,14 @@ canvas.look-graph-canvas {
     }
 }
 
-@media (max-width: 340px) {
+@container (max-width: 340px) {
     span.look-graph-layout-label {
         white-space: normal;
         text-align: right;
     }
 
     div.look-graph-panel-heading span {
-        font-size: 0.62rem;
+        font-size: 0.875rem;
     }
 }
 

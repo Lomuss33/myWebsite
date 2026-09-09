@@ -23,7 +23,7 @@ div.layout-slideshow {
     position: relative;
     isolation: isolate;
 
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         grid-template-rows: auto;
         grid-auto-rows: auto;
         margin: 0;
@@ -60,7 +60,7 @@ div.layout-slideshow-adjacent-controls {
     pointer-events: none;
     transition: opacity 160ms ease;
 
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         display: none;
     }
 
@@ -84,11 +84,11 @@ div.layout-slideshow-adjacent-controls {
 }
 
 div.layout-slideshow-transitioning {
-    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+    @include layout-desktop {
         overflow: hidden;
     }
 
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         // The window remains the mobile scroll owner throughout a section
         // switch. Do not let the transient state replace visible overflow with
         // a second clipped scrolling boundary.
@@ -100,7 +100,7 @@ div.layout-slideshow-transitioning {
 div.layout-slideshow-paper-sheet {
     display: none;
 
-    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+    @include layout-desktop {
         --paper-sheet-surface:
             color-mix(in srgb, var(--theme-card-background) 92%, var(--theme-background) 8%);
         --paper-sheet-ink:
@@ -148,18 +148,18 @@ span.layout-slideshow-paper-sheet-edge {
 }
 
 div.layout-slideshow-paper-sheet-covering {
-    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+    @include layout-desktop {
         animation: layout-slideshow-paper-cover 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 }
 
 div.layout-slideshow-paper-sheet-revealing {
-    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+    @include layout-desktop {
         animation: layout-slideshow-paper-reveal 540ms cubic-bezier(0.4, 0, 0.2, 1) both;
     }
 }
 
-@include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+@include layout-desktop {
     div.layout-slideshow-transitioning > section.section-will-hide,
     div.layout-slideshow-transitioning > section.section-hiding,
     div.layout-slideshow-paper-switching > section.section-will-hide,
@@ -286,7 +286,7 @@ button.layout-slideshow-adjacent-button {
         pointer-events: none;
     }
 
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         --adjacent-button-size: 42px;
         --adjacent-button-hit-width: 48px;
         --adjacent-button-hit-height: 90px;
@@ -300,7 +300,7 @@ button.layout-slideshow-adjacent-button {
         margin-top: 0;
     }
 
-    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+    @include layout-desktop {
         position: fixed;
         top: calc(var(--adjacent-control-center-y) - (var(--adjacent-button-hit-height) / 2));
         margin-top: 0;
@@ -523,7 +523,7 @@ button.layout-slideshow-adjacent-button-previous {
         left: calc(var(--adjacent-button-outside-shift) - var(--adjacent-button-size) / 2);
     }
 
-    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+    @include layout-desktop {
         left: calc(var(--adjacent-control-previous-center-x) - (var(--adjacent-button-hit-width) / 2));
         right: auto;
 
@@ -564,7 +564,7 @@ button.layout-slideshow-adjacent-button-next {
         right: calc(var(--adjacent-button-outside-shift) - var(--adjacent-button-size) / 2);
     }
 
-    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+    @include layout-desktop {
         right: auto;
         left: calc(var(--adjacent-control-next-center-x) - (var(--adjacent-button-hit-width) / 2));
 

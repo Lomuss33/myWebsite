@@ -1,0 +1,29 @@
+{
+  "date": "2026-09-09",
+  "chromium": {
+    "passed": 27,
+    "failed": 0,
+    "routeCombinations": 192
+  },
+  "firefox": {
+    "passed": 6,
+    "failed": 0,
+    "routeCombinations": 24,
+    "additionalContactViewports": 10
+  },
+  "resolver": {
+    "passed": 4,
+    "failed": 0
+  },
+  "checks": {
+    "lint": "passed",
+    "i18n": "passed",
+    "build": "passed"
+  },
+  "unverified": [
+    "Actual browser zoom at 200% and 400%",
+    "Real iOS/Android keyboards, safe areas and browser chrome",
+    "Fullscreen API transitions",
+    "High-DPI canvas and image quality"
+  ]
+}

@@ -15,7 +15,7 @@ li.article-inline-list-item {
     white-space: nowrap;
     display: inline-flex;
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         margin-right: calc($spacing-between-items - 12px);
     }
 
@@ -25,11 +25,11 @@ li.article-inline-list-item {
         margin-left: $spacing-between-items;
         margin-top: 4px;
 
-        @include media-breakpoint-down(md) {
+        @include content-breakpoint-down(md) {
             margin-top: 5px;
         }
 
-        @include media-breakpoint-down(sm) {
+        @include content-breakpoint-down(sm) {
             margin-left: calc($spacing-between-items - 5px);
         }
     }
@@ -46,7 +46,7 @@ article#article-1-section-about {
     --home-contact-text-color: #f8fafc;
     position: relative;
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         --home-contact-pill-height: 48px;
         --home-contact-pill-radius: 18px;
         --home-contact-pill-icon-gap: 7px;
@@ -69,14 +69,14 @@ article#article-1-section-about {
         margin-right: auto;
         padding-inline: 0;
 
-        @include media-breakpoint-down(sm) {
+        @include content-breakpoint-down(sm) {
             flex-direction: row;
             align-items: stretch;
             justify-content: stretch;
             gap: var(--home-contact-band-gap);
         }
 
-        @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        @include layout-mobile {
             width: 100%;
         }
     }
@@ -155,7 +155,7 @@ article#article-1-section-about {
         align-items: stretch;
         position: relative;
 
-        @include media-breakpoint-down(sm) {
+        @include content-breakpoint-down(sm) {
             flex: 1 1 0;
             width: 0;
             min-width: 0;
@@ -220,14 +220,14 @@ article#article-1-section-about {
             justify-content: center;
             width: 100%;
             min-height: var(--home-contact-pill-height);
-            font-size: clamp(0.96rem, 0.87rem + 0.26vw, 1.14rem);
+            font-size: clamp(0.96rem, 0.875rem + 0.26vw, 1.14rem);
             line-height: 1;
             position: relative;
             z-index: 1;
 
-            @include media-breakpoint-down(sm) {
+            @include content-breakpoint-down(sm) {
                 min-width: 0;
-                font-size: clamp(0.86rem, 0.81rem + 0.18vw, 0.96rem);
+                font-size: clamp(0.875rem, 0.875rem + 0.18vw, 0.96rem);
             }
         }
 
@@ -253,7 +253,7 @@ article#article-1-section-about {
                 inset 0 -14px 24px rgba(2, 6, 23, 0.28);
             transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, filter 180ms ease, background 180ms ease;
 
-            @include media-breakpoint-down(sm) {
+            @include content-breakpoint-down(sm) {
                 padding-right: 8px;
             }
         }
@@ -386,7 +386,7 @@ article#article-1-section-about {
         align-items: stretch;
     }
 
-    @media (max-width: 420px) {
+    @container (max-width: 420px) {
         ul.article-inline-list-items[data-label-mode="short"] {
             li.article-inline-list-item .article-inline-list-item-pill {
                 grid-template-columns: 30px minmax(0, max-content);
@@ -535,7 +535,7 @@ article#article-1-section-about {
 /* Deterministic fallback for older narrow mobile browsers. The JavaScript fit
    mode normally reaches the same icon-only result, but this prevents late font
    loading or Firefox rounding from leaving three truncated labels in one row. */
-@media (max-width: 340px) {
+@container (max-width: 340px) {
     article#article-1-section-about {
         ul.article-inline-list-items:not(.article-inline-list-items-fit-measure) {
             width: 100%;
@@ -587,7 +587,7 @@ i.article-inline-list-item-icon {
     height: 32px;
     font-size: 0.96rem;
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         margin: 0 calc($item-padding - 3px);
     }
 }

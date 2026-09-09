@@ -260,7 +260,7 @@ article.article-complaint-form {
             linear-gradient(180deg, color-mix(in srgb, var(--complaint-panel-2) 88%, white 12%) 0%, var(--complaint-panel-2) 100%);
         box-shadow: inset 0 1px 0 color-mix(in srgb, white 10%, transparent), 0 10px 24px rgba(2,6,23,.13);
         color: color-mix(in srgb, var(--complaint-text) 82%, var(--complaint-muted) 18%);
-        font-size: clamp(0.82rem, 0.8rem + 0.14vw, 0.92rem);
+        font-size: clamp(0.875rem, 0.875rem + 0.14vw, 0.92rem);
         font-weight: 500;
         line-height: 1.48;
         letter-spacing: -0.005em;
@@ -334,7 +334,7 @@ article.article-complaint-form {
         top: 50%;
         transform: translateY(-50%);
         color: color-mix(in srgb, var(--complaint-select-text) 82%, transparent);
-        font-size: 0.82rem;
+        font-size: 0.875rem;
         font-weight: 700;
         letter-spacing: 0.01em;
         white-space: nowrap;
@@ -479,7 +479,7 @@ article.article-complaint-form {
 
     i.article-complaint-form-select-option-icon {
         flex: 0 0 auto;
-        font-size: 0.84rem;
+        font-size: 0.875rem;
         color: color-mix(in srgb, var(--complaint-select-menu-text) 90%, white 10%);
     }
 
@@ -645,7 +645,7 @@ article.article-complaint-form {
         }
     }
 
-    @media (max-width: 991.98px) {
+    @container (max-width: 991.98px) {
         div.article-complaint-form-main {
             grid-template-columns: 1fr;
             grid-template-rows: auto minmax(200px, auto) auto auto;
@@ -696,7 +696,7 @@ article.article-complaint-form {
         }
     }
 
-    @media (min-width: 992px) {
+    @container (min-width: 992px) {
         div.article-complaint-form-select-menu {
             top: auto;
             bottom: calc(100% + 0.55rem);
@@ -704,7 +704,7 @@ article.article-complaint-form {
         }
     }
 
-    @media (max-width: 575.98px) {
+    @container (max-width: 575.98px) {
         form.article-complaint-form-shell {
             gap: 10px;
         }
@@ -723,7 +723,7 @@ article.article-complaint-form {
 
         .article-complaint-form-note {
             padding: 0.78rem 0.86rem;
-            font-size: 0.8rem;
+            font-size: 0.875rem;
             line-height: 1.46;
         }
 
@@ -734,7 +734,7 @@ article.article-complaint-form {
 
         span.article-complaint-form-select-prefix {
             left: 0.9rem;
-            font-size: 0.76rem;
+            font-size: 0.875rem;
         }
 
         span.article-complaint-form-select-value {
@@ -875,7 +875,7 @@ button.article-complaint-form-popup-close:focus-visible {
     border-color: color-mix(in srgb, var(--complaint-popup-accent) 42%, var(--complaint-popup-border));
 }
 
-@media (max-width: 575.98px) {
+@container (max-width: 575.98px) {
     div.article-complaint-form-popup-layer {
         backdrop-filter: blur(1px);
     }

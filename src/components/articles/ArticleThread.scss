@@ -10,13 +10,13 @@ div.article-thread-items {
 
     position: relative;
 
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         --circle-size: 30px;
         --gap-between-circle-and-content: 25px;
         --line-width: 5px;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         --min-gap-between-items: 40px;
         --circle-size: 26px;
         --gap-between-circle-and-content: 16px;
@@ -70,7 +70,7 @@ div.article-thread-item-circle {
 div.article-thread-item-content {
     margin-left: var(--gap-between-circle-and-content)!important;
     padding: 22px 26px 24px!important;
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         padding: 18px 20px 22px!important;
     }
 }

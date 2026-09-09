@@ -5,20 +5,20 @@ div.article-facts-items {
     --margin: 4px 0 16px;
     --info-margin-top: 16px;
 
-    @include media-breakpoint-down(xl) {
+    @include content-breakpoint-down(xl) {
         --avatar-size: 110px;
     }
 
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         --avatar-size: 100px;
         --margin: 4px 0 8px;
     }
 
-    @include media-breakpoint-down(md) {
+    @include content-breakpoint-down(md) {
         --avatar-size: 90px;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         --avatar-size: 80px;
     }
 }

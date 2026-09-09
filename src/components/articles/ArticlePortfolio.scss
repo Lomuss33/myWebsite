@@ -26,7 +26,7 @@ div.article-portfolio-items {
     */
     --portfolio-card-min-width: 320px;
 
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         --item-gap: 22px;
         --padding: 18px 18px 16px;
         --portfolio-inline-padding: 18px;
@@ -35,7 +35,7 @@ div.article-portfolio-items {
         --avatar-offset: 14px;
     }
 
-    @include media-breakpoint-down(md) {
+    @include content-breakpoint-down(md) {
         --item-gap: 18px;
         --padding: 16px 16px 15px;
         --portfolio-inline-padding: 16px;
@@ -44,7 +44,7 @@ div.article-portfolio-items {
         --avatar-offset: 12px;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         --avatar-size: 70px;
         --margin-top: 5px;
         --padding: 15px 14px 14px;
@@ -215,7 +215,7 @@ article#article-1-section-my-software {
         color: inherit!important;
     }
 
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         h4.article-title {
             gap: 10px;
             width: 100%;
@@ -229,7 +229,7 @@ article#article-1-section-my-software {
         }
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         h4.article-title {
             gap: 9px;
             width: 100%;
@@ -255,12 +255,12 @@ article#article-1-section-my-software {
     }
 
     li.article-portfolio-item-body-tag {
-        font-size: clamp(0.66rem, 0.64rem + 0.09vw, 0.74rem) !important;
+        font-size: clamp(0.875rem, 0.875rem + 0.09vw, 0.875rem) !important;
         line-height: 1.18;
     }
 
     span.article-portfolio-item-control-btn-label {
-        font-size: clamp(0.76rem, 1.82cqw, 0.9rem);
+        font-size: clamp(0.875rem, 1.82cqw, 0.9rem);
         line-height: 1.02;
     }
 
@@ -590,7 +590,7 @@ article#article-1-section-my-hardware {
         color: inherit!important;
     }
 
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         h4.article-title {
             gap: 10px;
             width: 100%;
@@ -604,7 +604,7 @@ article#article-1-section-my-hardware {
         }
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         h4.article-title {
             gap: 9px;
             width: 100%;
@@ -630,12 +630,12 @@ article#article-1-section-my-hardware {
     }
 
     li.article-portfolio-item-body-tag {
-        font-size: clamp(0.66rem, 0.64rem + 0.09vw, 0.74rem) !important;
+        font-size: clamp(0.875rem, 0.875rem + 0.09vw, 0.875rem) !important;
         line-height: 1.18;
     }
 
     span.article-portfolio-item-control-btn-label {
-        font-size: clamp(0.76rem, 1.82cqw, 0.9rem);
+        font-size: clamp(0.875rem, 1.82cqw, 0.9rem);
         line-height: 1.02;
     }
 
@@ -852,7 +852,7 @@ div.article-portfolio-item-controls {
     position: relative;
     z-index: 3;
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         flex-wrap: wrap;
         align-items: stretch;
 
@@ -919,7 +919,7 @@ div.article-portfolio-item-control-btn {
         color 180ms ease;
 
     i.fa-icon {
-        font-size: clamp(0.8rem, 1.7cqw, 0.95rem);
+        font-size: clamp(0.875rem, 1.7cqw, 0.95rem);
         line-height: 1;
     }
 
@@ -1002,7 +1002,7 @@ a.article-portfolio-item-control-btn-docs {
 span.article-portfolio-item-control-btn-label {
     flex: 1 1 auto;
     min-width: 0;
-    font-size: clamp(0.70rem, 1.65cqw, 0.86rem);
+    font-size: clamp(0.875rem, 1.65cqw, 0.875rem);
     font-weight: 800;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -1212,13 +1212,13 @@ article#article-1-section-my-hardware {
         margin-top: 8px;
     }
 
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         div.article-portfolio-item-body {
             margin-top: 8px;
         }
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         div.article-portfolio-item-body {
             margin-top: 7px;
         }
@@ -1235,13 +1235,13 @@ li.article-portfolio-item-body-tag {
     color: var(--portfolio-tag-text-color);
     border: 1px solid var(--portfolio-tag-border-color);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    font-size: clamp(0.62rem, 0.6rem + 0.08vw, 0.69rem) !important;
+    font-size: clamp(0.875rem, 0.875rem + 0.08vw, 0.875rem) !important;
     padding: 2px 6px;
     margin-right: 4px;
     margin-bottom: 4px;
     line-height: 1.15;
 
-    @include media-breakpoint-down(md) {
+    @include content-breakpoint-down(md) {
         padding: 2px 6px;
         margin-right: 3px;
         margin-bottom: 3px;
@@ -1316,7 +1316,7 @@ article#article-1-section-my-hardware {
     }
 }
 
-@include media-breakpoint-up(xl) {
+@include content-breakpoint-up(xl) {
     article#article-1-section-my-software,
     article#article-1-section-my-hardware {
         div.article-portfolio-items {
@@ -1327,7 +1327,7 @@ article#article-1-section-my-hardware {
     }
 }
 
-@include media-breakpoint-up(xxl) {
+@include content-breakpoint-up(xxl) {
     article#article-1-section-my-software,
     article#article-1-section-my-hardware {
         div.article-portfolio-items {
@@ -1464,7 +1464,7 @@ article#article-1-section-my-hardware {
                 inset 0 1px 0 rgba(255, 255, 255, 0.075),
                 inset 0 8px 18px rgba(255, 255, 255, 0.025),
                 0 -5px 16px rgba(2, 6, 23, 0.12);
-            font-size: clamp(1rem, 0.86rem + 0.3vw, 1.18rem) !important;
+            font-size: clamp(1rem, 0.875rem + 0.3vw, 1.18rem) !important;
             font-weight: 800;
             line-height: 1.2;
             letter-spacing: 0.085em;
@@ -1588,7 +1588,7 @@ article#article-1-section-my-hardware div.article-portfolio-item {
     }
 }
 
-@include media-breakpoint-up(xl) {
+@include content-breakpoint-up(xl) {
     article#article-1-section-my-software,
     article#article-1-section-my-hardware {
         h4.article-title {
@@ -1597,7 +1597,7 @@ article#article-1-section-my-hardware div.article-portfolio-item {
     }
 }
 
-@include media-breakpoint-down(sm) {
+@include content-breakpoint-down(sm) {
     article#article-1-section-my-software,
     article#article-1-section-my-hardware {
         h4.article-title {
@@ -1696,12 +1696,12 @@ article#article-1-section-my-hardware div.article-portfolio-item {
         }
 
         span.article-portfolio-item-control-btn-label {
-            font-size: clamp(0.76rem, 3.2vw, 0.88rem);
+            font-size: clamp(0.875rem, 3.2vw, 0.88rem);
         }
     }
 }
 
-@media (max-width: 350px) {
+@container (max-width: 350px) {
     article#article-1-section-my-software,
     article#article-1-section-my-hardware {
         div.article-portfolio-item-controls {
@@ -1734,7 +1734,7 @@ article#article-1-section-my-hardware div.article-portfolio-item {
  * Non-mobile compensation for the scaled desktop section shell. Typography
  * and controls use card-relative sizing, but remain bounded at both ends.
  */
-@include media-breakpoint-up(sm) {
+@include content-breakpoint-up(sm) {
     article#article-1-section-my-software,
     article#article-1-section-my-hardware {
         div.article-portfolio-items {
@@ -1782,7 +1782,7 @@ article#article-1-section-my-hardware div.article-portfolio-item {
         }
 
         li.article-portfolio-item-body-tag {
-            font-size: clamp(0.78rem, 1.7cqw, 0.92rem) !important;
+            font-size: clamp(0.875rem, 1.7cqw, 0.92rem) !important;
             padding: 4px 8px;
         }
 
@@ -1900,7 +1900,7 @@ article#article-1-section-my-hardware {
     }
 }
 
-@media (max-width: 575.98px) {
+@container (max-width: 575.98px) {
     article#article-1-section-my-software,
     article#article-1-section-my-hardware {
         margin-top: 6px;
@@ -1913,7 +1913,7 @@ article#article-1-section-my-hardware {
     }
 }
 
-@media (max-width: 420px) {
+@container (max-width: 420px) {
     article#article-1-section-my-software,
     article#article-1-section-my-hardware {
         h4.article-title {

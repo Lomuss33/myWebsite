@@ -16,6 +16,10 @@ import InputProvider from "./providers/InputProvider.jsx"
 import NavigationProvider from "./providers/NavigationProvider.jsx"
 import Portfolio from "./components/Portfolio.jsx"
 
+import {applyLayout, readLayout} from "./config/responsiveLayout.js"
+
+applyLayout(readLayout())
+
 const createDefaultSettings = () => ({
     developerSettings: {
         debugMode: false,

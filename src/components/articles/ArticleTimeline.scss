@@ -10,7 +10,7 @@ ul.article-timeline-items {
     --timeline-line-top-trim: 0px;
     --timeline-line-bottom-trim: 0px;
 
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         --min-gap-between-items: 18px;
         --avatar-size: 60px;
         --avatar-border-width: 3px;
@@ -18,12 +18,12 @@ ul.article-timeline-items {
         --gap-between-avatar-and-content: 12px;
     }
 
-    @include media-breakpoint-down(md) {
+    @include content-breakpoint-down(md) {
         --avatar-size: 54px;
         --gap-between-avatar-and-content: 10px;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         --min-gap-between-items: 14px;
         --avatar-size: 42px;
         --avatar-border-width: 3px;
@@ -53,7 +53,7 @@ ul.article-timeline-items:before {
     left: calc(var(--avatar-size)/2 - var(--timeline-line-width)/2);
     z-index: 0;
 
-    @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+    @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
         top: calc(var(--timeline-line-top-offset, calc(var(--avatar-size)/2)) + var(--timeline-line-top-trim) - var(--avatar-offset-merge-mode));
         bottom: calc(var(--timeline-line-bottom-offset, calc(var(--avatar-size)/2)) + var(--timeline-line-bottom-trim) - var(--avatar-offset-merge-mode));
     }
@@ -106,7 +106,7 @@ div.article-timeline-item-avatar {
         --ff-filter: none;
     }
 
-    @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+    @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
         position: relative;
         top: calc(-1 * var(--avatar-offset-merge-mode));
         left: calc(-0.7 * var(--avatar-offset-merge-mode));
@@ -150,7 +150,7 @@ div.article-timeline-item-content {
     max-width: 100%;
     flex: 1 1 auto;
 
-    @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+    @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
         position: relative;
         margin-left: var(--gap-between-avatar-and-content)!important;
         margin-top: 0!important;
@@ -165,24 +165,24 @@ article.article-timeline--my-art {
         --avatar-size: 168px;
         --gap-between-avatar-and-content: 18px;
 
-        @include media-breakpoint-down(lg) {
+        @include content-breakpoint-down(lg) {
             --avatar-size: 144px;
             --gap-between-avatar-and-content: 16px;
         }
 
-        @include media-breakpoint-down(md) {
+        @include content-breakpoint-down(md) {
             --avatar-size: 120px;
             --gap-between-avatar-and-content: 14px;
         }
 
-        @include media-breakpoint-down(sm) {
+        @include content-breakpoint-down(sm) {
             --avatar-size: 96px;
             --gap-between-avatar-and-content: 12px;
         }
 
         // On very small screens, the base "merge mode" shifts the card under the avatar.
         // That works for small avatars, but for the "my art" timeline it can cover content.
-        @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+        @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
             --avatar-offset-merge-mode: 0px;
         }
     }
@@ -195,7 +195,7 @@ article.article-timeline--my-art {
         margin-top: clamp(2.6rem, 5vw, 4.75rem);
     }
 
-    @include media-breakpoint-down(md) {
+    @include content-breakpoint-down(md) {
         div.collapsable-menu {
             margin-top: clamp(2rem, 8vw, 3rem);
         }
@@ -206,14 +206,14 @@ article.article-timeline--my-art {
     }
 
     div.article-timeline-item-avatar {
-        @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+        @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
             top: 0;
             left: 0;
         }
     }
 
     div.article-timeline-item-content {
-        @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+        @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
             margin-left: var(--gap-between-avatar-and-content)!important;
             border-top-left-radius: $standard-border-radius!important;
             border-bottom-left-radius: $standard-border-radius!important;
@@ -230,17 +230,17 @@ article#article-1-section-education {
         --timeline-line-top-trim: clamp(18px, calc(var(--avatar-size) * 0.16), 30px);
         --timeline-line-bottom-trim: clamp(18px, calc(var(--avatar-size) * 0.16), 30px);
 
-        @include media-breakpoint-down(lg) {
+        @include content-breakpoint-down(lg) {
             --avatar-size: 156px;
             --gap-between-avatar-and-content: 22px;
         }
 
-        @include media-breakpoint-down(md) {
+        @include content-breakpoint-down(md) {
             --avatar-size: 140px;
             --gap-between-avatar-and-content: 20px;
         }
 
-        @include media-breakpoint-down(sm) {
+        @include content-breakpoint-down(sm) {
             --avatar-size: 110px;
             --gap-between-avatar-and-content: 16px;
             --avatar-offset-merge-mode: 0px;
@@ -256,14 +256,14 @@ article#article-1-section-education {
     }
 
     div.article-timeline-item-avatar {
-        @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+        @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
             top: 0;
             left: 0;
         }
     }
 
     div.article-timeline-item-content {
-        @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+        @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
             margin-left: var(--gap-between-avatar-and-content)!important;
             border-top-left-radius: $standard-border-radius!important;
             border-bottom-left-radius: $standard-border-radius!important;
@@ -289,17 +289,17 @@ article#article-1-section-my-writings {
         padding-left: var(--timeline-edge-clearance);
         gap: 0;
 
-        @include media-breakpoint-down(lg) {
+        @include content-breakpoint-down(lg) {
             --avatar-size: 112px;
             --gap-between-avatar-and-content: 18px;
         }
 
-        @include media-breakpoint-down(md) {
+        @include content-breakpoint-down(md) {
             --avatar-size: 96px;
             --gap-between-avatar-and-content: 16px;
         }
 
-        @include media-breakpoint-down(sm) {
+        @include content-breakpoint-down(sm) {
             --avatar-size: 76px;
             --gap-between-avatar-and-content: 14px;
             --avatar-offset-merge-mode: 0px;
@@ -416,7 +416,7 @@ article#article-1-section-my-writings {
         border-color: transparent;
         box-shadow: none;
 
-        @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+        @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
             top: 0;
             left: 0;
         }
@@ -474,7 +474,7 @@ article#article-1-section-my-writings {
         border-image: var(--timeline-writing-gradient) 1;
         border-radius: 0;
 
-        @include media-breakpoint-down(sm) {
+        @include content-breakpoint-down(sm) {
             margin-left: 0 !important;
         }
     }
@@ -482,7 +482,7 @@ article#article-1-section-my-writings {
     // Keep the decorative frame at its original full width. Only its textual
     // children change measure and alignment; buttons and all frame borders stay
     // on the established timeline geometry.
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         div.article-timeline-item-info-preview-footer--meta-end {
             display: none;
         }
@@ -596,7 +596,7 @@ article#article-1-section-my-writings {
 
     }
 
-    @include media-breakpoint-up(md) {
+    @include content-breakpoint-up(md) {
         li.article-timeline-item div.article-timeline-item-info-for-timelines-header,
         li.article-timeline-item div.article-timeline-item-info-for-timelines-body {
             width: min(82%, 70rem);
@@ -769,7 +769,7 @@ button.standard-button.btn-contrast.article-timeline-see-more-button {
         }
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         width: 100%;
         min-height: 3.6rem;
         padding: 0.85rem 1.2rem !important;
@@ -942,7 +942,7 @@ article#article-1-section-experience {
         gap: 16px;
         overflow: visible;
 
-        @include media-breakpoint-down(sm) {
+        @include content-breakpoint-down(sm) {
             --experience-avatar-size: clamp(84px, 20vw, 96px);
             --experience-description-right-buffer: 0.98rem;
             --experience-rail-width: 60px;
@@ -966,7 +966,7 @@ article#article-1-section-experience {
             gap: 14px;
         }
 
-        @include media-breakpoint-up(md) {
+        @include content-breakpoint-up(md) {
             --experience-avatar-size: 164px;
             --experience-description-right-buffer: 1.35rem;
             --experience-rail-width: 80px;
@@ -985,7 +985,7 @@ article#article-1-section-experience {
             gap: 20px;
         }
 
-        @include media-breakpoint-up(lg) {
+        @include content-breakpoint-up(lg) {
             --experience-avatar-size: 192px;
             --experience-rail-width: 90px;
             --experience-avatar-vertical-offset: calc(var(--experience-avatar-size) * 0.45);
@@ -1001,7 +1001,7 @@ article#article-1-section-experience {
             gap: 21px;
         }
 
-        @include media-breakpoint-up(xl) {
+        @include content-breakpoint-up(xl) {
             --experience-avatar-size: 208px;
             --experience-description-right-buffer: 1.5rem;
             --experience-rail-width: 104px;
@@ -1023,7 +1023,7 @@ article#article-1-section-experience {
             gap: 22px;
         }
 
-        @media (min-width: 2000px) {
+        @container (min-width: 2000px) {
             --experience-avatar-size: 184px;
             --experience-description-right-buffer: 1.35rem;
             --experience-rail-width: 88px;
@@ -1082,7 +1082,7 @@ article#article-1-section-experience {
         isolation: isolate;
         z-index: 1;
 
-        @include media-breakpoint-down(sm) {
+        @include content-breakpoint-down(sm) {
             box-sizing: border-box;
             width: 100%;
             padding-right: var(--experience-item-right-reserve);
@@ -1101,7 +1101,7 @@ article#article-1-section-experience {
         transform: translateY(-50%);
         z-index: 4;
 
-        @include media-breakpoint-down(md) {
+        @include content-breakpoint-down(md) {
             top: 74%;
             transform: translateY(-50%);
         }
@@ -1234,7 +1234,7 @@ article#article-1-section-experience {
     }
 }
 
-@include media-breakpoint-up(xl) {
+@include content-breakpoint-up(xl) {
     article#article-1-section-education div.article-content,
     article#article-1-section-experience div.article-content {
         width: min(100%, 77rem);
@@ -1248,7 +1248,7 @@ article#article-1-section-experience {
     }
 }
 
-@media (min-width: 2000px) {
+@container (min-width: 2000px) {
     article#article-1-section-experience div.article-content {
         width: min(100%, 72rem);
     }
@@ -1261,22 +1261,22 @@ article.article-timeline--art-photography {
         --avatar-size: 168px;
         --gap-between-avatar-and-content: 18px;
 
-        @include media-breakpoint-down(lg) {
+        @include content-breakpoint-down(lg) {
             --avatar-size: 144px;
             --gap-between-avatar-and-content: 16px;
         }
 
-        @include media-breakpoint-down(md) {
+        @include content-breakpoint-down(md) {
             --avatar-size: 120px;
             --gap-between-avatar-and-content: 14px;
         }
 
-        @include media-breakpoint-down(sm) {
+        @include content-breakpoint-down(sm) {
             --avatar-size: 88px;
             --gap-between-avatar-and-content: 14px;
         }
 
-        @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+        @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
             --avatar-offset-merge-mode: 0px;
         }
     }
@@ -1294,7 +1294,7 @@ article.article-timeline--art-photography {
         align-items: center;
     }
 
-    @include media-breakpoint-up(md) {
+    @include content-breakpoint-up(md) {
         ul.article-timeline-items {
             --photography-row-size: clamp(11rem, 14.45vw, 15.3rem);
             --photo-action-size: calc((var(--photography-row-size) - var(--photo-action-gap)) / 2);
@@ -1412,7 +1412,7 @@ article.article-timeline--art-photography {
             0 0 0 1px rgba(255, 255, 255, 0.08) inset,
             0 12px 30px rgba(0, 0, 0, 0.38);
 
-        @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+        @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
             top: 0;
             left: 0;
         }
@@ -1440,7 +1440,7 @@ article.article-timeline--art-photography {
     }
 
     div.article-timeline-item-content {
-        @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+        @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
             margin-left: var(--gap-between-avatar-and-content)!important;
             border-top-left-radius: $standard-border-radius!important;
             border-bottom-left-radius: $standard-border-radius!important;
@@ -1463,19 +1463,19 @@ article.article-timeline--art-digital-expression {
         perspective: 1400px;
         perspective-origin: 70% 18%;
 
-        @include media-breakpoint-down(lg) {
+        @include content-breakpoint-down(lg) {
             --digital-card-stack-base: clamp(8rem, 24vw, 9.8rem);
             --digital-card-stack-track: clamp(9.6rem, 28vw, 11.6rem);
             grid-template-columns: 1fr;
         }
 
-        @include media-breakpoint-down(sm) {
+        @include content-breakpoint-down(sm) {
             --digital-card-stack-base: clamp(5.8rem, 30vw, 7rem);
             --digital-card-stack-track: clamp(7rem, 34vw, 8.4rem);
             --digital-item-buffer: 0.38rem;
         }
 
-        @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+        @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
             --avatar-offset-merge-mode: 0px;
         }
     }
@@ -1515,7 +1515,7 @@ article.article-timeline--art-digital-expression {
         min-height: 100%;
         transform: translateZ(24px);
 
-        @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+        @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
             margin-left: 0!important;
         }
     }
@@ -1795,7 +1795,7 @@ article.article-timeline--art-digital-expression {
         }
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         li.article-timeline-item {
             min-height: 300px;
         }
@@ -1807,7 +1807,7 @@ article.article-timeline--art-digital-expression {
         }
     }
 
-    @media (max-width: 380px) {
+    @container (max-width: 380px) {
         ul.article-timeline-items {
             --digital-card-stack-base: clamp(5.3rem, 28vw, 6.35rem);
             --digital-item-buffer: 0.5rem;
@@ -1829,7 +1829,7 @@ article.article-timeline--art-digital-expression {
         }
     }
 
-    @include media-breakpoint-down($timeline-merge-mode-breakpoint) {
+    @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
         li.article-timeline-item--visual-neo-surface div.article-timeline-item-content {
             border-top-left-radius: 34px!important;
             border-bottom-left-radius: 34px!important;

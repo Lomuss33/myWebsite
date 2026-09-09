@@ -1,0 +1,96 @@
+@use "../../../styles/extend" as *;
+
+@include layout-desktop {
+    nav.nav-sidebar-extended div.nav-profile-card[data-profile-layout] {
+        display: block;
+        padding: 0;
+        min-width: 0;
+        --nav-profile-card-desktop-action-size: 2.75rem;
+        --avatar-size: clamp(3rem, min(32cqi, 35cqh), 6rem);
+        &[data-profile-layout="hidden"] { display: none; }
+        .nav-profile-card-main-row { display: contents; }
+        div.nav-profile-card-header {
+            display: grid;
+            width: 100%;
+            height: 100%;
+            min-height: 0;
+            padding: 0.5rem;
+            gap: 0.375rem;
+            grid-template-columns: minmax(0, 1fr);
+            grid-template-rows: max-content max-content;
+            grid-template-areas: "info" "actions";
+            align-content: center;
+            align-items: center;
+            justify-items: center;
+        }
+        div.nav-profile-card-media { display: none; grid-area: media; margin: 0; }
+        div.nav-profile-card-role { display: none; grid-area: role; margin: 0; width: 100%; height: 1.75rem; min-height: 1.75rem; }
+        div.nav-profile-card-info {
+            display: flex; grid-area: info; width: 100%; min-width: 0;
+            padding: 0; margin: 0; overflow: visible; align-items: center;
+        }
+        h1.nav-profile-card-name {
+            display: block; width: 100%; margin: 0; padding: 0.12em 0;
+            font-family: "Great Vibes", "Alex Brush", Georgia, serif;
+            font-weight: 400;
+            font-size: clamp(1.3rem, 12cqi, 2.5rem) !important;
+            line-height: 1.2 !important; transform: none; overflow: visible;
+            white-space: normal; text-align: center;
+        }
+        span.nav-profile-card-name-text {
+            display: flex; flex-wrap: wrap; flex-direction: row; justify-content: center;
+            width: 100%; max-width: 100%; gap: 0 0.25em; transform: none; white-space: normal;
+        }
+        span.nav-profile-card-name-line {
+            display: block; min-width: 0; max-width: 100%; flex: 0 1 auto;
+            white-space: normal; overflow-wrap: anywhere; margin: 0; text-align: center;
+        }
+        div.nav-profile-card-desktop-action-stack {
+            display: flex; grid-area: actions; flex-flow: row wrap;
+            width: auto; max-width: 100%; height: auto; gap: 0.375rem;
+            margin: 0; padding: 0; transform: none; opacity: 1;
+            align-self: center; justify-self: center;
+        }
+        &[data-profile-layout^="paired"] {
+            div.nav-profile-card-header {
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+                grid-template-rows: minmax(max-content, 1fr) max-content;
+                grid-template-areas: "media actions" "info info";
+            }
+            div.nav-profile-card-media { display: inline-flex; }
+        }
+        &[data-profile-layout^="stacked"] {
+            div.nav-profile-card-header {
+                grid-template-rows: minmax(max-content, 1fr) max-content max-content;
+                grid-template-areas: "media" "actions" "info";
+            }
+            div.nav-profile-card-media { display: inline-flex; }
+        }
+        &[data-profile-layout="paired-role"] div.nav-profile-card-header {
+            grid-template-rows: minmax(max-content, 1fr) max-content max-content;
+            grid-template-areas: "media actions" "info info" "role role";
+        }
+        &[data-profile-layout="stacked-role"] div.nav-profile-card-header,
+        &[data-profile-layout="stacked-column-role"] div.nav-profile-card-header {
+            grid-template-rows: minmax(max-content, 1fr) max-content max-content max-content;
+            grid-template-areas: "media" "actions" "info" "role";
+        }
+        &[data-profile-layout="stacked-column-role"] div.nav-profile-card-desktop-action-stack { flex-direction: column; }
+        &[data-profile-layout^="stacked"] span.nav-profile-card-name-text { flex-direction: column; }
+        &[data-profile-layout="compact-role"] div.nav-profile-card-header {
+            grid-template-rows: minmax(max-content, 1fr) max-content max-content;
+            grid-template-areas: "info" "actions" "role";
+        }
+        &[data-profile-layout$="-role"] {
+            div.nav-profile-card-header { padding-bottom: 0; }
+            div.nav-profile-card-role {
+                display: flex; align-self: end;
+                width: calc(100% + 1rem); max-width: none;
+                --nav-extended-role-opacity: 1;
+                --nav-extended-role-height: 1.75rem;
+            }
+        }
+    }
+    nav.nav-sidebar-extended div.nav-link-list-shell { overflow-y: auto; }
+    nav.nav-sidebar-extended div.nav-link-list-shell button.nav-link { min-height: 2.75rem; flex-shrink: 0; }
+}

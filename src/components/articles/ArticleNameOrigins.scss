@@ -40,7 +40,7 @@ section.name-origin-given {
 div.name-origin-meta {
     margin-bottom: 5px;
     color: var(--theme-texts-light);
-    font-size: clamp(.7rem, .64rem + .2vw, .84rem);
+    font-size: clamp(0.875rem, 0.875rem + .2vw, 0.875rem);
     font-weight: 720;
     letter-spacing: .11em;
     text-transform: uppercase;
@@ -85,7 +85,7 @@ div.name-origin-copy {
         min-width: 0;
         max-width: 100%;
         color: var(--theme-texts-light);
-        font-size: clamp(1.05rem, .83rem + .68vw, 1.42rem);
+        font-size: clamp(1.05rem, 0.875rem + .68vw, 1.42rem);
         line-height: 1.52;
         opacity: .76;
         text-wrap: pretty;
@@ -125,7 +125,7 @@ div.name-origin-copy {
         max-width: 100%;
         margin: 0;
         color: var(--theme-texts-light);
-        font-size: clamp(1.05rem, .83rem + .68vw, 1.42rem);
+        font-size: clamp(1.05rem, 0.875rem + .68vw, 1.42rem);
         line-height: 1.52;
         opacity: .76;
         overflow-wrap: anywhere;
@@ -155,7 +155,7 @@ div.article-name-origins-panel > footer {
     gap: 10px;
     padding-top: 13px;
     color: var(--theme-texts-light);
-    font-size: clamp(.72rem, .66rem + .18vw, .84rem);
+    font-size: clamp(0.875rem, 0.875rem + .18vw, 0.875rem);
     font-weight: 700;
     letter-spacing: .08em;
     text-transform: uppercase;
@@ -166,7 +166,7 @@ div.article-name-origins-panel > footer {
 @container (max-width: 650px) {
     section.name-origin, section.name-origin-given { gap: 12px; padding-block: clamp(18px, 6cqw, 26px); }
     div.name-origin-display { min-width: 0; max-width: 100%; }
-    div.name-origin-meta { margin-bottom: 3px; font-size: clamp(.62rem, 2.8cqw, .76rem); letter-spacing: .08em; }
+    div.name-origin-meta { margin-bottom: 3px; font-size: clamp(0.875rem, 2.8cqw, 0.875rem); letter-spacing: .08em; }
     div.name-origin-word.pretext-interactive-text { max-width: 100%; font-size: clamp(4rem, 21cqw, 6.6rem); }
     div.name-origin-copy {
         min-width: 0;
@@ -193,7 +193,7 @@ div.article-name-origins-panel > footer {
     div.article-name-origins-panel > footer {
         align-items: flex-start;
         padding-top: 10px;
-        font-size: clamp(.62rem, 2.7cqw, .74rem);
+        font-size: clamp(0.875rem, 2.7cqw, 0.875rem);
         line-height: 1.35;
     }
 }
@@ -239,7 +239,7 @@ div.article-name-origins-panel > footer {
 @container (min-width: 1000px) {
     div.name-origin-meta {
         margin-bottom: 12px;
-        font-size: clamp(.82rem, .78rem + .12cqw, .98rem);
+        font-size: clamp(0.875rem, 0.875rem + .12cqw, .98rem);
     }
 
     section.name-origin {
@@ -267,7 +267,7 @@ div.article-name-origins-panel > footer {
             justify-self: end;
             flex-wrap: nowrap;
             white-space: nowrap;
-            font-size: clamp(1rem, .78rem + .32cqw, 1.4rem);
+            font-size: clamp(1rem, 0.875rem + .32cqw, 1.4rem);
         }
         .name-origin-story-1 { grid-column: 7 / 13; grid-row: 2; }
         .name-origin-story-2 { grid-column: 7 / 13; grid-row: 3; }
@@ -303,7 +303,7 @@ div.article-name-origins-panel > footer {
     }
 
     section.name-origin-given div.name-origin-lineage {
-        font-size: clamp(1rem, .78rem + .32cqw, 1.4rem);
+        font-size: clamp(1rem, 0.875rem + .32cqw, 1.4rem);
     }
 }
 

@@ -1,7 +1,7 @@
 @use "../../../styles/extend" as *;
 
 div.nav-link-list-shell {
-    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+    @include layout-desktop {
         @include nav-hazard-shell-frame(4px);
 
         &::before {
@@ -35,12 +35,12 @@ div.nav-link-list-shell {
     overflow: hidden;
     background: var(--theme-nav-surface);
 
-    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+    @include layout-desktop {
         overflow: visible;
     }
 }
 
-@include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+@include layout-desktop {
     div.nav-sidebar-rail-stack > div.nav-link-list-shell,
     nav.nav-sidebar-short-rail div.nav-link-list-shell {
         &::after {

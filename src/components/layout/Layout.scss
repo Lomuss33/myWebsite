@@ -11,7 +11,7 @@ div.layout {
     background: var(--theme-background);
     color: var(--theme-texts);
 
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         overflow: visible;
     }
 }

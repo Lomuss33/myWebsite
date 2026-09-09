@@ -14,7 +14,9 @@
         "preview": "vite preview",
         "resume:make:article": "node npm/npm-resume-new-article.js",
         "resume:clear": "node npm/npm-resume-clear.js",
-        "validate:i18n": "node npm/validate-i18n-text.js"
+        "validate:i18n": "node npm/validate-i18n-text.js",
+        "test:layout": "node --test npm/responsive-layout.test.js",
+        "test:responsive": "playwright test"
     },
     "dependencies": {
         "@chenglou/pretext": "^0.0.8",
@@ -35,6 +37,7 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.39.5",
+        "@playwright/test": "^1.63.0",
         "@types/react": "^18.3.31",
         "@types/react-dom": "^18.3.7",
         "@vitejs/plugin-react": "^4.7.0",

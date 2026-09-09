@@ -1,149 +1,68 @@
 @use "../../styles/extend" as *;
 
 div.layout-navigation-wrapper {
-    --mobile-nav-tabs-total-height: calc(var(--nav-tabs-height, #{$nav-tabs-height}) + env(safe-area-inset-bottom, 0px) + var(--mobile-viewport-offset-bottom, 0px));
-    --layout-rail-compact-width: 113.4px;
-    --layout-rail-wide-desktop-width:
-        clamp(230.85px, 15.39vw, 299.25px);
-    --layout-rail-wide-ultrawide-width:
-        clamp(340px, 12vw, 420px);
-    --layout-rail-current-width:
-        var(--layout-rail-wide-desktop-width);
-    --layout-page-max-width: 960px;
-    --layout-shell-column-gap: 0px;
-
-    display: flex;
-    flex: 1 1 auto;
+    --mobile-nav-tabs-total-height: calc(var(--nav-tabs-height, 3.5rem) + env(safe-area-inset-bottom, 0px) + var(--mobile-viewport-offset-bottom, 0px));
+    --layout-rail-compact-width: 5.5rem;
+    --layout-rail-current-width: clamp(12rem, 18vw, 18rem);
+    --layout-page-max-width: 72rem;
+    --layout-content-zoom: 0.8;
+    display: grid;
+    grid-template-columns: var(--layout-rail-current-width) minmax(0, 1fr);
     position: relative;
-    align-items: stretch;
-    min-width: 0;
+    isolation: isolate;
     width: 100%;
-    height: 100vh;
-    height: 100svh;
-    min-height: 100vh;
-    min-height: 100svh;
-    max-height: 100vh;
-    max-height: 100svh;
+    max-width: none;
+    height: 100dvh;
+    min-height: 0;
+    margin-inline: auto;
     background:
-        radial-gradient(circle at 12% 12%, rgba(103, 232, 249, 0.08) 0%, transparent 24%),
-        radial-gradient(circle at 84% 18%, rgba(244, 114, 182, 0.06) 0%, transparent 22%),
-        radial-gradient(circle at 50% 100%, rgba(96, 165, 250, 0.06) 0%, transparent 30%),
-        linear-gradient(180deg, var(--theme-background-sky-top, var(--theme-background)) 0%, var(--theme-background-sky-middle, var(--theme-background)) 46%, var(--theme-background-sky-bottom, var(--theme-background)) 100%);
-
-    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
-        display: grid;
-        grid-template-columns:
-            var(--layout-rail-current-width)
-            minmax(0, 1fr);
-        column-gap: 0;
-    }
-
-    @include media-layout-ultrawide {
-        --layout-rail-current-width:
-            var(--layout-rail-wide-ultrawide-width);
-        --layout-page-max-width: 960px;
-    }
-
-    @media (min-width: 1680px) {
-        --layout-shell-column-gap: clamp(28px, 2.4vw, 52px);
-    }
-
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-        height: auto;
-        min-height: var(--mobile-visual-viewport-height, 100svh);
-        max-height: inherit;
+        radial-gradient(circle at 12% 12%, rgba(103, 232, 249, 0.08), transparent 24%),
+        radial-gradient(circle at 84% 18%, rgba(244, 114, 182, 0.06), transparent 22%),
+        linear-gradient(180deg, var(--theme-background-sky-top, var(--theme-background)), var(--theme-background-sky-middle, var(--theme-background)) 46%, var(--theme-background-sky-bottom, var(--theme-background)));
+    @include layout-mobile {
+        display: flex;
         flex-direction: column;
+        height: auto;
+        max-width: 90rem;
+        min-height: 100svh;
     }
 }
 
 div.layout-navigation-wrapper:has(> nav.nav-sidebar-short-rail) {
-    --layout-rail-current-width:
-        var(--layout-rail-compact-width);
-}
-
-div.layout-navigation-wrapper > nav,
-div.layout-navigation-children-wrapper,
-div.layout-navigation-children-inner {
-    position: relative;
-    min-height: 0;
+    --layout-rail-current-width: var(--layout-rail-compact-width);
 }
 
 div.layout-navigation-wrapper > nav {
+    position: relative;
     grid-column: 1;
     width: 100%;
     min-width: 0;
+    min-height: 0;
     z-index: 2;
 }
 
-div.layout-navigation-children-wrapper {
-    grid-column: 2;
-    z-index: 1;
-}
- 
-div.layout-navigation-children-wrapper {
-    display: flex;
-    flex: 1 1 auto;
-    align-items: stretch;
-    justify-content: center;
-    min-width: 0;
-    width: 100%;
-    min-height: 100%;
-    height: 100%;
-    margin: 0;
-    border-radius: 0;
-
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-        min-height: var(--mobile-visual-viewport-height, 100svh);
-        height: auto;
-    }
-
-    @include media-breakpoint-up(lg) {
-        justify-content: flex-start;
-        overflow: visible;
-    }
-
-    @include media-layout-ultrawide {
-        justify-content: flex-start;
-        box-sizing: border-box;
-    }
-}
-
+div.layout-navigation-children-wrapper,
 div.layout-navigation-children-inner {
+    position: relative;
     display: flex;
     flex: 1 1 auto;
     min-width: 0;
+    min-height: 0;
     width: 100%;
-    max-width: var(--layout-page-max-width);
-    min-height: 100%;
     height: 100%;
-    margin-inline: auto;
-    transform: none;
-    transform-origin: initial;
+    @include layout-mobile { height: auto; }
+}
+div.layout-navigation-children-wrapper { grid-column: 2; z-index: 1; }
 
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-        height: auto;
-    }
-
-    @include media-breakpoint-up(lg) {
-        flex: 1 1 auto;
-        width: 100%;
-        min-height: 100%;
+// The page detaches as soon as its readable width is reached. The full-width
+// shell keeps the existing garden visible in the space around the page.
+@include layout-desktop {
+    div.layout-navigation-children-wrapper { justify-content: center; }
+    div.layout-navigation-children-inner {
+        flex: 0 1 auto;
+        zoom: var(--layout-content-zoom);
+        width: calc(100% / var(--layout-content-zoom));
+        max-width: calc(var(--layout-page-max-width) / var(--layout-content-zoom));
         height: 100%;
-    }
-
-    @include media-layout-ultrawide {
-        flex: 0 1 var(--layout-page-max-width);
-        width: min(100%, var(--layout-page-max-width));
-        max-width: var(--layout-page-max-width);
-        min-height: 100%;
-        height: 100%;
-        margin-left: max(
-            0px,
-            calc(
-                ((100vw - var(--layout-page-max-width)) / 2) -
-                var(--layout-rail-current-width)
-            )
-        );
-        margin-right: 0;
     }
 }

@@ -8,30 +8,30 @@ div.article-cards-items {
     --avatar-border-size: 7px;
     --min-height: 260px;
 
-    @include media-breakpoint-down(xxl) {
+    @include content-breakpoint-down(xxl) {
         --avatar-size: 95px;
         --item-padding-default: 30px;
     }
 
-    @include media-breakpoint-down(xl) {
+    @include content-breakpoint-down(xl) {
         --avatar-size: 90px;
         --item-padding-default: 25px;
         --min-height: 230px;
     }
 
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         --avatar-size: 85px;
         --item-padding-default: 20px;
     }
 
-    @include media-breakpoint-down(md) {
+    @include content-breakpoint-down(md) {
         --avatar-size: 80px;
         --avatar-border-size: 6px;
         --item-padding-default: 20px;
         --min-height: 220px;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         --avatar-size: 75px;
         --avatar-border-size: 6px;
         --item-padding-default: 20px;
@@ -57,11 +57,11 @@ div.article-cards-items-static {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 20px;
 
-    @include media-breakpoint-down(md) {
+    @include content-breakpoint-down(md) {
         gap: 18px;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         grid-template-columns: 1fr;
         gap: 16px;
     }
@@ -91,7 +91,7 @@ div.article-cards-item-content {
     text-align: center;
     margin-top: 16px;
     height: 100%;
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         margin-top: 12px;
     }
 
@@ -313,7 +313,7 @@ article#article-2-section-education {
     span.article-cards-item-education-certification-field-label {
         display: block;
         color: var(--cert-label);
-        font-size: 0.68rem;
+        font-size: 0.875rem;
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0;
@@ -326,7 +326,7 @@ article#article-2-section-education {
         display: block;
         min-width: 0;
         color: var(--cert-value);
-        font-size: clamp(0.78rem, 0.75rem + 0.1vw, 0.86rem);
+        font-size: clamp(0.875rem, 0.875rem + 0.1vw, 0.875rem);
         font-weight: 750;
         line-height: 1.14;
         overflow-wrap: anywhere;
@@ -339,7 +339,7 @@ article#article-2-section-education {
         color: var(--cert-muted);
         padding: 0 10px 2px;
         margin-bottom: 4px;
-        font-size: clamp(0.84rem, 0.8rem + 0.12vw, 0.92rem);
+        font-size: clamp(0.875rem, 0.875rem + 0.12vw, 0.92rem);
         line-height: 1.42;
         text-align: center;
     }
@@ -393,11 +393,11 @@ article#article-2-section-education {
         }
 
         &-date-badge {
-            font-size: clamp(0.86rem, 0.82rem + 0.12vw, 0.94rem);
+            font-size: clamp(0.875rem, 0.875rem + 0.12vw, 0.94rem);
         }
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         div.article-cards-item-education-certification {
             min-height: 380px;
         }

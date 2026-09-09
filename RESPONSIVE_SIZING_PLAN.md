@@ -106,3 +106,7 @@ Use assertions that verify meaningful outcomes and representative screenshots th
 The implementation will produce the shared mode/sizing foundation, migrated application components, a portable regression harness, before/after measurements for the known failures, and a final verification report. The report will distinguish completed automated checks, visual inspection, and any real-device checks still outstanding.
 
 The first implementation milestone is a working Home and Contact flow in all three modes with readable, unscaled content and correct navigation/scroll behavior. That establishes the geometry on which the remaining article migration depends.
+
+## Implementation update — 2026-09-09
+
+The shared three-mode foundation and component sizing migration are implemented. See [implementation and verification](docs/audits/responsive-sizing-verification.md) for completed checks, reproduction commands, and outstanding manual/device validation. The acceptance list above remains the broader validation target; unavailable device/zoom checks are not marked passed.

@@ -6,7 +6,7 @@ div.scrollable-wrapper {
     min-height: 0;
     position: relative;
 
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         height: auto;
         min-height: 100%;
     }

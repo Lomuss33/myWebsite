@@ -19,7 +19,7 @@ img.medieval-cursor-layer {
         visibility: visible;
     }
 
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         display: none;
     }
 }

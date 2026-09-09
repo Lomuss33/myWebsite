@@ -135,7 +135,7 @@ function ImageViewContainer({ resolvedSrc, resolvedSrcSet, sizes, width, height,
              ref={imageRef}
              src={resolvedSrc}
              srcSet={resolvedSrcSet || undefined}
-             sizes={sizes || undefined}
+             sizes={loading === "lazy" ? `auto, ${sizes || "100vw"}` : sizes || undefined}
              alt={alt}
              width={width || undefined}
              height={height || undefined}

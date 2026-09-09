@@ -34,7 +34,7 @@ div.article-manuscript-stage div.illustrated-manuscript {
         inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
-@include media-breakpoint-down(lg) {
+@include content-breakpoint-down(lg) {
     div.article-manuscript-stage div.illustrated-manuscript {
         min-height: clamp(334px, 78vw, 560px);
     }

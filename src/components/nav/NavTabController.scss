@@ -17,7 +17,7 @@ div.nav-tab-controller-wrapper {
     touch-action: none;
     overscroll-behavior: none;
 
-    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+    @include layout-desktop {
         display: none;
     }
 }

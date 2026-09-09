@@ -6,6 +6,7 @@
 @use "../extend" as *;
 
 html {
+    font-size: 100%;
     // The document is the native scroll owner on mobile and is fixed on the
     // desktop layout. Never let its platform scrollbar reserve page width.
     scrollbar-width: none;
@@ -15,14 +16,11 @@ html {
         height: 0;
     }
 
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
-        font-size: 15px;
+    @include layout-mobile {
         overflow-y: auto;
     }
 
-    @media (max-width: 380px) {
-        font-size: 14px;
-    }
+
 }
 
 html,
@@ -33,7 +31,7 @@ body,
     padding: 0;
     overflow-x: hidden;
 
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         // Unlike `hidden`, `clip` does not turn a visible vertical axis into an
         // implicit `auto` scrolling container. This leaves one mobile scroller:
         // the browser viewport rooted at `html`.
@@ -54,14 +52,14 @@ body {
     width: 100%;
     background-color: $loader-background;
 
-    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+    @include layout-desktop {
         position: fixed!important;
         inset: 0;
         height: 100dvh;
         overflow-y: hidden!important;
     }
 
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         overflow-x: clip!important;
         overflow-y: visible;
     }
@@ -71,12 +69,7 @@ body.body-theme {
     background-color: var(--theme-background)!important;
 }
 
-body.body-android {
-    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
-        position: relative!important;
-        overflow-y: auto!important;
-    }
-}
+
 
 body.body-no-scroll {
     overflow-y: hidden!important;

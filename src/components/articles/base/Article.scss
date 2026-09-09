@@ -75,11 +75,11 @@ article.article::after {
     box-shadow: 0 0 24px color-mix(in srgb, var(--article-title-line-mid) 24%, transparent);
     opacity: 0.9;
 
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         margin-top: clamp(32px, 4svh, 40px);
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         margin-top: clamp(32px, 4svh, 40px);
     }
 }
@@ -97,11 +97,11 @@ h4.article-title {
     margin-top: 10px;
     margin-bottom: 18px;
 
-    @include media-breakpoint-down(xl) {
+    @include content-breakpoint-down(xl) {
         font-size: clamp(1.04rem, 0.98rem + 0.34vw, 1.24rem)!important;
     }
 
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         margin-top: 8px;
         margin-bottom: 16px;
         font-size: clamp(1rem, 0.94rem + 0.28vw, 1.12rem)!important;
@@ -118,7 +118,7 @@ h4.article-title {
         margin-right: 8px!important;
         padding-right: 0!important;
 
-        @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        @include layout-mobile {
             font-size: clamp(0.92rem, 0.88rem + 0.18vw, 1rem)!important;
         }
     }
@@ -132,7 +132,7 @@ section#section-about h4.article-title {
     font-size: clamp(1.34rem, 1.22rem + 0.53vw, 1.7rem)!important;
     line-height: 1.16;
 
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         font-size: clamp(1.25rem, 1.16rem + 0.36vw, 1.39rem)!important;
     }
 }
@@ -140,7 +140,7 @@ section#section-about h4.article-title {
 section#section-about h4.article-title span.article-title-prefix {
     font-size: clamp(1.43rem, 1.33rem + 0.39vw, 1.62rem)!important;
 
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         font-size: clamp(1.32rem, 1.25rem + 0.25vw, 1.43rem)!important;
     }
 }
@@ -154,28 +154,28 @@ div.article-content {
     max-width: 100%;
     min-width: 0;
     box-sizing: border-box;
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         margin: 0 6px;
     }
 }
 
 article.article-spacing-default {
     margin-top: 18px;
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         margin-top: 12px;
     }
 }
 
 article.article-spacing-small {
     margin-top: 10px;
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         margin-top: 8px;
     }
 }
 
 div.article-category-filter {
     margin-bottom: 20px!important;
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         margin-bottom: 18px!important;
     }
 }

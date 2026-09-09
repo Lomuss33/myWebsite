@@ -81,7 +81,7 @@ button.circular-button-variant-blend, button.circular-button-variant-transparent
         max-height: $size;
         font-size: calc(#{$size}/2.5);
 
-        @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        @include layout-mobile {
             width: $responsive-size;
             height: $responsive-size;
             min-width: $responsive-size;

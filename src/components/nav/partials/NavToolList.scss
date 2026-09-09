@@ -260,7 +260,7 @@ div.nav-tools {
 
 }
 
-@include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+@include layout-desktop {
     nav.nav-sidebar {
         div.nav-tools {
             --nav-tools-hazard-thickness: 4px;

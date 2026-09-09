@@ -9,11 +9,11 @@ div.article-text-items {
     display: flex;
     flex-direction: column;
 
-    @include media-breakpoint-down(xxl) {--avatar-size: 270px}
-    @include media-breakpoint-down(xl) {--avatar-size: 200px}
-    @include media-breakpoint-down(lg) {--avatar-size: 180px}
-    @include media-breakpoint-down(md) {--avatar-size: 150px}
-    @include media-breakpoint-down(sm) {--avatar-size: 130px}
+    @include content-breakpoint-down(xxl) {--avatar-size: 270px}
+    @include content-breakpoint-down(xl) {--avatar-size: 200px}
+    @include content-breakpoint-down(lg) {--avatar-size: 180px}
+    @include content-breakpoint-down(md) {--avatar-size: 150px}
+    @include content-breakpoint-down(sm) {--avatar-size: 130px}
 }
 
 div.article-text-items.article-text-items-mode-draggable_inline_icon_flow {
@@ -27,7 +27,7 @@ div.article-text-items.article-text-items-mode-draggable_inline_icon_flow {
 
 div.article-text-items.article-text-items-keep-image-row {
     div.article-text-item {
-        @include media-breakpoint-down(lg) {
+        @include content-breakpoint-down(lg) {
             flex-direction: column;
             align-items: stretch;
             &:not(:last-child) {
@@ -41,7 +41,7 @@ div.article-text-items.article-text-items-keep-image-row {
     }
 
     div.article-text-avatar-view-wrapper {
-        @include media-breakpoint-down(lg) {
+        @include content-breakpoint-down(lg) {
             display: block;
             flex: 0 0 100%;
             width: 100% !important;
@@ -59,7 +59,7 @@ div.article-text-items.article-text-items-keep-image-row {
     }
 
     div.article-text-avatar-view {
-        @include media-breakpoint-down(lg) {
+        @include content-breakpoint-down(lg) {
             display: block;
             width: 100% !important;
             min-width: 100% !important;
@@ -76,7 +76,7 @@ div.article-text-items.article-text-items-keep-image-row {
     }
 
     div.article-text-excerpt {
-        @include media-breakpoint-down(lg) {
+        @include content-breakpoint-down(lg) {
             margin: 0;
         }
 
@@ -85,7 +85,7 @@ div.article-text-items.article-text-items-keep-image-row {
         }
     }
 
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         div.avatar-view,
         div.avatar-view-image-view,
         div.image-view,
@@ -112,14 +112,14 @@ div.article-text-item {
     align-items: center;
 
     margin-top: calc(var(--row-gap)/2);
-    @include media-breakpoint-up($column-breakpoint) {
+    @include content-breakpoint-up($column-breakpoint) {
         margin-bottom: calc(var(--row-gap)/2);
     }
     &:not(:last-child) {
         margin-bottom: calc(var(--row-gap)/2);
     }
 
-    @include media-breakpoint-down($column-breakpoint) {
+    @include content-breakpoint-down($column-breakpoint) {
         flex-direction: column;
         &:not(:last-child) {
             margin-bottom: 30px;
@@ -139,7 +139,7 @@ div.article-text-avatar-view-wrapper {
 
     margin-left: calc(var(--spacing)/4);
     margin-right: var(--spacing);
-    @include media-breakpoint-down($column-breakpoint) {
+    @include content-breakpoint-down($column-breakpoint) {
         margin-left: 5px;
         margin-right: 0;
     }
@@ -150,7 +150,7 @@ div.article-text-avatar-view {
     width: 100%;
     background-color: transparent;
     font-size: calc(var(--avatar-size) / 1.75);
-    @include media-breakpoint-down($column-breakpoint) {
+    @include content-breakpoint-down($column-breakpoint) {
         margin-bottom: calc(var(--spacing)/2);
     }
 }
@@ -162,10 +162,10 @@ div.article-text-excerpt {
 
 
     margin-bottom: 8px;
-    @include media-breakpoint-down(xxl) {
+    @include content-breakpoint-down(xxl) {
         margin-bottom: 2px;
     }
-    @include media-breakpoint-down($column-breakpoint) {
+    @include content-breakpoint-down($column-breakpoint) {
         margin: 10px 0 0;
     }
 }
@@ -188,11 +188,11 @@ div.article-text-item.article-text-item-flow-card {
     background-color: var(--theme-boards-background);
     border: 1px solid var(--theme-standard-borders);
 
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         padding: 20px;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         padding: 16px;
     }
 }
@@ -217,7 +217,7 @@ article#article-3-section-experience {
         width: var(--experience-card-max-width);
         margin: 0 auto;
 
-        @include media-breakpoint-down(sm) {
+        @include content-breakpoint-down(sm) {
             --experience-card-inner-max-width: 100%;
             --experience-card-prose-max-width: 100%;
             --experience-card-intro-max-width: 100%;
@@ -225,7 +225,7 @@ article#article-3-section-experience {
             gap: 14px;
         }
 
-        @media (min-width: 1440px) {
+        @container (min-width: 1440px) {
             --experience-card-max-width: min(100%, 1320px);
             --experience-card-inner-max-width: min(100%, 1140px);
             --experience-card-prose-max-width: min(100%, 80ch);
@@ -261,7 +261,7 @@ article#article-3-section-experience {
             box-shadow 140ms linear,
             background 140ms linear;
 
-        @include media-breakpoint-down(lg) {
+        @include content-breakpoint-down(lg) {
             padding-inline: 20px;
         }
 
@@ -363,7 +363,7 @@ article#article-3-section-experience {
         margin: 0;
         padding: 0;
         color: color-mix(in srgb, var(--experience-card-accent) 54%, var(--experience-flow-label-color) 46%);
-        font-size: 0.74rem;
+        font-size: 0.875rem;
         font-weight: 700;
         letter-spacing: 0.18em;
         text-transform: uppercase;
@@ -382,9 +382,9 @@ article#article-3-section-experience {
         max-width: min(100%, 26ch);
     }
 
-    @media (min-width: 1440px) {
+    @container (min-width: 1440px) {
         p.article-text-flow-card-eyebrow {
-            font-size: 0.82rem;
+            font-size: 0.875rem;
         }
 
         h3.article-text-flow-card-heading {
@@ -503,7 +503,7 @@ article#article-3-section-experience {
         line-height: 1.68;
     }
 
-    @media (min-width: 1440px) {
+    @container (min-width: 1440px) {
         p.pretext-draggable-inline-icon-text-intro,
         div.pretext-draggable-inline-icon-text-body,
         p.pretext-draggable-inline-icon-text-paragraph {
@@ -632,13 +632,13 @@ article#article-3-section-experience {
         }
     }
 
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         h3.article-text-flow-card-heading {
             max-width: min(100%, 22ch);
         }
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         div.article-text-item.article-text-item-flow-card {
             padding: 16px 14px;
             border-radius: 22px;
@@ -658,7 +658,7 @@ article#article-3-section-experience {
         }
 
         p.article-text-flow-card-eyebrow {
-            font-size: 0.7rem;
+            font-size: 0.875rem;
             letter-spacing: 0.14em;
         }
 
@@ -669,7 +669,7 @@ article#article-3-section-experience {
         }
 
         span.article-text-flow-card-axis-label {
-            font-size: 0.84rem;
+            font-size: 0.875rem;
             letter-spacing: 0.12em;
         }
 
@@ -678,7 +678,7 @@ article#article-3-section-experience {
         }
 
         span.article-text-flow-card-impact-pill {
-            font-size: 0.82rem;
+            font-size: 0.875rem;
         }
 
         div.pretext-draggable-inline-icon-text-rail-block {

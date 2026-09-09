@@ -7,6 +7,7 @@
 import React, {createContext, useContext, useEffect, useRef, useState, useSyncExternalStore} from 'react'
 import {useUtils} from "../hooks/utils.js"
 import {useScheduler} from "../hooks/scheduler.js"
+import {applyLayout, readLayout} from "../config/responsiveLayout.js"
 import {useData} from "./DataProvider.jsx"
 
 const getScrollPositionSnapshot = () => {
@@ -56,6 +57,8 @@ function ViewportProvider({ children }) {
         bottom: null,
         height: null
     })
+    const [layout, setLayout] = useState(() => readLayout())
+    const layoutRef = useRef(layout)
     const [innerWidth, setInnerWidth] = useState(window.innerWidth)
     const [innerHeight, setInnerHeight] = useState(window.innerHeight)
     const [clipboardText, setClipboardText] = useState(null)
@@ -112,6 +115,9 @@ function ViewportProvider({ children }) {
     }
 
     const _applyResize = () => {
+        const nextLayout = applyLayout(readLayout(layoutRef.current))
+        layoutRef.current = nextLayout
+        setLayout(nextLayout)
         setInnerWidth(window.innerWidth)
         setInnerHeight(window.innerHeight)
         _scheduleVisualViewportSync()
@@ -208,8 +214,7 @@ function ViewportProvider({ children }) {
     }
 
     const isMobileLayout = () => {
-        const mobileBreakpoint = utils.css.getRootSCSSVariable("--max-breakpoint-for-tabbed-interface")
-        return !isBreakpoint(mobileBreakpoint)
+        return layout.mode === "mobile"
     }
 
     const isDesktopLayout = () => {
@@ -274,6 +279,7 @@ function ViewportProvider({ children }) {
 
         return (
         <ViewportContext.Provider value={{
+            layoutMode: layout.mode,
             innerWidth,
             innerHeight,
 

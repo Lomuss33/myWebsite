@@ -4,7 +4,7 @@ nav.nav-header-mobile {
     width: 100%;
     position: relative;
 
-    @include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
+    @include layout-desktop {
         display: none;
     }
 
@@ -35,7 +35,7 @@ nav.nav-header-mobile {
 
 [data-theme="light"] {
     nav.nav-header-mobile {
-        @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        @include layout-mobile {
             --theme-nav-mobile-action-edge: rgba(37, 99, 235, 0.28);
 
             div.nav-header-mobile-card-wrapper {
@@ -51,7 +51,7 @@ nav.nav-header-mobile {
 
 [data-theme="dark"] {
     nav.nav-header-mobile {
-        @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        @include layout-mobile {
             --theme-nav-mobile-action-edge: rgba(103, 232, 249, 0.24);
 
             div.nav-header-mobile-card-wrapper {

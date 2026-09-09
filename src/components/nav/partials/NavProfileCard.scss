@@ -1,3 +1,4 @@
+@use "./profile-fit";
 @use "../../../styles/extend" as *;
 
 div.nav-profile-card {
@@ -349,7 +350,7 @@ div.nav-profile-card {
         padding: 0 2px 0 0;
         box-sizing: border-box;
         min-height: 0;
-        @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        @include layout-mobile {
             margin-top: 14px;
             margin-bottom: 8px;
             align-items: center;
@@ -375,7 +376,7 @@ div.nav-profile-card {
         width: fit-content;
         max-width: 100%;
 
-        @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        @include layout-mobile {
             font-size: 1.35rem!important;
             margin-bottom: 7px;
             line-height: 1.55rem!important;
@@ -421,7 +422,7 @@ div.nav-profile-card {
             filter: drop-shadow(0 0 0.32rem color-mix(in srgb, var(--theme-primary) 32%, transparent 68%));
         }
 
-        @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        @include layout-mobile {
             margin-left: 10px;
             margin-right: 10px;
         }
@@ -545,7 +546,7 @@ div.nav-profile-card {
             transform: translateY(-1px);
         }
 
-        @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+        @include layout-mobile {
             font-size: 0.88rem;
             min-height: 25px;
         }
@@ -888,7 +889,7 @@ div.nav-profile-card {
         }
     }
 
-    @include media-breakpoint-down($max-breakpoint-for-tabbed-interface) {
+    @include layout-mobile {
         --avatar-size: clamp(3.75rem, 20cqi, 6rem);
         --avatar-shell-gap: clamp(4px, 1.2vw, 6px);
         --avatar-outline-size: clamp(1.2px, 0.4vw, 1.45px);
@@ -1513,413 +1514,6 @@ div.nav-profile-card {
     }
 }
 
-@include media-breakpoint-up($max-breakpoint-for-tabbed-interface) {
-    nav.nav-sidebar-extended div.nav-profile-card:not(.nav-profile-card-short-rail)::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        right: 0;
-        left: 0;
-        z-index: 10;
-        height: 4px;
-        pointer-events: none;
-        background-image: repeating-linear-gradient(
-            -55deg,
-            #000000,
-            #000000 26px,
-            var(--theme-primary) 26px,
-            var(--theme-primary) 52px
-        );
-    }
-
-    // Desktop invariants: the complete name and all profile controls stay visible together.
-    nav.nav-sidebar-extended div.nav-profile-card:not(.nav-profile-card-short-rail):has(div.nav-profile-card-desktop-action-stack) {
-        display: grid;
-        grid-template-rows: minmax(0, 1fr);
-        align-items: stretch;
-        justify-content: stretch;
-
-        > div.nav-profile-card-header {
-            justify-content: stretch;
-            min-height: 0;
-        }
-
-        > div.nav-profile-card-header > div.nav-profile-card-main-row > div.nav-profile-card-media,
-        > div.nav-profile-card-header > div.nav-profile-card-main-row > div.nav-profile-card-info,
-        > div.nav-profile-card-header > div.nav-profile-card-main-row > div.nav-profile-card-desktop-action-stack {
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-    }
-
-    nav.nav-sidebar-extended div.nav-profile-card-info {
-        align-items: center;
-        justify-content: center;
-        padding-block: 0;
-        padding-inline: 0;
-        text-align: center;
-        overflow: clip;
-    }
-
-    nav.nav-sidebar-extended h1.nav-profile-card-name {
-        justify-content: center;
-        width: 100%;
-        max-width: 100%;
-        margin: 0;
-        font-family: "Great Vibes", "Alex Brush", "IM Fell English", "Iowan Old Style", "Book Antiqua", Palatino, Georgia, serif;
-        font-style: normal;
-        font-weight: 400;
-        font-size: clamp(1.75rem, min(16.5cqi, 23cqh, 7.4svh), 3.15rem) !important;
-        line-height: 1 !important;
-        letter-spacing: 0.001em;
-        font-feature-settings: "calt" 1, "liga" 1, "dlig" 1, "swsh" 1;
-        text-rendering: optimizeLegibility;
-        transform: scaleX(1.06);
-        transform-origin: center;
-        text-align: center;
-        white-space: nowrap;
-        padding-block: 0.25em 0.12em;
-        box-sizing: border-box;
-        overflow: clip;
-    }
-
-    nav.nav-sidebar-extended span.nav-profile-card-name-text {
-        display: inline-flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        transform: none;
-        width: auto;
-        min-width: 0;
-        max-width: 100%;
-        white-space: nowrap;
-        column-gap: clamp(0.28rem, 4.5%, 1rem);
-    }
-
-    nav.nav-sidebar-extended span.nav-profile-card-name-line {
-        display: inline-flex;
-        flex: 0 0 auto;
-        white-space: nowrap;
-    }
-
-    nav.nav-sidebar-extended span.nav-profile-card-name-line-last {
-        margin-left: 0;
-    }
-
-    nav.nav-sidebar-extended div.nav-profile-card-role {
-        grid-area: role;
-        justify-self: center;
-        width: calc(100% + (var(--nav-profile-card-inline-padding) * 2));
-        max-width: none;
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-
-    // State 1: standard rail. Keep the controls beside the portrait and give
-    // the name the complete row below; the portrait is never isolated.
-    nav.nav-sidebar-extended div.nav-profile-card-header {
-        --avatar-size: clamp(3.6rem, min(36cqi, 58cqh), 5.25rem);
-        --nav-profile-card-desktop-action-size: clamp(2rem, min(18cqi, 30cqh), 2.75rem);
-
-        display: grid;
-        grid-template-columns:
-            minmax(0, 1fr)
-            max-content
-            clamp(0.45rem, 4cqi, 1rem)
-            max-content
-            minmax(0, 1fr);
-        grid-template-rows: minmax(auto, 1fr) max-content auto;
-        grid-template-areas:
-            ". actions . media ."
-            "info info info info info"
-            "role role role role role";
-        align-content: start;
-        align-items: center;
-        justify-items: center;
-        justify-content: stretch;
-        column-gap: 0;
-        row-gap: 0;
-        padding-top: clamp(0.35rem, 0.7svh, 0.5rem);
-        padding-inline: var(--nav-profile-card-inline-padding);
-        padding-bottom: 0;
-        height: 100%;
-        min-height: 0;
-        box-sizing: border-box;
-    }
-
-    nav.nav-sidebar-extended div.nav-profile-card-media {
-        grid-area: media;
-        align-self: center;
-        justify-self: center;
-    }
-
-    nav.nav-sidebar-extended div.nav-profile-card-info {
-        grid-area: info;
-        align-self: stretch;
-        justify-self: stretch;
-        min-width: 0;
-        width: 100%;
-    }
-
-    nav.nav-sidebar-extended div.nav-profile-card-desktop-action-stack {
-        grid-area: actions;
-        position: relative;
-        inset: auto;
-        display: flex;
-        flex-flow: row nowrap;
-        align-items: center;
-        justify-content: center;
-        align-self: center;
-        justify-self: center;
-        gap: clamp(2px, 0.8cqi, 4px);
-        box-sizing: border-box;
-        height: auto;
-        width: max-content;
-        max-width: 100%;
-        padding-inline: 0;
-        margin: 0;
-        padding-block: 0;
-    }
-
-    nav.nav-sidebar-extended div.nav-profile-card-desktop-action {
-        width: var(--nav-profile-card-desktop-action-size);
-        flex: 0 0 var(--nav-profile-card-desktop-action-size);
-    }
-
-    // The profile card is 25% of the rail. Tighten only the surrounding chrome;
-    // the layout states below decide whether the name fits, rather than hiding
-    // usable typography behind a blanket small-font fallback.
-    @container nav-profile-card (max-height: #{$nav-extended-profile-paired-max-height}) {
-        nav.nav-sidebar-extended div.nav-profile-card-header {
-            padding-top: 2px;
-            padding-bottom: 0;
-        }
-    }
-
-    // State 2: genuinely tall rail. Keep five distinct visual rows: portrait,
-    // controls, first name, surname, and the flowing role band.
-    @container nav-profile-card (min-height: #{$nav-extended-profile-stacked-min-height}) {
-        nav.nav-sidebar-extended div.nav-profile-card-header {
-            --avatar-size: clamp(3.8rem, min(34cqi, 28cqh), 5.5rem);
-            --nav-profile-card-desktop-action-size: clamp(2rem, min(18cqi, 22cqh), 2.75rem);
-
-            grid-template-columns: minmax(0, 1fr);
-            grid-template-rows: minmax(auto, 1fr) auto max-content auto;
-            grid-template-areas:
-                "media"
-                "actions"
-                "info"
-                "role";
-            column-gap: 0;
-            row-gap: clamp(0.25rem, 1.5cqh, 0.55rem);
-        }
-
-        nav.nav-sidebar-extended div.nav-profile-card-desktop-action-stack {
-            grid-area: actions;
-            display: flex;
-            flex-flow: row nowrap;
-            align-items: center;
-            justify-content: center;
-            gap: var(--nav-profile-card-desktop-action-gutter);
-            height: auto;
-            width: auto;
-            margin: 0;
-            padding: 0;
-            transform: none;
-        }
-
-        nav.nav-sidebar-extended div.nav-profile-card-info {
-            align-self: stretch;
-            min-height: max-content;
-        }
-
-        nav.nav-sidebar-extended h1.nav-profile-card-name {
-            font-size: clamp(1.6rem, min(18.5cqi, 10cqh), 3rem) !important;
-            line-height: 1 !important;
-            transform: none;
-        }
-
-        nav.nav-sidebar-extended span.nav-profile-card-name-text {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            transform: none;
-            row-gap: clamp(0.18rem, 0.65svh, 0.52rem);
-        }
-
-        nav.nav-sidebar-extended span.nav-profile-card-name-line {
-            display: block;
-            width: 100%;
-            text-align: center;
-        }
-
-        nav.nav-sidebar-extended span.nav-profile-card-name-line-last {
-            margin-left: 0;
-        }
-
-    }
-
-    // The role is the optional fourth row. It appears only when the complete
-    // portrait, control, name, and role footprint fits without compression.
-    @container nav-profile-card (min-height: #{$nav-extended-profile-role-min-height}) {
-        nav.nav-sidebar-extended div.nav-profile-card-header {
-            --avatar-size: clamp(4rem, min(38cqi, 28cqh), 6rem);
-        }
-
-        nav.nav-sidebar-extended div.nav-profile-card-desktop-action-stack {
-            flex-direction: row;
-            justify-content: center;
-            justify-self: center;
-            gap: var(--nav-profile-card-desktop-action-gutter);
-            height: auto;
-            width: max-content;
-        }
-    }
-
-    // Monotonic visibility: once the rail reaches the safe text-band height, no
-    // later width or height state hides the animated role band again.
-    @container nav-profile-card (max-height: #{$nav-extended-profile-role-min-height - 1px}) {
-        nav.nav-sidebar-extended div.nav-profile-card-role {
-            display: none;
-        }
-    }
-
-    // Compact state: once the portrait cannot fit safely, controls and name
-    // share one row. Both remain bounded by the card and disappear together at
-    // the outer rail's final collapse threshold.
-    @container nav-profile-card (min-height: #{$nav-extended-profile-collapse-max-height + 1px}) and (max-height: #{$nav-extended-profile-compact-max-height}) {
-        nav.nav-sidebar-extended div.nav-profile-card-header {
-            --nav-profile-card-desktop-action-size: clamp(2.1rem, 7.2cqi, 2.6rem);
-        }
-
-        nav.nav-sidebar-extended div.nav-profile-card-header {
-            grid-template-columns: max-content minmax(0, 1fr);
-            grid-template-rows: minmax(0, 1fr);
-            grid-template-areas: "actions info";
-            align-content: center;
-            align-items: center;
-            justify-content: stretch;
-            justify-items: stretch;
-            column-gap: clamp(0.35rem, 2.4cqi, 0.8rem);
-            row-gap: 0;
-            min-height: 0;
-            padding-block: clamp(0.1rem, 1.4%, 0.24rem);
-            padding-inline: clamp(0.4rem, 3.5cqi, 0.7rem);
-        }
-
-        nav.nav-sidebar-extended div.nav-profile-card-media {
-            display: none;
-        }
-
-        nav.nav-sidebar-extended div.nav-profile-card-desktop-action-stack {
-            flex-flow: row nowrap;
-            justify-content: flex-start;
-            justify-self: start;
-            align-self: center;
-            gap: clamp(0.18rem, 1.4cqi, 0.35rem);
-            width: max-content;
-            height: auto;
-            margin: 0;
-            padding: 0;
-            transform: none;
-            opacity: 1;
-        }
-
-        nav.nav-sidebar-extended div.nav-profile-card-info {
-            display: flex;
-            align-self: center;
-            justify-self: stretch;
-            align-items: center;
-            justify-content: flex-end;
-            min-width: 0;
-            width: 100%;
-            padding-block: 0;
-            padding-inline: 0;
-            text-align: right;
-        }
-
-        nav.nav-sidebar-extended h1.nav-profile-card-name {
-            align-items: center;
-            justify-content: flex-end;
-            width: 100%;
-            font-size: clamp(1.18rem, min(8.4cqi, 4.6svh), 1.65rem) !important;
-            line-height: 1 !important;
-            transform: none;
-            white-space: normal;
-        }
-
-        nav.nav-sidebar-extended span.nav-profile-card-name-text {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            justify-content: center;
-            width: 100%;
-            transform: none;
-            row-gap: clamp(0.02rem, 0.3svh, 0.1rem);
-            white-space: normal;
-        }
-
-        nav.nav-sidebar-extended span.nav-profile-card-name-line {
-            display: block;
-            width: 100%;
-            text-align: right;
-        }
-    }
-
-    // Narrow rails retain the portrait and place the compact control pair beneath
-    // it. This keeps the visual hierarchy intact instead of making the controls
-    // compete with the portrait for the same horizontal lane.
-    @container nav-profile-card (max-width: 14.75rem) and (min-height: #{$nav-extended-profile-stacked-min-height}) {
-        nav.nav-sidebar-extended div.nav-profile-card-header {
-            --nav-profile-card-desktop-action-size: clamp(2.05rem, 14cqi, 2.5rem);
-            --avatar-size: clamp(4.2rem, 34cqi, 5.15rem);
-        }
-
-        nav.nav-sidebar-extended div.nav-profile-card-header {
-            grid-template-columns: minmax(0, 1fr);
-            grid-template-rows: auto auto minmax(0, 1fr) auto;
-            grid-template-areas:
-                "media"
-                "actions"
-                "info"
-                "role";
-            justify-content: center;
-            row-gap: clamp(0.12rem, 0.9cqi, 0.28rem);
-            padding-top: clamp(0.16rem, 0.45svh, 0.32rem);
-            padding-bottom: clamp(0.1rem, 0.3svh, 0.2rem);
-        }
-
-        nav.nav-sidebar-extended div.nav-profile-card-desktop-action-stack {
-            flex-flow: row nowrap;
-            justify-content: center;
-            justify-self: center;
-            gap: clamp(0.18rem, 1.7cqi, 0.34rem);
-            width: auto;
-            height: var(--nav-profile-card-desktop-action-size);
-            align-self: center;
-        }
-
-        nav.nav-sidebar-extended div.nav-profile-card-info {
-            align-self: center;
-            min-height: 0;
-            padding-block: 0;
-        }
-
-        nav.nav-sidebar-extended h1.nav-profile-card-name {
-            font-size: clamp(1.28rem, min(10.2cqi, 4.9svh), 1.9rem) !important;
-            line-height: 1 !important;
-            transform: none;
-        }
-
-        nav.nav-sidebar-extended span.nav-profile-card-name-text {
-            row-gap: clamp(0.03rem, 0.35svh, 0.14rem);
-            transform: none;
-        }
-    }
-
-}
 
 div.nav-profile-card-short-rail {
     --avatar-size: var(--nav-short-rail-avatar-size, 72px);

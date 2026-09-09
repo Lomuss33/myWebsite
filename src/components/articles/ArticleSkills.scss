@@ -6,18 +6,18 @@ div.article-skills-items {
     --avatar-size: 48px;
     --avatar-wrapper-width: 64px;
 
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         --avatar-size: 46px;
         --avatar-wrapper-width: 62px;
     }
 
-    @include media-breakpoint-down(md) {
+    @include content-breakpoint-down(md) {
         --avatar-size: 44px;
         --item-gap: 22px;
         --avatar-wrapper-width: 60px;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         --item-gap: 20px;
         --avatar-size: 40px;
         --avatar-wrapper-width: 56px;
@@ -257,7 +257,7 @@ div.article-skills-item-title {
         color: var(--theme-texts-light);
         text-align: right;
 
-        @include media-breakpoint-down(sm) {
+        @include content-breakpoint-down(sm) {
             flex-basis: 3ch;
             width: 3ch;
         }
@@ -277,7 +277,7 @@ div.article-skills-item-title {
         text-align: right;
         white-space: nowrap;
 
-        @include media-breakpoint-down(sm) {
+        @include content-breakpoint-down(sm) {
             flex-basis: 8ch;
             width: 8ch;
         }
@@ -339,7 +339,7 @@ article.article-skills-article-3-section-education {
     --education-language-popup-padding-y: 10px;
     --education-language-popup-line-height: 1.32;
 
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         --avatar-size: 32px;
         --avatar-wrapper-width: 43px;
         --education-language-popup-body-min-height: 90px;
@@ -349,17 +349,17 @@ article.article-skills-article-3-section-education {
         --education-language-popup-line-height: 1.32;
     }
 
-    @include media-breakpoint-down(md) {
+    @include content-breakpoint-down(md) {
         --avatar-size: 31px;
         --avatar-wrapper-width: 42px;
         --education-language-popup-body-min-height: 86px;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         --avatar-size: 28px;
         --avatar-wrapper-width: 39px;
         --education-language-popup-body-min-height: 82px;
-        --education-language-popup-font-size: 0.82rem;
+        --education-language-popup-font-size: 0.875rem;
         --education-language-popup-padding-x: 10px;
         --education-language-popup-padding-y: 8px;
         --education-language-popup-line-height: 1.28;
@@ -439,12 +439,12 @@ article.article-skills-article-3-section-education {
         padding-left: 6px;
         padding-right: 6px;
 
-        @include media-breakpoint-down(md) {
+        @include content-breakpoint-down(md) {
             padding-left: 5px;
             padding-right: 5px;
         }
 
-        @include media-breakpoint-down(sm) {
+        @include content-breakpoint-down(sm) {
             padding-left: 4px;
             padding-right: 4px;
         }
@@ -632,7 +632,7 @@ article.article-skills-article-3-section-education {
 
     span.article-skills-item-title-label {
         color: var(--skill-card-text-mid);
-        font-size: clamp(0.84rem, 0.8rem + 0.12vw, 0.92rem);
+        font-size: clamp(0.875rem, 0.875rem + 0.12vw, 0.92rem);
     }
 
     span.article-skills-item-title-suffix {
@@ -663,7 +663,7 @@ article.article-skills-article-3-section-education {
         }
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         div.article-skills-item-education-language div.article-skills-item-title {
             gap: 8px;
         }
@@ -779,7 +779,7 @@ div.article-skills-items.article-skills-items-section-my-writings {
         }
     }
 
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         div.article-skills-embed.article-skills-embed-illustrated-manuscript {
             div.illustrated-manuscript {
                 min-height: clamp(328px, 78vw, 546px);
@@ -977,7 +977,7 @@ article:is(#article-3-section-my-writings, #article-4-section-my-writings) {
     }
 
     span.article-skills-item-title-label {
-        font-size: clamp(0.84rem, 0.8rem + 0.12vw, 0.92rem);
+        font-size: clamp(0.875rem, 0.875rem + 0.12vw, 0.92rem);
     }
 
     span.article-skills-item-title-percentage {
@@ -1034,7 +1034,7 @@ article#article-4-section-my-writings {
         }
     }
 
-    @include media-breakpoint-down(lg) {
+    @include content-breakpoint-down(lg) {
         div.article-skills-embed.article-skills-embed-illustrated-manuscript {
             div.illustrated-manuscript {
                 min-height: clamp(334px, 78vw, 560px);
@@ -1042,7 +1042,7 @@ article#article-4-section-my-writings {
         }
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         div.article-skills-item {
             padding: 13px 13px 12px;
         }
@@ -1111,7 +1111,7 @@ article#article-5-section-my-writings {
         box-shadow: none;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include content-breakpoint-down(sm) {
         div.article-skills-item {
             padding: 13px 13px 12px;
         }

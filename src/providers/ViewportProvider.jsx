@@ -115,7 +115,7 @@ function ViewportProvider({ children }) {
     }
 
     const _applyResize = () => {
-        const nextLayout = applyLayout(readLayout(layoutRef.current))
+        const nextLayout = applyLayout(readLayout())
         layoutRef.current = nextLayout
         setLayout(nextLayout)
         setInnerWidth(window.innerWidth)

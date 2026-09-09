@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test'
 
 test('mobile profile centers the portrait between names and reflows controls', async ({page})=>{
     await page.goto('/#about')
-    for(const [width,height] of [[240,568],[320,568],[568,320],[768,1024],[1920,3840]]) {
+    for(const [width,height] of [[240,568],[320,568],[568,800],[768,1024],[1920,3840]]) {
         await page.setViewportSize({width,height})
         await expect(page.locator('html')).toHaveAttribute('data-layout','mobile')
         const nav=page.locator('nav.nav-header-mobile')

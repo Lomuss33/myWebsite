@@ -88,7 +88,8 @@ function NavSidebar({ profile, links }) {
         const updateTogglePosition = () => {
             const profileHeight = profileCard.getBoundingClientRect().height
             const resumeHeight = resumeBand?.getBoundingClientRect().height || 0
-            const toggleTop = Math.max(0, profileHeight + (resumeHeight / 2) - 16)
+            const shell = wrapper.querySelector('.nav-link-list-shell')
+            const toggleTop = shell ? shell.getBoundingClientRect().top - wrapper.getBoundingClientRect().top + 2 : profileHeight + resumeHeight
             wrapper.style.setProperty(`--nav-sidebar-toggle-top`, `${toggleTop}px`)
         }
 

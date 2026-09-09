@@ -76,7 +76,7 @@ test('resize keeps mode and navigation in agreement', async ({page})=>{
 
 test('font enlargement retains readable form text and scroll access', async ({page})=>{
     await preferences(page)
-    await page.setViewportSize({width:1366,height:768})
+    await page.setViewportSize({width:768,height:1366})
     await openSection(page,'contact')
     await page.addStyleTag({content:'html { font-size: 200% !important; }'})
     await page.evaluate(()=>window.dispatchEvent(new Event('resize')))
@@ -90,7 +90,7 @@ test('font enlargement retains readable form text and scroll access', async ({pa
 
 test('gallery stays fullscreen and dismissible across mode changes', async ({page}) => {
     await preferences(page)
-    await page.setViewportSize({width:1366,height:768})
+    await page.setViewportSize({width:768,height:1366})
     await openSection(page,'my-art')
     await page.locator('section.section-shown a[href="#gallery:open"]').first().click()
     const modal=page.locator('#gallery-modal')

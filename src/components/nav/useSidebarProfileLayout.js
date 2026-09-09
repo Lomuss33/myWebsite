@@ -64,7 +64,9 @@ export function useSidebarProfileLayout(wrapperRef, railMode, linkCount) {
                 if(!fits()) usedHeight = budget
             }
             rail.style.setProperty('--nav-extended-profile-height', usedHeight + 'px')
-            rail.style.setProperty('--nav-sidebar-toggle-top', chosen === 'hidden' ? '8px' : Math.max(8,usedHeight-16) + 'px')
+            const divider = rail.querySelector('.nav-link-list-shell')
+            const dividerY = divider ? divider.getBoundingClientRect().top - rail.getBoundingClientRect().top + 2 : usedHeight
+            rail.style.setProperty('--nav-sidebar-toggle-top', dividerY + 'px')
         }
         const schedule = () => { if(!disposed && !frame) frame = requestAnimationFrame(fit) }
         const resize = new ResizeObserver(schedule)

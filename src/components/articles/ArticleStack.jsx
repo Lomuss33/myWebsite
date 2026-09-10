@@ -696,7 +696,7 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
     )
 
     const content = isHomeStack ? (
-        <div className={`article-stack-item ${homeClass} ${compactClass} ${bubbleClass}`.trim()}
+        <div className={`article-stack-item ${homeClass} ${compactClass} ${bubbleClass} ${isBubblePinned ? "article-stack-item-pinned" : ""}`.trim()}
              ref={cardRef}
              onMouseLeave={handleBubbleMouseLeave}>
             <div className={`article-stack-item-home-trigger`}>

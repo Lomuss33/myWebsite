@@ -6,7 +6,7 @@ import {useViewport} from "../../providers/ViewportProvider.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useUtils} from "../../hooks/utils.js"
 
-const ADAPTIVE_LABEL_MODES = ["full", "short", "icon"]
+const ADAPTIVE_LABEL_MODES = ["full", "compact", "short", "icon"]
 const HOME_CONTACT_FULL_SIDE_BUFFER_RATIO = 0.015
 const HOME_CONTACT_FULL_SIDE_BUFFER_MIN = 0
 const HOME_CONTACT_FULL_SIDE_BUFFER_MAX = 24
@@ -54,6 +54,7 @@ function ArticleInlineListItems({ dataWrapper, selectedItemCategoryId }) {
     const listRef = useRef(null)
     const measureRefs = useRef({
         full: [],
+        compact: [],
         short: [],
         icon: []
     })
@@ -81,7 +82,7 @@ function ArticleInlineListItems({ dataWrapper, selectedItemCategoryId }) {
         isHomeContactBand: isAdaptiveHomeBand
     }))
     const labelSignature = itemModels
-        .map(itemModel => `${itemModel.fullLabel}|${itemModel.shortLabel}|${itemModel.iconLabel}`)
+        .map(itemModel => `${itemModel.fullLabel}|${itemModel.compactLabel}|${itemModel.shortLabel}|${itemModel.iconLabel}`)
         .join("||")
 
     const displayAsList = viewport.innerWidth < dataWrapper.settings.displayAsListIfWidthIsLowerThan
@@ -121,7 +122,7 @@ function ArticleInlineListItems({ dataWrapper, selectedItemCategoryId }) {
                 if(widths.length !== slots)
                     continue
 
-                const totalContentWidth = widths.reduce((sum, width) => sum + width, 0)
+                const totalContentWidth = Math.max(...widths) * slots
                 const totalGapWidth = gap * Math.max(0, widths.length - 1)
                 const layout = getHomeContactModeLayout({
                     mode,
@@ -153,6 +154,9 @@ function ArticleInlineListItems({ dataWrapper, selectedItemCategoryId }) {
 
         const resizeObserver = new ResizeObserver(syncLabelMode)
         resizeObserver.observe(listElement)
+        for (const elements of Object.values(measureRefs.current)) {
+            elements.forEach(element => element && resizeObserver.observe(element))
+        }
 
         return () => {
             window.clearTimeout(delayedSyncId)
@@ -274,6 +278,9 @@ function createInlineListItemModel({ itemWrapper, language, utils, viewport, isH
     return {
         ariaLabel: stripHtml(fullLabel || shortLabel),
         fullLabel,
+        compactLabel: isHomeContactBand && link?.href?.startsWith("mailto:") ?
+            link.href.slice(7).split("?")[0] :
+            isHomeContactBand && link?.action === "phone_qr" ? "+49 17662236934" : shortLabel,
         shortLabel,
         iconLabel: "",
         href,
@@ -309,7 +316,7 @@ function getInlineListShortLabel({ itemWrapper, link, language, isHomeContactBan
 }
 
 function getHomeContactModeLayout({ mode, listWidth }) {
-    if(mode === "full") {
+    if(mode === "full" || mode === "compact") {
         return {
             mode,
             sideBuffer: clampNumber(

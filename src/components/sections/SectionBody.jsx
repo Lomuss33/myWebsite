@@ -116,14 +116,14 @@ function SectionBody({ section, showDecorationBands = true }) {
     const articleDataWrappers = useMemo(() => {
         return parser.parseSectionArticles(section)
     }, [parser.parseSectionArticles, section])
-    // Keep the compact name-origin panel directly below the current final Home article.
+    // End Home with the human stack, preceded by the name origins.
     const visibleArticleWrappers = useMemo(() => {
         if(section?.id !== "about")
             return articleDataWrappers
 
         return [...articleDataWrappers].sort((firstArticle, secondArticle) => {
-            return Number(firstArticle.component === "ArticleNameOrigins") -
-                Number(secondArticle.component === "ArticleNameOrigins")
+            return ({ArticleNameOrigins: 1, ArticleStack: 2}[firstArticle.component] || 0) -
+                ({ArticleNameOrigins: 1, ArticleStack: 2}[secondArticle.component] || 0)
         })
     }, [articleDataWrappers, section?.id])
 

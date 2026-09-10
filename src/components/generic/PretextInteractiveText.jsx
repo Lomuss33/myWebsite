@@ -186,7 +186,7 @@ function PretextInteractiveText({
         return () => {
             disposed = true
         }
-    }, [typographyVersion])
+    }, [typographyVersion, contentWidth])
 
     useEffect(() => {
         const element = contentRef.current

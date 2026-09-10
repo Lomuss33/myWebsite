@@ -124,6 +124,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
     })
     const hasAlternateImage = Boolean(itemWrapper.img && itemWrapper.imgAlt)
     const [showAlternateImage, setShowAlternateImage] = useState(false)
+    const [introCardIndex, setIntroCardIndex] = useState(0)
     const [isMobileView, setIsMobileView] = useState(() => {
         if (typeof window === "undefined" || !window.matchMedia) return false
         return window.matchMedia(MOBILE_VIEW_MEDIA_QUERY).matches
@@ -153,10 +154,10 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
     const isFixedViewportImageLayout = featureLayoutMode === "equal_split_fixed_vh_image"
     const isSquareFitLayout = featureLayoutMode === "equal_split_square_fit"
     const isConfiguredInteractiveItem = articleSettings.featureInteractiveItemIds.includes(itemWrapper.id)
-    const shouldFitTextToMediaHeight =
+    const shouldFitTextToMediaHeight = !isAboutIntro && (
         isSquareFitLayout ||
         (isFixedViewportImageLayout && isHomeStyleIntro) ||
-        Boolean(articleSettings.featureTextFitToMediaHeight)
+        Boolean(articleSettings.featureTextFitToMediaHeight))
     const usesWoodProductsAdaptiveLayout = false
     const defaultFitMaxScale = isHomeStyleIntro ? FEATURE_TEXT_ABOUT_INTRO_MAX_SCALE : FEATURE_TEXT_DEFAULT_MAX_SCALE
     const textFontSize = computeScaledFontSize(baseTypographyRef, textScale)
@@ -623,6 +624,25 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
         }
     }, [html, isWritingBookFeature, typographyVersion])
 
+    useEffect(() => {
+        if (!isAboutIntro || !mediaRef.current) return
+        const media = mediaRef.current
+        const photo = media.querySelector(".article-feature-item-image-switch")
+        if (!photo) return
+        const update = () => {
+            // Offsets stay inside the media cell, away from the text and section edges.
+            const freeX = Math.max(0, media.clientWidth - photo.offsetWidth)
+            const freeY = Math.max(0, media.clientHeight - photo.offsetHeight)
+            media.style.setProperty("--intro-card-x", `${freeX * 0.47}px`)
+            media.style.setProperty("--intro-card-y", `${freeY * 0.47}px`)
+        }
+        const observer = new ResizeObserver(update)
+        observer.observe(media)
+        observer.observe(photo)
+        update()
+        return () => observer.disconnect()
+    }, [isAboutIntro])
+
     const renderVisibleBody = () => {
         if (isAboutIntro) {
             return (
@@ -696,6 +716,10 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
         if(!hasAlternateImage)
             return
 
+        if (isAboutIntro) {
+            setIntroCardIndex(current => (current + 1) % 5)
+            return
+        }
         setShowAlternateImage(current => !current)
     }
 
@@ -755,14 +779,30 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                              onClick={onMediaClick}
                              role="button"
                              tabIndex={0}
-                             aria-pressed={showAlternateImage}
-                             aria-label={`Toggle feature image`}
+                             aria-pressed={isAboutIntro ? undefined : showAlternateImage}
+                             aria-label={isAboutIntro ? `Show next photo (${introCardIndex + 1} of 5)` : `Toggle feature image`}
                              onKeyDown={(event) => {
                                  if(event.key === "Enter" || event.key === " ") {
                                      event.preventDefault()
                                      onMediaClick()
                                  }
                              }}>
+                            {isAboutIntro ? [itemWrapper.img, itemWrapper.imgAlt,
+                                "/images/profile-placeholder.png", "/images/profile-placeholder.png", "/images/profile-placeholder.png"
+                            ].map((src, index) => {
+                                const rank = (index - introCardIndex + 5) % 5
+                                const offset = [0, 0.5, -0.5, 1, -1][rank]
+                                return <div key={index}
+                                            className="article-feature-item-image-face article-feature-item-intro-card"
+                                            aria-hidden={rank !== 0}
+                                            style={{"--intro-card-offset": offset, zIndex: 5 - rank}}>
+                                    <img src={src} alt={index < 2 ? itemWrapper.imageAlt : "Profile photo placeholder"}
+                                         onError={event => {
+                                             event.currentTarget.onerror = null
+                                             event.currentTarget.src = "/images/profile-placeholder.png"
+                                         }}/>
+                                </div>
+                            }) : <>
                             <div className={`article-feature-item-image-face article-feature-item-image-face-front`}>
                                 <ImageView src={itemWrapper.img}
                                            alt={itemWrapper.imageAlt}
@@ -782,6 +822,7 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                                            fetchPriority={`low`}
                                            sizes={imageSizes}/>
                             </div>
+                            </>}
                         </div>
                     ) : (
                         <ImageView src={itemWrapper.img}

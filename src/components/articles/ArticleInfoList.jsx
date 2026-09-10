@@ -394,7 +394,7 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
     ])
 
     useEffect(() => {
-        if (!hasProofBubble || !isBubblePinned)
+        if (!hasProofBubble || !isBubbleOpen)
             return
 
         const handlePointerDown = (event) => {
@@ -422,7 +422,7 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
             document.removeEventListener("pointerdown", handlePointerDown)
             document.removeEventListener("keydown", handleKeyDown)
         }
-    }, [hasProofBubble, isBubblePinned])
+    }, [hasProofBubble, isBubbleOpen])
 
     const handleBubbleMouseEnter = () => {
         setLinkHovered(true)

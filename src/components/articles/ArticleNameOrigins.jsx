@@ -1,5 +1,4 @@
 import "./ArticleNameOrigins.scss"
-import { useEffect, useState } from "react"
 import Article from "./base/Article.jsx"
 import PretextInteractiveText from "../generic/PretextInteractiveText.jsx"
 import { useLanguage } from "../../providers/LanguageProvider.jsx"
@@ -102,7 +101,6 @@ const COPY = {
 
 function ArticleNameOrigins({ dataWrapper }) {
     const language = useLanguage()
-    const useInteractiveStories = useInteractiveStoryText()
     const copy = COPY[language.selectedLanguageId] || COPY.en
     const stories = STORY_IDENTITIES.map(story => ({...story, ...copy[story.id]}))
 
@@ -113,7 +111,7 @@ function ArticleNameOrigins({ dataWrapper }) {
                 {stories.map((story, index) => (
                     <NameOrigin key={story.id} story={story} index={index}
                                 evolvesInto={copy.evolvesInto}
-                                useInteractiveStories={useInteractiveStories}/>
+/>
                 ))}
                 <footer><span/>{copy.footer}</footer>
             </div>
@@ -121,7 +119,7 @@ function ArticleNameOrigins({ dataWrapper }) {
     )
 }
 
-function NameOrigin({ story, index, evolvesInto, useInteractiveStories }) {
+function NameOrigin({ story, index, evolvesInto }) {
     return (
         <section className={`name-origin name-origin-${story.id}`} aria-labelledby={`name-origin-${story.id}`}>
             <div className="name-origin-display">
@@ -144,46 +142,14 @@ function NameOrigin({ story, index, evolvesInto, useInteractiveStories }) {
                     ))}
                 </div>
                 {story.blocks.map((block, blockIndex) => (
-                    useInteractiveStories ? (
-                        <PretextInteractiveText html={`<p>${block}</p>`}
-                                                key={`${story.id}-${blockIndex}`}
-                                                className={`name-origin-story name-origin-story-${blockIndex + 1}`}
-                                                effectVariant="wave"
-                                                terrainVariant="standard"
-                                                revealOnScroll={false}
-                                                replayOnHover={false}
-                                                widthMeasurementMode="self_only"/>
-                    ) : (
                         <p key={`${story.id}-${blockIndex}`}
                            className={`name-origin-story-mobile name-origin-story-${blockIndex + 1}`}>
                             {block}
                         </p>
-                    )
                 ))}
             </div>
         </section>
     )
-}
-
-function useInteractiveStoryText() {
-    const query = "(min-width: 1101px) and (hover: hover) and (pointer: fine)"
-    const readQuery = () => {
-        if(typeof window === "undefined" || !window.matchMedia) return true
-        return window.matchMedia(query).matches
-    }
-    const [isInteractive, setIsInteractive] = useState(readQuery)
-
-    useEffect(() => {
-        if(!window.matchMedia) return undefined
-
-        const mediaQuery = window.matchMedia(query)
-        const updateMode = () => setIsInteractive(mediaQuery.matches)
-        updateMode()
-        mediaQuery.addEventListener("change", updateMode)
-        return () => mediaQuery.removeEventListener("change", updateMode)
-    }, [])
-
-    return isInteractive
 }
 
 export default ArticleNameOrigins

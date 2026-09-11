@@ -798,8 +798,9 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                                             style={{"--intro-card-offset": offset, zIndex: 5 - rank}}>
                                     <img src={src} alt={index < 2 ? itemWrapper.imageAlt : "Profile photo placeholder"}
                                          onError={event => {
-                                             event.currentTarget.onerror = null
-                                             event.currentTarget.src = "/images/profile-placeholder.png"
+                                             const image = event.currentTarget
+                                             const fallback = "/images/profile-placeholder.png"
+                                             if (image.getAttribute("src") !== fallback) image.src = fallback
                                          }}/>
                                 </div>
                             }) : <>

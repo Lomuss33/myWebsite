@@ -46,3 +46,7 @@ tmp/extract_patronus_svg.cjs
 # Browser verification artifacts
 test-results/
 playwright-report/
+
+# Disposable documentation experiments
+docs/tmp/*
+!docs/tmp/README.md

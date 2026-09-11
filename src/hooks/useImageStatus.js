@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useRef, useState} from "react"
+import {useLayoutEffect, useMemo, useRef, useState} from "react"
 import {_imageUtils} from "./utils/_image-utils.js"
 
 export const IMAGE_LIFECYCLE_STATUS = {
@@ -22,7 +22,8 @@ export function useImageStatus(src) {
             IMAGE_LIFECYCLE_STATUS.IDLE
     })
 
-    useEffect(() => {
+    // Reset before child passive effects reconcile already-cached images.
+    useLayoutEffect(() => {
         activeSrcRef.current = resolvedSrc
         setStatus(canRenderImg ? IMAGE_LIFECYCLE_STATUS.LOADING : IMAGE_LIFECYCLE_STATUS.IDLE)
     }, [resolvedSrc, canRenderImg])

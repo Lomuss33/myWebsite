@@ -3,6 +3,8 @@
 Project overview: [README.md](./README.md)  
 Maintenance and extension notes: [MAINTANER.md](./MAINTANER.md)
 
+Documentation map: [docs/README.md](docs/README.md)
+
 ## Purpose
 
 This guide describes the visible behavior of the site from a visitor's point of view.
@@ -24,7 +26,7 @@ Visitors move through it by:
 - switching categories
 - interacting with cards, links, filters, modals, and forms
 
-The layout changes between desktop and mobile presentations.
+The layout has mobile, normal, and ultrawide presentations. Portrait windows use mobile; landscape and square windows use desktop composition.
 
 ## Navigation
 
@@ -215,3 +217,13 @@ Use this guide when you want to:
 - understand live UI behavior
 - run manual QA on visible features
 - confirm that a customized copy still behaves correctly for visitors
+
+## Home-specific interactions
+
+- Contact labels shorten as space decreases while retaining accessible names.
+- Click, Enter, or Space cycles five profile cards; three await photos.
+- Skill proof panels stay inside their cards; Escape dismisses them.
+- Human-stack circles sit half outside cards. Hover highlights; clicking pins details in amber.
+- Name origins precedes the human stack at the end of Home.
+
+Technical behavior and limits: [Home implementation](docs/architecture/home.md).

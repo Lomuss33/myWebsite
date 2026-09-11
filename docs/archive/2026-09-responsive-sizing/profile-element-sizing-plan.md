@@ -1,4 +1,6 @@
-# Profile element sizing — next implementation plan
+> Status: historical / superseded. Archived 2026-09-11. Earlier proposals and checks are not current requirements. See [current layout guidance](../../architecture/responsive-layout.md).
+
+# Profile element sizing â€” next implementation plan
 
 The additional arrangements are implemented. This plan covers the next sizing refinement, not additional whole-site modes.
 

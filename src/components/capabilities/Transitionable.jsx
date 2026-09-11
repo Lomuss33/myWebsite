@@ -68,32 +68,15 @@ Transitionable.Animations = {
 }
 
 function TransitionableItem({ children, id, index, animation, transitionsEnabled, refreshCount, delayBetweenItems }) {
-    const scheduler = useScheduler()
-
-    const [isVisible, setIsVisible] = useState(false)
-
-    const animationClass = isVisible ?
-        animation :
-        `transitionable-item-invisible`
-
+    const [isVisible, setIsVisible] = useState(true)
+    const animationClass = isVisible ? animation : "transitionable-item-invisible"
     useEffect(() => {
-        if(transitionsEnabled) _showWithTransition()
-        else _showWithoutTransition()
-    }, [refreshCount])
-
-    const _showWithTransition = () => {
-        scheduler.clearAllWithTag(id)
-
+        if (!transitionsEnabled) { setIsVisible(true); return }
         setIsVisible(false)
-        scheduler.schedule(() => {
-            setIsVisible(true)
-        }, 30 + delayBetweenItems*index, id)
-    }
-
-    const _showWithoutTransition = () => {
-        scheduler.clearAllWithTag(id)
-        setIsVisible(true)
-    }
+        // Own the reveal timer so global scheduler cleanup cannot cancel it.
+        const timer = window.setTimeout(() => setIsVisible(true), 30 + delayBetweenItems * index)
+        return () => window.clearTimeout(timer)
+    }, [refreshCount, transitionsEnabled, delayBetweenItems, index])
 
     return (
         <div className={`transitionable-item ${animationClass}`}>

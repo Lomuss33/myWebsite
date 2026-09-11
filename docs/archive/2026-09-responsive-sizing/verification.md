@@ -1,3 +1,5 @@
+> Status: historical / superseded. Archived 2026-09-11. Earlier proposals and checks are not current requirements. See [current layout guidance](../../architecture/responsive-layout.md).
+
 # Responsive sizing implementation and verification
 
 Implemented 2026-09-09. This follows `RESPONSIVE_SIZING_PLAN.md` and the recorded baseline.

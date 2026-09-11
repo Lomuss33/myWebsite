@@ -312,3 +312,21 @@ html[data-layout] section#section-about article#article-7-section-about {
   }
  }
 }
+
+// Release idle compositor layers while retaining interactive tilt.
+html[data-layout] section#section-about {
+    .floating-frame:not(.floating-frame--active):not(.floating-frame--transition) {
+        transform: none;
+        transform-style: flat;
+        will-change: auto;
+    }
+    .article-feature-item-intro-card {
+        backface-visibility: visible;
+        -webkit-backface-visibility: visible;
+        transform-style: flat;
+    }
+    .transitionable-item-animation-pop { animation-fill-mode: backwards; }
+    @media (prefers-reduced-motion: reduce) {
+        .transitionable-item { animation: none; }
+    }
+}

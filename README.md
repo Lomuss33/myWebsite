@@ -105,16 +105,13 @@ public/
   images/       source and responsive assets
   generated/    generated CV fragments
   cv/           generated CV page
+
+docs/           current guidance, handoffs, historical evidence
 ```
 
-## 📚 Deeper Docs
+## Documentation
 
-- [MAINTANER.md](./MAINTANER.md) for maintainer notes and extension workflow
-- [USER_GUIDE.md](./USER_GUIDE.md) for visitor-facing behavior and QA checks
-
-## 🔗 Related Files
-
-- [MAINTANER.md](./MAINTANER.md)
-- [USER_GUIDE.md](./USER_GUIDE.md)
-
-If you want the full template details, customization path, and maintenance notes, use the linked docs above. This README is intentionally the short version.
+- [User guide](USER_GUIDE.md): visitor behavior.
+- [Maintainer guide](MAINTANER.md): ownership and workflow.
+- [Documentation index](docs/README.md): architecture, guides, decisions, active work, and history.
+- [AI orientation](AGENTS.md): concise starting instructions.

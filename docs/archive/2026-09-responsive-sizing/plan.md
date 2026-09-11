@@ -1,8 +1,10 @@
+> Status: historical / superseded. Archived 2026-09-11. Earlier proposals and checks are not current requirements. See [current layout guidance](../../architecture/responsive-layout.md).
+
 **Responsive sizing implementation plan — 8 September 2026**
 
 **Objective:** make the existing website fit small phones, ordinary windows, large portrait displays, and ultrawide screens using exactly three overall compositions: `mobile`, `normal`, and `ultrawide`. Ratios select the composition; fluid allocation and content constraints size the elements inside it.
 
-This plan follows the [completed investigation](RESPONSIVE_SIZING_INVESTIGATION.md) and its [measurement baseline](docs/audits/responsive-sizing-baseline.json). The application remains at commit `ae07396`; implementation has not started. This document defines the order of work, the decisions to validate, and the evidence required for completion.
+This plan follows the [completed investigation](investigation.md) and its [measurement baseline](../../evidence/2026-09-responsive-sizing/responsive-sizing-baseline.json). The application remains at commit `ae07396`; implementation has not started. This document defines the order of work, the decisions to validate, and the evidence required for completion.
 
 **Design decisions to carry into implementation**
 
@@ -107,6 +109,6 @@ The implementation will produce the shared mode/sizing foundation, migrated appl
 
 The first implementation milestone is a working Home and Contact flow in all three modes with readable, unscaled content and correct navigation/scroll behavior. That establishes the geometry on which the remaining article migration depends.
 
-## Implementation update � 2026-09-09
+## Implementation update — 2026-09-09
 
-The shared three-mode foundation and component sizing migration are implemented. See [implementation and verification](docs/audits/responsive-sizing-verification.md) for completed checks, reproduction commands, and outstanding manual/device validation. The acceptance list above remains the broader validation target; unavailable device/zoom checks are not marked passed.
+The shared three-mode foundation and component sizing migration are implemented. See [implementation and verification](verification.md) for completed checks, reproduction commands, and outstanding manual/device validation. The acceptance list above remains the broader validation target; unavailable device/zoom checks are not marked passed.

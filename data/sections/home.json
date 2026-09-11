@@ -1029,16 +1029,16 @@
           },
           "locales": {
             "en": {
-              "title": "Height: 204 cm"
+              "title": "Height: 200 cm"
             },
             "de": {
-              "title": "Größe: 204 cm"
+              "title": "Größe: 200 cm"
             },
             "hr": {
-              "title": "Visina: 204 cm"
+              "title": "Visina: 200 cm"
             },
             "tr": {
-              "title": "Boy: 204 cm"
+              "title": "Boy: 200 cm"
             }
           }
         },
@@ -1058,16 +1058,16 @@
           },
           "locales": {
             "en": {
-              "title": "Weight: 98 kg"
+              "title": "Weight: 100 kg"
             },
             "de": {
-              "title": "Gewicht: 98 kg"
+              "title": "Gewicht: 100 kg"
             },
             "hr": {
-              "title": "Težina: 98 kg"
+              "title": "Težina: 100 kg"
             },
             "tr": {
-              "title": "Kilo: 98 kg"
+              "title": "Kilo: 100 kg"
             }
           }
         },

@@ -330,3 +330,18 @@ html[data-layout] section#section-about {
         .transitionable-item { animation: none; }
     }
 }
+
+// Descriptions remain fully visible; their text must not create nested scrolling.
+html[data-layout] section#section-about article.article-info-list-home {
+    .article-info-list-item-content.article-info-list-item-home { height: auto; }
+    .article-info-list-item-info-text {
+        height: auto;
+        max-height: none;
+        flex-shrink: 0;
+        overflow: visible;
+    }
+}
+html[data-layout="mobile"] section#section-about article.article-info-list-home .article-info-list-item-info-text {
+    font-size: clamp(.875rem, .84rem + .15cqi, 1rem) !important;
+    line-height: 1.35 !important;
+}

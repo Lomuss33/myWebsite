@@ -2,7 +2,7 @@
 html[data-layout="mobile"] nav.nav-header-mobile {
     .nav-header-mobile-card-wrapper { container: mobile-profile-card / inline-size; }
     div.nav-profile-card {
-        --avatar-size: clamp(2.75rem, 9cqi, 4rem);
+        --avatar-size: clamp(3.25rem, 14cqi, 4rem);
         --avatar-shell-gap: 2px;
         --mobile-action-size: 2.75rem;
         --mobile-action-visual-scale: 1;
@@ -25,7 +25,7 @@ html[data-layout="mobile"] nav.nav-header-mobile {
         span.nav-profile-card-name-line {
             display: block;
             width: auto; max-width: 100%; min-width: 0;
-            font-size: clamp(1rem, 4.2cqi, 2rem) !important;
+            font-size: clamp(1.125rem, 5.5cqi, 2rem) !important;
             line-height: 1.2 !important;
             font-weight: 600;
             margin: 0; padding: 0;
@@ -52,9 +52,9 @@ html[data-layout="mobile"] nav.nav-header-mobile {
 
 @container mobile-profile-card (min-width: 24rem) {
     html[data-layout="mobile"] nav.nav-header-mobile div.nav-profile-card {
-        --avatar-size: clamp(3rem, 10cqi, 4.75rem);
+        --avatar-size: clamp(3.75rem, 14cqi, 4.75rem);
         div.nav-profile-card-main-row { column-gap: clamp(0.5rem, 2cqi, 1.125rem); }
-        span.nav-profile-card-name-line { font-size: clamp(1.25rem, 4.8cqi, 2.25rem) !important; }
+        span.nav-profile-card-name-line { font-size: clamp(1.375rem, 5.8cqi, 2.25rem) !important; }
     }
 }
 

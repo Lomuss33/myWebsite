@@ -37,3 +37,5 @@ No redesign is pending. Three placeholders await replacement photos. Recent chec
 Description sizing update (2026-09-12): Home skill descriptions use natural height without nested scrolling, with slightly smaller mobile type. Proof-panel scrolling remains separate. Focused checks at 240, 390, and 768px found no overflowing visible descriptions.
 
 Home heading update (2026-09-13): prefix and title each remain a single line. SectionHeader measures available width and reduces font size as needed after resizing, text changes, and font loading. Very narrow screens intentionally use smaller heading text.
+
+Compact typography (2026-09-13): Home article headings use smaller bounded type and tighter margins below a 48rem content container. Name-origin body text is reduced in that range; narrow stacked display names are capped at 3.75rem. Wide layouts retain their existing scale.

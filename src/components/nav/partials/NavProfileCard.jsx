@@ -9,6 +9,8 @@ import TextTyper from "../../generic/TextTyper.jsx"
 import AudioButton from "../../buttons/AudioButton.jsx"
 import NavToolResumeDownloader from "../tools/NavToolResumeDownloader.jsx"
 
+import ProfileContactDialog from "./ProfileContactDialog.jsx"
+
 const PROFILE_AVATAR_SIZES = "(max-width: 991.98px) 96px, 144px"
 const PROFILE_FRAME_SPIN_DURATION_MS = 3600
 const PROFILE_FRAME_RETURN_DELAY_MS = 1000
@@ -58,6 +60,8 @@ function NavProfileCard({
     mobileActionStackAfterInfo = null,
     showNameAudioButton = true
 }) {
+    const [contactOpen, setContactOpen] = useState(false)
+    const closeContact = useCallback(() => setContactOpen(false), [])
     const language = useLanguage()
     const utils = useUtils()
     const floatingFrame = useFloatingFrame()
@@ -350,7 +354,8 @@ function NavProfileCard({
             pauseProfileFrameSpin()
         }
 
-        setShowAlternateProfilePicture((current) => !current)
+        mediaRef.current?.focus({preventScroll: true})
+        setContactOpen(true)
     }
 
     const _onMediaPointerEnter = (event) => {
@@ -361,6 +366,7 @@ function NavProfileCard({
 
     return (
         <Card className={`nav-profile-card ${railModeClass}`}>
+            {contactOpen && safeProfile.contactCard && <ProfileContactDialog profile={safeProfile} onClose={closeContact} />}
             <div className={navProfileCardHeaderClass}>
                 <div className={`nav-profile-card-main-row`}>
                 {mobileActionStackBeforeInfo && (
@@ -384,8 +390,9 @@ function NavProfileCard({
                              _onMediaClicked(event)
                          }
                      }}
-                     aria-label={`Toggle profile picture`}
-                     aria-pressed={showAlternateProfilePicture}>
+                     aria-label={language.getTranslation(safeProfile.locales, "contact_title")}
+                     aria-haspopup="dialog"
+                     aria-expanded={contactOpen}>
                     <div className={`nav-profile-card-avatar-switch ${showAlternateProfilePicture ? "nav-profile-card-avatar-switch-secondary" : "nav-profile-card-avatar-switch-primary"}`}>
                         <div className={`nav-profile-card-avatar-face nav-profile-card-avatar-face-front`}>
                             <ImageView src={profilePictureUrl}

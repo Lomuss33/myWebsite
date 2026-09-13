@@ -1,0 +1,90 @@
+.profile-contact-dialog {
+    width: min(32rem, calc(100vw - 2rem));
+    max-width: none;
+    max-height: calc(100dvh - 2rem);
+    margin: auto;
+    padding: 0;
+    border: 1px solid var(--theme-standard-borders, #dcdde4);
+    border-radius: 1.75rem;
+    background: var(--theme-pop-ups-background, #fff);
+    color: var(--theme-texts, #202332);
+    box-shadow: 0 24px 80px rgb(10 15 35 / 22%), 0 4px 16px rgb(10 15 35 / 8%);
+    overflow: clip;
+    overscroll-behavior: contain;
+    font-size: 1rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.5;
+
+    h2, p, a, button { font-family: inherit; }
+
+    &::backdrop { background: rgb(0 0 0 / 10%); }
+    &[open] { animation: profile-contact-enter 180ms ease-out; }
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible, button:focus-visible { outline: 3px solid #8d80e8; outline-offset: 4px; }
+}
+
+.profile-contact-card { position: relative; }
+.profile-contact-cover {
+    height: 8.5rem;
+    background-color: #231f48;
+    background-size: 4.5% auto;
+    background-repeat: repeat;
+    background-position: 41% 17%;
+    border-bottom: 3px solid #936db2;
+}
+.profile-contact-close {
+    position: absolute;
+    top: .75rem;
+    right: .75rem;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid rgb(255 255 255 / 35%);
+    border-radius: 50%;
+    background: #232334;
+    color: #fff;
+    font-size: 1.75rem;
+    cursor: pointer;
+}
+.profile-contact-content { padding: 0 clamp(1rem, 5vw, 2.25rem) 1.25rem; }
+.profile-contact-portrait {
+    display: block;
+    width: 112px;
+    height: 112px;
+    margin-top: -56px;
+    position: relative;
+    border: 4px solid var(--theme-pop-ups-background, #fff);
+    border-radius: 50%;
+    background: var(--theme-pop-ups-background, #fff);
+    img { display: block; width: 100%; height: 100%; border-radius: inherit; object-fit: cover; }
+}
+.profile-contact-eyebrow { margin: 1rem 0 .25rem; font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.profile-contact-content h2 { margin: 0 0 .5rem; font-size: clamp(1.65rem, 6vw, 2.25rem); font-weight: 700; letter-spacing: -.035em; }
+.profile-contact-job { margin: 0; font-weight: 600; }
+.profile-contact-location { margin: .3rem 0 0; font-size: .9rem; opacity: .75; }
+.profile-contact-description { margin: 1.25rem 0; }
+.profile-contact-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .65rem;
+    a { display: flex; align-items: center; gap: .6rem; padding: .8rem; min-height: 52px; border: 1px solid var(--theme-standard-borders, #dcdde4); border-radius: .85rem; font-size: .9rem; font-weight: 600; }
+    img { padding: 2px; background: #fff; border-radius: 5px; }
+    span:last-child { margin-left: auto; opacity: .6; }
+    a:hover { background: rgb(128 112 180 / 12%); }
+}
+a.profile-contact-primary { display: flex; align-items: center; justify-content: space-between; margin-top: 1rem; min-height: 52px; padding: .85rem 1.1rem; border-radius: .85rem; background: linear-gradient(138deg, #041340, #74253e 55%, #41077c); color: #fff; font-weight: 600; }
+@media (max-width: 350px) { .profile-contact-links { grid-template-columns: 1fr; } }
+@media (max-height: 700px) {
+    .profile-contact-cover { height: 5rem; }
+    .profile-contact-portrait { width: 80px; height: 80px; margin-top: -40px; }
+    .profile-contact-eyebrow { margin-top: .5rem; }
+    .profile-contact-content h2 { font-size: 1.65rem; margin-bottom: .25rem; }
+    .profile-contact-description { margin: .65rem 0; }
+    .profile-contact-links { gap: .4rem; }
+    .profile-contact-links a { min-height: 44px; padding: .5rem .65rem; }
+    a.profile-contact-primary { min-height: 44px; margin-top: .65rem; padding: .6rem .85rem; }
+}
+@media (prefers-reduced-motion: reduce) { .profile-contact-dialog[open] { animation: none; } }
+@keyframes profile-contact-enter { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }

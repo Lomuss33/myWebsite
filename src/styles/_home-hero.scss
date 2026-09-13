@@ -355,3 +355,20 @@ html[data-layout] section#section-about header.section-header.section-header-hom
     }
     .section-header-prefix span, h2.section-header-title span { white-space: nowrap; }
 }
+
+// Compact Home article typography when the content column is narrow.
+@container (max-width: 48rem) {
+    html[data-layout] section#section-about article.article > h4.article-title {
+        font-size: clamp(1.0625rem, .95rem + .5cqi, 1.25rem) !important;
+        line-height: 1.25;
+        letter-spacing: -.02em;
+        margin-top: .625rem;
+        margin-bottom: .75rem;
+        text-shadow: none;
+        > span { font-size: inherit; line-height: inherit; }
+    }
+    html[data-layout] section#section-about .name-origin-copy {
+        font-size: clamp(.875rem, .82rem + .3cqi, 1rem);
+        line-height: 1.5;
+    }
+}

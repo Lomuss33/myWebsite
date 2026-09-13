@@ -7,8 +7,41 @@
     "statusCircleVisible": true,
     "statusCircleVariant": "available",
     "statusCircleHoverMessage": "status_message_available_for_freelance",
+    "contactCard": {
+        "profileUrl": "https://gravatar.com/instantlytyphoonf343a39c44?utm_source=profile-card",
+        "avatarUrl": "https://1.gravatar.com/avatar/40523e24fc188837942364e680f886fa21919ebc6d51a7484ccab5a4be8dc484?s=256&d=initials",
+        "coverUrl": "https://1.gravatar.com/userimage/284668016/8bd03aa489dc7aad6a2b16598b363e48?size=1024",
+        "location": "Frankfurt am Main",
+        "links": [
+            {
+                "name": "Gravatar",
+                "url": "https://gravatar.com/instantlytyphoonf343a39c44?utm_source=hovercard",
+                "icon": "https://s.gravatar.com/icons/gravatar.svg"
+            },
+            {
+                "name": "LinkedIn",
+                "url": "https://www.linkedin.com/in/lovro-musi%C4%87",
+                "icon": "https://s.gravatar.com/icons/linkedin.svg"
+            },
+            {
+                "name": "GitHub",
+                "url": "https://github.com/Lomuss33",
+                "icon": "https://s.gravatar.com/icons/github.svg"
+            },
+            {
+                "name": "Pinterest",
+                "url": "https://www.pinterest.com/lovromusi",
+                "icon": "https://s.gravatar.com/icons/pinterest.svg"
+            }
+        ]
+    },
     "locales": {
         "en": {
+            "contact_title": "Let’s connect",
+            "contact_job": "Computer Engineer, DB InfraGO",
+            "contact_description": "Man of skills and ideas.",
+            "contact_view_profile": "View Gravatar profile",
+            "contact_close": "Close contact card",
             "localized_name": "Lovro Musić",
             "localized_name_stylized": "<strong>Lovro {{Musić}}</strong>",
             "status_message_available_for_freelance": "Available for hire!",
@@ -58,6 +91,11 @@
             "name_pronunciation_audio_url": "/data/audio/lovro-music.mp3"
         },
         "de": {
+            "contact_title": "Kontakt aufnehmen",
+            "contact_job": "Computeringenieur, DB InfraGO",
+            "contact_description": "Ein Mann voller Fähigkeiten und Ideen.",
+            "contact_view_profile": "Gravatar-Profil ansehen",
+            "contact_close": "Kontaktkarte schließen",
             "localized_name": "Lovro Musić",
             "localized_name_stylized": "<strong>Lovro {{Musić}}</strong>",
             "status_message_available_for_freelance": "Verfügbar zur Anstellung!",
@@ -107,6 +145,11 @@
             "name_pronunciation_audio_url": "/data/audio/lovro-music.mp3"
         },
         "hr": {
+            "contact_title": "Povežimo se",
+            "contact_job": "Računalni inženjer, DB InfraGO",
+            "contact_description": "Čovjek vještina i ideja.",
+            "contact_view_profile": "Pogledaj Gravatar profil",
+            "contact_close": "Zatvori kontakt karticu",
             "localized_name": "Lovro Musić",
             "localized_name_stylized": "<strong>Lovro {{Musić}}</strong>",
             "status_message_available_for_freelance": "Dostupan za angažman!",
@@ -156,6 +199,11 @@
             "name_pronunciation_audio_url": "/data/audio/lovro-music.mp3"
         },
         "tr": {
+            "contact_title": "İletişime geçelim",
+            "contact_job": "Bilgisayar Mühendisi, DB InfraGO",
+            "contact_description": "Beceri ve fikirlerle dolu bir insan.",
+            "contact_view_profile": "Gravatar profilini görüntüle",
+            "contact_close": "İletişim kartını kapat",
             "localized_name": "Lovro Musić",
             "localized_name_stylized": "<strong>Lovro {{Musić}}</strong>",
             "status_message_available_for_freelance": "İş için uygun!",

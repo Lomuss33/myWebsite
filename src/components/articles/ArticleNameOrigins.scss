@@ -20,7 +20,7 @@ div.name-origin-word.pretext-interactive-text {
 .article-name-origins-panel > footer { padding-top: .75rem; font-size: .8125rem; line-height: 1.5; color: var(--theme-texts-light); opacity: .8; }
 @container name-origins (max-width: 35rem) {
  .name-origin-display, .name-origin-surname .name-origin-display { float: none; width: 100%; margin: 0 0 .5rem; }
- div.name-origin-word.pretext-interactive-text { font-size: clamp(2.5rem, 19cqi, 5.5rem); }
+ div.name-origin-word.pretext-interactive-text { font-size: clamp(2.25rem, 12cqi, 3.75rem); }
  section.name-origin { padding: .75rem 0; }
 }
 

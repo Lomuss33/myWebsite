@@ -345,3 +345,13 @@ html[data-layout="mobile"] section#section-about article.article-info-list-home 
     font-size: clamp(.875rem, .84rem + .15cqi, 1rem) !important;
     line-height: 1.35 !important;
 }
+
+html[data-layout] section#section-about header.section-header.section-header-home {
+    div.section-header-prefix, h2.section-header-title {
+        width: max-content;
+        max-width: none;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    .section-header-prefix span, h2.section-header-title span { white-space: nowrap; }
+}

@@ -35,3 +35,5 @@ Idle Home floating frames release permanent 3D/will-change layers; active tilt r
 No redesign is pending. Three placeholders await replacement photos. Recent checks sampled four viewport/theme/language combinations, popup keyboard dismissal, cached reload/scroll visibility, and failed-placeholder loading. They were ad hoc checks, not a permanent full-device suite. See [known gaps](../guides/validation.md#known-gaps).
 
 Description sizing update (2026-09-12): Home skill descriptions use natural height without nested scrolling, with slightly smaller mobile type. Proof-panel scrolling remains separate. Focused checks at 240, 390, and 768px found no overflowing visible descriptions.
+
+Home heading update (2026-09-13): prefix and title each remain a single line. SectionHeader measures available width and reduces font size as needed after resizing, text changes, and font loading. Very narrow screens intentionally use smaller heading text.

@@ -14,9 +14,9 @@
         "location": "Frankfurt am Main",
         "links": [
             {
-                "name": "Gravatar",
-                "url": "https://gravatar.com/instantlytyphoonf343a39c44?utm_source=hovercard",
-                "icon": "https://s.gravatar.com/icons/gravatar.svg"
+                "name": "Calendly",
+                "url": "https://calendly.com/lovro-music-3",
+                "icon": "/images/calendar-booking.svg"
             },
             {
                 "name": "LinkedIn",

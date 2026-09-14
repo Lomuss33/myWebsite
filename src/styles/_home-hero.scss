@@ -168,6 +168,16 @@ html[data-layout] section#section-about .article-feature-item-home-style-intro {
         box-sizing: border-box;
         border: 1px solid #fff;
         background: #a7adb5 url('/images/profile-placeholder.png') center / cover;
+        transition: transform 480ms cubic-bezier(.22, .8, .25, 1), box-shadow 480ms ease;
+        &.intro-card-lifting {
+            transition-duration: 220ms;
+            transform: translate(calc(var(--intro-card-x, 12px) * -.65), calc(var(--intro-card-y, 0px) * -.65)) scale(.94) rotate(-5deg);
+            box-shadow: 0 12px 24px #0003;
+        }
+        &.intro-card-arriving {
+            animation: intro-card-arrive 480ms cubic-bezier(.22, .8, .25, 1) both;
+        }
+        @media (prefers-reduced-motion: reduce) { transition: none; }
         transform: translate(calc(var(--intro-card-x, 12px) * var(--intro-card-offset)), calc(var(--intro-card-y, 0px) * var(--intro-card-offset)));
         img { display: block; width: 100%; height: 100%; object-fit: cover; }
     }
@@ -371,4 +381,10 @@ html[data-layout] section#section-about header.section-header.section-header-hom
         font-size: clamp(.875rem, .82rem + .3cqi, 1rem);
         line-height: 1.5;
     }
+}
+
+@keyframes intro-card-arrive {
+    from { transform: translate(calc(var(--intro-card-x, 12px) * .5), calc(var(--intro-card-y, 0px) * .5)) scale(.96) rotate(2deg); }
+    65% { transform: translate(0, 0) scale(1.015) rotate(-.4deg); }
+    to { transform: translate(0, 0) scale(1) rotate(0); }
 }

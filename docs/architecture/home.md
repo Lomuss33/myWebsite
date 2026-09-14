@@ -7,7 +7,7 @@ Route: `#about`. Data: [home.json](../../public/data/sections/home.json). Regist
 | Area | Owner | Behavior |
 |---|---|---|
 | Contact band | `ArticleInlineList.jsx` | Full, compact address/number, short, icon labels; measured equal-width slots |
-| Profile stack | `ArticleFeature.jsx` | Two photos, three placeholders; click/Enter/Space cycles; spread uses available media space |
+| Profile stack | `ArticleFeature.jsx` | Five images, no placeholder cards; click/Enter/Space cycles; spread uses available media space |
 | Intro text | `PretextInteractiveText.jsx` | Measured animated lines; refresh typography on width changes |
 | Skill proof | `ArticleInfoList.jsx` | Stable cards, in-card details, Escape dismissal, scroll for long text |
 | Name origins | `ArticleNameOrigins.jsx/.scss` | Native paragraphs around animated names; narrow-screen stacking |
@@ -32,10 +32,12 @@ Idle Home floating frames release permanent 3D/will-change layers; active tilt r
 
 ## Handoff
 
-No redesign is pending. Three placeholders await replacement photos. Recent checks sampled four viewport/theme/language combinations, popup keyboard dismissal, cached reload/scroll visibility, and failed-placeholder loading. They were ad hoc checks, not a permanent full-device suite. See [known gaps](../guides/validation.md#known-gaps).
+No redesign is pending. All five cards have images: original main, `lovro-outdoors.webp`, original alternate, `ejajLovroMusicFinal.png`, and `ai_lovro_fifa26.png`. The placeholder remains only as an error fallback. Recent checks sampled four viewport/theme/language combinations, popup keyboard dismissal, cached reload/scroll visibility, and failed-placeholder loading. They were ad hoc checks, not a permanent full-device suite. See [known gaps](../guides/validation.md#known-gaps).
 
 Description sizing update (2026-09-12): Home skill descriptions use natural height without nested scrolling, with slightly smaller mobile type. Proof-panel scrolling remains separate. Focused checks at 240, 390, and 768px found no overflowing visible descriptions.
 
 Home heading update (2026-09-13): prefix and title each remain a single line. SectionHeader measures available width and reduces font size as needed after resizing, text changes, and font loading. Very narrow screens intentionally use smaller heading text.
 
 Compact typography (2026-09-13): Home article headings use smaller bounded type and tighter margins below a 48rem content container. Name-origin body text is reduced in that range; narrow stacked display names are capped at 3.75rem. Wide layouts retain their existing scale.
+
+Image stack cycling follows neighboring slots (center, near right, far right, far left, near left), keeping the cross-stack wrap behind the foreground cards. Transitions honor reduced motion.

@@ -1465,3 +1465,84 @@ div.article-feature-items.article-feature-items-section-my-writings {
             }
         }
 }
+
+
+// Matching pages on a shared book cover; texture sampled from the source flyer.
+html[data-layout] section#section-experience div.article-feature-item.wood-project {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto;
+    grid-auto-rows: 1fr;
+    align-items: stretch;
+    width: 100%; max-width: clamp(44rem, 105svh, 54rem);
+    margin-inline: auto;
+    gap: clamp(.5rem, 1.2cqi, 1rem);
+    padding: clamp(.375rem, .8cqi, .75rem);
+    border: 1px solid #785132;
+    border-radius: 12px;
+    background: #392719;
+    box-shadow: 0 8px 24px #0003, inset 0 1px #ffffff20;
+    color: #fff;
+    .wood-project-flyer, .wood-project-page {
+        box-sizing: border-box;
+        min-width: 0;
+        width: 100%;
+        aspect-ratio: 707 / 1000;
+        border-radius: 6px;
+        overflow: hidden;
+        background: #a56637 url('/images/hardware/wood-products-texture.webp') repeat;
+        background-size: 10% 4%;
+        box-shadow: 0 2px 6px #0005;
+    }
+    .wood-project-flyer {
+        display: grid;
+        .image-view { width: 100%; height: 100%; }
+        img { display: block; width: 100%; height: 100%; object-fit: contain; border-radius: 6px; }
+    }
+    .wood-project-page {
+        background-image: url('/images/hardware/wood-products-five-planks.webp');
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        display: flex; flex-direction: column; justify-content: center;
+        padding: clamp(.75rem, 2cqi, 2rem);
+        gap: 1rem;
+        font-size: clamp(.875rem, .75rem + .4cqi, 1.0625rem);
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+        text-shadow: 0 1px 2px #46240d80;
+        p { margin: 0 0 .8em; }
+        p:last-child { margin-bottom: 0; }
+        a, strong, em { color: #fff; }
+        a { text-decoration: underline; text-underline-offset: .2em; }
+    }
+    .wood-project-description {
+        p:first-child {
+            font-size: 1.2em;
+            line-height: 1.4;
+            padding-bottom: .8em;
+            border-bottom: 1px solid #ffffff70;
+        }
+        p:first-child > strong:first-child {
+            display: block;
+            margin-bottom: .4em;
+            font-family: Georgia, serif;
+            font-size: 1.5em;
+            line-height: 1.1;
+            text-wrap: balance;
+        }
+        p:nth-child(2) { padding-block: .25em; }
+        p:last-child:not(:first-child) {
+            border-left: 3px solid #fff;
+            padding: .5em 0 .5em .8em;
+            font-style: italic;
+            font-size: 1.08em;
+            margin-top: 1em;
+        }
+    }
+    .wood-project-details { border-top: 1px solid #ffffff80; padding-top: .75rem; }
+    @container (max-width: 40rem) {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        .wood-project-page { font-size: clamp(.875rem, .7rem + .6cqi, 1.0625rem); }
+    }
+}

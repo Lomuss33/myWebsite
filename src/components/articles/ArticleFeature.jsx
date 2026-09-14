@@ -125,6 +125,10 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
     const hasAlternateImage = Boolean(itemWrapper.img && itemWrapper.imgAlt)
     const [showAlternateImage, setShowAlternateImage] = useState(false)
     const [introCardIndex, setIntroCardIndex] = useState(0)
+    const [introShufflePhase, setIntroShufflePhase] = useState(null)
+    const introShuffleTimer = useRef(null)
+    const introShuffleBusy = useRef(false)
+    useEffect(() => () => window.clearTimeout(introShuffleTimer.current), [])
     const [isMobileView, setIsMobileView] = useState(() => {
         if (typeof window === "undefined" || !window.matchMedia) return false
         return window.matchMedia(MOBILE_VIEW_MEDIA_QUERY).matches
@@ -717,7 +721,21 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
             return
 
         if (isAboutIntro) {
-            setIntroCardIndex(current => (current + 1) % 5)
+            if (introShuffleBusy.current) return
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                setIntroCardIndex(current => (current + 1) % 5)
+                return
+            }
+            introShuffleBusy.current = true
+            setIntroShufflePhase('lift')
+            introShuffleTimer.current = window.setTimeout(() => {
+                setIntroCardIndex(current => (current + 1) % 5)
+                setIntroShufflePhase('settle')
+                introShuffleTimer.current = window.setTimeout(() => {
+                    setIntroShufflePhase(null)
+                    introShuffleBusy.current = false
+                }, 480)
+            }, 220)
             return
         }
         setShowAlternateImage(current => !current)
@@ -787,16 +805,17 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
                                      onMediaClick()
                                  }
                              }}>
-                            {isAboutIntro ? [itemWrapper.img, itemWrapper.imgAlt,
-                                "/images/profile-placeholder.png", "/images/profile-placeholder.png", "/images/profile-placeholder.png"
+                            {isAboutIntro ? [itemWrapper.img, "/images/lovro-outdoors.webp", itemWrapper.imgAlt,
+                                "/images/ejajLovroMusicFinal.png", "/images/ai_lovro_fifa26.png"
                             ].map((src, index) => {
                                 const rank = (index - introCardIndex + 5) % 5
-                                const offset = [0, 0.5, -0.5, 1, -1][rank]
+                                // Advance one neighboring slot at a time; only the rear card wraps sides.
+                                const offset = [0, 0.5, 1, -1, -0.5][rank]
                                 return <div key={index}
-                                            className="article-feature-item-image-face article-feature-item-intro-card"
+                                            className={`article-feature-item-image-face article-feature-item-intro-card ${introShufflePhase === "lift" && rank === 0 ? "intro-card-lifting" : ""} ${introShufflePhase === "settle" && rank === 0 ? "intro-card-arriving" : ""}`}
                                             aria-hidden={rank !== 0}
-                                            style={{"--intro-card-offset": offset, zIndex: 5 - rank}}>
-                                    <img src={src} alt={index < 2 ? itemWrapper.imageAlt : "Profile photo placeholder"}
+                                            style={{"--intro-card-offset": offset, zIndex: [5, 4, 2, 1, 3][rank]}}>
+                                    <img src={src} alt={itemWrapper.imageAlt}
                                          onError={event => {
                                              const image = event.currentTarget
                                              const fallback = "/images/profile-placeholder.png"
@@ -868,6 +887,17 @@ function ArticleFeatureItem({ itemWrapper, imageStyle }) {
             </div>
         </>
     )
+
+    if (isWoodProductsFeature) {
+        const footerStart = html.lastIndexOf('<p>')
+        return (
+            <div ref={itemRef} className={itemClassName + ' wood-project'}>
+                <div className="wood-project-flyer"><ImageView src={itemWrapper.img} alt={itemWrapper.imageAlt} loading="lazy" hideSpinner={true}/></div>
+                <div className="wood-project-page"><div className="wood-project-description" dangerouslySetInnerHTML={{__html: footerStart > 0 ? html.slice(0, footerStart) : html}}/>
+                <div className="wood-project-details" dangerouslySetInnerHTML={{__html: footerStart > 0 ? html.slice(footerStart) : ''}}/></div>
+            </div>
+        )
+    }
 
     return (
         <div ref={itemRef}

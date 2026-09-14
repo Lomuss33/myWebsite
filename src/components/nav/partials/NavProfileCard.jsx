@@ -355,6 +355,7 @@ function NavProfileCard({
         }
 
         mediaRef.current?.focus({preventScroll: true})
+        setShowAlternateProfilePicture(current => !current)
         setContactOpen(true)
     }
 

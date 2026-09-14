@@ -13,7 +13,7 @@ export default function ProfileContactDialog({profile, onClose}) {
     const label = (key) => language.getTranslation(profile.locales, `contact_${key}`)
     const restartTimer = useCallback(() => {
         window.clearTimeout(timerRef.current)
-        timerRef.current = window.setTimeout(onClose, 7000)
+        timerRef.current = window.setTimeout(onClose, 10000)
     }, [onClose])
 
     useEffect(() => {

@@ -66,3 +66,15 @@ Navigation refinement: language option labels occupy a single centered grid cell
 Short-rail resume trigger: the shared ResumeMenu root has an explicit `resume-menu` class. The band sizes that wrapper to its full width and height so the trigger and icon row inherit the band height rather than collapsing to intrinsic icon height. No tests run.
 
 Resume popup sizing: intrinsic content width with compact row padding, bounded by the visual viewport. Placement chooses the side of the trigger with enough/more vertical room and constrains scrolling to that space; trigger resizing also updates placement. No tests run.
+
+Experience timeline prose uses compact 15?17px desktop and 14?15px mobile sizing, 1.45 line height, and reduced body spacing. Right padding retains the supplied decoration buffer without the former 3.4 multiplier/15cqi minimum. Height remains content-driven; no clipping or fixed-height truncation. Source-only update, no tests run.
+
+Wood Products uses a natural-flow flyer/description/details grid instead of managed image sizing. Below 36rem content width, description moves above and details sit beside the flyer; below 23rem everything stacks. Warm wood colors adapt to the theme. No tests run.
+
+Wood Products revision: two equal-width/equal-height pages with shared corners, side by side above 40rem content width and stacked below. The description uses pure white text and a repeated texture extracted from the flyer?s bottom 4%/rightmost 10% intersection (141?80px). Regenerate `wood-products-texture.webp` from `wood-products-deutschland.webp` using that crop if the flyer changes. A restrained brown outer cover joins the pages. Supersedes the earlier description/details grid.
+
+Wood page refinement: grain uses the top 56px of the 141?80px sample to omit its seam, tiled at 10% ? 2.8% to match flyer grain scale. Four separate horizontal seams span the page. Intro heading, story, takeaway, and contact footer use distinct typographic treatments. No tests run.
+
+The description page now uses `wood-products-five-planks.webp`, a single generated five-plank texture with right-edge shading, displayed once across the page. This replaces the repeated grain tiles and CSS seams.
+
+Experience feature and story sizing: the wood book is centered with a 44?54rem width cap influenced by viewport height (still limited to available width). Story text is capped at 17px, headings at 24px, and card/rail spacing is compact. Article titles cap at 28px. No tests run.

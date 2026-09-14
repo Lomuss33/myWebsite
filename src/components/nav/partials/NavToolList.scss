@@ -1635,10 +1635,10 @@ nav.nav-sidebar-extended div.nav-tools.nav-tools-extended {
     }
 
     div.dropdown-menu.nav-tools-popup-menu:not(.nav-resume-menu) {
-        --nav-tools-popup-width: 100%;
+        --nav-tools-popup-width: calc(100% - 8px);
         --nav-tools-popup-min-width: 0;
-        --nav-tools-popup-max-width: 100%;
-        left: 0 !important;
+        --nav-tools-popup-max-width: calc(100% - 8px);
+        left: 4px !important;
         bottom: calc(100% + 4px) !important;
         box-sizing: border-box;
         padding: 2px;

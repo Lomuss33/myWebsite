@@ -698,3 +698,24 @@ div.article-text-items.article-text-items-mode-draggable_inline_icon_flow {
         }
     }
 }
+
+// Bounded experience typography rather than continued viewport-driven growth.
+html[data-layout] section#section-experience article#article-3-section-experience {
+    .article-text-items { width: 100%; max-width: 64rem; margin-inline: auto; gap: 1rem; }
+    div.article-text-item-flow-card { padding: clamp(.75rem, 1.5cqi, 1.25rem); min-width: 0; }
+    h3.article-text-flow-card-heading { font-size: clamp(1.125rem, 1rem + .5cqi, 1.5rem); line-height: 1.2; }
+    p.pretext-draggable-inline-icon-text-intro,
+    div.pretext-draggable-inline-icon-text-body,
+    p.pretext-draggable-inline-icon-text-paragraph {
+        font-size: clamp(.9375rem, .875rem + min(.25cqi, .4svh), 1.0625rem);
+        line-height: 1.5;
+    }
+    div.pretext-draggable-inline-icon-text-body { gap: .625rem; }
+    div.article-text-flow-card-story { --pretext-draggable-inline-icon-text-handle-size: clamp(44px, 5cqi, 60px); }
+    div.pretext-draggable-inline-icon-text-rail-block { margin-block: .625rem; }
+    span.article-text-flow-card-axis-label { font-size: clamp(.75rem, .7rem + .2cqi, .9375rem); white-space: normal; overflow-wrap: anywhere; letter-spacing: .06em; }
+}
+html[data-layout] section#section-experience article:is(#article-2-section-experience, #article-3-section-experience) {
+    padding-bottom: .75rem;
+    h4.article-title { font-size: clamp(1.2rem, 1.05rem + .5cqi, 1.75rem) !important; line-height: 1.2; margin-bottom: 1rem; }
+}

@@ -2810,3 +2810,31 @@ article.article-timeline--art-photography div.article-timeline-item-content ul.a
         ),
         linear-gradient(135deg, rgba(148, 163, 184, 0.16), transparent 48%);
 }
+
+// Compact experience prose; retain natural height and room for card decoration.
+html[data-layout] article#article-1-section-experience div.article-timeline-item-info-for-timelines-body {
+    --experience-description-right-offset: max(.5rem, var(--experience-description-right-buffer, 0px));
+    margin-top: .5rem;
+    padding-top: .375rem;
+
+    div.article-timeline-item-info-for-timelines-body-text,
+    ul.article-timeline-item-info-for-timelines-body-list {
+        font-size: clamp(.9375rem, calc(.875rem + min(.3vw, .45vh)), 1.0625rem) !important;
+        line-height: 1.45;
+        padding-top: .25rem;
+        overflow-wrap: anywhere;
+    }
+    ul.article-timeline-item-info-for-timelines-body-list {
+        margin-top: .25rem;
+        li.article-timeline-item-info-for-timelines-body-list-item { margin-bottom: .25rem; }
+    }
+    div.article-timeline-item-info-for-timelines-body-text + ul.article-timeline-item-info-for-timelines-body-list,
+    ul.article-timeline-item-info-for-timelines-body-list:first-child { padding-top: .25rem; }
+}
+html[data-layout="mobile"] article#article-1-section-experience div.article-timeline-item-info-for-timelines-body {
+    div.article-timeline-item-info-for-timelines-body-text,
+    ul.article-timeline-item-info-for-timelines-body-list {
+        font-size: clamp(.875rem, calc(.825rem + .2vw), .9375rem) !important;
+        line-height: 1.45;
+    }
+}

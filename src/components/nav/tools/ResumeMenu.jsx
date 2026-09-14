@@ -22,13 +22,23 @@ export default function ResumeMenu({toggleClassName = "", toggleCaption = null, 
             const top = viewport?.offsetTop || 0
             const width = viewport?.width || window.innerWidth
             const height = viewport?.height || window.innerHeight
-            menu.style.maxWidth = Math.max(1, width - 16) + 'px'
-            menu.style.maxHeight = Math.max(1, height - 16) + 'px'
+            const margin = 8
+            const gap = 6
+            const minX = left + margin
+            const minY = top + margin
+            const maxY = top + height - margin
+            menu.style.maxWidth = Math.max(1, width - margin * 2) + 'px'
+            const above = Math.max(0, rect.top - gap - minY)
+            const below = Math.max(0, maxY - rect.bottom - gap)
+            // Measure full content even when the previous placement was scroll-limited.
+            const naturalHeight = menu.scrollHeight + menu.offsetHeight - menu.clientHeight
+            const opensBelow = below >= naturalHeight || below >= above
+            const available = opensBelow ? below : above
+            menu.style.maxHeight = Math.max(1, available) + 'px'
             const box = menu.getBoundingClientRect()
-            const below = rect.bottom + 8
-            const y = below + box.height <= top + height - 8 ? below : rect.top - box.height - 8
-            menu.style.left = Math.max(left + 8, Math.min(rect.left, left + width - box.width - 8)) + 'px'
-            menu.style.top = Math.max(top + 8, Math.min(y, top + height - box.height - 8)) + 'px'
+            const y = opensBelow ? rect.bottom + gap : rect.top - gap - box.height
+            menu.style.left = Math.max(minX, Math.min(rect.left, left + width - margin - box.width)) + 'px'
+            menu.style.top = Math.max(minY, Math.min(y, maxY - box.height)) + 'px'
         }
         const outside = event => {
             if (!menu.contains(event.target) && !toggle.current.contains(event.target)) setOpen(false)
@@ -40,6 +50,7 @@ export default function ResumeMenu({toggleClassName = "", toggleCaption = null, 
         if (keyboardOpen.current) menu.querySelector('[role="menuitem"]')?.focus()
         const observer = new ResizeObserver(place)
         observer.observe(menu)
+        observer.observe(toggle.current)
         window.addEventListener('resize', place)
         window.addEventListener('scroll', place, true)
         window.visualViewport?.addEventListener('resize', place)
@@ -71,7 +82,7 @@ export default function ResumeMenu({toggleClassName = "", toggleCaption = null, 
             setOpen(false)
         }
     }
-    return <div className={className}>
+    return <div className={`resume-menu ${className}`}>
         <button ref={toggle} type="button" className={`btn-option-picker-toggle btn btn-transparent ${toggleClassName} ${open ? "show" : ""} ${toggleCaption ? "btn-option-picker-toggle-with-caption" : ""} ${toggleCaption && toggleCaptionLayout === "inline" ? "btn-option-picker-toggle-caption-inline" : ""}`}
                 aria-haspopup="menu" aria-expanded={open} aria-controls={open ? id : undefined}
                 aria-label={ariaLabel || tooltipLabel} data-tooltip={open ? 'hidden' : tooltipLabel}

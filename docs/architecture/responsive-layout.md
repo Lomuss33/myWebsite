@@ -59,4 +59,10 @@ Compact sidebar toggle (2026-09-14): narrow windows and touch screens up to 64re
 
 Unified resume popup (2026-09-14): all NavToolResumeDownloader instances now use ResumeMenu.jsx/.scss, including desktop profile/sidebar controls. This replaces the separate desktop OptionPickerButton popup and retains caller-provided toggle captions/classes. Popup palette, action rows, viewport placement, and keyboard behavior are shared across modes. No tests run per request.
 
-- Sidebar language dropdowns anchor to their own trigger and match its width in both rail modes, with 2px outer padding and wrapping option labels. Each option shares the trigger?s --nav-tools-height and navigation surface colors; a subdued flag ball sits behind the centered label, with accent hover/focus feedback. Short-rail options show full-opacity flags only; image alt text preserves their accessible names. Source-only sizing update; no tests run.
+- Sidebar language dropdowns match the trigger width in extended mode and anchor to the full tools-row width in short mode, with 2px outer padding and wrapping option labels. Each option shares the trigger?s --nav-tools-height and navigation surface colors; a subdued flag ball sits behind the centered label, with accent hover/focus feedback. Short-rail options show full-opacity flags only; image alt text preserves their accessible names. Source-only sizing update; no tests run.
+
+Navigation refinement: language option labels occupy a single centered grid cell with 2px row spacing. The sidebar toggle scales from 32px to 56px using viewport width and height, retaining the compact touch override and divider anchoring. Mobile action order is sound/resume on the left and theme/language on the right. Source edits only; no tests run.
+
+Short-rail resume trigger: the shared ResumeMenu root has an explicit `resume-menu` class. The band sizes that wrapper to its full width and height so the trigger and icon row inherit the band height rather than collapsing to intrinsic icon height. No tests run.
+
+Resume popup sizing: intrinsic content width with compact row padding, bounded by the visual viewport. Placement chooses the side of the trigger with enough/more vertical room and constrains scrolling to that space; trigger resizing also updates placement. No tests run.

@@ -239,14 +239,15 @@ html:is([data-layout="normal"], [data-layout="ultrawide"]) {
 
 // Center the toggle on the rail's 4px vertical stripe and navigation divider.
 html[data-layout] nav.nav-sidebar button.nav-sidebar-btn-toggle {
-    width: 2.75rem !important;
-    height: 2.75rem !important;
-    min-width: 2.75rem !important;
-    min-height: 2.75rem !important;
-    max-width: 2.75rem !important;
-    max-height: 2.75rem !important;
+    --sidebar-toggle-size: clamp(2rem, min(2.5vw, 5vh), 3.5rem);
+    width: var(--sidebar-toggle-size) !important;
+    height: var(--sidebar-toggle-size) !important;
+    min-width: var(--sidebar-toggle-size) !important;
+    min-height: var(--sidebar-toggle-size) !important;
+    max-width: var(--sidebar-toggle-size) !important;
+    max-height: var(--sidebar-toggle-size) !important;
     right: 1px;
-    font-size: 1rem !important;
+    font-size: calc(var(--sidebar-toggle-size) * 0.38) !important;
     transform: translate(50%, -50%) !important;
     scale: 1 !important;
 }

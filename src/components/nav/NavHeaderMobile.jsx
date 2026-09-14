@@ -20,11 +20,14 @@ function NavHeaderMobile({ profile }) {
     const themeButtonVisible = Boolean(theme.supportsMultipleThemes)
     const languageButtonVisible = Boolean(language.supportsMultipleLanguages)
 
-    const mobileActionStackBeforeInfo = (themeButtonVisible || resumeButtonVisible) ? (
+    const mobileActionStackBeforeInfo = (namePronunciationButtonVisible || resumeButtonVisible) ? (
         <>
-            {themeButtonVisible && (
-                <div className={`nav-profile-card-mobile-action nav-profile-card-mobile-action-theme`}>
-                    <NavToolThemePicker/>
+            {namePronunciationButtonVisible && (
+                <div className={`nav-profile-card-mobile-action nav-profile-card-mobile-action-audio`}>
+                    <AudioButton url={namePronunciationAudioUrl}
+                                 tooltip={namePronunciationIpa}
+                                 tooltipLabel={namePronunciationIpa}
+                                 size={AudioButton.Sizes.DEFAULT}/>
                 </div>
             )}
 
@@ -38,14 +41,11 @@ function NavHeaderMobile({ profile }) {
         </>
     ) : null
 
-    const mobileActionStackAfterInfo = (namePronunciationButtonVisible || languageButtonVisible) ? (
+    const mobileActionStackAfterInfo = (themeButtonVisible || languageButtonVisible) ? (
         <>
-            {namePronunciationButtonVisible && (
-                <div className={`nav-profile-card-mobile-action nav-profile-card-mobile-action-audio`}>
-                    <AudioButton url={namePronunciationAudioUrl}
-                                 tooltip={namePronunciationIpa}
-                                 tooltipLabel={namePronunciationIpa}
-                                 size={AudioButton.Sizes.DEFAULT}/>
+            {themeButtonVisible && (
+                <div className={`nav-profile-card-mobile-action nav-profile-card-mobile-action-theme`}>
+                    <NavToolThemePicker/>
                 </div>
             )}
 

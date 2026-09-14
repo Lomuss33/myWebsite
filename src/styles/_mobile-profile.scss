@@ -41,29 +41,20 @@ html[data-layout="mobile"] nav.nav-header-mobile {
             justify-self: center;
         }
         div.nav-profile-card-mobile-action-stack {
-            display: flex; flex-direction: column;
-            gap: 0.25rem; width: auto; flex-basis: auto;
+            display: flex; flex-direction: row; flex-wrap: wrap;
+            gap: 0.375rem; width: 100%; flex-basis: auto;
             margin: 0; padding: 0; min-width: 0;
         }
-        div.nav-profile-card-mobile-action-stack-middle { grid-area: left; justify-self: start; }
-        div.nav-profile-card-mobile-action-stack-right { grid-area: right; justify-self: end; }
+        div.nav-profile-card-mobile-action-stack-middle { grid-area: left; justify-self: start; justify-content: flex-start; }
+        div.nav-profile-card-mobile-action-stack-right { grid-area: right; justify-self: end; justify-content: flex-end; }
     }
 }
 
 @container mobile-profile-card (min-width: 24rem) {
     html[data-layout="mobile"] nav.nav-header-mobile div.nav-profile-card {
         --avatar-size: clamp(4rem, 18cqi, 5.75rem);
-        div.nav-profile-card-main-row { column-gap: clamp(0.5rem, 2cqi, 1.125rem); }
+        div.nav-profile-card-main-row { column-gap: clamp(0.375rem, 1.2cqi, 0.75rem); }
         span.nav-profile-card-name-line { font-size: clamp(1.5rem, 6.5cqi, 2.5rem) !important; }
-    }
-}
-
-@container mobile-profile-card (min-width: 40rem) {
-    html[data-layout="mobile"] nav.nav-header-mobile div.nav-profile-card div.nav-profile-card-mobile-action-stack {
-        flex-direction: row;
-        width: 100%;
-        max-width: 12rem;
-        justify-content: space-between;
     }
 }
 
@@ -119,3 +110,51 @@ html[data-layout="mobile"] nav.nav-header-mobile div.nav-profile-card {
     }
 }
 
+
+// Keep touch navigation in normal layout; avoid compressed flex items and sticky hover movement.
+html[data-layout="mobile"] {
+    .nav-header-mobile, .nav-header-mobile-card-wrapper,
+    .nav-link-pills-sticky-slot, .nav-link-pills-fixed-wrapper,
+    nav.nav-link-pills-mobile, nav.nav-tab-controller { flex-shrink: 0; }
+    nav.nav-link-pills-mobile, nav.nav-tab-controller {
+        height: var(--mobile-nav-row-height);
+        min-height: var(--mobile-nav-row-height);
+        box-sizing: border-box;
+    }
+    nav.nav-link-pills-mobile > button.nav-link-pills-link,
+    nav.nav-tab-controller > button.nav-tab-controller-link {
+        height: 100%;
+        min-height: var(--mobile-nav-row-height);
+        touch-action: manipulation;
+    }
+}
+@media (pointer: coarse) {
+    html[data-layout="mobile"] {
+        .nav-tab-controller-link, .nav-link-pills-link {
+            transform: none !important;
+            transition: background-color .15s ease, color .15s ease;
+        }
+        nav.nav-header-mobile .floating-frame {
+            transform: none !important;
+            transform-style: flat;
+            will-change: auto;
+        }
+    }
+}
+@media (min-width: 30rem) and (min-height: 40rem) and (pointer: coarse) {
+    html[data-layout="mobile"] {
+        --mobile-nav-row-height: 5.5rem;
+        --mobile-nav-item-icon-size: 1.5rem;
+        --mobile-nav-item-label-size: 1rem;
+        --mobile-nav-item-gap: .375rem;
+        nav.nav-header-mobile div.nav-profile-card {
+            --mobile-action-size: 3.5rem;
+            --mobile-action-footprint: 3.5rem;
+            --mobile-action-visual-scale: 1;
+            padding-top: .5rem;
+            .nav-profile-card-main-row { padding-block: .5rem; }
+            .nav-profile-card-mobile-action-stack { gap: .375rem; }
+        }
+        .nav-tab-controller-link span { font-size: 1rem; line-height: 1.2; }
+    }
+}

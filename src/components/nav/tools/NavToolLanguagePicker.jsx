@@ -34,7 +34,7 @@ function NavToolLanguagePicker({
     const captionLayoutClass = toggleCaption && toggleCaptionLayout === "inline" ?
         "btn-option-picker-toggle-caption-inline" :
         ""
-    const toggleClasses = `btn-option-picker-toggle nav-tool-language-toggle ${captionClass} ${captionLayoutClass}`.trim()
+    const toggleClasses = `btn-option-picker-toggle nav-tool-language-toggle ${toggleCaption === "Language" ? "nav-tool-language-caption-long" : ""} ${captionClass} ${captionLayoutClass}`.trim()
     const alternateToggleLanguages = toggleCaption && toggleCaptionLayout === "inline" ?
         availableLanguages.filter(lang => lang.id !== selectedLanguage?.id) :
         []

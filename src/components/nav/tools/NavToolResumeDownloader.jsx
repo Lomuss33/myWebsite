@@ -4,7 +4,7 @@ import {useUtils} from "../../../hooks/utils.js"
 import OptionPickerButton from "../../buttons/OptionPickerButton.jsx"
 import {useData} from "../../../providers/DataProvider.jsx"
 import {useFeedbacks} from "../../../providers/FeedbacksProvider.jsx"
-import MobileTubeMenu from "./MobileTubeMenu.jsx"
+import MobileResumeMenu from "./MobileResumeMenu.jsx"
 import {getResumePdfPath} from "../../../config/resumePdfConfig.js"
 
 function NavToolResumeDownloader({
@@ -103,8 +103,7 @@ function NavToolResumeDownloader({
 
     if(mobileTubeMenu) {
         return (
-            <MobileTubeMenu className={dropdownClassName}
-                            menuClassName={resolvedMenuClassName}
+            <MobileResumeMenu className={dropdownClassName}
                             tooltipLabel={tooltip}
                             ariaLabel={tooltip}
                             toggleContent={(
@@ -126,9 +125,7 @@ function NavToolResumeDownloader({
                                     aria-label={option.label}
                                     onClick={() => {
                                         closeMenu()
-                                        window.requestAnimationFrame(() => {
-                                            _onOptionSelected(option.id)
-                                        })
+                                        _onOptionSelected(option.id)
                                     }}>
                                 <div className={`btn-option-picker-icon btn-option-picker-icon-size-1`}>
                                     <i className={`fa-icon ${option.faIcon}`}/>
@@ -141,7 +138,7 @@ function NavToolResumeDownloader({
                         ))}
                     </>
                 )}
-            </MobileTubeMenu>
+            </MobileResumeMenu>
         )
     }
 

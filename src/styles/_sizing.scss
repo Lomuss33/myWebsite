@@ -73,7 +73,7 @@ html[data-layout] {
 }
 
 html[data-layout="mobile"] {
-    --mobile-nav-row-height: 3.75rem;
+    --mobile-nav-row-height: 4.5rem;
     .nav-header-mobile { max-width: 60rem; margin-inline: auto; }
     .nav-header-mobile .nav-profile-card {
         --avatar-size: clamp(3rem, 12vw, 4rem);
@@ -105,7 +105,7 @@ html[data-layout="mobile"] {
 
 @media (max-height: 30rem) {
     html[data-layout="mobile"] {
-        --mobile-nav-row-height: 3rem;
+        --mobile-nav-row-height: 3.5rem;
         :is(button.nav-tab-controller-link, button.nav-link-pills-link) {
             flex-direction: row;
             gap: 0.3rem;
@@ -249,4 +249,29 @@ html[data-layout] nav.nav-sidebar button.nav-sidebar-btn-toggle {
     font-size: 1rem !important;
     transform: translate(50%, -50%) !important;
     scale: 1 !important;
+}
+
+// Mobile navigation: shared height also drives sticky slots and bottom clearance.
+html[data-layout="mobile"] {
+    .nav-tab-controller-wrapper { touch-action: manipulation; }
+    .nav-link-pills-sticky-slot {
+        flex-basis: var(--nav-pills-height);
+        height: var(--nav-pills-height);
+        min-height: var(--nav-pills-height);
+    }
+    .nav-link-pills-fixed-wrapper {
+        box-sizing: border-box;
+        transform: none;
+        backface-visibility: visible;
+    }
+    button.nav-tab-controller-link {
+        flex: 1 1 0;
+        width: 0;
+        span { line-height: 1.15; }
+    }
+    button.nav-tab-controller-link:focus-visible,
+    button.nav-link-pills-link:focus-visible {
+        outline: 2px solid var(--theme-primary) !important;
+        outline-offset: -4px;
+    }
 }

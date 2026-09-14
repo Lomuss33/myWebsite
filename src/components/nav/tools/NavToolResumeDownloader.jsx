@@ -1,10 +1,9 @@
 import React from 'react'
 import {useLanguage} from "../../../providers/LanguageProvider.jsx"
 import {useUtils} from "../../../hooks/utils.js"
-import OptionPickerButton from "../../buttons/OptionPickerButton.jsx"
 import {useData} from "../../../providers/DataProvider.jsx"
 import {useFeedbacks} from "../../../providers/FeedbacksProvider.jsx"
-import MobileResumeMenu from "./MobileResumeMenu.jsx"
+import ResumeMenu from "./ResumeMenu.jsx"
 import {getResumePdfPath} from "../../../config/resumePdfConfig.js"
 
 function NavToolResumeDownloader({
@@ -32,7 +31,6 @@ function NavToolResumeDownloader({
     const selectedOptionId = "resume"
     const tooltip = language.getString("resume_options")
     const menuHeader = language.getString("resume_options")
-    const resolvedMenuClassName = `${menuClassName} nav-resume-menu`.trim()
 
     const options = [
         {
@@ -101,10 +99,12 @@ function NavToolResumeDownloader({
         }
     }
 
-    if(mobileTubeMenu) {
         return (
-            <MobileResumeMenu className={dropdownClassName}
-                            tooltipLabel={tooltip}
+            <ResumeMenu className={dropdownClassName}
+                            tooltipLabel={showTooltip ? tooltip : null}
+                            toggleClassName={toggleClassName}
+                            toggleCaption={toggleCaption}
+                            toggleCaptionLayout={toggleCaptionLayout}
                             ariaLabel={tooltip}
                             toggleContent={(
                                 <div className={`btn-option-picker-icon btn-option-picker-icon-size-2`}>
@@ -138,28 +138,8 @@ function NavToolResumeDownloader({
                         ))}
                     </>
                 )}
-            </MobileResumeMenu>
+            </ResumeMenu>
         )
-    }
-
-    return (
-        <OptionPickerButton mode={OptionPickerButton.Modes.MODE_DROPDOWN}
-                            options={options}
-                            selectedOptionId={selectedOptionId}
-                            onOptionSelected={_onOptionSelected}
-                            tooltipLabel={showTooltip ? tooltip : null}
-                            hideTooltipWhenOpen={true}
-                            dropdownDrop={dropdownDrop}
-                            dropdownClassName={dropdownClassName}
-                            menuClassName={resolvedMenuClassName}
-                            menuPopperConfig={menuPopperConfig}
-                            compactMenu={compactMenu}
-                            toggleCaption={toggleCaption}
-                            toggleCaptionLayout={toggleCaptionLayout}
-                            toggleClassName={toggleClassName}
-                            hideCaret={hideCaret}
-                            menuHeader={menuHeader}/>
-    )
 }
 
 export default NavToolResumeDownloader

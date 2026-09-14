@@ -275,3 +275,22 @@ html[data-layout="mobile"] {
         outline-offset: -4px;
     }
 }
+
+// Landscape phones use the sidebar composition too; size by touch capability here.
+@media (pointer: coarse) and (max-width: 64rem), (max-width: 40rem) {
+    html[data-layout] nav.nav-sidebar button.nav-sidebar-btn-toggle {
+        width: 2rem !important; height: 2rem !important;
+        min-width: 2rem !important; min-height: 2rem !important;
+        max-width: 2rem !important; max-height: 2rem !important;
+        font-size: .8125rem !important;
+        overflow: visible;
+        &::after {
+            content: '';
+            position: absolute;
+            inset: -.375rem;
+            border-radius: 50%;
+            background: transparent;
+            pointer-events: auto;
+        }
+    }
+}

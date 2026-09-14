@@ -1,8 +1,8 @@
 import React, {useId, useLayoutEffect, useRef, useState} from 'react'
 import {createPortal} from 'react-dom'
-import './MobileResumeMenu.scss'
+import './ResumeMenu.scss'
 
-export default function MobileResumeMenu({className = '', tooltipLabel, ariaLabel, toggleContent, children}) {
+export default function ResumeMenu({toggleClassName = "", toggleCaption = null, toggleCaptionLayout = "stack", className = '', tooltipLabel, ariaLabel, toggleContent, children}) {
     const [open, setOpen] = useState(false)
     const toggle = useRef(null)
     const panel = useRef(null)
@@ -72,7 +72,7 @@ export default function MobileResumeMenu({className = '', tooltipLabel, ariaLabe
         }
     }
     return <div className={className}>
-        <button ref={toggle} type="button" className="btn-option-picker-toggle btn btn-transparent"
+        <button ref={toggle} type="button" className={`btn-option-picker-toggle btn btn-transparent ${toggleClassName} ${open ? "show" : ""} ${toggleCaption ? "btn-option-picker-toggle-with-caption" : ""} ${toggleCaption && toggleCaptionLayout === "inline" ? "btn-option-picker-toggle-caption-inline" : ""}`}
                 aria-haspopup="menu" aria-expanded={open} aria-controls={open ? id : undefined}
                 aria-label={ariaLabel || tooltipLabel} data-tooltip={open ? 'hidden' : tooltipLabel}
                 onClick={event => { keyboardOpen.current = event.detail === 0; setOpen(value => !value) }}
@@ -82,6 +82,7 @@ export default function MobileResumeMenu({className = '', tooltipLabel, ariaLabe
                     }
                 }}>
             <span className="btn-option-picker-toggle-row">{toggleContent}</span>
+            {toggleCaption && <span className="btn-option-picker-toggle-caption">{toggleCaption}</span>}
         </button>
         {open && createPortal(<div ref={panel} id={id} role="menu" aria-label={ariaLabel || tooltipLabel}
             className="mobile-resume-popover" onKeyDown={navigate}>

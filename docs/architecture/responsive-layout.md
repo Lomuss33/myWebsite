@@ -54,3 +54,9 @@ Resume popup revision (2026-09-14): mobile resume now uses MobileResumeMenu.jsx/
 Touch-tablet navigation (2026-09-14): mobile coarse-pointer viewports at least 30rem wide and 40rem tall use 5.5rem bands and 3.5rem profile action targets. Shared clearance variables follow the band height; navigation flex items cannot shrink. Touch navigation transforms and mobile profile tilt are disabled to avoid hover-driven movement. This is a source-based fix; Samsung Firefox hardware behavior remains unverified. No tests run under the existing request.
 
 Mobile side controls (2026-09-14): replaced the fixed 40rem row switch with native flex wrapping inside each allocated side column. Each pair forms one row when its actual control widths plus gap fit; groups remain aligned to the outside edges with a compact gap. Reduced center-column gaps free usable width without shrinking the identity. Supersedes the earlier fixed-breakpoint description. No tests run per request.
+
+Compact sidebar toggle (2026-09-14): narrow windows and touch screens up to 64rem use a 2rem visible toggle with a transparent .375rem hit extension. Center alignment is retained. This includes landscape phones using normal composition. No tests run per request.
+
+Unified resume popup (2026-09-14): all NavToolResumeDownloader instances now use ResumeMenu.jsx/.scss, including desktop profile/sidebar controls. This replaces the separate desktop OptionPickerButton popup and retains caller-provided toggle captions/classes. Popup palette, action rows, viewport placement, and keyboard behavior are shared across modes. No tests run per request.
+
+- Sidebar language dropdowns anchor to their own trigger and match its width in both rail modes, with 2px outer padding and wrapping option labels. Each option shares the trigger?s --nav-tools-height and navigation surface colors; a subdued flag ball sits behind the centered label, with accent hover/focus feedback. Source-only sizing update; no tests run.

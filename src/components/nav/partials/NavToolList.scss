@@ -1620,3 +1620,90 @@ nav.nav-sidebar-extended div.nav-tools.nav-tools-extended {
 [data-theme] nav.nav-sidebar-extended div.nav-sidebar-rail-stack div.nav-tools.nav-tools-extended {
     border-top: 0 !important;
 }
+
+// Keep the language popup within its own trigger, including the short rail.
+[data-theme] nav.nav-sidebar div.nav-tools div.nav-tools-item-language {
+    > div.dropup,
+    > div.dropdown {
+        position: relative !important;
+        width: 100%;
+        min-width: 0;
+    }
+
+    div.dropdown-menu.nav-tools-popup-menu:not(.nav-resume-menu) {
+        --nav-tools-popup-width: 100%;
+        --nav-tools-popup-min-width: 0;
+        --nav-tools-popup-max-width: 100%;
+        left: 0 !important;
+        bottom: calc(100% + 4px) !important;
+        box-sizing: border-box;
+        padding: 2px;
+        border-radius: 8px;
+
+        &::before { display: none; }
+
+        a.dropdown-item,
+        button.dropdown-item {
+            width: 100%;
+            min-width: 0;
+            height: var(--nav-tools-height);
+            min-height: var(--nav-tools-height);
+            box-sizing: border-box;
+            position: relative;
+            isolation: isolate;
+            display: grid;
+            place-items: center;
+            color: var(--theme-nav-text);
+            background: linear-gradient(180deg, var(--theme-nav-tool-surface), var(--theme-nav-tool-surface-accent));
+            box-shadow: none;
+
+            &::before, &::after { display: none; }
+
+            div.btn-option-picker-icon {
+                position: absolute;
+                inset: 0;
+                margin: auto;
+                width: min(80%, calc(var(--nav-tools-height) * 0.8));
+                min-width: 0;
+                height: calc(var(--nav-tools-height) * 0.8);
+                z-index: 0;
+                opacity: 0.4;
+                pointer-events: none;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                    border-radius: 50%;
+                }
+            }
+
+            &:hover, &:focus-visible {
+                color: var(--theme-nav-text);
+                background: color-mix(in srgb, var(--theme-primary) 18%, var(--theme-nav-surface-raised));
+                box-shadow: inset 0 -2px 0 var(--theme-primary);
+                transform: none;
+
+                div.btn-option-picker-icon { opacity: 0.6; }
+            }
+            padding: 4px;
+            gap: 4px;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            line-height: 1.2;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            flex-wrap: wrap;
+            justify-content: center;
+
+            .btn-option-picker-menu-item-label {
+                position: relative;
+                z-index: 1;
+                font-weight: 700;
+                min-width: 0;
+                max-width: 100%;
+                text-align: center;
+            }
+        }
+    }
+}

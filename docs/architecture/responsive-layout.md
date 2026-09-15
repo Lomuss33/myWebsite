@@ -82,3 +82,5 @@ Experience feature and story sizing: the wood book is centered with a 44?54rem w
 Wood description uses shorter localized copy, 14?16px body type, restrained heading scaling and compact spacing. Its min-content height prevents clipping and lets equal grid rows grow when narrow screens require more room. No tests run.
 
 Experience ends with Wood Products (article ID 2; stable IDs preserved by display sorting). Below 40rem, its flyer and text join into one continuous page: natural-height text below the image, no equal-row or portrait-ratio requirement on the text block. Desktop keeps two matching pages.
+
+Art preview actions: circular controls fill their link frame and are explicitly centered. This overrides the global fixed 44px button sizing inside larger photo action frames; the outer link retains a 44px minimum target. Source-only fix, no tests run.

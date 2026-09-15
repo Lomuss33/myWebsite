@@ -58,3 +58,25 @@ button.article-item-preview-menu-website-button-compact {
         display: inline-flex;
     }
 }
+
+// Art action frames and their controls must share the same footprint.
+html[data-layout] section#section-my-art a.article-item-preview-menu-link:has(> button.circular-button) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-width: 44px;
+    min-height: 44px;
+    > button.circular-button {
+        box-sizing: border-box;
+        flex: 1 1 auto;
+        width: 100% !important;
+        height: 100% !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        margin: 0;
+        font-size: clamp(1rem, calc(var(--photo-action-size, 44px) / 2.8), 1.75rem) !important;
+    }
+}

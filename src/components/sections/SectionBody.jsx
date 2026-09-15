@@ -118,6 +118,10 @@ function SectionBody({ section, showDecorationBands = true }) {
     }, [parser.parseSectionArticles, section])
     // End Home with the human stack, preceded by the name origins.
     const visibleArticleWrappers = useMemo(() => {
+        if(section?.id === "experience") {
+            return [...articleDataWrappers].sort((a, b) =>
+                Number(a.id === 2) - Number(b.id === 2))
+        }
         if(section?.id !== "about")
             return articleDataWrappers
 

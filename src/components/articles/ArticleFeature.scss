@@ -1504,10 +1504,12 @@ html[data-layout] section#section-experience div.article-feature-item.wood-proje
         background-size: 100% 100%;
         background-repeat: no-repeat;
         display: flex; flex-direction: column; justify-content: center;
-        padding: clamp(.75rem, 2cqi, 2rem);
-        gap: 1rem;
-        font-size: clamp(.875rem, .75rem + .4cqi, 1.0625rem);
-        line-height: 1.5;
+        padding: clamp(.625rem, 1.6cqi, 1.5rem);
+        min-height: min-content;
+        overflow: visible;
+        gap: .625rem;
+        font-size: clamp(.875rem, .8rem + .25cqi, 1rem);
+        line-height: 1.45;
         overflow-wrap: anywhere;
         text-shadow: 0 1px 2px #46240d80;
         p { margin: 0 0 .8em; }
@@ -1517,16 +1519,16 @@ html[data-layout] section#section-experience div.article-feature-item.wood-proje
     }
     .wood-project-description {
         p:first-child {
-            font-size: 1.2em;
+            font-size: 1em;
             line-height: 1.4;
             padding-bottom: .8em;
             border-bottom: 1px solid #ffffff70;
         }
-        p:first-child > strong:first-child {
+        p:first-child > .wood-project-archive-label {
             display: block;
             margin-bottom: .4em;
             font-family: Georgia, serif;
-            font-size: 1.5em;
+            font-size: 1.35em;
             line-height: 1.1;
             text-wrap: balance;
         }
@@ -1534,15 +1536,45 @@ html[data-layout] section#section-experience div.article-feature-item.wood-proje
         p:last-child:not(:first-child) {
             border-left: 3px solid #fff;
             padding: .5em 0 .5em .8em;
-            font-style: italic;
-            font-size: 1.08em;
-            margin-top: 1em;
+            font-style: normal;
+            font-size: 1em;
+            margin-top: .625em;
         }
     }
-    .wood-project-details { border-top: 1px solid #ffffff80; padding-top: .75rem; }
+    .wood-project-details {
+        border-top: 1px solid #ffffff80;
+        padding-top: .75rem;
+        a {
+            display: inline-block;
+            color: #fff;
+            background: #70244330;
+            padding: .05em .3em;
+            margin-top: .35em;
+            border-radius: .3rem;
+            font-weight: 600;
+            text-decoration: underline;
+            text-underline-offset: .2em;
+            &:hover, &:focus-visible { background: #70244360; outline: 2px solid #fff; outline-offset: 2px; }
+        }
+    }
     @container (max-width: 40rem) {
         grid-template-columns: minmax(0, 1fr);
-        grid-template-rows: repeat(2, 1fr);
-        .wood-project-page { font-size: clamp(.875rem, .7rem + .6cqi, 1.0625rem); }
+        grid-template-rows: auto auto;
+        grid-auto-rows: auto;
+        gap: 0;
+        .wood-project-flyer {
+            border-radius: 6px 6px 0 0;
+            box-shadow: none;
+            img { border-radius: 6px 6px 0 0; }
+        }
+        .wood-project-page {
+            aspect-ratio: auto;
+            border-radius: 0 0 6px 6px;
+            border-top: 1px solid #ffffff70;
+            box-shadow: none;
+            padding: clamp(.75rem, 3cqi, 1.25rem);
+            gap: .5rem;
+            font-size: clamp(.875rem, .8rem + .25cqi, 1rem);
+        }
     }
 }

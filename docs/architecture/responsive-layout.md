@@ -78,3 +78,7 @@ Wood page refinement: grain uses the top 56px of the 141?80px sample to omit its
 The description page now uses `wood-products-five-planks.webp`, a single generated five-plank texture with right-edge shading, displayed once across the page. This replaces the repeated grain tiles and CSS seams.
 
 Experience feature and story sizing: the wood book is centered with a 44?54rem width cap influenced by viewport height (still limited to available width). Story text is capped at 17px, headings at 24px, and card/rail spacing is compact. Article titles cap at 28px. No tests run.
+
+Wood description uses shorter localized copy, 14?16px body type, restrained heading scaling and compact spacing. Its min-content height prevents clipping and lets equal grid rows grow when narrow screens require more room. No tests run.
+
+Experience ends with Wood Products (article ID 2; stable IDs preserved by display sorting). Below 40rem, its flyer and text join into one continuous page: natural-height text below the image, no equal-row or portrait-ratio requirement on the text block. Desktop keeps two matching pages.

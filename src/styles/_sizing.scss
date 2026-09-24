@@ -6,6 +6,14 @@
     --size-gutter: clamp(0.75rem, 2%, 2rem);
     --size-gap: clamp(0.75rem, 1.5vw, 1.5rem);
     --size-reading: 68ch;
+
+    // Shared mobile navigation scale. Wide mode replaces these tokens once;
+    // component styles consume them without adding another breakpoint patch.
+    --mobile-nav-row-height: 4.5rem;
+    --mobile-nav-profile-height: auto;
+    --mobile-profile-row-max: 52rem;
+    --mobile-profile-gutter: 0.5rem;
+    --mobile-profile-column-gap: clamp(0.375rem, 1.2cqi, 0.75rem);
 }
 
 html[data-layout] {
@@ -73,7 +81,6 @@ html[data-layout] {
 }
 
 html[data-layout="mobile"] {
-    --mobile-nav-row-height: 4.5rem;
     .nav-header-mobile { max-width: 60rem; margin-inline: auto; }
     .nav-header-mobile .nav-profile-card {
         --avatar-size: clamp(3rem, 12vw, 4rem);
@@ -82,7 +89,7 @@ html[data-layout="mobile"] {
         --mobile-stack-gap: 0.25rem;
         --nav-profile-mobile-role-height: 1.75rem;
     }
-    .nav-header-mobile .nav-profile-card-main-row { max-width: 44rem; margin-inline: auto; }
+    .nav-header-mobile .nav-profile-card-main-row { max-width: var(--mobile-profile-row-max); margin-inline: auto; }
     :is(.nav-tab-controller, .nav-link-pills-mobile) { max-width: 60rem; margin-inline: auto; }
     .nav-tab-controller-wrapper { background: var(--theme-nav-surface); }
     .nav-tab-controller-link { min-width: 0; padding-inline: 0.2rem; }
@@ -122,6 +129,110 @@ html[data-layout="mobile"] {
         .nav-profile-card-role { display: none; }
         .nav-profile-card-main-row { padding-block: 0.2rem; }
         .nav-profile-card-media { display: none; }
+    }
+}
+
+@media (min-width: 30rem) and (min-height: 40rem) and (pointer: coarse) {
+    html[data-layout="mobile"] {
+        --mobile-nav-row-height: 5.5rem;
+        --mobile-nav-item-icon-size: 1.5rem;
+        --mobile-nav-item-label-size: 1rem;
+        --mobile-nav-item-gap: 0.375rem;
+        --mobile-nav-item-padding-block: 0.5rem;
+    }
+}
+
+// One source for large mobile/touch geometry. Percent-like viewport values
+// size the bands; bounded tokens protect content and touch targets.
+@media (min-width: 90rem) {
+    html[data-layout="mobile"] {
+        --mobile-nav-row-height: clamp(5.5rem, 10svh, 10rem);
+        --mobile-nav-profile-height: clamp(10rem, 20svh, 20rem);
+        --mobile-profile-row-max: none;
+        --mobile-nav-item-label-size: clamp(1rem, 2svh, 2rem);
+        --mobile-nav-item-icon-size: clamp(1.25rem, 2.4svh, 2.25rem);
+        --mobile-nav-item-gap: clamp(.375rem, 1svh, 1rem);
+        --mobile-nav-item-padding-block: clamp(.5rem, 1.5svh, 1.5rem);
+        --nav-tabs-height: var(--mobile-nav-row-height);
+        --nav-pills-height: var(--mobile-nav-row-height);
+        --mobile-profile-gutter: clamp(.75rem, 3vw, 3rem);
+        --mobile-profile-column-gap: clamp(1rem, 3vw, 4rem);
+        --mobile-profile-grid-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(8rem, 1.3fr) minmax(0, 1fr) minmax(0, 1fr);
+
+        .nav-header-mobile,
+        .nav-header-mobile-card-wrapper,
+        .nav-header-mobile .nav-profile-card {
+            width: 100%;
+            max-width: none;
+            height: var(--mobile-nav-profile-height);
+            min-height: var(--mobile-nav-profile-height);
+            box-sizing: border-box;
+        }
+
+        .nav-header-mobile .nav-profile-card-header {
+            min-height: 0;
+            height: auto;
+            padding-block: clamp(.5rem, 1.2svh, 1.25rem);
+        }
+
+        .nav-header-mobile .nav-profile-card-main-row {
+            width: 100%;
+            max-width: none;
+            min-height: calc(var(--mobile-nav-profile-height) - 2.5rem);
+            height: auto;
+            padding-inline: var(--mobile-profile-gutter);
+            column-gap: var(--mobile-profile-column-gap);
+            --avatar-size: clamp(4.5rem, 12svh, 9rem);
+            --mobile-action-size: clamp(3rem, 8svh, 6rem);
+            --mobile-action-footprint: var(--mobile-action-size);
+        }
+
+        .nav-header-mobile .nav-profile-card-role {
+            min-height: clamp(1.75rem, 3svh, 3rem);
+            font-size: clamp(.875rem, 1.7svh, 1.5rem);
+        }
+
+        .nav-tab-controller-wrapper,
+        .nav-link-pills-fixed-wrapper,
+        nav.nav-tab-controller,
+        nav.nav-link-pills-mobile,
+        .nav-link-pills-sticky-slot {
+            width: 100%;
+            max-width: none;
+            height: var(--mobile-nav-row-height);
+            min-height: var(--mobile-nav-row-height);
+        }
+
+        nav.nav-tab-controller > button.nav-tab-controller-link,
+        nav.nav-link-pills-mobile > button.nav-link-pills-link {
+            flex: 1 1 0;
+            width: 0;
+            min-width: 0;
+            height: 100%;
+            min-height: 100%;
+            padding-block: var(--mobile-nav-item-padding-block);
+            gap: var(--mobile-nav-item-gap);
+        }
+
+        div.layout-navigation-wrapper,
+        div.layout-navigation-children-wrapper,
+        div.layout-navigation-children-inner,
+        div.layout-content,
+        .layout-content .section-content {
+            width: 100%;
+            max-width: none;
+            box-sizing: border-box;
+        }
+        div.layout-navigation-wrapper { min-height: 100svh; }
+        div.layout-navigation-children-inner { flex: 1 1 auto; }
+
+        .layout-content .section-content {
+            padding-inline: clamp(1rem, 3vw, 4rem);
+            padding-top: clamp(1.5rem, 3svh, 4rem) !important;
+        }
+        .section-content-elements-wrapper {
+            padding-top: clamp(.75rem, 1.5svh, 2rem) !important;
+        }
     }
 }
 

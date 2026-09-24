@@ -10,13 +10,14 @@ html[data-layout="mobile"] nav.nav-header-mobile {
         div.nav-profile-card-header { width: 100%; padding-inline: 0; }
         div.nav-profile-card-main-row {
             display: grid;
-            grid-template-columns: minmax(2.75rem, 1fr) max-content max-content max-content minmax(2.75rem, 1fr);
+            grid-template-columns: var(--mobile-profile-grid-columns, minmax(2.75rem, 1fr) max-content max-content max-content minmax(2.75rem, 1fr));
             grid-template-areas: "left first portrait last right";
             align-items: center;
             gap: clamp(0.375rem, 1.25cqi, 0.625rem);
-            width: 100%; max-width: 52rem;
+            column-gap: var(--mobile-profile-column-gap, clamp(0.375rem, 1.2cqi, 0.75rem));
+            width: 100%; max-width: var(--mobile-profile-row-max, 52rem);
             min-height: 0; margin-inline: auto;
-            padding: 0.25rem 0.5rem 0.375rem;
+            padding: 0.25rem var(--mobile-profile-gutter, 0.5rem) 0.375rem;
             box-sizing: border-box;
         }
         div.nav-profile-card-info, h1.nav-profile-card-name, span.nav-profile-card-name-text {
@@ -143,10 +144,6 @@ html[data-layout="mobile"] {
 }
 @media (min-width: 30rem) and (min-height: 40rem) and (pointer: coarse) {
     html[data-layout="mobile"] {
-        --mobile-nav-row-height: 5.5rem;
-        --mobile-nav-item-icon-size: 1.5rem;
-        --mobile-nav-item-label-size: 1rem;
-        --mobile-nav-item-gap: .375rem;
         nav.nav-header-mobile div.nav-profile-card {
             --mobile-action-size: 3.5rem;
             --mobile-action-footprint: 3.5rem;
@@ -155,6 +152,6 @@ html[data-layout="mobile"] {
             .nav-profile-card-main-row { padding-block: .5rem; }
             .nav-profile-card-mobile-action-stack { gap: .375rem; }
         }
-        .nav-tab-controller-link span { font-size: 1rem; line-height: 1.2; }
+        .nav-tab-controller-link span { font-size: var(--mobile-nav-item-label-size); line-height: 1.2; }
     }
 }

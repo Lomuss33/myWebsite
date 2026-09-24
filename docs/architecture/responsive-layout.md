@@ -1,6 +1,6 @@
 # Responsive layout
 
-Verified: 2026-09-11 against resolver, shell, and stylesheet entry point; not exhaustive device testing.
+Verified: 2026-09-24 against resolver and sizing stylesheet ownership; not exhaustive device testing.
 
 ## Mode authority
 
@@ -30,6 +30,12 @@ This density and bounded, centered ultrawide content with visible garden/sky gut
 - [_profile-fit.scss](../../src/components/nav/partials/_profile-fit.scss): profile states.
 
 Inspect computed styles before adding rules. Component SCSS and later overrides coexist. Consolidation should preserve behavior and be a separate change. Measure actual rendered geometry under zoom.
+
+## Current sizing contract
+
+`src/styles/_sizing.scss` owns shared responsive tokens and the coarse-pointer and large-mobile overrides. The profile component consumes `--mobile-profile-row-max`, `--mobile-profile-grid-columns`, `--mobile-profile-gutter`, and `--mobile-profile-column-gap` from `src/styles/_mobile-profile.scss`. Navigation bands consume `--nav-tabs-height` and `--nav-pills-height`; labels, icons, and gaps use `--mobile-nav-item-*` tokens, with mobile defaults in `_root-flags.scss`.
+
+For mobile composition at widths of 90rem and above, one media block in `_sizing.scss` sets those tokens from viewport width/height ratios with bounded `clamp()` values. It also removes the wrapper/content width caps and provides section clearance. The coarse-pointer size tokens are defined before this block, so large-mobile sizing wins when both conditions match. Do not add another large-mobile patch block; update these tokens and their component consumers instead. Height-based short-screen rules still take precedence for compact navigation.
 
 [Validation limits](../guides/validation.md#known-gaps) include keyboards, safe areas, browser zoom, and weak GPUs. Archived measurements do not certify the current tree.
 
@@ -84,3 +90,7 @@ Wood description uses shorter localized copy, 14?16px body type, restrained head
 Experience ends with Wood Products (article ID 2; stable IDs preserved by display sorting). Below 40rem, its flyer and text join into one continuous page: natural-height text below the image, no equal-row or portrait-ratio requirement on the text block. Desktop keeps two matching pages.
 
 Art preview actions: circular controls fill their link frame and are explicitly centered. This overrides the global fixed 44px button sizing inside larger photo action frames; the outer link retains a 44px minimum target. Source-only fix, no tests run.
+
+Large touch displays (90rem and wider) keep mobile interaction controls but remove phone/tablet width caps. Profile rows, both navigation bands, and section content use the full viewport with fluid gutters. Source-only update; no tests run.
+
+Wide mobile sizing also scales vertically: profile area targets about 20svh and navigation bands about 10svh, with avatar/action/font sizes tied to the same viewport height. This prevents 72px legacy bands from becoming visually tiny on large touch screens. No tests run.

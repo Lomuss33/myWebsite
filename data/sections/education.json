@@ -82,7 +82,6 @@
                             "title": "Erasmus+ Exchange — Computer Engineering",
                             "institution": "International Balkan University (IBU)",
                             "country": "Skopje, North Macedonia",
-                            "text": "A semester in Skopje took my computer-engineering studies beyond the classroom. At IBU, I worked on applied coursework, learned alongside an international cohort, and earned credits eligible for transfer to THM.",
                             "list": [
                                 "One-semester Erasmus+ exchange at IBU",
                                 "Computer-engineering courses and applied projects",
@@ -99,7 +98,6 @@
                             "title": "Erasmus+ Austausch — Computer Engineering",
                             "institution": "International Balkan University (IBU)",
                             "country": "Skopje, Nordmazedonien",
-                            "text": "Ein Semester in Skopje brachte mein Studium der Computertechnik in ein neues Umfeld. An der IBU arbeitete ich an praxisnahen Kursen und Projekten, lernte in einem internationalen Team und sammelte anrechenbare ECTS-Punkte für die THM.",
                             "list": [
                                 "Erasmus+-Austauschsemester an der IBU",
                                 "Kurse und Praxisprojekte in Computer Engineering",
@@ -116,7 +114,6 @@
                             "title": "Erasmus+ razmjena — Računalno inženjerstvo",
                             "institution": "International Balkan University (IBU)",
                             "country": "Skopje, Sjeverna Makedonija",
-                            "text": "Jedan semestar u Skopju proširio je moje studiranje računalnog inženjerstva izvan učionice. Na IBU-u sam radio na primijenjenim projektima, učio u međunarodnom okruženju i stekao ECTS bodove koji se mogu priznati na THM-u.",
                             "list": [
                                 "Jednosemestralna Erasmus+ razmjena na IBU-u",
                                 "Kolegiji i primijenjeni projekti iz računalnog inženjerstva",
@@ -133,7 +130,6 @@
                             "title": "Erasmus+ Değişim — Bilgisayar Mühendisliği",
                             "institution": "International Balkan University (IBU)",
                             "country": "Üsküp, Kuzey Makedonya",
-                            "text": "Üsküp’te geçirdiğim bir dönem, bilgisayar mühendisliği eğitimime yeni bir bakış açısı kattı. IBU’da uygulamalı dersler ve projeler üzerinde çalıştım, uluslararası bir ortamda deneyim kazandım ve THM’de saydırılabilen ECTS kredileri aldım.",
                             "list": [
                                 "IBU’da bir dönemlik Erasmus+ değişimi",
                                 "Bilgisayar mühendisliği dersleri ve uygulamalı projeler",
@@ -259,7 +255,6 @@
                             "title": "Engineering Computer Science",
                             "institution": "Technische Hochschule Mittelhessen",
                             "country": "Gießen, Germany",
-                            "text": "I’m studying Engineering Computer Science at THM, building my skills in software development and the engineering methods behind complex technical systems.",
                             "list": [
                                 "Degree in progress at Technische Hochschule Mittelhessen",
                                 "Software development",
@@ -274,7 +269,6 @@
                             "title": "Ingenieurinformatik",
                             "institution": "Technische Hochschule Mittelhessen - THM",
                             "country": "Gießen, Deutschland",
-                            "text": "An der THM studiere ich Ingenieurinformatik und vertiefe meine Kenntnisse in Softwareentwicklung und ingenieurwissenschaftlichen Methoden für komplexe technische Systeme.",
                             "list": [
                                 "Laufendes Studium an der Technischen Hochschule Mittelhessen",
                                 "Schwerpunkt Softwareentwicklung",
@@ -289,7 +283,6 @@
                             "title": "Inženjerska Računalna Sindrom",
                             "institution": "Tehnička Visoka Škola Mittelhessen - THM",
                             "country": "Gießen, Njemačka",
-                            "text": "Na THM-u studiram inženjersku informatiku i razvijam znanje iz programiranja te inženjerskih metoda za složene tehničke sustave.",
                             "list": [
                                 "Studij na Tehničkom veleučilištu Mittelhessen u tijeku",
                                 "Fokus na razvoju softvera",
@@ -304,7 +297,6 @@
                             "title": "Mühendislik Bilgisayar Bilimi",
                             "institution": "Mittelhessen Teknik Üniversitesi - THM",
                             "country": "Gießen, Almanya",
-                            "text": "THM’de Mühendislik Bilgisayar Bilimi okuyorum; yazılım geliştirme ve karmaşık teknik sistemleri çözümlemeye yönelik mühendislik yöntemleri üzerine çalışıyorum.",
                             "list": [
                                 "Technische Hochschule Mittelhessen’de devam eden lisans eğitimi",
                                 "Yazılım geliştirme odağı",
@@ -344,7 +336,6 @@
                             "title": "Vocational School",
                             "institution": "Brühlwiesenschule",
                             "country": "Hofheim am Taunus, Germany",
-                            "text": "After my apprenticeship, I returned to the classroom to strengthen my technical skills and prepare for further study. It connected hands-on training with the next step in engineering.",
                             "list": [
                                 "Technical subjects building on apprenticeship experience",
                                 "Preparation for further studies",
@@ -359,7 +350,6 @@
                             "title": "Fachschule",
                             "institution": "Brühlwiesenschule",
                             "country": "Hofheim am Taunus, Deutschland",
-                            "text": "Nach der Ausbildung kehrte ich an die Schule zurück, um meine technischen Kenntnisse zu vertiefen und mich auf ein weiterführendes Studium vorzubereiten. So verband ich praktische Erfahrung mit dem nächsten Schritt im Ingenieurwesen.",
                             "list": [
                                 "Technische Inhalte aufbauend auf der Ausbildung",
                                 "Vorbereitung auf ein weiterführendes Studium",
@@ -374,7 +364,6 @@
                             "title": "Stručna Škola",
                             "institution": "Brühlwiesenschule",
                             "country": "Hofheim am Taunus, Njemačka",
-                            "text": "Nakon naukovanja vratio sam se u školu kako bih proširio tehničko znanje i pripremio se za daljnji studij. Tako sam praktično iskustvo povezao sa sljedećim korakom prema inženjerstvu.",
                             "list": [
                                 "Tehnički predmeti nadovezani na iskustvo iz naukovanja",
                                 "Priprema za daljnji studij",
@@ -389,7 +378,6 @@
                             "title": "Meslek Okulu",
                             "institution": "Brühlwiesenschule",
                             "country": "Hofheim am Taunus, Almanya",
-                            "text": "Mesleki eğitimimin ardından teknik bilgilerimi derinleştirmek ve yükseköğrenime hazırlanmak için okula geri döndüm. Böylece uygulamalı deneyimimi mühendislik yolundaki bir sonraki adımla birleştirdim.",
                             "list": [
                                 "Mesleki deneyimi geliştiren teknik dersler",
                                 "İleri eğitim için hazırlık",
@@ -429,12 +417,8 @@
                             "title": "Secondary School",
                             "institution": "Eichendorffschule",
                             "country": "Kelkheim, Germany",
-                            "text": "At Eichendorffschule in Kelkheim, I completed secondary school and prepared for what came next: vocational training in technology.",
-                            "list": [
-                                "Completed secondary education in Kelkheim",
-                                "Built a broad general-education foundation",
-                                "Prepared for technical vocational training"
-                            ],
+                            "text": "At Eichendorffschule, I found my footing in a new school system and finished secondary school in Kelkheim. That chapter helped me choose my next step: a hands-on technical apprenticeship.",
+                            "list": [],
                             "tags": [
                                 "Secondary Education",
                                 "General Knowledge"
@@ -444,12 +428,8 @@
                             "title": "Realschule",
                             "institution": "EichendorfSchule Kelkheim",
                             "country": "Deutschland",
-                            "text": "An der Eichendorffschule in Kelkheim schloss ich die Realschule ab und bereitete mich auf den nächsten Schritt vor: eine technische Berufsausbildung.",
-                            "list": [
-                                "Realschulabschluss in Kelkheim",
-                                "Breite schulische Grundlagen",
-                                "Vorbereitung auf eine technische Ausbildung"
-                            ],
+                            "text": "An der Eichendorffschule fand ich mich im neuen Schulsystem zurecht und schloss in Kelkheim die Realschule ab. Diese Zeit half mir, meinen nächsten Schritt zu wählen: eine praxisnahe technische Ausbildung.",
+                            "list": [],
                             "tags": [
                                 "Realschulausbildung",
                                 "Allgemeinbildung"
@@ -459,12 +439,8 @@
                             "title": "Srednja Škola",
                             "institution": "EichendorfSchule Kelkheim",
                             "country": "Njemačka",
-                            "text": "U Eichendorffschule u Kelkheimu završio sam srednju školu i pripremio se za sljedeći korak: stručno obrazovanje u tehničkom području.",
-                            "list": [
-                                "Završena srednja škola u Kelkheimu",
-                                "Široka osnova općeg obrazovanja",
-                                "Priprema za tehničko strukovno obrazovanje"
-                            ],
+                            "text": "U Eichendorffschuleu sam se snašao u novom školskom sustavu i završio srednju školu u Kelkheimu. To mi je iskustvo pomoglo odabrati sljedeći korak: praktično strukovno obrazovanje u tehnici.",
+                            "list": [],
                             "tags": [
                                 "Srednje Obrazovanje",
                                 "Opće Znanje"
@@ -474,12 +450,8 @@
                             "title": "Ortaokul",
                             "institution": "EichendorfSchule Kelkheim",
                             "country": "Almanya",
-                            "text": "Kelkheim’deki Eichendorffschule’de ortaöğrenimimi tamamladım ve teknoloji alanındaki mesleki eğitimime hazırlandım.",
-                            "list": [
-                                "Kelkheim’de tamamlanan ortaöğrenim",
-                                "Genel eğitim temeli",
-                                "Teknik mesleki eğitime hazırlık"
-                            ],
+                            "text": "Eichendorffschule’de yeni bir okul düzenine alışırken Kelkheim’de ortaöğrenimimi tamamladım. Bu dönem, sonraki adımımı seçmeme yardımcı oldu: uygulamalı bir teknik meslek eğitimi.",
+                            "list": [],
                             "tags": [
                                 "Ortaöğretim",
                                 "Genel Bilgi"
@@ -514,12 +486,8 @@
                             "title": "Primary School",
                             "institution": "Osnovna škola fra Mijo Čuić",
                             "country": "Tomislavgrad, Bosnia",
-                            "text": "My school years in Tomislavgrad ran from 2007 to 2018. They gave me the foundations for the next chapter, which began in Germany.",
-                            "list": [
-                                "Primary education in Tomislavgrad",
-                                "School years from 2007 to 2018",
-                                "The starting point for my education in Germany"
-                            ],
+                            "text": "From 2007 to 2018, I attended Osnovna škola fra Mijo Čuić in Brišnik, a village near Tomislavgrad. A close-knit school and village life shared the same rhythm, giving my generation an education rooted in community.",
+                            "list": [],
                             "tags": [
                                 "Primary Education",
                                 "Foundational Skills"
@@ -529,12 +497,8 @@
                             "title": "Grundschule",
                             "institution": "Tomislavgrad, Bosnien",
                             "country": "Bosnien und Herzegowina",
-                            "text": "Von 2007 bis 2018 ging ich in Tomislavgrad zur Schule. Dort entstand die Grundlage für das nächste Kapitel, das in Deutschland weiterging.",
-                            "list": [
-                                "Grundschulzeit in Tomislavgrad",
-                                "Schuljahre von 2007 bis 2018",
-                                "Ausgangspunkt für meinen weiteren Bildungsweg in Deutschland"
-                            ],
+                            "text": "Von 2007 bis 2018 besuchte ich die Osnovna škola fra Mijo Čuić in Brišnik, einem Dorf nahe Tomislavgrad. In dieser vertrauten Gemeinschaft gehörten Dorfleben und Schulalltag ganz selbstverständlich zusammen – eine prägende Schulzeit für meine Generation.",
+                            "list": [],
                             "tags": [
                                 "Grundschule",
                                 "Grundfähigkeiten"
@@ -544,12 +508,8 @@
                             "title": "Osnovna Škola",
                             "institution": "Tomislavgrad, Bosna",
                             "country": "Bosna i Hercegovina",
-                            "text": "Od 2007. do 2018. pohađao sam školu u Tomislavgradu. Ondje sam stekao osnovu za sljedeće poglavlje, koje se nastavilo u Njemačkoj.",
-                            "list": [
-                                "Osnovno obrazovanje u Tomislavgradu",
-                                "Školske godine od 2007. do 2018.",
-                                "Početak obrazovnog puta koji se nastavio u Njemačkoj"
-                            ],
+                            "text": "Od 2007. do 2018. pohađao sam Osnovnu školu fra Mije Čuića u Brišniku, selu kraj Tomislavgrada. U toj bliskoj sredini školski dani moje generacije prirodno su se isprepletali sa životom sela, pa je zajedništvo bilo dio svakodnevice.",
+                            "list": [],
                             "tags": [
                                 "Osnovno Obrazovanje",
                                 "Temeljne Vještine"
@@ -559,12 +519,8 @@
                             "title": "İlkokul",
                             "institution": "Tomislavgrad, Bosna",
                             "country": "Bosna-Hersek",
-                            "text": "2007’den 2018’e kadar Tomislavgrad’da okudum. Burada edindiğim temel, Almanya’da devam eden eğitim yolculuğumun ilk adımı oldu.",
-                            "list": [
-                                "Tomislavgrad’da ilkokul eğitimi",
-                                "2007–2018 arasındaki okul yılları",
-                                "Almanya’da devam eden eğitim yolculuğunun başlangıcı"
-                            ],
+                            "text": "2007–2018 yılları arasında Tomislavgrad yakınlarındaki Brišnik köyünde, Osnovna škola fra Mijo Čuić’te okudum. Okul ve köy yaşamı iç içeydi; kuşağımın eğitim yılları, yakın bir topluluk duygusuyla şekillendi.",
+                            "list": [],
                             "tags": [
                                 "İlköğretim",
                                 "Temel Beceriler"
@@ -619,18 +575,18 @@
             "id": 2,
             "component": "ArticleCards",
             "locales": {
-              "en": {
-                "title": "My {{Certifications}}"
-              },
-              "de": {
-                "title": "Meine {{Zertifikate}}"
-              },
-              "hr": {
-                "title": "Moji {{Certifikati}}"
-              },
-              "tr": {
-                "title": "{{Sertifikalarım}}"
-              }
+                "en": {
+                    "title": "My {{Certifications}}"
+                },
+                "de": {
+                    "title": "Meine {{Zertifikate}}"
+                },
+                "hr": {
+                    "title": "Moji {{Certifikati}}"
+                },
+                "tr": {
+                    "title": "{{Sertifikalarım}}"
+                }
             },
             "settings": {
                 "order_items_by": "id",
@@ -656,22 +612,22 @@
                         "tooltipString": "open_website"
                     },
                     "locales": {
-                      "en": {
-                        "title": "{{AEVO}} Certification",
-                        "text": "The IHK AEVO qualification is planned for July 2026, with certification expected in September 2026. It authorizes me as a certified instructor to train apprentices in Germany."
-                      },
-                      "de": {
-                        "title": "{{AEVO}}-Zertifikat",
-                        "text": "Die IHK-AEVO-Qualifikation ist fuer Juli 2026 geplant, das Zertifikat wird im September 2026 erwartet. Sie berechtigt mich als zertifizierten Ausbilder zur Ausbildung von Auszubildenden in Deutschland."
-                      },
-                      "hr": {
-                        "title": "{{AEVO}} certifikat",
-                        "text": "IHK AEVO kvalifikacija planirana je za srpanj 2026., a certifikat se ocekuje u rujnu 2026. Time se stjece ovlast za strucno osposobljavanje pripravnika u Njemackoj."
-                      },
-                      "tr": {
-                        "title": "{{AEVO}} sertifikasi",
-                        "text": "IHK AEVO yeterliligi Temmuz 2026 icin planlandi, sertifikanin ise Eylul 2026'da gelmesi bekleniyor. Bu belge Almanya'da cirak egitimi verebilen sertifikali bir egitici olma yetkisi saglar."
-                      }
+                        "en": {
+                            "title": "{{AEVO}} Certification",
+                            "text": "The IHK AEVO qualification is planned for July 2026, with certification expected in September 2026. It authorizes me as a certified instructor to train apprentices in Germany."
+                        },
+                        "de": {
+                            "title": "{{AEVO}}-Zertifikat",
+                            "text": "Die IHK-AEVO-Qualifikation ist fuer Juli 2026 geplant, das Zertifikat wird im September 2026 erwartet. Sie berechtigt mich als zertifizierten Ausbilder zur Ausbildung von Auszubildenden in Deutschland."
+                        },
+                        "hr": {
+                            "title": "{{AEVO}} certifikat",
+                            "text": "IHK AEVO kvalifikacija planirana je za srpanj 2026., a certifikat se ocekuje u rujnu 2026. Time se stjece ovlast za strucno osposobljavanje pripravnika u Njemackoj."
+                        },
+                        "tr": {
+                            "title": "{{AEVO}} sertifikasi",
+                            "text": "IHK AEVO yeterliligi Temmuz 2026 icin planlandi, sertifikanin ise Eylul 2026'da gelmesi bekleniyor. Bu belge Almanya'da cirak egitimi verebilen sertifikali bir egitici olma yetkisi saglar."
+                        }
                     }
                 },
                 {
@@ -693,22 +649,22 @@
                         "tooltipString": "open_website"
                     },
                     "locales": {
-                      "en": {
-                        "title": "{{CCNA}} Certification",
-                        "text": "Preparing for the Cisco CCNA exam with a target date of December 2026, focused on network fundamentals, security, and automation."
-                      },
-                      "de": {
-                        "title": "{{CCNA}}-Zertifikat",
-                        "text": "Vorbereitung auf die Cisco-CCNA-Prüfung mit geplantem Termin im Dezember 2026; Schwerpunkt auf Netzwerkgrundlagen, Sicherheit und Automatisierung."
-                      },
-                      "hr": {
-                        "title": "{{CCNA}} certifikat",
-                        "text": "Pripremam se za Cisco CCNA ispit s planiranim rokom u prosincu 2026., s fokusom na mrežne osnove, sigurnost i automatizaciju."
-                      },
-                      "tr": {
-                        "title": "{{CCNA}} sertifikasi",
-                        "text": "Aralık 2026 hedefli Cisco CCNA sınavına hazırlanıyorum; odak alanlarım ağ temelleri, güvenlik ve otomasyon."
-                      }
+                        "en": {
+                            "title": "{{CCNA}} Certification",
+                            "text": "Preparing for the Cisco CCNA exam with a target date of December 2026, focused on network fundamentals, security, and automation."
+                        },
+                        "de": {
+                            "title": "{{CCNA}}-Zertifikat",
+                            "text": "Vorbereitung auf die Cisco-CCNA-Prüfung mit geplantem Termin im Dezember 2026; Schwerpunkt auf Netzwerkgrundlagen, Sicherheit und Automatisierung."
+                        },
+                        "hr": {
+                            "title": "{{CCNA}} certifikat",
+                            "text": "Pripremam se za Cisco CCNA ispit s planiranim rokom u prosincu 2026., s fokusom na mrežne osnove, sigurnost i automatizaciju."
+                        },
+                        "tr": {
+                            "title": "{{CCNA}} sertifikasi",
+                            "text": "Aralık 2026 hedefli Cisco CCNA sınavına hazırlanıyorum; odak alanlarım ağ temelleri, güvenlik ve otomasyon."
+                        }
                     }
                 }
             ]
@@ -730,7 +686,7 @@
                     "title": "{{Diller}}"
                 },
                 "mk": {
-                    "title": "{{\u0408\u0430\u0437\u0438\u0446\u0438}}"
+                    "title": "{{Јазици}}"
                 }
             },
             "settings": {
@@ -770,7 +726,7 @@
                         },
                         "de": {
                             "title": "Kroatisch",
-                            "text": "Muttersprache; ich kann m\u00fchelos im Alltag, zu technischen Themen und im Berufsleben kommunizieren.",
+                            "text": "Muttersprache; ich kann mühelos im Alltag, zu technischen Themen und im Berufsleben kommunizieren.",
                             "level": "Muttersprache / 100%",
                             "list": [
                                 "Dobar dan, kako si?",
@@ -781,7 +737,7 @@
                         },
                         "hr": {
                             "title": "Hrvatski",
-                            "text": "Materinji jezik; mogu se potpuno prirodno izra\u017eavati u svakodnevnim, stru\u010dnim i poslovnim situacijama.",
+                            "text": "Materinji jezik; mogu se potpuno prirodno izražavati u svakodnevnim, stručnim i poslovnim situacijama.",
                             "level": "Izvorni / 100%",
                             "list": [
                                 "Dobar dan, kako si?",
@@ -791,8 +747,8 @@
                             ]
                         },
                         "tr": {
-                            "title": "H\u0131rvat\u00e7a",
-                            "text": "Anadil seviyesinde, g\u00fcnl\u00fck ya\u015famda ve teknik konularda \u00e7ok ak\u0131c\u0131 ileti\u015fim kurabiliyorum.",
+                            "title": "Hırvatça",
+                            "text": "Anadil seviyesinde, günlük yaşamda ve teknik konularda çok akıcı iletişim kurabiliyorum.",
                             "level": "Anadil / 100%",
                             "list": [
                                 "Dobar dan, kako si?",
@@ -802,9 +758,9 @@
                             ]
                         },
                         "mk": {
-                            "title": "\u0425\u0440\u0432\u0430\u0442\u0441\u043a\u0438",
-                            "text": "\u041c\u043e\u0458 \u043c\u0430\u0458\u0447\u0438\u043d \u0458\u0430\u0437\u0438\u043a; \u0442\u0435\u0447\u043d\u043e \u0437\u0431\u043e\u0440\u0443\u0432\u0430\u043c \u0432\u043e \u0441\u0435\u043a\u043e\u0458\u0434\u043d\u0435\u0432\u043d\u0438, \u0442\u0435\u0445\u043d\u0438\u0447\u043a\u0438 \u0438 \u043f\u0440\u043e\u0444\u0435\u0441\u0438\u043e\u043d\u0430\u043b\u043d\u0438 \u0441\u0438\u0442\u0443\u0430\u0446\u0438\u0438.",
-                            "level": "\u041c\u0430\u0458\u0447\u0438\u043d / 100%",
+                            "title": "Хрватски",
+                            "text": "Мој мајчин јазик; течно зборувам во секојдневни, технички и професионални ситуации.",
+                            "level": "Мајчин / 100%",
                             "list": [
                                 "Dobar dan, kako si?",
                                 "Hvala lijepa, to mi puno znači.",
@@ -841,7 +797,7 @@
                         },
                         "de": {
                             "title": "Englisch",
-                            "text": "Sehr gute Arbeitssprache; ich nutze Englisch t\u00e4glich f\u00fcr technische Dokumentation, Lernen und professionelle Kommunikation.",
+                            "text": "Sehr gute Arbeitssprache; ich nutze Englisch täglich für technische Dokumentation, Lernen und professionelle Kommunikation.",
                             "level": "C2 / 98%",
                             "list": [
                                 "Hi, how are you doing today?",
@@ -852,7 +808,7 @@
                         },
                         "hr": {
                             "title": "Engleski",
-                            "text": "Vrlo sna\u017eno radno znanje; svakodnevno koristim engleski za tehni\u010dku dokumentaciju, u\u010denje i profesionalnu komunikaciju.",
+                            "text": "Vrlo snažno radno znanje; svakodnevno koristim engleski za tehničku dokumentaciju, učenje i profesionalnu komunikaciju.",
                             "level": "C2 / 98%",
                             "list": [
                                 "Hi, how are you doing today?",
@@ -862,9 +818,9 @@
                             ]
                         },
                         "tr": {
-                            "title": "\u0130ngilizce",
-                            "text": "\u0130yi d\u00fczeyde, \u00f6zellikle teknik dok\u00fcmanlar ve g\u00fcnl\u00fck ileti\u015fim i\u00e7in rahat\u00e7a kullanabiliyorum.",
-                            "level": "\u0130leri / 98%",
+                            "title": "İngilizce",
+                            "text": "İyi düzeyde, özellikle teknik dokümanlar ve günlük iletişim için rahatça kullanabiliyorum.",
+                            "level": "İleri / 98%",
                             "list": [
                                 "Hi, how are you doing today?",
                                 "A cup of tea fixes more than expected.",
@@ -873,8 +829,8 @@
                             ]
                         },
                         "mk": {
-                            "title": "\u0410\u043d\u0433\u043b\u0438\u0441\u043a\u0438",
-                            "text": "\u041c\u043d\u043e\u0433\u0443 \u0434\u043e\u0431\u0440\u043e \u043d\u0438\u0432\u043e \u0437\u0430 \u0440\u0430\u0431\u043e\u0442\u0430; \u0433\u043e \u043a\u043e\u0440\u0438\u0441\u0442\u0430\u043c \u0437\u0430 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u0458\u0430, \u0443\u0447\u0435\u045a\u0435 \u0438 \u043f\u0440\u043e\u0444\u0435\u0441\u0438\u043e\u043d\u0430\u043b\u043d\u0430 \u043a\u043e\u043c\u0443\u043d\u0438\u043a\u0430\u0446\u0438\u0458\u0430.",
+                            "title": "Англиски",
+                            "text": "Многу добро ниво за работа; го користам за документација, учење и професионална комуникација.",
                             "level": "C2 / 98%",
                             "list": [
                                 "Hi, how are you doing today?",
@@ -922,8 +878,8 @@
                             ]
                         },
                         "hr": {
-                            "title": "Njema\u010dki",
-                            "text": "Siguran u svakodnevnim i poslovnim situacijama; mogu raspravljati o tehni\u010dkim temama i dobro funkcionirati u njema\u010dkim timovima.",
+                            "title": "Njemački",
+                            "text": "Siguran u svakodnevnim i poslovnim situacijama; mogu raspravljati o tehničkim temama i dobro funkcionirati u njemačkim timovima.",
                             "level": "C1-C2 / 95%",
                             "list": [
                                 "Guten Tag, wie geht es dir?",
@@ -934,7 +890,7 @@
                         },
                         "tr": {
                             "title": "Almanca",
-                            "text": "G\u00fcnl\u00fck hayat ve i\u015f ortam\u0131nda kendimi rahat ifade edebiliyorum.",
+                            "text": "Günlük hayat ve iş ortamında kendimi rahat ifade edebiliyorum.",
                             "level": "Orta-ileri / 95%",
                             "list": [
                                 "Guten Tag, wie geht es dir?",
@@ -944,8 +900,8 @@
                             ]
                         },
                         "mk": {
-                            "title": "\u0413\u0435\u0440\u043c\u0430\u043d\u0441\u043a\u0438",
-                            "text": "\u0414\u043e\u0431\u0440\u043e \u043d\u0438\u0432\u043e \u0437\u0430 \u0441\u0435\u043a\u043e\u0458\u0434\u043d\u0435\u0432\u043d\u0430 \u043a\u043e\u043c\u0443\u043d\u0438\u043a\u0430\u0446\u0438\u0458\u0430 \u0438 \u0440\u0430\u0431\u043e\u0442\u0430, \u043e\u0441\u043e\u0431\u0435\u043d\u043e \u0432\u043e \u0442\u0435\u0445\u043d\u0438\u0447\u043a\u0438 \u0441\u0440\u0435\u0434\u0438\u043d\u0438.",
+                            "title": "Германски",
+                            "text": "Добро ниво за секојдневна комуникација и работа, особено во технички средини.",
                             "level": "C1-C2 / 95%",
                             "list": [
                                 "Guten Tag, wie geht es dir?",
@@ -983,7 +939,7 @@
                         },
                         "de": {
                             "title": "Mazedonisch",
-                            "text": "Grundkenntnisse in Verst\u00e4ndnis und einfacher Kommunikation, besonders mit Sprechern aus der Region.",
+                            "text": "Grundkenntnisse in Verständnis und einfacher Kommunikation, besonders mit Sprechern aus der Region.",
                             "level": "A2 / 40%",
                             "list": [
                                 "Здраво, како си?",
@@ -1005,7 +961,7 @@
                         },
                         "tr": {
                             "title": "Makedonca",
-                            "text": "Temel seviyede anlayabiliyorum, b\u00f6lgede konu\u015fulan dile biraz a\u015finay\u0131m.",
+                            "text": "Temel seviyede anlayabiliyorum, bölgede konuşulan dile biraz aşinayım.",
                             "level": "Temel / 40%",
                             "list": [
                                 "Здраво, како си?",
@@ -1015,8 +971,8 @@
                             ]
                         },
                         "mk": {
-                            "title": "\u041c\u0430\u043a\u0435\u0434\u043e\u043d\u0441\u043a\u0438",
-                            "text": "\u041e\u0441\u043d\u043e\u0432\u043d\u043e \u043d\u0438\u0432\u043e \u043d\u0430 \u043a\u043e\u043c\u0443\u043d\u0438\u043a\u0430\u0446\u0438\u0458\u0430; \u0440\u0430\u0437\u0431\u0438\u0440\u0430\u043c \u0435\u0434\u043d\u043e\u0441\u0442\u0430\u0432\u043d\u0438 \u0440\u0435\u0447\u0435\u043d\u0438\u0446\u0438 \u0438 \u0438\u0437\u0440\u0430\u0437\u0438 \u0438 \u043f\u043e\u0441\u0442\u0435\u043f\u0435\u043d\u043e \u043d\u0430\u043f\u0440\u0435\u0434\u0443\u0432\u0430\u043c.",
+                            "title": "Македонски",
+                            "text": "Основно ниво на комуникација; разбирам едноставни реченици и изрази и постепено напредувам.",
                             "level": "A2 / 40%",
                             "list": [
                                 "Здраво, како си?",
@@ -1053,9 +1009,9 @@
                             ]
                         },
                         "de": {
-                            "title": "T\u00fcrkisch",
-                            "text": "Sehr einfaches Niveau; ich verstehe einige h\u00e4ufige Ausdr\u00fccke und baue langsam Wortschatz auf.",
-                            "level": "Anf\u00e4nger / 15%",
+                            "title": "Türkisch",
+                            "text": "Sehr einfaches Niveau; ich verstehe einige häufige Ausdrücke und baue langsam Wortschatz auf.",
+                            "level": "Anfänger / 15%",
                             "list": [
                                 "Merhaba, nasılsın?",
                                 "Bir çay molası her şeyi yumuşatır.",
@@ -1065,8 +1021,8 @@
                         },
                         "hr": {
                             "title": "Turski",
-                            "text": "Vrlo osnovna razina; razumijem nekoliko naj\u010de\u0161\u0107ih fraza i polako u\u010dim nove rije\u010di.",
-                            "level": "Po\u010detnik / 15%",
+                            "text": "Vrlo osnovna razina; razumijem nekoliko najčešćih fraza i polako učim nove riječi.",
+                            "level": "Početnik / 15%",
                             "list": [
                                 "Merhaba, nasılsın?",
                                 "Bir çay molası her şeyi yumuşatır.",
@@ -1075,9 +1031,9 @@
                             ]
                         },
                         "tr": {
-                            "title": "T\u00fcrk\u00e7e",
-                            "text": "\u015eimdilik sadece birka\u00e7 temel kelime ve ifade biliyorum, ama zamanla geli\u015ftirmek istiyorum.",
-                            "level": "Ba\u015flang\u0131\u00e7 / 15%",
+                            "title": "Türkçe",
+                            "text": "Şimdilik sadece birkaç temel kelime ve ifade biliyorum, ama zamanla geliştirmek istiyorum.",
+                            "level": "Başlangıç / 15%",
                             "list": [
                                 "Merhaba, nasılsın?",
                                 "Bir çay molası her şeyi yumuşatır.",
@@ -1086,8 +1042,8 @@
                             ]
                         },
                         "mk": {
-                            "title": "\u0422\u0443\u0440\u0441\u043a\u0438",
-                            "text": "\u041c\u043d\u043e\u0433\u0443 \u043e\u0441\u043d\u043e\u0432\u043d\u043e \u043d\u0438\u0432\u043e; \u0437\u043d\u0430\u043c \u043d\u0435\u043a\u043e\u043b\u043a\u0443 \u0438\u0437\u0440\u0430\u0437\u0438 \u0438 \u043f\u043e\u043b\u0435\u043a\u0430 \u0443\u0447\u0430\u043c \u043d\u043e\u0432\u0438 \u0437\u0431\u043e\u0440\u043e\u0432\u0438.",
+                            "title": "Турски",
+                            "text": "Многу основно ниво; знам неколку изрази и полека учам нови зборови.",
                             "level": "A1 / 15%",
                             "list": [
                                 "Merhaba, nasılsın?",
@@ -1125,8 +1081,8 @@
                         },
                         "de": {
                             "title": "Chinesisch (Mandarin)",
-                            "text": "Ganz am Anfang; ich kenne nur ein paar grundlegende W\u00f6rter und Ausdr\u00fccke und m\u00f6chte die Sprache nach und nach besser kennenlernen.",
-                            "level": "Anf\u00e4nger / 1%",
+                            "text": "Ganz am Anfang; ich kenne nur ein paar grundlegende Wörter und Ausdrücke und möchte die Sprache nach und nach besser kennenlernen.",
+                            "level": "Anfänger / 1%",
                             "list": [
                                 "你好，很高兴认识你。",
                                 "谢谢，你太客气了。",
@@ -1136,8 +1092,8 @@
                         },
                         "hr": {
                             "title": "Kineski (mandarinski)",
-                            "text": "Tek sam na po\u010detku; znam par osnovnih rije\u010di i fraza i rado bih s vremenom vi\u0161e upoznao jezik.",
-                            "level": "Potpuni po\u010detnik / 1%",
+                            "text": "Tek sam na početku; znam par osnovnih riječi i fraza i rado bih s vremenom više upoznao jezik.",
+                            "level": "Potpuni početnik / 1%",
                             "list": [
                                 "你好，很高兴认识你。",
                                 "谢谢，你太客气了。",
@@ -1146,9 +1102,9 @@
                             ]
                         },
                         "tr": {
-                            "title": "\u00c7ince (Mandarin)",
-                            "text": "Hen\u00fcz en ba\u015ftay\u0131m; sadece birka\u00e7 temel kelime biliyorum ve dili yava\u015f yava\u015f ke\u015ffetmek istiyorum.",
-                            "level": "Ba\u015flang\u0131\u00e7 / 1%",
+                            "title": "Çince (Mandarin)",
+                            "text": "Henüz en baştayım; sadece birkaç temel kelime biliyorum ve dili yavaş yavaş keşfetmek istiyorum.",
+                            "level": "Başlangıç / 1%",
                             "list": [
                                 "你好，很高兴认识你。",
                                 "谢谢，你太客气了。",
@@ -1157,9 +1113,9 @@
                             ]
                         },
                         "mk": {
-                            "title": "\u041a\u0438\u043d\u0435\u0441\u043a\u0438 (\u041c\u0430\u043d\u0434\u0430\u0440\u0438\u043d)",
-                            "text": "\u0421\u0430\u043c\u043e \u043f\u043e\u0447\u0435\u0442\u043d\u043e \u043d\u0438\u0432\u043e; \u0437\u043d\u0430\u043c \u043d\u0435\u043a\u043e\u043b\u043a\u0443 \u043e\u0441\u043d\u043e\u0432\u043d\u0438 \u0437\u0431\u043e\u0440\u043e\u0432\u0438 \u0438 \u0438\u0437\u0440\u0430\u0437\u0438 \u0438 \u0441\u0430\u043a\u0430\u043c \u0441\u043e \u0432\u0440\u0435\u043c\u0435 \u043f\u043e\u0434\u043e\u0431\u0440\u043e \u0434\u0430 \u0433\u043e \u0437\u0430\u043f\u043e\u0437\u043d\u0430\u0430\u043c \u0458\u0430\u0437\u0438\u043a\u043e\u0442.",
-                            "level": "\u041f\u043e\u0447\u0435\u0442\u043d\u0438\u043a / 1%",
+                            "title": "Кинески (Мандарин)",
+                            "text": "Само почетно ниво; знам неколку основни зборови и изрази и сакам со време подобро да го запознаам јазикот.",
+                            "level": "Почетник / 1%",
                             "list": [
                                 "你好，很高兴认识你。",
                                 "谢谢，你太客气了。",

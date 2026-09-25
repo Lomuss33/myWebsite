@@ -3,6 +3,7 @@ html[data-layout="mobile"] nav.nav-header-mobile {
     .nav-header-mobile-card-wrapper { container: mobile-profile-card / inline-size; }
     div.nav-profile-card {
         --avatar-size: var(--mobile-profile-avatar-size, clamp(3.25rem, 17cqi, 4.5rem));
+        --avatar-frame-radius: clamp(0.375rem, 2.5cqi, 1.25rem);
         --avatar-shell-gap: 2px;
         --mobile-action-size: var(--mobile-profile-action-size, 2.75rem);
         --mobile-action-visual-scale: 1;

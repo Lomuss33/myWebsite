@@ -204,8 +204,13 @@ div.nav-profile-card {
     }
 
     &-avatar-switch {
+        box-sizing: border-box;
         width: var(--avatar-size);
         height: var(--avatar-size);
+        min-width: 0;
+        min-height: 0;
+        aspect-ratio: 1;
+        flex: 0 0 var(--avatar-size);
         position: relative;
         overflow: hidden;
         border: 0;
@@ -2514,5 +2519,17 @@ div.nav-short-rail-resume-band {
     h1.nav-profile-card-name span.nav-profile-card-name-line,
     div.nav-profile-card-role span.text-typer-span-dynamic {
         color: #000000 !important;
+    }
+}
+
+// On wide mobile cards the audio control grows beyond its normal icon size.
+// Its circular SVG path nearly reaches the viewBox edge, so fill the button to
+// make the animated ring align with the actual button bounds.
+@container mobile-profile-card (min-width: 40rem) {
+    html[data-layout="mobile"] nav.nav-header-mobile div.nav-profile-card
+        div.nav-profile-card-mobile-action-stack div.nav-profile-card-mobile-action-audio
+        button.audio-button svg.audio-button-icon {
+        width: 100%;
+        height: 100%;
     }
 }

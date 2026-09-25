@@ -79,7 +79,7 @@ Resume popup sizing: intrinsic content width with compact row padding, bounded b
 
 Experience timeline title, metadata, and body sizing are bounded by the card's container width where container units are supported, with viewport-based fallbacks. Metadata location/company pills stay in two columns until the card is narrower than 23rem, then stack to protect legibility. On mobile, the first experience card bleeds across the section's responsive left gutter; the card's text keeps a compact inset, and its right padding retains the avatar decoration buffer. Body height remains content-driven, with no clipping or fixed-height truncation.
 
-Education timeline body and metadata type scale from each card's inline size when container units are supported, with smaller viewport-based fallbacks and bounded minimum/maximum sizes. This keeps narrow cards readable without oversized copy and lets metadata grow on wide displays.
+Education timeline body and metadata type scale from each card's inline size when container units are supported, with smaller viewport-based fallbacks and bounded minimum/maximum sizes. Date, place, and school details flow as unboxed inline metadata and wrap only when the card runs out of room. Collapsed cards keep the expansion control right-aligned without reserving a padded empty row.
 
 Education certification cards use content-driven height, a two-column desktop layout, and a single-column narrow layout. Their metadata switches from three compact tiles to stacked rows when an individual card is narrow, independent of viewport width.
 

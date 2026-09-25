@@ -1745,13 +1745,16 @@ article#article-1-section-education {
     }
 
     div.article-timeline-item-info-for-timelines-header-meta-band {
-        align-items: flex-start;
+        align-items: stretch;
     }
 
     div.article-timeline-item-info-for-timelines-education-meta {
         display: flex;
-        flex-direction: column;
-        gap: clamp(0.34rem, 0.26rem + 0.18vw, 0.5rem);
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        column-gap: clamp(0.6rem, 0.52rem + 0.2vw, 0.9rem);
+        row-gap: 0.32rem;
         width: 100%;
         max-width: 100%;
         color: var(--card-text-mid);
@@ -1759,22 +1762,29 @@ article#article-1-section-education {
 
     div.article-timeline-item-info-for-timelines-education-meta-row {
         display: flex;
-        align-items: flex-start;
-        gap: clamp(0.46rem, 0.36rem + 0.18vw, 0.62rem);
-        width: 100%;
+        align-items: center;
+        gap: 0.34em;
+        flex: 0 1 auto;
+        width: auto;
         max-width: 100%;
-        line-height: 1.34;
-            font-size: clamp(0.84rem, 0.8rem + 0.16vw, 0.96rem);
+        min-width: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        line-height: 1.25;
+        font-size: clamp(0.84rem, 0.8rem + 0.16vw, 0.96rem);
 
         i.fa-icon {
-            width: 1.18rem;
-            min-width: 1.18rem;
+            width: 1em;
+            min-width: 1em;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            margin-top: 0.08rem;
             color: color-mix(in srgb, var(--card-accent) 70%, var(--card-text-strong) 30%);
             opacity: 1;
+            font-size: 0.94em;
         }
 
         span {
@@ -1812,6 +1822,9 @@ article#article-1-section-education {
         &.article-timeline-item-info-for-timelines-body--education.is-education-collapsed {
             display: flex;
             flex-direction: column;
+            margin-top: 0.18rem;
+            padding-top: 0;
+            border-top: 0;
 
             div.article-timeline-item-info-for-timelines-body-text {
                 display: none;
@@ -1850,39 +1863,38 @@ article#article-1-section-education {
 
     div.article-timeline-item-info-for-timelines-body-expand-action {
         display: flex;
-        justify-content: flex-start;
-        margin-top: clamp(0.52rem, 0.42rem + 0.18vw, 0.66rem);
-        padding-bottom: 0.28rem;
+        justify-content: flex-end;
+        margin-top: 0.32rem;
+        padding: 0;
     }
 
     button.article-timeline-item-info-for-timelines-body-expand-button {
         display: inline-flex;
         align-items: center;
-        gap: 0.52rem;
-        padding: 0.42rem 0.72rem;
-        border: 1px solid color-mix(in srgb, var(--card-accent) 38%, var(--card-border) 62%);
-        border-radius: 999px;
-        background: color-mix(in srgb, var(--card-surface-top) 48%, transparent 52%);
-        color: color-mix(in srgb, var(--card-text-strong) 82%, var(--card-accent) 18%);
-        font-size: 0.8rem;
-        font-weight: 650;
-        letter-spacing: 0.015em;
+        justify-content: center;
+        gap: 0.42rem;
+        min-height: 2.25rem;
+        padding: 0.35rem 0.15rem 0.35rem 0.55rem;
+        border: 0;
+        border-radius: 0.35rem;
+        background: transparent;
+        color: color-mix(in srgb, var(--card-accent) 62%, var(--card-text-strong) 38%);
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.01em;
         box-shadow: none;
-        opacity: 0.88;
-        transition: transform 160ms ease, border-color 160ms ease, background-color 160ms ease, color 160ms ease;
+        opacity: 0.92;
+        transition: background-color 160ms ease, color 160ms ease, opacity 160ms ease;
 
         &:hover,
         &:focus-visible {
-            transform: translateY(-1px);
-            background: color-mix(in srgb, var(--card-accent) 12%, transparent 88%);
-            border-color: color-mix(in srgb, var(--card-accent-2) 46%, var(--card-accent) 54%);
+            background: color-mix(in srgb, var(--card-accent) 8%, transparent 92%);
             color: var(--education-body-strong);
+            opacity: 1;
         }
 
         &:active {
-            transform: translateY(0);
-            background: color-mix(in srgb, var(--card-accent) 18%, transparent 82%);
-            border-color: color-mix(in srgb, var(--card-accent-2) 58%, var(--card-accent) 42%);
+            background: color-mix(in srgb, var(--card-accent) 13%, transparent 87%);
         }
 
         &:focus-visible {
@@ -1906,6 +1918,14 @@ article#article-1-section-education {
 
     article#article-1-section-education div.article-timeline-item-info-for-timelines-education-meta-row {
         font-size: clamp(0.78rem, 0.68rem + 0.7cqi, 1.22rem);
+    }
+
+    article#article-1-section-education div.article-timeline-item-info-for-timelines-education-meta {
+        column-gap: clamp(0.6rem, 1.5cqi, 1.1rem);
+    }
+
+    article#article-1-section-education div.article-timeline-item-info-for-timelines-header-main h5 {
+        font-size: clamp(1.08rem, 0.95rem + 0.95cqi, 1.7rem) !important;
     }
 }
 

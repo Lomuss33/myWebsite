@@ -199,8 +199,56 @@ article#article-2-section-education {
     }
 
     div.article-cards-item-education-certification-ccna {
-        --cert-accent: #38bdf8;
-        --cert-accent-rgb: 56, 189, 248;
+        --cert-accent: #8995a4;
+        --cert-accent-rgb: 137, 149, 164;
+        --cert-panel: color-mix(in srgb, var(--theme-boards-background) 72%, #94a3b8 28%);
+        --cert-panel-raised: rgba(203, 213, 225, 0.06);
+        --cert-text: rgba(241, 245, 249, 0.78);
+        --cert-muted: rgba(203, 213, 225, 0.58);
+        --cert-label: rgba(203, 213, 225, 0.56);
+        --cert-value: rgba(226, 232, 240, 0.7);
+        border-color: rgba(148, 163, 184, 0.2);
+        background:
+            linear-gradient(145deg, rgba(226, 232, 240, 0.055), transparent 46%),
+            linear-gradient(180deg, rgba(148, 163, 184, 0.055), transparent 58%),
+            var(--cert-panel);
+
+        &::before {
+            background: linear-gradient(90deg, rgba(148, 163, 184, 0.28), rgba(203, 213, 225, 0.46), rgba(148, 163, 184, 0.28));
+        }
+
+        &::after {
+            background: linear-gradient(90deg, rgba(148, 163, 184, 0.1), transparent 64%), linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent);
+        }
+
+        div.article-cards-item-education-certification-frame {
+            filter: grayscale(0.9);
+            opacity: 0.62;
+        }
+
+        div.article-cards-item-education-certification-field {
+            border-color: rgba(148, 163, 184, 0.13);
+            background: rgba(148, 163, 184, 0.045);
+        }
+
+        .article-cards-item-education-certification-status {
+            position: absolute;
+            z-index: 4;
+            top: 1rem;
+            right: -2.35rem;
+            width: 9rem;
+            padding: 0.38rem 0.5rem;
+            transform: rotate(38deg);
+            color: #fff;
+            background: linear-gradient(135deg, #b91c1c, #ef4444 54%, #b91c1c);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.28);
+            font-size: 0.64rem;
+            font-weight: 900;
+            letter-spacing: 0.14em;
+            line-height: 1;
+            text-align: center;
+            pointer-events: none;
+        }
     }
 
     div.article-cards-item-education-certification-frame {
@@ -411,6 +459,21 @@ article#article-2-section-education {
                     0 18px 34px rgba(15, 23, 42, 0.11),
                     0 0 0 1px rgba(var(--cert-accent-rgb), 0.12),
                     inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            }
+        }
+
+        div.article-cards-item-education-certification-ccna {
+            --cert-panel: #f1f3f5;
+            --cert-panel-raised: rgba(148, 163, 184, 0.08);
+            --cert-text: rgba(30, 41, 59, 0.72);
+            --cert-muted: rgba(51, 65, 85, 0.62);
+            --cert-label: rgba(71, 85, 105, 0.62);
+            --cert-value: rgba(30, 41, 59, 0.72);
+            border-color: rgba(100, 116, 139, 0.2);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.76), transparent 50%), #eef1f4;
+
+            &::before {
+                background: linear-gradient(90deg, rgba(100, 116, 139, 0.24), rgba(148, 163, 184, 0.42), rgba(100, 116, 139, 0.24));
             }
         }
 

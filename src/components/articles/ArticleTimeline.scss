@@ -226,33 +226,134 @@ article#article-1-section-education {
         --avatar-size: 188px;
         --avatar-border-width: 4px;
         --timeline-line-width: 4px;
-        --gap-between-avatar-and-content: 24px;
+        --education-card-width: min(52vw, 64rem);
+        --gap-between-avatar-and-content: clamp(18px, 1.35vw, 24px);
         --timeline-line-top-trim: clamp(18px, calc(var(--avatar-size) * 0.16), 30px);
         --timeline-line-bottom-trim: clamp(18px, calc(var(--avatar-size) * 0.16), 30px);
 
         @include content-breakpoint-down(lg) {
             --avatar-size: 156px;
-            --gap-between-avatar-and-content: 22px;
+            --education-card-width: min(72vw, 46rem);
+            --gap-between-avatar-and-content: 16px;
         }
 
         @include content-breakpoint-down(md) {
             --avatar-size: 140px;
-            --gap-between-avatar-and-content: 20px;
+            --education-card-width: min(88vw, 42rem);
+            --gap-between-avatar-and-content: 12px;
         }
 
         @include content-breakpoint-down(sm) {
             --avatar-size: 110px;
-            --gap-between-avatar-and-content: 16px;
+            --education-card-width: calc(100vw - 1rem);
+            --gap-between-avatar-and-content: 8px;
             --avatar-offset-merge-mode: 0px;
         }
     }
 
     li.article-timeline-item {
+        --education-avatar-shift-x: 0px;
+        width: 100%;
         align-items: center;
     }
 
     div.article-timeline-item-avatar-wrapper {
+        position: relative;
+        z-index: 3;
         align-items: center;
+        transition: transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    li.article-timeline-item:nth-child(4n + 1) {
+        --education-avatar-shift-x: clamp(-42px, -2.8vw, -18px);
+
+        div.article-timeline-item-avatar-wrapper {
+            transform: translateX(var(--education-avatar-shift-x)) rotate(-4deg) scale(1.045);
+        }
+    }
+
+    li.article-timeline-item:nth-child(4n + 2) {
+        --education-avatar-shift-x: clamp(18px, 2.15vw, 32px);
+
+        div.article-timeline-item-avatar-wrapper {
+            transform: translateX(var(--education-avatar-shift-x)) rotate(3deg) scale(1.035);
+        }
+    }
+
+    li.article-timeline-item:nth-child(4n + 3) {
+        --education-avatar-shift-x: clamp(20px, 2.25vw, 34px);
+
+        div.article-timeline-item-avatar-wrapper {
+            transform: translateX(var(--education-avatar-shift-x)) rotate(-3deg) scale(1.05);
+        }
+    }
+
+    li.article-timeline-item:nth-child(4n) {
+        --education-avatar-shift-x: clamp(-38px, -2.45vw, -16px);
+
+        div.article-timeline-item-avatar-wrapper {
+            transform: translateX(var(--education-avatar-shift-x)) rotate(4deg) scale(1.04);
+        }
+    }
+
+    div.article-timeline-item-content {
+        // Center each panel independently from the avatar rail. The avatar is
+        // a foreground overlay, while the responsive panel leaves room around it.
+        box-sizing: border-box;
+        flex: 0 0 var(--education-card-width);
+        width: var(--education-card-width);
+        max-width: none;
+        margin-left: calc((100vw - var(--education-card-width)) / 2 - var(--avatar-size)) !important;
+        position: relative;
+        z-index: 1;
+    }
+
+    li.article-timeline-item {
+        position: relative;
+        z-index: 1;
+    }
+
+    ul.article-timeline-items-has-education-snake::before {
+        display: none;
+    }
+
+    svg.article-timeline-education-snake {
+        position: absolute;
+        z-index: 0;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        pointer-events: none;
+
+        path {
+            fill: none;
+            stroke: color-mix(in srgb, var(--theme-primary) 74%, var(--theme-secondary) 26%);
+            stroke-width: clamp(4px, 0.42vw, 7px);
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            vector-effect: non-scaling-stroke;
+            filter: drop-shadow(0 0 4px color-mix(in srgb, var(--theme-primary) 48%, transparent));
+            opacity: 0.88;
+        }
+    }
+
+    @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
+        li.article-timeline-item:nth-child(4n + 1),
+        li.article-timeline-item:nth-child(4n + 2),
+        li.article-timeline-item:nth-child(4n + 3),
+        li.article-timeline-item:nth-child(4n) {
+            --education-avatar-shift-x: 0px;
+
+            div.article-timeline-item-avatar-wrapper {
+                transform: none;
+            }
+        }
+
+        svg.article-timeline-education-snake path {
+            stroke-width: 4px;
+            opacity: 0.72;
+        }
     }
 
     div.article-timeline-item-avatar {
@@ -1261,6 +1362,14 @@ article#article-1-section-experience {
         width: 100%;
         padding-inline: 0;
     }
+}
+
+article#article-1-section-education div.article-content {
+    box-sizing: border-box;
+    width: 100vw;
+    max-width: none;
+    margin-inline: calc(50% - 50vw);
+    padding-inline: 0;
 }
 
 @container (min-width: 2000px) {

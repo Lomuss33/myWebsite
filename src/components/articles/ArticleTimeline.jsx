@@ -11,6 +11,52 @@ import Link from "../generic/Link.jsx"
 import {useUtils} from "../../hooks/utils.js"
 
 const FINE_POINTER_MEDIA_QUERY = "(hover: hover) and (pointer: fine)"
+
+function buildEducationTimelinePath(listElement) {
+    if(!listElement)
+        return null
+
+    const listRect = listElement.getBoundingClientRect()
+    const avatars = [...listElement.querySelectorAll(":scope > .article-timeline-item .article-timeline-item-avatar-wrapper")]
+    if(avatars.length < 2 || listRect.width <= 0 || listRect.height <= 0)
+        return null
+
+    const points = avatars.map(avatar => {
+        const rect = avatar.getBoundingClientRect()
+        return {
+            x: rect.left + rect.width / 2 - listRect.left,
+            y: rect.top + rect.height / 2 - listRect.top,
+            size: Math.min(rect.width, rect.height)
+        }
+    })
+    const commands = [`M ${points[0].x} ${points[0].y}`]
+    const sidePattern = [1, -1, -1, 1, -1, 1, 1, -1]
+    const amplitudePattern = [1, 0.72, 1.08, 0.82, 1.16, 0.74, 1.02, 0.86]
+
+    for(let index = 0; index < points.length - 1; index++) {
+        const start = points[index]
+        const end = points[index + 1]
+        const deltaY = end.y - start.y
+        const direction = sidePattern[index % sidePattern.length]
+        const idealAmplitude = Math.min(start.size * 0.78, listRect.width * 0.2, 112) * amplitudePattern[index % amplitudePattern.length]
+        const availableAmplitude = direction < 0 ? start.x - 8 : listRect.width - start.x - 8
+        const amplitude = Math.max(0, Math.min(idealAmplitude, availableAmplitude))
+        const middleX = (start.x + end.x) / 2 + direction * amplitude
+        const middleY = (start.y + end.y) / 2
+
+        commands.push(
+            `C ${start.x + direction * amplitude} ${start.y + deltaY * 0.22}, ${start.x + direction * amplitude} ${start.y + deltaY * 0.42}, ${middleX} ${middleY}`,
+            `C ${middleX} ${start.y + deltaY * 0.58}, ${end.x + direction * amplitude} ${end.y - deltaY * 0.22}, ${end.x} ${end.y}`
+        )
+    }
+
+    return {
+        path: commands.join(" "),
+        width: listRect.width,
+        height: listRect.height
+    }
+}
+
 /**
  * @param {ArticleDataWrapper} dataWrapper
  * @param {Number} id
@@ -73,6 +119,7 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
         topOffsetPx: null,
         bottomOffsetPx: null
     })
+    const [educationTimelinePath, setEducationTimelinePath] = useState(null)
     const [expandedEducationItemIds, setExpandedEducationItemIds] = useState(() => new Set())
     const [activeOverlayItemId, setActiveOverlayItemId] = useState(null)
     const [supportsFinePointer, setSupportsFinePointer] = useState(() => {
@@ -175,6 +222,15 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
             return
 
         const _updateOffsets = () => {
+            if(isEducationTimeline) {
+                const nextPath = buildEducationTimelinePath(listElement)
+                setEducationTimelinePath(current => {
+                    if(current?.path === nextPath?.path && current?.width === nextPath?.width && current?.height === nextPath?.height)
+                        return current
+                    return nextPath
+                })
+            }
+
             const avatarSelector = isExperienceTimeline ?
                 ".article-timeline-item-avatar-wrapper--experience" :
                 ".article-timeline-item-avatar-wrapper"
@@ -363,9 +419,17 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
 
     return (
         <>
-            <ul className={`article-timeline-items`}
+            <ul className={`article-timeline-items${isEducationTimeline && educationTimelinePath ? " article-timeline-items-has-education-snake" : ""}`}
                 ref={listRef}
                 style={timelineLineOffsetsStyle || undefined}>
+                {isEducationTimeline && educationTimelinePath && (
+                    <svg className="article-timeline-education-snake"
+                         viewBox={`0 0 ${educationTimelinePath.width} ${educationTimelinePath.height}`}
+                         preserveAspectRatio="none"
+                         aria-hidden="true">
+                        <path d={educationTimelinePath.path}/>
+                    </svg>
+                )}
                 {visibleItemWrappers.map((itemWrapper, key) => (
                     <ArticleTimelineItem itemWrapper={itemWrapper}
                                          itemIndex={key}

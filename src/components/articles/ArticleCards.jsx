@@ -165,6 +165,11 @@ function ArticleEducationCertificationCard({ itemWrapper }) {
 
     return (
         <div className={`article-cards-item article-cards-item-education-certification article-cards-item-education-certification-${meta.tone}`}>
+            {meta.tone === "ccna" && (
+                <span className="article-cards-item-education-certification-status" role="img" aria-label="Incoming certification">
+                    INCOMING
+                </span>
+            )}
             <div className={`article-cards-item-education-certification-frame`}>
                 <div className={`article-cards-item-education-certification-heading`}>
                     {itemWrapper.link && itemWrapper.link.href ? (

@@ -1710,7 +1710,16 @@ article#article-1-section-experience {
 }
 
 article#article-1-section-education {
+    div.article-timeline-item-info-for-timelines-header {
+        align-items: stretch;
+        width: 100%;
+        gap: clamp(0.65rem, 0.55rem + 0.22vw, 1rem);
+        text-align: center;
+    }
+
     div.article-timeline-item-info-for-timelines-header-title {
+        width: 100%;
+        text-align: center;
         margin-bottom: clamp(0.3rem, 0.22rem + 0.14vw, 0.42rem);
         padding-bottom: clamp(0.42rem, 0.32rem + 0.18vw, 0.56rem);
         position: relative;
@@ -1730,9 +1739,14 @@ article#article-1-section-education {
     }
 
     div.article-timeline-item-info-for-timelines-header-main {
+        width: 100%;
+        justify-content: center;
+
         h5 {
             display: block;
             width: 100%;
+            max-width: 58ch;
+            margin-inline: auto;
             padding-bottom: 0;
             color: var(--card-text-strong);
             font-size: clamp(1.24rem, 1.08rem + 0.5vw, 1.58rem) !important;
@@ -1746,16 +1760,18 @@ article#article-1-section-education {
 
     div.article-timeline-item-info-for-timelines-header-meta-band {
         align-items: stretch;
+        justify-content: center;
     }
 
     div.article-timeline-item-info-for-timelines-education-meta {
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: center;
-        column-gap: clamp(0.6rem, 0.52rem + 0.2vw, 0.9rem);
-        row-gap: 0.32rem;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        gap: clamp(0.28rem, 0.24rem + 0.12vw, 0.4rem);
         width: 100%;
+        margin-inline: auto;
+        padding-inline: clamp(0.25rem, 0.2rem + 0.7vw, 1.5rem);
         max-width: 100%;
         color: var(--card-text-mid);
     }
@@ -1764,15 +1780,20 @@ article#article-1-section-education {
         display: flex;
         align-items: center;
         gap: 0.34em;
-        flex: 0 1 auto;
-        width: auto;
+        flex: 0 0 auto;
+        width: 100%;
+        align-self: stretch;
+        box-sizing: border-box;
+        justify-content: center;
+        text-align: center;
         max-width: 100%;
         min-width: 0;
-        padding: 0;
-        border: 0;
-        border-radius: 0;
-        background: transparent;
-        box-shadow: none;
+        min-height: 2rem;
+        padding: clamp(0.3rem, 0.32rem + 0.1vw, 0.42rem) clamp(0.65rem, 0.72rem + 0.2vw, 0.92rem);
+        border: 1px solid color-mix(in srgb, var(--card-border) 66%, var(--card-accent) 34%);
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--card-surface-top) 84%, transparent 16%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
         line-height: 1.25;
         font-size: clamp(0.84rem, 0.8rem + 0.16vw, 0.96rem);
 
@@ -1822,8 +1843,8 @@ article#article-1-section-education {
         &.article-timeline-item-info-for-timelines-body--education.is-education-collapsed {
             display: flex;
             flex-direction: column;
-            margin-top: 0.18rem;
-            padding-top: 0;
+            margin-top: 0.22rem;
+            padding-top: clamp(0.4rem, 0.8vw, 0.7rem);
             border-top: 0;
 
             div.article-timeline-item-info-for-timelines-body-text {
@@ -1836,9 +1857,10 @@ article#article-1-section-education {
 
             div.article-timeline-item-info-for-timelines-body-expand-action {
                 align-self: stretch;
-                justify-content: flex-end;
-                margin: 0;
-                padding: 0;
+                justify-content: center;
+                width: 100%;
+                margin: clamp(0.65rem, 1.5vw, 1rem) 0 0;
+                padding: 0 0 0.1rem;
             }
         }
 
@@ -1921,7 +1943,12 @@ article#article-1-section-education {
     }
 
     article#article-1-section-education div.article-timeline-item-info-for-timelines-education-meta {
-        column-gap: clamp(0.6rem, 1.5cqi, 1.1rem);
+        gap: clamp(0.28rem, 0.45cqi, 0.42rem);
+        padding-inline: clamp(0.25rem, 2.4cqi, 1.5rem);
+    }
+
+    article#article-1-section-education div.article-timeline-item-info-for-timelines-header {
+        gap: clamp(0.65rem, 1.4cqi, 1rem);
     }
 
     article#article-1-section-education div.article-timeline-item-info-for-timelines-header-main h5 {
@@ -1967,25 +1994,13 @@ article#article-1-section-education li.article-timeline-item--visual-origin-meta
         width: 100%;
         min-width: 0;
         align-self: stretch;
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 0.32rem 0.44rem;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        gap: 0.28rem;
     }
 
     div.article-timeline-item-info-for-timelines-education-meta-row {
-        box-sizing: border-box;
-        flex: 1 1 max-content;
-        align-items: center;
-        width: auto;
-        max-width: 100%;
-        padding: 0.3rem 0.52rem;
-        border: 1px solid color-mix(in srgb, var(--card-border) 66%, var(--card-accent) 34%);
-        border-radius: 999px;
-        background: color-mix(in srgb, var(--card-surface-top) 84%, transparent 16%);
-        font-size: clamp(0.78rem, 0.72rem + 0.22vw, 0.94rem);
-        line-height: 1.25;
-
         i.fa-icon {
             margin-top: 0;
         }

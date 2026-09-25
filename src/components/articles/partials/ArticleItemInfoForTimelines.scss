@@ -2838,3 +2838,12 @@ html[data-layout="mobile"] article#article-1-section-experience div.article-time
         line-height: 1.45;
     }
 }
+
+// Let the mobile experience surface meet the section's left edge while
+// keeping a compact, readable inset around its text in both themes.
+html[data-layout="mobile"] article#article-1-section-experience div.article-timeline-item-info-for-timelines {
+    --content-padding: 0.5rem clamp(0.5rem, 2vw, 0.75rem);
+    border-left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}

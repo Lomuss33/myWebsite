@@ -540,6 +540,8 @@ function FallingWords({
 
     const onModalTextPointerUp = (event) => {
         event.stopPropagation()
+        if(event.target.closest("a, button")) return
+        _closeSelection()
     }
 
     const _closeSelection = () => {
@@ -758,9 +760,17 @@ function FallingWords({
                             onClick={(event) => event.stopPropagation()}
                             onPointerUp={onModalTextPointerUp}
                         >
+                            <button
+                                className={`falling-words-modal-close`}
+                                type={`button`}
+                                aria-label={`Close definition`}
+                                onClick={_closeSelection}
+                            >
+                                X
+                            </button>
                             <div className={`falling-words-modal-heading`}>
                                 <a
-                                    className={`falling-words-modal-title text-1`}
+                                    className={`falling-words-modal-title-word-link text-1`}
                                     href={`https://www.google.com/search?q=${encodeURIComponent(`${wordSearchPrefix}: ${effectiveEntries[selectedIndex]?.word || ""}`)}`}
                                     target={`_blank`}
                                     rel={`noopener noreferrer`}
@@ -768,11 +778,8 @@ function FallingWords({
                                     <span className={`falling-words-modal-title-word`}>
                                         {effectiveEntries[selectedIndex]?.word || ""}
                                     </span>
-                                    <span className={`falling-words-modal-link-cue`} aria-hidden={`true`}>
-                                        <span className={`falling-words-modal-link-cue-label`}>Google</span>
-                                        <span className={`falling-words-modal-link-cue-icon`}>↗</span>
-                                    </span>
                                 </a>
+
                             </div>
                             <div className={`falling-words-modal-definition text-2`}>
                                 <span className={`falling-words-modal-definition-mark`} aria-hidden={`true`}>“</span>
@@ -781,6 +788,15 @@ function FallingWords({
                                 </span>
                             </div>
                             <div className={`falling-words-modal-search-links`}>
+                                <a
+                                    className={`falling-words-modal-search-link falling-words-modal-search-link-google`}
+                                    href={`https://www.google.com/search?q=${encodeURIComponent(`${wordSearchPrefix}: ${effectiveEntries[selectedIndex]?.word || ""}`)}`}
+                                    target={`_blank`}
+                                    rel={`noopener noreferrer`}
+                                >
+                                    <span>Google</span>
+                                    <span aria-hidden={`true`}>Search web</span>
+                                </a>
                                 <a
                                     className={`falling-words-modal-search-link falling-words-modal-search-link-duckduckgo`}
                                     href={`https://duckduckgo.com/?q=${encodeURIComponent(`beginners guide to ${effectiveEntries[selectedIndex]?.word || ""}`)}`}

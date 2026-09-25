@@ -1234,6 +1234,21 @@ article#article-1-section-experience {
     }
 }
 
+// The first experience card is a full-bleed mobile surface. article-content
+// sits inside section-content's responsive horizontal padding, so removing its
+// own margin alone still leaves the section gutter visible on the left.
+@include layout-mobile {
+    article#article-1-section-experience > div.article-content {
+        box-sizing: border-box;
+        width: calc(100% + var(--padding-x, 0px));
+        max-width: none;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+        margin-left: calc(-1 * var(--padding-x, 0px));
+    }
+}
+
 @include content-breakpoint-up(xl) {
     article#article-1-section-education div.article-content,
     article#article-1-section-experience div.article-content {

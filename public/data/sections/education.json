@@ -82,12 +82,12 @@
                             "title": "Erasmus+ Exchange — Computer Engineering",
                             "institution": "International Balkan University (IBU)",
                             "country": "Skopje, North Macedonia",
-                            "text": "One-semester Erasmus+ exchange in Computer Engineering at IBU Skopje.",
+                            "text": "A semester in Skopje took my computer-engineering studies beyond the classroom. At IBU, I worked on applied coursework, learned alongside an international cohort, and earned credits eligible for transfer to THM.",
                             "list": [
-                                "Current mobility semester",
-                                "Selected courses in computer engineering and applied projects",
-                                "Cross-cultural teamwork and presentations",
-                                "ECTS credits transferable to THM"
+                                "One-semester Erasmus+ exchange at IBU",
+                                "Computer-engineering courses and applied projects",
+                                "International teamwork and presentations",
+                                "Credits transferable to THM"
                             ],
                             "tags": [
                                 "Erasmus+",
@@ -99,12 +99,12 @@
                             "title": "Erasmus+ Austausch — Computer Engineering",
                             "institution": "International Balkan University (IBU)",
                             "country": "Skopje, Nordmazedonien",
-                            "text": "Erasmus+-Austausch (ein Semester) im Bereich Computer Engineering an der IBU Skopje.",
+                            "text": "Ein Semester in Skopje brachte mein Studium der Computertechnik in ein neues Umfeld. An der IBU arbeitete ich an praxisnahen Kursen und Projekten, lernte in einem internationalen Team und sammelte anrechenbare ECTS-Punkte für die THM.",
                             "list": [
-                                "Aktuelles Mobilitätssemester",
-                                "Ausgewählte Kurse in Computer Engineering und Praxisprojekten",
-                                "Interkulturelle Teamarbeit und Präsentationen",
-                                "ECTS an die THM anrechenbar"
+                                "Erasmus+-Austauschsemester an der IBU",
+                                "Kurse und Praxisprojekte in Computer Engineering",
+                                "Teamarbeit und Präsentationen im internationalen Umfeld",
+                                "ECTS-Punkte an der THM anrechenbar"
                             ],
                             "tags": [
                                 "Erasmus+",
@@ -116,12 +116,12 @@
                             "title": "Erasmus+ razmjena — Računalno inženjerstvo",
                             "institution": "International Balkan University (IBU)",
                             "country": "Skopje, Sjeverna Makedonija",
-                            "text": "Jednosemestralna Erasmus+ razmjena iz računalnog inženjerstva na IBU Skopje.",
+                            "text": "Jedan semestar u Skopju proširio je moje studiranje računalnog inženjerstva izvan učionice. Na IBU-u sam radio na primijenjenim projektima, učio u međunarodnom okruženju i stekao ECTS bodove koji se mogu priznati na THM-u.",
                             "list": [
-                                "Trenutni semestar mobilnosti",
-                                "Odabrani kolegiji iz računalnog inženjerstva i primijenjenih projekata",
-                                "Međukulturni timski rad i prezentacije",
-                                "ECTS bodovi se priznaju na THM"
+                                "Jednosemestralna Erasmus+ razmjena na IBU-u",
+                                "Kolegiji i primijenjeni projekti iz računalnog inženjerstva",
+                                "Timski rad i prezentacije u međunarodnom okruženju",
+                                "ECTS bodovi priznati na THM-u"
                             ],
                             "tags": [
                                 "Erasmus+",
@@ -133,12 +133,12 @@
                             "title": "Erasmus+ Değişim — Bilgisayar Mühendisliği",
                             "institution": "International Balkan University (IBU)",
                             "country": "Üsküp, Kuzey Makedonya",
-                            "text": "IBU Üsküp’te bir dönemlik Erasmus+ bilgisayar mühendisliği değişim programı.",
+                            "text": "Üsküp’te geçirdiğim bir dönem, bilgisayar mühendisliği eğitimime yeni bir bakış açısı kattı. IBU’da uygulamalı dersler ve projeler üzerinde çalıştım, uluslararası bir ortamda deneyim kazandım ve THM’de saydırılabilen ECTS kredileri aldım.",
                             "list": [
-                                "Güncel hareketlilik dönemi",
+                                "IBU’da bir dönemlik Erasmus+ değişimi",
                                 "Bilgisayar mühendisliği dersleri ve uygulamalı projeler",
-                                "Kültürlerarası takım çalışması ve sunumlar",
-                                "ECTS kredileri THM’ye aktarılabilir"
+                                "Uluslararası ortamda takım çalışması ve sunumlar",
+                                "THM’de saydırılabilen ECTS kredileri"
                             ],
                             "tags": [
                                 "Erasmus+",
@@ -175,10 +175,11 @@
                             "title": "Training as Electronic Technician for Automation Technology",
                             "institution": "Provadis",
                             "country": "Frankfurt am Main, Germany",
-                            "text": "Completed a training program focusing on automation technology.",
+                            "text": "My apprenticeship brought automation technology to life through practical work with real systems. It gave me a solid technical foundation and a clear reason to keep exploring engineering.",
                             "list": [
-                                "Hands-on experience in automation systems",
-                                "Collaboration on technical projects"
+                                "Hands-on experience with automation systems",
+                                "Technical project work",
+                                "A practical foundation for further engineering studies"
                             ],
                             "tags": [
                                 "Training",
@@ -189,10 +190,11 @@
                             "title": "Ausbildung als Elektroniker für Automatisierungstechnik",
                             "institution": "Clariant",
                             "country": "Frankfurt am Main, Deutschland",
-                            "text": "Absolvierte eine Ausbildung mit dem Schwerpunkt Automatisierungstechnik.",
+                            "text": "In der Ausbildung wurde Automatisierungstechnik durch die praktische Arbeit an technischen Systemen greifbar. So entstand eine solide fachliche Grundlage und der Wunsch, mich weiter mit Ingenieurthemen zu beschäftigen.",
                             "list": [
-                                "Praktische Erfahrung in Automatisierungssystemen",
-                                "Zusammenarbeit an technischen Projekten"
+                                "Praxis an Automatisierungssystemen",
+                                "Mitarbeit an technischen Projekten",
+                                "Fachliche Grundlage für den weiteren Weg im Ingenieurwesen"
                             ],
                             "tags": [
                                 "Ausbildung",
@@ -203,10 +205,11 @@
                             "title": "Obuka za Elektroničara za Automatizaciju",
                             "institution": "Clariant",
                             "country": "Frankfurt am Main, Njemačka",
-                            "text": "Završena obuka s fokusom na automatizaciju.",
+                            "text": "Tijekom naukovanja upoznao sam automatizaciju kroz praktičan rad sa stvarnim sustavima. Stekao sam čvrstu tehničku osnovu i još veći interes za inženjerstvo.",
                             "list": [
-                                "Praktično iskustvo u automatizacijskim sustavima",
-                                "Suradnja na tehničkim projektima"
+                                "Praktičan rad s automatizacijskim sustavima",
+                                "Rad na tehničkim projektima",
+                                "Dobra osnova za daljnje obrazovanje u inženjerstvu"
                             ],
                             "tags": [
                                 "Obuka",
@@ -217,10 +220,11 @@
                             "title": "Otomasyon Teknolojisi Eğitimine Elektronik Teknisyeni",
                             "institution": "Clariant",
                             "country": "Frankfurt am Main, Almanya",
-                            "text": "Otomasyon teknolojisi üzerine odaklanan bir eğitim programını tamamladım.",
+                            "text": "Mesleki eğitimim sırasında otomasyon teknolojisini gerçek sistemler üzerinde çalışarak öğrendim. Bu deneyim bana sağlam bir teknik temel ve mühendisliğe devam etme isteği kazandırdı.",
                             "list": [
-                                "Otomasyon sistemlerinde uygulamalı deneyim",
-                                "Teknik projelerde işbirliği"
+                                "Otomasyon sistemlerinde uygulamalı çalışma",
+                                "Teknik projelerde görev alma",
+                                "İleri mühendislik eğitimi için sağlam temel"
                             ],
                             "tags": [
                                 "Eğitim",
@@ -255,10 +259,11 @@
                             "title": "Engineering Computer Science",
                             "institution": "Technische Hochschule Mittelhessen",
                             "country": "Gießen, Germany",
-                            "text": "Currently pursuing a degree in Engineering Computer Science.",
+                            "text": "I’m studying Engineering Computer Science at THM, building my skills in software development and the engineering methods behind complex technical systems.",
                             "list": [
-                                "Now studying for 2 years and 2 months",
-                                "Focus on software development and engineering principles"
+                                "Degree in progress at Technische Hochschule Mittelhessen",
+                                "Software development",
+                                "Engineering methods and problem-solving"
                             ],
                             "tags": [
                                 "Current Studies",
@@ -269,10 +274,11 @@
                             "title": "Ingenieurinformatik",
                             "institution": "Technische Hochschule Mittelhessen - THM",
                             "country": "Gießen, Deutschland",
-                            "text": "Aktuell studiere ich Ingenieurinformatik.",
+                            "text": "An der THM studiere ich Ingenieurinformatik und vertiefe meine Kenntnisse in Softwareentwicklung und ingenieurwissenschaftlichen Methoden für komplexe technische Systeme.",
                             "list": [
-                                "Jetzt seit 2 Jahren und 2 Monaten am Studium",
-                                "Schwerpunkt auf Softwareentwicklung und Ingenieurprinzipien"
+                                "Laufendes Studium an der Technischen Hochschule Mittelhessen",
+                                "Schwerpunkt Softwareentwicklung",
+                                "Ingenieurmethoden und systematisches Problemlösen"
                             ],
                             "tags": [
                                 "Aktuelles Studium",
@@ -283,10 +289,11 @@
                             "title": "Inženjerska Računalna Sindrom",
                             "institution": "Tehnička Visoka Škola Mittelhessen - THM",
                             "country": "Gießen, Njemačka",
-                            "text": "Trenutno studiram inženjersku računalnu znanost.",
+                            "text": "Na THM-u studiram inženjersku informatiku i razvijam znanje iz programiranja te inženjerskih metoda za složene tehničke sustave.",
                             "list": [
-                                "Sad studiram 2 godine i 2 mjeseca",
-                                "Fokus na razvoju softvera i inženjerskim principima"
+                                "Studij na Tehničkom veleučilištu Mittelhessen u tijeku",
+                                "Fokus na razvoju softvera",
+                                "Inženjerske metode i rješavanje problema"
                             ],
                             "tags": [
                                 "Trenutne Studije",
@@ -297,10 +304,11 @@
                             "title": "Mühendislik Bilgisayar Bilimi",
                             "institution": "Mittelhessen Teknik Üniversitesi - THM",
                             "country": "Gießen, Almanya",
-                            "text": "Şu anda Mühendislik Bilgisayar Biliminde okumaktayım.",
+                            "text": "THM’de Mühendislik Bilgisayar Bilimi okuyorum; yazılım geliştirme ve karmaşık teknik sistemleri çözümlemeye yönelik mühendislik yöntemleri üzerine çalışıyorum.",
                             "list": [
-                                "Şu anda 2 yıl 2 ay okuma",
-                                "Yazılım geliştirme ve mühendislik ilkeleri üzerine odaklanma"
+                                "Technische Hochschule Mittelhessen’de devam eden lisans eğitimi",
+                                "Yazılım geliştirme odağı",
+                                "Mühendislik yöntemleri ve problem çözme"
                             ],
                             "tags": [
                                 "Mevcut Çalışmalar",
@@ -336,10 +344,11 @@
                             "title": "Vocational School",
                             "institution": "Brühlwiesenschule",
                             "country": "Hofheim am Taunus, Germany",
-                            "text": "Completed vocational training after the apprenticeship.",
+                            "text": "After my apprenticeship, I returned to the classroom to strengthen my technical skills and prepare for further study. It connected hands-on training with the next step in engineering.",
                             "list": [
-                                "Focus on relevant technical skills",
-                                "Preparation for further studies"
+                                "Technical subjects building on apprenticeship experience",
+                                "Preparation for further studies",
+                                "A step toward engineering at university"
                             ],
                             "tags": [
                                 "Vocational Training",
@@ -350,10 +359,11 @@
                             "title": "Fachschule",
                             "institution": "Brühlwiesenschule",
                             "country": "Hofheim am Taunus, Deutschland",
-                            "text": "Abschluss der Fachschule nach der Ausbildung.",
+                            "text": "Nach der Ausbildung kehrte ich an die Schule zurück, um meine technischen Kenntnisse zu vertiefen und mich auf ein weiterführendes Studium vorzubereiten. So verband ich praktische Erfahrung mit dem nächsten Schritt im Ingenieurwesen.",
                             "list": [
-                                "Schwerpunkt auf relevanten technischen Fähigkeiten",
-                                "Vorbereitung auf das Studium"
+                                "Technische Inhalte aufbauend auf der Ausbildung",
+                                "Vorbereitung auf ein weiterführendes Studium",
+                                "Nächster Schritt Richtung Ingenieurwesen"
                             ],
                             "tags": [
                                 "Fachliche Ausbildung",
@@ -364,10 +374,11 @@
                             "title": "Stručna Škola",
                             "institution": "Brühlwiesenschule",
                             "country": "Hofheim am Taunus, Njemačka",
-                            "text": "Završena stručna izobrazba nakon naukovanja.",
+                            "text": "Nakon naukovanja vratio sam se u školu kako bih proširio tehničko znanje i pripremio se za daljnji studij. Tako sam praktično iskustvo povezao sa sljedećim korakom prema inženjerstvu.",
                             "list": [
-                                "Fokus na relevantnim tehničkim vještinama",
-                                "Priprema za daljnje studije"
+                                "Tehnički predmeti nadovezani na iskustvo iz naukovanja",
+                                "Priprema za daljnji studij",
+                                "Sljedeći korak prema inženjerstvu"
                             ],
                             "tags": [
                                 "Stručna Priprema",
@@ -378,10 +389,11 @@
                             "title": "Meslek Okulu",
                             "institution": "Brühlwiesenschule",
                             "country": "Hofheim am Taunus, Almanya",
-                            "text": "Stajdan sonra mesleki eğitim tamamlandı.",
+                            "text": "Mesleki eğitimimin ardından teknik bilgilerimi derinleştirmek ve yükseköğrenime hazırlanmak için okula geri döndüm. Böylece uygulamalı deneyimimi mühendislik yolundaki bir sonraki adımla birleştirdim.",
                             "list": [
-                                "İlgili teknik becerilere odaklanma",
-                                "Daha ileri çalışmalar için hazırlık"
+                                "Mesleki deneyimi geliştiren teknik dersler",
+                                "İleri eğitim için hazırlık",
+                                "Üniversitede mühendisliğe doğru bir adım"
                             ],
                             "tags": [
                                 "Mesleki Eğitim",
@@ -417,10 +429,11 @@
                             "title": "Secondary School",
                             "institution": "Eichendorffschule",
                             "country": "Kelkheim, Germany",
-                            "text": "Completed secondary education before vocational training.",
+                            "text": "At Eichendorffschule in Kelkheim, I completed secondary school and prepared for what came next: vocational training in technology.",
                             "list": [
-                                "General education",
-                                "Preparation for vocational training"
+                                "Completed secondary education in Kelkheim",
+                                "Built a broad general-education foundation",
+                                "Prepared for technical vocational training"
                             ],
                             "tags": [
                                 "Secondary Education",
@@ -431,10 +444,11 @@
                             "title": "Realschule",
                             "institution": "EichendorfSchule Kelkheim",
                             "country": "Deutschland",
-                            "text": "Abschluss der Realschule vor der Berufsbildung.",
+                            "text": "An der Eichendorffschule in Kelkheim schloss ich die Realschule ab und bereitete mich auf den nächsten Schritt vor: eine technische Berufsausbildung.",
                             "list": [
-                                "Allgemeine Bildung",
-                                "Vorbereitung auf die Ausbildung"
+                                "Realschulabschluss in Kelkheim",
+                                "Breite schulische Grundlagen",
+                                "Vorbereitung auf eine technische Ausbildung"
                             ],
                             "tags": [
                                 "Realschulausbildung",
@@ -445,10 +459,11 @@
                             "title": "Srednja Škola",
                             "institution": "EichendorfSchule Kelkheim",
                             "country": "Njemačka",
-                            "text": "Završena srednja škola prije stručne izobrazbe.",
+                            "text": "U Eichendorffschule u Kelkheimu završio sam srednju školu i pripremio se za sljedeći korak: stručno obrazovanje u tehničkom području.",
                             "list": [
-                                "Opća obrazovanja",
-                                "Priprema za stručnu izobrazbu"
+                                "Završena srednja škola u Kelkheimu",
+                                "Široka osnova općeg obrazovanja",
+                                "Priprema za tehničko strukovno obrazovanje"
                             ],
                             "tags": [
                                 "Srednje Obrazovanje",
@@ -459,10 +474,11 @@
                             "title": "Ortaokul",
                             "institution": "EichendorfSchule Kelkheim",
                             "country": "Almanya",
-                            "text": "Meslek eğitiminden önce ortaokuldan mezun oldum.",
+                            "text": "Kelkheim’deki Eichendorffschule’de ortaöğrenimimi tamamladım ve teknoloji alanındaki mesleki eğitimime hazırlandım.",
                             "list": [
-                                "Genel eğitim",
-                                "Meslek eğitimine hazırlık"
+                                "Kelkheim’de tamamlanan ortaöğrenim",
+                                "Genel eğitim temeli",
+                                "Teknik mesleki eğitime hazırlık"
                             ],
                             "tags": [
                                 "Ortaöğretim",
@@ -498,10 +514,11 @@
                             "title": "Primary School",
                             "institution": "Osnovna škola fra Mijo Čuić",
                             "country": "Tomislavgrad, Bosnia",
-                            "text": "Completed my primary education in Tomislavgrad, where curiosity, discipline, and character first took shape.",
+                            "text": "My school years in Tomislavgrad ran from 2007 to 2018. They gave me the foundations for the next chapter, which began in Germany.",
                             "list": [
-                                "Basic education",
-                                "A strong foundation for everything that followed"
+                                "Primary education in Tomislavgrad",
+                                "School years from 2007 to 2018",
+                                "The starting point for my education in Germany"
                             ],
                             "tags": [
                                 "Primary Education",
@@ -512,10 +529,11 @@
                             "title": "Grundschule",
                             "institution": "Tomislavgrad, Bosnien",
                             "country": "Bosnien und Herzegowina",
-                            "text": "Abschluss der Grundschule vor dem Umzug nach Deutschland.",
+                            "text": "Von 2007 bis 2018 ging ich in Tomislavgrad zur Schule. Dort entstand die Grundlage für das nächste Kapitel, das in Deutschland weiterging.",
                             "list": [
-                                "Grundlegende Bildung",
-                                "Basis für weitere Studien"
+                                "Grundschulzeit in Tomislavgrad",
+                                "Schuljahre von 2007 bis 2018",
+                                "Ausgangspunkt für meinen weiteren Bildungsweg in Deutschland"
                             ],
                             "tags": [
                                 "Grundschule",
@@ -526,10 +544,11 @@
                             "title": "Osnovna Škola",
                             "institution": "Tomislavgrad, Bosna",
                             "country": "Bosna i Hercegovina",
-                            "text": "Završena osnovna škola prije preseljenja u Njemačku.",
+                            "text": "Od 2007. do 2018. pohađao sam školu u Tomislavgradu. Ondje sam stekao osnovu za sljedeće poglavlje, koje se nastavilo u Njemačkoj.",
                             "list": [
-                                "Osnovna edukacija",
-                                "Temelj za daljnja istraživanja"
+                                "Osnovno obrazovanje u Tomislavgradu",
+                                "Školske godine od 2007. do 2018.",
+                                "Početak obrazovnog puta koji se nastavio u Njemačkoj"
                             ],
                             "tags": [
                                 "Osnovno Obrazovanje",
@@ -540,10 +559,11 @@
                             "title": "İlkokul",
                             "institution": "Tomislavgrad, Bosna",
                             "country": "Bosna-Hersek",
-                            "text": "Almanya'ya taşınmadan önce ilkokuldan mezun oldum.",
+                            "text": "2007’den 2018’e kadar Tomislavgrad’da okudum. Burada edindiğim temel, Almanya’da devam eden eğitim yolculuğumun ilk adımı oldu.",
                             "list": [
-                                "Temel eğitim",
-                                "Daha ileri çalışmalar için temeldir"
+                                "Tomislavgrad’da ilkokul eğitimi",
+                                "2007–2018 arasındaki okul yılları",
+                                "Almanya’da devam eden eğitim yolculuğunun başlangıcı"
                             ],
                             "tags": [
                                 "İlköğretim",
@@ -554,6 +574,7 @@
                 },
                 {
                     "id": 7,
+                    "visual_variant": "origin-meta",
                     "faIcon": "fa-solid fa-seedling",
                     "faIconColors": {
                         "bg": "#0F172A",
@@ -569,65 +590,26 @@
                         "year": 2001,
                         "month": 2
                     },
-                    "dateEnd": {
-                        "now": true
-                    },
                     "locales": {
                         "en": {
-                            "title": "The Beginning",
+                            "title": "Birthplace in Livno",
                             "institution": "Županijska bolnica fra Mihovil Sučić",
-                            "country": "Livno, Bosnia",
-                            "text": "Born in Livno, where my story began with curiosity, resilience, and a habit of learning from both the easy and the challenging parts of life.",
-                            "list": [
-                                "Where my story started",
-                                "Shaped by both challenge and opportunity"
-                            ],
-                            "tags": [
-                                "Personal Story",
-                                "Growth Mindset"
-                            ]
+                            "country": "Livno, Bosnia and Herzegovina"
                         },
                         "de": {
-                            "title": "Der Anfang",
+                            "title": "Geburtsort Livno",
                             "institution": "Županijska bolnica fra Mihovil Sučić",
-                            "country": "Livno, Bosnien",
-                            "text": "In Livno geboren, begann mein Weg mit Neugier, Widerstandskraft und der Gewohnheit, aus den einfachen wie aus den herausfordernden Seiten des Lebens zu lernen.",
-                            "list": [
-                                "Hier begann meine Geschichte",
-                                "Geprägt von Herausforderung und Chance"
-                            ],
-                            "tags": [
-                                "Persönliche Geschichte",
-                                "Wachstumsdenken"
-                            ]
+                            "country": "Livno, Bosnien und Herzegowina"
                         },
                         "hr": {
-                            "title": "Početak",
+                            "title": "Rodno mjesto Livno",
                             "institution": "Županijska bolnica fra Mihovil Sučić",
-                            "country": "Livno, Bosna",
-                            "text": "Rođen u Livnu, gdje je moja priča počela znatiželjom, otpornošću i navikom da učim i iz jednostavnih i iz zahtjevnih strana života.",
-                            "list": [
-                                "Tu je moja priča krenula",
-                                "Oblikovan i izazovima i prilikama"
-                            ],
-                            "tags": [
-                                "Osobna priča",
-                                "Rast i razvoj"
-                            ]
+                            "country": "Livno, Bosna i Hercegovina"
                         },
                         "tr": {
-                            "title": "Başlangıç",
+                            "title": "Livno'daki doğum yeri",
                             "institution": "Županijska bolnica fra Mihovil Sučić",
-                            "country": "Livno, Bosna",
-                            "text": "Livno'da başlayan hikayem; merak, dayanıklılık ve hayatın hem kolay hem de zor taraflarından öğrenme alışkanlığıyla şekillendi.",
-                            "list": [
-                                "Hikayemin başladığı yer",
-                                "Hayatın zorlu ve akıcı yanlarıyla şekillenen bir yolculuk"
-                            ],
-                            "tags": [
-                                "Kişisel hikaye",
-                                "Gelişim odaklı"
-                            ]
+                            "country": "Livno, Bosna-Hersek"
                         }
                     }
                 }

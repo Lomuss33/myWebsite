@@ -53,6 +53,7 @@ function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateIn
     const location = isSmallScreen && institution ?
         itemWrapper.shortLocation :
         itemWrapper.fullLocation
+    const isOriginMetaOnly = itemWrapper?.visualVariant === "origin-meta"
 
     const propListItems = []
 
@@ -86,13 +87,13 @@ function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateIn
 
     return (
         <div className={`article-timeline-item-info-for-timelines-header ${className}`}>
-            <div className={`article-timeline-item-info-for-timelines-header-title`}>
+            {!isOriginMetaOnly && <div className={`article-timeline-item-info-for-timelines-header-title`}>
                 <div className={`article-timeline-item-info-for-timelines-header-main`}>
                     <h5 className={``}
                         dangerouslySetInnerHTML={{__html: itemWrapper.locales.title || itemWrapper.placeholder}}/>
 
                 </div>
-            </div>
+            </div>}
 
             {showMeta && (
                 <div className={`article-timeline-item-info-for-timelines-header-meta-band`}>
@@ -127,12 +128,18 @@ function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateIn
                         </div>
                     ) : isEducationTimeline ? (
                         <div className={`article-timeline-item-info-for-timelines-education-meta text-1`}>
+                            {isOriginMetaOnly && (
+                                <div className={`article-timeline-item-info-for-timelines-education-meta-row article-timeline-item-info-for-timelines-education-meta-row--birth-time`}>
+                                    <span aria-hidden="true">🕒</span>
+                                    <span>03:69</span>
+                                </div>
+                            )}
                             <div className={`article-timeline-item-info-for-timelines-education-meta-row article-timeline-item-info-for-timelines-education-meta-row--time`}>
-                                <i className={`fa-icon fa-regular fa-clock`}/>
+                                <i className={`fa-icon fa-regular ${isOriginMetaOnly ? "fa-calendar-days" : "fa-clock"}`}/>
                                 {renderDateValue()}
                             </div>
 
-                            {location && (
+                            {!isOriginMetaOnly && location && (
                                 <div className={`article-timeline-item-info-for-timelines-education-meta-row article-timeline-item-info-for-timelines-education-meta-row--location`}>
                                     <i className={`fa-icon fa-solid fa-location-dot`}/>
                                     <span dangerouslySetInnerHTML={{__html: location}}/>
@@ -141,8 +148,15 @@ function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateIn
 
                             {institution && (
                                 <div className={`article-timeline-item-info-for-timelines-education-meta-row article-timeline-item-info-for-timelines-education-meta-row--school`}>
-                                    <i className={`fa-icon fa-solid fa-school`}/>
+                                    <i className={`fa-icon fa-solid ${isOriginMetaOnly ? "fa-hospital" : "fa-school"}`}/>
                                     <span dangerouslySetInnerHTML={{__html: institution}}/>
+                                </div>
+                            )}
+
+                            {isOriginMetaOnly && location && (
+                                <div className={`article-timeline-item-info-for-timelines-education-meta-row article-timeline-item-info-for-timelines-education-meta-row--location`}>
+                                    <i className={`fa-icon fa-solid fa-location-dot`}/>
+                                    <span dangerouslySetInnerHTML={{__html: location}}/>
                                 </div>
                             )}
                         </div>
@@ -176,14 +190,20 @@ function ArticleItemInfoForTimelinesBody({ itemWrapper, className = "", isEducat
     const language = useLanguage()
     const textClass = `text-3`
     const hasList = Boolean(itemWrapper.locales.list && itemWrapper.locales.list.length > 0)
+    const hasText = Boolean(itemWrapper.locales.text?.trim())
     const educationBodyClass = isEducationTimeline ?
         `article-timeline-item-info-for-timelines-body--education ${isEducationExpanded ? "is-education-expanded" : "is-education-collapsed"}` :
         ``
 
+    if(!hasText && !hasList)
+        return null
+
     return (
         <div className={`article-timeline-item-info-for-timelines-body ${educationBodyClass} ${className}`.trim()}>
-            <div className={`article-timeline-item-info-for-timelines-body-text ${textClass} last-p-no-margin`}
-                 dangerouslySetInnerHTML={{__html: itemWrapper.locales.text}}/>
+            {hasText && (
+                <div className={`article-timeline-item-info-for-timelines-body-text ${textClass} last-p-no-margin`}
+                     dangerouslySetInnerHTML={{__html: itemWrapper.locales.text}}/>
+            )}
 
             {hasList && (
                 <ul className={`article-timeline-item-info-for-timelines-body-list list-mobile-small-padding ${textClass}`}>

@@ -1879,6 +1879,76 @@ article#article-1-section-education {
     }
 }
 
+// The birth entry is a compact origin marker: keep the same card treatment,
+// but use its space for only the date, hospital, and location.
+article#article-1-section-education li.article-timeline-item--visual-origin-meta {
+    align-items: center;
+
+    div.article-timeline-item-info-for-timelines {
+        box-sizing: border-box;
+        width: 100%;
+        justify-content: center;
+        min-height: 0;
+        padding: clamp(0.55rem, 1vw, 0.8rem) clamp(0.7rem, 1.4vw, 1rem);
+    }
+
+    div.article-timeline-item-info-for-timelines::before {
+        // Balance the existing left accent with a quieter inset edge on the right.
+        box-shadow: inset -1px 0 0 color-mix(in srgb, var(--card-accent) 30%, transparent 70%);
+    }
+
+    div.article-timeline-item-info-for-timelines-header,
+    div.article-timeline-item-info-for-timelines-header-meta-band {
+        width: 100%;
+        min-width: 0;
+        align-self: stretch;
+    }
+
+    div.article-timeline-item-info-for-timelines-header {
+        gap: 0;
+    }
+
+    div.article-timeline-item-info-for-timelines-header-meta-band {
+        align-items: center;
+    }
+
+    div.article-timeline-item-info-for-timelines-education-meta {
+        box-sizing: border-box;
+        width: 100%;
+        min-width: 0;
+        align-self: stretch;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.32rem 0.44rem;
+    }
+
+    div.article-timeline-item-info-for-timelines-education-meta-row {
+        box-sizing: border-box;
+        flex: 1 1 max-content;
+        align-items: center;
+        width: auto;
+        max-width: 100%;
+        padding: 0.3rem 0.52rem;
+        border: 1px solid color-mix(in srgb, var(--card-border) 66%, var(--card-accent) 34%);
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--card-surface-top) 84%, transparent 16%);
+        font-size: clamp(0.78rem, 0.72rem + 0.22vw, 0.94rem);
+        line-height: 1.25;
+
+        i.fa-icon {
+            margin-top: 0;
+        }
+    }
+
+    div.article-timeline-item-info-for-timelines-education-meta-row--birth-time {
+        flex: 0 0 auto;
+        white-space: nowrap;
+        color: var(--card-text-strong);
+        font-weight: 750;
+    }
+}
+
 [data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines {
     --education-body-text: #334155;
     --education-body-strong: #0f172a;

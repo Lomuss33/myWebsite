@@ -2,6 +2,7 @@
 
 nav.nav-link-pills {
     display: flex;
+    container-type: inline-size;
     justify-content: stretch;
     align-items: stretch;
 
@@ -127,18 +128,32 @@ button.nav-link-pills-link {
     }
 
     nav.nav-link-pills-mobile.nav-link-pills-overview > button.nav-link-pills-link {
-        gap: clamp(0.18rem, 1vw, 0.32rem);
-        padding-inline: clamp(0.08rem, 0.8vw, 0.24rem);
+        gap: var(--mobile-nav-item-gap);
+        padding-inline: clamp(0.08rem, 0.8cqi, 0.5rem);
 
-        i {
-            font-size: clamp(1rem, 4.2vw, 1.5rem);
-        }
+        i { font-size: var(--mobile-nav-item-icon-size); }
 
         span {
             width: 100%;
-            font-size: clamp(0.56rem, 2.15vw, 0.76rem);
+            font-size: var(--mobile-nav-item-label-size);
             letter-spacing: 0;
         }
+    }
+}
+
+// On exceptionally narrow phones, preserve the full accessible button name
+// while showing the icon-only control needed to keep every destination usable.
+@media (max-width: 18rem) {
+    html[data-layout="mobile"] :is(nav.nav-tab-controller, nav.nav-link-pills-mobile) > button > span {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+        border: 0;
     }
 }
 

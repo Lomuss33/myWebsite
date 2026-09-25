@@ -14,7 +14,7 @@ nav.nav-sidebar {
     --nav-extended-action-scale: 1;
     --nav-extended-padding-top: clamp(4px, 0.75svh, 8px);
     --nav-extended-row-height: clamp(30px, 5svh, 64px);
-    --nav-extended-tools-height: calc(100svh / 12);
+    --nav-extended-tools-height: clamp(3rem, calc(100svh / 12), 8rem);
 
     display: flex;
     position: relative;
@@ -231,7 +231,7 @@ nav.nav-sidebar-short-rail {
     --nav-short-rail-profile-padding: 0px;
     --nav-short-rail-row-height: clamp(22px, 4.5svh, 64px);
     --nav-short-rail-separator-height: 4px;
-    --nav-short-rail-tools-height: calc(100svh / 12);
+    --nav-short-rail-tools-height: clamp(3rem, calc(100svh / 12), 8rem);
     --nav-short-rail-avatar-size: clamp(54px, 7svh, 78px);
     --nav-short-rail-status-offset: calc(4px + 6px * var(--nav-short-rail-visual-density));
     --nav-short-rail-profile-padding: calc(1px + 3px * var(--nav-short-rail-visual-density));
@@ -342,6 +342,16 @@ nav.nav-sidebar-short-rail {
         height: var(--nav-tools-height);
         min-height: var(--nav-tools-height);
         max-height: var(--nav-tools-height);
+    }
+}
+
+// Preserve usable extended-rail hit areas on short touch viewports. When the
+// links cannot fit, the link region scrolls independently of profile/tools.
+@media (pointer: coarse) and (max-height: 40rem) {
+    nav.nav-sidebar-extended div.nav-link-list-shell {
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: contain;
     }
 }
 

@@ -2,10 +2,11 @@
 html[data-layout="mobile"] nav.nav-header-mobile {
     .nav-header-mobile-card-wrapper { container: mobile-profile-card / inline-size; }
     div.nav-profile-card {
-        --avatar-size: clamp(3.25rem, 17cqi, 4.5rem);
+        --avatar-size: var(--mobile-profile-avatar-size, clamp(3.25rem, 17cqi, 4.5rem));
         --avatar-shell-gap: 2px;
-        --mobile-action-size: 2.75rem;
+        --mobile-action-size: var(--mobile-profile-action-size, 2.75rem);
         --mobile-action-visual-scale: 1;
+        --mobile-action-footprint: var(--mobile-action-size);
         padding-top: 0.375rem;
         div.nav-profile-card-header { width: 100%; padding-inline: 0; }
         div.nav-profile-card-main-row {
@@ -43,7 +44,7 @@ html[data-layout="mobile"] nav.nav-header-mobile {
         }
         div.nav-profile-card-mobile-action-stack {
             display: flex; flex-direction: row; flex-wrap: wrap;
-            gap: 0.375rem; width: 100%; flex-basis: auto;
+            gap: var(--mobile-profile-action-gap, 0.375rem); width: 100%; flex-basis: auto;
             margin: 0; padding: 0; min-width: 0;
         }
         div.nav-profile-card-mobile-action-stack-middle { grid-area: left; justify-self: start; justify-content: flex-start; }
@@ -53,8 +54,8 @@ html[data-layout="mobile"] nav.nav-header-mobile {
 
 @container mobile-profile-card (min-width: 24rem) {
     html[data-layout="mobile"] nav.nav-header-mobile div.nav-profile-card {
-        --avatar-size: clamp(4rem, 18cqi, 5.75rem);
-        div.nav-profile-card-main-row { column-gap: clamp(0.375rem, 1.2cqi, 0.75rem); }
+        --avatar-size: var(--mobile-profile-avatar-size, clamp(4rem, 18cqi, 5.75rem));
+        div.nav-profile-card-main-row { column-gap: var(--mobile-profile-column-gap, clamp(0.375rem, 1.2cqi, 0.75rem)); }
         span.nav-profile-card-name-line { font-size: clamp(1.5rem, 6.5cqi, 2.5rem) !important; }
     }
 }
@@ -145,12 +146,12 @@ html[data-layout="mobile"] {
 @media (min-width: 30rem) and (min-height: 40rem) and (pointer: coarse) {
     html[data-layout="mobile"] {
         nav.nav-header-mobile div.nav-profile-card {
-            --mobile-action-size: 3.5rem;
-            --mobile-action-footprint: 3.5rem;
+            --mobile-action-size: var(--mobile-profile-action-size, 3.5rem);
+            --mobile-action-footprint: var(--mobile-action-size);
             --mobile-action-visual-scale: 1;
             padding-top: .5rem;
             .nav-profile-card-main-row { padding-block: .5rem; }
-            .nav-profile-card-mobile-action-stack { gap: .375rem; }
+            .nav-profile-card-mobile-action-stack { gap: var(--mobile-profile-action-gap, .375rem); }
         }
         .nav-tab-controller-link span { font-size: var(--mobile-nav-item-label-size); line-height: 1.2; }
     }

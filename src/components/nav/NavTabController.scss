@@ -26,6 +26,7 @@ nav.nav-tab-controller {
     @include nav-selected-edge(top);
 
     display: flex;
+    container-type: inline-size;
     justify-content: space-evenly;
     align-items: stretch;
 

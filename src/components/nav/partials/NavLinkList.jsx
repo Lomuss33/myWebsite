@@ -4,12 +4,12 @@ import Nav from "../base/Nav.jsx"
 import GestureAwareButton from "../../buttons/GestureAwareButton.jsx"
 
 const EXTENDED_RAIL_DENSITY_PROFILE = {
-    minRowHeight: 18,
+    minRowHeight: 44,
     baselineRowHeight: 48,
     upscaleCeiling: 64,
-    iconWidth: { min: 30, baseline: 60, max: 72 },
-    iconSize: { min: 0.78, baseline: 1.15, max: 1.34, unit: "rem" },
-    fontSize: { min: 0.68, baseline: 0.98, max: 1.08, unit: "rem" },
+    iconWidth: { min: 26, baseline: 42, max: 54 },
+    iconSize: { min: 0.88, baseline: 1.15, max: 1.34, unit: "rem" },
+    fontSize: { min: 0.75, baseline: 0.98, max: 1.08, unit: "rem" },
     paddingInline: { min: 4, baseline: 12, max: 16 },
     gap: { min: 2, baseline: 8, max: 10 },
     hoverScale: { min: 1.02, baseline: 1.08, max: 1.09, unit: "" },

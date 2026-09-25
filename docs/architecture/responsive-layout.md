@@ -1,6 +1,6 @@
 # Responsive layout
 
-Verified: 2026-09-24 against resolver and sizing stylesheet ownership; not exhaustive device testing.
+Verified: 2026-09-25 against resolver and navigation sizing sources; not exhaustive device testing.
 
 ## Mode authority
 
@@ -37,6 +37,10 @@ Inspect computed styles before adding rules. Component SCSS and later overrides 
 
 For mobile composition at widths of 90rem and above, one media block in `_sizing.scss` sets those tokens from viewport width/height ratios with bounded `clamp()` values. It also removes the wrapper/content width caps and provides section clearance. The coarse-pointer size tokens are defined before this block, so large-mobile sizing wins when both conditions match. Do not add another large-mobile patch block; update these tokens and their component consumers instead. Height-based short-screen rules still take precedence for compact navigation.
 
+### Navigation icons, labels, and controls
+
+The mobile tab and pill bars share the `--mobile-nav-item-*` scale. Their band height follows `10svh` between 3.25rem and 7rem; icons and spacing scale with viewport height, and labels scale against both viewport height and nav width. At mobile widths of 60rem and above, the profile header, identity row, and both nav bars remove their 60rem/52rem caps and use the full available width, including tall portrait tablets that remain below the separate 90rem large-mobile geometry breakpoint. The mobile identity card reserves `20svh` between 7rem and 20rem so tall portrait tablets and tall display windows do not fall back to compact intrinsic sizing. Short-height layouts use a 3.25rem navigation band, reduce the profile share to `14svh` bounded from 4.5rem to 6rem, and switch nav controls to inline icon/label rows. At widths below 18rem the labels are visually clipped but stay in the accessibility tree; pill navigation can scroll horizontally when its destinations cannot fit. Profile actions and portraits use the profile-card container plus `svh`, with bounded touch-sized floors and display-sized ceilings. Sidebar link density is calculated from available row height in `NavLinkList.jsx`; extended links retain a 44px minimum, and on short viewports their region can scroll separately from profile/tools. Extended and short-rail tool bands cap at 8rem to prevent very tall screens from producing oversized controls.
+
 [Validation limits](../guides/validation.md#known-gaps) include keyboards, safe areas, browser zoom, and weak GPUs. Archived measurements do not certify the current tree.
 
 ## Avatar contact card
@@ -51,13 +55,13 @@ Updated 2026-09-12: the portrait has a 3.25rem minimum at small mobile widths, r
 
 Mobile refinement (2026-09-14): portrait/name scale increased to use the center band more fully. Side controls switch to horizontal groups at a 40rem card width to reserve center clearance. The open language picker raises its ancestor stacking context, removes clipping, and shows toggle-sized discs below its control. No tests run for this refinement, per request.
 
-Mobile navigation update (2026-09-14): both bands use a shared 4.5rem height (3.5rem for very short mobile viewports). Sticky slot and bottom clearance follow the same variables. Bottom buttons use equal flexible slots and permit browser touch zoom; keyboard focus outlines are inset to avoid clipping. The top wrapper no longer retains an unnecessary 3D transform/backface rule. Source review only; no tests run per request.
+Mobile navigation update (2026-09-14): both bands originally used a shared 4.5rem height (3.5rem for very short mobile viewports). Sticky slot and bottom clearance follow the shared variables. Bottom buttons use equal flexible slots and permit browser touch zoom; keyboard focus outlines are inset to avoid clipping. The top wrapper no longer retains an unnecessary 3D transform/backface rule. The fixed-height sizing was superseded by the current fluid navigation scale above.
 
 Mobile resume palette (2026-09-14): popup surfaces, labels, icons, and hover states inherit active navigation theme colors, with an accent border and restrained shadow. No tests run per request.
 
 Resume popup revision (2026-09-14): mobile resume now uses MobileResumeMenu.jsx/.scss, separate from MobileTubeMenu (still used by other controls). A body portal avoids header clipping; positioning follows visual viewport bounds and resize/scroll. Options have 44px minimum rows, keyboard navigation, outside dismissal, and focus return. Actions execute directly from the click to preserve browser user activation. Earlier mobile resume palette overrides were removed; the new component owns its styles. Source review only, no tests run per request.
 
-Touch-tablet navigation (2026-09-14): mobile coarse-pointer viewports at least 30rem wide and 40rem tall use 5.5rem bands and 3.5rem profile action targets. Shared clearance variables follow the band height; navigation flex items cannot shrink. Touch navigation transforms and mobile profile tilt are disabled to avoid hover-driven movement. This is a source-based fix; Samsung Firefox hardware behavior remains unverified. No tests run under the existing request.
+Touch-tablet navigation (2026-09-14): mobile coarse-pointer viewports at least 30rem wide and 40rem tall originally used 5.5rem bands and 3.5rem profile action targets. Shared clearance variables follow band height; navigation flex items cannot shrink. Touch navigation transforms and mobile profile tilt are disabled to avoid hover-driven movement. The fixed band size was superseded by the current fluid navigation scale above; Samsung Firefox hardware behavior remains unverified.
 
 Mobile side controls (2026-09-14): replaced the fixed 40rem row switch with native flex wrapping inside each allocated side column. Each pair forms one row when its actual control widths plus gap fit; groups remain aligned to the outside edges with a compact gap. Reduced center-column gaps free usable width without shrinking the identity. Supersedes the earlier fixed-breakpoint description. No tests run per request.
 

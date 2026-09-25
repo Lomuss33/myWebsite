@@ -29,11 +29,12 @@
 
 html[data-layout="mobile"] {
     --default-card-spacing: 0.5rem;
-    --mobile-nav-row-height: clamp(3.25rem, calc(3rem + 0.5svh), 3.5rem);
-    --mobile-nav-item-icon-size: clamp(0.95rem, 1.8svh, 1.5rem);
-    --mobile-nav-item-label-size: clamp(0.625rem, 3.5cqi, 0.875rem);
-    --mobile-nav-item-gap: clamp(0.125rem, 0.55svh, 0.375rem);
-    --mobile-nav-item-padding-block: clamp(0.15rem, 0.8svh, 0.5rem);
+    --mobile-nav-row-height: clamp(3.25rem, 10svh, 7rem);
+    --mobile-nav-item-icon-size: clamp(1rem, 3svh, 2.5rem);
+    --mobile-nav-item-label-size: clamp(0.625rem, 2svh, 1.35rem);
+    --mobile-nav-item-label-size: clamp(0.625rem, min(2svh, 3.5cqi), 1.35rem);
+    --mobile-nav-item-gap: clamp(0.25rem, 1svh, 0.75rem);
+    --mobile-nav-item-padding-block: clamp(0.25rem, 1svh, 0.75rem);
     --nav-tabs-height: var(--mobile-nav-row-height);
     --nav-pills-height: var(--mobile-nav-row-height);
 }

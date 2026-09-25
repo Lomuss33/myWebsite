@@ -347,7 +347,7 @@ nav.nav-sidebar-short-rail {
 
 // Preserve usable extended-rail hit areas on short touch viewports. When the
 // links cannot fit, the link region scrolls independently of profile/tools.
-@media (pointer: coarse) and (max-height: 40rem) {
+@media (max-height: 40rem) {
     nav.nav-sidebar-extended div.nav-link-list-shell {
         overflow-x: hidden;
         overflow-y: auto;

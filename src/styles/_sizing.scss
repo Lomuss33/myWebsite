@@ -10,7 +10,9 @@
     // Shared mobile navigation scale. Wide mode replaces these tokens once;
     // component styles consume them without adding another breakpoint patch.
     --mobile-nav-row-height: 4.5rem;
-    --mobile-nav-profile-height: auto;
+    // Reserve a predictable share for identity on tall mobile viewports; the
+    // short-height rule below trades that space back when content is scarce.
+    --mobile-nav-profile-height: clamp(7rem, 20svh, 20rem);
     --mobile-profile-row-max: 52rem;
     --mobile-profile-gutter: 0.5rem;
     --mobile-profile-column-gap: clamp(0.375rem, 1.2cqi, 0.75rem);
@@ -86,6 +88,9 @@ html[data-layout] {
 html[data-layout="mobile"] {
     .nav-header-mobile { max-width: 60rem; margin-inline: auto; }
     .nav-header-mobile .nav-profile-card {
+        height: var(--mobile-nav-profile-height);
+        min-height: var(--mobile-nav-profile-height);
+        box-sizing: border-box;
         --avatar-size: clamp(3rem, 12vw, 4rem);
         --mobile-action-size: 2.75rem;
         --mobile-action-visual-scale: 1;
@@ -96,7 +101,7 @@ html[data-layout="mobile"] {
     :is(.nav-tab-controller, .nav-link-pills-mobile) { max-width: 60rem; margin-inline: auto; }
     .nav-tab-controller-wrapper { background: var(--theme-nav-surface); }
     .nav-tab-controller-link { min-width: 0; padding-inline: 0.2rem; }
-    .nav-tab-controller-link span { white-space: normal; font-size: 0.875rem; overflow-wrap: anywhere; }
+    .nav-tab-controller-link span { white-space: normal; font-size: var(--mobile-nav-item-label-size); overflow-wrap: anywhere; }
     nav.nav-link-pills-mobile { overflow-x: auto; scrollbar-width: none; scroll-padding-inline: 0.5rem; }
     nav.nav-link-pills-mobile > button.nav-link-pills-link {
         flex: 1 0 auto;
@@ -106,16 +111,39 @@ html[data-layout="mobile"] {
         span { overflow: visible; text-overflow: clip; white-space: nowrap; }
     }
     nav.nav-link-pills-mobile.nav-link-pills-overview > button.nav-link-pills-link {
-        padding-inline: 0.75rem;
-        span { font-size: 0.875rem; width: auto; }
+        padding-inline: clamp(0.08rem, 0.8cqi, 0.5rem);
+        span { font-size: var(--mobile-nav-item-label-size); width: auto; }
     }
     .scrollable-content { padding-bottom: calc(var(--mobile-nav-tabs-total-height) + 1rem) !important; }
     .section-content { min-height: 0; }
 }
 
+// Tall portrait tablets and kiosk windows can be wider than the usual mobile
+// card caps while still resolving to mobile layout. Let the navigation chrome
+// use the viewport instead of leaving centered desktop-sized gutters.
+@media (min-width: 60rem) {
+    html[data-layout="mobile"] {
+        .nav-header-mobile,
+        .nav-header-mobile-card-wrapper,
+        .nav-header-mobile .nav-profile-card,
+        .nav-header-mobile .nav-profile-card-header,
+        .nav-header-mobile .nav-profile-card-main-row,
+        nav.nav-tab-controller,
+        nav.nav-link-pills-mobile {
+            width: 100%;
+            max-width: none;
+        }
+
+        .nav-header-mobile .nav-profile-card-main-row {
+            --mobile-profile-row-max: none;
+        }
+    }
+}
+
 @media (max-height: 30rem) {
     html[data-layout="mobile"] {
-        --mobile-nav-row-height: 3.5rem;
+        --mobile-nav-row-height: 3.25rem;
+        --mobile-nav-profile-height: clamp(4.5rem, 14svh, 6rem);
         :is(button.nav-tab-controller-link, button.nav-link-pills-link) {
             flex-direction: row;
             gap: 0.3rem;
@@ -132,16 +160,6 @@ html[data-layout="mobile"] {
         .nav-profile-card-role { display: none; }
         .nav-profile-card-main-row { padding-block: 0.2rem; }
         .nav-profile-card-media { display: none; }
-    }
-}
-
-@media (min-width: 30rem) and (min-height: 40rem) and (pointer: coarse) {
-    html[data-layout="mobile"] {
-        --mobile-nav-row-height: 5.5rem;
-        --mobile-nav-item-icon-size: 1.5rem;
-        --mobile-nav-item-label-size: 1rem;
-        --mobile-nav-item-gap: 0.375rem;
-        --mobile-nav-item-padding-block: 0.5rem;
     }
 }
 

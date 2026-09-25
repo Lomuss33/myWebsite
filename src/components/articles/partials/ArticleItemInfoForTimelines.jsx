@@ -200,12 +200,22 @@ function ArticleItemInfoForTimelinesBody({ itemWrapper, className = "", isEducat
 
     return (
         <div className={`article-timeline-item-info-for-timelines-body ${educationBodyClass} ${className}`.trim()}>
+            {isEducationTimeline && hasList && (
+                <ul className={`article-timeline-item-info-for-timelines-body-list list-mobile-small-padding ${textClass}`}>
+                    {itemWrapper.locales.list.map((item, key) => (
+                        <li className={`article-timeline-item-info-for-timelines-body-list-item`}
+                            key={key}
+                            dangerouslySetInnerHTML={{__html: item}}/>
+                    ))}
+                </ul>
+            )}
+
             {hasText && (
                 <div className={`article-timeline-item-info-for-timelines-body-text ${textClass} last-p-no-margin`}
                      dangerouslySetInnerHTML={{__html: itemWrapper.locales.text}}/>
             )}
 
-            {hasList && (
+            {!isEducationTimeline && hasList && (
                 <ul className={`article-timeline-item-info-for-timelines-body-list list-mobile-small-padding ${textClass}`}>
                     {itemWrapper.locales.list.map((item, key) => (
                         <li className={`article-timeline-item-info-for-timelines-body-list-item`}

@@ -79,6 +79,10 @@ Resume popup sizing: intrinsic content width with compact row padding, bounded b
 
 Experience timeline title, metadata, and body sizing are bounded by the card's container width where container units are supported, with viewport-based fallbacks. Metadata location/company pills stay in two columns until the card is narrower than 23rem, then stack to protect legibility. On mobile, the first experience card bleeds across the section's responsive left gutter; the card's text keeps a compact inset, and its right padding retains the avatar decoration buffer. Body height remains content-driven, with no clipping or fixed-height truncation.
 
+Education timeline body and metadata type scale from each card's inline size when container units are supported, with smaller viewport-based fallbacks and bounded minimum/maximum sizes. This keeps narrow cards readable without oversized copy and lets metadata grow on wide displays.
+
+Education certification cards use content-driven height, a two-column desktop layout, and a single-column narrow layout. Their metadata switches from three compact tiles to stacked rows when an individual card is narrow, independent of viewport width.
+
 Wood Products uses a natural-flow flyer/description/details grid instead of managed image sizing. Below 36rem content width, description moves above and details sit beside the flyer; below 23rem everything stacks. Warm wood colors adapt to the theme. No tests run.
 
 Wood Products revision: two equal-width/equal-height pages with shared corners, side by side above 40rem content width and stacked below. The description uses pure white text and a repeated texture extracted from the flyer?s bottom 4%/rightmost 10% intersection (141?80px). Regenerate `wood-products-texture.webp` from `wood-products-deutschland.webp` using that crop if the flyer changes. A restrained brown outer cover joins the pages. Supersedes the earlier description/details grid.

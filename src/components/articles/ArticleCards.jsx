@@ -166,16 +166,19 @@ function ArticleEducationCertificationCard({ itemWrapper }) {
     return (
         <div className={`article-cards-item article-cards-item-education-certification article-cards-item-education-certification-${meta.tone}`}>
             <div className={`article-cards-item-education-certification-frame`}>
-                {itemWrapper.link && itemWrapper.link.href ? (
-                    <Link href={itemWrapper.link.href}
-                          className={`article-cards-item-education-certification-avatar-link`}>
-                        {certificationAvatar}
-                    </Link>
-                ) : certificationAvatar}
+                <div className={`article-cards-item-education-certification-heading`}>
+                    {itemWrapper.link && itemWrapper.link.href ? (
+                        <Link href={itemWrapper.link.href}
+                              className={`article-cards-item-education-certification-avatar-link`}>
+                            {certificationAvatar}
+                        </Link>
+                    ) : certificationAvatar}
 
-                <div className={`article-cards-item-education-certification-title-block`}>
-                    <h6 className={`article-cards-item-content-title article-cards-item-education-certification-title`}
-                        dangerouslySetInnerHTML={{__html: itemWrapper.locales.title || itemWrapper.placeholder}}/>
+                    <div className={`article-cards-item-education-certification-title-block`}>
+                        <span className={`article-cards-item-education-certification-kicker`}>Certification path</span>
+                        <h6 className={`article-cards-item-content-title article-cards-item-education-certification-title`}
+                            dangerouslySetInnerHTML={{__html: itemWrapper.locales.title || itemWrapper.placeholder}}/>
+                    </div>
                 </div>
 
                 <div className={`article-cards-item-education-certification-description`}>

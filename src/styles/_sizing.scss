@@ -12,13 +12,16 @@
     --mobile-nav-row-height: 4.5rem;
     // Reserve a predictable share for identity on tall mobile viewports; the
     // short-height rule below trades that space back when content is scarce.
-    --mobile-nav-profile-height: clamp(7rem, 20svh, 20rem);
+    --mobile-nav-profile-height: clamp(5.5rem, 20svh, 20rem);
     --mobile-profile-row-max: 52rem;
-    --mobile-profile-gutter: 0.5rem;
-    --mobile-profile-column-gap: clamp(0.375rem, 1.2cqi, 0.75rem);
-    --mobile-profile-avatar-size: clamp(3.25rem, 18cqi, 5.75rem);
-    --mobile-profile-action-size: clamp(2.75rem, min(9cqi, 7svh), 4.5rem);
-    --mobile-profile-action-gap: clamp(0.25rem, 0.8cqi, 0.625rem);
+    --mobile-profile-name-size: clamp(1rem, min(6cqi, 3svh), 4rem);
+    --mobile-profile-gutter: clamp(0.25rem, 2cqi, 3rem);
+    --mobile-profile-column-gap: clamp(0.25rem, 2cqi, 4rem);
+    --mobile-profile-avatar-size: clamp(2.5rem, min(20cqi, 9svh), 15rem);
+    // Mobile nav controls stay proportional, but never balloon on kiosk-sized
+    // portrait displays. Narrow profile cards override the 40px floor below.
+    --mobile-profile-action-size: clamp(2.5rem, min(8cqi, 6svh), 3.5rem);
+    --mobile-profile-action-gap: clamp(0.25rem, min(2cqi, 1svh), 1rem);
 }
 
 html[data-layout] {
@@ -91,10 +94,11 @@ html[data-layout="mobile"] {
         height: var(--mobile-nav-profile-height);
         min-height: var(--mobile-nav-profile-height);
         box-sizing: border-box;
-        --avatar-size: clamp(3rem, 12vw, 4rem);
-        --mobile-action-size: 2.75rem;
+        --avatar-size: var(--mobile-profile-avatar-size);
+        --mobile-action-size: var(--mobile-profile-action-size);
         --mobile-action-visual-scale: 1;
-        --mobile-stack-gap: 0.25rem;
+        --mobile-action-icon-size: clamp(1rem, calc(var(--mobile-action-size) * 0.42), 3.25rem);
+        --mobile-stack-gap: var(--mobile-profile-action-gap);
         --nav-profile-mobile-role-height: 1.75rem;
     }
     .nav-header-mobile .nav-profile-card-main-row { max-width: var(--mobile-profile-row-max); margin-inline: auto; }
@@ -137,6 +141,33 @@ html[data-layout="mobile"] {
         .nav-header-mobile .nav-profile-card-main-row {
             --mobile-profile-row-max: none;
         }
+
+        // Give the newly taller profile band to the identity row. Auto-sized
+        // grid tracks otherwise divide its spare height with the thin role band.
+        .nav-header-mobile .nav-profile-card {
+            --avatar-size: var(--mobile-profile-avatar-size);
+            --mobile-action-size: var(--mobile-profile-action-size);
+            --mobile-action-footprint: var(--mobile-action-size);
+            --mobile-action-icon-size: clamp(1rem, calc(var(--mobile-action-size) * 0.42), 3.25rem);
+            --mobile-stack-gap: var(--mobile-profile-action-gap);
+        }
+
+        .nav-header-mobile .nav-profile-card-header {
+            grid-template-rows: minmax(0, 1fr) auto;
+            align-content: stretch;
+            padding-block: clamp(0.5rem, 1.2svh, 1.25rem);
+        }
+
+        .nav-header-mobile .nav-profile-card-main-row {
+            min-height: 0;
+            padding-inline: var(--mobile-profile-gutter, clamp(0.75rem, 3vw, 3rem));
+            column-gap: var(--mobile-profile-column-gap, clamp(1rem, 3vw, 4rem));
+        }
+
+        .nav-header-mobile .nav-profile-card-role {
+            min-height: clamp(1.75rem, 3svh, 3rem);
+            font-size: clamp(0.875rem, 1.7svh, 1.5rem);
+        }
     }
 }
 
@@ -176,11 +207,6 @@ html[data-layout="mobile"] {
         --mobile-nav-item-padding-block: clamp(.5rem, 1.5svh, 1.5rem);
         --nav-tabs-height: var(--mobile-nav-row-height);
         --nav-pills-height: var(--mobile-nav-row-height);
-        --mobile-profile-gutter: clamp(.75rem, 3vw, 3rem);
-        --mobile-profile-column-gap: clamp(1rem, 3vw, 4rem);
-        --mobile-profile-avatar-size: clamp(4.5rem, 12svh, 9rem);
-        --mobile-profile-action-size: clamp(3rem, min(9cqi, 7svh), 6rem);
-        --mobile-profile-action-gap: clamp(.375rem, 1svh, 1rem);
         --mobile-profile-grid-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(8rem, 1.3fr) minmax(0, 1fr) minmax(0, 1fr);
 
         .nav-header-mobile,
@@ -202,12 +228,12 @@ html[data-layout="mobile"] {
         .nav-header-mobile .nav-profile-card-main-row {
             width: 100%;
             max-width: none;
-            min-height: calc(var(--mobile-nav-profile-height) - 2.5rem);
+            min-height: 0;
             height: auto;
             padding-inline: var(--mobile-profile-gutter);
             column-gap: var(--mobile-profile-column-gap);
-            --avatar-size: clamp(4.5rem, 12svh, 9rem);
-            --mobile-action-size: clamp(3rem, 8svh, 6rem);
+            --avatar-size: var(--mobile-profile-avatar-size);
+            --mobile-action-size: var(--mobile-profile-action-size);
             --mobile-action-footprint: var(--mobile-action-size);
         }
 

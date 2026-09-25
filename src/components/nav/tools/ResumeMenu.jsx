@@ -27,7 +27,9 @@ export default function ResumeMenu({toggleClassName = "", toggleCaption = null, 
             const minX = left + margin
             const minY = top + margin
             const maxY = top + height - margin
-            menu.style.maxWidth = Math.max(1, width - margin * 2) + 'px'
+            const rootFontSize = Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || 16
+            const maxMenuWidth = Math.max(1, Math.min(rootFontSize * 12, width - margin * 2))
+            menu.style.maxWidth = maxMenuWidth + 'px'
             const above = Math.max(0, rect.top - gap - minY)
             const below = Math.max(0, maxY - rect.bottom - gap)
             // Measure full content even when the previous placement was scroll-limited.

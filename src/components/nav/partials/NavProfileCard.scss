@@ -890,14 +890,15 @@ div.nav-profile-card {
     }
 
     @include layout-mobile {
-        --avatar-size: clamp(3.75rem, 20cqi, 6rem);
+        --avatar-size: var(--mobile-profile-avatar-size, clamp(2.5rem, min(20cqi, 9svh), 15rem));
         --avatar-shell-gap: clamp(4px, 1.2vw, 6px);
         --avatar-outline-size: clamp(1.2px, 0.4vw, 1.45px);
         --avatar-inner-rim-size: clamp(0.9px, 0.25vw, 1.1px);
-        --mobile-action-size: clamp(2.15rem, 11.4cqi, 3.25rem);
-        --mobile-action-visual-scale: 1.085;
+        --mobile-action-size: var(--mobile-profile-action-size, clamp(2.5rem, min(8cqi, 6svh), 3.5rem));
+        --mobile-action-icon-size: clamp(1rem, calc(var(--mobile-action-size) * 0.42), 3.25rem);
+        --mobile-action-visual-scale: 1.04;
         --mobile-action-footprint: calc(var(--mobile-action-size) * var(--mobile-action-visual-scale));
-        --mobile-stack-gap: clamp(0.46rem, 2.1vw, 0.64rem);
+        --mobile-stack-gap: var(--mobile-profile-action-gap, clamp(0.25rem, min(2cqi, 1svh), 1rem));
         --mobile-header-gap: clamp(0.56rem, 2.9vw, 0.96rem);
         --mobile-header-vertical-buffer: clamp(0.22rem, 1vw, 0.34rem);
         --nav-profile-mobile-role-height: clamp(40px, 5.4svh, 48px);
@@ -962,6 +963,8 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-mobile-action-stack {
+            --nav-profile-mobile-icon-size: var(--mobile-profile-action-icon-size, clamp(1.125rem, calc(var(--mobile-action-size) * 0.56), 1.625rem));
+            --nav-profile-mobile-icon-background-size: contain;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -1039,6 +1042,11 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-mobile-action-stack button.btn-option-picker-toggle span.btn-option-picker-toggle-row {
+            width: 100%;
+            height: 100%;
+        }
+
+        div.nav-profile-card-mobile-action-resume > div.resume-menu {
             width: 100%;
             height: 100%;
         }
@@ -1223,9 +1231,9 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-mobile-action-language div.btn-option-picker-icon-size-2 {
-            width: 100%;
-            height: 100%;
-            font-size: 1.2rem;
+            width: var(--nav-profile-mobile-icon-size);
+            height: var(--nav-profile-mobile-icon-size);
+            font-size: var(--nav-profile-mobile-icon-size);
         }
 
         div.nav-profile-card-mobile-action-language div.btn-option-picker-icon-size-2 img {
@@ -1252,8 +1260,8 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-mobile-action-stack button.audio-button svg.audio-button-icon {
-            width: 100%;
-            height: 100%;
+            width: var(--nav-profile-mobile-icon-size);
+            height: var(--nav-profile-mobile-icon-size);
         }
 
         div.nav-profile-card-mobile-action-stack button.audio-button .triangle,
@@ -1263,9 +1271,9 @@ div.nav-profile-card {
 
         div.nav-profile-card-mobile-action-theme {
             div.btn-option-picker-icon-size-2 {
-                width: 100%;
-                height: 100%;
-                font-size: 1.34rem;
+                width: var(--nav-profile-mobile-icon-size);
+                height: var(--nav-profile-mobile-icon-size);
+                font-size: var(--mobile-action-icon-size);
             }
 
             button.btn-option-picker-toggle i.fa-caret-icon {
@@ -1275,9 +1283,9 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-mobile-action-resume div.btn-option-picker-icon-size-2 {
-            width: 100%;
-            height: 100%;
-            font-size: 1.16rem;
+            width: var(--nav-profile-mobile-icon-size);
+            height: var(--nav-profile-mobile-icon-size);
+            font-size: var(--mobile-action-icon-size);
         }
 
         div.nav-profile-card-mobile-action-resume button.btn-option-picker-toggle i.fa-icon {
@@ -1459,6 +1467,133 @@ div.nav-profile-card {
 
         }
 
+        // Own the narrow-card action layout here, beside the component's
+        // vertical-stack defaults, so the two controls never spill into the
+        // identity row when the card enters its compact composition.
+        @container mobile-profile-main (max-width: 18rem) {
+            div.nav-profile-card-mobile-action-stack {
+                --mobile-action-size: clamp(1.625rem, 14cqi, 2.25rem);
+                --mobile-action-icon-size: clamp(0.9375rem, calc(var(--mobile-action-size) * 0.56), 1.25rem);
+                display: flex !important;
+                flex-direction: row !important;
+                flex-wrap: nowrap !important;
+                align-items: center;
+                justify-content: center;
+                width: max-content !important;
+                max-width: 100%;
+                height: var(--mobile-action-size);
+                flex: 0 0 auto !important;
+                gap: clamp(0.125rem, 0.8cqi, 0.25rem);
+            }
+
+            div.nav-profile-card-mobile-action-stack > div.nav-profile-card-mobile-action {
+                width: var(--mobile-action-size) !important;
+                height: var(--mobile-action-size) !important;
+                min-width: 0;
+                min-height: 0;
+                flex: 0 0 var(--mobile-action-size) !important;
+                background: transparent !important;
+                border: 0 !important;
+                box-shadow: none !important;
+                transform: none !important;
+            }
+
+            div.nav-profile-card-mobile-action-stack > div.nav-profile-card-mobile-action::before {
+                content: '';
+                position: absolute;
+                z-index: -1;
+                top: 50%;
+                left: 50%;
+                width: var(--mobile-action-size) !important;
+                height: var(--mobile-action-size) !important;
+                transform: translate(-50%, -50%);
+                border: 1px solid var(--theme-nav-mobile-action-edge, var(--theme-nav-action-border));
+                border-radius: 50%;
+                background: linear-gradient(180deg, var(--theme-nav-action-surface), var(--theme-nav-action-surface-accent));
+                box-shadow: 0 4px 12px rgba(2, 6, 23, 0.2), inset 0 1px 0 rgba(255,255,255,.08);
+                pointer-events: none;
+            }
+
+            div.nav-profile-card-mobile-action-stack > div.nav-profile-card-mobile-action:not(.nav-profile-card-mobile-action-audio):hover::before,
+            div.nav-profile-card-mobile-action-stack > div.nav-profile-card-mobile-action:not(.nav-profile-card-mobile-action-audio):focus-within::before {
+                border-color: #f8aa28;
+                box-shadow: 0 5px 14px rgba(248,170,40,.16), inset 0 0 0 1px rgba(248,170,40,.14);
+            }
+
+            div.nav-profile-card-mobile-action-stack > div.nav-profile-card-mobile-action button.btn-option-picker-toggle,
+            div.nav-profile-card-mobile-action-stack > div.nav-profile-card-mobile-action button.audio-button {
+                width: 100% !important;
+                height: 100% !important;
+                min-width: 0 !important;
+                min-height: 0 !important;
+                padding: 0 !important;
+            }
+
+            div.nav-profile-card-mobile-action-language div.btn-option-picker-icon-size-2 {
+                width: var(--mobile-action-icon-size);
+                height: var(--mobile-action-icon-size);
+                font-size: var(--mobile-action-icon-size);
+            }
+
+            div.nav-profile-card-mobile-action-language div.btn-option-picker-icon-size-2 img {
+                width: 100%;
+                height: 100%;
+            }
+
+            div.nav-profile-card-mobile-action-audio button.audio-button svg.audio-button-icon {
+                width: var(--mobile-action-icon-size);
+                height: var(--mobile-action-icon-size);
+            }
+
+            div.nav-profile-card-mobile-action-theme div.btn-option-picker-icon-size-2,
+            div.nav-profile-card-mobile-action-resume div.btn-option-picker-icon-size-2 {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: var(--mobile-action-icon-size);
+                height: var(--mobile-action-icon-size);
+                flex: 0 0 var(--mobile-action-icon-size);
+            }
+
+            div.nav-profile-card-mobile-action-theme button.btn-option-picker-toggle i.fa-icon,
+            div.nav-profile-card-mobile-action-resume button.btn-option-picker-toggle i.fa-icon {
+                width: 100%;
+                height: 100%;
+                background-size: var(--nav-profile-mobile-icon-background-size);
+            }
+
+            div.nav-profile-card-mobile-action-language div.btn-option-picker-icon-size-2 img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 50%;
+            }
+        }
+
+        @container mobile-profile-main (max-width: 15rem) {
+            div.nav-profile-card-mobile-action-stack {
+                --mobile-action-size: clamp(1.375rem, 12cqi, 2rem);
+                --mobile-action-icon-size: clamp(0.875rem, calc(var(--mobile-action-size) * 0.56), 1.125rem);
+                gap: clamp(0.0625rem, 0.5cqi, 0.125rem);
+            }
+
+            div.nav-profile-card-mobile-action-stack > div.nav-profile-card-mobile-action {
+                width: var(--mobile-action-size) !important;
+                height: var(--mobile-action-size) !important;
+                flex-basis: var(--mobile-action-size) !important;
+            }
+
+        }
+
+        @container mobile-profile-main (max-width: 9rem) {
+            div.nav-profile-card-mobile-action-stack {
+                --mobile-action-size: clamp(1rem, 14cqi, 1.375rem);
+                --mobile-action-icon-size: clamp(0.625rem, calc(var(--mobile-action-size) * 0.56), 0.8125rem);
+                --nav-profile-mobile-icon-size: var(--mobile-action-icon-size);
+                gap: 0;
+            }
+        }
+
         div.nav-profile-card-role {
             grid-area: role;
             position: relative;
@@ -1511,6 +1646,22 @@ div.nav-profile-card {
                 font-size: clamp(1.2rem, 7.2cqi, 2.2rem) !important;
             }
         }
+    }
+}
+
+// The mobile role strip is a sibling of the named main-row container, so size
+// it from the card wrapper and override the extended-rail width in this owner.
+@container mobile-profile-card (max-width: 26rem) {
+    html[data-layout="mobile"] nav.nav-header-mobile div.nav-profile-card-header div.nav-profile-card-role {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-height: 1.25rem !important;
+        height: 1.5rem !important;
+        max-height: 1.5rem !important;
+        padding: 0.125rem 0.25rem !important;
+        box-sizing: border-box;
+        font-size: clamp(0.7rem, min(4.8cqi, 1svh), 0.875rem) !important;
+        line-height: 1.1 !important;
     }
 }
 
@@ -2112,12 +2263,12 @@ div.nav-tools-item-theme {
     &:has(i.fa-icon.fa-sun) {
         button.btn-option-picker-toggle i.fa-icon.fa-sun {
             display: inline-block;
-            width: 100%;
-            height: 100%;
+            width: var(--nav-profile-mobile-icon-size, 100%);
+            height: var(--nav-profile-mobile-icon-size, 100%);
             background-image: url("/images/svg/sun-premium.svg");
             background-repeat: no-repeat;
             background-position: 45% 35%;
-            background-size: 97%;
+            background-size: var(--nav-profile-mobile-icon-background-size, 97%);
             color: transparent;
             text-shadow: none;
             font-size: 0 !important;
@@ -2141,12 +2292,12 @@ div.nav-tools-item-theme {
     &:has(i.fa-icon.fa-moon) {
         button.btn-option-picker-toggle i.fa-icon.fa-moon {
             display: inline-block;
-            width: 100%;
-            height: 100%;
+            width: var(--nav-profile-mobile-icon-size, 100%);
+            height: var(--nav-profile-mobile-icon-size, 100%);
             background-image: url("/images/svg/moon-premium.svg");
             background-repeat: no-repeat;
             background-position: 45% 35%;
-            background-size: 99%;
+            background-size: var(--nav-profile-mobile-icon-background-size, 99%);
             color: transparent;
             text-shadow: none;
             font-size: 0 !important;
@@ -2178,12 +2329,12 @@ div.nav-short-rail-resume-band {
     &:has(button.btn-option-picker-toggle i.fa-icon.fa-file-arrow-down) {
         button.btn-option-picker-toggle i.fa-icon.fa-file-arrow-down {
             display: inline-block;
-            width: 100%;
-            height: 100%;
+            width: var(--nav-profile-mobile-icon-size, 100%);
+            height: var(--nav-profile-mobile-icon-size, 100%);
             background-image: url("/images/svg/resume-premium.svg");
             background-repeat: no-repeat;
             background-position: center;
-            background-size: 84%;
+            background-size: var(--nav-profile-mobile-icon-background-size, 84%);
             color: transparent;
             text-shadow: none;
             font-size: 0 !important;

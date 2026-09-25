@@ -120,9 +120,9 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
     --card-accent-2: #facc15;
     --content-padding: 1.08rem 1.25rem;
     // Keep usable values on older Android browsers that do not understand cqi.
-    --timeline-title-size: clamp(1.32rem, 1.18rem + 0.7vw, 2rem);
-    --timeline-meta-size: clamp(0.92rem, 0.86rem + 0.2vw, 1.26rem);
-    --timeline-body-size: clamp(1.08rem, 1rem + 0.34vw, 1.58rem);
+    --timeline-title-size: clamp(1.08rem, 1rem + 0.45vw, 1.42rem);
+    --timeline-meta-size: clamp(0.8rem, 0.76rem + 0.18vw, 1.02rem);
+    --timeline-body-size: clamp(0.92rem, 0.84rem + 0.28vw, 1.12rem);
     --experience-meta-time-size: var(--timeline-meta-size);
     --experience-meta-grid-gap: 0.62rem;
     --experience-meta-split-gap: 0.78rem;
@@ -162,9 +162,9 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
         filter 180ms ease;
 
     @supports (width: 1cqi) {
-        --timeline-title-size: clamp(1.32rem, 1.1rem + 1.22cqi, 2rem);
-        --timeline-meta-size: clamp(0.92rem, 0.78rem + 0.42cqi, 1.26rem);
-        --timeline-body-size: clamp(1.08rem, 0.88rem + 1.28cqi, 1.58rem);
+        --timeline-title-size: clamp(1rem, 0.95rem + 1.05cqi, 1.42rem);
+        --timeline-meta-size: clamp(0.78rem, 0.74rem + 0.45cqi, 1rem);
+        --timeline-body-size: clamp(0.9rem, 0.82rem + 0.9cqi, 1.12rem);
         --experience-description-right-offset: max(15cqi, calc(var(--experience-description-right-buffer, 0px) * 3.4));
     }
 
@@ -1545,10 +1545,6 @@ article#article-1-section-experience {
     }
 
     @include content-breakpoint-down(md) {
-        div.article-timeline-item-info-for-timelines-header-meta-row--split {
-            grid-template-columns: minmax(0, 1fr);
-        }
-
         div.article-timeline-item-info-for-timelines-header-meta-segment--company {
             justify-content: flex-end;
             text-align: right;
@@ -1605,17 +1601,23 @@ article#article-1-section-experience {
 
         div.article-timeline-item-info-for-timelines-header-meta-row--split {
             justify-items: stretch;
-            gap: 0.5rem;
+            gap: 0.12rem;
         }
 
         div.article-timeline-item-info-for-timelines-header-meta-segment {
-            width: 100%;
+            width: auto;
             max-width: 100%;
             min-height: 0;
             box-sizing: border-box;
-            padding: 0.62rem 0.78rem;
-            border-radius: 0.9rem;
+            padding: 0.42rem 0.38rem;
+            border-radius: 0.72rem;
             line-height: 1.26;
+        }
+
+        @supports (width: 1cqi) {
+            div.article-timeline-item-info-for-timelines-header-meta-segment {
+                padding-inline: clamp(0.38rem, 1.4cqi, 0.65rem);
+            }
         }
 
         div.article-timeline-item-info-for-timelines-header-meta-segment--location {
@@ -1632,7 +1634,7 @@ article#article-1-section-experience {
         }
 
         div.article-timeline-item-info-for-timelines-header-meta-content--company {
-            width: 100%;
+            width: auto;
             max-width: 100%;
 
             span {
@@ -1661,6 +1663,24 @@ article#article-1-section-experience {
             }
         }
     }
+
+    // Base the row switch on the card's usable width, not the viewport mode.
+    // Two compact pills stay side-by-side whenever their contents can fit.
+    @container experience-timeline-card (max-width: 23rem) {
+        div.article-timeline-item-info-for-timelines-header-meta-row--split {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 0.3rem;
+        }
+
+        div.article-timeline-item-info-for-timelines-header-meta-segment {
+            width: 100%;
+            padding-inline: 0.62rem;
+        }
+
+        div.article-timeline-item-info-for-timelines-header-meta-content--company {
+            width: 100%;
+        }
+    }
 }
 
 @container (min-width: 2000px) {
@@ -1679,9 +1699,9 @@ article#article-1-section-experience {
         --experience-meta-segment-radius: 0.92rem;
 
         @supports (width: 1cqi) {
-            --timeline-title-size: clamp(1.32rem, 1.1rem + 1.22cqi, 2rem);
-            --timeline-meta-size: clamp(0.92rem, 0.78rem + 0.42cqi, 1.26rem);
-            --timeline-body-size: clamp(1.08rem, 0.88rem + 1.28cqi, 1.58rem);
+            --timeline-title-size: clamp(1rem, 0.95rem + 1.05cqi, 1.42rem);
+            --timeline-meta-size: clamp(0.78rem, 0.74rem + 0.45cqi, 1rem);
+            --timeline-body-size: clamp(0.9rem, 0.82rem + 0.9cqi, 1.12rem);
             --timeline-badge-size: clamp(0.92rem, 0.82rem + 0.32cqi, 1.28rem);
         }
     }
@@ -2819,10 +2839,17 @@ html[data-layout] article#article-1-section-experience div.article-timeline-item
 
     div.article-timeline-item-info-for-timelines-body-text,
     ul.article-timeline-item-info-for-timelines-body-list {
-        font-size: clamp(.9375rem, calc(.875rem + min(.3vw, .45vh)), 1.0625rem) !important;
-        line-height: 1.45;
+        font-size: clamp(.9rem, calc(.82rem + .25vw), 1.08rem) !important;
+        line-height: 1.5;
         padding-top: .25rem;
         overflow-wrap: anywhere;
+    }
+
+    @supports (width: 1cqi) {
+        div.article-timeline-item-info-for-timelines-body-text,
+        ul.article-timeline-item-info-for-timelines-body-list {
+            font-size: clamp(.9rem, calc(.82rem + .9cqi), 1.12rem) !important;
+        }
     }
     ul.article-timeline-item-info-for-timelines-body-list {
         margin-top: .25rem;
@@ -2830,13 +2857,6 @@ html[data-layout] article#article-1-section-experience div.article-timeline-item
     }
     div.article-timeline-item-info-for-timelines-body-text + ul.article-timeline-item-info-for-timelines-body-list,
     ul.article-timeline-item-info-for-timelines-body-list:first-child { padding-top: .25rem; }
-}
-html[data-layout="mobile"] article#article-1-section-experience div.article-timeline-item-info-for-timelines-body {
-    div.article-timeline-item-info-for-timelines-body-text,
-    ul.article-timeline-item-info-for-timelines-body-list {
-        font-size: clamp(.875rem, calc(.825rem + .2vw), .9375rem) !important;
-        line-height: 1.45;
-    }
 }
 
 // Let the mobile experience surface meet the section's left edge while

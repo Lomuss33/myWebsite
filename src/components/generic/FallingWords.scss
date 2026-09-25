@@ -122,7 +122,7 @@ div.falling-words-modal-card {
 
     border: 0;
     border-radius: 0;
-    background: color-mix(in srgb, var(--theme-boards-background) 76%, transparent);
+    background: color-mix(in srgb, var(--theme-boards-background) 64%, transparent);
     box-shadow: none;
 
     padding: 28px 24px;
@@ -167,7 +167,7 @@ button.falling-words-modal-close {
     font-weight: 800;
     border: 1px solid color-mix(in srgb, var(--theme-standard-borders) 75%, var(--theme-primary));
     border-radius: 4px;
-    background: color-mix(in srgb, var(--theme-boards-background) 48%, transparent);
+    background: transparent;
     cursor: pointer;
 
     &:hover,

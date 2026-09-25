@@ -77,7 +77,7 @@ Short-rail resume trigger: the shared ResumeMenu root has an explicit `resume-me
 
 Resume popup sizing: intrinsic content width with compact row padding, bounded by the visual viewport. Placement chooses the side of the trigger with enough/more vertical room and constrains scrolling to that space; trigger resizing also updates placement. No tests run.
 
-Experience timeline prose uses compact 15–17px desktop and 14–15px mobile sizing, 1.45 line height, and reduced body spacing. On mobile, the first experience card bleeds across the section's responsive left gutter; the card's text keeps a compact inset, and its right padding retains the avatar decoration buffer. The description no longer uses the former 3.4 multiplier/15cqi minimum. Height remains content-driven, with no clipping or fixed-height truncation.
+Experience timeline title, metadata, and body sizing are bounded by the card's container width where container units are supported, with viewport-based fallbacks. Metadata location/company pills stay in two columns until the card is narrower than 23rem, then stack to protect legibility. On mobile, the first experience card bleeds across the section's responsive left gutter; the card's text keeps a compact inset, and its right padding retains the avatar decoration buffer. Body height remains content-driven, with no clipping or fixed-height truncation.
 
 Wood Products uses a natural-flow flyer/description/details grid instead of managed image sizing. Below 36rem content width, description moves above and details sit beside the flyer; below 23rem everything stacks. Warm wood colors adapt to the theme. No tests run.
 

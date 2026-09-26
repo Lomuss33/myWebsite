@@ -11,6 +11,19 @@ import Link from "../generic/Link.jsx"
 import {useUtils} from "../../hooks/utils.js"
 
 const FINE_POINTER_MEDIA_QUERY = "(hover: hover) and (pointer: fine)"
+const EDUCATION_CRYSTAL_COLORS_BY_ID = {
+    6: "#ff2d3f", // Erasmus: red
+    2: "#005b3c", // THM: dark green
+    3: "#c7d2de", // BWS: metallic silver
+    1: "#123a8f", // Provadis: dark blue
+    4: "#8b35dc", // EDS: purple
+    5: "#c46a2e", // Primary school: vibrant brown
+    7: "#39ff14", // Life: bright green
+}
+
+function getEducationCrystalColor(itemId) {
+    return EDUCATION_CRYSTAL_COLORS_BY_ID[itemId] || "#60a5fa"
+}
 
 function buildEducationTimelinePath(listElement) {
     if(!listElement)
@@ -29,29 +42,77 @@ function buildEducationTimelinePath(listElement) {
             size: Math.min(rect.width, rect.height)
         }
     })
-    const commands = [`M ${points[0].x} ${points[0].y}`]
-    const sidePattern = [1, -1, -1, 1, -1, 1, 1, -1]
-    const amplitudePattern = [1, 0.72, 1.08, 0.82, 1.16, 0.74, 1.02, 0.86]
-
+    const segments = []
     for(let index = 0; index < points.length - 1; index++) {
         const start = points[index]
         const end = points[index + 1]
         const deltaY = end.y - start.y
-        const direction = sidePattern[index % sidePattern.length]
-        const idealAmplitude = Math.min(start.size * 0.78, listRect.width * 0.2, 112) * amplitudePattern[index % amplitudePattern.length]
-        const availableAmplitude = direction < 0 ? start.x - 8 : listRect.width - start.x - 8
-        const amplitude = Math.max(0, Math.min(idealAmplitude, availableAmplitude))
-        const middleX = (start.x + end.x) / 2 + direction * amplitude
-        const middleY = (start.y + end.y) / 2
+        const deltaX = end.x - start.x
+        const idealAmplitude = Math.min(start.size * 1.7, listRect.width * 0.34, 240)
+        const safeEdge = 24
+        const leftAmplitude = Math.max(0, Math.min(idealAmplitude, Math.min(start.x, end.x) - safeEdge))
+        const rightAmplitude = Math.max(0, Math.min(idealAmplitude, listRect.width - Math.max(start.x, end.x) - safeEdge))
+        const midpointX = start.x + deltaX * 0.5
+        const midpointY = start.y + deltaY * 0.5
+        const verticalAmplitude = Math.max(start.size * 0.38, Math.min(deltaY * 0.12, listRect.height * 0.06))
+        const phase = index * 0.83 + (index % 2 === 0 ? 0 : Math.PI * 0.31)
+        const sampleCount = 96
+        const weaveKnots = Array.from({length: sampleCount - 1}, (_, knotIndex) => {
+            const step = knotIndex + 1
+            const progress = step / sampleCount
+            const envelope = Math.sin(Math.PI * progress) ** 0.58
+            const xWave = Math.max(-1, Math.min(1,
+                0.78 * Math.sin(2 * Math.PI * 3 * progress + phase) +
+                0.22 * Math.sin(2 * Math.PI * 5 * progress - phase * 0.65)
+            ))
+            const yWave =
+                0.72 * Math.sin(2 * Math.PI * 2 * progress + phase * 0.5) +
+                0.28 * Math.sin(2 * Math.PI * 3 * progress - phase * 0.75)
 
-        commands.push(
-            `C ${start.x + direction * amplitude} ${start.y + deltaY * 0.22}, ${start.x + direction * amplitude} ${start.y + deltaY * 0.42}, ${middleX} ${middleY}`,
-            `C ${middleX} ${start.y + deltaY * 0.58}, ${end.x + direction * amplitude} ${end.y - deltaY * 0.22}, ${end.x} ${end.y}`
-        )
+            return {
+                progress,
+                x: start.x + deltaX * progress + (xWave < 0 ? leftAmplitude : rightAmplitude) * xWave * envelope,
+                y: start.y + deltaY * progress + verticalAmplitude * yWave * envelope
+            }
+        })
+        const curvePoints = [
+            {x: start.x, y: start.y},
+            ...weaveKnots.map(({x, y}) => ({x, y})),
+            {x: end.x, y: end.y}
+        ]
+        const commands = [`M ${start.x} ${start.y}`]
+
+        // Compact, low-amplitude waves create small rounded swirls while
+        // keeping the path close to the avatar-to-avatar route.
+        for(let knotIndex = 0; knotIndex < curvePoints.length - 1; knotIndex++) {
+            const previous = curvePoints[Math.max(0, knotIndex - 1)]
+            const current = curvePoints[knotIndex]
+            const next = curvePoints[knotIndex + 1]
+            const following = curvePoints[Math.min(curvePoints.length - 1, knotIndex + 2)]
+            const tension = 0.9
+            const control1 = {
+                x: current.x + (next.x - previous.x) * tension / 6,
+                y: current.y + (next.y - previous.y) * tension / 6
+            }
+            const control2 = {
+                x: next.x - (following.x - current.x) * tension / 6,
+                y: next.y - (following.y - current.y) * tension / 6
+            }
+            commands.push(`C ${control1.x} ${control1.y}, ${control2.x} ${control2.y}, ${next.x} ${next.y}`)
+        }
+
+        segments.push({
+            path: commands.join(" "),
+            startX: start.x,
+            startY: start.y,
+            endX: end.x,
+            endY: end.y,
+            index
+        })
     }
 
     return {
-        path: commands.join(" "),
+        segments,
         width: listRect.width,
         height: listRect.height
     }
@@ -358,15 +419,16 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
         if(!isEducationTimeline)
             return
 
-        setExpandedEducationItemIds(currentIds => {
-            if(currentIds.has(itemId))
-                return currentIds
-
-            const nextIds = new Set(currentIds)
-            nextIds.add(itemId)
-            return nextIds
-        })
-    }, [isEducationTimeline])
+        if(expandedEducationItemIds.has(itemId)) {
+            setExpandedEducationItemIds(currentIds => {
+                const nextIds = new Set(currentIds)
+                nextIds.delete(itemId)
+                return nextIds
+            })
+            return
+        }
+        setExpandedEducationItemIds(currentIds => new Set(currentIds).add(itemId))
+    }, [expandedEducationItemIds, isEducationTimeline])
 
     const _onMyArtItemHeightChange = useCallback((itemIndex, heightPx) => {
         if(!usesArtItemHeightMeasurement)
@@ -427,7 +489,25 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
                          viewBox={`0 0 ${educationTimelinePath.width} ${educationTimelinePath.height}`}
                          preserveAspectRatio="none"
                          aria-hidden="true">
-                        <path d={educationTimelinePath.path}/>
+                        <defs>
+                            {educationTimelinePath.segments.map(segment => (
+                                <linearGradient id={`education-timeline-crystal-${segment.index}`}
+                                                gradientUnits="userSpaceOnUse"
+                                                x1={segment.startX}
+                                                y1={segment.startY}
+                                                x2={segment.endX}
+                                                y2={segment.endY}
+                                                key={segment.index}>
+                                    <stop offset="0%" stopColor={getEducationCrystalColor(visibleItemWrappers[segment.index]?.id)}/>
+                                    <stop offset="100%" stopColor={getEducationCrystalColor(visibleItemWrappers[segment.index + 1]?.id)}/>
+                                </linearGradient>
+                            ))}
+                        </defs>
+                        {educationTimelinePath.segments.map(segment => (
+                            <path d={segment.path}
+                                  stroke={`url(#education-timeline-crystal-${segment.index})`}
+                                  key={segment.index}/>
+                        ))}
                     </svg>
                 )}
                 {visibleItemWrappers.map((itemWrapper, key) => (
@@ -438,6 +518,7 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
                                          isEducationTimeline={isEducationTimeline}
                                          isPhotographyTimeline={isPhotographyTimeline}
                                          isEducationExpanded={expandedEducationItemIds.has(itemWrapper.id)}
+                                         nextEducationItemId={visibleItemWrappers[key + 1]?.id}
                                          isDigitalExpressionTimeline={isDigitalExpressionTimeline}
                                          isOverlayActive={isExperienceTimeline && activeOverlayItemId === itemWrapper.id}
                                          usesTapOverlay={usesTapOverlay}
@@ -478,6 +559,7 @@ function ArticleTimelineItem({
     isEducationTimeline = false,
     isPhotographyTimeline = false,
     isEducationExpanded = false,
+    nextEducationItemId = null,
     isDigitalExpressionTimeline = false,
     isOverlayActive = false,
     usesTapOverlay = false,
@@ -632,6 +714,13 @@ function ArticleTimelineItem({
     const photographyCountryStyle = isPhotographyTimeline ?
         getPhotographyCountryStyle(itemWrapper?.locales?.country) :
         null
+    const educationExpandedClass = isEducationExpanded ? "article-timeline-item--education-expanded" : ""
+    const educationExpandedStyle = {
+        ...(isEducationTimeline ? {
+            "--education-crystal-color": getEducationCrystalColor(itemWrapper.id),
+            "--education-next-crystal-color": getEducationCrystalColor(nextEducationItemId ?? itemWrapper.id)
+        } : {})
+    }
 
     const _onGalleryAvatarClick = () => {
         if(!shouldInterceptGalleryTap)
@@ -648,8 +737,10 @@ function ArticleTimelineItem({
     }
 
     return (
-        <li className={`article-timeline-item ${experienceItemClass} ${overlayActiveClass} ${visualVariantClass}`.trim()}
+        <li className={`article-timeline-item ${experienceItemClass} ${overlayActiveClass} ${visualVariantClass} ${educationExpandedClass}`.trim()}
             ref={itemRef}
+            style={educationExpandedStyle}
+            data-education-item-id={isEducationTimeline ? itemWrapper.id : undefined}
             data-overlay-item-id={isExperienceTimeline ? itemWrapper.id : undefined}>
             {shouldRenderDigitalImageStack ? (
                 <DigitalExpressionImageStack screenshots={screenshots}

@@ -720,6 +720,38 @@ html[data-layout] section#section-experience article:is(#article-2-section-exper
     h4.article-title { font-size: clamp(1.2rem, 1.05rem + .5cqi, 1.75rem) !important; line-height: 1.2; margin-bottom: 1rem; }
 }
 
+// Keep the closing Experience story card's full text hierarchy compact on
+// mobile, where the desktop-oriented container scale otherwise grows too far.
+html[data-layout="mobile"] section#section-experience article#article-3-section-experience {
+    h4.article-title {
+        font-size: clamp(.95rem, .9rem + .2cqi, 1.125rem) !important;
+        line-height: 1.2;
+        margin-bottom: .7rem;
+    }
+
+    p.article-text-flow-card-eyebrow { font-size: .65rem; }
+
+    h3.article-text-flow-card-heading {
+        font-size: clamp(1rem, .9rem + .35cqi, 1.15rem);
+        line-height: 1.15;
+    }
+
+    p.pretext-draggable-inline-icon-text-intro,
+    div.pretext-draggable-inline-icon-text-body,
+    p.pretext-draggable-inline-icon-text-paragraph {
+        font-size: clamp(.78rem, .74rem + .3cqi, .875rem) !important;
+        line-height: 1.48;
+    }
+
+    span.article-text-flow-card-axis-label {
+        font-size: clamp(.62rem, .58rem + .18cqi, .7rem);
+        line-height: 1.2;
+        letter-spacing: .04em;
+    }
+
+    span.article-text-flow-card-impact-pill { font-size: .75rem; }
+}
+
 // Compact the closing story cards for the post-zoom desktop scale. Keep the
 // prose comfortable and the draggable control above the accessible touch floor.
 @media (min-width: 64rem) {

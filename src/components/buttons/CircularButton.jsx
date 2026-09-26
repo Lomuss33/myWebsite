@@ -1,12 +1,13 @@
 import "./CircularButton.scss"
 import React, {useEffect, useState} from 'react'
 
-function CircularButton({ faIcon, onClick, variant = "circular-button-variant-default", size = "circular-button-size-default", tooltip = null, className = "" }) {
+function CircularButton({ faIcon, onClick, variant = "circular-button-variant-default", size = "circular-button-size-default", tooltip = null, className = "", children = null }) {
     return (
         <button className={`circular-button ${variant} ${size} ${className}`}
                 data-tooltip={tooltip}
                 onClick={onClick}>
-            <i className={`${faIcon}`}/>
+            {children}
+            {faIcon && <i className={`${faIcon}`}/>}
         </button>
     )
 }

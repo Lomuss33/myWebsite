@@ -1829,7 +1829,7 @@ article#article-1-section-my-hardware {
         overflow: visible;
         background: none;
         box-shadow: none;
-        font-size: clamp(2rem, 1.42rem + 2.15vw, 4.2rem) !important;
+        font-size: clamp(1.05rem, 1rem + 0.5vw, 1.5rem) !important;
         font-weight: 900;
         line-height: 1.05;
         text-align: center;
@@ -1917,11 +1917,165 @@ article#article-1-section-my-hardware {
     article#article-1-section-my-software,
     article#article-1-section-my-hardware {
         h4.article-title {
-            font-size: clamp(1.9rem, 8.1vw, 2.18rem) !important;
+            font-size: clamp(1.05rem, 1rem + 0.5vw, 1.5rem) !important;
         }
 
         h4.article-title::after {
             width: min(58%, 190px);
         }
     }
+}
+
+// Section sizing is a high-specificity shared rule. Keep the project
+// collection heading on this bounded display scale in every layout mode.
+html[data-layout] section#section-my-software article#article-1-section-my-software h4.article-title,
+html[data-layout] section#section-my-hardware article#article-1-section-my-hardware h4.article-title {
+    min-height: 0;
+    margin: 0 auto clamp(8px, .75vw, 12px);
+    padding: .25rem 0;
+    gap: clamp(5px, .6vw, 8px);
+    font-size: clamp(1.05rem, 1rem + .5vw, 1.5rem) !important;
+    line-height: 1.08;
+}
+
+// Give the portfolio filters only two deliberate layouts: 2 × 2 in a narrow
+// article and 1 × 4 once the article has enough room for four readable labels.
+html[data-layout] section#section-my-software article#article-1-section-my-software div.article-content,
+html[data-layout] section#section-my-hardware article#article-1-section-my-hardware div.article-content {
+    container: portfolio-filter-width / inline-size;
+}
+
+html[data-layout] section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter,
+html[data-layout] section#section-my-hardware article#article-1-section-my-hardware div.category-filter.article-category-filter {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@container portfolio-filter-width (min-width: 32rem) {
+    html[data-layout] section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter,
+    html[data-layout] section#section-my-hardware article#article-1-section-my-hardware div.category-filter.article-category-filter {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+// Keep Software's filters slim without taking away their touch targets.
+html[data-layout] section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter {
+    gap: 4px;
+    padding: 3px;
+    margin-bottom: 8px;
+    border-radius: 12px;
+}
+
+html[data-layout] section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button {
+    min-height: 44px;
+    height: 44px;
+    padding: .35rem .45rem !important;
+    border-radius: 11px !important;
+    font-size: .78rem !important;
+    line-height: 1.1;
+    letter-spacing: 0;
+}
+
+html[data-layout] section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button span.category-filter-button-label,
+html[data-layout] section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button span.category-filter-button-count {
+    font-size: inherit !important;
+}
+
+@mixin portfolio-project-compact-title-density {
+    div.article-portfolio-items {
+        --portfolio-card-title-size: clamp(1.05rem, 4.2cqw, 1.18rem);
+        --portfolio-card-title-line-height: 1.1;
+        --portfolio-card-category-size: clamp(.78rem, 3cqw, .86rem);
+    }
+
+    div.article-portfolio-item-title {
+        min-height: 0;
+        padding-top: .58rem;
+        gap: .2rem;
+
+        h5.article-portfolio-item-title-main {
+            font-size: var(--portfolio-card-title-size) !important;
+            line-height: var(--portfolio-card-title-line-height);
+        }
+
+        div.article-portfolio-item-title-category {
+            margin-top: .12rem;
+            padding: .28rem .42rem .3rem;
+            font-size: var(--portfolio-card-category-size) !important;
+            line-height: 1.15;
+            letter-spacing: .025em;
+        }
+    }
+}
+
+@mixin portfolio-project-compact-density {
+    div.article-portfolio-items {
+        --item-gap: .7rem;
+        --padding: .58rem .62rem .55rem;
+        --portfolio-inline-padding: .62rem;
+        --padding-bottom: .55rem;
+        --portfolio-card-description-size: clamp(.82rem, 3.25cqw, .92rem);
+        --portfolio-card-description-line-height: 1.38;
+        --portfolio-control-height: clamp(44px, 10cqw, 50px);
+        --portfolio-controls-gap: .35rem;
+        --portfolio-controls-separation: .4rem;
+    }
+
+    div.article-portfolio-item {
+        padding: var(--padding) !important;
+    }
+
+    @include portfolio-project-compact-title-density;
+
+    div.article-portfolio-item-body {
+        margin-top: .5rem;
+
+        div.article-portfolio-item-body-description {
+            font-size: var(--portfolio-card-description-size) !important;
+            line-height: var(--portfolio-card-description-line-height);
+        }
+    }
+
+    ul.article-portfolio-item-body-tags { margin-top: .42rem; }
+
+    li.article-portfolio-item-body-tag {
+        margin-right: .14rem;
+        margin-bottom: .14rem;
+        padding: .08rem .28rem;
+        font-size: clamp(.7rem, 2.4cqw, .78rem) !important;
+    }
+
+    div.article-portfolio-item-footer { margin-top: .35rem; }
+
+    div.article-portfolio-item-controls {
+        min-height: 44px;
+        gap: .35rem;
+        padding-top: .55rem;
+    }
+
+    a.article-portfolio-item-control-btn,
+    div.article-portfolio-item-control-btn,
+    a.article-portfolio-item-control-btn-visit {
+        min-height: 44px;
+    }
+}
+
+html[data-layout="mobile"] section#section-my-software article#article-1-section-my-software {
+    @include portfolio-project-compact-density;
+}
+
+@media (max-width: 50rem) {
+    html[data-layout] section#section-my-software article#article-1-section-my-software {
+        @include portfolio-project-compact-density;
+    }
+}
+
+// Both project collections share the same compact title typography in every
+// layout. Hardware also shares Software's complete compact type/control scale
+// on mobile, where the tall-touch defaults had made copy and buttons oversized.
+html[data-layout] section#section-my-hardware article#article-1-section-my-hardware {
+    @include portfolio-project-compact-title-density;
+}
+
+html[data-layout="mobile"] section#section-my-hardware article#article-1-section-my-hardware {
+    @include portfolio-project-compact-density;
 }

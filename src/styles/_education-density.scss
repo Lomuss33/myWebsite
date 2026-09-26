@@ -30,6 +30,7 @@
                 --avatar-border-width: 3px;
                 --timeline-line-width: 3px;
                 --gap-between-avatar-and-content: clamp(0.75rem, 1vw, 1rem);
+                --education-card-width: min(78%, 58rem);
             }
 
             div.article-timeline-item-info-for-timelines {

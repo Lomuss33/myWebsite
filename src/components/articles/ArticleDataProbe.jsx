@@ -916,7 +916,7 @@ function ArticleDataProbe({ dataWrapper }) {
                         Passive probes are queued until the browser is idle so this section does not stall page transitions.
                     </div>
                 )}
-                <div className={`article-data-probe-grid article-data-probe-grid-fixed-two`}>
+                <div className={`article-data-probe-grid article-data-probe-grid-single-column`}>
                     {visiblePassiveProbes.map(p => (
                         <ProbeItem key={p.id}
                                    probe={p}

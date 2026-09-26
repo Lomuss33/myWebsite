@@ -154,9 +154,19 @@ function ItemPreviewMenuGalleryButton({ itemWrapper, galleryMetadata = null }) {
               ariaLabel={actionLabel}>
             <CircularButton variant={CircularButton.Variants.DARK}
                             size={CircularButton.Sizes.EXTRA_EXTRA_LARGE}
-                            className={`article-item-preview-menu-circular-button`}
+                            className={`article-item-preview-menu-circular-button article-item-preview-menu-gallery-button`}
                             tooltip={actionLabel}
-                            faIcon={actionIcon}/>
+                            faIcon={actionIcon}>
+                {isPhotographyTimeline && (
+                    <img src={itemWrapper.img || screenshots[0]}
+                         className={`article-item-preview-menu-gallery-image`}
+                         alt={``}
+                         aria-hidden={true}
+                         loading={`lazy`}
+                         decoding={`async`}
+                         draggable={false}/>
+                )}
+            </CircularButton>
         </Link>
     )
 }

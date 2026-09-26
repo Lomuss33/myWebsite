@@ -60,6 +60,25 @@ html[data-layout="mobile"] nav.nav-header-mobile {
     }
 }
 
+// Keep the two name lines inside their measured grid tracks on compact and
+// mid-size phones. Intrinsic nowrap sizing can otherwise paint into the side
+// action groups before the existing two-row composition is reached.
+@container mobile-profile-card (max-width: 36rem) {
+    html[data-layout="mobile"] nav.nav-header-mobile div.nav-profile-card {
+        span.nav-profile-card-name-line {
+            width: 100%;
+            min-width: 0;
+            max-width: 100%;
+            font-size: clamp(0.75rem, min(3.2cqi, 2.25svh), 1rem) !important;
+            line-height: 1.1 !important;
+            white-space: nowrap !important;
+        }
+
+        span.nav-profile-card-name-line-first { text-align: right; }
+        span.nav-profile-card-name-line-last { text-align: left; }
+    }
+}
+
 // Narrow phones reduce the painted discs before the row changes composition;
 // the two-row switch below happens before the hit areas can collide with names.
 @container mobile-profile-card (max-width: 26rem) {

@@ -92,8 +92,9 @@
             div.article-web-art-shell {
                 --article-web-art-shell-padding: 4px;
                 --article-web-art-stage-preview-height: clamp(208px, 17vw, 232px);
+                --article-web-art-guide-radius: 0px;
                 gap: clamp(0.55rem, 0.8vw, 0.75rem);
-                border-radius: 1.1rem;
+                border-radius: 0;
             }
 
             div.article-web-art-intro-cover-buttons {
@@ -110,13 +111,11 @@
 
         section#section-my-art article#article-4-section-my-art {
             div.article-stack-items.article-stack-items-compact {
-                --stack-columns: 6;
-                --gap: clamp(0.5rem, 0.72vw, 0.65rem);
-                --avatar-size: clamp(3.1rem, 4vw, 3.6rem);
-                --padding: 0.55rem;
+                --gap: 4px;
+                --avatar-size: 44px;
+                --padding: 3px;
                 --card-height: auto;
-                grid-template-columns: repeat(6, minmax(0, 1fr));
-                gap: clamp(0.5rem, 0.72vw, 0.65rem);
+                gap: 4px;
             }
 
             div.article-stack-item.article-stack-item-compact {
@@ -126,18 +125,18 @@
             }
 
             div.article-stack-item-compact div.article-stack-item-avatar {
-                width: clamp(3.1rem, 48cqi, 5.4rem);
-                height: clamp(3.1rem, 48cqi, 5.4rem);
+                width: clamp(34px, 42cqi, 52px);
+                height: clamp(34px, 42cqi, 52px);
             }
 
             div.article-stack-item-compact div.article-stack-item-title {
-                min-height: 2.7em;
-                margin-top: 0.3rem;
+                min-height: 0;
+                margin-top: 0;
             }
 
             div.article-stack-item-compact div.article-stack-item-title-main {
-                font-size: clamp(12px, 6.7cqi, 18px);
-                line-height: 1.12;
+                font-size: 11px;
+                line-height: 1.08;
             }
         }
 

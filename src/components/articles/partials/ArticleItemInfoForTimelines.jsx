@@ -225,13 +225,14 @@ function ArticleItemInfoForTimelinesBody({ itemWrapper, className = "", isEducat
                 </ul>
             )}
 
-            {isEducationTimeline && !isEducationExpanded && (
+            {isEducationTimeline && (
                 <div className={`article-timeline-item-info-for-timelines-body-expand-action`}>
                     <button type={"button"}
                             className={`article-timeline-item-info-for-timelines-body-expand-button`}
+                            aria-expanded={isEducationExpanded}
                             onClick={() => onEducationExpand?.(itemWrapper.id)}>
-                        <span>{language.getString("see_more")}</span>
-                        <i className={`fa-solid fa-arrow-down-long`}/>
+                        <span>{language.getString(isEducationExpanded ? "see_less" : "see_more")}</span>
+                        <i className={`fa-solid ${isEducationExpanded ? "fa-arrow-up-long" : "fa-arrow-down-long"}`}/>
                     </button>
                 </div>
             )}

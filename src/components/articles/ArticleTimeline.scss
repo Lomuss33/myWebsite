@@ -227,6 +227,17 @@ article.article-timeline--my-art {
             border-bottom-left-radius: $standard-border-radius!important;
         }
     }
+
+    @include content-breakpoint-down(md) {
+        li.article-timeline-item {
+            padding: 0;
+        }
+
+        div.article-timeline-item-content {
+            margin: 0 !important;
+            border-radius: $standard-border-radius !important;
+        }
+    }
 }
 
 article#article-1-section-education {
@@ -265,6 +276,29 @@ article#article-1-section-education {
         align-items: center;
     }
 
+    li.article-timeline-item div.article-timeline-item-avatar {
+        border-color: var(--education-crystal-color) !important;
+        box-shadow:
+            0 0 0 2px color-mix(in srgb, var(--education-crystal-color) 42%, transparent),
+            0 0 18px color-mix(in srgb, var(--education-crystal-color) 48%, transparent),
+            inset 0 0 10px color-mix(in srgb, var(--education-crystal-color) 38%, transparent);
+    }
+
+    li[data-education-item-id="3"] div.article-timeline-item-avatar {
+        box-shadow:
+            0 0 0 2px rgba(248, 250, 252, 0.82),
+            0 0 24px rgba(203, 213, 225, 0.78),
+            inset 0 0 12px rgba(255, 255, 255, 0.76);
+    }
+
+    li.article-timeline-item div.article-timeline-item-content::after {
+        background: linear-gradient(
+            180deg,
+            var(--education-crystal-color),
+            var(--education-next-crystal-color)
+        );
+    }
+
     div.article-timeline-item-avatar-wrapper {
         position: relative;
         z-index: 3;
@@ -273,7 +307,7 @@ article#article-1-section-education {
     }
 
     li.article-timeline-item:nth-child(4n + 1) {
-        --education-avatar-shift-x: clamp(-12px, -0.55vw, -4px);
+        --education-avatar-shift-x: clamp(-8px, -0.35vw, -3px);
 
         div.article-timeline-item-avatar-wrapper {
             transform: translateX(var(--education-avatar-shift-x)) rotate(-4deg) scale(1.045);
@@ -281,7 +315,7 @@ article#article-1-section-education {
     }
 
     li.article-timeline-item:nth-child(4n + 2) {
-        --education-avatar-shift-x: clamp(18px, 2.15vw, 32px);
+        --education-avatar-shift-x: clamp(12px, 1.25vw, 24px);
 
         div.article-timeline-item-avatar-wrapper {
             transform: translateX(var(--education-avatar-shift-x)) rotate(3deg) scale(1.035);
@@ -289,7 +323,7 @@ article#article-1-section-education {
     }
 
     li.article-timeline-item:nth-child(4n + 3) {
-        --education-avatar-shift-x: clamp(20px, 2.25vw, 34px);
+        --education-avatar-shift-x: clamp(18px, 1.75vw, 30px);
 
         div.article-timeline-item-avatar-wrapper {
             transform: translateX(var(--education-avatar-shift-x)) rotate(-3deg) scale(1.05);
@@ -297,7 +331,7 @@ article#article-1-section-education {
     }
 
     li.article-timeline-item:nth-child(4n) {
-        --education-avatar-shift-x: clamp(-10px, -0.45vw, -4px);
+        --education-avatar-shift-x: clamp(-10px, -0.65vw, -18px);
 
         div.article-timeline-item-avatar-wrapper {
             transform: translateX(var(--education-avatar-shift-x)) rotate(4deg) scale(1.04);
@@ -321,6 +355,10 @@ article#article-1-section-education {
         z-index: 1;
     }
 
+    li.article-timeline-item--education-expanded {
+        z-index: 2;
+    }
+
     ul.article-timeline-items-has-education-snake::before {
         display: none;
     }
@@ -336,13 +374,12 @@ article#article-1-section-education {
 
         path {
             fill: none;
-            stroke: color-mix(in srgb, var(--theme-primary) 74%, var(--theme-secondary) 26%);
-            stroke-width: clamp(4px, 0.42vw, 7px);
+            stroke-width: clamp(8px, 0.675vw, 11px);
             stroke-linecap: round;
             stroke-linejoin: round;
             vector-effect: non-scaling-stroke;
-            filter: drop-shadow(0 0 4px color-mix(in srgb, var(--theme-primary) 48%, transparent));
-            opacity: 0.88;
+            filter: drop-shadow(0 0 7px color-mix(in srgb, var(--theme-primary) 56%, transparent));
+            opacity: 0.92;
         }
     }
 
@@ -359,8 +396,8 @@ article#article-1-section-education {
         }
 
         svg.article-timeline-education-snake path {
-            stroke-width: 4px;
-            opacity: 0.72;
+            stroke-width: 11px;
+            opacity: 0.88;
         }
     }
 
@@ -1381,7 +1418,56 @@ article#article-1-section-education div.article-content {
     padding-inline: 0;
 
     @include layout-mobile {
-        --education-article-bleed: calc(var(--padding-x, 0px) + 6px);
+        --education-article-bleed: calc(var(--padding-x, 0px) + 4px);
+    }
+}
+
+// Keep the Education avatar rail close to the content block on very wide
+// desktops, where the centered article can otherwise leave a large gutter.
+@media (min-width: 80rem) {
+    html:is([data-layout="normal"], [data-layout="ultrawide"]) {
+        article#article-1-section-education {
+            ul.article-timeline-items {
+                width: min(100%, 64rem);
+                margin-inline: auto;
+                overflow: visible;
+                box-sizing: border-box;
+                --education-snake-inset: clamp(6rem, 10vw, 9rem);
+                padding-left: var(--education-snake-inset);
+                position: relative;
+                left: clamp(-4.5rem, -5vw, -3rem);
+                --education-card-width: min(78%, 58rem);
+            }
+
+            div.article-content {
+                width: min(100%, 77rem);
+                margin-inline: auto;
+            }
+        }
+    }
+}
+
+// Keep the desktop avatar rail within 2rem of the card edge while preserving
+// a little alternating variation. The SVG path reads these rendered centers.
+@media (min-width: 80rem) {
+    html:is([data-layout="normal"], [data-layout="ultrawide"]) {
+        article#article-1-section-education {
+            li.article-timeline-item:nth-child(4n + 1) {
+                --education-avatar-shift-x: 0px;
+            }
+
+            li.article-timeline-item:nth-child(4n + 2) {
+                --education-avatar-shift-x: 1.1rem;
+            }
+
+            li.article-timeline-item:nth-child(4n + 3) {
+                --education-avatar-shift-x: 1.8rem;
+            }
+
+            li.article-timeline-item:nth-child(4n) {
+                --education-avatar-shift-x: -0.5rem;
+            }
+        }
     }
 }
 
@@ -1543,6 +1629,40 @@ article.article-timeline--art-photography {
         }
     }
 
+    // Narrow layout: keep the story card full-width. The gallery action itself
+    // carries the avatar image, leaving exactly two circular actions.
+    @include content-breakpoint-down(md) {
+        ul.article-timeline-items {
+            --photo-action-size: clamp(3.2rem, 13vw, 3.75rem);
+            --photo-action-gap: 0.44rem;
+            --photo-action-rail-width: calc(var(--photo-action-size) + 0.45rem);
+            --photo-mobile-card-top-inset: 1rem;
+            --photo-mobile-card-right-inset: 1.08rem;
+
+            &::before {
+                display: none;
+            }
+        }
+
+        li.article-timeline-item {
+            position: relative;
+            display: block;
+            min-width: 0;
+        }
+
+        div.article-timeline-item-avatar-wrapper {
+            display: none;
+        }
+
+        div.article-timeline-item-content {
+            width: 100%;
+            max-width: 100%;
+            margin: 0 !important;
+            border-top-left-radius: $standard-border-radius !important;
+            border-bottom-left-radius: $standard-border-radius !important;
+        }
+    }
+
     div.article-timeline-item-avatar {
         border-color: rgba(56, 189, 248, 0.52);
         box-shadow:
@@ -1581,6 +1701,17 @@ article.article-timeline--art-photography {
             margin-left: var(--gap-between-avatar-and-content)!important;
             border-top-left-radius: $standard-border-radius!important;
             border-bottom-left-radius: $standard-border-radius!important;
+        }
+    }
+
+    @include content-breakpoint-down(md) {
+        li.article-timeline-item {
+            padding: 0;
+        }
+
+        div.article-timeline-item-content {
+            margin: 0 !important;
+            border-radius: $standard-border-radius !important;
         }
     }
 }

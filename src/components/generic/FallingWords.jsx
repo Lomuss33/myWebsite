@@ -337,10 +337,10 @@ function FallingWords({
             )
 
             const body = Bodies.rectangle(startX, startY, bodyWidth, bodyHeight, {
-                friction: 0.26,
-                frictionStatic: 0.95,
-                frictionAir: isCoarsePointer() ? 0.035 : 0.018,
-                restitution: 0.06,
+                friction: 0.3,
+                frictionStatic: 0.98,
+                frictionAir: isCoarsePointer() ? 0.044 : 0.023,
+                restitution: 0.04,
                 slop: 0.01,
                 render: {visible: false},
                 collisionFilter: {

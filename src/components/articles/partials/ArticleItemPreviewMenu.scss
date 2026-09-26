@@ -49,6 +49,33 @@ button.article-item-preview-menu-website-button-compact {
     display: none;
 }
 
+article.article-timeline--art-photography button.article-item-preview-menu-gallery-button {
+    position: relative;
+    overflow: hidden;
+
+    img.article-item-preview-menu-gallery-image {
+        display: none;
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: inherit;
+        object-fit: cover;
+    }
+}
+
+@include content-breakpoint-down(md) {
+    article.article-timeline--art-photography button.article-item-preview-menu-gallery-button {
+        > i {
+            display: none;
+        }
+
+        img.article-item-preview-menu-gallery-image {
+            display: block;
+        }
+    }
+}
+
 @container (max-width: 18rem) {
     button.article-item-preview-menu-website-button {
         display: none;

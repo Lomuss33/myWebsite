@@ -520,6 +520,163 @@ html:is([data-layout="normal"], [data-layout="ultrawide"]) section#section-about
     }
 }
 
+// Home needs a denser composition once the viewport has enough room for the
+// desktop pane. Keep short landscape windows and the mobile composition out.
+@media (min-width: 50rem) and (min-height: 30rem) {
+    html:is([data-layout="normal"], [data-layout="ultrawide"]) section#section-about {
+        header.section-header.section-header-home {
+            margin-block: .25rem .4rem;
+
+            .section-header-prefix { font-size: clamp(.68rem, .64rem + .18cqi, .78rem); }
+
+            h2.section-header-title {
+                font-size: clamp(1.4rem, 1.18rem + .7cqi, 1.625rem) !important;
+                line-height: 1.12;
+            }
+        }
+
+        article.article {
+            margin-top: .32rem;
+
+            > h4.article-title {
+                font-size: clamp(.76rem, .72rem + .12cqi, .82rem) !important;
+                line-height: 1.16;
+                margin: .38rem 0 .42rem;
+            }
+
+            &::after { margin-top: .45rem; }
+        }
+
+        article#article-1-section-about {
+            --home-contact-band-gap: .3rem;
+
+            ul.article-inline-list-items:not(.article-inline-list-items-fit-measure) {
+                gap: .3rem;
+                li.article-inline-list-item { height: 44px; min-height: 44px; }
+            }
+
+            .article-inline-list-item-control { height: 44px; min-height: 44px; }
+            .article-inline-list-item-pill {
+                height: 29px;
+                min-height: 29px;
+                max-height: 29px;
+                padding-inline: .42rem !important;
+            }
+            i.article-inline-list-item-icon {
+                flex-basis: .9rem;
+                width: .9rem;
+                min-width: .9rem;
+                height: .9rem;
+                font-size: .82rem;
+            }
+            .article-inline-list-item-control,
+            span.article-inline-list-item-label { font-size: .75rem; }
+        }
+
+        .article-feature-item.article-feature-item-home-style-intro {
+            grid-template-columns: minmax(0, 16%) minmax(0, 1fr);
+            gap: clamp(.6rem, 1.1cqi, .85rem);
+
+            .article-feature-item-image { max-width: 11rem; }
+            .article-feature-item-text {
+                font-size: clamp(.8rem, .77rem + .08cqi, .84rem) !important;
+                line-height: 1.38;
+            }
+        }
+
+        article.article-info-list-home {
+            .article-info-list-items.article-info-list-items-home,
+            .article-info-list-items.article-info-list-items-home.article-info-list-items-shrink {
+                --avatar-size: clamp(2.35rem, 3.05cqi, 2.6rem);
+                --min-height: calc(var(--avatar-size) + .85rem);
+                --padding: 3px;
+                --content-padding-inline-start: .48rem;
+                --content-padding-inline-end: .48rem;
+                --content-padding-block: .38rem;
+                --grid-row-gap: .38rem;
+                --grid-column-gap: .38rem;
+                --home-skill-title-font-size: clamp(.78rem, .75rem + .1cqi, .82rem);
+                --home-skill-description-font-size: clamp(.75rem, .72rem + .08cqi, .78rem);
+                --home-skill-description-line-height: 1.28;
+                --proof-bubble-font-size: clamp(.75rem, .72rem + .08cqi, .78rem);
+            }
+
+            .article-info-list-item-content.article-info-list-item-home {
+                padding: .35rem .42rem !important;
+            }
+
+            .article-info-list-item.article-info-list-item-home .article-info-list-item-info-title {
+                font-size: clamp(.78rem, .75rem + .1cqi, .82rem) !important;
+                line-height: 1.16 !important;
+            }
+
+            .article-info-list-item-info-text {
+                font-size: clamp(.75rem, .72rem + .08cqi, .78rem) !important;
+                line-height: 1.28 !important;
+            }
+
+            .collapsable-menu { margin-top: .6rem; }
+            button.standard-button.see-more-button-modern {
+                width: min(100%, 14rem);
+                min-height: 44px;
+                padding: .32rem .65rem;
+                font-size: .74rem;
+            }
+        }
+
+        article#article-5-section-about {
+            margin-top: .32rem;
+
+            .article-name-origins-panel { padding-inline: .18rem; }
+            section.name-origin { padding: .48rem 0; }
+            .name-origin-display { width: 30%; margin-right: .7rem; }
+            .name-origin-surname .name-origin-display { margin-left: .7rem; }
+
+            div.name-origin-word.pretext-interactive-text {
+                font-size: clamp(3.45rem, 6.3cqi, 4.3rem) !important;
+                line-height: 1;
+            }
+
+            .name-origin-meta { font-size: .62rem; margin-bottom: .16rem; }
+            .name-origin-copy {
+                font-size: clamp(.78rem, .75rem + .08cqi, .82rem);
+                line-height: 1.38;
+
+                p.name-origin-story-mobile { margin-bottom: .35rem; }
+            }
+
+            .name-origin-lineage { gap: .14rem .28rem; margin-bottom: .3rem; font-size: .76em; }
+            .article-name-origins-panel > footer { padding-top: .35rem; font-size: .7rem; }
+
+            @container name-origins (max-width: 35rem) {
+                div.name-origin-word.pretext-interactive-text {
+                    font-size: clamp(2rem, 10cqi, 3rem) !important;
+                }
+            }
+        }
+
+        article#article-7-section-about {
+            .article-stack-items.article-stack-items-home {
+                --avatar-size: clamp(2.15rem, 2.7cqi, 2.35rem);
+                --home-stack-avatar-outset: calc(var(--avatar-size) / 2);
+                --home-stack-icon-reserve: calc(var(--avatar-size) / 2 + .3rem);
+                --home-stack-bubble-safe-inset: calc(var(--avatar-size) / 2 + .48rem);
+                gap: .38rem;
+            }
+
+            .article-stack-item.article-stack-item-home {
+                min-height: 5.2rem;
+                padding-block: .38rem;
+                gap: .25rem;
+            }
+
+            .article-stack-item-title-prefix { font-size: clamp(.68rem, 5cqi, .76rem) !important; }
+            .article-stack-item-title-main { font-size: clamp(.88rem, 7.3cqi, 1.08rem) !important; }
+            .article-stack-item-home-bubble-inner { padding-left: calc(var(--home-stack-avatar-outset) + .48rem); }
+        }
+    }
+}
+
 // Compact Home article typography when the content column is narrow.
 @container (max-width: 48rem) {
     html[data-layout] section#section-about article.article > h4.article-title {
@@ -535,6 +692,214 @@ html:is([data-layout="normal"], [data-layout="ultrawide"]) section#section-about
         font-size: clamp(.875rem, .82rem + .3cqi, 1rem);
         line-height: 1.5;
     }
+}
+
+// The mobile layout mode also includes very tall touch displays, so keep its
+// density tied to usable type sizes and container width rather than raw vh.
+// All tap targets remain at least 44px; only their visible contents shrink.
+html[data-layout="mobile"] section#section-about {
+    --home-mobile-gutter: clamp(.55rem, 2.4vw, 1rem);
+
+    header.section-header.section-header-home {
+        width: calc(100% - 2 * var(--home-mobile-gutter));
+        max-width: 100%;
+        margin: .4rem auto .55rem;
+        padding-inline: 0;
+        align-items: center;
+
+        div.section-header-prefix,
+        h2.section-header-title {
+            width: 100%;
+            max-width: 100%;
+            white-space: normal;
+            flex-shrink: 1;
+            text-align: center;
+        }
+        .section-header-prefix span,
+        h2.section-header-title span { white-space: normal; }
+        .section-header-prefix { font-size: clamp(.62rem, 2.4vw, .78rem); }
+        h2.section-header-title {
+            font-size: clamp(1.05rem, 4.8vw, 1.55rem) !important;
+            line-height: 1.12;
+            letter-spacing: -.025em;
+            text-wrap: balance;
+        }
+    }
+
+    article.article {
+        margin: .2rem 0 0;
+        padding-bottom: .2rem;
+
+        > h4.article-title {
+            font-size: clamp(.9rem, 3.8vw, 1.12rem) !important;
+            line-height: 1.18;
+            margin: .42rem 0 .5rem;
+            letter-spacing: -.02em;
+            text-wrap: balance;
+        }
+        &::after { margin-top: .45rem; }
+    }
+
+    article#article-1-section-about {
+        --home-contact-band-gap: .25rem;
+        ul.article-inline-list-items:not(.article-inline-list-items-fit-measure) {
+            gap: .18rem;
+            li.article-inline-list-item { height: 44px; min-height: 44px; }
+        }
+        .article-inline-list-item-control { height: 44px; min-height: 44px; }
+        .article-inline-list-item-pill {
+            height: 30px;
+            min-height: 30px;
+            max-height: 30px;
+            padding-inline: .35rem !important;
+            gap: .25rem;
+        }
+        i.article-inline-list-item-icon {
+            flex-basis: .8rem;
+            width: .8rem;
+            min-width: .8rem;
+            height: .8rem;
+            font-size: .72rem;
+        }
+        .article-inline-list-item-control,
+        span.article-inline-list-item-label { font-size: clamp(.62rem, 2.7vw, .76rem); }
+    }
+
+    .article-feature-item.article-feature-item-home-style-intro {
+        grid-template-columns: minmax(0, 1fr);
+        gap: .35rem;
+
+        .article-feature-item-media {
+            width: 100%;
+            justify-self: stretch;
+            order: 1;
+        }
+        .article-feature-item-content { order: 2; min-width: 0; }
+        .article-feature-item-image {
+            width: clamp(7.25rem, 34cqi, 9.25rem) !important;
+            max-width: 9.25rem;
+            margin-inline: auto;
+        }
+        .article-feature-item-text {
+            min-width: 0;
+            font-size: clamp(.8rem, 3.35vw, .92rem) !important;
+            line-height: 1.38;
+        }
+
+        @container (min-width: 36.01rem) {
+            grid-template-columns: minmax(0, 16%) minmax(0, 1fr);
+            gap: clamp(.5rem, 1.3cqi, .85rem);
+            .article-feature-item-media { width: auto; justify-self: center; }
+            .article-feature-item-image {
+                width: min(100%, 12rem) !important;
+                max-width: 12rem;
+                margin-inline: 0;
+            }
+        }
+    }
+
+    article.article-info-list-home {
+        .article-info-list-items.article-info-list-items-home,
+        .article-info-list-items.article-info-list-items-home.article-info-list-items-shrink {
+            --avatar-size: clamp(2.2rem, 8cqi, 3rem);
+            --min-height: calc(var(--avatar-size) + .55rem);
+            --padding: 2px;
+            --content-padding-inline-start: .42rem;
+            --content-padding-inline-end: .42rem;
+            --content-padding-block: .3rem;
+            --grid-row-gap: .3rem;
+            --grid-column-gap: .3rem;
+            --home-skill-title-font-size: clamp(.78rem, 3.5vw, .92rem);
+            --home-skill-description-font-size: clamp(.72rem, 3.15vw, .84rem);
+            --home-skill-description-line-height: 1.25;
+            --proof-bubble-font-size: clamp(.72rem, 3.15vw, .84rem);
+        }
+        .article-info-list-item-content.article-info-list-item-home {
+            min-height: 0;
+            padding: .28rem .35rem !important;
+        }
+        .article-info-list-item.article-info-list-item-home .article-info-list-item-info-title {
+            font-size: clamp(.78rem, 3.5vw, .92rem) !important;
+            line-height: 1.16 !important;
+        }
+        .article-info-list-item-info-text {
+            font-size: clamp(.72rem, 3.15vw, .84rem) !important;
+            line-height: 1.25 !important;
+        }
+        .collapsable-menu { margin-top: .35rem; }
+        button.standard-button.see-more-button-modern {
+            width: min(100%, 12rem);
+            min-height: 44px;
+            padding: .3rem .55rem;
+            font-size: .72rem;
+            line-height: 1.15;
+        }
+    }
+
+    article#article-5-section-about {
+        margin-top: .2rem;
+        .article-name-origins-panel { padding-inline: .1rem; }
+        section.name-origin { padding: .35rem 0; }
+        .name-origin-display,
+        .name-origin-surname .name-origin-display {
+            float: none;
+            width: 100%;
+            margin: 0 0 .3rem;
+        }
+        div.name-origin-word.pretext-interactive-text {
+            font-size: clamp(1.65rem, 7cqi, 3.4rem) !important;
+            line-height: 1;
+            text-wrap: balance;
+        }
+        .name-origin-meta { font-size: clamp(.58rem, 2.4vw, .7rem); margin-bottom: .12rem; }
+        .name-origin-copy {
+            font-size: clamp(.76rem, 3.2vw, .88rem) !important;
+            line-height: 1.38;
+            p.name-origin-story-mobile { margin-bottom: .25rem; }
+        }
+        .name-origin-lineage { gap: .12rem .22rem; margin-bottom: .25rem; font-size: .72em; }
+        .article-name-origins-panel > footer { padding-top: .28rem; font-size: .66rem; }
+    }
+
+    article#article-7-section-about {
+        .article-stack-items.article-stack-items-home {
+            --avatar-size: clamp(2.1rem, min(11cqi, 4.2svh), 3.4rem);
+            --home-stack-avatar-outset: calc(var(--avatar-size) / 2);
+            --home-stack-icon-reserve: calc(var(--avatar-size) / 2 + .25rem);
+            --home-stack-bubble-safe-inset: calc(var(--avatar-size) / 2 + .4rem);
+            gap: .28rem;
+        }
+        .article-stack-item.article-stack-item-home {
+            min-height: 5rem;
+            padding-block: .3rem;
+            gap: .2rem;
+        }
+        .article-stack-item-title-prefix { font-size: clamp(.66rem, 2.9vw, .78rem) !important; }
+        .article-stack-item-title-main { font-size: clamp(.82rem, 3.8vw, 1.05rem) !important; }
+        .article-stack-item-home-bubble-inner { padding-left: calc(var(--home-stack-avatar-outset) + .4rem); }
+    }
+}
+
+// The shared contrast-button selector sets a 21rem width and large padding.
+// Override it at the Home scope so the local compact values actually win.
+html[data-layout] section#section-about .collapsable-menu > button.standard-button.btn-contrast.see-more-button-modern {
+    width: min(100%, 10.5rem) !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    max-height: 44px;
+    padding: .2rem .5rem !important;
+    gap: .3rem;
+    font-size: .75rem !important;
+    line-height: 1 !important;
+    letter-spacing: .02em;
+    border-radius: .82rem !important;
+    --see-more-border-width: 2px;
+    box-shadow: 0 5px 10px color-mix(in srgb, var(--theme-dark) 18%, transparent),
+        0 1px 0 rgba(255, 255, 255, .22) inset;
+}
+
+html[data-layout="mobile"] section#section-about .collapsable-menu > button.standard-button.btn-contrast.see-more-button-modern {
+    width: min(100%, 9.5rem) !important;
 }
 
 @keyframes intro-card-arrive {

@@ -61,10 +61,10 @@ article#article-2-section-my-writings {
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        height: clamp(88px, 7vw, 112px);
+        height: auto;
         min-height: 0;
         margin-bottom: 18px;
-        padding: clamp(16px, 1.25vw, 22px) clamp(26px, 2vw, 34px) clamp(16px, 1.25vw, 22px) clamp(84px, 6vw, 96px);
+        padding: clamp(12px, 1vw, 16px) clamp(16px, 1.5vw, 24px) clamp(12px, 1vw, 16px) clamp(84px, 6vw, 96px);
         color: #e2e8f0;
         font-size: var(--pretext-fit-font-size, clamp(1.14rem, 0.92rem + 0.72vw, 1.46rem));
         font-weight: 700;
@@ -176,8 +176,9 @@ article#article-2-section-my-writings {
         width: min(100%, 960px);
 
         div.article-falling-words-hint {
-            height: clamp(86px, 10vw, 104px);
-            padding: 16px 22px 16px 78px;
+            height: auto;
+            min-height: 0;
+            padding: clamp(10px, 1.2vw, 14px) clamp(14px, 1.6vw, 20px) clamp(10px, 1.2vw, 14px) clamp(60px, 5.4vw, 78px);
             font-size: var(--pretext-fit-font-size, clamp(1.02rem, 0.875rem + 0.72vw, 1.22rem));
 
             &::before {
@@ -190,15 +191,23 @@ article#article-2-section-my-writings {
         div.falling-words.article-falling-words-stage {
             min-height: clamp(400px, 82vw, 540px);
         }
+
+        span.falling-word {
+            // The stage's physics reads each rendered word's dimensions, so keep
+            // the visual and collision-box size in sync through the CSS font size.
+            font-size: clamp(.7rem, calc(clamp(1.05rem, 0.95rem + 0.8vw, 1.75rem) * var(--falling-word-font-scale, 1) * .84), 1rem) !important;
+        }
     }
 
     @include content-breakpoint-down(sm) {
         width: 100%;
 
         div.article-falling-words-hint {
-            height: clamp(92px, 26vw, 104px);
+            height: auto;
+            min-height: 0;
+            max-height: none;
             margin-bottom: 14px;
-            padding: 12px 14px 12px 60px;
+            padding: 10px 14px 10px 60px;
             font-size: var(--pretext-fit-font-size, clamp(1rem, 0.9rem + 0.5vw, 1.12rem));
             line-height: var(--pretext-fit-line-height, 1.28);
             border-radius: 12px;
@@ -373,7 +382,7 @@ article#article-2-section-my-writings {
 
     @include content-breakpoint-down(sm) {
         div.article-falling-words-hint {
-            padding: 12px 14px;
+            padding: 12px 14px 12px 60px;
             font-size: clamp(0.875rem, 0.875rem + 0.22vw, 0.92rem);
         }
 

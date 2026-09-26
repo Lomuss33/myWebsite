@@ -633,6 +633,10 @@ article.article-data-probe {
         }
     }
 
+    div.article-data-probe-grid.article-data-probe-grid-single-column {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
     div.article-data-probe-list-footer {
         --probe-item-accent: var(--probe-accent);
         display: flex;
@@ -1655,5 +1659,177 @@ button.article-data-probe-search-popup-btn-go {
             opacity: 1;
             transform: translateY(0);
         }
+    }
+}
+
+// Tall mobile screens were inheriting the large feature-title floor and
+// desktop-scaled DataProbe copy. Keep this dense, technical article readable
+// through card-relative caps without reducing its interactive hit areas.
+html[data-layout="mobile"] article#article-2-section-my-hardware {
+    --probe-mobile-title-size: clamp(1rem, .94rem + .42cqi, 1.25rem);
+    --probe-mobile-body-size: clamp(.78rem, .75rem + .16cqi, .86rem);
+    --probe-mobile-meta-size: clamp(.7rem, .68rem + .12cqi, .76rem);
+    --probe-mobile-control-size: clamp(.76rem, .73rem + .12cqi, .82rem);
+
+    .article-title {
+        margin-top: clamp(.65rem, 2.2cqi, 1rem);
+        margin-bottom: clamp(.35rem, 1.2cqi, .55rem);
+    }
+
+    div.article-content {
+        margin-inline: 0;
+    }
+
+    h4.article-title {
+        gap: clamp(.3rem, 1cqi, .45rem);
+        font-size: var(--probe-mobile-title-size) !important;
+        line-height: 1.1;
+    }
+
+    p.article-data-probe-intro {
+        width: min(100%, 68ch);
+        margin-bottom: clamp(.55rem, 1.8cqi, .8rem);
+        font-size: var(--probe-mobile-body-size) !important;
+        line-height: 1.42;
+    }
+
+    div.article-data-probe-summary {
+        gap: clamp(.3rem, 1cqi, .45rem);
+        margin-top: 0;
+    }
+
+    div.article-data-probe-summary-chip {
+        grid-template-columns: minmax(16px, 1.25rem) auto minmax(0, 1fr);
+        gap: clamp(.22rem, .7cqi, .35rem);
+        padding: clamp(.3rem, 1.15cqi, .45rem);
+    }
+
+    span.article-data-probe-summary-value {
+        font-size: clamp(.9rem, .86rem + .22cqi, .98rem);
+    }
+
+    span.article-data-probe-summary-label {
+        font-size: var(--probe-mobile-meta-size);
+        line-height: 1.25;
+    }
+
+    section.article-data-probe-block {
+        margin-top: clamp(.45rem, 1.4cqi, .65rem);
+        padding: clamp(.55rem, 1.8cqi, .75rem);
+        border-radius: clamp(.75rem, 2.5cqi, 1rem);
+    }
+
+    section.article-data-probe-block:first-of-type {
+        margin-top: clamp(.45rem, 1.4cqi, .65rem);
+    }
+
+    div.article-data-probe-block-header {
+        gap: clamp(.4rem, 1.4cqi, .6rem);
+        margin-bottom: clamp(.35rem, 1.2cqi, .5rem);
+    }
+
+    div.article-data-probe-block-lead {
+        gap: clamp(.35rem, 1.2cqi, .5rem);
+    }
+
+    div.article-data-probe-block-description {
+        margin-top: .15rem;
+        font-size: var(--probe-mobile-body-size);
+        line-height: 1.4;
+    }
+
+    div.article-data-probe-grid {
+        gap: clamp(.4rem, 1.3cqi, .55rem);
+    }
+
+    div.article-data-probe-item {
+        padding: clamp(.5rem, 1.6cqi, .65rem);
+        border-radius: clamp(.65rem, 2cqi, .85rem);
+    }
+
+    div.article-data-probe-item-head {
+        grid-template-columns: var(--probe-icon-size) minmax(0, 1fr);
+        gap: clamp(.4rem, 1.3cqi, .55rem);
+        margin-bottom: clamp(.35rem, 1.2cqi, .5rem);
+    }
+
+    div.article-data-probe-item-icon {
+        width: var(--probe-icon-size);
+        height: var(--probe-icon-size);
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    div.article-data-probe-item-body {
+        gap: clamp(.35rem, 1.2cqi, .5rem);
+    }
+
+    div.article-data-probe-item-meta {
+        row-gap: clamp(.25rem, .8cqi, .35rem);
+        font-size: var(--probe-mobile-meta-size);
+        line-height: 1.32;
+    }
+
+    div.article-data-probe-item-meta-row {
+        grid-template-columns: minmax(2.1rem, 2.6rem) minmax(0, 1fr);
+        gap: clamp(.25rem, .8cqi, .35rem);
+        align-items: start;
+    }
+
+    div.article-data-probe-item-meta-row + div.article-data-probe-item-meta-row {
+        padding-top: clamp(.22rem, .7cqi, .32rem);
+    }
+
+    span.article-data-probe-item-meta-key {
+        min-height: 0;
+        font-size: .58rem;
+        line-height: 1.35;
+    }
+
+    span.article-data-probe-item-meta-value {
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+    div.article-data-probe-item-value-toolbar {
+        gap: clamp(.35rem, 1cqi, .45rem);
+        padding-top: clamp(.35rem, 1cqi, .45rem);
+    }
+
+    div.article-data-probe-item-value-label {
+        min-height: 0;
+        font-size: .7rem;
+    }
+
+    pre.article-data-probe-item-value {
+        padding: clamp(.5rem, 1.5cqi, .65rem);
+        font-size: var(--probe-mobile-body-size);
+        line-height: 1.45;
+    }
+
+    div.article-data-probe-block-eyebrow {
+        font-size: .66rem;
+    }
+
+    h5.article-data-probe-block-title {
+        font-size: clamp(.9rem, .86rem + .22cqi, .98rem);
+        line-height: 1.16;
+    }
+
+    div.article-data-probe-item-title {
+        font-size: clamp(.82rem, .8rem + .12cqi, .9rem);
+        line-height: 1.2;
+    }
+
+    div.article-data-probe-item-badge {
+        font-size: clamp(.68rem, .66rem + .12cqi, .72rem);
+    }
+
+    button.standard-button.btn-contrast.article-data-probe-action-btn,
+    button.standard-button.btn-contrast.article-data-probe-unlock-btn,
+    button.copy-button.copy-button-pill {
+        --padding: .45rem .72rem;
+        --font-size: var(--probe-mobile-control-size);
+        min-height: 44px;
     }
 }

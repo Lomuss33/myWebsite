@@ -51,23 +51,6 @@ function _syncTileEngineSize(tile, engine, devicePixelRatio = 1) {
     engine?.setSize?.(width, height, safeDevicePixelRatio)
 }
 
-function _scrollArticleIntoSectionView(articleId, sectionId, behavior = "smooth") {
-    if(typeof window === "undefined") return
-
-    const articleEl = document.getElementById(articleId)
-    const scrollableEl = document.getElementById(`scrollable-${sectionId}`)
-    if(!articleEl || !scrollableEl) return
-
-    const articleRect = articleEl.getBoundingClientRect()
-    const scrollableRect = scrollableEl.getBoundingClientRect()
-    const targetScrollTop = scrollableEl.scrollTop + (articleRect.top - scrollableRect.top)
-
-    scrollableEl.scrollTo({
-        top: Math.max(0, targetScrollTop),
-        behavior
-    })
-}
-
 const WEB_ART_STAGE_PREVIEW_HEIGHT = 248
 const WEB_ART_STAGE_TRANSITION_FALLBACK_MS = 460
 const WEB_ART_STAGE_PHASE = {
@@ -399,15 +382,12 @@ function ArticleWebArt({ dataWrapper, id }) {
 
         return ordered
     }, [rawItems])
-    const shellRef = useRef(null)
     const tilesWrapperRef = useRef(null)
     const stageRef = useRef(null)
     const stagePhaseRef = useRef(WEB_ART_STAGE_PHASE.PREVIEW)
     const stageFrameIdsRef = useRef([])
     const stageTransitionTimeoutRef = useRef(null)
-    const tileElementsRef = useRef(new Map())
     const openTileIdsRef = useRef(new Set())
-    const scrollCloseTimeoutsRef = useRef(new Map())
     const desktopCloseTimeoutRef = useRef(null)
     const [stagePhase, setStagePhaseState] = useState(WEB_ART_STAGE_PHASE.PREVIEW)
     const [stageHeight, setStageHeight] = useState(null)
@@ -460,12 +440,6 @@ function ArticleWebArt({ dataWrapper, id }) {
     useEffect(() => {
         openTileIdsRef.current = openTileIds
     }, [openTileIds])
-
-    const registerTileElement = useCallback((tileId, node) => {
-        if(!tileId) return
-        if(node) tileElementsRef.current.set(tileId, node)
-        else tileElementsRef.current.delete(tileId)
-    }, [])
 
     const setStagePhase = useCallback((nextPhase) => {
         stagePhaseRef.current = nextPhase
@@ -758,31 +732,6 @@ function ArticleWebArt({ dataWrapper, id }) {
         delete window.__pendingSectionAction
 
         onIntroEnter({ openAll: true })
-
-        const targetArticleId = pending.targetArticleId || dataWrapper.uniqueId
-        let openTimeoutId = null
-        let firstFrameId = null
-        let retryTimeoutId = null
-        let secondFrameId = null
-
-        openTimeoutId = window.setTimeout(() => {
-            firstFrameId = window.requestAnimationFrame(() => {
-                _scrollArticleIntoSectionView(targetArticleId, dataWrapper.sectionId)
-
-                retryTimeoutId = window.setTimeout(() => {
-                    secondFrameId = window.requestAnimationFrame(() => {
-                        _scrollArticleIntoSectionView(targetArticleId, dataWrapper.sectionId)
-                    })
-                }, 220)
-            })
-        }, 90)
-
-        return () => {
-            if(openTimeoutId !== null) window.clearTimeout(openTimeoutId)
-            if(firstFrameId !== null) window.cancelAnimationFrame(firstFrameId)
-            if(retryTimeoutId !== null) window.clearTimeout(retryTimeoutId)
-            if(secondFrameId !== null) window.cancelAnimationFrame(secondFrameId)
-        }
     }, [dataWrapper.uniqueId, dataWrapper.sectionId, navigation.targetSection?.id, navigation.transitionStatus, onIntroEnter])
 
     const openTile = useCallback((uniqueId) => {
@@ -826,112 +775,9 @@ function ArticleWebArt({ dataWrapper, id }) {
     }, [allTileIds, closeAllOpenTiles, openAllArtTiles, openTileIds])
 
     useEffect(() => {
-        if(typeof window === "undefined") return
-        if(!shouldMountTiles || showIntroCover || !openTileIds.size) return
-
-        const observedEntries = Array.from(openTileIds)
-            .map((tileId) => [tileId, tileElementsRef.current.get(tileId)])
-            .filter(([, node]) => Boolean(node))
-
-        if(!observedEntries.length) return
-
-        const clearPendingClose = (tileId) => {
-            const timeoutId = scrollCloseTimeoutsRef.current.get(tileId)
-            if(timeoutId == null) return
-
-            window.clearTimeout(timeoutId)
-            scrollCloseTimeoutsRef.current.delete(tileId)
-        }
-
-        const scheduleClose = (tileId) => {
-            if(scrollCloseTimeoutsRef.current.has(tileId)) return
-
-            const timeoutId = window.setTimeout(() => {
-                scrollCloseTimeoutsRef.current.delete(tileId)
-                if(openTileIdsRef.current.has(tileId)) closeTile(tileId)
-            }, 220)
-
-            scrollCloseTimeoutsRef.current.set(tileId, timeoutId)
-        }
-
-        const clearAllPendingCloses = () => {
-            for(const timeoutId of scrollCloseTimeoutsRef.current.values())
-                window.clearTimeout(timeoutId)
-            scrollCloseTimeoutsRef.current.clear()
-        }
-
-        const scrollRoot = _isMobileWebArtLayout()
-            ? null
-            : document.getElementById(`scrollable-${dataWrapper.sectionId}`)
-
-        if("IntersectionObserver" in window) {
-            const nodeToId = new Map(observedEntries.map(([tileId, node]) => [node, tileId]))
-            const observer = new IntersectionObserver((entries) => {
-                for(const entry of entries) {
-                    const tileId = nodeToId.get(entry.target)
-                    if(!tileId) continue
-
-                    const isFarAway = !entry.isIntersecting || entry.intersectionRatio <= 0.02
-                    if(isFarAway) scheduleClose(tileId)
-                    else clearPendingClose(tileId)
-                }
-            }, {
-                root: scrollRoot,
-                rootMargin: "18% 0px 18% 0px",
-                threshold: [0, 0.02, 0.08]
-            })
-
-            for(const [, node] of observedEntries)
-                observer.observe(node)
-
-            return () => {
-                observer.disconnect()
-                clearAllPendingCloses()
-            }
-        }
-
-        let frameId = null
-        const checkVisibility = () => {
-            frameId = null
-            const rootRect = scrollRoot?.getBoundingClientRect?.()
-            const rootTop = rootRect?.top ?? 0
-            const rootBottom = rootRect?.bottom ?? window.innerHeight
-            const rootHeight = Math.max(1, rootRect?.height ?? window.innerHeight)
-            const margin = rootHeight * 0.18
-
-            for(const [tileId, node] of observedEntries) {
-                const rect = node.getBoundingClientRect()
-                const isFarAway = rect.bottom < rootTop - margin || rect.top > rootBottom + margin
-                if(isFarAway) scheduleClose(tileId)
-                else clearPendingClose(tileId)
-            }
-        }
-
-        const scheduleVisibilityCheck = () => {
-            if(frameId == null)
-                frameId = window.requestAnimationFrame(checkVisibility)
-        }
-
-        const scrollTarget = scrollRoot || window
-        scrollTarget.addEventListener("scroll", scheduleVisibilityCheck, { passive: true })
-        window.addEventListener("resize", scheduleVisibilityCheck, { passive: true })
-        scheduleVisibilityCheck()
-
-        return () => {
-            scrollTarget.removeEventListener("scroll", scheduleVisibilityCheck)
-            window.removeEventListener("resize", scheduleVisibilityCheck)
-            if(frameId != null) window.cancelAnimationFrame(frameId)
-            clearAllPendingCloses()
-        }
-    }, [shouldMountTiles, showIntroCover, openTileIds, closeTile, dataWrapper.sectionId])
-
-    useEffect(() => {
         if(typeof window === "undefined" || !window.matchMedia) return
         if(showIntroCover || !openTileIds.size) return
         if(!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return
-
-        const shell = shellRef.current
-        if(!shell) return
 
         const clearDesktopClose = () => {
             if(desktopCloseTimeoutRef.current == null) return
@@ -948,31 +794,21 @@ function ArticleWebArt({ dataWrapper, id }) {
             }, 180)
         }
 
-        const onPointerEnter = () => clearDesktopClose()
-        const onPointerLeaveShell = (event) => {
-            if(event.relatedTarget && shell.contains(event.relatedTarget)) return
-            scheduleDesktopClose()
-        }
-        const onWindowPointerOut = (event) => {
-            if(event.relatedTarget === null) scheduleDesktopClose()
-        }
         const onBlur = () => scheduleDesktopClose()
+        const onFocus = () => clearDesktopClose()
         const onVisibilityChange = () => {
             if(document.hidden) scheduleDesktopClose()
+            else clearDesktopClose()
         }
 
-        shell.addEventListener("pointerenter", onPointerEnter)
-        shell.addEventListener("pointerleave", onPointerLeaveShell)
-        window.addEventListener("pointerout", onWindowPointerOut, { passive: true })
         window.addEventListener("blur", onBlur)
+        window.addEventListener("focus", onFocus)
         document.addEventListener("visibilitychange", onVisibilityChange)
 
         return () => {
             clearDesktopClose()
-            shell.removeEventListener("pointerenter", onPointerEnter)
-            shell.removeEventListener("pointerleave", onPointerLeaveShell)
-            window.removeEventListener("pointerout", onWindowPointerOut)
             window.removeEventListener("blur", onBlur)
+            window.removeEventListener("focus", onFocus)
             document.removeEventListener("visibilitychange", onVisibilityChange)
         }
     }, [showIntroCover, openTileIds, closeAllOpenTiles])
@@ -1054,15 +890,13 @@ function ArticleWebArt({ dataWrapper, id }) {
         const shouldRenderTile = mountedTileIds.has(tileId) || isOpen
         return (
             <GatedWebArtTile key={tileId}
-                             tileId={tileId}
                              label={getItemTileLabel(itemWrapper, index)}
                              isOpen={isOpen}
                              onToggle={() => {
                                  if(isOpen) closeTile(tileId)
                                  else openTile(tileId)
                              }}
-                             shouldRender={shouldRenderTile}
-                             tileRefCallback={registerTileElement}>
+                             shouldRender={shouldRenderTile}>
                 {shouldRenderTile && (
                     <WebArtTile itemWrapper={itemWrapper}
                                 index={index}
@@ -1152,15 +986,13 @@ function ArticleWebArt({ dataWrapper, id }) {
         const shouldRenderTile = mountedTileIds.has(tileId) || isOpen
         return (
             <GatedWebArtTile key={key}
-                             tileId={tileId}
                              label={label}
                              isOpen={isOpen}
                              onToggle={() => {
                                  if(isOpen) closeTile(tileId)
                                  else openTile(tileId)
                              }}
-                             shouldRender={shouldRenderTile}
-                             tileRefCallback={registerTileElement}>
+                             shouldRender={shouldRenderTile}>
                 {shouldRenderTile && render(isOpen)}
             </GatedWebArtTile>
         )
@@ -1240,8 +1072,7 @@ function ArticleWebArt({ dataWrapper, id }) {
                  className={`article-web-art`}
                  selectedItemCategoryId={selectedItemCategoryId}
                  setSelectedItemCategoryId={setSelectedItemCategoryId}>
-            <div className={`article-web-art-shell`}
-                 ref={shellRef}>
+            <div className={`article-web-art-shell`}>
                 <WebArtIntroCover guide={introCopy.guide}
                                   buttonLabel={showIntroCover ? introCopy.button : introHideLabel}
                                   hidden={!showIntroCover}
@@ -1263,13 +1094,13 @@ function ArticleWebArt({ dataWrapper, id }) {
                     <div className={`article-web-art-items ${locked ? "article-web-art-items-locked" : ""}`}
                          ref={tilesWrapperRef}
                          aria-busy={showIntroCover}>
+                        {itemTiles}
+                        {ambientTiles}
                         {shouldMountTiles && (
                             <SendYourFunAnimationTile label={submitTileLabel}
                                                       clickLabel={clickTileLabel}
                                                       previewRequested={sendYoursPreviewOpen}/>
                         )}
-                        {itemTiles}
-                        {ambientTiles}
                     </div>
                 </div>
             </div>
@@ -1341,16 +1172,7 @@ function WebArtIntroCover({ guide, buttonLabel, hidden, onEnter, secondaryButton
     )
 }
 
-function GatedWebArtTile({ tileId, label, isOpen, onToggle, shouldRender = true, children, tileRefCallback = null }) {
-    const rootRef = useRef(null)
-
-    useEffect(() => {
-        tileRefCallback?.(tileId, rootRef.current)
-        return () => {
-            tileRefCallback?.(tileId, null)
-        }
-    }, [tileId, tileRefCallback])
-
+function GatedWebArtTile({ label, isOpen, onToggle, shouldRender = true, children }) {
     const onClosedTileClick = useCallback((event) => {
         if(isOpen || event.defaultPrevented) return
         if(event.target.closest?.("button")) return
@@ -1359,7 +1181,6 @@ function GatedWebArtTile({ tileId, label, isOpen, onToggle, shouldRender = true,
 
     return (
         <div className={`article-web-art-gated-tile ${isOpen ? "article-web-art-gated-tile-open" : "article-web-art-gated-tile-closed"}`}
-             ref={rootRef}
              onClick={isOpen ? undefined : onClosedTileClick}>
             {shouldRender ? children : (
                 <div className={`article-web-art-tile article-web-art-tile-placeholder`}

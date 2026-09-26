@@ -120,38 +120,51 @@ test('Home desktop density stays compact while contact controls remain usable', 
                 const element=document.querySelector(selector)
                 if(!element) return null
                 const rect=element.getBoundingClientRect()
-                return {font:parseFloat(getComputedStyle(element).fontSize),height:rect.height}
+                return {font:parseFloat(getComputedStyle(element).fontSize),width:rect.width,height:rect.height}
             }
             return {
                 heading:get('.section-header-home h2'),
                 contact:get('#article-1-section-about .article-inline-list-item-control'),
                 chip:get('#article-1-section-about .article-inline-list-item-pill'),
                 intro:get('.article-feature-item-home-style-intro .article-feature-item-text'),
+                introImage:get('.article-feature-item-home-style-intro .article-feature-item-image'),
+                skillCard:get('#article-3-section-about .article-info-list-item-content'),
                 skillTitle:get('#article-3-section-about .article-info-list-item-info-title'),
                 skillBody:get('#article-3-section-about .article-info-list-item-info-text'),
+                seeMore:get('#article-3-section-about .collapsable-menu > button.see-more-button-modern'),
+                stackSeeMore:get('#article-7-section-about .collapsable-menu > button.see-more-button-modern'),
                 name:get('#article-5-section-about .name-origin-word'),
                 nameCopy:get('#article-5-section-about .name-origin-copy'),
+                stackCard:get('#article-7-section-about .article-stack-item-home'),
                 stackValue:get('#article-7-section-about .article-stack-item-title-main'),
                 homeHeight:document.querySelector('#scrollable-about').scrollHeight
             }
         })
-        expect(metrics.heading.font).toBeGreaterThanOrEqual(28)
-        expect(metrics.heading.font).toBeLessThanOrEqual(33)
+        expect(metrics.heading.font).toBeGreaterThanOrEqual(24)
+        expect(metrics.heading.font).toBeLessThanOrEqual(27)
         expect(metrics.contact.height).toBeGreaterThanOrEqual(44)
-        expect(metrics.chip.height).toBeLessThanOrEqual(38)
-        expect(metrics.intro.font).toBeGreaterThanOrEqual(16)
-        expect(metrics.intro.font).toBeLessThanOrEqual(17)
-        expect(metrics.skillTitle.font).toBeGreaterThanOrEqual(14)
-        expect(metrics.skillTitle.font).toBeLessThanOrEqual(16)
-        expect(metrics.skillBody.font).toBeGreaterThanOrEqual(14)
-        expect(metrics.skillBody.font).toBeLessThanOrEqual(15.5)
-        expect(metrics.name.font).toBeGreaterThanOrEqual(80)
-        expect(metrics.name.font).toBeLessThanOrEqual(92)
-        expect(metrics.nameCopy.font).toBeGreaterThanOrEqual(14)
-        expect(metrics.nameCopy.font).toBeLessThanOrEqual(16)
-        expect(metrics.stackValue.font).toBeGreaterThanOrEqual(21)
-        expect(metrics.stackValue.font).toBeLessThanOrEqual(24)
-        expect(metrics.homeHeight).toBeLessThan(2800)
+        expect(metrics.chip.height).toBeLessThanOrEqual(31)
+        expect(metrics.introImage.width).toBeLessThanOrEqual(180)
+        expect(metrics.introImage.height).toBeLessThanOrEqual(180)
+        expect(metrics.intro.font).toBeGreaterThanOrEqual(12.5)
+        expect(metrics.intro.font).toBeLessThanOrEqual(14)
+        expect(metrics.skillTitle.font).toBeGreaterThanOrEqual(12.7)
+        expect(metrics.skillTitle.font).toBeLessThanOrEqual(13.5)
+        expect(metrics.skillBody.font).toBeGreaterThanOrEqual(12)
+        expect(metrics.skillBody.font).toBeLessThanOrEqual(13)
+        expect(metrics.skillCard.height).toBeLessThanOrEqual(115)
+        expect(metrics.seeMore.width).toBeLessThanOrEqual(170)
+        expect(metrics.seeMore.height).toBe(44)
+        expect(metrics.stackSeeMore.width).toBe(metrics.seeMore.width)
+        expect(metrics.stackSeeMore.height).toBe(metrics.seeMore.height)
+        expect(metrics.name.font).toBeGreaterThanOrEqual(64)
+        expect(metrics.name.font).toBeLessThanOrEqual(72)
+        expect(metrics.nameCopy.font).toBeGreaterThanOrEqual(12.5)
+        expect(metrics.nameCopy.font).toBeLessThanOrEqual(13.5)
+        expect(metrics.stackValue.font).toBeGreaterThanOrEqual(16)
+        expect(metrics.stackValue.font).toBeLessThanOrEqual(18.5)
+        expect(metrics.stackCard.height).toBeLessThanOrEqual(90)
+        expect(metrics.homeHeight).toBeLessThan(2100)
     }
 })
 
@@ -181,6 +194,95 @@ test('Home intro remains readable in a narrow landscape desktop pane', async ({p
     expect(metrics.introImage.width).toBeGreaterThan(120)
     expect(metrics.nameDisplay.font).toBeGreaterThanOrEqual(36)
     expect(metrics.nameDisplay.font).toBeLessThanOrEqual(60)
+})
+
+test('Home density reduction reaches medium desktop widths', async ({page})=>{
+    await preferences(page)
+    await page.setViewportSize({width:1024,height:768})
+    await openSection(page,'about')
+    const metrics=await page.evaluate(()=>{
+        const measure=(selector)=>{
+            const element=document.querySelector(selector)
+            if(!element) return null
+            const rect=element.getBoundingClientRect()
+            return {width:rect.width,height:rect.height,font:parseFloat(getComputedStyle(element).fontSize)}
+        }
+        return {
+            layout:document.documentElement.dataset.layout,
+            heading:measure('.section-header-home h2'),
+            intro:measure('.article-feature-item-home-style-intro .article-feature-item-text'),
+            portrait:measure('.article-feature-item-home-style-intro .article-feature-item-image'),
+            skill:measure('#article-3-section-about .article-info-list-item-content'),
+            stack:measure('#article-7-section-about .article-stack-item-home'),
+            homeHeight:document.querySelector('#scrollable-about').scrollHeight
+        }
+    })
+
+    expect(metrics.layout).toBe('normal')
+    expect(metrics.heading.font).toBeLessThanOrEqual(26)
+    expect(metrics.intro.font).toBeLessThanOrEqual(13.5)
+    expect(metrics.portrait.width).toBeLessThanOrEqual(140)
+    expect(metrics.skill.height).toBeLessThanOrEqual(115)
+    expect(metrics.stack.height).toBeLessThanOrEqual(90)
+    expect(metrics.homeHeight).toBeLessThan(2250)
+})
+
+test('Home mobile scale stays compact from tiny phones to tall touch displays', async ({page})=>{
+    await preferences(page)
+    await page.setViewportSize({width:320,height:568})
+    await openSection(page,'about')
+
+    for(const [width,height] of [[280,653],[320,568],[390,844],[1440,2560]]) {
+        await page.setViewportSize({width,height})
+        await expect(page.locator('html')).toHaveAttribute('data-layout','mobile')
+        const metrics=await page.evaluate(()=>{
+            const measure=(selector)=>{
+                const element=document.querySelector(selector)
+                if(!element) return null
+                const rect=element.getBoundingClientRect()
+                const style=getComputedStyle(element)
+                return {width:rect.width,height:rect.height,font:parseFloat(style.fontSize),line:parseFloat(style.lineHeight)}
+            }
+            return {
+                viewport:innerWidth,
+                documentWidth:document.documentElement.scrollWidth,
+                heading:measure('.section-header-home h2'),
+                articleTitle:measure('#article-3-section-about > .article-title'),
+                contact:measure('#article-1-section-about .article-inline-list-item-control'),
+                chip:measure('#article-1-section-about .article-inline-list-item-pill'),
+                intro:measure('.article-feature-item-home-style-intro .article-feature-item-text'),
+                portrait:measure('.article-feature-item-home-style-intro .article-feature-item-image'),
+                skill:measure('#article-3-section-about .article-info-list-item-content'),
+                skillTitle:measure('#article-3-section-about .article-info-list-item-info-title'),
+                skillBody:measure('#article-3-section-about .article-info-list-item-info-text'),
+                seeMore:measure('#article-3-section-about .collapsable-menu > button.see-more-button-modern'),
+                stackSeeMore:measure('#article-7-section-about .collapsable-menu > button.see-more-button-modern'),
+                name:measure('#article-5-section-about .name-origin-word'),
+                nameCopy:measure('#article-5-section-about .name-origin-copy'),
+                stack:measure('#article-7-section-about .article-stack-item-home'),
+                stackTitle:measure('#article-7-section-about .article-stack-item-title-main')
+            }
+        })
+
+        expect(metrics.documentWidth,`${width}x${height} document width`).toBeLessThanOrEqual(width+1)
+        expect(metrics.heading.font,`${width}x${height} welcome title`).toBeLessThanOrEqual(26)
+        expect(metrics.articleTitle.font,`${width}x${height} article title`).toBeLessThanOrEqual(18)
+        expect(metrics.contact.height,`${width}x${height} touch target`).toBeGreaterThanOrEqual(43.5)
+        expect(metrics.chip.height,`${width}x${height} visible contact chip`).toBeLessThanOrEqual(32)
+        expect(metrics.intro.font,`${width}x${height} intro copy`).toBeLessThanOrEqual(15)
+        expect(metrics.portrait.width,`${width}x${height} intro portrait`).toBeLessThanOrEqual(196)
+        expect(metrics.skillTitle.font,`${width}x${height} skill title`).toBeLessThanOrEqual(15)
+        expect(metrics.skillBody.font,`${width}x${height} skill copy`).toBeLessThanOrEqual(14)
+        expect(metrics.skill.height,`${width}x${height} skill row`).toBeLessThanOrEqual(112)
+        expect(metrics.seeMore.width,`${width}x${height} show-more width`).toBeLessThanOrEqual(154)
+        expect(metrics.seeMore.height,`${width}x${height} show-more hit height`).toBe(44)
+        expect(metrics.stackSeeMore.width,`${width}x${height} stack show-more width`).toBe(metrics.seeMore.width)
+        expect(metrics.stackSeeMore.height,`${width}x${height} stack show-more hit height`).toBe(metrics.seeMore.height)
+        expect(metrics.name.font,`${width}x${height} name display`).toBeLessThanOrEqual(58)
+        expect(metrics.nameCopy.font,`${width}x${height} name copy`).toBeLessThanOrEqual(15)
+        expect(metrics.stackTitle.font,`${width}x${height} stack title`).toBeLessThanOrEqual(18)
+        expect(metrics.stack.height,`${width}x${height} stack card`).toBeLessThanOrEqual(104)
+    }
 })
 
 test('Experience desktop density keeps all three articles compact and readable', async ({page})=>{
@@ -376,6 +478,7 @@ test('Software desktop density compacts project cards and testimonials without s
                 return {width:rect.width,height:rect.height,font:parseFloat(getComputedStyle(element).fontSize),lineHeight:parseFloat(getComputedStyle(element).lineHeight)}
             }
             return {
+                portfolioHeading:measure('#article-1-section-my-software > h4.article-title'),
                 project:measure('#article-1-section-my-software .article-portfolio-item'),
                 projectTitle:measure('#article-1-section-my-software .article-portfolio-item-title-main'),
                 projectCategory:measure('#article-1-section-my-software .article-portfolio-item-title-category'),
@@ -394,6 +497,8 @@ test('Software desktop density compacts project cards and testimonials without s
         })
 
         expect(metrics.project.height).toBeLessThan(320)
+        expect(metrics.portfolioHeading.font).toBeGreaterThanOrEqual(21)
+        expect(metrics.portfolioHeading.font).toBeLessThanOrEqual(24)
         expect(metrics.projectTitle.font).toBeGreaterThanOrEqual(18)
         expect(metrics.projectTitle.font).toBeLessThanOrEqual(21)
         expect(metrics.projectCategory.font).toBeLessThanOrEqual(15)
@@ -432,13 +537,82 @@ test('Software desktop density stays off in narrow landscape and mobile modes', 
     await page.setViewportSize({width:390,height:844})
     await expect(page.locator('html')).toHaveAttribute('data-layout','mobile')
     await expect(page.locator('#article-1-section-my-software .article-portfolio-item').first()).toBeVisible()
+    expect(await page.locator('#article-1-section-my-software > h4.article-title').evaluate(el=>parseFloat(getComputedStyle(el).fontSize))).toBeLessThanOrEqual(20)
     await expect(page.locator('#article-2-section-my-software .article-testimonials-item-balloon').first()).toBeVisible()
     expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(391)
 
     await page.setViewportSize({width:1440,height:2560})
     await expect(page.locator('html')).toHaveAttribute('data-layout','mobile')
     await expect(page.locator('#article-1-section-my-software .article-portfolio-item').first()).toBeVisible()
+    expect(await page.locator('#article-1-section-my-software > h4.article-title').evaluate(el=>parseFloat(getComputedStyle(el).fontSize))).toBeLessThanOrEqual(24)
     await expect(page.locator('#article-2-section-my-software .article-testimonials-item-balloon').first()).toBeVisible()
+})
+
+test('Software mobile filters and project cards use compact type with full-size targets', async ({page})=>{
+    await preferences(page)
+    await page.setViewportSize({width:390,height:844})
+    await openSection(page,'my-software')
+
+    for(const [width,height] of [[280,653],[320,568],[390,844],[1440,2560]]) {
+        await page.setViewportSize({width,height})
+        await expect(page.locator('#article-1-section-my-software .article-portfolio-item').first()).toBeVisible()
+        const metrics=await page.evaluate(()=>{
+            const measure=(selector)=>{
+                const element=document.querySelector(selector)
+                if(!element) return null
+                const rect=element.getBoundingClientRect()
+                const style=getComputedStyle(element)
+                return {width:rect.width,height:rect.height,font:parseFloat(style.fontSize),padding:style.padding}
+            }
+            return {
+                viewport:innerWidth,
+                documentWidth:document.documentElement.scrollWidth,
+                filter:measure('#article-1-section-my-software .article-category-filter'),
+                filterButton:measure('#article-1-section-my-software .article-category-filter button'),
+                filterLabel:measure('#article-1-section-my-software .article-category-filter button .category-filter-button-label'),
+                card:measure('#article-1-section-my-software .article-portfolio-item'),
+                title:measure('#article-1-section-my-software .article-portfolio-item-title-main'),
+                category:measure('#article-1-section-my-software .article-portfolio-item-title-category'),
+                copy:measure('#article-1-section-my-software .article-portfolio-item-body-description'),
+                action:measure('#article-1-section-my-software .article-portfolio-item-control-btn')
+            }
+        })
+        expect(metrics.documentWidth,`${width}x${height} page width`).toBeLessThanOrEqual(width+1)
+        expect(metrics.filter.height,`${width}x${height} filter frame`).toBeLessThanOrEqual(102)
+        expect(metrics.filterButton.height,`${width}x${height} filter target`).toBeGreaterThanOrEqual(43.5)
+        expect(metrics.filterLabel.font,`${width}x${height} filter label`).toBeLessThanOrEqual(13)
+        expect(metrics.title.font,`${width}x${height} project title`).toBeLessThanOrEqual(19)
+        expect(metrics.category.font,`${width}x${height} project category`).toBeLessThanOrEqual(14)
+        expect(metrics.copy.font,`${width}x${height} project copy`).toBeLessThanOrEqual(15)
+        expect(metrics.action.height,`${width}x${height} project action`).toBeGreaterThanOrEqual(43.5)
+    }
+})
+
+test('Software and Hardware filters use only 2×2 or 1×4 layouts', async ({page})=>{
+    await preferences(page)
+
+    for(const section of ['my-software','my-hardware']) {
+        for(const [width,height] of [[280,653],[390,844],[429,900],[600,900],[1366,768],[1440,2560]]) {
+            await page.setViewportSize({width,height})
+            await openSection(page,section)
+
+            const filter=page.locator(`#article-1-section-${section} .article-category-filter`)
+            await expect(filter).toBeVisible()
+            const layout=await filter.evaluate(element=>{
+                const style=getComputedStyle(element)
+                return {
+                    columns:style.gridTemplateColumns.split(' ').length,
+                    rows:style.gridTemplateRows.split(' ').length,
+                    contentWidth:element.closest('.article-content').getBoundingClientRect().width
+                }
+            })
+
+            await expect(filter.locator('button')).toHaveCount(4)
+            const expectedColumns=layout.contentWidth>=512?4:2
+            expect(layout.columns,`${section} filter columns at ${width}×${height} (content ${layout.contentWidth}px)`).toBe(expectedColumns)
+            expect(layout.rows,`${section} filter rows at ${width}×${height}`).toBe(expectedColumns===4?1:2)
+        }
+    }
 })
 
 test('Hardware desktop density compacts project cards and DataProbe without shrinking controls', async ({page})=>{
@@ -462,7 +636,9 @@ test('Hardware desktop density compacts project cards and DataProbe without shri
             }
             return {
                 project:measure('#article-1-section-my-hardware .article-portfolio-item'),
+                projectTitleBand:measure('#article-1-section-my-hardware .article-portfolio-item-title'),
                 projectTitle:measure('#article-1-section-my-hardware .article-portfolio-item-title-main'),
+                projectCategory:measure('#article-1-section-my-hardware .article-portfolio-item-title-category'),
                 projectCopy:measure('#article-1-section-my-hardware .article-portfolio-item-body-description'),
                 projectAction:measure('#article-1-section-my-hardware .article-portfolio-item-control-btn'),
                 filter:measure('#article-1-section-my-hardware .category-filter-button'),
@@ -478,8 +654,10 @@ test('Hardware desktop density compacts project cards and DataProbe without shri
         })
 
         expect(metrics.project.height).toBeLessThan(390)
-        expect(metrics.projectTitle.font).toBeGreaterThanOrEqual(18)
-        expect(metrics.projectTitle.font).toBeLessThanOrEqual(21)
+        expect(metrics.projectTitleBand.height).toBeLessThan(100)
+        expect(metrics.projectTitle.font).toBeGreaterThanOrEqual(16)
+        expect(metrics.projectTitle.font).toBeLessThanOrEqual(19)
+        expect(metrics.projectCategory.font).toBeLessThanOrEqual(14)
         expect(metrics.projectCopy.font).toBeGreaterThanOrEqual(14)
         expect(metrics.projectCopy.font).toBeLessThanOrEqual(16)
         expect(metrics.projectAction.height).toBeGreaterThanOrEqual(43.5)
@@ -512,6 +690,130 @@ test('Hardware desktop density compacts project cards and DataProbe without shri
     }
 })
 
+test('Hardware project title bands stay compact from tiny phones to tall mobile screens', async ({page})=>{
+    await preferences(page)
+    await page.setViewportSize({width:390,height:844})
+    await openSection(page,'my-hardware')
+
+    for(const [width,height] of [[280,653],[390,844],[429,900],[1440,2560]]) {
+        await page.setViewportSize({width,height})
+        const title=page.locator('#article-1-section-my-hardware .article-portfolio-item-title').first()
+        await expect(title).toBeVisible()
+        const card=page.locator('#article-1-section-my-hardware .article-portfolio-item').first()
+        const metrics=await title.evaluate(element=>({
+            height:element.getBoundingClientRect().height,
+            titleFont:parseFloat(getComputedStyle(element.querySelector('.article-portfolio-item-title-main')).fontSize),
+            categoryFont:parseFloat(getComputedStyle(element.querySelector('.article-portfolio-item-title-category')).fontSize)
+        }))
+        const bodyFont=await card.locator('.article-portfolio-item-body-description').evaluate(element=>parseFloat(getComputedStyle(element).fontSize))
+        const controlHeight=await card.locator('.article-portfolio-item-control-btn').first().evaluate(element=>element.getBoundingClientRect().height)
+        expect(metrics.height,`${width}×${height} Hardware title band`).toBeLessThan(100)
+        expect(metrics.titleFont,`${width}×${height} Hardware title`).toBeLessThanOrEqual(19)
+        expect(metrics.categoryFont,`${width}×${height} Hardware category`).toBeLessThanOrEqual(14)
+        expect(bodyFont,`${width}×${height} Hardware description`).toBeLessThanOrEqual(15)
+        expect(controlHeight,`${width}×${height} Hardware action`).toBeGreaterThanOrEqual(43.5)
+        expect(controlHeight,`${width}×${height} Hardware action`).toBeLessThanOrEqual(50)
+        expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(width+1)
+    }
+})
+
+test('DataProbe typography stays compact on tiny, regular, and tall mobile screens', async ({page})=>{
+    await preferences(page)
+    await page.setViewportSize({width:390,height:844})
+    await openSection(page,'my-hardware')
+
+    const probe=page.locator('#article-2-section-my-hardware')
+    for(const [width,height] of [[280,653],[390,844],[429,900],[1440,2560]]) {
+        await page.setViewportSize({width,height})
+        await expect(probe.locator('.article-title-text')).toBeVisible()
+        const metrics=await probe.evaluate(element=>{
+            const font=selector=>{
+                const target=element.querySelector(selector)
+                return target?parseFloat(getComputedStyle(target).fontSize):null
+            }
+            const action=element.querySelector('button.article-data-probe-action-btn, button.article-data-probe-unlock-btn')
+            return {
+                title:font('.article-title-text'),
+                intro:font('.article-data-probe-intro'),
+                summaryValue:font('.article-data-probe-summary-value'),
+                summaryLabel:font('.article-data-probe-summary-label'),
+                blockTitle:font('.article-data-probe-block-title'),
+                blockDescription:font('.article-data-probe-block-description'),
+                itemTitle:font('.article-data-probe-item-title'),
+                itemMeta:font('.article-data-probe-item-meta'),
+                actionFont:action?parseFloat(getComputedStyle(action).fontSize):null,
+                actionHeight:action?action.getBoundingClientRect().height:null,
+                documentWidth:document.documentElement.scrollWidth
+            }
+        })
+        expect(metrics.title,`${width}×${height} DataProbe title`).toBeLessThanOrEqual(22)
+        expect(metrics.intro,`${width}×${height} DataProbe intro`).toBeLessThanOrEqual(15)
+        expect(metrics.summaryValue,`${width}×${height} summary value`).toBeLessThanOrEqual(16)
+        expect(metrics.summaryLabel,`${width}×${height} summary label`).toBeLessThanOrEqual(13.5)
+        expect(metrics.blockTitle,`${width}×${height} block title`).toBeLessThanOrEqual(16)
+        expect(metrics.blockDescription,`${width}×${height} block description`).toBeLessThanOrEqual(15)
+        expect(metrics.itemTitle,`${width}×${height} item title`).toBeLessThanOrEqual(15.5)
+        expect(metrics.itemMeta,`${width}×${height} item metadata`).toBeLessThanOrEqual(13.5)
+        expect(metrics.actionFont,`${width}×${height} action text`).toBeLessThanOrEqual(14)
+        expect(metrics.actionHeight,`${width}×${height} action target`).toBeGreaterThanOrEqual(43.5)
+        expect(metrics.actionHeight,`${width}×${height} action target`).toBeLessThanOrEqual(50)
+        expect(metrics.documentWidth,`${width}×${height} document width`).toBeLessThanOrEqual(width+1)
+    }
+})
+
+test('DataProbe mobile vertical rhythm stays compact without shrinking controls', async ({page})=>{
+    await preferences(page)
+    await page.setViewportSize({width:390,height:844})
+    await openSection(page,'my-hardware')
+
+    const probe=page.locator('#article-2-section-my-hardware')
+    for(const [width,height] of [[280,653],[320,568],[390,844],[429,900],[1440,2560]]) {
+        await page.setViewportSize({width,height})
+        const metrics=await probe.evaluate(element=>{
+            const style=selector=>getComputedStyle(element.querySelector(selector))
+            const firstCard=element.querySelector('.accent-external .article-data-probe-item')
+            const action=firstCard.querySelector('.article-data-probe-action-btn')
+            return {
+                contentWidth:element.querySelector('.article-content').getBoundingClientRect().width,
+                introBottom:parseFloat(style('.article-data-probe-intro').marginBottom),
+                sectionTop:parseFloat(style('.article-data-probe-block').marginTop),
+                sectionPadding:parseFloat(style('.article-data-probe-block').paddingTop),
+                cardPadding:parseFloat(getComputedStyle(firstCard).paddingTop),
+                cardHeight:firstCard.getBoundingClientRect().height,
+                metadataColumns:style('.article-data-probe-item-meta-row').gridTemplateColumns.split(' ').length,
+                actionHeight:action.getBoundingClientRect().height
+            }
+        })
+        expect(metrics.contentWidth,`${width}x${height} content fills the article`).toBeGreaterThan(width*.9)
+        expect(metrics.introBottom,`${width}x${height} intro spacing`).toBeLessThanOrEqual(13)
+        expect(metrics.sectionTop,`${width}x${height} section spacing`).toBeLessThanOrEqual(11)
+        expect(metrics.sectionPadding,`${width}x${height} section padding`).toBeLessThanOrEqual(13)
+        expect(metrics.cardPadding,`${width}x${height} reading-card padding`).toBeLessThanOrEqual(11)
+        expect(metrics.metadataColumns,`${width}x${height} metadata columns`).toBe(2)
+        expect(metrics.cardHeight,`${width}x${height} reading-card height`).toBeLessThan(400)
+        expect(metrics.actionHeight,`${width}x${height} action target`).toBeGreaterThanOrEqual(43.5)
+    }
+})
+
+test('DataProbe passive readings stay one item per row at every screen width', async ({page})=>{
+    await preferences(page)
+    await page.setViewportSize({width:390,height:844})
+    await openSection(page,'my-hardware')
+
+    const passiveGrid=page.locator('#article-2-section-my-hardware .accent-passive .article-data-probe-grid-single-column')
+    for(const [width,height] of [[280,653],[390,844],[429,900],[1366,768],[1440,2560],[3440,1440]]) {
+        await page.setViewportSize({width,height})
+        await expect(passiveGrid).toBeVisible()
+        const layout=await passiveGrid.evaluate(element=>({
+            columns:getComputedStyle(element).gridTemplateColumns.split(' ').length,
+            rows:getComputedStyle(element).gridTemplateRows.split(' ').length,
+            items:element.querySelectorAll('.article-data-probe-item').length
+        }))
+        expect(layout.columns,`${width}×${height} passive columns`).toBe(1)
+        expect(layout.rows,`${width}×${height} passive rows`).toBe(layout.items)
+    }
+})
+
 test('Hardware desktop density stays off in narrow landscape and mobile modes', async ({page})=>{
     await preferences(page)
     await page.setViewportSize({width:568,height:320})
@@ -533,7 +835,7 @@ test('Hardware desktop density stays off in narrow landscape and mobile modes', 
     await expect(page.locator('#article-1-section-my-hardware .article-portfolio-item').first()).toBeVisible()
     await expect(page.locator('#article-2-section-my-hardware .article-data-probe-item').first()).toBeVisible()
     const tallMobileFont=await page.locator('#article-1-section-my-hardware .article-portfolio-item-body-description').first().evaluate(element=>parseFloat(getComputedStyle(element).fontSize))
-    expect(tallMobileFont).toBeGreaterThan(16)
+    expect(tallMobileFont).toBeLessThanOrEqual(15)
 })
 
 test('Writings desktop density compacts the timeline, interactive word stage, feature, skills, and manuscript', async ({page})=>{
@@ -598,7 +900,20 @@ test('Writings desktop density compacts the timeline, interactive word stage, fe
             await expect(page.locator('#article-5-section-my-writings .article-skills-item')).toHaveCount(6)
             expect(await page.locator('#article-2-section-my-writings .falling-word').count()).toBeGreaterThan(100)
 
-            await page.locator('#article-2-section-my-writings .falling-word').first().click()
+            await page.locator('#article-2-section-my-writings .falling-word').first().evaluate(element=>{
+                const rect=element.getBoundingClientRect()
+                const pointer={
+                    bubbles:true,
+                    cancelable:true,
+                    pointerId:7,
+                    pointerType:'mouse',
+                    button:0,
+                    clientX:rect.left+rect.width/2,
+                    clientY:rect.top+rect.height/2
+                }
+                element.dispatchEvent(new PointerEvent('pointerdown',pointer))
+                window.dispatchEvent(new PointerEvent('pointerup',pointer))
+            })
             const definition=page.locator('#article-2-section-my-writings .falling-words-modal-card')
             await expect(definition).toBeVisible()
             await definition.getByRole('button',{name:'Close definition'}).click()
@@ -626,12 +941,58 @@ test('Writings desktop density stays off in narrow landscape and mobile modes', 
     await expect(page.locator('#article-3-section-my-writings .article-feature-item-text')).toBeVisible()
     await expect(page.locator('#article-4-section-my-writings .article-skills-item').first()).toBeVisible()
     await expect(page.locator('#article-6-section-my-writings canvas.illustrated-manuscript-canvas')).toBeVisible()
+    const phoneWordFont=await page.locator('#article-2-section-my-writings .falling-word').first().evaluate(element=>parseFloat(getComputedStyle(element).fontSize))
+    expect(phoneWordFont).toBeGreaterThanOrEqual(11)
+    expect(phoneWordFont).toBeLessThanOrEqual(16)
     expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(391)
 
     await page.setViewportSize({width:1440,height:2560})
     await expect(page.locator('html')).toHaveAttribute('data-layout','mobile')
     await expect(page.locator('#article-2-section-my-writings .article-falling-words-stage')).toBeVisible()
+    const tallMobileWordFont=await page.locator('#article-2-section-my-writings .falling-word').first().evaluate(element=>parseFloat(getComputedStyle(element).fontSize))
+    expect(tallMobileWordFont).toBeGreaterThanOrEqual(11)
+    expect(tallMobileWordFont).toBeLessThanOrEqual(16)
     await expect(page.locator('#article-6-section-my-writings canvas.illustrated-manuscript-canvas')).toBeVisible()
+})
+
+test('FallingWords hint wraps inside a content-height card without spacing gaps', async ({page})=>{
+    await preferences(page)
+    await page.setViewportSize({width:390,height:844})
+    await openSection(page,'my-writings')
+
+    const hint=page.locator('#article-2-section-my-writings .article-falling-words-hint')
+    const stage=page.locator('#article-2-section-my-writings .article-falling-words-stage')
+    for(const [width,height] of [[280,653],[390,844],[508,900],[1366,768],[1440,2560]]) {
+        await page.setViewportSize({width,height})
+        const geometry=await hint.evaluate(element=>{
+            const style=getComputedStyle(element)
+            const rect=element.getBoundingClientRect()
+            const textRange=document.createRange()
+            textRange.selectNodeContents(element)
+            const text=textRange.getBoundingClientRect()
+            const iconStyle=getComputedStyle(element,'::before')
+            return {
+                height:rect.height,
+                textLeft:text.left-rect.left,
+                textRight:rect.right-text.right,
+                iconRight:parseFloat(iconStyle.left)+parseFloat(iconStyle.width),
+                paddingLeft:parseFloat(style.paddingLeft),
+                paddingRight:parseFloat(style.paddingRight),
+                verticalSlack:rect.height-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom)-text.height,
+                scrollHeight:element.scrollHeight,
+                clientHeight:element.clientHeight
+            }
+        })
+        const stageTop=await stage.evaluate(element=>element.getBoundingClientRect().top)
+        const hintBottom=await hint.evaluate(element=>element.getBoundingClientRect().bottom)
+        expect(geometry.height,`${width}x${height} hint height`).toBeLessThan(160)
+        expect(geometry.textLeft,`${width}x${height} text clears the info icon`).toBeGreaterThanOrEqual(geometry.iconRight+8)
+        expect(geometry.textLeft,`${width}x${height} text respects the reserved left padding`).toBeGreaterThanOrEqual(geometry.paddingLeft-1)
+        expect(geometry.textRight,`${width}x${height} text respects right inset`).toBeGreaterThanOrEqual(geometry.paddingRight-1)
+        expect(geometry.verticalSlack,`${width}x${height} unused vertical space`).toBeLessThanOrEqual(24)
+        expect(geometry.scrollHeight,`${width}x${height} hint content`).toBeLessThanOrEqual(geometry.clientHeight+1)
+        expect(stageTop,`${width}x${height} hint and stage do not overlap`).toBeGreaterThanOrEqual(hintBottom-1)
+    }
 })
 
 test('Art desktop density compacts timelines, WebArt, stack cards, and SecretPearls', async ({page})=>{

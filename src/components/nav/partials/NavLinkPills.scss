@@ -99,6 +99,18 @@ button.nav-link-pills-link {
 }
 
 @include layout-mobile {
+    // Two destinations share the band exactly. More destinations keep their
+    // intrinsic touch width and use the existing horizontal scroll behavior.
+    nav.nav-link-pills-mobile.nav-link-pills-count-2 {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        > button.nav-link-pills-link {
+            width: 100%;
+            min-width: 0;
+        }
+    }
+
     nav.nav-link-pills-mobile > button.nav-link-pills-link {
         height: 100%;
         min-height: var(--nav-tabs-height);

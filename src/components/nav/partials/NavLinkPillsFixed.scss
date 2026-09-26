@@ -32,8 +32,6 @@ div.nav-link-pills-fixed-wrapper {
     border-bottom: 1px solid var(--theme-nav-border);
     backdrop-filter: none;
     overflow: hidden;
-    transform: translateZ(0);
-    backface-visibility: hidden;
 
     @include layout-desktop {
         display: none;

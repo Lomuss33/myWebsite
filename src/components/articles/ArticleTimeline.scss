@@ -185,6 +185,14 @@ article.article-timeline--my-art {
         @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
             --avatar-offset-merge-mode: 0px;
         }
+
+        @include content-breakpoint-up(lg) {
+            > li.article-timeline-item:nth-child(3):last-child {
+                grid-column: 1 / -1;
+                width: min(100%, 52rem);
+                justify-self: center;
+            }
+        }
     }
 
     li.article-timeline-item {
@@ -1589,8 +1597,6 @@ article.article-timeline--art-digital-expression {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: clamp(1rem, 2.5vw, 1.55rem);
         align-items: stretch;
-        perspective: 1400px;
-        perspective-origin: 70% 18%;
 
         @include content-breakpoint-down(lg) {
             --digital-card-stack-base: clamp(8rem, 24vw, 9.8rem);
@@ -1616,13 +1622,11 @@ article.article-timeline--art-digital-expression {
     li.article-timeline-item {
         position: relative;
         align-items: stretch;
-        min-height: 315px;
+        min-height: calc(var(--digital-card-stack-track) + 2.5rem);
         padding: var(--digital-item-buffer);
-        transform-style: preserve-3d;
         isolation: isolate;
         transition:
-            transform 560ms cubic-bezier(0.22, 1, 0.36, 1),
-            filter 280ms ease;
+            transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
 
         &::before,
         &::after {
@@ -1635,14 +1639,12 @@ article.article-timeline--art-digital-expression {
 
     li.article-timeline-item:hover,
     li.article-timeline-item:focus-within {
-        transform: translateY(-2px) rotate3d(1, 1, 0, 4deg);
-        filter: saturate(1.04);
+        transform: translateY(-2px);
     }
 
     div.article-timeline-item-content {
         margin-left: 0 !important;
         min-height: 100%;
-        transform: translateZ(24px);
 
         @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
             margin-left: 0!important;
@@ -1661,7 +1663,6 @@ article.article-timeline--art-digital-expression {
         justify-content: center;
         padding: 0.1rem;
         z-index: 5;
-        transform: translateZ(26px);
         pointer-events: none;
     }
 
@@ -1675,13 +1676,11 @@ article.article-timeline--art-digital-expression {
         height: auto;
         pointer-events: auto;
         outline: none;
-        transform-style: preserve-3d;
     }
 
     span.digital-expression-layer-stack__layer {
-        --circle-rest-transform: translate3d(0, 0, 20px);
-        --circle-expanded-transform: translate3d(0, 0, 30px) scale(1.02);
-        --circle-centered-z: 92px;
+        --circle-rest-transform: translate(0, 0) scale(1.02);
+        --circle-expanded-transform: translate(0, 0) scale(1.02);
         position: absolute;
         display: block;
         aspect-ratio: 1;
@@ -1690,9 +1689,7 @@ article.article-timeline--art-digital-expression {
         background: transparent;
         border: 0;
         opacity: 0.72;
-        filter: saturate(1.08) contrast(1.04);
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
+        filter: none;
         box-shadow:
             rgba(100, 100, 111, 0.25) -10px 10px 24px 0,
             0 0 22px rgba(34, 211, 238, 0.08);
@@ -1718,9 +1715,8 @@ article.article-timeline--art-digital-expression {
         right: 10px;
         z-index: 3;
         opacity: 0.66;
-        --circle-rest-transform: translate3d(0, 0, 40px);
-        --circle-expanded-transform: translate3d(-16px, 16px, 70px) scale(1.04);
-        --circle-centered-z: 112px;
+        --circle-rest-transform: translate(-12%, 12%) scale(1.02);
+        --circle-expanded-transform: translate(-18%, 18%) scale(1.04);
         transform: var(--circle-expanded-transform);
     }
 
@@ -1730,9 +1726,8 @@ article.article-timeline--art-digital-expression {
         right: 17px;
         z-index: 4;
         opacity: 0.58;
-        --circle-rest-transform: translate3d(0, 0, 60px);
-        --circle-expanded-transform: translate3d(-34px, 34px, 102px) scale(1.07);
-        --circle-centered-z: 132px;
+        --circle-rest-transform: translate(-18%, 18%) scale(1.03);
+        --circle-expanded-transform: translate(-30%, 30%) scale(1.07);
         transform: var(--circle-expanded-transform);
     }
 
@@ -1742,9 +1737,8 @@ article.article-timeline--art-digital-expression {
         right: 23px;
         z-index: 5;
         opacity: 0.5;
-        --circle-rest-transform: translate3d(0, 0, 80px);
-        --circle-expanded-transform: translate3d(-54px, 54px, 138px) scale(1.12);
-        --circle-centered-z: 152px;
+        --circle-rest-transform: translate(-24%, 24%) scale(1.04);
+        --circle-expanded-transform: translate(-46%, 46%) scale(1.12);
         transform: var(--circle-expanded-transform);
     }
 
@@ -1807,7 +1801,7 @@ article.article-timeline--art-digital-expression {
         top: calc((100% - var(--centered-layer-size)) / 2);
         right: calc((100% - var(--centered-layer-size)) / 2);
         opacity: 0.9;
-        transform: translate3d(0, 0, var(--circle-centered-z)) scale(1.03);
+        transform: scale(1.03);
         box-shadow:
             0 0 0 1px rgba(255, 255, 255, 0.18) inset,
             0 18px 42px rgba(2, 6, 23, 0.32),
@@ -1822,19 +1816,19 @@ article.article-timeline--art-digital-expression {
     li.article-timeline-item a.digital-expression-layer-stack__link:hover span.digital-expression-layer-stack__layer--2,
     li.article-timeline-item a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer--2 {
         --centered-layer-size: calc(var(--digital-stack-size) * 0.82);
-        transform: translate3d(0, 0, var(--circle-centered-z)) scale(1.035) rotate(2deg);
+        transform: scale(1.035) rotate(2deg);
     }
 
     li.article-timeline-item a.digital-expression-layer-stack__link:hover span.digital-expression-layer-stack__layer--3,
     li.article-timeline-item a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer--3 {
         --centered-layer-size: calc(var(--digital-stack-size) * 0.64);
-        transform: translate3d(0, 0, var(--circle-centered-z)) scale(1.04) rotate(-2deg);
+        transform: scale(1.04) rotate(-2deg);
     }
 
     li.article-timeline-item a.digital-expression-layer-stack__link:hover span.digital-expression-layer-stack__layer--4,
     li.article-timeline-item a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer--4 {
         --centered-layer-size: calc(var(--digital-stack-size) * 0.44);
-        transform: translate3d(0, 0, var(--circle-centered-z)) scale(1.05);
+        transform: scale(1.05);
     }
 
     a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer--1 {
@@ -1851,9 +1845,8 @@ article.article-timeline--art-digital-expression {
             aspect-ratio: 1;
             border-radius: 34% 66% 42% 58% / 48% 38% 62% 52%;
             background: conic-gradient(from 210deg, rgba(251, 191, 36, 0.68), rgba(236, 72, 153, 0.62), rgba(99, 102, 241, 0.58), rgba(34, 211, 238, 0.58), rgba(251, 191, 36, 0.68));
-            filter: blur(0.6px);
             opacity: 0.52;
-            transform: translateZ(12px) rotate(-10deg);
+            transform: rotate(-10deg);
         }
 
         &::after {
@@ -1884,7 +1877,7 @@ article.article-timeline--art-digital-expression {
                 0 0 0 38px rgba(167, 139, 250, 0.04),
                 0 0 56px rgba(0, 255, 214, 0.14);
             opacity: 0.8;
-            transform: translateX(-50%) translateZ(12px);
+            transform: translateX(-50%);
         }
 
         &::after {
@@ -1907,9 +1900,8 @@ article.article-timeline--art-digital-expression {
             aspect-ratio: 1;
             background: conic-gradient(from 200deg at 65% 35%, rgba(34, 211, 238, 0.62), rgba(129, 140, 248, 0.62), rgba(244, 114, 182, 0.58), rgba(250, 204, 21, 0.58), rgba(34, 211, 238, 0.62));
             clip-path: polygon(50% 0, 92% 22%, 78% 86%, 24% 100%, 0 38%);
-            filter: blur(0.4px);
             opacity: 0.54;
-            transform: translateZ(12px) rotate(8deg);
+            transform: rotate(8deg);
         }
 
         &::after {
@@ -1926,7 +1918,7 @@ article.article-timeline--art-digital-expression {
 
     @include content-breakpoint-down(sm) {
         li.article-timeline-item {
-            min-height: 300px;
+            min-height: calc(var(--digital-card-stack-track) + 2.5rem);
         }
 
         div.digital-expression-layer-stack {
@@ -1940,11 +1932,10 @@ article.article-timeline--art-digital-expression {
         ul.article-timeline-items {
             --digital-card-stack-base: clamp(5.3rem, 28vw, 6.35rem);
             --digital-item-buffer: 0.5rem;
-            perspective-origin: 50% 14%;
         }
 
         li.article-timeline-item {
-            min-height: 286px;
+            min-height: calc(var(--digital-card-stack-track) + 2.5rem);
             padding-left: calc(var(--digital-item-buffer) + 0.16rem);
         }
 
@@ -1953,9 +1944,6 @@ article.article-timeline--art-digital-expression {
             transform: translateY(-3px);
         }
 
-        div.article-timeline-item-content {
-            transform: translateZ(10px);
-        }
     }
 
     @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
@@ -1990,28 +1978,28 @@ article.article-timeline--art-digital-expression {
         li.article-timeline-item:focus-within span.digital-expression-layer-stack__layer--1,
         a.digital-expression-layer-stack__link:hover span.digital-expression-layer-stack__layer--1,
         a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer--1 {
-            transform: translate3d(0, 0, 20px);
+            transform: scale(1.02);
         }
 
         li.article-timeline-item:hover span.digital-expression-layer-stack__layer--2,
         li.article-timeline-item:focus-within span.digital-expression-layer-stack__layer--2,
         a.digital-expression-layer-stack__link:hover span.digital-expression-layer-stack__layer--2,
         a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer--2 {
-            transform: translate3d(0, 0, 40px);
+            transform: translate(-12%, 12%) scale(1.02);
         }
 
         li.article-timeline-item:hover span.digital-expression-layer-stack__layer--3,
         li.article-timeline-item:focus-within span.digital-expression-layer-stack__layer--3,
         a.digital-expression-layer-stack__link:hover span.digital-expression-layer-stack__layer--3,
         a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer--3 {
-            transform: translate3d(0, 0, 60px);
+            transform: translate(-18%, 18%) scale(1.03);
         }
 
         li.article-timeline-item:hover span.digital-expression-layer-stack__layer--4,
         li.article-timeline-item:focus-within span.digital-expression-layer-stack__layer--4,
         a.digital-expression-layer-stack__link:hover span.digital-expression-layer-stack__layer--4,
         a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer--4 {
-            transform: translate3d(0, 0, 80px);
+            transform: translate(-24%, 24%) scale(1.04);
         }
     }
 }

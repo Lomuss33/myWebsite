@@ -355,46 +355,59 @@ html[data-layout] {
 
 // Desktop density is expressed in real component dimensions, not a page transform.
 html:is([data-layout="normal"], [data-layout="ultrawide"]) {
-    --size-gap: clamp(0.75rem, 1.1vw, 1.125rem);
+    // Keep dense desktop rhythm in actual CSS pixels; the page shell no longer
+    // globally scales every component to get this compact spacing.
+    --desktop-content-gap: clamp(0.6rem, 0.88vw, 0.9rem);
+    --desktop-page-inset: 0.8rem;
+    --desktop-card-column-min: 17.6rem;
+    --size-gap: var(--desktop-content-gap);
     --size-body: 1rem;
 
     section:is(#section-about, #section-experience, #section-education, #section-my-software, #section-my-hardware, #section-my-writings, #section-my-art, #section-contact) {
-        .section-content { --padding-x: 1rem; --padding-bottom: 2rem; }
+        .section-content { --padding-x: var(--desktop-page-inset); --padding-bottom: 1.6rem; }
         header.section-header {
-            --section-header-title-size: clamp(1.75rem, 1.3rem + 1.5vw, 2.55rem);
-            --section-header-feature-title-size: clamp(2rem, 1.3rem + 2.3vw, 3.75rem);
-            margin-bottom: 1.5rem;
+            --section-header-title-size: clamp(1.4rem, 1.04rem + 1.2vw, 2.04rem);
+            --section-header-feature-title-size: clamp(1.6rem, 1.04rem + 1.84vw, 3rem);
+            margin-bottom: 1.2rem;
         }
         header.section-header-home h2.section-header-title {
-            font-size: clamp(1.5rem, 1rem + 1.2vw, 2.35rem) !important;
+            font-size: clamp(1.2rem, 0.8rem + 0.96vw, 1.88rem) !important;
         }
         article.article {
-            margin-top: 0.875rem;
-            &::after { margin-top: 1.5rem; }
+            margin-top: 0.7rem;
+            &::after { margin-top: 1.2rem; }
             h4.article-title {
-                font-size: clamp(1.125rem, 1rem + 0.3vw, 1.35rem) !important;
-                margin-bottom: 0.875rem;
+                font-size: clamp(0.9rem, 0.8rem + 0.24vw, 1.08rem) !important;
+                margin-bottom: 0.7rem;
             }
         }
         .article-portfolio-items {
-            --padding: 16px 16px 14px;
-            --portfolio-inline-padding: 16px;
-            --avatar-size: 68px;
-            --portfolio-controls-gap: 8px;
-            --portfolio-card-title-size: clamp(1.125rem, 1rem + 0.3vw, 1.35rem);
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+            --padding: 13px 13px 11px;
+            --portfolio-inline-padding: 13px;
+            --avatar-size: 54px;
+            --portfolio-controls-gap: 6px;
+            --portfolio-card-title-size: clamp(0.9rem, 0.8rem + 0.24vw, 1.08rem);
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--desktop-card-column-min)), 1fr));
             gap: var(--size-gap);
         }
         .article-info-list-items {
-            --avatar-size: 68px;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 1fr));
+            --avatar-size: 54px;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 16.8rem), 1fr));
         }
-        .article-feature-items { gap: 1.25rem; }
-        .article-feature-item { gap: 1.25rem; }
+        .article-feature-items { gap: 1rem; }
+        .article-feature-item { gap: 1rem; }
         .article-feature-items-section-about .article-feature-item-image {
-            max-height: 28rem;
+            max-height: 22.4rem;
             img { object-fit: contain; }
         }
+    }
+
+    article.article .article-portfolio-items-adaptive {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 20.8rem), 1fr));
+    }
+
+    article.article .article-stack-items:not(.article-stack-items-home) {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 11.2rem), 1fr));
     }
 }
 

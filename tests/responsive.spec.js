@@ -52,8 +52,8 @@ for(const language of smoke ? ['en'] : ['en','de','hr','tr']) {
                         await expect(page.locator('input.form-input').first()).toHaveCSS('font-size','16px')
                         const sizes=await page.locator('button.copy-button').evaluateAll(nodes=>nodes.map(e=>e.getBoundingClientRect().height).filter(Boolean))
                         expect(sizes.length).toBeGreaterThan(0)
-                        // Desktop uses the stakeholder-approved 80% content zoom; mobile targets stay full size.
-                        for(const size of sizes) expect(size).toBeGreaterThanOrEqual(mode === "mobile" ? 43.5 : 34.8)
+                        // Controls keep their real 44px hit area in every layout mode.
+                        for(const size of sizes) expect(size).toBeGreaterThanOrEqual(43.5)
                     }
                 }
                 expect(errors).toEqual([])
@@ -71,6 +71,39 @@ test('resize keeps mode and navigation in agreement', async ({page})=>{
         await expect(page.locator('html')).toHaveAttribute('data-layout',mode)
         await expect(page.locator('nav.nav-sidebar')).toHaveCount(mode==='mobile'?0:1)
         await expect(page.locator('nav.nav-header-mobile')).toHaveCount(mode==='mobile'?1:0)
+    }
+})
+
+test('desktop page uses a centered 72rem pane without CSS zoom', async ({page})=>{
+    await preferences(page)
+    await page.setViewportSize({width:1366,height:768})
+    await openSection(page,'about')
+
+    for(const [width,height] of [[1366,768],[3440,1440],[5120,1440]]) {
+        await page.setViewportSize({width,height})
+        await expect(page.locator('html')).toHaveAttribute('data-layout',resolveLayout(width,height))
+        const geometry=await page.evaluate(()=>{
+            const page=document.querySelector('.layout-navigation-children-inner')
+            const area=page.parentElement
+            const rail=document.querySelector('nav.nav-sidebar')
+            const pageRect=page.getBoundingClientRect()
+            const areaRect=area.getBoundingClientRect()
+            const railRect=rail.getBoundingClientRect()
+            const rootFont=parseFloat(getComputedStyle(document.documentElement).fontSize)||16
+            const availableLeft=railRect.right
+            const availableWidth=areaRect.right-availableLeft
+            const expectedLeft=availableLeft+(availableWidth-pageRect.width)/2
+            return {
+                zoom:getComputedStyle(page).zoom,
+                width:pageRect.width,
+                maxWidth:72*rootFont,
+                left:pageRect.left,
+                expectedLeft
+            }
+        })
+        expect(geometry.zoom).toBe('1')
+        expect(geometry.width).toBeLessThanOrEqual(geometry.maxWidth+1)
+        expect(Math.abs(geometry.left-geometry.expectedLeft)).toBeLessThanOrEqual(1)
     }
 })
 

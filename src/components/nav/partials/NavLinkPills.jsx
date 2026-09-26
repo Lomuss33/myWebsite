@@ -12,7 +12,7 @@ function NavLinkPills({ links, id, className = "" }) {
              links={links}
              data={null}
              tag={id}
-             className={`nav-link-pills ${className} ${visibleClass}`}
+             className={`nav-link-pills nav-link-pills-count-${links.length} ${className} ${visibleClass}`}
              itemComponent={NavLinkPillsLink}/>
     )
 }

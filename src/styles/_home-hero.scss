@@ -113,7 +113,7 @@ html[data-layout] section#section-about .article-feature-item.article-feature-it
         width: 100%; min-width: 0; max-width: none; min-height: 0;
     }
     .article-feature-item-text {
-        font-size: clamp(0.9375rem, 0.875rem + 0.3cqi, 1.125rem);
+        font-size: clamp(1rem, 0.9375rem + 0.3cqi, 1.125rem);
         line-height: 1.55;
         overflow-wrap: anywhere;
     }

@@ -5,7 +5,6 @@ div.layout-navigation-wrapper {
     --layout-rail-compact-width: 5.5rem;
     --layout-rail-current-width: clamp(12rem, 18vw, 18rem);
     --layout-page-max-width: 72rem;
-    --layout-content-zoom: 0.8;
     display: grid;
     grid-template-columns: var(--layout-rail-current-width) minmax(0, 1fr);
     position: relative;
@@ -54,15 +53,15 @@ div.layout-navigation-children-inner {
 }
 div.layout-navigation-children-wrapper { grid-column: 2; z-index: 1; }
 
-// The page detaches as soon as its readable width is reached. The full-width
-// shell keeps the existing garden visible in the space around the page.
+// The page detaches as soon as its readable width is reached. Its actual
+// layout width is the visual cap; no zoom or inverse-width compensation is
+// needed to keep the garden visible around it.
 @include layout-desktop {
     div.layout-navigation-children-wrapper { justify-content: center; }
     div.layout-navigation-children-inner {
         flex: 0 1 auto;
-        zoom: var(--layout-content-zoom);
-        width: calc(100% / var(--layout-content-zoom));
-        max-width: calc(var(--layout-page-max-width) / var(--layout-content-zoom));
+        width: 100%;
+        max-width: var(--layout-page-max-width);
         height: 100%;
     }
 }

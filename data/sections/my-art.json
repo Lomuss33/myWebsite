@@ -397,7 +397,7 @@
                     "title": "Meine {{digitalen Ausdrucksalben}}"
                 },
                 "hr": {
-                    "title": "Moji {{albumi digitalnog izraza}}"
+                    "title": "<span class='art-title-rgb-my'>Moji</span> <span class='art-title-rgb-red'>albumi</span> <span class='art-title-rgb-green'>digitalnog</span> <span class='art-title-rgb-blue'>izraza</span>"
                 },
                 "tr": {
                     "title": "{{Dijital ifade albümlerim}}"

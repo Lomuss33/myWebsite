@@ -226,26 +226,26 @@ article#article-1-section-education {
         --avatar-size: 188px;
         --avatar-border-width: 4px;
         --timeline-line-width: 4px;
-        --education-card-width: min(52vw, 64rem);
+        --education-card-width: min(52%, 64rem);
         --gap-between-avatar-and-content: clamp(18px, 1.35vw, 24px);
         --timeline-line-top-trim: clamp(18px, calc(var(--avatar-size) * 0.16), 30px);
         --timeline-line-bottom-trim: clamp(18px, calc(var(--avatar-size) * 0.16), 30px);
 
         @include content-breakpoint-down(lg) {
             --avatar-size: 156px;
-            --education-card-width: min(72vw, 46rem);
+            --education-card-width: min(72%, 46rem);
             --gap-between-avatar-and-content: 16px;
         }
 
         @include content-breakpoint-down(md) {
             --avatar-size: 140px;
-            --education-card-width: min(88vw, 42rem);
+            --education-card-width: min(88%, 42rem);
             --gap-between-avatar-and-content: 12px;
         }
 
         @include content-breakpoint-down(sm) {
             --avatar-size: 110px;
-            --education-card-width: calc(100vw - 1rem);
+            --education-card-width: calc(100% - 1rem);
             --gap-between-avatar-and-content: 8px;
             --avatar-offset-merge-mode: 0px;
         }
@@ -265,7 +265,7 @@ article#article-1-section-education {
     }
 
     li.article-timeline-item:nth-child(4n + 1) {
-        --education-avatar-shift-x: clamp(-42px, -2.8vw, -18px);
+        --education-avatar-shift-x: clamp(-12px, -0.55vw, -4px);
 
         div.article-timeline-item-avatar-wrapper {
             transform: translateX(var(--education-avatar-shift-x)) rotate(-4deg) scale(1.045);
@@ -289,7 +289,7 @@ article#article-1-section-education {
     }
 
     li.article-timeline-item:nth-child(4n) {
-        --education-avatar-shift-x: clamp(-38px, -2.45vw, -16px);
+        --education-avatar-shift-x: clamp(-10px, -0.45vw, -4px);
 
         div.article-timeline-item-avatar-wrapper {
             transform: translateX(var(--education-avatar-shift-x)) rotate(4deg) scale(1.04);
@@ -303,7 +303,7 @@ article#article-1-section-education {
         flex: 0 0 var(--education-card-width);
         width: var(--education-card-width);
         max-width: none;
-        margin-left: calc((100vw - var(--education-card-width)) / 2 - var(--avatar-size)) !important;
+        margin-left: calc((100% - var(--education-card-width)) / 2 - var(--avatar-size)) !important;
         position: relative;
         z-index: 1;
     }
@@ -365,7 +365,7 @@ article#article-1-section-education {
 
     div.article-timeline-item-content {
         @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
-            margin-left: var(--gap-between-avatar-and-content)!important;
+            margin-left: calc((100% - var(--education-card-width)) / 2 - var(--avatar-size)) !important;
             border-top-left-radius: $standard-border-radius!important;
             border-bottom-left-radius: $standard-border-radius!important;
         }
@@ -1366,10 +1366,15 @@ article#article-1-section-experience {
 
 article#article-1-section-education div.article-content {
     box-sizing: border-box;
-    width: 100vw;
+    --education-article-bleed: calc(var(--padding-x, 0px) + 8px);
+    width: calc(100% + var(--education-article-bleed) + var(--education-article-bleed));
     max-width: none;
-    margin-inline: calc(50% - 50vw);
+    margin-inline: calc(0px - var(--education-article-bleed));
     padding-inline: 0;
+
+    @include layout-mobile {
+        --education-article-bleed: calc(var(--padding-x, 0px) + 6px);
+    }
 }
 
 @container (min-width: 2000px) {

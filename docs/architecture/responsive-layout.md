@@ -1,6 +1,6 @@
 # Responsive layout
 
-Verified: 2026-09-25 against resolver and navigation sizing sources; not exhaustive device testing.
+Verified: 2026-09-26 against resolver, navigation, and timeline sizing sources; not exhaustive device testing.
 
 ## Mode authority
 
@@ -79,7 +79,7 @@ Resume popup sizing: intrinsic content width with compact row padding, bounded b
 
 Experience timeline title, metadata, and body sizing are bounded by the card's container width where container units are supported, with viewport-based fallbacks. Metadata location/company pills stay in two columns until the card is narrower than 23rem, then stack to protect legibility. On mobile, the first experience card bleeds across the section's responsive left gutter; the card's text keeps a compact inset, and its right padding retains the avatar decoration buffer. Body height remains content-driven, with no clipping or fixed-height truncation.
 
-Education timeline body and metadata type scale from each card's inline size when container units are supported, with smaller viewport-based fallbacks and bounded minimum/maximum sizes. Header titles and metadata are centered within the card; date, place, and school details each occupy their own full-width capsule row, with long values wrapping inside the row. Collapsed cards use a lower, centered expansion control. Timeline cards break out to the viewport and center at a responsive portion of its width, preserving side space on larger screens and usable width on phones. Avatar wrappers sit above the card layer and return to the aligned rail in merged/narrow layouts. A measured SVG connector follows avatar centers with alternating curves and recalculates on timeline resize.
+Education timeline body and metadata type scale from each card's inline size when container units are supported, with smaller viewport-based fallbacks and bounded minimum/maximum sizes. Header titles and metadata are centered within the card; date, place, and school details each occupy their own full-width capsule row, with long values wrapping inside the row. Collapsed cards use a lower, centered expansion control. Timeline cards expand to the scrollable section pane, then center at a responsive portion of that pane rather than the browser viewport; percentage sizing keeps the geometry correct inside the centered, zoomed desktop shell. Avatar wrappers sit above the card layer, and their leftward offsets have hard 12px/10px CSS-pixel caps, so they extend only slightly beyond the pane's left edge at ultrawide sizes; merged/narrow layouts return them to the aligned rail. A measured SVG connector follows avatar centers with alternating curves and recalculates on timeline resize.
 
 Education certification cards use content-driven height, a two-column desktop layout, and a single-column narrow layout. Their metadata switches from three compact tiles to stacked rows when an individual card is narrow, independent of viewport width. The future CCNA path is intentionally muted and grayscale, with a red INCOMING corner ribbon that remains legible in both themes.
 

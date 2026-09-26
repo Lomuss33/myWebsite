@@ -1,0 +1,193 @@
+// Post-zoom desktop density for Art. Keep canvas stages content-measured and
+// preserve the original timeline, reveal, and tile interaction models.
+@media (min-width: 80rem) {
+    html:is([data-layout="normal"], [data-layout="ultrawide"]) {
+        section#section-my-art {
+            --section-header-feature-title-size: clamp(1.45rem, 1.45rem + 0.12vw, 1.55rem);
+
+            article:is(
+                #article-1-section-my-art,
+                #article-2-section-my-art,
+                #article-3-section-my-art,
+                #article-4-section-my-art,
+                #article-5-section-my-art
+            ) h4.article-title {
+                gap: 0.5rem;
+                margin-bottom: clamp(1rem, 1.35vw, 1.35rem);
+                font-size: clamp(20px, 1.55vw, 23px) !important;
+                line-height: 1.12;
+            }
+
+            article:is(
+                #article-2-section-my-art,
+                #article-3-section-my-art,
+                #article-4-section-my-art,
+                #article-5-section-my-art
+            ) h4.article-title {
+                margin-top: clamp(1rem, 1.35vw, 1.4rem);
+            }
+        }
+
+        article#article-1-section-my-art {
+            ul.article-timeline-items {
+                --photography-row-size: clamp(7.5rem, 8.8vw, 9rem);
+                --photo-action-gap: clamp(0.4rem, 0.55vw, 0.55rem);
+                --photo-action-size: calc((var(--photography-row-size) - var(--photo-action-gap)) / 2);
+                --photo-action-rail-width: calc(var(--photo-action-size) + 0.75rem);
+                --photography-side-buffer: clamp(0.75rem, 2.2vw, 2rem);
+                --photography-card-width: min(
+                    clamp(28rem, 46vw, 38rem),
+                    calc(100vw - var(--photography-row-size) - var(--photo-action-rail-width) - 4rem)
+                );
+                --avatar-size: var(--photography-row-size);
+                --gap-between-avatar-and-content: clamp(0.65rem, 0.9vw, 0.85rem);
+            }
+
+            div.article-timeline-item-info-for-timelines {
+                --timeline-title-size: clamp(1rem, 1.25vw, 1.15rem);
+                --timeline-meta-size: clamp(0.8rem, 0.95vw, 0.88rem);
+                --timeline-body-size: clamp(16px, 1.12vw, 16.5px);
+                --timeline-frame-padding: 0.9rem clamp(1rem, 1.3vw, 1.2rem);
+            }
+
+            div.article-timeline-item-info-for-timelines-header-main h5 {
+                font-size: clamp(17px, 1.24vw, 18px) !important;
+                line-height: 1.2;
+            }
+
+            div.article-timeline-item-info-for-timelines-body-text,
+            ul.article-timeline-item-info-for-timelines-body-list {
+                font-size: clamp(15.5px, 1.1vw, 16.5px);
+                line-height: 1.48;
+            }
+
+            div.article-timeline-item-info-preview-footer a,
+            div.article-timeline-item-info-preview-footer button {
+                min-width: 2.75rem;
+                min-height: 2.75rem;
+            }
+        }
+
+        article#article-2-section-my-art {
+            ul.article-timeline-items {
+                --digital-card-stack-base: clamp(6.8rem, 7.8vw, 7.8rem);
+                --digital-card-stack-track: clamp(7.8rem, 8.7vw, 8.4rem);
+                --digital-item-buffer: clamp(0.35rem, 0.55vw, 0.48rem);
+                gap: clamp(0.65rem, 1vw, 0.85rem);
+            }
+
+            div.article-timeline-item-info-for-timelines-header-main h5 {
+                font-size: clamp(17px, 1.24vw, 18px) !important;
+                line-height: 1.2;
+            }
+
+            div.article-timeline-item-info-for-timelines-body-text,
+            ul.article-timeline-item-info-for-timelines-body-list {
+                font-size: clamp(15.5px, 1.1vw, 16.5px);
+                line-height: 1.48;
+            }
+        }
+
+        article#article-3-section-my-art {
+            div.article-web-art-shell {
+                --article-web-art-shell-padding: 4px;
+                --article-web-art-stage-preview-height: clamp(208px, 17vw, 232px);
+                gap: clamp(0.55rem, 0.8vw, 0.75rem);
+                border-radius: 1.1rem;
+            }
+
+            div.article-web-art-intro-cover-buttons {
+                min-height: clamp(3.25rem, 4.6cqw, 4rem);
+                gap: 0.5rem;
+            }
+
+            button.article-web-art-intro-cover-button {
+                min-height: 2.75rem;
+                padding: 0.65rem 1rem;
+                font-size: clamp(0.88rem, 0.95vw, 0.96rem);
+            }
+        }
+
+        section#section-my-art article#article-4-section-my-art {
+            div.article-stack-items.article-stack-items-compact {
+                --stack-columns: 6;
+                --gap: clamp(0.5rem, 0.72vw, 0.65rem);
+                --avatar-size: clamp(3.1rem, 4vw, 3.6rem);
+                --padding: 0.55rem;
+                --card-height: auto;
+                grid-template-columns: repeat(6, minmax(0, 1fr));
+                gap: clamp(0.5rem, 0.72vw, 0.65rem);
+            }
+
+            div.article-stack-item.article-stack-item-compact {
+                aspect-ratio: 1 / 1;
+                min-height: 0;
+                padding: var(--padding);
+            }
+
+            div.article-stack-item-compact div.article-stack-item-avatar {
+                width: clamp(3.1rem, 48cqi, 5.4rem);
+                height: clamp(3.1rem, 48cqi, 5.4rem);
+            }
+
+            div.article-stack-item-compact div.article-stack-item-title {
+                min-height: 2.7em;
+                margin-top: 0.3rem;
+            }
+
+            div.article-stack-item-compact div.article-stack-item-title-main {
+                font-size: clamp(12px, 6.7cqi, 18px);
+                line-height: 1.12;
+            }
+        }
+
+        article#article-5-section-my-art {
+            div.article-secret-pearls-gate {
+                min-height: clamp(5.5rem, 7.5vw, 7rem);
+                padding-block: 0.5rem;
+            }
+
+            button.article-secret-pearls-gate-button {
+                min-height: 2.75rem;
+                padding: 0.72rem 1.15rem;
+            }
+
+            span.article-secret-pearls-gate-button-kicker {
+                font-size: clamp(1.05rem, 1.15vw, 1.25rem);
+            }
+
+            div.article-secret-pearls-body {
+                gap: clamp(0.8rem, 1.25vw, 1rem);
+            }
+
+            p.article-secret-pearls-description {
+                max-width: 62rem;
+                margin-inline: auto;
+                padding: clamp(0.85rem, 1.1vw, 1rem) clamp(1rem, 1.5vw, 1.3rem);
+                font-size: clamp(17px, 1.35vw, 19px);
+                line-height: 1.55;
+            }
+
+            div.article-secret-pearls-grid {
+                gap: clamp(0.65rem, 1vw, 0.9rem);
+            }
+
+            button.article-secret-pearls-gated-tile-pill {
+                min-height: 2.75rem;
+            }
+
+            button.article-secret-pearls-gated-tile-pill-closed {
+                min-width: min(72%, 15rem);
+                min-height: clamp(3.25rem, 5.8vw, 4.25rem);
+                padding-inline: 1.2rem;
+                font-size: clamp(1rem, 1.2vw, 1.2rem);
+            }
+
+            button.article-secret-pearls-gated-tile-pill-open {
+                min-height: 2.75rem;
+                padding-inline: 0.9rem;
+                font-size: 0.9rem;
+            }
+        }
+    }
+}

@@ -13,7 +13,7 @@ import {useUtils} from "../../../hooks/utils.js"
  * @return {JSX.Element}
  * @constructor
  */
-function ArticleItemPreviewMenu({ itemWrapper, className = "", spaceBetween, excludePrimaryAction = false }) {
+function ArticleItemPreviewMenu({ itemWrapper, className = "", spaceBetween, excludePrimaryAction = false, galleryMetadata = null }) {
     const utils = useUtils()
 
     const hasScreenshotsOrVideo = itemWrapper.preview?.hasScreenshotsOrYoutubeVideo
@@ -47,7 +47,8 @@ function ArticleItemPreviewMenu({ itemWrapper, className = "", spaceBetween, exc
             {(hasScreenshotsOrVideo || !spaceBetween) && (
                 <div className={`article-item-preview-menu-button-list`}>
                     <ItemPreviewMenuYoutubeButton itemWrapper={itemWrapper}/>
-                    {(!excludePrimaryAction || !hasGallery) && <ItemPreviewMenuGalleryButton itemWrapper={itemWrapper}/>}
+                    {(!excludePrimaryAction || !hasGallery) && <ItemPreviewMenuGalleryButton itemWrapper={itemWrapper}
+                                                                                             galleryMetadata={galleryMetadata}/>}
                     {hasLinks && !spaceBetween && (
                         <>
                             {menuLinks.map((link, key) => (
@@ -115,7 +116,7 @@ function ItemPreviewMenuYoutubeButton({ itemWrapper }) {
     )
 }
 
-function ItemPreviewMenuGalleryButton({ itemWrapper }) {
+function ItemPreviewMenuGalleryButton({ itemWrapper, galleryMetadata = null }) {
     const language = useLanguage()
     const utils = useUtils()
 
@@ -129,16 +130,18 @@ function ItemPreviewMenuGalleryButton({ itemWrapper }) {
         "fa-regular fa-folder-open" :
         "fa-solid fa-camera"
 
-    const splitTitle = utils.string.extractFirstPart(itemWrapper.locales.title || "")
-    const title = splitTitle.length < 35 ?
-        splitTitle :
-        language.getString("get_to_know_more")
+    const metadata = galleryMetadata || (() => {
+        const splitTitle = utils.string.extractFirstPart(itemWrapper.locales.title || "")
+        const title = splitTitle.length < 35 ?
+            splitTitle :
+            language.getString("get_to_know_more")
 
-    const metadata = {
-        title: title,
-        images: screenshots,
-        aspectRatio: screenshotsAspectRatio,
-    }
+        return {
+            title: title,
+            images: screenshots,
+            aspectRatio: screenshotsAspectRatio,
+        }
+    })()
 
     if(!screenshots || screenshots.length === 0)
         return <></>

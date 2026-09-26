@@ -40,4 +40,6 @@ Home heading update (2026-09-13): prefix and title each remain a single line. Se
 
 Compact typography (2026-09-13): Home article headings use smaller bounded type and tighter margins below a 48rem content container. Name-origin body text is reduced in that range; narrow stacked display names are capped at 3.75rem. Wide layouts retain their existing scale.
 
+Desktop density restoration (2026-09-26): after removing page-level CSS zoom, `src/styles/_home-hero.scss` applies a Home-only density scale for `normal` and `ultrawide` layouts. The welcome heading, intro column/image, skill-card type and spacing, name-origin displays, and human-stack tiles are each bounded at their component level; natural content height is retained. A narrow content-container fallback stacks the intro and name display even when a landscape phone resolves to desktop layout. Contact chips have a 36px visual surface inside their existing 44px control targets. These selectors exclude mobile and do not affect the navigation rail. Responsive checks sample 1366×768 and 3440×1440 for desktop density and 568×320 for the narrow landscape pane.
+
 Image stack cycling follows neighboring slots (center, near right, far right, far left, near left), keeping the cross-stack wrap behind the foreground cards. Transitions honor reduced motion.

@@ -1,0 +1,105 @@
+// Page-local post-zoom density for the Experience section. The 72rem shell
+// remains unchanged; component geometry and type scale within that pane.
+@media (min-width: 64rem) {
+    html:is([data-layout="normal"], [data-layout="ultrawide"]) section#section-experience {
+        .section-header-prefix {
+            font-size: clamp(.9rem, .84rem + .22cqi, 1rem) !important;
+            line-height: 1.25;
+        }
+
+        header.section-header {
+            --section-header-feature-title-size: clamp(1.7rem, 1.58rem + .52cqi, 1.9rem);
+        }
+
+        header.section-header h2.section-header-title {
+            font-size: var(--section-header-feature-title-size) !important;
+            line-height: 1.12;
+        }
+
+        article#article-1-section-experience {
+            ul.article-timeline-items {
+                --experience-avatar-size: clamp(7rem, 10vw, 9rem);
+                --experience-rail-width: clamp(4rem, 5vw, 4.5rem);
+                --experience-avatar-vertical-offset: calc(var(--experience-avatar-size) * .42);
+                --experience-avatar-scale-resting: 1.14;
+                --experience-avatar-scale-active: 1.18;
+                --experience-avatar-scale-direct: 1.22;
+                --experience-overlay-shift-active: calc(var(--experience-avatar-size) * .14);
+                --experience-overlay-shift-direct: calc(var(--experience-overlay-shift-active) * 2);
+                --experience-overlay-shift-max: calc(var(--experience-overlay-shift-active) * 3);
+                --experience-overlay-gradient-width-resting: calc(var(--experience-avatar-size) * .82);
+                --experience-overlay-gradient-width-active: calc(var(--experience-avatar-size) * 1.08);
+                --experience-description-right-buffer: 1.1rem;
+                --experience-card-right-padding-resting: calc(.9rem + var(--experience-card-overlap));
+                --experience-card-right-padding-active: calc(.9rem + var(--experience-card-overlap));
+                gap: 1rem;
+            }
+
+            div.article-timeline-item-info-for-timelines {
+                --content-padding: .85rem 1rem;
+                --timeline-title-size: clamp(1rem, .96rem + .5cqi, 1.18rem);
+                --timeline-meta-size: clamp(.82rem, .78rem + .28cqi, .9rem);
+                --timeline-body-size: clamp(.9rem, .84rem + .3cqi, .98rem);
+                --experience-meta-time-size: var(--timeline-meta-size);
+                --experience-meta-grid-gap: .45rem;
+                --experience-meta-split-gap: .55rem;
+                --experience-meta-segment-gap: .35rem;
+                --experience-meta-segment-padding-y: .36rem;
+                --experience-meta-segment-padding-x: .58rem;
+                --experience-meta-segment-radius: .72rem;
+            }
+
+            div.article-timeline-item-info-for-timelines-header-main h5 {
+                font-size: var(--timeline-title-size) !important;
+                line-height: 1.2;
+            }
+
+            div.article-timeline-item-info-for-timelines-header-meta-row--split,
+            div.article-timeline-item-info-for-timelines-header-meta-segment {
+                font-size: var(--timeline-meta-size);
+            }
+
+            div.article-timeline-item-info-for-timelines-body {
+                --experience-description-right-offset: max(.7rem, var(--experience-description-right-buffer, 0px));
+                margin-top: .4rem;
+                padding-top: .45rem;
+                line-height: 1.48;
+
+                div.article-timeline-item-info-for-timelines-body-text,
+                ul.article-timeline-item-info-for-timelines-body-list {
+                    font-size: clamp(.875rem, .84rem + .2cqi, .94rem) !important;
+                    line-height: 1.45;
+                    padding-top: .25rem;
+                }
+
+                ul.article-timeline-item-info-for-timelines-body-list {
+                    margin-top: .2rem;
+                    li.article-timeline-item-info-for-timelines-body-list-item { margin-bottom: .18rem; }
+                }
+            }
+        }
+
+        article#article-2-section-experience {
+            .article-feature-item.wood-project {
+                max-width: clamp(34rem, 82svh, 44rem);
+                gap: clamp(.4rem, .9cqi, .7rem);
+                padding: clamp(.3rem, .6cqi, .5rem);
+            }
+
+            .wood-project-page {
+                padding: clamp(.55rem, 1.2cqi, 1rem);
+                gap: .45rem;
+                font-size: clamp(.875rem, .82rem + .1cqi, .94rem);
+                line-height: 1.42;
+            }
+
+            .wood-project-description p:first-child > .wood-project-archive-label {
+                font-size: 1.22em;
+                margin-bottom: .3em;
+            }
+
+            .wood-project-details { padding-top: .55rem; }
+        }
+
+    }
+}

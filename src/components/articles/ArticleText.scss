@@ -719,3 +719,55 @@ html[data-layout] section#section-experience article:is(#article-2-section-exper
     padding-bottom: .75rem;
     h4.article-title { font-size: clamp(1.2rem, 1.05rem + .5cqi, 1.75rem) !important; line-height: 1.2; margin-bottom: 1rem; }
 }
+
+// Compact the closing story cards for the post-zoom desktop scale. Keep the
+// prose comfortable and the draggable control above the accessible touch floor.
+@media (min-width: 64rem) {
+    html:is([data-layout="normal"], [data-layout="ultrawide"]) section#section-experience article#article-2-section-experience h4.article-title,
+    html:is([data-layout="normal"], [data-layout="ultrawide"]) section#section-experience article#article-3-section-experience h4.article-title {
+        font-size: clamp(1.1rem, 1.08rem + .04cqi, 1.13rem) !important;
+        line-height: 1.18;
+        margin-block: .75rem !important;
+    }
+
+    html:is([data-layout="normal"], [data-layout="ultrawide"]) section#section-experience article#article-3-section-experience {
+        div.article-text-items.article-text-items-mode-draggable_inline_icon_flow {
+            width: min(100%, 58rem);
+            max-width: min(100%, 58rem) !important;
+            --experience-card-max-width: min(100%, 58rem);
+            --experience-card-inner-max-width: min(100%, 52rem);
+            --experience-card-rail-max-width: min(100%, 48rem);
+            --experience-flow-card-gap: .8rem;
+        }
+
+        div.article-text-item.article-text-item-flow-card {
+            padding: clamp(.8rem, 1.1cqi, 1rem) clamp(.9rem, 1.25cqi, 1.15rem);
+            gap: .7rem;
+        }
+
+        p.article-text-flow-card-eyebrow { font-size: .78rem; }
+        div.article-text-flow-card-axis { gap: .75rem; }
+        span.article-text-flow-card-axis-label { font-size: clamp(.76rem, .72rem + .18cqi, .82rem); }
+        span.article-text-flow-card-impact-pill { font-size: .8rem; }
+
+        div.article-text-item.article-text-item-flow-card h3.article-text-flow-card-heading {
+            font-size: clamp(1.04rem, .98rem + .32cqi, 1.18rem) !important;
+            line-height: 1.12;
+        }
+
+        div.article-text-item.article-text-item-flow-card p.pretext-draggable-inline-icon-text-intro,
+        div.article-text-item.article-text-item-flow-card div.pretext-draggable-inline-icon-text-body,
+        div.article-text-item.article-text-item-flow-card p.pretext-draggable-inline-icon-text-paragraph {
+            font-size: clamp(.875rem, .84rem + .16cqi, .92rem) !important;
+            line-height: 1.48;
+        }
+
+        div.article-text-item.article-text-item-flow-card div.pretext-draggable-inline-icon-text-rail-hit-area {
+            height: clamp(3.25rem, 4.2vw, 3.75rem);
+        }
+
+        div.article-text-item.article-text-item-flow-card div.article-text-flow-card-story {
+            --pretext-draggable-inline-icon-text-handle-size: clamp(3.25rem, 4.5vw, 4rem);
+        }
+    }
+}

@@ -1,0 +1,256 @@
+// Desktop density for the physical-project portfolio and DataProbe article.
+// The 72rem page shell stays centered; these rules compact only page content.
+// Mobile and narrow-landscape layouts continue to use component sizing.
+@media (min-width: 80rem) {
+    html:is([data-layout="normal"], [data-layout="ultrawide"]) {
+        section#section-my-hardware {
+            header.section-header {
+                --section-header-feature-title-size: clamp(1.9rem, 1.9rem + 0.12vw, 2rem);
+                margin-bottom: clamp(1.5rem, 1.8vw, 1.8rem);
+            }
+
+            article:is(#article-1-section-my-hardware, #article-2-section-my-hardware) h4.article-title {
+                gap: 0.5rem;
+                margin-bottom: 1.15rem;
+                font-size: clamp(1.85rem, 1.78rem + 0.3vw, 2rem) !important;
+            }
+        }
+
+        article#article-1-section-my-hardware {
+            div.article-portfolio-items {
+                --item-gap: clamp(0.85rem, 1.1vw, 1rem);
+                --padding: 0.65rem 0.72rem 0.62rem;
+                --portfolio-inline-padding: 0.72rem;
+                --padding-bottom: 0.62rem;
+                --portfolio-card-intrinsic-size: clamp(18rem, 19vw, 20.5rem);
+                --portfolio-card-title-size: clamp(1.18rem, 1.1rem + 0.2cqi, 1.25rem);
+                --portfolio-card-category-size: clamp(0.88rem, 0.84rem + 0.14cqi, 0.94rem);
+                --portfolio-card-description-size: clamp(0.9rem, 0.87rem + 0.22cqi, 0.96rem);
+                --portfolio-card-description-line-height: 1.44;
+                --portfolio-control-height: 3rem;
+                --portfolio-controls-gap: 0.4rem;
+                --portfolio-controls-separation: 0.45rem;
+            }
+
+            div.article-portfolio-item-title {
+                min-height: 6.15rem;
+                padding-top: 0.65rem;
+                gap: 0.25rem;
+
+                div.article-portfolio-item-title-heading {
+                    gap: 0.45rem;
+
+                    &::before,
+                    &::after {
+                        max-width: 2.5rem;
+                    }
+                }
+
+                h5.article-portfolio-item-title-main {
+                    font-size: var(--portfolio-card-title-size) !important;
+                    line-height: 1.12;
+                }
+
+                div.article-portfolio-item-title-category {
+                    margin-top: 0.15rem;
+                    padding: 0.2rem 0.45rem 0.24rem;
+                    font-size: var(--portfolio-card-category-size) !important;
+                    line-height: 1.15;
+                }
+            }
+
+            div.article-portfolio-item-body {
+                margin-top: 0.4rem;
+
+                div.article-portfolio-item-body-description {
+                    font-size: var(--portfolio-card-description-size);
+                    line-height: var(--portfolio-card-description-line-height);
+                }
+            }
+
+            ul.article-portfolio-item-body-tags {
+                margin-top: 0.3rem;
+            }
+
+            li.article-portfolio-item-body-tag {
+                padding: 0.08rem 0.3rem;
+                margin-right: 0.18rem;
+                margin-bottom: 0.18rem;
+                font-size: 0.78rem !important;
+            }
+
+            div.article-portfolio-item-footer {
+                margin-top: 0.3rem;
+            }
+
+            div.article-portfolio-item-controls {
+                min-height: 2.75rem;
+                gap: 0.4rem;
+            }
+
+            a.article-portfolio-item-control-btn,
+            div.article-portfolio-item-control-btn,
+            a.article-portfolio-item-control-btn-visit {
+                min-height: 2.75rem;
+            }
+
+            div.article-category-filter {
+                margin-bottom: 0.7rem;
+            }
+
+            button.category-filter-button {
+                min-height: 2.75rem;
+            }
+        }
+
+        article#article-2-section-my-hardware {
+            margin-top: clamp(1.5rem, 2.1vw, 1.9rem);
+            --probe-gap: 0.55rem;
+            --probe-icon-size: 2.75rem;
+            --probe-card-radius: 0.85rem;
+            --probe-block-radius: 1rem;
+
+            p.article-data-probe-intro {
+                width: min(100%, 54rem);
+                margin-bottom: 1rem;
+                font-size: clamp(0.92rem, 0.9rem + 0.1vw, 0.98rem) !important;
+                line-height: 1.5;
+            }
+
+            div.article-data-probe-summary {
+                gap: 0.55rem;
+                margin-top: 0.75rem;
+            }
+
+            div.article-data-probe-summary-chip {
+                padding: 0.55rem 0.7rem;
+                gap: 0.45rem;
+            }
+
+            span.article-data-probe-summary-value {
+                font-size: 1rem;
+            }
+
+            span.article-data-probe-summary-label {
+                font-size: 0.8rem;
+                line-height: 1.25;
+            }
+
+            section.article-data-probe-block {
+                margin-top: 0.8rem;
+                padding: 0.7rem;
+            }
+
+            div.article-data-probe-block-header {
+                gap: 0.6rem;
+                margin-bottom: 0.6rem;
+            }
+
+            div.article-data-probe-block-lead {
+                grid-template-columns: 2.75rem minmax(0, 1fr);
+                gap: 0.6rem;
+            }
+
+            div.article-data-probe-block-icon {
+                width: 2.75rem;
+                height: 2.75rem;
+                border-radius: 0.75rem;
+            }
+
+            h5.article-data-probe-block-title {
+                font-size: clamp(1rem, 0.96rem + 0.12vw, 1.06rem);
+            }
+
+            div.article-data-probe-block-description {
+                margin-top: 0.2rem;
+                font-size: 0.88rem;
+                line-height: 1.4;
+            }
+
+            div.article-data-probe-grid {
+                gap: var(--probe-gap);
+            }
+
+            div.article-data-probe-grid.article-data-probe-grid-fixed-two {
+                gap: var(--probe-gap);
+            }
+
+            div.article-data-probe-item {
+                padding: 0.65rem;
+            }
+
+            div.article-data-probe-item-head {
+                gap: 0.55rem;
+                margin-bottom: 0.55rem;
+            }
+
+            div.article-data-probe-item-body {
+                gap: 0.55rem;
+            }
+
+            div.article-data-probe-item-icon {
+                border-radius: 0.7rem;
+            }
+
+            div.article-data-probe-item-head-content {
+                gap: 0.3rem;
+            }
+
+            div.article-data-probe-item-title {
+                font-size: 0.96rem;
+                line-height: 1.2;
+            }
+
+            div.article-data-probe-item-badge {
+                padding: 0.22rem 0.45rem;
+                font-size: 0.76rem;
+            }
+
+            div.article-data-probe-item-meta {
+                row-gap: 0.45rem;
+                font-size: 0.86rem;
+                line-height: 1.4;
+            }
+
+            div.article-data-probe-item-meta-row {
+                grid-template-columns: 3.25rem minmax(0, 1fr);
+                gap: 0.5rem;
+
+                & + div.article-data-probe-item-meta-row {
+                    padding-top: 0.4rem;
+                }
+            }
+
+            div.article-data-probe-item-value-toolbar {
+                padding-top: 0.45rem;
+                gap: 0.55rem;
+            }
+
+            div.article-data-probe-item-value-label {
+                min-height: 2.75rem;
+                font-size: 0.78rem;
+            }
+
+            div.article-data-probe-item-value-actions {
+                gap: 0.4rem;
+            }
+
+            pre.article-data-probe-item-value {
+                padding: 0.65rem 0.7rem;
+                font-size: 0.875rem;
+                line-height: 1.5;
+            }
+
+            button.article-data-probe-unlock-btn,
+            button.standard-button.article-data-probe-action-btn,
+            button.copy-button.copy-button-pill {
+                min-height: 2.75rem;
+            }
+
+            button.standard-button.article-data-probe-action-btn.article-data-probe-expand-btn,
+            button.standard-button.article-data-probe-action-btn.article-data-probe-list-toggle-btn {
+                min-height: 2.75rem;
+            }
+        }
+    }
+}

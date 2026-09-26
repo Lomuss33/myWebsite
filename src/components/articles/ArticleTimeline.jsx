@@ -540,6 +540,11 @@ function ArticleTimelineItem({
         }
     }, [canOpenGallery, isDigitalExpressionTimeline, isPhotographyTimeline, itemWrapper.locales?.title, language, screenshots, screenshotsAspectRatio, utils])
 
+    const previewFooter = !isWritingsTimeline && !isPhotographyTimeline ? (
+        <ArticleItemInfoForTimelinesPreviewFooter itemWrapper={itemWrapper}
+                                                  galleryMetadata={isDigitalExpressionTimeline ? galleryMetadata : null}/>
+    ) : null
+
     useLayoutEffect(() => {
         if(!isMyArtTimeline)
             return
@@ -622,9 +627,6 @@ function ArticleTimelineItem({
     const contentClass = isExperienceTimeline ?
         "article-timeline-item-content article-timeline-item-content--experience" :
         "article-timeline-item-content"
-    const previewFooter = !isWritingsTimeline && !isPhotographyTimeline ? (
-        <ArticleItemInfoForTimelinesPreviewFooter itemWrapper={itemWrapper}/>
-    ) : null
     const overlayActionLabel = itemWrapper?.imageAlt || itemWrapper.locales?.title || language.getString("get_to_know_more")
     const avatarActionLabel = primaryAvatarLink?.tooltip || primaryPreviewLink?.tooltip || overlayActionLabel
     const photographyCountryStyle = isPhotographyTimeline ?

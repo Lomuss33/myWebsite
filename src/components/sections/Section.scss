@@ -718,6 +718,23 @@ section#section-experience article:is(
     }
 }
 
+// Post-zoom desktop headings are bounded to the content pane; navigation and
+// all mobile heading sizes retain their own sizing contract.
+@media (min-width: 64rem) {
+    html:is([data-layout="normal"], [data-layout="ultrawide"]) section#section-experience {
+        header.section-header {
+            --section-header-feature-title-size: clamp(1.7rem, 1.58rem + .52cqi, 1.9rem);
+        }
+
+        article#article-1-section-experience h4.article-title {
+            font-size: clamp(1.65rem, 1.52rem + .48cqi, 1.85rem) !important;
+            line-height: 1.14;
+            margin-block: .75rem !important;
+        }
+
+    }
+}
+
 section#section-my-software {
     --software-accent-blue: #4ea3ff;
     --software-accent-gold: #facc15;

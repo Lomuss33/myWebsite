@@ -270,7 +270,7 @@ function ArticleItemInfoForTimelinesTagsFooter({ itemWrapper, className = "" }) 
  * @return {JSX.Element}
  * @constructor
  */
-function ArticleItemInfoForTimelinesPreviewFooter({ itemWrapper, className = "", excludePrimaryAction = false }) {
+function ArticleItemInfoForTimelinesPreviewFooter({ itemWrapper, className = "", excludePrimaryAction = false, galleryMetadata = null }) {
     const hasScreenshotsOrVideo = itemWrapper.preview?.hasScreenshotsOrYoutubeVideo
     const hasLinks = itemWrapper.preview?.hasLinks
     const hasGallery = Boolean(itemWrapper.preview?.screenshots?.length)
@@ -289,6 +289,7 @@ function ArticleItemInfoForTimelinesPreviewFooter({ itemWrapper, className = "",
         <div className={`article-timeline-item-info-preview-footer ${className}`}>
             <ArticleItemPreviewMenu itemWrapper={itemWrapper}
                                     spaceBetween={false}
+                                    galleryMetadata={galleryMetadata}
                                     excludePrimaryAction={excludePrimaryAction}/>
         </div>
     )

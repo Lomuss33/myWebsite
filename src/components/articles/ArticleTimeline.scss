@@ -1626,7 +1626,7 @@ article.article-timeline--art-digital-expression {
         padding: var(--digital-item-buffer);
         isolation: isolate;
         transition:
-            transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+            transform 260ms cubic-bezier(0.22, 0.75, 0.36, 1);
 
         &::before,
         &::after {
@@ -1679,8 +1679,10 @@ article.article-timeline--art-digital-expression {
     }
 
     span.digital-expression-layer-stack__layer {
-        --circle-rest-transform: translate(0, 0) scale(1.02);
-        --circle-expanded-transform: translate(0, 0) scale(1.02);
+        --circle-rest-translate: 0 0;
+        --circle-rest-scale: 1.02;
+        --circle-expanded-translate: var(--circle-rest-translate);
+        --circle-expanded-scale: var(--circle-rest-scale);
         position: absolute;
         display: block;
         aspect-ratio: 1;
@@ -1693,12 +1695,12 @@ article.article-timeline--art-digital-expression {
         box-shadow:
             rgba(100, 100, 111, 0.25) -10px 10px 24px 0,
             0 0 22px rgba(34, 211, 238, 0.08);
+        translate: var(--circle-expanded-translate);
+        transform: scale(var(--circle-expanded-scale));
         transition:
-            transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
-            top 500ms cubic-bezier(0.22, 1, 0.36, 1),
-            right 500ms cubic-bezier(0.22, 1, 0.36, 1),
-            box-shadow 280ms ease,
-            opacity 280ms ease;
+            translate 260ms cubic-bezier(0.22, 0.75, 0.36, 1),
+            transform 260ms cubic-bezier(0.22, 0.75, 0.36, 1),
+            opacity 260ms cubic-bezier(0.22, 0.75, 0.36, 1);
     }
 
     span.digital-expression-layer-stack__layer--1 {
@@ -1706,7 +1708,6 @@ article.article-timeline--art-digital-expression {
         top: 8px;
         right: 8px;
         z-index: 2;
-        transform: var(--circle-expanded-transform);
     }
 
     span.digital-expression-layer-stack__layer--2 {
@@ -1715,9 +1716,10 @@ article.article-timeline--art-digital-expression {
         right: 10px;
         z-index: 3;
         opacity: 0.66;
-        --circle-rest-transform: translate(-12%, 12%) scale(1.02);
-        --circle-expanded-transform: translate(-18%, 18%) scale(1.04);
-        transform: var(--circle-expanded-transform);
+        --circle-rest-translate: -12% 12%;
+        --circle-rest-scale: 1.02;
+        --circle-expanded-translate: -18% 18%;
+        --circle-expanded-scale: 1.04;
     }
 
     span.digital-expression-layer-stack__layer--3 {
@@ -1726,9 +1728,10 @@ article.article-timeline--art-digital-expression {
         right: 17px;
         z-index: 4;
         opacity: 0.58;
-        --circle-rest-transform: translate(-18%, 18%) scale(1.03);
-        --circle-expanded-transform: translate(-30%, 30%) scale(1.07);
-        transform: var(--circle-expanded-transform);
+        --circle-rest-translate: -18% 18%;
+        --circle-rest-scale: 1.03;
+        --circle-expanded-translate: -30% 30%;
+        --circle-expanded-scale: 1.07;
     }
 
     span.digital-expression-layer-stack__layer--4 {
@@ -1737,9 +1740,10 @@ article.article-timeline--art-digital-expression {
         right: 23px;
         z-index: 5;
         opacity: 0.5;
-        --circle-rest-transform: translate(-24%, 24%) scale(1.04);
-        --circle-expanded-transform: translate(-46%, 46%) scale(1.12);
-        transform: var(--circle-expanded-transform);
+        --circle-rest-translate: -24% 24%;
+        --circle-rest-scale: 1.04;
+        --circle-expanded-translate: -46% 46%;
+        --circle-expanded-scale: 1.12;
     }
 
     div.digital-expression-layer-stack__image {
@@ -1775,59 +1779,58 @@ article.article-timeline--art-digital-expression {
     li.article-timeline-item:hover span.digital-expression-layer-stack__layer--1,
     li.article-timeline-item:focus-within span.digital-expression-layer-stack__layer--1 {
         opacity: 0.82;
-        transform: var(--circle-rest-transform);
+        translate: var(--circle-rest-translate);
+        transform: scale(var(--circle-rest-scale));
     }
 
     li.article-timeline-item:hover span.digital-expression-layer-stack__layer--2,
     li.article-timeline-item:focus-within span.digital-expression-layer-stack__layer--2 {
         opacity: 0.82;
-        transform: var(--circle-rest-transform);
+        translate: var(--circle-rest-translate);
+        transform: scale(var(--circle-rest-scale));
     }
 
     li.article-timeline-item:hover span.digital-expression-layer-stack__layer--3,
     li.article-timeline-item:focus-within span.digital-expression-layer-stack__layer--3 {
         opacity: 0.82;
-        transform: var(--circle-rest-transform);
+        translate: var(--circle-rest-translate);
+        transform: scale(var(--circle-rest-scale));
     }
 
     li.article-timeline-item:hover span.digital-expression-layer-stack__layer--4,
     li.article-timeline-item:focus-within span.digital-expression-layer-stack__layer--4 {
         opacity: 0.82;
-        transform: var(--circle-rest-transform);
+        translate: var(--circle-rest-translate);
+        transform: scale(var(--circle-rest-scale));
     }
 
     li.article-timeline-item a.digital-expression-layer-stack__link:hover span.digital-expression-layer-stack__layer,
     li.article-timeline-item a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer {
-        top: calc((100% - var(--centered-layer-size)) / 2);
-        right: calc((100% - var(--centered-layer-size)) / 2);
         opacity: 0.9;
         transform: scale(1.03);
-        box-shadow:
-            0 0 0 1px rgba(255, 255, 255, 0.18) inset,
-            0 18px 42px rgba(2, 6, 23, 0.32),
-            0 0 34px rgba(34, 211, 238, 0.20);
     }
 
     li.article-timeline-item a.digital-expression-layer-stack__link:hover span.digital-expression-layer-stack__layer--1,
     li.article-timeline-item a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer--1 {
-        --centered-layer-size: var(--digital-stack-size);
+        translate: 8px -8px;
+        transform: scale(1.025);
     }
 
     li.article-timeline-item a.digital-expression-layer-stack__link:hover span.digital-expression-layer-stack__layer--2,
     li.article-timeline-item a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer--2 {
-        --centered-layer-size: calc(var(--digital-stack-size) * 0.82);
+        translate: calc(10px - 11%) calc(11% - 10px);
         transform: scale(1.035) rotate(2deg);
     }
 
     li.article-timeline-item a.digital-expression-layer-stack__link:hover span.digital-expression-layer-stack__layer--3,
     li.article-timeline-item a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer--3 {
-        --centered-layer-size: calc(var(--digital-stack-size) * 0.64);
+        translate: calc(17px - 28.125%) calc(28.125% - 17px);
         transform: scale(1.04) rotate(-2deg);
     }
 
     li.article-timeline-item a.digital-expression-layer-stack__link:hover span.digital-expression-layer-stack__layer--4,
     li.article-timeline-item a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer--4 {
-        --centered-layer-size: calc(var(--digital-stack-size) * 0.44);
+        translate: calc(23px - 63.636%) calc(63.636% - 23px);
         transform: scale(1.05);
     }
 
@@ -1972,34 +1975,6 @@ article.article-timeline--art-digital-expression {
         li.article-timeline-item:hover,
         li.article-timeline-item:focus-within {
             transform: none;
-        }
-
-        li.article-timeline-item:hover span.digital-expression-layer-stack__layer--1,
-        li.article-timeline-item:focus-within span.digital-expression-layer-stack__layer--1,
-        a.digital-expression-layer-stack__link:hover span.digital-expression-layer-stack__layer--1,
-        a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer--1 {
-            transform: scale(1.02);
-        }
-
-        li.article-timeline-item:hover span.digital-expression-layer-stack__layer--2,
-        li.article-timeline-item:focus-within span.digital-expression-layer-stack__layer--2,
-        a.digital-expression-layer-stack__link:hover span.digital-expression-layer-stack__layer--2,
-        a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer--2 {
-            transform: translate(-12%, 12%) scale(1.02);
-        }
-
-        li.article-timeline-item:hover span.digital-expression-layer-stack__layer--3,
-        li.article-timeline-item:focus-within span.digital-expression-layer-stack__layer--3,
-        a.digital-expression-layer-stack__link:hover span.digital-expression-layer-stack__layer--3,
-        a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer--3 {
-            transform: translate(-18%, 18%) scale(1.03);
-        }
-
-        li.article-timeline-item:hover span.digital-expression-layer-stack__layer--4,
-        li.article-timeline-item:focus-within span.digital-expression-layer-stack__layer--4,
-        a.digital-expression-layer-stack__link:hover span.digital-expression-layer-stack__layer--4,
-        a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer--4 {
-            transform: translate(-24%, 24%) scale(1.04);
         }
     }
 }

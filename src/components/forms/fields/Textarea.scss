@@ -1,7 +1,7 @@
 @use "../../../styles/extend" as *;
 
 textarea.form-textarea, textarea.form-textarea:focus {
-    --min-height: 200px;
+    --min-height: var(--textarea-min-height, 200px);
     --padding: 1rem;
 
     min-height: var(--min-height);
@@ -23,7 +23,7 @@ textarea.form-textarea, textarea.form-textarea:focus {
         --padding: 0.9rem;
     }
     @include media-breakpoint-down(sm) {
-        --min-height: 150px;
+        --min-height: var(--textarea-min-height, 150px);
         --padding: 0.85rem;
     }
 }

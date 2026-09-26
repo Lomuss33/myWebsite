@@ -34,7 +34,8 @@ function TextArea({
 
             const rect = wrapperEl.getBoundingClientRect()
             if(rect.height > 0) {
-                const px = Math.max(200, Math.round(rect.height))
+                const configuredMinimum = Number.parseFloat(getComputedStyle(textareaEl).getPropertyValue("--textarea-min-height")) || 200
+                const px = Math.max(configuredMinimum, Math.round(rect.height))
                 wrapperEl.style.minHeight = `${px}px`
                 return
             }

@@ -1,0 +1,135 @@
+// Post-zoom desktop density for Software's portfolio and recommendations.
+// The viewport/layout guard keeps mobile and narrow-landscape component rules
+// in charge; card copy scales from each card's own inline size.
+@media (min-width: 80rem) {
+    html:is([data-layout="normal"], [data-layout="ultrawide"]) {
+        article#article-1-section-my-software {
+            div.article-portfolio-items {
+                --item-gap: clamp(0.9rem, 1.25vw, 1.1rem);
+                --padding: 0.72rem 0.76rem 0.65rem;
+                --portfolio-inline-padding: 0.76rem;
+                --padding-bottom: 0.65rem;
+                --portfolio-card-title-size: clamp(1.16rem, 1rem + 1cqi, 1.3rem);
+                --portfolio-card-category-size: clamp(0.88rem, 0.84rem + 0.28cqi, 0.94rem);
+                --portfolio-card-description-size: clamp(0.875rem, 0.86rem + 0.42cqi, 0.94rem);
+                --portfolio-card-description-line-height: 1.42;
+                --portfolio-control-height: 3rem;
+                --portfolio-controls-gap: 0.45rem;
+                --portfolio-controls-separation: 0.5rem;
+                --portfolio-card-intrinsic-size: 14rem;
+            }
+
+            div.article-portfolio-item-title {
+                gap: 0.28rem;
+
+                h5.article-portfolio-item-title-main {
+                    font-size: var(--portfolio-card-title-size) !important;
+                    line-height: 1.12;
+                }
+
+                div.article-portfolio-item-title-category {
+                    margin-top: 0.2rem;
+                    padding: 0.32rem 0.55rem 0.36rem;
+                    font-size: var(--portfolio-card-category-size) !important;
+                    line-height: 1.15;
+                }
+            }
+
+            div.article-portfolio-item-body {
+                margin-top: 0.45rem;
+
+                div.article-portfolio-item-body-description {
+                    font-size: var(--portfolio-card-description-size);
+                    line-height: var(--portfolio-card-description-line-height);
+                }
+            }
+
+            ul.article-portfolio-item-body-tags {
+                margin-top: 0.35rem;
+            }
+
+            li.article-portfolio-item-body-tag {
+                padding: 0.1rem 0.32rem;
+                margin-right: 0.2rem;
+                margin-bottom: 0.2rem;
+                font-size: 0.82rem !important;
+            }
+
+            div.article-portfolio-item-footer {
+                margin-top: 0.35rem;
+            }
+
+            div.article-portfolio-item-controls {
+                gap: 0.45rem;
+                min-height: 3rem;
+            }
+
+            a.article-portfolio-item-control-btn,
+            div.article-portfolio-item-control-btn {
+                min-height: 2.75rem;
+            }
+
+            a.article-portfolio-item-control-btn-visit {
+                min-height: 2.75rem;
+            }
+
+            div.article-category-filter {
+                margin-bottom: 0.8rem;
+            }
+        }
+
+        article#article-2-section-my-software {
+            --software-rec-desktop-content-width: 72rem;
+
+            div.article-testimonials-groups {
+                gap: clamp(2rem, 2.5vw, 2.5rem);
+            }
+
+            p.article-testimonials-intro {
+                padding: 0.85rem 1rem;
+                margin-bottom: clamp(1.6rem, 2.3vw, 2rem);
+                font-size: clamp(1rem, 0.98rem + 0.14vw, 1.04rem);
+                line-height: 1.48;
+            }
+
+            h5.article-testimonials-group-title {
+                margin-bottom: 0.9rem;
+                font-size: clamp(1.2rem, 1.16rem + 0.22vw, 1.28rem) !important;
+                line-height: 1.2;
+            }
+
+            div.article-testimonials-items {
+                --testimonial-balloon-min-height: clamp(11.25rem, 13vw, 12.25rem);
+                --testimonial-balloon-padding: 1rem 0.95rem;
+                --testimonial-avatar-size: clamp(4.75rem, 5.5vw, 5.25rem);
+                --testimonial-avatar-border-size: 5px;
+                padding-inline: 0.35rem;
+            }
+
+            div.article-testimonials-item-balloon {
+                min-height: var(--testimonial-balloon-min-height);
+                border-radius: 0.9rem;
+            }
+
+            div.balloon {
+                font-size: clamp(1.22rem, 1.18rem + 0.2vw, 1.3rem);
+                line-height: 1.42;
+            }
+
+            div.article-testimonials-item-info {
+                margin-top: 0.9rem;
+            }
+
+            a.article-testimonials-item-name {
+                font-size: clamp(1rem, 0.98rem + 0.12vw, 1.05rem);
+                line-height: 1.24;
+            }
+
+            div.article-testimonials-item-role {
+                margin-top: 0.25rem;
+                font-size: clamp(0.88rem, 0.86rem + 0.1vw, 0.92rem);
+                line-height: 1.32;
+            }
+        }
+    }
+}

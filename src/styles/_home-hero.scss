@@ -366,6 +366,160 @@ html[data-layout] section#section-about header.section-header.section-header-hom
     .section-header-prefix span, h2.section-header-title span { white-space: nowrap; }
 }
 
+// Restore Home's former desktop density after retiring page-level zoom. Keep
+// the scale local to Home: mobile composition and the fixed navigation rail
+// continue to use their existing sizing systems.
+html:is([data-layout="normal"], [data-layout="ultrawide"]) section#section-about {
+    header.section-header.section-header-home {
+        margin: .35rem auto .55rem;
+        h2.section-header-title {
+            font-size: clamp(1.75rem, 1.45rem + 1.15cqi, 2rem) !important;
+            line-height: 1.14;
+        }
+    }
+
+    article.article {
+        margin-top: .45rem;
+        > h4.article-title {
+            font-size: clamp(.9rem, .84rem + .18cqi, 1rem) !important;
+            line-height: 1.2;
+            margin: .6rem 0 .65rem;
+        }
+        &::after { margin-top: .7rem; }
+    }
+
+    // Keep comfortable 44px hit targets while reducing the visible contact
+    // chips, so compactness does not make the controls harder to use.
+    article#article-1-section-about {
+        --home-contact-band-gap: .4rem;
+        ul.article-inline-list-items:not(.article-inline-list-items-fit-measure) {
+            gap: .4rem;
+            li.article-inline-list-item { height: 44px; min-height: 44px; }
+        }
+        .article-inline-list-item-control { height: 44px; min-height: 44px; }
+        .article-inline-list-item-pill {
+            height: 36px; min-height: 36px; max-height: 36px;
+            padding-inline: .6rem !important;
+        }
+        i.article-inline-list-item-icon {
+            flex-basis: 1.125rem; width: 1.125rem; min-width: 1.125rem;
+            height: 1.125rem; font-size: 1rem;
+        }
+        .article-inline-list-item-control,
+        span.article-inline-list-item-label { font-size: .875rem; }
+    }
+
+    .article-feature-item.article-feature-item-home-style-intro {
+        grid-template-columns: minmax(0, 19.5%) minmax(0, 1fr);
+        gap: clamp(.75rem, 1.5cqi, 1.125rem);
+        .article-feature-item-image { max-width: 15.5rem; }
+        .article-feature-item-text {
+            font-size: clamp(1rem, .94rem + .12cqi, 1.03125rem) !important;
+            line-height: 1.45;
+        }
+        // Landscape phones can resolve to desktop composition while the
+        // content pane itself is still phone-narrow (the rail uses space).
+        @container (max-width: 36rem) {
+            grid-template-columns: minmax(0, 1fr);
+            row-gap: .25rem;
+            .article-feature-item-media { width: 100%; justify-self: stretch; order: 1; }
+            .article-feature-item-content { order: 2; }
+            .article-feature-item-image { max-width: min(13rem, 48cqi); margin-inline: auto; }
+            .article-feature-item-text { min-width: 0; }
+        }
+    }
+
+    article.article-info-list-home {
+        .article-info-list-items.article-info-list-items-home,
+        .article-info-list-items.article-info-list-items-home.article-info-list-items-shrink {
+            --avatar-size: clamp(3.25rem, 4cqi, 3.75rem);
+            --min-height: calc(var(--avatar-size) + 1.25rem);
+            --padding: 4px;
+            --content-padding-inline-start: .7rem;
+            --content-padding-inline-end: .7rem;
+            --content-padding-block: .55rem;
+            --grid-row-gap: .55rem;
+            --grid-column-gap: .55rem;
+            --home-skill-title-font-size: clamp(.9rem, .86rem + .16cqi, .97rem);
+            --home-skill-description-font-size: clamp(.875rem, .84rem + .12cqi, .94rem);
+            --home-skill-description-line-height: 1.32;
+            --proof-bubble-font-size: clamp(.875rem, .84rem + .12cqi, .94rem);
+        }
+        .article-info-list-item-content.article-info-list-item-home {
+            padding: .5rem .65rem !important;
+        }
+        .article-info-list-item.article-info-list-item-home .article-info-list-item-info-title {
+            font-size: clamp(.9rem, .86rem + .16cqi, .97rem) !important;
+            line-height: 1.2 !important;
+        }
+        .article-info-list-item-info-text {
+            font-size: clamp(.875rem, .84rem + .12cqi, .94rem) !important;
+            line-height: 1.32 !important;
+        }
+        .collapsable-menu { margin-top: .9rem; }
+        button.standard-button.see-more-button-modern {
+            width: min(100%, 17rem);
+            min-height: 44px;
+            padding: .45rem .8rem;
+            font-size: .84rem;
+            line-height: 1.2;
+        }
+    }
+
+    article#article-5-section-about {
+        margin-top: .45rem;
+        .article-name-origins-panel { padding-inline: .25rem; }
+        section.name-origin { padding: .7rem 0; }
+        .name-origin-display { width: 33%; margin-right: 1rem; }
+        .name-origin-surname .name-origin-display { margin-left: 1rem; }
+        div.name-origin-word.pretext-interactive-text {
+            font-size: clamp(4.5rem, 8cqi, 5.75rem) !important;
+            line-height: 1.02;
+        }
+        .name-origin-meta { font-size: .7rem; margin-bottom: .25rem; }
+        .name-origin-copy {
+            font-size: clamp(.9rem, .86rem + .12cqi, .95rem);
+            line-height: 1.45;
+            p.name-origin-story-mobile { margin-bottom: .5rem; }
+        }
+        .name-origin-lineage { gap: .2rem .4rem; margin-bottom: .45rem; font-size: .82em; }
+        .article-name-origins-panel > footer { padding-top: .5rem; font-size: .78rem; }
+        @container name-origins (max-width: 35rem) {
+            .name-origin-display,
+            .name-origin-surname .name-origin-display {
+                float: none;
+                width: 100%;
+                margin: 0 0 .45rem;
+            }
+            div.name-origin-word.pretext-interactive-text {
+                font-size: clamp(2.25rem, 12cqi, 3.75rem) !important;
+            }
+        }
+    }
+
+    article#article-7-section-about {
+        .article-stack-items.article-stack-items-home {
+            --avatar-size: clamp(2.75rem, 3.4cqi, 3rem);
+            --home-stack-avatar-outset: calc(var(--avatar-size) / 2);
+            --home-stack-icon-reserve: calc(var(--avatar-size) / 2 + .4rem);
+            --home-stack-bubble-safe-inset: calc(var(--avatar-size) / 2 + .65rem);
+            gap: .5rem;
+        }
+        .article-stack-item.article-stack-item-home {
+            min-height: 6.5rem;
+            padding-block: .55rem;
+            gap: .35rem;
+        }
+        .article-stack-item-title-prefix {
+            font-size: clamp(.82rem, 6cqi, .94rem) !important;
+        }
+        .article-stack-item-title-main {
+            font-size: clamp(1.05rem, 9.5cqi, 1.45rem) !important;
+        }
+        .article-stack-item-home-bubble-inner { padding-left: calc(var(--home-stack-avatar-outset) + .65rem); }
+    }
+}
+
 // Compact Home article typography when the content column is narrow.
 @container (max-width: 48rem) {
     html[data-layout] section#section-about article.article > h4.article-title {

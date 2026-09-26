@@ -1,6 +1,6 @@
 # Responsive layout
 
-Verified: 2026-09-26 against resolver, navigation, and timeline sizing sources; not exhaustive device testing.
+Verified: 2026-09-26 against resolver, navigation, timeline sizing, and Contact form sources; not exhaustive device testing.
 
 ## Mode authority
 
@@ -18,12 +18,15 @@ Do not introduce independent width-only mobile fallbacks. Container breakpoints 
 
 [LayoutNavigation.scss](../../src/components/layout/LayoutNavigation.scss) gives the desktop page a true 72rem maximum width and centers it in the space beside the navigation rail. It uses normal CSS layout with no global `zoom`, transformed page, or inverse-width compensation. The surrounding shell continues to show the garden/sky background on wide displays. Shared desktop spacing and typography are expressed through the bounded desktop tokens in [_sizing.scss](../../src/styles/_sizing.scss); interactive targets retain their actual 44px minimum. Mobile layout is unchanged.
 
+Page-specific density is owned by each page's styles after the shared shell scale. Home's post-zoom desktop scale is scoped to `normal` and `ultrawide` in [_home-hero.scss](../../src/styles/_home-hero.scss); Experience, Education, Software, Hardware, Writings, Art, and Contact have similarly scoped rules in [_experience-density.scss](../../src/styles/_experience-density.scss), [_education-density.scss](../../src/styles/_education-density.scss), [_software-density.scss](../../src/styles/_software-density.scss), [_hardware-density.scss](../../src/styles/_hardware-density.scss), [_writings-density.scss](../../src/styles/_writings-density.scss), [_art-density.scss](../../src/styles/_art-density.scss), and [_contact-density.scss](../../src/styles/_contact-density.scss). Do not compensate by shrinking the centered 72rem pane or the navigation rail.
+
 ## Styling ownership
 
 - [app.scss](../../src/styles/app.scss): imports and cascade order.
 - [_sizing.scss](../../src/styles/_sizing.scss): shared responsive overrides.
 - [_mobile-profile.scss](../../src/styles/_mobile-profile.scss): mobile profile.
 - [_home-hero.scss](../../src/styles/_home-hero.scss): multiple Home article overrides and reliability safeguards despite its narrow filename.
+- [_experience-density.scss](../../src/styles/_experience-density.scss), [_education-density.scss](../../src/styles/_education-density.scss), [_software-density.scss](../../src/styles/_software-density.scss), [_hardware-density.scss](../../src/styles/_hardware-density.scss), [_writings-density.scss](../../src/styles/_writings-density.scss), [_art-density.scss](../../src/styles/_art-density.scss), and [_contact-density.scss](../../src/styles/_contact-density.scss): page-specific desktop density after zoom removal.
 - [useSidebarProfileLayout.js](../../src/components/nav/useSidebarProfileLayout.js): rail-space fit; navigation takes priority over optional profile content.
 - [_profile-fit.scss](../../src/components/nav/partials/_profile-fit.scss): profile states.
 
@@ -83,9 +86,23 @@ Education timeline body and metadata type scale from each card's inline size whe
 
 Education certification cards use content-driven height, a two-column desktop layout, and a single-column narrow layout. Their metadata switches from three compact tiles to stacked rows when an individual card is narrow, independent of viewport width. The future CCNA path is intentionally muted and grayscale, with a red INCOMING corner ribbon that remains legible in both themes.
 
-The My Art Digital Expression timeline keeps its overlapping gallery preview layers in a flat 2D stacking context. Hover and focus may fan/center the layers with 2D transforms; avoid nested 3D transforms, perspective, and backdrop filters there because they produced unstable compositing at large sizes.
+Contact's desktop density scopes compact information cards, the primary contact form, location comparison, and complaint composer to `normal`/`ultrawide` viewports at least 80rem wide. Location map controls remain at least 44px tall while the two map panels use a wider aspect ratio to limit article height without shrinking the interactive map below a useful size. Contact and complaint textareas can opt into a CSS-configurable initial wrapper minimum; their existing default remains 200px, while Contact desktop uses 160px. The textarea resizer reads that optional value before locking its initial wrapper size, so other forms retain their current dimensions. Mobile and narrow-landscape layouts do not receive this density pass. Focused coverage lives in `tests/responsive.spec.js`; the valid email-submission path is deliberately not exercised by layout tests.
+
+Education's post-zoom desktop density pass is scoped to normal and ultrawide layouts at viewport widths of 80rem and above. It reduces the section/article heading scale, timeline portrait and card rhythm, certificate frame/detail spacing, and skill-card spacing/type while keeping each timeline's three metadata rows, collapsed descriptions, centered card/avatar layering, and the certification ribbon. Skill popup buttons retain a 44px minimum target. Narrow landscape and mobile keep the existing component sizing. See [_education-density.scss](../../src/styles/_education-density.scss) and its focused assertions in `tests/responsive.spec.js`.
+
+Software's post-zoom desktop density pass uses the same 80rem normal/ultrawide scope. Project title, category, and description sizes follow each card's inline width; project links and category filters retain 44px minimum targets. Testimonial quote, author, and avatar sizing are bounded, while carousel behavior and narrow/mobile layouts remain component-owned. See [_software-density.scss](../../src/styles/_software-density.scss) and its focused assertions in `tests/responsive.spec.js`.
+
+Hardware's desktop density pass uses the same 80rem normal/ultrawide scope. Project cards keep their three-column collection, shorten the oversized title band and body rhythm, and retain readable descriptions and 44px actions/filters. DataProbe's summary tiles, grouped panels, signal metadata, and value blocks use tighter spacing and bounded type; permission unlock, per-signal requests, copy, and expand actions remain intact with 44px targets. The component has no plotted canvas/SVG charts; its visual summary and grouped signal cards are the visualization surface. Narrow landscape and mobile continue to use component sizing. See [_hardware-density.scss](../../src/styles/_hardware-density.scss) and focused desktop/mobile assertions in `tests/responsive.spec.js`.
+
+Writings' desktop density pass uses the same 80rem normal/ultrawide scope. The timeline card rhythm and type, FallingWords hint and play area, feature copy, both skills collections, and manuscript display are compacted while retaining content flow and interactive behavior. The manuscript stays at its native 900:1006 drawing ratio; its existing resize observer redraws the canvas at the capped display size. Timeline actions keep 44px minimum targets, and narrow landscape/mobile retain component-owned sizing. See [_writings-density.scss](../../src/styles/_writings-density.scss) and focused desktop, interaction, and mobile-isolation assertions in `tests/responsive.spec.js`.
+
+Art's desktop density pass uses the same 80rem normal/ultrawide scope. Photography portraits and card text, digital-expression tracks, article headings, educator-stack columns, and SecretPearls copy/gates are scaled for the centered page width. WebArt's measured expanded stage and the pearl tiles' square canvas surfaces remain content-sized; controls preserve 44px targets and reveal/collapse behavior. Narrow landscape and mobile keep their existing layouts. See [_art-density.scss](../../src/styles/_art-density.scss) and focused desktop, interaction, and mobile-isolation assertions in `tests/responsive.spec.js`.
+
+The My Art Digital Expression timeline keeps its overlapping gallery preview layers in a flat 2D stacking context. Card hover fans the four absolute layers; stack hover/focus centers them. Animate both states with the separate `translate`, `transform`, and `opacity` properties so layer geometry stays fixed; avoid animated shadows, positional properties, nested 3D transforms, perspective, and backdrop filters there.
 
 The three Digital Expression timeline cards keep a content-first text column alongside the reserved gallery preview track. Their minimum height follows that preview track, while titles, actions, and descriptions can expand naturally when content wraps on smaller screens.
+
+My Art's compact digital stack uses four columns on medium phone widths, three below 28.75rem, and two only below 21.25rem. Tile padding and avatar scale tighten with each step so the icons and titles remain legible without oversized cards.
 
 Wood Products uses a natural-flow flyer/description/details grid instead of managed image sizing. Below 36rem content width, description moves above and details sit beside the flyer; below 23rem everything stacks. Warm wood colors adapt to the theme. No tests run.
 
@@ -95,7 +112,7 @@ Wood page refinement: grain uses the top 56px of the 141?80px sample to omit its
 
 The description page now uses `wood-products-five-planks.webp`, a single generated five-plank texture with right-edge shading, displayed once across the page. This replaces the repeated grain tiles and CSS seams.
 
-Experience feature and story sizing: the wood book is centered with a 44?54rem width cap influenced by viewport height (still limited to available width). Story text is capped at 17px, headings at 24px, and card/rail spacing is compact. Article titles cap at 28px. No tests run.
+Experience desktop density (2026-09-26): timeline card/avatar geometry, metadata and body type, the two-page wood-project book, and closing story cards are compacted only at desktop widths in normal/ultrawide layout. Timeline body copy stays around 15px, the wood book is capped from 34rem to 44rem by viewport height and available content width, and closing-story type stays around 15px while its draggable rail keeps a 52px minimum target. Section/article heading rules live with their component owners because those selectors carry important declarations. Narrow landscape and mobile retain their own composition. `tests/responsive.spec.js` checks density at 1366×768 and 3440×1440 and confirms the desktop rules do not leak into 568×320 or 390×844.
 
 Wood description uses shorter localized copy, 14?16px body type, restrained heading scaling and compact spacing. Its min-content height prevents clipping and lets equal grid rows grow when narrow screens require more room. No tests run.
 

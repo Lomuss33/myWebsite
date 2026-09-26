@@ -1,0 +1,231 @@
+// Desktop density after removing global CSS zoom. Keep forms, link actions,
+// and map controls usable; only authored spacing and the map canvas ratio shift.
+@media (min-width: 80rem) {
+    html:is([data-layout="normal"], [data-layout="ultrawide"]) {
+        section#section-contact {
+            header.section-header {
+                --section-header-feature-title-size: clamp(1.7rem, 1.7rem + 0.12vw, 1.8rem);
+                margin-bottom: clamp(1.25rem, 1.5vw, 1.5rem);
+            }
+
+            article:is(
+                #article-1-section-contact,
+                #article-2-section-contact,
+                #article-3-section-contact,
+                #article-4-section-contact
+            ) h4.article-title {
+                margin-top: 0.5rem;
+                margin-bottom: 0.85rem;
+                font-size: clamp(18px, 1.25vw, 20px) !important;
+                line-height: 1.15;
+            }
+        }
+
+        article#article-1-section-contact {
+            div.article-info-list-items {
+                --grid-row-gap: clamp(0.5rem, 0.65vw, 0.65rem);
+                --grid-column-gap: clamp(0.5rem, 0.65vw, 0.65rem);
+            }
+
+            div.article-info-list-item {
+                min-height: 7.5rem;
+                padding: 0.7rem 0.8rem 0.7rem 0.7rem;
+                column-gap: 0.65rem;
+            }
+
+            div.article-info-list-item-avatar {
+                --avatar-size: clamp(2.75rem, 4vw, 3.25rem);
+                width: var(--avatar-size);
+                min-width: var(--avatar-size);
+                height: var(--avatar-size);
+                min-height: var(--avatar-size);
+                max-height: var(--avatar-size);
+            }
+
+            div.article-info-list-item-info-title {
+                margin-bottom: 0.15rem;
+                font-size: clamp(1rem, 0.95rem + 0.2vw, 1.08rem);
+                line-height: 1.25;
+            }
+
+            div.article-info-list-item-info-text {
+                gap: 0.45rem;
+                font-size: clamp(0.86rem, 0.82rem + 0.14vw, 0.92rem);
+                line-height: 1.35;
+            }
+
+            div.copy-button-wrapper.article-info-list-item-inline-copy button.copy-button.copy-button-inline {
+                min-height: 2.75rem;
+                padding: 0.3rem 0.62rem;
+                font-size: 0.82rem;
+            }
+        }
+
+        article#article-2-section-contact {
+            textarea.form-textarea {
+                --textarea-min-height: 160px;
+            }
+
+            div.article-content {
+                gap: 0.65rem;
+            }
+
+            div.row-form {
+                --bs-gutter-x: 8px;
+                --bs-gutter-y: 8px;
+            }
+
+            div.input-field-wrapper {
+                min-height: 3rem;
+            }
+
+            input.form-input {
+                min-height: 3rem;
+                padding-block: 0.65rem;
+            }
+
+            div.row-form-group.article-contact-form-left,
+            div.row-form-group.article-contact-form-right {
+                height: 11rem;
+                min-height: 11rem;
+            }
+
+            div.row-form-group.article-contact-form-right > div.row-form-group-item,
+            div.row-form-group.article-contact-form-right div.input-field-wrapper {
+                height: 100%;
+                min-height: 0;
+            }
+
+            div.row-form-group.article-contact-form-right textarea.form-textarea {
+                min-height: 0;
+            }
+
+            div.row-form-group-submit button,
+            button.article-contact-form-reset-button {
+                min-height: 2.75rem;
+            }
+        }
+
+        article#article-3-section-contact {
+            div.article-content {
+                gap: clamp(0.65rem, 0.8vw, 0.8rem);
+                padding: clamp(0.6rem, 0.7vw, 0.75rem);
+                border-radius: 1.1rem;
+            }
+
+            .location-compare-intro {
+                gap: 0.55rem;
+
+                p,
+                .location-compare-pretext {
+                    font-size: clamp(1rem, 0.94rem + 0.15vw, 1.06rem);
+                    line-height: 1.5;
+                }
+            }
+
+            .location-compare-kicker {
+                padding: 0.35rem 0.65rem;
+                font-size: 0.78rem;
+            }
+
+            .location-compare-toolbar {
+                min-height: 0;
+                gap: 0.65rem;
+                padding: 0.65rem;
+            }
+
+            .location-compare-presets-title {
+                min-height: 3.25rem;
+            }
+
+            .location-compare-preset {
+                min-height: 3.25rem;
+                padding: 0.4rem 0.5rem;
+            }
+
+            .location-compare-preset > i {
+                width: 1.65rem;
+                height: 1.65rem;
+            }
+
+            .location-compare-actions {
+                gap: 0.5rem;
+
+                button,
+                button.location-compare-pan-link {
+                    height: 3.5rem;
+                    min-height: 3.5rem;
+                }
+            }
+
+            .location-compare-card {
+                aspect-ratio: 1.18 / 1;
+            }
+
+            .location-compare-label {
+                min-height: 4rem;
+                padding: 0.5rem 0.65rem;
+                gap: 0.5rem;
+            }
+
+            .location-compare-footer {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.82rem;
+                line-height: 1.4;
+            }
+        }
+
+        article#article-4-section-contact {
+            textarea.form-textarea {
+                --textarea-min-height: 160px;
+            }
+
+            form.article-complaint-form-shell {
+                gap: 0.6rem;
+            }
+
+            div.article-complaint-form-main {
+                grid-template-rows: minmax(0, 10.5rem) auto;
+                row-gap: 0.4rem;
+            }
+
+            div.article-complaint-form-message-column,
+            .article-complaint-form-rail {
+                padding: 0.75rem 0.75rem 0;
+            }
+
+            div.article-complaint-form-message-column > div.input-field-wrapper,
+            div.article-complaint-form-message-column > div.input-field-wrapper textarea.form-textarea {
+                min-height: 0;
+                height: 100%;
+            }
+
+            .article-complaint-form-rail {
+                gap: 0.5rem;
+            }
+
+            .article-complaint-form-note {
+                padding: 0.65rem 0.75rem;
+                font-size: 0.88rem;
+                line-height: 1.42;
+            }
+
+            button.article-complaint-form-select-trigger {
+                min-height: 3.25rem;
+            }
+
+            div.article-complaint-form-send-button-wrapper,
+            div.article-complaint-form-message-error-slot {
+                padding: 0 0.75rem 0.75rem;
+            }
+
+            div.article-complaint-form-send-button-wrapper > button.standard-button.article-complaint-form-send-button,
+            p.article-complaint-form-message-error,
+            p.article-complaint-form-status,
+            p.article-complaint-form-error,
+            span.article-complaint-form-message-error-placeholder {
+                min-height: 2.75rem;
+            }
+        }
+    }
+}

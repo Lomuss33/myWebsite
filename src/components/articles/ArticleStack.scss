@@ -1121,16 +1121,23 @@ article#article-4-section-my-art {
 
         @container article-stack (max-width: 660px) {
             --stack-columns: 4;
-            --gap: 13px;
-            --avatar-size: 118px;
-            --padding: clamp(9px, 5%, 13px);
+            --gap: 8px;
+            --avatar-size: 56px;
+            --padding: clamp(5px, 1.5vw, 7px);
         }
 
         @container article-stack (max-width: 460px) {
-            --stack-columns: 4;
-            --gap: 10px;
-            --avatar-size: 104px;
-            --padding: clamp(8px, 5%, 12px);
+            --stack-columns: 3;
+            --gap: 6px;
+            --avatar-size: 48px;
+            --padding: clamp(4px, 1.4vw, 6px);
+        }
+
+        @container article-stack (max-width: 340px) {
+            --stack-columns: 2;
+            --gap: 6px;
+            --avatar-size: 44px;
+            --padding: 5px;
         }
     }
 
@@ -1145,7 +1152,7 @@ article#article-4-section-my-art {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: clamp(9px, 6cqi, 20px);
+        gap: clamp(4px, 1vw, 8px);
         container-type: inline-size;
         aspect-ratio: 1 / 1;
         border: 1px solid rgba(56, 189, 248, 0.18);
@@ -1201,7 +1208,7 @@ article#article-4-section-my-art {
         align-items: center;
         justify-content: center;
         width: 100%;
-        max-width: 94%;
+        max-width: 100%;
         text-align: center;
     }
 

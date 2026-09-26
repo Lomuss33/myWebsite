@@ -11,9 +11,9 @@
                 --padding-bottom: 0.65rem;
                 --portfolio-card-title-size: clamp(1.16rem, 1rem + 1cqi, 1.3rem);
                 --portfolio-card-category-size: clamp(0.88rem, 0.84rem + 0.28cqi, 0.94rem);
-                --portfolio-card-description-size: clamp(0.875rem, 0.86rem + 0.42cqi, 0.94rem);
-                --portfolio-card-description-line-height: 1.42;
-                --portfolio-control-height: 3rem;
+                --portfolio-card-description-size: clamp(0.84rem, 0.8rem + 0.35cqi, 0.9rem);
+                --portfolio-card-description-line-height: 1.38;
+                --portfolio-control-height: 2.75rem;
                 --portfolio-controls-gap: 0.45rem;
                 --portfolio-controls-separation: 0.5rem;
                 --portfolio-card-intrinsic-size: 14rem;
@@ -61,7 +61,8 @@
 
             div.article-portfolio-item-controls {
                 gap: 0.45rem;
-                min-height: 3rem;
+                min-height: 2.75rem;
+                padding-top: 0.55rem;
             }
 
             a.article-portfolio-item-control-btn,

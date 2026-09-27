@@ -38,8 +38,8 @@ Build an editorial “artist listening room” rather than a plain Spotify embed
 - Appended the article as positional article 6, then ordered it and its associated decorative band between the first artwork entry and Web Art. Existing article IDs remain stable.
 - Artist, banner, links, release metadata, artwork, and Spotify identifiers remain blank; localized empty-state copy is present in English, German, Croatian, and Turkish.
 - The Spotify iFrame Embed API controller is created only when a track identifier is populated. Playback begins from the visitor's play action; vinyl motion follows playback state and honors reduced motion.
-- Follow-up visual refinement: the identity banner is compact, the native Spotify track embed is the main release view, and the clickable spinning record is a small accent alongside it.
-- After the artist supplied media, the article uses optimized WebP banner, portrait, and cover assets plus a 192 kbps MP3 encoded from the supplied 24-bit WAV. The local player takes priority, starts at 84 seconds on first play, supports seeking through the full recording, and rotates the clickable cover disc during playback. The supplied Spotify artist link is shown; Spotify identifies that URL as Lovro Musić, while the requested card name remains Snopdan Dogovic.
+- Follow-up visual refinement made the identity banner compact. The Spotify track embed remained an optional fallback until the artist supplied local audio.
+- After the artist supplied media, the article uses optimized WebP banner, portrait, and cover assets plus a 192 kbps MP3 encoded from the supplied 24-bit WAV. The local player takes priority, starts at 84 seconds on first play, supports seeking through the full recording, and rotates the clickable cover disc during playback. The banner crop excludes stray text at its top edge. The supplied Spotify artist link is shown; Spotify identifies that URL as Lovro Musić, while the requested card name remains Snopdan Dogovic.
 - JSON parse check, focused ESLint, direct Vite production build, and `git diff --check` passed. The build emitted existing Sass deprecation and large-chunk warnings.
 
 ## References

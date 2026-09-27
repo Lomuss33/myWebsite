@@ -196,12 +196,18 @@ function ArticleArtistSpotlight({dataWrapper}) {
                             <a className="artist-spotlight-spotify-link" href={data.spotifyArtistUrl}
                                target="_blank" rel="noopener noreferrer">
                                 <span>{text("artistButton", "Explore on Spotify")}</span>
-                                <span aria-hidden="true">↗</span>
+                                <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                                    <path d="M4 12 12 4M5 4h7v7" fill="none" stroke="currentColor"
+                                          strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
                             </a>
                         ) : !data.artistName ? (
                             <span className="artist-spotlight-spotify-link is-placeholder" aria-disabled="true">
                                 <span>{text("artistButton", "Explore on Spotify")}</span>
-                                <span aria-hidden="true">↗</span>
+                                <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                                    <path d="M4 12 12 4M5 4h7v7" fill="none" stroke="currentColor"
+                                          strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
                             </span>
                         ) : null}
                     </div>
@@ -222,7 +228,12 @@ function ArticleArtistSpotlight({dataWrapper}) {
                                 </span>
                             </span>
                             <span className="artist-spotlight-play" aria-hidden="true">
-                                <span aria-hidden="true">{isPlaying ? "Ⅱ" : "▶"}</span>
+                                {isPlaying ? (
+                                    <svg viewBox="0 0 16 16"><rect x="4" y="3" width="2.5" height="10" rx="0.5"/>
+                                        <rect x="9.5" y="3" width="2.5" height="10" rx="0.5"/></svg>
+                                ) : (
+                                    <svg viewBox="0 0 16 16"><path d="M5 3.5 12 8 5 12.5Z"/></svg>
+                                )}
                             </span>
                         </button>
                         <div className="artist-spotlight-release-copy">
@@ -256,7 +267,7 @@ function ArticleArtistSpotlight({dataWrapper}) {
                                            style={{"--artist-progress": `${duration ? currentTime / duration * 100 : 0}%`}}/>
                                     <div className="artist-spotlight-time" aria-hidden="true">
                                         <span>{formatTrackTime(currentTime)}</span>
-                                        <span>{formatTrackTime(duration)}</span>
+                                        <span>{release.duration || formatTrackTime(Math.ceil(duration))}</span>
                                     </div>
                                     {audioError && <span className="artist-spotlight-audio-error">
                                         {text("audioUnavailable", "Audio could not be loaded")}

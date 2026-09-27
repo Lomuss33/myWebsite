@@ -73,6 +73,26 @@ div.article-web-art-stage {
     overflow-anchor: none;
 }
 
+div.article-web-art-stage-carousel {
+    --article-web-art-stage-preview-height: 1px;
+
+    .layered-card-carousel {
+        opacity: 1;
+        transform: perspective(900px) rotateY(0);
+        transform-origin: center;
+        transition: opacity 380ms ease, transform 500ms cubic-bezier(.2, .8, .2, 1);
+    }
+
+    &.article-web-art-stage-preview .layered-card-carousel {
+        opacity: 0;
+        transform: perspective(900px) rotateY(90deg);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .layered-card-carousel { transition: none; }
+    }
+}
+
 div.article-web-art-intro-cover {
     position: relative;
     display: flex;

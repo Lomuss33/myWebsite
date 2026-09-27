@@ -68,20 +68,23 @@
 
         article#article-2-section-my-art {
             ul.article-timeline-items {
-                --digital-card-stack-base: clamp(6.8rem, 7.8vw, 7.8rem);
-                --digital-card-stack-track: clamp(7.8rem, 8.7vw, 8.4rem);
-                --digital-item-buffer: clamp(0.35rem, 0.55vw, 0.48rem);
-                gap: clamp(0.65rem, 1vw, 0.85rem);
+                --digital-card-stack-base: clamp(6.2rem, 6.5cqw, 7.1rem);
+                --digital-card-stack-track: clamp(6.85rem, 7.6cqw, 8rem);
+                --digital-item-buffer: clamp(0.25rem, 0.5cqw, 0.42rem);
+                --digital-card-heading-size: clamp(0.94rem, 1.22cqw, 1rem);
+                --digital-card-body-size: clamp(0.82rem, 1.13cqw, 0.9rem);
+                --digital-card-media-size: clamp(5rem, 7.5cqw, 5.85rem);
+                gap: clamp(0.5rem, 1.05cqw, 0.72rem);
             }
 
             div.article-timeline-item-info-for-timelines-header-main h5 {
-                font-size: clamp(17px, 1.24vw, 18px) !important;
+                font-size: clamp(15.04px, 1.22cqw, 16px) !important;
                 line-height: 1.2;
             }
 
             div.article-timeline-item-info-for-timelines-body-text,
             ul.article-timeline-item-info-for-timelines-body-list {
-                font-size: clamp(15.5px, 1.1vw, 16.5px);
+                font-size: clamp(13.12px, 1.13cqw, 14.4px);
                 line-height: 1.48;
             }
         }

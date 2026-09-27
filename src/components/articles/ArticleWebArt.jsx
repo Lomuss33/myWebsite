@@ -1,6 +1,7 @@
 import "./ArticleWebArt.scss"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Article from "./base/Article.jsx"
+import LayeredCardCarousel from "../generic/LayeredCardCarousel.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useNavigation} from "../../providers/NavigationProvider.jsx"
 import patronusSvgMarkup from "./webArt/patronus.svg?raw"
@@ -360,6 +361,7 @@ function ArticleWebArt({ dataWrapper, id }) {
     const ambientTardisReadyId = `${dataWrapper.uniqueId}-ambient-tardis`
     const [selectedItemCategoryId, setSelectedItemCategoryId] = useState(null)
     const [showIntroCover, setShowIntroCover] = useState(true)
+    const useCarousel = dataWrapper.settings.webArtPresentation !== "grid"
     const rawItems = useMemo(() => dataWrapper.orderedItems, [dataWrapper.orderedItems])
     const items = useMemo(() => {
         // Desired visual order: Poly, 5, 3D, Orbit, Hover, Wave, Spin, Shape, Hourglass, Noice, Distance, Android, Pulse, Bars, Deep
@@ -398,6 +400,8 @@ function ArticleWebArt({ dataWrapper, id }) {
     const [activationIndex, setActivationIndex] = useState(-1)
     const [openTileIds, setOpenTileIds] = useState(() => new Set())
     const [mountedTileIds, setMountedTileIds] = useState(() => new Set())
+    const [pinnedSlides, setPinnedSlides] = useState([])
+    const [carouselActiveTileId, setCarouselActiveTileId] = useState(null)
     const [sendYoursPreviewOpen, setSendYoursPreviewOpen] = useState(false)
     const allTileIds = useMemo(() => {
         const ids = items.map((item) => item?.uniqueId).filter(Boolean)
@@ -623,6 +627,8 @@ function ArticleWebArt({ dataWrapper, id }) {
         setShouldMountTiles(false)
         setOpenTileIds(new Set())
         setMountedTileIds(new Set())
+        setPinnedSlides([])
+        setCarouselActiveTileId(null)
         setSendYoursPreviewOpen(false)
     }, [])
 
@@ -683,7 +689,15 @@ function ArticleWebArt({ dataWrapper, id }) {
         setShowIntroCover(false)
         setShouldMountTiles(true)
         setActivationIndex(items.length - 1)
-        if(openAll) {
+        if(useCarousel) {
+            const firstTileId = items[0]?.uniqueId
+            setPinnedSlides([])
+            setCarouselActiveTileId(firstTileId || null)
+            setOpenTileIds(new Set(firstTileId ? [firstTileId] : []))
+            setMountedTileIds(new Set(firstTileId ? [firstTileId] : []))
+            setSendYoursPreviewOpen(false)
+        }
+        else if(openAll) {
             openAllArtTiles()
         }
         else {
@@ -712,7 +726,7 @@ function ArticleWebArt({ dataWrapper, id }) {
         })
 
         stageFrameIdsRef.current.push(firstFrameId)
-    }, [clearStageTransitionWork, items.length, openAllArtTiles, scheduleStageTransitionFallback, setStagePhase])
+    }, [clearStageTransitionWork, items, openAllArtTiles, scheduleStageTransitionFallback, setStagePhase, useCarousel])
 
     useEffect(() => {
         if(typeof window === "undefined") return
@@ -776,6 +790,7 @@ function ArticleWebArt({ dataWrapper, id }) {
 
     useEffect(() => {
         if(typeof window === "undefined" || !window.matchMedia) return
+        if(useCarousel) return
         if(showIntroCover || !openTileIds.size) return
         if(!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return
 
@@ -811,7 +826,7 @@ function ArticleWebArt({ dataWrapper, id }) {
             window.removeEventListener("focus", onFocus)
             document.removeEventListener("visibilitychange", onVisibilityChange)
         }
-    }, [showIntroCover, openTileIds, closeAllOpenTiles])
+    }, [showIntroCover, openTileIds, closeAllOpenTiles, useCarousel])
 
     const onIntroHide = useCallback(() => {
         clearStageTransitionWork()
@@ -908,7 +923,7 @@ function ArticleWebArt({ dataWrapper, id }) {
         )
     })
 
-    const ambientTiles = shouldMountTiles ? [
+    const ambientTileDefinitions = [
         {
             key: "ambient-trace",
             tileId: ambientTraceReadyId,
@@ -981,7 +996,8 @@ function ArticleWebArt({ dataWrapper, id }) {
             label: "Patronus",
             render: (isOpen) => <PatronusTile locked={locked || !isOpen} />
         }
-    ].map(({ key, tileId, label, render }) => {
+    ]
+    const ambientTiles = shouldMountTiles ? ambientTileDefinitions.map(({ key, tileId, label, render }) => {
         const isOpen = openTileIds.has(tileId)
         const shouldRenderTile = mountedTileIds.has(tileId) || isOpen
         return (
@@ -1028,6 +1044,75 @@ function ArticleWebArt({ dataWrapper, id }) {
              className={`article-web-art-tile article-web-art-tile-placeholder`}
              aria-label={`Web art tardis tile loading`}/>
     ]
+
+    const carouselSlides = [
+        ...items.map((item, index) => ({
+            id: item.uniqueId,
+            tileId: item.uniqueId,
+            label: getItemTileLabel(item, index),
+            content: itemTiles[index]
+        })),
+        ...ambientTileDefinitions.slice(0, ambientTiles.length).map(({key, tileId, label}, index) => ({
+            id: key,
+            tileId,
+            label,
+            content: ambientTiles[index]
+        })),
+        ...(shouldMountTiles ? [{
+            id: "send-yours",
+            tileId: null,
+            pinnable: false,
+            label: submitTileLabel,
+            content: <SendYourFunAnimationTile label={submitTileLabel}
+                                                   clickLabel={clickTileLabel}
+                                                   previewRequested={sendYoursPreviewOpen}/>
+        }] : [])
+    ]
+
+    const carouselLabels = {
+        en: {gallery: "Web art gallery", next: "Next artwork", previous: "Previous artwork", last: "Last viewed artwork", jump: "Jump to artwork", jumpTo: "Show artwork", pin: "Open alongside current artwork", unpin: "Close extra window", pinLimit: "Three extra artworks are already open", pinned: "Extra artwork"},
+        de: {gallery: "Webkunst-Galerie", next: "Nächstes Werk", previous: "Vorheriges Werk", last: "Zuletzt angesehenes Werk", jump: "Werk auswählen", jumpTo: "Werk anzeigen", pin: "Neben dem aktuellen Werk öffnen", unpin: "Zusätzliches Fenster schließen", pinLimit: "Drei zusätzliche Werke sind bereits offen", pinned: "Zusätzliches Werk"},
+        hr: {gallery: "Galerija web umjetnosti", next: "Sljedeće djelo", previous: "Prethodno djelo", last: "Zadnje pregledano djelo", jump: "Odaberi djelo", jumpTo: "Prikaži djelo", pin: "Otvori uz trenutno djelo", unpin: "Zatvori dodatni prozor", pinLimit: "Već su otvorena tri dodatna djela", pinned: "Dodatno djelo"},
+        tr: {gallery: "Web sanatı galerisi", next: "Sonraki eser", previous: "Önceki eser", last: "Son görüntülenen eser", jump: "Eser seç", jumpTo: "Eseri göster", pin: "Geçerli eserin yanında aç", unpin: "Ek pencereyi kapat", pinLimit: "Üç ek eser zaten açık", pinned: "Ek eser"}
+    }[selectedLanguageId]
+
+    const onCarouselChange = (_index, slide) => {
+        const selectedIds = new Set([...pinnedSlides.map(({tileId}) => tileId), slide.tileId].filter(Boolean))
+        for(const [tileId, timeoutId] of readyTimeoutsRef.current) {
+            if(selectedIds.has(tileId)) continue
+            window.clearTimeout(timeoutId)
+            readyTimeoutsRef.current.delete(tileId)
+        }
+        setCarouselActiveTileId(slide.tileId)
+        setOpenTileIds(selectedIds)
+        setMountedTileIds(selectedIds)
+        setSendYoursPreviewOpen(false)
+    }
+
+    const onCarouselPin = (slideId) => {
+        const slide = carouselSlides.find(({id: candidateId}) => candidateId === slideId)
+        if(!slide?.tileId) return
+        setPinnedSlides((current) => {
+            if(current.some(({id}) => id === slideId) || current.length >= 3) return current
+            return [...current, {id: slideId, tileId: slide.tileId}]
+        })
+    }
+
+    const onCarouselUnpin = (slideId) => {
+        setPinnedSlides((current) => current.filter(({id}) => id !== slideId))
+    }
+
+    useEffect(() => {
+        if(!useCarousel || showIntroCover || !shouldMountTiles) return
+        const selectedIds = new Set([...pinnedSlides.map(({tileId}) => tileId), carouselActiveTileId].filter(Boolean))
+        setOpenTileIds(selectedIds)
+        setMountedTileIds(selectedIds)
+        for(const [tileId, timeoutId] of readyTimeoutsRef.current) {
+            if(selectedIds.has(tileId)) continue
+            window.clearTimeout(timeoutId)
+            readyTimeoutsRef.current.delete(tileId)
+        }
+    }, [carouselActiveTileId, pinnedSlides, shouldMountTiles, showIntroCover, useCarousel])
 
     useEffect(() => {
         clearStageTransitionWork()
@@ -1077,31 +1162,44 @@ function ArticleWebArt({ dataWrapper, id }) {
                                   buttonLabel={showIntroCover ? introCopy.button : introHideLabel}
                                   hidden={!showIntroCover}
                                   onEnter={showIntroCover ? onIntroEnter : onIntroHide}
-                                  secondaryButtonLabel={!showIntroCover ? "promaja" : null}
-                                  onSecondaryAction={!showIntroCover ? toggleAllArtTiles : null}
+                                  secondaryButtonLabel={!showIntroCover && !useCarousel ? "promaja" : null}
+                                  onSecondaryAction={!showIntroCover && !useCarousel ? toggleAllArtTiles : null}
                                   secondaryPressed={areAllArtTilesOpen}/>
 
                 <div ref={stageRef}
                      className={[
                          "article-web-art-stage",
+                         useCarousel ? "article-web-art-stage-carousel" : "",
                          showIntroCover ? "article-web-art-stage-preview" : "",
                          stageHeight !== null ? "article-web-art-stage-measured" : "",
                          `article-web-art-stage-${stagePhase}`
                      ].filter(Boolean).join(" ")}
                      style={stageHeight !== null ? { "--article-web-art-stage-height": `${stageHeight}px` } : undefined}
                      onTransitionEnd={onStageTransitionEnd}
-                     aria-hidden={showIntroCover}>
-                    <div className={`article-web-art-items ${locked ? "article-web-art-items-locked" : ""}`}
-                         ref={tilesWrapperRef}
-                         aria-busy={showIntroCover}>
-                        {itemTiles}
-                        {ambientTiles}
-                        {shouldMountTiles && (
-                            <SendYourFunAnimationTile label={submitTileLabel}
-                                                      clickLabel={clickTileLabel}
-                                                      previewRequested={sendYoursPreviewOpen}/>
-                        )}
-                    </div>
+                     aria-hidden={showIntroCover}
+                     inert={showIntroCover ? "" : undefined}>
+                    {useCarousel ? (
+                        <LayeredCardCarousel key={showIntroCover ? "preview" : "open"}
+                                             slides={carouselSlides}
+                                             labels={carouselLabels}
+                                             enabled={!showIntroCover}
+                                             pinnedIds={pinnedSlides.map(({id: slideId}) => slideId)}
+                                             onChange={onCarouselChange}
+                                             onPin={onCarouselPin}
+                                             onUnpin={onCarouselUnpin}/>
+                    ) : (
+                        <div className={`article-web-art-items ${locked ? "article-web-art-items-locked" : ""}`}
+                             ref={tilesWrapperRef}
+                             aria-busy={showIntroCover}>
+                            {itemTiles}
+                            {ambientTiles}
+                            {shouldMountTiles && (
+                                <SendYourFunAnimationTile label={submitTileLabel}
+                                                          clickLabel={clickTileLabel}
+                                                          previewRequested={sendYoursPreviewOpen}/>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
         </Article>

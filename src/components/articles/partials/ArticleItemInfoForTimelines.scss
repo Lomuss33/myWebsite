@@ -75,7 +75,6 @@ article#article-1-section-education div.article-timeline-item-info-for-timelines
     background: transparent;
     box-shadow: none;
     transition:
-        transform 180ms ease,
         border-color 180ms ease,
         box-shadow 180ms ease;
 
@@ -115,7 +114,6 @@ article#article-1-section-education div.article-timeline-item-info-for-timelines
 
     &:hover,
     &:focus-within {
-        transform: translateY(-2px);
         --education-card-edge-color: color-mix(in srgb, var(--card-accent) 56%, var(--card-border) 44%);
     }
 }
@@ -2112,16 +2110,38 @@ article#article-1-section-education div.article-timeline-item-info-for-timelines
     cursor: pointer;
 }
 
+article#article-1-section-education div.article-timeline-item-info-for-timelines {
+    isolation: auto;
+
+    &::before,
+    &::after {
+        z-index: 1;
+    }
+
+    > * {
+        position: relative;
+        z-index: 3;
+    }
+}
+
 [data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines {
-    --education-body-text: #334155;
-    --education-body-strong: #0f172a;
-    --education-body-list: #475569;
+    --education-foreground: #000;
+    --card-text-strong: #000;
+    --card-text-mid: #000;
+    --card-text-soft: #000;
+    --education-body-text: #000;
+    --education-body-strong: #000;
+    --education-body-list: #000;
 }
 
 [data-theme="dark"] article#article-1-section-education div.article-timeline-item-info-for-timelines {
-    --education-body-text: #d7e3f4;
-    --education-body-strong: #f8fafc;
-    --education-body-list: #b8c7de;
+    --education-foreground: #fff;
+    --card-text-strong: #fff;
+    --card-text-mid: #fff;
+    --card-text-soft: #fff;
+    --education-body-text: #fff;
+    --education-body-strong: #fff;
+    --education-body-list: #fff;
 }
 
 [data-theme="dark"] article#article-1-section-education div.article-timeline-item-info-for-timelines-body.article-timeline-item-info-for-timelines-body--education.is-education-collapsed div.article-timeline-item-info-for-timelines-body-text::after {
@@ -2829,13 +2849,14 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines {
     --digital-card-inset: clamp(0.65rem, 1vw, 0.9rem);
     display: grid;
-    grid-template-columns: minmax(0, 1fr) var(--digital-card-stack-track, clamp(10.5rem, 24vw, 13.25rem));
-    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
     grid-template-areas:
-        "header header"
-        "body media"
-        "actions actions";
-    column-gap: clamp(0.75rem, 1.8vw, 1.25rem);
+        "header"
+        "media"
+        "body"
+        "actions";
+    column-gap: 0;
     row-gap: clamp(0.45rem, 1vw, 0.7rem);
     align-content: start;
     align-items: stretch;
@@ -2874,7 +2895,7 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
     width: 100%;
     max-width: 100%;
     margin: 0;
-    font-size: clamp(1.08rem, 0.98rem + 0.48vw, 1.42rem) !important;
+    font-size: var(--digital-card-heading-size, clamp(1.08rem, 0.98rem + 0.48vw, 1.42rem)) !important;
     font-weight: 800;
     line-height: 1.16;
     letter-spacing: -0.025em;
@@ -2959,15 +2980,29 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
     min-height: 44px !important;
     max-height: none !important;
     aspect-ratio: auto !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    background: rgba(2, 6, 23, 0.58) !important;
+    display: flex !important;
+    flex-direction: row-reverse;
+    gap: 0.42rem;
+    padding: 0.35rem 0.55rem !important;
+    border: 1px solid rgba(103, 232, 249, 0.55) !important;
+    border-radius: 0.7rem !important;
+    background: linear-gradient(145deg, rgba(8, 47, 73, 0.96), rgba(15, 23, 42, 0.96)) !important;
     color: #fff !important;
-    box-shadow: none !important;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.32), 0 0 0 1px rgba(255, 255, 255, 0.08) inset !important;
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list a.article-item-preview-menu-link:not(:last-child) > button.circular-button {
-    border-right: 1px solid rgba(255, 255, 255, 0.22) !important;
+    border-right: 1px solid rgba(103, 232, 249, 0.55) !important;
+}
+
+article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item span.article-item-preview-menu-button-label {
+    overflow: hidden;
+    color: #f8fafc;
+    font-size: 0.72rem;
+    font-weight: 750;
+    line-height: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list a.article-item-preview-menu-link:hover,
@@ -2977,7 +3012,15 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list a.article-item-preview-menu-link:hover > button.circular-button,
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list a.article-item-preview-menu-link:focus-visible > button.circular-button {
-    background: rgba(2, 6, 23, 0.78) !important;
+    background: linear-gradient(145deg, rgba(8, 65, 92, 0.98), rgba(30, 41, 59, 0.98)) !important;
+    border-color: rgba(165, 243, 252, 0.95) !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(165, 243, 252, 0.22) inset !important;
+}
+
+article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list a.article-item-preview-menu-link:focus-visible {
+    outline: 2px solid #a5f3fc;
+    outline-offset: -2px;
+    border-radius: 0.7rem;
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list a.article-item-preview-menu-link-website {
@@ -3008,7 +3051,7 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
     border-radius: 0;
     background: transparent;
     box-shadow: none;
-    font-size: clamp(0.92rem, 0.88rem + 0.25vw, 1.03rem);
+    font-size: var(--digital-card-body-size, clamp(0.92rem, 0.88rem + 0.25vw, 1.03rem));
     line-height: 1.5;
     transform: none;
 }
@@ -3041,14 +3084,15 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
     article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines {
         --digital-card-inset: clamp(0.65rem, 2vw, 0.85rem);
         display: grid;
-        grid-template-columns: minmax(0, 1fr) var(--digital-card-stack-track, clamp(7rem, 28vw, 8.4rem));
-        grid-template-rows: auto minmax(0, 1fr) auto;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto auto minmax(0, 1fr) auto;
         grid-template-areas:
-            "header header"
-            "body media"
-            "actions actions";
+            "header"
+            "media"
+            "body"
+            "actions";
         row-gap: 0.5rem;
-        column-gap: 0.75rem;
+        column-gap: 0;
         padding: var(--digital-card-inset);
     }
 
@@ -3073,9 +3117,14 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
 @include content-breakpoint-down(sm) {
     article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines {
         --digital-card-inset: 0.55rem;
-        grid-template-columns: minmax(0, 1fr) var(--digital-card-stack-track, clamp(6.25rem, 27vw, 7rem));
-        grid-template-rows: auto minmax(0, 1fr) auto;
-        column-gap: 0.55rem;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto auto minmax(0, 1fr) auto;
+        grid-template-areas:
+            "header"
+            "media"
+            "body"
+            "actions";
+        column-gap: 0;
         row-gap: 0.45rem;
         padding: var(--digital-card-inset);
     }
@@ -3085,13 +3134,14 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
     }
 
     article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list {
-        gap: 0.4rem;
+        gap: 0;
     }
 
     article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list a.article-item-preview-menu-link {
-        flex-basis: 2.65rem;
-        width: 2.65rem;
-        height: 2.65rem;
+        flex: 1 1 50%;
+        flex-basis: 50%;
+        width: 50%;
+        height: 3rem;
     }
 }
 
@@ -3284,4 +3334,29 @@ html[data-layout="mobile"] article#article-1-section-experience div.article-time
     border-left: 0;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+}
+
+// Keep all card copy crisp above the translucent surface and timeline line.
+// The surface remains transparent; only foreground text and glyphs change ink.
+[data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines,
+[data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines *,
+[data-theme="dark"] article#article-1-section-education div.article-timeline-item-info-for-timelines,
+[data-theme="dark"] article#article-1-section-education div.article-timeline-item-info-for-timelines * {
+    color: var(--education-foreground) !important;
+}
+
+[data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines-header-main h5,
+[data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines-education-meta span,
+[data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines-body,
+[data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines-tags-footer,
+[data-theme="dark"] article#article-1-section-education div.article-timeline-item-info-for-timelines-header-main h5,
+[data-theme="dark"] article#article-1-section-education div.article-timeline-item-info-for-timelines-education-meta span,
+[data-theme="dark"] article#article-1-section-education div.article-timeline-item-info-for-timelines-body,
+[data-theme="dark"] article#article-1-section-education div.article-timeline-item-info-for-timelines-tags-footer {
+    text-shadow: 0 1px 2px color-mix(in srgb, var(--education-crystal-color) 24%, transparent);
+}
+
+[data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines-education-meta-row .prop-list-separator,
+[data-theme="dark"] article#article-1-section-education div.article-timeline-item-info-for-timelines-education-meta-row .prop-list-separator {
+    opacity: 1;
 }

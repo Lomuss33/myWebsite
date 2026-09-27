@@ -156,6 +156,12 @@ article.article-artist-spotlight {
             color: rgba(240, 248, 244, 0.65);
             cursor: default;
         }
+
+        svg {
+            width: 0.8rem;
+            height: 0.8rem;
+            flex: none;
+        }
     }
 
     .artist-spotlight-release {
@@ -220,7 +226,7 @@ article.article-artist-spotlight {
 
     .artist-spotlight-record-label {
         display: grid;
-        width: 72%;
+        width: 84%;
         aspect-ratio: 1;
         place-items: center;
         overflow: hidden;
@@ -238,6 +244,8 @@ article.article-artist-spotlight {
 
     .artist-spotlight-play {
         position: absolute;
+        right: -0.1rem;
+        bottom: -0.1rem;
         z-index: 2;
         display: grid;
         width: 1.75rem;
@@ -251,6 +259,12 @@ article.article-artist-spotlight {
         color: #0c1716;
         font-size: 0.65rem;
         pointer-events: none;
+
+        svg {
+            width: 0.85rem;
+            height: 0.85rem;
+            fill: currentColor;
+        }
     }
 
     .artist-spotlight-turntable:disabled .artist-spotlight-play { color: #65727a; }

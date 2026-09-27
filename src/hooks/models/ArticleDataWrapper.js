@@ -123,6 +123,9 @@ export default class ArticleDataWrapper {
             // - ArticleArtistSpotlight
             artistSpotlight: rawSettings["artist_spotlight"] || {},
 
+            // - ArticleWebArt
+            webArtPresentation: rawSettings["web_art_presentation"] || "carousel",
+
             // - ArticleFeature
             featureLayoutMode: rawSettings["feature_layout_mode"] || "default",
             featureStackOrder: rawSettings["feature_stack_order"] || "media_text",

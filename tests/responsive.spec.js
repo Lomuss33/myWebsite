@@ -612,6 +612,68 @@ test('Headerless decorated pages keep the top band flush to the scroll pane', as
     }
 })
 
+test('Education connector stays visible through card surfaces in both themes', async ({page})=>{
+    await page.setViewportSize({width:390,height:844})
+
+    for(const theme of ['dark','light']) {
+        await preferences(page,'en',theme)
+        await openSection(page,'education')
+        const card=page.locator('#article-1-section-education .article-timeline-item-info-for-timelines').first()
+        await card.hover()
+
+        const layers=await page.locator('#article-1-section-education').evaluate(article=>({
+            connector:getComputedStyle(article.querySelector('.article-timeline-education-snake')).zIndex,
+            card:getComputedStyle(article.querySelector('.article-timeline-item-content')).zIndex,
+            surface:getComputedStyle(article.querySelector('.article-timeline-item-info-for-timelines'),'::before').zIndex,
+            content:getComputedStyle(article.querySelector('.article-timeline-item-info-for-timelines').firstElementChild).zIndex,
+            contentPosition:getComputedStyle(article.querySelector('.article-timeline-item-info-for-timelines').firstElementChild).position,
+            transform:getComputedStyle(article.querySelector('.article-timeline-item-info-for-timelines')).transform,
+            item:getComputedStyle(article.querySelector('.article-timeline-item')).zIndex,
+            avatar:getComputedStyle(article.querySelector('.article-timeline-item-avatar-wrapper')).zIndex
+        }))
+
+        expect(layers.card).toBe('auto')
+        expect(Number(layers.connector)).toBeGreaterThan(Number(layers.surface))
+        expect(Number(layers.content)).toBeGreaterThan(Number(layers.connector))
+        expect(layers.contentPosition).toBe('relative')
+        expect(layers.transform).toBe('none')
+        expect(layers.item).toBe('auto')
+        expect(Number(layers.avatar)).toBeGreaterThan(Number(layers.connector))
+    }
+})
+
+test('Education card copy is pure black in light mode over transparent surfaces', async ({page})=>{
+    await page.setViewportSize({width:390,height:844})
+    await preferences(page,'en','light')
+    await openSection(page,'education')
+    await expect(page.locator('html')).toHaveAttribute('data-theme','light')
+
+    const firstCard=page.locator('#article-1-section-education .article-timeline-item-info-for-timelines').first()
+    await expect(firstCard).toBeVisible()
+
+    const colors=await firstCard.evaluate(element=>[element,...element.querySelectorAll('*')].map(node=>getComputedStyle(node).color))
+    expect(new Set(colors)).toEqual(new Set(['rgb(0, 0, 0)']))
+    expect(await firstCard.evaluate(element=>getComputedStyle(element).backgroundColor)).toBe('rgba(0, 0, 0, 0)')
+    const textShadow=await firstCard.locator('.article-timeline-item-info-for-timelines-header-main h5').evaluate(element=>getComputedStyle(element).textShadow)
+    expect(textShadow).toContain('2px')
+})
+
+test('Education card copy is pure white in dark mode over transparent surfaces', async ({page})=>{
+    await page.setViewportSize({width:390,height:844})
+    await preferences(page,'en','dark')
+    await openSection(page,'education')
+    await expect(page.locator('html')).toHaveAttribute('data-theme','dark')
+
+    const firstCard=page.locator('#article-1-section-education .article-timeline-item-info-for-timelines').first()
+    await expect(firstCard).toBeVisible()
+
+    const colors=await firstCard.evaluate(element=>[element,...element.querySelectorAll('*')].map(node=>getComputedStyle(node).color))
+    expect(new Set(colors)).toEqual(new Set(['rgb(255, 255, 255)']))
+    expect(await firstCard.evaluate(element=>getComputedStyle(element).backgroundColor)).toBe('rgba(0, 0, 0, 0)')
+    const textShadow=await firstCard.locator('.article-timeline-item-info-for-timelines-header-main h5').evaluate(element=>getComputedStyle(element).textShadow)
+    expect(textShadow).toContain('2px')
+})
+
 test('Software desktop density compacts project cards and testimonials without shrinking actions', async ({page})=>{
     await preferences(page)
 

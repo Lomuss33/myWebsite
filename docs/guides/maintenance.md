@@ -30,6 +30,8 @@ Verified: 2026-09-27 against commands and source locations, including artist spo
 
 For `ArticleArtistSpotlight`, put profile, banner, links, and latest-release fields in `settings.artist_spotlight`. Keep user-facing labels localized under that setting's `labels` object. Images use authored paths under `public/images/`. Set `latestRelease.audioSrc` and `startOffsetSeconds` for a local song; its first play begins at that offset, and the seek bar can reach the full recording. A Spotify track URI or URL remains an optional embedded-player source when no local audio is set. The Spotify artist button appears when `spotifyArtistUrl` is populated. Place new My Art entries with the section's explicit article ordering in `SectionContent.scss` so existing generated article IDs remain stable.
 
+`ArticleWebArt` uses `settings.web_art_presentation: "carousel"` for its layered card gallery. `LayeredCardCarousel` owns the deck, swipe navigation, side cards, numbered visit trail, and adaptive window layout; `ArticleWebArt` owns the artwork engines and the list of up to three pinned extras. Pinning advances to the next card and keeps the pinned work live. The numbered index includes every authored and ambient work plus Send Yours, and wraps into compact rows without a scrollbar. The closed gallery folds edge-on at 90 degrees, is transparent, and reserves only a 1px stage. Set the presentation to `"grid"` to restore the previous multi-card gallery without changing the artwork implementations.
+
 ### Change theme styling
 
 Main files:

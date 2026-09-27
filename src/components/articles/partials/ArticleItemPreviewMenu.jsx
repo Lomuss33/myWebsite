@@ -123,6 +123,7 @@ function ItemPreviewMenuGalleryButton({ itemWrapper, galleryMetadata = null }) {
     const screenshots = itemWrapper.preview?.screenshots
     const screenshotsAspectRatio = itemWrapper.preview?.screenshotsAspectRatio
     const isPhotographyTimeline = itemWrapper?.articleWrapper?.settings?.timelineVariant === "art-photography"
+    const isDigitalExpressionTimeline = itemWrapper?.articleWrapper?.settings?.timelineVariant === "art-digital-expression"
     const actionLabel = isPhotographyTimeline ?
         "Open local photo album" :
         language.getString("open_gallery")
@@ -157,6 +158,9 @@ function ItemPreviewMenuGalleryButton({ itemWrapper, galleryMetadata = null }) {
                             className={`article-item-preview-menu-circular-button article-item-preview-menu-gallery-button`}
                             tooltip={actionLabel}
                             faIcon={actionIcon}>
+                {isDigitalExpressionTimeline && (
+                    <span className={`article-item-preview-menu-button-label`}>Gallery</span>
+                )}
                 {isPhotographyTimeline && (
                     <img src={itemWrapper.img || screenshots[0]}
                          className={`article-item-preview-menu-gallery-image`}
@@ -177,10 +181,11 @@ function ItemPreviewMenuCustomLinkButton({ link, itemWrapper }) {
     const tooltip = presentation.tooltip
     const faIcon = presentation.faIcon
     const isWebsiteAction = Boolean(link.isWebsiteAction)
+    const isPinterestLink = String(faIcon || "").includes("pinterest")
     const label = presentation.label
     const linkClassName = isWebsiteAction ?
         `article-item-preview-menu-link article-item-preview-menu-link-website` :
-        `article-item-preview-menu-link`
+        `article-item-preview-menu-link${isPinterestLink ? " article-item-preview-menu-link-pinterest" : ""}`
 
     return (
         <Link href={href}
@@ -208,7 +213,11 @@ function ItemPreviewMenuCustomLinkButton({ link, itemWrapper }) {
                                 size={CircularButton.Sizes.EXTRA_EXTRA_LARGE}
                                 className={`article-item-preview-menu-circular-button`}
                                 tooltip={tooltip}
-                                faIcon={faIcon}/>
+                                faIcon={faIcon}>
+                    {isPinterestLink && (
+                        <span className={`article-item-preview-menu-button-label`}>Pinterest</span>
+                    )}
+                </CircularButton>
             )}
         </Link>
     )

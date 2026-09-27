@@ -818,12 +818,7 @@ function ArticleTimelineItem({
             }}
             data-education-item-id={isEducationTimeline ? itemWrapper.id : undefined}
             data-overlay-item-id={isExperienceTimeline ? itemWrapper.id : undefined}>
-            {shouldRenderDigitalImageStack ? (
-                <DigitalExpressionImageStack screenshots={screenshots}
-                                             galleryMetadata={galleryMetadata}
-                                             label={overlayActionLabel}
-                                             swapOuterLayers={shouldSwapDigitalStackOuterLayers}/>
-            ) : (
+            {!shouldRenderDigitalImageStack && (
                 <div className={avatarWrapperClass}>
                     {canOpenGallery ? (
                         <Link href={"#gallery:open"}
@@ -887,6 +882,13 @@ function ArticleTimelineItem({
                                                    dateOnlyMeta={isPhotographyTimeline}
                                                    showMeta={!isDigitalExpressionTimeline}/>
 
+                {shouldRenderDigitalImageStack && (
+                    <DigitalExpressionImageStack screenshots={screenshots}
+                                                 galleryMetadata={galleryMetadata}
+                                                 label={overlayActionLabel}
+                                                 swapOuterLayers={shouldSwapDigitalStackOuterLayers}/>
+                )}
+
                 <ArticleItemInfoForTimelinesBody itemWrapper={itemWrapper}
                                                  isEducationTimeline={isEducationTimeline}
                                                  isEducationExpanded={isEducationExpanded}
@@ -948,7 +950,7 @@ function DigitalExpressionImageStack({ screenshots = [], galleryMetadata = null,
         layerImages[lastIndex] = firstLayerImage
     }
     const primaryLayerIndex = layerImages.findIndex(src => src === firstImage)
-    const sizes = "(max-width: 575.98px) 88px, (max-width: 767.98px) 104px, (max-width: 991.98px) 124px, 148px"
+    const sizes = "(max-width: 575.98px) calc(32vw - 8px), (max-width: 991.98px) 92px, 128px"
 
     return (
         <div className={`digital-expression-layer-stack`}>

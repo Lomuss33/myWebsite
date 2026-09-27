@@ -1,5 +1,5 @@
 import "./LayeredCardCarousel.scss"
-import React, {useEffect, useRef, useState} from "react"
+import React, {useLayoutEffect, useRef, useState} from "react"
 import {flushSync} from "react-dom"
 
 /** A presentation shell: callers own each card's content and activation lifecycle. */
@@ -20,8 +20,13 @@ function LayeredCardCarousel({slides, onChange, onPin, onUnpin, pinnedIds = [], 
         .filter((slide) => slide && slide.id !== active?.id)
     const isPinned = Boolean(active && pinnedIds.includes(active.id))
     const canPin = Boolean(onPin && active?.pinnable !== false && (isPinned || pinnedIds.length < maxPinned))
+    const recentAges = new Map()
+    for(let position = history.length - 1; position >= 0; position--) {
+        const index = history[position]
+        if(!recentAges.has(index)) recentAges.set(index, history.length - 1 - position)
+    }
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const rail = indexRef.current
         if(!rail || !count) return
 
@@ -75,18 +80,21 @@ function LayeredCardCarousel({slides, onChange, onPin, onUnpin, pinnedIds = [], 
 
     const select = (index) => {
         if(!enabled || index === null || index === currentIndex || !slides[index]) return
-        runLayoutTransition(() => commitSelect(index), pinnedIds.length > 0)
+        const movesPinnedWindow = isPinned || pinnedIds.includes(slides[index].id)
+        runLayoutTransition(() => commitSelect(index), movesPinnedWindow)
     }
 
     const onPointerDown = (event) => {
-        if(!enabled || event.pointerType === "mouse") return
-        pointerStartRef.current = {x: event.clientX, y: event.clientY}
+        pointerStartRef.current = null
+        if(!enabled || event.pointerType === "mouse" || !event.isPrimary ||
+            event.target.closest(".article-web-art-gated-tile-open, button, a, input, select, textarea, [role='button']")) return
+        pointerStartRef.current = {id: event.pointerId, x: event.clientX, y: event.clientY}
     }
 
     const onPointerUp = (event) => {
         const start = pointerStartRef.current
         pointerStartRef.current = null
-        if(!start || !enabled) return
+        if(!start || start.id !== event.pointerId || !enabled) return
         const dx = event.clientX - start.x
         const dy = event.clientY - start.y
         if(Math.abs(dx) < 58 || Math.abs(dx) < Math.abs(dy) * 1.35) return
@@ -132,8 +140,7 @@ function LayeredCardCarousel({slides, onChange, onPin, onUnpin, pinnedIds = [], 
     }
 
     const renderSide = (index, side) => index === null ? null : (
-        <button key={`${side}-${slides[index].id}`}
-                type="button"
+        <button type="button"
                 className={`layered-card-carousel-side layered-card-carousel-side-${side}`}
                 style={{"--carousel-preview-hue": (index * 37 + 195) % 360}}
                 onClick={() => select(index)}
@@ -161,19 +168,19 @@ function LayeredCardCarousel({slides, onChange, onPin, onUnpin, pinnedIds = [], 
                          role="group"
                          aria-label={`${currentIndex + 1} / ${count}: ${active.label}`}>
                         {active.content}
-                        {enabled && onPin && active.pinnable !== false && (
-                            <button type="button" className={`layered-card-carousel-pin${isPinned ? " is-pinned" : ""}`}
-                                    onClick={onPinClick}
-                                    disabled={!canPin}
-                                    aria-label={isPinned ? labels.unpin || "Remove from simultaneous view" : canPin ? labels.pin || "Add to simultaneous view" : labels.pinLimit || "Three extra artworks are already open"}
-                                    title={isPinned ? labels.unpin || "Remove from simultaneous view" : canPin ? labels.pin || "Add to simultaneous view" : labels.pinLimit || "Three extra artworks are already open"}>
-                                <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-                                    <rect x="3.5" y="3.5" width="13" height="13" rx="2" fill="none" stroke="currentColor" strokeWidth="1.5"/>
-                                    {isPinned ? <path d="M6.5 10h7"/> : <path d="M6.5 10h7M10 6.5v7"/>}
-                                </svg>
-                            </button>
-                        )}
                     </div>
+                    {enabled && onPin && active.pinnable !== false && (
+                        <button type="button" className={`layered-card-carousel-pin${isPinned ? " is-pinned" : ""}`}
+                                onClick={onPinClick}
+                                disabled={!canPin}
+                                aria-label={isPinned ? labels.unpin || "Remove from simultaneous view" : canPin ? labels.pin || "Add to simultaneous view" : labels.pinLimit || "Three extra artworks are already open"}
+                                title={isPinned ? labels.unpin || "Remove from simultaneous view" : canPin ? labels.pin || "Add to simultaneous view" : labels.pinLimit || "Three extra artworks are already open"}>
+                            <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                                <rect x="3.5" y="3.5" width="13" height="13" rx="2" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+                                {isPinned ? <path d="M6.5 10h7"/> : <path d="M6.5 10h7M10 6.5v7"/>}
+                            </svg>
+                        </button>
+                    )}
                 </div>
                 {visiblePinned.map((slide) => (
                     <div className="layered-card-carousel-pinned" key={slide.id}
@@ -194,13 +201,16 @@ function LayeredCardCarousel({slides, onChange, onPin, onUnpin, pinnedIds = [], 
                  style={{"--carousel-index-columns": indexColumns}}
                  aria-label={labels.jump || "Choose artwork"}>
                 {slides.map((slide, index) => {
-                    const age = [...history].reverse().indexOf(index)
+                    const age = recentAges.get(index) ?? -1
                     const trail = age > 0 && age <= 5
                     return (
                         <button key={slide.id}
                                 type="button"
                                 className={`layered-card-carousel-index-button${index === currentIndex ? " is-current" : ""}${trail ? " is-recent" : ""}`}
-                                style={trail ? {"--carousel-trail-percent": `${Math.max(12, 100 - age * 18)}%`} : undefined}
+                                style={{
+                                    "--carousel-index-delay": `${Math.min(index, 18) * 20}ms`,
+                                    ...(trail ? {"--carousel-trail-percent": `${Math.max(12, 100 - age * 18)}%`} : {})
+                                }}
                                 onClick={() => select(index)}
                                 onKeyDown={(event) => onIndexKeyDown(event, index)}
                                 tabIndex={index === currentIndex ? 0 : -1}

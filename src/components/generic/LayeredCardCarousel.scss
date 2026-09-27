@@ -115,7 +115,7 @@
     transform: translateX(-50%);
     box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.46);
 
-    > :first-child {
+    > * {
         width: 100%;
         height: 100%;
     }
@@ -171,6 +171,10 @@
 }
 
 .layered-card-carousel-pin.is-pinned { background: color-mix(in srgb, var(--carousel-control-surface) 62%, var(--carousel-number-current-bottom)); }
+
+.layered-card-carousel-pin {
+    right: max(0.55rem, calc((100% - var(--carousel-card-size)) / 2 + 0.55rem));
+}
 
 .layered-card-carousel-pinned {
     position: relative;
@@ -289,6 +293,12 @@
     font-weight: 850;
     line-height: 1;
     opacity: 0.8;
+    animation: layered-card-side-pulse 2.8s ease-in-out infinite alternate;
+}
+
+@keyframes layered-card-side-pulse {
+    from { opacity: 0.68; text-shadow: 0 0 0 transparent; }
+    to { opacity: 1; text-shadow: 0 0 1rem var(--carousel-side-border); }
 }
 
 .layered-card-carousel-side-label {
@@ -330,8 +340,8 @@
     border: 1px solid var(--carousel-number-border);
     border-radius: 0;
     background: linear-gradient(160deg,
-        color-mix(in srgb, var(--carousel-number-recent) var(--carousel-trail-percent), var(--carousel-number-top)),
-        color-mix(in srgb, var(--carousel-number-recent) var(--carousel-trail-percent), var(--carousel-number-bottom)));
+        color-mix(in srgb, var(--carousel-number-recent) var(--carousel-trail-percent, 0%), var(--carousel-number-top)),
+        color-mix(in srgb, var(--carousel-number-recent) var(--carousel-trail-percent, 0%), var(--carousel-number-bottom)));
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 2px 5px rgba(13, 35, 54, 0.17);
     color: var(--carousel-number-ink);
     font-size: 0.72rem;
@@ -340,6 +350,8 @@
     cursor: pointer;
     transition: --carousel-trail-percent 1100ms ease-out, color 250ms ease, border-color 250ms ease,
         box-shadow 280ms ease, transform 300ms cubic-bezier(.16, .8, .25, 1), filter 280ms ease;
+    animation: layered-card-index-enter 480ms cubic-bezier(.16, .8, .25, 1) both;
+    animation-delay: var(--carousel-index-delay, 0ms);
 
     &::before {
         content: "";
@@ -362,6 +374,7 @@
 
     &.is-recent {
         border-color: color-mix(in srgb, var(--carousel-number-recent) 62%, var(--carousel-number-border));
+        animation-delay: 0ms;
     }
 
     &.is-current {
@@ -371,6 +384,7 @@
         color: var(--carousel-number-current-ink);
         box-shadow: 0 0 0 1px var(--carousel-number-current-top), 0 0 1rem color-mix(in srgb, var(--carousel-number-current-bottom) 65%, transparent);
         animation: layered-card-index-ignite 500ms cubic-bezier(.16, .8, .25, 1) both;
+        animation-delay: 0ms;
 
         &::before { animation: layered-card-index-scan 2.8s ease-in-out 450ms infinite; }
     }
@@ -380,6 +394,11 @@
     0% { transform: scale(0.82); filter: brightness(1.9); }
     55% { transform: scale(1.09); filter: brightness(1.26); }
     100% { transform: scale(1); filter: brightness(1); }
+}
+
+@keyframes layered-card-index-enter {
+    from { opacity: 0; transform: perspective(260px) rotateX(-80deg) translateY(0.3rem); filter: brightness(1.6); }
+    to { opacity: 1; transform: perspective(260px) rotateX(0) translateY(0); filter: brightness(1); }
 }
 
 @keyframes layered-card-index-scan {
@@ -407,12 +426,20 @@
 
 @media (prefers-reduced-motion: reduce) {
     .layered-card-carousel-side,
-    .layered-card-carousel-index-button { transition: none; }
+    .layered-card-carousel-index-button,
+    .layered-card-carousel-pin,
+    .layered-card-carousel-unpin { transition: none; }
+
+    .layered-card-carousel-side:hover { transform: translateX(var(--carousel-side-x)) perspective(700px) rotateY(var(--carousel-side-tilt)) scale(0.88); }
+    .layered-card-carousel-index-button:hover,
+    .layered-card-carousel-pin:hover,
+    .layered-card-carousel-unpin:hover { transform: none; }
 
     .layered-card-carousel-current,
     .layered-card-carousel-pinned,
     .layered-card-carousel-pinned::before,
     .layered-card-carousel-pinned::after,
+    .layered-card-carousel-side-number,
     .layered-card-carousel-index-button,
     .layered-card-carousel-index-button::before { animation: none; }
 }

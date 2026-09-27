@@ -1125,6 +1125,9 @@ function ArticleWebArt({ dataWrapper, id }) {
     useEffect(() => {
         return () => {
             clearStageTransitionWork()
+            for(const timeoutId of readyTimeoutsRef.current.values())
+                window.clearTimeout(timeoutId)
+            readyTimeoutsRef.current.clear()
         }
     }, [clearStageTransitionWork])
 

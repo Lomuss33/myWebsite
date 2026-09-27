@@ -1744,6 +1744,16 @@ article#article-1-section-experience {
 }
 
 article#article-1-section-education {
+    li[data-education-item-id="4"],
+    li[data-education-item-id="5"] {
+        div.article-timeline-item-info-for-timelines-body-text {
+            max-width: 68ch;
+            margin-inline: auto;
+            text-align: center;
+            text-wrap: pretty;
+        }
+    }
+
     div.article-timeline-item-info-for-timelines-header {
         align-items: stretch;
         width: 100%;
@@ -1842,7 +1852,7 @@ article#article-1-section-education {
             border-end-start-radius: 999px;
             border-start-end-radius: 0;
             border-end-end-radius: 0;
-            background: color-mix(in srgb, var(--card-surface-top) 84%, transparent 16%);
+            background: color-mix(in srgb, var(--theme-boards-background) 92%, var(--card-accent) 8%);
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
             -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 72%, rgba(0, 0, 0, 0.28) 92%, transparent 100%);
             mask-image: linear-gradient(90deg, #000 0%, #000 72%, rgba(0, 0, 0, 0.28) 92%, transparent 100%);
@@ -1923,7 +1933,7 @@ article#article-1-section-education {
                     border-end-start-radius: 999px;
                     border-start-end-radius: 0;
                     border-end-end-radius: 0;
-                    background: color-mix(in srgb, var(--card-surface-top) 40%, transparent 60%);
+                    background: color-mix(in srgb, var(--theme-boards-background) 92%, var(--card-accent) 8%);
                     -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 72%, rgba(0, 0, 0, 0.28) 92%, transparent 100%);
                     mask-image: linear-gradient(90deg, #000 0%, #000 72%, rgba(0, 0, 0, 0.28) 92%, transparent 100%);
                     pointer-events: none;

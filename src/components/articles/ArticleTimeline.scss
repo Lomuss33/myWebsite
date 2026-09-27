@@ -291,7 +291,9 @@ article#article-1-section-education {
 
     div.article-timeline-year-axis {
         position: absolute;
-        z-index: 4;
+        // Keep the scale labels above the cards but let its decorative rule
+        // sit behind them, so the line never cuts through metadata pills.
+        z-index: auto;
         inset-block-start: 0.85rem;
         inset-inline-end: 0;
         width: var(--education-year-axis-width, clamp(3rem, 5vw, 4rem));
@@ -302,6 +304,7 @@ article#article-1-section-education {
         &::before {
             content: "";
             position: absolute;
+            z-index: 2;
             inset-block: 0;
             inset-inline-end: 0.42rem;
             width: 2px;
@@ -318,6 +321,7 @@ article#article-1-section-education {
 
     span.article-timeline-year-axis-tick {
         position: absolute;
+        z-index: 4;
         inset-inline: 0;
         display: flex;
         align-items: center;
@@ -381,6 +385,14 @@ article#article-1-section-education {
         transition: transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
+    @include layout-mobile {
+        div.article-timeline-item-avatar-wrapper {
+            // Education's mobile bleed may start just outside the scroll pane;
+            // keep every circle inside the visible viewport edge.
+            left: 4px;
+        }
+    }
+
     li.article-timeline-item:nth-child(4n + 1) {
         // Keep the scaled/rotated circle fully inside the left edge while
         // retaining a small rightward drift for the alternating composition.
@@ -425,6 +437,12 @@ article#article-1-section-education {
         margin-left: calc((100% - var(--education-card-width)) / 2 - var(--avatar-size) - var(--education-snake-inset, 0px) / 2) !important;
         position: relative;
         z-index: auto;
+    }
+
+    li.article-timeline-item div.article-timeline-item-info-for-timelines {
+        // The connector stays visible through the card surface but behind its
+        // foreground. Opaque metadata/list pills then mask it completely.
+        z-index: 3;
     }
 
     li.article-timeline-item {
@@ -1551,7 +1569,7 @@ article#article-1-section-education div.article-content {
             }
 
             li.article-timeline-item:nth-child(4n) {
-                --education-avatar-shift-x: -0.5rem;
+                --education-avatar-shift-x: 0.5rem;
             }
         }
     }

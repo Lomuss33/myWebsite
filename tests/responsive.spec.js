@@ -484,7 +484,7 @@ test('Education cards center on the full timeline while the year rail overlays t
         const avatarLeftEdges=await page.locator('#article-1-section-education .article-timeline-item-avatar-wrapper').evaluateAll(avatars=>
             avatars.map(avatar=>avatar.getBoundingClientRect().left)
         )
-        expect(Math.min(...avatarLeftEdges)).toBeGreaterThanOrEqual(-0.5)
+        expect(Math.min(...avatarLeftEdges),`${viewport.width}x${viewport.height}: ${JSON.stringify(avatarLeftEdges)}`).toBeGreaterThanOrEqual(-0.5)
 
         const geometry=await page.evaluate(()=>{
             const article=document.querySelector('#article-1-section-education')
@@ -639,22 +639,37 @@ test('Education connector stays visible through card surfaces in both themes', a
         const layers=await page.locator('#article-1-section-education').evaluate(article=>({
             connector:getComputedStyle(article.querySelector('.article-timeline-education-snake')).zIndex,
             card:getComputedStyle(article.querySelector('.article-timeline-item-content')).zIndex,
-            surface:getComputedStyle(article.querySelector('.article-timeline-item-info-for-timelines'),'::before').zIndex,
+            cardSurfaceOwner:getComputedStyle(article.querySelector('.article-timeline-item-info-for-timelines')).zIndex,
             content:getComputedStyle(article.querySelector('.article-timeline-item-info-for-timelines').firstElementChild).zIndex,
             contentPosition:getComputedStyle(article.querySelector('.article-timeline-item-info-for-timelines').firstElementChild).position,
+            yearAxis:getComputedStyle(article.querySelector('.article-timeline-year-axis')).zIndex,
+            yearAxisLine:getComputedStyle(article.querySelector('.article-timeline-year-axis'),'::before').zIndex,
+            yearTick:getComputedStyle(article.querySelector('.article-timeline-year-axis-tick')).zIndex,
+            metaPillSurface:getComputedStyle(article.querySelector('.article-timeline-item-info-for-timelines-education-meta-row'),'::before').backgroundColor,
+            detailPillSurface:getComputedStyle(article.querySelector('.article-timeline-item-info-for-timelines-body-list-item'),'::before').backgroundColor,
             transform:getComputedStyle(article.querySelector('.article-timeline-item-info-for-timelines')).transform,
             item:getComputedStyle(article.querySelector('.article-timeline-item')).zIndex,
             avatar:getComputedStyle(article.querySelector('.article-timeline-item-avatar-wrapper')).zIndex
         }))
 
-        expect(layers.card).toBe('auto')
-        expect(Number(layers.connector)).toBeGreaterThan(Number(layers.surface))
+        expect(layers.card).toBe('3')
+        expect(Number(layers.cardSurfaceOwner)).toBeGreaterThan(Number(layers.connector))
         expect(Number(layers.content)).toBeGreaterThan(Number(layers.connector))
         expect(layers.contentPosition).toBe('relative')
+        expect(layers.yearAxis).toBe('auto')
+        expect(Number(layers.yearAxisLine)).toBeLessThan(Number(layers.cardSurfaceOwner))
+        expect(Number(layers.yearTick)).toBeGreaterThan(Number(layers.cardSurfaceOwner))
+        expect(layers.metaPillSurface).not.toBe('rgba(0, 0, 0, 0)')
+        expect(layers.detailPillSurface).not.toBe('rgba(0, 0, 0, 0)')
         expect(layers.transform).toBe('none')
         expect(layers.item).toBe('auto')
         expect(Number(layers.avatar)).toBeGreaterThan(Number(layers.connector))
     }
+
+    const schoolFactAlignments=await page.locator('#article-1-section-education li[data-education-item-id="4"], #article-1-section-education li[data-education-item-id="5"]')
+        .locator('.article-timeline-item-info-for-timelines-body-text')
+        .evaluateAll(elements=>elements.map(element=>getComputedStyle(element).textAlign))
+    expect(schoolFactAlignments).toEqual(['center','center'])
 })
 
 test('Education card copy is pure black in light mode over transparent surfaces', async ({page})=>{

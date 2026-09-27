@@ -574,6 +574,9 @@
         {
             "id": 0,
             "component": "ArticleWebArt",
+            "settings": {
+                "web_art_presentation": "carousel"
+            },
             "locales": {
                 "en": {
                     "title": "Here’s some fun {{web art}}"
@@ -2247,7 +2250,7 @@
                     "bannerAlt": "",
                     "links": [],
                     "latestRelease": {
-                        "title": "Ona zna",
+                        "title": "Tišina diše",
                         "artistCredit": "",
                         "releaseType": "",
                         "releaseDate": "",

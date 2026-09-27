@@ -3345,15 +3345,11 @@ html[data-layout="mobile"] article#article-1-section-experience div.article-time
     color: var(--education-foreground) !important;
 }
 
-[data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines-header-main h5,
-[data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines-education-meta span,
-[data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines-body,
-[data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines-tags-footer,
-[data-theme="dark"] article#article-1-section-education div.article-timeline-item-info-for-timelines-header-main h5,
-[data-theme="dark"] article#article-1-section-education div.article-timeline-item-info-for-timelines-education-meta span,
-[data-theme="dark"] article#article-1-section-education div.article-timeline-item-info-for-timelines-body,
-[data-theme="dark"] article#article-1-section-education div.article-timeline-item-info-for-timelines-tags-footer {
-    text-shadow: 0 1px 2px color-mix(in srgb, var(--education-crystal-color) 24%, transparent);
+article#article-1-section-education li.article-timeline-item div.article-timeline-item-info-for-timelines,
+article#article-1-section-education li.article-timeline-item div.article-timeline-item-info-for-timelines * {
+    // Item-scoped accent follows the matching avatar/crystal down every text
+    // node, including metadata separators, collapsed controls, and expanded copy.
+    text-shadow: 0 1px 2px color-mix(in srgb, var(--education-crystal-color) 18%, transparent) !important;
 }
 
 [data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines-education-meta-row .prop-list-separator,

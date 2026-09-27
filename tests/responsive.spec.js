@@ -464,6 +464,7 @@ test('Education cards center on the full timeline while the year rail overlays t
     for (const viewport of [
         {width:280,height:653},
         {width:390,height:844},
+        {width:768,height:1024},
         {width:1366,height:768},
         {width:3440,height:1440}
     ]) {
@@ -480,6 +481,10 @@ test('Education cards center on the full timeline while the year rail overlays t
             expect(link.rel).toContain('noopener')
             expect(link.rel).toContain('noreferrer')
         }
+        const avatarLeftEdges=await page.locator('#article-1-section-education .article-timeline-item-avatar-wrapper').evaluateAll(avatars=>
+            avatars.map(avatar=>avatar.getBoundingClientRect().left)
+        )
+        expect(Math.min(...avatarLeftEdges)).toBeGreaterThanOrEqual(-0.5)
 
         const geometry=await page.evaluate(()=>{
             const article=document.querySelector('#article-1-section-education')
@@ -533,6 +538,11 @@ test('Education cards center on the full timeline while the year rail overlays t
         await expect(expandButton).toHaveCSS('background-color','rgba(0, 0, 0, 0)')
         await assertExpandButtonPlacement()
         const firstCard=page.locator('#article-1-section-education .article-timeline-item-info-for-timelines').first()
+        const firstAvatar=page.locator('#article-1-section-education .article-timeline-item-avatar-wrapper').first()
+        const avatarOffsetBeforeExpansion=await firstAvatar.evaluate(avatar=>{
+            const itemRect=avatar.closest('.article-timeline-item').getBoundingClientRect()
+            return avatar.getBoundingClientRect().top-itemRect.top
+        })
         const clickCardEdge=async()=>{
             const position=await firstCard.evaluate(card=>({
                 x:Math.max(1,card.clientWidth-4),
@@ -544,6 +554,11 @@ test('Education cards center on the full timeline while the year rail overlays t
         await clickCardEdge()
         await expect(expandButton).toHaveAttribute('aria-expanded','true')
         await assertExpandButtonPlacement()
+        const avatarOffsetAfterExpansion=await firstAvatar.evaluate(avatar=>{
+            const itemRect=avatar.closest('.article-timeline-item').getBoundingClientRect()
+            return avatar.getBoundingClientRect().top-itemRect.top
+        })
+        expect(avatarOffsetAfterExpansion).toBeLessThan(avatarOffsetBeforeExpansion)
         const listStyles=await firstCard.locator('.article-timeline-item-info-for-timelines-body-list').evaluate(list=>({
             listStyle:getComputedStyle(list).listStyleType,
             alignment:getComputedStyle(list.firstElementChild).textAlign
@@ -654,8 +669,19 @@ test('Education card copy is pure black in light mode over transparent surfaces'
     const colors=await firstCard.evaluate(element=>[element,...element.querySelectorAll('*')].map(node=>getComputedStyle(node).color))
     expect(new Set(colors)).toEqual(new Set(['rgb(0, 0, 0)']))
     expect(await firstCard.evaluate(element=>getComputedStyle(element).backgroundColor)).toBe('rgba(0, 0, 0, 0)')
-    const textShadow=await firstCard.locator('.article-timeline-item-info-for-timelines-header-main h5').evaluate(element=>getComputedStyle(element).textShadow)
-    expect(textShadow).toContain('2px')
+
+    const timelineShadows=await page.locator('#article-1-section-education .article-timeline-item-info-for-timelines-header-main h5').evaluateAll(elements=>elements.map(element=>getComputedStyle(element).textShadow))
+    expect(timelineShadows.length).toBeGreaterThan(1)
+    expect(timelineShadows.every(shadow=>shadow.includes('2px'))).toBeTruthy()
+    expect(timelineShadows[0]).not.toBe(timelineShadows[1])
+
+    const certificationShadows=await page.locator('#article-2-section-education .article-cards-item-education-certification-frame *').evaluateAll(elements=>elements.map(element=>getComputedStyle(element).textShadow))
+    expect(certificationShadows.length).toBeGreaterThan(0)
+    expect(certificationShadows.every(shadow=>shadow.includes('2px'))).toBeTruthy()
+
+    const skillShadows=await page.locator('#article-3-section-education .article-skills-item-info *').evaluateAll(elements=>elements.map(element=>getComputedStyle(element).textShadow))
+    expect(skillShadows.length).toBeGreaterThan(0)
+    expect(skillShadows.every(shadow=>shadow.includes('2px'))).toBeTruthy()
 })
 
 test('Education card copy is pure white in dark mode over transparent surfaces', async ({page})=>{
@@ -670,8 +696,19 @@ test('Education card copy is pure white in dark mode over transparent surfaces',
     const colors=await firstCard.evaluate(element=>[element,...element.querySelectorAll('*')].map(node=>getComputedStyle(node).color))
     expect(new Set(colors)).toEqual(new Set(['rgb(255, 255, 255)']))
     expect(await firstCard.evaluate(element=>getComputedStyle(element).backgroundColor)).toBe('rgba(0, 0, 0, 0)')
-    const textShadow=await firstCard.locator('.article-timeline-item-info-for-timelines-header-main h5').evaluate(element=>getComputedStyle(element).textShadow)
-    expect(textShadow).toContain('2px')
+
+    const timelineShadows=await page.locator('#article-1-section-education .article-timeline-item-info-for-timelines-header-main h5').evaluateAll(elements=>elements.map(element=>getComputedStyle(element).textShadow))
+    expect(timelineShadows.length).toBeGreaterThan(1)
+    expect(timelineShadows.every(shadow=>shadow.includes('2px'))).toBeTruthy()
+    expect(timelineShadows[0]).not.toBe(timelineShadows[1])
+
+    const certificationShadows=await page.locator('#article-2-section-education .article-cards-item-education-certification-frame *').evaluateAll(elements=>elements.map(element=>getComputedStyle(element).textShadow))
+    expect(certificationShadows.length).toBeGreaterThan(0)
+    expect(certificationShadows.every(shadow=>shadow.includes('2px'))).toBeTruthy()
+
+    const skillShadows=await page.locator('#article-3-section-education .article-skills-item-info *').evaluateAll(elements=>elements.map(element=>getComputedStyle(element).textShadow))
+    expect(skillShadows.length).toBeGreaterThan(0)
+    expect(skillShadows.every(shadow=>shadow.includes('2px'))).toBeTruthy()
 })
 
 test('Software desktop density compacts project cards and testimonials without shrinking actions', async ({page})=>{

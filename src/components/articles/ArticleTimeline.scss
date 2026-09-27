@@ -382,7 +382,9 @@ article#article-1-section-education {
     }
 
     li.article-timeline-item:nth-child(4n + 1) {
-        --education-avatar-shift-x: clamp(-8px, -0.35vw, -3px);
+        // Keep the scaled/rotated circle fully inside the left edge while
+        // retaining a small rightward drift for the alternating composition.
+        --education-avatar-shift-x: clamp(8px, 0.35vw, 12px);
 
         div.article-timeline-item-avatar-wrapper {
             transform: translateX(var(--education-avatar-shift-x)) rotate(-4deg) scale(1.045);
@@ -406,7 +408,7 @@ article#article-1-section-education {
     }
 
     li.article-timeline-item:nth-child(4n) {
-        --education-avatar-shift-x: clamp(-10px, -0.65vw, -18px);
+        --education-avatar-shift-x: clamp(8px, 0.65vw, 14px);
 
         div.article-timeline-item-avatar-wrapper {
             transform: translateX(var(--education-avatar-shift-x)) rotate(4deg) scale(1.04);
@@ -431,6 +433,15 @@ article#article-1-section-education {
 
     li.article-timeline-item--education-expanded {
         z-index: auto;
+        // Expanded copy can be much taller than the avatar. Keep the avatar
+        // pinned above the panel instead of vertically centering it against
+        // the expanded row (which makes it appear to slide down on expansion).
+        align-items: flex-start;
+
+        div.article-timeline-item-avatar-wrapper {
+            align-self: flex-start;
+            top: calc(-1 * clamp(2px, 0.25vw, 4px));
+        }
     }
 
     ul.article-timeline-items-has-education-snake::before {

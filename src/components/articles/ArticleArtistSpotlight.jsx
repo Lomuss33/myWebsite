@@ -122,7 +122,14 @@ function ArticleArtistSpotlight({dataWrapper}) {
     const hasSpotifyTrack = Boolean(trackUri)
     const canPlay = (hasLocalAudio || hasSpotifyTrack) && !audioError
     const hasArtistLink = Boolean(data.spotifyArtistUrl)
+    const showArtistCta = hasArtistLink || !data.artistName
     const artistLinks = Array.isArray(data.links) ? data.links.filter(link => link?.url && link?.label) : []
+    const portrait = hasProfile ? (
+        <img className="artist-spotlight-portrait" src={data.profileImage}
+             alt={data.profileImageAlt || data.artistName || text("artistPortrait", "Artist portrait")}/>
+    ) : (
+        <AssetPlaceholder kind="portrait" label={text("portraitPlaceholder", "Artist portrait")}/>
+    )
 
     const prepareLocalAudio = (audio) => {
         const actualDuration = Number.isFinite(audio.duration) ? audio.duration : knownDuration
@@ -179,12 +186,35 @@ function ArticleArtistSpotlight({dataWrapper}) {
                         <AssetPlaceholder kind="banner" label={text("bannerPlaceholder", "Artist banner")}/>
                     )}
                     <div className="artist-spotlight-hero-shade" aria-hidden="true"/>
-                    <div className="artist-spotlight-identity">
-                        {hasProfile ? (
-                            <img className="artist-spotlight-portrait" src={data.profileImage}
-                                 alt={data.profileImageAlt || data.artistName || text("artistPortrait", "Artist portrait")}/>
-                        ) : (
-                            <AssetPlaceholder kind="portrait" label={text("portraitPlaceholder", "Artist portrait")}/>
+                    <div className={`artist-spotlight-identity${showArtistCta ? " has-artist-cta" : ""}`}>
+                        {hasArtistLink ? (
+                            <a className="artist-spotlight-avatar-link" href={data.spotifyArtistUrl}
+                               target="_blank" rel="noopener noreferrer"
+                               aria-label={text("artistAvatarLink", `Open ${data.artistName || "artist"} on Spotify`)}>
+                                {portrait}
+                            </a>
+                        ) : portrait}
+                        {showArtistCta && (
+                            <div className="artist-spotlight-cta-column">
+                                {hasArtistLink ? (
+                                    <a className="artist-spotlight-spotify-link" href={data.spotifyArtistUrl}
+                                       target="_blank" rel="noopener noreferrer">
+                                        <span>{text("artistButton", "Explore on Spotify")}</span>
+                                        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                                            <path d="M4 12 12 4M5 4h7v7" fill="none" stroke="currentColor"
+                                                  strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+                                        </svg>
+                                    </a>
+                                ) : (
+                                    <span className="artist-spotlight-spotify-link is-placeholder" aria-disabled="true">
+                                        <span>{text("artistButton", "Explore on Spotify")}</span>
+                                        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                                            <path d="M4 12 12 4M5 4h7v7" fill="none" stroke="currentColor"
+                                                  strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+                                        </svg>
+                                    </span>
+                                )}
+                            </div>
                         )}
                         <div className="artist-spotlight-identity-copy">
                             <h2>{data.artistName || text("artistNamePlaceholder", "Artist name")}</h2>
@@ -192,24 +222,6 @@ function ArticleArtistSpotlight({dataWrapper}) {
                                 <p>{data.artistDescription || text("artistDescriptionPlaceholder", "A short introduction will appear here.")}</p>
                             )}
                         </div>
-                        {hasArtistLink ? (
-                            <a className="artist-spotlight-spotify-link" href={data.spotifyArtistUrl}
-                               target="_blank" rel="noopener noreferrer">
-                                <span>{text("artistButton", "Explore on Spotify")}</span>
-                                <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-                                    <path d="M4 12 12 4M5 4h7v7" fill="none" stroke="currentColor"
-                                          strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-                                </svg>
-                            </a>
-                        ) : !data.artistName ? (
-                            <span className="artist-spotlight-spotify-link is-placeholder" aria-disabled="true">
-                                <span>{text("artistButton", "Explore on Spotify")}</span>
-                                <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-                                    <path d="M4 12 12 4M5 4h7v7" fill="none" stroke="currentColor"
-                                          strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-                                </svg>
-                            </span>
-                        ) : null}
                     </div>
                 </section>
 

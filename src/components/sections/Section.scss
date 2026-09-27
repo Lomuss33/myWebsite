@@ -1716,6 +1716,10 @@ section.section {
     --section-scrollbar-cap-size: 14px;
 }
 
+html.is-edge section.section {
+    --section-scrollbar-cap-size: 15px;
+}
+
 section.section > button.section-fullscreen-control:focus-visible {
     outline: 2px solid var(--theme-primary);
     outline-offset: -2px;

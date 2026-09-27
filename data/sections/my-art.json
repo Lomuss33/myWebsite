@@ -3,29 +3,29 @@
         "locales": {
             "en": {
                 "title_short": "Art & Creativity",
-                "title_short_nav": "Image",
-                "title_short_tooltip": "Visual hobbies",
+                "title_short_nav": "Art",
+                "title_short_tooltip": "Creative expressions",
                 "title_long_prefix": "Drawn in color, lines and curiosity",
                 "title_long": "Here are {{my diamonds}}"
             },
             "de": {
                 "title_short": "Kunst & Kreativität",
-                "title_short_nav": "Bild",
-                "title_short_tooltip": "Visuelle Hobbys",
+                "title_short_nav": "Kunst",
+                "title_short_tooltip": "Kreative Ausdrucksformen",
                 "title_long_prefix": "Entstanden aus Farbe, Linien und Neugier",
                 "title_long": "Hier sind {{meine Diamanten}}"
             },
             "hr": {
                 "title_short": "Umjetnost i kreativnost",
-                "title_short_nav": "Slika",
-                "title_short_tooltip": "Vizualni hobiji",
+                "title_short_nav": "Umjetnost",
+                "title_short_tooltip": "Kreativni izrazi",
                 "title_long_prefix": "Nacrtana u bojama, linijama i znatiželji",
                 "title_long": "Evo {{mojih dijamanata}}"
             },
             "tr": {
                 "title_short": "Sanat ve Yaratıcılık",
-                "title_short_nav": "Görsel",
-                "title_short_tooltip": "Görsel hobiler",
+                "title_short_nav": "Sanat",
+                "title_short_tooltip": "Yaratıcı ifadeler",
                 "title_long_prefix": "Renk, çizgi ve merakla çizildi",
                 "title_long": "İşte {{benim elmaslarım}}"
             }
@@ -2226,6 +2226,149 @@
                     }
                 }
             ]
+        },
+        {
+            "id": 6,
+            "component": "ArticleArtistSpotlight",
+            "locales": {
+                "en": {"title": "Artist spotlight"},
+                "de": {"title": "Künstler im Spotlight"},
+                "hr": {"title": "Predstavljamo umjetnika"},
+                "tr": {"title": "Sanatçı vitrini"}
+            },
+            "settings": {
+                "artist_spotlight": {
+                    "artistName": "Snopdan Dogovic",
+                    "artistDescription": "",
+                    "spotifyArtistUrl": "https://open.spotify.com/artist/4o95PAobZLANZVKXzRRe6d?si=5qukO23FTfqd7z0W3NgaFA",
+                    "profileImage": "/images/artist/snopdan-dogovic/portrait.webp",
+                    "profileImageAlt": "",
+                    "bannerImage": "/images/artist/snopdan-dogovic/banner.webp",
+                    "bannerAlt": "",
+                    "links": [],
+                    "latestRelease": {
+                        "title": "Ona zna",
+                        "artistCredit": "",
+                        "releaseType": "",
+                        "releaseDate": "",
+                        "duration": "2:48",
+                        "durationSeconds": 167.83,
+                        "coverImage": "/images/artist/snopdan-dogovic/ona-zna-cover.webp",
+                        "coverAlt": "",
+                        "audioSrc": "/audio/artist/snopdan-dogovic/ona-zna.mp3",
+                        "startOffsetSeconds": 84,
+                        "spotifyTrackUri": "",
+                        "spotifyTrackUrl": ""
+                    },
+                    "labels": {
+                        "en": {
+                            "artistSectionLabel": "Artist profile",
+                            "bannerPlaceholder": "Artist banner",
+                            "portraitPlaceholder": "Artist portrait",
+                            "artistPortrait": "Artist portrait",
+                            "artistEyebrow": "ARTIST SPOTLIGHT",
+                            "artistNamePlaceholder": "Artist name",
+                            "artistDescriptionPlaceholder": "A short introduction will appear here.",
+                            "artistButton": "Explore on Spotify",
+                            "releaseEyebrow": "THE LATEST RELEASE",
+                            "releaseTypePlaceholder": "SINGLE / EP / ALBUM",
+                            "trackTitlePlaceholder": "Newest song",
+                            "trackArtistPlaceholder": "Artist name",
+                            "releaseDatePlaceholder": "Release date",
+                            "playTrack": "Play latest release",
+                            "pauseTrack": "Pause latest release",
+                            "playHint": "Tap the record to listen",
+                            "playerLoading": "Preparing Spotify player…",
+                            "trackPlaceholderHint": "Add a Spotify track link to enable listening",
+                            "coverAlt": "Latest release cover",
+                            "coverPlaceholder": "Cover artwork",
+                            "moreLinks": "More artist links",
+                            "audioPlayer": "Audio player",
+                            "seekTrack": "Seek song position",
+                            "audioUnavailable": "Audio could not be loaded"
+                        },
+                        "de": {
+                            "artistSectionLabel": "Künstlerprofil",
+                            "bannerPlaceholder": "Künstlerbanner",
+                            "portraitPlaceholder": "Künstlerporträt",
+                            "artistPortrait": "Künstlerporträt",
+                            "artistEyebrow": "KÜNSTLER IM SPOTLIGHT",
+                            "artistNamePlaceholder": "Künstlername",
+                            "artistDescriptionPlaceholder": "Hier erscheint eine kurze Vorstellung.",
+                            "artistButton": "Auf Spotify entdecken",
+                            "releaseEyebrow": "DIE NEUESTE VERÖFFENTLICHUNG",
+                            "releaseTypePlaceholder": "SINGLE / EP / ALBUM",
+                            "trackTitlePlaceholder": "Neuster Song",
+                            "trackArtistPlaceholder": "Künstlername",
+                            "releaseDatePlaceholder": "Erscheinungsdatum",
+                            "playTrack": "Neueste Veröffentlichung abspielen",
+                            "pauseTrack": "Neueste Veröffentlichung pausieren",
+                            "playHint": "Zum Anhören auf die Schallplatte tippen",
+                            "playerLoading": "Spotify-Player wird vorbereitet…",
+                            "trackPlaceholderHint": "Spotify-Tracklink hinzufügen, um die Wiedergabe zu aktivieren",
+                            "coverAlt": "Cover der neuesten Veröffentlichung",
+                            "coverPlaceholder": "Cover-Artwork",
+                            "moreLinks": "Weitere Künstlerlinks",
+                            "audioPlayer": "Audioplayer",
+                            "seekTrack": "Position im Song wählen",
+                            "audioUnavailable": "Audio konnte nicht geladen werden"
+                        },
+                        "hr": {
+                            "artistSectionLabel": "Profil umjetnika",
+                            "bannerPlaceholder": "Naslovna slika umjetnika",
+                            "portraitPlaceholder": "Portret umjetnika",
+                            "artistPortrait": "Portret umjetnika",
+                            "artistEyebrow": "PREDSTAVLJAMO UMJETNIKA",
+                            "artistNamePlaceholder": "Ime umjetnika",
+                            "artistDescriptionPlaceholder": "Ovdje će biti kratak uvod.",
+                            "artistButton": "Posjeti Spotify profil",
+                            "releaseEyebrow": "NAJNOVIJE IZDANJE",
+                            "releaseTypePlaceholder": "SINGL / EP / ALBUM",
+                            "trackTitlePlaceholder": "Najnovija pjesma",
+                            "trackArtistPlaceholder": "Ime umjetnika",
+                            "releaseDatePlaceholder": "Datum izdanja",
+                            "playTrack": "Pokreni najnovije izdanje",
+                            "pauseTrack": "Pauziraj najnovije izdanje",
+                            "playHint": "Dodirni ploču za slušanje",
+                            "playerLoading": "Priprema Spotify playera…",
+                            "trackPlaceholderHint": "Dodaj Spotify poveznicu pjesme za slušanje",
+                            "coverAlt": "Naslovnica najnovijeg izdanja",
+                            "coverPlaceholder": "Naslovnica izdanja",
+                            "moreLinks": "Ostale poveznice umjetnika",
+                            "audioPlayer": "Glazbeni player",
+                            "seekTrack": "Odaberi položaj u pjesmi",
+                            "audioUnavailable": "Zvuk se ne može učitati"
+                        },
+                        "tr": {
+                            "artistSectionLabel": "Sanatçı profili",
+                            "bannerPlaceholder": "Sanatçı kapak görseli",
+                            "portraitPlaceholder": "Sanatçı portresi",
+                            "artistPortrait": "Sanatçı portresi",
+                            "artistEyebrow": "SANATÇI VİTRİNİ",
+                            "artistNamePlaceholder": "Sanatçı adı",
+                            "artistDescriptionPlaceholder": "Kısa bir tanıtım burada yer alacak.",
+                            "artistButton": "Spotify'da keşfet",
+                            "releaseEyebrow": "EN YENİ YAYIN",
+                            "releaseTypePlaceholder": "TEKLİ / EP / ALBÜM",
+                            "trackTitlePlaceholder": "En yeni şarkı",
+                            "trackArtistPlaceholder": "Sanatçı adı",
+                            "releaseDatePlaceholder": "Yayın tarihi",
+                            "playTrack": "En yeni yayını çal",
+                            "pauseTrack": "En yeni yayını duraklat",
+                            "playHint": "Dinlemek için plağa dokun",
+                            "playerLoading": "Spotify oynatıcı hazırlanıyor…",
+                            "trackPlaceholderHint": "Dinlemeyi etkinleştirmek için Spotify parça bağlantısı ekle",
+                            "coverAlt": "En yeni yayının kapağı",
+                            "coverPlaceholder": "Kapak görseli",
+                            "moreLinks": "Diğer sanatçı bağlantıları",
+                            "audioPlayer": "Ses oynatıcı",
+                            "seekTrack": "Şarkı konumunu seç",
+                            "audioUnavailable": "Ses yüklenemedi"
+                        }
+                    }
+                }
+            },
+            "items": []
         }
     ]
 }

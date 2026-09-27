@@ -4,28 +4,28 @@
       "en": {
         "title_short": "Writing & Notes",
         "title_short_nav": "Writing",
-        "title_short_tooltip": "Text hobbies",
+        "title_short_tooltip": "Written texts",
         "title_long_prefix": "Articles, notes, and summaries",
         "title_long": "{{My writing}}"
       },
       "de": {
         "title_short": "Texte & Notizen",
         "title_short_nav": "Texte",
-        "title_short_tooltip": "Text-Hobbys",
+        "title_short_tooltip": "Geschriebene Texte",
         "title_long_prefix": "Artikel, Notizen und Zusammenfassungen",
         "title_long": "{{Meine Texte}}"
       },
       "hr": {
         "title_short": "Tekstovi i bilješke",
         "title_short_nav": "Tekstovi",
-        "title_short_tooltip": "Tekstualni hobiji",
+        "title_short_tooltip": "Pisani tekstovi",
         "title_long_prefix": "Članci, bilješke i sažeci",
         "title_long": "{{Moji tekstovi}}"
       },
       "tr": {
         "title_short": "Yazılar ve Notlar",
         "title_short_nav": "Yazılar",
-        "title_short_tooltip": "Yazı hobileri",
+        "title_short_tooltip": "Yazılı metinler",
         "title_long_prefix": "Makaleler, notlar ve özetler",
         "title_long": "{{Yazılarım}}"
       }

@@ -120,6 +120,9 @@ export default class ArticleDataWrapper {
             keepImageRow: Boolean(rawSettings["keepImageRow"]) || undefined,
             textLayoutMode: rawSettings["text_layout_mode"] || "default",
 
+            // - ArticleArtistSpotlight
+            artistSpotlight: rawSettings["artist_spotlight"] || {},
+
             // - ArticleFeature
             featureLayoutMode: rawSettings["feature_layout_mode"] || "default",
             featureStackOrder: rawSettings["feature_stack_order"] || "media_text",

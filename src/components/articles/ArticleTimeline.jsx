@@ -775,6 +775,7 @@ function ArticleTimelineItem({
         "article-timeline-item-content"
     const overlayActionLabel = itemWrapper?.imageAlt || itemWrapper.locales?.title || language.getString("get_to_know_more")
     const avatarActionLabel = primaryAvatarLink?.tooltip || primaryPreviewLink?.tooltip || overlayActionLabel
+    const avatarLinkHref = (primaryAvatarLink || primaryPreviewLink)?.href
     const photographyCountryStyle = isPhotographyTimeline ?
         getPhotographyCountryStyle(itemWrapper?.locales?.country) :
         null
@@ -798,6 +799,14 @@ function ArticleTimelineItem({
             return
 
         onOverlayToggle?.(itemWrapper.id)
+    }
+
+    const _onEducationAvatarLinkClick = (event) => {
+        if(!isEducationTimeline || !avatarLinkHref)
+            return
+
+        event.preventDefault()
+        window.open(avatarLinkHref, "_blank", "noopener,noreferrer")
     }
 
     return (
@@ -832,10 +841,12 @@ function ArticleTimelineItem({
                                          className={`article-timeline-item-avatar article-timeline-item-avatar--button ${isExperienceTimeline ? "article-timeline-item-avatar--experience" : ""}`.trim()}/>
                         </Link>
                     ) : shouldUseItemLinkAvatar || shouldUsePreviewLinkAvatar ? (
-                        <Link href={(primaryAvatarLink || primaryPreviewLink).href}
+                        <Link href={avatarLinkHref}
+                              target={isEducationTimeline ? "_blank" : undefined}
                               className={avatarLinkClass}
                               tooltip={avatarActionLabel}
-                              ariaLabel={avatarActionLabel}>
+                              ariaLabel={avatarActionLabel}
+                              onClick={isEducationTimeline ? _onEducationAvatarLinkClick : undefined}>
                             <AvatarView src={avatarSrc}
                                          faIcon={avatarFaIcon}
                                          style={avatarStyle}
@@ -865,6 +876,9 @@ function ArticleTimelineItem({
             <ArticleItemInfoForTimelines className={contentClass}
                                          itemWrapper={itemWrapper}
                                          countryStyle={photographyCountryStyle}
+                                         isEducationTimeline={isEducationTimeline}
+                                         isEducationExpanded={isEducationExpanded}
+                                         onEducationExpand={onEducationExpand}
                                          containerRef={contentRef}>
                 <ArticleItemInfoForTimelinesHeader itemWrapper={itemWrapper}
                                                    dateInterval={shouldShowDateInterval}

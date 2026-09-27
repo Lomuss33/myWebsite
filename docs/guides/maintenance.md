@@ -1,6 +1,6 @@
 # Maintenance workflows
 
-Verified: 2026-09-11 against commands and source locations. Code-span paths are repository-relative.
+Verified: 2026-09-27 against commands and source locations, including artist spotlight configuration and registration. Code-span paths are repository-relative.
 
 [Documentation index](../README.md) | [Validation](validation.md)
 
@@ -27,6 +27,8 @@ Verified: 2026-09-11 against commands and source locations. Code-span paths are 
 3. Register the loader in `src/components/sections/SectionBody.jsx`.
 4. Register the lazy component in `src/components/sections/SectionBody.jsx`.
 5. Reference the new `component` name from section JSON.
+
+For `ArticleArtistSpotlight`, put profile, banner, links, and latest-release fields in `settings.artist_spotlight`. Keep user-facing labels localized under that setting's `labels` object. Images use authored paths under `public/images/`. Set `latestRelease.audioSrc` and `startOffsetSeconds` for a local song; its first play begins at that offset, and the seek bar can reach the full recording. A Spotify track URI or URL remains an optional embedded-player source when no local audio is set. The Spotify artist button appears when `spotifyArtistUrl` is populated. Place new My Art entries with the section's explicit article ordering in `SectionContent.scss` so existing generated article IDs remain stable.
 
 ### Change theme styling
 

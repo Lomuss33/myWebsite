@@ -282,6 +282,16 @@ html[data-layout="mobile"] {
         .section-content-elements-wrapper {
             padding-top: clamp(.75rem, 1.5svh, 2rem) !important;
         }
+
+        // Headerless pages start with their top decoration band. Keep that band
+        // flush to the pane even though wide portrait layouts need extra inset
+        // on ordinary sections.
+        .section-content.section-content-has-decoration-bands.section-content-hide-header {
+            padding-top: 0 !important;
+        }
+        .section-content.section-content-has-decoration-bands.section-content-hide-header > .section-content-elements-wrapper {
+            padding-top: 0 !important;
+        }
     }
 }
 
@@ -363,7 +373,13 @@ html:is([data-layout="normal"], [data-layout="ultrawide"]) {
     --size-body: 1rem;
 
     section:is(#section-about, #section-experience, #section-education, #section-my-software, #section-my-hardware, #section-my-writings, #section-my-art, #section-contact) {
-        .section-content { --padding-x: var(--desktop-page-inset); --padding-bottom: 1.6rem; }
+        .section-content {
+            --padding-x: var(--desktop-page-inset);
+
+            &:not(.section-content-has-decoration-bands) {
+                --padding-bottom: 1.6rem;
+            }
+        }
         header.section-header {
             margin-bottom: 1.2rem;
         }

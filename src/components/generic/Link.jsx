@@ -9,6 +9,7 @@ function Link({
     id = null,
     className = "",
     href,
+    target = null,
     children,
     tooltip = null,
     metadata = null,
@@ -32,7 +33,8 @@ function Link({
     const hrefClass = !href ?
         `link-no-href` :
         ``
-    const useNativeExternalNavigation = shouldUseNativeExternalNavigation(href, openYoutubeInModal)
+    const useNativeExternalNavigation = target === "_blank" || shouldUseNativeExternalNavigation(href, openYoutubeInModal)
+    const resolvedTarget = target || (useNativeExternalNavigation ? "_blank" : undefined)
 
     const _onMouseEnter = (e) => {
         onHoverStatus && onHoverStatus(true)
@@ -151,8 +153,8 @@ function Link({
            id={id}
            className={`${className} ${hrefClass}`}
            aria-label={ariaLabel || undefined}
-           target={useNativeExternalNavigation ? "_blank" : undefined}
-           rel={useNativeExternalNavigation ? "noopener noreferrer" : undefined}
+           target={resolvedTarget}
+           rel={resolvedTarget === "_blank" ? "noopener noreferrer" : undefined}
            onClick={_onClick}
            onMouseEnter={_onMouseEnter}
            onMouseLeave={_onMouseLeave}

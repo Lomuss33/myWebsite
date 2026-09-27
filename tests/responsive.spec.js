@@ -470,6 +470,17 @@ test('Education cards center on the full timeline while the year rail overlays t
         await page.setViewportSize(viewport)
         await openSection(page,'education')
 
+        const avatarLinks=await page.locator('#article-1-section-education a.article-timeline-item-avatar-link').evaluateAll(links=>
+            links.map(link=>({href:link.href,target:link.target,rel:link.rel}))
+        )
+        expect(avatarLinks.length).toBeGreaterThan(0)
+        for(const link of avatarLinks) {
+            expect(link.href).toMatch(/^https?:\/\//)
+            expect(link.target).toBe('_blank')
+            expect(link.rel).toContain('noopener')
+            expect(link.rel).toContain('noreferrer')
+        }
+
         const geometry=await page.evaluate(()=>{
             const article=document.querySelector('#article-1-section-education')
             const panel=article.querySelector('.article-timeline-item-info-for-timelines')
@@ -477,11 +488,14 @@ test('Education cards center on the full timeline while the year rail overlays t
             const articleRect=article.getBoundingClientRect()
             const panelRect=panel.getBoundingClientRect()
             const axisRect=axis.getBoundingClientRect()
+            const tube=article.querySelector('.article-timeline-item-info-for-timelines-education-meta-row')
             return {
                 centerOffset:Math.abs((panelRect.left+panelRect.width/2)-(articleRect.left+articleRect.width/2)),
                 panelRight:panelRect.right,
                 axisLeft:axisRect.left,
                 mask:getComputedStyle(panel,'::before').maskImage,
+                tubeMask:getComputedStyle(tube,'::before').maskImage,
+                tubeRightRadius:getComputedStyle(tube,'::before').borderTopRightRadius,
                 documentWidth:document.documentElement.scrollWidth
             }
         })
@@ -490,8 +504,74 @@ test('Education cards center on the full timeline while the year rail overlays t
         expect(geometry.panelRight).toBeGreaterThan(geometry.axisLeft)
         expect(geometry.mask).toContain('rgba(0, 0, 0, 0)')
         expect(geometry.mask).toContain('0.8')
+        expect(geometry.tubeMask).toContain('rgba(0, 0, 0, 0)')
+        expect(geometry.tubeRightRadius).toBe('0px')
         expect(geometry.documentWidth).toBeLessThanOrEqual(viewport.width+1)
+
+        const expandButton=page.locator('#article-1-section-education .article-timeline-item-info-for-timelines-body-expand-button').first()
+        const assertExpandButtonPlacement=async()=>{
+            const placement=await expandButton.evaluate(button=>{
+                const buttonRect=button.getBoundingClientRect()
+                const cardRect=button.closest('.article-timeline-item-info-for-timelines').getBoundingClientRect()
+                const style=getComputedStyle(button)
+                return {
+                    centerOffset:Math.abs((buttonRect.left+buttonRect.width/2)-(cardRect.left+cardRect.width/2)),
+                    bottomGap:cardRect.bottom-buttonRect.bottom,
+                    borderTopColor:style.borderTopColor,
+                    backgroundColor:style.backgroundColor
+                }
+            })
+
+            expect(placement.centerOffset).toBeLessThanOrEqual(1)
+            expect(placement.bottomGap).toBeGreaterThanOrEqual(0)
+            expect(placement.bottomGap).toBeLessThanOrEqual(1)
+            expect(placement.borderTopColor).toBe('rgba(0, 0, 0, 0)')
+            expect(placement.backgroundColor).toBe('rgba(0, 0, 0, 0)')
+        }
+
+        await expandButton.hover()
+        await expect(expandButton).toHaveCSS('background-color','rgba(0, 0, 0, 0)')
+        await assertExpandButtonPlacement()
+        const firstCard=page.locator('#article-1-section-education .article-timeline-item-info-for-timelines').first()
+        const clickCardEdge=async()=>{
+            const position=await firstCard.evaluate(card=>({
+                x:Math.max(1,card.clientWidth-4),
+                y:Math.max(1,card.clientHeight/2)
+            }))
+            await firstCard.click({position})
+        }
+
+        await clickCardEdge()
+        await expect(expandButton).toHaveAttribute('aria-expanded','true')
+        await assertExpandButtonPlacement()
+        const listStyles=await firstCard.locator('.article-timeline-item-info-for-timelines-body-list').evaluate(list=>({
+            listStyle:getComputedStyle(list).listStyleType,
+            alignment:getComputedStyle(list.firstElementChild).textAlign
+        }))
+        expect(listStyles.listStyle).toBe('none')
+        expect(listStyles.alignment).toBe('center')
+
+        await clickCardEdge()
+        await expect(expandButton).toHaveAttribute('aria-expanded','false')
+        await expandButton.click()
+        await expect(expandButton).toHaveAttribute('aria-expanded','true')
+        await expandButton.click()
+        await expect(expandButton).toHaveAttribute('aria-expanded','false')
     }
+})
+
+test('Education avatar links open in a separate tab on click', async ({page,context})=>{
+    await preferences(page)
+    await page.setViewportSize({width:390,height:844})
+    await openSection(page,'education')
+
+    const avatarLink=page.locator('#article-1-section-education a.article-timeline-item-avatar-link').first()
+    const destination=await avatarLink.getAttribute('href')
+    const newPagePromise=context.waitForEvent('page')
+    await avatarLink.click()
+    const newPage=await newPagePromise
+    await expect(newPage).toHaveURL(destination)
+    await newPage.close()
 })
 
 test('Education desktop density stays off in narrow landscape and mobile modes', async ({page})=>{
@@ -514,6 +594,22 @@ test('Education desktop density stays off in narrow landscape and mobile modes',
     await expect(page.locator('html')).toHaveAttribute('data-layout','mobile')
     await expect(page.locator('#article-1-section-education .article-timeline-item-info-for-timelines').first()).toBeVisible()
     await expect(page.locator('#article-3-section-education .article-skills-item-popup-trigger').first()).toBeVisible()
+})
+
+test('Headerless decorated pages keep the top band flush to the scroll pane', async ({page})=>{
+    await preferences(page)
+    await page.setViewportSize({width:1440,height:2560})
+
+    for(const route of ['my-software','my-hardware','my-writings','my-art']) {
+        await openSection(page,route)
+        await expect(page.locator('html')).toHaveAttribute('data-layout','mobile')
+        const topGap=await page.locator('#scrollable-'+route).evaluate(scrollable=>{
+            const band=scrollable.querySelector('.section-decoration-boundary-page-top')
+            const wrapper=scrollable.closest('.scrollable-wrapper')
+            return band.getBoundingClientRect().top-wrapper.getBoundingClientRect().top
+        })
+        expect(topGap,route+' top decoration band meets the scroll pane edge').toBeLessThanOrEqual(1)
+    }
 })
 
 test('Software desktop density compacts project cards and testimonials without shrinking actions', async ({page})=>{

@@ -55,9 +55,7 @@ button.nav-tab-controller-link {
     gap: var(--mobile-nav-item-gap);
     padding: var(--mobile-nav-item-padding-block) 0.42rem;
     transition:
-        background-color 0.18s ease,
         color 0.18s ease,
-        transform 0.18s ease,
         box-shadow 0.18s ease;
     border: 0;
     outline: none!important;
@@ -67,17 +65,33 @@ button.nav-tab-controller-link {
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
 
-    background: transparent;
+    background: var(--theme-nav-selected-surface);
     color: var(--theme-nav-text);
     overflow: hidden;
 
+    // Keep the hit area fixed while the painted face reveals the rail above it.
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        transition: transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
     i {
+        position: relative;
+        z-index: 1;
+        transition: transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
         opacity: 0.68;
         font-size: var(--mobile-nav-item-icon-size);
         margin-top: 0;
     }
 
     span {
+        position: relative;
+        z-index: 1;
+        transition: transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
         opacity: 0.84;
         max-width: 100%;
         overflow: hidden;
@@ -92,12 +106,14 @@ button.nav-tab-controller-link {
 }
 
 button.nav-tab-controller-link:not(.nav-tab-controller-link-active):not(.nav-tab-controller-link-visited) {
-    background:
-        linear-gradient(180deg,
+    color: var(--theme-nav-unvisited-ink);
+
+    &::before {
+        background: linear-gradient(180deg,
             var(--theme-nav-unvisited-surface-accent) 0%,
             var(--theme-nav-unvisited-surface) 100%);
-    color: var(--theme-nav-unvisited-ink);
-    @include nav-interactive-edge(var(--theme-nav-unvisited-border));
+        @include nav-interactive-edge(var(--theme-nav-unvisited-border));
+    }
 
     i,
     span {
@@ -107,17 +123,19 @@ button.nav-tab-controller-link:not(.nav-tab-controller-link-active):not(.nav-tab
 }
 
 button.nav-tab-controller-link-visited:not(.nav-tab-controller-link-active) {
-    background:
-        linear-gradient(180deg,
+    color: var(--theme-nav-visited-ink);
+
+    &::before {
+        background: linear-gradient(180deg,
             var(--theme-nav-visited-surface-accent) 0%,
             var(--theme-nav-visited-surface) 100%);
-    color: var(--theme-nav-visited-ink);
-    @include nav-interactive-edge(
-        var(--theme-nav-visited-marker),
-        top,
-        1px,
-        (inset 0 0 0 1px var(--theme-nav-visited-border))
-    );
+        @include nav-interactive-edge(
+            var(--theme-nav-visited-marker),
+            top,
+            1px,
+            (inset 0 0 0 1px var(--theme-nav-visited-border))
+        );
+    }
 
     i,
     span {
@@ -128,15 +146,22 @@ button.nav-tab-controller-link-visited:not(.nav-tab-controller-link-active) {
 
 @media (hover: hover) and (pointer: fine) {
     button.nav-tab-controller-link:not(.nav-tab-controller-link-active):hover {
-        background: color-mix(in srgb, var(--theme-nav-surface-raised) 72%, transparent 28%);
         color: var(--theme-nav-text);
-        @include nav-interactive-edge(
-            color-mix(in srgb, var(--theme-primary) 64%, var(--theme-nav-divider) 36%),
-            top,
-            1px,
-            (inset 0 0 0 1px color-mix(in srgb, var(--theme-primary) 18%, var(--theme-nav-divider) 82%))
-        );
-        transform: translateY(-1px);
+
+        &::before {
+            @include nav-interactive-edge(
+                color-mix(in srgb, var(--theme-primary) 64%, var(--theme-nav-divider) 36%),
+                top,
+                1px,
+                (inset 0 0 0 1px color-mix(in srgb, var(--theme-primary) 18%, var(--theme-nav-divider) 82%))
+            );
+        }
+
+        &::before,
+        i,
+        span {
+            transform: translateY(var(--nav-hover-reveal-size));
+        }
 
         i {
             opacity: 1;
@@ -150,6 +175,10 @@ button.nav-tab-controller-link-visited:not(.nav-tab-controller-link-active) {
 
 button.nav-tab-controller-link-active {
     @include nav-selected-button;
+
+    &::before {
+        display: none;
+    }
 }
 
 nav.nav-tab-controller > button.nav-tab-controller-link + button.nav-tab-controller-link {
@@ -163,7 +192,10 @@ button.nav-tab-controller-link:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    button.nav-tab-controller-link {
+    button.nav-tab-controller-link,
+    button.nav-tab-controller-link::before,
+    button.nav-tab-controller-link i,
+    button.nav-tab-controller-link span {
         transition: none;
     }
 }

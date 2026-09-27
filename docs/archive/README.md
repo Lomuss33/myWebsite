@@ -6,5 +6,6 @@ Archived files are not current instructions. Preserve dates/findings and mark su
 - [Original plan](2026-09-responsive-sizing/plan.md)
 - [Profile plan](2026-09-responsive-sizing/profile-element-sizing-plan.md)
 - [Verification and revisions](2026-09-responsive-sizing/verification.md)
+- [My Art artist spotlight masterplan and completion record](2026-09-27-my-art-artist-spotlight.md)
 
 Current rules: [responsive layout](../architecture/responsive-layout.md). Measurements: [evidence](../evidence/README.md).

@@ -15,14 +15,32 @@ import {useLanguage} from "../../../providers/LanguageProvider.jsx"
  * @return {JSX.Element}
  * @constructor
  */
-function ArticleItemInfoForTimelines({ children, itemWrapper, countryStyle = null, className = "", smallDateBadge = false, containerRef = null }) {
+function ArticleItemInfoForTimelines({ children, itemWrapper, countryStyle = null, className = "", smallDateBadge = false, containerRef = null, isEducationTimeline = false, isEducationExpanded = false, onEducationExpand = null }) {
     const dateBadgeClass = smallDateBadge ?
         `article-timeline-item-info-for-timelines-date-badge-small` :
         ``
+    const hasEducationDetails = Boolean(itemWrapper?.locales?.text?.trim() || itemWrapper?.locales?.list?.length)
+    const isEducationInteractive = isEducationTimeline && hasEducationDetails
+    const educationInteractiveClass = isEducationInteractive ? `article-timeline-item-info-for-timelines-content-toggleable` : ""
+
+    const _handleEducationCardClick = (event) => {
+        if(!isEducationInteractive || event.defaultPrevented)
+            return
+
+        const eventTarget = event.target?.nodeType === 1 ? event.target : event.target?.parentElement
+        if(eventTarget?.closest?.("a, button, input, select, textarea, summary, [contenteditable='true'], [role='button']"))
+            return
+
+        if(globalThis.getSelection?.()?.toString().trim())
+            return
+
+        onEducationExpand?.(itemWrapper?.id)
+    }
 
     return (
-        <div className={`article-timeline-item-info-for-timelines ${className} ${dateBadgeClass}`}
+        <div className={`article-timeline-item-info-for-timelines ${className} ${dateBadgeClass} ${educationInteractiveClass}`.trim()}
              data-country-style={countryStyle || undefined}
+             onClick={isEducationInteractive ? _handleEducationCardClick : undefined}
              ref={containerRef}>
             {children}
         </div>

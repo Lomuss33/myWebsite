@@ -487,6 +487,14 @@ section#section-my-art div.section-content div.section-body > div.section-decora
     order: 20;
 }
 
+section#section-my-art div.section-content div.section-body > article#article-6-section-my-art {
+    order: 25;
+}
+
+section#section-my-art div.section-content div.section-body > div.section-decoration-boundary-between-articles[data-section-decoration-band-index="5"] {
+    order: 27;
+}
+
 section#section-my-art div.section-content div.section-body > article#article-3-section-my-art {
     order: 30;
 }

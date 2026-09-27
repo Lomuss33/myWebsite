@@ -4,6 +4,7 @@ import ArticleNotFound from "../articles/ArticleNotFound.jsx"
 import SectionDecorationBand from "./SectionDecorationBand.jsx"
 
 function _loadArticleCards() { return import("../articles/ArticleCards.jsx") }
+function _loadArticleArtistSpotlight() { return import("../articles/ArticleArtistSpotlight.jsx") }
 function _loadArticleComplaintForm() { return import("../articles/ArticleComplaintForm.jsx") }
 function _loadArticleContactForm() { return import("../articles/ArticleContactForm.jsx") }
 function _loadArticleDataProbe() { return import("../articles/ArticleDataProbe.jsx") }
@@ -27,6 +28,7 @@ function _loadArticleSecretPearls() { return import("../articles/ArticleSecretPe
 function _loadArticleWebArt() { return import("../articles/ArticleWebArt.jsx") }
 
 const ARTICLE_LOADERS = {
+    ArticleArtistSpotlight: _loadArticleArtistSpotlight,
     ArticleCards: _loadArticleCards,
     ArticleComplaintForm: _loadArticleComplaintForm,
     ArticleContactForm: _loadArticleContactForm,
@@ -52,6 +54,7 @@ const ARTICLE_LOADERS = {
 }
 
 const ARTICLE_COMPONENTS = {
+    ArticleArtistSpotlight: lazy(_loadArticleArtistSpotlight),
     ArticleCards: lazy(_loadArticleCards),
     ArticleComplaintForm: lazy(_loadArticleComplaintForm),
     ArticleContactForm: lazy(_loadArticleContactForm),

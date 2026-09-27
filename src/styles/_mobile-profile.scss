@@ -301,7 +301,7 @@ html[data-layout="mobile"] {
     nav.nav-link-pills-mobile > button.nav-link-pills-link,
     nav.nav-tab-controller > button.nav-tab-controller-link {
         height: 100%;
-        min-height: var(--mobile-nav-row-height);
+        min-height: 100%;
         touch-action: manipulation;
     }
 }

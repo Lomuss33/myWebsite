@@ -1583,6 +1583,7 @@ section#section-my-art div.section-body {
     > article#article-5-section-my-art {
         order: 5;
     }
+
 }
 
 @include layout-mobile {
@@ -1739,6 +1740,10 @@ section.section > button.section-fullscreen-control:focus-visible {
         --scrollbar-track-width: var(--section-scrollbar-cap-size);
         --scrollbar-thumb-width: var(--section-scrollbar-cap-size);
     }
+}
+
+section.section > .section-scrollable-headerless-decorated {
+    padding-top: 0 !important;
 }
 
 /** Transitions **/

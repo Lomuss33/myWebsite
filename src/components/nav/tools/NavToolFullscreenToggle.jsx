@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react'
-import CircularButton from "../../buttons/CircularButton.jsx"
+import React from 'react'
 import {useUtils} from "../../../hooks/utils.js"
 import {useLanguage} from "../../../providers/LanguageProvider.jsx"
 
-function NavToolFullscreenToggle({ className = "" }) {
+function NavToolFullscreenToggle() {
     const utils = useUtils()
     const language = useLanguage()
 
@@ -18,12 +17,13 @@ function NavToolFullscreenToggle({ className = "" }) {
         "fa-solid fa-maximize"
 
     return (
-        <CircularButton onClick={utils.capabilities.toggleFullscreen}
-                        faIcon={faIcon}
-                        size={CircularButton.Sizes.EXTRA_LARGE}
-                        variant={CircularButton.Variants.BLEND}
-                        className={className}
-                        tooltip={tooltip}/>
+        <button type="button"
+                className="section-fullscreen-control"
+                aria-label={tooltip}
+                data-tooltip={tooltip}
+                onClick={utils.capabilities.toggleFullscreen}>
+            <i className={faIcon} aria-hidden="true"/>
+        </button>
     )
 }
 

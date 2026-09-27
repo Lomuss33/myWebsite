@@ -98,11 +98,11 @@ function SectionRenderer({ section, status, shouldRenderContent, shouldResetScro
         <section className={`section ${statusClassName}`}
                  id={`section-${section.id}`}>
             {canToggleFullscreen && (
-                <NavToolFullscreenToggle className={`section-fullscreen-toggle`}/>
+                <NavToolFullscreenToggle/>
             )}
 
             <Scrollable id={`scrollable-${section.id}`}
-                        className={`section-scrollable ${hasDecorationBands ? "section-scrollable-decorated" : ""}`.trim()}
+                        className={`section-scrollable ${hasDecorationBands ? "section-scrollable-decorated" : ""} ${canToggleFullscreen ? "section-scrollable-with-fullscreen-cap" : ""}`.trim()}
                         shouldResetScroll={shouldResetScroll}
                         setShouldResetScroll={setShouldResetScroll}>
                 <SectionContent section={section}

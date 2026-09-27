@@ -23,8 +23,7 @@ nav.nav-link-pills {
 
     @include layout-mobile {
         &.nav-link-pills-mobile {
-            // Pair with the fixed wrapper's top edge using the opposite phase.
-            @include nav-selected-edge(bottom, 6px, 40px);
+            @include nav-selected-edge(top, 2px);
 
             min-height: var(--nav-tabs-height);
             height: var(--nav-tabs-height);
@@ -214,8 +213,10 @@ button.nav-link-pills-link:not(.nav-link-pills-link-active):not(.nav-link-pills-
             var(--theme-nav-unvisited-surface-accent) 0%,
             var(--theme-nav-unvisited-surface) 100%)!important;
     color: var(--theme-nav-unvisited-ink);
-    box-shadow:
-        inset 0 0 0 1px var(--theme-nav-unvisited-border);
+    @include nav-interactive-edge(
+        var(--theme-nav-unvisited-border),
+        (inset 0 0 0 1px var(--theme-nav-unvisited-border))
+    );
 
     i,
     span {
@@ -230,9 +231,10 @@ button.nav-link-pills-link-visited:not(.nav-link-pills-link-active) {
             var(--theme-nav-visited-surface-accent) 0%,
             var(--theme-nav-visited-surface) 100%)!important;
     color: var(--theme-nav-visited-ink);
-    box-shadow:
-        inset 0 0 0 1px var(--theme-nav-visited-border),
-        inset 0 -3px 0 var(--theme-nav-visited-marker);
+    @include nav-interactive-edge(
+        var(--theme-nav-visited-marker),
+        (inset 0 0 0 1px var(--theme-nav-visited-border))
+    );
 
     i,
     span {
@@ -248,9 +250,13 @@ button.nav-link-pills-link-visited:not(.nav-link-pills-link-active) {
                 color-mix(in srgb, var(--theme-nav-surface-raised) 76%, white 24%) 0%,
                 var(--theme-nav-surface-raised) 100%)!important;
         color: var(--theme-nav-text);
-        box-shadow:
-            inset 0 0 0 1px color-mix(in srgb, var(--theme-primary) 18%, var(--theme-nav-divider) 82%),
-            0 8px 16px rgba(15, 23, 42, 0.05);
+        @include nav-interactive-edge(
+            color-mix(in srgb, var(--theme-primary) 64%, var(--theme-nav-divider) 36%),
+            (
+                inset 0 0 0 1px color-mix(in srgb, var(--theme-primary) 18%, var(--theme-nav-divider) 82%),
+                0 8px 16px rgba(15, 23, 42, 0.05)
+            )
+        );
         transform: translateY(-1px);
 
         i {

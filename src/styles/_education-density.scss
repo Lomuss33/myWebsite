@@ -5,7 +5,6 @@
     html:is([data-layout="normal"], [data-layout="ultrawide"]) {
         section#section-education {
             header.section-header {
-                --section-header-feature-title-size: clamp(1.95rem, 1.95rem + 0.16vw, 2.05rem);
                 margin-bottom: clamp(1.65rem, 2vw, 2rem);
             }
 

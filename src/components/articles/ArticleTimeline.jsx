@@ -11,6 +11,8 @@ import Link from "../generic/Link.jsx"
 import {useUtils} from "../../hooks/utils.js"
 
 const FINE_POINTER_MEDIA_QUERY = "(hover: hover) and (pointer: fine)"
+const EDUCATION_YEAR_AXIS_NEWEST_INTERVAL_WEIGHT = 1.75
+const EDUCATION_YEAR_AXIS_OLDEST_INTERVAL_WEIGHT = 1
 const EDUCATION_CRYSTAL_COLORS_BY_ID = {
     6: "#ff2d3f", // Erasmus: red
     2: "#005b3c", // THM: dark green
@@ -23,6 +25,32 @@ const EDUCATION_CRYSTAL_COLORS_BY_ID = {
 
 function getEducationCrystalColor(itemId) {
     return EDUCATION_CRYSTAL_COLORS_BY_ID[itemId] || "#60a5fa"
+}
+
+function getEducationYearTicks(items) {
+    const years = items.flatMap(item => [item.dateStart, item.dateEnd])
+        .filter(date => date instanceof Date && Number.isFinite(date.getTime()))
+        .map(date => date.getFullYear())
+
+    if(!years.length)
+        return []
+
+    const firstYear = Math.min(...years)
+    const lastYear = Math.max(...years)
+    const range = lastYear - firstYear
+    const intervalWeights = Array.from({length: range}, (_, index) => {
+        const progress = range <= 1 ? 0 : index / (range - 1)
+        return EDUCATION_YEAR_AXIS_NEWEST_INTERVAL_WEIGHT +
+            (EDUCATION_YEAR_AXIS_OLDEST_INTERVAL_WEIGHT - EDUCATION_YEAR_AXIS_NEWEST_INTERVAL_WEIGHT) * progress
+    })
+    const totalIntervalWeight = intervalWeights.reduce((total, weight) => total + weight, 0)
+
+    return Array.from({length: range + 1}, (_, index) => {
+        const year = lastYear - index
+        const elapsedWeight = intervalWeights.slice(0, index).reduce((total, weight) => total + weight, 0)
+        const position = range === 0 ? 50 : elapsedWeight / totalIntervalWeight * 100
+        return {year, position}
+    })
 }
 
 function buildEducationTimelinePath(listElement) {
@@ -146,7 +174,7 @@ function ArticleTimeline({ dataWrapper, id }) {
         <Article id={dataWrapper.uniqueId}
                  type={Article.Types.SPACING_DEFAULT}
                  dataWrapper={dataWrapper}
-                 className={`article-timeline ${isMyArtTimeline ? "article-timeline--my-art" : ""} ${isExperienceTimeline ? "article-timeline--experience" : ""} ${timelineVariantClass}`}
+                 className={`article-timeline ${isMyArtTimeline ? "article-timeline--my-art" : ""} ${isExperienceTimeline ? "article-timeline--experience" : ""} ${isEducationTimeline ? "article-timeline--education" : ""} ${timelineVariantClass}`}
                  selectedItemCategoryId={selectedItemCategoryId}
                  setSelectedItemCategoryId={setSelectedItemCategoryId}>
             <ArticleTimelineItems dataWrapper={dataWrapper}
@@ -181,6 +209,8 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
         bottomOffsetPx: null
     })
     const [educationTimelinePath, setEducationTimelinePath] = useState(null)
+    const [educationTimelineViewportHeightPx, setEducationTimelineViewportHeightPx] = useState(null)
+    const [educationTimelineFullHeightPx, setEducationTimelineFullHeightPx] = useState(null)
     const [expandedEducationItemIds, setExpandedEducationItemIds] = useState(() => new Set())
     const [activeOverlayItemId, setActiveOverlayItemId] = useState(null)
     const [supportsFinePointer, setSupportsFinePointer] = useState(() => {
@@ -197,8 +227,17 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
         setVisibleItems(Math.min(initialVisibleItems, filteredItems.length))
     }, [initialVisibleItems, filteredItems.length, selectedItemCategoryId])
 
-    const visibleItemWrappers = filteredItems.slice(0, visibleItems)
-    const canExpand = visibleItems < filteredItems.length
+    const visibleItemCount = Math.min(visibleItems, filteredItems.length)
+    const visibleItemWrappers = filteredItems.slice(0, visibleItemCount)
+    const timelineItemWrappers = isEducationTimeline ? filteredItems : visibleItemWrappers
+    const canExpand = visibleItemCount < filteredItems.length
+    const educationYearTicks = isEducationTimeline ?
+        getEducationYearTicks(dataWrapper.getOrderedItemsFilteredBy(null)) :
+        []
+    const educationTimelineStageStyle = isEducationTimeline ? {
+        ...(Number.isFinite(educationTimelineViewportHeightPx) ? {height: `${educationTimelineViewportHeightPx}px`} : {}),
+        ...(Number.isFinite(educationTimelineFullHeightPx) ? {"--education-timeline-full-height": `${educationTimelineFullHeightPx}px`} : {})
+    } : undefined
 
     useEffect(() => {
         if(!isExperienceTimeline || typeof window === "undefined" || !window.matchMedia)
@@ -283,7 +322,19 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
             return
 
         const _updateOffsets = () => {
+            const listRect = listElement.getBoundingClientRect()
+
             if(isEducationTimeline) {
+                const itemElements = listElement.querySelectorAll(":scope > .article-timeline-item")
+                const lastVisibleItem = itemElements[Math.max(0, Math.min(visibleItemCount, itemElements.length) - 1)]
+                const viewportHeightPx = lastVisibleItem ?
+                    Math.ceil(lastVisibleItem.getBoundingClientRect().bottom - listRect.top) :
+                    0
+                const fullHeightPx = Math.ceil(listElement.scrollHeight)
+
+                setEducationTimelineViewportHeightPx(current => current === viewportHeightPx ? current : viewportHeightPx)
+                setEducationTimelineFullHeightPx(current => current === fullHeightPx ? current : fullHeightPx)
+
                 const nextPath = buildEducationTimelinePath(listElement)
                 setEducationTimelinePath(current => {
                     if(current?.path === nextPath?.path && current?.width === nextPath?.width && current?.height === nextPath?.height)
@@ -309,7 +360,6 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
                 return
             }
 
-            const listRect = listElement.getBoundingClientRect()
             const articleRect = listElement.closest("article")?.getBoundingClientRect()
             const firstRect = avatarElements[0].getBoundingClientRect()
             const lastRect = avatarElements[avatarElements.length - 1].getBoundingClientRect()
@@ -356,7 +406,7 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
 
         window.addEventListener("resize", _updateOffsets)
         return () => window.removeEventListener("resize", _updateOffsets)
-    }, [isExperienceTimeline, isEducationTimeline, visibleItemWrappers.length, selectedItemCategoryId])
+    }, [isExperienceTimeline, isEducationTimeline, visibleItemWrappers.length, visibleItemCount, selectedItemCategoryId])
 
     useLayoutEffect(() => {
         if(!isMyArtTimeline)
@@ -481,55 +531,68 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
 
     return (
         <>
-            <ul className={`article-timeline-items${isEducationTimeline && educationTimelinePath ? " article-timeline-items-has-education-snake" : ""}`}
-                ref={listRef}
-                style={timelineLineOffsetsStyle || undefined}>
-                {isEducationTimeline && educationTimelinePath && (
-                    <svg className="article-timeline-education-snake"
-                         viewBox={`0 0 ${educationTimelinePath.width} ${educationTimelinePath.height}`}
-                         preserveAspectRatio="none"
-                         aria-hidden="true">
-                        <defs>
+            <div className={`article-timeline-items-stage${isEducationTimeline ? " article-timeline-items-stage--education" : ""}`}
+                 style={educationTimelineStageStyle}>
+                <ul className={`article-timeline-items${isEducationTimeline && educationTimelinePath ? " article-timeline-items-has-education-snake" : ""}`}
+                    ref={listRef}
+                    style={timelineLineOffsetsStyle || undefined}>
+                    {isEducationTimeline && educationTimelinePath && (
+                        <svg className="article-timeline-education-snake"
+                             viewBox={`0 0 ${educationTimelinePath.width} ${educationTimelinePath.height}`}
+                             preserveAspectRatio="none"
+                             aria-hidden="true">
+                            <defs>
+                                {educationTimelinePath.segments.map(segment => (
+                                    <linearGradient id={`education-timeline-crystal-${segment.index}`}
+                                                    gradientUnits="userSpaceOnUse"
+                                                    x1={segment.startX}
+                                                    y1={segment.startY}
+                                                    x2={segment.endX}
+                                                    y2={segment.endY}
+                                                    key={segment.index}>
+                                        <stop offset="0%" stopColor={getEducationCrystalColor(timelineItemWrappers[segment.index]?.id)}/>
+                                        <stop offset="100%" stopColor={getEducationCrystalColor(timelineItemWrappers[segment.index + 1]?.id)}/>
+                                    </linearGradient>
+                                ))}
+                            </defs>
                             {educationTimelinePath.segments.map(segment => (
-                                <linearGradient id={`education-timeline-crystal-${segment.index}`}
-                                                gradientUnits="userSpaceOnUse"
-                                                x1={segment.startX}
-                                                y1={segment.startY}
-                                                x2={segment.endX}
-                                                y2={segment.endY}
-                                                key={segment.index}>
-                                    <stop offset="0%" stopColor={getEducationCrystalColor(visibleItemWrappers[segment.index]?.id)}/>
-                                    <stop offset="100%" stopColor={getEducationCrystalColor(visibleItemWrappers[segment.index + 1]?.id)}/>
-                                </linearGradient>
+                                <path d={segment.path}
+                                      stroke={`url(#education-timeline-crystal-${segment.index})`}
+                                      key={segment.index}/>
                             ))}
-                        </defs>
-                        {educationTimelinePath.segments.map(segment => (
-                            <path d={segment.path}
-                                  stroke={`url(#education-timeline-crystal-${segment.index})`}
-                                  key={segment.index}/>
+                        </svg>
+                    )}
+                    {timelineItemWrappers.map((itemWrapper, key) => (
+                        <ArticleTimelineItem itemWrapper={itemWrapper}
+                                             itemIndex={key}
+                                             isEducationItemVisible={key < visibleItemCount}
+                                             isMyArtTimeline={isMyArtTimeline}
+                                             isExperienceTimeline={isExperienceTimeline}
+                                             isEducationTimeline={isEducationTimeline}
+                                             isPhotographyTimeline={isPhotographyTimeline}
+                                             isEducationExpanded={expandedEducationItemIds.has(itemWrapper.id)}
+                                             nextEducationItemId={timelineItemWrappers[key + 1]?.id}
+                                             isDigitalExpressionTimeline={isDigitalExpressionTimeline}
+                                             isOverlayActive={isExperienceTimeline && activeOverlayItemId === itemWrapper.id}
+                                             usesTapOverlay={usesTapOverlay}
+                                             avatarColumnSizePx={isMyArtTimeline ? avatarColumnSizePx : null}
+                                             onMyArtItemHeightChange={isMyArtTimeline ? _onMyArtItemHeightChange : null}
+                                             onOverlayActivate={_activateOverlay}
+                                             onOverlayToggle={_toggleOverlay}
+                                             onEducationExpand={_expandEducationItem}
+                                              key={itemWrapper.id}/>
+                    ))}
+                </ul>
+                {isEducationTimeline && educationYearTicks.length > 0 && (
+                    <div className="article-timeline-year-axis" aria-hidden="true">
+                        {educationYearTicks.map(({year, position}) => (
+                            <span className={`article-timeline-year-axis-tick${educationYearTicks.length === 1 ? " article-timeline-year-axis-tick--only" : ""}`}
+                                  style={{top: `${position}%`}}
+                                  key={year}>{year}</span>
                         ))}
-                    </svg>
+                    </div>
                 )}
-                {visibleItemWrappers.map((itemWrapper, key) => (
-                    <ArticleTimelineItem itemWrapper={itemWrapper}
-                                         itemIndex={key}
-                                         isMyArtTimeline={isMyArtTimeline}
-                                         isExperienceTimeline={isExperienceTimeline}
-                                         isEducationTimeline={isEducationTimeline}
-                                         isPhotographyTimeline={isPhotographyTimeline}
-                                         isEducationExpanded={expandedEducationItemIds.has(itemWrapper.id)}
-                                         nextEducationItemId={visibleItemWrappers[key + 1]?.id}
-                                         isDigitalExpressionTimeline={isDigitalExpressionTimeline}
-                                         isOverlayActive={isExperienceTimeline && activeOverlayItemId === itemWrapper.id}
-                                         usesTapOverlay={usesTapOverlay}
-                                         avatarColumnSizePx={isMyArtTimeline ? avatarColumnSizePx : null}
-                                         onMyArtItemHeightChange={isMyArtTimeline ? _onMyArtItemHeightChange : null}
-                                         onOverlayActivate={_activateOverlay}
-                                         onOverlayToggle={_toggleOverlay}
-                                         onEducationExpand={_expandEducationItem}
-                                          key={key}/>
-                ))}
-            </ul>
+            </div>
 
             {Boolean(canExpand) && (
                 <div className={`collapsable-menu`}>
@@ -559,6 +622,7 @@ function ArticleTimelineItem({
     isEducationTimeline = false,
     isPhotographyTimeline = false,
     isEducationExpanded = false,
+    isEducationItemVisible = true,
     nextEducationItemId = null,
     isDigitalExpressionTimeline = false,
     isOverlayActive = false,
@@ -739,7 +803,10 @@ function ArticleTimelineItem({
     return (
         <li className={`article-timeline-item ${experienceItemClass} ${overlayActiveClass} ${visualVariantClass} ${educationExpandedClass}`.trim()}
             ref={itemRef}
-            style={educationExpandedStyle}
+            style={{
+                ...educationExpandedStyle,
+                ...(isEducationTimeline && !isEducationItemVisible ? {visibility: "hidden"} : {})
+            }}
             data-education-item-id={isEducationTimeline ? itemWrapper.id : undefined}
             data-overlay-item-id={isExperienceTimeline ? itemWrapper.id : undefined}>
             {shouldRenderDigitalImageStack ? (

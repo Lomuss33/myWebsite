@@ -5,19 +5,8 @@ header.section-header {
     --section-header-prefix-size-mobile: clamp(0.86rem, 0.82rem + 0.2vw, 0.98rem);
     --section-header-prefix-tracking: 0.12em;
     --section-header-home-prefix-tracking: 0.16em;
-    --section-header-title-size: clamp(1.94rem, 1.46rem + 1.9vw, 3rem);
-    --section-header-title-size-md: clamp(1.4rem, 1.12rem + 1.18vw, 1.9rem);
-    --section-header-title-size-sm: clamp(1.27rem, 1.04rem + 0.9vw, 1.58rem);
-    --section-header-title-tracking: 0.06em;
-    --section-header-home-title-tracking: 0.03em;
     --section-header-home-prefix-size: clamp(1.2rem, 1.08rem + 0.36vw, 1.48rem);
     --section-header-home-prefix-size-sm: clamp(1.02rem, 0.98rem + 0.24vw, 1.16rem);
-    --section-header-home-title-size: clamp(1.06rem, 4.2vw, 4.24rem);
-    --section-header-home-title-size-md: clamp(1rem, 4vw, 2.56rem);
-    --section-header-home-title-size-sm: clamp(0.94rem, 4.7vw, 1.72rem);
-    --section-header-feature-title-size: clamp(2.36rem, 1.42rem + 2.95vw, 4.78rem);
-    --section-header-feature-title-size-md: clamp(1.96rem, 1.28rem + 2.32vw, 2.98rem);
-    --section-header-feature-title-size-sm: clamp(1.62rem, 1.2rem + 1.76vw, 2.26rem);
 
     display: flex;
     flex-direction: column;
@@ -102,41 +91,34 @@ div.section-header-prefix {
 h2.section-header-title {
     margin: 0 16px;
     text-align: center;
-    font-weight: 850;
-    font-size: var(--section-header-title-size)!important;
-    line-height: 1.08;
-    letter-spacing: var(--section-header-title-tracking);
+    font-weight: 800;
+    font-size: var(--section-title-size)!important;
+    line-height: 1.12;
+    letter-spacing: var(--section-title-tracking);
     text-wrap: balance;
     max-width: min(100%, 980px);
     box-sizing: border-box;
 
-    @include media-breakpoint-down(xl) {
-        font-size: var(--section-header-title-size)!important;
-    }
-
     @include media-breakpoint-down(lg) {
         color: var(--theme-primary);
         margin-top: 2px;
-        font-size: var(--section-header-title-size-md)!important;
     }
 
     @include media-breakpoint-down(md) {
         margin: 0 10px;
-        font-size: var(--section-header-title-size-md)!important;
     }
 
     @include media-breakpoint-down(sm) {
         margin: 0 6px;
-        font-size: var(--section-header-title-size-sm)!important;
     }
 }
 
 header.section-header.section-header-home h2.section-header-title {
     margin: 0 auto;
     max-width: 100%;
-    font-size: clamp(1.06rem, 4.2vw, 4.24rem)!important;
-    line-height: 1.04;
-    letter-spacing: var(--section-header-home-title-tracking);
+    font-size: var(--section-title-size)!important;
+    line-height: 1.12;
+    letter-spacing: var(--section-title-tracking);
     text-wrap: nowrap;
     white-space: nowrap;
     overflow: visible;
@@ -148,27 +130,27 @@ header.section-header.section-header-home h2.section-header-title {
     }
 
     span.text-primary {
-        font-size: var(--section-header-title-size);
+        font-size: var(--section-title-size);
         line-height: 1.08;
-        letter-spacing: var(--section-header-title-tracking);
+        letter-spacing: var(--section-title-tracking);
     }
 
     @include media-breakpoint-down(md) {
-        font-size: clamp(1rem, 4vw, 2.56rem)!important;
-        line-height: 1.06;
+        font-size: var(--section-title-size)!important;
+        line-height: 1.12;
 
         span.text-primary {
-            font-size: var(--section-header-title-size-md);
+            font-size: var(--section-title-size);
         }
     }
 
     @include media-breakpoint-down(sm) {
         margin: 0 4px;
-        font-size: clamp(0.94rem, 4.7vw, 1.72rem)!important;
-        line-height: 1.08;
+        font-size: var(--section-title-size)!important;
+        line-height: 1.12;
 
         span.text-primary {
-            font-size: var(--section-header-title-size-sm);
+            font-size: var(--section-title-size);
         }
     }
 }

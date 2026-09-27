@@ -304,7 +304,7 @@ article.article.article-stack-home {
         --home-stack-icon-clearance: calc((var(--avatar-size) * 0.5) + 8px);
         --home-stack-card-min-height: 190px;
         --card-height: auto;
-        --home-stack-bubble-font-size: 1.28rem;
+        --home-stack-bubble-font-size: 1.16rem;
         --home-stack-bubble-line-height: 1.22;
         padding-left: var(--home-stack-avatar-outset);
         width: 100%;
@@ -809,7 +809,7 @@ article.article.article-stack-home {
         /* One continuous scale: compact on phones, roomy on desktop, capped on ultrawide. */
         --avatar-size: clamp(78px, calc(50px + 5cqi), 172px);
         --home-stack-card-min-height: clamp(178px, calc(140px + 6cqi), 330px);
-        --home-stack-bubble-font-size: 1.3rem;
+        --home-stack-bubble-font-size: 1.16rem;
         --home-stack-bubble-line-height: 1.12;
         --home-stack-bubble-clearance: clamp(10px, calc(var(--avatar-size) * 0.1), 16px);
         --home-stack-bubble-safe-inset: calc(

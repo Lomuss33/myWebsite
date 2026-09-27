@@ -2,6 +2,10 @@
 
 div.section-content {
     /* Keep the section anchored higher while preserving comfortable side and bottom spacing. */
+    --section-title-size: clamp(1.4rem, 1.18rem + 0.7cqi, 1.625rem);
+    --section-title-size-md: clamp(1.05rem, 1.05rem + 1.1cqi, 1.625rem);
+    --section-title-size-sm: clamp(1.05rem, 4.8vw, 1.55rem);
+    --section-title-tracking: -0.025em;
     --section-content-min-height: calc(100vh - #{$default-card-spacing * 5});
     --padding-top: 0.85rem;
     --padding-x: 1.35rem;
@@ -50,10 +54,36 @@ div.section-content {
         --padding-bottom: 0;
     }
 
+    @include media-breakpoint-down(lg) {
+        --section-title-size: var(--section-title-size-md);
+    }
+
+    @include media-breakpoint-down(sm) {
+        --section-title-size: var(--section-title-size-sm);
+    }
+
     @media (max-width: 380px) {
         --padding-top: 0.4rem;
         --padding-x: 0.6rem;
         --padding-bottom: 0;
+    }
+}
+
+// Pages that hide the standalone section header use their first article title
+// as the page title. Keep that title on the same responsive scale as Home and
+// visible section headings while leaving each article's color treatment intact.
+html[data-layout] section#section-my-software .section-content.section-content-hide-header .section-body > article#article-1-section-my-software > h4.article-title,
+html[data-layout] section#section-my-hardware .section-content.section-content-hide-header .section-body > article#article-1-section-my-hardware > h4.article-title,
+html[data-layout] section#section-my-writings .section-content.section-content-hide-header .section-body > article#article-1-section-my-writings > h4.article-title,
+html[data-layout] section#section-my-art .section-content.section-content-hide-header .section-body > article#article-1-section-my-art > h4.article-title {
+    font-size: var(--section-title-size) !important;
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: var(--section-title-tracking);
+    text-wrap: balance;
+
+    .article-title-prefix {
+        font-size: inherit !important;
     }
 }
 

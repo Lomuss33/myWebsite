@@ -89,6 +89,14 @@ $nav-extended-profile-collapse-max-height: 92px;
     }
 }
 
+@mixin nav-interactive-edge($color, $additional-shadows: null) {
+    @if $additional-shadows == null {
+        box-shadow: inset 0 3px 0 $color;
+    } @else {
+        box-shadow: inset 0 3px 0 $color, $additional-shadows;
+    }
+}
+
 @mixin nav-hazard-shell-frame($thickness: 4px) {
     position: relative;
 

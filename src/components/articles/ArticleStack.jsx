@@ -118,13 +118,13 @@ const HOME_STACK_POPUP_COPY = {
 
 const HOME_STACK_BUBBLE_DEFAULTS = {
     desktop: {
-        fontSize: 1.3,
+        fontSize: 1.16,
         paddingX: 4,
         paddingY: 5,
         lineHeight: 1.12
     },
     tablet: {
-        fontSize: 1.2,
+        fontSize: 1.12,
         paddingX: 4,
         paddingY: 4,
         lineHeight: 1.1

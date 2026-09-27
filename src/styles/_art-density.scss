@@ -3,8 +3,6 @@
 @media (min-width: 80rem) {
     html:is([data-layout="normal"], [data-layout="ultrawide"]) {
         section#section-my-art {
-            --section-header-feature-title-size: clamp(1.45rem, 1.45rem + 0.12vw, 1.55rem);
-
             article:is(
                 #article-1-section-my-art,
                 #article-2-section-my-art,

@@ -43,6 +43,10 @@ ul.article-timeline-items {
     gap: var(--min-gap-between-items);
 }
 
+div.article-timeline-items-stage {
+    display: contents;
+}
+
 ul.article-timeline-items:before {
     position: absolute;
     content: "";
@@ -241,14 +245,26 @@ article.article-timeline--my-art {
 }
 
 article#article-1-section-education {
+    div.article-timeline-items-stage--education {
+        display: block;
+        position: relative;
+        width: 100%;
+        overflow-x: visible;
+        overflow-y: clip;
+        isolation: isolate;
+    }
+
     ul.article-timeline-items {
         --avatar-size: 188px;
         --avatar-border-width: 4px;
         --timeline-line-width: 4px;
         --education-card-width: min(52%, 64rem);
+        --education-year-axis-width: clamp(3rem, 5vw, 4rem);
         --gap-between-avatar-and-content: clamp(18px, 1.35vw, 24px);
         --timeline-line-top-trim: clamp(18px, calc(var(--avatar-size) * 0.16), 30px);
         --timeline-line-bottom-trim: clamp(18px, calc(var(--avatar-size) * 0.16), 30px);
+        box-sizing: border-box;
+        padding-inline-end: var(--education-year-axis-width);
 
         @include content-breakpoint-down(lg) {
             --avatar-size: 156px;
@@ -265,9 +281,66 @@ article#article-1-section-education {
         @include content-breakpoint-down(sm) {
             --avatar-size: 110px;
             --education-card-width: calc(100% - 1rem);
+            --education-year-axis-width: 3rem;
             --gap-between-avatar-and-content: 8px;
             --avatar-offset-merge-mode: 0px;
         }
+    }
+
+    div.article-timeline-year-axis {
+        position: absolute;
+        z-index: 4;
+        inset-block-start: 0.85rem;
+        inset-inline-end: 0;
+        width: var(--education-year-axis-width, clamp(3rem, 5vw, 4rem));
+        height: calc(var(--education-timeline-full-height, 100%) - 1.7rem);
+        pointer-events: none;
+        color: var(--theme-text-color, #e2e8f0);
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset-block: 0;
+            inset-inline-end: 0.42rem;
+            width: 2px;
+            border-radius: 999px;
+            background: linear-gradient(
+                180deg,
+                rgba(103, 232, 249, 0.9),
+                rgba(226, 232, 240, 0.72) 48%,
+                rgba(103, 232, 249, 0.9)
+            );
+            box-shadow: 0 0 8px rgba(103, 232, 249, 0.28);
+        }
+    }
+
+    span.article-timeline-year-axis-tick {
+        position: absolute;
+        inset-inline: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        min-height: 1.15rem;
+        padding-inline-end: 0.9rem;
+        transform: translateY(-50%);
+        font-size: clamp(0.65rem, 0.75vw, 0.8rem);
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        line-height: 1;
+        text-shadow: 0 1px 3px rgba(2, 6, 23, 0.95);
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset-inline-end: 0.16rem;
+            width: 0.55rem;
+            height: 1px;
+            background: rgba(226, 232, 240, 0.82);
+        }
+    }
+
+    span.article-timeline-year-axis-tick--only {
+        transform: translateY(-50%);
     }
 
     li.article-timeline-item {

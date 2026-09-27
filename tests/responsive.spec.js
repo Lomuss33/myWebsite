@@ -19,6 +19,28 @@ async function openSection(page, route) {
     await page.mouse.move(200,1)
 }
 
+test('all page titles share the Home responsive type scale', async ({page})=>{
+    await preferences(page)
+
+    for(const [width,height] of [[1366,768],[390,844],[1440,2560]]) {
+        await page.setViewportSize({width,height})
+        const sizes=[]
+        for(const route of routes) {
+            await openSection(page,route)
+            const pageTitle=page.locator(
+                '#section-'+route+' .section-header-title, '+
+                '#section-'+route+' .section-content-hide-header .section-body > article:first-of-type > h4.article-title'
+            ).first()
+            await expect(pageTitle).toBeVisible()
+            sizes.push(await pageTitle.evaluate(element=>parseFloat(getComputedStyle(element).fontSize)))
+        }
+        const homeSize=sizes[0]
+        for(const [index,size] of sizes.entries()) {
+            expect(Math.abs(size-homeSize),width+'x'+height+' '+routes[index]+' heading matches Home').toBeLessThanOrEqual(1.5)
+        }
+    }
+})
+
 for(const language of smoke ? ['en'] : ['en','de','hr','tr']) {
     for(const theme of smoke ? ['dark'] : ['dark','light']) {
         for(const [mode,[width,height]] of Object.entries(modes)) {
@@ -318,8 +340,8 @@ test('Experience desktop density keeps all three articles compact and readable',
                 documentWidth:document.documentElement.scrollWidth
             }
         })
-        expect(metrics.sectionTitle.font).toBeGreaterThanOrEqual(28)
-        expect(metrics.sectionTitle.font).toBeLessThanOrEqual(32)
+        expect(metrics.sectionTitle.font).toBeGreaterThanOrEqual(25)
+        expect(metrics.sectionTitle.font).toBeLessThanOrEqual(27)
         expect(metrics.timelineHeading.font).toBeLessThanOrEqual(31)
         expect(metrics.timelineTitle.font).toBeLessThanOrEqual(19)
         expect(metrics.timelineBody.font).toBeGreaterThanOrEqual(14.5)
@@ -497,8 +519,8 @@ test('Software desktop density compacts project cards and testimonials without s
         })
 
         expect(metrics.project.height).toBeLessThan(320)
-        expect(metrics.portfolioHeading.font).toBeGreaterThanOrEqual(21)
-        expect(metrics.portfolioHeading.font).toBeLessThanOrEqual(24)
+        expect(metrics.portfolioHeading.font).toBeGreaterThanOrEqual(24)
+        expect(metrics.portfolioHeading.font).toBeLessThanOrEqual(27)
         expect(metrics.projectTitle.font).toBeGreaterThanOrEqual(18)
         expect(metrics.projectTitle.font).toBeLessThanOrEqual(21)
         expect(metrics.projectCategory.font).toBeLessThanOrEqual(15)
@@ -544,7 +566,7 @@ test('Software desktop density stays off in narrow landscape and mobile modes', 
     await page.setViewportSize({width:1440,height:2560})
     await expect(page.locator('html')).toHaveAttribute('data-layout','mobile')
     await expect(page.locator('#article-1-section-my-software .article-portfolio-item').first()).toBeVisible()
-    expect(await page.locator('#article-1-section-my-software > h4.article-title').evaluate(el=>parseFloat(getComputedStyle(el).fontSize))).toBeLessThanOrEqual(24)
+    expect(await page.locator('#article-1-section-my-software > h4.article-title').evaluate(el=>parseFloat(getComputedStyle(el).fontSize))).toBeLessThanOrEqual(27)
     await expect(page.locator('#article-2-section-my-software .article-testimonials-item-balloon').first()).toBeVisible()
 })
 
@@ -1035,7 +1057,7 @@ test('Art desktop density compacts timelines, WebArt, stack cards, and SecretPea
         })
 
         expect(metrics.articleTitle.font).toBeGreaterThanOrEqual(20)
-        expect(metrics.articleTitle.font).toBeLessThanOrEqual(23)
+        expect(metrics.articleTitle.font).toBeLessThanOrEqual(27)
         expect(metrics.photoCard.height).toBeLessThan(190)
         expect(metrics.photoAvatar.width).toBeGreaterThanOrEqual(115)
         expect(metrics.photoAvatar.width).toBeLessThanOrEqual(150)

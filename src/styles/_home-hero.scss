@@ -15,10 +15,10 @@ html[data-layout] section#section-about {
             text-shadow: none;
         }
         h2.section-header-title {
-            font-size: clamp(1.5rem, 1.1rem + 2cqi, 2.5rem) !important;
-            line-height: 1.18;
-            font-weight: 750;
-            letter-spacing: -0.025em;
+            font-size: var(--section-title-size) !important;
+            line-height: 1.12;
+            font-weight: 800;
+            letter-spacing: var(--section-title-tracking);
             max-width: 34ch;
             margin: 0;
             padding: 0;
@@ -373,8 +373,8 @@ html:is([data-layout="normal"], [data-layout="ultrawide"]) section#section-about
     header.section-header.section-header-home {
         margin: .35rem auto .55rem;
         h2.section-header-title {
-            font-size: clamp(1.75rem, 1.45rem + 1.15cqi, 2rem) !important;
-            line-height: 1.14;
+            font-size: var(--section-title-size) !important;
+            line-height: 1.12;
         }
     }
 
@@ -499,7 +499,7 @@ html:is([data-layout="normal"], [data-layout="ultrawide"]) section#section-about
 
     article#article-7-section-about {
         .article-stack-items.article-stack-items-home {
-            --avatar-size: clamp(2.75rem, 3.4cqi, 3rem);
+            --avatar-size: clamp(3.5rem, 18vw, 6rem);
             --home-stack-avatar-outset: calc(var(--avatar-size) / 2);
             --home-stack-icon-reserve: calc(var(--avatar-size) / 2 + .4rem);
             --home-stack-bubble-safe-inset: calc(var(--avatar-size) / 2 + .65rem);
@@ -530,7 +530,7 @@ html:is([data-layout="normal"], [data-layout="ultrawide"]) section#section-about
             .section-header-prefix { font-size: clamp(.68rem, .64rem + .18cqi, .78rem); }
 
             h2.section-header-title {
-                font-size: clamp(1.4rem, 1.18rem + .7cqi, 1.625rem) !important;
+                font-size: var(--section-title-size) !important;
                 line-height: 1.12;
             }
         }
@@ -657,7 +657,7 @@ html:is([data-layout="normal"], [data-layout="ultrawide"]) section#section-about
 
         article#article-7-section-about {
             .article-stack-items.article-stack-items-home {
-                --avatar-size: clamp(2.15rem, 2.7cqi, 2.35rem);
+                --avatar-size: calc(5.2rem - .5rem);
                 --home-stack-avatar-outset: calc(var(--avatar-size) / 2);
                 --home-stack-icon-reserve: calc(var(--avatar-size) / 2 + .3rem);
                 --home-stack-bubble-safe-inset: calc(var(--avatar-size) / 2 + .48rem);
@@ -719,9 +719,9 @@ html[data-layout="mobile"] section#section-about {
         h2.section-header-title span { white-space: normal; }
         .section-header-prefix { font-size: clamp(.62rem, 2.4vw, .78rem); }
         h2.section-header-title {
-            font-size: clamp(1.05rem, 4.8vw, 1.55rem) !important;
+            font-size: var(--section-title-size) !important;
             line-height: 1.12;
-            letter-spacing: -.025em;
+            letter-spacing: var(--section-title-tracking);
             text-wrap: balance;
         }
     }
@@ -863,7 +863,7 @@ html[data-layout="mobile"] section#section-about {
 
     article#article-7-section-about {
         .article-stack-items.article-stack-items-home {
-            --avatar-size: clamp(2.1rem, min(11cqi, 4.2svh), 3.4rem);
+            --avatar-size: calc(5rem - .5rem);
             --home-stack-avatar-outset: calc(var(--avatar-size) / 2);
             --home-stack-icon-reserve: calc(var(--avatar-size) / 2 + .25rem);
             --home-stack-bubble-safe-inset: calc(var(--avatar-size) / 2 + .4rem);

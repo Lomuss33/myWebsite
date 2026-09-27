@@ -7,15 +7,6 @@
             line-height: 1.25;
         }
 
-        header.section-header {
-            --section-header-feature-title-size: clamp(1.7rem, 1.58rem + .52cqi, 1.9rem);
-        }
-
-        header.section-header h2.section-header-title {
-            font-size: var(--section-header-feature-title-size) !important;
-            line-height: 1.12;
-        }
-
         article#article-1-section-experience {
             ul.article-timeline-items {
                 --experience-avatar-size: clamp(7rem, 10vw, 9rem);

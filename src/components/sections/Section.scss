@@ -136,10 +136,10 @@ section#section-education header.section-header h2.section-header-title {
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
-    font-size: var(--section-header-feature-title-size)!important;
-    font-weight: 950;
-    line-height: 1.06;
-    letter-spacing: var(--section-header-title-tracking);
+    font-size: var(--section-title-size)!important;
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: var(--section-title-tracking);
     padding-bottom: 0.1em;
     text-shadow: var(--education-title-shadow);
     text-wrap: balance;
@@ -310,8 +310,8 @@ section#section-education article:is(
 
     section#section-education header.section-header h2.section-header-title {
         max-width: 620px;
-        font-size: var(--section-header-feature-title-size-md)!important;
-        line-height: 1.08;
+        font-size: var(--section-title-size)!important;
+        line-height: 1.12;
     }
 
     section#section-education header.section-header::after {
@@ -348,7 +348,7 @@ section#section-education article:is(
     }
 
     section#section-education header.section-header h2.section-header-title {
-        font-size: var(--section-header-feature-title-size-sm)!important;
+        font-size: var(--section-title-size)!important;
     }
 
     section#section-education article:is(
@@ -479,10 +479,10 @@ section#section-experience header.section-header h2.section-header-title {
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
-    font-size: var(--section-header-feature-title-size)!important;
-    font-weight: 950;
-    line-height: 1.06;
-    letter-spacing: var(--section-header-title-tracking);
+    font-size: var(--section-title-size)!important;
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: var(--section-title-tracking);
     padding-bottom: 0.1em;
     text-shadow: var(--experience-title-shadow);
     text-wrap: balance;
@@ -658,8 +658,8 @@ section#section-experience article:is(
 
     section#section-experience header.section-header h2.section-header-title {
         max-width: 620px;
-        font-size: var(--section-header-feature-title-size-md)!important;
-        line-height: 1.08;
+        font-size: var(--section-title-size)!important;
+        line-height: 1.12;
     }
 
     section#section-experience header.section-header::after {
@@ -700,7 +700,7 @@ section#section-experience article:is(
     }
 
     section#section-experience header.section-header h2.section-header-title {
-        font-size: var(--section-header-feature-title-size-sm)!important;
+        font-size: var(--section-title-size)!important;
     }
 
     section#section-experience article:is(
@@ -722,10 +722,6 @@ section#section-experience article:is(
 // all mobile heading sizes retain their own sizing contract.
 @media (min-width: 64rem) {
     html:is([data-layout="normal"], [data-layout="ultrawide"]) section#section-experience {
-        header.section-header {
-            --section-header-feature-title-size: clamp(1.7rem, 1.58rem + .52cqi, 1.9rem);
-        }
-
         article#article-1-section-experience h4.article-title {
             font-size: clamp(1.65rem, 1.52rem + .48cqi, 1.85rem) !important;
             line-height: 1.14;
@@ -807,9 +803,9 @@ section#section-my-hardware header.section-header div.section-header-prefix {
 section#section-my-hardware header.section-header h2.section-header-title {
     max-width: 980px;
     margin: 0 auto;
-    font-size: var(--section-header-feature-title-size)!important;
-    line-height: 0.98;
-    letter-spacing: var(--section-header-title-tracking);
+    font-size: var(--section-title-size)!important;
+    line-height: 1.12;
+    letter-spacing: var(--section-title-tracking);
 }
 
 @include layout-mobile {
@@ -825,8 +821,8 @@ section#section-my-hardware header.section-header h2.section-header-title {
 
     section#section-my-hardware header.section-header h2.section-header-title {
         max-width: 620px;
-        font-size: var(--section-header-feature-title-size-md)!important;
-        line-height: 1.02;
+        font-size: var(--section-title-size)!important;
+        line-height: 1.12;
     }
 }
 
@@ -836,7 +832,7 @@ section#section-my-hardware header.section-header h2.section-header-title {
     }
 
     section#section-my-hardware header.section-header h2.section-header-title {
-        font-size: var(--section-header-feature-title-size-sm)!important;
+        font-size: var(--section-title-size)!important;
     }
 }
 
@@ -900,9 +896,9 @@ section#section-my-writings header.section-header div.section-header-prefix {
 section#section-my-writings header.section-header h2.section-header-title {
     max-width: 980px;
     margin: 0 auto;
-    font-size: var(--section-header-feature-title-size)!important;
-    line-height: 0.98;
-    letter-spacing: var(--section-header-title-tracking);
+    font-size: var(--section-title-size)!important;
+    line-height: 1.12;
+    letter-spacing: var(--section-title-tracking);
 }
 
 section#section-my-writings article:is(
@@ -1129,8 +1125,8 @@ section#section-my-writings article:is(
 
     section#section-my-writings header.section-header h2.section-header-title {
         max-width: 620px;
-        font-size: var(--section-header-feature-title-size-md)!important;
-        line-height: 1.02;
+        font-size: var(--section-title-size)!important;
+        line-height: 1.12;
     }
 
     section#section-my-writings article:is(
@@ -1189,7 +1185,7 @@ section#section-my-writings article:is(
     }
 
     section#section-my-writings header.section-header h2.section-header-title {
-        font-size: var(--section-header-feature-title-size-sm)!important;
+        font-size: var(--section-title-size)!important;
     }
 
     section#section-my-writings article:is(

@@ -1,10 +1,6 @@
 @use "../../styles/extend" as *;
 
 div.nav-tab-controller-wrapper {
-    // Offset the lower stripe phase so the two horizontal edges begin on
-    // opposite colors, matching the alternating desktop rail treatment.
-    @include nav-selected-edge(bottom, 6px, 40px);
-
     position: fixed;
     z-index: $z-index-nav-tabs;
     left: 0;
@@ -23,7 +19,7 @@ div.nav-tab-controller-wrapper {
 }
 
 nav.nav-tab-controller {
-    @include nav-selected-edge(top);
+    @include nav-selected-edge(bottom, 2px, 40px);
 
     display: flex;
     container-type: inline-size;
@@ -101,6 +97,7 @@ button.nav-tab-controller-link:not(.nav-tab-controller-link-active):not(.nav-tab
             var(--theme-nav-unvisited-surface-accent) 0%,
             var(--theme-nav-unvisited-surface) 100%);
     color: var(--theme-nav-unvisited-ink);
+    @include nav-interactive-edge(var(--theme-nav-unvisited-border));
 
     i,
     span {
@@ -115,9 +112,10 @@ button.nav-tab-controller-link-visited:not(.nav-tab-controller-link-active) {
             var(--theme-nav-visited-surface-accent) 0%,
             var(--theme-nav-visited-surface) 100%);
     color: var(--theme-nav-visited-ink);
-    box-shadow:
-        inset 0 0 0 1px var(--theme-nav-visited-border),
-        inset 0 -3px 0 var(--theme-nav-visited-marker);
+    @include nav-interactive-edge(
+        var(--theme-nav-visited-marker),
+        (inset 0 0 0 1px var(--theme-nav-visited-border))
+    );
 
     i,
     span {
@@ -130,8 +128,10 @@ button.nav-tab-controller-link-visited:not(.nav-tab-controller-link-active) {
     button.nav-tab-controller-link:not(.nav-tab-controller-link-active):hover {
         background: color-mix(in srgb, var(--theme-nav-surface-raised) 72%, transparent 28%);
         color: var(--theme-nav-text);
-        box-shadow:
-            inset 0 0 0 1px color-mix(in srgb, var(--theme-primary) 18%, var(--theme-nav-divider) 82%);
+        @include nav-interactive-edge(
+            color-mix(in srgb, var(--theme-primary) 64%, var(--theme-nav-divider) 36%),
+            (inset 0 0 0 1px color-mix(in srgb, var(--theme-primary) 18%, var(--theme-nav-divider) 82%))
+        );
         transform: translateY(-1px);
 
         i {

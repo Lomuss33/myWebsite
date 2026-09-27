@@ -53,6 +53,12 @@ const imageManifest = {
         "width": 1080,
         "height": 1080
     },
+    "/images/contant/db_infrago.png": {
+        "src": "/images/__responsive/images/contant/db_infrago-w1254.webp",
+        "srcSet": "/images/__responsive/images/contant/db_infrago-w160.webp 160w, /images/__responsive/images/contant/db_infrago-w320.webp 320w, /images/__responsive/images/contant/db_infrago-w480.webp 480w, /images/__responsive/images/contant/db_infrago-w640.webp 640w, /images/__responsive/images/contant/db_infrago-w960.webp 960w, /images/__responsive/images/contant/db_infrago-w1254.webp 1254w",
+        "width": 1254,
+        "height": 1254
+    },
     "/images/contant/displayfusion.webp": {
         "src": "/images/__responsive/images/contant/displayfusion-w512.webp",
         "srcSet": "/images/__responsive/images/contant/displayfusion-w160.webp 160w, /images/__responsive/images/contant/displayfusion-w320.webp 320w, /images/__responsive/images/contant/displayfusion-w480.webp 480w, /images/__responsive/images/contant/displayfusion-w512.webp 512w",
@@ -70,6 +76,12 @@ const imageManifest = {
         "srcSet": "/images/__responsive/images/contant/edge-w160.webp 160w, /images/__responsive/images/contant/edge-w320.webp 320w, /images/__responsive/images/contant/edge-w480.webp 480w, /images/__responsive/images/contant/edge-w640.webp 640w, /images/__responsive/images/contant/edge-w960.webp 960w, /images/__responsive/images/contant/edge-w1024.webp 1024w",
         "width": 1024,
         "height": 1024
+    },
+    "/images/contant/eichendorfschule_logo.png": {
+        "src": "/images/__responsive/images/contant/eichendorfschule_logo-w1332.webp",
+        "srcSet": "/images/__responsive/images/contant/eichendorfschule_logo-w160.webp 160w, /images/__responsive/images/contant/eichendorfschule_logo-w320.webp 320w, /images/__responsive/images/contant/eichendorfschule_logo-w480.webp 480w, /images/__responsive/images/contant/eichendorfschule_logo-w640.webp 640w, /images/__responsive/images/contant/eichendorfschule_logo-w960.webp 960w, /images/__responsive/images/contant/eichendorfschule_logo-w1280.webp 1280w, /images/__responsive/images/contant/eichendorfschule_logo-w1332.webp 1332w",
+        "width": 1332,
+        "height": 1103
     },
     "/images/contant/eichendorfschule_logo.webp": {
         "src": "/images/__responsive/images/contant/eichendorfschule_logo-w28.webp",
@@ -304,6 +316,24 @@ const imageManifest = {
         "srcSet": "/images/__responsive/images/hardware/wood-products-deutschland-w160.webp 160w, /images/__responsive/images/hardware/wood-products-deutschland-w320.webp 320w, /images/__responsive/images/hardware/wood-products-deutschland-w480.webp 480w, /images/__responsive/images/hardware/wood-products-deutschland-w640.webp 640w, /images/__responsive/images/hardware/wood-products-deutschland-w960.webp 960w, /images/__responsive/images/hardware/wood-products-deutschland-w1280.webp 1280w, /images/__responsive/images/hardware/wood-products-deutschland-w1414.webp 1414w",
         "width": 1414,
         "height": 2000
+    },
+    "/images/hardware/wood-products-five-planks.webp": {
+        "src": "/images/__responsive/images/hardware/wood-products-five-planks-w1055.webp",
+        "srcSet": "/images/__responsive/images/hardware/wood-products-five-planks-w160.webp 160w, /images/__responsive/images/hardware/wood-products-five-planks-w320.webp 320w, /images/__responsive/images/hardware/wood-products-five-planks-w480.webp 480w, /images/__responsive/images/hardware/wood-products-five-planks-w640.webp 640w, /images/__responsive/images/hardware/wood-products-five-planks-w960.webp 960w, /images/__responsive/images/hardware/wood-products-five-planks-w1055.webp 1055w",
+        "width": 1055,
+        "height": 1491
+    },
+    "/images/hardware/wood-products-grain.webp": {
+        "src": "/images/__responsive/images/hardware/wood-products-grain-w141.webp",
+        "srcSet": "/images/__responsive/images/hardware/wood-products-grain-w141.webp 141w",
+        "width": 141,
+        "height": 56
+    },
+    "/images/hardware/wood-products-texture.webp": {
+        "src": "/images/__responsive/images/hardware/wood-products-texture-w141.webp",
+        "srcSet": "/images/__responsive/images/hardware/wood-products-texture-w141.webp 141w",
+        "width": 141,
+        "height": 80
     },
     "/images/private/LovroMusic2025.webp": {
         "src": "/images/__responsive/images/private/LovroMusic2025-w1717.webp",

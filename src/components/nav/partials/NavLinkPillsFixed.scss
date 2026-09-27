@@ -22,8 +22,6 @@ div.nav-link-pills-sticky-slot-static {
 }
 
 div.nav-link-pills-fixed-wrapper {
-    @include nav-selected-edge(top);
-
     position: relative;
     z-index: $z-index-nav-tabs;
     width: 100%;
@@ -47,10 +45,6 @@ div.nav-link-pills-fixed-wrapper-hidden {
 }
 
 div.nav-link-pills-placeholder {
-    // Match the two-edge construction of the button-based mobile nav: the
-    // wrapper owns the top phase and the placeholder owns the offset bottom.
-    @include nav-selected-edge(bottom, 6px, 40px);
-
     display: flex;
     align-items: center;
     justify-content: center;

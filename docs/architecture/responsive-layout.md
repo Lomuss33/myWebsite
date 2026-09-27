@@ -1,6 +1,8 @@
 # Responsive layout
 
-Verified: 2026-09-26 against resolver, navigation, timeline sizing, and Contact form sources; not exhaustive device testing.
+Verified: 2026-09-27 against resolver, shared section-heading sizing, navigation, timeline sizing, and Contact form sources; not exhaustive device testing.
+
+Mobile navigation has 2px construction-tape stripes on the exposed top of the sticky pill bar and exposed bottom of the fixed tab bar. The sticky placeholder has no tape. Unvisited, visited, and hover link hints share the `nav-interactive-edge` mixin for a consistent 3px top inset marker across both bars; active links retain the selected-button treatment.
 
 ## Mode authority
 
@@ -35,6 +37,9 @@ Home has a distinct mobile density layer in [_home-hero.scss](../../src/styles/_
 Inspect computed styles before adding rules. Component SCSS and later overrides coexist. Consolidation should preserve behavior and be a separate change. Measure actual rendered geometry at the final page width and at browser zoom levels.
 
 ## Current sizing contract
+
+Primary page titles share one bounded scale and tracking defined on [SectionContent.scss](../../src/components/sections/SectionContent.scss), where container-relative sizing follows the actual content pane. [SectionHeader.scss](../../src/components/sections/SectionHeader.scss) consumes those tokens for visible headings. Software, Hardware, Writings, and Art hide the standalone section header, so their first article heading consumes the same tokens as the page title. Page-specific gradients, prefixes, and separators remain distinct; later article headings keep their own hierarchy.
+
 
 `src/styles/_sizing.scss` owns shared responsive tokens and the coarse-pointer and large-mobile overrides. The profile component consumes `--mobile-profile-row-max`, `--mobile-profile-grid-columns`, `--mobile-profile-gutter`, and `--mobile-profile-column-gap` from `src/styles/_mobile-profile.scss`. Navigation bands consume `--nav-tabs-height` and `--nav-pills-height`; labels, icons, and gaps use `--mobile-nav-item-*` tokens, with mobile defaults in `_root-flags.scss`.
 
@@ -128,6 +133,8 @@ Experience mobile prose (2026-09-26): timeline body paragraphs and lists use con
 Experience closing story card mobile type (2026-09-26): the article title, card heading, eyebrow, draggable-story prose, axis labels, and impact tags each use a compact mobile scale; the desktop density rules remain unchanged.
 
 Education timeline framing (2026-09-26): the timeline bleed leaves a 4px allowance beyond the section inset on mobile so the avatar image circle reaches the viewport edge without clipping. Wide desktop layouts center the timeline in a bounded 64rem rail and reserve a left inset so the avatar rail has room for swirls beside the cards; cards use up to 78% of the content rail. Avatar offsets alternate with varied but capped shifts; narrow layouts align avatars to the rail. Each education entry has a fixed border color keyed to its stable data ID: Erasmus red, THM dark green, BWS metallic silver, Provadis dark blue, EDS purple, Primary School vibrant brown, and Life bright green. BWS gets a silver highlight. Each span samples compact rounded swirls with capped left/right reach and shallow vertical variation, keeping the line close to the avatar-to-avatar route. Each avatar-to-avatar span has its own user-space gradient anchored at the two avatar centers and blends only that pair's fixed colors. Expanded descriptions grow their timeline rows naturally, moving following entries down to avoid overlap; the connector is recalculated from the avatar centers and retains the same ID-based color assignments. The collapsed Show more control uses a compact pill with reduced space above it. The stroke width is half its previous size: 11px on narrow layouts and a capped 8–11px on wider layouts.
+
+Education yearly axis (2026-09-27): the timeline reserves a narrow right rail for an annual year scale whose intervals widen gently toward the newest year while keeping every year label readable. Its full range and geometry come from all Education entries regardless of collapsed/expanded state; the collapsed viewport clips lower ticks at the visible-item cutoff and Show more reveals those ticks in place. Ongoing dates use the current year. Labels sit to the left of the contrasted axis line, and the rail stays outside card text on desktop and mobile. The date mapping and labels live in `ArticleTimeline.jsx`; rail geometry and visual treatment live with the timeline in `ArticleTimeline.scss`.
 
 Wood description uses shorter localized copy, 14?16px body type, restrained heading scaling and compact spacing. Its min-content height prevents clipping and lets equal grid rows grow when narrow screens require more room. No tests run.
 

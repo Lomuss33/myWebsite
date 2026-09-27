@@ -263,7 +263,7 @@ div.nav-tools {
 @include layout-desktop {
     nav.nav-sidebar {
         div.nav-tools {
-            --nav-tools-hazard-thickness: 4px;
+            --nav-tools-hazard-thickness: 1px;
             --nav-tools-icon-box-size: var(--nav-link-icon-width, 50px);
             --nav-tools-icon-font-size: var(--nav-link-icon-size, 1.05rem);
 

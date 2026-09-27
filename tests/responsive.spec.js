@@ -458,6 +458,42 @@ test('Education desktop density compacts the timeline, certificates, and skills 
     expect(ultrawide.documentWidth).toBeLessThanOrEqual(3441)
 })
 
+test('Education cards center on the full timeline while the year rail overlays the fading edge', async ({page})=>{
+    await preferences(page)
+
+    for (const viewport of [
+        {width:280,height:653},
+        {width:390,height:844},
+        {width:1366,height:768},
+        {width:3440,height:1440}
+    ]) {
+        await page.setViewportSize(viewport)
+        await openSection(page,'education')
+
+        const geometry=await page.evaluate(()=>{
+            const article=document.querySelector('#article-1-section-education')
+            const panel=article.querySelector('.article-timeline-item-info-for-timelines')
+            const axis=article.querySelector('.article-timeline-year-axis')
+            const articleRect=article.getBoundingClientRect()
+            const panelRect=panel.getBoundingClientRect()
+            const axisRect=axis.getBoundingClientRect()
+            return {
+                centerOffset:Math.abs((panelRect.left+panelRect.width/2)-(articleRect.left+articleRect.width/2)),
+                panelRight:panelRect.right,
+                axisLeft:axisRect.left,
+                mask:getComputedStyle(panel,'::before').maskImage,
+                documentWidth:document.documentElement.scrollWidth
+            }
+        })
+
+        expect(geometry.centerOffset).toBeLessThanOrEqual(2)
+        expect(geometry.panelRight).toBeGreaterThan(geometry.axisLeft)
+        expect(geometry.mask).toContain('rgba(0, 0, 0, 0)')
+        expect(geometry.mask).toContain('0.8')
+        expect(geometry.documentWidth).toBeLessThanOrEqual(viewport.width+1)
+    }
+})
+
 test('Education desktop density stays off in narrow landscape and mobile modes', async ({page})=>{
     await preferences(page)
     await page.setViewportSize({width:568,height:320})

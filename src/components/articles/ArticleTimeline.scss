@@ -258,23 +258,25 @@ article#article-1-section-education {
         --avatar-size: 188px;
         --avatar-border-width: 4px;
         --timeline-line-width: 4px;
-        --education-card-width: min(52%, 64rem);
+        --education-card-width: min(84%, 68rem);
         --education-year-axis-width: clamp(3rem, 5vw, 4rem);
         --gap-between-avatar-and-content: clamp(18px, 1.35vw, 24px);
         --timeline-line-top-trim: clamp(18px, calc(var(--avatar-size) * 0.16), 30px);
         --timeline-line-bottom-trim: clamp(18px, calc(var(--avatar-size) * 0.16), 30px);
         box-sizing: border-box;
-        padding-inline-end: var(--education-year-axis-width);
+        // The year rail overlays the card edge, so the card is sized and
+        // centered against the whole timeline width rather than a reserved gutter.
+        padding-inline-end: 0;
 
         @include content-breakpoint-down(lg) {
             --avatar-size: 156px;
-            --education-card-width: min(72%, 46rem);
+            --education-card-width: min(90%, 54rem);
             --gap-between-avatar-and-content: 16px;
         }
 
         @include content-breakpoint-down(md) {
             --avatar-size: 140px;
-            --education-card-width: min(88%, 42rem);
+            --education-card-width: min(96%, 48rem);
             --gap-between-avatar-and-content: 12px;
         }
 
@@ -418,7 +420,7 @@ article#article-1-section-education {
         flex: 0 0 var(--education-card-width);
         width: var(--education-card-width);
         max-width: none;
-        margin-left: calc((100% - var(--education-card-width)) / 2 - var(--avatar-size)) !important;
+        margin-left: calc((100% - var(--education-card-width)) / 2 - var(--avatar-size) - var(--education-snake-inset, 0px) / 2) !important;
         position: relative;
         z-index: 1;
     }
@@ -1501,15 +1503,14 @@ article#article-1-section-education div.article-content {
     html:is([data-layout="normal"], [data-layout="ultrawide"]) {
         article#article-1-section-education {
             ul.article-timeline-items {
-                width: min(100%, 64rem);
                 margin-inline: auto;
                 overflow: visible;
                 box-sizing: border-box;
-                --education-snake-inset: clamp(6rem, 10vw, 9rem);
+                --education-snake-inset: clamp(5rem, 8vw, 7rem);
                 padding-left: var(--education-snake-inset);
                 position: relative;
-                left: clamp(-4.5rem, -5vw, -3rem);
-                --education-card-width: min(78%, 58rem);
+                width: min(100%, 77rem);
+                --education-card-width: min(calc(100% + var(--education-year-axis-width)), 74rem);
             }
 
             div.article-content {

@@ -89,11 +89,14 @@ $nav-extended-profile-collapse-max-height: 92px;
     }
 }
 
-@mixin nav-interactive-edge($color, $additional-shadows: null) {
+@mixin nav-interactive-edge($color, $edge: top, $thickness: 1px, $additional-shadows: null) {
+    $offset-x: if($edge == left, $thickness, if($edge == right, -$thickness, 0));
+    $offset-y: if($edge == top, $thickness, if($edge == bottom, -$thickness, 0));
+
     @if $additional-shadows == null {
-        box-shadow: inset 0 3px 0 $color;
+        box-shadow: inset $offset-x $offset-y 0 $color;
     } @else {
-        box-shadow: inset 0 3px 0 $color, $additional-shadows;
+        box-shadow: inset $offset-x $offset-y 0 $color, $additional-shadows;
     }
 }
 
@@ -145,7 +148,9 @@ $nav-extended-profile-collapse-max-height: 92px;
     }
 }
 
-@mixin nav-selected-button {
+@mixin nav-selected-button($edge: top) {
+    $edge-offset-y: if($edge == bottom, -1px, 1px);
+
     background:
         linear-gradient(135deg,
             var(--theme-nav-selected-surface) 0%,
@@ -153,7 +158,7 @@ $nav-extended-profile-collapse-max-height: 92px;
     user-select: none;
     pointer-events: none;
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.32),
+        inset 0 $edge-offset-y 0 rgba(255, 255, 255, 0.32),
         0 8px 20px var(--theme-nav-selected-shadow);
 
     i,

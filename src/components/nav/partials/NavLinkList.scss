@@ -2,7 +2,7 @@
 
 div.nav-link-list-shell {
     @include layout-desktop {
-        @include nav-hazard-shell-frame(4px);
+        @include nav-hazard-shell-frame(1px);
 
         &::before {
             content: none;
@@ -19,7 +19,7 @@ div.nav-link-list-shell {
     --nav-link-label-line-height: 1.18;
     --nav-link-label-padding-top: 0.08em;
     --nav-link-label-padding-bottom: 0.18em;
-    --nav-link-accent-bar-width: 4px;
+    --nav-link-accent-bar-width: 1px;
     --nav-link-accent-bar-height: 30px;
     --nav-link-accent-dot-size: 6px;
     --nav-link-accent-dot-offset-x: 10px;
@@ -202,9 +202,12 @@ button.nav-link-visited:not(.nav-link-active) {
             var(--theme-nav-visited-surface) 0%,
             var(--theme-nav-visited-surface-accent) 100%);
     color: var(--theme-nav-visited-ink);
-    box-shadow:
-        inset 0 0 0 1px var(--theme-nav-visited-border),
-        inset 4px 0 0 var(--theme-nav-visited-marker);
+    @include nav-interactive-edge(
+        var(--theme-nav-visited-marker),
+        left,
+        1px,
+        (inset 0 0 0 1px var(--theme-nav-visited-border))
+    );
 
     i,
     span {

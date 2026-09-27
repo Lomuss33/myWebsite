@@ -49,6 +49,7 @@ article#article-1-section-education div.article-timeline-item-info-for-timelines
     --card-surface-top: #0f172a;
     --card-surface-bottom: #060910;
     --card-border: #22324b;
+    --education-card-edge-color: color-mix(in srgb, var(--card-border) 88%, transparent 12%);
     --card-shadow: 0 16px 36px rgba(0, 0, 0, 0.42);
     --card-shadow-hover: 0 24px 54px rgba(78, 163, 255, 0.16);
     --card-text-strong: #f8fafc;
@@ -68,11 +69,10 @@ article#article-1-section-education div.article-timeline-item-info-for-timelines
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    border: 1px solid var(--card-border);
+    border: 1px solid transparent;
     border-radius: $standard-border-radius;
-    background:
-        linear-gradient(140deg, var(--card-surface-top), var(--card-surface-bottom));
-    box-shadow: var(--card-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    background: transparent;
+    box-shadow: none;
     transition:
         transform 180ms ease,
         border-color 180ms ease,
@@ -84,7 +84,14 @@ article#article-1-section-education div.article-timeline-item-info-for-timelines
         inset: 0;
         background:
             radial-gradient(circle at top right, rgba(78, 163, 255, 0.16) 0%, transparent 58%),
-            linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent 48%);
+            linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent 48%),
+            linear-gradient(140deg, var(--card-surface-top), var(--card-surface-bottom));
+        border-radius: inherit;
+        box-shadow:
+            inset 0 0 0 1px var(--education-card-edge-color),
+            inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 78%, rgba(0, 0, 0, 0.8) 90%, transparent 100%);
+        mask-image: linear-gradient(90deg, #000 0%, #000 78%, rgba(0, 0, 0, 0.8) 90%, transparent 100%);
         pointer-events: none;
         z-index: 0;
     }
@@ -108,8 +115,7 @@ article#article-1-section-education div.article-timeline-item-info-for-timelines
     &:hover,
     &:focus-within {
         transform: translateY(-2px);
-        border-color: color-mix(in srgb, var(--card-accent) 56%, var(--card-border) 44%);
-        box-shadow: var(--card-shadow-hover), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        --education-card-edge-color: color-mix(in srgb, var(--card-accent) 56%, var(--card-border) 44%);
     }
 }
 

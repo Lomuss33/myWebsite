@@ -192,7 +192,7 @@ nav.nav-sidebar-extended {
             right: 0;
             bottom: 0;
             left: 0;
-            height: 4px;
+            height: 1px;
             z-index: 10;
             pointer-events: none;
             background-image: repeating-linear-gradient(
@@ -210,7 +210,7 @@ nav.nav-sidebar-extended {
             top: -1px;
             right: 0;
             bottom: -1px;
-            width: 4px;
+            width: 1px;
             z-index: 10;
             pointer-events: none;
             background-image: repeating-linear-gradient(
@@ -230,7 +230,7 @@ nav.nav-sidebar-short-rail {
     --nav-short-rail-visual-density: 1;
     --nav-short-rail-profile-padding: 0px;
     --nav-short-rail-row-height: clamp(22px, 4.5svh, 64px);
-    --nav-short-rail-separator-height: 4px;
+    --nav-short-rail-separator-height: 1px;
     --nav-short-rail-tools-height: clamp(3rem, calc(100svh / 12), 8rem);
     --nav-short-rail-avatar-size: clamp(54px, 7svh, 78px);
     --nav-short-rail-status-offset: calc(4px + 6px * var(--nav-short-rail-visual-density));
@@ -238,7 +238,7 @@ nav.nav-sidebar-short-rail {
     --nav-short-rail-link-icon-width: clamp(24px, 4svh, 34px);
     --nav-short-rail-link-icon-size: clamp(1.2rem, 2.2svh, 1.55rem);
     --nav-short-rail-link-padding-inline: calc(0px + 3px * var(--nav-short-rail-visual-density));
-    --nav-short-rail-link-accent-bar-width: calc(2px + 2px * var(--nav-short-rail-visual-density));
+    --nav-short-rail-link-accent-bar-width: 1px;
     --nav-short-rail-link-accent-bar-height: clamp(16px, calc(var(--nav-short-rail-row-height) * 0.42), 36px);
     --nav-short-rail-link-accent-dot-size: calc(2px + 3px * var(--nav-short-rail-visual-density));
     --nav-short-rail-link-accent-dot-offset-x: calc(4px + 4px * var(--nav-short-rail-visual-density));
@@ -360,8 +360,8 @@ nav.nav-sidebar.nav-sidebar-short-rail-with-resume-band {
 }
 
 nav.nav-sidebar div.nav-short-rail-resume-band {
-    --nav-short-rail-resume-divider-offset: 2px;
-    --nav-short-rail-resume-divider-height: 4px;
+    --nav-short-rail-resume-divider-offset: 1px;
+    --nav-short-rail-resume-divider-height: 1px;
 
     flex: 0 0 var(--nav-short-rail-resume-height);
     width: 100%;
@@ -551,7 +551,7 @@ nav.nav-sidebar div.nav-short-rail-resume-band::after {
 }
 
 div.nav-sidebar-rail-stack {
-    --nav-rail-separator-height: 4px;
+    --nav-rail-separator-height: 1px;
     --nav-rail-control-divider: color-mix(in srgb, var(--theme-nav-divider) 72%, var(--theme-nav-text) 28%);
     --nav-rail-control-divider-highlight: color-mix(in srgb, white 42%, transparent 58%);
 
@@ -598,7 +598,7 @@ div.nav-sidebar-rail-stack {
 
 @include layout-desktop {
     div.nav-sidebar-rail-stack {
-        @include nav-hazard-shell-frame(4px);
+        @include nav-hazard-shell-frame(1px);
 
         &::before {
             content: none;

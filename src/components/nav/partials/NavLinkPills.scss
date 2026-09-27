@@ -215,6 +215,8 @@ button.nav-link-pills-link:not(.nav-link-pills-link-active):not(.nav-link-pills-
     color: var(--theme-nav-unvisited-ink);
     @include nav-interactive-edge(
         var(--theme-nav-unvisited-border),
+        bottom,
+        1px,
         (inset 0 0 0 1px var(--theme-nav-unvisited-border))
     );
 
@@ -233,6 +235,8 @@ button.nav-link-pills-link-visited:not(.nav-link-pills-link-active) {
     color: var(--theme-nav-visited-ink);
     @include nav-interactive-edge(
         var(--theme-nav-visited-marker),
+        bottom,
+        1px,
         (inset 0 0 0 1px var(--theme-nav-visited-border))
     );
 
@@ -252,6 +256,8 @@ button.nav-link-pills-link-visited:not(.nav-link-pills-link-active) {
         color: var(--theme-nav-text);
         @include nav-interactive-edge(
             color-mix(in srgb, var(--theme-primary) 64%, var(--theme-nav-divider) 36%),
+            bottom,
+            1px,
             (
                 inset 0 0 0 1px color-mix(in srgb, var(--theme-primary) 18%, var(--theme-nav-divider) 82%),
                 0 8px 16px rgba(15, 23, 42, 0.05)
@@ -270,7 +276,7 @@ button.nav-link-pills-link-visited:not(.nav-link-pills-link-active) {
 }
 
 button.nav-link-pills-link-active {
-    @include nav-selected-button;
+    @include nav-selected-button(bottom);
 }
 
 button.nav-link-pills-link:focus-visible {

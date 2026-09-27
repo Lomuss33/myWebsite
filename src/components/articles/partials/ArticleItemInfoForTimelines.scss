@@ -3366,3 +3366,24 @@ article#article-1-section-education li.article-timeline-item div.article-timelin
 [data-theme="dark"] article#article-1-section-education div.article-timeline-item-info-for-timelines-education-meta-row .prop-list-separator {
     opacity: 1;
 }
+
+// Education titles share the card's complete text measure. Avoid the inherited
+// flex basis/fit-content sizing so short and long localized titles align alike.
+article#article-1-section-education div.article-timeline-item-info-for-timelines-header-main {
+    display: block;
+    width: 100%;
+    min-width: 0;
+
+    h5 {
+        display: block;
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        flex: none;
+        text-align: center;
+        text-wrap: balance;
+        overflow-wrap: anywhere;
+        hyphens: auto;
+    }
+}

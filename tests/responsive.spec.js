@@ -575,6 +575,34 @@ test('Education cards center on the full timeline while the year rail overlays t
     }
 })
 
+test('Education titles use a consistent full-width text box in every viewport', async ({page})=>{
+    await preferences(page,'hr')
+
+    for (const viewport of [
+        {width:280,height:653},
+        {width:390,height:844},
+        {width:768,height:1024},
+        {width:1366,height:768},
+        {width:3440,height:1440}
+    ]) {
+        await page.setViewportSize(viewport)
+        await openSection(page,'education')
+
+        const title=page.locator('#article-1-section-education li[data-education-item-id="2"] .article-timeline-item-info-for-timelines-header-main h5')
+        await expect(title).toHaveText('Inženjerska informatika')
+        const box=await title.evaluate(element=>({
+            width:element.getBoundingClientRect().width,
+            parentWidth:element.parentElement.getBoundingClientRect().width,
+            clientWidth:element.clientWidth,
+            scrollWidth:element.scrollWidth,
+            alignment:getComputedStyle(element).textAlign
+        }))
+        expect(Math.abs(box.width-box.parentWidth),`${viewport.width}px title fills its header`).toBeLessThanOrEqual(1)
+        expect(box.scrollWidth,`${viewport.width}px title text fits its box`).toBeLessThanOrEqual(box.clientWidth+1)
+        expect(box.alignment).toBe('center')
+    }
+})
+
 test('Education avatar links open in a separate tab on click', async ({page,context})=>{
     await preferences(page)
     await page.setViewportSize({width:390,height:844})

@@ -1687,12 +1687,12 @@ section.section > button.section-fullscreen-control {
     display: grid;
     place-items: center;
     box-sizing: border-box;
-    width: 12px;
-    height: 12px;
-    min-width: 12px;
-    max-width: 12px;
-    min-height: 12px;
-    max-height: 12px;
+    width: var(--section-scrollbar-cap-size);
+    height: var(--section-scrollbar-cap-size);
+    min-width: var(--section-scrollbar-cap-size);
+    max-width: var(--section-scrollbar-cap-size);
+    min-height: var(--section-scrollbar-cap-size);
+    max-height: var(--section-scrollbar-cap-size);
     margin: 0;
     padding: 0;
     border: 0;
@@ -1700,16 +1700,20 @@ section.section > button.section-fullscreen-control {
     appearance: none;
     background: var(--theme-scrollbar-track);
     color: var(--theme-scrollbar-thumb);
-    font-size: 6px;
+    font-size: 7px;
     line-height: 1;
     cursor: pointer;
 
     i {
         display: block;
-        font-size: 6px;
+        font-size: 7px;
         line-height: 1;
         pointer-events: none;
     }
+}
+
+section.section {
+    --section-scrollbar-cap-size: 14px;
 }
 
 section.section > button.section-fullscreen-control:focus-visible {
@@ -1720,7 +1724,16 @@ section.section > button.section-fullscreen-control:focus-visible {
 @include layout-desktop {
     section.section > .section-scrollable-with-fullscreen-cap {
         box-sizing: border-box;
-        padding-top: 12px;
+        padding-top: var(--section-scrollbar-cap-size);
+    }
+
+    section.section > .section-scrollable-with-fullscreen-cap .scrollable::-webkit-scrollbar {
+        width: var(--section-scrollbar-cap-size);
+    }
+
+    section.section > .section-scrollable-with-fullscreen-cap .scrollable-with-plugin {
+        --scrollbar-track-width: var(--section-scrollbar-cap-size);
+        --scrollbar-thumb-width: var(--section-scrollbar-cap-size);
     }
 }
 

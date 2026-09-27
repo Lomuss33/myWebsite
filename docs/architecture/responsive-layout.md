@@ -146,7 +146,7 @@ Web Art surface: at all widths, content bleeds through the inherited section gut
 
 The Web Art intro guide switches to compact container-based typography below 640px: eyebrow 11â€“13px, body 13â€“15px, primary copy 15â€“17px, and 46px minimum button rows. Padding and line gaps reduce with it; desktop guide typography is unchanged.
 
-The section fullscreen toggle is a dedicated 12px square control at the upper-right edge, with no shared circular-button styles. Desktop section scroll areas reserve the matching 12px slot only when the control is rendered, so the scrollbar starts directly below it. The toggle stays on the right.
+The section fullscreen toggle is a dedicated 14px square control at the upper-right edge, with no shared circular-button styles. Desktop section scroll areas reserve a matching 14px slot and set the visible scrollbar to 14px when the control is rendered, so the scrollbar starts directly below it. The toggle stays on the right.
 
 Large touch displays (90rem and wider) keep mobile interaction controls but remove phone/tablet width caps. Profile rows, both navigation bands, and section content use the full viewport with fluid gutters. Source-only update; no tests run.
 

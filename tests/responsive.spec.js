@@ -554,11 +554,17 @@ test('Education cards center on the full timeline while the year rail overlays t
         await clickCardEdge()
         await expect(expandButton).toHaveAttribute('aria-expanded','true')
         await assertExpandButtonPlacement()
-        const avatarOffsetAfterExpansion=await firstAvatar.evaluate(avatar=>{
+        const expandedAvatarGeometry=await firstAvatar.evaluate(avatar=>{
             const itemRect=avatar.closest('.article-timeline-item').getBoundingClientRect()
-            return avatar.getBoundingClientRect().top-itemRect.top
+            return {
+                topOffset:avatar.getBoundingClientRect().top-itemRect.top,
+                computedTop:getComputedStyle(avatar).top,
+                transform:getComputedStyle(avatar).transform,
+                itemClass:avatar.closest('.article-timeline-item').className
+            }
         })
-        expect(avatarOffsetAfterExpansion).toBeLessThan(avatarOffsetBeforeExpansion)
+        expect(expandedAvatarGeometry.topOffset).toBeLessThan(avatarOffsetBeforeExpansion)
+        expect(expandedAvatarGeometry.topOffset,`${viewport.width}px: ${JSON.stringify(expandedAvatarGeometry)}`).toBeGreaterThanOrEqual(0)
         const listStyles=await firstCard.locator('.article-timeline-item-info-for-timelines-body-list').evaluate(list=>({
             listStyle:getComputedStyle(list).listStyleType,
             alignment:getComputedStyle(list.firstElementChild).textAlign
@@ -600,6 +606,168 @@ test('Education titles use a consistent full-width text box in every viewport', 
         expect(Math.abs(box.width-box.parentWidth),`${viewport.width}px title fills its header`).toBeLessThanOrEqual(1)
         expect(box.scrollWidth,`${viewport.width}px title text fits its box`).toBeLessThanOrEqual(box.clientWidth+1)
         expect(box.alignment).toBe('center')
+    }
+})
+
+test('Education language labels use the requested CEFR levels', async ({page})=>{
+    await preferences(page,'hr')
+
+    for(const viewport of [
+        {width:280,height:653},
+        {width:390,height:844},
+        {width:768,height:1024},
+        {width:1366,height:768},
+        {width:3440,height:1440}
+    ]) {
+        await page.setViewportSize(viewport)
+        await openSection(page,'education')
+
+        const ratings=await page.locator('#article-3-section-education .article-skills-item-title-rating').evaluateAll(items=>
+            items.map(rating=>{
+                const card=rating.closest('.article-skills-item-info')
+                const info=rating.closest('.article-skills-item-info-education-language')
+                const title=card.querySelector('.article-skills-item-title-main')
+                const rank=rating.querySelector('.article-skills-item-title-suffix')
+                const separator=rating.querySelector('.article-skills-item-title-rating-separator')
+                const percentage=rating.querySelector('.article-skills-item-title-rating-percentage')
+                const titleRect=title.getBoundingClientRect()
+                const ratingRect=rating.getBoundingClientRect()
+                const rankRect=rank.getBoundingClientRect()
+                const separatorRect=separator.getBoundingClientRect()
+                const percentageRect=percentage.getBoundingClientRect()
+                return {
+                    language:card.querySelector('.article-skills-item-title-main').textContent.trim(),
+                    rank:rank.textContent.trim(),
+                    width:rating.getBoundingClientRect().width,
+                    cardWidth:card.getBoundingClientRect().width,
+                    infoWidth:info.clientWidth,
+                    titleRight:titleRect.right,
+                    titleBottom:titleRect.bottom,
+                    ratingLeft:ratingRect.left,
+                    ratingTop:ratingRect.top,
+                    rankRight:rankRect.right,
+                    separatorLeft:separatorRect.left,
+                    separatorRight:separatorRect.right,
+                    separatorWidth:separatorRect.width,
+                    separatorHeight:separatorRect.height,
+                    percentageLeft:percentageRect.left,
+                    percentageWidth:percentageRect.width
+                }
+            })
+        )
+
+        expect(ratings).toHaveLength(6)
+        expect(Object.fromEntries(ratings.map(({language,rank})=>[language,rank]))).toMatchObject({
+            Hrvatski:'C2',
+            Engleski:'C2',
+            Njemački:'C2',
+            Makedonski:'A2',
+            Turski:'A2',
+            'Kineski (mandarinski)':'A1'
+        })
+        for(const rating of ratings) {
+            expect(rating.width,`${viewport.width}px: rating fits its card`).toBeLessThan(rating.cardWidth)
+            expect(rating.separatorWidth).toBe(1)
+            expect(rating.separatorHeight).toBeGreaterThan(0)
+            expect(rating.separatorLeft).toBeGreaterThanOrEqual(rating.rankRight)
+            expect(rating.percentageLeft).toBeGreaterThan(rating.separatorRight)
+            expect(rating.percentageWidth).toBeGreaterThan(0)
+            if(rating.infoWidth<=256) {
+                expect(rating.ratingTop,`${viewport.width}px: compact title stacks its rating`).toBeGreaterThanOrEqual(rating.titleBottom)
+            } else {
+                expect(rating.titleRight,`${viewport.width}px: title leaves room for its rating`).toBeLessThanOrEqual(rating.ratingLeft+1)
+            }
+        }
+        expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(viewport.width+1)
+    }
+})
+
+test('Education language ratings keep strong contrast in light mode', async ({page})=>{
+    await preferences(page,'hr','light')
+    await page.setViewportSize({width:390,height:844})
+    await openSection(page,'education')
+
+    const rating=page.locator('#article-3-section-education .article-skills-item-title-rating').first()
+    const styles=await rating.evaluate(element=>({
+        rankColor:getComputedStyle(element.querySelector('.article-skills-item-title-suffix')).color,
+        percentageColor:getComputedStyle(element.querySelector('.article-skills-item-title-rating-percentage')).color,
+        percentageTextShadow:getComputedStyle(element.querySelector('.article-skills-item-title-rating-percentage')).textShadow,
+        separatorColor:getComputedStyle(element.querySelector('.article-skills-item-title-rating-separator')).backgroundColor
+    }))
+    expect(styles.rankColor).toBe('rgb(146, 64, 14)')
+    expect(styles.percentageColor).toBe('rgb(51, 65, 85)')
+    expect(styles.percentageTextShadow).toBe('none')
+    expect(styles.separatorColor).toBe('rgba(51, 65, 85, 0.48)')
+})
+
+test('Education language cards use a balanced frame and readable phrase rows in both themes', async ({page})=>{
+    for(const theme of ['dark','light']) {
+        const themePage=theme==='dark'?page:await page.context().newPage()
+        await preferences(themePage,'hr',theme)
+        await themePage.setViewportSize({width:390,height:844})
+        await openSection(themePage,'education')
+
+        const card=themePage.locator('#article-3-section-education .article-skills-item-education-language').first()
+        const frame=await card.evaluate(element=>({
+            width:element.getBoundingClientRect().width,
+            decorationWidth:parseFloat(getComputedStyle(element,'::after').width),
+            decorationLeft:getComputedStyle(element,'::after').left
+        }))
+        expect(frame.decorationWidth,`${theme} language card has a full-width frame`).toBeGreaterThanOrEqual(frame.width-2)
+        expect(frame.decorationLeft).toBe('0px')
+
+        await card.locator('.article-skills-item-popup-trigger').click()
+        const popup=card.locator('.article-skills-item-popup-body-inner')
+        await expect(popup).toBeVisible()
+        const rows=await card.locator('.article-skills-item-popup-row').evaluateAll(elements=>elements.map(element=>({
+            text:element.textContent.trim(),
+            color:getComputedStyle(element).color,
+            background:getComputedStyle(element).backgroundImage,
+            radius:getComputedStyle(element).borderRadius,
+            separator:getComputedStyle(element).borderBottomStyle,
+            shadow:getComputedStyle(element).textShadow,
+            height:element.getBoundingClientRect().height
+        })))
+        expect(rows.length).toBeGreaterThan(1)
+        expect(rows.every((row,index)=>row.text && row.height>0 && row.background==='none' && row.radius==='0px' && row.separator===(index===rows.length-1?'none':'solid') && row.shadow==='none')).toBeTruthy()
+        expect(rows.every(row=>row.color===(theme==='light'?'rgb(23, 36, 58)':'rgb(236, 244, 255)')),JSON.stringify({theme,rows})).toBeTruthy()
+
+        if(themePage!==page)
+            await themePage.close()
+    }
+})
+
+test('Education language phrase popups expand in flow and push later cards down', async ({page})=>{
+    await preferences(page,'hr')
+
+    for(const [width,height] of [[390,844],[1366,768]]) {
+        await page.setViewportSize({width,height})
+        await openSection(page,'education')
+
+        const firstCard=page.locator('#article-3-section-education .article-skills-column').first().locator('.article-skills-item-education-language').first()
+        const nextCard=firstCard.locator('xpath=following-sibling::*[1]')
+        await expect(firstCard).toBeVisible()
+        await expect(nextCard).toBeVisible()
+        const [firstBefore,nextBefore]=await Promise.all([firstCard.boundingBox(),nextCard.boundingBox()])
+
+        const trigger=firstCard.locator('.article-skills-item-popup-trigger')
+        if(width>=576)
+            await trigger.hover()
+        else
+            await trigger.click()
+        await expect(firstCard.locator('.article-skills-item-popup-body')).toBeVisible()
+        const allRowsFit=await firstCard.locator('.article-skills-item-popup-body-inner').evaluate(inner=>{
+            const bounds=inner.getBoundingClientRect()
+            return [...inner.querySelectorAll('.article-skills-item-popup-row')].every(row=>{
+                const rowBounds=row.getBoundingClientRect()
+                return rowBounds.top>=bounds.top-1 && rowBounds.bottom<=bounds.bottom+1
+            })
+        })
+        const [firstAfter,nextAfter]=await Promise.all([firstCard.boundingBox(),nextCard.boundingBox()])
+        expect(allRowsFit,`${width}px: every phrase is visible inside the expanded popup`).toBe(true)
+        expect(nextAfter.y-firstAfter.y,`${width}px: next card starts after expanded card`).toBeGreaterThanOrEqual(firstAfter.height-1)
+        if(firstAfter.height>firstBefore.height+12)
+            expect(nextAfter.y-firstAfter.y,`${width}px: following card moves down to make room`).toBeGreaterThan(nextBefore.y-firstBefore.y+12)
     }
 })
 
@@ -659,12 +827,16 @@ test('Education connector stays visible through card surfaces in both themes', a
     await page.setViewportSize({width:390,height:844})
 
     for(const theme of ['dark','light']) {
-        await preferences(page,'en',theme)
+        await page.goto('/#about')
+        await page.evaluate(theme=>localStorage.setItem('storage-preferences',JSON.stringify({preferredLanguage:'en',preferredTheme:theme,preferredCursorMode:'system'})),theme)
+        await page.reload()
         await openSection(page,'education')
+        await expect(page.locator('html')).toHaveAttribute('data-theme',theme)
         const card=page.locator('#article-1-section-education .article-timeline-item-info-for-timelines').first()
         await card.hover()
 
         const layers=await page.locator('#article-1-section-education').evaluate(article=>({
+            theme:document.documentElement.dataset.theme,
             connector:getComputedStyle(article.querySelector('.article-timeline-education-snake')).zIndex,
             card:getComputedStyle(article.querySelector('.article-timeline-item-content')).zIndex,
             cardSurfaceOwner:getComputedStyle(article.querySelector('.article-timeline-item-info-for-timelines')).zIndex,
@@ -675,6 +847,14 @@ test('Education connector stays visible through card surfaces in both themes', a
             yearTick:getComputedStyle(article.querySelector('.article-timeline-year-axis-tick')).zIndex,
             metaPillSurface:getComputedStyle(article.querySelector('.article-timeline-item-info-for-timelines-education-meta-row'),'::before').backgroundColor,
             detailPillSurface:getComputedStyle(article.querySelector('.article-timeline-item-info-for-timelines-body-list-item'),'::before').backgroundColor,
+            schoolFactPillSurfaces:[4,5].map(id=>{
+                const text=article.querySelector(`li[data-education-item-id="${id}"] .article-timeline-item-info-for-timelines-body-text`)
+                return getComputedStyle(text,'::before').backgroundColor
+            }),
+            cardSurface:getComputedStyle(article.querySelector('.article-timeline-item-info-for-timelines'),'::before').backgroundImage,
+            cardSurfaceShadow:getComputedStyle(article.querySelector('.article-timeline-item-info-for-timelines'),'::before').boxShadow,
+            connectorOpacity:getComputedStyle(article.querySelector('.article-timeline-education-snake path')).opacity,
+            connectorFilter:getComputedStyle(article.querySelector('.article-timeline-education-snake path')).filter,
             transform:getComputedStyle(article.querySelector('.article-timeline-item-info-for-timelines')).transform,
             item:getComputedStyle(article.querySelector('.article-timeline-item')).zIndex,
             avatar:getComputedStyle(article.querySelector('.article-timeline-item-avatar-wrapper')).zIndex
@@ -689,6 +869,19 @@ test('Education connector stays visible through card surfaces in both themes', a
         expect(Number(layers.yearTick)).toBeGreaterThan(Number(layers.cardSurfaceOwner))
         expect(layers.metaPillSurface).not.toBe('rgba(0, 0, 0, 0)')
         expect(layers.detailPillSurface).not.toBe('rgba(0, 0, 0, 0)')
+        expect(layers.cardSurface).toBe('none')
+        expect(layers.cardSurfaceShadow).toBe('none')
+        if(theme==='light') {
+            expect(layers.connectorOpacity,JSON.stringify(layers)).toBe('0.48')
+            expect(layers.connectorFilter).toBe('none')
+            expect(layers.metaPillSurface).toBe('rgba(255, 255, 255, 0.82)')
+            expect(layers.detailPillSurface).toBe('rgba(255, 255, 255, 0.7)')
+            expect(layers.schoolFactPillSurfaces).toEqual(['rgba(255, 255, 255, 0.7)','rgba(255, 255, 255, 0.7)'])
+        } else {
+            expect(layers.metaPillSurface).toBe('rgba(8, 15, 29, 0.82)')
+            expect(layers.detailPillSurface).toBe('rgba(8, 15, 29, 0.7)')
+            expect(layers.schoolFactPillSurfaces).toEqual(['rgba(8, 15, 29, 0.7)','rgba(8, 15, 29, 0.7)'])
+        }
         expect(layers.transform).toBe('none')
         expect(layers.item).toBe('auto')
         expect(Number(layers.avatar)).toBeGreaterThan(Number(layers.connector))
@@ -698,6 +891,55 @@ test('Education connector stays visible through card surfaces in both themes', a
         .locator('.article-timeline-item-info-for-timelines-body-text')
         .evaluateAll(elements=>elements.map(element=>getComputedStyle(element).textAlign))
     expect(schoolFactAlignments).toEqual(['center','center'])
+})
+
+test('Education hover motion stays restrained and stops for reduced motion', async ({page})=>{
+    await page.setViewportSize({width:1280,height:900})
+    await page.emulateMedia({reducedMotion:'no-preference'})
+    await preferences(page,'en','dark')
+    await openSection(page,'education')
+
+    const timelineCard=page.locator('#article-1-section-education .article-timeline-item-info-for-timelines').first()
+    await timelineCard.hover()
+    expect(await timelineCard.evaluate(element=>getComputedStyle(element).transform)).toBe('none')
+
+    const showMore=page.locator('#article-1-section-education button.article-timeline-see-more-button').first()
+    if(await showMore.isVisible()) {
+        await showMore.hover()
+        await page.waitForTimeout(200)
+        const transform=await showMore.evaluate(element=>getComputedStyle(element).transform)
+        expect(transform).toMatch(/matrix\(1, 0, 0, 1, 0, -1\)/)
+    }
+
+    const skillCard=page.locator('article.article-skills-article-3-section-education .article-skills-item').first()
+    await skillCard.hover()
+    await page.waitForTimeout(200)
+    expect(await skillCard.evaluate(element=>getComputedStyle(element).transform)).toMatch(/matrix\(1, 0, 0, 1, 0, -1\)/)
+
+    const certification=page.locator('#article-2-section-education .article-cards-item-education-certification').first()
+    await certification.hover()
+    await page.waitForTimeout(200)
+    expect(await certification.evaluate(element=>getComputedStyle(element).transform)).toMatch(/matrix\(1, 0, 0, 1, 0, -1\)/)
+
+    await preferences(page,'en','light')
+    await openSection(page,'education')
+    const lightCertification=page.locator('#article-2-section-education .article-cards-item-education-certification').first()
+    await lightCertification.hover()
+    await page.waitForTimeout(200)
+    expect(await lightCertification.evaluate(element=>getComputedStyle(element).transform)).toMatch(/matrix\(1, 0, 0, 1, 0, -1\)/)
+
+    await page.emulateMedia({reducedMotion:'reduce'})
+    await timelineCard.hover()
+    expect(await timelineCard.evaluate(element=>getComputedStyle(element).transitionDuration)).toBe('0s')
+    await skillCard.hover()
+    expect(await skillCard.evaluate(element=>getComputedStyle(element).transitionDuration)).toBe('0s')
+    await certification.hover()
+    expect(await certification.evaluate(element=>getComputedStyle(element).transitionDuration)).toBe('0s')
+    if(await showMore.isVisible()) {
+        await showMore.hover()
+        expect(await showMore.evaluate(element=>getComputedStyle(element).transitionDuration)).toBe('0s')
+        expect(await showMore.evaluate(element=>getComputedStyle(element).transform)).toBe('none')
+    }
 })
 
 test('Education card copy is pure black in light mode over transparent surfaces', async ({page})=>{
@@ -722,7 +964,7 @@ test('Education card copy is pure black in light mode over transparent surfaces'
     expect(certificationShadows.length).toBeGreaterThan(0)
     expect(certificationShadows.every(shadow=>shadow.includes('2px'))).toBeTruthy()
 
-    const skillShadows=await page.locator('#article-3-section-education .article-skills-item-info *').evaluateAll(elements=>elements.map(element=>getComputedStyle(element).textShadow))
+    const skillShadows=await page.locator('#article-3-section-education .article-skills-item-info .article-skills-item-title-main, #article-3-section-education .article-skills-item-info .article-skills-item-experience, #article-3-section-education .article-skills-item-info .article-skills-item-description').evaluateAll(elements=>elements.map(element=>getComputedStyle(element).textShadow))
     expect(skillShadows.length).toBeGreaterThan(0)
     expect(skillShadows.every(shadow=>shadow.includes('2px'))).toBeTruthy()
 })
@@ -749,9 +991,49 @@ test('Education card copy is pure white in dark mode over transparent surfaces',
     expect(certificationShadows.length).toBeGreaterThan(0)
     expect(certificationShadows.every(shadow=>shadow.includes('2px'))).toBeTruthy()
 
-    const skillShadows=await page.locator('#article-3-section-education .article-skills-item-info *').evaluateAll(elements=>elements.map(element=>getComputedStyle(element).textShadow))
+    const skillShadows=await page.locator('#article-3-section-education .article-skills-item-info .article-skills-item-title-main, #article-3-section-education .article-skills-item-info .article-skills-item-experience, #article-3-section-education .article-skills-item-info .article-skills-item-description').evaluateAll(elements=>elements.map(element=>getComputedStyle(element).textShadow))
     expect(skillShadows.length).toBeGreaterThan(0)
     expect(skillShadows.every(shadow=>shadow.includes('2px'))).toBeTruthy()
+})
+
+test('Portfolio project actions stay left and visit links stay right at every layout width', async ({page})=>{
+    await preferences(page)
+
+    for(const section of ['my-software','my-hardware']) {
+        await page.setViewportSize({width:390,height:844})
+        await openSection(page,section)
+
+        const article=page.locator(`#article-1-section-${section}`)
+        const card=article.locator('.article-portfolio-item:has(.article-portfolio-item-control-btn-visit)').first()
+        await expect(card).toBeVisible()
+
+        for(const [width,height] of [[280,653],[390,844],[568,320],[1366,768],[3440,1440]]) {
+            await page.setViewportSize({width,height})
+            const positions=await card.locator('.article-portfolio-item-controls').evaluate(controls=>{
+                const box=element=>{
+                    const {left,right}=element.getBoundingClientRect()
+                    return {left,right}
+                }
+                const actions=controls.querySelector('.article-portfolio-item-actions')
+                const visitDock=controls.querySelector('.article-portfolio-item-visit-dock')
+                const visit=visitDock.querySelector('.article-portfolio-item-control-btn-visit')
+                return {
+                    controls:box(controls),
+                    actions:actions?box(actions):null,
+                    visitDock:box(visitDock),
+                    visit:box(visit),
+                    visitDockAlignment:getComputedStyle(visitDock).justifyContent
+                }
+            })
+
+            expect(positions.visitDockAlignment,`${section} ${width}x${height} visit dock`).toBe('flex-end')
+            if(positions.actions) {
+                expect(positions.actions.left,`${section} ${width}x${height} action group`).toBeGreaterThanOrEqual(positions.controls.left-1)
+                expect(positions.actions.left,`${section} ${width}x${height} action group`).toBeLessThan(positions.visit.left)
+            }
+            expect(Math.abs(positions.visit.right-positions.visitDock.right),`${section} ${width}x${height} visit link`).toBeLessThanOrEqual(1)
+        }
+    }
 })
 
 test('Software desktop density compacts project cards and testimonials without shrinking actions', async ({page})=>{
@@ -1484,6 +1766,49 @@ test('Contact desktop density stays off in narrow landscape and mobile layouts',
         await expect(page.locator('#article-4-section-contact .article-complaint-form-select-trigger')).toBeVisible()
         expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(width+1)
         expect(await page.locator('#article-2-section-contact textarea.form-textarea').evaluate(element=>getComputedStyle(element).getPropertyValue('--textarea-min-height').trim())).toBe('')
+    }
+})
+
+test('Contact location comparison stays compact and symmetrical across narrow and tablet widths', async ({page})=>{
+    await preferences(page)
+
+    for(const [width,height] of [[320,700],[390,844],[768,1024]]) {
+        await page.setViewportSize({width,height})
+        await openSection(page,'contact')
+        const map=page.locator('#article-3-section-contact')
+        const metrics=await map.evaluate(root=>{
+            const rect=selector=>{
+                const {width,height}=root.querySelector(selector).getBoundingClientRect()
+                return {width,height}
+            }
+            return {
+                toolbar:rect('.location-compare-toolbar'),
+                intro:rect('.location-compare-intro'),
+                narrativeSpanDisplay:getComputedStyle(root.querySelector('.location-compare-pretext > span')).display,
+                presets:[...root.querySelectorAll('.location-compare-preset')].map(element=>({
+                    height:element.getBoundingClientRect().height,
+                    top:element.getBoundingClientRect().top
+                })),
+                actions:[...root.querySelectorAll('.location-compare-actions button')].map(element=>element.getBoundingClientRect().height),
+                maps:[...root.querySelectorAll('.location-compare-map')].map(element=>({
+                    width:element.getBoundingClientRect().width,
+                    height:element.getBoundingClientRect().height
+                }))
+            }
+        })
+
+        expect(metrics.toolbar.height).toBeLessThan(250)
+        expect(metrics.intro.height).toBeLessThan(210)
+        expect(metrics.narrativeSpanDisplay).toBe('inline')
+        expect(metrics.presets).toHaveLength(3)
+        expect(metrics.presets.every(preset=>preset.height>=43.5)).toBe(true)
+        expect(Math.max(...metrics.presets.map(preset=>preset.top))-Math.min(...metrics.presets.map(preset=>preset.top))).toBeLessThan(1)
+        expect(metrics.actions.every(height=>height>=43.5)).toBe(true)
+        expect(metrics.maps.every(mapSize=>mapSize.height>=140)).toBe(true)
+        expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(width+1)
+
+        if(width>=768)
+            expect(Math.abs(metrics.maps[0].width-metrics.maps[1].width)).toBeLessThan(1)
     }
 })
 

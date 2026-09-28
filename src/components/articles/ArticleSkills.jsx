@@ -9,123 +9,6 @@ import AvatarView from "../generic/AvatarView.jsx"
 import NumberAnimation from "../generic/NumberAnimation.jsx"
 import IllustratedManuscript from "../generic/IllustratedManuscript.jsx"
 
-const EDUCATION_LANGUAGE_POPUP_DEFAULTS = {
-    desktop: {
-        fontSize: 0.92,
-        paddingX: 12,
-        paddingY: 10,
-        lineHeight: 1.32
-    },
-    tablet: {
-        fontSize: 0.86,
-        paddingX: 11,
-        paddingY: 9,
-        lineHeight: 1.28
-    },
-    mobile: {
-        fontSize: 0.78,
-        paddingX: 10,
-        paddingY: 8,
-        lineHeight: 1.24
-    }
-}
-
-const EDUCATION_LANGUAGE_POPUP_FLOORS = {
-    desktop: {
-        fontSize: 0.76,
-        paddingX: 8,
-        paddingY: 7,
-        lineHeight: 1.18
-    },
-    tablet: {
-        fontSize: 0.72,
-        paddingX: 7,
-        paddingY: 6,
-        lineHeight: 1.15
-    },
-    mobile: {
-        fontSize: 0.68,
-        paddingX: 6,
-        paddingY: 5,
-        lineHeight: 1.12
-    }
-}
-
-const EDUCATION_LANGUAGE_POPUP_FIT_VARIABLES = [
-    "--education-language-popup-font-size",
-    "--education-language-popup-padding-x",
-    "--education-language-popup-padding-y",
-    "--education-language-popup-line-height"
-]
-
-const educationLanguagePopupFitCache = new Map()
-
-const roundToStep = (value, precision = 2) => {
-    const multiplier = 10 ** precision
-    return Math.round(value * multiplier) / multiplier
-}
-
-const getEducationLanguagePopupDefaults = (innerWidth) => {
-    if(innerWidth < 576)
-        return { ...EDUCATION_LANGUAGE_POPUP_DEFAULTS.mobile }
-    if(innerWidth < 992)
-        return { ...EDUCATION_LANGUAGE_POPUP_DEFAULTS.tablet }
-    return { ...EDUCATION_LANGUAGE_POPUP_DEFAULTS.desktop }
-}
-
-const getEducationLanguagePopupFloors = (innerWidth) => {
-    if(innerWidth < 576)
-        return { ...EDUCATION_LANGUAGE_POPUP_FLOORS.mobile }
-    if(innerWidth < 992)
-        return { ...EDUCATION_LANGUAGE_POPUP_FLOORS.tablet }
-    return { ...EDUCATION_LANGUAGE_POPUP_FLOORS.desktop }
-}
-
-const getEducationLanguagePopupViewportBucket = (innerWidth) => {
-    if(innerWidth < 576)
-        return "mobile"
-    if(innerWidth < 992)
-        return "tablet"
-    return "desktop"
-}
-
-const getEducationLanguagePopupFitCacheKey = (itemWrapper, viewportBucket, popupRows) => {
-    return `${itemWrapper.uniqueId}:${viewportBucket}:${popupRows.join("|")}`
-}
-
-const clearEducationLanguagePopupFitVariables = (element) => {
-    if(!element)
-        return
-
-    EDUCATION_LANGUAGE_POPUP_FIT_VARIABLES.forEach(variableName => {
-        element.style.removeProperty(variableName)
-    })
-}
-
-const applyEducationLanguagePopupFitVariables = (element, fitValues) => {
-    if(!element)
-        return
-
-    element.style.setProperty("--education-language-popup-font-size", `${roundToStep(fitValues.fontSize)}rem`)
-    element.style.setProperty("--education-language-popup-padding-x", `${Math.round(fitValues.paddingX)}px`)
-    element.style.setProperty("--education-language-popup-padding-y", `${Math.round(fitValues.paddingY)}px`)
-    element.style.setProperty("--education-language-popup-line-height", `${roundToStep(fitValues.lineHeight)}`)
-}
-
-const getEducationLanguagePopupAvailableBox = (element) => {
-    if(!element)
-        return { width: 0, height: 0 }
-
-    const computedStyles = window.getComputedStyle(element)
-    const horizontalPadding = parseFloat(computedStyles.paddingLeft || 0) + parseFloat(computedStyles.paddingRight || 0)
-    const verticalPadding = parseFloat(computedStyles.paddingTop || 0) + parseFloat(computedStyles.paddingBottom || 0)
-
-    return {
-        width: Math.max(0, element.clientWidth - horizontalPadding),
-        height: Math.max(0, element.clientHeight - verticalPadding)
-    }
-}
-
 const isEducationLanguagePopupCard = (itemWrapper, utils) => {
     return itemWrapper.articleWrapper.sectionId === "education" &&
         itemWrapper.articleWrapper.settings.avatarImageMode === "flag" &&
@@ -301,11 +184,7 @@ function ArticleSkillsItem({ itemWrapper }) {
     const popupCopyRef = useRef(null)
     const [popupExpandedHeight, setPopupExpandedHeight] = useState(0)
     const popupClass = isPopupOpen ? `article-skills-item-popup-open` : ``
-    const usesExpandablePopupLayout = isEducationLanguageCard && viewport.innerWidth >= 576
-    const viewportBucket = getEducationLanguagePopupViewportBucket(viewport.innerWidth || 0)
-    const popupFitCacheKey = isPopupEnabled ?
-        getEducationLanguagePopupFitCacheKey(itemWrapper, viewportBucket, popupRows) :
-        null
+    const usesExpandablePopupLayout = isEducationLanguageCard
 
     if (itemWrapper.articleWrapper.settings.roundIcons) {
         avatarClasses.push(`article-skills-item-avatar-round`)
@@ -316,12 +195,9 @@ function ArticleSkillsItem({ itemWrapper }) {
     }
 
     useEffect(() => {
-        if(isPopupOpen)
-            return
-
-        clearEducationLanguagePopupFitVariables(popupInnerRef.current)
-        setPopupExpandedHeight(0)
-    }, [isPopupOpen, popupRows])
+        if(!isPopupOpen)
+            setPopupExpandedHeight(0)
+    }, [isPopupOpen])
 
     useLayoutEffect(() => {
         if(!isPopupEnabled || !isPopupOpen)
@@ -329,93 +205,29 @@ function ArticleSkillsItem({ itemWrapper }) {
 
         let frameId = 0
 
-        const fitPopupText = () => {
+        const measurePopupHeight = () => {
             const popupInnerEl = popupInnerRef.current
             const popupCopyEl = popupCopyRef.current
-
             if(!popupInnerEl || !popupCopyEl)
                 return
 
-            if(usesExpandablePopupLayout) {
-                clearEducationLanguagePopupFitVariables(popupInnerEl)
-                const nextExpandedHeight = Math.ceil(popupInnerEl.scrollHeight)
-                setPopupExpandedHeight(currentHeight => currentHeight === nextExpandedHeight ? currentHeight : nextExpandedHeight)
-                return
-            }
-
-            const cachedFitValues = educationLanguagePopupFitCache.get(popupFitCacheKey)
-            if(cachedFitValues) {
-                applyEducationLanguagePopupFitVariables(popupInnerEl, cachedFitValues)
-                return
-            }
-
-            const innerWidth = viewport.innerWidth || window.innerWidth
-            const defaultFitValues = getEducationLanguagePopupDefaults(innerWidth)
-            const floorFitValues = getEducationLanguagePopupFloors(innerWidth)
-            const fitValues = { ...defaultFitValues }
-
-            const doesOverflow = () => {
-                const availableBox = getEducationLanguagePopupAvailableBox(popupInnerEl)
-                if(!availableBox.width || !availableBox.height)
-                    return false
-
-                return popupCopyEl.scrollHeight > availableBox.height + 0.5 ||
-                    popupCopyEl.scrollWidth > availableBox.width + 0.5
-            }
-
-            const applyCurrentFitValues = () => {
-                applyEducationLanguagePopupFitVariables(popupInnerEl, fitValues)
-            }
-
-            applyCurrentFitValues()
-
-            let fontSizeIterations = 0
-            while(doesOverflow() && fitValues.fontSize > floorFitValues.fontSize + 0.001 && fontSizeIterations < 20) {
-                fitValues.fontSize = Math.max(
-                    floorFitValues.fontSize,
-                    roundToStep(fitValues.fontSize - 0.02)
-                )
-                applyCurrentFitValues()
-                fontSizeIterations += 1
-            }
-
-            let paddingIterations = 0
-            while(
-                doesOverflow() &&
-                (
-                    fitValues.paddingX > floorFitValues.paddingX ||
-                    fitValues.paddingY > floorFitValues.paddingY
-                ) &&
-                paddingIterations < 12
-            ) {
-                if(fitValues.paddingX > floorFitValues.paddingX)
-                    fitValues.paddingX = Math.max(floorFitValues.paddingX, fitValues.paddingX - 1)
-                if(fitValues.paddingY > floorFitValues.paddingY)
-                    fitValues.paddingY = Math.max(floorFitValues.paddingY, fitValues.paddingY - 1)
-
-                applyCurrentFitValues()
-                paddingIterations += 1
-            }
-
-            let lineHeightIterations = 0
-            while(doesOverflow() && fitValues.lineHeight > floorFitValues.lineHeight + 0.001 && lineHeightIterations < 10) {
-                fitValues.lineHeight = Math.max(
-                    floorFitValues.lineHeight,
-                    roundToStep(fitValues.lineHeight - 0.02)
-                )
-                applyCurrentFitValues()
-                lineHeightIterations += 1
-            }
-
-            educationLanguagePopupFitCache.set(popupFitCacheKey, { ...fitValues })
+            const innerStyles = window.getComputedStyle(popupInnerEl)
+            const innerVerticalInsets = [
+                innerStyles.paddingTop,
+                innerStyles.paddingBottom,
+                innerStyles.borderTopWidth,
+                innerStyles.borderBottomWidth
+            ].reduce((total, value) => total + parseFloat(value || 0), 0)
+            const nextExpandedHeight = Math.ceil(popupCopyEl.getBoundingClientRect().height + innerVerticalInsets)
+            setPopupExpandedHeight(currentHeight => currentHeight === nextExpandedHeight ? currentHeight : nextExpandedHeight)
         }
 
-        frameId = window.requestAnimationFrame(fitPopupText)
+        frameId = window.requestAnimationFrame(measurePopupHeight)
 
         return () => {
             window.cancelAnimationFrame(frameId)
         }
-    }, [isPopupEnabled, isPopupOpen, popupFitCacheKey, popupRows, usesExpandablePopupLayout, viewport.innerWidth])
+    }, [isPopupEnabled, isPopupOpen, popupRows, viewport.innerWidth])
 
     useEffect(() => {
         if(!isPopupEnabled || !isPopupPinned)
@@ -630,21 +442,40 @@ function ArticleSkillsItemInfo({
                               dangerouslySetInnerHTML={{__html: titleMeta}}/>
                     )}
 
-                    {level && (
+                    {isEducationLanguageCard && (level || hasPercentage) ? (
+                        <div className={`article-skills-item-title-rating`} role="group" aria-label={`${level || ``}${level && hasPercentage ? `, ` : ``}${hasPercentage ? `${percentage}%` : ``}`}>
+                            {level && (
+                                <span className={`article-skills-item-title-suffix text-5`}
+                                      dangerouslySetInnerHTML={{__html: level}}/>
+                            )}
+                            {level && hasPercentage && <span className={`article-skills-item-title-rating-separator`} aria-hidden="true"/>}
+                            {hasPercentage && (
+                                <span className={`article-skills-item-title-rating-percentage`}>
+                                    <NumberAnimation className={`article-skills-item-title-percentage text-3`}
+                                                     id={`article-skills-item-title-percentage-${itemWrapper.uniqueId}`}
+                                                     initialValue={initialPercentage}
+                                                     targetValue={animationPercentage}
+                                                     format={`{n}%`}/>
+                                </span>
+                            )}
+                        </div>
+                    ) : level && (
                         <span className={`article-skills-item-title-suffix text-5`}
                               dangerouslySetInnerHTML={{__html: level}}/>
                     )}
                 </div>
 
-                <div className={`article-skills-item-title-right-column`}>
-                    {hasPercentage && (
+                {!isEducationLanguageCard && (
+                    <div className={`article-skills-item-title-right-column`}>
+                        {hasPercentage && (
                         <NumberAnimation className={`article-skills-item-title-percentage text-3`}
                                          id={`article-skills-item-title-percentage-${itemWrapper.uniqueId}`}
                                          initialValue={initialPercentage}
                                          targetValue={animationPercentage}
                                          format={`{n}%`}/>
-                    )}
-                </div>
+                        )}
+                    </div>
+                )}
             </div>
 
             {isEducationLanguageCard ? (

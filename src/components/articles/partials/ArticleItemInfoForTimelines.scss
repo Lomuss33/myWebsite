@@ -58,6 +58,8 @@ article#article-1-section-education div.article-timeline-item-info-for-timelines
     --education-body-text: #d7e3f4;
     --education-body-strong: #f8fafc;
     --education-body-list: #b8c7de;
+    --education-motion-duration: 180ms;
+    --education-motion-ease: cubic-bezier(0.2, 0.75, 0.3, 1);
 
     display: flex;
     flex-direction: column;
@@ -75,8 +77,8 @@ article#article-1-section-education div.article-timeline-item-info-for-timelines
     background: transparent;
     box-shadow: none;
     transition:
-        border-color 180ms ease,
-        box-shadow 180ms ease;
+        border-color var(--education-motion-duration) var(--education-motion-ease),
+        box-shadow var(--education-motion-duration) var(--education-motion-ease);
 
     &::before {
         content: "";
@@ -1226,18 +1228,13 @@ article.article-timeline--art-digital-expression li.article-timeline-item--visua
 
 @media (hover: hover) and (pointer: fine) {
     article#article-1-section-education div.article-timeline-item-info-for-timelines:hover {
-        transform: translateY(-4px);
+        --education-card-edge-color: color-mix(in srgb, var(--card-accent) 42%, var(--card-border) 58%);
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
     article#article-1-section-education div.article-timeline-item-info-for-timelines {
-        transition: border-color 180ms ease, box-shadow 180ms ease;
-
-        &:hover,
-        &:focus-within {
-            transform: none;
-        }
+        transition: none;
     }
 }
 
@@ -1747,10 +1744,31 @@ article#article-1-section-education {
     li[data-education-item-id="4"],
     li[data-education-item-id="5"] {
         div.article-timeline-item-info-for-timelines-body-text {
+            position: relative;
+            isolation: isolate;
+            box-sizing: border-box;
+            width: 100%;
             max-width: 68ch;
             margin-inline: auto;
+            padding: 0.38rem 0.8rem;
             text-align: center;
             text-wrap: pretty;
+
+            &::before {
+                content: "";
+                position: absolute;
+                z-index: -1;
+                inset: 0;
+                border: 1px solid rgba(148, 163, 184, 0.2);
+                border-start-start-radius: 999px;
+                border-end-start-radius: 999px;
+                border-start-end-radius: 0;
+                border-end-end-radius: 0;
+                background: rgba(8, 15, 29, 0.7);
+                -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 72%, rgba(0, 0, 0, 0.28) 92%, transparent 100%);
+                mask-image: linear-gradient(90deg, #000 0%, #000 72%, rgba(0, 0, 0, 0.28) 92%, transparent 100%);
+                pointer-events: none;
+            }
         }
     }
 
@@ -2152,6 +2170,30 @@ article#article-1-section-education div.article-timeline-item-info-for-timelines
     --education-body-text: #fff;
     --education-body-strong: #fff;
     --education-body-list: #fff;
+}
+
+// Keep the Education panel surface transparent like light mode; the type and
+// avatars provide the foreground while the winding connector stays behind it.
+[data-theme="dark"] article#article-1-section-education div.article-timeline-item-info-for-timelines::before {
+    background: none !important;
+    box-shadow: none !important;
+}
+
+[data-theme="dark"] article#article-1-section-education div.article-timeline-item-info-for-timelines-education-meta-row::before {
+    border-color: rgba(148, 163, 184, 0.24) !important;
+    background: rgba(8, 15, 29, 0.82) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+[data-theme="dark"] article#article-1-section-education li.article-timeline-item-info-for-timelines-body-list-item::before {
+    border-color: rgba(148, 163, 184, 0.2) !important;
+    background: rgba(8, 15, 29, 0.7) !important;
+}
+
+[data-theme="dark"] article#article-1-section-education li[data-education-item-id="4"] div.article-timeline-item-info-for-timelines-body-text::before,
+[data-theme="dark"] article#article-1-section-education li[data-education-item-id="5"] div.article-timeline-item-info-for-timelines-body-text::before {
+    border-color: rgba(148, 163, 184, 0.2) !important;
+    background: rgba(8, 15, 29, 0.7) !important;
 }
 
 [data-theme="dark"] article#article-1-section-education div.article-timeline-item-info-for-timelines-body.article-timeline-item-info-for-timelines-body--education.is-education-collapsed div.article-timeline-item-info-for-timelines-body-text::after {
@@ -2918,134 +2960,96 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-preview-footer {
     grid-area: actions;
     grid-column: 1 / -1;
-    width: calc(100% + var(--digital-card-inset) + var(--digital-card-inset));
-    max-width: none;
+    justify-self: center;
+    width: min(100%, 17rem);
+    max-width: 100%;
     height: auto;
-    min-height: 0;
+    min-height: 3rem;
     align-self: end;
-    margin: 0 calc(0px - var(--digital-card-inset));
-    margin-bottom: calc(0px - var(--digital-card-inset));
-    padding: 0;
-    justify-content: flex-start;
-    align-items: stretch;
+    margin: 0 auto;
+    padding: 0.2rem;
+    justify-content: center;
+    align-items: center;
     position: relative;
     z-index: 6;
     transform: none;
-    overflow: hidden;
-    border-radius: 0;
+    overflow: visible;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 0.95rem;
+    background: rgba(7, 15, 29, 0.58);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu,
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list {
-    justify-content: flex-start;
+    justify-content: center;
     width: auto;
     max-width: 100%;
-    height: 100%;
+    height: auto;
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.4rem;
     width: 100%;
-    align-items: stretch;
+    align-items: center;
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu > div.article-item-preview-menu-button-list {
-    flex: 1 1 50%;
-    width: 50%;
+    display: contents;
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list {
-    margin-left: 0;
-    margin-right: auto;
     min-width: 0;
     min-height: 0;
-    height: auto;
-    padding: 0;
-    gap: 0;
-    justify-content: flex-start;
-    flex-wrap: nowrap;
-    flex-direction: row-reverse;
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list a.article-item-preview-menu-link {
     display: inline-flex;
-    flex: 1 1 0;
+    box-sizing: border-box;
+    flex: none;
     align-items: center;
     justify-content: center;
-    width: 50%;
-    height: 3rem;
+    gap: 0.5rem;
+    width: 100%;
+    height: 2.75rem;
     min-height: 44px;
+    min-width: 0;
     margin: 0;
     overflow: hidden;
-    transform-style: flat;
-    transition: filter 160ms ease;
-}
-
-article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list a.article-item-preview-menu-link > button.circular-button {
-    box-sizing: border-box;
-    flex: 1 1 auto;
-    width: 100% !important;
-    max-width: none !important;
-    height: 3rem !important;
-    min-width: 0 !important;
-    min-height: 44px !important;
-    max-height: none !important;
-    aspect-ratio: auto !important;
-    display: flex !important;
-    flex-direction: row-reverse;
-    gap: 0.42rem;
-    padding: 0.35rem 0.55rem !important;
-    border: 1px solid rgba(103, 232, 249, 0.55) !important;
-    border-radius: 0.7rem !important;
-    background: linear-gradient(145deg, rgba(8, 47, 73, 0.96), rgba(15, 23, 42, 0.96)) !important;
-    color: #fff !important;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.32), 0 0 0 1px rgba(255, 255, 255, 0.08) inset !important;
-}
-
-article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list a.article-item-preview-menu-link:not(:last-child) > button.circular-button {
-    border-right: 1px solid rgba(103, 232, 249, 0.55) !important;
-}
-
-article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item span.article-item-preview-menu-button-label {
-    overflow: hidden;
+    padding: 0.45rem 0.55rem;
+    border: 1px solid rgba(103, 232, 249, 0.48);
+    border-radius: 0.72rem;
+    background: linear-gradient(145deg, rgba(8, 47, 73, 0.96), rgba(15, 23, 42, 0.96));
     color: #f8fafc;
-    font-size: 0.72rem;
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.24), 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+    font-size: clamp(0.68rem, 2.7vw, 0.78rem);
     font-weight: 750;
     line-height: 1;
-    text-overflow: ellipsis;
+    text-decoration: none;
     white-space: nowrap;
+    transform-style: flat;
+    transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item a.article-item-preview-menu-link--digital-action > i {
+    flex: 0 0 auto;
+    font-size: 0.95rem;
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list a.article-item-preview-menu-link:hover,
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list a.article-item-preview-menu-link:focus-visible {
-    filter: brightness(1.06);
-}
-
-article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list a.article-item-preview-menu-link:hover > button.circular-button,
-article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list a.article-item-preview-menu-link:focus-visible > button.circular-button {
-    background: linear-gradient(145deg, rgba(8, 65, 92, 0.98), rgba(30, 41, 59, 0.98)) !important;
-    border-color: rgba(165, 243, 252, 0.95) !important;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(165, 243, 252, 0.22) inset !important;
+    background: linear-gradient(145deg, rgba(8, 65, 92, 0.98), rgba(30, 41, 59, 0.98));
+    border-color: rgba(165, 243, 252, 0.92);
+    box-shadow: 0 5px 13px rgba(0, 0, 0, 0.32), 0 0 0 1px rgba(165, 243, 252, 0.18) inset;
+    transform: translateY(-1px);
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list a.article-item-preview-menu-link:focus-visible {
     outline: 2px solid #a5f3fc;
-    outline-offset: -2px;
+    outline-offset: 2px;
     border-radius: 0.7rem;
-}
-
-article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list a.article-item-preview-menu-link-website {
-    flex: 1 1 0;
-    width: 50%;
-    min-height: 44px;
-    height: 3rem;
-}
-
-article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list a.article-item-preview-menu-link {
-    margin-right: 0;
-}
-
-article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list a.article-item-preview-menu-link + a.article-item-preview-menu-link {
-    margin-left: 0;
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-body {
@@ -3067,11 +3071,21 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-body-text {
+    box-sizing: border-box;
     width: 100%;
     max-width: 100%;
-    padding: 0 clamp(0.25rem, 1vw, 0.55rem) 0.25rem;
-    background: transparent;
+    padding: 0.45rem clamp(0.55rem, 1.2vw, 0.8rem);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 0.8rem;
+    background: rgba(7, 14, 28, 0.62);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(255, 255, 255, 0.035) inset;
     overflow-wrap: anywhere;
+}
+
+[data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-body-text {
+    border-color: rgba(30, 41, 59, 0.14);
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: 0 3px 12px rgba(49, 46, 129, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.48) inset;
 }
 
 [data-theme="dark"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-body,
@@ -3119,9 +3133,6 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
         padding: 0.1rem 0.15rem;
     }
 
-    article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-body-text {
-        padding: 0 0.2rem 0.2rem;
-    }
 }
 
 @include content-breakpoint-down(sm) {
@@ -3147,12 +3158,6 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
         gap: 0;
     }
 
-    article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list a.article-item-preview-menu-link {
-        flex: 1 1 50%;
-        flex-basis: 50%;
-        width: 50%;
-        height: 3rem;
-    }
 }
 
 [data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines,

@@ -150,27 +150,31 @@ function ItemPreviewMenuGalleryButton({ itemWrapper, galleryMetadata = null }) {
     return (
         <Link href={"#gallery:open"}
               metadata={metadata}
-              className={`article-item-preview-menu-link`}
+              className={`article-item-preview-menu-link${isDigitalExpressionTimeline ? " article-item-preview-menu-link--digital-action" : ""}`}
               tooltip={actionLabel}
               ariaLabel={actionLabel}>
-            <CircularButton variant={CircularButton.Variants.DARK}
-                            size={CircularButton.Sizes.EXTRA_EXTRA_LARGE}
-                            className={`article-item-preview-menu-circular-button article-item-preview-menu-gallery-button`}
-                            tooltip={actionLabel}
-                            faIcon={actionIcon}>
-                {isDigitalExpressionTimeline && (
-                    <span className={`article-item-preview-menu-button-label`}>Gallery</span>
-                )}
-                {isPhotographyTimeline && (
-                    <img src={itemWrapper.img || screenshots[0]}
-                         className={`article-item-preview-menu-gallery-image`}
-                         alt={``}
-                         aria-hidden={true}
-                         loading={`lazy`}
-                         decoding={`async`}
-                         draggable={false}/>
-                )}
-            </CircularButton>
+            {isDigitalExpressionTimeline ? (
+                <>
+                    <i className={`fa-icon ${actionIcon}`} aria-hidden="true"/>
+                    <span className={`article-item-preview-menu-action-label`}>Gallery</span>
+                </>
+            ) : (
+                <CircularButton variant={CircularButton.Variants.DARK}
+                                size={CircularButton.Sizes.EXTRA_EXTRA_LARGE}
+                                className={`article-item-preview-menu-circular-button article-item-preview-menu-gallery-button`}
+                                tooltip={actionLabel}
+                                faIcon={actionIcon}>
+                    {isPhotographyTimeline && (
+                        <img src={itemWrapper.img || screenshots[0]}
+                             className={`article-item-preview-menu-gallery-image`}
+                             alt={``}
+                             aria-hidden={true}
+                             loading={`lazy`}
+                             decoding={`async`}
+                             draggable={false}/>
+                    )}
+                </CircularButton>
+            )}
         </Link>
     )
 }
@@ -182,10 +186,11 @@ function ItemPreviewMenuCustomLinkButton({ link, itemWrapper }) {
     const faIcon = presentation.faIcon
     const isWebsiteAction = Boolean(link.isWebsiteAction)
     const isPinterestLink = String(faIcon || "").includes("pinterest")
+    const isDigitalExpressionTimeline = itemWrapper?.articleWrapper?.settings?.timelineVariant === "art-digital-expression"
     const label = presentation.label
     const linkClassName = isWebsiteAction ?
         `article-item-preview-menu-link article-item-preview-menu-link-website` :
-        `article-item-preview-menu-link${isPinterestLink ? " article-item-preview-menu-link-pinterest" : ""}`
+        `article-item-preview-menu-link${isPinterestLink ? " article-item-preview-menu-link-pinterest" : ""}${isDigitalExpressionTimeline && isPinterestLink ? " article-item-preview-menu-link--digital-action" : ""}`
 
     return (
         <Link href={href}
@@ -207,6 +212,11 @@ function ItemPreviewMenuCustomLinkButton({ link, itemWrapper }) {
                                     className={`article-item-preview-menu-circular-button article-item-preview-menu-website-button-compact`}
                                     tooltip={tooltip}
                                     faIcon={faIcon}/>
+                </>
+            ) : isDigitalExpressionTimeline && isPinterestLink ? (
+                <>
+                    <i className={`fa-icon ${faIcon}`} aria-hidden="true"/>
+                    <span className={`article-item-preview-menu-action-label`}>Pinterest</span>
                 </>
             ) : (
                 <CircularButton variant={CircularButton.Variants.DARK}

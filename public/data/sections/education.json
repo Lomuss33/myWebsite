@@ -712,7 +712,7 @@
                         "en": {
                             "title": "Croatian",
                             "text": "Native level; I can communicate effortlessly in everyday life, technical topics, and professional settings.",
-                            "level": "Native / 100%",
+                            "level": "C2",
                             "list": [
                                 "Dobar dan, kako si?",
                                 "Hvala lijepa, to mi puno znači.",
@@ -723,7 +723,7 @@
                         "de": {
                             "title": "Kroatisch",
                             "text": "Muttersprache; ich kann mühelos im Alltag, zu technischen Themen und im Berufsleben kommunizieren.",
-                            "level": "Muttersprache / 100%",
+                            "level": "C2",
                             "list": [
                                 "Dobar dan, kako si?",
                                 "Hvala lijepa, to mi puno znači.",
@@ -734,7 +734,7 @@
                         "hr": {
                             "title": "Hrvatski",
                             "text": "Materinji jezik; mogu se potpuno prirodno izražavati u svakodnevnim, stručnim i poslovnim situacijama.",
-                            "level": "Izvorni / 100%",
+                            "level": "C2",
                             "list": [
                                 "Dobar dan, kako si?",
                                 "Hvala lijepa, to mi puno znači.",
@@ -745,7 +745,7 @@
                         "tr": {
                             "title": "Hırvatça",
                             "text": "Anadil seviyesinde, günlük yaşamda ve teknik konularda çok akıcı iletişim kurabiliyorum.",
-                            "level": "Anadil / 100%",
+                            "level": "C2",
                             "list": [
                                 "Dobar dan, kako si?",
                                 "Hvala lijepa, to mi puno znači.",
@@ -756,7 +756,7 @@
                         "mk": {
                             "title": "Хрватски",
                             "text": "Мој мајчин јазик; течно зборувам во секојдневни, технички и професионални ситуации.",
-                            "level": "Мајчин / 100%",
+                            "level": "C2",
                             "list": [
                                 "Dobar dan, kako si?",
                                 "Hvala lijepa, to mi puno znači.",
@@ -783,7 +783,7 @@
                         "en": {
                             "title": "English",
                             "text": "Very strong working proficiency; I use English daily for technical documentation, learning, and professional communication.",
-                            "level": "C2 / 98%",
+                            "level": "C2",
                             "list": [
                                 "Hi, how are you doing today?",
                                 "A cup of tea fixes more than expected.",
@@ -794,7 +794,7 @@
                         "de": {
                             "title": "Englisch",
                             "text": "Sehr gute Arbeitssprache; ich nutze Englisch täglich für technische Dokumentation, Lernen und professionelle Kommunikation.",
-                            "level": "C2 / 98%",
+                            "level": "C2",
                             "list": [
                                 "Hi, how are you doing today?",
                                 "A cup of tea fixes more than expected.",
@@ -805,7 +805,7 @@
                         "hr": {
                             "title": "Engleski",
                             "text": "Vrlo snažno radno znanje; svakodnevno koristim engleski za tehničku dokumentaciju, učenje i profesionalnu komunikaciju.",
-                            "level": "C2 / 98%",
+                            "level": "C2",
                             "list": [
                                 "Hi, how are you doing today?",
                                 "A cup of tea fixes more than expected.",
@@ -816,7 +816,7 @@
                         "tr": {
                             "title": "İngilizce",
                             "text": "İyi düzeyde, özellikle teknik dokümanlar ve günlük iletişim için rahatça kullanabiliyorum.",
-                            "level": "İleri / 98%",
+                            "level": "C2",
                             "list": [
                                 "Hi, how are you doing today?",
                                 "A cup of tea fixes more than expected.",
@@ -827,7 +827,7 @@
                         "mk": {
                             "title": "Англиски",
                             "text": "Многу добро ниво за работа; го користам за документација, учење и професионална комуникација.",
-                            "level": "C2 / 98%",
+                            "level": "C2",
                             "list": [
                                 "Hi, how are you doing today?",
                                 "A cup of tea fixes more than expected.",
@@ -854,7 +854,7 @@
                         "en": {
                             "title": "German",
                             "text": "Comfortable in everyday and professional contexts; I can discuss technical topics and integrate well in German-speaking teams.",
-                            "level": "C1-C2 / 95%",
+                            "level": "C2",
                             "list": [
                                 "Guten Tag, wie geht es dir?",
                                 "Ein Kaffee und ein Brötchen gehen fast immer.",
@@ -865,7 +865,7 @@
                         "de": {
                             "title": "Deutsch",
                             "text": "Sicher im Alltag und Beruf; ich kann technische Themen besprechen und mich gut in deutschsprachige Teams integrieren.",
-                            "level": "C1-C2 / 95%",
+                            "level": "C2",
                             "list": [
                                 "Guten Tag, wie geht es dir?",
                                 "Ein Kaffee und ein Brötchen gehen fast immer.",
@@ -876,7 +876,7 @@
                         "hr": {
                             "title": "Njemački",
                             "text": "Siguran u svakodnevnim i poslovnim situacijama; mogu raspravljati o tehničkim temama i dobro funkcionirati u njemačkim timovima.",
-                            "level": "C1-C2 / 95%",
+                            "level": "C2",
                             "list": [
                                 "Guten Tag, wie geht es dir?",
                                 "Ein Kaffee und ein Brötchen gehen fast immer.",
@@ -887,7 +887,7 @@
                         "tr": {
                             "title": "Almanca",
                             "text": "Günlük hayat ve iş ortamında kendimi rahat ifade edebiliyorum.",
-                            "level": "Orta-ileri / 95%",
+                            "level": "C2",
                             "list": [
                                 "Guten Tag, wie geht es dir?",
                                 "Ein Kaffee und ein Brötchen gehen fast immer.",
@@ -898,7 +898,7 @@
                         "mk": {
                             "title": "Германски",
                             "text": "Добро ниво за секојдневна комуникација и работа, особено во технички средини.",
-                            "level": "C1-C2 / 95%",
+                            "level": "C2",
                             "list": [
                                 "Guten Tag, wie geht es dir?",
                                 "Ein Kaffee und ein Brötchen gehen fast immer.",
@@ -925,7 +925,7 @@
                         "en": {
                             "title": "Macedonian",
                             "text": "Basic understanding and communication, especially with speakers from the region; still improving over time.",
-                            "level": "A2 / 40%",
+                            "level": "A2",
                             "list": [
                                 "Здраво, како си?",
                                 "Фала многу, тоа многу значи.",
@@ -936,7 +936,7 @@
                         "de": {
                             "title": "Mazedonisch",
                             "text": "Grundkenntnisse in Verständnis und einfacher Kommunikation, besonders mit Sprechern aus der Region.",
-                            "level": "A2 / 40%",
+                            "level": "A2",
                             "list": [
                                 "Здраво, како си?",
                                 "Фала многу, тоа многу значи.",
@@ -947,7 +947,7 @@
                         "hr": {
                             "title": "Makedonski",
                             "text": "Osnovno razumijevanje i jednostavna komunikacija, posebno s govornicima iz regije; znanje polako raste.",
-                            "level": "A2 / 40%",
+                            "level": "A2",
                             "list": [
                                 "Здраво, како си?",
                                 "Фала многу, тоа многу значи.",
@@ -958,7 +958,7 @@
                         "tr": {
                             "title": "Makedonca",
                             "text": "Temel seviyede anlayabiliyorum, bölgede konuşulan dile biraz aşinayım.",
-                            "level": "Temel / 40%",
+                            "level": "A2",
                             "list": [
                                 "Здраво, како си?",
                                 "Фала многу, тоа многу значи.",
@@ -969,7 +969,7 @@
                         "mk": {
                             "title": "Македонски",
                             "text": "Основно ниво на комуникација; разбирам едноставни реченици и изрази и постепено напредувам.",
-                            "level": "A2 / 40%",
+                            "level": "A2",
                             "list": [
                                 "Здраво, како си?",
                                 "Фала многу, тоа многу значи.",
@@ -996,7 +996,7 @@
                         "en": {
                             "title": "Turkish",
                             "text": "Very basic level; I understand a few common phrases and am slowly building up more vocabulary.",
-                            "level": "Beginner / 15%",
+                            "level": "A2",
                             "list": [
                                 "Merhaba, nasılsın?",
                                 "Bir çay molası her şeyi yumuşatır.",
@@ -1007,7 +1007,7 @@
                         "de": {
                             "title": "Türkisch",
                             "text": "Sehr einfaches Niveau; ich verstehe einige häufige Ausdrücke und baue langsam Wortschatz auf.",
-                            "level": "Anfänger / 15%",
+                            "level": "A2",
                             "list": [
                                 "Merhaba, nasılsın?",
                                 "Bir çay molası her şeyi yumuşatır.",
@@ -1018,7 +1018,7 @@
                         "hr": {
                             "title": "Turski",
                             "text": "Vrlo osnovna razina; razumijem nekoliko najčešćih fraza i polako učim nove riječi.",
-                            "level": "Početnik / 15%",
+                            "level": "A2",
                             "list": [
                                 "Merhaba, nasılsın?",
                                 "Bir çay molası her şeyi yumuşatır.",
@@ -1029,7 +1029,7 @@
                         "tr": {
                             "title": "Türkçe",
                             "text": "Şimdilik sadece birkaç temel kelime ve ifade biliyorum, ama zamanla geliştirmek istiyorum.",
-                            "level": "Başlangıç / 15%",
+                            "level": "A2",
                             "list": [
                                 "Merhaba, nasılsın?",
                                 "Bir çay molası her şeyi yumuşatır.",
@@ -1040,7 +1040,7 @@
                         "mk": {
                             "title": "Турски",
                             "text": "Многу основно ниво; знам неколку изрази и полека учам нови зборови.",
-                            "level": "A1 / 15%",
+                            "level": "A2",
                             "list": [
                                 "Merhaba, nasılsın?",
                                 "Bir çay molası her şeyi yumuşatır.",
@@ -1067,7 +1067,7 @@
                         "en": {
                             "title": "Chinese (Mandarin)",
                             "text": "Just starting out; I know a few basic words and phrases and am curious to explore the language more over time.",
-                            "level": "Absolute beginner / 1%",
+                            "level": "A1",
                             "list": [
                                 "你好，很高兴认识你。",
                                 "谢谢，你太客气了。",
@@ -1078,7 +1078,7 @@
                         "de": {
                             "title": "Chinesisch (Mandarin)",
                             "text": "Ganz am Anfang; ich kenne nur ein paar grundlegende Wörter und Ausdrücke und möchte die Sprache nach und nach besser kennenlernen.",
-                            "level": "Anfänger / 1%",
+                            "level": "A1",
                             "list": [
                                 "你好，很高兴认识你。",
                                 "谢谢，你太客气了。",
@@ -1089,7 +1089,7 @@
                         "hr": {
                             "title": "Kineski (mandarinski)",
                             "text": "Tek sam na početku; znam par osnovnih riječi i fraza i rado bih s vremenom više upoznao jezik.",
-                            "level": "Potpuni početnik / 1%",
+                            "level": "A1",
                             "list": [
                                 "你好，很高兴认识你。",
                                 "谢谢，你太客气了。",
@@ -1100,7 +1100,7 @@
                         "tr": {
                             "title": "Çince (Mandarin)",
                             "text": "Henüz en baştayım; sadece birkaç temel kelime biliyorum ve dili yavaş yavaş keşfetmek istiyorum.",
-                            "level": "Başlangıç / 1%",
+                            "level": "A1",
                             "list": [
                                 "你好，很高兴认识你。",
                                 "谢谢，你太客气了。",
@@ -1111,7 +1111,7 @@
                         "mk": {
                             "title": "Кинески (Мандарин)",
                             "text": "Само почетно ниво; знам неколку основни зборови и изрази и сакам со време подобро да го запознаам јазикот.",
-                            "level": "Почетник / 1%",
+                            "level": "A1",
                             "list": [
                                 "你好，很高兴认识你。",
                                 "谢谢，你太客气了。",

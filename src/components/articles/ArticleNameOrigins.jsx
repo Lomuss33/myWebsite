@@ -19,7 +19,7 @@ const STORY_IDENTITIES = [
 const COPY = {
     en: {
         surname: {
-            meta: "Surname · A line that reaches outward",
+            meta: "Surname",
             blocks: [
                 "Musić is a South Slavic surname built with the suffix -ić. The suffix began as a diminutive and developed a patronymic function, commonly marking a younger member or descendant of a family line. The base may be the personal name or nickname Musa, but surname etymology is rarely proved by spelling alone; several unrelated families can form the same surname independently.",
                 "Musa is the Arabic form of Moses, one of the central figures shared by Judaism, Christianity, and Islam. This explains why names derived from Musa occur across different religious and ethnic communities in the Balkans. The surname therefore reflects a region where Slavic language, Ottoman-era naming, and several religious traditions interacted for centuries.",
@@ -27,7 +27,7 @@ const COPY = {
             ]
         },
         given: {
-            meta: "Given name · A line carried home",
+            meta: "Given name",
             blocks: [
                 "Lovro is a Croatian and Slovene form in the large European name family descended from the Latin Laurentius. Strictly translated, Laurentius meant “a person from Laurentum,” an ancient town near Rome. Laurentum itself was traditionally associated with laurus, the Latin word for laurel, which is why the name later acquired the familiar meaning “laurelled” or “crowned with laurel.”",
                 "The evergreen bay laurel, Laurus nobilis, was both useful and symbolic. Its leaves were used in food and medicine, while Greek and Roman wreaths honoured athletic victors, military success, poets, and public achievement. That symbolism survives in words such as “laureate” and in the expression “resting on one’s laurels”: the plant became shorthand for distinction earned and publicly recognized.",
@@ -35,11 +35,10 @@ const COPY = {
             ]
         },
         evolvesInto: " evolves into ",
-        footer: "Easy to say. Impossible to separate from where I come from."
     },
     de: {
         surname: {
-            meta: "Nachname · Eine Linie, die in die Welt reicht",
+            meta: "Nachname",
             blocks: [
                 "Musić ist ein südslawischer Familienname, der mit dem Suffix -ić gebildet wird. Dieses Suffix diente ursprünglich der Verkleinerung und entwickelte später eine patronymische Funktion: Häufig bezeichnet es ein jüngeres Mitglied oder einen Nachkommen einer Familienlinie. Als Grundlage kommt der Personenname oder Beiname Musa infrage. Die Etymologie eines Familiennamens lässt sich jedoch selten allein anhand seiner Schreibweise belegen; mehrere nicht miteinander verwandte Familien können denselben Namen unabhängig voneinander gebildet haben.",
                 "Musa ist die arabische Form von Moses, einer zentralen Gestalt, die Judentum, Christentum und Islam miteinander teilen. Das erklärt, warum von Musa abgeleitete Namen auf dem Balkan in unterschiedlichen religiösen und ethnischen Gemeinschaften vorkommen. Der Familienname spiegelt damit eine Region wider, in der die slawische Sprachwelt, die Namensgebung der osmanischen Zeit und mehrere religiöse Traditionen über Jahrhunderte ineinandergriffen.",
@@ -47,7 +46,7 @@ const COPY = {
             ]
         },
         given: {
-            meta: "Vorname · Eine Linie, die nach Hause führt",
+            meta: "Vorname",
             blocks: [
                 "Lovro ist die kroatische und slowenische Form einer großen europäischen Namensfamilie, die auf das lateinische Laurentius zurückgeht. Wörtlich bezeichnete Laurentius „eine Person aus Laurentum“, einer antiken Stadt nahe Rom. Laurentum selbst wurde traditionell mit laurus, dem lateinischen Wort für Lorbeer, verbunden; so erhielt der Name später die vertraute Bedeutung „lorbeerbekränzt“ oder „mit Lorbeer gekrönt“.",
                 "Der immergrüne Echte Lorbeer, Laurus nobilis, war nützlich und symbolträchtig zugleich. Seine Blätter fanden in Küche und Medizin Verwendung; griechische und römische Kränze ehrten sportliche Sieger, militärische Erfolge, Dichter und öffentliche Verdienste. Diese Symbolik lebt in Wörtern wie „Laureat“ und in der Wendung „sich auf seinen Lorbeeren ausruhen“ fort: Die Pflanze wurde zum Sinnbild für erworbene und öffentlich anerkannte Auszeichnung.",
@@ -55,11 +54,10 @@ const COPY = {
             ]
         },
         evolvesInto: " entwickelt sich zu ",
-        footer: "Leicht auszusprechen. Untrennbar mit meiner Herkunft verbunden."
     },
     hr: {
         surname: {
-            meta: "Prezime · Loza koja seže u svijet",
+            meta: "Prezime",
             blocks: [
                 "Musić je južnoslavensko prezime tvoreno sufiksom -ić. Taj je sufiks isprva imao deminutivnu, a poslije je razvio patronimičku funkciju te je često označavao mlađeg člana ili potomka obiteljske loze. Osnova može biti osobno ime ili nadimak Musa, no etimologiju prezimena rijetko je moguće dokazati samo prema njegovu zapisu: više međusobno nepovezanih obitelji moglo je neovisno oblikovati isto prezime.",
                 "Musa je arapski oblik imena Mojsije, jedne od središnjih osoba u judaizmu, kršćanstvu i islamu. To objašnjava zašto se imena izvedena od Muse pojavljuju u različitim vjerskim i etničkim zajednicama na Balkanu. Prezime stoga odražava prostor u kojem su se slavenski jezik, osmanska tradicija imenovanja i više vjerskih predaja stoljećima isprepletali.",
@@ -67,7 +65,7 @@ const COPY = {
             ]
         },
         given: {
-            meta: "Ime · Nit koja vodi kući",
+            meta: "Ime",
             blocks: [
                 "Lovro je hrvatski i slovenski oblik iz velike europske skupine srodnih imena koja potječu od latinskoga Laurentius. U doslovnom značenju Laurentius je bio „osoba iz Laurentuma“, drevnoga grada u blizini Rima. Sam Laurentum tradicionalno se povezivao s riječju laurus, latinskim nazivom za lovor, pa je ime poslije dobilo poznato značenje „ovjenčan lovorom“ ili „okrunjen lovorovim vijencem“.",
                 "Zimzeleni pravi lovor, Laurus nobilis, bio je istodobno koristan i simboličan. Njegovo lišće upotrebljavalo se u prehrani i liječenju, dok su grčki i rimski vijenci odavali počast sportskim pobjednicima, vojnim uspjesima, pjesnicima i javnim postignućima. Ta simbolika živi u riječi „laureat“ i izrazu „počivati na lovorikama“: biljka je postala sažetim znakom zaslužene i javno priznate izvrsnosti.",
@@ -75,11 +73,10 @@ const COPY = {
             ]
         },
         evolvesInto: " prelazi u ",
-        footer: "Lako se izgovara. Nemoguće ga je odvojiti od mojih korijena."
     },
     tr: {
         surname: {
-            meta: "Soyadı · Dünyaya uzanan bir çizgi",
+            meta: "Soyadı",
             blocks: [
                 "Musić, -ić ekiyle kurulmuş bir Güney Slav soyadıdır. Bu ek başlangıçta küçültme işlevi taşırken zamanla baba soyunu bildiren bir işleve kavuşmuş; çoğu kez bir aile kolunun genç üyesini ya da soyundan gelen kişiyi belirtmiştir. Kökünde Musa kişi adı veya lakabı bulunabilir. Ancak soyadı kökenleri yalnızca yazılış biçiminden hareketle nadiren kesin olarak kanıtlanabilir; birbiriyle akraba olmayan birkaç aile aynı soyadını bağımsız biçimde oluşturmuş olabilir.",
                 "Musa, İngilizcede Moses olarak bilinen adın Arapça biçimidir ve Yahudilik, Hristiyanlık ile İslam'ın ortak kabul ettiği temel şahsiyetlerden biridir. Bu durum, Musa'dan türeyen adların Balkanlar'daki farklı dinî ve etnik topluluklarda görülmesini açıklar. Dolayısıyla bu soyadı; Slav dili, Osmanlı dönemi adlandırma geleneği ve çeşitli dinî geleneklerin yüzyıllar boyunca etkileşim içinde olduğu bir coğrafyayı yansıtır.",
@@ -87,7 +84,7 @@ const COPY = {
             ]
         },
         given: {
-            meta: "Ad · Eve uzanan bir çizgi",
+            meta: "Ad",
             blocks: [
                 "Lovro, Latince Laurentius'tan türeyen geniş Avrupa ad ailesinin Hırvatça ve Slovence biçimidir. Laurentius kelimesi kelimesine “Laurentumlu kişi” anlamına geliyordu; Laurentum, Roma yakınlarında antik bir kentti. Kentin adı geleneksel olarak Latince defne anlamındaki laurus sözcüğüyle ilişkilendirildi; böylece ad zamanla “defneyle taçlandırılmış” biçimindeki tanıdık anlamını kazandı.",
                 "Her dem yeşil defne, Laurus nobilis, hem yararlı hem de simgeseldi. Yaprakları yemeklerde ve tıpta kullanılırken, Yunan ve Roma çelenkleri spor galiplerini, askerî başarıları, şairleri ve kamusal başarıları onurlandırıyordu. Bu simgecilik, İngilizcedeki “laureate” sözcüğünde ve “resting on one's laurels” deyiminde yaşamayı sürdürüyor: Bitki, emekle kazanılmış ve toplumca tanınmış seçkinliğin kısa bir ifadesine dönüştü.",
@@ -95,7 +92,6 @@ const COPY = {
             ]
         },
         evolvesInto: " biçimine dönüşür: ",
-        footer: "Söylemesi kolay. Geldiğim yerden ayırmak imkânsız."
     }
 }
 
@@ -113,7 +109,6 @@ function ArticleNameOrigins({ dataWrapper }) {
                                 evolvesInto={copy.evolvesInto}
 />
                 ))}
-                <footer><span/>{copy.footer}</footer>
             </div>
         </Article>
     )
@@ -122,17 +117,17 @@ function ArticleNameOrigins({ dataWrapper }) {
 function NameOrigin({ story, index, evolvesInto }) {
     return (
         <section className={`name-origin name-origin-${story.id}`} aria-labelledby={`name-origin-${story.id}`}>
-            <div className="name-origin-display">
+            <div className="name-origin-header">
                 <div className="name-origin-meta"><b>0{index + 1}</b>{story.meta}</div>
-                <h3 id={`name-origin-${story.id}`} className="visually-hidden">{story.name}</h3>
-                <div aria-hidden="true">
-                    <PretextInteractiveText html={story.name} className="name-origin-word"
-                                            effectVariant="wave" terrainVariant="detailed"
-                                            revealOnScroll={false} replayOnHover={false}
-                                            widthMeasurementMode="self_only"/>
+                <div className="name-origin-display">
+                    <h3 id={`name-origin-${story.id}`} className="visually-hidden">{story.name}</h3>
+                    <div aria-hidden="true">
+                        <PretextInteractiveText html={story.name} className="name-origin-word"
+                                                effectVariant="wave" terrainVariant="detailed"
+                                                revealOnScroll={false} replayOnHover={false}
+                                                widthMeasurementMode="self_only"/>
+                    </div>
                 </div>
-            </div>
-            <div className="name-origin-copy">
                 <div className="name-origin-lineage" aria-label={story.trail.join(evolvesInto)}>
                     {story.trail.map((step, stepIndex) => (
                         <span key={step}>
@@ -141,6 +136,8 @@ function NameOrigin({ story, index, evolvesInto }) {
                         </span>
                     ))}
                 </div>
+            </div>
+            <div className="name-origin-copy">
                 {story.blocks.map((block, blockIndex) => (
                         <p key={`${story.id}-${blockIndex}`}
                            className={`name-origin-story-mobile name-origin-story-${blockIndex + 1}`}>

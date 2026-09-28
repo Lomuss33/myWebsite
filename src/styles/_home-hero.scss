@@ -48,7 +48,7 @@ html[data-layout] section#section-about {
             li.article-inline-list-item {
                 flex: 1 1 0; width: 0; min-width: 0;
                 height: 44px; min-height: 44px;
-            }
+        }
         }
         .article-inline-list-item-control {
             height: 44px; min-height: 44px;
@@ -470,8 +470,6 @@ html:is([data-layout="normal"], [data-layout="ultrawide"]) section#section-about
         margin-top: .45rem;
         .article-name-origins-panel { padding-inline: .25rem; }
         section.name-origin { padding: .7rem 0; }
-        .name-origin-display { width: 33%; margin-right: 1rem; }
-        .name-origin-surname .name-origin-display { margin-left: 1rem; }
         div.name-origin-word.pretext-interactive-text {
             font-size: clamp(4.5rem, 8cqi, 5.75rem) !important;
             line-height: 1.02;
@@ -482,15 +480,8 @@ html:is([data-layout="normal"], [data-layout="ultrawide"]) section#section-about
             line-height: 1.45;
             p.name-origin-story-mobile { margin-bottom: .5rem; }
         }
-        .name-origin-lineage { gap: .2rem .4rem; margin-bottom: .45rem; font-size: .82em; }
-        .article-name-origins-panel > footer { padding-top: .5rem; font-size: .78rem; }
+        .name-origin-lineage { gap: .2rem .4rem; font-size: .82em; }
         @container name-origins (max-width: 35rem) {
-            .name-origin-display,
-            .name-origin-surname .name-origin-display {
-                float: none;
-                width: 100%;
-                margin: 0 0 .45rem;
-            }
             div.name-origin-word.pretext-interactive-text {
                 font-size: clamp(2.25rem, 12cqi, 3.75rem) !important;
             }
@@ -629,8 +620,6 @@ html:is([data-layout="normal"], [data-layout="ultrawide"]) section#section-about
 
             .article-name-origins-panel { padding-inline: .18rem; }
             section.name-origin { padding: .48rem 0; }
-            .name-origin-display { width: 30%; margin-right: .7rem; }
-            .name-origin-surname .name-origin-display { margin-left: .7rem; }
 
             div.name-origin-word.pretext-interactive-text {
                 font-size: clamp(3.45rem, 6.3cqi, 4.3rem) !important;
@@ -645,8 +634,7 @@ html:is([data-layout="normal"], [data-layout="ultrawide"]) section#section-about
                 p.name-origin-story-mobile { margin-bottom: .35rem; }
             }
 
-            .name-origin-lineage { gap: .14rem .28rem; margin-bottom: .3rem; font-size: .76em; }
-            .article-name-origins-panel > footer { padding-top: .35rem; font-size: .7rem; }
+            .name-origin-lineage { gap: .14rem .28rem; font-size: .76em; }
 
             @container name-origins (max-width: 35rem) {
                 div.name-origin-word.pretext-interactive-text {
@@ -840,16 +828,9 @@ html[data-layout="mobile"] section#section-about {
         margin-top: .2rem;
         .article-name-origins-panel { padding-inline: .1rem; }
         section.name-origin { padding: .35rem 0; }
-        .name-origin-display,
-        .name-origin-surname .name-origin-display {
-            float: none;
-            width: 100%;
-            margin: 0 0 .3rem;
-        }
         div.name-origin-word.pretext-interactive-text {
             font-size: clamp(1.65rem, 7cqi, 3.4rem) !important;
             line-height: 1;
-            text-wrap: balance;
         }
         .name-origin-meta { font-size: clamp(.58rem, 2.4vw, .7rem); margin-bottom: .12rem; }
         .name-origin-copy {
@@ -857,8 +838,7 @@ html[data-layout="mobile"] section#section-about {
             line-height: 1.38;
             p.name-origin-story-mobile { margin-bottom: .25rem; }
         }
-        .name-origin-lineage { gap: .12rem .22rem; margin-bottom: .25rem; font-size: .72em; }
-        .article-name-origins-panel > footer { padding-top: .28rem; font-size: .66rem; }
+        .name-origin-lineage { gap: .12rem .22rem; font-size: .72em; }
     }
 
     article#article-7-section-about {

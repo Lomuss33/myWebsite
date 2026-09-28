@@ -1514,3 +1514,273 @@ article.article-location-compare div.article-content {
         transform: none;
     }
 }
+
+// Keep the map controls owned by this component. A compact toolbar, readable
+// natural-flow intro, and quieter map frames work consistently in every pane.
+.article-location-compare {
+    > .article-content {
+        gap: clamp(0.55rem, 1.1vw, 0.8rem);
+        padding: clamp(0.55rem, 1vw, 0.75rem);
+        border-width: 1px;
+        border-radius: 1rem;
+        background: color-mix(in srgb, var(--location-panel) 64%, transparent);
+        box-shadow: 0 0.75rem 2rem var(--location-shadow);
+    }
+
+    .location-compare-intro {
+        gap: 0.35rem;
+
+        .location-compare-kicker {
+            width: fit-content;
+            max-width: 100%;
+            padding: 0;
+            border: 0;
+            border-radius: 0;
+            background: none;
+            color: var(--location-cyan);
+            box-shadow: none;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+        }
+
+        .location-compare-pretext {
+            font-size: clamp(0.9rem, 0.86rem + 0.16vw, 1rem);
+            line-height: 1.48;
+
+            > span {
+                display: inline;
+                width: auto;
+                opacity: 1;
+                transform: none;
+                animation: none;
+            }
+        }
+    }
+
+    .location-compare-toolbar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        align-items: stretch;
+        gap: 0.45rem;
+        min-height: 0;
+        padding: 0.5rem;
+        border: 1px solid color-mix(in srgb, var(--location-cyan) 26%, var(--location-soft-border));
+        border-radius: 0.9rem;
+        background: color-mix(in srgb, var(--location-panel) 88%, transparent);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+        &::after { display: none; }
+    }
+
+    .location-compare-lock {
+        min-height: 2.75rem;
+        gap: 0.55rem;
+        padding: 0.25rem 0.4rem;
+        border: 0;
+        border-radius: 0.5rem;
+        background: transparent;
+        box-shadow: none;
+
+        strong {
+            color: var(--location-ink);
+            font-size: 0.88rem;
+        }
+
+        .location-compare-lock-copy small {
+            color: var(--location-muted);
+            font-size: 0.68rem;
+        }
+    }
+
+    .location-compare-lock-signal {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 0.65rem;
+        box-shadow: none;
+    }
+
+    .location-compare-presets {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        grid-column: 1;
+        grid-row: auto;
+        gap: 0;
+    }
+
+    .location-compare-presets-title { display: none; }
+
+    .location-compare-preset-list {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.3rem;
+    }
+
+    .location-compare-preset {
+        min-height: 2.75rem;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto auto;
+        justify-items: center;
+        gap: 0.1rem;
+        padding: 0.25rem 0.15rem;
+        border-width: 1px;
+        border-top-width: 2px;
+        border-radius: 0.55rem;
+        background: color-mix(in srgb, var(--location-panel) 94%, transparent);
+        box-shadow: none;
+
+        > i { display: none; }
+
+        span,
+        em {
+            max-width: 100%;
+            margin: 0;
+            overflow: hidden;
+            font-size: clamp(0.62rem, 0.72rem, 0.75rem);
+            line-height: 1.1;
+            text-align: center;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        span { font-weight: 750; }
+        em { font-weight: 550; }
+
+        &:hover,
+        &:focus-visible,
+        &.is-active {
+            transform: none;
+            box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--preset-color) 22%, transparent);
+        }
+    }
+
+    .location-compare-actions {
+        display: grid;
+        grid-column: 1;
+        grid-row: auto;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.35rem;
+
+        button,
+        button.location-compare-pan-link {
+            display: grid;
+            grid-template-columns: 1.45rem minmax(0, 1fr);
+            justify-items: start;
+            height: auto;
+            min-height: 2.9rem;
+            gap: 0.35rem;
+            padding: 0.35rem 0.45rem;
+            border-width: 1px;
+            border-radius: 0.6rem;
+            background: color-mix(in srgb, var(--location-panel-elevated) 64%, var(--location-panel));
+            box-shadow: none;
+            font-size: 0.72rem;
+            line-height: 1.15;
+            text-align: center;
+
+            &:hover,
+            &:focus-visible {
+                transform: translateY(-1px);
+                box-shadow: 0 0.3rem 0.8rem color-mix(in srgb, var(--location-cyan) 12%, transparent);
+            }
+        }
+
+        button.location-compare-pan-link {
+            grid-template-columns: 1.45rem minmax(0, 1fr);
+            padding-inline: 0.4rem;
+            text-align: left;
+        }
+
+        button.location-compare-control small { font-size: 0.68rem; }
+
+        button.location-compare-reset > span:last-child {
+            font-size: 0.64rem !important;
+            line-height: 1.1;
+            white-space: nowrap;
+        }
+    }
+
+    .location-compare-control .location-compare-control-icon,
+    .location-compare-pan-link-icon,
+    .location-compare-actions button.location-compare-reset > i {
+        width: 1.45rem;
+        height: 1.45rem;
+        border-width: 1px;
+        border-radius: 0.45rem;
+    }
+
+    .location-compare-card {
+        aspect-ratio: 1.16 / 1;
+        border-width: 1px;
+        border-radius: 0.9rem;
+        box-shadow: 0 0.45rem 1rem rgba(2, 8, 18, 0.16);
+    }
+
+    .location-compare-label {
+        min-height: 3.5rem;
+        padding: 0.45rem 0.55rem;
+        gap: 0.45rem;
+        border-bottom-width: 1px;
+
+        strong { font-size: 0.9rem; }
+
+        small,
+        em { font-size: 0.68rem; }
+    }
+
+    .location-compare-footer {
+        gap: 0.25rem 0.75rem;
+        padding: 0.35rem 0.1rem 0;
+        border: 0;
+        border-top: 1px solid color-mix(in srgb, var(--location-soft-border) 65%, transparent);
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        font-size: 0.76rem;
+        font-weight: 500;
+    }
+}
+
+@media (min-width: 48rem) {
+    .article-location-compare {
+        .location-compare-toolbar {
+            grid-template-columns: minmax(11rem, 0.72fr) minmax(0, 1.28fr);
+            align-items: center;
+        }
+
+        .location-compare-lock {
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        .location-compare-presets {
+            grid-column: 2;
+            grid-row: 1;
+        }
+
+        .location-compare-actions {
+            grid-column: 1 / -1;
+            grid-row: 2;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .location-compare-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: clamp(0.65rem, 1.2vw, 1rem);
+        }
+
+        .location-compare-card { aspect-ratio: 1.14 / 1; }
+    }
+}
+
+@media (max-width: 29rem) {
+    .article-location-compare {
+        .location-compare-toolbar { padding: 0.4rem; }
+
+        .location-compare-actions button,
+        .location-compare-actions button.location-compare-pan-link {
+            min-height: 2.75rem;
+            padding: 0.3rem;
+            font-size: 0.66rem;
+        }
+    }
+}

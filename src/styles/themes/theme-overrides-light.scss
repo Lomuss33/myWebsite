@@ -643,6 +643,14 @@
     box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
 }
 
+[data-theme="light"] article.article-skills-article-3-section-education {
+    --education-language-popup-surface: linear-gradient(145deg, #ffffff, #f2f7ff);
+    --education-language-popup-border: rgba(37, 99, 235, 0.24);
+    --education-language-popup-shadow: 0 16px 30px rgba(15, 23, 42, 0.16);
+    --education-language-popup-text: #17243a;
+    --education-language-popup-row-border: rgba(37, 99, 235, 0.13);
+}
+
 [data-theme="light"] article.article-skills-article-3-section-education div.article-skills-item-avatar,
 [data-theme="light"] div.article-skills-items.article-skills-items-section-my-writings div.article-skills-item-avatar {
     border-color: rgba(37, 99, 235, 0.18);
@@ -659,6 +667,29 @@
 [data-theme="light"] article.article-skills-article-3-section-education div.article-skills-item-description,
 [data-theme="light"] div.article-skills-items.article-skills-items-section-my-writings div.article-skills-item-description {
     color: #0f172a;
+}
+
+[data-theme="light"] article.article-skills-article-3-section-education div.article-skills-item-title-rating,
+[data-theme="light"] article.article-skills-article-3-section-education span.article-skills-item-title-rating-percentage,
+[data-theme="light"] article.article-skills-article-3-section-education span.article-skills-item-title-rating-percentage span.article-skills-item-title-percentage {
+    color: #334155;
+    text-shadow: none !important;
+}
+
+[data-theme="light"] article.article-skills-article-3-section-education div.article-skills-item-title-rating span.article-skills-item-title-suffix {
+    color: #92400e;
+    text-shadow: none !important;
+}
+
+[data-theme="light"] article.article-skills-article-3-section-education div.article-skills-item-education-language span.article-skills-item-title-rating-separator {
+    background: rgba(51, 65, 85, 0.48);
+    text-shadow: none !important;
+}
+
+[data-theme="light"] article.article-skills-article-3-section-education div.article-skills-item-education-language span.article-skills-item-title-rating-percentage,
+[data-theme="light"] article.article-skills-article-3-section-education div.article-skills-item-education-language span.article-skills-item-title-rating-percentage span.article-skills-item-title-percentage {
+    color: #334155;
+    text-shadow: none !important;
 }
 
 [data-theme="light"] article.article-skills-article-3-section-education div.article-skills-item-progress,
@@ -2932,4 +2963,44 @@
 
 [data-theme="light"] article.article-timeline--art-photography div.article-timeline-item-info-for-timelines::after {
     background: var(--photo-country-ribbon);
+}
+
+// Education keeps its intentionally transparent card shells in both themes.
+// In light mode, neutral white translucent bands separate text from the page
+// without adding the blue cast or the bright glow of the winding connector.
+[data-theme="light"] article#article-1-section-education ul.article-timeline-items-has-education-snake {
+    --education-snake-filter: none;
+    --education-snake-opacity: 0.48;
+}
+
+[data-theme="light"] article#article-1-section-education svg.article-timeline-education-snake path {
+    filter: none !important;
+    opacity: 0.48 !important;
+}
+
+[data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines {
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+}
+
+[data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines::before {
+    box-shadow: none;
+}
+
+[data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines-education-meta-row::before {
+    border-color: rgba(100, 116, 139, 0.2);
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.74);
+}
+
+[data-theme="light"] article#article-1-section-education li.article-timeline-item-info-for-timelines-body-list-item::before {
+    border-color: rgba(100, 116, 139, 0.16) !important;
+    background: rgba(255, 255, 255, 0.7) !important;
+}
+
+[data-theme="light"] article#article-1-section-education li[data-education-item-id="4"] div.article-timeline-item-info-for-timelines-body-text::before,
+[data-theme="light"] article#article-1-section-education li[data-education-item-id="5"] div.article-timeline-item-info-for-timelines-body-text::before {
+    border-color: rgba(100, 116, 139, 0.16) !important;
+    background: rgba(255, 255, 255, 0.7) !important;
 }

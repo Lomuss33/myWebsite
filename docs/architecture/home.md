@@ -10,12 +10,13 @@ Route: `#about`. Data: [home.json](../../public/data/sections/home.json). Regist
 | Profile stack | `ArticleFeature.jsx` | Five images, no placeholder cards; click/Enter/Space cycles; spread uses available media space |
 | Intro text | `PretextInteractiveText.jsx` | Measured animated lines; refresh typography on width changes |
 | Skill proof | `ArticleInfoList.jsx` | Stable cards, in-card details, Escape dismissal, scroll for long text |
-| Name origins | `ArticleNameOrigins.jsx/.scss` | Native paragraphs around animated names; narrow-screen stacking |
+| Name origins | `ArticleNameOrigins.jsx/.scss` | Animated names with metadata and name lineage in a container-responsive header; story paragraphs below |
 | Human stack | `ArticleStack.jsx` | Half-outside circles, neighbor clearance, distinct hover/pinned states |
 
 ## Constraints learned
 
 - Ordinary wrapping overrides on animated measured lines caused overlap. Change measured width/font instead.
+- Name-origin headers use the panel's container width: three columns when wide, metadata/name plus a full-width lineage row at medium widths, and a compact stack only in very narrow panels. Preserve the measured animated-name line and adjust its available width/font for responsive fit.
 - Intro text must not resize to fill portrait height.
 - `public/images/profile-placeholder.png` is the future-photo/error fallback. Stop retrying if that URL fails.
 - Human-stack card widths must include outside-circle space; 100% width plus margin overlapped neighbors.
@@ -47,5 +48,7 @@ Image stack cycling follows neighboring slots (center, near right, far right, fa
 Further Home refinement (2026-09-26): an additional pass reduces the remaining oversized elements after the initial zoom-removal restoration: the welcome heading, contact chip visuals, intro portrait and copy, skill tiles, name displays/copy, human-stack cards, and article rhythm. It applies in normal/ultrawide layouts at viewports at least 50rem wide and 30rem tall. The page content height at 1366x768 fell from about 2440px to about 1975px in an English/dark Chromium sample, while 44px interactive targets remain. Mobile and short landscape layouts do not receive this additional reduction. This is a density adjustment rather than a promise of identical percentage scaling for every translation or viewport.
 
 Mobile Home density update (2026-09-26): a separate `data-layout="mobile"` scale now compacts the welcome heading, article rhythm, contact-chip visuals, intro portrait/copy, skill cards, name-origin displays/copy, and human-stack tiles. It wraps the welcome title, stacks the intro below 36rem of content width, and caps display sizes on tall touch screens. Content keeps natural height and controls retain 44px hit areas. Focused checks cover 280x653, 320x568, 390x844, and 1440x2560; the rules do not modify the navigation shell.
+
+Name-origin layout update (2026-09-28): metadata, animated name, and lineage now share a container-responsive header. Panels wider than 36rem use three columns; narrower panels put the lineage on a second row, with only very narrow panels stacking all three. The paragraphs remain full-width below. A production build passed, and Chromium preview measurements from 360 through 1920px confirmed that the measured animated word fits its slot where the article is present.
 
 Human-stack circle sizing (2026-09-27): the circle follows the compact card height, with an 8px vertical allowance in the mobile and regular desktop modes. Short landscape cards use a viewport-bounded circle that can approach their taller card height. The card's existing half-circle inset and text reserve grow from the same avatar-size token, so the circle remains outside the label/value area.

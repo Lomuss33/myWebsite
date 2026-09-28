@@ -3358,8 +3358,8 @@ html[data-layout] article#article-1-section-experience div.article-timeline-item
 @media (min-width: 48rem) {
     @container experience-timeline-card (max-width: 72rem) {
         html:is([data-layout="normal"], [data-layout="ultrawide"]) article#article-1-section-experience div.article-timeline-item-info-for-timelines-body {
-            font-size: clamp(.76rem, calc(.72rem + .25cqi), .82rem) !important;
-            line-height: 1.44;
+            font-size: clamp(.68rem, calc(.67rem + .1cqi), .72rem) !important;
+            line-height: 1.46;
 
             div.article-timeline-item-info-for-timelines-body-text,
             ul.article-timeline-item-info-for-timelines-body-list,

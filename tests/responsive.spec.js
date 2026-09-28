@@ -358,8 +358,8 @@ test('Experience desktop density keeps all three articles compact and readable',
         expect(metrics.timelineHeading.font).toBeLessThanOrEqual(31)
         expect(metrics.timelineTitle.font).toBeLessThanOrEqual(19)
         if(metrics.timelineCard.width<=1152) {
-            expect(metrics.timelineBody.font).toBeGreaterThanOrEqual(13)
-            expect(metrics.timelineBody.font).toBeLessThanOrEqual(13.2)
+            expect(metrics.timelineBody.font).toBeGreaterThanOrEqual(10.8)
+            expect(metrics.timelineBody.font).toBeLessThanOrEqual(11.6)
         } else {
             expect(metrics.timelineBody.font).toBeGreaterThanOrEqual(14.5)
             expect(metrics.timelineBody.font).toBeLessThanOrEqual(15.5)
@@ -404,7 +404,7 @@ test('Experience desktop density does not leak into narrow landscape or mobile',
 
 test('Experience timeline text scales with narrow desktop cards', async ({page})=>{
     await preferences(page)
-    for(const [width,height] of [[800,650],[900,768],[1024,768],[1120,768],[1180,768],[1366,768]]) {
+    for(const [width,height] of [[800,650],[900,768],[1024,768],[1092,922],[1120,768],[1180,768],[1366,768]]) {
         await page.setViewportSize({width,height})
         await openSection(page,'experience')
         await expect(page.locator('html')).toHaveAttribute('data-layout','normal')
@@ -425,8 +425,9 @@ test('Experience timeline text scales with narrow desktop cards', async ({page})
         })
         expect(sizes.content.every(size=>size.width>0)).toBe(true)
         if(sizes.cardWidth<=1152) {
-            expect(sizes.bodyFont).toBeLessThanOrEqual(13.2)
-            expect(sizes.content.every(size=>size.font<=13.2)).toBe(true)
+            expect(sizes.bodyFont).toBeGreaterThanOrEqual(10.8)
+            expect(sizes.bodyFont).toBeLessThanOrEqual(11.6)
+            expect(sizes.content.every(size=>size.font>=10.8&&size.font<=11.6)).toBe(true)
         } else {
             expect(sizes.content.every(size=>size.font<=15.5)).toBe(true)
         }

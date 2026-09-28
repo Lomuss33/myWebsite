@@ -35,6 +35,14 @@ div.scrollable.scrollable-mobile-native {
     touch-action: auto;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+    // Native mobile scrolling keeps momentum; this only smooths programmatic
+    // section navigation and focus-driven scroll adjustments.
+    div.scrollable.scrollable-mobile-native {
+        scroll-behavior: smooth;
+    }
+}
+
 div.scrollable.scrollable-mobile-native > div.scrollable-content {
     padding-bottom: var(--mobile-nav-tabs-total-height, var(--nav-tabs-height, 0px));
 }

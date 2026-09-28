@@ -1769,19 +1769,40 @@ test('Contact desktop density stays off in narrow landscape and mobile layouts',
     }
 })
 
-test('Contact location comparison stays compact and symmetrical across narrow and tablet widths', async ({page})=>{
+test('Contact location comparison stays compact and symmetrical across viewport widths', async ({page})=>{
     await preferences(page)
 
-    for(const [width,height] of [[320,700],[390,844],[768,1024]]) {
+    for(const [width,height] of [[320,700],[390,844],[768,1024],[1024,768],[1920,1080]]) {
         await page.setViewportSize({width,height})
         await openSection(page,'contact')
         const map=page.locator('#article-3-section-contact')
+        await expect(map.locator('.location-compare-kicker')).toHaveCount(0)
+        await expect(map.locator('.location-compare-footer > span')).toHaveCount(1)
+        await expect(map.locator('.location-compare-control small, .location-compare-control-orbit, .location-compare-control-icon')).toHaveCount(0)
+        await expect(map.locator('.location-compare-control--out > i')).toHaveClass(/fa-minus/)
+        await expect(map.locator('.location-compare-control--in > i')).toHaveClass(/fa-plus/)
         const metrics=await map.evaluate(root=>{
             const rect=selector=>{
                 const {width,height}=root.querySelector(selector).getBoundingClientRect()
                 return {width,height}
             }
+            const articleContent=root.querySelector('.article-content')
+            const contentStyle=getComputedStyle(articleContent)
+            const zoomControls=[...root.querySelectorAll('.location-compare-control')].map(element=>({
+                width:element.getBoundingClientRect().width,
+                height:element.getBoundingClientRect().height,
+                background:getComputedStyle(element).backgroundColor,
+                borderWidth:getComputedStyle(element).borderTopWidth
+            }))
             return {
+                contentFrame:{
+                    padding:contentStyle.padding,
+                    borderWidth:contentStyle.borderTopWidth,
+                    background:contentStyle.backgroundColor,
+                    width:articleContent.getBoundingClientRect().width,
+                    parentWidth:articleContent.parentElement.getBoundingClientRect().width
+                },
+                zoomControls,
                 toolbar:rect('.location-compare-toolbar'),
                 intro:rect('.location-compare-intro'),
                 narrativeSpanDisplay:getComputedStyle(root.querySelector('.location-compare-pretext > span')).display,
@@ -1797,7 +1818,13 @@ test('Contact location comparison stays compact and symmetrical across narrow an
             }
         })
 
-        expect(metrics.toolbar.height).toBeLessThan(250)
+        expect(metrics.toolbar.height).toBeLessThan(180)
+        expect(metrics.contentFrame.padding).toBe('0px')
+        expect(metrics.contentFrame.borderWidth).toBe('0px')
+        expect(metrics.contentFrame.width).toBeCloseTo(metrics.contentFrame.parentWidth,0)
+        expect(metrics.zoomControls.every(control=>control.width>=43.5 && control.height>=43.5)).toBe(true)
+        expect(metrics.zoomControls.every(control=>control.borderWidth==='0px')).toBe(true)
+        expect(metrics.zoomControls.every(control=>control.background==='rgba(0, 0, 0, 0)')).toBe(true)
         expect(metrics.intro.height).toBeLessThan(210)
         expect(metrics.narrativeSpanDisplay).toBe('inline')
         expect(metrics.presets).toHaveLength(3)
@@ -1810,6 +1837,129 @@ test('Contact location comparison stays compact and symmetrical across narrow an
         if(width>=768)
             expect(Math.abs(metrics.maps[0].width-metrics.maps[1].width)).toBeLessThan(1)
     }
+})
+
+test('Contact map bridge stays compact and labels use the active theme palette', async ({page})=>{
+    const themeLabelColors=[]
+    const themeLabelBackgrounds=[]
+    for(const theme of ['dark','light']) {
+        const themedPage=theme==='dark'?page:await page.context().newPage()
+        await preferences(themedPage,'en',theme)
+        const snapshots=[]
+
+        for(const [width,height] of [[390,844],[1366,768]]) {
+            await themedPage.setViewportSize({width,height})
+            await openSection(themedPage,'contact')
+            const map=themedPage.locator('#article-3-section-contact')
+            await expect(map.locator('.location-compare-live')).toHaveCount(0)
+            if(width===390) {
+                const label=map.locator('.location-compare-label').first()
+                const menuId=await label.getAttribute('aria-controls')
+                await expect(themedPage.locator(`#${menuId}`)).toHaveAttribute('role','listbox')
+                await label.click()
+                await expect(label).toHaveAttribute('aria-expanded','true')
+                await expect(themedPage.locator(`#${menuId}`)).toHaveClass(/location-compare-menu--open/)
+                const pickerMetrics=await themedPage.locator(`#${menuId}`).evaluate(menu=>({
+                    height:menu.getBoundingClientRect().height,
+                    borderWidth:getComputedStyle(menu).borderTopWidth,
+                    padding:getComputedStyle(menu).padding,
+                    optionHeights:[...menu.querySelectorAll('[role="option"]')].map(option=>option.getBoundingClientRect().height),
+                    optionBorders:[...menu.querySelectorAll('[role="option"]')].map(option=>getComputedStyle(option).borderTopWidth)
+                }))
+                // Eight city choices still need four touch-friendly rows in a
+                // two-column list; the old full-card menu was about 263px tall.
+                expect(pickerMetrics.height).toBeLessThanOrEqual(235)
+                expect(pickerMetrics.borderWidth).toBe('1px')
+                expect(pickerMetrics.padding).toBe('8px')
+                expect(pickerMetrics.optionHeights.every(height=>height>=43.5)).toBe(true)
+                expect(pickerMetrics.optionBorders.every(border=>border==='0px')).toBe(true)
+                await expect(themedPage.locator(`#${menuId} .fa-arrow-up-right-from-square`)).toHaveCount(0)
+                await label.click()
+            }
+            const snapshot=await themedPage.locator('#article-3-section-contact').evaluate(root=>{
+                const cards=[...root.querySelectorAll('.location-compare-card')]
+                const bridge=root.querySelector('.location-compare-bridge')
+                const bridgeCore=bridge.querySelector('.location-compare-bridge-core')
+                const labels=[...root.querySelectorAll('.location-compare-label')]
+                const rect=element=>{
+                    const {x,y,width,height}=element.getBoundingClientRect()
+                    return {x,y,width,height,right:x+width,bottom:y+height}
+                }
+                return {
+                    cards:cards.map(rect),
+                    bridge:rect(bridge),
+                    bridgeCore:rect(bridgeCore),
+                    labels:labels.map(label=>({
+                        color:getComputedStyle(label).color,
+                        background:getComputedStyle(label).backgroundColor,
+                        borderWidth:getComputedStyle(label).borderBottomWidth
+                    }))
+    }
+})
+
+            snapshots.push(snapshot)
+        }
+
+        const [mobile,desktop]=snapshots
+        themeLabelColors.push(mobile.labels[0].color)
+        themeLabelBackgrounds.push(mobile.labels[0].background)
+        expect(mobile.bridge.height).toBeLessThanOrEqual(28)
+        expect(mobile.bridge.y).toBeGreaterThanOrEqual(mobile.cards[0].bottom)
+        expect(mobile.bridge.bottom).toBeLessThanOrEqual(mobile.cards[1].y)
+        expect(mobile.bridgeCore.width).toBeLessThanOrEqual(64)
+        expect(desktop.bridge.height).toBeLessThanOrEqual(28)
+        expect(desktop.bridgeCore.width).toBeLessThanOrEqual(64)
+        for(const snapshot of snapshots) {
+            expect(snapshot.labels[0].color).toBe(snapshot.labels[1].color)
+            expect(snapshot.labels.every(label=>label.borderWidth==='1px')).toBe(true)
+        }
+
+        if(themedPage!==page)
+            await themedPage.close()
+    }
+    expect(themeLabelColors[0]).not.toBe(themeLabelColors[1])
+    expect(themeLabelBackgrounds[0]).not.toBe(themeLabelBackgrounds[1])
+})
+
+test('Contact page wheel scroll stays smooth while modified wheel zooms both maps', async ({page})=>{
+    await page.setViewportSize({width:1366,height:768})
+    await preferences(page)
+    await openSection(page,'contact')
+    const map=page.locator('#article-3-section-contact')
+    const scrollable=page.locator('#scrollable-contact')
+    const mapSurface=map.locator('.location-compare-map').first()
+    const scaleReadout=map.locator('.location-compare-lock-copy strong')
+
+    await scrollable.evaluate(element=>{element.scrollTop=0})
+    const plainWheelPrevented=await mapSurface.evaluate(element=>!element.dispatchEvent(new WheelEvent('wheel',{
+        deltaY:120,
+        bubbles:true,
+        cancelable:true
+    })))
+    expect(plainWheelPrevented).toBe(true)
+    await expect.poll(()=>scrollable.evaluate(element=>element.scrollTop),{timeout:1000}).toBeGreaterThan(0)
+
+    const scaleBeforeZoom=await scaleReadout.textContent()
+    const scrollBeforeZoom=await scrollable.evaluate(element=>element.scrollTop)
+    const modifiedWheelPrevented=await mapSurface.evaluate(element=>!element.dispatchEvent(new WheelEvent('wheel',{
+        deltaY:-120,
+        ctrlKey:true,
+        bubbles:true,
+        cancelable:true
+    })))
+    expect(modifiedWheelPrevented).toBe(true)
+    await expect.poll(()=>scaleReadout.textContent(),{timeout:1000}).not.toBe(scaleBeforeZoom)
+    expect(await scrollable.evaluate(element=>element.scrollTop)).toBeCloseTo(scrollBeforeZoom,0)
+
+    const scaleBeforeButton=await scaleReadout.textContent()
+    await map.locator('.location-compare-control--out').click()
+    await expect.poll(()=>scaleReadout.textContent(),{timeout:1000}).not.toBe(scaleBeforeButton)
+
+    const streetPreset=map.locator('.location-compare-preset').first()
+    await streetPreset.click()
+    await expect(streetPreset).toHaveAttribute('aria-pressed','true')
+    await map.locator('.location-compare-reset').click()
+    await expect(scaleReadout).toHaveText(scaleBeforeZoom)
 })
 
 test('font enlargement retains readable form text and scroll access', async ({page})=>{

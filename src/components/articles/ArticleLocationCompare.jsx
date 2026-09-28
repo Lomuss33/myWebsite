@@ -71,11 +71,17 @@ function formatScale(scale) {
     return `${Math.round(scale)} m / px`
 }
 
+function mapTransitionOptions(duration) {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    return {animate: !reduceMotion && duration > 0, duration: reduceMotion ? 0 : duration}
+}
+
 function ArticleLocationCompare({dataWrapper}) {
     const containerRefs = useRef([])
     const mapsRef = useRef([])
     const markersRef = useRef([])
     const syncingRef = useRef(false)
+    const zoomSyncTimerRef = useRef(0)
     const panSyncRef = useRef(null)
     const isPanLinkedRef = useRef(true)
     const menuRootRef = useRef(null)
@@ -106,15 +112,46 @@ function ArticleLocationCompare({dataWrapper}) {
         const sourceScale = metersPerPixel(sourceMap.getCenter().lat, sourceMap.getZoom())
         const targetZoom = zoomForMetersPerPixel(targetMap.getCenter().lat, sourceScale)
 
-        syncingRef.current = true
-        targetMap.setZoom(targetZoom, {animate: false})
-        syncingRef.current = false
+        if(Math.abs(targetMap.getZoom() - targetZoom) > 0.005) {
+            syncingRef.current = true
+            window.clearTimeout(zoomSyncTimerRef.current)
+            targetMap.setZoom(targetZoom, mapTransitionOptions(0.2))
+            zoomSyncTimerRef.current = window.setTimeout(() => {
+                syncingRef.current = false
+            }, 320)
+        }
         updateScaleReadout(sourceScale)
+    }
+
+    const animateLinkedZoom = (sourceIndex, nextZoom, anchorPoint = null, duration = 0.24) => {
+        if(mapsRef.current.length !== LOCATION_GROUPS.length) return
+
+        const sourceMap = mapsRef.current[sourceIndex]
+        const targetMap = mapsRef.current[sourceIndex === 0 ? 1 : 0]
+        if(!sourceMap || !targetMap) return
+
+        const boundedZoom = Math.max(sourceMap.getMinZoom(), Math.min(sourceMap.getMaxZoom(), nextZoom))
+        const nextScale = metersPerPixel(sourceMap.getCenter().lat, boundedZoom)
+        const targetZoom = zoomForMetersPerPixel(targetMap.getCenter().lat, nextScale)
+
+        syncingRef.current = true
+        window.clearTimeout(zoomSyncTimerRef.current)
+        const transition = mapTransitionOptions(duration)
+        if(anchorPoint)
+            sourceMap.setZoomAround(anchorPoint, boundedZoom, transition)
+        else
+            sourceMap.setZoom(boundedZoom, transition)
+        targetMap.setZoom(targetZoom, transition)
+        updateScaleReadout(nextScale)
+        zoomSyncTimerRef.current = window.setTimeout(() => {
+            syncingRef.current = false
+        }, transition.duration * 1000 + 140)
     }
 
     useEffect(() => {
         const initialLocations = selectedLocationsRef.current
         const initialScale = metersPerPixel(initialLocations[0].coordinates[1], STARTING_ZOOM)
+        const mapWheelHandlers = []
         const maps = initialLocations.map((location, index) => {
             const map = L.map(containerRefs.current[index], {
                 center: [location.coordinates[1], location.coordinates[0]],
@@ -123,6 +160,8 @@ function ArticleLocationCompare({dataWrapper}) {
                 maxZoom: 18.75,
                 zoomSnap: 0,
                 zoomDelta: 0.25,
+                scrollWheelZoom: false,
+                touchZoom: true,
                 zoomControl: false,
                 attributionControl: false,
                 boxZoom: false
@@ -151,7 +190,17 @@ function ArticleLocationCompare({dataWrapper}) {
                 .addTo(map)
             markersRef.current[index] = marker
 
-            map.on("zoom", () => syncScaleFrom(index))
+            map.on("zoomend", () => syncScaleFrom(index))
+            const handleModifiedWheel = event => {
+                if((!event.ctrlKey && !event.metaKey) || event.target.closest(".location-compare-menu")) return
+                event.preventDefault()
+                event.stopPropagation()
+                const zoomChange = Math.sign(event.deltaY) * Math.min(0.65, Math.max(0.15, Math.abs(event.deltaY) / 250)) * -1
+                animateLinkedZoom(index, map.getZoom() + zoomChange, map.mouseEventToContainerPoint(event))
+            }
+            const mapContainer = map.getContainer()
+            mapContainer.addEventListener("wheel", handleModifiedWheel, {passive: false})
+            mapWheelHandlers.push([mapContainer, handleModifiedWheel])
             map.on("dragstart", () => {
                 if(!isPanLinkedRef.current) return
                 const targetIndex = index === 0 ? 1 : 0
@@ -186,6 +235,8 @@ function ArticleLocationCompare({dataWrapper}) {
         setMapsReady(true)
 
         return () => {
+            window.clearTimeout(zoomSyncTimerRef.current)
+            mapWheelHandlers.forEach(([container, handler]) => container.removeEventListener("wheel", handler))
             maps.forEach(map => map.remove())
             mapsRef.current = []
             markersRef.current = []
@@ -209,17 +260,21 @@ function ArticleLocationCompare({dataWrapper}) {
     const changeZoom = (delta) => {
         const sourceMap = mapsRef.current[0]
         if(!sourceMap) return
-        sourceMap.setZoom(sourceMap.getZoom() + delta, {animate: false})
+        animateLinkedZoom(0, sourceMap.getZoom() + delta)
     }
 
     const setScalePreset = (nextScale) => {
         if(mapsRef.current.length !== LOCATION_GROUPS.length) return
 
+        const transition = mapTransitionOptions(0.28)
         syncingRef.current = true
+        window.clearTimeout(zoomSyncTimerRef.current)
         mapsRef.current.forEach(map => {
-            map.setZoom(zoomForMetersPerPixel(map.getCenter().lat, nextScale), {animate: false})
+            map.setZoom(zoomForMetersPerPixel(map.getCenter().lat, nextScale), transition)
         })
-        syncingRef.current = false
+        zoomSyncTimerRef.current = window.setTimeout(() => {
+            syncingRef.current = false
+        }, transition.duration * 1000 + 140)
         updateScaleReadout(nextScale)
     }
 
@@ -239,15 +294,19 @@ function ArticleLocationCompare({dataWrapper}) {
         const initialScale = metersPerPixel(defaults[0].coordinates[1], STARTING_ZOOM)
         setSelectedLocationIds(defaults.map(location => location.id))
         syncingRef.current = true
+        window.clearTimeout(zoomSyncTimerRef.current)
+        const transition = mapTransitionOptions(0.48)
         mapsRef.current.forEach((map, index) => {
             markersRef.current[index]?.setLatLng([defaults[index].coordinates[1], defaults[index].coordinates[0]])
-            map.setView(
-                [defaults[index].coordinates[1], defaults[index].coordinates[0]],
-                zoomForMetersPerPixel(defaults[index].coordinates[1], initialScale),
-                {animate: false}
-            )
+            const center = [defaults[index].coordinates[1], defaults[index].coordinates[0]]
+            if(transition.animate)
+                map.flyTo(center, zoomForMetersPerPixel(defaults[index].coordinates[1], initialScale), {...transition, easeLinearity: 0.25, noMoveStart: true})
+            else
+                map.setView(center, zoomForMetersPerPixel(defaults[index].coordinates[1], initialScale), transition)
         })
-        syncingRef.current = false
+        zoomSyncTimerRef.current = window.setTimeout(() => {
+            syncingRef.current = false
+        }, transition.duration * 1000 + 140)
         updateScaleReadout(initialScale)
     }
 
@@ -268,11 +327,13 @@ function ArticleLocationCompare({dataWrapper}) {
             syncingRef.current = false
             updateScaleReadout(currentScale)
         })
-        map.flyTo(
-            [location.coordinates[1], location.coordinates[0]],
-            zoomForMetersPerPixel(location.coordinates[1], currentScale),
-            {duration: 0.85, easeLinearity: 0.22, noMoveStart: true}
-        )
+        const center = [location.coordinates[1], location.coordinates[0]]
+        const zoom = zoomForMetersPerPixel(location.coordinates[1], currentScale)
+        const transition = mapTransitionOptions(0.52)
+        if(transition.animate)
+            map.flyTo(center, zoom, {...transition, easeLinearity: 0.25, noMoveStart: true})
+        else
+            map.setView(center, zoom, transition)
     }
 
     const getCountryLabel = (country) => ({
@@ -288,7 +349,6 @@ function ArticleLocationCompare({dataWrapper}) {
                  dataWrapper={dataWrapper}
                  className="article-location-compare">
             <div className="location-compare-intro">
-                <span className="location-compare-kicker">{dataWrapper.locales.locationKicker}</span>
                 <PretextLocationNarrative text={dataWrapper.locales.description}/>
             </div>
 
@@ -336,16 +396,12 @@ function ArticleLocationCompare({dataWrapper}) {
                         <span>{isPanLinked ? dataWrapper.locales.locationPanLinkedLabel : dataWrapper.locales.locationPanLinkLabel}</span>
                     </button>
                     <button type="button" className="location-compare-control location-compare-control--out" onClick={() => changeZoom(-1)} aria-label={dataWrapper.locales.locationZoomOutLabel}>
-                        <span className="location-compare-control-orbit" aria-hidden="true"/>
-                        <span className="location-compare-control-icon" aria-hidden="true"><i className="fa-solid fa-minus"/></span>
-                        <small>{dataWrapper.locales.locationZoomOutLabel}</small>
+                        <i className="fa-solid fa-minus" aria-hidden="true"/>
                     </button>
                     <button type="button" className="location-compare-control location-compare-control--in" onClick={() => changeZoom(1)} aria-label={dataWrapper.locales.locationZoomInLabel}>
-                        <span className="location-compare-control-orbit" aria-hidden="true"/>
-                        <span className="location-compare-control-icon" aria-hidden="true"><i className="fa-solid fa-plus"/></span>
-                        <small>{dataWrapper.locales.locationZoomInLabel}</small>
+                        <i className="fa-solid fa-plus" aria-hidden="true"/>
                     </button>
-                    <button type="button" className="location-compare-reset" onClick={resetMaps}>
+                    <button type="button" className="location-compare-reset" onClick={resetMaps} aria-label={dataWrapper.locales.locationResetLabel}>
                         <span className="location-compare-reset-glow" aria-hidden="true"/>
                         <i className="fa-solid fa-location-crosshairs" aria-hidden="true"/>
                         <span>{dataWrapper.locales.locationResetLabel}</span>
@@ -365,6 +421,7 @@ function ArticleLocationCompare({dataWrapper}) {
                                 className="location-compare-label"
                                 aria-haspopup="listbox"
                                 aria-expanded={openMenuIndex === index}
+                                aria-controls={`${dataWrapper.uniqueId}-location-menu-${LOCATION_GROUPS[index].id}`}
                                 onClick={() => setOpenMenuIndex(currentIndex => currentIndex === index ? null : index)}>
                             <span className="location-compare-index">0{index + 1}</span>
                             <span>
@@ -380,10 +437,11 @@ function ArticleLocationCompare({dataWrapper}) {
                         <div className="location-compare-viewport">
                             <div className="location-compare-map" ref={element => { containerRefs.current[index] = element }}/>
                             <div className={`location-compare-menu ${openMenuIndex === index ? "location-compare-menu--open" : ""}`}
+                                 id={`${dataWrapper.uniqueId}-location-menu-${LOCATION_GROUPS[index].id}`}
                                  role="listbox"
                                  aria-label={dataWrapper.locales.locationChooseLabel}>
                                 <div className="location-compare-menu-heading">
-                                    <span><i className="fa-solid fa-satellite-dish"/> {index === 0 ? dataWrapper.locales.locationBalkanMenuLabel : dataWrapper.locales.locationGermanyMenuLabel}</span>
+                                    <span>{index === 0 ? dataWrapper.locales.locationBalkanMenuLabel : dataWrapper.locales.locationGermanyMenuLabel}</span>
                                     <small>{LOCATION_GROUPS[index].locations.length} {dataWrapper.locales.locationPlacesLabel}</small>
                                 </div>
                                 <div className="location-compare-menu-grid">
@@ -397,12 +455,11 @@ function ArticleLocationCompare({dataWrapper}) {
                                                 onClick={() => selectLocation(index, option)}>
                                             <span className="location-compare-option-marker"><i/></span>
                                             <span><strong>{option.city}</strong><small>{getCountryLabel(option.country)}</small></span>
-                                            <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"/>
+                                            <i className="fa-solid fa-check" aria-hidden="true"/>
                                         </button>
                                     ))}
                                 </div>
                             </div>
-                            <span className="location-compare-live"><i/> LIVE VIEW</span>
                         </div>
                     </section>
                 ))}
@@ -417,7 +474,6 @@ function ArticleLocationCompare({dataWrapper}) {
             </div>
 
             <footer className="location-compare-footer">
-                <span><i className="fa-solid fa-arrows-left-right"/> {dataWrapper.locales.locationHint}</span>
                 <span>Satellite imagery © Esri</span>
             </footer>
         </Article>

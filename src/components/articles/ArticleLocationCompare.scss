@@ -1471,25 +1471,27 @@ article.article-location-compare div.article-content {
 
         > button.location-compare-control {
             display: grid;
+            grid-template-columns: minmax(0, 1fr);
             width: 2.75rem;
             min-width: 2.75rem;
             height: 2.75rem;
             min-height: 2.75rem;
             padding: 0;
             place-items: center;
+            justify-items: center;
             justify-self: center;
-            border: 0;
+            border: 1px solid color-mix(in srgb, var(--location-cyan) 32%, var(--location-soft-border));
             border-radius: 50%;
-            background: transparent;
-            box-shadow: none;
+            background: color-mix(in srgb, var(--location-panel) 88%, var(--location-cyan) 12%);
+            box-shadow: inset 0 1px 0 color-mix(in srgb, white 8%, transparent);
             color: var(--location-ink);
             font-size: 1rem;
             transition: color 160ms ease, background-color 160ms ease, transform 160ms ease;
 
             > i {
                 display: grid;
-                width: 2.75rem;
-                height: 2.75rem;
+                width: 100%;
+                height: 100%;
                 place-items: center;
                 border-radius: inherit;
                 color: var(--location-cyan);
@@ -1743,10 +1745,10 @@ article.article-location-compare div.article-content {
 // decorative cards. Keep the full touch target while stripping redundant chrome.
 .article-location-compare {
     .location-compare-toolbar {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr);
+        grid-template-columns: minmax(0, 1fr);
         grid-template-areas:
-            "scale presets"
-            "actions actions";
+            "presets"
+            "actions";
         align-items: center;
         gap: 0.3rem 0.7rem;
         padding: 0;
@@ -1756,21 +1758,6 @@ article.article-location-compare div.article-content {
         box-shadow: none;
     }
 
-    .location-compare-lock {
-        grid-area: scale;
-        min-width: 0;
-        min-height: 2.75rem;
-        gap: 0.35rem;
-        padding: 0;
-
-        strong { font-size: 0.82rem; }
-
-        .location-compare-lock-copy small {
-            font-size: 0.64rem;
-            line-height: 1.1;
-        }
-    }
-
     .location-compare-lock-signal {
         display: none;
     }
@@ -1778,12 +1765,16 @@ article.article-location-compare div.article-content {
     .location-compare-presets {
         grid-area: presets;
         min-width: 0;
+        width: 100%;
     }
 
     .location-compare-preset-list {
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 0;
-        border-bottom: 1px solid color-mix(in srgb, var(--location-soft-border) 78%, transparent);
+        gap: 0.42rem;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
     }
 
     .location-compare-preset {
@@ -1793,12 +1784,12 @@ article.article-location-compare div.article-content {
         grid-template-rows: auto auto;
         justify-items: center;
         gap: 0.08rem;
-        padding: 0.2rem 0.12rem;
-        border: 0;
-        border-bottom: 2px solid transparent;
-        border-radius: 0;
-        background: transparent;
-        color: var(--location-muted);
+        padding: 0.18rem 0.12rem;
+        border: 1px solid color-mix(in srgb, var(--location-soft-border) 82%, transparent);
+        border-radius: 0.58rem;
+        background: color-mix(in srgb, var(--location-panel) 66%, transparent);
+        color: var(--location-ink);
+        box-shadow: inset 0 1px 0 color-mix(in srgb, white 6%, transparent);
 
         > i { display: none; }
 
@@ -1814,19 +1805,24 @@ article.article-location-compare div.article-content {
             white-space: nowrap;
         }
 
+        span,
+        em { color: var(--location-ink); }
+
         span { font-weight: 700; }
-        em { font-weight: 500; }
+        em { font-weight: 600; opacity: 0.78; }
 
         &:hover,
         &:focus-visible {
             transform: none;
-            background: color-mix(in srgb, var(--preset-color) 6%, transparent);
-            box-shadow: none;
+            border-color: color-mix(in srgb, var(--location-cyan) 32%, var(--location-soft-border));
+            background: color-mix(in srgb, var(--location-cyan) 9%, var(--location-panel));
+            box-shadow: inset 0 1px 0 color-mix(in srgb, white 8%, transparent);
+            color: var(--location-ink);
         }
 
         &.is-active {
-            border-bottom-color: var(--preset-color);
-            background: transparent;
+            border-color: color-mix(in srgb, var(--location-cyan) 32%, var(--location-soft-border));
+            background: color-mix(in srgb, var(--location-cyan) 9%, var(--location-panel));
             color: var(--location-ink);
             box-shadow: none;
         }
@@ -1836,9 +1832,10 @@ article.article-location-compare div.article-content {
         grid-area: actions;
         grid-template-columns: minmax(0, 1fr) 2.75rem 2.75rem minmax(0, 1fr);
         grid-template-areas: none;
-        gap: 0.15rem;
+        gap: 0.42rem;
         align-items: center;
-        border-top: 1px solid color-mix(in srgb, var(--location-soft-border) 68%, transparent);
+        padding-top: 0.3rem;
+        border-top: 1px solid color-mix(in srgb, var(--location-soft-border) 52%, transparent);
 
         > button,
         > button.location-compare-pan-link {
@@ -1847,26 +1844,30 @@ article.article-location-compare div.article-content {
             min-height: 2.75rem;
             height: 2.75rem;
             justify-content: center;
-            gap: 0.35rem;
-            padding: 0.25rem 0.35rem;
-            border: 0;
-            border-radius: 0.4rem;
-            background: transparent;
-            box-shadow: none;
-            color: var(--location-muted);
-            font-size: 0.66rem;
-            font-weight: 650;
+            gap: 0.42rem;
+            padding: 0.3rem 0.55rem;
+            border: 1px solid color-mix(in srgb, var(--location-soft-border) 82%, transparent);
+            border-radius: 0.58rem;
+            background: color-mix(in srgb, var(--location-panel) 66%, transparent);
+            box-shadow: inset 0 1px 0 color-mix(in srgb, white 6%, transparent);
+            color: var(--location-ink);
+            font-size: 0.7rem;
+            font-weight: 700;
             text-align: center;
             text-transform: none;
+            transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease, transform 150ms ease;
 
             &:hover,
             &:focus-visible,
             &.is-active {
                 transform: none;
-                background: color-mix(in srgb, var(--location-cyan) 7%, transparent);
-                box-shadow: none;
+                border-color: color-mix(in srgb, var(--location-cyan) 32%, var(--location-soft-border));
+                background: color-mix(in srgb, var(--location-cyan) 9%, var(--location-panel));
+                box-shadow: inset 0 1px 0 color-mix(in srgb, white 8%, transparent);
                 color: var(--location-ink);
             }
+
+            &:active { transform: translateY(1px); }
         }
 
         > button.location-compare-pan-link { grid-column: 1; }
@@ -1875,17 +1876,33 @@ article.article-location-compare div.article-content {
         > button.location-compare-reset { grid-column: 4; }
 
         > button.location-compare-control {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
             width: 2.75rem;
             min-width: 2.75rem;
             height: 2.75rem;
             min-height: 2.75rem;
+            place-items: center;
+            justify-items: center;
             border-radius: 50%;
+            border: 1px solid color-mix(in srgb, var(--location-cyan) 32%, var(--location-soft-border));
+            background: color-mix(in srgb, var(--location-panel) 88%, var(--location-cyan) 12%);
             color: var(--location-ink);
+            box-shadow: inset 0 1px 0 color-mix(in srgb, white 8%, transparent);
 
             > i {
-                width: 2.75rem;
-                height: 2.75rem;
-                color: var(--location-accent);
+                display: grid;
+                width: 100%;
+                height: 100%;
+                place-items: center;
+                color: var(--location-cyan);
+                font-size: 1.12rem;
+                line-height: 1;
+            }
+
+            &:hover,
+            &:focus-visible {
+                background: color-mix(in srgb, var(--location-cyan) 17%, var(--location-panel));
             }
         }
     }
@@ -1904,8 +1921,8 @@ article.article-location-compare div.article-content {
     .location-compare-actions button.location-compare-pan-link > span:last-child {
         max-width: 100%;
         overflow: hidden;
-        font-size: 0.66rem;
-        font-weight: 650;
+        font-size: 0.69rem;
+        font-weight: 700;
         letter-spacing: 0;
         text-overflow: ellipsis;
         text-transform: none;
@@ -2095,4 +2112,471 @@ article.article-location-compare div.article-content {
         animation-duration: 0.01ms;
         animation-iteration-count: 1;
     }
+}
+
+// Keep scale first, then compact neutral controls in a bounded toolbar row.
+.article-location-compare {
+    .location-compare-toolbar {
+        width: min(100%, 42rem);
+        margin-inline: auto;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+            "scale"
+            "presets"
+            "actions";
+        gap: 0.35rem;
+        container-type: inline-size;
+    }
+
+    .location-compare-presets {
+        display: block;
+        width: 100%;
+    }
+
+    .location-compare-presets-title { display: none; }
+
+    .location-compare-lock {
+        display: flex;
+        width: 100%;
+        min-width: 0;
+        min-height: 30px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.15rem 0.35rem;
+        border: 0;
+        border-bottom: 1px solid color-mix(in srgb, var(--location-soft-border) 72%, transparent);
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        color: var(--location-ink);
+        white-space: nowrap;
+        grid-area: scale;
+    }
+
+    .location-compare-lock-copy {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: row;
+        gap: 0.5rem;
+
+        small {
+            max-width: 75%;
+            color: var(--location-ink);
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.025em;
+            line-height: 1.1;
+            opacity: 0.78;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        strong {
+            color: var(--location-ink);
+            font-size: 0.78rem;
+            font-weight: 800;
+            line-height: 1.1;
+            white-space: nowrap;
+        }
+    }
+
+    .location-compare-actions {
+        grid-template-columns: minmax(0, 1fr) 2.75rem 2.75rem minmax(0, 1fr);
+        gap: 0.35rem;
+        padding-top: 0;
+        border-top: 0;
+    }
+
+    .location-compare-preset {
+        min-height: 44px;
+    }
+}
+
+@media (max-width: 47.999rem) {
+    .article-location-compare .location-compare-grid {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+            "balkan"
+            "germany";
+        grid-template-rows: auto auto;
+        gap: 0.75rem;
+    }
+
+    .article-location-compare .location-compare-card:nth-child(1) { grid-area: balkan; }
+    .article-location-compare .location-compare-card:nth-child(2) { grid-area: germany; }
+}
+
+@media (min-width: 48rem) and (pointer: fine) {
+    .article-location-compare {
+        .location-compare-toolbar .location-compare-preset,
+        .location-compare-actions > button:not(.location-compare-control),
+        .location-compare-actions > button.location-compare-control {
+            min-height: 36px;
+            height: 36px;
+            padding-block: 0.15rem;
+        }
+
+        .location-compare-actions {
+            grid-template-columns: clamp(6rem, 18cqi, 8.5rem) 2.25rem 2.25rem clamp(6rem, 18cqi, 8.5rem);
+            justify-content: center;
+        }
+
+        .location-compare-actions > button.location-compare-control {
+            width: 36px;
+            min-width: 36px;
+            height: 36px;
+            min-height: 36px;
+        }
+    }
+}
+
+@media (min-width: 80rem) and (pointer: fine) {
+    .article-location-compare {
+        .location-compare-toolbar { gap: 0.25rem 0.5rem; }
+
+        .location-compare-toolbar .location-compare-preset,
+        .location-compare-actions > button:not(.location-compare-control),
+        .location-compare-actions > button.location-compare-control {
+            min-height: 32px;
+            height: 32px;
+        }
+
+        .location-compare-actions {
+            grid-template-columns: clamp(5.5rem, 16cqi, 7rem) 2rem 2rem clamp(5.5rem, 16cqi, 7rem);
+            justify-content: center;
+            gap: 0.3rem;
+        }
+
+        .location-compare-actions > button.location-compare-control {
+            width: 32px;
+            min-width: 32px;
+            height: 32px;
+            min-height: 32px;
+        }
+    }
+}
+
+// Final location-comparison pass: calm editorial copy, full-width maps and
+// readout, with a small centered control dock and one consistent neutral UI.
+article.article-location-compare {
+    --location-muted: color-mix(in srgb, var(--location-ink) 68%, var(--location-panel));
+
+    div.article-content {
+        width: 100%;
+        max-width: none;
+        gap: clamp(0.65rem, 1vw, 1rem);
+        margin-inline: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .location-compare-pretext,
+    .location-compare-intro p {
+        color: var(--location-muted);
+        font-size: clamp(0.9rem, 0.875rem + 0.16vw, 1rem);
+        line-height: 1.55;
+    }
+
+    .location-compare-pretext > span {
+        color: inherit;
+        opacity: 1;
+        transform: none;
+        animation: none;
+        transition: color 160ms ease;
+    }
+
+    .location-compare-pretext:hover > span {
+        color: color-mix(in srgb, var(--location-ink) 86%, var(--location-cyan));
+        transform: none;
+    }
+
+    .location-compare-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-areas: "balkan germany";
+        grid-template-rows: auto;
+        gap: clamp(0.6rem, 1.15vw, 1rem);
+    }
+
+    .location-compare-card {
+        aspect-ratio: 1.2 / 1;
+        border: 1px solid color-mix(in srgb, var(--location-accent) 30%, var(--location-soft-border));
+        border-radius: 1rem;
+        box-shadow: 0 0.65rem 1.8rem color-mix(in srgb, var(--location-shadow) 70%, transparent);
+    }
+
+    .location-compare-viewport::after {
+        background:
+            linear-gradient(180deg, rgba(2, 8, 18, 0.2), transparent 24%),
+            linear-gradient(0deg, rgba(2, 8, 18, 0.28), transparent 26%);
+    }
+
+    .location-compare-label {
+        min-height: 3.5rem;
+        gap: 0.65rem;
+        padding: 0.55rem 0.75rem;
+        background: color-mix(in srgb, var(--location-panel) 96%, var(--location-accent) 4%);
+        box-shadow: none;
+
+        small {
+            color: var(--location-accent);
+            font-size: 0.64rem;
+            letter-spacing: 0.075em;
+        }
+
+        em {
+            color: var(--location-muted);
+            font-size: 0.65rem;
+            letter-spacing: 0.025em;
+        }
+    }
+
+    .location-compare-band-action {
+        min-width: 0;
+        width: auto;
+        gap: 0.15rem;
+
+        small {
+            max-width: none;
+            color: var(--location-muted);
+            font-size: 0.59rem;
+            letter-spacing: 0.035em;
+            text-overflow: clip;
+        }
+
+        i {
+            margin-top: 0.1rem;
+            color: var(--location-accent);
+            filter: none;
+        }
+    }
+
+    .location-compare-toolbar {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        gap: 0.3rem;
+        padding: 0.2rem 0 0;
+    }
+
+    .location-compare-lock {
+        min-height: 1.75rem;
+        padding: 0.15rem 0.2rem 0.35rem;
+        border-bottom-color: color-mix(in srgb, var(--location-soft-border) 82%, transparent);
+    }
+
+    .location-compare-lock-copy {
+        small {
+            max-width: calc(100% - 5rem);
+            color: var(--location-muted);
+            font-size: 0.68rem;
+            font-weight: 650;
+            letter-spacing: 0.015em;
+            opacity: 1;
+        }
+
+        strong {
+            color: var(--location-ink);
+            font-size: 0.78rem;
+            font-weight: 750;
+            font-variant-numeric: tabular-nums;
+        }
+    }
+
+    .location-compare-preset-list {
+        gap: clamp(0.25rem, 0.55vw, 0.5rem);
+    }
+
+    .location-compare-preset {
+        display: flex;
+        min-height: 44px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.25rem;
+        padding: 0.35rem clamp(0.4rem, 0.8vw, 0.75rem);
+        border-color: color-mix(in srgb, var(--location-soft-border) 90%, transparent);
+        border-radius: 0.65rem;
+        background: color-mix(in srgb, var(--location-panel) 88%, transparent);
+        box-shadow: inset 0 1px 0 color-mix(in srgb, white 5%, transparent);
+
+        span,
+        em {
+            max-width: 100%;
+            overflow: hidden;
+            font-size: clamp(0.62rem, 0.6rem + 0.08vw, 0.7rem);
+            line-height: 1.1;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        span {
+            color: var(--location-ink);
+            font-weight: 700;
+            text-align: left;
+        }
+
+        em {
+            color: var(--location-muted);
+            font-weight: 550;
+            text-align: right;
+        }
+
+        &:hover,
+        &:focus-visible,
+        &.is-active {
+            border-color: color-mix(in srgb, var(--location-cyan) 42%, var(--location-soft-border));
+            background: color-mix(in srgb, var(--location-cyan) 8%, var(--location-panel));
+            box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--location-cyan) 68%, transparent);
+            color: var(--location-ink);
+            transform: none;
+        }
+    }
+
+    .location-compare-actions {
+        display: flex;
+        grid-template-columns: none;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.15rem 0 0;
+        border: 0;
+
+        > button,
+        > button.location-compare-pan-link,
+        > button.location-compare-reset,
+        > button.location-compare-control {
+            display: grid;
+            width: 44px;
+            min-width: 44px;
+            height: 44px;
+            min-height: 44px;
+            flex: 0 0 auto;
+            grid-template-columns: minmax(0, 1fr);
+            grid-template-rows: minmax(0, 1fr);
+            place-items: center;
+            justify-items: center;
+            padding: 0;
+            border: 1px solid color-mix(in srgb, var(--location-soft-border) 95%, transparent);
+            border-radius: 50%;
+            background: color-mix(in srgb, var(--location-panel) 92%, transparent);
+            box-shadow: inset 0 1px 0 color-mix(in srgb, white 6%, transparent);
+            color: var(--location-muted);
+            text-align: center;
+            transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease, transform 150ms ease;
+
+            &:hover,
+            &:focus-visible,
+            &.is-active {
+                border-color: color-mix(in srgb, var(--location-cyan) 48%, var(--location-soft-border));
+                background: color-mix(in srgb, var(--location-cyan) 10%, var(--location-panel));
+                color: var(--location-ink);
+                box-shadow: 0 0 0 3px color-mix(in srgb, var(--location-cyan) 9%, transparent);
+                transform: none;
+            }
+
+            &:active { transform: scale(0.95); }
+        }
+
+        > button.location-compare-reset { color: var(--location-accent); }
+
+        > button.location-compare-control > i,
+        > button.location-compare-reset > i,
+        .location-compare-pan-link-icon > i {
+            display: grid;
+            width: 100%;
+            height: 100%;
+            place-items: center;
+            margin: 0;
+            color: currentColor;
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .location-compare-pan-link-icon {
+            display: grid;
+            width: 100%;
+            height: 100%;
+            place-items: center;
+            border: 0;
+            border-radius: 50%;
+            background: transparent;
+            color: currentColor;
+        }
+
+        > button.location-compare-control {
+            background: color-mix(in srgb, var(--location-cyan) 7%, var(--location-panel));
+            color: var(--location-cyan);
+        }
+
+        > button.location-compare-reset,
+        > button.location-compare-pan-link {
+            background: color-mix(in srgb, var(--location-panel) 92%, transparent);
+            color: var(--location-ink);
+        }
+    }
+
+    .location-compare-footer {
+        justify-content: flex-start;
+        margin-top: 0.2rem;
+        padding: 0.35rem 0 0;
+        border: 0;
+        border-top: 1px solid color-mix(in srgb, var(--location-soft-border) 72%, transparent);
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        color: var(--location-muted);
+        font-size: 0.7rem;
+
+        span:first-child { color: var(--location-muted); }
+    }
+}
+
+@media (max-width: 47.999rem) {
+    article.article-location-compare .location-compare-grid {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas: "balkan" "germany";
+        grid-template-rows: auto auto;
+        gap: 0.7rem;
+    }
+}
+
+@media (min-width: 48rem) and (pointer: fine) {
+    article.article-location-compare {
+        .location-compare-preset { min-height: 36px; height: 36px; }
+
+        .location-compare-actions > button,
+        .location-compare-actions > button.location-compare-pan-link,
+        .location-compare-actions > button.location-compare-control,
+        .location-compare-actions > button.location-compare-reset {
+            width: 36px;
+            min-width: 36px;
+            height: 36px;
+            min-height: 36px;
+        }
+    }
+}
+
+@media (min-width: 80rem) and (pointer: fine) {
+    article.article-location-compare {
+        .location-compare-preset { min-height: 32px; height: 32px; }
+
+        .location-compare-actions > button,
+        .location-compare-actions > button.location-compare-pan-link,
+        .location-compare-actions > button.location-compare-control,
+        .location-compare-actions > button.location-compare-reset {
+            width: 32px;
+            min-width: 32px;
+            height: 32px;
+            min-height: 32px;
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    article.article-location-compare .location-compare-pretext > span { animation: none; }
 }

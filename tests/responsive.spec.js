@@ -1724,7 +1724,7 @@ test('Contact desktop density compacts information, forms, and map panels withou
         expect(metrics.locationArticle.height).toBeLessThan(900)
         expect(metrics.mapCard.height).toBeLessThan(470)
         expect(metrics.mapCanvas.height).toBeGreaterThan(300)
-        expect(metrics.mapControls.every(height=>height>=43.5)).toBe(true)
+        expect(metrics.mapControls.every(height=>height>=31.5)).toBe(true)
         expect(metrics.complaintPanel.height).toBeLessThan(250)
         expect(metrics.complaintTextarea.height).toBeGreaterThan(140)
         expect(metrics.complaintDestination.height).toBeGreaterThanOrEqual(43.5)
@@ -1788,12 +1788,18 @@ test('Contact location comparison stays compact and symmetrical across viewport 
             }
             const articleContent=root.querySelector('.article-content')
             const contentStyle=getComputedStyle(articleContent)
-            const zoomControls=[...root.querySelectorAll('.location-compare-control')].map(element=>({
-                width:element.getBoundingClientRect().width,
-                height:element.getBoundingClientRect().height,
+            const zoomControls=[...root.querySelectorAll('.location-compare-control')].map(element=>{
+                const buttonRect=element.getBoundingClientRect()
+                const iconRect=element.querySelector('i').getBoundingClientRect()
+                return {
+                width:buttonRect.width,
+                height:buttonRect.height,
                 background:getComputedStyle(element).backgroundColor,
-                borderWidth:getComputedStyle(element).borderTopWidth
-            }))
+                borderWidth:getComputedStyle(element).borderTopWidth,
+                radius:getComputedStyle(element).borderTopLeftRadius,
+                iconSize:iconRect.width,
+                iconCenterOffset:Math.abs((iconRect.left+iconRect.width/2)-(buttonRect.left+buttonRect.width/2))
+            }})
             return {
                 contentFrame:{
                     padding:contentStyle.padding,
@@ -1808,9 +1814,21 @@ test('Contact location comparison stays compact and symmetrical across viewport 
                 narrativeSpanDisplay:getComputedStyle(root.querySelector('.location-compare-pretext > span')).display,
                 presets:[...root.querySelectorAll('.location-compare-preset')].map(element=>({
                     height:element.getBoundingClientRect().height,
-                    top:element.getBoundingClientRect().top
+                    top:element.getBoundingClientRect().top,
+                    borderWidth:getComputedStyle(element).borderTopWidth,
+                    radius:getComputedStyle(element).borderTopLeftRadius
                 })),
-                actions:[...root.querySelectorAll('.location-compare-actions button')].map(element=>element.getBoundingClientRect().height),
+                actions:[...root.querySelectorAll('.location-compare-actions button')].map(element=>({
+                    width:element.getBoundingClientRect().width,
+                    height:element.getBoundingClientRect().height,
+                    borderWidth:getComputedStyle(element).borderTopWidth,
+                    radius:getComputedStyle(element).borderTopLeftRadius,
+                    iconCenterOffset:(()=>{
+                        const buttonRect=element.getBoundingClientRect()
+                        const iconRect=element.querySelector('i').getBoundingClientRect()
+                        return Math.abs((iconRect.left+iconRect.width/2)-(buttonRect.left+buttonRect.width/2))
+                    })()
+                })),
                 maps:[...root.querySelectorAll('.location-compare-map')].map(element=>({
                     width:element.getBoundingClientRect().width,
                     height:element.getBoundingClientRect().height
@@ -1822,15 +1840,33 @@ test('Contact location comparison stays compact and symmetrical across viewport 
         expect(metrics.contentFrame.padding).toBe('0px')
         expect(metrics.contentFrame.borderWidth).toBe('0px')
         expect(metrics.contentFrame.width).toBeCloseTo(metrics.contentFrame.parentWidth,0)
-        expect(metrics.zoomControls.every(control=>control.width>=43.5 && control.height>=43.5)).toBe(true)
-        expect(metrics.zoomControls.every(control=>control.borderWidth==='0px')).toBe(true)
-        expect(metrics.zoomControls.every(control=>control.background==='rgba(0, 0, 0, 0)')).toBe(true)
+        expect(metrics.zoomControls.every(control=>control.width>=(width<768?43.5:31) && control.height>=(width<768?43.5:31))).toBe(true)
+        expect(metrics.zoomControls.map(control=>control.borderWidth)).toEqual(['1px','1px'])
+        expect(metrics.zoomControls.every(control=>control.background!=='rgba(0, 0, 0, 0)')).toBe(true)
+        expect(metrics.zoomControls.every(control=>control.radius==='50%')).toBe(true)
+        expect(metrics.zoomControls.every(control=>control.iconSize<control.width)).toBe(true)
+        expect(metrics.zoomControls.every(control=>control.iconCenterOffset<1)).toBe(true)
         expect(metrics.intro.height).toBeLessThan(210)
         expect(metrics.narrativeSpanDisplay).toBe('inline')
         expect(metrics.presets).toHaveLength(3)
-        expect(metrics.presets.every(preset=>preset.height>=43.5)).toBe(true)
+        expect(metrics.presets.every(preset=>preset.height>=(width<768?43.5:31))).toBe(true)
+        expect(metrics.presets.every(preset=>preset.borderWidth==='1px' && preset.radius!=='0px')).toBe(true)
         expect(Math.max(...metrics.presets.map(preset=>preset.top))-Math.min(...metrics.presets.map(preset=>preset.top))).toBeLessThan(1)
-        expect(metrics.actions.every(height=>height>=43.5)).toBe(true)
+        expect(metrics.actions.every(action=>action.height>=(width<768?43.5:31) && action.borderWidth==='1px' && action.radius!=='0px')).toBe(true)
+        expect(metrics.actions.every(action=>action.width===action.height && action.iconCenterOffset<1)).toBe(true)
+        if(width>=768) {
+            expect(metrics.presets.every(preset=>preset.height<=37)).toBe(true)
+            expect(metrics.actions.every(action=>action.height<=37)).toBe(true)
+            expect(metrics.zoomControls.every(control=>control.width<=37 && control.height<=37)).toBe(true)
+            expect(metrics.actions.every(action=>action.width<=37)).toBe(true)
+            expect(metrics.toolbar.width).toBeCloseTo(metrics.contentFrame.width,0)
+        }
+        if(width>=1280) {
+            expect(metrics.presets.every(preset=>preset.height<=33)).toBe(true)
+            expect(metrics.actions.every(action=>action.height<=33)).toBe(true)
+            expect(metrics.zoomControls.every(control=>control.width<=33 && control.height<=33)).toBe(true)
+            expect(metrics.actions.every(action=>action.width<=33)).toBe(true)
+        }
         expect(metrics.maps.every(mapSize=>mapSize.height>=140)).toBe(true)
         expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(width+1)
 
@@ -1839,7 +1875,7 @@ test('Contact location comparison stays compact and symmetrical across viewport 
     }
 })
 
-test('Contact map bridge stays compact and labels use the active theme palette', async ({page})=>{
+test('Contact scale readout and compact controls sit below both maps in both themes', async ({page})=>{
     const themeLabelColors=[]
     const themeLabelBackgrounds=[]
     for(const theme of ['dark','light']) {
@@ -1878,8 +1914,10 @@ test('Contact map bridge stays compact and labels use the active theme palette',
             }
             const snapshot=await themedPage.locator('#article-3-section-contact').evaluate(root=>{
                 const cards=[...root.querySelectorAll('.location-compare-card')]
-                const bridge=root.querySelector('.location-compare-bridge')
-                const bridgeCore=bridge.querySelector('.location-compare-bridge-core')
+                const toolbar=root.querySelector('.location-compare-toolbar')
+                const scaleReadout=root.querySelector('.location-compare-lock')
+                const readoutLabel=scaleReadout.querySelector('small')
+                const readoutValue=scaleReadout.querySelector('strong')
                 const labels=[...root.querySelectorAll('.location-compare-label')]
                 const rect=element=>{
                     const {x,y,width,height}=element.getBoundingClientRect()
@@ -1887,8 +1925,10 @@ test('Contact map bridge stays compact and labels use the active theme palette',
                 }
                 return {
                     cards:cards.map(rect),
-                    bridge:rect(bridge),
-                    bridgeCore:rect(bridgeCore),
+                    toolbar:rect(toolbar),
+                    scaleReadout:rect(scaleReadout),
+                    readoutLabel:rect(readoutLabel),
+                    readoutValue:rect(readoutValue),
                     labels:labels.map(label=>({
                         color:getComputedStyle(label).color,
                         background:getComputedStyle(label).backgroundColor,
@@ -1903,12 +1943,24 @@ test('Contact map bridge stays compact and labels use the active theme palette',
         const [mobile,desktop]=snapshots
         themeLabelColors.push(mobile.labels[0].color)
         themeLabelBackgrounds.push(mobile.labels[0].background)
-        expect(mobile.bridge.height).toBeLessThanOrEqual(28)
-        expect(mobile.bridge.y).toBeGreaterThanOrEqual(mobile.cards[0].bottom)
-        expect(mobile.bridge.bottom).toBeLessThanOrEqual(mobile.cards[1].y)
-        expect(mobile.bridgeCore.width).toBeLessThanOrEqual(64)
-        expect(desktop.bridge.height).toBeLessThanOrEqual(28)
-        expect(desktop.bridgeCore.width).toBeLessThanOrEqual(64)
+        expect(mobile.scaleReadout.width).toBeCloseTo(mobile.toolbar.width,0)
+        expect(mobile.toolbar.y).toBeGreaterThan(Math.max(...mobile.cards.map(card=>card.bottom)))
+        expect(mobile.scaleReadout.y).toBeGreaterThan(Math.max(...mobile.cards.map(card=>card.bottom)))
+        expect(mobile.readoutLabel.y+mobile.readoutLabel.height/2).toBeCloseTo(mobile.readoutValue.y+mobile.readoutValue.height/2,0)
+        expect(desktop.scaleReadout.width).toBeCloseTo(desktop.toolbar.width,0)
+        expect(desktop.toolbar.y).toBeGreaterThan(Math.max(...desktop.cards.map(card=>card.bottom)))
+        expect(desktop.scaleReadout.y).toBeGreaterThan(Math.max(...desktop.cards.map(card=>card.bottom)))
+        expect(desktop.readoutLabel.y+desktop.readoutLabel.height/2).toBeCloseTo(desktop.readoutValue.y+desktop.readoutValue.height/2,0)
+        await expect(themedPage.locator('#article-3-section-contact .location-compare-scale-between-maps')).toHaveCount(0)
+        await expect(themedPage.locator('#article-3-section-contact .location-compare-bridge-core')).toHaveCount(0)
+        const actionTextColor=await themedPage.locator('#article-3-section-contact .location-compare-actions button').first().evaluate(element=>getComputedStyle(element).color)
+        const secondaryTextColor=await themedPage.locator('#article-3-section-contact .location-compare-lock-copy small').evaluate(element=>getComputedStyle(element).color)
+        await expect(themedPage.locator('#article-3-section-contact .location-compare-pan-link')).toHaveAttribute('title',/\S+/)
+        await expect(themedPage.locator('#article-3-section-contact .location-compare-reset')).toHaveAttribute('title',/\S+/)
+        for(const preset of await themedPage.locator('#article-3-section-contact .location-compare-preset').all()) {
+            await expect(preset.locator('span')).toHaveCSS('color',actionTextColor)
+            await expect(preset.locator('em')).toHaveCSS('color',secondaryTextColor)
+        }
         for(const snapshot of snapshots) {
             expect(snapshot.labels[0].color).toBe(snapshot.labels[1].color)
             expect(snapshot.labels.every(label=>label.borderWidth==='1px')).toBe(true)
@@ -1921,7 +1973,7 @@ test('Contact map bridge stays compact and labels use the active theme palette',
     expect(themeLabelBackgrounds[0]).not.toBe(themeLabelBackgrounds[1])
 })
 
-test('Contact page wheel scroll stays smooth while modified wheel zooms both maps', async ({page})=>{
+test('Contact keeps native page scrolling and only zooms when a wheel gesture starts on a map', async ({page})=>{
     await page.setViewportSize({width:1366,height:768})
     await preferences(page)
     await openSection(page,'contact')
@@ -1931,23 +1983,36 @@ test('Contact page wheel scroll stays smooth while modified wheel zooms both map
     const scaleReadout=map.locator('.location-compare-lock-copy strong')
 
     await scrollable.evaluate(element=>{element.scrollTop=0})
-    const plainWheelPrevented=await mapSurface.evaluate(element=>!element.dispatchEvent(new WheelEvent('wheel',{
-        deltaY:120,
-        bubbles:true,
-        cancelable:true
-    })))
-    expect(plainWheelPrevented).toBe(true)
+    const intro=map.locator('.location-compare-intro')
+    await intro.scrollIntoViewIfNeeded()
+    const introBounds=await intro.boundingBox()
+    await page.mouse.move(introBounds.x+introBounds.width/2,introBounds.y+introBounds.height/2)
+    await page.mouse.wheel(0,120)
     await expect.poll(()=>scrollable.evaluate(element=>element.scrollTop),{timeout:1000}).toBeGreaterThan(0)
+    const initialScale=await scaleReadout.textContent()
+    const pageScrollAfterOutsideStart=await scrollable.evaluate(element=>element.scrollTop)
+    const pageWheelSequence=await page.evaluate(()=>{
+        const intro=document.querySelector('#article-3-section-contact .location-compare-intro')
+        const map=document.querySelector('#article-3-section-contact .location-compare-map')
+        const first=new WheelEvent('wheel',{deltaY:120,bubbles:true,cancelable:true})
+        const second=new WheelEvent('wheel',{deltaY:120,bubbles:true,cancelable:true})
+        intro.dispatchEvent(first)
+        map.dispatchEvent(second)
+        return {firstPrevented:first.defaultPrevented,secondPrevented:second.defaultPrevented}
+    })
+    expect(pageWheelSequence.firstPrevented).toBe(false)
+    expect(pageWheelSequence.secondPrevented).toBe(false)
+    const scaleAfterPageGesture=await scaleReadout.textContent()
+    expect(scaleAfterPageGesture).toBe(initialScale)
+    expect(pageScrollAfterOutsideStart).toBeGreaterThan(0)
 
     const scaleBeforeZoom=await scaleReadout.textContent()
     const scrollBeforeZoom=await scrollable.evaluate(element=>element.scrollTop)
-    const modifiedWheelPrevented=await mapSurface.evaluate(element=>!element.dispatchEvent(new WheelEvent('wheel',{
-        deltaY:-120,
-        ctrlKey:true,
-        bubbles:true,
-        cancelable:true
-    })))
-    expect(modifiedWheelPrevented).toBe(true)
+    await page.waitForTimeout(300)
+    await mapSurface.scrollIntoViewIfNeeded()
+    const refreshedMapBounds=await mapSurface.boundingBox()
+    await page.mouse.move(refreshedMapBounds.x+refreshedMapBounds.width/2,refreshedMapBounds.y+refreshedMapBounds.height/2)
+    await page.mouse.wheel(0,-120)
     await expect.poll(()=>scaleReadout.textContent(),{timeout:1000}).not.toBe(scaleBeforeZoom)
     expect(await scrollable.evaluate(element=>element.scrollTop)).toBeCloseTo(scrollBeforeZoom,0)
 

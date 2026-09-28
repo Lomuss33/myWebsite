@@ -134,7 +134,7 @@ test('Home desktop density stays compact while contact controls remain usable', 
     await page.setViewportSize({width:1366,height:768})
     await openSection(page,'about')
 
-    for(const [width,height] of [[1366,768],[3440,1440]]) {
+    for(const [width,height] of [[900,768],[1366,768],[3440,1440]]) {
         await page.setViewportSize({width,height})
         await expect(page.locator('html')).toHaveAttribute('data-layout',resolveLayout(width,height))
         const metrics=await page.evaluate(()=>{
@@ -322,6 +322,18 @@ test('Experience desktop density keeps all three articles compact and readable',
                 const rect=element.getBoundingClientRect()
                 return {width:rect.width,height:rect.height,font:parseFloat(getComputedStyle(element).fontSize)}
             }
+            const closingHeadings=[...document.querySelectorAll('#article-3-section-experience .article-text-flow-card-heading')].map(element=>{
+                const rect=element.getBoundingClientRect()
+                const header=element.closest('.article-text-flow-card-header').getBoundingClientRect()
+                const style=getComputedStyle(element)
+                return {
+                    width:rect.width,
+                    headerWidth:header.width,
+                    height:rect.height,
+                    lineHeight:parseFloat(style.lineHeight),
+                    font:parseFloat(style.fontSize)
+                }
+            })
             return {
                 sectionTitle:measure('#section-experience .section-header-title'),
                 timelineHeading:measure('#article-1-section-experience > h4.article-title'),
@@ -335,6 +347,7 @@ test('Experience desktop density keeps all three articles compact and readable',
                 bookPage:measure('#article-2-section-experience .wood-project-page'),
                 closingHeading:measure('#article-3-section-experience > h4.article-title'),
                 closingCardHeading:measure('#article-3-section-experience .article-text-flow-card-heading'),
+                closingHeadings,
                 closingCopy:measure('#article-3-section-experience .pretext-draggable-inline-icon-text-paragraph'),
                 dragTarget:measure('#article-3-section-experience .pretext-draggable-inline-icon-text-rail-hit-area'),
                 documentWidth:document.documentElement.scrollWidth
@@ -344,8 +357,13 @@ test('Experience desktop density keeps all three articles compact and readable',
         expect(metrics.sectionTitle.font).toBeLessThanOrEqual(27)
         expect(metrics.timelineHeading.font).toBeLessThanOrEqual(31)
         expect(metrics.timelineTitle.font).toBeLessThanOrEqual(19)
-        expect(metrics.timelineBody.font).toBeGreaterThanOrEqual(14.5)
-        expect(metrics.timelineBody.font).toBeLessThanOrEqual(15.2)
+        if(metrics.timelineCard.width<=1152) {
+            expect(metrics.timelineBody.font).toBeGreaterThanOrEqual(13)
+            expect(metrics.timelineBody.font).toBeLessThanOrEqual(13.2)
+        } else {
+            expect(metrics.timelineBody.font).toBeGreaterThanOrEqual(14.5)
+            expect(metrics.timelineBody.font).toBeLessThanOrEqual(15.5)
+        }
         expect(metrics.timelineCard.height).toBeLessThan(350)
         expect(metrics.avatar.width).toBeLessThanOrEqual(171)
         expect(metrics.flyerHeading.font).toBeGreaterThanOrEqual(17)
@@ -354,11 +372,17 @@ test('Experience desktop density keeps all three articles compact and readable',
         expect(metrics.bookPage.font).toBeGreaterThanOrEqual(14)
         expect(Math.abs(metrics.flyerPage.width-metrics.bookPage.width)).toBeLessThanOrEqual(1)
         expect(Math.abs(metrics.flyerPage.height-metrics.bookPage.height)).toBeLessThanOrEqual(1)
-        expect(metrics.closingCardHeading.width).toBeLessThanOrEqual(160)
+        expect(metrics.closingHeadings.every(heading=>Math.abs(heading.width-heading.headerWidth)<1)).toBe(true)
+        expect(metrics.closingHeadings.every(heading=>Math.ceil(heading.height/heading.lineHeight)<=2)).toBe(true)
         expect(metrics.closingHeading.font).toBeLessThanOrEqual(18.5)
         expect(metrics.closingCardHeading.font).toBeLessThanOrEqual(19)
-        expect(metrics.closingCopy.font).toBeGreaterThanOrEqual(14)
-        expect(metrics.closingCopy.font).toBeLessThanOrEqual(15.2)
+        if(width<1024) {
+            expect(metrics.closingCopy.font).toBeGreaterThanOrEqual(13)
+            expect(metrics.closingCopy.font).toBeLessThanOrEqual(14.5)
+        } else {
+            expect(metrics.closingCopy.font).toBeGreaterThanOrEqual(14)
+            expect(metrics.closingCopy.font).toBeLessThanOrEqual(15.2)
+        }
         expect(metrics.dragTarget.height).toBeGreaterThanOrEqual(52)
         expect(metrics.documentWidth).toBeLessThanOrEqual(width+1)
     }
@@ -376,6 +400,37 @@ test('Experience desktop density does not leak into narrow landscape or mobile',
     await expect(page.locator('#article-1-section-experience .article-timeline-item-info-for-timelines-body-text').first()).toBeVisible()
     await expect(page.locator('#article-2-section-experience .wood-project-page')).toBeVisible()
     await expect(page.locator('#article-3-section-experience .pretext-draggable-inline-icon-text-rail-hit-area').first()).toBeVisible()
+})
+
+test('Experience timeline text scales with narrow desktop cards', async ({page})=>{
+    await preferences(page)
+    for(const [width,height] of [[800,650],[900,768],[1024,768],[1120,768],[1180,768],[1366,768]]) {
+        await page.setViewportSize({width,height})
+        await openSection(page,'experience')
+        await expect(page.locator('html')).toHaveAttribute('data-layout','normal')
+        const sizes=await page.locator('#article-1-section-experience .article-timeline-item-info-for-timelines-body').first().evaluate(body=>{
+            const selectors=[
+                '.article-timeline-item-info-for-timelines-body-text',
+                '.article-timeline-item-info-for-timelines-body-list',
+                '.article-timeline-item-info-for-timelines-body-list-item'
+            ]
+            return {
+                cardWidth:body.closest('.article-timeline-item-info-for-timelines').getBoundingClientRect().width,
+                bodyFont:parseFloat(getComputedStyle(body).fontSize),
+                content:selectors.map(selector=>{
+                const element=body.querySelector(selector)
+                return {width:element.getBoundingClientRect().width,font:parseFloat(getComputedStyle(element).fontSize)}
+                })
+            }
+        })
+        expect(sizes.content.every(size=>size.width>0)).toBe(true)
+        if(sizes.cardWidth<=1152) {
+            expect(sizes.bodyFont).toBeLessThanOrEqual(13.2)
+            expect(sizes.content.every(size=>size.font<=13.2)).toBe(true)
+        } else {
+            expect(sizes.content.every(size=>size.font<=15.5)).toBe(true)
+        }
+    }
 })
 
 test('Education desktop density compacts the timeline, certificates, and skills while preserving interactions', async ({page})=>{
@@ -1708,6 +1763,11 @@ test('Contact desktop density compacts information, forms, and map panels withou
                 mapControls:[...document.querySelectorAll('#article-3-section-contact .location-compare-preset, #article-3-section-contact .location-compare-actions button')].map(button=>button.getBoundingClientRect().height),
                 complaintArticle:measure('#article-4-section-contact'),
                 complaintPanel:measure('#article-4-section-contact .article-complaint-form-main'),
+                complaintPanelStyle:(()=>{
+                    const panel=document.querySelector('#article-4-section-contact .article-complaint-form-main')
+                    const style=getComputedStyle(panel)
+                    return {background:style.backgroundColor,border:style.borderTopWidth,parentWidth:panel.parentElement.getBoundingClientRect().width}
+                })(),
                 complaintTextarea:measure('#article-4-section-contact textarea.form-textarea'),
                 complaintDestination:measure('#article-4-section-contact .article-complaint-form-select-trigger'),
                 documentWidth:document.documentElement.scrollWidth
@@ -1715,6 +1775,7 @@ test('Contact desktop density compacts information, forms, and map panels withou
         })
 
         expect(metrics.infoCard.height).toBeLessThan(150)
+        expect(metrics.infoCard.width).toBeGreaterThanOrEqual(width < 768 ? width-48 : 280)
         expect(metrics.infoAvatar.width).toBeGreaterThanOrEqual(44)
         expect(metrics.copyButtons.length).toBeGreaterThan(0)
         expect(metrics.copyButtons.every(height=>height>=43.5)).toBe(true)
@@ -1726,6 +1787,9 @@ test('Contact desktop density compacts information, forms, and map panels withou
         expect(metrics.mapCanvas.height).toBeGreaterThan(300)
         expect(metrics.mapControls.every(height=>height>=31.5)).toBe(true)
         expect(metrics.complaintPanel.height).toBeLessThan(250)
+        expect(metrics.complaintPanelStyle.background).toBe('rgba(0, 0, 0, 0)')
+        expect(metrics.complaintPanelStyle.border).toBe('0px')
+        expect(metrics.complaintPanel.width).toBeCloseTo(metrics.complaintPanelStyle.parentWidth,0)
         expect(metrics.complaintTextarea.height).toBeGreaterThan(140)
         expect(metrics.complaintDestination.height).toBeGreaterThanOrEqual(43.5)
         expect(metrics.documentWidth).toBeLessThanOrEqual(width+1)
@@ -1772,7 +1836,7 @@ test('Contact desktop density stays off in narrow landscape and mobile layouts',
 test('Contact location comparison stays compact and symmetrical across viewport widths', async ({page})=>{
     await preferences(page)
 
-    for(const [width,height] of [[320,700],[390,844],[768,1024],[1024,768],[1920,1080]]) {
+    for(const [width,height] of [[320,700],[390,844],[430,932],[480,900],[768,1024],[1024,768],[1920,1080]]) {
         await page.setViewportSize({width,height})
         await openSection(page,'contact')
         const map=page.locator('#article-3-section-contact')
@@ -1783,8 +1847,8 @@ test('Contact location comparison stays compact and symmetrical across viewport 
         await expect(map.locator('.location-compare-control--in > i')).toHaveClass(/fa-plus/)
         const metrics=await map.evaluate(root=>{
             const rect=selector=>{
-                const {width,height}=root.querySelector(selector).getBoundingClientRect()
-                return {width,height}
+                const {x,y,width,height}=root.querySelector(selector).getBoundingClientRect()
+                return {x,y,width,height,bottom:y+height}
             }
             const articleContent=root.querySelector('.article-content')
             const contentStyle=getComputedStyle(articleContent)
@@ -1808,15 +1872,27 @@ test('Contact location comparison stays compact and symmetrical across viewport 
                     width:articleContent.getBoundingClientRect().width,
                     parentWidth:articleContent.parentElement.getBoundingClientRect().width
                 },
+                attributionCenterOffset:(()=>{
+                    const footer=root.querySelector('.location-compare-footer')
+                    const attribution=footer.querySelector('span')
+                    const footerRect=footer.getBoundingClientRect()
+                    const attributionRect=attribution.getBoundingClientRect()
+                    return Math.abs((attributionRect.left+attributionRect.width/2)-(footerRect.left+footerRect.width/2))
+                })(),
                 zoomControls,
                 toolbar:rect('.location-compare-toolbar'),
+                scaleReadout:rect('.location-compare-lock'),
+                actionsRow:rect('.location-compare-actions'),
+                presetsRow:rect('.location-compare-presets'),
                 intro:rect('.location-compare-intro'),
                 narrativeSpanDisplay:getComputedStyle(root.querySelector('.location-compare-pretext > span')).display,
                 presets:[...root.querySelectorAll('.location-compare-preset')].map(element=>({
                     height:element.getBoundingClientRect().height,
                     top:element.getBoundingClientRect().top,
                     borderWidth:getComputedStyle(element).borderTopWidth,
-                    radius:getComputedStyle(element).borderTopLeftRadius
+                    radius:getComputedStyle(element).borderTopLeftRadius,
+                    labelFontSize:getComputedStyle(element.querySelector('span')).fontSize,
+                    valueFontSize:getComputedStyle(element.querySelector('em')).fontSize
                 })),
                 actions:[...root.querySelectorAll('.location-compare-actions button')].map(element=>({
                     width:element.getBoundingClientRect().width,
@@ -1829,17 +1905,29 @@ test('Contact location comparison stays compact and symmetrical across viewport 
                         return Math.abs((iconRect.left+iconRect.width/2)-(buttonRect.left+buttonRect.width/2))
                     })()
                 })),
+                actionsWidth:root.querySelector('.location-compare-actions').getBoundingClientRect().width,
+                actionLabels:[...root.querySelectorAll('.location-compare-pan-link, .location-compare-reset')].map(button=>({
+                    width:button.getBoundingClientRect().width,
+                    height:button.getBoundingClientRect().height,
+                    fontSize:getComputedStyle(button).fontSize,
+                    shortVisible:getComputedStyle(button.querySelector('.location-compare-action-label--short')).display!=='none',
+                    longVisible:getComputedStyle(button.querySelector('.location-compare-action-label--long')).display!=='none'
+                })),
                 maps:[...root.querySelectorAll('.location-compare-map')].map(element=>({
                     width:element.getBoundingClientRect().width,
-                    height:element.getBoundingClientRect().height
+                    height:element.getBoundingClientRect().height,
+                    y:element.getBoundingClientRect().top
                 }))
             }
         })
 
         expect(metrics.toolbar.height).toBeLessThan(180)
+        expect(metrics.scaleReadout.bottom).toBeLessThan(metrics.maps[0].y)
+        expect(metrics.actionsRow.y).toBeLessThan(metrics.presetsRow.y)
         expect(metrics.contentFrame.padding).toBe('0px')
         expect(metrics.contentFrame.borderWidth).toBe('0px')
         expect(metrics.contentFrame.width).toBeCloseTo(metrics.contentFrame.parentWidth,0)
+        expect(metrics.attributionCenterOffset).toBeLessThan(1)
         expect(metrics.zoomControls.every(control=>control.width>=(width<768?43.5:31) && control.height>=(width<768?43.5:31))).toBe(true)
         expect(metrics.zoomControls.map(control=>control.borderWidth)).toEqual(['1px','1px'])
         expect(metrics.zoomControls.every(control=>control.background!=='rgba(0, 0, 0, 0)')).toBe(true)
@@ -1851,31 +1939,51 @@ test('Contact location comparison stays compact and symmetrical across viewport 
         expect(metrics.presets).toHaveLength(3)
         expect(metrics.presets.every(preset=>preset.height>=(width<768?43.5:31))).toBe(true)
         expect(metrics.presets.every(preset=>preset.borderWidth==='1px' && preset.radius!=='0px')).toBe(true)
+        expect(metrics.presets.every(preset=>parseFloat(preset.labelFontSize)<=12 && parseFloat(preset.valueFontSize)<=11)).toBe(true)
         expect(Math.max(...metrics.presets.map(preset=>preset.top))-Math.min(...metrics.presets.map(preset=>preset.top))).toBeLessThan(1)
         expect(metrics.actions.every(action=>action.height>=(width<768?43.5:31) && action.borderWidth==='1px' && action.radius!=='0px')).toBe(true)
-        expect(metrics.actions.every(action=>action.width===action.height && action.iconCenterOffset<1)).toBe(true)
+        expect(metrics.actions[0].width).toBeGreaterThan(metrics.actions[0].height)
+        expect(metrics.actions[3].width).toBeGreaterThan(metrics.actions[3].height)
+        expect(metrics.actions.slice(1,3).every(action=>action.width===action.height && action.iconCenterOffset<1)).toBe(true)
+        expect(metrics.actionLabels.every(label=>label.shortVisible!==label.longVisible)).toBe(true)
+        expect(metrics.actionLabels.every(label=>label.shortVisible===(label.width<184))).toBe(true)
+        expect(metrics.actionLabels.every(label=>parseFloat(label.fontSize)>=12)).toBe(true)
         if(width>=768) {
             expect(metrics.presets.every(preset=>preset.height<=37)).toBe(true)
             expect(metrics.actions.every(action=>action.height<=37)).toBe(true)
             expect(metrics.zoomControls.every(control=>control.width<=37 && control.height<=37)).toBe(true)
-            expect(metrics.actions.every(action=>action.width<=37)).toBe(true)
             expect(metrics.toolbar.width).toBeCloseTo(metrics.contentFrame.width,0)
         }
         if(width>=1280) {
             expect(metrics.presets.every(preset=>preset.height<=33)).toBe(true)
             expect(metrics.actions.every(action=>action.height<=33)).toBe(true)
             expect(metrics.zoomControls.every(control=>control.width<=33 && control.height<=33)).toBe(true)
-            expect(metrics.actions.every(action=>action.width<=33)).toBe(true)
         }
         expect(metrics.maps.every(mapSize=>mapSize.height>=140)).toBe(true)
         expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(width+1)
+
+        if(width===390) {
+            const firstCard=page.locator('#article-1-section-contact .article-info-list-item').first()
+            const widthBeforeHover=(await firstCard.boundingBox()).width
+            await firstCard.hover()
+            const hoverMetrics=await firstCard.evaluate(element=>({
+                width:element.getBoundingClientRect().width,
+                transform:getComputedStyle(element).transform,
+                filter:getComputedStyle(element).filter,
+                borderWidth:getComputedStyle(element).borderTopWidth
+            }))
+            expect(Math.abs(hoverMetrics.width-widthBeforeHover)).toBeLessThan(0.5)
+            expect(hoverMetrics.transform).toBe('none')
+            expect(hoverMetrics.filter).toBe('none')
+            expect(hoverMetrics.borderWidth).toBe('1px')
+        }
 
         if(width>=768)
             expect(Math.abs(metrics.maps[0].width-metrics.maps[1].width)).toBeLessThan(1)
     }
 })
 
-test('Contact scale readout and compact controls sit below both maps in both themes', async ({page})=>{
+test('Contact scale readout sits above both maps and actions precede presets in both themes', async ({page})=>{
     const themeLabelColors=[]
     const themeLabelBackgrounds=[]
     for(const theme of ['dark','light']) {
@@ -1927,6 +2035,8 @@ test('Contact scale readout and compact controls sit below both maps in both the
                     cards:cards.map(rect),
                     toolbar:rect(toolbar),
                     scaleReadout:rect(scaleReadout),
+                    actions:rect(root.querySelector('.location-compare-actions')),
+                    presets:rect(root.querySelector('.location-compare-presets')),
                     readoutLabel:rect(readoutLabel),
                     readoutValue:rect(readoutValue),
                     labels:labels.map(label=>({
@@ -1945,11 +2055,13 @@ test('Contact scale readout and compact controls sit below both maps in both the
         themeLabelBackgrounds.push(mobile.labels[0].background)
         expect(mobile.scaleReadout.width).toBeCloseTo(mobile.toolbar.width,0)
         expect(mobile.toolbar.y).toBeGreaterThan(Math.max(...mobile.cards.map(card=>card.bottom)))
-        expect(mobile.scaleReadout.y).toBeGreaterThan(Math.max(...mobile.cards.map(card=>card.bottom)))
+        expect(mobile.scaleReadout.bottom).toBeLessThan(Math.min(...mobile.cards.map(card=>card.y)))
+        expect(mobile.actions.y).toBeLessThan(mobile.presets.y)
         expect(mobile.readoutLabel.y+mobile.readoutLabel.height/2).toBeCloseTo(mobile.readoutValue.y+mobile.readoutValue.height/2,0)
         expect(desktop.scaleReadout.width).toBeCloseTo(desktop.toolbar.width,0)
         expect(desktop.toolbar.y).toBeGreaterThan(Math.max(...desktop.cards.map(card=>card.bottom)))
-        expect(desktop.scaleReadout.y).toBeGreaterThan(Math.max(...desktop.cards.map(card=>card.bottom)))
+        expect(desktop.scaleReadout.bottom).toBeLessThan(Math.min(...desktop.cards.map(card=>card.y)))
+        expect(desktop.actions.y).toBeLessThan(desktop.presets.y)
         expect(desktop.readoutLabel.y+desktop.readoutLabel.height/2).toBeCloseTo(desktop.readoutValue.y+desktop.readoutValue.height/2,0)
         await expect(themedPage.locator('#article-3-section-contact .location-compare-scale-between-maps')).toHaveCount(0)
         await expect(themedPage.locator('#article-3-section-contact .location-compare-bridge-core')).toHaveCount(0)
@@ -1973,7 +2085,7 @@ test('Contact scale readout and compact controls sit below both maps in both the
     expect(themeLabelBackgrounds[0]).not.toBe(themeLabelBackgrounds[1])
 })
 
-test('Contact keeps native page scrolling and only zooms when a wheel gesture starts on a map', async ({page})=>{
+test('Contact keeps native wheel scrolling over maps and zooms only on a deliberate modified gesture', async ({page})=>{
     await page.setViewportSize({width:1366,height:768})
     await preferences(page)
     await openSection(page,'contact')
@@ -1994,26 +2106,45 @@ test('Contact keeps native page scrolling and only zooms when a wheel gesture st
     const pageWheelSequence=await page.evaluate(()=>{
         const intro=document.querySelector('#article-3-section-contact .location-compare-intro')
         const map=document.querySelector('#article-3-section-contact .location-compare-map')
+        const scrollable=document.querySelector('#scrollable-contact')
+        const beforeMapWheel=scrollable.scrollTop
         const first=new WheelEvent('wheel',{deltaY:120,bubbles:true,cancelable:true})
         const second=new WheelEvent('wheel',{deltaY:120,bubbles:true,cancelable:true})
         intro.dispatchEvent(first)
         map.dispatchEvent(second)
-        return {firstPrevented:first.defaultPrevented,secondPrevented:second.defaultPrevented}
+        return {firstPrevented:first.defaultPrevented,secondPrevented:second.defaultPrevented,mapWheelScrollDelta:scrollable.scrollTop-beforeMapWheel}
     })
     expect(pageWheelSequence.firstPrevented).toBe(false)
-    expect(pageWheelSequence.secondPrevented).toBe(false)
+    expect(pageWheelSequence.secondPrevented).toBe(true)
+    expect(pageWheelSequence.mapWheelScrollDelta).toBe(120)
     const scaleAfterPageGesture=await scaleReadout.textContent()
     expect(scaleAfterPageGesture).toBe(initialScale)
     expect(pageScrollAfterOutsideStart).toBeGreaterThan(0)
 
     const scaleBeforeZoom=await scaleReadout.textContent()
-    const scrollBeforeZoom=await scrollable.evaluate(element=>element.scrollTop)
     await page.waitForTimeout(300)
     await mapSurface.scrollIntoViewIfNeeded()
+    await scrollable.evaluate(element=>{element.scrollTop=Math.max(0,element.scrollTop-140)})
+    await page.waitForTimeout(80)
     const refreshedMapBounds=await mapSurface.boundingBox()
     await page.mouse.move(refreshedMapBounds.x+refreshedMapBounds.width/2,refreshedMapBounds.y+refreshedMapBounds.height/2)
+    const scrollBeforeMapWheel=await scrollable.evaluate(element=>element.scrollTop)
     await page.mouse.wheel(0,-120)
+    await expect.poll(()=>scrollable.evaluate(element=>element.scrollTop),{timeout:1000}).toBeLessThan(scrollBeforeMapWheel)
+    expect(await scaleReadout.textContent()).toBe(scaleBeforeZoom)
+
+    const scrollBeforeZoom=await scrollable.evaluate(element=>element.scrollTop)
+    const modifiedWheel=await mapSurface.evaluate(element=>{
+        const event=new WheelEvent('wheel',{deltaY:-240,bubbles:true,cancelable:true,ctrlKey:true})
+        element.dispatchEvent(event)
+        return event.defaultPrevented
+    })
+    expect(modifiedWheel).toBe(true)
     await expect.poll(()=>scaleReadout.textContent(),{timeout:1000}).not.toBe(scaleBeforeZoom)
+    const scaleAfterZoom=await scaleReadout.textContent()
+    const scaleChangeRatio=parseFloat(scaleAfterZoom)/parseFloat(scaleBeforeZoom)
+    expect(scaleChangeRatio).toBeGreaterThan(0.25)
+    expect(scaleChangeRatio).toBeLessThan(0.45)
     expect(await scrollable.evaluate(element=>element.scrollTop)).toBeCloseTo(scrollBeforeZoom,0)
 
     const scaleBeforeButton=await scaleReadout.textContent()

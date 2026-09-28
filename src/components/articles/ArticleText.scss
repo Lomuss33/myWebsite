@@ -371,15 +371,18 @@ article#article-3-section-experience {
 
     h3.article-text-flow-card-heading {
         display: block;
-        justify-self: center;
-        width: fit-content;
+        justify-self: stretch;
+        width: 100%;
+        max-width: 100%;
         margin: 0;
-        color: #f8fbff;
+        color: color-mix(in srgb, #f8fbff 90%, var(--experience-card-accent) 10%);
         font-size: clamp(1.48rem, 1.06vw + 1.14rem, 2.14rem);
         line-height: 1.06;
         letter-spacing: -0.03em;
+        font-weight: 700;
+        text-shadow: 0 1px 12px color-mix(in srgb, var(--experience-card-accent) 16%, transparent);
         text-wrap: balance;
-        max-width: min(100%, 26ch);
+        overflow-wrap: normal;
     }
 
     @container (min-width: 1440px) {
@@ -389,7 +392,7 @@ article#article-3-section-experience {
 
         h3.article-text-flow-card-heading {
             font-size: clamp(1.68rem, 1.34vw + 1.1rem, 2.56rem);
-            max-width: min(100%, 30ch);
+            max-width: 100%;
         }
 
         span.article-text-flow-card-axis-label {
@@ -402,7 +405,7 @@ article#article-3-section-experience {
     }
 
     div.article-text-item-flow-card[data-flow-card-index="2"] h3.article-text-flow-card-heading {
-        white-space: pre-line;
+        white-space: normal;
         text-align: center;
         line-height: 1.08;
     }
@@ -634,7 +637,7 @@ article#article-3-section-experience {
 
     @include content-breakpoint-down(lg) {
         h3.article-text-flow-card-heading {
-            max-width: min(100%, 22ch);
+            max-width: 100%;
         }
     }
 
@@ -649,7 +652,7 @@ article#article-3-section-experience {
         }
 
         h3.article-text-flow-card-heading {
-            width: fit-content;
+            width: 100%;
             max-width: 100%;
         }
 

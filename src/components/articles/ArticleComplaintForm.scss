@@ -150,7 +150,9 @@ article.article-complaint-form {
     div.article-complaint-form-main {
         position: relative;
         display: grid;
-        grid-template-columns: minmax(0, 1.06fr) minmax(300px, 0.94fr);
+        width: 100%;
+        box-sizing: border-box;
+        grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
         grid-template-rows: minmax(200px, 1fr) auto;
         grid-template-areas:
             "message rail"
@@ -158,13 +160,10 @@ article.article-complaint-form {
         column-gap: 0;
         row-gap: 8px;
         align-items: stretch;
-        border: 1px solid color-mix(in srgb, var(--complaint-accent) 28%, var(--complaint-border));
-        border-radius: 18px;
-        background:
-            radial-gradient(circle at 92% 8%, color-mix(in srgb, #8b5cf6 11%, transparent), transparent 34%),
-            radial-gradient(circle at 4% 98%, color-mix(in srgb, var(--complaint-accent) 9%, transparent), transparent 31%),
-            var(--complaint-panel);
-        box-shadow: 0 22px 54px rgba(2, 6, 23, 0.28), inset 0 1px 0 rgba(255,255,255,.055);
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
         overflow: visible;
         isolation: isolate;
     }
@@ -174,8 +173,8 @@ article.article-complaint-form {
         min-width: 0;
         min-height: 0;
         height: 100%;
-        padding: 1rem 1rem 0;
-        border-right: 1px solid var(--complaint-border);
+        padding: 0.7rem 0.7rem 0;
+        border-right: 0;
         overflow: visible;
     }
 
@@ -560,9 +559,9 @@ article.article-complaint-form {
         display: flex;
         align-self: stretch;
         min-width: 0;
-        padding: 0 1rem 1rem;
+        padding: 0 0.7rem 0.7rem;
         box-sizing: border-box;
-        border-right: 1px solid var(--complaint-border);
+        border-right: 0;
     }
 
     div.article-complaint-form-send-button-wrapper > button.standard-button.article-complaint-form-send-button {
@@ -672,8 +671,8 @@ article.article-complaint-form {
 
         .article-complaint-form-rail {
             min-height: 0;
-            gap: 0.55rem;
-            padding: 0.9rem 0.9rem 0;
+            gap: 0.45rem;
+            padding: 0.65rem 0.7rem 0;
             overflow: visible;
         }
 
@@ -692,7 +691,7 @@ article.article-complaint-form {
         }
 
         div.article-complaint-form-message-error-slot {
-            padding: 0 0.9rem 0.9rem;
+            padding: 0 0.7rem 0.7rem;
         }
     }
 
@@ -709,16 +708,16 @@ article.article-complaint-form {
             gap: 10px;
         }
 
-        div.article-complaint-form-main {
-            border-radius: 16px;
-        }
-
         div.article-complaint-form-message-column {
-            padding: 0.9rem 0.9rem 0;
+            padding: 0.6rem 0.65rem 0;
         }
 
         .article-complaint-form-rail {
-            padding: 0.9rem 0.9rem 0;
+            padding: 0.6rem 0.65rem 0;
+        }
+
+        div.article-complaint-form-send-button-wrapper {
+            padding: 0 0.65rem 0.65rem;
         }
 
         .article-complaint-form-note {

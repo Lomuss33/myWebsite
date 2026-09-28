@@ -191,17 +191,37 @@ function ArticleLocationCompare({dataWrapper}) {
             markersRef.current[index] = marker
 
             map.on("zoomend", () => syncScaleFrom(index))
-            const handleModifiedWheel = event => {
-                if(event.__locationCompareWheelOwner !== map.getContainer() || event.target.closest(".location-compare-menu")) return
+            const mapContainer = map.getContainer()
+            const handleMapWheel = event => {
+                if(event.target.closest(".location-compare-menu")) return
+                const deltaY = event.deltaY * (event.deltaMode === WheelEvent.DOM_DELTA_LINE ? 16 : event.deltaMode === WheelEvent.DOM_DELTA_PAGE ? map.getSize().y : 1)
+
+                if(!event.ctrlKey && !event.metaKey) {
+                    if(Math.abs(event.deltaY) < Math.abs(event.deltaX) || !event.cancelable) return
+                    const scrollable = mapContainer.closest(".scrollable")
+                    if(!scrollable) return
+
+                    // Let a plain wheel gesture keep moving the section page.
+                    // Leaflet's surface can suppress its native scroll default,
+                    // so forward the un-eased delta to the real scroll container.
+                    event.preventDefault()
+                    if(scrollable.classList.contains("scrollable-mobile-native"))
+                        window.scrollBy(0, deltaY)
+                    else
+                        scrollable.scrollTop += deltaY
+                    return
+                }
+
                 event.preventDefault()
                 event.stopPropagation()
-                const deltaY = event.deltaY * (event.deltaMode === WheelEvent.DOM_DELTA_LINE ? 16 : event.deltaMode === WheelEvent.DOM_DELTA_PAGE ? map.getSize().y : 1)
-                const zoomChange = Math.sign(deltaY) * Math.min(0.65, Math.max(0.15, Math.abs(deltaY) / 250)) * -1
-                animateLinkedZoom(index, map.getZoom() + zoomChange, map.mouseEventToContainerPoint(event), 0.18)
+                // A standard 120px wheel notch should feel close to one zoom
+                // level. Trackpads keep proportional smaller steps, with a
+                // small floor so deliberate modified gestures still respond.
+                const zoomChange = Math.sign(deltaY) * Math.min(1.5, Math.max(0.12, Math.abs(deltaY) / 120 * 1.1)) * -1
+                animateLinkedZoom(index, map.getZoom() + zoomChange, map.mouseEventToContainerPoint(event), 0.16)
             }
-            const mapContainer = map.getContainer()
-            mapContainer.addEventListener("wheel", handleModifiedWheel, {passive: false})
-            mapWheelHandlers.push([mapContainer, handleModifiedWheel])
+            mapContainer.addEventListener("wheel", handleMapWheel, {passive: false})
+            mapWheelHandlers.push([mapContainer, handleMapWheel])
             map.on("dragstart", () => {
                 if(!isPanLinkedRef.current) return
                 const targetIndex = index === 0 ? 1 : 0
@@ -353,6 +373,16 @@ function ArticleLocationCompare({dataWrapper}) {
                 <PretextLocationNarrative text={dataWrapper.locales.description}/>
             </div>
 
+            <output className="location-compare-lock"
+                    aria-label={`${dataWrapper.locales.locationScaleLabel}: ${formatScale(scale)}`}
+                    aria-live="polite"
+                    aria-atomic="true">
+                <span className="location-compare-lock-copy">
+                    <small>{dataWrapper.locales.locationScaleLabel}</small>
+                    <strong>{formatScale(scale)}</strong>
+                </span>
+            </output>
+
             <div ref={menuRootRef} className={`location-compare-grid ${mapsReady ? "location-compare-grid--ready" : ""}`}>
                 {selectedLocations.map((location, index) => (
                     <section className={`location-compare-card ${openMenuIndex === index ? "location-compare-card--menu-open" : ""}`}
@@ -410,15 +440,40 @@ function ArticleLocationCompare({dataWrapper}) {
             </div>
 
             <div className="location-compare-toolbar">
-                <output className="location-compare-lock"
-                        aria-label={`${dataWrapper.locales.locationScaleLabel}: ${formatScale(scale)}`}
-                        aria-live="polite"
-                        aria-atomic="true">
-                    <span className="location-compare-lock-copy">
-                        <small>{dataWrapper.locales.locationScaleLabel}</small>
-                        <strong>{formatScale(scale)}</strong>
-                    </span>
-                </output>
+                <div className="location-compare-actions">
+                    <button type="button"
+                            className={`location-compare-pan-link ${isPanLinked ? "is-active" : ""}`}
+                            aria-pressed={isPanLinked}
+                            onClick={togglePanLink}
+                            aria-label={isPanLinked ? dataWrapper.locales.locationPanLinkedLabel : dataWrapper.locales.locationPanLinkLabel}
+                            title={isPanLinked ? dataWrapper.locales.locationPanLinkedLabel : dataWrapper.locales.locationPanLinkLabel}>
+                        <span className="location-compare-pan-link-icon" aria-hidden="true">
+                            <i className={`fa-solid ${isPanLinked ? "fa-link" : "fa-link-slash"}`}/>
+                        </span>
+                        <span className="location-compare-action-label location-compare-action-label--short" aria-hidden="true">
+                            {isPanLinked ? dataWrapper.locales.locationPanLinkedShortLabel : dataWrapper.locales.locationPanLinkShortLabel}
+                        </span>
+                        <span className="location-compare-action-label location-compare-action-label--long" aria-hidden="true">
+                            {isPanLinked ? dataWrapper.locales.locationPanLinkedLabel : dataWrapper.locales.locationPanLinkLabel}
+                        </span>
+                    </button>
+                    <button type="button" className="location-compare-control location-compare-control--out" onClick={() => changeZoom(-1)} aria-label={dataWrapper.locales.locationZoomOutLabel}>
+                        <i className="fa-solid fa-minus" aria-hidden="true"/>
+                    </button>
+                    <button type="button" className="location-compare-control location-compare-control--in" onClick={() => changeZoom(1)} aria-label={dataWrapper.locales.locationZoomInLabel}>
+                        <i className="fa-solid fa-plus" aria-hidden="true"/>
+                    </button>
+                    <button type="button" className="location-compare-reset" onClick={resetMaps} aria-label={dataWrapper.locales.locationResetLabel} title={dataWrapper.locales.locationResetLabel}>
+                        <span className="location-compare-reset-glow" aria-hidden="true"/>
+                        <span className="location-compare-action-label location-compare-action-label--short" aria-hidden="true">
+                            {dataWrapper.locales.locationResetShortLabel}
+                        </span>
+                        <span className="location-compare-action-label location-compare-action-label--long" aria-hidden="true">
+                            {dataWrapper.locales.locationResetLabel}
+                        </span>
+                        <i className="fa-solid fa-location-crosshairs" aria-hidden="true"/>
+                    </button>
+                </div>
                 <div className="location-compare-presets" aria-label={dataWrapper.locales.locationPresetsLabel}>
                     <span className="location-compare-presets-title"
                           title={dataWrapper.locales.locationPresetsLabel}
@@ -439,28 +494,6 @@ function ArticleLocationCompare({dataWrapper}) {
                             )
                         })}
                     </div>
-                </div>
-                <div className="location-compare-actions">
-                    <button type="button"
-                            className={`location-compare-pan-link ${isPanLinked ? "is-active" : ""}`}
-                            aria-pressed={isPanLinked}
-                            onClick={togglePanLink}
-                            aria-label={isPanLinked ? dataWrapper.locales.locationPanLinkedLabel : dataWrapper.locales.locationPanLinkLabel}
-                            title={isPanLinked ? dataWrapper.locales.locationPanLinkedLabel : dataWrapper.locales.locationPanLinkLabel}>
-                        <span className="location-compare-pan-link-icon" aria-hidden="true">
-                            <i className={`fa-solid ${isPanLinked ? "fa-link" : "fa-link-slash"}`}/>
-                        </span>
-                    </button>
-                    <button type="button" className="location-compare-control location-compare-control--out" onClick={() => changeZoom(-1)} aria-label={dataWrapper.locales.locationZoomOutLabel}>
-                        <i className="fa-solid fa-minus" aria-hidden="true"/>
-                    </button>
-                    <button type="button" className="location-compare-control location-compare-control--in" onClick={() => changeZoom(1)} aria-label={dataWrapper.locales.locationZoomInLabel}>
-                        <i className="fa-solid fa-plus" aria-hidden="true"/>
-                    </button>
-                    <button type="button" className="location-compare-reset" onClick={resetMaps} aria-label={dataWrapper.locales.locationResetLabel} title={dataWrapper.locales.locationResetLabel}>
-                        <span className="location-compare-reset-glow" aria-hidden="true"/>
-                        <i className="fa-solid fa-location-crosshairs" aria-hidden="true"/>
-                    </button>
                 </div>
             </div>
 

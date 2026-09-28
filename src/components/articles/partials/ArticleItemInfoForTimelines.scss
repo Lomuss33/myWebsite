@@ -3332,6 +3332,45 @@ html[data-layout] article#article-1-section-experience div.article-timeline-item
     ul.article-timeline-item-info-for-timelines-body-list:first-child { padding-top: .25rem; }
 }
 
+// On desktop/tablet landscape, base Experience copy on the card's actual
+// width and cap its growth. The general timeline scale was too steep for
+// narrow desktop cards (e.g. 410px of usable text width).
+@media (min-width: 48rem) {
+    html:is([data-layout="normal"], [data-layout="ultrawide"]) article#article-1-section-experience div.article-timeline-item-info-for-timelines-body {
+        div.article-timeline-item-info-for-timelines-body-text,
+        ul.article-timeline-item-info-for-timelines-body-list {
+            font-size: clamp(.84rem, calc(.8rem + .3cqi), .96rem) !important;
+            line-height: 1.46;
+        }
+
+        ul.article-timeline-item-info-for-timelines-body-list {
+            li.article-timeline-item-info-for-timelines-body-list-item {
+                font-size: inherit !important;
+                line-height: inherit;
+            }
+        }
+    }
+}
+
+// Compact Experience cards can happen at any viewport width because the
+// navigation rail and centered page shell reduce their inline space. Keep
+// the wrapper and every prose/list child on one card-relative scale.
+@media (min-width: 48rem) {
+    @container experience-timeline-card (max-width: 72rem) {
+        html:is([data-layout="normal"], [data-layout="ultrawide"]) article#article-1-section-experience div.article-timeline-item-info-for-timelines-body {
+            font-size: clamp(.76rem, calc(.72rem + .25cqi), .82rem) !important;
+            line-height: 1.44;
+
+            div.article-timeline-item-info-for-timelines-body-text,
+            ul.article-timeline-item-info-for-timelines-body-list,
+            ul.article-timeline-item-info-for-timelines-body-list li.article-timeline-item-info-for-timelines-body-list-item {
+                font-size: inherit !important;
+                line-height: inherit;
+            }
+        }
+    }
+}
+
 // The container-relative desktop scale above grows too aggressively on wide
 // mobile cards. Keep Experience prose compact and readable on phones/tablets.
 html[data-layout="mobile"] article#article-1-section-experience div.article-timeline-item-info-for-timelines-body {

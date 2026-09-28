@@ -895,8 +895,11 @@ article.article-location-compare {
 
 .location-compare-footer {
     display: flex;
+    width: 100%;
+    box-sizing: border-box;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    text-align: center;
     gap: 12px;
     color: var(--location-muted);
     font-size: 0.875rem;
@@ -2121,11 +2124,33 @@ article.article-location-compare div.article-content {
         margin-inline: auto;
         grid-template-columns: minmax(0, 1fr);
         grid-template-areas:
-            "scale"
-            "presets"
-            "actions";
+            "actions"
+            "presets";
         gap: 0.35rem;
         container-type: inline-size;
+    }
+
+    .location-compare-toolbar > .location-compare-actions { grid-area: actions; }
+    .location-compare-toolbar > .location-compare-presets { grid-area: presets; }
+
+    > .article-content > .location-compare-lock {
+        display: flex;
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+        min-height: 1.75rem;
+        box-sizing: border-box;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 auto;
+        padding: 0.15rem 0.35rem 0.35rem;
+        border: 0;
+        border-bottom: 1px solid color-mix(in srgb, var(--location-soft-border) 72%, transparent);
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        color: var(--location-ink);
+        white-space: nowrap;
     }
 
     .location-compare-presets {
@@ -2150,7 +2175,6 @@ article.article-location-compare div.article-content {
         box-shadow: none;
         color: var(--location-ink);
         white-space: nowrap;
-        grid-area: scale;
     }
 
     .location-compare-lock-copy {
@@ -2397,8 +2421,8 @@ article.article-location-compare {
         min-height: 44px;
         align-items: center;
         justify-content: space-between;
-        gap: 0.25rem;
-        padding: 0.35rem clamp(0.4rem, 0.8vw, 0.75rem);
+        gap: 0.35rem;
+        padding: 0.2rem clamp(0.4rem, 0.8vw, 0.75rem);
         border-color: color-mix(in srgb, var(--location-soft-border) 90%, transparent);
         border-radius: 0.65rem;
         background: color-mix(in srgb, var(--location-panel) 88%, transparent);
@@ -2408,20 +2432,21 @@ article.article-location-compare {
         em {
             max-width: 100%;
             overflow: hidden;
-            font-size: clamp(0.62rem, 0.6rem + 0.08vw, 0.7rem);
-            line-height: 1.1;
+            line-height: 1.15;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
         span {
             color: var(--location-ink);
+            font-size: 0.72rem;
             font-weight: 700;
             text-align: left;
         }
 
         em {
             color: var(--location-muted);
+            font-size: 0.68rem;
             font-weight: 550;
             text-align: right;
         }
@@ -2439,10 +2464,13 @@ article.article-location-compare {
 
     .location-compare-actions {
         display: flex;
+        width: 100%;
+        container-name: location-compare-actions;
+        container-type: inline-size;
         grid-template-columns: none;
         align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
+        justify-content: space-between;
+        gap: clamp(0.3rem, 1.2cqi, 0.55rem);
         padding: 0.15rem 0 0;
         border: 0;
 
@@ -2482,7 +2510,34 @@ article.article-location-compare {
             &:active { transform: scale(0.95); }
         }
 
-        > button.location-compare-reset { color: var(--location-accent); }
+        > button.location-compare-pan-link,
+        > button.location-compare-reset {
+            display: flex;
+            width: auto;
+            min-width: 0;
+            flex: 1 1 0;
+            gap: clamp(0.28rem, 1.2cqi, 0.55rem);
+            padding-inline: clamp(0.45rem, 2cqi, 0.9rem);
+            border-radius: 999px;
+            font-size: clamp(0.75rem, 0.72rem + 0.18cqi, 0.84rem);
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        > button.location-compare-pan-link {
+            container-name: location-compare-pan-label;
+            container-type: inline-size;
+            justify-content: flex-start;
+            text-align: left;
+        }
+
+        > button.location-compare-reset {
+            container-name: location-compare-reset-label;
+            container-type: inline-size;
+            justify-content: flex-end;
+            color: var(--location-accent);
+            text-align: right;
+        }
 
         > button.location-compare-control > i,
         > button.location-compare-reset > i,
@@ -2499,13 +2554,37 @@ article.article-location-compare {
 
         .location-compare-pan-link-icon {
             display: grid;
-            width: 100%;
-            height: 100%;
+            width: 1rem;
+            height: 1rem;
+            flex: 0 0 1rem;
             place-items: center;
             border: 0;
             border-radius: 50%;
             background: transparent;
             color: currentColor;
+        }
+
+        .location-compare-pan-link-icon > i,
+        > button.location-compare-reset > i {
+            width: 1rem;
+            height: 1rem;
+            flex: 0 0 1rem;
+            font-size: 0.9rem;
+        }
+
+        .location-compare-action-label {
+            overflow: hidden;
+            font-size: inherit;
+            font-weight: 700;
+            line-height: 1;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .location-compare-action-label--long { display: none; }
+
+        > button.location-compare-reset > .location-compare-reset-glow {
+            display: none;
         }
 
         > button.location-compare-control {
@@ -2521,7 +2600,8 @@ article.article-location-compare {
     }
 
     .location-compare-footer {
-        justify-content: flex-start;
+        justify-content: center;
+        text-align: center;
         margin-top: 0.2rem;
         padding: 0.35rem 0 0;
         border: 0;
@@ -2549,12 +2629,15 @@ article.article-location-compare {
     article.article-location-compare {
         .location-compare-preset { min-height: 36px; height: 36px; }
 
-        .location-compare-actions > button,
-        .location-compare-actions > button.location-compare-pan-link,
-        .location-compare-actions > button.location-compare-control,
-        .location-compare-actions > button.location-compare-reset {
+        .location-compare-actions > button.location-compare-control {
             width: 36px;
             min-width: 36px;
+            height: 36px;
+            min-height: 36px;
+        }
+
+        .location-compare-actions > button.location-compare-pan-link,
+        .location-compare-actions > button.location-compare-reset {
             height: 36px;
             min-height: 36px;
         }
@@ -2565,18 +2648,41 @@ article.article-location-compare {
     article.article-location-compare {
         .location-compare-preset { min-height: 32px; height: 32px; }
 
-        .location-compare-actions > button,
-        .location-compare-actions > button.location-compare-pan-link,
-        .location-compare-actions > button.location-compare-control,
-        .location-compare-actions > button.location-compare-reset {
+        .location-compare-actions > button.location-compare-control {
             width: 32px;
             min-width: 32px;
+            height: 32px;
+            min-height: 32px;
+        }
+
+        .location-compare-actions > button.location-compare-pan-link,
+        .location-compare-actions > button.location-compare-reset {
             height: 32px;
             min-height: 32px;
         }
     }
 }
 
+@container location-compare-pan-label (min-width: 11.5rem) {
+    article.article-location-compare .article-content .location-compare-pan-link .location-compare-action-label--short { display: none; }
+    article.article-location-compare .article-content .location-compare-pan-link .location-compare-action-label--long { display: inline; }
+}
+
+@container location-compare-reset-label (min-width: 11.5rem) {
+    article.article-location-compare .article-content .location-compare-reset .location-compare-action-label--short { display: none; }
+    article.article-location-compare .article-content .location-compare-reset .location-compare-action-label--long { display: inline; }
+}
+
 @media (prefers-reduced-motion: reduce) {
     article.article-location-compare .location-compare-pretext > span { animation: none; }
+}
+
+article.article-location-compare .location-compare-footer {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }

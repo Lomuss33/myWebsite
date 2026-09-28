@@ -116,12 +116,12 @@
 
             div.article-complaint-form-main {
                 grid-template-rows: minmax(0, 10.5rem) auto;
-                row-gap: 0.4rem;
+                row-gap: 0.25rem;
             }
 
             div.article-complaint-form-message-column,
             .article-complaint-form-rail {
-                padding: 0.75rem 0.75rem 0;
+                padding: 0.6rem 0.65rem 0;
             }
 
             div.article-complaint-form-message-column > div.input-field-wrapper,
@@ -146,7 +146,7 @@
 
             div.article-complaint-form-send-button-wrapper,
             div.article-complaint-form-message-error-slot {
-                padding: 0 0.75rem 0.75rem;
+                padding: 0 0.65rem 0.65rem;
             }
 
             div.article-complaint-form-send-button-wrapper > button.standard-button.article-complaint-form-send-button,

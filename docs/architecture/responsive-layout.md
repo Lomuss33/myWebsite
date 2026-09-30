@@ -44,6 +44,8 @@ Art photography action thumbnails should use the generated responsive image mani
 
 The Web Art intro cover remains the explicit entry point. In carousel mode, its Enter action opens the artwork occupying the first carousel position (currently Julia) so the selected artwork does not require a second activation.
 
+The Android robot foreground canvas uses normal alpha compositing at every width. Shared screen blending may be used for atmospheric canvas layers, but it washes out the opaque body and face when applied to the character itself. Hourglass sliders sit at the vertical midpoint on transparent side controls and use a narrow track.
+
 ## Current sizing contract
 
 Primary page titles share one bounded scale and tracking defined on [SectionContent.scss](../../src/components/sections/SectionContent.scss), where container-relative sizing follows the actual content pane. [SectionHeader.scss](../../src/components/sections/SectionHeader.scss) consumes those tokens for visible headings. Software, Hardware, Writings, and Art hide the standalone section header, so their first article heading consumes the same tokens as the page title. Page-specific gradients, prefixes, and separators remain distinct; later article headings keep their own hierarchy.

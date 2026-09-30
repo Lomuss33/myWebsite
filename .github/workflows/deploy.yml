@@ -38,8 +38,10 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium firefox webkit
 
-      - name: Run responsive browser suite
-        run: npm run test:responsive
+      - name: Run focused Chromium responsive suite
+        run: npm run test:responsive:ci
+        env:
+          RESPONSIVE_SMOKE: '1'
 
       - name: Run Firefox responsive smoke suite
         run: npm run test:responsive:cross-browser

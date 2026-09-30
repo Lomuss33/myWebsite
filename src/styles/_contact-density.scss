@@ -100,9 +100,9 @@
                 min-height: 0;
             }
 
-            div.row-form-group-submit button,
+            div.row-form-submit button,
             button.article-contact-form-reset-button {
-                min-height: 2.75rem;
+                min-height: 2.75rem !important;
             }
         }
 
@@ -157,6 +157,12 @@
             span.article-complaint-form-message-error-placeholder {
                 min-height: 2.75rem;
             }
+        }
+
+        article#article-3-section-contact .location-compare-card {
+            // Keep the paired desktop maps tall enough for comfortable map
+            // interaction after reserving their persistent side rails.
+            aspect-ratio: 1.45 / 1;
         }
     }
 }

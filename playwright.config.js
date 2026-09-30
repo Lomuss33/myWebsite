@@ -6,7 +6,7 @@ export default defineConfig({
     timeout: 90000,
     expect: {timeout: 15000},
     workers: 2,
-    reporter: [['list'], ['json', {outputFile: 'test-results/responsive.json'}]],
+    reporter: 'list',
     use: {
         baseURL: 'http://localhost:5173',
         browserName: process.env.PLAYWRIGHT_BROWSER || 'chromium',

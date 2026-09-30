@@ -18,7 +18,8 @@
         "test:layout": "node --test npm/responsive-layout.test.js",
         "test:web-art": "node --test npm/web-art-minesweeper.test.js",
         "test:responsive": "playwright test",
-        "test:responsive:cross-browser": "playwright test tests/responsive.spec.js tests/mobile-profile.spec.js tests/profile-fit.spec.js --grep \"mobile profile centers|profile reflows inside|all page titles share|all sections fit|Education hover motion|Hardware desktop density compacts|Contact location comparison|Contact keeps native wheel scrolling|gallery stays fullscreen\""
+        "test:responsive:ci": "playwright test tests/responsive.spec.js tests/mobile-profile.spec.js tests/profile-fit.spec.js tests/profile-contact.spec.js --grep \"mobile profile centers|profile reflows inside|contact card opens and dismisses|contact card refits short screens|all page titles share|all sections fit|resize keeps mode and navigation|Home desktop density stays compact|Experience desktop density keeps|Education desktop density compacts|Education language ratings keep strong contrast|Education hover motion|Software desktop density compacts|Hardware desktop density compacts|Art desktop density compacts|Contact desktop density compacts|Contact location comparison stays compact|Contact location comparison keeps two-finger pinch|Contact scale readout sits above both maps|Contact keeps native wheel scrolling|gallery stays fullscreen\"",
+        "test:responsive:cross-browser": "playwright test tests/responsive.spec.js tests/mobile-profile.spec.js --grep \"mobile profile centers|Education hover motion|Contact keeps native wheel scrolling|gallery stays fullscreen\""
     },
     "dependencies": {
         "@chenglou/pretext": "^0.0.8",

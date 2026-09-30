@@ -12,7 +12,7 @@
 - The lockfile audit reports zero vulnerabilities. Sass is declared and locked at 1.105.1. A separate clean worktree installed that version and passed the production build and complete Chromium suite; the original preview remains on its already-running local Sass 1.100.0 install.
 - Lint, responsive layout tests, production build, workflow YAML parsing, lockfile dry-run, and clean `npm ci` passed. The Chromium responsive suite passed 79/79 twice against the original install and once against the clean locked install.
 - Weekly npm and GitHub Actions update PRs are configured in `.github/dependabot.yml`, with development-tool patch updates grouped and major changes kept separate.
-- The focused browser smoke suite passed locally in Firefox and WebKit across representative profile sizing, viewport fit, timeline, portfolio, map, and gallery interactions. Fractional hairline widths and subpixel animation offsets are asserted with tolerances rather than exact serialization. CI runs this focused suite in both engines alongside the full Chromium suite; hosted-runner results remain unverified until the workflow runs.
+- The browser workflow now uses a focused Chromium CI suite and a smaller Firefox/WebKit interaction smoke set. Its six section-fit samples collectively cover all four locales, both themes, and mobile, normal, and ultrawide layouts; the exhaustive 24-case matrix and detailed specs remain available through `npm run test:responsive`. Fractional hairline widths and subpixel animation offsets are asserted with tolerances rather than exact serialization. Hosted-runner results for the simplified gates remain unverified until the workflow runs.
 - React 19.3.0, React DOM 19.3.0, and matching React type packages pass a clean install and local compatibility matrix: lint, layout and Minesweeper tests, production build, all 79 Chromium tests, and the 11-test responsive smoke group in Chromium, Firefox, and WebKit. `npm audit --audit-level=high` found zero vulnerabilities. The main workspace manifest, lockfile, and installed dependency tree now all resolve React 19.
 - Vite 8.3.1 and `@vitejs/plugin-react` 6.1.1 pass a clean install, audit, lint, focused unit tests, production build, and the current full 79-test Chromium suite. The current production snapshot also passes the 11-test CI-focused responsive interaction group in Chromium, Firefox, and WebKit (11/11 in each). The build config uses Rolldown's `rolldownOptions.output.codeSplitting` groups, and an explicit target preserves the Vite 6 `modules` floor (ES2020, Edge 88, Firefox 78, Chrome 87, Safari 14). The only build warning is the Three.js chunk at about 609 KB raw / 154 KB gzip. A cold WebKit run against Vite's development server exceeded Playwright's former 15-second section-readiness wait while lazy modules loaded; the wait now allows 30 seconds. The same case passes against the production preview. Hosted CI remains unverified.
 - A first bounded maintainability extraction moved the Minesweeper board, flood-reveal, and win rules out of the 5,800-line `ArticleWebArt.jsx` into `webArt/minesweeper.js`. Four focused Node tests cover generated clues, safe mine limits, flood expansion/flags, and win states; the tested rules are included in CI.
@@ -23,7 +23,7 @@
 
 ### 1. Confirm the checked-in baseline in CI
 
-Fresh-worktree verification passed locally on Node 24 with a clean `npm ci`, locked Sass 1.105.1, lint, layout tests, all 79 Playwright tests, and the production build. On the next pull request, confirm the hosted GitHub runner passes the same gates. Resolve any Linux-only or hosted-runner issues before starting dependency majors. Keep deployment gated to successful verification.
+Fresh-worktree verification passed locally on Node 24 with a clean `npm ci`, locked Sass 1.105.1, lint, layout tests, all 79 Playwright tests, and the production build. The routine workflow now runs focused Chromium coverage plus a small Firefox/WebKit interaction smoke set; the exhaustive local suite remains available for broad changes and diagnosis. Confirm the hosted GitHub runner passes the simplified gates. Resolve any Linux-only or hosted-runner issues before starting dependency majors. Keep deployment gated to successful verification.
 
 **Done when:** the PR workflow is green from a fresh runner and the build uses the exact lockfile versions.
 
@@ -58,7 +58,7 @@ Capture a repeatable baseline for the initial Home route and the Art route on a 
 
 ### 5. Extend browser coverage after a stability check
 
-Run the existing targeted profile, timeline, portfolio, maps, and gallery flows in Firefox and WebKit. Fix genuine engine-specific issues first. The maintained 11-test smoke group passed locally in Chromium (49s), Firefox (1.1m), and WebKit (1.4m), with 2 workers. The focused suite is now included in CI; retain the complete Chromium suite as the required baseline and verify the hosted workflow before considering broader non-Chromium coverage.
+Run the highest-value interaction flows in Firefox and WebKit. Fix genuine engine-specific issues first. The previous 11-test smoke group passed locally in Chromium, Firefox, and WebKit. The routine workflow now narrows cross-browser checks to profile layout, Education motion, map pinch/wheel behavior, and gallery dismissal, while Chromium retains broader page-density and responsive coverage. Keep the complete Chromium suite available for local validation and verify the hosted workflow before considering broader non-Chromium coverage.
 
 **Done when:** the hosted workflow passes in all three engines and documented browser support matches the tested interactions, with no known engine-specific interaction regressions.
 
@@ -74,7 +74,9 @@ The initial inventory found `ArticleWebArt.jsx` at roughly 5,800 lines, followed
 - `npm audit --audit-level=high`
 - `npm run lint`
 - `npm run test:layout`
-- `npm run test:responsive`
+- `npm run test:responsive:ci` with `RESPONSIVE_SMOKE=1`
+- `npm run test:responsive:cross-browser` with `RESPONSIVE_SMOKE=1` in Firefox and WebKit
+- `npm run test:responsive` for exhaustive Chromium validation when a change warrants it
 - `npm run build`
 - Review generated files and `git diff --check`
 

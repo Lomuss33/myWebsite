@@ -1,6 +1,8 @@
 import "./LayeredCardCarousel.scss"
 import React, {useEffect, useLayoutEffect, useRef, useState} from "react"
 
+const CAROUSEL_PREVIEW_HUES = [190, 214, 268, 322, 164, 232, 286, 340]
+
 /** A presentation shell: callers own each card's content and activation lifecycle. */
 function LayeredCardCarousel({slides, onChange, onPin, onUnpin, onReplacePinned, onWindowsSettled, pinnedIds = [], maxPinned = 3, labels = {}, enabled = true}) {
     const [activeIndex, setActiveIndex] = useState(0)
@@ -189,7 +191,7 @@ function LayeredCardCarousel({slides, onChange, onPin, onUnpin, onReplacePinned,
     const renderSide = (index, side) => index === null ? null : (
         <button type="button"
                 className={`layered-card-carousel-side layered-card-carousel-side-${side}`}
-                style={{"--carousel-preview-hue": (index * 37 + 195) % 360}}
+                style={{"--carousel-preview-hue": CAROUSEL_PREVIEW_HUES[index % CAROUSEL_PREVIEW_HUES.length]}}
                 onClick={() => select(index)}
                 disabled={!enabled}
                 aria-label={`${side === "next" ? labels.next || "Next artwork" : labels.previous || "Previous artwork"}: ${index + 1}, ${slides[index].label}`}>
@@ -214,6 +216,7 @@ function LayeredCardCarousel({slides, onChange, onPin, onUnpin, onReplacePinned,
                         <div key={slide.id}
                              className={[
                                  isCurrent ? `layered-card-carousel-current layered-card-carousel-current-${entryDirection}` : "layered-card-carousel-pinned",
+                                 isCurrent && slide.transition === "fade" ? "layered-card-carousel-current-fade" : "",
                                  (lastInteractedSlideId || active?.id) === slide.id ? "is-last-interacted" : ""
                              ].filter(Boolean).join(" ")}
                              role="group"
@@ -263,6 +266,7 @@ function LayeredCardCarousel({slides, onChange, onPin, onUnpin, onReplacePinned,
                                 <path d="M12 5v14M5 12h14"/>
                             </svg>
                         </span>
+                        <span className="layered-card-carousel-add-slot-label" aria-hidden="true">{labels.addNext || "Add artwork"}</span>
                     </button>
                 )}
             </div>

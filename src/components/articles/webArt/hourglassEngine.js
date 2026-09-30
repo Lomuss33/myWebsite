@@ -3,13 +3,13 @@ import Matter from "matter-js"
 const { Engine, Bodies, Body, Composite, Sleeping } = Matter
 
 const DEFAULT_PARAMS = {
-    gravity: 2.8,
-    neckRatio: 0.01
+    gravity: 1.15,
+    neckRatio: 0.065
 }
 
 const CONFIG = {
-    maxParticles: 6000,
-    wallThickness: 36,
+    maxParticles: 1800,
+    wallThickness: 28,
     colors: [
         "#ff3f70",
         "#ff7626",
@@ -26,14 +26,14 @@ const CONFIG = {
     physics: {
         dtBase: 16.667,
         maxDt: 50,
-        posIters: 10,
-        velIters: 8
+        posIters: 6,
+        velIters: 4
     }
 }
 
 const LIMITS = {
-    gravity: { min: 0.25, max: 2.8 },
-    neckRatio: { min: 0.01, max: 0.2 }
+    gravity: { min: 0.5, max: 1.9 },
+    neckRatio: { min: 0.025, max: 0.17 }
 }
 
 function clamp(value, min, max) {
@@ -91,14 +91,15 @@ export function createHourglassEngine(canvas) {
     let frostGradient = null
     let lastTimestamp = null
     let rafId = null
-    let rebuildRafId = null
+    let rebuildTimeoutId = null
+    let pixelRatio = 1
     let running = false
 
     function buildGeometry() {
         const { width, height } = dimensions
 
-        geometry.height = Math.min(height * 0.44, 300)
-        geometry.maxWidth = Math.min(width * 0.34, 220)
+        geometry.height = Math.min(height * 0.4, 260)
+        geometry.maxWidth = Math.min(width * 0.3, 180)
         geometry.particleRadius = Math.max(
             Math.min(geometry.maxWidth / 44, 3.5),
             2
@@ -231,7 +232,7 @@ export function createHourglassEngine(canvas) {
         }
 
         const step = particleRadius * 1.8
-        const spawnPasses = 3
+        const spawnPasses = 2
         const startY = -H + particleRadius * 5
         const endY = -H * 0.17
         const yRange = endY - startY || 1
@@ -381,17 +382,7 @@ export function createHourglassEngine(canvas) {
         engine.world.gravity.x = Math.sin(angles.gravity) * params.gravity
         engine.world.gravity.y = Math.cos(angles.gravity) * params.gravity
 
-        entities.particles.forEach((particle) => {
-            if(particle.isSleeping && Math.random() < 0.02) {
-                Sleeping.set(particle, false)
-            }
-        })
-
-        const subSteps = clamp(Math.ceil(dt / 8.333), 1, 6)
-        const stepDt = dt / subSteps
-        for(let i = 0; i < subSteps; i++) {
-            Engine.update(engine, stepDt)
-        }
+        Engine.update(engine, clamp(dt, 8, 34))
 
         ctx.clearRect(0, 0, width, height)
         ctx.save()
@@ -420,11 +411,11 @@ export function createHourglassEngine(canvas) {
     }
 
     function scheduleRebuild() {
-        if(rebuildRafId != null) cancelAnimationFrame(rebuildRafId)
-        rebuildRafId = requestAnimationFrame(() => {
-            rebuildRafId = null
+        if(rebuildTimeoutId != null) clearTimeout(rebuildTimeoutId)
+        rebuildTimeoutId = setTimeout(() => {
+            rebuildTimeoutId = null
             rebuildWorld()
-        })
+        }, 180)
     }
 
     function reset() {
@@ -452,11 +443,13 @@ export function createHourglassEngine(canvas) {
         const w = Math.max(1, Math.floor(width || 1))
         const h = Math.max(1, Math.floor(height || 1))
         const dpr = Math.max(1, Number(devicePixelRatio) || 1)
+        if(w === dimensions.width && h === dimensions.height && dpr === pixelRatio) return
 
         dimensions.width = w
         dimensions.height = h
         dimensions.cx = w / 2
         dimensions.cy = h / 2
+        pixelRatio = dpr
 
         canvas.width = Math.floor(w * dpr)
         canvas.height = Math.floor(h * dpr)
@@ -492,8 +485,8 @@ export function createHourglassEngine(canvas) {
 
     function destroy() {
         stop()
-        if(rebuildRafId != null) cancelAnimationFrame(rebuildRafId)
-        rebuildRafId = null
+        if(rebuildTimeoutId != null) clearTimeout(rebuildTimeoutId)
+        rebuildTimeoutId = null
         Composite.clear(engine.world)
     }
 

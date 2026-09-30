@@ -17,10 +17,10 @@ export function createPrismFieldEngine(canvas, options = {}) {
     const pointerInfluence = Number.isFinite(options.pointerInfluence) ? options.pointerInfluence : 1
     const pointerDepth = Number.isFinite(options.pointerDepth) ? options.pointerDepth : 18
     const pointerSmoothing = Number.isFinite(options.pointerSmoothing) ? options.pointerSmoothing : 0.22
-    const interactionRadiusRatio = Number.isFinite(options.interactionRadiusRatio) ? options.interactionRadiusRatio : 0.15
-    const interactionLift = Number.isFinite(options.interactionLift) ? options.interactionLift : 7.5
-    const interactionScale = Number.isFinite(options.interactionScale) ? options.interactionScale : 0.26
-    const interactionEmissiveBoost = Number.isFinite(options.interactionEmissiveBoost) ? options.interactionEmissiveBoost : 1.25
+    const interactionRadiusRatio = Number.isFinite(options.interactionRadiusRatio) ? options.interactionRadiusRatio : 0.72
+    const interactionLift = Number.isFinite(options.interactionLift) ? options.interactionLift : 4.5
+    const interactionScale = Number.isFinite(options.interactionScale) ? options.interactionScale : 0.15
+    const interactionEmissiveBoost = Number.isFinite(options.interactionEmissiveBoost) ? options.interactionEmissiveBoost : 0.72
 
     let renderer = null
     let scene = null
@@ -44,6 +44,8 @@ export function createPrismFieldEngine(canvas, options = {}) {
     let lastFrameMs = 0
     let sceneSeed = 0
     const baseQuaternion = new THREE.Quaternion()
+    const flipQuaternion = new THREE.Quaternion()
+    const flipAxis = new THREE.Vector3(1, 0, 0)
     const lookHelper = new THREE.Object3D()
 
     const cornerColors = {
@@ -134,8 +136,8 @@ export function createPrismFieldEngine(canvas, options = {}) {
         const visibleHeight = 2 * Math.tan((camera.fov * Math.PI / 180) / 2) * Math.abs(camera.position.z)
         const visibleWidth = visibleHeight * camera.aspect
         interactionRadius = Math.max(
-            objectRadius * 2.5,
-            Math.min(visibleWidth, visibleHeight) * interactionRadiusRatio
+            objectRadius * 4,
+            Math.hypot(visibleWidth, visibleHeight) * interactionRadiusRatio
         )
         const nx = Math.max(12, Math.ceil(visibleWidth / dx) + 6)
         const ny = Math.max(12, Math.ceil(visibleHeight / dy) + 8)
@@ -240,9 +242,8 @@ export function createPrismFieldEngine(canvas, options = {}) {
                 const dx = reactiveCurrent.x - mesh.position.x
                 const dy = reactiveCurrent.y - mesh.position.y
                 const distance = Math.sqrt(dx * dx + dy * dy)
-                const influence = mouseActive
-                    ? easeOutCubic(clamp(1 - distance / interactionRadius, 0, 1))
-                    : 0
+                const falloff = mouseActive ? clamp(1 - distance / interactionRadius, 0, 1) : 0
+                const influence = falloff * falloff * (3 - 2 * falloff)
                 const pulse = 0.9 + 0.1 * Math.sin(time * 8 + (mesh.position.x + mesh.position.y) * 0.18)
 
                 lookHelper.position.copy(mesh.position)
@@ -251,6 +252,8 @@ export function createPrismFieldEngine(canvas, options = {}) {
                 mesh.quaternion.copy(baseQuaternion)
                 if(influence > 0.001) {
                     mesh.quaternion.slerp(lookHelper.quaternion, influence)
+                    flipQuaternion.setFromAxisAngle(flipAxis, (Math.PI / 2) * influence)
+                    mesh.quaternion.multiply(flipQuaternion)
                 }
 
                 mesh.position.z = interactionLift * influence * pulse

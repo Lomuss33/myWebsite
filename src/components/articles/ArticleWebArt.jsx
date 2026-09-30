@@ -604,7 +604,8 @@ function ArticleWebArt({ dataWrapper, id }) {
         setShouldMountTiles(true)
         setActivationIndex(items.length - 1)
         if(useCarousel) {
-            const firstTileId = items[0]?.uniqueId
+            // Julia is the first carousel slide after the presentation order is applied.
+            const firstTileId = ambientJuliaReadyId
             pinnedSlidesRef.current = []
             setPinnedSlides([])
             stagedPinnedSlideIdsRef.current = new Set()
@@ -643,7 +644,7 @@ function ArticleWebArt({ dataWrapper, id }) {
         })
 
         stageFrameIdsRef.current.push(firstFrameId)
-    }, [clearStageTransitionWork, items, openAllArtTiles, scheduleStageTransitionFallback, setStagePhase, useCarousel])
+    }, [ambientJuliaReadyId, clearStageTransitionWork, items, openAllArtTiles, scheduleStageTransitionFallback, setStagePhase, useCarousel])
 
     useEffect(() => {
         if(typeof window === "undefined") return
@@ -976,6 +977,7 @@ function ArticleWebArt({ dataWrapper, id }) {
             id: item.uniqueId,
             tileId: item.uniqueId,
             label: getItemTileLabel(item, index),
+            transition: getItemTileLabel(item, index) === "Wave" ? "fade" : undefined,
             content: itemTiles[index]
         })),
         ...ambientTileDefinitions.slice(0, ambientTiles.length).map(({key, tileId, label}, index) => ({
@@ -995,11 +997,23 @@ function ArticleWebArt({ dataWrapper, id }) {
         }] : [])
     ]
 
+    const swapCarouselSlides = (firstLabel, secondLabel) => {
+        const firstIndex = carouselSlides.findIndex(({label}) => label === firstLabel)
+        const secondIndex = carouselSlides.findIndex(({label}) => label === secondLabel)
+        if(firstIndex < 0 || secondIndex < 0) return
+        const firstSlide = carouselSlides[firstIndex]
+        carouselSlides[firstIndex] = carouselSlides[secondIndex]
+        carouselSlides[secondIndex] = firstSlide
+    }
+    swapCarouselSlides("Wave", "Julia")
+    swapCarouselSlides("Julia", "Poly")
+    swapCarouselSlides("Plop", "Click")
+
     const carouselLabels = {
-        en: {gallery: "Web art gallery", next: "Next artwork", previous: "Previous artwork", last: "Last viewed artwork", jump: "Jump to artwork", jumpTo: "Show artwork", pin: "Open alongside current artwork", unpin: "Close extra window", pinLimit: "Three extra artworks are already open", pinned: "Extra artwork"},
-        de: {gallery: "Webkunst-Galerie", next: "Nächstes Werk", previous: "Vorheriges Werk", last: "Zuletzt angesehenes Werk", jump: "Werk auswählen", jumpTo: "Werk anzeigen", pin: "Neben dem aktuellen Werk öffnen", unpin: "Zusätzliches Fenster schließen", pinLimit: "Drei zusätzliche Werke sind bereits offen", pinned: "Zusätzliches Werk"},
-        hr: {gallery: "Galerija web umjetnosti", next: "Sljedeće djelo", previous: "Prethodno djelo", last: "Zadnje pregledano djelo", jump: "Odaberi djelo", jumpTo: "Prikaži djelo", pin: "Otvori uz trenutno djelo", unpin: "Zatvori dodatni prozor", pinLimit: "Već su otvorena tri dodatna djela", pinned: "Dodatno djelo"},
-        tr: {gallery: "Web sanatı galerisi", next: "Sonraki eser", previous: "Önceki eser", last: "Son görüntülenen eser", jump: "Eser seç", jumpTo: "Eseri göster", pin: "Geçerli eserin yanında aç", unpin: "Ek pencereyi kapat", pinLimit: "Üç ek eser zaten açık", pinned: "Ek eser"}
+        en: {gallery: "Web art gallery", next: "Next artwork", previous: "Previous artwork", last: "Last viewed artwork", jump: "Jump to artwork", jumpTo: "Show artwork", pin: "Open alongside current artwork", unpin: "Close extra window", pinLimit: "Three extra artworks are already open", pinned: "Extra artwork", addNext: "Add artwork"},
+        de: {gallery: "Webkunst-Galerie", next: "Nächstes Werk", previous: "Vorheriges Werk", last: "Zuletzt angesehenes Werk", jump: "Werk auswählen", jumpTo: "Werk anzeigen", pin: "Neben dem aktuellen Werk öffnen", unpin: "Zusätzliches Fenster schließen", pinLimit: "Drei zusätzliche Werke sind bereits offen", pinned: "Zusätzliches Werk", addNext: "Werk hinzufügen"},
+        hr: {gallery: "Galerija web umjetnosti", next: "Sljedeće djelo", previous: "Prethodno djelo", last: "Zadnje pregledano djelo", jump: "Odaberi djelo", jumpTo: "Prikaži djelo", pin: "Otvori uz trenutno djelo", unpin: "Zatvori dodatni prozor", pinLimit: "Već su otvorena tri dodatna djela", pinned: "Dodatno djelo", addNext: "Dodaj djelo"},
+        tr: {gallery: "Web sanatı galerisi", next: "Sonraki eser", previous: "Önceki eser", last: "Son görüntülenen eser", jump: "Eser seç", jumpTo: "Eseri göster", pin: "Geçerli eserin yanında aç", unpin: "Ek pencereyi kapat", pinLimit: "Üç ek eser zaten açık", pinned: "Ek eser", addNext: "Eser ekle"}
     }[selectedLanguageId]
 
     const onCarouselChange = (_index, slide) => {
@@ -1964,8 +1978,8 @@ function HourglassTile({ itemWrapper, index, activate, locked, onReady }) {
     const engineRef = useRef(null)
     const didReadyRef = useRef(false)
     const visibleRef = useRef(true)
-    const [gravity, setGravity] = useState(2.8)
-    const [neckRatio, setNeckRatio] = useState(0.01)
+    const [gravity, setGravity] = useState(1.15)
+    const [neckRatio, setNeckRatio] = useState(0.065)
 
     useEffect(() => {
         if(!activate) return
@@ -2001,13 +2015,11 @@ function HourglassTile({ itemWrapper, index, activate, locked, onReady }) {
                 const updateSize = () => _syncTileEngineSize(tile, engine, window.devicePixelRatio || 1)
 
                 updateSize()
-                engine.renderStatic?.()
                 if(!locked) engine.start?.()
                 markReady()
 
                 ro = new ResizeObserver(() => {
                     updateSize()
-                    engine.renderStatic?.()
                 })
                 ro.observe(tile)
 
@@ -2062,10 +2074,6 @@ function HourglassTile({ itemWrapper, index, activate, locked, onReady }) {
           event.stopPropagation()
       }
 
-      const stopControlEventCapture = (event) => {
-          event.stopPropagation()
-      }
-
       const onGravityChange = (event) => {
           const nextValue = Number(event.target.value)
           setGravity(nextValue)
@@ -2090,19 +2098,19 @@ function HourglassTile({ itemWrapper, index, activate, locked, onReady }) {
               <canvas ref={canvasRef}
                       className={`article-web-art-canvas`}/>
                 <div className={`article-web-art-hourglass-controls`}
-                     onClickCapture={stopControlEventCapture}
-                     onPointerDownCapture={stopControlEventCapture}
-                     onPointerUpCapture={stopControlEventCapture}
                      onClick={stopControlEvent}
                      onPointerDown={stopControlEvent}
                      onPointerUp={stopControlEvent}
                      onKeyDown={stopControlEvent}>
                     <label className={`article-web-art-hourglass-control article-web-art-hourglass-control-left`}>
-                        <span className={`article-web-art-hourglass-control-name`}>Neck</span>
+                        <span className={`article-web-art-hourglass-control-name`}>
+                            <span>Neck</span>
+                            <output>{Math.round(neckRatio * 100)}%</output>
+                        </span>
                         <input className={`article-web-art-hourglass-slider`}
                                type={"range"}
-                               min={"0.01"}
-                               max={"0.22"}
+                               min={"0.025"}
+                               max={"0.17"}
                                step={"0.001"}
                                value={neckRatio}
                                onChange={onNeckRatioChange}
@@ -2110,11 +2118,14 @@ function HourglassTile({ itemWrapper, index, activate, locked, onReady }) {
                                aria-label={"Hourglass neck size"}/>
                     </label>
                     <label className={`article-web-art-hourglass-control article-web-art-hourglass-control-right`}>
-                        <span className={`article-web-art-hourglass-control-name`}>Gravity</span>
+                        <span className={`article-web-art-hourglass-control-name`}>
+                            <span>Gravity</span>
+                            <output>{gravity.toFixed(2)}×</output>
+                        </span>
                         <input className={`article-web-art-hourglass-slider`}
                                type={"range"}
-                               min={"0.45"}
-                               max={"2.8"}
+                               min={"0.5"}
+                               max={"1.9"}
                                step={"0.01"}
                                value={gravity}
                                onChange={onGravityChange}
@@ -4389,15 +4400,19 @@ function MinesweeperTile({ readyId, locked, onReady }) {
                             className={`article-web-art-minesweeper-mode ${mode === "mine" ? "article-web-art-minesweeper-mode-active" : ""}`}
                             onClick={() => setMode("mine")}
                             disabled={locked || status !== "playing"}
+                            aria-label={"Pickaxe tool"}
+                            title={"Reveal cells"}
                             aria-pressed={mode === "mine"}>
-                        ⛏
+                        <span className="article-web-art-minesweeper-mode-icon" aria-hidden={true}>⛏</span>
                     </button>
                     <button type={"button"}
                             className={`article-web-art-minesweeper-mode ${mode === "flag" ? "article-web-art-minesweeper-mode-active" : ""}`}
                             onClick={() => setMode("flag")}
                             disabled={locked || status !== "playing"}
+                            aria-label={"Flag tool"}
+                            title={"Place flags"}
                             aria-pressed={mode === "flag"}>
-                        🚩
+                        <span className="article-web-art-minesweeper-mode-icon" aria-hidden={true}>🚩</span>
                     </button>
                 </div>
 
@@ -4596,8 +4611,13 @@ function FallingRingsTile({ readyId, locked, onReady }) {
                     pointerIdRef.current = null
                     setHeld(false)
                 }}
+                onMouseEnter={locked ? undefined : (() => {
+                    engineRef.current?.setHovered?.(true)
+                })}
                 onMouseLeave={locked ? undefined : (() => {
+                    engineRef.current?.setHovered?.(false)
                     if(pointerIdRef.current == null) return
+                    pointerIdRef.current = null
                     setHeld(false)
                 })}
                 onBlur={locked ? undefined : (() => {
@@ -4637,10 +4657,10 @@ function PrismFieldTile({ readyId, locked, onReady }) {
             pointerInfluence: 1,
             pointerDepth: 18,
             pointerSmoothing: 0.22,
-            interactionRadiusRatio: 0.15,
-            interactionLift: 7.5,
-            interactionScale: 0.26,
-            interactionEmissiveBoost: 1.25
+            interactionRadiusRatio: 0.78,
+            interactionLift: 4.5,
+            interactionScale: 0.15,
+            interactionEmissiveBoost: 0.72
         }
     }, [reduceMotion])
 

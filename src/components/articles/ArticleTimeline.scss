@@ -1924,35 +1924,29 @@ article.article-timeline--art-digital-expression {
             --digital-card-stack-track: clamp(9.6rem, 28vw, 11.6rem);
         }
 
-        @include content-breakpoint-up(sm) {
-            --digital-card-stack-base: clamp(6.2rem, 6.5cqw, 7.1rem);
-            --digital-card-stack-track: clamp(6.85rem, 7.6cqw, 8rem);
-            --digital-item-buffer: clamp(0.25rem, 0.5cqw, 0.42rem);
-            --digital-card-heading-size: clamp(0.94rem, 1.22cqw, 1rem);
-            --digital-card-body-size: clamp(0.82rem, 1.13cqw, 0.9rem);
-            --digital-card-media-size: clamp(5rem, 7.5cqw, 5.85rem);
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: clamp(0.5rem, 1.05cqw, 0.72rem);
-        }
-
         @include content-breakpoint-down(sm) {
             --digital-card-stack-base: clamp(5.8rem, 30vw, 7rem);
             --digital-card-stack-track: clamp(7rem, 34vw, 8.4rem);
             --digital-item-buffer: 0.38rem;
         }
 
+        @container (min-width: 30rem) {
+            --digital-card-stack-base: clamp(6.2rem, 6.5cqw, 7.1rem);
+            --digital-card-stack-track: clamp(6.85rem, 7.6cqw, 8rem);
+            --digital-item-buffer: clamp(0.25rem, 0.5cqw, 0.42rem);
+            --digital-card-heading-size: clamp(0.94rem, 1.22cqw, 1rem);
+            --digital-card-body-size: clamp(0.82rem, 1.13cqw, 0.9rem);
+            --digital-card-media-size: clamp(5rem, 7.5cqw, 5.85rem);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: clamp(0.5rem, 1.05cqw, 0.72rem);
+        }
+
+        @container (min-width: 50rem) {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
         @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
             --avatar-offset-merge-mode: 0px;
-        }
-    }
-
-    @include layout-desktop {
-        @include content-breakpoint-up(sm) {
-            ul.article-timeline-items > li.article-timeline-item:nth-child(3):last-child {
-                grid-column: auto;
-                width: auto;
-                justify-self: stretch;
-            }
         }
     }
 
@@ -1983,6 +1977,44 @@ article.article-timeline--art-digital-expression {
         transform: translateY(-2px);
     }
 
+    li.article-timeline-item--digital-placeholder {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.65rem;
+        min-height: 100%;
+        border: 1px dashed color-mix(in srgb, var(--theme-primary) 50%, transparent);
+        border-radius: clamp(1.25rem, 3vw, 2rem);
+        background: color-mix(in srgb, var(--theme-card-background) 35%, transparent);
+        color: var(--theme-text-color);
+        font-weight: 700;
+        text-align: center;
+        transform: none;
+
+        &::before,
+        &::after { display: none; }
+    }
+
+    span.digital-expression-placeholder-mark {
+        display: grid;
+        width: 3rem;
+        height: 3rem;
+        place-items: center;
+        border: 1px solid currentColor;
+        border-radius: 50%;
+        font-size: 1.8rem;
+        font-weight: 400;
+        line-height: 1;
+    }
+
+    @container (min-width: 30rem) and (max-width: 49.99rem) {
+        li.article-timeline-item--digital-placeholder {
+            display: flex;
+            border-radius: 10px 34px 34px 10px;
+        }
+    }
+
     div.article-timeline-item-content {
         margin-left: 0 !important;
         min-height: 100%;
@@ -1998,13 +2030,14 @@ article.article-timeline--art-digital-expression {
         inset: auto;
         width: calc(100% + var(--digital-card-inset, 0.8rem) + var(--digital-card-inset, 0.8rem));
         height: auto;
-        aspect-ratio: 3.2 / 1;
+        aspect-ratio: auto;
         justify-self: stretch;
         display: flex;
         align-items: center;
         justify-content: center;
         margin: 0 calc(0px - var(--digital-card-inset, 0.8rem));
         padding: 0;
+        clip-path: inset(-3rem 0);
         z-index: 5;
         pointer-events: none;
     }
@@ -2013,8 +2046,8 @@ article.article-timeline--art-digital-expression {
         --digital-stack-size: 32%;
         position: relative;
         display: block;
-        width: min(100%, 16rem);
-        max-width: 100%;
+        width: calc(100% - 1rem);
+        max-width: none;
         aspect-ratio: 3.2 / 1;
         height: auto;
         pointer-events: auto;
@@ -2082,7 +2115,7 @@ article.article-timeline--art-digital-expression {
     span.digital-expression-layer-stack__layer--4 {
         width: var(--digital-stack-size);
         top: 0;
-        left: 68.1%;
+        left: 80%;
         right: auto;
         z-index: 5;
         opacity: 0.5;
@@ -2176,7 +2209,7 @@ article.article-timeline--art-digital-expression {
 
     li.article-timeline-item a.digital-expression-layer-stack__link:hover span.digital-expression-layer-stack__layer--4,
     li.article-timeline-item a.digital-expression-layer-stack__link:focus-visible span.digital-expression-layer-stack__layer--4 {
-        translate: calc(23px - 63.636%) calc(63.636% - 23px);
+        translate: calc(min(1rem, 4cqw) - 63.636%) calc(63.636% - min(1rem, 4cqw));
         transform: scale(1.05);
     }
 
@@ -2295,20 +2328,24 @@ article.article-timeline--art-digital-expression {
 
     }
 
+    // The single-column cards keep their existing left edge. The two-column
+    // layout assigns page-like corners to both sides of the center seam.
     @include content-breakpoint-down($timeline-merge-mode-breakpoint) {
-        li.article-timeline-item--visual-neo-surface div.article-timeline-item-content {
-            border-top-left-radius: 34px!important;
-            border-bottom-left-radius: 34px!important;
-        }
+        @container (max-width: 29.99rem) {
+            li.article-timeline-item--visual-neo-surface div.article-timeline-item-content {
+                border-top-left-radius: 34px!important;
+                border-bottom-left-radius: 34px!important;
+            }
 
-        li.article-timeline-item--visual-orb-glass div.article-timeline-item-content {
-            border-top-left-radius: 38px!important;
-            border-bottom-left-radius: 38px!important;
-        }
+            li.article-timeline-item--visual-orb-glass div.article-timeline-item-content {
+                border-top-left-radius: 38px!important;
+                border-bottom-left-radius: 38px!important;
+            }
 
-        li.article-timeline-item--visual-crystal-facet div.article-timeline-item-content {
-            border-top-left-radius: 30px!important;
-            border-bottom-left-radius: 30px!important;
+            li.article-timeline-item--visual-crystal-facet div.article-timeline-item-content {
+                border-top-left-radius: 30px!important;
+                border-bottom-left-radius: 30px!important;
+            }
         }
     }
 

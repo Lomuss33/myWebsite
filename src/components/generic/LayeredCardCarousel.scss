@@ -2,9 +2,9 @@
     --carousel-card-size: clamp(11rem, 43cqw, 20rem);
     --carousel-side-offset: min(33cqw, 18rem);
     --carousel-stage-surface: #071425;
-    --carousel-side-start: #263f59;
-    --carousel-side-end: #0a1728;
-    --carousel-side-border: rgba(154, 216, 238, 0.7);
+    --carousel-side-start: #15527b;
+    --carousel-side-end: #09172a;
+    --carousel-side-border: rgba(117, 222, 255, 0.88);
     --carousel-side-ink: #edf9ff;
     --carousel-control-surface: rgba(7, 26, 44, 0.91);
     --carousel-control-ink: #dcf8ff;
@@ -115,19 +115,6 @@
     border-radius: 0;
     box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.46);
 
-    &::before {
-        content: "";
-        position: absolute;
-        z-index: 4;
-        inset: 0;
-        border-radius: 0;
-        background: linear-gradient(110deg, transparent 35%, var(--carousel-pinned-glow) 50%, transparent 65%);
-        background-size: 220% 100%;
-        mix-blend-mode: screen;
-        pointer-events: none;
-        animation: layered-card-hologram-sweep 5s ease-in-out infinite;
-    }
-
     &::after {
         content: "";
         position: absolute;
@@ -135,18 +122,12 @@
         inset: 0;
         border: var(--carousel-window-edge-width) solid var(--carousel-pinned-line);
         border-radius: 0;
-        box-shadow: inset 0 0 1.2rem var(--carousel-pinned-glow), 0 0 1.2rem var(--carousel-pinned-glow);
+        box-shadow: none;
         pointer-events: none;
         animation: layered-card-hologram-flight 650ms cubic-bezier(.16, .8, .25, 1) both;
     }
 
-    &.is-last-interacted {
-        --carousel-window-edge-width: 2.5px;
-
-        &::after {
-            box-shadow: inset 0 0 1.5rem var(--carousel-pinned-glow), 0 0 1.5rem var(--carousel-pinned-glow);
-        }
-    }
+    &.is-last-interacted { --carousel-window-edge-width: 2.5px; }
 }
 
 .layered-card-carousel-workspace > [role="group"] .article-web-art-gated-tile,
@@ -245,21 +226,20 @@
     aspect-ratio: 1;
     align-content: center;
     justify-items: center;
+    gap: 0.4rem;
     padding: 1rem;
-    border: 1px dashed var(--carousel-control-border);
+    border: 1px solid var(--carousel-pinned-line);
     border-radius: 0;
     background:
-        radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--carousel-pinned-glow) 88%, transparent), transparent 58%),
-        linear-gradient(145deg, color-mix(in srgb, var(--carousel-control-surface) 92%, #163d58), var(--carousel-stage-surface));
+        linear-gradient(145deg, color-mix(in srgb, var(--carousel-control-surface) 76%, #163d58), var(--carousel-stage-surface));
     color: var(--carousel-control-ink);
     cursor: pointer;
-    transition: border-color 180ms ease, box-shadow 180ms ease, color 180ms ease;
+    transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
 
     &:hover:not(:disabled) {
-        border-style: solid;
         border-color: var(--carousel-number-current-top);
+        background: linear-gradient(145deg, color-mix(in srgb, var(--carousel-control-surface) 62%, #163d58), var(--carousel-stage-surface));
         color: var(--carousel-number-current-top);
-        box-shadow: inset 0 0 1.5rem var(--carousel-pinned-glow), 0 0 1rem var(--carousel-pinned-glow);
     }
 
     &:focus-visible { outline: 2px solid var(--carousel-number-current-top); outline-offset: -4px; }
@@ -268,13 +248,11 @@
 
 .layered-card-carousel-add-slot-icon {
     display: grid;
-    width: 2rem;
-    height: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
     place-items: center;
-    border: 1px solid var(--carousel-control-border);
-    border-radius: 0;
-    background: var(--carousel-control-surface);
-    box-shadow: 0 0 0 5px color-mix(in srgb, var(--carousel-pinned-glow) 55%, transparent);
+    border: 0;
+    background: transparent;
 
     svg {
         width: 1.1rem;
@@ -284,6 +262,15 @@
         stroke-width: 1.8;
         stroke-linecap: round;
     }
+}
+
+.layered-card-carousel-add-slot-label {
+    color: color-mix(in srgb, var(--carousel-control-ink) 76%, transparent);
+    font-size: 0.68rem;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    text-transform: uppercase;
 }
 
 .layered-card-carousel-pinned {
@@ -307,14 +294,10 @@
     to { opacity: 1; transform: perspective(700px) translateY(0) rotateY(0) scale(1); }
 }
 
-@keyframes layered-card-hologram-sweep {
-    0%, 28% { background-position: 100% 0; }
-    58%, 100% { background-position: -100% 0; }
-}
-
 .layered-card-carousel-current-next { animation: layered-card-reveal-next 420ms cubic-bezier(.16, .8, .25, 1) both; }
 .layered-card-carousel-current-previous { animation: layered-card-reveal-previous 420ms cubic-bezier(.16, .8, .25, 1) both; }
 .layered-card-carousel-current-jump { animation: layered-card-reveal-jump 340ms ease-out both; }
+.layered-card-carousel-current-fade { animation: layered-card-reveal-fade 240ms ease-out both; }
 
 @keyframes layered-card-reveal-next {
     from { clip-path: inset(0 0 0 100%); filter: brightness(1.45) saturate(1.35); }
@@ -331,6 +314,11 @@
     to { opacity: 1; filter: brightness(1) saturate(1); }
 }
 
+@keyframes layered-card-reveal-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 .layered-card-carousel-side {
     z-index: 1;
     display: flex;
@@ -341,7 +329,7 @@
     overflow: hidden;
     border: 1px solid var(--carousel-side-border);
     background:
-        radial-gradient(circle at 22% 20%, hsl(var(--carousel-preview-hue) 72% 52% / 0.33), transparent 54%),
+        radial-gradient(circle at 22% 20%, hsl(var(--carousel-preview-hue) 84% 58% / 0.42), transparent 62%),
         linear-gradient(145deg, var(--carousel-side-start), var(--carousel-side-end) 72%);
     box-shadow: 0 0.7rem 2rem rgba(0, 0, 0, 0.34);
     color: var(--carousel-side-ink);
@@ -410,9 +398,9 @@
     margin-top: 0.7rem;
     padding: 0.3rem;
     overflow: hidden;
-    border-block: 1px solid var(--carousel-rail-border);
-    background: var(--carousel-rail-surface);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 0.45rem 1rem rgba(2, 12, 29, 0.14);
+    border: 0;
+    background: transparent;
+    box-shadow: none;
 }
 
 .layered-card-carousel-index-button {
@@ -525,9 +513,7 @@
 
     .layered-card-carousel-current,
     .layered-card-carousel-pinned,
-    .layered-card-carousel-current::before,
     .layered-card-carousel-current::after,
-    .layered-card-carousel-pinned::before,
     .layered-card-carousel-pinned::after,
     .layered-card-carousel-side-number,
     .layered-card-carousel-index-button,

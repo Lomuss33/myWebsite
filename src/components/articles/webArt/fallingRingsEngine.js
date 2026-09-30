@@ -137,6 +137,8 @@ export function createFallingRingsEngine(canvas, options = {}) {
     let lastFrameMs = 0
     let holdMix = 0
     let held = false
+    let hoverMix = 0
+    let hovered = false
 
     function initShaders() {
         const vertexShader = compileShader(gl, VERTEX_SHADER_SOURCE, gl.VERTEX_SHADER)
@@ -210,7 +212,13 @@ export function createFallingRingsEngine(canvas, options = {}) {
 
         const ambientSpeed = 0.12
         const holdSpeed = 0.012
-        const speedMix = ambientSpeed + (holdSpeed - ambientSpeed) * easedHoldMix
+        const hoverTarget = hovered && !held ? 1 : 0
+        const hoverEase = 1 - Math.pow(0.85, dt / (1000 / 60))
+        hoverMix += (hoverTarget - hoverMix) * hoverEase
+        const easedHoverMix = smoothstep(0, 1, hoverMix)
+        const holdSpeedMix = ambientSpeed + (holdSpeed - ambientSpeed) * easedHoldMix
+        const hoverSpeed = holdSpeed * 0.3
+        const speedMix = holdSpeedMix + (hoverSpeed - holdSpeedMix) * easedHoverMix
         simTime += dt * speedMix * (reduceMotion ? 0.1 : 1.0)
 
         gl.uniform1f(timeHandle, simTime)
@@ -245,6 +253,11 @@ export function createFallingRingsEngine(canvas, options = {}) {
 
     function setHeld(nextHeld) {
         held = Boolean(nextHeld)
+        if(!running) draw(performance.now())
+    }
+
+    function setHovered(nextHovered) {
+        hovered = Boolean(nextHovered)
         if(!running) draw(performance.now())
     }
 
@@ -291,6 +304,7 @@ export function createFallingRingsEngine(canvas, options = {}) {
         reset,
         renderStatic,
         setSize,
-        setHeld
+        setHeld,
+        setHovered
     }
 }

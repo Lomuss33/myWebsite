@@ -122,6 +122,7 @@ function ItemPreviewMenuGalleryButton({ itemWrapper, galleryMetadata = null }) {
 
     const screenshots = itemWrapper.preview?.screenshots
     const screenshotsAspectRatio = itemWrapper.preview?.screenshotsAspectRatio
+    const galleryPreviewImage = utils.image.normalizeSource(itemWrapper.img || screenshots?.[0])
     const isPhotographyTimeline = itemWrapper?.articleWrapper?.settings?.timelineVariant === "art-photography"
     const isDigitalExpressionTimeline = itemWrapper?.articleWrapper?.settings?.timelineVariant === "art-digital-expression"
     const actionLabel = isPhotographyTimeline ?
@@ -165,7 +166,9 @@ function ItemPreviewMenuGalleryButton({ itemWrapper, galleryMetadata = null }) {
                                 tooltip={actionLabel}
                                 faIcon={actionIcon}>
                     {isPhotographyTimeline && (
-                        <img src={itemWrapper.img || screenshots[0]}
+                        <img src={galleryPreviewImage.resolvedSrc || itemWrapper.img || screenshots[0]}
+                             srcSet={galleryPreviewImage.srcSet || undefined}
+                             sizes="56px"
                              className={`article-item-preview-menu-gallery-image`}
                              alt={``}
                              aria-hidden={true}

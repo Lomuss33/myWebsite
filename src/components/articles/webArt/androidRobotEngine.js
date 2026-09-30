@@ -133,17 +133,14 @@ export function createAndroidRobotEngine(canvas, options = {}) {
             ? 1 + (Math.sin(bounceMix * Math.PI * 2) * 0.04) * (1 - bounceMix)
             : 1
 
-        let opacity = 1
         let scale = bounceScale
         if(collapseState) {
             const progress = smoothstep01((now - collapseState.startAt) / Math.max(1, collapseState.endAt - collapseState.startAt))
-            opacity = 1 - progress
-            scale *= 1 - progress * 0.1
+            scale *= 1 - progress * 0.16
         }
         else if(now < reappearUntil) {
             const progress = 1 - ((reappearUntil - now) / 600)
-            opacity = smoothstep01(progress)
-            scale *= 0.92 + 0.08 * opacity
+            scale *= 0.92 + 0.08 * smoothstep01(progress)
         }
 
         const eyeColor = isAngry ? "#ff4d4d" : "#25d366"
@@ -165,35 +162,44 @@ export function createAndroidRobotEngine(canvas, options = {}) {
                 popState = null
             }
             else {
-                const alphaIn = progress < 0.3 ? progress / 0.3 : 1 - ((progress - 0.3) / 0.7)
-                const yShift = 16 - 22 * progress
-                const pillWidth = Math.max(68, popState.text.length * 7.6)
-                const pillHeight = 24
+                const alphaIn = progress < 0.18 ? progress / 0.18 : 1 - ((progress - 0.18) / 0.82)
+                const yShift = 18 - 26 * progress
+                ctx.font = "700 13px system-ui, sans-serif"
+                const pillWidth = clamp(ctx.measureText(popState.text).width + 32, 82, Math.max(82, width - 24))
+                const pillHeight = 34
                 const px = width / 2
-                const py = Math.max(24, height - 42 + yShift)
+                const py = clamp(height - 42 + yShift, pillHeight / 2 + 8, height - pillHeight / 2 - 8)
 
                 ctx.save()
                 ctx.globalAlpha = clamp(alphaIn, 0, 1)
-                ctx.fillStyle = "rgba(255, 255, 255, 0.18)"
-                ctx.strokeStyle = "rgba(255, 255, 255, 0.32)"
-                ctx.lineWidth = 1
+                ctx.shadowColor = "rgba(0, 0, 0, 0.48)"
+                ctx.shadowBlur = 14
+                ctx.shadowOffsetY = 5
+                const pillGradient = ctx.createLinearGradient(0, py - pillHeight / 2, 0, py + pillHeight / 2)
+                pillGradient.addColorStop(0, "rgba(14, 38, 49, 0.98)")
+                pillGradient.addColorStop(1, "rgba(5, 20, 30, 0.98)")
+                ctx.fillStyle = pillGradient
+                ctx.strokeStyle = "rgba(112, 236, 178, 0.84)"
+                ctx.lineWidth = 1.25
                 ctx.beginPath()
-                ctx.roundRect(px - pillWidth / 2, py - pillHeight / 2, pillWidth, pillHeight, 999)
+                ctx.roundRect(px - pillWidth / 2, py - pillHeight / 2, pillWidth, pillHeight, 17)
                 ctx.fill()
                 ctx.stroke()
-                ctx.fillStyle = "#eafff6"
-                ctx.font = "700 12px system-ui, sans-serif"
+                ctx.globalAlpha = 1
+                ctx.shadowColor = "transparent"
+                ctx.shadowBlur = 0
+                ctx.shadowOffsetY = 0
+                ctx.fillStyle = "#f2fff8"
+                ctx.font = "700 13px system-ui, sans-serif"
                 ctx.textAlign = "center"
                 ctx.textBaseline = "middle"
-                ctx.fillText(popState.text, px, py + 0.5)
+                ctx.fillText(popState.text, px, py + 0.5, pillWidth - 20)
                 ctx.restore()
             }
         }
 
-        if(opacity <= 0.001) return
-
         ctx.save()
-        ctx.globalAlpha = opacity
+        ctx.globalAlpha = 1
         ctx.translate(offsetX + drawW / 2, offsetY + drawH / 2)
         ctx.scale(fit * scale, fit * scale)
         ctx.translate(-baseW / 2, -baseH / 2)
@@ -232,6 +238,8 @@ export function createAndroidRobotEngine(canvas, options = {}) {
 
         const logoX = bodyX + pointer.x * 10
         const logoY = bodyY + pointer.y * 5
+        ctx.save()
+        ctx.globalAlpha = 0.72
         ctx.fillStyle = "#25d366"
         ctx.beginPath()
         ctx.arc(logoX, logoY, 15, 0, Math.PI * 2)
@@ -240,6 +248,7 @@ export function createAndroidRobotEngine(canvas, options = {}) {
         ctx.beginPath()
         ctx.arc(logoX - 3, logoY - 3, 4, 0, Math.PI * 2)
         ctx.fill()
+        ctx.restore()
 
         let headGradient = ctx.createRadialGradient(headX - 30, headY - 20, 20, headX, headY, 80)
         headGradient.addColorStop(0, "#ffffff")
@@ -296,6 +305,8 @@ export function createAndroidRobotEngine(canvas, options = {}) {
             ctx.stroke()
         }
 
+        ctx.save()
+        ctx.globalAlpha = 0.68
         ctx.strokeStyle = "#cbd5e1"
         ctx.lineWidth = 6
         ctx.beginPath()
@@ -304,6 +315,7 @@ export function createAndroidRobotEngine(canvas, options = {}) {
         ctx.moveTo(headX + 40, headY - 40)
         ctx.lineTo(headX + 55, headY - 65)
         ctx.stroke()
+        ctx.restore()
 
         ctx.restore()
     }

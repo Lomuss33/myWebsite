@@ -1064,8 +1064,7 @@ article.article-timeline--art-digital-expression li.article-timeline-item--visua
         text-decoration-color: rgba(34, 211, 238, 0.78);
     }
 
-    ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item,
-    div.article-timeline-item-info-for-timelines-body {
+    ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item {
         color: rgba(255, 247, 237, 0.86);
         background: rgba(124, 45, 18, 0.24);
         border-color: rgba(255, 255, 255, 0.24);
@@ -1126,8 +1125,7 @@ article.article-timeline--art-digital-expression li.article-timeline-item--visua
         text-decoration-color: rgba(192, 132, 252, 0.82);
     }
 
-    ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item,
-    div.article-timeline-item-info-for-timelines-body {
+    ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item {
         color: rgba(0, 72, 48, 0.86);
         background: rgba(255, 255, 255, 0.34);
         border-color: rgba(255, 255, 255, 0.5);
@@ -1195,8 +1193,7 @@ article.article-timeline--art-digital-expression li.article-timeline-item--visua
         text-decoration-color: rgba(250, 204, 21, 0.82);
     }
 
-    ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item,
-    div.article-timeline-item-info-for-timelines-body {
+    ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item {
         color: rgba(248, 251, 255, 0.88);
         background: rgba(15, 23, 42, 0.24);
         border-color: rgba(255, 255, 255, 0.24);
@@ -2671,8 +2668,7 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
     color: var(--card-text-mid);
 }
 
-[data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item,
-[data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-body {
+[data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item {
     background: rgba(255, 255, 255, 0.12);
     border-color: rgba(255, 255, 255, 0.18);
 }
@@ -2707,8 +2703,7 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
     text-decoration-color: rgba(34, 211, 238, 0.78);
 }
 
-[data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item--visual-neo-surface ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item,
-[data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item--visual-neo-surface div.article-timeline-item-info-for-timelines-body {
+[data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item--visual-neo-surface ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item {
     color: rgba(255, 247, 237, 0.86);
     background: rgba(124, 45, 18, 0.24);
     border-color: rgba(255, 255, 255, 0.24);
@@ -2737,8 +2732,7 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
     text-decoration-color: rgba(192, 132, 252, 0.82);
 }
 
-[data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item,
-[data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass div.article-timeline-item-info-for-timelines-body {
+[data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item {
     color: rgba(0, 72, 48, 0.86);
     background: rgba(255, 255, 255, 0.34);
     border-color: rgba(255, 255, 255, 0.5);
@@ -2768,8 +2762,7 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
     text-decoration-color: rgba(250, 204, 21, 0.82);
 }
 
-[data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item--visual-crystal-facet ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item,
-[data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item--visual-crystal-facet div.article-timeline-item-info-for-timelines-body {
+[data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item--visual-crystal-facet ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item {
     color: rgba(248, 251, 255, 0.88);
     background: rgba(15, 23, 42, 0.24);
     border-color: rgba(255, 255, 255, 0.24);
@@ -2811,7 +2804,6 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
     box-shadow: 0 0 24px rgba(103, 232, 249, 0.34);
 }
 
-[data-theme="dark"] article#article-2-section-my-art.article-timeline--art-digital-expression div.article-timeline-item-info-for-timelines-body,
 [data-theme="dark"] article#article-2-section-my-art.article-timeline--art-digital-expression ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item {
     background: rgba(6, 12, 28, 0.58);
     border-color: rgba(255, 255, 255, 0.16);
@@ -2835,7 +2827,6 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
         0 0 48px rgba(251, 113, 133, 0.15);
 }
 
-[data-theme="dark"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item--visual-neo-surface div.article-timeline-item-info-for-timelines-body,
 [data-theme="dark"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item--visual-neo-surface ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item {
     color: rgba(255, 247, 237, 0.88);
     background: rgba(69, 26, 3, 0.38);
@@ -2866,7 +2857,6 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
     text-decoration-color: rgba(167, 139, 250, 0.86);
 }
 
-[data-theme="dark"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass div.article-timeline-item-info-for-timelines-body,
 [data-theme="dark"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item--visual-orb-glass ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item {
     color: rgba(209, 250, 244, 0.88);
     background: rgba(2, 44, 34, 0.42);
@@ -2891,7 +2881,6 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
         0 0 48px rgba(103, 232, 249, 0.14);
 }
 
-[data-theme="dark"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item--visual-crystal-facet div.article-timeline-item-info-for-timelines-body,
 [data-theme="dark"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item--visual-crystal-facet ul.article-timeline-item-info-for-timelines-header-prop-list li.prop-list-item {
     color: rgba(248, 251, 255, 0.9);
     background: rgba(15, 23, 42, 0.34);
@@ -2909,7 +2898,7 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
         "body"
         "actions";
     column-gap: 0;
-    row-gap: clamp(0.45rem, 1vw, 0.7rem);
+    row-gap: 0;
     align-content: start;
     align-items: stretch;
     min-height: calc(var(--digital-card-stack-track, clamp(10.5rem, 24vw, 13.25rem)) + 4.25rem);
@@ -2924,6 +2913,12 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
     &::after {
         transform-style: flat;
     }
+
+    &::before {
+        // Keep the inset decorative frame clear of the action buttons.
+        -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - 5.25rem), transparent calc(100% - 4.25rem));
+        mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - 5.25rem), transparent calc(100% - 4.25rem));
+    }
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-header {
@@ -2931,8 +2926,9 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
     grid-column: 1 / -1;
     width: 100%;
     min-height: 0;
-    margin: 0.25rem 0 0 0.35rem;
+    margin: 0.25rem 0 0;
     padding: 0.2rem 0.25rem 0.35rem;
+    text-align: center;
     border-bottom: 1px solid color-mix(in srgb, var(--card-accent, #67e8f9) 28%, transparent);
     transform: none;
 }
@@ -2940,6 +2936,8 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-header-title,
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-header-main {
     min-width: 0;
+    justify-content: center;
+    text-align: center;
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-header-main h5 {
@@ -2961,23 +2959,23 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
     grid-area: actions;
     grid-column: 1 / -1;
     justify-self: center;
-    width: min(100%, 17rem);
+    width: 100%;
     max-width: 100%;
     height: auto;
     min-height: 3rem;
     align-self: end;
-    margin: 0 auto;
-    padding: 0.2rem;
+    margin: 0.25rem auto 0;
+    padding: 0;
     justify-content: center;
     align-items: center;
     position: relative;
     z-index: 6;
     transform: none;
     overflow: visible;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 0.95rem;
-    background: rgba(7, 15, 29, 0.58);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu,
@@ -3021,9 +3019,10 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
     padding: 0.45rem 0.55rem;
     border: 1px solid rgba(103, 232, 249, 0.48);
     border-radius: 0.72rem;
-    background: linear-gradient(145deg, rgba(8, 47, 73, 0.96), rgba(15, 23, 42, 0.96));
-    color: #f8fafc;
-    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.24), 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+    background: transparent;
+    color: var(--card-text-strong, #f8fafc);
+    box-shadow: none;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.42);
     font-size: clamp(0.68rem, 2.7vw, 0.78rem);
     font-weight: 750;
     line-height: 1;
@@ -3040,9 +3039,9 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list a.article-item-preview-menu-link:hover,
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-item-preview-menu-button-list a.article-item-preview-menu-link:focus-visible {
-    background: linear-gradient(145deg, rgba(8, 65, 92, 0.98), rgba(30, 41, 59, 0.98));
+    background: transparent;
     border-color: rgba(165, 243, 252, 0.92);
-    box-shadow: 0 5px 13px rgba(0, 0, 0, 0.32), 0 0 0 1px rgba(165, 243, 252, 0.18) inset;
+    box-shadow: 0 0 0 1px rgba(165, 243, 252, 0.18) inset;
     transform: translateY(-1px);
 }
 
@@ -3057,7 +3056,7 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
     display: flex;
     align-self: stretch;
     justify-content: flex-end;
-    margin-top: 0;
+    margin-top: 0.25rem;
     width: auto;
     max-width: 100%;
     padding: 0.15rem 0.2rem;
@@ -3075,17 +3074,11 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
     width: 100%;
     max-width: 100%;
     padding: 0.45rem clamp(0.55rem, 1.2vw, 0.8rem);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 0.8rem;
-    background: rgba(7, 14, 28, 0.62);
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(255, 255, 255, 0.035) inset;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
     overflow-wrap: anywhere;
-}
-
-[data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-body-text {
-    border-color: rgba(30, 41, 59, 0.14);
-    background: rgba(255, 255, 255, 0.72);
-    box-shadow: 0 3px 12px rgba(49, 46, 129, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.48) inset;
 }
 
 [data-theme="dark"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-body,
@@ -3104,6 +3097,38 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
     color: #000;
 }
 
+// The two-column view reads as two open pages: rounded outside edges and a
+// restrained center seam. Match the inset frame and accent rail to each page.
+@container (min-width: 30rem) and (max-width: 49.99rem) {
+    article#article-2-section-my-art.article-timeline--art-digital-expression {
+        li.article-timeline-item--visual-neo-surface { --digital-book-outer-radius: 34px; }
+        li.article-timeline-item--visual-orb-glass { --digital-book-outer-radius: 38px; }
+        li.article-timeline-item--visual-crystal-facet { --digital-book-outer-radius: 30px; }
+
+        li.article-timeline-item:nth-child(odd) div.article-timeline-item-info-for-timelines {
+            border-radius: var(--digital-book-outer-radius) 10px 10px var(--digital-book-outer-radius);
+        }
+
+        li.article-timeline-item:nth-child(even) div.article-timeline-item-info-for-timelines {
+            border-radius: 10px var(--digital-book-outer-radius) var(--digital-book-outer-radius) 10px;
+        }
+
+        li.article-timeline-item:nth-child(odd) div.article-timeline-item-info-for-timelines::before {
+            border-radius: calc(var(--digital-book-outer-radius) - 9px) 3px 3px calc(var(--digital-book-outer-radius) - 9px);
+            clip-path: none;
+        }
+
+        li.article-timeline-item:nth-child(even) div.article-timeline-item-info-for-timelines::before {
+            border-radius: 3px calc(var(--digital-book-outer-radius) - 9px) calc(var(--digital-book-outer-radius) - 9px) 3px;
+            clip-path: none;
+        }
+
+        li.article-timeline-item:nth-child(even) div.article-timeline-item-info-for-timelines::after {
+            inset: 0 0 0 auto;
+        }
+    }
+}
+
 @include content-breakpoint-down(md) {
     article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines {
         --digital-card-inset: clamp(0.65rem, 2vw, 0.85rem);
@@ -3115,7 +3140,7 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
             "media"
             "body"
             "actions";
-        row-gap: 0.5rem;
+        row-gap: 0;
         column-gap: 0;
         padding: var(--digital-card-inset);
     }
@@ -3123,7 +3148,7 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
     article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-header {
         min-height: 0;
         width: 100%;
-        margin: 0.45rem 0 0 0.35rem;
+        margin: 0.45rem 0 0;
         padding: 0.4rem 0.25rem 0.55rem;
     }
 
@@ -3146,7 +3171,7 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
             "body"
             "actions";
         column-gap: 0;
-        row-gap: 0.45rem;
+        row-gap: 0;
         padding: var(--digital-card-inset);
     }
 

@@ -231,7 +231,7 @@ void main() {
     float time = u_time * 1.55;
     mat2 rot = mat2(cos(time / 10.0), sin(time / 10.0), -sin(time / 10.0), cos(time / 10.0));
     uv = rot * uv;
-    uv *= 0.9 * sin(time * 0.5) + 3.0;
+    uv *= (0.9 * sin(time * 0.5) + 3.0) * 0.94;
     uv.x -= time / 5.0;
 
     vec2 q = vec2(0.0);

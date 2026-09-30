@@ -582,6 +582,12 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
                                              onEducationExpand={_expandEducationItem}
                                               key={itemWrapper.id}/>
                     ))}
+                    {isDigitalExpressionTimeline && timelineItemWrappers.length === 3 && (
+                        <li className="article-timeline-item article-timeline-item--digital-placeholder">
+                            <span className="digital-expression-placeholder-mark" aria-hidden="true">?</span>
+                            <span>{language.getString("digital_expression_more_soon")}</span>
+                        </li>
+                    )}
                 </ul>
                 {isEducationTimeline && educationYearTicks.length > 0 && (
                     <div className="article-timeline-year-axis" aria-hidden="true">

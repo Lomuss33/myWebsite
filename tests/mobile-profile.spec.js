@@ -21,6 +21,9 @@ test('mobile profile centers the portrait between names and reflows controls', a
                 inside:r.every(b=>b.left>=box.left-1&&b.right<=box.right+1&&b.top>=box.top-1&&b.bottom<=box.bottom+1),
                 separate:r.every((a,i)=>r.slice(i+1).every(b=>Math.min(a.right,b.right)-Math.max(a.left,b.left)<=1||Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)<=1)),
                 ordered:r[0].right<=r[1].left+1&&r[1].right<=r[2].left+1,
+                avatarSize:r[1].width,
+                actionSizes:[...nodes[3].children,...nodes[4].children].map(node=>node.getBoundingClientRect().width),
+                identityCenters:r.map(b=>b.top+b.height/2),
                 direction:getComputedStyle(nodes[3]).flexDirection,
                 overflow:document.documentElement.scrollWidth>innerWidth
             }
@@ -28,6 +31,12 @@ test('mobile profile centers the portrait between names and reflows controls', a
         expect(result.inside,`${width} containment`).toBe(true)
         expect(result.separate,`${width} overlap`).toBe(true)
         expect(result.ordered,`${width} name order`).toBe(true)
+        if(width===568) {
+            expect(result.avatarSize).toBeGreaterThanOrEqual(68)
+            expect(result.actionSizes.length).toBeGreaterThan(0)
+            expect(result.actionSizes.every(size=>size>=47)).toBe(true)
+            expect(Math.max(...result.identityCenters)-Math.min(...result.identityCenters)).toBeLessThanOrEqual(2)
+        }
         expect(result.overflow).toBe(false)
         expect(['row','column']).toContain(result.direction)
         await expect(page.locator('.nav-tab-controller')).toBeInViewport()

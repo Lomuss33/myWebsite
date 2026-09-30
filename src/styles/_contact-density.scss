@@ -55,8 +55,8 @@
             }
 
             div.copy-button-wrapper.article-info-list-item-inline-copy button.copy-button.copy-button-inline {
-                min-height: 2.75rem;
-                padding: 0.24rem 0.48rem;
+                min-height: 2.25rem;
+                padding: 0.16rem 0.48rem;
                 font-size: clamp(0.72rem, 0.66rem + 0.28vw, 0.98rem);
             }
         }
@@ -72,16 +72,16 @@
 
             div.row-form {
                 --bs-gutter-x: 8px;
-                --bs-gutter-y: 8px;
+                --bs-gutter-y: 5px;
             }
 
             div.input-field-wrapper {
-                min-height: 3rem;
+                min-height: 2.75rem;
             }
 
             input.form-input {
-                min-height: 3rem;
-                padding-block: 0.65rem;
+                min-height: 2.75rem;
+                padding-block: 0.5rem;
             }
 
             div.row-form-group.article-contact-form-left,
@@ -157,6 +157,24 @@
             span.article-complaint-form-message-error-placeholder {
                 min-height: 2.75rem;
             }
+        }
+    }
+}
+
+// Keep the visual action compact on mouse/trackpad layouts. The shared
+// 44px copy-button target remains in effect for narrow and coarse-pointer use.
+@media (min-width: 48rem) and (pointer: fine) {
+    html[data-layout] article.article-info-list-contact {
+        div.copy-button-wrapper.article-info-list-item-inline-copy button.copy-button.copy-button-inline {
+            min-height: 2.25rem !important;
+        }
+    }
+}
+
+@media (min-width: 120rem) and (pointer: fine) {
+    html[data-layout] article.article-info-list-contact {
+        div.copy-button-wrapper.article-info-list-item-inline-copy button.copy-button.copy-button-inline {
+            min-height: 2rem !important;
         }
     }
 }

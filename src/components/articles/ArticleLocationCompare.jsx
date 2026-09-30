@@ -379,6 +379,9 @@ function ArticleLocationCompare({dataWrapper}) {
                     aria-atomic="true">
                 <span className="location-compare-lock-copy">
                     <small>{dataWrapper.locales.locationScaleLabel}</small>
+                    <span className="location-compare-wheel-hint" aria-hidden="true">
+                        {dataWrapper.locales.locationWheelHint}
+                    </span>
                     <strong>{formatScale(scale)}</strong>
                 </span>
             </output>

@@ -71,6 +71,7 @@ export default class ArticleDataWrapper {
             complaintPopupBody: language.getTranslation(rawLocales, "complaint_popup_body", undefined),
             locationKicker: language.getTranslation(rawLocales, "location_kicker", undefined),
             locationScaleLabel: language.getTranslation(rawLocales, "location_scale_label", undefined),
+            locationWheelHint: language.getTranslation(rawLocales, "location_wheel_hint", undefined),
             locationResetLabel: language.getTranslation(rawLocales, "location_reset_label", undefined),
             locationResetShortLabel: language.getTranslation(rawLocales, "location_reset_short_label", undefined),
             locationHint: language.getTranslation(rawLocales, "location_hint", undefined),

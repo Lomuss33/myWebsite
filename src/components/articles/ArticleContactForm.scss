@@ -56,10 +56,21 @@ article.article-contact-form {
     // Visually match the tighter spacing of the contact cards grid above.
     div.row-form {
         --bs-gutter-x: 10px;
-        --bs-gutter-y: 10px;
+        --bs-gutter-y: 5px;
+    }
+
+    div.row-form-group:not(:last-child),
+    div.row-form-group-item:not(:last-child) {
+        margin-bottom: 4px;
+    }
+
+    div.row-form-submit {
+        margin-top: 8px;
+        margin-bottom: 2px;
     }
 
     div.input-field-wrapper {
+        border-radius: 0;
         border-color: var(--contact-form-border);
         background-color: var(--contact-form-surface);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
@@ -83,6 +94,7 @@ article.article-contact-form {
     textarea.form-textarea {
         background-color: var(--contact-form-surface);
         color: var(--contact-form-text);
+        padding-block: 0.5rem;
 
         &::-webkit-input-placeholder {
             color: var(--article-contact-form-placeholder-color) !important;
@@ -92,6 +104,28 @@ article.article-contact-form {
         &::placeholder {
             color: var(--article-contact-form-placeholder-color) !important;
             opacity: 1;
+        }
+    }
+
+    input.form-input {
+        min-height: 2.75rem;
+    }
+
+    textarea.form-textarea {
+        --padding: 0.55rem 0.75rem;
+    }
+
+    div.row-form-submit button.standard-button,
+    button.article-contact-form-reset-button {
+        border-radius: 0 !important;
+        min-height: 2.5rem;
+        padding-block: 0.45rem;
+    }
+
+    @media (pointer: coarse) {
+        div.row-form-submit button.standard-button,
+        button.article-contact-form-reset-button {
+            min-height: 2.75rem;
         }
     }
 
@@ -131,7 +165,7 @@ article.article-contact-form {
             span.input-field-wrapper-attach {
                 width: 100%;
                 min-width: 100%;
-                min-height: 42px;
+                min-height: 2rem;
                 border-radius: 0;
             }
 
@@ -199,5 +233,5 @@ article.article-contact-form {
 }
 
 button.article-contact-form-reset-button {
-    margin-top: 28px;
+    margin-top: 8px;
 }

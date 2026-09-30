@@ -807,12 +807,14 @@ article.article-info-list-contact {
     div.article-info-list-item {
         position: relative;
         isolation: isolate;
+        container: contact-card / inline-size;
         display: grid;
         grid-template-columns: var(--avatar-size) minmax(0, 1fr);
         column-gap: 9px;
         align-items: center;
         padding: 4px 10px;
         overflow: hidden;
+        height: auto;
         border: 1px solid color-mix(in srgb, var(--contact-accent) 34%, var(--contact-card-border));
         background:
             radial-gradient(circle at 4% 50%, color-mix(in srgb, var(--contact-accent) 16%, transparent) 0, transparent 31%),
@@ -953,6 +955,7 @@ article.article-info-list-contact {
         text-align: left;
         justify-content: center;
         padding: 0;
+        height: auto;
     }
 
     div.article-info-list-item-info-title {
@@ -978,16 +981,41 @@ article.article-info-list-contact {
         min-width: 0;
         font-size: clamp(0.82rem, 0.75rem + 0.34vw, 1.16rem);
         line-height: 1.4;
+        overflow-wrap: anywhere;
 
         > span {
             grid-column: 1;
             grid-row: 1;
+            display: block;
             min-width: 0;
             white-space: normal;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            height: auto;
+            min-height: 0;
+            overflow: visible;
+            overflow-wrap: anywhere;
+            text-overflow: clip;
+            -webkit-line-clamp: unset;
+            -webkit-box-orient: initial;
+        }
+    }
+
+    // At narrow card widths the copy action gets its own row, leaving the
+    // description the full text column instead of squeezing it beside a pill.
+    @container contact-card (max-width: 28rem) {
+        div.article-info-list-item-info-text {
+            grid-template-columns: minmax(0, 1fr);
+            align-items: start;
+
+            > span {
+                grid-column: 1;
+                grid-row: 1;
+            }
+        }
+
+        div.copy-button-wrapper.article-info-list-item-inline-copy {
+            grid-column: 1;
+            grid-row: 2;
+            justify-self: start;
         }
     }
 
@@ -1032,6 +1060,20 @@ article.article-info-list-contact {
 
             &:active {
                 transform: translateY(0) scale(0.97);
+            }
+        }
+    }
+
+    @media (min-width: 120rem) and (pointer: fine) {
+        div.copy-button-wrapper.article-info-list-item-inline-copy button.copy-button.copy-button-inline {
+            min-height: 2rem;
+            max-width: 8rem;
+            padding: 0.14rem 0.34rem;
+            gap: 0.24rem;
+            font-size: clamp(0.7rem, 0.66rem + 0.12vw, 0.78rem);
+
+            span.copy-button-label {
+                max-width: 5rem;
             }
         }
     }

@@ -1931,6 +1931,10 @@ test('Contact location comparison stays compact and symmetrical across viewport 
         const map=page.locator('#article-3-section-contact')
         await expect(map.locator('.location-compare-kicker')).toHaveCount(0)
         await expect(map.locator('.location-compare-footer > span')).toHaveCount(1)
+        const wheelHint=map.locator('.location-compare-wheel-hint')
+        const hasFinePointer=await page.evaluate(()=>matchMedia('(any-hover: hover) and (any-pointer: fine)').matches)
+        if(hasFinePointer) await expect(wheelHint).toBeVisible()
+        else await expect(wheelHint).toBeHidden()
         await expect(map.locator('.location-compare-control small, .location-compare-control-orbit, .location-compare-control-icon')).toHaveCount(0)
         await expect(map.locator('.location-compare-control--out > i')).toHaveClass(/fa-minus/)
         await expect(map.locator('.location-compare-control--in > i')).toHaveClass(/fa-plus/)
@@ -2013,11 +2017,13 @@ test('Contact location comparison stays compact and symmetrical across viewport 
                     const avatar=row.closest('.article-info-list-item').querySelector('.article-info-list-item-avatar-link').getBoundingClientRect()
                     return {
                         rightGap:rowRect.right-buttonRect.right,
+                        buttonHeight:buttonRect.height,
                         textFontSize:parseFloat(getComputedStyle(row).fontSize),
                         buttonFontSize:parseFloat(getComputedStyle(button).fontSize),
                         avatarWidth:avatar.width
                     }
                 }),
+                coarsePointer:matchMedia('(pointer: coarse)').matches,
                 contactCardVerticalPadding:[...root.ownerDocument.querySelectorAll('#article-1-section-contact .article-info-list-item')].map(card=>{
                     const style=getComputedStyle(card)
                     return [parseFloat(style.paddingTop),parseFloat(style.paddingBottom)]
@@ -2098,6 +2104,8 @@ test('Contact location comparison stays compact and symmetrical across viewport 
         expect(metrics.contactCopyButtons.every(button=>button.avatarWidth>=50),JSON.stringify({width,copyButtons:metrics.contactCopyButtons})).toBe(true)
         expect(metrics.contactCopyButtons.every(button=>button.textFontSize>=12.5 && button.textFontSize<=18)).toBe(true)
         expect(metrics.contactCopyButtons.every(button=>button.buttonFontSize>=11 && button.buttonFontSize<=16)).toBe(true)
+        if(width>=768 && !metrics.coarsePointer) expect(metrics.contactCopyButtons.every(button=>button.buttonHeight<=37),JSON.stringify({width,copyButtons:metrics.contactCopyButtons})).toBe(true)
+        if(width<768 || metrics.coarsePointer) expect(metrics.contactCopyButtons.every(button=>button.buttonHeight>=43.5)).toBe(true)
         if(width===1920) expect(metrics.contactCopyButtons[0].avatarWidth).toBeGreaterThan(metrics.contactCopyButtons[0].textFontSize*4)
         expect(metrics.contactCardVerticalPadding.length).toBeGreaterThan(0)
         expect(metrics.contactCardVerticalPadding.every(([top,bottom])=>top<=4 && bottom<=4),JSON.stringify({width,verticalPadding:metrics.contactCardVerticalPadding})).toBe(true)
@@ -2116,8 +2124,8 @@ test('Contact location comparison stays compact and symmetrical across viewport 
         expect(metrics.maps.every(mapSize=>mapSize.height>=140)).toBe(true)
         expect(metrics.mapInsets).toHaveLength(2)
         expect(metrics.mapInsets.every(inset=>inset.cardAspect>=(width<768?1.25:1.45))).toBe(true)
-        expect(metrics.mapInsets.every(inset=>inset.left>=39 && inset.right>=39)).toBe(true)
-        expect(metrics.mapInsets.every(inset=>inset.railWidths.length===2 && inset.railWidths.every(width=>width>=39))).toBe(true)
+        expect(metrics.mapInsets.every(inset=>inset.left>=59 && inset.right>=59)).toBe(true)
+        expect(metrics.mapInsets.every(inset=>inset.railWidths.length===2 && inset.railWidths.every(width=>width>=59))).toBe(true)
         expect(metrics.mapInsets.every(inset=>inset.railText.length===2 && inset.railText[0]===inset.railText[1])).toBe(true)
         expect(metrics.mapInsets.every(inset=>inset.writingModes.every(mode=>mode==='vertical-rl'))).toBe(true)
         expect(metrics.mapCards).toHaveLength(2)
@@ -2127,6 +2135,19 @@ test('Contact location comparison stays compact and symmetrical across viewport 
             expect(Math.abs(metrics.mapCards[0].bottom-metrics.mapCards[1].top)).toBeLessThanOrEqual(1)
             expect(Math.abs(metrics.mapCards[1].labelBottom-metrics.mapCards[1].bottom)).toBeLessThanOrEqual(1)
             expect(Math.abs(metrics.mapCards[1].viewportBottom-metrics.mapCards[1].labelTop)).toBeLessThanOrEqual(1)
+
+            if(width===768) {
+                const lowerCard=map.locator('.location-compare-card').nth(1)
+                await lowerCard.locator('.location-compare-label').click()
+                const menu=lowerCard.locator('.location-compare-menu')
+                await expect(menu).toHaveClass(/location-compare-menu--open/)
+                await expect.poll(()=>menu.evaluate(element=>{
+                    const menuRect=element.getBoundingClientRect()
+                    const viewportRect=element.parentElement.getBoundingClientRect()
+                    const triggerRect=element.closest('.location-compare-card').querySelector('.location-compare-label').getBoundingClientRect()
+                    return Math.max(Math.abs(menuRect.bottom-viewportRect.bottom),Math.abs(menuRect.bottom-triggerRect.top))
+                }),{timeout:1500}).toBeLessThanOrEqual(1)
+            }
         } else {
             // Side-by-side cards meet edge-to-edge without a gutter.
             expect(Math.abs(metrics.mapCards[0].right-metrics.mapCards[1].left)).toBeLessThanOrEqual(1)
@@ -2254,6 +2275,56 @@ test('Contact scale readout sits above both maps and actions precede presets in 
     }
     expect(themeLabelColors[0]).not.toBe(themeLabelColors[1])
     expect(themeLabelBackgrounds[0]).not.toBe(themeLabelBackgrounds[1])
+})
+
+test('Contact location comparison keeps two-finger pinch zoom available on touch screens', async ({browser})=>{
+    test.skip(browser.browserType().name()!=='chromium','The native touch-gesture probe uses Chromium CDP.')
+
+    const context=await browser.newContext({
+        viewport:{width:390,height:844},
+        hasTouch:true,
+        reducedMotion:'reduce'
+    })
+    const page=await context.newPage()
+    try {
+        await preferences(page)
+        await openSection(page,'contact')
+        const map=page.locator('#article-3-section-contact')
+        const mapSurface=map.locator('.location-compare-map').first()
+        const viewport=map.locator('.location-compare-viewport').first()
+        const scaleReadout=map.locator('.location-compare-lock-copy strong')
+
+        await mapSurface.scrollIntoViewIfNeeded()
+        await expect(mapSurface).toHaveClass(/leaflet-touch-zoom/)
+        await expect(mapSurface).toHaveClass(/leaflet-touch-drag/)
+        await expect(viewport).toHaveCSS('touch-action','auto')
+        await expect(map.locator('.location-compare-wheel-hint')).toBeHidden()
+        const initialScale=await scaleReadout.textContent()
+        const bounds=await mapSurface.boundingBox()
+        const centerX=bounds.x+bounds.width/2
+        const centerY=bounds.y+bounds.height/2
+        const session=await context.newCDPSession(page)
+        await session.send('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:2})
+        await session.send('Input.dispatchTouchEvent',{
+            type:'touchStart',
+            touchPoints:[
+                {id:1,x:centerX-35,y:centerY,radiusX:5,radiusY:5,force:1},
+                {id:2,x:centerX+35,y:centerY,radiusX:5,radiusY:5,force:1}
+            ]
+        })
+        await session.send('Input.dispatchTouchEvent',{
+            type:'touchMove',
+            touchPoints:[
+                {id:1,x:centerX-80,y:centerY,radiusX:5,radiusY:5,force:1},
+                {id:2,x:centerX+80,y:centerY,radiusX:5,radiusY:5,force:1}
+            ]
+        })
+        await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]})
+        await expect.poll(()=>scaleReadout.textContent(),{timeout:2500,intervals:[40,80,120]}).not.toBe(initialScale)
+        await session.detach()
+    } finally {
+        await context.close()
+    }
 })
 
 test('Contact keeps native wheel scrolling over maps and zooms only on a deliberate modified gesture', async ({page})=>{

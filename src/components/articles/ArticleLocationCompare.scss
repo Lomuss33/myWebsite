@@ -2100,7 +2100,9 @@ article.article-location-compare div.article-content {
     }
 
     .location-compare-viewport {
-        touch-action: pan-x pan-y;
+        // Leave gesture arbitration to Leaflet on the map canvas. Restricting
+        // the parent to pan-x/pan-y prevents the child's two-finger pinch.
+        touch-action: auto;
         overscroll-behavior: contain;
     }
 }
@@ -2178,15 +2180,16 @@ article.article-location-compare div.article-content {
     }
 
     .location-compare-lock-copy {
-        display: flex;
+        display: grid;
         width: 100%;
         align-items: center;
         justify-content: space-between;
-        flex-direction: row;
+        grid-template-columns: minmax(0, 1fr) minmax(0, max-content) minmax(0, 1fr);
         gap: 0.5rem;
 
         small {
-            max-width: 75%;
+            grid-column: 1;
+            max-width: 100%;
             color: var(--location-ink);
             font-size: 0.68rem;
             font-weight: 700;
@@ -2196,15 +2199,33 @@ article.article-location-compare div.article-content {
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            text-align: start;
+        }
+
+        .location-compare-wheel-hint {
+            display: none;
+            grid-column: 2;
+            color: var(--location-muted);
+            font-size: clamp(0.58rem, 0.54rem + 0.12vw, 0.68rem);
+            font-weight: 650;
+            line-height: 1.1;
+            text-align: center;
+            white-space: nowrap;
         }
 
         strong {
+            grid-column: 3;
+            justify-self: end;
             color: var(--location-ink);
             font-size: 0.78rem;
             font-weight: 800;
             line-height: 1.1;
             white-space: nowrap;
         }
+    }
+
+    @media (any-hover: hover) and (any-pointer: fine) {
+        .location-compare-lock-copy .location-compare-wheel-hint { display: block; }
     }
 
     .location-compare-actions {
@@ -2329,7 +2350,24 @@ article.article-location-compare {
         gap: 0;
     }
 
+    // The selector header and the two vertical place rails share one surface
+    // and join on a single fine divider, so they read as one map frame.
+    .location-compare-label,
+    .location-compare-label:hover,
+    .location-compare-label[aria-expanded="true"] {
+        border-bottom: 1px solid var(--location-map-band-seam);
+        background: var(--location-map-band-surface);
+        box-shadow: none;
+    }
+
+    .location-compare-place-rail {
+        border-color: var(--location-map-band-seam);
+        background: var(--location-map-band-surface);
+    }
+
     .location-compare-card {
+        --location-map-band-surface: color-mix(in srgb, var(--location-panel) 94%, var(--location-accent) 6%);
+        --location-map-band-seam: color-mix(in srgb, var(--location-accent) 28%, var(--location-soft-border));
         aspect-ratio: 1.5 / 1;
         border: 1px solid color-mix(in srgb, var(--location-accent) 30%, var(--location-soft-border));
         border-radius: 1rem 0 0 1rem;
@@ -2341,7 +2379,7 @@ article.article-location-compare {
     }
 
     .location-compare-viewport {
-        --location-map-side-rail-width: clamp(2.5rem, 3vw, 3.5rem);
+        --location-map-side-rail-width: clamp(3.75rem, 4.5vw, 5.25rem);
         background: var(--location-card-shell);
         overscroll-behavior: auto;
     }
@@ -2692,6 +2730,16 @@ article.article-location-compare {
             flex-direction: column-reverse;
             border-radius: 0 0 1rem 1rem;
         }
+    }
+
+    // The lower card's selector sits below its map on stacked layouts, so its
+    // city menu must open from the bottom edge nearest that selector.
+    article.article-location-compare .location-compare-card:nth-child(2) .location-compare-menu {
+        inset: auto 0 0;
+        transform: translateY(4px);
+        transform-origin: bottom center;
+
+        &.location-compare-menu--open { transform: none; }
     }
 }
 

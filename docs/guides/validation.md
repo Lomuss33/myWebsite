@@ -53,7 +53,7 @@ Retained evidence records revision/dirty-tree state, viewport, browser, theme, l
 
 ## Known gaps
 
-Real mobile keyboards/safe areas, browser zoom, weak GPUs, and device rendering still require manual verification. The automated matrix covers Chromium across viewport classes, themes, and supported locales, plus targeted English/dark interaction checks in Firefox and WebKit; it does not replace checks on physical devices or other operating systems.
+Real mobile keyboards/safe areas, browser zoom, weak GPUs, and device rendering still require manual verification. The focused Chromium matrix samples all supported locales, both themes, and all three viewport classes, but not every possible combination; Firefox and WebKit cover targeted English/dark interactions. These checks do not replace physical-device or other operating-system testing.
 
 ## Deployment
 

@@ -58,7 +58,7 @@ Capture a repeatable baseline for the initial Home route and the Art route on a 
 
 ### 5. Extend browser coverage after a stability check
 
-Run the highest-value interaction flows in Firefox and WebKit. Fix genuine engine-specific issues first. The previous 11-test smoke group passed locally in Chromium, Firefox, and WebKit. The routine workflow now narrows cross-browser checks to profile layout, Education motion, map pinch/wheel behavior, and gallery dismissal, while Chromium retains broader page-density and responsive coverage. Keep the complete Chromium suite available for local validation and verify the hosted workflow before considering broader non-Chromium coverage.
+Run the highest-value interaction flows in Firefox and WebKit. Fix genuine engine-specific issues first. The previous 11-test smoke group passed locally in Chromium, Firefox, and WebKit. The routine workflow now narrows cross-browser checks to profile layout, Education motion, map wheel behavior, and gallery dismissal, while Chromium retains broader page-density, responsive, and touch-pinch coverage. Keep the complete Chromium suite available for local validation and verify the hosted workflow before considering broader non-Chromium coverage.
 
 **Done when:** the hosted workflow passes in all three engines and documented browser support matches the tested interactions, with no known engine-specific interaction regressions.
 

@@ -2120,8 +2120,8 @@ test('Contact location comparison stays compact and symmetrical across viewport 
         expect(metrics.contactCopyButtons.every(button=>button.avatarWidth>=50),JSON.stringify({width,copyButtons:metrics.contactCopyButtons})).toBe(true)
         expect(metrics.contactCopyButtons.every(button=>button.textFontSize>=12.5 && button.textFontSize<=18)).toBe(true)
         expect(metrics.contactCopyButtons.every(button=>button.buttonFontSize>=11 && button.buttonFontSize<=16)).toBe(true)
-        if(width>=768 && !metrics.coarsePointer) expect(metrics.contactCopyButtons.every(button=>button.buttonHeight<=37),JSON.stringify({width,copyButtons:metrics.contactCopyButtons})).toBe(true)
-        if(width<768 || metrics.coarsePointer) expect(metrics.contactCopyButtons.every(button=>button.buttonHeight>=43.5)).toBe(true)
+        // Copy actions preserve the shared 44px target on desktop and touch layouts.
+        expect(metrics.contactCopyButtons.every(button=>button.buttonHeight>=43.5 && button.buttonHeight<=45),JSON.stringify({width,copyButtons:metrics.contactCopyButtons})).toBe(true)
         if(width===1920) expect(metrics.contactCopyButtons[0].avatarWidth).toBeGreaterThan(metrics.contactCopyButtons[0].textFontSize*4)
         expect(metrics.contactCardVerticalPadding.length).toBeGreaterThan(0)
         expect(metrics.contactCardVerticalPadding.every(([top,bottom])=>top<=4 && bottom<=4),JSON.stringify({width,verticalPadding:metrics.contactCardVerticalPadding})).toBe(true)

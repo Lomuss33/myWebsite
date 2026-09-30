@@ -172,45 +172,118 @@
 .layered-card-carousel-unpin {
     position: absolute;
     z-index: 5;
-    top: 0.55rem;
-    right: 0.55rem;
+    top: 0;
+    right: 0;
     display: grid;
-    width: 2.75rem;
-    height: 2.75rem;
+    width: 44px;
+    height: 44px;
     place-items: center;
     padding: 0;
-    border: 1px solid var(--carousel-control-border);
-    border-radius: 0.35rem;
-    background: var(--carousel-control-surface);
-    box-shadow: 0 0 0 1px rgba(67, 218, 255, 0.16), 0 0.5rem 1rem rgba(0, 0, 0, 0.34);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
     color: var(--carousel-control-ink);
     cursor: pointer;
-    backdrop-filter: blur(8px);
-    transition: background 220ms ease, box-shadow 220ms ease, transform 260ms cubic-bezier(.2, .8, .2, 1), border-color 220ms ease;
+    transition: color 180ms ease, opacity 180ms ease;
+
+    &::before {
+        content: "";
+        position: absolute;
+        z-index: 0;
+        inset: 8px;
+        border: 1px solid var(--carousel-control-border);
+        border-radius: 0;
+        background: var(--carousel-control-surface);
+        box-shadow: 0 0 0 1px rgba(67, 218, 255, 0.12), 0 4px 12px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(8px);
+        transition: inset 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+    }
 
     svg {
-        width: 1.1rem;
-        height: 1.1rem;
+        position: relative;
+        z-index: 1;
+        width: 12px;
+        height: 12px;
         fill: none;
         stroke: currentColor;
-        stroke-width: 1.6;
+        stroke-width: 1.8;
         stroke-linecap: round;
     }
 
     &:hover:not(:disabled) {
-        transform: translateY(-3px) scale(1.07);
-        background: color-mix(in srgb, var(--carousel-control-surface) 72%, var(--carousel-number-current-bottom));
-        box-shadow: 0 0 1.3rem rgba(76, 221, 255, 0.5);
+        color: #f3fcff;
+
+        &::before {
+            inset: 6px;
+            border-color: color-mix(in srgb, var(--carousel-control-border) 72%, white);
+            background: color-mix(in srgb, var(--carousel-control-surface) 72%, var(--carousel-number-current-bottom));
+            box-shadow: 0 0 1rem rgba(76, 221, 255, 0.34), 0 6px 14px rgba(0, 0, 0, 0.34);
+        }
     }
 
     &:focus-visible { outline: 2px solid #b5f1ff; outline-offset: 2px; }
     &:disabled { opacity: 0.48; cursor: not-allowed; }
 }
 
-.layered-card-carousel-pin.is-pinned { background: color-mix(in srgb, var(--carousel-control-surface) 62%, var(--carousel-number-current-bottom)); }
+.layered-card-carousel-pin.is-pinned::before {
+    background: color-mix(in srgb, var(--carousel-control-surface) 62%, var(--carousel-number-current-bottom));
+}
 
 .layered-card-carousel-pin {
-    right: max(0.55rem, calc((100% - var(--carousel-card-size)) / 2 + 0.55rem));
+    right: max(2px, calc((100% - var(--carousel-card-size)) / 2 + 2px));
+}
+
+.layered-card-carousel-multiview .layered-card-carousel-pin {
+    right: 2px;
+}
+
+.layered-card-carousel-add-slot {
+    display: none;
+    width: 100%;
+    min-width: 0;
+    aspect-ratio: 1;
+    align-content: center;
+    justify-items: center;
+    padding: 1rem;
+    border: 1px dashed var(--carousel-control-border);
+    border-radius: 0;
+    background:
+        radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--carousel-pinned-glow) 88%, transparent), transparent 58%),
+        linear-gradient(145deg, color-mix(in srgb, var(--carousel-control-surface) 92%, #163d58), var(--carousel-stage-surface));
+    color: var(--carousel-control-ink);
+    cursor: pointer;
+    transition: border-color 180ms ease, box-shadow 180ms ease, color 180ms ease;
+
+    &:hover:not(:disabled) {
+        border-style: solid;
+        border-color: var(--carousel-number-current-top);
+        color: var(--carousel-number-current-top);
+        box-shadow: inset 0 0 1.5rem var(--carousel-pinned-glow), 0 0 1rem var(--carousel-pinned-glow);
+    }
+
+    &:focus-visible { outline: 2px solid var(--carousel-number-current-top); outline-offset: -4px; }
+    &:disabled { opacity: 0.48; cursor: not-allowed; }
+}
+
+.layered-card-carousel-add-slot-icon {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border: 1px solid var(--carousel-control-border);
+    border-radius: 0;
+    background: var(--carousel-control-surface);
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--carousel-pinned-glow) 55%, transparent);
+
+    svg {
+        width: 1.1rem;
+        height: 1.1rem;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+    }
 }
 
 .layered-card-carousel-pinned {
@@ -428,6 +501,10 @@
     .layered-card-carousel-workspace[data-view-count="3"],
     .layered-card-carousel-workspace[data-view-count="4"] {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .layered-card-carousel-workspace[data-view-count="3"] .layered-card-carousel-add-slot {
+        display: grid;
     }
 
     .layered-card-carousel-side-number { font-size: 1.2rem; }

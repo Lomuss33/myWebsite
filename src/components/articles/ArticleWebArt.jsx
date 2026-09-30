@@ -647,6 +647,9 @@ function ArticleWebArt({ dataWrapper, id }) {
 
     useEffect(() => {
         if(typeof window === "undefined") return
+        // The art section can mount before navigation context is available.
+        // Defer its pending enter action instead of crashing the app tree.
+        if(!navigation) return
         if(navigation.targetSection?.id !== dataWrapper.sectionId) return
         if(navigation.transitionStatus !== "transition_status_none") return
 
@@ -663,7 +666,7 @@ function ArticleWebArt({ dataWrapper, id }) {
         delete window.__pendingSectionAction
 
         onIntroEnter({ openAll: true })
-    }, [dataWrapper.uniqueId, dataWrapper.sectionId, navigation.targetSection?.id, navigation.transitionStatus, onIntroEnter])
+    }, [dataWrapper.uniqueId, dataWrapper.sectionId, navigation?.targetSection?.id, navigation?.transitionStatus, onIntroEnter])
 
     const openTile = useCallback((uniqueId) => {
         if(!uniqueId) return
@@ -5351,7 +5354,7 @@ function SendYourFunAnimationTile({ label, clickLabel, previewRequested = false 
     }, [])
 
     const goToContact = useCallback(() => {
-        navigation.navigateToSectionWithId("contact")
+        navigation?.navigateToSectionWithId?.("contact")
     }, [navigation])
 
     const onKeyDown = (event) => {

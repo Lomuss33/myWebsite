@@ -35,6 +35,8 @@ Remove-Item Env:PLAYWRIGHT_BROWSER
 
 Set `RESPONSIVE_SMOKE=1` as well to limit the locale/theme layout matrix to its representative English/dark cases. The focused suite checks profile fit, page-title sizing and mobile/normal/ultrawide section fit, Education motion, Hardware card density, Contact map controls and wheel behavior, and the Art gallery. CI runs the full suite in Chromium and this focused suite in Firefox and WebKit. The config starts/reuses localhost:5173, defaults to reduced motion, and writes `test-results/`. Check that the server serves the intended tree. Inspect assertions before treating tests as current product requirements.
 
+Section-opening tests wait for the requested section to be shown, its lazy content to resolve, and its heading font and geometry to become ready; they do not wait for unrelated page fonts or image-load events. Hover-motion checks poll the computed transform within a restrained range, then verify zero translation and zero transition duration under reduced motion. Keep these checks tied to rendered state rather than fixed sleeps.
+
 Sample narrow portrait, tablet, desktop, short ultrawide, both themes, and en/de/hr/tr as appropriate. Check image visibility after cached reloads, text/circle boundaries, cycling, Escape, hover, and pinning. Animation changes need a normal-motion check too.
 
 Retained evidence records revision/dirty-tree state, viewport, browser, theme, language, motion, command, result, and limits. A build is not a visual or accessibility audit.

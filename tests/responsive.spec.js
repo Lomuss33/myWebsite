@@ -6,8 +6,30 @@ const modes = {mobile: [320,568], normal: [1366,768], ultrawide: [3440,1440]}
 const smoke = process.env.RESPONSIVE_SMOKE === '1'
 const hasVisibleHairline = width => parseFloat(width) > 0 && parseFloat(width) <= 1
 const matrixTranslateY = transform => {
-    const values = transform.match(/^matrix\(([^)]+)\)$/)?.[1].split(',')
-    return values ? Number(values[5]) : Number.NaN
+    if(transform === 'none') return 0
+    const matrix3d = transform.match(/^matrix3d\(([^)]+)\)$/)?.[1].split(',')
+    if(matrix3d) return Number(matrix3d[13])
+    const matrix = transform.match(/^matrix\(([^)]+)\)$/)?.[1].split(',')
+    return matrix ? Number(matrix[5]) : Number.NaN
+}
+
+async function expectHoverTranslateY(locator, expectedY) {
+    await expect.poll(async()=>{
+        const transform=await locator.evaluate(element=>getComputedStyle(element).transform)
+        const translateY=matrixTranslateY(transform)
+        return Number.isFinite(translateY) && Math.abs(translateY-expectedY)<=0.5
+    },{timeout:3000,intervals:[50,100,150]}).toBe(true)
+}
+
+async function expectNoMotion(locator) {
+    await expect.poll(async()=>{
+        const {transform,duration}=await locator.evaluate(element=>{
+            const style=getComputedStyle(element)
+            return {transform:style.transform,duration:style.transitionDuration}
+        })
+        const durations=duration.split(',').map(value=>parseFloat(value.trim()))
+        return Math.abs(matrixTranslateY(transform))<=0.01 && durations.every(value=>value===0)
+    },{timeout:1500,intervals:[50,100]}).toBe(true)
 }
 
 async function preferences(page, language = 'en', theme = 'dark') {
@@ -16,12 +38,57 @@ async function preferences(page, language = 'en', theme = 'dark') {
     }, {language,theme})
 }
 async function openSection(page, route) {
-    await page.goto('/#'+route)
-    // A cold lazy-loaded article can take longer on WebKit's Vite dev server,
-    // where every module is transformed individually. Wait for real content
-    // without treating a slower first load as a broken route.
-    await expect(page.locator('#section-'+route+'.section-shown article').first()).toBeVisible({timeout:30000})
-    await page.waitForFunction(() => document.fonts.status === "loaded")
+    if(!page.__responsiveConsoleErrors) {
+        page.__responsiveConsoleErrors=[]
+        page.on('console',message=>{
+            if(message.type()==='error') page.__responsiveConsoleErrors.push(message.text())
+        })
+    }
+    // The app's actual ready check below covers its lazy React sections;
+    // don't also block on unrelated images and other load-event resources.
+    await page.goto('/#'+route,{waitUntil:'domcontentloaded'})
+    const section=page.locator('#section-'+route+'.section-shown')
+    const pageTitle=section.locator(
+        '.section-header-title, .section-content-hide-header .section-body > article:first-of-type > h4.article-title'
+    ).first()
+    const lazySectionReadyTimeout=45000
+
+    // Readiness means the destination is active, its lazy content has resolved,
+    // and its actual heading has stable, font-ready geometry. This avoids
+    // waiting for unrelated fonts across every mounted section.
+    const readiness=await page.waitForFunction(({route})=>{
+        if(document.querySelector('.app-error-boundary')) return 'app-error'
+        const activeSection=document.querySelector(`#section-${route}.section-shown`)
+        const activeContent=activeSection?.querySelector('.section-content')
+        if(!activeContent?.classList.contains('section-content-page-ready') ||
+           activeContent.querySelector('.section-loading-placeholder')) return false
+        const title=activeSection.querySelector(
+            '.section-header-title, .section-content-hide-header .section-body > article:first-of-type > h4.article-title'
+        )
+        if(!title) return false
+        const rect=title.getBoundingClientRect()
+        const style=getComputedStyle(title)
+        const visible=rect.width>0&&rect.height>0&&style.visibility!=='hidden'
+        const fontReady=document.fonts.check(`${style.fontWeight} ${style.fontSize} ${style.fontFamily}`,title.textContent)
+        return visible&&fontReady?'ready':false
+    },{route},{timeout:lazySectionReadyTimeout,polling:100})
+    const readinessState=await readiness.jsonValue()
+    if(readinessState==='app-error')
+        throw new Error(`App error while opening #${route}: ${page.__responsiveConsoleErrors.slice(-3).join(' | ')}`)
+    let previousGeometry=''
+    let stableSamples=0
+    await expect.poll(async()=>pageTitle.evaluate(element=>{
+        const rect=element.getBoundingClientRect()
+        const style=getComputedStyle(element)
+        const fontReady=document.fonts.check(`${style.fontWeight} ${style.fontSize} ${style.fontFamily}`,element.textContent)
+        const visible=element.isConnected&&rect.width>0&&rect.height>0&&style.visibility!=='hidden'
+        return {fontReady,visible,geometry:[rect.x,rect.y,rect.width,rect.height,style.fontSize].map(value=>Number(value).toFixed(2)).join(':')}
+    }).then(state=>{
+        const geometry=state.fontReady&&state.visible?state.geometry:''
+        stableSamples=geometry&&geometry===previousGeometry?stableSamples+1:geometry?1:0
+        previousGeometry=geometry
+        return stableSamples>=3
+    }),{timeout:lazySectionReadyTimeout,intervals:[50,100,150]}).toBe(true)
     // Stop the decorative onboarding spotlight by normal pointer movement.
     await page.mouse.move(1,1)
     await page.mouse.move(200,1)
@@ -970,39 +1037,36 @@ test('Education hover motion stays restrained and stops for reduced motion', asy
     const showMore=page.locator('#article-1-section-education button.article-timeline-see-more-button').first()
     if(await showMore.isVisible()) {
         await showMore.hover()
-        await page.waitForTimeout(200)
-        const transform=await showMore.evaluate(element=>getComputedStyle(element).transform)
-        expect(matrixTranslateY(transform)).toBeCloseTo(-1,1)
+        await expectHoverTranslateY(showMore,-1)
     }
 
     const skillCard=page.locator('article.article-skills-article-3-section-education .article-skills-item').first()
     await skillCard.hover()
-    await page.waitForTimeout(200)
-    expect(matrixTranslateY(await skillCard.evaluate(element=>getComputedStyle(element).transform))).toBeCloseTo(-1,1)
+    await expectHoverTranslateY(skillCard,-1)
 
     const certification=page.locator('#article-2-section-education .article-cards-item-education-certification').first()
     await certification.hover()
-    await page.waitForTimeout(200)
-    expect(matrixTranslateY(await certification.evaluate(element=>getComputedStyle(element).transform))).toBeCloseTo(-1,1)
+    await expectHoverTranslateY(certification,-1)
 
-    await preferences(page,'en','light')
-    await openSection(page,'education')
+    // Change the theme in-place so the second mode exercises the same mounted
+    // cards instead of triggering another cold lazy-section load.
+    const themeToggle=page.locator('.nav-tools-item-theme button.btn-option-picker-toggle').first()
+    await themeToggle.click()
+    await expect(page.locator('html')).toHaveAttribute('data-theme','light')
     const lightCertification=page.locator('#article-2-section-education .article-cards-item-education-certification').first()
     await lightCertification.hover()
-    await page.waitForTimeout(200)
-    expect(matrixTranslateY(await lightCertification.evaluate(element=>getComputedStyle(element).transform))).toBeCloseTo(-1,1)
+    await expectHoverTranslateY(lightCertification,-1)
 
     await page.emulateMedia({reducedMotion:'reduce'})
     await timelineCard.hover()
-    expect(await timelineCard.evaluate(element=>getComputedStyle(element).transitionDuration)).toBe('0s')
+    await expectNoMotion(timelineCard)
     await skillCard.hover()
-    expect(await skillCard.evaluate(element=>getComputedStyle(element).transitionDuration)).toBe('0s')
+    await expectNoMotion(skillCard)
     await certification.hover()
-    expect(await certification.evaluate(element=>getComputedStyle(element).transitionDuration)).toBe('0s')
+    await expectNoMotion(certification)
     if(await showMore.isVisible()) {
         await showMore.hover()
-        expect(await showMore.evaluate(element=>getComputedStyle(element).transitionDuration)).toBe('0s')
-        expect(await showMore.evaluate(element=>getComputedStyle(element).transform)).toBe('none')
+        await expectNoMotion(showMore)
     }
 })
 

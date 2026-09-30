@@ -13,9 +13,10 @@ test('profile reflows inside its allocated box and yields to navigation', async 
             e.style.setProperty('min-width',width+'px','important')
             e.style.setProperty('height',height+'px','important')
         },{width,height})
-        let consecutiveSafeLayouts=0
+        let previousSafeLayout=''
+        let consecutiveStableLayouts=0
         await expect.poll(async()=>{
-            const isSafe=await rail.evaluate(e=>{
+            const layout=await rail.evaluate(e=>{
                 const card=e.querySelector('.nav-profile-card')
                 const box=card.getBoundingClientRect()
                 const rects=[...card.querySelectorAll('.nav-profile-card-media,.nav-profile-card-info,.nav-profile-card-desktop-action-stack,.nav-profile-card-role')]
@@ -24,11 +25,17 @@ test('profile reflows inside its allocated box and yields to navigation', async 
                     .filter(rect=>rect.width&&rect.height)
                 const inside=rects.every(rect=>rect.left>=box.left-1&&rect.right<=box.right+1&&rect.top>=box.top-1&&rect.bottom<=box.bottom+1)
                 const separate=rects.every((a,index)=>rects.slice(index+1).every(b=>Math.min(a.right,b.right)-Math.max(a.left,b.left)<=1||Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)<=1))
-                return inside&&separate
+                // Include the actual measured layout, so readiness means both
+                // safe geometry and a settled ResizeObserver-driven reflow.
+                const signature=[card.dataset.profileLayout,box,...rects].flatMap(value=>
+                    typeof value==='string'?[value]:[value.x,value.y,value.width,value.height]
+                ).map(value=>typeof value==='string'?value:Math.round(value*2)/2).join('|')
+                return {safe:inside&&separate,signature}
             })
-            consecutiveSafeLayouts=isSafe?consecutiveSafeLayouts+1:0
-            return consecutiveSafeLayouts>=3
-        },{timeout:4000,intervals:[100,150,250]}).toBe(true)
+            consecutiveStableLayouts=layout.safe&&layout.signature===previousSafeLayout?consecutiveStableLayouts+1:layout.safe?1:0
+            previousSafeLayout=layout.safe?layout.signature:''
+            return consecutiveStableLayouts>=3
+        },{timeout:10000,intervals:[80,120,180]}).toBe(true)
         if(height<=300||width<64) await expect(rail.locator(".nav-profile-card")).toHaveAttribute("data-profile-layout","hidden")
         if(width===288 && height>=1200) {
             await expect(rail.locator('.nav-profile-card')).toHaveAttribute('data-profile-layout',height>=1440?'stacked-column-role':'stacked-role')

@@ -116,6 +116,19 @@ function LayeredCardCarousel({slides, onChange, onPin, onUnpin, onReplacePinned,
         commitSelect(index)
     }
 
+    const addNextWindow = () => {
+        if(!enabled || !onPin) return
+        for(let offset = 1; offset < count; offset++) {
+            const candidate = (currentIndex + offset) % count
+            if(slides[candidate].id === active?.id || slides[candidate].pinnable === false || pinnedIds.includes(slides[candidate].id)) continue
+            if(pinnedIds.length < maxPinned) onPin(slides[candidate].id)
+            else commitSelect(candidate)
+            markInteractedSlide(slides[candidate].id)
+            if(pinnedIds.length < maxPinned) scheduleWindowsSettled()
+            return
+        }
+    }
+
     const onPointerDown = (event) => {
         pointerStartRef.current = null
         if(!enabled || event.pointerType === "mouse" || !event.isPrimary ||
@@ -238,6 +251,20 @@ function LayeredCardCarousel({slides, onChange, onPin, onUnpin, onReplacePinned,
                         </div>
                     )
                 })}
+                {visiblePinned.length === 2 && onPin && (
+                    <button type="button"
+                            className="layered-card-carousel-add-slot"
+                            onClick={addNextWindow}
+                            disabled={!enabled || !slides.some((slide) => slide.id !== active?.id && slide.pinnable !== false && !pinnedIds.includes(slide.id))}
+                            aria-label={labels.addNext || labels.pin || "Add next artwork"}
+                            title={labels.addNext || labels.pin || "Add next artwork"}>
+                        <span className="layered-card-carousel-add-slot-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" focusable="false">
+                                <path d="M12 5v14M5 12h14"/>
+                            </svg>
+                        </span>
+                    </button>
+                )}
             </div>
             <nav ref={indexRef} className="layered-card-carousel-index"
                  style={{"--carousel-index-columns": indexColumns}}

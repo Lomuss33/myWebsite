@@ -2,12 +2,14 @@
     position: fixed;
     z-index: 1240;
     box-sizing: border-box;
-    width: max-content;
+    width: min(15rem, calc(100vw - 16px));
     min-width: min(9rem, calc(100vw - 16px));
-    max-width: min(12rem, calc(100vw - 16px));
+    max-width: calc(100vw - 16px);
     padding: .125rem .25rem;
-    overflow: auto;
-    overscroll-behavior: contain;
+    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    overscroll-behavior: none;
     border: 1px solid color-mix(in srgb, var(--theme-primary) 60%, var(--theme-nav-border));
     border-radius: .875rem;
     background: var(--theme-nav-surface);
@@ -16,7 +18,7 @@
     .btn-option-picker-menu-header {
         box-sizing: border-box;
         width: 100%;
-        margin: 0 .25rem .125rem;
+        margin: 0 0 .125rem;
         padding: .2rem .25rem;
         text-align: center;
         color: var(--theme-primary);
@@ -56,11 +58,28 @@
                 transparent);
         }
         .btn-option-picker-icon { flex: 0 0 1.25rem; width: 1.25rem; color: var(--theme-primary); }
-        .btn-option-picker-menu-item-label { flex: 0 1 auto; min-width: 0; overflow-wrap: anywhere; }
+        .btn-option-picker-menu-item-label {
+            min-width: 0;
+            max-width: 100%;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            word-break: normal;
+        }
         &:hover, &:focus-visible {
             background: color-mix(in srgb, var(--theme-primary) 14%, var(--theme-nav-surface));
             outline: 2px solid var(--theme-primary); outline-offset: -2px;
         }
         &:active { background: color-mix(in srgb, var(--theme-primary) 24%, var(--theme-nav-surface)); }
+    }
+
+    &[data-compact="true"] {
+        .btn-option-picker-menu-header { display: none; }
+
+        button.nav-profile-card-mobile-resume-item {
+            min-height: 32px;
+            padding-block: .1rem;
+            font-size: .72rem;
+            line-height: 1.1;
+        }
     }
 }

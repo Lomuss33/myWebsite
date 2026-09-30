@@ -28,17 +28,26 @@ export default function ResumeMenu({toggleClassName = "", toggleCaption = null, 
             const minY = top + margin
             const maxY = top + height - margin
             const rootFontSize = Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || 16
-            const maxMenuWidth = Math.max(1, Math.min(rootFontSize * 12, width - margin * 2))
+            const maxMenuWidth = Math.max(1, Math.min(rootFontSize * 15, width - margin * 2))
+            menu.style.maxHeight = 'none'
+            menu.removeAttribute('data-compact')
+            menu.style.width = Math.min(rootFontSize * 15, width - margin * 2) + 'px'
             menu.style.maxWidth = maxMenuWidth + 'px'
             const above = Math.max(0, rect.top - gap - minY)
             const below = Math.max(0, maxY - rect.bottom - gap)
-            // Measure full content even when the previous placement was scroll-limited.
-            const naturalHeight = menu.scrollHeight + menu.offsetHeight - menu.clientHeight
-            const opensBelow = below >= naturalHeight || below >= above
-            const available = opensBelow ? below : above
-            menu.style.maxHeight = Math.max(1, available) + 'px'
+            const totalAvailable = Math.max(1, maxY - minY)
+            let naturalHeight = menu.scrollHeight + menu.offsetHeight - menu.clientHeight
+            if(naturalHeight > totalAvailable) {
+                menu.dataset.compact = 'true'
+                naturalHeight = menu.scrollHeight + menu.offsetHeight - menu.clientHeight
+            }
+            const menuHeight = Math.min(naturalHeight, totalAvailable)
+            const opensBelow = below >= menuHeight
+            const opensAbove = !opensBelow && above >= menuHeight
+            menu.style.maxHeight = menuHeight + 'px'
             const box = menu.getBoundingClientRect()
-            const y = opensBelow ? rect.bottom + gap : rect.top - gap - box.height
+            const centeredY = rect.top + (rect.height - box.height) / 2
+            const y = opensBelow ? rect.bottom + gap : opensAbove ? rect.top - gap - box.height : centeredY
             menu.style.left = Math.max(minX, Math.min(rect.left, left + width - margin - box.width)) + 'px'
             menu.style.top = Math.max(minY, Math.min(y, maxY - box.height)) + 'px'
         }

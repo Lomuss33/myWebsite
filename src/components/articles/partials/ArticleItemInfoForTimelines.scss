@@ -2889,6 +2889,8 @@ article#article-1-section-my-writings div.article-timeline-item-info-for-timelin
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines {
     --digital-card-inset: clamp(0.65rem, 1vw, 0.9rem);
+    --digital-text-fill: #fff;
+    --digital-text-edge: #000;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto minmax(0, 1fr) auto;
@@ -2919,6 +2921,12 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
         -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - 5.25rem), transparent calc(100% - 4.25rem));
         mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - 5.25rem), transparent calc(100% - 4.25rem));
     }
+
+    // The card's generic direct-child rule gives every child z-index: 1.
+    // Place the opaque artwork above both decorative layers, then text above it.
+    > div.digital-expression-layer-stack { z-index: 3; }
+    > div.article-timeline-item-info-for-timelines-header,
+    > div.article-timeline-item-info-for-timelines-body { z-index: 4; }
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-header {
@@ -3078,6 +3086,7 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
     border-radius: 0;
     background: transparent;
     box-shadow: none;
+    font-weight: 600;
     overflow-wrap: anywhere;
 }
 
@@ -3095,6 +3104,27 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
 [data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-body span,
 [data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-header-main h5 {
     color: #000;
+}
+
+[data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines {
+    --digital-text-fill: #000;
+    --digital-text-edge: #fff;
+}
+
+article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines {
+    div.article-timeline-item-info-for-timelines-header-main h5,
+    div.article-timeline-item-info-for-timelines-body-text,
+    div.article-timeline-item-info-for-timelines-body-text *,
+    div.article-item-preview-menu-button-list a.article-item-preview-menu-link {
+        color: var(--digital-text-fill);
+        -webkit-text-stroke: 0.55px var(--digital-text-edge);
+        text-shadow: none;
+    }
+
+    a.article-item-preview-menu-link--digital-action > i {
+        color: var(--digital-text-fill);
+        -webkit-text-stroke: 0;
+    }
 }
 
 // The two-column view reads as two open pages: rounded outside edges and a
@@ -3455,4 +3485,21 @@ article#article-1-section-education div.article-timeline-item-info-for-timelines
         overflow-wrap: anywhere;
         hyphens: auto;
     }
+}
+
+// The Pinterest profile card uses a neutral surface in both themes.
+[data-theme="dark"] article#article-2-section-my-art.article-timeline--art-digital-expression ul.article-timeline-items > li:nth-child(4) div.article-timeline-item-info-for-timelines {
+    background: #000;
+}
+
+[data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression ul.article-timeline-items > li:nth-child(4) div.article-timeline-item-info-for-timelines {
+    background: #fff;
+}
+
+[data-theme="dark"] article#article-2-section-my-art.article-timeline--art-digital-expression ul.article-timeline-items > li:nth-child(4) div.article-timeline-item-info-for-timelines::before,
+[data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression ul.article-timeline-items > li:nth-child(4) div.article-timeline-item-info-for-timelines::before,
+[data-theme="dark"] article#article-2-section-my-art.article-timeline--art-digital-expression ul.article-timeline-items > li:nth-child(4) div.article-timeline-item-info-for-timelines::after,
+[data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression ul.article-timeline-items > li:nth-child(4) div.article-timeline-item-info-for-timelines::after {
+    background: none;
+    box-shadow: none;
 }

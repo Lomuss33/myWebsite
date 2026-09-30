@@ -2324,17 +2324,76 @@ article.article-location-compare {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         grid-template-areas: "balkan germany";
         grid-template-rows: auto;
-        gap: clamp(0.6rem, 1.15vw, 1rem);
+        // Keep the paired maps physically joined; each card border forms one
+        // half of the shared seam instead of a shadow-filled gutter.
+        gap: 0;
     }
 
     .location-compare-card {
-        aspect-ratio: 1.2 / 1;
+        aspect-ratio: 1.5 / 1;
         border: 1px solid color-mix(in srgb, var(--location-accent) 30%, var(--location-soft-border));
-        border-radius: 1rem;
+        border-radius: 1rem 0 0 1rem;
         box-shadow: 0 0.65rem 1.8rem color-mix(in srgb, var(--location-shadow) 70%, transparent);
+
+        &:nth-child(2) {
+            border-radius: 0 1rem 1rem 0;
+        }
+    }
+
+    .location-compare-viewport {
+        --location-map-side-rail-width: clamp(2.5rem, 3vw, 3.5rem);
+        background: var(--location-card-shell);
+        overscroll-behavior: auto;
+    }
+
+    .location-compare-map {
+        inset-inline: var(--location-map-side-rail-width);
+    }
+
+    .location-compare-place-rail {
+        position: absolute;
+        inset-block: 0;
+        z-index: 2;
+        display: grid;
+        width: var(--location-map-side-rail-width);
+        overflow: hidden;
+        place-items: center;
+        border-color: color-mix(in srgb, var(--location-accent) 25%, var(--location-soft-border));
+        background: color-mix(in srgb, var(--location-panel) 92%, var(--location-accent) 8%);
+        color: color-mix(in srgb, var(--location-ink) 80%, var(--location-accent));
+        touch-action: pan-y;
+        overscroll-behavior: auto;
+
+        > span {
+            max-block-size: 100%;
+            overflow: hidden;
+            font-size: clamp(0.55rem, 0.68vw, 0.72rem);
+            font-weight: 750;
+            letter-spacing: 0.08em;
+            line-height: 1;
+            text-overflow: ellipsis;
+            text-transform: uppercase;
+            white-space: nowrap;
+            writing-mode: vertical-rl;
+        }
+
+        &--start {
+            inset-inline-start: 0;
+            border-inline-end-style: solid;
+            border-inline-end-width: 1px;
+
+            > span { transform: rotate(180deg); }
+        }
+
+        &--end {
+            inset-inline-end: 0;
+            border-inline-start-style: solid;
+            border-inline-start-width: 1px;
+        }
     }
 
     .location-compare-viewport::after {
+        inset-inline: var(--location-map-side-rail-width);
         background:
             linear-gradient(180deg, rgba(2, 8, 18, 0.2), transparent 24%),
             linear-gradient(0deg, rgba(2, 8, 18, 0.28), transparent 26%);
@@ -2616,12 +2675,29 @@ article.article-location-compare {
     }
 }
 
-@media (max-width: 47.999rem) {
+@media (max-width: 47.999rem), (orientation: portrait) and (min-width: 48rem) {
     article.article-location-compare .location-compare-grid {
         grid-template-columns: minmax(0, 1fr);
         grid-template-areas: "balkan" "germany";
         grid-template-rows: auto auto;
-        gap: 0.7rem;
+        gap: 0;
+    }
+
+    article.article-location-compare .location-compare-card {
+        border-radius: 1rem 1rem 0 0;
+
+        &:nth-child(2) {
+            // On stacked layouts, put the second city selector at the bottom
+            // of its map so the two map viewports meet cleanly at the seam.
+            flex-direction: column-reverse;
+            border-radius: 0 0 1rem 1rem;
+        }
+    }
+}
+
+@media (max-width: 47.999rem) {
+    article.article-location-compare .location-compare-card {
+        aspect-ratio: 1.3 / 1;
     }
 }
 

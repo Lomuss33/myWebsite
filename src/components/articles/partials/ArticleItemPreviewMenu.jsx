@@ -1,6 +1,7 @@
 import "./ArticleItemPreviewMenu.scss"
 import React from 'react'
 import Link from "../../generic/Link.jsx"
+import GalleryLink from "../../generic/GalleryLink.jsx"
 import {useLanguage} from "../../../providers/LanguageProvider.jsx"
 import CircularButton from "../../buttons/CircularButton.jsx"
 import StandardButton from "../../buttons/StandardButton.jsx"
@@ -122,7 +123,8 @@ function ItemPreviewMenuGalleryButton({ itemWrapper, galleryMetadata = null }) {
 
     const screenshots = itemWrapper.preview?.screenshots
     const screenshotsAspectRatio = itemWrapper.preview?.screenshotsAspectRatio
-    const galleryPreviewImage = utils.image.normalizeSource(itemWrapper.img || screenshots?.[0])
+    const galleryPreviewSource = screenshots?.[screenshots.length - 1] || itemWrapper.img || screenshots?.[0]
+    const galleryPreviewImage = utils.image.normalizeSource(galleryPreviewSource)
     const isPhotographyTimeline = itemWrapper?.articleWrapper?.settings?.timelineVariant === "art-photography"
     const isDigitalExpressionTimeline = itemWrapper?.articleWrapper?.settings?.timelineVariant === "art-digital-expression"
     const actionLabel = isPhotographyTimeline ?
@@ -149,11 +151,10 @@ function ItemPreviewMenuGalleryButton({ itemWrapper, galleryMetadata = null }) {
         return <></>
 
     return (
-        <Link href={"#gallery:open"}
-              metadata={metadata}
-              className={`article-item-preview-menu-link${isDigitalExpressionTimeline ? " article-item-preview-menu-link--digital-action" : ""}`}
-              tooltip={actionLabel}
-              ariaLabel={actionLabel}>
+        <GalleryLink metadata={metadata}
+                     className={`article-item-preview-menu-link${isDigitalExpressionTimeline ? " article-item-preview-menu-link--digital-action" : ""}`}
+                     tooltip={actionLabel}
+                     ariaLabel={actionLabel}>
             {isDigitalExpressionTimeline ? (
                 <>
                     <i className={`fa-icon ${actionIcon}`} aria-hidden="true"/>
@@ -166,7 +167,7 @@ function ItemPreviewMenuGalleryButton({ itemWrapper, galleryMetadata = null }) {
                                 tooltip={actionLabel}
                                 faIcon={actionIcon}>
                     {isPhotographyTimeline && (
-                        <img src={galleryPreviewImage.resolvedSrc || itemWrapper.img || screenshots[0]}
+                        <img src={galleryPreviewImage.resolvedSrc || galleryPreviewSource}
                              srcSet={galleryPreviewImage.srcSet || undefined}
                              sizes="56px"
                              className={`article-item-preview-menu-gallery-image`}
@@ -178,7 +179,7 @@ function ItemPreviewMenuGalleryButton({ itemWrapper, galleryMetadata = null }) {
                     )}
                 </CircularButton>
             )}
-        </Link>
+        </GalleryLink>
     )
 }
 

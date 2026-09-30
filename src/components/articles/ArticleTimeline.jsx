@@ -8,6 +8,7 @@ import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
 import {ArticleItemInfoForTimelines, ArticleItemInfoForTimelinesHeader, ArticleItemInfoForTimelinesBody, ArticleItemInfoForTimelinesPreviewFooter} from "./partials/ArticleItemInfoForTimelines.jsx"
 import Link from "../generic/Link.jsx"
+import GalleryLink from "../generic/GalleryLink.jsx"
 import {useUtils} from "../../hooks/utils.js"
 
 const FINE_POINTER_MEDIA_QUERY = "(hover: hover) and (pointer: fine)"
@@ -582,12 +583,6 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
                                              onEducationExpand={_expandEducationItem}
                                               key={itemWrapper.id}/>
                     ))}
-                    {isDigitalExpressionTimeline && timelineItemWrappers.length === 3 && (
-                        <li className="article-timeline-item article-timeline-item--digital-placeholder">
-                            <span className="digital-expression-placeholder-mark" aria-hidden="true">?</span>
-                            <span>{language.getString("digital_expression_more_soon")}</span>
-                        </li>
-                    )}
                 </ul>
                 {isEducationTimeline && educationYearTicks.length > 0 && (
                     <div className="article-timeline-year-axis" aria-hidden="true">
@@ -827,20 +822,19 @@ function ArticleTimelineItem({
             {!shouldRenderDigitalImageStack && (
                 <div className={avatarWrapperClass}>
                     {canOpenGallery ? (
-                        <Link href={"#gallery:open"}
-                              metadata={galleryMetadata}
-                              className={avatarLinkClass}
-                              tooltip={language.getString("open_gallery")}
-                              ariaLabel={overlayActionLabel}
-                              intercept={shouldInterceptGalleryTap}
-                              onClick={_onGalleryAvatarClick}>
+                        <GalleryLink metadata={galleryMetadata}
+                                     className={avatarLinkClass}
+                                     tooltip={language.getString("open_gallery")}
+                                     ariaLabel={overlayActionLabel}
+                                     intercept={shouldInterceptGalleryTap}
+                                     onClick={_onGalleryAvatarClick}>
                             <AvatarView src={avatarSrc}
                                          faIcon={avatarFaIcon}
                                          style={avatarStyle}
                                          alt={itemWrapper?.imageAlt}
                                          sizes={avatarSizes}
                                          className={`article-timeline-item-avatar article-timeline-item-avatar--button ${isExperienceTimeline ? "article-timeline-item-avatar--experience" : ""}`.trim()}/>
-                        </Link>
+                        </GalleryLink>
                     ) : shouldUseItemLinkAvatar || shouldUsePreviewLinkAvatar ? (
                         <Link href={avatarLinkHref}
                               target={isEducationTimeline ? "_blank" : undefined}
@@ -960,11 +954,10 @@ function DigitalExpressionImageStack({ screenshots = [], galleryMetadata = null,
 
     return (
         <div className={`digital-expression-layer-stack`}>
-            <Link href={"#gallery:open"}
-                  metadata={galleryMetadata}
-                  className={`digital-expression-layer-stack__link`}
-                  tooltip={language.getString("open_gallery")}
-                  ariaLabel={label}>
+            <GalleryLink metadata={galleryMetadata}
+                         className={`digital-expression-layer-stack__link`}
+                         tooltip={language.getString("open_gallery")}
+                         ariaLabel={label}>
                 {layerImages.map((src, index) => {
                     const isPrimaryLayer = index === primaryLayerIndex
                     return (
@@ -979,7 +972,7 @@ function DigitalExpressionImageStack({ screenshots = [], galleryMetadata = null,
                         </span>
                     )
                 })}
-            </Link>
+            </GalleryLink>
         </div>
     )
 }

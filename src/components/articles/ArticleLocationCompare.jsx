@@ -409,7 +409,13 @@ function ArticleLocationCompare({dataWrapper}) {
                             </span>
                         </button>
                         <div className="location-compare-viewport">
+                            <span className="location-compare-place-rail location-compare-place-rail--start" aria-hidden="true">
+                                <span>{location.city}</span>
+                            </span>
                             <div className="location-compare-map" ref={element => { containerRefs.current[index] = element }}/>
+                            <span className="location-compare-place-rail location-compare-place-rail--end" aria-hidden="true">
+                                <span>{location.city}</span>
+                            </span>
                             <div className={`location-compare-menu ${openMenuIndex === index ? "location-compare-menu--open" : ""}`}
                                  id={`${dataWrapper.uniqueId}-location-menu-${LOCATION_GROUPS[index].id}`}
                                  role="listbox"

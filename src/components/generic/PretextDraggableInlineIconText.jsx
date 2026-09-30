@@ -1,8 +1,10 @@
 import "./PretextDraggableInlineIconText.scss"
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { parseDraggableInlineHtml } from "./pretextDraggableInlineFlow.js"
 
 const POINTER_KEYBOARD_STEP = 0.05
+const DRAG_EDGE_SPEED = 0.025
+const DRAG_CENTER_SPEED = 2.3
 
 function PretextDraggableInlineIconText({
     html,
@@ -20,6 +22,16 @@ function PretextDraggableInlineIconText({
 
     const [xRatio, setXRatio] = useState(() => clamp(initialXRatio, 0, 1))
     const [isDragging, setIsDragging] = useState(false)
+
+    const finishPointerDrag = useCallback(event => {
+        const dragState = dragStateRef.current
+        if (!dragState || dragState.pointerId !== event.pointerId) return
+
+        if (dragState.frameId !== null) cancelAnimationFrame(dragState.frameId)
+        releasePointerCapture(dragState)
+        dragStateRef.current = null
+        setIsDragging(false)
+    }, [])
 
     const paragraphs = useMemo(() => {
         return parseDraggableInlineHtml(html)
@@ -41,52 +53,76 @@ function PretextDraggableInlineIconText({
     }, [onRatioChange, xRatio])
 
     useEffect(() => {
-        return () => {
-            dragStateRef.current = null
-        }
-    }, [])
-
-    useEffect(() => {
         if (!isDragging) return
+
+        const advanceDrag = timestamp => {
+            const dragState = dragStateRef.current
+            if (!dragState) return
+
+            dragState.frameId = null
+            const elapsedSeconds = clamp((timestamp - dragState.lastFrameTime) / 1000, 0, 0.05)
+            dragState.lastFrameTime = timestamp
+
+            const currentRatio = xRatioRef.current
+            const distance = dragState.targetRatio - currentRatio
+            if (distance === 0) return
+
+            const step = getDragSpeed(currentRatio) * elapsedSeconds
+            const nextRatio = Math.abs(distance) <= step ? dragState.targetRatio : currentRatio + Math.sign(distance) * step
+            xRatioRef.current = nextRatio
+            setXRatio(nextRatio)
+            if (nextRatio !== dragState.targetRatio) scheduleDragFrame(dragState)
+        }
+
+        const scheduleDragFrame = dragState => {
+            if (dragState.frameId !== null) return
+            dragState.lastFrameTime = performance.now()
+            dragState.frameId = requestAnimationFrame(advanceDrag)
+        }
 
         const handlePointerMove = event => {
             const dragState = dragStateRef.current
             if (!dragState || dragState.pointerId !== event.pointerId) return
 
-            setXRatio(getRatioFromClientX(event.clientX, railRef.current))
-        }
-
-        const finishPointerDrag = event => {
-            const dragState = dragStateRef.current
-            if (!dragState || dragState.pointerId !== event.pointerId) return
-
-            releasePointerCapture(dragState)
-            dragStateRef.current = null
-            setIsDragging(false)
+            const travelWidth = getRailTravelWidth(railRef.current)
+            const pointerDelta = travelWidth > 0 ? (event.clientX - dragState.startClientX) / travelWidth : 0
+            dragState.targetRatio = clamp(dragState.startRatio + pointerDelta, 0, 1)
+            scheduleDragFrame(dragState)
         }
 
         window.addEventListener("pointermove", handlePointerMove)
         window.addEventListener("pointerup", finishPointerDrag)
         window.addEventListener("pointercancel", finishPointerDrag)
+        if (dragStateRef.current) scheduleDragFrame(dragStateRef.current)
 
         return () => {
+            const dragState = dragStateRef.current
+            if (dragState && dragState.frameId !== null) {
+                cancelAnimationFrame(dragState.frameId)
+                dragState.frameId = null
+            }
             window.removeEventListener("pointermove", handlePointerMove)
             window.removeEventListener("pointerup", finishPointerDrag)
             window.removeEventListener("pointercancel", finishPointerDrag)
         }
-    }, [isDragging])
+    }, [finishPointerDrag, isDragging])
 
     const handlePointerDown = event => {
-        if (!hasRail) return
+        if (!hasRail || dragStateRef.current) return
 
         event.preventDefault()
 
-        const nextRatio = getRatioFromClientX(event.clientX, railRef.current)
-        setXRatio(nextRatio)
+        const startedOnHandle = Boolean(event.target.closest?.("button.pretext-draggable-inline-icon-text-handle"))
+        const targetRatio = startedOnHandle ? xRatioRef.current : getPointerRatioFromClientX(event.clientX, railRef.current)
 
         dragStateRef.current = {
             captureTarget: event.currentTarget,
-            pointerId: event.pointerId
+            pointerId: event.pointerId,
+            startClientX: event.clientX,
+            startRatio: targetRatio,
+            targetRatio,
+            frameId: null,
+            lastFrameTime: 0
         }
         capturePointer(event)
         setIsDragging(true)
@@ -133,14 +169,12 @@ function PretextDraggableInlineIconText({
                 <div className={`pretext-draggable-inline-icon-text-rail-block`}>
                     <div ref={railRef}
                          className={`pretext-draggable-inline-icon-text-rail-hit-area`}
-                         onPointerDown={handlePointerDown}>
+                         onPointerDown={handlePointerDown}
+                         onPointerUp={finishPointerDrag}
+                         onPointerCancel={finishPointerDrag}>
                         <div className={`pretext-draggable-inline-icon-text-rail`}
                              aria-hidden={true}>
                             <span className={`pretext-draggable-inline-icon-text-rail-line`}/>
-                            <span className={`pretext-draggable-inline-icon-text-rail-progress`}
-                                  style={{ width: railPosition }}/>
-                            <span className={`pretext-draggable-inline-icon-text-rail-dot pretext-draggable-inline-icon-text-rail-dot-start`}/>
-                            <span className={`pretext-draggable-inline-icon-text-rail-dot pretext-draggable-inline-icon-text-rail-dot-end`}/>
                         </div>
 
                         <button type={`button`}
@@ -156,7 +190,6 @@ function PretextDraggableInlineIconText({
                                 aria-valuenow={Math.round(xRatio * 100)}
                                 aria-valuetext={ariaValueText}
                                 role={`slider`}
-                                onPointerDown={handlePointerDown}
                                 onKeyDown={handleKeyDown}>
                             <span className={`pretext-draggable-inline-icon-text-handle-icon`}>
                                 <i className={faIcon}/>
@@ -242,13 +275,31 @@ function renderMarkedText(fragment) {
     return content
 }
 
-function getRatioFromClientX(clientX, element) {
+function getPointerRatioFromClientX(clientX, element) {
     if (!element) return 0.5
 
     const bounds = element.getBoundingClientRect()
-    if (bounds.width <= 0) return 0.5
+    const safeInset = getRailSafeInset(element)
+    const travelWidth = bounds.width - safeInset * 2
+    if (travelWidth <= 0) return 0.5
 
-    return clamp((clientX - bounds.left) / bounds.width, 0, 1)
+    return clamp((clientX - bounds.left - safeInset) / travelWidth, 0, 1)
+}
+
+function getRailSafeInset(element) {
+    const handle = element?.querySelector("button.pretext-draggable-inline-icon-text-handle")
+    return handle ? handle.offsetWidth / 2 + 2 : 0
+}
+
+function getRailTravelWidth(element) {
+    if (!element) return 0
+    return Math.max(0, element.getBoundingClientRect().width - getRailSafeInset(element) * 2)
+}
+
+function getDragSpeed(handleRatio) {
+    const distanceFromCenter = Math.abs(handleRatio - 0.5) * 2
+    const edgeFalloff = (1 - distanceFromCenter ** 3) ** 4
+    return DRAG_EDGE_SPEED + DRAG_CENTER_SPEED * edgeFalloff
 }
 
 function clamp(value, min, max) {

@@ -7,6 +7,7 @@ const PUBLIC_DIR = path.join(ROOT, "public")
 const SOURCE_DIRECTORIES = [
     "images/contant",
     "images/hardware",
+    "images/artist",
     "images/private",
     "images/personal_art",
     "images/writing/books"

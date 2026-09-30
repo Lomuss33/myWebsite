@@ -335,6 +335,24 @@ const imageManifest = {
         "width": 141,
         "height": 80
     },
+    "/images/artist/snopdan-dogovic/banner.webp": {
+        "src": "/images/__responsive/images/artist/snopdan-dogovic/banner-w1920.webp",
+        "srcSet": "/images/__responsive/images/artist/snopdan-dogovic/banner-w160.webp 160w, /images/__responsive/images/artist/snopdan-dogovic/banner-w320.webp 320w, /images/__responsive/images/artist/snopdan-dogovic/banner-w480.webp 480w, /images/__responsive/images/artist/snopdan-dogovic/banner-w640.webp 640w, /images/__responsive/images/artist/snopdan-dogovic/banner-w960.webp 960w, /images/__responsive/images/artist/snopdan-dogovic/banner-w1280.webp 1280w, /images/__responsive/images/artist/snopdan-dogovic/banner-w1600.webp 1600w, /images/__responsive/images/artist/snopdan-dogovic/banner-w1920.webp 1920w",
+        "width": 1920,
+        "height": 568
+    },
+    "/images/artist/snopdan-dogovic/ona-zna-cover.webp": {
+        "src": "/images/__responsive/images/artist/snopdan-dogovic/ona-zna-cover-w800.webp",
+        "srcSet": "/images/__responsive/images/artist/snopdan-dogovic/ona-zna-cover-w160.webp 160w, /images/__responsive/images/artist/snopdan-dogovic/ona-zna-cover-w320.webp 320w, /images/__responsive/images/artist/snopdan-dogovic/ona-zna-cover-w480.webp 480w, /images/__responsive/images/artist/snopdan-dogovic/ona-zna-cover-w640.webp 640w, /images/__responsive/images/artist/snopdan-dogovic/ona-zna-cover-w800.webp 800w",
+        "width": 800,
+        "height": 800
+    },
+    "/images/artist/snopdan-dogovic/portrait.webp": {
+        "src": "/images/__responsive/images/artist/snopdan-dogovic/portrait-w2048.webp",
+        "srcSet": "/images/__responsive/images/artist/snopdan-dogovic/portrait-w160.webp 160w, /images/__responsive/images/artist/snopdan-dogovic/portrait-w320.webp 320w, /images/__responsive/images/artist/snopdan-dogovic/portrait-w480.webp 480w, /images/__responsive/images/artist/snopdan-dogovic/portrait-w640.webp 640w, /images/__responsive/images/artist/snopdan-dogovic/portrait-w960.webp 960w, /images/__responsive/images/artist/snopdan-dogovic/portrait-w1280.webp 1280w, /images/__responsive/images/artist/snopdan-dogovic/portrait-w1600.webp 1600w, /images/__responsive/images/artist/snopdan-dogovic/portrait-w2048.webp 2048w",
+        "width": 2048,
+        "height": 2048
+    },
     "/images/private/LovroMusic2025.webp": {
         "src": "/images/__responsive/images/private/LovroMusic2025-w1717.webp",
         "srcSet": "/images/__responsive/images/private/LovroMusic2025-w160.webp 160w, /images/__responsive/images/private/LovroMusic2025-w320.webp 320w, /images/__responsive/images/private/LovroMusic2025-w480.webp 480w, /images/__responsive/images/private/LovroMusic2025-w640.webp 640w, /images/__responsive/images/private/LovroMusic2025-w960.webp 960w, /images/__responsive/images/private/LovroMusic2025-w1280.webp 1280w, /images/__responsive/images/private/LovroMusic2025-w1600.webp 1600w, /images/__responsive/images/private/LovroMusic2025-w1717.webp 1717w",

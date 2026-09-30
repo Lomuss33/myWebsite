@@ -2002,11 +2002,65 @@ test('Contact location comparison stays compact and symmetrical across viewport 
                     shortVisible:getComputedStyle(button.querySelector('.location-compare-action-label--short')).display!=='none',
                     longVisible:getComputedStyle(button.querySelector('.location-compare-action-label--long')).display!=='none'
                 })),
+                contactAvatarLinks:[...root.ownerDocument.querySelectorAll('#article-1-section-contact .article-info-list-item-avatar-link')].map(link=>{
+                    const rect=link.getBoundingClientRect()
+                    return {width:rect.width,height:rect.height}
+                }),
+                contactCopyButtons:[...root.ownerDocument.querySelectorAll('#article-1-section-contact .article-info-list-item-info-text:has(.article-info-list-item-inline-copy)')].map(row=>{
+                    const rowRect=row.getBoundingClientRect()
+                    const button=row.querySelector('.article-info-list-item-inline-copy button')
+                    const buttonRect=button.getBoundingClientRect()
+                    const avatar=row.closest('.article-info-list-item').querySelector('.article-info-list-item-avatar-link').getBoundingClientRect()
+                    return {
+                        rightGap:rowRect.right-buttonRect.right,
+                        textFontSize:parseFloat(getComputedStyle(row).fontSize),
+                        buttonFontSize:parseFloat(getComputedStyle(button).fontSize),
+                        avatarWidth:avatar.width
+                    }
+                }),
+                contactCardVerticalPadding:[...root.ownerDocument.querySelectorAll('#article-1-section-contact .article-info-list-item')].map(card=>{
+                    const style=getComputedStyle(card)
+                    return [parseFloat(style.paddingTop),parseFloat(style.paddingBottom)]
+                }),
+                contactLinkHint:(()=>{
+                    const card=root.ownerDocument.querySelector('#article-1-section-contact .article-info-list-item:has(.article-info-list-item-avatar-link)')
+                    return card?getComputedStyle(card,'::after').content:null
+                })(),
                 maps:[...root.querySelectorAll('.location-compare-map')].map(element=>({
+                    x:element.getBoundingClientRect().left,
+                    right:element.getBoundingClientRect().right,
                     width:element.getBoundingClientRect().width,
                     height:element.getBoundingClientRect().height,
                     y:element.getBoundingClientRect().top
-                }))
+                })),
+                mapInsets:[...root.querySelectorAll('.location-compare-card')].map(card=>{
+                    const viewport=card.querySelector('.location-compare-viewport').getBoundingClientRect()
+                    const mapCanvas=card.querySelector('.location-compare-map').getBoundingClientRect()
+                    const rails=[...card.querySelectorAll('.location-compare-place-rail')]
+                    return {
+                        cardAspect:card.getBoundingClientRect().width/card.getBoundingClientRect().height,
+                        left:mapCanvas.left-viewport.left,
+                        right:viewport.right-mapCanvas.right,
+                        railWidths:rails.map(rail=>rail.getBoundingClientRect().width),
+                        railText:rails.map(rail=>rail.innerText.trim()),
+                        writingModes:rails.map(rail=>getComputedStyle(rail.firstElementChild).writingMode)
+                    }
+                }),
+                mapCards:[...root.querySelectorAll('.location-compare-card')].map(card=>{
+                    const rect=card.getBoundingClientRect()
+                    const label=card.querySelector('.location-compare-label').getBoundingClientRect()
+                    const viewport=card.querySelector('.location-compare-viewport').getBoundingClientRect()
+                    return {
+                        left:rect.left,
+                        right:rect.right,
+                        top:rect.top,
+                        bottom:rect.bottom,
+                        labelTop:label.top,
+                        labelBottom:label.bottom,
+                        viewportTop:viewport.top,
+                        viewportBottom:viewport.bottom
+                    }
+                })
             }
         })
 
@@ -2037,6 +2091,17 @@ test('Contact location comparison stays compact and symmetrical across viewport 
         expect(metrics.actionLabels.every(label=>label.shortVisible!==label.longVisible)).toBe(true)
         expect(metrics.actionLabels.every(label=>label.shortVisible===(label.width<184))).toBe(true)
         expect(metrics.actionLabels.every(label=>parseFloat(label.fontSize)>=12)).toBe(true)
+        expect(metrics.contactAvatarLinks.length).toBeGreaterThan(0)
+        expect(metrics.contactAvatarLinks.every(link=>Math.abs(link.width-link.height)<0.5)).toBe(true)
+        expect(metrics.contactCopyButtons.length).toBeGreaterThan(0)
+        expect(metrics.contactCopyButtons.every(button=>button.rightGap>=-1 && button.rightGap<1),JSON.stringify({width,copyButtons:metrics.contactCopyButtons})).toBe(true)
+        expect(metrics.contactCopyButtons.every(button=>button.avatarWidth>=50),JSON.stringify({width,copyButtons:metrics.contactCopyButtons})).toBe(true)
+        expect(metrics.contactCopyButtons.every(button=>button.textFontSize>=12.5 && button.textFontSize<=18)).toBe(true)
+        expect(metrics.contactCopyButtons.every(button=>button.buttonFontSize>=11 && button.buttonFontSize<=16)).toBe(true)
+        if(width===1920) expect(metrics.contactCopyButtons[0].avatarWidth).toBeGreaterThan(metrics.contactCopyButtons[0].textFontSize*4)
+        expect(metrics.contactCardVerticalPadding.length).toBeGreaterThan(0)
+        expect(metrics.contactCardVerticalPadding.every(([top,bottom])=>top<=4 && bottom<=4),JSON.stringify({width,verticalPadding:metrics.contactCardVerticalPadding})).toBe(true)
+        expect(metrics.contactLinkHint).toBe('none')
         if(width>=768) {
             expect(metrics.presets.every(preset=>preset.height<=37)).toBe(true)
             expect(metrics.actions.every(action=>action.height<=37)).toBe(true)
@@ -2049,6 +2114,23 @@ test('Contact location comparison stays compact and symmetrical across viewport 
             expect(metrics.zoomControls.every(control=>control.width<=33 && control.height<=33)).toBe(true)
         }
         expect(metrics.maps.every(mapSize=>mapSize.height>=140)).toBe(true)
+        expect(metrics.mapInsets).toHaveLength(2)
+        expect(metrics.mapInsets.every(inset=>inset.cardAspect>=(width<768?1.25:1.45))).toBe(true)
+        expect(metrics.mapInsets.every(inset=>inset.left>=39 && inset.right>=39)).toBe(true)
+        expect(metrics.mapInsets.every(inset=>inset.railWidths.length===2 && inset.railWidths.every(width=>width>=39))).toBe(true)
+        expect(metrics.mapInsets.every(inset=>inset.railText.length===2 && inset.railText[0]===inset.railText[1])).toBe(true)
+        expect(metrics.mapInsets.every(inset=>inset.writingModes.every(mode=>mode==='vertical-rl'))).toBe(true)
+        expect(metrics.mapCards).toHaveLength(2)
+        if(height>width || width<768) {
+            // Stacked cards share a flush horizontal seam, and the lower
+            // selector stays at the bottom of its card below the map.
+            expect(Math.abs(metrics.mapCards[0].bottom-metrics.mapCards[1].top)).toBeLessThanOrEqual(1)
+            expect(Math.abs(metrics.mapCards[1].labelBottom-metrics.mapCards[1].bottom)).toBeLessThanOrEqual(1)
+            expect(Math.abs(metrics.mapCards[1].viewportBottom-metrics.mapCards[1].labelTop)).toBeLessThanOrEqual(1)
+        } else {
+            // Side-by-side cards meet edge-to-edge without a gutter.
+            expect(Math.abs(metrics.mapCards[0].right-metrics.mapCards[1].left)).toBeLessThanOrEqual(1)
+        }
         expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(width+1)
 
         if(width===390) {

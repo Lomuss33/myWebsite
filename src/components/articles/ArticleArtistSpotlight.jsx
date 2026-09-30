@@ -2,8 +2,17 @@ import "./ArticleArtistSpotlight.scss"
 import React, {useEffect, useId, useRef, useState} from "react"
 import Article from "./base/Article.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
+import {useUtils} from "../../hooks/utils.js"
 
 let spotifyApiPromise
+
+const platformIcons = {
+    spotify: "fa-brands fa-spotify",
+    "apple-music": "fa-brands fa-apple",
+    youtube: "fa-brands fa-youtube",
+    deezer: "fa-brands fa-deezer",
+    "amazon-music": "fa-brands fa-amazon"
+}
 
 function loadSpotifyIframeApi() {
     if(typeof window === "undefined") return Promise.reject(new Error("Spotify is only available in the browser."))
@@ -99,6 +108,7 @@ function formatTrackTime(seconds) {
 
 function ArticleArtistSpotlight({dataWrapper}) {
     const language = useLanguage()
+    const utils = useUtils()
     const data = dataWrapper.settings.artistSpotlight || {}
     const release = data.latestRelease || {}
     const text = (key, fallback) => language.getTranslation(data.labels || {}, key, fallback)
@@ -117,15 +127,23 @@ function ArticleArtistSpotlight({dataWrapper}) {
     const [audioReady, setAudioReady] = useState(false)
     const [audioError, setAudioError] = useState(false)
     const hasProfile = Boolean(data.profileImage)
+    const profileImage = utils.image.normalizeSource(data.profileImage)
     const hasBanner = Boolean(data.bannerImage)
     const hasLocalAudio = Boolean(audioSrc)
     const hasSpotifyTrack = Boolean(trackUri)
     const canPlay = (hasLocalAudio || hasSpotifyTrack) && !audioError
     const hasArtistLink = Boolean(data.spotifyArtistUrl)
-    const showArtistCta = hasArtistLink || !data.artistName
     const artistLinks = Array.isArray(data.links) ? data.links.filter(link => link?.url && link?.label) : []
+    const platformLinks = [
+        ...(hasArtistLink ? [{label: "Spotify", url: data.spotifyArtistUrl, platform: "spotify", target: "artist"}] : []),
+        ...artistLinks
+    ]
     const portrait = hasProfile ? (
-        <img className="artist-spotlight-portrait" src={data.profileImage}
+        <img className="artist-spotlight-portrait"
+             src={profileImage.resolvedSrc || data.profileImage}
+             srcSet={profileImage.srcSet || undefined}
+             sizes="(max-width: 560px) 28vw, 224px"
+             loading="lazy" decoding="async"
              alt={data.profileImageAlt || data.artistName || text("artistPortrait", "Artist portrait")}/>
     ) : (
         <AssetPlaceholder kind="portrait" label={text("portraitPlaceholder", "Artist portrait")}/>
@@ -177,6 +195,7 @@ function ArticleArtistSpotlight({dataWrapper}) {
         <Article id={dataWrapper.uniqueId}
                  type={Article.Types.SPACING_DEFAULT}
                  dataWrapper={dataWrapper}
+                 forceHideTitle
                  className="article-artist-spotlight">
             <div className="artist-spotlight-shell">
                 <section className="artist-spotlight-hero" aria-label={text("artistSectionLabel", "Artist profile")}>
@@ -195,35 +214,42 @@ function ArticleArtistSpotlight({dataWrapper}) {
                             </a>
                         ) : portrait}
                         <div className="artist-spotlight-identity-copy">
-                            <h2>{data.artistName || text("artistNamePlaceholder", "Artist name")}</h2>
-                            {(data.artistDescription || !data.artistName) && (
+                            {data.artistGenreStatement ? (
+                                <p className="artist-spotlight-genre">
+                                    <span className="artist-spotlight-genre-label">Genre:</span>
+                                    <span>{data.artistGenreStatement}</span>
+                                </p>
+                            ) : (data.artistDescription || !data.artistName) && (
                                 <p>{data.artistDescription || text("artistDescriptionPlaceholder", "A short introduction will appear here.")}</p>
                             )}
                         </div>
                     </div>
-                    {showArtistCta && (
-                        <div className="artist-spotlight-seam-cta">
-                            {hasArtistLink ? (
-                                <a className="artist-spotlight-spotify-link" href={data.spotifyArtistUrl}
-                                   target="_blank" rel="noopener noreferrer">
-                                    <span>{text("artistButton", "Open on Spotify")}</span>
+                </section>
+
+                {platformLinks.length > 0 && (
+                    <nav className="artist-spotlight-seam-cta" aria-label={text("moreLinks", "Artist platforms")}
+                         style={{"--artist-platform-count": platformLinks.length}}>
+                        {platformLinks.map((link) => {
+                            const destination = link.target === "release" ? release.title : data.artistName
+                            const description = `${link.label} — ${destination || text("artistNamePlaceholder", "Artist")}`
+                            return (
+                                <a key={`${link.label}-${link.url}`}
+                                   className="artist-spotlight-platform-link"
+                                   data-platform={link.platform}
+                                   href={link.url} target="_blank" rel="noopener noreferrer"
+                                   aria-label={description} title={description}>
+                                    <i className={`artist-spotlight-platform-icon ${platformIcons[link.platform] || "fa-solid fa-music"}`}
+                                       aria-hidden="true"/>
+                                    <span>{link.shortLabel || link.label}</span>
                                     <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
                                         <path d="M4 12 12 4M5 4h7v7" fill="none" stroke="currentColor"
                                               strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
                                     </svg>
                                 </a>
-                            ) : (
-                                <span className="artist-spotlight-spotify-link is-placeholder" aria-disabled="true">
-                                    <span>{text("artistButton", "Open on Spotify")}</span>
-                                    <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-                                        <path d="M4 12 12 4M5 4h7v7" fill="none" stroke="currentColor"
-                                              strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
-                                </span>
-                            )}
-                        </div>
-                    )}
-                </section>
+                            )
+                        })}
+                    </nav>
+                )}
 
                 <section className="artist-spotlight-release" aria-labelledby={`${playerId}-release-title`}>
                     <div className="artist-spotlight-release-heading">
@@ -295,15 +321,6 @@ function ArticleArtistSpotlight({dataWrapper}) {
                             )}
                         </div>
                     </div>
-                    {artistLinks.length > 0 && (
-                        <nav className="artist-spotlight-links" aria-label={text("moreLinks", "More artist links")}>
-                            {artistLinks.map((link) => (
-                                <a key={`${link.label}-${link.url}`} href={link.url} target="_blank" rel="noopener noreferrer">
-                                    {link.label}<span aria-hidden="true"> ↗</span>
-                                </a>
-                            ))}
-                        </nav>
-                    )}
                 </section>
             </div>
         </Article>

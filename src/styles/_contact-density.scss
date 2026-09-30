@@ -24,16 +24,17 @@
             div.article-info-list-items {
                 --grid-row-gap: clamp(0.5rem, 0.65vw, 0.65rem);
                 --grid-column-gap: clamp(0.5rem, 0.65vw, 0.65rem);
+                --avatar-size: clamp(4.25rem, 4.4vw, 5rem);
+                --min-height: calc(var(--avatar-size) + 10px);
             }
 
             div.article-info-list-item {
-                min-height: 7.5rem;
-                padding: 0.7rem 0.8rem 0.7rem 0.7rem;
-                column-gap: 0.65rem;
+                min-height: var(--min-height);
+                padding: 3px 0.65rem;
+                column-gap: 0.5rem;
             }
 
             div.article-info-list-item-avatar {
-                --avatar-size: clamp(2.75rem, 4vw, 3.25rem);
                 width: var(--avatar-size);
                 min-width: var(--avatar-size);
                 height: var(--avatar-size);
@@ -43,20 +44,20 @@
 
             div.article-info-list-item-info-title {
                 margin-bottom: 0.15rem;
-                font-size: clamp(1rem, 0.95rem + 0.2vw, 1.08rem);
+                font-size: clamp(1rem, 0.9rem + 0.38vw, 1.3rem);
                 line-height: 1.25;
             }
 
             div.article-info-list-item-info-text {
-                gap: 0.45rem;
-                font-size: clamp(0.86rem, 0.82rem + 0.14vw, 0.92rem);
+                column-gap: clamp(0.4rem, 0.8vw, 0.7rem);
+                font-size: clamp(0.8rem, 0.7rem + 0.32vw, 1.12rem);
                 line-height: 1.35;
             }
 
             div.copy-button-wrapper.article-info-list-item-inline-copy button.copy-button.copy-button-inline {
                 min-height: 2.75rem;
-                padding: 0.3rem 0.62rem;
-                font-size: 0.82rem;
+                padding: 0.24rem 0.48rem;
+                font-size: clamp(0.72rem, 0.66rem + 0.28vw, 0.98rem);
             }
         }
 

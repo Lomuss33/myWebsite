@@ -61,46 +61,12 @@ span.pretext-draggable-inline-icon-text-rail-line {
     background: linear-gradient(
         90deg,
         rgba(0, 0, 0, 0) 0%,
-        color-mix(in srgb, var(--theme-standard-borders) 72%, transparent) 8%,
-        color-mix(in srgb, var(--pretext-draggable-inline-icon-text-accent) 40%, var(--theme-standard-borders)) 50%,
-        color-mix(in srgb, var(--theme-standard-borders) 72%, transparent) 92%,
+        color-mix(in srgb, var(--pretext-draggable-inline-icon-text-accent) 72%, transparent) 10%,
+        color-mix(in srgb, var(--pretext-draggable-inline-icon-text-accent) 18%, transparent) 50%,
+        color-mix(in srgb, var(--pretext-draggable-inline-icon-text-accent) 72%, transparent) 90%,
         rgba(0, 0, 0, 0) 100%
     );
     opacity: 0.98;
-}
-
-span.pretext-draggable-inline-icon-text-rail-progress {
-    position: absolute;
-    left: 0;
-    height: 2px;
-    border-radius: 999px;
-    background: linear-gradient(
-        90deg,
-        color-mix(in srgb, var(--pretext-draggable-inline-icon-text-accent) 0%, transparent) 0%,
-        color-mix(in srgb, var(--pretext-draggable-inline-icon-text-accent) 75%, white 8%) 100%
-    );
-    box-shadow: 0 0 18px color-mix(in srgb, var(--pretext-draggable-inline-icon-text-accent) 24%, transparent);
-    pointer-events: none;
-}
-
-span.pretext-draggable-inline-icon-text-rail-dot {
-    position: absolute;
-    top: 50%;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: color-mix(in srgb, var(--pretext-draggable-inline-icon-text-accent) 24%, var(--theme-surface, #fff));
-    border: 1px solid color-mix(in srgb, var(--pretext-draggable-inline-icon-text-accent) 32%, var(--theme-standard-borders));
-    transform: translateY(-50%);
-    pointer-events: none;
-}
-
-span.pretext-draggable-inline-icon-text-rail-dot-start {
-    left: 6px;
-}
-
-span.pretext-draggable-inline-icon-text-rail-dot-end {
-    right: 6px;
 }
 
 button.pretext-draggable-inline-icon-text-handle {

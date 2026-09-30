@@ -1263,20 +1263,20 @@ div.article-web-art-items {
     max-width: calc(100% - 12px);
     min-width: 44px;
     min-height: 44px;
-    padding-inline: clamp(6px, 2.5cqw, 10px);
+    padding-inline: 16px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: clamp(10px, 3.5cqw, 12px);
     &::before {
-        inset: 8px 0;
+        inset: 8px;
         background: rgba(7, 18, 31, 0.88);
         box-shadow: none;
         backdrop-filter: none;
     }
 
     &:hover:not(:disabled)::before {
-        inset: 6px 0;
+        inset: 6px;
         box-shadow: none;
     }
 }

@@ -32,6 +32,17 @@ async function expectNoMotion(locator) {
     },{timeout:1500,intervals:[50,100]}).toBe(true)
 }
 
+async function expectStableTitleFontSize(locator) {
+    let previousSize=Number.NaN
+    let stableSamples=0
+    await expect.poll(async()=>{
+        const size=await locator.evaluate(element=>parseFloat(getComputedStyle(element).fontSize))
+        stableSamples=Number.isFinite(size)&&Math.abs(size-previousSize)<0.01?stableSamples+1:Number.isFinite(size)?1:0
+        previousSize=size
+        return stableSamples>=3
+    },{timeout:5000,intervals:[50,100,150]}).toBe(true)
+}
+
 async function preferences(page, language = 'en', theme = 'dark') {
     await page.addInitScript(({language,theme}) => {
         localStorage.setItem('storage-preferences', JSON.stringify({preferredLanguage:language,preferredTheme:theme,preferredCursorMode:'system'}))
@@ -47,10 +58,6 @@ async function openSection(page, route) {
     // The app's actual ready check below covers its lazy React sections;
     // don't also block on unrelated images and other load-event resources.
     await page.goto('/#'+route,{waitUntil:'domcontentloaded'})
-    const section=page.locator('#section-'+route+'.section-shown')
-    const pageTitle=section.locator(
-        '.section-header-title, .section-content-hide-header .section-body > article:first-of-type > h4.article-title'
-    ).first()
     const lazySectionReadyTimeout=45000
 
     // Readiness means the destination is active, its lazy content has resolved,
@@ -75,20 +82,6 @@ async function openSection(page, route) {
     const readinessState=await readiness.jsonValue()
     if(readinessState==='app-error')
         throw new Error(`App error while opening #${route}: ${page.__responsiveConsoleErrors.slice(-3).join(' | ')}`)
-    let previousGeometry=''
-    let stableSamples=0
-    await expect.poll(async()=>pageTitle.evaluate(element=>{
-        const rect=element.getBoundingClientRect()
-        const style=getComputedStyle(element)
-        const fontReady=document.fonts.check(`${style.fontWeight} ${style.fontSize} ${style.fontFamily}`,element.textContent)
-        const visible=element.isConnected&&rect.width>0&&rect.height>0&&style.visibility!=='hidden'
-        return {fontReady,visible,geometry:[rect.x,rect.y,rect.width,rect.height,style.fontSize].map(value=>Number(value).toFixed(2)).join(':')}
-    }).then(state=>{
-        const geometry=state.fontReady&&state.visible?state.geometry:''
-        stableSamples=geometry&&geometry===previousGeometry?stableSamples+1:geometry?1:0
-        previousGeometry=geometry
-        return stableSamples>=3
-    }),{timeout:lazySectionReadyTimeout,intervals:[50,100,150]}).toBe(true)
     // Stop the decorative onboarding spotlight by normal pointer movement.
     await page.mouse.move(1,1)
     await page.mouse.move(200,1)
@@ -97,18 +90,31 @@ async function openSection(page, route) {
 test('all page titles share the Home responsive type scale', async ({page})=>{
     await preferences(page)
 
-    for(const [width,height] of [[1366,768],[390,844],[1440,2560]]) {
-        await page.setViewportSize({width,height})
-        const sizes=[]
-        for(const route of routes) {
-            await openSection(page,route)
-            const pageTitle=page.locator(
-                '#section-'+route+' .section-header-title, '+
-                '#section-'+route+' .section-content-hide-header .section-body > article:first-of-type > h4.article-title'
-            ).first()
+    const viewports=[[1366,768],[390,844],[1440,2560]]
+    const sizesByViewport=viewports.map(()=>[])
+
+    // Open each lazy section once, then measure it at every viewport. Repeated
+    // cold page loads made this matrix needlessly expensive on hosted WebKit.
+    for(const route of routes) {
+        await page.setViewportSize({width:viewports[0][0],height:viewports[0][1]})
+        await openSection(page,route)
+        const pageTitle=page.locator(
+            '#section-'+route+' .section-header-title, '+
+            '#section-'+route+' .section-content-hide-header .section-body > article:first-of-type > h4.article-title'
+        ).first()
+        for(const [viewportIndex,[width,height]] of viewports.entries()) {
+            if(viewportIndex>0) {
+                await page.setViewportSize({width,height})
+                await expect(page.locator('html')).toHaveAttribute('data-layout',resolveLayout(width,height))
+            }
             await expect(pageTitle).toBeVisible()
-            sizes.push(await pageTitle.evaluate(element=>parseFloat(getComputedStyle(element).fontSize)))
+            await expectStableTitleFontSize(pageTitle)
+            sizesByViewport[viewportIndex].push(await pageTitle.evaluate(element=>parseFloat(getComputedStyle(element).fontSize)))
         }
+    }
+
+    for(const [viewportIndex,[width,height]] of viewports.entries()) {
+        const sizes=sizesByViewport[viewportIndex]
         const homeSize=sizes[0]
         for(const [index,size] of sizes.entries()) {
             expect(Math.abs(size-homeSize),width+'x'+height+' '+routes[index]+' heading matches Home').toBeLessThanOrEqual(1.5)

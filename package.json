@@ -35,7 +35,7 @@
         "react-dom": "^19.3.0",
         "smooth-scrollbar": "^8.8.4",
         "swiper": "^12.2.0",
-        "three": "^0.180.0"
+        "three": "^0.186.1"
     },
     "devDependencies": {
         "@eslint/js": "^9.39.5",

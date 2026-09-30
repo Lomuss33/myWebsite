@@ -20,7 +20,7 @@ for(const [mode, width, height] of [['desktop', 1440, 1000], ['short rail', 1920
         expect(box.height).toBeLessThan(height)
         expect(await dialog.evaluate(e => e.scrollHeight <= e.clientHeight + 1)).toBe(true)
         await expect(dialog.locator('.profile-contact-hint')).toHaveCount(0)
-        expect(await dialog.evaluate(e => getComputedStyle(e, '::backdrop').backgroundColor)).toBe('rgba(0, 0, 0, 0.1)')
+        expect(await dialog.evaluate(e => getComputedStyle(e, '::backdrop').backgroundColor)).toBe('rgba(0, 0, 0, 0.6)')
         await page.keyboard.press('Escape')
         await expect(dialog).toHaveCount(0)
         await expect(avatar).toBeFocused()

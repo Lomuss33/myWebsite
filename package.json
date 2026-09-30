@@ -16,7 +16,9 @@
         "resume:clear": "node npm/npm-resume-clear.js",
         "validate:i18n": "node npm/validate-i18n-text.js",
         "test:layout": "node --test npm/responsive-layout.test.js",
-        "test:responsive": "playwright test"
+        "test:web-art": "node --test npm/web-art-minesweeper.test.js",
+        "test:responsive": "playwright test",
+        "test:responsive:cross-browser": "playwright test tests/responsive.spec.js tests/mobile-profile.spec.js tests/profile-fit.spec.js --grep \"mobile profile centers|profile reflows inside|all page titles share|all sections fit|Education hover motion|Hardware desktop density compacts|Contact location comparison|Contact keeps native wheel scrolling|gallery stays fullscreen\""
     },
     "dependencies": {
         "@chenglou/pretext": "^0.0.8",
@@ -28,9 +30,9 @@
         "motion": "^12.43.0",
         "primeicons": "^7.0.0",
         "qrcode": "^1.5.4",
-        "react": "^18.3.1",
+        "react": "^19.3.0",
         "react-bootstrap": "^2.10.4",
-        "react-dom": "^18.3.1",
+        "react-dom": "^19.3.0",
         "smooth-scrollbar": "^8.8.4",
         "swiper": "^12.2.0",
         "three": "^0.180.0"
@@ -38,16 +40,16 @@
     "devDependencies": {
         "@eslint/js": "^9.39.5",
         "@playwright/test": "^1.63.0",
-        "@types/react": "^18.3.31",
-        "@types/react-dom": "^18.3.7",
-        "@vitejs/plugin-react": "^4.7.0",
+        "@types/react": "^19.3.0",
+        "@types/react-dom": "^19.3.0",
+        "@vitejs/plugin-react": "^6.1.1",
         "eslint": "^9.39.5",
         "eslint-plugin-react": "^7.35.0",
         "eslint-plugin-react-hooks": "^5.2.0",
         "eslint-plugin-react-refresh": "^0.4.26",
         "globals": "^15.15.0",
-        "sass-embedded": "^1.100.0",
+        "sass-embedded": "^1.105.1",
         "sharp": "^0.35.3",
-        "vite": "^6.4.3"
+        "vite": "^8.3.1"
     }
 }

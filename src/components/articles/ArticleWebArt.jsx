@@ -6,6 +6,7 @@ import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {useNavigation} from "../../providers/NavigationProvider.jsx"
 import patronusSvgMarkup from "./webArt/patronus.svg?raw"
 import sendYoursHexLoopSource from "./webArt/sendYoursHexLoopEngine.js?raw"
+import {createMinesweeperBoard, floodRevealMinesweeper, isMinesweeperVictory, MINESWEEPER_COLORS} from "./webArt/minesweeper.js"
 
 function _scheduleIdleWork(work, { timeoutMs = 1200 } = {}) {
     if(typeof window === "undefined") {
@@ -78,20 +79,6 @@ function _getWebArtStagePreviewHeight(stage) {
     return WEB_ART_STAGE_PREVIEW_HEIGHT
 }
 
-const MINESWEEPER_ROWS = 9
-const MINESWEEPER_COLS = 9
-const MINESWEEPER_MINES = 10
-const MINESWEEPER_COLORS = [
-    "#0000ff",
-    "#008100",
-    "#ff1300",
-    "#000083",
-    "#810500",
-    "#2a9494",
-    "#000000",
-    "#808080"
-]
-
 const INITIAL_WEB_ART_ITEM_MOUNT_COUNT = 2
 const MOBILE_WEB_ART_OPEN_TILE_LIMIT = 6
 const PATRONUS_LAYER_SRCS = [
@@ -145,87 +132,6 @@ function _tileSetContainsAll(tileIds, targetTileIds) {
             return false
     }
 
-    return true
-}
-
-function _createMinesweeperBoard(rows = MINESWEEPER_ROWS, cols = MINESWEEPER_COLS, mineCount = MINESWEEPER_MINES) {
-    const total = rows * cols
-    const safeMineCount = Math.max(1, Math.min(mineCount, total - 1))
-    const mines = new Set()
-
-    while(mines.size < safeMineCount) {
-        mines.add(Math.floor(Math.random() * total))
-    }
-
-    const counts = new Array(total).fill(0)
-    for(let index = 0; index < total; index++) {
-        if(mines.has(index)) {
-            counts[index] = -1
-            continue
-        }
-
-        const x = index % cols
-        const y = Math.floor(index / cols)
-        let neighbours = 0
-
-        for(let dy = -1; dy <= 1; dy++) {
-            for(let dx = -1; dx <= 1; dx++) {
-                if(dx === 0 && dy === 0) continue
-                const nx = x + dx
-                const ny = y + dy
-                if(nx < 0 || ny < 0 || nx >= cols || ny >= rows) continue
-                if(mines.has(ny * cols + nx)) neighbours += 1
-            }
-        }
-
-        counts[index] = neighbours
-    }
-
-    return {
-        rows,
-        cols,
-        mineCount: safeMineCount,
-        mines,
-        counts
-    }
-}
-
-function _floodRevealMinesweeper(index, board, revealed, flagged) {
-    const next = new Set(revealed)
-    const pending = [index]
-
-    while(pending.length > 0) {
-        const current = pending.pop()
-        if(current == null) continue
-        if(next.has(current) || flagged.has(current) || board.mines.has(current)) continue
-
-        next.add(current)
-        if(board.counts[current] !== 0) continue
-
-        const x = current % board.cols
-        const y = Math.floor(current / board.cols)
-
-        for(let dy = -1; dy <= 1; dy++) {
-            for(let dx = -1; dx <= 1; dx++) {
-                if(dx === 0 && dy === 0) continue
-                const nx = x + dx
-                const ny = y + dy
-                if(nx < 0 || ny < 0 || nx >= board.cols || ny >= board.rows) continue
-                pending.push(ny * board.cols + nx)
-            }
-        }
-    }
-
-    return next
-}
-
-function _isMinesweeperVictory(board, revealed, flagged) {
-    const safeCells = board.rows * board.cols - board.mineCount
-    if(revealed.size >= safeCells) return true
-    if(flagged.size !== board.mineCount) return false
-    for(const mineIndex of board.mines) {
-        if(!flagged.has(mineIndex)) return false
-    }
     return true
 }
 
@@ -401,6 +307,11 @@ function ArticleWebArt({ dataWrapper, id }) {
     const [openTileIds, setOpenTileIds] = useState(() => new Set())
     const [mountedTileIds, setMountedTileIds] = useState(() => new Set())
     const [pinnedSlides, setPinnedSlides] = useState([])
+    // Pin and advance callbacks run in one event; keep the new pin visible to
+    // onCarouselChange before React commits the state update.
+    const pinnedSlidesRef = useRef([])
+    const [stagedPinnedSlideIds, setStagedPinnedSlideIds] = useState(() => new Set())
+    const stagedPinnedSlideIdsRef = useRef(new Set())
     const [carouselActiveTileId, setCarouselActiveTileId] = useState(null)
     const [sendYoursPreviewOpen, setSendYoursPreviewOpen] = useState(false)
     const allTileIds = useMemo(() => {
@@ -627,7 +538,10 @@ function ArticleWebArt({ dataWrapper, id }) {
         setShouldMountTiles(false)
         setOpenTileIds(new Set())
         setMountedTileIds(new Set())
+        pinnedSlidesRef.current = []
         setPinnedSlides([])
+        stagedPinnedSlideIdsRef.current = new Set()
+        setStagedPinnedSlideIds(new Set())
         setCarouselActiveTileId(null)
         setSendYoursPreviewOpen(false)
     }, [])
@@ -691,7 +605,10 @@ function ArticleWebArt({ dataWrapper, id }) {
         setActivationIndex(items.length - 1)
         if(useCarousel) {
             const firstTileId = items[0]?.uniqueId
+            pinnedSlidesRef.current = []
             setPinnedSlides([])
+            stagedPinnedSlideIdsRef.current = new Set()
+            setStagedPinnedSlideIds(new Set())
             setCarouselActiveTileId(firstTileId || null)
             setOpenTileIds(new Set(firstTileId ? [firstTileId] : []))
             setMountedTileIds(new Set(firstTileId ? [firstTileId] : []))
@@ -902,12 +819,15 @@ function ArticleWebArt({ dataWrapper, id }) {
 
         const tileId = itemWrapper.uniqueId
         const isOpen = openTileIds.has(tileId)
-        const shouldRenderTile = mountedTileIds.has(tileId) || isOpen
+        const isStaging = stagedPinnedSlideIds.has(tileId)
+        const shouldRenderTile = mountedTileIds.has(tileId) || (isOpen && !isStaging)
         return (
             <GatedWebArtTile key={tileId}
                              label={getItemTileLabel(itemWrapper, index)}
                              isOpen={isOpen}
+                             isStaging={isStaging}
                              onToggle={() => {
+                                 if(isStaging) return
                                  if(isOpen) closeTile(tileId)
                                  else openTile(tileId)
                              }}
@@ -999,12 +919,15 @@ function ArticleWebArt({ dataWrapper, id }) {
     ]
     const ambientTiles = shouldMountTiles ? ambientTileDefinitions.map(({ key, tileId, label, render }) => {
         const isOpen = openTileIds.has(tileId)
-        const shouldRenderTile = mountedTileIds.has(tileId) || isOpen
+        const isStaging = stagedPinnedSlideIds.has(key)
+        const shouldRenderTile = mountedTileIds.has(tileId) || (isOpen && !isStaging)
         return (
             <GatedWebArtTile key={key}
                              label={label}
                              isOpen={isOpen}
+                             isStaging={isStaging}
                              onToggle={() => {
+                                 if(isStaging) return
                                  if(isOpen) closeTile(tileId)
                                  else openTile(tileId)
                              }}
@@ -1077,7 +1000,12 @@ function ArticleWebArt({ dataWrapper, id }) {
     }[selectedLanguageId]
 
     const onCarouselChange = (_index, slide) => {
-        const selectedIds = new Set([...pinnedSlides.map(({tileId}) => tileId), slide.tileId].filter(Boolean))
+        const selectedIds = new Set([
+            ...pinnedSlidesRef.current
+                .filter(({id}) => !stagedPinnedSlideIdsRef.current.has(id))
+                .map(({tileId}) => tileId),
+            slide.tileId
+        ].filter(Boolean))
         for(const [tileId, timeoutId] of readyTimeoutsRef.current) {
             if(selectedIds.has(tileId)) continue
             window.clearTimeout(timeoutId)
@@ -1092,19 +1020,87 @@ function ArticleWebArt({ dataWrapper, id }) {
     const onCarouselPin = (slideId) => {
         const slide = carouselSlides.find(({id: candidateId}) => candidateId === slideId)
         if(!slide?.tileId) return
-        setPinnedSlides((current) => {
-            if(current.some(({id}) => id === slideId) || current.length >= 3) return current
-            return [...current, {id: slideId, tileId: slide.tileId}]
-        })
+        const current = pinnedSlidesRef.current
+        if(current.some(({id}) => id === slideId) || current.length >= 3) return
+        const next = [...current, {id: slideId, tileId: slide.tileId}]
+        const staged = new Set(stagedPinnedSlideIdsRef.current)
+        staged.add(slideId)
+        stagedPinnedSlideIdsRef.current = staged
+        setStagedPinnedSlideIds(staged)
+        pinnedSlidesRef.current = next
+        setPinnedSlides(next)
     }
 
     const onCarouselUnpin = (slideId) => {
-        setPinnedSlides((current) => current.filter(({id}) => id !== slideId))
+        const next = pinnedSlidesRef.current.filter(({id}) => id !== slideId)
+        if(next.length === pinnedSlidesRef.current.length) return
+        const staged = new Set(stagedPinnedSlideIdsRef.current)
+        staged.delete(slideId)
+        stagedPinnedSlideIdsRef.current = staged
+        setStagedPinnedSlideIds(staged)
+        pinnedSlidesRef.current = next
+        setPinnedSlides(next)
+    }
+
+    const onCarouselReplacePinned = (replacedSlideId, selectedSlide, activeSlideId) => {
+        const current = pinnedSlidesRef.current
+        const replacedIndex = current.findIndex(({id}) => id === replacedSlideId)
+        if(replacedIndex < 0 || !selectedSlide) return
+
+        const next = [...current]
+        const selectedIndex = next.findIndex(({id}) => id === selectedSlide.id)
+        if(selectedSlide.id === activeSlideId) {
+            next.splice(replacedIndex, 1)
+            const staged = new Set(stagedPinnedSlideIdsRef.current)
+            staged.delete(replacedSlideId)
+            stagedPinnedSlideIdsRef.current = staged
+            setStagedPinnedSlideIds(staged)
+        } else if(selectedIndex >= 0) {
+            ;[next[replacedIndex], next[selectedIndex]] = [next[selectedIndex], next[replacedIndex]]
+        } else {
+            next[replacedIndex] = {id: selectedSlide.id, tileId: selectedSlide.tileId}
+            const staged = new Set(stagedPinnedSlideIdsRef.current)
+            staged.delete(replacedSlideId)
+            staged.add(selectedSlide.id)
+            stagedPinnedSlideIdsRef.current = staged
+            setStagedPinnedSlideIds(staged)
+        }
+
+        pinnedSlidesRef.current = next
+        setPinnedSlides(next)
+        const selectedIds = new Set([...next.map(({tileId}) => tileId), carouselActiveTileId].filter(Boolean))
+        for(const [tileId, timeoutId] of readyTimeoutsRef.current) {
+            if(selectedIds.has(tileId)) continue
+            window.clearTimeout(timeoutId)
+            readyTimeoutsRef.current.delete(tileId)
+        }
+        setOpenTileIds(selectedIds)
+        setMountedTileIds(selectedIds)
+        if(selectedSlide.id === activeSlideId) setSendYoursPreviewOpen(false)
+    }
+
+    const onCarouselWindowsSettled = () => {
+        if(!stagedPinnedSlideIdsRef.current.size) return
+        stagedPinnedSlideIdsRef.current = new Set()
+        setStagedPinnedSlideIds(new Set())
+        const selectedIds = new Set([...pinnedSlidesRef.current.map(({tileId}) => tileId), carouselActiveTileId].filter(Boolean))
+        for(const [tileId, timeoutId] of readyTimeoutsRef.current) {
+            if(selectedIds.has(tileId)) continue
+            window.clearTimeout(timeoutId)
+            readyTimeoutsRef.current.delete(tileId)
+        }
+        setOpenTileIds(selectedIds)
+        setMountedTileIds(selectedIds)
     }
 
     useEffect(() => {
         if(!useCarousel || showIntroCover || !shouldMountTiles) return
-        const selectedIds = new Set([...pinnedSlides.map(({tileId}) => tileId), carouselActiveTileId].filter(Boolean))
+        const selectedIds = new Set([
+            ...pinnedSlides
+                .filter(({id}) => !stagedPinnedSlideIds.has(id))
+                .map(({tileId}) => tileId),
+            carouselActiveTileId
+        ].filter(Boolean))
         setOpenTileIds(selectedIds)
         setMountedTileIds(selectedIds)
         for(const [tileId, timeoutId] of readyTimeoutsRef.current) {
@@ -1112,7 +1108,7 @@ function ArticleWebArt({ dataWrapper, id }) {
             window.clearTimeout(timeoutId)
             readyTimeoutsRef.current.delete(tileId)
         }
-    }, [carouselActiveTileId, pinnedSlides, shouldMountTiles, showIntroCover, useCarousel])
+    }, [carouselActiveTileId, pinnedSlides, shouldMountTiles, showIntroCover, stagedPinnedSlideIds, useCarousel])
 
     useEffect(() => {
         clearStageTransitionWork()
@@ -1180,7 +1176,7 @@ function ArticleWebArt({ dataWrapper, id }) {
                      style={stageHeight !== null ? { "--article-web-art-stage-height": `${stageHeight}px` } : undefined}
                      onTransitionEnd={onStageTransitionEnd}
                      aria-hidden={showIntroCover}
-                     inert={showIntroCover ? "" : undefined}>
+                     inert={showIntroCover || undefined}>
                     {useCarousel ? (
                         <LayeredCardCarousel key={showIntroCover ? "preview" : "open"}
                                              slides={carouselSlides}
@@ -1189,7 +1185,9 @@ function ArticleWebArt({ dataWrapper, id }) {
                                              pinnedIds={pinnedSlides.map(({id: slideId}) => slideId)}
                                              onChange={onCarouselChange}
                                              onPin={onCarouselPin}
-                                             onUnpin={onCarouselUnpin}/>
+                                             onUnpin={onCarouselUnpin}
+                                             onReplacePinned={onCarouselReplacePinned}
+                                             onWindowsSettled={onCarouselWindowsSettled}/>
                     ) : (
                         <div className={`article-web-art-items ${locked ? "article-web-art-items-locked" : ""}`}
                              ref={tilesWrapperRef}
@@ -1273,15 +1271,16 @@ function WebArtIntroCover({ guide, buttonLabel, hidden, onEnter, secondaryButton
     )
 }
 
-function GatedWebArtTile({ label, isOpen, onToggle, shouldRender = true, children }) {
+function GatedWebArtTile({ label, isOpen, isStaging = false, onToggle, shouldRender = true, children }) {
     const onClosedTileClick = useCallback((event) => {
-        if(isOpen || event.defaultPrevented) return
+        if(isOpen || isStaging || event.defaultPrevented) return
         if(event.target.closest?.("button")) return
         onToggle?.()
-    }, [isOpen, onToggle])
+    }, [isOpen, isStaging, onToggle])
 
     return (
         <div className={`article-web-art-gated-tile ${isOpen ? "article-web-art-gated-tile-open" : "article-web-art-gated-tile-closed"}`}
+             aria-busy={isStaging || undefined}
              onClick={isOpen ? undefined : onClosedTileClick}>
             {shouldRender ? children : (
                 <div className={`article-web-art-tile article-web-art-tile-placeholder`}
@@ -1290,6 +1289,7 @@ function GatedWebArtTile({ label, isOpen, onToggle, shouldRender = true, childre
             <div className={`article-web-art-gated-tile-sheet`} aria-hidden={true}/>
             <button type={"button"}
                     className={`article-web-art-gated-tile-pill ${isOpen ? "article-web-art-gated-tile-pill-open" : "article-web-art-gated-tile-pill-closed"}`}
+                    disabled={isStaging}
                     onClick={onToggle}
                     aria-label={`${isOpen ? "Hide" : "Show"} ${label}`}>
                 {label}
@@ -4292,7 +4292,7 @@ function MinesweeperTile({ readyId, locked, onReady }) {
     const [startedAt, setStartedAt] = useState(null)
     const [elapsedSeconds, setElapsedSeconds] = useState(0)
 
-    const board = useMemo(() => _createMinesweeperBoard(), [gameId])
+    const board = useMemo(() => createMinesweeperBoard(), [gameId])
 
     useEffect(() => {
         onReady?.(readyId)
@@ -4338,7 +4338,7 @@ function MinesweeperTile({ readyId, locked, onReady }) {
             else nextFlagged.add(index)
 
             setFlagged(nextFlagged)
-            if(_isMinesweeperVictory(board, revealed, nextFlagged)) {
+            if(isMinesweeperVictory(board, revealed, nextFlagged)) {
                 setStatus("won")
             }
             return
@@ -4355,9 +4355,9 @@ function MinesweeperTile({ readyId, locked, onReady }) {
             return
         }
 
-        const nextRevealed = _floodRevealMinesweeper(index, board, revealed, flagged)
+        const nextRevealed = floodRevealMinesweeper(index, board, revealed, flagged)
         setRevealed(nextRevealed)
-        if(_isMinesweeperVictory(board, nextRevealed, flagged)) {
+        if(isMinesweeperVictory(board, nextRevealed, flagged)) {
             setStatus("won")
         }
     }

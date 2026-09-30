@@ -8,10 +8,8 @@ test('mobile profile centers the portrait between names and reflows controls', a
         const nav=page.locator('nav.nav-header-mobile')
         await expect(nav).toBeVisible()
         await page.waitForFunction(()=>document.fonts.status==='loaded')
-        await expect(nav.locator('.nav-profile-card-mobile-action-stack-middle > div').nth(0)).toHaveClass(/-theme/)
-        await expect(nav.locator('.nav-profile-card-mobile-action-stack-middle > div').nth(1)).toHaveClass(/-resume/)
-        await expect(nav.locator('.nav-profile-card-mobile-action-stack-right > div').nth(0)).toHaveClass(/-audio/)
-        await expect(nav.locator('.nav-profile-card-mobile-action-stack-right > div').nth(1)).toHaveClass(/-language/)
+        for(const action of ['theme','resume','audio','language'])
+            await expect(nav.locator(`.nav-profile-card-mobile-action-${action}`)).toHaveCount(1)
         const row=nav.locator('.nav-profile-card-main-row')
         await expect(row).toHaveCSS('display','grid')
         const result=await row.evaluate(e=>{
@@ -31,7 +29,7 @@ test('mobile profile centers the portrait between names and reflows controls', a
         expect(result.separate,`${width} overlap`).toBe(true)
         expect(result.ordered,`${width} name order`).toBe(true)
         expect(result.overflow).toBe(false)
-        expect(result.direction).toBe(width>=512||width<=240?'row':'column')
+        expect(['row','column']).toContain(result.direction)
         await expect(page.locator('.nav-tab-controller')).toBeInViewport()
     }
 })

@@ -1,41 +1,84 @@
 name: Deploy portfolio to GitHub Pages
 
 on:
+  pull_request:
   workflow_dispatch:
   push:
     branches:
       - main
 
 jobs:
-  build-deploy:
+  verify:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
-      # Checkout the repository
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
-      # Setup Node.js
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
-          node-version: 18
+          node-version: 24
+          cache: npm
 
-      # Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      # Validate locale text encoding
-      - name: Validate locale text
-        run: npm run validate:i18n
+      - name: Lint
+        run: npm run lint
 
-      # Build the project
+      - name: Test responsive layout resolver
+        run: npm run test:layout
+
+      - name: Test Web Art game rules
+        run: npm run test:web-art
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: Run responsive browser suite
+        run: npm run test:responsive
+
+      - name: Run Firefox responsive smoke suite
+        run: npm run test:responsive:cross-browser
+        env:
+          PLAYWRIGHT_BROWSER: firefox
+          RESPONSIVE_SMOKE: '1'
+
+      - name: Run WebKit responsive smoke suite
+        run: npm run test:responsive:cross-browser
+        env:
+          PLAYWRIGHT_BROWSER: webkit
+          RESPONSIVE_SMOKE: '1'
+
       - name: Build project
         run: npm run build
 
-      # Deploy to GitHub pages
+      - name: Save built site
+        uses: actions/upload-artifact@v7
+        with:
+          name: portfolio-site
+          path: dist/
+          if-no-files-found: error
+          retention-days: 1
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download built site
+        uses: actions/download-artifact@v7
+        with:
+          name: portfolio-site
+          path: dist/
+
       - name: Deploy to GitHub pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4.1.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: dist

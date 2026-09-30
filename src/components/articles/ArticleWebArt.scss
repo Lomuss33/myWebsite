@@ -673,6 +673,8 @@ div.article-web-art-items {
     position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
+    container-type: inline-size;
+    container-name: gated-art-tile;
     border-radius: $standard-border-radius;
     overflow: hidden;
 
@@ -1164,76 +1166,99 @@ div.article-web-art-items {
 .article-web-art-gated-tile-pill {
     position: absolute;
     z-index: 10;
+    box-sizing: border-box;
+    max-width: calc(100% - 12px);
     touch-action: manipulation;
     appearance: none;
-    border: 2px solid rgba(255, 255, 255, 0.16);
-    background: rgba(7, 12, 22, 0.76);
+    border: 1px solid rgba(224, 242, 254, 0.42);
+    background: linear-gradient(145deg, rgba(15, 31, 48, 0.94), rgba(5, 14, 27, 0.9));
     color: rgba(255, 255, 255, 0.92);
-    font-weight: 700;
+    font-weight: 750;
     font-size: 1rem;
-    line-height: 1;
+    line-height: 1.15;
     border-radius: 999px;
-    padding: 0 16px;
-    min-width: 90px;
-    min-height: 50px;
+    padding: 0 14px;
+    min-width: 44px;
+    min-height: 44px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(8px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.24);
-    transition: top 260ms ease, left 260ms ease, transform 260ms ease, opacity 220ms ease, background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+    backdrop-filter: blur(12px) saturate(1.25);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    transition: opacity 180ms ease, background-color 160ms ease, border-color 160ms ease,
+        box-shadow 160ms ease, color 160ms ease;
 
-    &:hover {
-        border-color: rgba(255, 255, 255, 0.654);
-        background: rgba(0, 0, 0, 0.88);
+    &:hover:not(:disabled) {
+        border-color: rgba(186, 230, 253, 0.92);
+        background: linear-gradient(145deg, rgba(18, 50, 72, 0.98), rgba(5, 22, 38, 0.96));
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(103, 232, 249, 0.26),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
+
+    &:focus-visible { outline: 3px solid #67e8f9; outline-offset: 3px; }
+    &:active:not(:disabled) { filter: brightness(1.12); }
+    &:disabled { opacity: 0.68; cursor: wait; }
 }
 
 .article-web-art-gated-tile-pill-closed {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    transition:
-        transform 180ms cubic-bezier(0.2, 0.7, 0.2, 1),
-        border-color 180ms ease,
-        background-color 180ms ease,
-        box-shadow 180ms ease;
-    min-width: 250px;
-    min-height: 100px;
-    padding: 0 28px;
-    font-size: 1.8rem;
-    letter-spacing: 0.01em;
-    background: transparent;
-    border-color: rgba(160, 210, 255, 0.68);
+    width: min(18rem, calc(100% - 20px));
+    min-width: 0;
+    min-height: clamp(48px, 23cqw, 96px);
+    padding: clamp(10px, 4cqw, 18px) clamp(12px, 5cqw, 24px);
+    gap: clamp(8px, 3.5cqw, 14px);
+    font-size: clamp(13px, 8cqw, 28px);
+    letter-spacing: 0.015em;
+    text-align: center;
+    overflow-wrap: anywhere;
+    background: linear-gradient(145deg, rgba(15, 31, 48, 0.92), rgba(5, 14, 27, 0.88));
+    border-color: rgba(160, 210, 255, 0.58);
     box-shadow:
-        0 16px 32px rgba(0, 0, 0, 0.28),
-        inset 0 0 0 1px rgba(93, 220, 255, 0.28);
-    backdrop-filter: none;
+        0 14px 30px rgba(0, 0, 0, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.16),
+        inset 0 0 0 1px rgba(93, 220, 255, 0.16);
+
+    &::after {
+        content: "↗";
+        flex: 0 0 auto;
+        display: grid;
+        width: 1.45em;
+        height: 1.45em;
+        place-items: center;
+        border: 1px solid rgba(186, 230, 253, 0.38);
+        border-radius: 50%;
+        color: #a5f3fc;
+        font-size: 0.72em;
+        line-height: 1;
+    }
+
+    &:hover:not(:disabled) {
+        transform: translate(-50%, calc(-50% - 2px));
+    }
 }
 
 .article-web-art-gated-tile-pill-open {
-    top: 10px;
-    left: 10px;
+    top: clamp(6px, 2.5cqw, 10px);
+    left: clamp(6px, 2.5cqw, 10px);
     transform: translate(0, 0);
-    min-width: 138px;
+    width: max-content;
+    max-width: calc(100% - 12px);
+    min-width: 44px;
     min-height: 44px;
-    padding: 0 18px;
-    font-size: 0.98rem;
-    background: rgba(7, 12, 22, 0.76);
-    backdrop-filter: blur(8px);
+    padding-inline: clamp(8px, 4cqw, 16px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: clamp(12px, 4.5cqw, 15px);
+    background: rgba(7, 18, 31, 0.88);
 }
 
 @media (pointer: coarse), (max-width: 767px) {
     .article-web-art-gated-tile-pill-open {
-        top: 6px;
-        left: 6px;
-        min-width: 44px;
-        min-height: 24px;
-        padding: 0 8px;
-        font-size: 0.875rem;
-        border-width: 1px;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.22);
-        backdrop-filter: blur(5px);
+        min-height: 44px;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
     }
 }
 
@@ -1265,12 +1290,13 @@ div.article-web-art-items {
         }
 
         .article-web-art-gated-tile-pill-closed {
-            transform: translate(-50%, calc(-50% - 2px));
+            transform: translate(-50%, -50%);
             border-color: rgba(255, 255, 255, 0.654);
-            background: rgba(0, 0, 0, 0.88);
+            background: linear-gradient(145deg, rgba(18, 50, 72, 0.98), rgba(5, 22, 38, 0.96));
             box-shadow:
-                0 20px 38px rgba(0, 0, 0, 0.34),
-                inset 0 0 0 1px rgba(93, 220, 255, 0.44);
+                0 16px 32px rgba(0, 0, 0, 0.38),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                inset 0 0 0 1px rgba(93, 220, 255, 0.3);
         }
     }
 

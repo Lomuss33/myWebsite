@@ -54,21 +54,21 @@
     initial-value: 0%;
 }
 
-:root[data-web-art-layout-transition] {
-    view-transition-name: none;
-}
-
-:root[data-web-art-layout-transition]::view-transition-group(.web-art-window) {
-    animation-duration: 480ms;
-    animation-timing-function: cubic-bezier(.16, .8, .25, 1);
-}
-
 .layered-card-carousel-workspace {
     display: grid;
     gap: clamp(0.5rem, 1.3cqw, 0.9rem);
     align-items: start;
     width: 100%;
     margin-inline: auto;
+}
+
+.layered-card-carousel-workspace[data-view-count="1"] {
+    position: relative;
+    height: var(--carousel-card-size);
+    overflow: hidden;
+    touch-action: pan-y;
+    isolation: isolate;
+    background: var(--carousel-stage-surface);
 }
 
 .layered-card-carousel-workspace[data-view-count="2"] {
@@ -86,20 +86,6 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-.layered-card-carousel-stage {
-    position: relative;
-    height: var(--carousel-card-size);
-    overflow: hidden;
-    touch-action: pan-y;
-    isolation: isolate;
-    background: var(--carousel-stage-surface);
-}
-
-.layered-card-carousel-multiview .layered-card-carousel-stage {
-    height: auto;
-    aspect-ratio: 1;
-}
-
 .layered-card-carousel-current,
 .layered-card-carousel-side {
     position: absolute;
@@ -107,7 +93,7 @@
     left: 50%;
     width: var(--carousel-card-size);
     aspect-ratio: 1;
-    border-radius: 1rem;
+    border-radius: 0;
 }
 
 .layered-card-carousel-current {
@@ -115,17 +101,68 @@
     transform: translateX(-50%);
     box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.46);
 
-    > * {
+    > :first-child {
         width: 100%;
         height: 100%;
     }
 }
 
+.layered-card-carousel-current,
+.layered-card-carousel-pinned {
+    --carousel-window-edge-width: 1px;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: 0;
+    box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.46);
+
+    &::before {
+        content: "";
+        position: absolute;
+        z-index: 4;
+        inset: 0;
+        border-radius: 0;
+        background: linear-gradient(110deg, transparent 35%, var(--carousel-pinned-glow) 50%, transparent 65%);
+        background-size: 220% 100%;
+        mix-blend-mode: screen;
+        pointer-events: none;
+        animation: layered-card-hologram-sweep 5s ease-in-out infinite;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        z-index: 4;
+        inset: 0;
+        border: var(--carousel-window-edge-width) solid var(--carousel-pinned-line);
+        border-radius: 0;
+        box-shadow: inset 0 0 1.2rem var(--carousel-pinned-glow), 0 0 1.2rem var(--carousel-pinned-glow);
+        pointer-events: none;
+        animation: layered-card-hologram-flight 650ms cubic-bezier(.16, .8, .25, 1) both;
+    }
+
+    &.is-last-interacted {
+        --carousel-window-edge-width: 2.5px;
+
+        &::after {
+            box-shadow: inset 0 0 1.5rem var(--carousel-pinned-glow), 0 0 1.5rem var(--carousel-pinned-glow);
+        }
+    }
+}
+
+.layered-card-carousel-workspace > [role="group"] .article-web-art-gated-tile,
+.layered-card-carousel-workspace > [role="group"] .article-web-art-tile {
+    border-radius: 0;
+}
+
 .layered-card-carousel-multiview {
     .layered-card-carousel-current {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
         width: 100%;
-        height: 100%;
-        aspect-ratio: auto;
+        height: auto;
+        aspect-ratio: 1;
     }
 
     .layered-card-carousel-side { display: none; }
@@ -181,35 +218,9 @@
     width: 100%;
     aspect-ratio: 1;
     min-width: 0;
-    isolation: isolate;
     animation: layered-card-hologram-appear 460ms ease-out both;
 
     > :first-child { width: 100%; height: 100%; }
-
-    &::before {
-        content: "";
-        position: absolute;
-        z-index: 4;
-        inset: 0;
-        border-radius: 1rem;
-        background: linear-gradient(110deg, transparent 35%, var(--carousel-pinned-glow) 50%, transparent 65%);
-        background-size: 220% 100%;
-        mix-blend-mode: screen;
-        pointer-events: none;
-        animation: layered-card-hologram-sweep 5s ease-in-out infinite;
-    }
-
-    &::after {
-        content: "";
-        position: absolute;
-        z-index: 4;
-        inset: 0;
-        border: 1px solid var(--carousel-pinned-line);
-        border-radius: 1rem;
-        box-shadow: inset 0 0 1.2rem var(--carousel-pinned-glow), 0 0 1.2rem var(--carousel-pinned-glow);
-        pointer-events: none;
-        animation: layered-card-hologram-flight 650ms cubic-bezier(.16, .8, .25, 1) both;
-    }
 }
 
 @keyframes layered-card-hologram-appear {
@@ -233,13 +244,13 @@
 .layered-card-carousel-current-jump { animation: layered-card-reveal-jump 340ms ease-out both; }
 
 @keyframes layered-card-reveal-next {
-    from { clip-path: inset(0 0 0 100% round 1rem); filter: brightness(1.45) saturate(1.35); }
-    to { clip-path: inset(0 0 0 0 round 1rem); filter: brightness(1) saturate(1); }
+    from { clip-path: inset(0 0 0 100%); filter: brightness(1.45) saturate(1.35); }
+    to { clip-path: inset(0 0 0 0); filter: brightness(1) saturate(1); }
 }
 
 @keyframes layered-card-reveal-previous {
-    from { clip-path: inset(0 100% 0 0 round 1rem); filter: brightness(1.45) saturate(1.35); }
-    to { clip-path: inset(0 0 0 0 round 1rem); filter: brightness(1) saturate(1); }
+    from { clip-path: inset(0 100% 0 0); filter: brightness(1.45) saturate(1.35); }
+    to { clip-path: inset(0 0 0 0); filter: brightness(1) saturate(1); }
 }
 
 @keyframes layered-card-reveal-jump {
@@ -437,6 +448,8 @@
 
     .layered-card-carousel-current,
     .layered-card-carousel-pinned,
+    .layered-card-carousel-current::before,
+    .layered-card-carousel-current::after,
     .layered-card-carousel-pinned::before,
     .layered-card-carousel-pinned::after,
     .layered-card-carousel-side-number,

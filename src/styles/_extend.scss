@@ -90,8 +90,20 @@ $nav-extended-profile-collapse-max-height: 92px;
 }
 
 @mixin nav-interactive-edge($color, $edge: top, $thickness: 1px, $additional-shadows: null) {
-    $offset-x: if($edge == left, $thickness, if($edge == right, -$thickness, 0));
-    $offset-y: if($edge == top, $thickness, if($edge == bottom, -$thickness, 0));
+    $offset-x: 0;
+    $offset-y: 0;
+
+    @if $edge == left {
+        $offset-x: $thickness;
+    } @else if $edge == right {
+        $offset-x: -$thickness;
+    }
+
+    @if $edge == top {
+        $offset-y: $thickness;
+    } @else if $edge == bottom {
+        $offset-y: -$thickness;
+    }
 
     @if $additional-shadows == null {
         box-shadow: inset $offset-x $offset-y 0 $color;
@@ -149,7 +161,11 @@ $nav-extended-profile-collapse-max-height: 92px;
 }
 
 @mixin nav-selected-button($edge: top) {
-    $edge-offset-y: if($edge == bottom, -1px, 1px);
+    $edge-offset-y: 1px;
+
+    @if $edge == bottom {
+        $edge-offset-y: -1px;
+    }
 
     background:
         linear-gradient(135deg,

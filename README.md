@@ -76,8 +76,10 @@ In practice:
 
 ## ⚡ Quick Start
 
+Use Node.js 24 LTS and the committed npm lockfile for reproducible installs.
+
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 

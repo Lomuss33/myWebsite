@@ -31,39 +31,22 @@ export default defineConfig({
         machineCvHtmlPlugin()
     ],
     build: {
-        rollupOptions: {
+        target: ['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14'],
+        rolldownOptions: {
             output: {
-                manualChunks(id) {
-                    if (id.includes('node_modules')) {
-                        if (id.includes('matter-js'))
-                            return 'physics';
-
-                        if (id.includes('@emailjs'))
-                            return 'email';
-
-                        if (id.includes('node_modules/qrcode'))
-                            return 'qrcode';
-
-                        if (id.includes('three'))
-                            return 'three';
-
-                        if (id.includes('swiper'))
-                            return 'swiper';
-
-                        if (id.includes('/react/') || id.includes('/react-dom/') || id.includes('/scheduler/'))
-                            return 'react-vendor';
-
-                        if (id.includes('@fortawesome') || id.includes('primeicons'))
-                            return 'icons';
-
-                        if (id.includes('bootstrap') || id.includes('react-bootstrap'))
-                            return 'bootstrap';
-
-                        if (id.includes('motion'))
-                            return 'motion';
-
-                        return 'vendor';
-                    }
+                codeSplitting: {
+                    groups: [
+                        {name: 'physics', test: /node_modules[\\/]matter-js[\\/]/, priority: 100},
+                        {name: 'email', test: /node_modules[\\/]@emailjs[\\/]/, priority: 95},
+                        {name: 'qrcode', test: /node_modules[\\/]qrcode[\\/]/, priority: 90},
+                        {name: 'three', test: /node_modules[\\/]three[\\/]/, priority: 85},
+                        {name: 'swiper', test: /node_modules[\\/]swiper[\\/]/, priority: 80},
+                        {name: 'react-vendor', test: /node_modules[\\/](?:react|react-dom|scheduler)[\\/]/, priority: 75},
+                        {name: 'icons', test: /node_modules[\\/](?:@fortawesome|primeicons)[\\/]/, priority: 70},
+                        {name: 'bootstrap', test: /node_modules[\\/](?:bootstrap|react-bootstrap)[\\/]/, priority: 65},
+                        {name: 'motion', test: /node_modules[\\/](?:motion|framer-motion|motion-dom|motion-utils)[\\/]/, priority: 60},
+                        {name: 'vendor', test: /node_modules[\\/]/, priority: 0}
+                    ]
                 }
             }
         }

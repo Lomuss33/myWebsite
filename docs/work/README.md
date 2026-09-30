@@ -2,6 +2,8 @@
 
 No documentation migration task remains after 2026-09-11. Pending photos and product limitations are in [Home](../architecture/home.md) and [validation](../guides/validation.md#known-gaps).
 
+The proposed post-audit maintenance and upgrade sequence is in [Project maintenance roadmap](2026-09-30-project-maintenance-roadmap.md).
+
 Create `YYYY-MM-DD-topic.md` for multi-step work with:
 
 - Status: proposed / active / blocked / complete

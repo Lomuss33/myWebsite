@@ -1,6 +1,6 @@
 # Responsive layout
 
-Verified: 2026-09-28 against layout resolution, timeline sizing, and digital-expression Art card sources; not exhaustive device testing.
+Verified: 2026-09-30 against layout resolution, timeline sizing, digital-expression Art card sources, and Web Art carousel pin lifecycle; not exhaustive device testing.
 
 Mobile navigation has 2px construction-tape stripes on the exposed top of the sticky pill bar and exposed bottom of the fixed tab bar. The sticky placeholder has no tape. Interactive link-state markers use a shared 1px edge: fixed-tab buttons place it at the top, pill buttons at the bottom, and desktop extended/short rail visited buttons at the left. Desktop rail hover bars, outer tape, section separators, resume dividers, and tool-band tape use a 1px width. Active pill buttons use the selected-button mixin's matching bottom highlight.
 
@@ -152,7 +152,7 @@ Experience ends with Wood Products (article ID 2; stable IDs preserved by displa
 
 Digital-expression cards keep their four-image animation transforms inside a centered, width-capped track so the artwork stays grouped at phone and desktop sizes. Gallery and Pinterest actions are single accessible links, styled as compact paired controls; the description sits on a more opaque theme-aware surface for legibility. The gallery imagery's hover/focus transitions remain on the layer spans.
 
-Web Art surface: at all widths, content bleeds through the inherited section gutter so the shell reaches the full available page pane; square outer corners keep the edge seamless. The bleed follows the page pane rather than spanning beneath the navigation rail.
+Web Art surface: at all widths, content bleeds through the inherited section gutter so the shell reaches the full available page pane; square outer corners keep the edge seamless. The bleed follows the page pane rather than spanning beneath the navigation rail. Carousel windows have square corners and shared animated edge decoration; the most recently touched or focused window has a 2.5px edge. Tile show/hide pills size against each square tile, clamp to its width, and keep a 44px touch target. The carousel keeps each visible active or pinned slide in a stable keyed workspace window; pinning first lays out a gated placeholder, then mounts the artwork after the window animation settles, preserving existing canvas and animation state. Number selection updates the last active or pinned workspace window the visitor touched or focused; selecting artwork already visible in another window swaps the two entries to avoid duplicates. Local CSS effects handle carousel motion instead of document view transitions, avoiding snapshot artifacts over live WebGL canvases.
 
 The Web Art intro guide switches to compact container-based typography below 640px: eyebrow 11â€“13px, body 13â€“15px, primary copy 15â€“17px, and 46px minimum button rows. Padding and line gaps reduce with it; desktop guide typography is unchanged.
 

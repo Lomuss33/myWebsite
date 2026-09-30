@@ -1,17 +1,21 @@
 import "./LayeredCardCarousel.scss"
-import React, {useLayoutEffect, useRef, useState} from "react"
-import {flushSync} from "react-dom"
+import React, {useEffect, useLayoutEffect, useRef, useState} from "react"
 
 /** A presentation shell: callers own each card's content and activation lifecycle. */
-function LayeredCardCarousel({slides, onChange, onPin, onUnpin, pinnedIds = [], maxPinned = 3, labels = {}, enabled = true}) {
+function LayeredCardCarousel({slides, onChange, onPin, onUnpin, onReplacePinned, onWindowsSettled, pinnedIds = [], maxPinned = 3, labels = {}, enabled = true}) {
     const [activeIndex, setActiveIndex] = useState(0)
     const [history, setHistory] = useState([0])
     const [entryDirection, setEntryDirection] = useState("initial")
     const pointerStartRef = useRef(null)
-    const layoutTransitionRef = useRef(null)
     const indexRef = useRef(null)
+    const lastInteractedSlideIdRef = useRef(null)
+    const [lastInteractedSlideId, setLastInteractedSlideId] = useState(null)
+    const onWindowsSettledRef = useRef(onWindowsSettled)
+    const settleFrameIdsRef = useRef([])
+    const settleTimeoutRef = useRef(null)
     const [indexColumns, setIndexColumns] = useState(1)
     const count = slides.length
+    onWindowsSettledRef.current = onWindowsSettled
     const currentIndex = count ? Math.min(activeIndex, count - 1) : 0
     const active = slides[currentIndex]
     const nextIndex = count > 1 ? (currentIndex + 1) % count : null
@@ -44,44 +48,72 @@ function LayeredCardCarousel({slides, onChange, onPin, onUnpin, pinnedIds = [], 
         return () => observer.disconnect()
     }, [count])
 
+    useEffect(() => () => {
+        for(const frameId of settleFrameIdsRef.current) window.cancelAnimationFrame(frameId)
+        if(settleTimeoutRef.current !== null) window.clearTimeout(settleTimeoutRef.current)
+    }, [])
+
     if(!count) return null
 
-    const runLayoutTransition = (update, animate = true) => {
-        if(!animate || typeof document.startViewTransition !== "function" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-            update()
-            return
-        }
-
-        document.documentElement.dataset.webArtLayoutTransition = "true"
-        let transition
-        try {
-            transition = document.startViewTransition(() => flushSync(update))
-        } catch {
-            delete document.documentElement.dataset.webArtLayoutTransition
-            update()
-            return
-        }
-        layoutTransitionRef.current = transition
-        transition.finished.finally(() => {
-            if(layoutTransitionRef.current === transition) {
-                delete document.documentElement.dataset.webArtLayoutTransition
-                layoutTransitionRef.current = null
-            }
-        }).catch(() => {})
+    const markInteractedSlide = (slideId) => {
+        lastInteractedSlideIdRef.current = slideId
+        setLastInteractedSlideId(slideId)
     }
 
-    const commitSelect = (index) => {
+    const scheduleWindowsSettled = () => {
+        for(const frameId of settleFrameIdsRef.current) window.cancelAnimationFrame(frameId)
+        settleFrameIdsRef.current = []
+        if(settleTimeoutRef.current !== null) window.clearTimeout(settleTimeoutRef.current)
+        settleTimeoutRef.current = null
+
+        if(typeof window === "undefined") {
+            onWindowsSettledRef.current?.()
+            return
+        }
+
+        const settleDelay = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ? 80 : 680
+        const firstFrameId = window.requestAnimationFrame(() => {
+            const secondFrameId = window.requestAnimationFrame(() => {
+                settleFrameIdsRef.current = []
+                settleTimeoutRef.current = window.setTimeout(() => {
+                    settleTimeoutRef.current = null
+                    onWindowsSettledRef.current?.()
+                }, settleDelay)
+            })
+            settleFrameIdsRef.current = [secondFrameId]
+        })
+        settleFrameIdsRef.current = [firstFrameId]
+    }
+
+    const commitSelect = (index, {preserveInteractionTarget = false} = {}) => {
         if(!enabled || index === null || index === currentIndex || !slides[index]) return
         setEntryDirection(index === nextIndex ? "next" : index === previousIndex ? "previous" : "jump")
         setActiveIndex(index)
         setHistory((current) => [...current, index].slice(-8))
+        if(!preserveInteractionTarget) markInteractedSlide(slides[index].id)
         onChange?.(index, slides[index])
     }
 
     const select = (index) => {
-        if(!enabled || index === null || index === currentIndex || !slides[index]) return
-        const movesPinnedWindow = isPinned || pinnedIds.includes(slides[index].id)
-        runLayoutTransition(() => commitSelect(index), movesPinnedWindow)
+        if(!enabled || index === null || !slides[index]) return
+        const selected = slides[index]
+        const interactionTargetId = lastInteractedSlideIdRef.current || active?.id
+        const targetIsPinned = interactionTargetId && interactionTargetId !== active?.id && pinnedIds.includes(interactionTargetId)
+
+        if(targetIsPinned) {
+            if(selected.id === interactionTargetId) return
+            onReplacePinned?.(interactionTargetId, selected, active?.id)
+            scheduleWindowsSettled()
+            setHistory((current) => [...current, index].slice(-8))
+            markInteractedSlide(selected.id === active?.id ? active.id : selected.id)
+            return
+        }
+
+        if(index === currentIndex) {
+            markInteractedSlide(selected.id)
+            return
+        }
+        commitSelect(index)
     }
 
     const onPointerDown = (event) => {
@@ -104,18 +136,18 @@ function LayeredCardCarousel({slides, onChange, onPin, onUnpin, pinnedIds = [], 
     const onPinClick = () => {
         if(!active || !canPin) return
         if(isPinned) {
-            runLayoutTransition(() => onUnpin?.(active.id))
+            onUnpin?.(active.id)
+            scheduleWindowsSettled()
             return
         }
-        runLayoutTransition(() => {
-            onPin?.(active.id)
-            for(let offset = 1; offset < count; offset++) {
-                const candidate = (currentIndex + offset) % count
-                if(slides[candidate].pinnable === false || pinnedIds.includes(slides[candidate].id)) continue
-                commitSelect(candidate)
-                break
-            }
-        })
+        onPin?.(active.id)
+        scheduleWindowsSettled()
+        for(let offset = 1; offset < count; offset++) {
+            const candidate = (currentIndex + offset) % count
+            if(slides[candidate].pinnable === false || pinnedIds.includes(slides[candidate].id)) continue
+            commitSelect(candidate, {preserveInteractionTarget: true})
+            break
+        }
     }
 
     const onIndexKeyDown = (event, index) => {
@@ -136,7 +168,9 @@ function LayeredCardCarousel({slides, onChange, onPin, onUnpin, pinnedIds = [], 
             event.currentTarget.closest(".layered-card-carousel")
                 ?.querySelector(".layered-card-carousel-index-button.is-current")?.focus()
         }
-        runLayoutTransition(() => onUnpin?.(slideId))
+        onUnpin?.(slideId)
+        scheduleWindowsSettled()
+        if(lastInteractedSlideIdRef.current === slideId) markInteractedSlide(active?.id || null)
     }
 
     const renderSide = (index, side) => index === null ? null : (
@@ -155,47 +189,55 @@ function LayeredCardCarousel({slides, onChange, onPin, onUnpin, pinnedIds = [], 
 
     return (
         <div className={`layered-card-carousel${visiblePinned.length ? " layered-card-carousel-multiview" : ""}`}
-             aria-label={labels.gallery || "Artwork gallery"}>
+            aria-label={labels.gallery || "Artwork gallery"}>
             <div className="layered-card-carousel-workspace" data-view-count={visiblePinned.length + 1}>
-                <div className="layered-card-carousel-stage"
-                     onPointerDown={onPointerDown}
-                     onPointerUp={onPointerUp}
-                     onPointerCancel={() => { pointerStartRef.current = null }}>
-                    {renderSide(previousIndex, "previous")}
-                    {renderSide(nextIndex, "next")}
-                    <div className={`layered-card-carousel-current layered-card-carousel-current-${entryDirection}`} key={active.id}
-                         style={{viewTransitionName: `web-art-window-${currentIndex}`, viewTransitionClass: "web-art-window"}}
-                         role="group"
-                         aria-label={`${currentIndex + 1} / ${count}: ${active.label}`}>
-                        {active.content}
-                    </div>
-                    {enabled && onPin && active.pinnable !== false && (
-                        <button type="button" className={`layered-card-carousel-pin${isPinned ? " is-pinned" : ""}`}
-                                onClick={onPinClick}
-                                disabled={!canPin}
-                                aria-label={isPinned ? labels.unpin || "Remove from simultaneous view" : canPin ? labels.pin || "Add to simultaneous view" : labels.pinLimit || "Three extra artworks are already open"}
-                                title={isPinned ? labels.unpin || "Remove from simultaneous view" : canPin ? labels.pin || "Add to simultaneous view" : labels.pinLimit || "Three extra artworks are already open"}>
-                            <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-                                <rect x="3.5" y="3.5" width="13" height="13" rx="2" fill="none" stroke="currentColor" strokeWidth="1.5"/>
-                                {isPinned ? <path d="M6.5 10h7"/> : <path d="M6.5 10h7M10 6.5v7"/>}
-                            </svg>
-                        </button>
-                    )}
-                </div>
-                {visiblePinned.map((slide) => (
-                    <div className="layered-card-carousel-pinned" key={slide.id}
-                         style={{viewTransitionName: `web-art-window-${slides.indexOf(slide)}`, viewTransitionClass: "web-art-window"}}
-                         role="group" aria-label={`${labels.pinned || "Open artwork"}: ${slide.label}`}>
-                        {slide.content}
-                        <button type="button" className="layered-card-carousel-unpin"
-                                onClick={(event) => onPinnedUnpinClick(event, slide.id)}
-                                aria-label={`${labels.unpin || "Remove from simultaneous view"}: ${slide.label}`}>
-                            <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-                                <path d="M5 5 15 15M15 5 5 15"/>
-                            </svg>
-                        </button>
-                    </div>
-                ))}
+                {renderSide(previousIndex, "previous")}
+                {renderSide(nextIndex, "next")}
+                {/* Keep each live tile under this keyed parent when its role changes. */}
+                {[active, ...visiblePinned].map((slide) => {
+                    const index = slides.indexOf(slide)
+                    const isCurrent = slide.id === active.id
+                    return (
+                        <div key={slide.id}
+                             className={[
+                                 isCurrent ? `layered-card-carousel-current layered-card-carousel-current-${entryDirection}` : "layered-card-carousel-pinned",
+                                 (lastInteractedSlideId || active?.id) === slide.id ? "is-last-interacted" : ""
+                             ].filter(Boolean).join(" ")}
+                             role="group"
+                             aria-label={isCurrent
+                                 ? `${index + 1} / ${count}: ${slide.label}`
+                                 : `${labels.pinned || "Open artwork"}: ${slide.label}`}
+                             onPointerDownCapture={() => markInteractedSlide(slide.id)}
+                             onFocusCapture={() => markInteractedSlide(slide.id)}
+                             onClickCapture={() => markInteractedSlide(slide.id)}
+                             onPointerDown={isCurrent ? onPointerDown : undefined}
+                             onPointerUp={isCurrent ? onPointerUp : undefined}
+                             onPointerCancel={isCurrent ? () => { pointerStartRef.current = null } : undefined}>
+                            {slide.content}
+                            {isCurrent && enabled && onPin && slide.pinnable !== false && (
+                                <button type="button" className={`layered-card-carousel-pin${isPinned ? " is-pinned" : ""}`}
+                                        onClick={onPinClick}
+                                        disabled={!canPin}
+                                        aria-label={isPinned ? labels.unpin || "Remove from simultaneous view" : canPin ? labels.pin || "Add to simultaneous view" : labels.pinLimit || "Three extra artworks are already open"}
+                                        title={isPinned ? labels.unpin || "Remove from simultaneous view" : canPin ? labels.pin || "Add to simultaneous view" : labels.pinLimit || "Three extra artworks are already open"}>
+                                    <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                                        <rect x="3.5" y="3.5" width="13" height="13" rx="2" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+                                        {isPinned ? <path d="M6.5 10h7"/> : <path d="M6.5 10h7M10 6.5v7"/>}
+                                    </svg>
+                                </button>
+                            )}
+                            {!isCurrent && (
+                                <button type="button" className="layered-card-carousel-unpin"
+                                        onClick={(event) => onPinnedUnpinClick(event, slide.id)}
+                                        aria-label={`${labels.unpin || "Remove from simultaneous view"}: ${slide.label}`}>
+                                    <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                                        <path d="M5 5 15 15M15 5 5 15"/>
+                                    </svg>
+                                </button>
+                            )}
+                        </div>
+                    )
+                })}
             </div>
             <nav ref={indexRef} className="layered-card-carousel-index"
                  style={{"--carousel-index-columns": indexColumns}}

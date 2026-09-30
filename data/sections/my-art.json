@@ -404,14 +404,15 @@
                 }
             },
             "settings": {
-                "max_rows_collapse_threshold": 3,
-                "order_items_by": "date",
-                "order_items_sort": "desc",
+                "max_rows_collapse_threshold": 4,
+                "order_items_by": "displayOrder",
+                "order_items_sort": "asc",
                 "timeline_variant": "art-digital-expression"
             },
             "items": [
                 {
                     "id": 2,
+                    "display_order": 3,
                     "visual_variant": "neo-surface",
                     "date": {
                         "year": 2019,
@@ -466,6 +467,7 @@
                 },
                 {
                     "id": 99,
+                    "display_order": 1,
                     "visual_variant": "orb-glass",
                     "date": {
                         "year": 2018,
@@ -516,6 +518,7 @@
                 },
                 {
                     "id": 100,
+                    "display_order": 2,
                     "visual_variant": "crystal-facet",
                     "date": {
                         "year": 2017,
@@ -566,6 +569,55 @@
                             "country": "Gorsel Arsiv",
                             "text": "Net duzenleri, guclu gorsel hikaye anlatimini ve veriye dayali tasarim referanslarini one cikaran secilmis favori infografikler.",
                             "medium": "Infografikler"
+                        }
+                    }
+                },
+                {
+                    "id": 101,
+                    "display_order": 4,
+                    "visual_variant": "neo-surface",
+                    "date": {
+                        "now": true
+                    },
+                    "preview": {
+                        "links": [
+                            {
+                                "href": "https://nz.pinterest.com/lovromusi/",
+                                "tooltipString": "See on Pinterest",
+                                "faIcon": "fa-brands fa-pinterest"
+                            }
+                        ],
+                        "screenshots": [
+                            "/images/personal_art/tattoo_design/tattoo_simple_deer.webp",
+                            "/images/personal_art/digital_expression/ai_prompt_01.webp",
+                            "/images/personal_art/digital_expression/favorite_infographic_01.webp"
+                        ],
+                        "screenshotsAspectRatio": "1:1"
+                    },
+                    "locales": {
+                        "en": {
+                            "title": "Pinterest — Visual inspiration",
+                            "country": "Digital collection",
+                            "text": "A personal archive of visual ideas, references, and creative inspiration.",
+                            "medium": "Pinterest"
+                        },
+                        "de": {
+                            "title": "Pinterest — Visuelle Inspiration",
+                            "country": "Digitale Sammlung",
+                            "text": "Ein persönliches Archiv visueller Ideen, Referenzen und kreativer Inspiration.",
+                            "medium": "Pinterest"
+                        },
+                        "hr": {
+                            "title": "Pinterest — vizualna inspiracija",
+                            "country": "Digitalna zbirka",
+                            "text": "Osobna zbirka vizualnih ideja, referenci i kreativne inspiracije.",
+                            "medium": "Pinterest"
+                        },
+                        "tr": {
+                            "title": "Pinterest — görsel ilham",
+                            "country": "Dijital koleksiyon",
+                            "text": "Görsel fikirler, referanslar ve yaratıcı ilhamdan oluşan kişisel bir arşiv.",
+                            "medium": "Pinterest"
                         }
                     }
                 }
@@ -2243,12 +2295,40 @@
                 "artist_spotlight": {
                     "artistName": "Snopdan Dogovic",
                     "artistDescription": "",
+                    "artistGenreStatement": "\u201csongs\u201d that will make you ask yourself why is it so weird and makes me feel so.",
                     "spotifyArtistUrl": "https://open.spotify.com/artist/4o95PAobZLANZVKXzRRe6d?si=5qukO23FTfqd7z0W3NgaFA",
                     "profileImage": "/images/artist/snopdan-dogovic/portrait.webp",
-                    "profileImageAlt": "",
+                    "profileImageAlt": "Snopdan Dogovic",
                     "bannerImage": "/images/artist/snopdan-dogovic/banner.webp",
                     "bannerAlt": "",
-                    "links": [],
+                    "links": [
+                        {
+                            "label": "Apple Music",
+                            "shortLabel": "Apple",
+                            "url": "https://music.apple.com/de/album/ti%C5%A1ina-di%C5%A1e/6814153252?i=6814153253",
+                            "platform": "apple-music",
+                            "target": "release"
+                        },
+                        {
+                            "label": "YouTube",
+                            "url": "https://www.youtube.com/watch?v=BquWdST2dSg",
+                            "platform": "youtube",
+                            "target": "release"
+                        },
+                        {
+                            "label": "Deezer",
+                            "url": "https://www.deezer.com/artist/418777822",
+                            "platform": "deezer",
+                            "target": "artist"
+                        },
+                        {
+                            "label": "Amazon Music",
+                            "shortLabel": "Amazon",
+                            "url": "https://music.amazon.de/artists/B0HL73S29K/snopdan-dogovi%C4%87",
+                            "platform": "amazon-music",
+                            "target": "artist"
+                        }
+                    ],
                     "latestRelease": {
                         "title": "Tišina diše",
                         "artistCredit": "",

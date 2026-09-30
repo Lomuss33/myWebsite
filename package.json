@@ -22,7 +22,7 @@
         "test:responsive:cross-browser": "playwright test tests/responsive.spec.js tests/mobile-profile.spec.js --grep \"mobile profile centers|Education hover motion|Contact keeps native wheel scrolling|gallery stays fullscreen\""
     },
     "dependencies": {
-        "@chenglou/pretext": "^0.0.8",
+        "@chenglou/pretext": "^0.0.9",
         "@emailjs/browser": "^4.4.1",
         "@fortawesome/fontawesome-free": "^6.7.2",
         "bootstrap": "^5.3.8",

@@ -1776,7 +1776,7 @@ test('Art desktop density compacts timelines, WebArt, stack cards, and SecretPea
 
         if(index===0) {
             await expect(page.locator('#article-1-section-my-art .article-timeline-item-info-for-timelines')).toHaveCount(3)
-            await expect(page.locator('#article-2-section-my-art .article-timeline-item-info-for-timelines')).toHaveCount(3)
+            await expect(page.locator('#article-2-section-my-art .article-timeline-item-info-for-timelines')).toHaveCount(4)
             await expect(page.locator('#article-4-section-my-art .article-stack-item-compact')).toHaveCount(71,{timeout:10000})
 
             const webArt=page.locator('#article-3-section-my-art')

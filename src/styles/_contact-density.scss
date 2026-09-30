@@ -55,7 +55,7 @@
             }
 
             div.copy-button-wrapper.article-info-list-item-inline-copy button.copy-button.copy-button-inline {
-                min-height: 2.25rem;
+                min-height: 2.75rem;
                 padding: 0.16rem 0.48rem;
                 font-size: clamp(0.72rem, 0.66rem + 0.28vw, 0.98rem);
             }
@@ -161,12 +161,12 @@
     }
 }
 
-// Keep the visual action compact on mouse/trackpad layouts. The shared
-// 44px copy-button target remains in effect for narrow and coarse-pointer use.
+// Keep Contact copy actions within the shared 44px interaction target at every
+// desktop density. Compact their label and padding, not the clickable surface.
 @media (min-width: 48rem) and (pointer: fine) {
     html[data-layout] article.article-info-list-contact {
         div.copy-button-wrapper.article-info-list-item-inline-copy button.copy-button.copy-button-inline {
-            min-height: 2.25rem !important;
+            min-height: 2.75rem !important;
         }
     }
 }
@@ -174,7 +174,7 @@
 @media (min-width: 120rem) and (pointer: fine) {
     html[data-layout] article.article-info-list-contact {
         div.copy-button-wrapper.article-info-list-item-inline-copy button.copy-button.copy-button-inline {
-            min-height: 2rem !important;
+            min-height: 2.75rem !important;
         }
     }
 }

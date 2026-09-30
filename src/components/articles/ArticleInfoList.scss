@@ -972,9 +972,12 @@ article.article-info-list-contact {
 
     div.article-info-list-item-info-text {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
+        // Copy labels can be long and localized. Give the description the
+        // full content width, then place its action beneath it so neither
+        // column collapses into narrow, tall text at desktop card widths.
+        grid-template-columns: minmax(0, 1fr);
         align-items: center;
-        column-gap: clamp(0.4rem, 1vw, 0.75rem);
+        column-gap: 0;
         row-gap: 0.25rem;
         align-self: stretch;
         width: 100%;
@@ -999,29 +1002,14 @@ article.article-info-list-contact {
         }
     }
 
-    // At narrow card widths the copy action gets its own row, leaving the
-    // description the full text column instead of squeezing it beside a pill.
-    @container contact-card (max-width: 28rem) {
-        div.article-info-list-item-info-text {
-            grid-template-columns: minmax(0, 1fr);
-            align-items: start;
-
-            > span {
-                grid-column: 1;
-                grid-row: 1;
-            }
-        }
-
-        div.copy-button-wrapper.article-info-list-item-inline-copy {
-            grid-column: 1;
-            grid-row: 2;
-            justify-self: start;
-        }
+    div.article-info-list-item-info-text > span {
+        grid-column: 1;
+        grid-row: 1;
     }
 
     div.copy-button-wrapper.article-info-list-item-inline-copy {
-        grid-column: 2;
-        grid-row: 1;
+        grid-column: 1;
+        grid-row: 2;
         position: relative;
         z-index: 3;
         max-width: 100%;

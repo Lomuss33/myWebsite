@@ -1399,8 +1399,11 @@ test('Hardware desktop density compacts project cards and DataProbe without shri
 
             const probe=page.locator('#article-2-section-my-hardware')
             const itemCountBefore=await probe.locator('.article-data-probe-item').count()
-            await expect(probe.locator('.article-data-probe-unlock-btn')).toBeVisible()
-            await probe.locator('.article-data-probe-unlock-btn').click()
+            const unlock=probe.locator('.article-data-probe-unlock-btn')
+            await expect(unlock).toBeVisible()
+            await unlock.click()
+            await expect(unlock).toBeHidden()
+            await expect(probe.locator('.article-data-probe-grid-fixed-two .article-data-probe-item').first()).toBeVisible()
             expect(await probe.locator('.article-data-probe-item').count()).toBeGreaterThan(itemCountBefore)
             const probeButtons=await probe.locator('button.article-data-probe-action-btn, button.article-data-probe-unlock-btn, button.copy-button.copy-button-pill').evaluateAll(buttons=>buttons.map(button=>Math.min(button.getBoundingClientRect().width,button.getBoundingClientRect().height)))
             expect(probeButtons.every(size=>size>=43.5)).toBe(true)

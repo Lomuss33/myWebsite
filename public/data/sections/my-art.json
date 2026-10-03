@@ -2295,7 +2295,6 @@
                 "artist_spotlight": {
                     "artistName": "Snopdan Dogovic",
                     "artistDescription": "",
-                    "artistGenreStatement": "\u201csongs\u201d that will make you ask yourself why is it so weird and makes me feel so.",
                     "spotifyArtistUrl": "https://open.spotify.com/artist/4o95PAobZLANZVKXzRRe6d?si=5qukO23FTfqd7z0W3NgaFA",
                     "profileImage": "/images/artist/snopdan-dogovic/portrait.webp",
                     "profileImageAlt": "Snopdan Dogovic",
@@ -2345,6 +2344,8 @@
                     },
                     "labels": {
                         "en": {
+                            "genreLabel": "Genre:",
+                            "artistGenreStatement": "\u201cSongs\u201d that make you wonder: why so strange\u2014and why do they move me so much?",
                             "artistSectionLabel": "Artist profile",
                             "bannerPlaceholder": "Artist banner",
                             "portraitPlaceholder": "Artist portrait",
@@ -2371,6 +2372,8 @@
                             "audioUnavailable": "Audio could not be loaded"
                         },
                         "de": {
+                            "genreLabel": "Genre:",
+                            "artistGenreStatement": "\u201eSongs\u201c, die dich fragen lassen: Warum sind sie so seltsam \u2013 und warum ber\u00fchren sie mich so sehr?",
                             "artistSectionLabel": "Künstlerprofil",
                             "bannerPlaceholder": "Künstlerbanner",
                             "portraitPlaceholder": "Künstlerporträt",
@@ -2397,6 +2400,8 @@
                             "audioUnavailable": "Audio konnte nicht geladen werden"
                         },
                         "hr": {
+                            "genreLabel": "Žanr:",
+                            "artistGenreStatement": "\u201ePjesme\u201c zbog kojih se pitaš: Zašto su tako neobične \u2014 i zašto me toliko diraju?",
                             "artistSectionLabel": "Profil umjetnika",
                             "bannerPlaceholder": "Naslovna slika umjetnika",
                             "portraitPlaceholder": "Portret umjetnika",
@@ -2423,6 +2428,8 @@
                             "audioUnavailable": "Zvuk se ne može učitati"
                         },
                         "tr": {
+                            "genreLabel": "Tür:",
+                            "artistGenreStatement": "\u201cŞarkılar\u201d: \u201cNeden bu kadar tuhaflar ve beni neden bu kadar derinden etkiliyorlar?\u201d dedirten.",
                             "artistSectionLabel": "Sanatçı profili",
                             "bannerPlaceholder": "Sanatçı kapak görseli",
                             "portraitPlaceholder": "Sanatçı portresi",

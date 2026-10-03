@@ -112,6 +112,7 @@ function ArticleArtistSpotlight({dataWrapper}) {
     const data = dataWrapper.settings.artistSpotlight || {}
     const release = data.latestRelease || {}
     const text = (key, fallback) => language.getTranslation(data.labels || {}, key, fallback)
+    const genreStatement = text("artistGenreStatement", data.artistGenreStatement || "")
     const trackUri = release.spotifyTrackUri || release.spotifyTrackUrl || ""
     const audioSrc = release.audioSrc || ""
     const startOffsetSeconds = Math.max(0, Number(release.startOffsetSeconds) || 0)
@@ -214,10 +215,10 @@ function ArticleArtistSpotlight({dataWrapper}) {
                             </a>
                         ) : portrait}
                         <div className="artist-spotlight-identity-copy">
-                            {data.artistGenreStatement ? (
+                            {genreStatement ? (
                                 <p className="artist-spotlight-genre">
-                                    <span className="artist-spotlight-genre-label">Genre:</span>
-                                    <span>{data.artistGenreStatement}</span>
+                                    <span className="artist-spotlight-genre-label">{text("genreLabel", "Genre:")}</span>
+                                    <span>{genreStatement}</span>
                                 </p>
                             ) : (data.artistDescription || !data.artistName) && (
                                 <p>{data.artistDescription || text("artistDescriptionPlaceholder", "A short introduction will appear here.")}</p>

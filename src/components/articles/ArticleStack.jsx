@@ -116,6 +116,13 @@ const HOME_STACK_POPUP_COPY = {
     }
 }
 
+const HOME_STACK_TITLE_TRIGGER_LABELS = {
+    en: "Show details",
+    de: "Details anzeigen",
+    hr: "Prikaži pojedinosti",
+    tr: "Ayrıntıları göster"
+}
+
 const HOME_STACK_BUBBLE_DEFAULTS = {
     desktop: {
         fontSize: 1.16,
@@ -447,29 +454,36 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
     const linkHref = itemWrapper.link?.href
     const linkTooltip = itemWrapper.link?.tooltip
     const emojiIconText = itemWrapper.iconText
+    const measurementExplanation = itemWrapper.locales.measurementExplanation
     const bubbleMarkup = itemWrapper.locales.proofBubble ||
         (isHomeStack ? HOME_STACK_POPUP_COPY[selectedLanguageId]?.[itemWrapper.id] || HOME_STACK_POPUP_COPY.en?.[itemWrapper.id] : null) ||
         itemWrapper.locales.text ||
         "Placeholder text for this item."
+    const titleOverlayMarkup = measurementExplanation || bubbleMarkup
     const isHomeBubbleEnabled = Boolean(isHomeStack && bubbleMarkup)
-    const [isBubbleOpen, setIsBubbleOpen] = useState(false)
+    const [activeHomeOverlay, setActiveHomeOverlay] = useState(null)
     const [isBubblePinned, setIsBubblePinned] = useState(false)
+    const isBubbleOpen = Boolean(activeHomeOverlay)
+    const popupMarkup = activeHomeOverlay === "title" ? titleOverlayMarkup : bubbleMarkup
     const bubbleRef = useRef(null)
     const bubbleToggleRef = useRef(null)
+    const titleToggleRef = useRef(null)
     const bubbleInnerRef = useRef(null)
     const bubbleCopyRef = useRef(null)
     const cardRef = useRef(null)
     const titleRef = useRef(null)
     const titlePrefixRef = useRef(null)
     const titleMainRef = useRef(null)
+    const homeOverlayId = `${articleId}-item-${itemWrapper.id}-home-overlay`
     const bubbleClass = isBubbleOpen ? `article-stack-item-home-bubble-open` : ``
+    const titleOverlayClass = activeHomeOverlay === "title" ? "article-stack-item-home-title-open" : ""
 
     useEffect(() => {
         if(isBubbleOpen)
             return
 
         clearHomeStackBubbleFitVariables(bubbleInnerRef.current)
-    }, [isBubbleOpen, bubbleMarkup])
+    }, [isBubbleOpen, popupMarkup])
 
     useLayoutEffect(() => {
         if(!isHomeStack)
@@ -598,7 +612,7 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
         return () => {
             window.cancelAnimationFrame(frameId)
         }
-    }, [bubbleMarkup, isBubbleOpen, isHomeBubbleEnabled, viewport.innerWidth])
+    }, [popupMarkup, isBubbleOpen, isHomeBubbleEnabled, viewport.innerWidth])
 
     useEffect(() => {
         if(!isHomeBubbleEnabled || !isBubblePinned)
@@ -607,11 +621,11 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
         const handlePointerDown = (event) => {
             const target = event.target
 
-            if(bubbleRef.current?.contains(target) || bubbleToggleRef.current?.contains(target))
+            if(bubbleRef.current?.contains(target) || bubbleToggleRef.current?.contains(target) || titleToggleRef.current?.contains(target))
                 return
 
             setIsBubblePinned(false)
-            setIsBubbleOpen(false)
+            setActiveHomeOverlay(null)
         }
 
         const handleKeyDown = (event) => {
@@ -619,7 +633,7 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
                 return
 
             setIsBubblePinned(false)
-            setIsBubbleOpen(false)
+            setActiveHomeOverlay(null)
         }
 
         document.addEventListener("pointerdown", handlePointerDown)
@@ -635,26 +649,42 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
         if(!isHomeBubbleEnabled)
             return
 
-        setIsBubbleOpen(true)
+        if(!isBubblePinned)
+            setActiveHomeOverlay("proof")
     }
 
     const handleBubbleMouseLeave = () => {
         if(!isHomeBubbleEnabled || isBubblePinned)
             return
 
-        setIsBubbleOpen(false)
+        setActiveHomeOverlay(null)
     }
 
-    const handleBubbleToggle = (event) => {
+    const handleTitleMouseEnter = () => {
+        if(!isHomeBubbleEnabled || isBubblePinned)
+            return
+
+        setActiveHomeOverlay("title")
+    }
+
+    const handleHomeOverlayBlur = (event) => {
+        if(isBubblePinned || cardRef.current?.contains(event.relatedTarget))
+            return
+
+        setActiveHomeOverlay(null)
+    }
+
+    const handleHomeOverlayToggle = (overlayKind) => (event) => {
         event.preventDefault()
         event.stopPropagation()
 
-        setIsBubblePinned((currentState) => {
-            const nextState = !currentState
-            setIsBubbleOpen(nextState)
-            return nextState
-        })
+        const shouldPin = !(isBubblePinned && activeHomeOverlay === overlayKind)
+        setIsBubblePinned(shouldPin)
+        setActiveHomeOverlay(shouldPin ? overlayKind : null)
     }
+
+    const handleBubbleToggle = handleHomeOverlayToggle("proof")
+    const handleTitleToggle = handleHomeOverlayToggle("title")
 
     const avatar = (
         <AvatarView src={itemWrapper.img}
@@ -666,7 +696,8 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
     )
 
     const popupBody = isHomeBubbleEnabled ? (
-        <div className={`article-stack-item-home-bubble ${bubbleClass}`}
+        <div className={`article-stack-item-home-bubble ${bubbleClass} ${titleOverlayClass ? "article-stack-item-home-title-bubble" : ""}`.trim()}
+             id={homeOverlayId}
              role="note"
              aria-hidden={!isBubbleOpen}
              ref={bubbleRef}>
@@ -675,7 +706,7 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
                 <div className={`article-stack-item-home-bubble-copy`}
                      ref={bubbleCopyRef}>
                     <div className={`article-stack-item-home-bubble-copy-content`}
-                         dangerouslySetInnerHTML={{__html: bubbleMarkup}}/>
+                         dangerouslySetInnerHTML={{__html: popupMarkup}}/>
                 </div>
             </div>
         </div>
@@ -696,14 +727,16 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
     )
 
     const content = isHomeStack ? (
-        <div className={`article-stack-item ${homeClass} ${compactClass} ${bubbleClass} ${isBubblePinned ? "article-stack-item-pinned" : ""}`.trim()}
+        <div className={`article-stack-item ${homeClass} ${compactClass} ${bubbleClass} ${titleOverlayClass} ${isBubblePinned ? "article-stack-item-pinned" : ""}`.trim()}
              ref={cardRef}
              onMouseLeave={handleBubbleMouseLeave}>
             <div className={`article-stack-item-home-trigger`}>
                 <ArticleStackHomeBubble itemWrapper={itemWrapper}
                                         isBubbleOpen={isBubbleOpen}
                                         onMouseEnter={handleBubbleMouseEnter}
+                                        onBlur={handleHomeOverlayBlur}
                                         onToggle={handleBubbleToggle}
+                                        bubbleId={homeOverlayId}
                                         bubbleToggleRef={bubbleToggleRef}>
                     {avatar}
                 </ArticleStackHomeBubble>
@@ -712,15 +745,40 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
             <div className={`article-stack-item-home-content`}>
                 <div className={`article-stack-item-title`}
                      ref={titleRef}>
-                    {displaySegmentedTitle.prefix && (
-                        <div className={`article-stack-item-title-prefix`}
-                             ref={titlePrefixRef}
-                             dangerouslySetInnerHTML={{__html: displaySegmentedTitle.prefix}}/>
-                    )}
+                    {isHomeBubbleEnabled ? (
+                        <button type="button"
+                                className="article-stack-item-home-unit-trigger"
+                                aria-label={`${HOME_STACK_TITLE_TRIGGER_LABELS[selectedLanguageId] || HOME_STACK_TITLE_TRIGGER_LABELS.en}: ${title}`}
+                                aria-expanded={activeHomeOverlay === "title"}
+                                aria-controls={homeOverlayId}
+                                onMouseEnter={handleTitleMouseEnter}
+                                onFocus={handleTitleMouseEnter}
+                                onBlur={handleHomeOverlayBlur}
+                                onClick={handleTitleToggle}
+                                ref={titleToggleRef}>
+                            {displaySegmentedTitle.prefix && (
+                                <span className={`article-stack-item-title-prefix`}
+                                     ref={titlePrefixRef}
+                                     dangerouslySetInnerHTML={{__html: displaySegmentedTitle.prefix}}/>
+                            )}
 
-                    <div className={`article-stack-item-title-main`}
-                         ref={titleMainRef}
-                         dangerouslySetInnerHTML={{__html: displaySegmentedTitle.value}}/>
+                            <span className={`article-stack-item-title-main`}
+                                 ref={titleMainRef}
+                                 dangerouslySetInnerHTML={{__html: displaySegmentedTitle.value}}/>
+                        </button>
+                    ) : (
+                        <>
+                            {displaySegmentedTitle.prefix && (
+                                <div className={`article-stack-item-title-prefix`}
+                                     ref={titlePrefixRef}
+                                     dangerouslySetInnerHTML={{__html: displaySegmentedTitle.prefix}}/>
+                            )}
+
+                            <div className={`article-stack-item-title-main`}
+                                 ref={titleMainRef}
+                                 dangerouslySetInnerHTML={{__html: displaySegmentedTitle.value}}/>
+                        </>
+                    )}
                 </div>
 
                 <div className={`article-stack-item-home-content-body ${bubbleClass}`.trim()}>
@@ -759,7 +817,7 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
     return content
 }
 
-function ArticleStackHomeBubble({ itemWrapper, children, isBubbleOpen, onMouseEnter, onToggle, bubbleToggleRef }) {
+function ArticleStackHomeBubble({ itemWrapper, children, isBubbleOpen, onMouseEnter, onBlur, onToggle, bubbleId, bubbleToggleRef }) {
     const bubbleClass = isBubbleOpen ? `article-stack-item-home-bubble-open` : ``
 
     return (
@@ -767,9 +825,11 @@ function ArticleStackHomeBubble({ itemWrapper, children, isBubbleOpen, onMouseEn
             <button type="button"
                     className={`article-stack-item-home-bubble-button`}
                     aria-expanded={isBubbleOpen}
+                    aria-controls={bubbleId}
                     aria-label={`Show more details for ${itemWrapper.locales.title || itemWrapper.placeholder}`}
                     onMouseEnter={onMouseEnter}
                     onFocus={onMouseEnter}
+                    onBlur={onBlur}
                     onClick={onToggle}
                     ref={bubbleToggleRef}>
                 {children}

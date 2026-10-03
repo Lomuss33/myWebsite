@@ -126,6 +126,8 @@ My Art article titles use the article container width below 42rem so narrow pane
 
 My Art photography switches below the medium breakpoint to a full-width story card with the vertical timeline rule hidden. The separate avatar is removed from this layout; the gallery action becomes the image circle and keeps its gallery-opening link, alongside the Pinterest circle. The alternating wide desktop layout retains its separate avatar and icon button.
 
+Photography timeline titles, metadata, and descriptions stay centered as a single content group at every width, including alternating desktop rows. Titles wrap with balanced lines and descriptions remain constrained to a comfortable reading width without clipping localized text.
+
 In the avatar-free photography layout, timeline merge spacing is disabled and the content card uses a compact, even 0.82rem inset so the old avatar gutter does not offset or overpad the full-width card.
 
 The My Art Digital Expression timeline keeps its overlapping gallery preview layers in a flat 2D stacking context. Card hover fans the four absolute layers; stack hover/focus centers them. Animate both states with the separate `translate`, `transform`, and `opacity` properties so layer geometry stays fixed; avoid animated shadows, positional properties, nested 3D transforms, perspective, and backdrop filters there. Four authored cards reflow without an empty filler; the fourth links to the full Pinterest profile, uses the same card treatment as the existing entries, and has a solid black dark-theme surface and solid white light-theme surface.

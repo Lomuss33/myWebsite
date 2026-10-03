@@ -242,6 +242,7 @@ article.article-timeline--my-art {
             border-radius: $standard-border-radius !important;
         }
     }
+
 }
 
 article#article-1-section-education {
@@ -1903,6 +1904,55 @@ article.article-timeline--art-photography {
             margin: 0 !important;
             border-radius: $standard-border-radius !important;
         }
+    }
+}
+
+article.article-timeline--art-photography {
+    // Keep the photography story text as one centered, readable composition
+    // at every width, including the alternating wide-screen timeline rows.
+    div.article-timeline-item-info-for-timelines-header-title,
+    div.article-timeline-item-info-for-timelines-header-main {
+        justify-content: center;
+        text-align: center;
+    }
+
+    div.article-timeline-item-info-for-timelines-header-main h5 {
+        flex: 1 1 100%;
+        width: 100%;
+        max-width: 100%;
+        margin-inline: auto;
+        text-align: center;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        text-wrap: balance;
+    }
+
+    div.article-timeline-item-info-for-timelines-header-meta-band {
+        justify-content: center;
+        text-align: center;
+    }
+
+    ul.article-timeline-item-info-for-timelines-header-prop-list {
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-inline: auto;
+        text-align: center;
+
+        li.prop-list-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+    }
+
+    div.article-timeline-item-info-for-timelines-body-text {
+        width: 100%;
+        max-width: 62ch;
+        margin-inline: auto;
+        text-align: center;
+        text-wrap: pretty;
     }
 }
 

@@ -166,6 +166,7 @@ export default class ArticleItemDataWrapper {
             text: language.getTranslation(locales, "text", null),
             label: language.getTranslation(locales, "label", null),
             proofBubble: language.getTranslation(locales, "proofBubble", null),
+            measurementExplanation: language.getTranslation(locales, "measurementExplanation", null),
         }
 
         if(translations.list && Array.isArray(translations.list)) {

@@ -1,6 +1,6 @@
 # Home implementation and handoff
 
-Verified: 2026-09-11 against source and recent focused checks. The Home design is accepted; preserve it while fixing concrete defects.
+Verified: 2026-10-03 against Home stack source and the focused mobile responsive check. The Home design is accepted; preserve it while fixing concrete defects.
 
 Route: `#about`. Data: [home.json](../../public/data/sections/home.json). Registry/order: [SectionBody.jsx](../../src/components/sections/SectionBody.jsx). Name origins precedes the human stack at the end.
 
@@ -52,3 +52,5 @@ Mobile Home density update (2026-09-26): a separate `data-layout="mobile"` scale
 Name-origin layout update (2026-09-28): metadata, animated name, and lineage now share a container-responsive header. Panels wider than 36rem use three columns; narrower panels put the lineage on a second row, with only very narrow panels stacking all three. The paragraphs remain full-width below. A production build passed, and Chromium preview measurements from 360 through 1920px confirmed that the measured animated word fits its slot where the article is present.
 
 Human-stack circle sizing (2026-09-27): the circle follows the compact card height, with an 8px vertical allowance in the mobile and regular desktop modes. Short landscape cards use a viewport-bounded circle that can approach their taller card height. The card's existing half-circle inset and text reserve grow from the same avatar-size token, so the circle remains outside the label/value area.
+
+Home stack mobile reliability (2026-10-03): the grid's rendered column count determines its initial visible rows. One-column phone layouts show two cards before Show more; wider grids show one full row. Stack title prefix/value pairs use a centered grid with no per-line vertical translation so breakpoint changes cannot push the two lines away from their center.

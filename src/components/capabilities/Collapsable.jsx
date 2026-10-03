@@ -18,14 +18,21 @@ function Collapsable({
     const utils = useUtils()
     const language = useLanguage()
 
-    const [visibleItems, setVisibleItems] = useState(() => initialVisibleItems || (initialVisibleRows ? 1 : 0))
+    const totalItems = children?.length
     const [columnCount, setColumnCount] = useState(1)
+    const getVisibleRows = count => typeof initialVisibleRows === "function" ? initialVisibleRows(count) : initialVisibleRows
+    const initialRowsAtOneColumn = getVisibleRows(1)
+    const [visibleItems, setVisibleItems] = useState(() => initialVisibleItems || (
+        typeof initialVisibleRows === "function" ?
+            Math.min(totalItems, initialRowsAtOneColumn) :
+            (initialVisibleRows ? 1 : 0)
+    ))
     const contentRef = useRef(null)
 
-    const totalItems = children?.length
     const resolvedBreakpointId = breakpointId || (initialVisibleRows ? `columns-${columnCount}` : undefined)
-    const resolvedInitialVisibleItems = initialVisibleRows ?
-        Math.min(totalItems, columnCount * initialVisibleRows) :
+    const visibleRows = getVisibleRows(columnCount)
+    const resolvedInitialVisibleItems = visibleRows ?
+        Math.min(totalItems, columnCount * visibleRows) :
         initialVisibleItems
     const canExpand = visibleItems && totalItems && visibleItems < totalItems
 
@@ -34,7 +41,7 @@ function Collapsable({
         Collapsable.savedStates[id] = Collapsable.savedStates[id] || {}
 
         const savedVisibleItems = Collapsable.savedStates[id][resolvedBreakpointId]
-        const initialAmount = savedVisibleItems ?? resolvedInitialVisibleItems
+        const initialAmount = Math.max(savedVisibleItems ?? 0, resolvedInitialVisibleItems)
         _updateVisibleItemsCount(initialAmount)
     }, [id, resolvedBreakpointId, resolvedInitialVisibleItems, totalItems])
 

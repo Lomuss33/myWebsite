@@ -246,11 +246,25 @@ html[data-layout] section#section-about article#article-7-section-about {
     .article-stack-item-home-trigger { position: absolute; top: 50%; left: calc(-1 * var(--home-stack-avatar-outset)); transform: translateY(-50%); }
     .article-stack-item-home-content { container-type: inline-size; padding: 0; }
     .article-stack-item-title {
-        min-height: 0; max-height: none; gap: .25rem;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        align-content: center;
+        align-items: center;
+        justify-content: center;
+        justify-items: center;
+        min-height: 0;
+        max-height: none;
+        gap: .25rem;
         padding: 0; text-align: center;
+        transform: none;
+        translate: none;
     }
     .article-stack-item-title-prefix,
     .article-stack-item-title-main {
+        position: static;
+        align-self: center;
+        justify-self: center;
+        margin: 0;
         translate: none;
         transform: none;
         width: 100%; max-width: 100%;

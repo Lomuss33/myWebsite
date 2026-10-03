@@ -154,3 +154,59 @@ $scrollbar-thumb: rgba(0, 136, 186, 0.24);
         /** SCROLLBAR THUMB: **/            $scrollbar-thumb,
     );
 }
+
+// Keep the two mobile rails bright and warm without changing the desktop
+// navigation palette or the dark theme.
+html[data-theme="light"] :is(
+    .nav-link-pills-fixed-wrapper,
+    nav.nav-link-pills-mobile,
+    nav.nav-tab-controller
+) {
+    --theme-nav-surface: #ffffff;
+    --theme-nav-surface-accent: #fff8e8;
+    --theme-nav-action-surface: #ffffff;
+    --theme-nav-action-surface-accent: #fff4d5;
+    --theme-nav-action-border: rgba(229, 151, 15, 0.52);
+    --theme-nav-mobile-action-edge: rgba(230, 145, 0, 0.62);
+    --theme-nav-unvisited-surface: #ffffff;
+    --theme-nav-unvisited-surface-accent: #ffffff;
+    --theme-nav-unvisited-border: rgba(194, 125, 22, 0.15);
+    --theme-nav-unvisited-ink: #24190c;
+    --theme-nav-visited-surface: #fff9e9;
+    --theme-nav-visited-surface-accent: #ffffff;
+    --theme-nav-visited-border: rgba(208, 138, 25, 0.2);
+    --theme-nav-visited-ink: #62410d;
+    --theme-nav-visited-marker: #edab19;
+    --theme-nav-selected-surface: #ffe34a;
+    --theme-nav-selected-surface-accent: #ffad00;
+    --theme-nav-selected-shadow: rgba(255, 173, 0, 0.55);
+    --theme-nav-selected-ink: #291900;
+    --theme-nav-hover-ink: #794006;
+    --theme-nav-border: rgba(222, 148, 24, 0.22);
+    --theme-nav-divider: rgba(194, 125, 22, 0.13);
+    --theme-nav-text: #24190c;
+    --theme-nav-text-muted: #684a24;
+}
+
+html[data-theme="light"] nav.nav-header-mobile {
+    --theme-nav-surface: #ffffff;
+    --theme-nav-surface-accent: #f2faff;
+    --theme-nav-action-surface: #ffffff;
+    --theme-nav-action-surface-accent: #effaff;
+    --theme-nav-action-border: rgba(8, 145, 178, 0.3);
+    --theme-nav-mobile-action-edge: rgba(8, 145, 178, 0.48);
+    --theme-nav-border: rgba(8, 145, 178, 0.24);
+    --theme-nav-divider: rgba(8, 145, 178, 0.16);
+    --theme-nav-text: #102033;
+    --theme-nav-text-muted: #34556a;
+}
+
+html[data-theme="light"] :is(
+    nav.nav-link-pills-mobile > button.nav-link-pills-link-active,
+    nav.nav-tab-controller > button.nav-tab-controller-link-active
+) {
+    box-shadow:
+        inset 0 0 16px rgba(255, 255, 255, 0.54),
+        inset 0 -10px 18px rgba(255, 135, 0, 0.16),
+        0 0 20px var(--theme-nav-selected-shadow);
+}

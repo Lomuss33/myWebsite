@@ -22,20 +22,20 @@ function NavHeaderMobile({ profile }) {
 
     const mobileActionStackBeforeInfo = (namePronunciationButtonVisible || resumeButtonVisible) ? (
         <>
+            {resumeButtonVisible && (
+                <div className={`nav-profile-card-mobile-action nav-profile-card-mobile-action-resume`}>
+                    <NavToolResumeDownloader dropdownClassName={`nav-profile-card-mobile-resume-dropdown`}
+                                             menuClassName={`nav-profile-card-mobile-resume-menu`}
+                                             mobileTubeMenu={true}/>
+                </div>
+            )}
+
             {namePronunciationButtonVisible && (
                 <div className={`nav-profile-card-mobile-action nav-profile-card-mobile-action-audio`}>
                     <AudioButton url={namePronunciationAudioUrl}
                                  tooltip={namePronunciationIpa}
                                  tooltipLabel={namePronunciationIpa}
                                  size={AudioButton.Sizes.DEFAULT}/>
-                </div>
-            )}
-
-            {resumeButtonVisible && (
-                <div className={`nav-profile-card-mobile-action nav-profile-card-mobile-action-resume`}>
-                    <NavToolResumeDownloader dropdownClassName={`nav-profile-card-mobile-resume-dropdown`}
-                                             menuClassName={`nav-profile-card-mobile-resume-menu`}
-                                             mobileTubeMenu={true}/>
                 </div>
             )}
         </>

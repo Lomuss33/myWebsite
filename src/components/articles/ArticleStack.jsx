@@ -402,7 +402,7 @@ function ArticleStackItems({ dataWrapper, selectedItemCategoryId, isHomeStack, i
         return (
             <Collapsable className={stackClassName}
                          id={dataWrapper.uniqueId}
-                         initialVisibleRows={1}>
+                         initialVisibleRows={columnCount => columnCount === 1 ? 2 : 1}>
                 {renderedItems}
             </Collapsable>
         )

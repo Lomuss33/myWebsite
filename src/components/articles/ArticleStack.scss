@@ -203,8 +203,6 @@ article.article.article-stack-compact {
 }
 
 article.article.article-stack-home {
-    --home-stack-title-spread: 0px;
-
     --home-stack-card-surface: linear-gradient(135deg, rgba(18, 27, 49, 0.96), rgba(8, 14, 29, 0.98));
     --home-stack-card-surface-glow-a: rgba(56, 189, 248, 0.16);
     --home-stack-card-surface-glow-b: rgba(244, 114, 182, 0.12);
@@ -856,7 +854,6 @@ article.article.article-stack-home {
         word-break: normal;
         hyphens: none;
         text-wrap: balance;
-        translate: 0 calc(0px - var(--home-stack-title-spread));
     }
 
     div.article-stack-item-home div.article-stack-item-title-main {
@@ -867,7 +864,6 @@ article.article.article-stack-home {
         word-break: normal;
         hyphens: none;
         text-wrap: balance;
-        translate: 0 var(--home-stack-title-spread);
     }
 
     div.article-stack-item-home-bubble-inner {
@@ -899,8 +895,6 @@ article.article.article-stack-home {
     }
 
     @container article-stack (max-width: 1180px) {
-        --home-stack-title-spread: 4px;
-
         div.article-stack-items.article-stack-items-home {
             --home-stack-card-pad-x: 8px;
             --home-stack-card-gap: 2px;
@@ -909,8 +903,6 @@ article.article.article-stack-home {
     }
 
     @container article-stack (max-width: 980px) {
-        --home-stack-title-spread: 8px;
-
         div.article-stack-items.article-stack-items-home {
             --home-stack-card-pad-x: 7px;
             --home-stack-card-gap: 2px;
@@ -919,8 +911,6 @@ article.article.article-stack-home {
     }
 
     @container article-stack (max-width: 640px) {
-        --home-stack-title-spread: 14px;
-
         div.article-stack-items.article-stack-items-home {
             --home-stack-card-pad-x: 6px;
             --home-stack-card-gap: 2px;
@@ -935,8 +925,6 @@ article.article.article-stack-home {
     }
 
     @container article-stack (max-width: 560px) {
-        --home-stack-title-spread: 18px;
-
         div.article-stack-items.article-stack-items-home {
             --stack-columns: 1;
             --home-stack-card-pad-x: 5px;
@@ -967,8 +955,6 @@ article.article.article-stack-home {
     }
 
     @container article-stack (max-width: 420px) {
-        --home-stack-title-spread: 22px;
-
         div.article-stack-items.article-stack-items-home {
             --home-stack-card-pad-x: 6px;
             --home-stack-card-gap: 3px;
@@ -999,8 +985,6 @@ article.article.article-stack-home {
     }
 
     @container article-stack (max-width: 360px) {
-        --home-stack-title-spread: 24px;
-
         div.article-stack-items.article-stack-items-home {
             --home-stack-card-pad-x: 5px;
             --home-stack-card-gap: 2px;
@@ -1022,8 +1006,6 @@ article.article.article-stack-home {
     }
 
     @container article-stack (max-width: 300px) {
-        --home-stack-title-spread: 26px;
-
         div.article-stack-items.article-stack-items-home {
             --home-stack-card-pad-x: 4px;
             --home-stack-card-gap: 1px;
@@ -1046,30 +1028,8 @@ article.article.article-stack-home {
     }
 }
 
-/* Viewport-driven spreading avoids the card's own inline-size container from
- * making phone typography behave like an ultra-narrow embedded widget. */
-@container (max-width: 1200px) {
-    article.article.article-stack-home {
-        --home-stack-title-spread: 6px;
-    }
-}
-
-@container (max-width: 980px) {
-    article.article.article-stack-home {
-        --home-stack-title-spread: 12px;
-    }
-}
-
-@container (max-width: 640px) {
-    article.article.article-stack-home {
-        --home-stack-title-spread: 20px;
-    }
-}
-
 @container (max-width: 560px) {
     article.article.article-stack-home {
-        --home-stack-title-spread: 28px;
-
         div.article-stack-item-home div.article-stack-item-title {
             row-gap: 0.5rem;
         }
@@ -1078,8 +1038,6 @@ article.article.article-stack-home {
 
 @container (max-width: 420px) {
     article.article.article-stack-home {
-        --home-stack-title-spread: 34px;
-
         div.article-stack-item-home div.article-stack-item-title {
             row-gap: 0.35rem;
         }

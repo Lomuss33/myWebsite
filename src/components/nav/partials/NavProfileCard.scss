@@ -900,7 +900,7 @@ div.nav-profile-card {
         --avatar-outline-size: clamp(1.2px, 0.4vw, 1.45px);
         --avatar-inner-rim-size: clamp(0.9px, 0.25vw, 1.1px);
         --mobile-action-size: var(--mobile-profile-action-size, clamp(2.5rem, min(8cqi, 6svh), 3.5rem));
-        --mobile-action-icon-size: clamp(1rem, calc(var(--mobile-action-size) * 0.42), 3.25rem);
+        --mobile-action-icon-size: clamp(1rem, calc(var(--mobile-action-size) * 0.56), 2.5rem);
         --mobile-action-visual-scale: 1.04;
         --mobile-action-footprint: calc(var(--mobile-action-size) * var(--mobile-action-visual-scale));
         --mobile-stack-gap: var(--mobile-profile-action-gap, clamp(0.25rem, min(2cqi, 1svh), 1rem));
@@ -968,7 +968,7 @@ div.nav-profile-card {
         }
 
         div.nav-profile-card-mobile-action-stack {
-            --nav-profile-mobile-icon-size: var(--mobile-profile-action-icon-size, clamp(1.125rem, calc(var(--mobile-action-size) * 0.56), 1.625rem));
+            --nav-profile-mobile-icon-size: var(--mobile-profile-action-icon-size, clamp(1.125rem, calc(var(--mobile-action-size) * 0.72), 2rem));
             --nav-profile-mobile-icon-background-size: contain;
             display: flex;
             flex-direction: column;
@@ -1478,7 +1478,7 @@ div.nav-profile-card {
         @container mobile-profile-main (max-width: 18rem) {
             div.nav-profile-card-mobile-action-stack {
                 --mobile-action-size: clamp(1.625rem, 14cqi, 2.25rem);
-                --mobile-action-icon-size: clamp(0.9375rem, calc(var(--mobile-action-size) * 0.56), 1.25rem);
+                --mobile-action-icon-size: clamp(0.9375rem, calc(var(--mobile-action-size) * 0.62), 1.375rem);
                 display: flex !important;
                 flex-direction: row !important;
                 flex-wrap: nowrap !important;
@@ -1578,7 +1578,7 @@ div.nav-profile-card {
         @container mobile-profile-main (max-width: 15rem) {
             div.nav-profile-card-mobile-action-stack {
                 --mobile-action-size: clamp(1.375rem, 12cqi, 2rem);
-                --mobile-action-icon-size: clamp(0.875rem, calc(var(--mobile-action-size) * 0.56), 1.125rem);
+                --mobile-action-icon-size: clamp(0.875rem, calc(var(--mobile-action-size) * 0.62), 1.25rem);
                 gap: clamp(0.0625rem, 0.5cqi, 0.125rem);
             }
 
@@ -2520,6 +2520,96 @@ div.nav-short-rail-resume-band {
     div.nav-profile-card-role span.text-typer-span-dynamic {
         color: #000000 !important;
     }
+}
+
+html[data-theme="light"][data-layout="mobile"] nav.nav-header-mobile div.nav-profile-card {
+    --nav-profile-flowing-band-surface: #f4fbff;
+    --avatar-shell-shadow:
+        0 0 0 1px rgba(8, 145, 178, 0.34),
+        0 0 22px rgba(34, 211, 238, 0.2),
+        0 8px 20px rgba(15, 54, 84, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.92);
+
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.64), rgba(239, 249, 255, 0.44));
+
+    h1.nav-profile-card-name span.nav-profile-card-name-line {
+        color: #102033 !important;
+        text-shadow: 0 1px 0 #ffffff, 0 0 16px rgba(8, 145, 178, 0.16);
+    }
+
+    div.nav-profile-card-media {
+        background:
+            radial-gradient(circle at 24% 16%, #ffffff 0%, rgba(255, 255, 255, 0.32) 34%, transparent 61%),
+            linear-gradient(145deg, #ffffff 0%, #dff8ff 48%, #71d7ee 100%);
+        box-shadow: var(--avatar-shell-shadow);
+    }
+
+    div.nav-profile-card-metal-frame-rotor {
+        background: conic-gradient(from 180deg,
+            #0891b2 0deg,
+            #e0faff 54deg,
+            #ffffff 108deg,
+            #67e8f9 178deg,
+            #effbff 242deg,
+            #60a5fa 308deg,
+            #0891b2 360deg);
+        filter: saturate(1.08) brightness(1.04);
+    }
+
+    div.nav-profile-card-role {
+        --nav-profile-role-edge-lip: #93c5fd;
+        --nav-profile-role-edge-trough: #fff0c2;
+        --nav-profile-role-edge-ridge: #ffffff;
+        --nav-profile-role-edge-veil-strong: rgba(37, 99, 235, 0.16);
+        --nav-profile-role-edge-veil-soft: rgba(245, 158, 11, 0.1);
+        --nav-profile-role-edge-shadow: rgba(37, 72, 140, 0.18);
+        color: #173b68;
+        background: linear-gradient(100deg, #eaf3ff 0%, #ffffff 34%, #fffdf7 66%, #fff3d6 100%);
+        border-color: rgba(37, 99, 235, 0.2);
+        box-shadow:
+            inset 0 1px 0 #ffffff,
+            inset 0 -1px 0 rgba(245, 158, 11, 0.42),
+            0 0 14px rgba(37, 99, 235, 0.08);
+
+        span.text-typer-span-dynamic { color: #173b68 !important; }
+    }
+
+    div.nav-profile-card-mobile-action-stack > div.nav-profile-card-mobile-action {
+        border-color: rgba(8, 145, 178, 0.42);
+        box-shadow:
+            0 5px 16px rgba(15, 54, 84, 0.12),
+            0 0 14px rgba(34, 211, 238, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.98);
+    }
+
+    div.nav-profile-card-mobile-action-stack > div.nav-profile-card-mobile-action:not(.nav-profile-card-mobile-action-audio):hover,
+    div.nav-profile-card-mobile-action-stack > div.nav-profile-card-mobile-action:not(.nav-profile-card-mobile-action-audio):focus-within {
+        border-color: #0891b2;
+        box-shadow:
+            0 0 18px rgba(34, 211, 238, 0.4),
+            0 7px 18px rgba(15, 54, 84, 0.14),
+            inset 0 0 0 1px rgba(8, 145, 178, 0.22),
+            inset 0 1px 0 #ffffff;
+    }
+}
+
+html[data-theme="dark"][data-layout="mobile"] nav.nav-header-mobile div.nav-profile-card div.nav-profile-card-role {
+    --nav-profile-flowing-band-surface: #201832;
+    --nav-profile-role-edge-lip: #6d4b9e;
+    --nav-profile-role-edge-trough: #302347;
+    --nav-profile-role-edge-ridge: #47345f;
+    --nav-profile-role-edge-veil-strong: rgba(167, 139, 250, 0.16);
+    --nav-profile-role-edge-veil-soft: rgba(167, 139, 250, 0.07);
+    --nav-profile-role-edge-shadow: rgba(42, 24, 74, 0.42);
+    color: #eee7ff;
+    background: linear-gradient(100deg, #201832 0%, #29203d 52%, #172239 100%);
+    border-color: rgba(167, 139, 250, 0.28);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(167, 139, 250, 0.2),
+        0 0 16px rgba(109, 75, 158, 0.14);
+
+    span.text-typer-span-dynamic { color: #f2ecff !important; }
 }
 
 // On wide mobile cards the audio control grows beyond its normal icon size.

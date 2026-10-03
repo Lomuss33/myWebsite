@@ -1029,16 +1029,20 @@
           },
           "locales": {
             "en": {
-              "title": "Height: 200 cm"
+              "title": "Height: 200 cm",
+              "measurementExplanation": "200 cm equals 2 metres, or about 6 ft 7 in—a notably tall height."
             },
             "de": {
-              "title": "Größe: 200 cm"
+              "title": "Größe: 200 cm",
+              "measurementExplanation": "200 cm entsprechen 2 Metern oder etwa 6 Fuß 7 Zoll – eine deutlich überdurchschnittliche Größe."
             },
             "hr": {
-              "title": "Visina: 200 cm"
+              "title": "Visina: 200 cm",
+              "measurementExplanation": "200 cm su 2 metra, odnosno oko 6 stopa i 7 inča — prilično iznadprosječna visina."
             },
             "tr": {
-              "title": "Boy: 200 cm"
+              "title": "Boy: 200 cm",
+              "measurementExplanation": "200 cm, 2 metreye (yaklaşık 6 fit 7 inç) karşılık gelir; ortalamanın oldukça üzerinde bir boy."
             }
           }
         },
@@ -1058,16 +1062,20 @@
           },
           "locales": {
             "en": {
-              "title": "Weight: 100 kg"
+              "title": "Weight: 100 kg",
+              "measurementExplanation": "100 kg is about 220 lb. It describes body mass, not strength or fitness."
             },
             "de": {
-              "title": "Gewicht: 100 kg"
+              "title": "Gewicht: 100 kg",
+              "measurementExplanation": "100 kg entsprechen etwa 220 lb. Das beschreibt die Körpermasse, nicht Kraft oder Fitness."
             },
             "hr": {
-              "title": "Težina: 100 kg"
+              "title": "Težina: 100 kg",
+              "measurementExplanation": "100 kg je oko 220 lb. To opisuje tjelesnu masu, ne snagu ni kondiciju."
             },
             "tr": {
-              "title": "Kilo: 100 kg"
+              "title": "Kilo: 100 kg",
+              "measurementExplanation": "100 kg yaklaşık 220 lb eder. Bu vücut kütlesini belirtir; güç ya da kondisyonu değil."
             }
           }
         },

@@ -2385,6 +2385,42 @@ div.nav-short-rail-resume-band {
 
 }
 
+[data-theme="light"] div.nav-profile-card-desktop-action-stack > div.nav-profile-card-desktop-action-audio,
+[data-theme="light"] div.nav-profile-card-desktop-action-stack > div.nav-profile-card-desktop-action-resume,
+[data-theme="light"] div.nav-profile-card-mobile-action-stack > div.nav-profile-card-mobile-action-audio,
+[data-theme="light"] div.nav-profile-card-mobile-action-stack > div.nav-profile-card-mobile-action-resume {
+    --theme-nav-action-surface: #fff;
+    --theme-nav-action-surface-accent: #fff;
+    background: #fff;
+}
+
+[data-theme="dark"] div.nav-profile-card-desktop-action-stack > div.nav-profile-card-desktop-action-audio,
+[data-theme="dark"] div.nav-profile-card-desktop-action-stack > div.nav-profile-card-desktop-action-resume,
+[data-theme="dark"] div.nav-profile-card-mobile-action-stack > div.nav-profile-card-mobile-action-audio,
+[data-theme="dark"] div.nav-profile-card-mobile-action-stack > div.nav-profile-card-mobile-action-resume {
+    --theme-nav-action-surface: #000;
+    --theme-nav-action-surface-accent: #000;
+    background: #000;
+}
+
+[data-theme="light"] div.nav-profile-card div.nav-profile-card-desktop-action-stack div.audio-button-wrapper-size-default button.audio-button,
+[data-theme="light"] div.nav-profile-card div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button,
+[data-theme="light"] div.nav-profile-card div.nav-profile-card-mobile-action-stack button.audio-button {
+    color: #111;
+}
+
+[data-theme="dark"] div.nav-profile-card div.nav-profile-card-desktop-action-stack div.audio-button-wrapper-size-default button.audio-button,
+[data-theme="dark"] div.nav-profile-card div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-audio-button,
+[data-theme="dark"] div.nav-profile-card div.nav-profile-card-mobile-action-stack button.audio-button {
+    color: #fff;
+}
+
+[data-theme] div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-resume-toggle::before,
+[data-theme] div.nav-profile-card-desktop-action-stack button.nav-profile-card-desktop-resume-toggle::after {
+    display: none;
+    content: none;
+}
+
 @keyframes nav-profile-card-metal-frame-spin {
     from {
         transform: rotate(0deg);

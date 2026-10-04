@@ -396,8 +396,10 @@ function FallingWords({
                             const dy = dragState.targetY - draggedEntry.body.position.y
                             const distance = Math.hypot(dx, dy)
                             if(distance > 0.01) {
-                                const pullStrength = isCoarsePointer() ? 0.0009 : 0.0012
-                                const maxPull = isCoarsePointer() ? 0.08 : 0.1
+                                // Keep the held word on a softer spring so it trails
+                                // behind the pointer and has to work through collisions.
+                                const pullStrength = isCoarsePointer() ? 0.00045 : 0.0006
+                                const maxPull = isCoarsePointer() ? 0.045 : 0.06
                                 const pullX = clamp(dx * pullStrength, -maxPull, maxPull)
                                 const pullY = clamp(dy * pullStrength, -maxPull, maxPull)
                                 Matter.Body.applyForce(draggedEntry.body, draggedEntry.body.position, {

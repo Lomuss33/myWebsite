@@ -7,6 +7,10 @@ div.article-testimonials-items {
     --testimonial-avatar-size: 92px;
     --testimonial-avatar-border-size: 7px;
 
+    // Let card shadows and decorative edges breathe beyond the active slide
+    // viewport. The page scroll frame still owns the outer page boundary.
+    overflow: visible;
+
     @include content-breakpoint-down(xl) {
         --testimonial-balloon-min-height: 156px;
         --testimonial-avatar-size: 88px;

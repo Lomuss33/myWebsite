@@ -18,15 +18,14 @@ const WORD_SEARCH_PREFIXES = {
 }
 
 const WORD_FONT_SCALE_STOPS = [
-    // The base word size already grows with viewport width. These multipliers
-    // keep the resulting text comfortably readable without over-scaling it.
-    [320, 0.75],
-    [480, 0.76],
-    [768, 0.78],
-    [1024, 0.73],
-    [1440, 0.71],
-    [1920, 0.73],
-    [2560, 0.77]
+    // Keep the dense word cloud legible while leaving more space between words.
+    [320, 0.68],
+    [480, 0.69],
+    [768, 0.71],
+    [1024, 0.66],
+    [1440, 0.64],
+    [1920, 0.66],
+    [2560, 0.70]
 ]
 
 const interpolateScale = (width, stops) => {

@@ -195,7 +195,7 @@ article#article-2-section-my-writings {
         span.falling-word {
             // The stage's physics reads each rendered word's dimensions, so keep
             // the visual and collision-box size in sync through the CSS font size.
-            font-size: clamp(.7rem, calc(clamp(1.05rem, 0.95rem + 0.8vw, 1.75rem) * var(--falling-word-font-scale, 1) * .84), 1rem) !important;
+            font-size: clamp(.625rem, calc(clamp(1.05rem, 0.95rem + 0.8vw, 1.75rem) * var(--falling-word-font-scale, 1) * .74), .9rem) !important;
         }
     }
 

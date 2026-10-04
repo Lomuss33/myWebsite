@@ -1,0 +1,112 @@
+{
+  "generator": "built-in image_gen",
+  "mode": "edit",
+  "revision": 2,
+  "status": "installed",
+  "styles": {
+    "left": "solid techno/neon digital emblem",
+    "right": "precision neon interface linework"
+  },
+  "promptFile": "prompts-neon-v2.json",
+  "previousManifest": "manifest-v1.json",
+  "stickers": [
+    {
+      "filename": "01-germancro-language-neon-v2.png",
+      "title": "GermanCro language exchange",
+      "style": "solid",
+      "inputFilename": "01-germancro-language-flat.png",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-dddbe032-953a-4631-8f13-c87d614ac11d.png"
+    },
+    {
+      "filename": "02-germancro-typing-neon-v2.png",
+      "title": "GermanCro typing validation",
+      "style": "line",
+      "inputFilename": "02-germancro-typing-ink.png",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-b96290e0-ffa3-40fc-bf7b-603d9dcb9df9.png"
+    },
+    {
+      "filename": "03-belot-bela-neon-v2.png",
+      "title": "Belot king and queen",
+      "style": "solid",
+      "inputFilename": "03-belot-bela-flat.png",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-f489faed-2b34-4786-8624-28ea380ad4c4.png"
+    },
+    {
+      "filename": "04-belot-trick-neon-v2.png",
+      "title": "Belot four-card trick",
+      "style": "line",
+      "inputFilename": "04-belot-trick-ink.png",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-1e9b8c5c-64f0-4070-8013-35c90e294f6f.png"
+    },
+    {
+      "filename": "05-pepper-tablet-neon-v2.png",
+      "title": "Pepper poker interface",
+      "style": "solid",
+      "inputFilename": "05-pepper-tablet-flat.png",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-93ebbaeb-5013-4d56-86c3-8d4129f9ba90.png"
+    },
+    {
+      "filename": "06-pepper-draw-neon-v2.png",
+      "title": "Poker hold and draw",
+      "style": "line",
+      "inputFilename": "06-pepper-draw-ink.png",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-bca8c0ab-1e5e-46b4-8a9b-38ded5d6e11e.png"
+    },
+    {
+      "filename": "07-villa-house-neon-v2.png",
+      "title": "Villa Bagara mountain retreat",
+      "style": "solid",
+      "inputFilename": "07-villa-house-flat.png",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-462fc0ef-e083-41e9-a646-69f3f01f6cc2.png"
+    },
+    {
+      "filename": "08-villa-trail-neon-v2.png",
+      "title": "Villa Bagara terrain navigation",
+      "style": "line",
+      "inputFilename": "08-villa-trail-ink.png",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-c3ecbdf3-f78a-4ab4-9637-77cadfe34f2c.png"
+    },
+    {
+      "filename": "09-family-nodes-neon-v2.png",
+      "title": "Family tree network",
+      "style": "solid",
+      "inputFilename": "09-family-nodes-flat.png",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-9d5c720b-36e1-41c8-826d-0b2533626d67.png"
+    },
+    {
+      "filename": "10-family-keyhole-neon-v2.png",
+      "title": "Encrypted family network",
+      "style": "line",
+      "inputFilename": "10-family-keyhole-ink.png",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-81943346-f927-47fc-8316-a1cde6880373.png"
+    },
+    {
+      "filename": "11-latex-cv-neon-v2.png",
+      "title": "LaTeX structured document",
+      "style": "solid",
+      "inputFilename": "11-latex-cv-flat.png",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-93ae007f-9bca-4dc1-a015-a476accd54b4.png"
+    },
+    {
+      "filename": "12-latex-typesetting-neon-v2.png",
+      "title": "LaTeX typesetting precision",
+      "style": "line",
+      "inputFilename": "12-latex-typesetting-ink.png",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-59494b20-5d6a-4da0-a85a-2b58fb038692.png"
+    },
+    {
+      "filename": "13-portfolio-browser-neon-v2.png",
+      "title": "Portfolio product interface",
+      "style": "solid",
+      "inputFilename": "13-portfolio-browser-flat.png",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-03113c9f-977c-4d8f-b127-d710730315f7.png"
+    },
+    {
+      "filename": "14-portfolio-timeline-neon-v2.png",
+      "title": "Portfolio career and project path",
+      "style": "line",
+      "inputFilename": "14-portfolio-timeline-ink.png",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-b2e3b48e-7309-46f5-aa64-cf517d427452.png"
+    }
+  ]
+}

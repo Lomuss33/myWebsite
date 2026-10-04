@@ -651,19 +651,19 @@
           "locales": {
             "en": {
               "title": "Browser Homepage Organization",
-              "text": "Group Speed Dial turns the chaotic browser start page into a [[control center]]. Instead of drowning in bookmarks, everything becomes visual, grouped, and instantly accessible. It's simple in theory but surprisingly powerful in practice."
+              "text": "I group the sites I use into visual tiles, so frequent links take one click instead of a bookmark search."
             },
             "de": {
               "title": "Browser-Startseiten Organisation",
-              "text": "Group Speed Dial verwandelt die chaotische Browser-Startseite in ein [[Kontrollzentrum]]. Statt in Lesezeichen zu ertrinken, wird alles visuell organisiert und schnell erreichbar."
+              "text": "Ich ordne häufig genutzte Websites als Kacheln. So öffne ich sie mit einem Klick, statt lange Lesezeichen zu durchsuchen."
             },
             "hr": {
               "title": "Organizacija početne stranice preglednika",
-              "text": "Group Speed Dial pretvara kaotičnu početnu stranicu preglednika u [[kontrolni centar]]. Sve je vizualno organizirano i brzo dostupno."
+              "text": "Najčešće stranice složim u pločice pa ih otvaram jednim klikom, bez traženja među oznakama."
             },
             "tr": {
               "title": "Tarayıcı Ana Sayfa Organizasyonu",
-              "text": "Group Speed Dial, tarayıcı ana sayfanızı bir [[kontrol merkezine]] dönüştürüyor. Yer imleri karmaşası yerine her şey görsel ve düzenli."
+              "text": "Sık kullandığım siteleri görsel kutucuklarda toplar; yer imlerinde aramak yerine tek tıkla açarım."
             }
           },
           "categoryId": "recommendation_group_online"
@@ -686,19 +686,19 @@
           "locales": {
             "en": {
               "title": "Amazon Price Tracker",
-              "text": "Keepa quietly gives shoppers [[data superpowers]]. The price history graphs reveal when deals are real and when they're just marketing theater."
+              "text": "Keepa tracks an item's price over time and can alert you to drops, so you can judge whether a deal is worth it."
             },
             "de": {
               "title": "Amazon Preis-Tracker",
-              "text": "Keepa verleiht Käufern [[Daten-Superkräfte]]. Preisdiagramme zeigen sofort, ob ein Angebot wirklich ein Schnäppchen ist."
+              "text": "Keepa zeigt den Preisverlauf eines Produkts und meldet Preisrückgänge. So erkenne ich, ob sich ein Angebot lohnt."
             },
             "hr": {
               "title": "Praćenje cijena na Amazonu",
-              "text": "Keepa kupcima daje [[supermoći podataka]]. Povijest cijena otkriva jesu li popusti stvarni."
+              "text": "Keepa prati cijenu proizvoda i može javiti kad padne, pa lakše procijenim isplati li se kupnja."
             },
             "tr": {
               "title": "Amazon Fiyat Takibi",
-              "text": "Keepa alışverişçilere [[veri süper güçleri]] verir. Fiyat geçmişi gerçek indirimleri ortaya çıkarır."
+              "text": "Keepa ürün fiyatlarını izler ve düşüşleri bildirebilir; böylece bir indirimin gerçekten iyi olup olmadığını anlarsınız."
             }
           },
           "categoryId": "recommendation_group_online"
@@ -721,19 +721,19 @@
           "locales": {
             "en": {
               "title": "Self-Hosted Cloud",
-              "text": "Nextcloud is what happens when you decide the cloud should belong to [[you]]. File sync, collaboration, and apps—all running on your own infrastructure."
+              "text": "Nextcloud syncs files and calendars across my devices. Hosting it myself gives me more control over where they live."
             },
             "de": {
               "title": "Selbstgehostete Cloud",
-              "text": "Nextcloud ist die Cloud, die wirklich [[Ihnen gehört]]. Dateien, Zusammenarbeit und Apps auf eigener Infrastruktur."
+              "text": "Nextcloud synchronisiert Dateien und Kalender zwischen meinen Geräten. Beim Selbsthosting behalte ich mehr Kontrolle über meine Daten."
             },
             "hr": {
               "title": "Samostalno hostana cloud platforma",
-              "text": "Nextcloud je cloud koji stvarno [[posjedujete]]. Sinkronizacija datoteka i suradnja na vlastitom serveru."
+              "text": "Nextcloud sinkronizira datoteke i kalendare na mojim uređajima. Vlastiti server daje mi veću kontrolu nad podacima."
             },
             "tr": {
               "title": "Kendi Barındırılan Bulut",
-              "text": "Nextcloud, bulutun gerçekten [[size ait]] olduğu bir platformdur."
+              "text": "Nextcloud dosyalarımı ve takvimlerimi cihazlarım arasında eşitler. Kendim barındırınca verilerim üzerinde daha çok kontrolüm olur."
             }
           },
           "categoryId": "recommendation_group_online"
@@ -756,19 +756,19 @@
           "locales": {
             "en": {
               "title": "Free Knowledge Encyclopedia",
-              "text": "Wikipedia remains one of humanity's most astonishing projects: millions of people building a [[shared knowledge archive]] together."
+              "text": "Wikipedia gives me a quick overview of unfamiliar topics, with references I can follow when I want to check the details."
             },
             "de": {
               "title": "Freie Wissens-Enzyklopädie",
-              "text": "Wikipedia ist eines der erstaunlichsten Projekte der Menschheit: ein [[gemeinsames Wissensarchiv]]."
+              "text": "Wikipedia verschafft mir schnell einen Überblick über ein Thema und verlinkt Quellen, mit denen ich Details prüfen kann."
             },
             "hr": {
               "title": "Besplatna enciklopedija",
-              "text": "Wikipedia je [[zajednička baza znanja]] koju gradi cijeli svijet."
+              "text": "Wikipedia mi brzo daje pregled nepoznate teme i izvore koje mogu otvoriti kad želim provjeriti pojedinosti."
             },
             "tr": {
               "title": "Ücretsiz Bilgi Ansiklopedisi",
-              "text": "Wikipedia, insanlığın birlikte oluşturduğu [[bilgi arşivi]]."
+              "text": "Wikipedia bilmediğim konulara hızlıca göz atmamı sağlar; ayrıntıları doğrulamak için kaynakları da inceleyebilirim."
             }
           },
           "categoryId": "recommendation_group_online"
@@ -791,19 +791,19 @@
           "locales": {
             "en": {
               "title": "European AI Platform",
-              "text": "Mistral represents a fascinating direction for AI: powerful models built with [[European openness and research culture]]."
+              "text": "Mistral's AI tools can help summarize, draft, or explain information, making a blank page or dense text easier to tackle."
             },
             "de": {
               "title": "Europäische KI",
-              "text": "Mistral zeigt eine spannende Richtung für KI: leistungsstarke Modelle mit [[europäischen Werten]]."
+              "text": "Mistrals KI kann Texte zusammenfassen, Entwürfe erstellen und Informationen erklären – hilfreich bei dichtem Stoff oder einem leeren Blatt."
             },
             "hr": {
               "title": "Europska umjetna inteligencija",
-              "text": "Mistral predstavlja novu generaciju [[europske umjetne inteligencije]]."
+              "text": "Mistralovi AI alati mogu sažeti, sastaviti ili objasniti tekst, pa je lakše krenuti od prazne stranice ili složene teme."
             },
             "tr": {
               "title": "Avrupa Yapay Zekası",
-              "text": "Mistral, [[Avrupa merkezli]] güçlü yapay zeka modellerini temsil ediyor."
+              "text": "Mistral'ın yapay zekâ araçları metinleri özetleyip açıklayabilir veya taslak hazırlayabilir; böylece işe başlamak kolaylaşır."
             }
           },
           "categoryId": "recommendation_group_online"
@@ -826,19 +826,19 @@
           "locales": {
             "en": {
               "title": "Diagram Tool",
-              "text": "draw.io is the unsung hero of [[visual thinking]]. When systems get complex, diagrams turn confusion into clarity."
+              "text": "draw.io turns processes, systems, and ideas into diagrams, so relationships are easier to see and explain."
             },
             "de": {
               "title": "Diagramm-Tool",
-              "text": "draw.io ist ein Held für [[visuelles Denken]]. Komplexe Systeme werden plötzlich verständlich."
+              "text": "Mit draw.io stelle ich Abläufe, Systeme und Ideen als Diagramme dar – Zusammenhänge werden dadurch leichter verständlich."
             },
             "hr": {
               "title": "Alat za dijagrame",
-              "text": "draw.io pomaže pretvoriti složene ideje u [[jasne dijagrame]]."
+              "text": "draw.io pretvara procese, sustave i ideje u dijagrame pa ih je lakše razumjeti i objasniti."
             },
             "tr": {
               "title": "Diyagram Aracı",
-              "text": "draw.io, karmaşık fikirleri [[görsel olarak]] açıklamak için mükemmeldir."
+              "text": "draw.io süreçleri, sistemleri ve fikirleri diyagramlara dönüştürür; ilişkileri anlamak ve anlatmak kolaylaşır."
             }
           },
           "categoryId": "recommendation_group_online"
@@ -861,19 +861,19 @@
           "locales": {
             "en": {
               "title": "Virtualization Platform",
-              "text": "Proxmox turns a humble server into a [[mini data center]]. Virtual machines, containers, backups—an incredible playground for anyone exploring infrastructure."
+              "text": "Proxmox runs virtual machines and containers on one server, so I can test services and manage a home lab in one place."
             },
             "de": {
               "title": "Virtualisierungsplattform",
-              "text": "Proxmox verwandelt einen Server in ein [[Mini-Rechenzentrum]]."
+              "text": "Proxmox betreibt virtuelle Maschinen und Container auf einem Server. So lassen sich Dienste und ein eigenes Testlabor zentral verwalten."
             },
             "hr": {
               "title": "Virtualizacijska platforma",
-              "text": "Proxmox pretvara server u [[mini data centar]]."
+              "text": "Proxmox pokreće virtualne strojeve i kontejnere na jednom serveru, pa mogu testirati i upravljati uslugama na jednom mjestu."
             },
             "tr": {
               "title": "Sanallaştırma Platformu",
-              "text": "Proxmox, bir sunucuyu [[mini veri merkezine]] dönüştürür."
+              "text": "Proxmox tek bir sunucuda sanal makineler ve kapsayıcılar çalıştırır; hizmetleri ve deneme ortamlarını tek yerden yönetebilirsiniz."
             }
           },
           "categoryId": "recommendation_group_online"
@@ -896,19 +896,19 @@
           "locales": {
             "en": {
               "title": "Private Networking",
-              "text": "Tailscale feels like [[networking from the future]]. Devices simply see each other securely without the usual VPN headaches."
+              "text": "Tailscale securely connects my devices, so I can reach my own computer or server without setting up a traditional VPN."
             },
             "de": {
               "title": "Privates Netzwerk",
-              "text": "Tailscale fühlt sich an wie [[Netzwerke aus der Zukunft]]."
+              "text": "Tailscale verbindet meine Geräte sicher. So erreiche ich meinen Computer oder Server, ohne ein herkömmliches VPN einzurichten."
             },
             "hr": {
               "title": "Privatna mreža",
-              "text": "Tailscale omogućuje [[sigurno povezivanje uređaja]]."
+              "text": "Tailscale sigurno povezuje moje uređaje pa mogu pristupiti svom računalu ili serveru bez ručnog podešavanja VPN-a."
             },
             "tr": {
               "title": "Özel Ağ",
-              "text": "Tailscale, cihazları [[güvenli şekilde]] birbirine bağlar."
+              "text": "Tailscale cihazlarımı güvenli biçimde bağlar; geleneksel bir VPN kurmadan bilgisayarıma veya sunucuma erişebilirim."
             }
           },
           "categoryId": "recommendation_group_online"
@@ -931,19 +931,19 @@
           "locales": {
             "en": {
               "title": "Market Analysis Platform",
-              "text": "TradingView blends charts, social insights, and analysis into one elegant interface—making financial markets surprisingly [[intuitive to explore]]."
+              "text": "TradingView puts charts, indicators, and price alerts together, making market movements easier to follow and compare."
             },
             "de": {
               "title": "Marktanalyse Plattform",
-              "text": "TradingView kombiniert Charts und Analysen zu einer [[intuitiven Plattform]]."
+              "text": "TradingView bündelt Diagramme, Indikatoren und Kursalarme. So kann ich Marktbewegungen leichter verfolgen und vergleichen."
             },
             "hr": {
               "title": "Analiza tržišta",
-              "text": "TradingView spaja grafikone i analize u [[jednostavnu platformu]]."
+              "text": "TradingView objedinjuje grafikone, pokazatelje i upozorenja o cijenama pa lakše pratim i uspoređujem tržišna kretanja."
             },
             "tr": {
               "title": "Piyasa Analizi",
-              "text": "TradingView, grafikler ve analizleri [[tek bir platformda]] birleştirir."
+              "text": "TradingView grafik, gösterge ve fiyat uyarılarını bir araya getirir; piyasa hareketlerini izleyip karşılaştırmak kolaylaşır."
             }
           },
           "categoryId": "recommendation_group_online"
@@ -966,19 +966,19 @@
           "locales": {
             "en": {
               "title": "Note Taking & Knowledge Base",
-              "text": "Joplin is a [[serious tool]] for people who think in notes. Markdown support, encryption, and flexible syncing make it feel more like a personal knowledge system than just another notebook."
+              "text": "Joplin keeps notes in searchable notebooks and syncs them between devices, helping me find ideas again when I need them."
             },
             "de": {
               "title": "Notizen & Wissensverwaltung",
-              "text": "Joplin ist ein [[ernsthaftes Werkzeug]] für Menschen, die in Notizen denken. Markdown, Verschlüsselung und flexible Synchronisation machen es zu einem persönlichen Wissenssystem."
+              "text": "Joplin organisiert Notizen in durchsuchbaren Notizbüchern und synchronisiert sie zwischen Geräten – so finde ich Gedanken schnell wieder."
             },
             "hr": {
               "title": "Bilješke i organizacija znanja",
-              "text": "Joplin je [[moćan alat]] za bilješke. Markdown, enkripcija i sinkronizacija čine ga pravim sustavom za znanje."
+              "text": "Joplin čuva bilješke u pretraživim bilježnicama i sinkronizira ih među uređajima, pa lako pronađem ono što mi treba."
             },
             "tr": {
               "title": "Not Alma Sistemi",
-              "text": "Joplin sadece bir not uygulaması değil, [[kişisel bilgi sistemi]] gibi çalışır."
+              "text": "Joplin notları aranabilir defterlerde düzenler ve cihazlar arasında eşitler; ihtiyacım olan fikri kolayca bulurum."
             }
           },
           "categoryId": "recommendation_group_desktop"
@@ -1001,19 +1001,19 @@
           "locales": {
             "en": {
               "title": "Multi-Monitor Control",
-              "text": "DisplayFusion turns a chaotic multi-monitor setup into a [[precision workspace]]. Once you experience proper window management and automation, going back feels primitive."
+              "text": "DisplayFusion helps arrange windows across multiple monitors and automate repetitive screen tasks, keeping a large setup manageable."
             },
             "de": {
               "title": "Multi-Monitor Steuerung",
-              "text": "DisplayFusion verwandelt ein chaotisches Multi-Monitor-Setup in einen [[präzisen Arbeitsplatz]]."
+              "text": "DisplayFusion ordnet Fenster auf mehreren Bildschirmen und automatisiert wiederkehrende Aufgaben – das hält ein großes Setup übersichtlich."
             },
             "hr": {
               "title": "Upravljanje više monitora",
-              "text": "DisplayFusion pretvara više monitora u [[organizirani radni prostor]]."
+              "text": "DisplayFusion raspoređuje prozore na više monitora i automatizira ponavljajuće radnje, pa je radni prostor pregledniji."
             },
             "tr": {
               "title": "Çoklu Monitör Yönetimi",
-              "text": "DisplayFusion çoklu monitör kurulumunu [[verimli bir çalışma alanına]] dönüştürür."
+              "text": "DisplayFusion pencereleri birden fazla ekranda düzenler ve tekrarlanan işleri otomatikleştirir; geniş çalışma alanı daha yönetilebilir olur."
             }
           },
           "categoryId": "recommendation_group_desktop"
@@ -1036,19 +1036,19 @@
           "locales": {
             "en": {
               "title": "PDF Editing",
-              "text": "Foxit proves that a PDF editor can be both [[powerful and fast]]. Compared to heavier alternatives, it feels agile while still handling serious document work."
+              "text": "Foxit lets me annotate, fill, and sign PDFs in one app, so document edits do not require printing or switching tools."
             },
             "de": {
               "title": "PDF-Bearbeitung",
-              "text": "Foxit zeigt, dass ein PDF-Editor [[leistungsstark und schnell]] sein kann."
+              "text": "Mit Foxit kann ich PDFs in einer Anwendung kommentieren, ausfüllen und unterschreiben – ohne Drucken oder Werkzeugwechsel."
             },
             "hr": {
               "title": "Uređivanje PDF-a",
-              "text": "Foxit je [[brz i moćan]] alat za rad s PDF dokumentima."
+              "text": "Foxit omogućuje komentiranje, ispunjavanje i potpisivanje PDF-ova u jednoj aplikaciji, bez ispisa i mijenjanja alata."
             },
             "tr": {
               "title": "PDF Düzenleme",
-              "text": "Foxit, PDF düzenlemeyi [[hızlı ve güçlü]] hale getirir."
+              "text": "Foxit PDF'lere not eklememi, form doldurmamı ve imzalamamı sağlar; yazdırmaya veya uygulama değiştirmeye gerek kalmaz."
             }
           },
           "categoryId": "recommendation_group_desktop"
@@ -1071,19 +1071,19 @@
           "locales": {
             "en": {
               "title": "Audio Enhancement",
-              "text": "FxSound is a small but fascinating tool that squeezes [[surprising clarity]] out of ordinary speakers. Sometimes simple signal processing can make a big difference."
+              "text": "FxSound gives me an equalizer and sound presets, so I can make speech clearer or tune audio to my headphones and speakers."
             },
             "de": {
               "title": "Audio-Verbesserung",
-              "text": "FxSound holt [[erstaunliche Klangqualität]] aus normalen Lautsprechern."
+              "text": "FxSound bietet Equalizer und Klangprofile. Damit kann ich Sprache verständlicher machen oder den Ton an Kopfhörer und Lautsprecher anpassen."
             },
             "hr": {
               "title": "Poboljšanje zvuka",
-              "text": "FxSound daje [[jasniji zvuk]] čak i običnim zvučnicima."
+              "text": "FxSound nudi ekvilizator i zvučne profile pa mogu jasnije čuti govor ili prilagoditi zvuk slušalicama i zvučnicima."
             },
             "tr": {
               "title": "Ses Geliştirme",
-              "text": "FxSound sıradan hoparlörlerden [[daha iyi ses]] elde etmenizi sağlar."
+              "text": "FxSound ekolayzır ve ses profilleri sunar; konuşmaları netleştirebilir, sesi kulaklığıma veya hoparlörüme göre ayarlayabilirim."
             }
           },
           "categoryId": "recommendation_group_desktop"
@@ -1106,19 +1106,19 @@
           "locales": {
             "en": {
               "title": "Code Editor",
-              "text": "VS Code is the [[Swiss-army knife]] of development environments. Lightweight at its core, yet endlessly extendable through its ecosystem."
+              "text": "VS Code combines editing, extensions, a terminal, and debugging in one customizable workspace, so I can work without constant app switching."
             },
             "de": {
               "title": "Code-Editor",
-              "text": "VS Code ist das [[Schweizer Taschenmesser]] der Entwicklungsumgebungen."
+              "text": "VS Code vereint Editor, Erweiterungen, Terminal und Fehlersuche in einer anpassbaren Oberfläche – so muss ich seltener zwischen Apps wechseln."
             },
             "hr": {
               "title": "Uređivač koda",
-              "text": "VS Code je [[švicarski nož]] među editorima koda."
+              "text": "VS Code objedinjuje uređivanje koda, dodatke, terminal i otklanjanje pogrešaka, pa rjeđe moram mijenjati aplikacije."
             },
             "tr": {
               "title": "Kod Editörü",
-              "text": "VS Code geliştiriciler için [[çok yönlü]] bir editördür."
+              "text": "VS Code düzenleyiciyi, eklentileri, terminali ve hata ayıklamayı bir araya getirir; böylece uygulamalar arasında daha az geçiş yaparım."
             }
           },
           "categoryId": "recommendation_group_desktop"
@@ -1141,19 +1141,19 @@
           "locales": {
             "en": {
               "title": "Git Client",
-              "text": "GitHub Desktop lowers the barrier to version control. It turns complex Git workflows into something [[visual and approachable]]."
+              "text": "GitHub Desktop shows code changes visually and makes commits and branches easier to manage, especially when learning Git."
             },
             "de": {
               "title": "Git-Client",
-              "text": "GitHub Desktop macht Versionskontrolle [[visuell und zugänglich]]."
+              "text": "GitHub Desktop zeigt Änderungen übersichtlich an und vereinfacht Commits und Branches – besonders beim Einstieg in Git."
             },
             "hr": {
               "title": "Git klijent",
-              "text": "GitHub Desktop čini Git [[lakšim za razumjeti]]."
+              "text": "GitHub Desktop vizualno prikazuje promjene i olakšava upravljanje commitovima i granama, posebno pri učenju Gita."
             },
             "tr": {
               "title": "Git İstemcisi",
-              "text": "GitHub Desktop, Git işlemlerini [[görsel ve kolay]] hale getirir."
+              "text": "GitHub Desktop kod değişikliklerini görsel olarak gösterir; commit ve dalları yönetmeyi, özellikle Git'i öğrenirken, kolaylaştırır."
             }
           },
           "categoryId": "recommendation_group_desktop"
@@ -1176,19 +1176,19 @@
           "locales": {
             "en": {
               "title": "Email Client",
-              "text": "Thunderbird remains one of the few email clients that still respects [[user control]]. Open-source, customizable, and surprisingly powerful."
+              "text": "Thunderbird brings email accounts, calendars, and contacts together, so I can manage communication in one customizable app."
             },
             "de": {
               "title": "E-Mail-Client",
-              "text": "Thunderbird respektiert noch immer [[die Kontrolle des Nutzers]]."
+              "text": "Thunderbird bündelt E-Mail-Konten, Kalender und Kontakte. So verwalte ich meine Kommunikation in einer anpassbaren Anwendung."
             },
             "hr": {
               "title": "Email klijent",
-              "text": "Thunderbird je [[moćan open-source]] email klijent."
+              "text": "Thunderbird objedinjuje e-poštu, kalendare i kontakte pa komunikaciju mogu voditi u jednoj prilagodljivoj aplikaciji."
             },
             "tr": {
               "title": "E-posta İstemcisi",
-              "text": "Thunderbird, kullanıcıya [[kontrol veren]] açık kaynaklı bir e-posta istemcisidir."
+              "text": "Thunderbird e-posta hesaplarını, takvimleri ve kişileri bir araya getirir; iletişimi tek bir uygulamada yönetebilirim."
             }
           },
           "categoryId": "recommendation_group_desktop"
@@ -1211,19 +1211,19 @@
           "locales": {
             "en": {
               "title": "Network Analyzer",
-              "text": "Wireshark lets you literally [[see the internet]] packet by packet. For anyone studying networking, it turns theory into something observable."
+              "text": "Wireshark shows network traffic packet by packet, helping me see what devices are sending and learn how connections behave."
             },
             "de": {
               "title": "Netzwerkanalyse",
-              "text": "Wireshark lässt Sie das Internet [[Paket für Paket]] sehen."
+              "text": "Wireshark zeigt den Netzwerkverkehr Paket für Paket. So sehe ich, was Geräte senden, und kann Verbindungen besser verstehen."
             },
             "hr": {
               "title": "Analiza mreže",
-              "text": "Wireshark omogućuje da [[vidite mrežni promet]]."
+              "text": "Wireshark prikazuje mrežni promet paket po paket pa mogu vidjeti što uređaji šalju i bolje razumjeti veze."
             },
             "tr": {
               "title": "Ağ Analizi",
-              "text": "Wireshark, ağ trafiğini [[paket paket]] analiz etmenizi sağlar."
+              "text": "Wireshark ağ trafiğini paket paket gösterir; cihazların ne gönderdiğini görüp bağlantıların nasıl çalıştığını öğrenebilirim."
             }
           },
           "categoryId": "recommendation_group_desktop"
@@ -1246,19 +1246,19 @@
           "locales": {
             "en": {
               "title": "Password Manager",
-              "text": "Bitwarden solves one of the most common security problems: humans and passwords. Open-source and transparent, it's a [[solid foundation]] for personal security."
+              "text": "Bitwarden stores and autofills unique passwords in an encrypted vault, so I do not have to reuse or remember them all."
             },
             "de": {
               "title": "Passwort-Manager",
-              "text": "Bitwarden löst eines der größten Sicherheitsprobleme: [[Passwörter]]."
+              "text": "Bitwarden speichert einzigartige Passwörter in einem verschlüsselten Tresor und füllt sie automatisch aus – ohne Wiederverwendung oder Auswendiglernen."
             },
             "hr": {
               "title": "Upravitelj lozinki",
-              "text": "Bitwarden je [[sigurno rješenje]] za upravljanje lozinkama."
+              "text": "Bitwarden čuva jedinstvene lozinke u šifriranom trezoru i automatski ih unosi, pa ih ne moram ponavljati ni pamtiti."
             },
             "tr": {
               "title": "Şifre Yöneticisi",
-              "text": "Bitwarden, [[güvenli şifre yönetimi]] için sağlam bir çözümdür."
+              "text": "Bitwarden benzersiz parolaları şifreli kasada saklayıp otomatik doldurur; hepsini hatırlamam veya tekrar kullanmam gerekmez."
             }
           },
           "categoryId": "recommendation_group_desktop"
@@ -1281,19 +1281,19 @@
           "locales": {
             "en": {
               "title": "Decentralized Messaging",
-              "text": "bitchat explores an intriguing idea: communication without centralized control. It's a small but fascinating example of [[decentralized technology]] challenging the traditional messaging model."
+              "text": "bitchat explores nearby messaging over Bluetooth, offering a way to communicate when internet access or central servers are unavailable."
             },
             "de": {
               "title": "Dezentrale Kommunikation",
-              "text": "bitchat zeigt eine spannende Idee: Kommunikation ohne zentrale Kontrolle – ein Beispiel für [[dezentrale Technologie]]."
+              "text": "bitchat erprobt Nachrichten über Bluetooth in der Nähe – eine Möglichkeit zur Kommunikation, wenn Internet oder zentrale Server fehlen."
             },
             "hr": {
               "title": "Decentralizirana komunikacija",
-              "text": "bitchat istražuje ideju komunikacije bez centralne kontrole – zanimljiv primjer [[decentralizirane tehnologije]]."
+              "text": "bitchat istražuje razmjenu poruka putem Bluetootha u blizini, što može pomoći kad nema interneta ni središnjeg servera."
             },
             "tr": {
               "title": "Merkezi Olmayan Mesajlaşma",
-              "text": "bitchat, merkezi kontrol olmadan iletişim fikrini araştıran ilginç bir [[merkeziyetsiz teknoloji]] örneğidir."
+              "text": "bitchat yakındaki cihazlar arasında Bluetooth ile mesajlaşmayı dener; internetin veya merkezi sunucuların olmadığı durumlar için bir seçenek sunar."
             }
           },
           "categoryId": "recommendation_group_mobile"
@@ -1316,19 +1316,19 @@
           "locales": {
             "en": {
               "title": "Weather Forecast",
-              "text": "yr delivers weather forecasts with impressive accuracy and scientific transparency. It's one of the rare weather apps where the data feels genuinely [[meteorology-driven]] rather than ad-driven."
+              "text": "yr gives location-based forecasts and precipitation details, helping me decide what to wear or whether to change plans."
             },
             "de": {
               "title": "Wettervorhersage",
-              "text": "yr liefert erstaunlich präzise Vorhersagen und wirkt stark [[wissenschaftlich fundiert]]."
+              "text": "yr bietet ortsbezogene Vorhersagen und Niederschlagsdaten. So kann ich Kleidung und Tagespläne besser abstimmen."
             },
             "hr": {
               "title": "Vremenska prognoza",
-              "text": "yr pruža vrlo precizne prognoze temeljene na [[meteorološkim podacima]]."
+              "text": "yr prikazuje prognozu i oborine za odabranu lokaciju pa lakše odlučim što odjenuti ili trebam li promijeniti plan."
             },
             "tr": {
               "title": "Hava Durumu",
-              "text": "yr, gerçekten [[meteoroloji temelli]] hava tahminleri sunan güvenilir bir uygulamadır."
+              "text": "yr konuma göre hava tahmini ve yağış bilgisi sunar; ne giyeceğime veya planımı değiştirip değiştirmeyeceğime karar vermek kolaylaşır."
             }
           },
           "categoryId": "recommendation_group_mobile"
@@ -1351,19 +1351,19 @@
           "locales": {
             "en": {
               "title": "Food Transparency",
-              "text": "Yuka transforms grocery shopping into a small investigation. Scan a product and suddenly you see ingredients, additives, and health ratings—giving consumers [[real informational leverage]]."
+              "text": "Yuka scans food and personal-care labels, making ingredients and ratings easier to compare while shopping."
             },
             "de": {
               "title": "Lebensmittel-Transparenz",
-              "text": "Yuka macht Einkaufen zu einer kleinen Analyse: Inhaltsstoffe und Bewertungen schaffen [[Transparenz]]."
+              "text": "Yuka scannt Lebensmittel und Pflegeprodukte und macht Inhaltsstoffe und Bewertungen beim Einkaufen leichter vergleichbar."
             },
             "hr": {
               "title": "Transparentnost hrane",
-              "text": "Yuka pretvara kupovinu hrane u malu analizu – daje potrošačima [[informacijsku prednost]]."
+              "text": "Yuka skenira deklaracije hrane i kozmetike pa je sastojke i ocjene lakše usporediti tijekom kupnje."
             },
             "tr": {
               "title": "Gıda Şeffaflığı",
-              "text": "Yuka, ürünleri tarayarak içerikleri ve katkı maddelerini gösterir ve kullanıcılara [[bilgi gücü]] verir."
+              "text": "Yuka gıda ve kişisel bakım ürünlerinin etiketlerini tarar; alışverişte içerikleri ve puanları karşılaştırmayı kolaylaştırır."
             }
           },
           "categoryId": "recommendation_group_mobile"
@@ -1386,19 +1386,19 @@
           "locales": {
             "en": {
               "title": "AI Bible Study",
-              "text": "BibleAI mixes ancient texts with modern machine intelligence. It allows quick exploration of passages, themes, and interpretations—turning scripture study into a surprisingly [[interactive experience]]."
+              "text": "BibleAI helps search passages and explore themes, giving me a quicker starting point for personal Bible study."
             },
             "de": {
               "title": "KI Bibelstudium",
-              "text": "BibleAI verbindet alte Texte mit moderner KI und macht das Studium der Bibel [[interaktiv]]."
+              "text": "BibleAI hilft, Bibelstellen zu finden und Themen zu erkunden – ein schneller Einstieg ins persönliche Bibelstudium."
             },
             "hr": {
               "title": "AI proučavanje Biblije",
-              "text": "BibleAI kombinira drevne tekstove s umjetnom inteligencijom za [[interaktivno proučavanje]]."
+              "text": "BibleAI pomaže pronaći biblijske odlomke i istražiti teme, kao brži početak osobnog proučavanja Biblije."
             },
             "tr": {
               "title": "Yapay Zeka ile İncil",
-              "text": "BibleAI, kutsal metinleri yapay zekâ ile analiz ederek [[etkileşimli bir çalışma]] sunar."
+              "text": "BibleAI ayetleri bulmaya ve temaları incelemeye yardımcı olur; kişisel İncil çalışmasına hızlı bir başlangıç sağlar."
             }
           },
           "categoryId": "recommendation_group_mobile"
@@ -1421,19 +1421,19 @@
           "locales": {
             "en": {
               "title": "Architecture & Planning",
-              "text": "Floor Plan Creator turns a smartphone into a surprisingly capable [[architectural sketchpad]]. Designing rooms or planning renovations becomes intuitive and visual."
+              "text": "Floor Plan Creator lets me sketch rooms to scale and place doors or furniture, so I can test a layout before moving things."
             },
             "de": {
               "title": "Raumplanung",
-              "text": "Floor Plan Creator verwandelt das Smartphone in ein [[Werkzeug für Raumplanung]]."
+              "text": "Mit Floor Plan Creator zeichne ich Räume maßstabsgetreu und platziere Türen oder Möbel – so prüfe ich Grundrisse vor dem Umräumen."
             },
             "hr": {
               "title": "Planiranje prostora",
-              "text": "Floor Plan Creator omogućuje jednostavno [[dizajniranje prostora]]."
+              "text": "Floor Plan Creator omogućuje crtanje prostorija u mjerilu i raspored vrata ili namještaja prije stvarnog preuređenja."
             },
             "tr": {
               "title": "Kat Planı Tasarımı",
-              "text": "Floor Plan Creator, telefonunuzu bir [[mimari tasarım aracı]] haline getirir."
+              "text": "Floor Plan Creator odaları ölçekli çizmeyi, kapı ve mobilya eklemeyi sağlar; eşyaları taşımadan önce yerleşimi deneyebilirim."
             }
           },
           "categoryId": "recommendation_group_mobile"
@@ -1456,19 +1456,19 @@
           "locales": {
             "en": {
               "title": "Spaced Repetition Learning",
-              "text": "AnkiDroid uses one of the most powerful learning techniques known: [[spaced repetition]]. Knowledge resurfaces exactly when your brain is about to forget it."
+              "text": "AnkiDroid schedules flashcards for review over time, helping me remember facts for exams, languages, or everyday learning."
             },
             "de": {
               "title": "Spaced-Repetition Lernen",
-              "text": "AnkiDroid nutzt [[Spaced Repetition]] – eine der effektivsten Lernmethoden."
+              "text": "AnkiDroid plant Karteikarten-Wiederholungen über die Zeit und hilft mir, Wissen für Prüfungen, Sprachen und den Alltag zu behalten."
             },
             "hr": {
               "title": "Učenje ponavljanjem",
-              "text": "AnkiDroid koristi [[spaced repetition]] za dugoročno pamćenje."
+              "text": "AnkiDroid raspoređuje ponavljanje kartica kroz vrijeme i pomaže mi zapamtiti gradivo za ispite, jezike i svakodnevno učenje."
             },
             "tr": {
               "title": "Aralıklı Tekrar Öğrenme",
-              "text": "AnkiDroid, [[spaced repetition]] yöntemiyle öğrenmeyi güçlendirir."
+              "text": "AnkiDroid kart tekrarlarını zamana yayar; sınavlar, diller ve günlük öğrenme için bilgileri akılda tutmaya yardımcı olur."
             }
           },
           "categoryId": "recommendation_group_mobile"
@@ -1491,19 +1491,19 @@
           "locales": {
             "en": {
               "title": "Creative Image Editing",
-              "text": "Picsart transforms the phone into a portable [[creative studio]]. From quick edits to surprisingly complex compositions, it encourages visual experimentation."
+              "text": "Picsart puts photo edits, text, and collage tools on my phone, making quick visual content easy to create and share."
             },
             "de": {
               "title": "Bildbearbeitung",
-              "text": "Picsart verwandelt das Smartphone in ein [[kreatives Studio]]."
+              "text": "Picsart vereint Bildbearbeitung, Text und Collagen auf dem Smartphone – so erstelle und teile ich schnell visuelle Inhalte."
             },
             "hr": {
               "title": "Uređivanje slika",
-              "text": "Picsart pretvara telefon u [[kreativni studio]]."
+              "text": "Picsart na telefonu objedinjuje uređivanje fotografija, tekst i kolaže pa brzo mogu izraditi i podijeliti vizualni sadržaj."
             },
             "tr": {
               "title": "Görsel Düzenleme",
-              "text": "Picsart, telefonu [[yaratıcı bir stüdyoya]] dönüştürür."
+              "text": "Picsart fotoğraf düzenleme, metin ve kolaj araçlarını telefonda sunar; görsel içerik oluşturup paylaşmayı kolaylaştırır."
             }
           },
           "categoryId": "recommendation_group_mobile"
@@ -1526,19 +1526,19 @@
           "locales": {
             "en": {
               "title": "Navigation & Exploration",
-              "text": "Google Maps quietly became one of humanity's most powerful navigation tools. Entire cities unfold on your screen, turning exploration into a [[data-guided adventure]]."
+              "text": "Google Maps combines turn-by-turn directions, live traffic, and saved places, helping me plan routes and find what is nearby."
             },
             "de": {
               "title": "Navigation & Erkundung",
-              "text": "Google Maps macht Städte zu einer [[datenbasierten Entdeckungsreise]]."
+              "text": "Google Maps verbindet Routenführung, Live-Verkehr und gespeicherte Orte – so plane ich Wege und finde Ziele in der Nähe."
             },
             "hr": {
               "title": "Navigacija i istraživanje",
-              "text": "Google Maps pretvara gradove u [[digitalnu kartu istraživanja]]."
+              "text": "Google Maps objedinjuje navigaciju, stanje u prometu i spremljena mjesta pa lakše planiram rute i pronalazim obližnje lokacije."
             },
             "tr": {
               "title": "Navigasyon & Keşif",
-              "text": "Google Maps, şehirleri [[veri destekli keşiflere]] dönüştürür."
+              "text": "Google Haritalar navigasyonu, canlı trafiği ve kayıtlı yerleri birleştirir; rota planlamayı ve yakındaki yerleri bulmayı kolaylaştırır."
             }
           },
           "categoryId": "recommendation_group_mobile"

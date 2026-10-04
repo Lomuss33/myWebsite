@@ -174,7 +174,7 @@ button.category-filter-button {
     min-height: 3.1rem;
     padding: 0.72rem 0.9rem !important;
     line-height: 1.12;
-    font-size: var(--category-filter-font-size) !important;
+    font-size: var(--category-filter-button-font-size, var(--category-filter-font-size)) !important;
     white-space: nowrap;
     text-align: center;
     display: inline-flex;
@@ -207,6 +207,20 @@ button.category-filter-button {
         min-height: 2.9rem;
         padding: 0.68rem 0.78rem !important;
     }
+}
+
+button.category-filter-button svg.category-filter-button-mark {
+    display: block;
+    flex: 0 0 1.05em;
+    width: 1.05em !important;
+    height: 1.05em !important;
+    min-width: 1.05em;
+    max-width: 1.05em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 div.category-filter > button.category-filter-button:last-child:nth-child(odd) {

@@ -1,6 +1,6 @@
 # Home implementation and handoff
 
-Verified: 2026-10-04 against Home source and name-origin drag mechanics; not exhaustive pointer-device testing. The Home design is accepted; preserve it while fixing concrete defects.
+Verified: 2026-10-04 against Home source, name-origin drag mechanics, story typography sizing, responsive header layout, and gravity-sweep pointer activation; not exhaustive pointer-device testing. The Home design is accepted; preserve it while fixing concrete defects.
 
 Route: `#about`. Data: [home.json](../../public/data/sections/home.json). Registry/order: [SectionBody.jsx](../../src/components/sections/SectionBody.jsx). Name origins precedes the human stack at the end.
 
@@ -16,8 +16,9 @@ Route: `#about`. Data: [home.json](../../public/data/sections/home.json). Regist
 ## Constraints learned
 
 - Ordinary wrapping overrides on animated measured lines caused overlap. Change measured width/font instead.
-- Name-origin headers use the panel's container width: three columns when wide, metadata/name plus a full-width lineage row at medium widths, and a compact stack only in very narrow panels. Preserve the measured animated-name line and adjust its available width/font for responsive fit.
+- Name-origin headers use the panel's container width: metadata and lineage stack in the left column, while the animated name stays at the top right in its own column. Keep the display column stretched to its grid track; shrink-to-fit sizing narrows the measured animation and can wrap a name one letter per line. The measured name scales within its column, and paragraphs remain full-width below.
 - Intro text must not resize to fill portrait height.
+- The Home intro's gravity sweep activates on physical pointer movement. Ignore stationary pointer updates caused by layout shifts so mount/resize events cannot scatter the text.
 - `public/images/profile-placeholder.png` is the future-photo/error fallback. Stop retrying if that URL fails.
 - Human-stack card widths must include outside-circle space; 100% width plus margin overlapped neighbors.
 - Skill details must not expand the card/grid when opened; that alternative was rejected.
@@ -49,7 +50,7 @@ Further Home refinement (2026-09-26): an additional pass reduces the remaining o
 
 Mobile Home density update (2026-09-26): a separate `data-layout="mobile"` scale now compacts the welcome heading, article rhythm, contact-chip visuals, intro portrait/copy, skill cards, name-origin displays/copy, and human-stack tiles. It wraps the welcome title, stacks the intro below 36rem of content width, and caps display sizes on tall touch screens. Content keeps natural height and controls retain 44px hit areas. Focused checks cover 280x653, 320x568, 390x844, and 1440x2560; the rules do not modify the navigation shell.
 
-Name-origin layout update (2026-09-28): metadata, animated name, and lineage now share a container-responsive header. Panels wider than 36rem use three columns; narrower panels put the lineage on a second row, with only very narrow panels stacking all three. The paragraphs remain full-width below. A production build passed, and Chromium preview measurements from 360 through 1920px confirmed that the measured animated word fits its slot where the article is present.
+Name-origin layout update (2026-09-28; placement refined 2026-10-04): metadata and lineage stack at the top left while the animated name stays at the top right in a separate column. The paragraphs remain full-width below. Header gaps and the space before copy scale within tighter bounds, while minmax grid tracks preserve separation without overlaying content. The display column must stretch to its grid track so the measured word receives the full available width and stays on one line. Name-origin sections also use smaller vertical padding. Story copy uses a smaller bounded responsive scale with a 12px mobile floor, while retaining theme-derived text colors in light and dark themes. Name words use the theme secondary color and lineage text keeps the primary accent, creating a readable contrast between the two.
 
 Human-stack circle sizing (2026-09-27): the circle follows the compact card height, with an 8px vertical allowance in the mobile and regular desktop modes. Short landscape cards use a viewport-bounded circle that can approach their taller card height. The card's existing half-circle inset and text reserve grow from the same avatar-size token, so the circle remains outside the label/value area.
 

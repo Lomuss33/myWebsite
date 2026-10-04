@@ -3042,3 +3042,118 @@
     border-color: rgba(100, 116, 139, 0.16) !important;
     background: rgba(255, 255, 255, 0.7) !important;
 }
+
+// Match the compact Writings skill dashboard in light mode as well.
+[data-theme="light"] article:is(#article-4-section-my-writings, #article-5-section-my-writings) {
+    div.article-skills-items.article-skills-items-section-my-writings {
+        --avatar-size: 30px;
+        --avatar-wrapper-width: 42px;
+        row-gap: 9px;
+        padding-top: 2px;
+    }
+
+    div.article-skills-item {
+        min-height: 0;
+        padding: 8px 12px;
+        border: 1px solid rgba(15, 23, 42, 0.12);
+        border-radius: 12px;
+        background: linear-gradient(110deg, rgba(255, 255, 255, 0.94), rgba(248, 250, 252, 0.8));
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82);
+
+        &::before {
+            background: none;
+        }
+
+        &::after {
+            width: 2px;
+            opacity: 0.82;
+        }
+    }
+
+    div.article-skills-item-avatar {
+        box-shadow: none;
+    }
+
+    div.article-skills-item-title {
+        align-items: center;
+        gap: 10px;
+        min-height: 20px;
+    }
+
+    div.article-skills-item-title-left-column {
+        flex-wrap: nowrap;
+        align-items: baseline;
+        gap: 6px;
+    }
+
+    span.article-skills-item-title-prefix {
+        flex: 0 0 auto;
+        width: auto;
+        margin: 0;
+        font-size: 0.78rem;
+    }
+
+    span.article-skills-item-title-main {
+        min-width: 0;
+        font-size: clamp(0.9rem, 0.84rem + 0.18vw, 1rem);
+        line-height: 1.25;
+        overflow-wrap: anywhere;
+    }
+
+    span.article-skills-item-title-label,
+    span.article-skills-item-title-percentage,
+    span.article-skills-item-title-suffix {
+        font-size: 0.78rem;
+        line-height: 1.2;
+    }
+
+    div.article-skills-item-title-right-column {
+        flex: 0 0 auto;
+        padding-left: 4px;
+    }
+
+    div.article-skills-item-progress {
+        height: 4px;
+        margin-top: 5px;
+        padding: 0;
+        border: 0;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.1);
+
+        .progress-bar {
+            height: 100%;
+            border-radius: inherit;
+            box-shadow: 0 0 7px color-mix(in srgb, var(--writings-skill-accent, #2563eb) 24%, transparent);
+        }
+    }
+
+    div.article-skills-item-experience,
+    div.article-skills-item-description {
+        margin-top: 4px;
+        font-size: 0.78rem;
+        line-height: 1.35;
+    }
+}
+
+@media (max-width: 36rem) {
+    [data-theme="light"] article:is(#article-4-section-my-writings, #article-5-section-my-writings) {
+        div.article-skills-items.article-skills-items-section-my-writings {
+            --avatar-size: 27px;
+            --avatar-wrapper-width: 37px;
+            row-gap: 7px;
+        }
+
+        div.article-skills-item {
+            padding: 7px 9px;
+            border-radius: 10px;
+        }
+
+        div.article-skills-item-title {
+            gap: 6px;
+        }
+
+        span.article-skills-item-title-main {
+            font-size: 0.9rem;
+        }
+    }
+}

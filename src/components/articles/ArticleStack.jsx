@@ -188,6 +188,10 @@ const HOME_STACK_TITLE_FIT_VARIABLES = [
     "--home-stack-title-prefix-fit-size",
     "--home-stack-title-main-fit-size"
 ]
+const ART_STACK_TITLE_FIT_VARIABLES = [
+    "--art-stack-title-prefix-fit-size",
+    "--art-stack-title-main-fit-size"
+]
 
 const ART_STACK_INITIAL_ITEM_MOUNT_COUNT = 24
 
@@ -235,11 +239,11 @@ const applyHomeStackBubbleFitVariables = (element, fitValues) => {
     element.style.setProperty("--home-stack-bubble-line-height", `${roundToStep(fitValues.lineHeight)}`)
 }
 
-const fitHomeStackTitle = ({ titleElement, prefixElement, mainElement }) => {
+const fitStackTitle = ({ titleElement, prefixElement, mainElement, fitVariables = HOME_STACK_TITLE_FIT_VARIABLES, minScale = 0.62 }) => {
     if(!titleElement || !mainElement)
         return
 
-    HOME_STACK_TITLE_FIT_VARIABLES.forEach(variableName => {
+    [...new Set([...HOME_STACK_TITLE_FIT_VARIABLES, ...ART_STACK_TITLE_FIT_VARIABLES])].forEach(variableName => {
         titleElement.style.removeProperty(variableName)
     })
 
@@ -250,8 +254,8 @@ const fitHomeStackTitle = ({ titleElement, prefixElement, mainElement }) => {
 
     const applyScale = (scale) => {
         if(prefixElement)
-            titleElement.style.setProperty("--home-stack-title-prefix-fit-size", `${roundToStep(prefixBaseSize * scale)}px`)
-        titleElement.style.setProperty("--home-stack-title-main-fit-size", `${roundToStep(mainBaseSize * scale)}px`)
+            titleElement.style.setProperty(fitVariables[0], `${roundToStep(prefixBaseSize * scale)}px`)
+        titleElement.style.setProperty(fitVariables[1], `${roundToStep(mainBaseSize * scale)}px`)
     }
 
     const fits = () => {
@@ -266,14 +270,16 @@ const fitHomeStackTitle = ({ titleElement, prefixElement, mainElement }) => {
                 return rect.left >= titleRect.left - tolerance &&
                     rect.right <= titleRect.right + tolerance &&
                     rect.top >= titleRect.top - tolerance &&
-                    rect.bottom <= titleRect.bottom + tolerance
+                    rect.bottom <= titleRect.bottom + tolerance &&
+                    element.scrollWidth <= element.clientWidth + tolerance &&
+                    element.scrollHeight <= element.clientHeight + tolerance
             })
     }
 
     if(fits())
         return
 
-    let low = 0.62
+    let low = minScale
     let high = 1
     let best = low
 
@@ -449,6 +455,7 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
         ...segmentedTitle,
         value: _breakTitleAfterSecondWord(segmentedTitle.value)
     } : segmentedTitle
+    const isArtStack = articleId === "article-4-section-my-art"
     const homeClass = isHomeStack ? `article-stack-item-home` : ``
     const compactClass = isCompactStack ? `article-stack-item-compact` : ``
     const linkHref = itemWrapper.link?.href
@@ -486,7 +493,7 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
     }, [isBubbleOpen, popupMarkup])
 
     useLayoutEffect(() => {
-        if(!isHomeStack)
+        if(!isHomeStack && !isArtStack)
             return
 
         const cardElement = cardRef.current
@@ -503,10 +510,12 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
 
             frameId = window.requestAnimationFrame(() => {
                 frameId = null
-                fitHomeStackTitle({
+                fitStackTitle({
                     titleElement,
                     prefixElement: titlePrefixRef.current,
-                    mainElement: titleMainRef.current
+                    mainElement: titleMainRef.current,
+                    fitVariables: isArtStack ? ART_STACK_TITLE_FIT_VARIABLES : HOME_STACK_TITLE_FIT_VARIABLES,
+                    minScale: isArtStack ? 0.58 : 0.62
                 })
             })
         }
@@ -528,7 +537,7 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
             if(!resizeObserver)
                 window.removeEventListener("resize", scheduleFit)
         }
-    }, [displaySegmentedTitle.prefix, displaySegmentedTitle.value, isHomeStack, selectedLanguageId, viewport.innerWidth])
+    }, [displaySegmentedTitle.prefix, displaySegmentedTitle.value, isArtStack, isHomeStack, selectedLanguageId, viewport.innerWidth])
 
     useLayoutEffect(() => {
         if(!isHomeBubbleEnabled || !isBubbleOpen)
@@ -789,16 +798,20 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
             </div>
         </div>
     ) : (
-        <div className={`article-stack-item ${homeClass} ${compactClass}`}>
+        <div className={`article-stack-item ${homeClass} ${compactClass}`}
+             ref={isArtStack ? cardRef : undefined}>
             {avatar}
 
-            <div className={`article-stack-item-title`}>
+            <div className={`article-stack-item-title`}
+                 ref={isArtStack ? titleRef : undefined}>
                 {displaySegmentedTitle.prefix && (
                     <div className={`article-stack-item-title-prefix`}
+                         ref={isArtStack ? titlePrefixRef : undefined}
                          dangerouslySetInnerHTML={{__html: displaySegmentedTitle.prefix}}/>
                 )}
 
                 <div className={`article-stack-item-title-main`}
+                     ref={isArtStack ? titleMainRef : undefined}
                      dangerouslySetInnerHTML={{__html: displaySegmentedTitle.value}}/>
             </div>
 

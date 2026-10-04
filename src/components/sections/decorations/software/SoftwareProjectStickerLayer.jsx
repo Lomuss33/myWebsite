@@ -5,13 +5,13 @@ import './SoftwareProjectStickerLayer.scss'
 const ASSET_ROOT = '/images/stickers/software/'
 // Image, rotation, horizontal offset and vertical offset (fractions of size).
 const PROJECT_STICKERS = {
-    1: [['01-germancro-language-flat.png', -8, -0.08, -0.24], ['02-germancro-typing-ink.png', 7, 0.05, -0.05]],
-    2: [['03-belot-bela-flat.png', 6, 0.16, -0.02], ['04-belot-trick-ink.png', -10, -0.18, -0.26]],
-    3: [['05-pepper-tablet-flat.png', -6, 0.04, -0.28], ['06-pepper-draw-ink.png', 9, 0.14, 0.02]],
-    4: [['07-villa-house-flat.png', 9, -0.04, 0.01], ['08-villa-trail-ink.png', -7, -0.12, -0.20]],
-    5: [['09-family-nodes-flat.png', -10, 0.20, -0.18], ['10-family-keyhole-ink.png', 5, 0.08, -0.02]],
-    6: [['11-latex-cv-flat.png', 5, 0.10, -0.04], ['12-latex-typesetting-ink.png', -9, -0.22, -0.24]],
-    7: [['13-portfolio-browser-flat.png', -7, -0.06, -0.22], ['14-portfolio-timeline-ink.png', 11, -0.03, 0.02]]
+    1: [['01-germancro-conversation-story-v3.png', -8, -0.08, -0.24], ['02-germancro-practice-story-v3.png', 7, 0.05, -0.05]],
+    2: [['03-belot-table-story-v3.png', 6, 0.16, -0.02], ['04-belot-engine-story-v3.png', -10, -0.18, -0.26]],
+    3: [['05-pepper-dealer-story-v3.png', -6, 0.04, -0.28], ['06-pepper-realtime-story-v3.png', 9, 0.14, 0.02]],
+    4: [['07-villa-renovation-story-v3.png', 9, -0.04, 0.01], ['08-villa-outdoors-story-v3.png', -7, -0.12, -0.20]],
+    5: [['09-family-generations-story-v3.png', -10, 0.20, -0.18], ['10-family-archive-story-v3.png', 5, 0.08, -0.02]],
+    6: [['11-latex-layout-story-v3.png', 5, 0.10, -0.04], ['12-latex-typesetter-story-v3.png', -9, -0.22, -0.24]],
+    7: [['13-portfolio-world-story-v3.png', -7, -0.06, -0.22], ['14-portfolio-journey-story-v3.png', 11, -0.03, 0.02]]
 }
 
 // Section-level cutouts follow card rectangles without affecting their layout.

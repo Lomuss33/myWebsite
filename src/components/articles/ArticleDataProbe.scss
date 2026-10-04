@@ -1490,6 +1490,8 @@ article#article-2-section-my-hardware {
     }
 }
 
+
+
 div.article-data-probe-search-popup-backdrop {
     position: fixed;
     inset: 0;
@@ -1831,5 +1833,291 @@ html[data-layout="mobile"] article#article-2-section-my-hardware {
         --padding: .45rem .72rem;
         --font-size: var(--probe-mobile-control-size);
         min-height: 44px;
+    }
+}
+
+// Keep the Hardware probe readable as one flexible glass workspace rather
+// than a stack of nested, accent-striped cards.
+article#article-2-section-my-hardware > div.article-content {
+    --probe-glass-surface: color-mix(in srgb, var(--theme-card-background) 88%, var(--theme-primary) 12%);
+    --probe-glass-line: color-mix(in srgb, var(--theme-standard-borders) 76%, var(--theme-primary) 24%);
+    container: hardware-probe-content / inline-size;
+    padding: clamp(12px, 2.6cqi, 22px);
+    border: 1px solid var(--probe-glass-line);
+    border-radius: clamp(14px, 2.6cqi, 22px);
+    background: var(--probe-glass-surface);
+    box-shadow: 0 18px 44px color-mix(in srgb, var(--theme-primary) 10%, transparent), inset 0 1px rgba(255, 255, 255, .12);
+    backdrop-filter: blur(18px) saturate(1.12);
+}
+
+article#article-2-section-my-hardware div.article-data-probe-summary {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
+    gap: 0 14px;
+    margin: 8px 0 4px;
+    padding: 6px 0 12px;
+    border-bottom: 1px solid var(--probe-glass-line);
+}
+
+article#article-2-section-my-hardware div.article-data-probe-summary-chip {
+    grid-template-columns: 22px auto minmax(0, 1fr);
+    gap: 9px;
+    min-height: 54px;
+    padding: 8px 6px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    transition: color 160ms ease;
+}
+
+article#article-2-section-my-hardware div.article-data-probe-summary-chip:hover {
+    transform: none;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+article#article-2-section-my-hardware div.article-data-probe-summary-chip i {
+    width: 22px;
+    height: 22px;
+    border-radius: 0;
+    background: transparent;
+}
+
+article#article-2-section-my-hardware span.article-data-probe-summary-value {
+    font-size: clamp(1.1rem, 1rem + .4cqi, 1.35rem);
+    font-variant-numeric: tabular-nums;
+}
+
+article#article-2-section-my-hardware span.article-data-probe-summary-label {
+    font-size: clamp(.82rem, .78rem + .2cqi, .95rem);
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+article#article-2-section-my-hardware section.article-data-probe-block {
+    margin: 0;
+    padding: clamp(18px, 3cqi, 26px) 0;
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    isolation: auto;
+    transform: none;
+    transition: none;
+}
+
+article#article-2-section-my-hardware section.article-data-probe-block + section.article-data-probe-block {
+    border-top: 1px solid var(--probe-glass-line);
+}
+
+article#article-2-section-my-hardware section.article-data-probe-block::before,
+article#article-2-section-my-hardware section.article-data-probe-block::after {
+    display: none;
+}
+
+article#article-2-section-my-hardware div.article-data-probe-block-icon {
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--probe-item-accent, var(--probe-accent)) 12%, transparent);
+    box-shadow: none;
+}
+
+article#article-2-section-my-hardware div.article-data-probe-item {
+    padding: 14px 0;
+    border: 0;
+    border-top: 1px solid var(--probe-glass-line);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+    transition: background-color 160ms ease;
+}
+
+article#article-2-section-my-hardware div.article-data-probe-item::before,
+article#article-2-section-my-hardware div.article-data-probe-item::after {
+    display: none;
+}
+
+article#article-2-section-my-hardware div.article-data-probe-item:hover {
+    transform: none;
+    border-color: var(--probe-glass-line);
+    box-shadow: none;
+    filter: none;
+}
+
+article#article-2-section-my-hardware div.article-data-probe-item-icon {
+    border: 0;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--probe-item-accent) 12%, transparent);
+    box-shadow: none;
+}
+
+article#article-2-section-my-hardware pre.article-data-probe-item-value {
+    border: 1px solid var(--probe-glass-line);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--theme-boards-background) 56%, transparent);
+    box-shadow: none;
+}
+
+article#article-2-section-my-hardware pre.article-data-probe-item-value::before {
+    display: none;
+}
+
+[data-theme="light"] article#article-2-section-my-hardware > div.article-content {
+    --probe-glass-surface: color-mix(in srgb, #ffffff 92%, var(--theme-primary) 8%);
+    --probe-glass-line: color-mix(in srgb, var(--theme-standard-borders) 82%, var(--theme-primary) 18%);
+    box-shadow: 0 18px 44px color-mix(in srgb, var(--theme-primary) 9%, transparent), inset 0 1px rgba(255, 255, 255, .82);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    article#article-2-section-my-hardware div.article-data-probe-summary-chip,
+    article#article-2-section-my-hardware section.article-data-probe-block,
+    article#article-2-section-my-hardware div.article-data-probe-item {
+        transition: none;
+    }
+}
+
+// Compact by the available article width, not the device breakpoint. This
+// trims the side-pane layout without shrinking controls or desktop content.
+@container hardware-probe-content (max-width: 36rem) {
+    article#article-2-section-my-hardware > div.article-content {
+        --probe-icon-size: 36px;
+        padding: clamp(10px, 2cqi, 14px);
+    }
+
+    article#article-2-section-my-hardware p.article-data-probe-intro {
+        margin-bottom: 8px;
+        font-size: clamp(.84rem, 3.05cqi, .94rem) !important;
+        line-height: 1.4;
+    }
+
+    article#article-2-section-my-hardware div.article-data-probe-summary {
+        gap: 0 8px;
+        margin: 0 0 2px;
+        padding: 2px 0 8px;
+    }
+
+    article#article-2-section-my-hardware div.article-data-probe-summary-chip {
+        grid-template-columns: 20px auto minmax(0, 1fr);
+        gap: 6px;
+        min-height: 44px;
+        padding: 5px 3px;
+    }
+
+    article#article-2-section-my-hardware div.article-data-probe-summary-chip i {
+        width: 20px;
+        height: 20px;
+        font-size: .9rem;
+    }
+
+    article#article-2-section-my-hardware span.article-data-probe-summary-value {
+        font-size: clamp(1rem, 3.2cqi, 1.12rem);
+    }
+
+    article#article-2-section-my-hardware span.article-data-probe-summary-label {
+        font-size: clamp(.76rem, 2.7cqi, .86rem);
+        line-height: 1.28;
+    }
+
+    article#article-2-section-my-hardware section.article-data-probe-block {
+        padding: 12px 0;
+    }
+
+    article#article-2-section-my-hardware div.article-data-probe-block-header {
+        gap: 8px;
+        margin-bottom: 6px;
+    }
+
+    article#article-2-section-my-hardware div.article-data-probe-block-lead {
+        grid-template-columns: 36px minmax(0, 1fr);
+        gap: 8px;
+    }
+
+    article#article-2-section-my-hardware div.article-data-probe-block-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        font-size: 1rem;
+    }
+
+    article#article-2-section-my-hardware div.article-data-probe-block-description {
+        margin-top: 2px;
+        font-size: clamp(.84rem, 2.9cqi, .92rem);
+        line-height: 1.38;
+    }
+
+    article#article-2-section-my-hardware div.article-data-probe-item {
+        padding: 9px 0;
+    }
+
+    article#article-2-section-my-hardware div.article-data-probe-item-head {
+        grid-template-columns: var(--probe-icon-size) minmax(0, 1fr);
+        gap: 8px;
+        margin-bottom: 6px;
+    }
+
+    article#article-2-section-my-hardware div.article-data-probe-item-icon {
+        border-radius: 10px;
+    }
+
+    article#article-2-section-my-hardware div.article-data-probe-item-body {
+        gap: 7px;
+    }
+
+    article#article-2-section-my-hardware div.article-data-probe-item-meta {
+        row-gap: 5px;
+        font-size: clamp(.82rem, 2.9cqi, .9rem);
+        line-height: 1.34;
+    }
+
+    article#article-2-section-my-hardware div.article-data-probe-item-meta-row {
+        grid-template-columns: 2.55rem minmax(0, 1fr);
+        gap: 7px;
+    }
+
+    article#article-2-section-my-hardware div.article-data-probe-item-meta-row + div.article-data-probe-item-meta-row {
+        padding-top: 4px;
+    }
+
+    article#article-2-section-my-hardware span.article-data-probe-item-meta-key {
+        font-size: .62rem;
+    }
+
+    article#article-2-section-my-hardware div.article-data-probe-item-value-toolbar {
+        gap: 7px;
+        padding-top: 5px;
+        align-items: center;
+    }
+
+    article#article-2-section-my-hardware div.article-data-probe-item-value-actions {
+        width: auto;
+        justify-content: flex-end;
+        flex: 0 1 auto;
+    }
+
+    article#article-2-section-my-hardware div.article-data-probe-item-value-actions > * {
+        width: auto !important;
+        min-width: 0;
+        min-height: 44px;
+        flex: 0 1 auto;
+    }
+
+    article#article-2-section-my-hardware div.article-data-probe-item-value-label {
+        font-size: .78rem;
+    }
+
+    article#article-2-section-my-hardware pre.article-data-probe-item-value {
+        padding: 9px 10px;
+        font-size: clamp(.82rem, 2.9cqi, .9rem);
+        line-height: 1.42;
+    }
+
+    article#article-2-section-my-hardware div.article-data-probe-item-badge {
+        padding: 4px 8px;
+        font-size: .78rem;
     }
 }

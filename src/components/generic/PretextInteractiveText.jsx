@@ -310,6 +310,14 @@ function PretextInteractiveText({
         const handleWindowPointerMove = event => {
             if (!event || event.pointerType === "touch") return
 
+            // Layout shifts and browser-generated pointer updates can report a
+            // stationary cursor while this component is mounting or resizing.
+            // Treat those as geometry updates, not as a request to release the
+            // Home intro's gravity text.
+            const movementX = Number(event.movementX)
+            const movementY = Number(event.movementY)
+            if (Number.isFinite(movementX) && Number.isFinite(movementY) && movementX === 0 && movementY === 0) return
+
             const clientX = event.clientX ?? 0
             const clientY = event.clientY ?? 0
             const now = performance.now()

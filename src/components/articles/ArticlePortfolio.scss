@@ -1982,6 +1982,106 @@ html[data-layout] section#section-my-software article#article-1-section-my-softw
     font-size: inherit !important;
 }
 
+section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button svg.category-filter-button-mark,
+section#section-my-hardware article#article-1-section-my-hardware div.category-filter.article-category-filter button.category-filter-button svg.category-filter-button-mark {
+    display: block;
+    flex: 0 0 17px;
+    width: 17px !important;
+    height: 17px !important;
+    min-width: 17px;
+    max-width: 17px;
+    margin: 0;
+    overflow: visible;
+}
+
+section#section-my-hardware article#article-1-section-my-hardware div.category-filter.article-category-filter {
+    --category-filter-accent-1: #a3e635;
+    --category-filter-accent-2: #22d3ee;
+    gap: 4px;
+    padding: 4px;
+    margin: 0 0 12px;
+    border: 1px solid color-mix(in srgb, #22d3ee 30%, transparent);
+    border-radius: 3px;
+    background:
+        linear-gradient(90deg, color-mix(in srgb, #22d3ee 7%, transparent), transparent 24%),
+        transparent;
+    box-shadow: inset 3px 0 #22d3ee;
+}
+
+section#section-my-hardware article#article-1-section-my-hardware div.category-filter.article-category-filter button.category-filter-button {
+    --filter-item-accent: #22d3ee;
+    position: relative;
+    display: flex;
+    min-height: 44px;
+    height: 44px;
+    justify-content: flex-start;
+    gap: 9px;
+    padding: 0 11px !important;
+    border: 1px solid rgba(148, 163, 184, .2) !important;
+    border-left: 2px solid var(--filter-item-accent) !important;
+    border-radius: 2px !important;
+    background: rgba(100, 116, 139, .07) !important;
+    color: var(--category-filter-button-text) !important;
+    text-align: left;
+    transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+section#section-my-hardware article#article-1-section-my-hardware div.category-filter.article-category-filter button.category-filter-button[data-category-id="category_educational"] { --filter-item-accent: #a78bfa; }
+section#section-my-hardware article#article-1-section-my-hardware div.category-filter.article-category-filter button.category-filter-button[data-category-id="category_professional"] { --filter-item-accent: #a3e635; }
+section#section-my-hardware article#article-1-section-my-hardware div.category-filter.article-category-filter button.category-filter-button[data-category-id="category_personal"] { --filter-item-accent: #fb923c; }
+
+section#section-my-hardware article#article-1-section-my-hardware div.category-filter.article-category-filter button.category-filter-button svg.category-filter-button-mark {
+    color: var(--filter-item-accent);
+    fill: none;
+    stroke: var(--filter-item-accent);
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+section#section-my-hardware article#article-1-section-my-hardware div.category-filter.article-category-filter button.category-filter-button span.category-filter-button-label {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
+}
+
+section#section-my-hardware article#article-1-section-my-hardware div.category-filter.article-category-filter button.category-filter-button span.category-filter-button-count {
+    min-width: auto;
+    height: auto;
+    margin-left: auto;
+    padding: 0 0 0 5px;
+    border-radius: 0;
+    background: transparent;
+    color: var(--filter-item-accent);
+    font-size: .8em !important;
+    font-weight: 750;
+    opacity: 1;
+}
+
+section#section-my-hardware article#article-1-section-my-hardware div.category-filter.article-category-filter button.category-filter-button-selected {
+    border-color: color-mix(in srgb, var(--filter-item-accent) 55%, #64748b) !important;
+    border-left-width: 3px !important;
+    background: color-mix(in srgb, var(--filter-item-accent) 15%, transparent) !important;
+    box-shadow: inset 0 1px rgba(255, 255, 255, .08), 0 0 14px color-mix(in srgb, var(--filter-item-accent) 12%, transparent) !important;
+}
+
+section#section-my-hardware article#article-1-section-my-hardware div.category-filter.article-category-filter button.category-filter-button:hover {
+    border-color: color-mix(in srgb, var(--filter-item-accent) 50%, #64748b) !important;
+    background: color-mix(in srgb, var(--filter-item-accent) 10%, transparent) !important;
+}
+
+[data-theme="light"] section#section-my-hardware article#article-1-section-my-hardware div.category-filter.article-category-filter button.category-filter-button {
+    color: #233348 !important;
+    background: rgba(255, 255, 255, .72) !important;
+}
+
+[data-theme="light"] section#section-my-hardware article#article-1-section-my-hardware div.category-filter.article-category-filter button.category-filter-button-selected {
+    color: #142338 !important;
+    background: color-mix(in srgb, var(--filter-item-accent) 13%, #ffffff) !important;
+}
+
 // Software and Hardware use a quiet, compact filter rail: readable labels,
 // persistent counts, and a clear selected state without oversized pill chrome.
 section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter,
@@ -2034,7 +2134,7 @@ section#section-my-hardware article#article-1-section-my-hardware div.category-f
     gap: 8px;
     padding: 0 10px !important;
     border-radius: 7px !important;
-    font-size: var(--category-filter-font-size) !important;
+    font-size: var(--category-filter-button-font-size, var(--category-filter-font-size)) !important;
     font-weight: 650;
     line-height: 1.2;
     letter-spacing: 0;
@@ -2096,6 +2196,131 @@ section#section-my-software article#article-1-section-my-software div.category-f
 section#section-my-hardware article#article-1-section-my-hardware div.category-filter.article-category-filter button.category-filter-button-selected span.category-filter-button-count {
     background: color-mix(in srgb, var(--category-filter-accent-1) 24%, transparent);
     opacity: 1;
+}
+
+// Software project navigation: small line icons, category accents, and an
+// editorial index treatment give the filters their own identity without
+// turning every option into another rounded card.
+section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter {
+    --category-filter-accent-1: #52d7ed;
+    --category-filter-accent-2: #1685d5;
+    display: grid;
+    gap: 0;
+    padding: 0;
+    margin: 0 0 12px;
+    border-top: 1px solid color-mix(in srgb, var(--category-filter-accent-1) 35%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--category-filter-accent-1) 35%, transparent);
+}
+
+section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button {
+    --filter-item-accent: #53cde3;
+    position: relative;
+    display: flex;
+    min-height: 48px;
+    height: 48px;
+    justify-content: flex-start;
+    gap: 9px;
+    padding: 0 12px !important;
+    border: 0 !important;
+    border-bottom: 1px solid rgba(148, 163, 184, .2) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: var(--category-filter-button-text) !important;
+    text-align: left;
+    transition: background-color 150ms ease, color 150ms ease;
+}
+
+section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button[data-category-id="category_educational"] { --filter-item-accent: #9b8cff; }
+section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button[data-category-id="category_professional"] { --filter-item-accent: #f2b84b; }
+section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button[data-category-id="category_personal"] { --filter-item-accent: #f083ad; }
+
+section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button:last-child,
+section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button:nth-last-child(2) {
+    border-bottom: 0 !important;
+}
+
+section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button .category-filter-button-mark {
+    flex: 0 0 17px;
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: var(--filter-item-accent);
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: .9;
+}
+
+section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button .category-filter-button-label {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button .category-filter-button-count {
+    min-width: auto;
+    height: auto;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--filter-item-accent);
+    font-size: .8em !important;
+    font-weight: 750;
+    opacity: 1;
+}
+
+section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button:hover {
+    background: color-mix(in srgb, var(--filter-item-accent) 8%, transparent) !important;
+}
+
+section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button-selected {
+    background: color-mix(in srgb, var(--filter-item-accent) 12%, transparent) !important;
+    color: var(--category-filter-button-text-selected) !important;
+    box-shadow: inset 0 -2px var(--filter-item-accent) !important;
+}
+
+@container portfolio-filter-width (min-width: 32rem) {
+    section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button {
+        border-right: 1px solid rgba(148, 163, 184, .2) !important;
+        border-bottom: 0 !important;
+    }
+
+    section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button:last-child {
+        border-right: 0 !important;
+    }
+}
+
+[data-theme="light"] section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button {
+    border-color: rgba(71, 85, 105, .2) !important;
+    color: #26364b !important;
+}
+
+[data-theme="light"] section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button-selected {
+    color: #102238 !important;
+}
+
+html[data-layout] section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter {
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+html[data-layout] section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button,
+html[data-layout] section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button-selected {
+    border-radius: 0 !important;
+}
+
+html[data-layout] section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button span.category-filter-button-count {
+    min-width: auto !important;
+    height: auto !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+}
+
+@container portfolio-filter-width (min-width: 32rem) {
+    html[data-layout] section#section-my-software article#article-1-section-my-software div.category-filter.article-category-filter button.category-filter-button {
+        border-bottom: 0 !important;
+    }
 }
 
 @mixin portfolio-project-compact-title-density {

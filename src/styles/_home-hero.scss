@@ -490,7 +490,7 @@ html:is([data-layout="normal"], [data-layout="ultrawide"]) section#section-about
         }
         .name-origin-meta { font-size: .7rem; margin-bottom: .25rem; }
         .name-origin-copy {
-            font-size: clamp(.9rem, .86rem + .12cqi, .95rem);
+            font-size: clamp(.82rem, .78rem + .1cqi, .9rem);
             line-height: 1.45;
             p.name-origin-story-mobile { margin-bottom: .5rem; }
         }
@@ -691,7 +691,7 @@ html:is([data-layout="normal"], [data-layout="ultrawide"]) section#section-about
         > span { font-size: inherit; line-height: inherit; }
     }
     html[data-layout] section#section-about .name-origin-copy {
-        font-size: clamp(.875rem, .82rem + .3cqi, 1rem);
+        font-size: clamp(.8125rem, .78rem + .15cqi, .9rem);
         line-height: 1.5;
     }
 }
@@ -841,14 +841,15 @@ html[data-layout="mobile"] section#section-about {
     article#article-5-section-about {
         margin-top: .2rem;
         .article-name-origins-panel { padding-inline: .1rem; }
-        section.name-origin { padding: .35rem 0; }
+        section.name-origin { padding: .15rem 0; }
+        .name-origin-header { row-gap: 0; margin-bottom: .08rem; }
         div.name-origin-word.pretext-interactive-text {
-            font-size: clamp(1.65rem, 7cqi, 3.4rem) !important;
+            font-size: clamp(2rem, 13cqi, 4rem) !important;
             line-height: 1;
         }
         .name-origin-meta { font-size: clamp(.58rem, 2.4vw, .7rem); margin-bottom: .12rem; }
         .name-origin-copy {
-            font-size: clamp(.76rem, 3.2vw, .88rem) !important;
+            font-size: clamp(.75rem, 2.6vw, .82rem) !important;
             line-height: 1.38;
             p.name-origin-story-mobile { margin-bottom: .25rem; }
         }

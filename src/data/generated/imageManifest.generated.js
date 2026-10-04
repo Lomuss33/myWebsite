@@ -689,9 +689,27 @@ const imageManifest = {
         "width": 640,
         "height": 427
     },
+    "/images/stickers/software/01-germancro-conversation-story-v3.png": {
+        "src": "/images/__responsive/images/stickers/software/01-germancro-conversation-story-v3-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/01-germancro-conversation-story-v3-w160.webp 160w, /images/__responsive/images/stickers/software/01-germancro-conversation-story-v3-w320.webp 320w, /images/__responsive/images/stickers/software/01-germancro-conversation-story-v3-w480.webp 480w, /images/__responsive/images/stickers/software/01-germancro-conversation-story-v3-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
     "/images/stickers/software/01-germancro-language-flat.png": {
         "src": "/images/__responsive/images/stickers/software/01-germancro-language-flat-w640.webp",
         "srcSet": "/images/__responsive/images/stickers/software/01-germancro-language-flat-w160.webp 160w, /images/__responsive/images/stickers/software/01-germancro-language-flat-w320.webp 320w, /images/__responsive/images/stickers/software/01-germancro-language-flat-w480.webp 480w, /images/__responsive/images/stickers/software/01-germancro-language-flat-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/01-germancro-language-neon-v2.png": {
+        "src": "/images/__responsive/images/stickers/software/01-germancro-language-neon-v2-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/01-germancro-language-neon-v2-w160.webp 160w, /images/__responsive/images/stickers/software/01-germancro-language-neon-v2-w320.webp 320w, /images/__responsive/images/stickers/software/01-germancro-language-neon-v2-w480.webp 480w, /images/__responsive/images/stickers/software/01-germancro-language-neon-v2-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/02-germancro-practice-story-v3.png": {
+        "src": "/images/__responsive/images/stickers/software/02-germancro-practice-story-v3-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/02-germancro-practice-story-v3-w160.webp 160w, /images/__responsive/images/stickers/software/02-germancro-practice-story-v3-w320.webp 320w, /images/__responsive/images/stickers/software/02-germancro-practice-story-v3-w480.webp 480w, /images/__responsive/images/stickers/software/02-germancro-practice-story-v3-w640.webp 640w",
         "width": 640,
         "height": 640
     },
@@ -701,9 +719,33 @@ const imageManifest = {
         "width": 640,
         "height": 640
     },
+    "/images/stickers/software/02-germancro-typing-neon-v2.png": {
+        "src": "/images/__responsive/images/stickers/software/02-germancro-typing-neon-v2-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/02-germancro-typing-neon-v2-w160.webp 160w, /images/__responsive/images/stickers/software/02-germancro-typing-neon-v2-w320.webp 320w, /images/__responsive/images/stickers/software/02-germancro-typing-neon-v2-w480.webp 480w, /images/__responsive/images/stickers/software/02-germancro-typing-neon-v2-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
     "/images/stickers/software/03-belot-bela-flat.png": {
         "src": "/images/__responsive/images/stickers/software/03-belot-bela-flat-w640.webp",
         "srcSet": "/images/__responsive/images/stickers/software/03-belot-bela-flat-w160.webp 160w, /images/__responsive/images/stickers/software/03-belot-bela-flat-w320.webp 320w, /images/__responsive/images/stickers/software/03-belot-bela-flat-w480.webp 480w, /images/__responsive/images/stickers/software/03-belot-bela-flat-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/03-belot-bela-neon-v2.png": {
+        "src": "/images/__responsive/images/stickers/software/03-belot-bela-neon-v2-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/03-belot-bela-neon-v2-w160.webp 160w, /images/__responsive/images/stickers/software/03-belot-bela-neon-v2-w320.webp 320w, /images/__responsive/images/stickers/software/03-belot-bela-neon-v2-w480.webp 480w, /images/__responsive/images/stickers/software/03-belot-bela-neon-v2-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/03-belot-table-story-v3.png": {
+        "src": "/images/__responsive/images/stickers/software/03-belot-table-story-v3-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/03-belot-table-story-v3-w160.webp 160w, /images/__responsive/images/stickers/software/03-belot-table-story-v3-w320.webp 320w, /images/__responsive/images/stickers/software/03-belot-table-story-v3-w480.webp 480w, /images/__responsive/images/stickers/software/03-belot-table-story-v3-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/04-belot-engine-story-v3.png": {
+        "src": "/images/__responsive/images/stickers/software/04-belot-engine-story-v3-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/04-belot-engine-story-v3-w160.webp 160w, /images/__responsive/images/stickers/software/04-belot-engine-story-v3-w320.webp 320w, /images/__responsive/images/stickers/software/04-belot-engine-story-v3-w480.webp 480w, /images/__responsive/images/stickers/software/04-belot-engine-story-v3-w640.webp 640w",
         "width": 640,
         "height": 640
     },
@@ -713,9 +755,27 @@ const imageManifest = {
         "width": 640,
         "height": 640
     },
+    "/images/stickers/software/04-belot-trick-neon-v2.png": {
+        "src": "/images/__responsive/images/stickers/software/04-belot-trick-neon-v2-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/04-belot-trick-neon-v2-w160.webp 160w, /images/__responsive/images/stickers/software/04-belot-trick-neon-v2-w320.webp 320w, /images/__responsive/images/stickers/software/04-belot-trick-neon-v2-w480.webp 480w, /images/__responsive/images/stickers/software/04-belot-trick-neon-v2-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/05-pepper-dealer-story-v3.png": {
+        "src": "/images/__responsive/images/stickers/software/05-pepper-dealer-story-v3-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/05-pepper-dealer-story-v3-w160.webp 160w, /images/__responsive/images/stickers/software/05-pepper-dealer-story-v3-w320.webp 320w, /images/__responsive/images/stickers/software/05-pepper-dealer-story-v3-w480.webp 480w, /images/__responsive/images/stickers/software/05-pepper-dealer-story-v3-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
     "/images/stickers/software/05-pepper-tablet-flat.png": {
         "src": "/images/__responsive/images/stickers/software/05-pepper-tablet-flat-w640.webp",
         "srcSet": "/images/__responsive/images/stickers/software/05-pepper-tablet-flat-w160.webp 160w, /images/__responsive/images/stickers/software/05-pepper-tablet-flat-w320.webp 320w, /images/__responsive/images/stickers/software/05-pepper-tablet-flat-w480.webp 480w, /images/__responsive/images/stickers/software/05-pepper-tablet-flat-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/05-pepper-tablet-neon-v2.png": {
+        "src": "/images/__responsive/images/stickers/software/05-pepper-tablet-neon-v2-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/05-pepper-tablet-neon-v2-w160.webp 160w, /images/__responsive/images/stickers/software/05-pepper-tablet-neon-v2-w320.webp 320w, /images/__responsive/images/stickers/software/05-pepper-tablet-neon-v2-w480.webp 480w, /images/__responsive/images/stickers/software/05-pepper-tablet-neon-v2-w640.webp 640w",
         "width": 640,
         "height": 640
     },
@@ -725,9 +785,39 @@ const imageManifest = {
         "width": 640,
         "height": 640
     },
+    "/images/stickers/software/06-pepper-draw-neon-v2.png": {
+        "src": "/images/__responsive/images/stickers/software/06-pepper-draw-neon-v2-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/06-pepper-draw-neon-v2-w160.webp 160w, /images/__responsive/images/stickers/software/06-pepper-draw-neon-v2-w320.webp 320w, /images/__responsive/images/stickers/software/06-pepper-draw-neon-v2-w480.webp 480w, /images/__responsive/images/stickers/software/06-pepper-draw-neon-v2-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/06-pepper-realtime-story-v3.png": {
+        "src": "/images/__responsive/images/stickers/software/06-pepper-realtime-story-v3-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/06-pepper-realtime-story-v3-w160.webp 160w, /images/__responsive/images/stickers/software/06-pepper-realtime-story-v3-w320.webp 320w, /images/__responsive/images/stickers/software/06-pepper-realtime-story-v3-w480.webp 480w, /images/__responsive/images/stickers/software/06-pepper-realtime-story-v3-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
     "/images/stickers/software/07-villa-house-flat.png": {
         "src": "/images/__responsive/images/stickers/software/07-villa-house-flat-w640.webp",
         "srcSet": "/images/__responsive/images/stickers/software/07-villa-house-flat-w160.webp 160w, /images/__responsive/images/stickers/software/07-villa-house-flat-w320.webp 320w, /images/__responsive/images/stickers/software/07-villa-house-flat-w480.webp 480w, /images/__responsive/images/stickers/software/07-villa-house-flat-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/07-villa-house-neon-v2.png": {
+        "src": "/images/__responsive/images/stickers/software/07-villa-house-neon-v2-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/07-villa-house-neon-v2-w160.webp 160w, /images/__responsive/images/stickers/software/07-villa-house-neon-v2-w320.webp 320w, /images/__responsive/images/stickers/software/07-villa-house-neon-v2-w480.webp 480w, /images/__responsive/images/stickers/software/07-villa-house-neon-v2-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/07-villa-renovation-story-v3.png": {
+        "src": "/images/__responsive/images/stickers/software/07-villa-renovation-story-v3-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/07-villa-renovation-story-v3-w160.webp 160w, /images/__responsive/images/stickers/software/07-villa-renovation-story-v3-w320.webp 320w, /images/__responsive/images/stickers/software/07-villa-renovation-story-v3-w480.webp 480w, /images/__responsive/images/stickers/software/07-villa-renovation-story-v3-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/08-villa-outdoors-story-v3.png": {
+        "src": "/images/__responsive/images/stickers/software/08-villa-outdoors-story-v3-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/08-villa-outdoors-story-v3-w160.webp 160w, /images/__responsive/images/stickers/software/08-villa-outdoors-story-v3-w320.webp 320w, /images/__responsive/images/stickers/software/08-villa-outdoors-story-v3-w480.webp 480w, /images/__responsive/images/stickers/software/08-villa-outdoors-story-v3-w640.webp 640w",
         "width": 640,
         "height": 640
     },
@@ -737,9 +827,33 @@ const imageManifest = {
         "width": 640,
         "height": 640
     },
+    "/images/stickers/software/08-villa-trail-neon-v2.png": {
+        "src": "/images/__responsive/images/stickers/software/08-villa-trail-neon-v2-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/08-villa-trail-neon-v2-w160.webp 160w, /images/__responsive/images/stickers/software/08-villa-trail-neon-v2-w320.webp 320w, /images/__responsive/images/stickers/software/08-villa-trail-neon-v2-w480.webp 480w, /images/__responsive/images/stickers/software/08-villa-trail-neon-v2-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/09-family-generations-story-v3.png": {
+        "src": "/images/__responsive/images/stickers/software/09-family-generations-story-v3-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/09-family-generations-story-v3-w160.webp 160w, /images/__responsive/images/stickers/software/09-family-generations-story-v3-w320.webp 320w, /images/__responsive/images/stickers/software/09-family-generations-story-v3-w480.webp 480w, /images/__responsive/images/stickers/software/09-family-generations-story-v3-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
     "/images/stickers/software/09-family-nodes-flat.png": {
         "src": "/images/__responsive/images/stickers/software/09-family-nodes-flat-w640.webp",
         "srcSet": "/images/__responsive/images/stickers/software/09-family-nodes-flat-w160.webp 160w, /images/__responsive/images/stickers/software/09-family-nodes-flat-w320.webp 320w, /images/__responsive/images/stickers/software/09-family-nodes-flat-w480.webp 480w, /images/__responsive/images/stickers/software/09-family-nodes-flat-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/09-family-nodes-neon-v2.png": {
+        "src": "/images/__responsive/images/stickers/software/09-family-nodes-neon-v2-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/09-family-nodes-neon-v2-w160.webp 160w, /images/__responsive/images/stickers/software/09-family-nodes-neon-v2-w320.webp 320w, /images/__responsive/images/stickers/software/09-family-nodes-neon-v2-w480.webp 480w, /images/__responsive/images/stickers/software/09-family-nodes-neon-v2-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/10-family-archive-story-v3.png": {
+        "src": "/images/__responsive/images/stickers/software/10-family-archive-story-v3-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/10-family-archive-story-v3-w160.webp 160w, /images/__responsive/images/stickers/software/10-family-archive-story-v3-w320.webp 320w, /images/__responsive/images/stickers/software/10-family-archive-story-v3-w480.webp 480w, /images/__responsive/images/stickers/software/10-family-archive-story-v3-w640.webp 640w",
         "width": 640,
         "height": 640
     },
@@ -749,9 +863,33 @@ const imageManifest = {
         "width": 640,
         "height": 640
     },
+    "/images/stickers/software/10-family-keyhole-neon-v2.png": {
+        "src": "/images/__responsive/images/stickers/software/10-family-keyhole-neon-v2-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/10-family-keyhole-neon-v2-w160.webp 160w, /images/__responsive/images/stickers/software/10-family-keyhole-neon-v2-w320.webp 320w, /images/__responsive/images/stickers/software/10-family-keyhole-neon-v2-w480.webp 480w, /images/__responsive/images/stickers/software/10-family-keyhole-neon-v2-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
     "/images/stickers/software/11-latex-cv-flat.png": {
         "src": "/images/__responsive/images/stickers/software/11-latex-cv-flat-w640.webp",
         "srcSet": "/images/__responsive/images/stickers/software/11-latex-cv-flat-w160.webp 160w, /images/__responsive/images/stickers/software/11-latex-cv-flat-w320.webp 320w, /images/__responsive/images/stickers/software/11-latex-cv-flat-w480.webp 480w, /images/__responsive/images/stickers/software/11-latex-cv-flat-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/11-latex-cv-neon-v2.png": {
+        "src": "/images/__responsive/images/stickers/software/11-latex-cv-neon-v2-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/11-latex-cv-neon-v2-w160.webp 160w, /images/__responsive/images/stickers/software/11-latex-cv-neon-v2-w320.webp 320w, /images/__responsive/images/stickers/software/11-latex-cv-neon-v2-w480.webp 480w, /images/__responsive/images/stickers/software/11-latex-cv-neon-v2-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/11-latex-layout-story-v3.png": {
+        "src": "/images/__responsive/images/stickers/software/11-latex-layout-story-v3-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/11-latex-layout-story-v3-w160.webp 160w, /images/__responsive/images/stickers/software/11-latex-layout-story-v3-w320.webp 320w, /images/__responsive/images/stickers/software/11-latex-layout-story-v3-w480.webp 480w, /images/__responsive/images/stickers/software/11-latex-layout-story-v3-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/12-latex-typesetter-story-v3.png": {
+        "src": "/images/__responsive/images/stickers/software/12-latex-typesetter-story-v3-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/12-latex-typesetter-story-v3-w160.webp 160w, /images/__responsive/images/stickers/software/12-latex-typesetter-story-v3-w320.webp 320w, /images/__responsive/images/stickers/software/12-latex-typesetter-story-v3-w480.webp 480w, /images/__responsive/images/stickers/software/12-latex-typesetter-story-v3-w640.webp 640w",
         "width": 640,
         "height": 640
     },
@@ -761,15 +899,45 @@ const imageManifest = {
         "width": 640,
         "height": 640
     },
+    "/images/stickers/software/12-latex-typesetting-neon-v2.png": {
+        "src": "/images/__responsive/images/stickers/software/12-latex-typesetting-neon-v2-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/12-latex-typesetting-neon-v2-w160.webp 160w, /images/__responsive/images/stickers/software/12-latex-typesetting-neon-v2-w320.webp 320w, /images/__responsive/images/stickers/software/12-latex-typesetting-neon-v2-w480.webp 480w, /images/__responsive/images/stickers/software/12-latex-typesetting-neon-v2-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
     "/images/stickers/software/13-portfolio-browser-flat.png": {
         "src": "/images/__responsive/images/stickers/software/13-portfolio-browser-flat-w640.webp",
         "srcSet": "/images/__responsive/images/stickers/software/13-portfolio-browser-flat-w160.webp 160w, /images/__responsive/images/stickers/software/13-portfolio-browser-flat-w320.webp 320w, /images/__responsive/images/stickers/software/13-portfolio-browser-flat-w480.webp 480w, /images/__responsive/images/stickers/software/13-portfolio-browser-flat-w640.webp 640w",
         "width": 640,
         "height": 640
     },
+    "/images/stickers/software/13-portfolio-browser-neon-v2.png": {
+        "src": "/images/__responsive/images/stickers/software/13-portfolio-browser-neon-v2-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/13-portfolio-browser-neon-v2-w160.webp 160w, /images/__responsive/images/stickers/software/13-portfolio-browser-neon-v2-w320.webp 320w, /images/__responsive/images/stickers/software/13-portfolio-browser-neon-v2-w480.webp 480w, /images/__responsive/images/stickers/software/13-portfolio-browser-neon-v2-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/13-portfolio-world-story-v3.png": {
+        "src": "/images/__responsive/images/stickers/software/13-portfolio-world-story-v3-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/13-portfolio-world-story-v3-w160.webp 160w, /images/__responsive/images/stickers/software/13-portfolio-world-story-v3-w320.webp 320w, /images/__responsive/images/stickers/software/13-portfolio-world-story-v3-w480.webp 480w, /images/__responsive/images/stickers/software/13-portfolio-world-story-v3-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/14-portfolio-journey-story-v3.png": {
+        "src": "/images/__responsive/images/stickers/software/14-portfolio-journey-story-v3-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/14-portfolio-journey-story-v3-w160.webp 160w, /images/__responsive/images/stickers/software/14-portfolio-journey-story-v3-w320.webp 320w, /images/__responsive/images/stickers/software/14-portfolio-journey-story-v3-w480.webp 480w, /images/__responsive/images/stickers/software/14-portfolio-journey-story-v3-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
     "/images/stickers/software/14-portfolio-timeline-ink.png": {
         "src": "/images/__responsive/images/stickers/software/14-portfolio-timeline-ink-w640.webp",
         "srcSet": "/images/__responsive/images/stickers/software/14-portfolio-timeline-ink-w160.webp 160w, /images/__responsive/images/stickers/software/14-portfolio-timeline-ink-w320.webp 320w, /images/__responsive/images/stickers/software/14-portfolio-timeline-ink-w480.webp 480w, /images/__responsive/images/stickers/software/14-portfolio-timeline-ink-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/14-portfolio-timeline-neon-v2.png": {
+        "src": "/images/__responsive/images/stickers/software/14-portfolio-timeline-neon-v2-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/14-portfolio-timeline-neon-v2-w160.webp 160w, /images/__responsive/images/stickers/software/14-portfolio-timeline-neon-v2-w320.webp 320w, /images/__responsive/images/stickers/software/14-portfolio-timeline-neon-v2-w480.webp 480w, /images/__responsive/images/stickers/software/14-portfolio-timeline-neon-v2-w640.webp 640w",
         "width": 640,
         "height": 640
     }

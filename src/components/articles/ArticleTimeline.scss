@@ -165,7 +165,18 @@ div.article-timeline-item-content {
 
 /** -------------- MY ART OVERRIDES -------------- **/
 article.article-timeline--my-art {
+    --my-art-timeline-item-gap: 24px;
+
+    @include content-breakpoint-down(lg) {
+        --my-art-timeline-item-gap: 18px;
+    }
+
+    @include content-breakpoint-down(sm) {
+        --my-art-timeline-item-gap: 14px;
+    }
+
     ul.article-timeline-items {
+        --min-gap-between-items: var(--my-art-timeline-item-gap);
         --avatar-size: 168px;
         --gap-between-avatar-and-content: 18px;
 
@@ -204,13 +215,7 @@ article.article-timeline--my-art {
     }
 
     div.collapsable-menu {
-        margin-top: clamp(2.6rem, 5vw, 4.75rem);
-    }
-
-    @include content-breakpoint-down(md) {
-        div.collapsable-menu {
-            margin-top: clamp(2rem, 8vw, 3rem);
-        }
+        margin-top: var(--my-art-timeline-item-gap);
     }
 
     div.article-timeline-item-avatar-wrapper {
@@ -2098,9 +2103,9 @@ article.article-timeline--art-digital-expression {
         display: block;
         width: calc(100% - 1rem);
         max-width: none;
-        // The last circle hangs below its anchor. Reserve its full visual
-        // height so it does not get clipped or collide with the description.
-        aspect-ratio: 2 / 1;
+        // Keep the hit area close to the stack; the final circle can bleed
+        // slightly into the description's open top edge.
+        aspect-ratio: 2.08 / 1;
         height: auto;
         pointer-events: auto;
         outline: none;

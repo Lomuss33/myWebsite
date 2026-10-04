@@ -149,7 +149,9 @@ div.section-content.section-content-page-ready {
     height: auto;
     min-height: var(--section-content-min-height);
     display: flow-root;
-    overflow: hidden;
+    // Content effects may bleed past article/card bounds; the containing page
+    // and scroll viewport remain responsible for clipping at the page edge.
+    overflow: visible;
 }
 
 div.section-content.section-content-has-decoration-bands.section-content-hide-header {
@@ -339,6 +341,10 @@ div.section-content.section-content-has-decoration-bands article.article > h4.ar
 div.section-content.section-content-has-decoration-bands div.section-body > article.article {
     padding-top: 0;
     padding-bottom: var(--section-article-separator-buffer-bottom);
+}
+
+div.section-content.section-content-has-decoration-bands div.section-body > article.article-artist-spotlight {
+    padding-top: calc(var(--section-article-separator-buffer-bottom) * 2);
 }
 
 /* Decoration boundaries must stay visually flush with the article/title

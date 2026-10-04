@@ -185,19 +185,19 @@ function ArticleArtistSpotlight({dataWrapper}) {
             const x = Math.max(-1, Math.min(1, (event.clientX / viewportWidth - 0.5) * 2))
             const y = Math.max(-1, Math.min(1, (event.clientY / viewportHeight - 0.5) * 2))
             const smoothResponse = (value) => Math.sign(value) * Math.pow(Math.abs(value), 1.25)
-            const sizeScale = Math.max(0.55, Math.min(1.1, bounds.width / 150))
+            const sizeScale = Math.max(0.68, Math.min(1.15, bounds.width / 136))
             const responseX = smoothResponse(x)
             const responseY = smoothResponse(y)
             const lightX = Math.max(0, Math.min(100, (x + 1) * 50))
             const lightY = Math.max(0, Math.min(100, (y + 1) * 50))
-            avatar.style.setProperty("--avatar-tilt-x", `${responseX * 12 * sizeScale}deg`)
-            avatar.style.setProperty("--avatar-tilt-y", `${-responseY * 8 * sizeScale}deg`)
+            avatar.style.setProperty("--avatar-tilt-x", `${responseX * 16 * sizeScale}deg`)
+            avatar.style.setProperty("--avatar-tilt-y", `${-responseY * 11.5 * sizeScale}deg`)
             avatar.style.setProperty("--avatar-light-x", `${lightX}%`)
             avatar.style.setProperty("--avatar-light-y", `${lightY}%`)
-            avatar.style.setProperty("--avatar-image-x", `${-responseX * 4 * sizeScale}px`)
-            avatar.style.setProperty("--avatar-image-y", `${-responseY * 4 * sizeScale}px`)
-            avatar.style.setProperty("--avatar-ring-x", `${responseX * 2.5 * sizeScale}px`)
-            avatar.style.setProperty("--avatar-ring-y", `${responseY * 2.5 * sizeScale}px`)
+            avatar.style.setProperty("--avatar-image-x", `${-responseX * 5 * sizeScale}px`)
+            avatar.style.setProperty("--avatar-image-y", `${-responseY * 5 * sizeScale}px`)
+            avatar.style.setProperty("--avatar-ring-x", `${responseX * 3 * sizeScale}px`)
+            avatar.style.setProperty("--avatar-ring-y", `${responseY * 3 * sizeScale}px`)
         }
 
         window.addEventListener("pointermove", handlePointerMove, {passive: true})
@@ -244,8 +244,8 @@ function ArticleArtistSpotlight({dataWrapper}) {
 
         const handleDeviceTilt = (event) => {
             if(!Number.isFinite(event.gamma) || !Number.isFinite(event.beta)) return
-            const horizontalTilt = Math.max(-12, Math.min(12, event.gamma * 0.35))
-            const verticalTilt = Math.max(-9, Math.min(9, (45 - event.beta) * 0.22))
+            const horizontalTilt = Math.max(-15, Math.min(15, event.gamma * 0.45))
+            const verticalTilt = Math.max(-11, Math.min(11, (45 - event.beta) * 0.28))
             avatarRef.current?.style.setProperty("--avatar-tilt-x", `${horizontalTilt}deg`)
             avatarRef.current?.style.setProperty("--avatar-tilt-y", `${verticalTilt}deg`)
         }

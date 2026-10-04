@@ -901,12 +901,12 @@ div.article-skills-items.article-skills-items-section-my-writings {
     }
 }
 
-article#article-4-section-my-writings div.article-skills-item-progress .progress-bar {
+article.article-skills#article-4-section-my-writings div.article-skills-item-progress .progress-bar {
     background-image: linear-gradient(90deg, #ffffff 0%, #ffffff 100%);
     box-shadow: none;
 }
 
-article#article-5-section-my-writings div.article-skills-item-progress .progress-bar {
+article.article-skills#article-5-section-my-writings div.article-skills-item-progress .progress-bar {
     background-image: linear-gradient(90deg, #ffffff 0%, #ffffff 100%);
     box-shadow: none;
 }
@@ -1077,6 +1077,264 @@ article#article-5-section-my-writings {
             transform: none;
         }
     }
+}
+
+// Compact dashboard rows for the Writings lists. Keep these overrides after
+// the shared article variants so the two six-item lists stay dense at every
+// viewport width.
+article:is(#article-4-section-my-writings, #article-5-section-my-writings) {
+    div.article-skills-items.article-skills-items-section-my-writings {
+        --avatar-size: 30px;
+        --avatar-wrapper-width: 42px;
+        row-gap: 9px;
+        padding-top: 2px;
+    }
+
+    div.article-skills-item {
+        min-height: 0;
+        padding: 8px 12px;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        border-radius: 12px;
+        background: linear-gradient(110deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018) 58%, rgba(255, 255, 255, 0.03));
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+        transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+
+        &::before {
+            background: none;
+        }
+
+        &::after {
+            width: 2px;
+            opacity: 0.82;
+        }
+
+        > * {
+            z-index: 1;
+        }
+    }
+
+    div.article-skills-item-avatar-wrapper {
+        height: auto;
+    }
+
+    div.article-skills-item-avatar {
+        box-shadow: none;
+    }
+
+    div.article-skills-item-title {
+        align-items: center;
+        gap: 10px;
+        min-height: 20px;
+    }
+
+    div.article-skills-item-title-left-column {
+        flex-wrap: nowrap;
+        align-items: baseline;
+        gap: 6px;
+    }
+
+    span.article-skills-item-title-prefix {
+        flex: 0 0 auto;
+        width: auto;
+        margin: 0;
+        color: rgba(148, 163, 184, 0.76);
+        font-size: 0.78rem;
+    }
+
+    span.article-skills-item-title-main {
+        min-width: 0;
+        font-size: clamp(0.9rem, 0.84rem + 0.18vw, 1rem);
+        line-height: 1.25;
+        overflow-wrap: anywhere;
+    }
+
+    span.article-skills-item-title-label,
+    span.article-skills-item-title-percentage,
+    span.article-skills-item-title-suffix {
+        font-size: 0.78rem;
+        line-height: 1.2;
+    }
+
+    div.article-skills-item-title-right-column {
+        flex: 0 0 auto;
+        padding-left: 4px;
+    }
+
+    div.article-skills-item-progress {
+        height: 4px;
+        margin-top: 5px;
+        border: 0;
+        border-radius: 999px;
+        background: rgba(148, 163, 184, 0.16);
+
+        .progress-bar {
+            border-radius: inherit;
+            box-shadow: 0 0 8px color-mix(in srgb, var(--writings-skill-accent, #38bdf8) 32%, transparent);
+        }
+    }
+
+    div.article-skills-item-experience,
+    div.article-skills-item-description {
+        margin-top: 4px;
+        font-size: 0.78rem;
+        line-height: 1.35;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        div.article-skills-item:hover,
+        div.article-skills-item:focus-within {
+            transform: translateY(-1px);
+            border-color: color-mix(in srgb, var(--writings-skill-accent, #38bdf8) 42%, rgba(148, 163, 184, 0.16));
+            background-color: rgba(255, 255, 255, 0.035);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+    }
+}
+
+@media (max-width: 36rem) {
+    article:is(#article-4-section-my-writings, #article-5-section-my-writings) {
+        div.article-skills-items.article-skills-items-section-my-writings {
+            --avatar-size: 27px;
+            --avatar-wrapper-width: 37px;
+            row-gap: 7px;
+        }
+
+        div.article-skills-item {
+            padding: 7px 9px;
+            border-radius: 10px;
+        }
+
+        div.article-skills-item-title {
+            gap: 6px;
+        }
+
+        span.article-skills-item-title-main {
+            font-size: 0.9rem;
+        }
+    }
+}
+
+// Give each short progress fill its own single-family finish instead of
+// squeezing a full rainbow into a 1–6% bar.
+article.article-skills#article-4-section-my-writings,
+article.article-skills#article-5-section-my-writings {
+    div.article-skills-items-section-my-writings > div.collapsable-item {
+        div.article-skills-item-progress .progress-bar {
+            position: relative;
+            overflow: visible;
+            border-radius: inherit;
+            background-image: linear-gradient(90deg, var(--skill-fill-start), var(--skill-fill-end));
+            box-shadow: 0 0 7px color-mix(in srgb, var(--skill-fill-tip) 48%, transparent);
+            opacity: 1 !important;
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                right: -1px;
+                width: 3px;
+                height: 100%;
+                border-radius: inherit;
+                background: var(--skill-fill-tip);
+                box-shadow: 0 0 5px var(--skill-fill-tip), 0 0 9px color-mix(in srgb, var(--skill-fill-tip) 58%, transparent);
+                pointer-events: none;
+            }
+        }
+    }
+}
+
+article#article-4-section-my-writings {
+    div.article-skills-items-section-my-writings > div.collapsable-item > div.article-skills-item:nth-child(1) {
+        --skill-fill-start: #0ea5e9;
+        --skill-fill-end: #67e8f9;
+        --skill-fill-tip: #ecfeff;
+    }
+
+    div.article-skills-items-section-my-writings > div.collapsable-item > div.article-skills-item:nth-child(2) {
+        --skill-fill-start: #2563eb;
+        --skill-fill-end: #93c5fd;
+        --skill-fill-tip: #eff6ff;
+    }
+
+    div.article-skills-items-section-my-writings > div.collapsable-item > div.article-skills-item:nth-child(3) {
+        --skill-fill-start: #0f766e;
+        --skill-fill-end: #5eead4;
+        --skill-fill-tip: #ecfdf5;
+    }
+
+    div.article-skills-items-section-my-writings > div.collapsable-item > div.article-skills-item:nth-child(4) {
+        --skill-fill-start: #4f46e5;
+        --skill-fill-end: #a5b4fc;
+        --skill-fill-tip: #eef2ff;
+    }
+
+    div.article-skills-items-section-my-writings > div.collapsable-item > div.article-skills-item:nth-child(5) {
+        --skill-fill-start: #0369a1;
+        --skill-fill-end: #7dd3fc;
+        --skill-fill-tip: #f0f9ff;
+    }
+
+    div.article-skills-items-section-my-writings > div.collapsable-item > div.article-skills-item:nth-child(6) {
+        --skill-fill-start: #0891b2;
+        --skill-fill-end: #a5f3fc;
+        --skill-fill-tip: #ecfeff;
+    }
+}
+
+article#article-5-section-my-writings {
+    div.article-skills-items-section-my-writings > div.collapsable-item > div.article-skills-item:nth-child(1) {
+        --skill-fill-start: #dc2626;
+        --skill-fill-end: #fb923c;
+        --skill-fill-tip: #fff7ed;
+    }
+
+    div.article-skills-items-section-my-writings > div.collapsable-item > div.article-skills-item:nth-child(2) {
+        --skill-fill-start: #ea580c;
+        --skill-fill-end: #facc15;
+        --skill-fill-tip: #fefce8;
+    }
+
+    div.article-skills-items-section-my-writings > div.collapsable-item > div.article-skills-item:nth-child(3) {
+        --skill-fill-start: #be123c;
+        --skill-fill-end: #fb7185;
+        --skill-fill-tip: #fff1f2;
+    }
+
+    div.article-skills-items-section-my-writings > div.collapsable-item > div.article-skills-item:nth-child(4) {
+        --skill-fill-start: #b91c1c;
+        --skill-fill-end: #fbbf24;
+        --skill-fill-tip: #fffbeb;
+    }
+
+    div.article-skills-items-section-my-writings > div.collapsable-item > div.article-skills-item:nth-child(5) {
+        --skill-fill-start: #c2410c;
+        --skill-fill-end: #fde047;
+        --skill-fill-tip: #fefce8;
+    }
+
+    div.article-skills-items-section-my-writings > div.collapsable-item > div.article-skills-item:nth-child(6) {
+        --skill-fill-start: #f43f5e;
+        --skill-fill-end: #fdba74;
+        --skill-fill-tip: #fff7ed;
+    }
+}
+
+article.article-skills#article-4-section-my-writings div.article-skills-item-progress .progress-bar {
+    background-image: linear-gradient(90deg, #38bdf8 0%, #fb7185 34%, #f97316 70%, #fde047 100%);
+    opacity: 0.96 !important;
+    box-shadow:
+        0 0 7px rgba(249, 115, 22, 0.62),
+        0 0 15px rgba(239, 68, 68, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+article.article-skills#article-5-section-my-writings div.article-skills-item-progress .progress-bar {
+    background-image: linear-gradient(90deg, #ef4444 0%, #fb4b26 38%, #ff851b 70%, #ffd84a 100%);
+    opacity: 0.96 !important;
+    box-shadow:
+        0 0 7px rgba(249, 115, 22, 0.62),
+        0 0 15px rgba(239, 68, 68, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55);
 }
 
 article:is(#article-3-section-my-writings, #article-4-section-my-writings) {
@@ -1255,6 +1513,69 @@ article#article-5-section-my-writings {
     @include content-breakpoint-down(sm) {
         div.article-skills-item {
             padding: 13px 13px 12px;
+        }
+    }
+}
+
+// Final sizing guard: keep Writings skill rows compact after article variants.
+article:is(#article-4-section-my-writings, #article-5-section-my-writings) {
+    div.article-skills-items.article-skills-items-section-my-writings {
+        row-gap: 9px;
+    }
+
+    div.article-skills-item {
+        align-items: center;
+        min-height: 0;
+        padding: 8px 12px;
+        border-radius: 12px;
+    }
+
+    div.article-skills-item-title {
+        align-items: center;
+        gap: 10px;
+        min-height: 20px;
+    }
+
+    div.article-skills-item-title-left-column {
+        flex-wrap: nowrap;
+        align-items: baseline;
+        gap: 6px;
+    }
+
+    span.article-skills-item-title-main {
+        font-size: clamp(0.9rem, 0.84rem + 0.18vw, 1rem);
+        line-height: 1.25;
+    }
+
+    div.article-skills-item-progress {
+        height: 4px;
+        margin-top: 5px;
+        padding: 0;
+
+        .progress-bar {
+            height: 100%;
+        }
+    }
+}
+
+@media (max-width: 36rem) {
+    article:is(#article-4-section-my-writings, #article-5-section-my-writings) {
+        div.article-skills-items.article-skills-items-section-my-writings {
+            --avatar-size: 27px;
+            --avatar-wrapper-width: 37px;
+            row-gap: 7px;
+        }
+
+        div.article-skills-item {
+            padding: 7px 9px;
+        }
+
+        div.article-skills-item-title {
+            gap: 6px;
+        }
+
+        span.article-skills-item-title-main {
+            font-size: 0.9rem;
         }
     }
 }

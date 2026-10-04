@@ -1,0 +1,94 @@
+{
+  "generator": "built-in image_gen",
+  "status": "installed",
+  "styles": {
+    "left": "flat graphic",
+    "right": "textured two-colour ink"
+  },
+  "stickers": [
+    {
+      "filename": "01-germancro-language-flat.png",
+      "title": "GermanCro languages",
+      "style": "flat",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-7bd872ae-2003-43b5-8741-c846945a3cda.png"
+    },
+    {
+      "filename": "02-germancro-typing-ink.png",
+      "title": "GermanCro typing feedback",
+      "style": "ink",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-d8f36538-fbf7-4e7f-8057-52d1e81faef1.png"
+    },
+    {
+      "filename": "03-belot-bela-flat.png",
+      "title": "Belot cards",
+      "style": "flat",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-9ad703f8-4153-4bd5-a7f3-de1e1da52e43.png"
+    },
+    {
+      "filename": "04-belot-trick-ink.png",
+      "title": "Belot table trick",
+      "style": "ink",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-0866c9f0-1dc6-4284-bcb4-59d697e6a96b.png"
+    },
+    {
+      "filename": "05-pepper-tablet-flat.png",
+      "title": "Pepper poker robot",
+      "style": "flat",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-ebed74b4-1ad6-453a-8095-a4259e256c6c.png"
+    },
+    {
+      "filename": "06-pepper-draw-ink.png",
+      "title": "Pepper five-card draw",
+      "style": "ink",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-53b90f20-62b3-449a-b37a-dad5dbd27aef.png"
+    },
+    {
+      "filename": "07-villa-house-flat.png",
+      "title": "Villa Bagara mountain house",
+      "style": "flat",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-7e8b40e8-4f96-493f-81ac-4d3640f62ae4.png"
+    },
+    {
+      "filename": "08-villa-trail-ink.png",
+      "title": "Villa Bagara hiking terrain",
+      "style": "ink",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-c34adfae-3429-4d3d-9917-7aeb376324d3.png"
+    },
+    {
+      "filename": "09-family-nodes-flat.png",
+      "title": "Family tree portrait branches",
+      "style": "flat",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-34283f5b-7abf-4006-92ba-e829d7ba222e.png"
+    },
+    {
+      "filename": "10-family-keyhole-ink.png",
+      "title": "Encrypted family archive",
+      "style": "ink",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-4e5f835c-10e6-4fb4-bc2d-741f900c2c39.png"
+    },
+    {
+      "filename": "11-latex-cv-flat.png",
+      "title": "LaTeX CV typeset sheet",
+      "style": "flat",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-e77f218f-34b2-46b1-82a7-f2963d6093f9.png"
+    },
+    {
+      "filename": "12-latex-typesetting-ink.png",
+      "title": "LaTeX typography craft",
+      "style": "ink",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-d060111e-fe5b-47bd-9c4e-053356a999c1.png"
+    },
+    {
+      "filename": "13-portfolio-browser-flat.png",
+      "title": "Portfolio browser",
+      "style": "flat",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-aa118700-5027-41dc-a7c3-5c50e2921bf8.png"
+    },
+    {
+      "filename": "14-portfolio-timeline-ink.png",
+      "title": "Portfolio winding timeline",
+      "style": "ink",
+      "originalGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-f5890e49-dd9f-404b-a881-f77cd21942d6.png"
+    }
+  ]
+}

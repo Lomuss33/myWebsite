@@ -1,4 +1,5 @@
 @use "../../styles/extend" as *;
+@use "../../styles/paper-page-surface" as paper;
 
 div.layout-slideshow {
     --section-transition-duration: 560ms;
@@ -101,31 +102,12 @@ div.layout-slideshow-paper-sheet {
     display: none;
 
     @include layout-desktop {
-        --paper-sheet-surface:
-            color-mix(in srgb, var(--theme-card-background) 92%, var(--theme-background) 8%);
-        --paper-sheet-ink:
-            color-mix(in srgb, var(--theme-nav-divider) 42%, transparent);
-
         position: absolute;
         inset: 0;
         z-index: calc(#{$z-index-section-active} + 2);
         display: block;
         overflow: hidden;
-        border-left: 1px solid color-mix(in srgb, var(--theme-standard-borders-accent) 48%, transparent);
-        border-radius: 12px 0 0 12px;
-        background:
-            linear-gradient(90deg,
-                color-mix(in srgb, var(--theme-standard-borders-accent) 8%, transparent) 0,
-                transparent 42px),
-            repeating-linear-gradient(180deg,
-                transparent 0,
-                transparent 42px,
-                var(--paper-sheet-ink) 43px,
-                transparent 44px),
-            var(--paper-sheet-surface);
-        box-shadow:
-            -20px 0 38px -24px rgba(2, 6, 23, 0.58),
-            inset 1px 0 0 color-mix(in srgb, white 14%, transparent);
+        @include paper.paper-page-face;
         contain: paint;
         pointer-events: none;
         backface-visibility: hidden;

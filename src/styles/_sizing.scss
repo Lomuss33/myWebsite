@@ -10,9 +10,6 @@
     // Shared mobile navigation scale. Wide mode replaces these tokens once;
     // component styles consume them without adding another breakpoint patch.
     --mobile-nav-row-height: 4.5rem;
-    // Reserve a predictable share for identity on tall mobile viewports; the
-    // short-height rule below trades that space back when content is scarce.
-    --mobile-nav-profile-height: clamp(5.5rem, 20svh, 20rem);
     --mobile-profile-row-max: 52rem;
     --mobile-profile-name-size: clamp(1rem, min(6cqi, 3svh), 4rem);
     --mobile-profile-gutter: clamp(0.25rem, 2cqi, 3rem);
@@ -90,8 +87,8 @@ html[data-layout] {
 html[data-layout="mobile"] {
     .nav-header-mobile { max-width: 60rem; margin-inline: auto; }
     .nav-header-mobile .nav-profile-card {
-        height: var(--mobile-nav-profile-height);
-        min-height: var(--mobile-nav-profile-height);
+        height: auto;
+        min-height: 0;
         box-sizing: border-box;
         --avatar-size: var(--mobile-profile-avatar-size);
         --mobile-action-size: var(--mobile-profile-action-size);
@@ -117,7 +114,11 @@ html[data-layout="mobile"] {
         padding-inline: clamp(0.08rem, 0.8cqi, 0.5rem);
         span { font-size: var(--mobile-nav-item-label-size); width: auto; }
     }
-    .scrollable-content { padding-bottom: calc(var(--mobile-nav-tabs-total-height) + 1rem) !important; }
+    // Decorated sections reserve exactly the nav footprint in Scrollable.
+    // Only regular pages receive an additional gap above the navigation.
+    .scrollable-wrapper:not(.section-scrollable-decorated) .scrollable-content {
+        padding-bottom: calc(var(--mobile-nav-tabs-total-height) + 1rem) !important;
+    }
     .section-content { min-height: 0; }
 }
 
@@ -141,8 +142,9 @@ html[data-layout="mobile"] {
             --mobile-profile-row-max: none;
         }
 
-        // Give the newly taller profile band to the identity row. Auto-sized
-        // grid tracks otherwise divide its spare height with the thin role band.
+        // Keep the identity and role rows grouped as the profile band grows.
+        // Letting the identity track absorb the extra height separates the role
+        // strip from the name and actions on tall portrait views.
         .nav-header-mobile .nav-profile-card {
             --avatar-size: var(--mobile-profile-avatar-size);
             --mobile-action-size: var(--mobile-profile-action-size);
@@ -152,8 +154,8 @@ html[data-layout="mobile"] {
         }
 
         .nav-header-mobile .nav-profile-card-header {
-            grid-template-rows: minmax(0, 1fr) auto;
-            align-content: stretch;
+            grid-template-rows: auto auto;
+            align-content: center;
             padding-block: clamp(0.5rem, 1.2svh, 1.25rem);
         }
 
@@ -173,7 +175,6 @@ html[data-layout="mobile"] {
 @media (max-height: 30rem) {
     html[data-layout="mobile"] {
         --mobile-nav-row-height: 3.25rem;
-        --mobile-nav-profile-height: clamp(4.5rem, 14svh, 6rem);
         :is(button.nav-tab-controller-link, button.nav-link-pills-link) {
             flex-direction: row;
             gap: 0.3rem;
@@ -198,7 +199,6 @@ html[data-layout="mobile"] {
 @media (min-width: 90rem) {
     html[data-layout="mobile"] {
         --mobile-nav-row-height: clamp(5.5rem, 10svh, 10rem);
-        --mobile-nav-profile-height: clamp(10rem, 20svh, 20rem);
         --mobile-profile-row-max: none;
         --mobile-nav-item-label-size: clamp(1rem, 2svh, 2rem);
         --mobile-nav-item-icon-size: clamp(1.25rem, 2.4svh, 2.25rem);
@@ -213,9 +213,12 @@ html[data-layout="mobile"] {
         .nav-header-mobile .nav-profile-card {
             width: 100%;
             max-width: none;
-            height: var(--mobile-nav-profile-height);
-            min-height: var(--mobile-nav-profile-height);
             box-sizing: border-box;
+        }
+
+        .nav-header-mobile .nav-profile-card {
+            height: auto;
+            min-height: 0;
         }
 
         .nav-header-mobile .nav-profile-card-header {

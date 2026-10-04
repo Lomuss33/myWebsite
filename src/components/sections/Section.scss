@@ -1,4 +1,5 @@
 @use "../../styles/extend" as *;
+@use "../../styles/paper-page-surface" as paper;
 
 section.section {
     --section-page-bg-dark:
@@ -46,14 +47,7 @@ div.layout-slideshow > section.section {
 }
 
 [data-theme="light"] section.section {
-    --section-page-bg-light:
-        linear-gradient(
-            180deg,
-            color-mix(in srgb, #ecf3fa 82%, #c9dff1 18%) 0%,
-            color-mix(in srgb, #ffffff 96%, #f6fafe 4%) 100%
-        );
-
-    background: var(--section-page-bg-light);
+    @include paper.paper-page-face;
 }
 
 section#section-education {
@@ -191,13 +185,13 @@ section#section-education article:is(
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 8px;
     width: 100%;
-    margin: 0 auto clamp(24px, 3vw, 34px);
-    font-size: clamp(1.76rem, 1.12rem + 1.82vw, 2.8rem)!important;
+    margin: 0 auto clamp(10px, 1.1vw, 16px);
+    font-size: clamp(1.65rem, 1.2rem + 1.6vw, 2.8rem)!important;
     font-weight: 900;
     line-height: 1.08;
-    padding-bottom: 0.1em;
+    padding-bottom: 0;
     text-align: center;
     text-shadow: var(--education-current-title-shadow);
     text-wrap: balance;
@@ -279,14 +273,38 @@ section#section-education article:is(
     #article-3-section-education
 ) h4.article-title span.article-title-text {
     display: block;
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
     max-width: 100%;
     min-width: 0;
-    padding: 0 2px 0.08em;
+    padding: 0 2px 0.42em;
     overflow-wrap: anywhere;
     background: linear-gradient(135deg, var(--education-current-title-start) 0%, var(--education-current-title-mid) 48%, var(--education-current-title-end) 100%);
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
+
+    &::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        width: min(72%, 28rem);
+        transform: translateX(-50%);
+        bottom: 0;
+        height: 2px;
+        border-radius: 999px;
+        background: linear-gradient(90deg,
+            transparent, rgba(184, 134, 11, 0.45) 12%,
+            #d2a339 32%, #fff0bd 50%, #d2a339 68%,
+            rgba(184, 134, 11, 0.45) 88%, transparent);
+        box-shadow: 0 2px 7px rgba(184, 134, 11, 0.12);
+        pointer-events: none;
+    }
+}
+
+section#section-education div.section-content.section-content-has-decoration-bands {
+    --section-article-separator-buffer-top: clamp(20px, 2vw, 28px);
 }
 
 section#section-education article:is(
@@ -323,9 +341,9 @@ section#section-education article:is(
         #article-2-section-education,
         #article-3-section-education
     ) h4.article-title {
-        gap: 10px;
-        margin-bottom: 26px;
-        font-size: clamp(1.44rem, 1.1rem + 1.32vw, 2.02rem)!important;
+        gap: 8px;
+        margin-bottom: 12px;
+        font-size: clamp(1.65rem, 1.2rem + 1.32vw, 2.3rem)!important;
         line-height: 1.08;
     }
 
@@ -356,9 +374,9 @@ section#section-education article:is(
         #article-2-section-education,
         #article-3-section-education
     ) h4.article-title {
-        gap: 9px;
-        margin-bottom: 22px;
-        font-size: clamp(1.24rem, 1.04rem + 0.92vw, 1.56rem)!important;
+        gap: 7px;
+        margin-bottom: 10px;
+        font-size: clamp(1.6rem, 1.22rem + 1.3vw, 2rem)!important;
     }
 }
 

@@ -1239,16 +1239,6 @@ function WebArtIntroCover({ guide, buttonLabel, hidden, onEnter, secondaryButton
                     <div className={`article-web-art-intro-guide ${hidden ? "article-web-art-intro-guide-hidden" : "article-web-art-intro-guide-open"}`}>
                         <div className={`article-web-art-intro-guide-inner`}>
                             <div className={`article-web-art-intro-guide-top-row`}>
-                                <div className={`article-web-art-intro-guide-top-copy`}>
-                                    <span className={`article-web-art-intro-guide-eyebrow`}>
-                                        {guide.eyebrow}
-                                    </span>
-
-                                    <p className={`article-web-art-intro-guide-line article-web-art-intro-guide-line-primary`}>
-                                        {_renderGuideLineContent(guide.lines[0])}
-                                    </p>
-                                </div>
-
                                 <div className={`article-web-art-intro-cover-buttons`}>
                                     {secondaryButtonLabel ? (
                                         <button type={"button"}
@@ -1265,7 +1255,11 @@ function WebArtIntroCover({ guide, buttonLabel, hidden, onEnter, secondaryButton
                                             onClick={onEnter}
                                             onKeyDown={onKeyDown}
                                             aria-label={buttonLabel}>
-                                        {buttonLabel}
+                                        <span className={`article-web-art-intro-glass-layer article-web-art-intro-glass-layer-blur`}
+                                              aria-hidden={`true`}/>
+                                        <span className={`article-web-art-intro-glass-layer article-web-art-intro-glass-layer-rim`}
+                                              aria-hidden={`true`}/>
+                                        <span className={`article-web-art-intro-cover-button-text`}>{buttonLabel}</span>
                                     </button>
                                 </div>
                             </div>

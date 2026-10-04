@@ -37,16 +37,16 @@
             "component": "ArticleTimeline",
             "locales": {
                 "en": {
-                    "title": "My {{timeline}}"
+                    "title": "My {{career timeline}}"
                 },
                 "de": {
-                    "title": "Meine {{Zeitleiste}}"
+                    "title": "Mein {{beruflicher Werdegang}}"
                 },
                 "hr": {
-                    "title": "Moja {{vremenska linija}}"
+                    "title": "Moja {{karijera kroz vrijeme}}"
                 },
                 "tr": {
-                    "title": "Benim {{zaman çizelgem}}"
+                    "title": "Benim {{kariyer zaman çizelgem}}"
                 }
             },
             "settings": {

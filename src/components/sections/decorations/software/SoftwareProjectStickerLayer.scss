@@ -1,0 +1,34 @@
+section#section-my-software .section-content > .software-project-sticker-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    overflow: visible;
+    visibility: hidden;
+    pointer-events: none;
+    user-select: none;
+}
+
+.software-project-sticker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    pointer-events: none;
+
+    img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transform: rotate(var(--sticker-rotation));
+        filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.40))
+                drop-shadow(0 5px 6px rgba(0, 0, 0, 0.27));
+    }
+}
+
+[data-theme="light"] .software-project-sticker img {
+    filter: drop-shadow(0 1px 1px rgba(15, 23, 42, 0.27))
+            drop-shadow(0 5px 6px rgba(15, 23, 42, 0.18));
+}

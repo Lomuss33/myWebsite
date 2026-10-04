@@ -585,10 +585,6 @@ section#section-my-writings div.section-decoration-band {
         --section-separator-edge-bleed: 0px;
     }
 
-    div.section-content.section-content-has-decoration-bands {
-        --section-decoration-band-safe-bottom: var(--mobile-nav-tabs-total-height, var(--nav-tabs-height, 0px));
-    }
-
     div.section-content.section-content-has-decoration-bands div.section-decoration-line {
         left: 0;
         width: 100%;

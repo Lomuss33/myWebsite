@@ -4,6 +4,8 @@ No documentation migration task remains after 2026-09-11. Pending photos and pro
 
 The proposed post-audit maintenance and upgrade sequence is in [Project maintenance roadmap](2026-09-30-project-maintenance-roadmap.md).
 
+The 14-image Software project sticker collection is installed. Its completed [plan and implementation record](2026-10-04-software-stickers-plan.md) describes the assets and placement; current ownership is in the responsive layout and maintenance guides.
+
 Create `YYYY-MM-DD-topic.md` for multi-step work with:
 
 - Status: proposed / active / blocked / complete

@@ -47,6 +47,21 @@ export default class ArticleItemDataWrapper {
 
         this.date = dateStart
 
+        const albumLastUpload = rawData.album_last_upload
+        if(albumLastUpload) {
+            const uploadDate = this._parseDate(albumLastUpload.date)
+            const statusKey = albumLastUpload.status === "empty" ? "album_no_uploads" : "album_unavailable"
+            const display = uploadDate ? uploadDate.toLocaleDateString(language.selectedLanguageId || undefined, {
+                day: "numeric", month: "short", year: "numeric"
+            }) : language.getString(statusKey)
+            this.albumLastUpload = {
+                display: uploadDate ? display.replace(/\d{4}/, year => `<strong>${year}</strong>`) : display,
+                label: uploadDate ? `${language.getString("album_last_upload")}: ${display}` : display,
+                faIcon: uploadDate ? "fa-regular fa-clock" :
+                    albumLastUpload.status === "empty" ? "fa-regular fa-images" : "fa-solid fa-link-slash"
+            }
+        }
+
         this.faIcon = rawData.faIcon
         this.iconText = language.parseJsonText(rawData.iconText)
         this.faIconColors = this._parseColor(rawData.faIconColors, theme)

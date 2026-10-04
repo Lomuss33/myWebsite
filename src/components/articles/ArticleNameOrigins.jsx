@@ -1,7 +1,11 @@
 import "./ArticleNameOrigins.scss"
 import Article from "./base/Article.jsx"
 import PretextInteractiveText from "../generic/PretextInteractiveText.jsx"
+import DraggableTextObstacle from "../generic/DraggableTextObstacle.jsx"
+import PretextObstacleText from "../generic/PretextObstacleText.jsx"
 import { useLanguage } from "../../providers/LanguageProvider.jsx"
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
+import { animate, motion, useMotionValue, useReducedMotion, useTransform } from "motion/react"
 
 const STORY_IDENTITIES = [
     {
@@ -115,38 +119,214 @@ function ArticleNameOrigins({ dataWrapper }) {
 }
 
 function NameOrigin({ story, index, evolvesInto }) {
+    const boundaryRef = useRef(null)
+    const copyRef = useRef(null)
+    const [obstacle, setObstacle] = useState(null)
+    const updateObstacle = useCallback(next => setObstacle(current => {
+        if (!current || !next) return current === next ? current : next
+        return Math.abs(current.left - next.left) < 0.5 && Math.abs(current.top - next.top) < 0.5 &&
+            Math.abs(current.width - next.width) < 0.5 && Math.abs(current.height - next.height) < 0.5 ? current : next
+    }), [])
+    const displayWord = useMemo(() => (
+        <PretextInteractiveText html={story.name} className="name-origin-word"
+                                effectVariant="wave" terrainVariant="detailed"
+                                revealOnScroll={false} replayOnHover={false}
+                                widthMeasurementMode="self_only"/>
+    ), [story.name])
     return (
-        <section className={`name-origin name-origin-${story.id}`} aria-labelledby={`name-origin-${story.id}`}>
+        <section ref={boundaryRef} className={`name-origin name-origin-${story.id}`} aria-labelledby={`name-origin-${story.id}`}>
             <div className="name-origin-header">
                 <div className="name-origin-meta"><b>0{index + 1}</b>{story.meta}</div>
                 <div className="name-origin-display">
                     <h3 id={`name-origin-${story.id}`} className="visually-hidden">{story.name}</h3>
                     <div aria-hidden="true">
-                        <PretextInteractiveText html={story.name} className="name-origin-word"
-                                                effectVariant="wave" terrainVariant="detailed"
-                                                revealOnScroll={false} replayOnHover={false}
-                                                widthMeasurementMode="self_only"/>
+                            <DraggableTextObstacle className="name-origin-tug name-origin-display-tug"
+                                                   shapeSelector=".pretext-interactive-text-fragment"
+                                                   boundaryRef={boundaryRef} resistanceRef={copyRef} resistance={0.84} onBoundsChange={updateObstacle}>
+                            {displayWord}
+                        </DraggableTextObstacle>
                     </div>
                 </div>
-                <div className="name-origin-lineage" aria-label={story.trail.join(evolvesInto)}>
-                    {story.trail.map((step, stepIndex) => (
-                        <span key={step}>
-                            {stepIndex > 0 && <i aria-hidden="true">→</i>}
-                            <b>{step}</b>
-                        </span>
+                <PhysicalDragSurface className="name-origin-lineage name-origin-tug"
+                                     flow={true}
+                                     role="group"
+                                     aria-label={story.trail.join(evolvesInto)}>
+                    {({ pullX }) => story.trail.map((step, stepIndex) => (
+                        <LineageStep key={step} index={stepIndex} pullX={pullX}
+                                     first={stepIndex === 0} final={stepIndex === story.trail.length - 1}>
+                            {step}
+                        </LineageStep>
                     ))}
-                </div>
+                </PhysicalDragSurface>
             </div>
-            <div className="name-origin-copy">
-                {story.blocks.map((block, blockIndex) => (
-                        <p key={`${story.id}-${blockIndex}`}
-                           className={`name-origin-story-mobile name-origin-story-${blockIndex + 1}`}>
-                            {block}
-                        </p>
-                ))}
-            </div>
+            <PretextObstacleText blocks={story.blocks} obstacle={obstacle} className="name-origin-copy"
+                                 externalRef={copyRef}
+                                 paragraphClassName="name-origin-story-mobile"/>
         </section>
     )
+}
+
+function LineageStep({ children, index, pullX, first, final }) {
+    return (
+        <motion.span data-lineage-index={index} data-lineage-end={first || final ? "true" : undefined}
+                     style={first ? { marginLeft: pullX } : undefined}>
+            <b>{children}</b>
+            {!final && <i aria-hidden="true">→</i>}
+        </motion.span>
+    )
+}
+
+function PhysicalDragSurface({ children, className = "", flow = false, externalRef, ...props }) {
+    const surfaceRef = useRef(null)
+    const dragRef = useRef(null)
+    const returnAnimationRef = useRef(null)
+    const moveFrameRef = useRef(0)
+    const pendingPointRef = useRef(null)
+    const rangeRef = useRef(28)
+    const dragX = useMotionValue(0)
+    const prefersReducedMotion = useReducedMotion()
+    const stretchX = useTransform(dragX, value => prefersReducedMotion ? 1 : 1 + Math.min(Math.abs(value) / rangeRef.current, 1) * 0.065)
+    const rotation = useTransform(dragX, value => prefersReducedMotion ? 0 : (value / rangeRef.current) * 1.8)
+    const liftY = useTransform(dragX, value => prefersReducedMotion ? 0 : Math.sign(value) * Math.min(Math.abs(value) * 0.025, 7))
+    const [isDragging, setIsDragging] = useState(false)
+    const [restHeight, setRestHeight] = useState(0)
+    const measuredWidthRef = useRef(0)
+
+    useLayoutEffect(() => {
+        const surface = surfaceRef.current
+        if (!surface) return
+
+        const updateRange = () => {
+            rangeRef.current = clamp(surface.offsetWidth * 0.42, 28, 260)
+            if (flow && measuredWidthRef.current !== surface.offsetWidth) {
+                measuredWidthRef.current = surface.offsetWidth
+                // Keep the copy below stable when pulling contracts two rows to one.
+                surface.style.minHeight = "0px"
+                const height = surface.offsetHeight
+                surface.style.minHeight = `${height}px`
+                setRestHeight(height)
+            }
+        }
+
+        updateRange()
+        const observer = typeof ResizeObserver === "function" ? new ResizeObserver(updateRange) : null
+        observer?.observe(surface)
+
+        return () => observer?.disconnect()
+    }, [flow])
+
+    const finishDrag = useCallback(event => {
+        const drag = dragRef.current
+        if (!drag || drag.pointerId !== event.pointerId) return
+
+        if (moveFrameRef.current) cancelAnimationFrame(moveFrameRef.current)
+        moveFrameRef.current = 0
+        pendingPointRef.current = null
+        dragRef.current = null
+        const surface = surfaceRef.current
+        if (surface?.hasPointerCapture?.(drag.pointerId)) {
+            try { surface.releasePointerCapture(drag.pointerId) } catch { /* Pointer may already have been released by the browser. */ }
+        }
+        returnAnimationRef.current?.stop()
+        const excursion = Math.abs(dragX.get())
+        returnAnimationRef.current = animate(dragX, 0, prefersReducedMotion
+            ? { duration: 0 }
+            : { duration: clamp(1.6 + excursion / 70, 1.6, 5), ease: "linear" })
+        setIsDragging(false)
+    }, [dragX, prefersReducedMotion])
+
+    useEffect(() => {
+        const applyPointerMove = event => {
+            const drag = dragRef.current
+            if (!drag || drag.pointerId !== event.pointerId) return
+
+            if (drag.pointerType === "touch" && Math.abs(event.clientY - drag.startClientY) > Math.abs(event.clientX - drag.startClientX) + 8) {
+                finishDrag(event)
+                return
+            }
+
+            const limit = rangeRef.current
+            const rawX = drag.startOffset + (event.clientX - drag.startClientX) * 0.55
+            const sign = Math.sign(rawX)
+            const distance = Math.max(0, Math.abs(rawX) - 8)
+            const resistedX = sign * (distance <= limit
+                ? distance
+                : limit + Math.min(limit * 0.22, (distance - limit) * 0.12))
+
+            dragX.set(resistedX)
+        }
+
+        const handlePointerMove = event => {
+            if (!dragRef.current || dragRef.current.pointerId !== event.pointerId) return
+            pendingPointRef.current = { pointerId: event.pointerId, pointerType: event.pointerType, clientX: event.clientX, clientY: event.clientY }
+            if (moveFrameRef.current) return
+            moveFrameRef.current = requestAnimationFrame(() => {
+                moveFrameRef.current = 0
+                const point = pendingPointRef.current
+                pendingPointRef.current = null
+                if (point) applyPointerMove(point)
+            })
+        }
+
+        const handlePointerUp = event => {
+            if (moveFrameRef.current) cancelAnimationFrame(moveFrameRef.current)
+            moveFrameRef.current = 0
+            const pendingPoint = pendingPointRef.current
+            pendingPointRef.current = null
+            if (pendingPoint) applyPointerMove(pendingPoint)
+            applyPointerMove(event)
+            finishDrag(event)
+        }
+
+        window.addEventListener("pointermove", handlePointerMove)
+        window.addEventListener("pointerup", handlePointerUp)
+        window.addEventListener("pointercancel", finishDrag)
+        window.addEventListener("lostpointercapture", finishDrag)
+
+        return () => {
+            if (moveFrameRef.current) cancelAnimationFrame(moveFrameRef.current)
+            window.removeEventListener("pointermove", handlePointerMove)
+            window.removeEventListener("pointerup", handlePointerUp)
+            window.removeEventListener("pointercancel", finishDrag)
+            window.removeEventListener("lostpointercapture", finishDrag)
+            returnAnimationRef.current?.stop()
+        }
+    }, [dragX, finishDrag])
+
+    const handlePointerDown = event => {
+        if (!event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return
+        if (event.target.closest?.("a, button, input, select, textarea")) return
+        // Only the beginning and end of the sequence are string handles.
+        // A visual wrap never creates another handle.
+        if (flow && !event.target.closest?.('[data-lineage-end="true"]')) return
+
+        if (event.pointerType === "mouse") event.preventDefault()
+        returnAnimationRef.current?.stop()
+        const currentX = dragX.get()
+        dragRef.current = {
+            pointerId: event.pointerId,
+            pointerType: event.pointerType,
+            startClientX: event.clientX,
+            startClientY: event.clientY,
+            startOffset: currentX
+        }
+        try { event.currentTarget.setPointerCapture(event.pointerId) } catch { /* Window listeners remain as a fallback. */ }
+        setIsDragging(true)
+    }
+
+    return (
+        <motion.div {...props}
+                    ref={element => { surfaceRef.current = element; if (externalRef) externalRef.current = element }}
+                    className={`${className} ${isDragging ? "is-dragging" : ""}`.trim()}
+                    style={flow ? { touchAction: "pan-y", minHeight: restHeight } : { x: dragX, y: liftY, scaleX: stretchX, rotate: rotation, touchAction: "pan-y" }}
+                    onPointerDown={handlePointerDown}>
+            {typeof children === "function" ? children({ pullX: dragX }) : children}
+        </motion.div>
+    )
+}
+
+function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value))
 }
 
 export default ArticleNameOrigins

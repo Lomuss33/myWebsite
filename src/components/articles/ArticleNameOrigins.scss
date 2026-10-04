@@ -6,18 +6,28 @@ section.name-origin { display: block; padding: 1rem 0; border-bottom: 1px solid 
  align-items: center; column-gap: clamp(.5rem, 1.4cqi, 1.25rem); row-gap: .5rem; margin-bottom: .65rem;
 }
 .name-origin-display { min-width: 0; }
+.name-origin-display-tug { width: 100%; min-width: 0; }
+.name-origin-tug {
+ touch-action: pan-y; user-select: none; -webkit-user-select: none; cursor: grab;
+ &.is-dragging { cursor: grabbing; z-index: 4; will-change: transform; }
+}
 .name-origin-meta { min-width: 0; font-size: .75rem; line-height: 1.4; letter-spacing: .06em; overflow-wrap: anywhere; b { color: var(--theme-primary); margin-right: .5rem; } }
 div.name-origin-word.pretext-interactive-text {
  font-size: clamp(2.5rem, 11cqi, 9rem); font-weight: 850; letter-spacing: -.055em; line-height: 1.1; color: var(--theme-primary);
  .pretext-interactive-text-measure-body, .pretext-interactive-text-measure-paragraph { font: inherit !important; letter-spacing: inherit !important; }
 }
 .name-origin-copy {
- min-width: 0; font-size: clamp(.9375rem, .875rem + .3cqi, 1.25rem); line-height: 1.6; overflow-wrap: anywhere;
- p.name-origin-story-mobile { margin: 0 0 .75rem; &:last-child { margin-bottom: 0; } }
+ display: grid; row-gap: .75rem; min-width: 0; font-size: clamp(.9375rem, .875rem + .3cqi, 1.25rem); line-height: 1.6; overflow-wrap: anywhere;
+ .name-origin-copy-tug { width: 100%; min-width: 0; }
+ p.name-origin-story-mobile { margin: 0; }
 }
 .name-origin-lineage {
+ cursor: default;
  display: flex; min-width: 0; flex-wrap: wrap; gap: .25rem .5rem; font-size: .875em; line-height: 1.5; color: var(--theme-primary);
- span { display: inline-flex; align-items: baseline; gap: .5rem; min-width: 0; }
+ touch-action: pan-y;
+ span { display: inline-flex; flex: 0 0 auto; align-items: baseline; gap: .5rem; white-space: nowrap; }
+ [data-lineage-end="true"] { cursor: grab; }
+ &.is-dragging [data-lineage-end="true"] { cursor: grabbing; }
  i { font-style: normal; color: var(--theme-texts-light); opacity: .6; }
 }
 @container name-origins (max-width: 36rem) {

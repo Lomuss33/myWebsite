@@ -92,9 +92,15 @@ function ArticlePortfolioItem({ itemWrapper }) {
         return icon.includes("fa-file") || href.includes("docs.google.com") || href.includes("readthedocs") || href.includes("/docs")
     }) || null
     const controlAvatarStyle = getTransparentControlAvatarStyle(itemWrapper?.faIconStyle)
+    const hardwareProjectId = itemWrapper?.articleWrapper?.sectionId === "my-hardware" &&
+        itemWrapper?.articleWrapper?.id === 1 ? itemWrapper.id : undefined
+    const softwareProjectId = itemWrapper?.articleWrapper?.sectionId === "my-software" &&
+        itemWrapper?.articleWrapper?.id === 1 ? itemWrapper.id : undefined
 
     return (
-        <div className={`article-portfolio-item ${portfolioToneClass}`}>
+        <div className={`article-portfolio-item ${portfolioToneClass}`}
+             data-hardware-project-id={hardwareProjectId}
+             data-software-project-id={softwareProjectId}>
             <ArticlePortfolioItemTitle itemWrapper={itemWrapper}/>
             <ArticlePortfolioItemBody itemWrapper={itemWrapper}/>
             <ArticlePortfolioItemFooter itemWrapper={itemWrapper}/>

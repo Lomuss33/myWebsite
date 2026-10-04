@@ -250,9 +250,16 @@ article#article-1-section-education {
         display: block;
         position: relative;
         width: 100%;
+        overflow: visible;
+        isolation: isolate;
+    }
+
+    div.article-timeline-education-clip {
+        position: relative;
+        width: 100%;
+        height: 100%;
         overflow-x: visible;
         overflow-y: clip;
-        isolation: isolate;
     }
 
     ul.article-timeline-items {
@@ -353,11 +360,14 @@ article#article-1-section-education {
     li.article-timeline-item {
         --education-avatar-shift-x: 0px;
         width: 100%;
-        align-items: center;
+        align-items: flex-start;
     }
 
     li.article-timeline-item div.article-timeline-item-avatar {
         border-color: var(--education-crystal-color) !important;
+        scale: 1;
+        transform-origin: left top;
+        transition: scale 360ms cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow:
             0 0 0 2px color-mix(in srgb, var(--education-crystal-color) 42%, transparent),
             0 0 18px color-mix(in srgb, var(--education-crystal-color) 48%, transparent),
@@ -383,7 +393,10 @@ article#article-1-section-education {
         position: relative;
         z-index: 4;
         align-items: center;
-        transition: transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
+        align-self: flex-start;
+        top: var(--education-avatar-top, 8px);
+        transition: top 360ms cubic-bezier(0.4, 0, 0.2, 1),
+            transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
     @include layout-mobile {
@@ -452,23 +465,20 @@ article#article-1-section-education {
 
     li.article-timeline-item--education-expanded {
         z-index: auto;
-        // Expanded copy can be much taller than the avatar. Keep the avatar
-        // pinned above the panel instead of vertically centering it against
-        // the expanded row (which makes it appear to slide down on expansion).
-        align-items: flex-start;
 
         div.article-timeline-item-avatar-wrapper {
-            align-self: flex-start;
-            top: calc(-1 * clamp(2px, 0.25vw, 4px));
+            top: var(--education-avatar-expanded-top, 8px);
+        }
+
+        div.article-timeline-item-avatar {
+            scale: 1.2;
         }
     }
 
-    // Rotation and scale make the first expanded avatar's visual bounds extend
-    // above its row. A small local top offset keeps the circle clear of the
-    // scroll pane's clipped top edge without shifting the rest of the timeline.
-    li.article-timeline-item:first-of-type.article-timeline-item--education-expanded {
+    @media (prefers-reduced-motion: reduce) {
+        div.article-timeline-item-avatar,
         div.article-timeline-item-avatar-wrapper {
-            top: clamp(8px, 0.55vw, 11px);
+            transition: none;
         }
     }
 
@@ -1048,39 +1058,45 @@ button.standard-button.btn-contrast.article-timeline-see-more-button {
     }
 }
 
-[data-theme="light"] button.standard-button.btn-contrast.article-timeline-see-more-button {
-    --timeline-see-more-edge: #f2b705;
-    --timeline-see-more-surface-top: #fff8e6;
-    --timeline-see-more-surface-mid: #ffe8ae;
-    --timeline-see-more-surface-bottom: #ffd66b;
-    --timeline-see-more-text: #3b2300;
+[data-theme="light"] article#article-1-section-education button.standard-button.btn-contrast.article-timeline-see-more-button {
+    --timeline-see-more-edge: #38bdf8;
+    --timeline-see-more-lower-edge: #818cf8;
+    --timeline-see-more-icon: #a66b08;
+    --timeline-see-more-surface-top: #ffffff;
+    --timeline-see-more-surface-mid: #e0f2fe;
+    --timeline-see-more-surface-bottom: #c7d2fe;
+    --timeline-see-more-text: #102a43;
     --std-btn-surface-top: var(--timeline-see-more-surface-top);
     --std-btn-surface-mid: var(--timeline-see-more-surface-mid);
     --std-btn-surface-bottom: var(--timeline-see-more-surface-bottom);
-    --std-btn-border: #f2b705;
+    --std-btn-border: #38bdf8;
     --std-btn-text: var(--timeline-see-more-text);
-    border-width: 3px !important;
+    background-image: linear-gradient(115deg, #ffffff 0%, #eff8ff 34%, #dbeafe 68%, #e0e7ff 100%) !important;
     box-shadow:
-        0 18px 30px rgba(128, 82, 0, 0.20),
-        0 5px 0 rgba(191, 139, 0, 0.42),
-        0 0 0 2px rgba(242, 183, 5, 0.72),
-        inset 0 1px 0 rgba(255, 248, 220, 0.92);
+        0 10px 22px rgba(30, 64, 175, 0.13),
+        0 3px 0 rgba(99, 102, 241, 0.34),
+        0 0 0 1px rgba(56, 189, 248, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.96);
+
+    i {
+        color: var(--timeline-see-more-icon) !important;
+    }
 
     &:hover:not([disabled]) {
         box-shadow:
-            0 24px 38px rgba(128, 82, 0, 0.24),
-            0 6px 0 rgba(191, 139, 0, 0.48),
-            0 0 0 3px rgba(242, 183, 5, 0.84),
-            0 0 22px rgba(242, 183, 5, 0.30),
-            inset 0 1px 0 rgba(255, 248, 220, 1);
+            0 14px 26px rgba(30, 64, 175, 0.17),
+            0 4px 0 rgba(99, 102, 241, 0.4),
+            0 0 0 2px rgba(56, 189, 248, 0.5),
+            0 0 16px rgba(99, 102, 241, 0.16),
+            inset 0 1px 0 #ffffff;
     }
 
     &:active:not([disabled]) {
         box-shadow:
-            0 10px 18px rgba(128, 82, 0, 0.18),
-            0 3px 0 rgba(191, 139, 0, 0.36),
-            0 0 0 2px rgba(242, 183, 5, 0.62),
-            inset 0 1px 0 rgba(255, 248, 220, 0.88);
+            0 7px 14px rgba(30, 64, 175, 0.14),
+            0 2px 0 rgba(99, 102, 241, 0.32),
+            0 0 0 1px rgba(56, 189, 248, 0.38),
+            inset 0 1px 0 rgba(255, 255, 255, 0.9);
     }
 }
 
@@ -1113,16 +1129,32 @@ button.standard-button.btn-contrast.article-timeline-see-more-button {
     }
 }
 
-// Education's transparent timeline has a precise overlap rhythm. Keep its
-// Show more response restrained so it never appears to jump across the snake.
+// A compact rectangular action fits the transparent Education timeline.
+// Keep the gold accent, without the shared button's double pill frame.
 article#article-1-section-education button.standard-button.btn-contrast.article-timeline-see-more-button {
+    width: fit-content;
+    min-width: min(100%, 11rem);
+    max-width: 100%;
+    min-height: clamp(2.75rem, 2.6rem + 0.3vw, 3rem);
+    padding: 0.45rem 1.1rem !important;
+    border: 1px solid color-mix(in srgb, var(--timeline-see-more-edge) 38%, transparent) !important;
+    border-bottom: 2px solid color-mix(in srgb, var(--timeline-see-more-lower-edge, var(--timeline-see-more-edge)) 82%, transparent) !important;
+    border-radius: 0.5rem !important;
+    font-size: clamp(0.84rem, 0.8rem + 0.16vw, 0.98rem) !important;
+    font-weight: 700 !important;
+    line-height: 1.3;
+    letter-spacing: 0.025em;
+    gap: 0.6rem;
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    will-change: auto;
     transition:
         transform 160ms cubic-bezier(0.2, 0.75, 0.3, 1),
         box-shadow 160ms ease,
         border-color 160ms ease;
 
-    &::before {
-        transition: opacity 160ms ease;
+    &::before,
+    &::after {
+        content: none;
     }
 
     span,
@@ -1130,12 +1162,21 @@ article#article-1-section-education button.standard-button.btn-contrast.article-
         transition: color 160ms ease;
     }
 
+    i {
+        margin-inline: 0 !important;
+        font-size: 0.9em;
+        filter: none;
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--timeline-see-more-edge);
+        outline-offset: 3px;
+    }
+
     &:hover:not([disabled]) {
         transform: none;
         filter: none;
-        box-shadow:
-            0 10px 22px rgba(0, 0, 0, 0.20),
-            inset 0 1px 0 rgba(255, 255, 255, 0.11);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.09);
 
         &::before {
             transform: none;
@@ -1152,16 +1193,14 @@ article#article-1-section-education button.standard-button.btn-contrast.article-
     @media (hover: hover) and (pointer: fine) {
         &:hover:not([disabled]) {
             transform: translateY(-1px);
-            box-shadow:
-                0 12px 24px rgba(0, 0, 0, 0.22),
-                0 0 0 1px color-mix(in srgb, var(--timeline-see-more-edge) 62%, transparent),
-                inset 0 1px 0 rgba(255, 255, 255, 0.13);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.09);
         }
     }
 
     &:active:not([disabled]) {
         transform: translateY(0);
         filter: none;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
     }
 }
 

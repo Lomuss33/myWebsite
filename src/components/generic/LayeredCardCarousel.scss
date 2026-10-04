@@ -60,13 +60,15 @@
     align-items: start;
     width: 100%;
     margin-inline: auto;
+    // Preserve vertical page scrolling while keeping horizontal swipes available
+    // for carousel navigation in both single and pinned multi-window layouts.
+    touch-action: pan-y;
 }
 
 .layered-card-carousel-workspace[data-view-count="1"] {
     position: relative;
     height: var(--carousel-card-size);
     overflow: hidden;
-    touch-action: pan-y;
     isolation: isolate;
     background: var(--carousel-stage-surface);
 }
@@ -338,10 +340,12 @@
     transform: translateX(var(--carousel-side-x)) perspective(700px) rotateY(var(--carousel-side-tilt)) scale(0.88);
     transition: filter 240ms ease, transform 360ms cubic-bezier(.16, .8, .25, 1), box-shadow 240ms ease;
 
-    &:hover {
-        filter: brightness(1.14) saturate(1.15);
-        transform: translateX(var(--carousel-side-x)) translateY(-0.35rem) perspective(700px) rotateY(0deg) scale(0.96);
-        box-shadow: 0 1rem 2.3rem rgba(0, 0, 0, 0.36), 0 0 1.2rem color-mix(in srgb, var(--carousel-side-border) 55%, transparent);
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            filter: brightness(1.14) saturate(1.15);
+            transform: translateX(var(--carousel-side-x)) translateY(-0.35rem) perspective(700px) rotateY(0deg) scale(0.96);
+            box-shadow: 0 1rem 2.3rem rgba(0, 0, 0, 0.36), 0 0 1.2rem color-mix(in srgb, var(--carousel-side-border) 55%, transparent);
+        }
     }
     &:focus-visible { outline: 3px solid #8be7ff; outline-offset: -4px; }
 }
@@ -434,11 +438,13 @@
         pointer-events: none;
     }
 
-    &:hover:not(:disabled) {
-        z-index: 2;
-        transform: translateY(-3px) scale(1.06);
-        filter: brightness(1.17);
-        box-shadow: 0 5px 13px rgba(5, 21, 38, 0.3), 0 0 0 1px var(--carousel-number-border);
+    @media (hover: hover) and (pointer: fine) {
+        &:hover:not(:disabled) {
+            z-index: 2;
+            transform: translateY(-3px) scale(1.06);
+            filter: brightness(1.17);
+            box-shadow: 0 5px 13px rgba(5, 21, 38, 0.3), 0 0 0 1px var(--carousel-number-border);
+        }
     }
     &:active:not(:disabled) { transform: translateY(0) scale(0.94); }
     &:focus-visible { z-index: 3; outline: 2px solid var(--carousel-number-current-top); outline-offset: -2px; }
@@ -460,6 +466,14 @@
 
         &::before { animation: layered-card-index-scan 2.8s ease-in-out 450ms infinite; }
     }
+}
+
+@container web-art-shell (max-width: 560px) {
+    .layered-card-carousel-index-button { min-height: 44px; }
+}
+
+@media (pointer: coarse) {
+    .layered-card-carousel-index-button { min-height: 44px; }
 }
 
 @keyframes layered-card-index-ignite {

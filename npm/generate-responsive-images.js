@@ -1,6 +1,7 @@
 import fs from "node:fs"
 import path from "node:path"
 import sharp from "sharp"
+import {pathToFileURL} from "node:url"
 
 const ROOT = process.cwd()
 const PUBLIC_DIR = path.join(ROOT, "public")
@@ -10,7 +11,9 @@ const SOURCE_DIRECTORIES = [
     "images/artist",
     "images/private",
     "images/personal_art",
-    "images/writing/books"
+    "images/writing/books",
+    "images/stickers/hardware-experiments",
+    "images/stickers/software"
 ]
 const OUTPUT_ROOT = "images/__responsive"
 const GENERATED_MODULE_PATH = path.join(ROOT, "src", "data", "generated", "imageManifest.generated.js")
@@ -43,9 +46,10 @@ const walkFiles = (directoryPath) => {
     return results
 }
 
-const buildVariantWidths = (originalWidth) => {
-    const widths = WIDTHS.filter(width => width < originalWidth)
-    widths.push(originalWidth)
+const buildVariantWidths = (originalWidth, relativeSourcePath) => {
+    const maximumWidth = relativeSourcePath.startsWith("images/stickers/") ? Math.min(originalWidth, 640) : originalWidth
+    const widths = WIDTHS.filter(width => width < maximumWidth)
+    widths.push(maximumWidth)
     return Array.from(new Set(widths)).sort((a, b) => a - b)
 }
 
@@ -68,7 +72,7 @@ const processFile = async (absoluteSourcePath) => {
     if(!originalWidth || !originalHeight)
         return null
 
-    const variantWidths = buildVariantWidths(originalWidth)
+    const variantWidths = buildVariantWidths(originalWidth, relativeToPublic)
     const variants = []
 
     for(const width of variantWidths) {
@@ -111,9 +115,19 @@ const processFile = async (absoluteSourcePath) => {
 }
 
 const main = async () => {
-    const manifest = {}
+    const selectedDirectory = process.argv.find(argument => argument.startsWith("--directory="))?.slice("--directory=".length)
+    if(selectedDirectory && !SOURCE_DIRECTORIES.includes(selectedDirectory))
+        throw new Error(`Unknown responsive image source directory: ${selectedDirectory}`)
 
-    for(const relativeDirectory of SOURCE_DIRECTORIES) {
+    const manifest = selectedDirectory && fs.existsSync(GENERATED_MODULE_PATH) ?
+        {...(await import(pathToFileURL(GENERATED_MODULE_PATH).href)).default} : {}
+    if(selectedDirectory) {
+        for(const key of Object.keys(manifest)) {
+            if(key.startsWith(`/${selectedDirectory}/`)) delete manifest[key]
+        }
+    }
+
+    for(const relativeDirectory of selectedDirectory ? [selectedDirectory] : SOURCE_DIRECTORIES) {
         const absoluteDirectory = path.join(PUBLIC_DIR, relativeDirectory)
         if(!fs.existsSync(absoluteDirectory))
             continue

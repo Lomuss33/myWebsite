@@ -155,12 +155,13 @@ $scrollbar-thumb: rgba(0, 136, 186, 0.24);
     );
 }
 
-// Keep the two mobile rails bright and warm without changing the desktop
-// navigation palette or the dark theme.
+// Keep light-mode navigation surfaces consistent across the desktop sidebar
+// and the two mobile rails, with warm white backgrounds and gold accents.
 html[data-theme="light"] :is(
     .nav-link-pills-fixed-wrapper,
     nav.nav-link-pills-mobile,
-    nav.nav-tab-controller
+    nav.nav-tab-controller,
+    nav.nav-sidebar
 ) {
     --theme-nav-surface: #ffffff;
     --theme-nav-surface-accent: #fff8e8;

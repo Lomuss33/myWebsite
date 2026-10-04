@@ -183,7 +183,9 @@ button.nav-link-pills-link {
 
             span {
                 width: 100%;
-                font-size: clamp(0.52rem, 1.3svh, 0.78rem);
+                // Six columns can become width-limited before their height
+                // scale catches up, especially with longer localized labels.
+                font-size: clamp(0.46rem, min(1.3svh, 2.3cqi), 0.78rem);
                 letter-spacing: 0;
             }
         }

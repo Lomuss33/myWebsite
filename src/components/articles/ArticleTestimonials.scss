@@ -45,7 +45,7 @@ div.article-testimonials-item-info {
     align-items: center;
     justify-content: center;
 
-    margin-top: 20px;
+    margin-top: 0;
 }
 
 div.article-testimonials-item-avatar {
@@ -253,15 +253,22 @@ article#article-2-section-my-software {
     }
 
     a.article-testimonials-item-name {
+        display: block;
+        width: 100%;
+        text-align: center;
         color: #dbeafe;
         font-size: clamp(1.02rem, 0.98rem + 0.14vw, 1.1rem);
         text-shadow: 0 0 14px rgba(78, 163, 255, 0.10);
     }
 
     div.article-testimonials-item-role {
+        width: 100%;
         color: #93c5fd;
         font-size: clamp(0.875rem, 0.875rem + 0.12vw, 0.92rem);
         line-height: 1.38;
+        text-align: center;
+        text-wrap: pretty;
+        overflow-wrap: anywhere;
     }
 
     @include layout-mobile {
@@ -479,7 +486,7 @@ article#article-2-section-my-software {
         }
 
         div.article-testimonials-item-info {
-            margin-top: 24px;
+            margin-top: 0;
         }
 
         a.article-testimonials-item-name {

@@ -153,7 +153,7 @@ html[data-layout="mobile"] nav.nav-header-mobile {
         --mobile-action-size: clamp(1.75rem, min(14cqi, 2.75rem), 2.75rem);
         --mobile-action-footprint: var(--mobile-action-size);
         height: auto;
-        min-height: var(--mobile-nav-profile-height);
+        min-height: 0;
         flex-basis: auto;
         div.nav-profile-card-header {
             height: auto;

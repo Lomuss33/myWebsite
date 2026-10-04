@@ -74,11 +74,13 @@ function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateIn
     const isOriginMetaOnly = itemWrapper?.visualVariant === "origin-meta"
 
     const propListItems = []
+    const albumLastUpload = dateOnlyMeta ? itemWrapper.albumLastUpload : null
 
     propListItems.push({
-        faIcon: `fa-regular fa-clock`,
-        type: dateInterval ? PropListItem.Types.INTERVAL : PropListItem.Types.SINGLE,
-        value: dateInterval ? [itemWrapper.dateStartDisplay, itemWrapper.dateEndDisplay] : [itemWrapper.dateStartDisplay]
+        faIcon: albumLastUpload?.faIcon || `fa-regular fa-clock`,
+        type: dateInterval && !albumLastUpload ? PropListItem.Types.INTERVAL : PropListItem.Types.SINGLE,
+        value: albumLastUpload ? [albumLastUpload.display] :
+            dateInterval ? [itemWrapper.dateStartDisplay, itemWrapper.dateEndDisplay] : [itemWrapper.dateStartDisplay]
     })
 
     if(!dateOnlyMeta && (institution || location)) {
@@ -114,7 +116,10 @@ function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateIn
             </div>}
 
             {showMeta && (
-                <div className={`article-timeline-item-info-for-timelines-header-meta-band`}>
+                <div className={`article-timeline-item-info-for-timelines-header-meta-band`}
+                     role={albumLastUpload ? "group" : undefined}
+                     title={albumLastUpload?.label}
+                     aria-label={albumLastUpload?.label}>
                     {isExperienceTimeline ? (
                         <div className={`article-timeline-item-info-for-timelines-header-meta-grid text-1`}>
                             <div className={`article-timeline-item-info-for-timelines-header-meta-row article-timeline-item-info-for-timelines-header-meta-row--time`}>
@@ -146,6 +151,12 @@ function ArticleItemInfoForTimelinesHeader({ itemWrapper, className = "", dateIn
                         </div>
                     ) : isEducationTimeline ? (
                         <div className={`article-timeline-item-info-for-timelines-education-meta text-1`}>
+                            {!isOriginMetaOnly && itemWrapper.locales.level && (
+                                <div className={`article-timeline-item-info-for-timelines-education-meta-row article-timeline-item-info-for-timelines-education-meta-row--level`}>
+                                    <i aria-hidden="true" className={`fa-icon fa-solid fa-graduation-cap`}/>
+                                    <span>{itemWrapper.locales.level}</span>
+                                </div>
+                            )}
                             {isOriginMetaOnly && (
                                 <div className={`article-timeline-item-info-for-timelines-education-meta-row article-timeline-item-info-for-timelines-education-meta-row--birth-time`}>
                                     <span aria-hidden="true">🕒</span>
@@ -216,8 +227,19 @@ function ArticleItemInfoForTimelinesBody({ itemWrapper, className = "", isEducat
     if(!hasText && !hasList)
         return null
 
+    const DetailsWrapper = isEducationTimeline ? 'div' : React.Fragment
+    const DetailsContent = isEducationTimeline ? 'div' : React.Fragment
+    const detailsId = `${itemWrapper.uniqueId}-education-details`
+
     return (
         <div className={`article-timeline-item-info-for-timelines-body ${educationBodyClass} ${className}`.trim()}>
+            <DetailsWrapper {...(isEducationTimeline ? {
+                className: 'article-timeline-education-details',
+                id: detailsId,
+                'aria-hidden': !isEducationExpanded,
+                inert: !isEducationExpanded
+            } : {})}>
+            <DetailsContent {...(isEducationTimeline ? {className: 'article-timeline-education-details-inner'} : {})}>
             {isEducationTimeline && hasList && (
                 <ul className={`article-timeline-item-info-for-timelines-body-list list-mobile-small-padding ${textClass}`}>
                     {itemWrapper.locales.list.map((item, key) => (
@@ -242,12 +264,15 @@ function ArticleItemInfoForTimelinesBody({ itemWrapper, className = "", isEducat
                     ))}
                 </ul>
             )}
+            </DetailsContent>
+            </DetailsWrapper>
 
             {isEducationTimeline && (
                 <div className={`article-timeline-item-info-for-timelines-body-expand-action`}>
                     <button type={"button"}
                             className={`article-timeline-item-info-for-timelines-body-expand-button`}
                             aria-expanded={isEducationExpanded}
+                            aria-controls={detailsId}
                             onClick={() => onEducationExpand?.(itemWrapper.id)}>
                         <span>{language.getString(isEducationExpanded ? "see_less" : "see_more")}</span>
                         <i className={`fa-solid ${isEducationExpanded ? "fa-arrow-up-long" : "fa-arrow-down-long"}`}/>

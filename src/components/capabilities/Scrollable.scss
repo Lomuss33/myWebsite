@@ -48,7 +48,9 @@ div.scrollable.scrollable-mobile-native > div.scrollable-content {
 }
 
 div.scrollable-wrapper.section-scrollable-decorated div.scrollable.scrollable-mobile-native > div.scrollable-content {
-    padding-bottom: 0;
+    // Reserve only the fixed bar's footprint outside the decoration, so the
+    // decoration's own bottom lands at the bar's top at maximum scroll.
+    padding-bottom: var(--mobile-nav-tabs-total-height, var(--nav-tabs-height, 0px));
 }
 
 /** Plugin customization **/

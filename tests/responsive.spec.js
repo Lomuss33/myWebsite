@@ -568,7 +568,7 @@ test('Education desktop density compacts the timeline, certificates, and skills 
     expect(metrics.documentWidth).toBeLessThanOrEqual(1367)
 
     const firstTimelineCard=page.locator('#article-1-section-education .article-timeline-item-info-for-timelines').first()
-    await expect(firstTimelineCard.locator('.article-timeline-item-info-for-timelines-education-meta-row')).toHaveCount(3)
+    await expect(firstTimelineCard.locator('.article-timeline-item-info-for-timelines-education-meta-row')).toHaveCount(4)
     await expect(firstTimelineCard.locator('.article-timeline-item-info-for-timelines-body-list')).toBeHidden()
     await firstTimelineCard.locator('.article-timeline-item-info-for-timelines-body-expand-button').click()
     await expect(firstTimelineCard.locator('.article-timeline-item-info-for-timelines-body-list')).toBeVisible()

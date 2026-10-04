@@ -43,7 +43,9 @@ div.pretext-draggable-inline-icon-text-rail-hit-area {
     height: 74px;
     margin: 0 auto;
     cursor: ew-resize;
-    touch-action: none;
+    touch-action: pan-y pinch-zoom;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 div.pretext-draggable-inline-icon-text-rail {
@@ -92,7 +94,7 @@ button.pretext-draggable-inline-icon-text-handle {
         0 18px 34px rgba(0, 0, 0, 0.26),
         0 0 0 8px color-mix(in srgb, var(--pretext-draggable-inline-icon-text-accent) 12%, transparent);
     cursor: ew-resize;
-    touch-action: none;
+    touch-action: pan-y pinch-zoom;
     user-select: none;
     -webkit-user-select: none;
     transform: translate(-50%, -50%) translateZ(0);

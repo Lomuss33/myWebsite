@@ -8,6 +8,7 @@ import CircularButton from "../buttons/CircularButton.jsx"
 import Link from "../generic/Link.jsx"
 import {useConstants} from "../../hooks/constants.js"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
+import {useLanguage} from "../../providers/LanguageProvider.jsx"
 
 /**
  * @param {ArticleDataWrapper} dataWrapper
@@ -141,14 +142,22 @@ function ArticleCardsGenericItem({ itemWrapper }) {
 
 function ArticleEducationCertificationCard({ itemWrapper }) {
     const meta = getEducationCertificationMeta(itemWrapper)
+    const language = useLanguage()
+    const dateTarget = itemWrapper.dateStart ?
+        formatCertificationDate(itemWrapper.dateStart, language.selectedLanguageId, "long") : meta.dateFallback
+    const compactDateTarget = itemWrapper.dateStart ?
+        formatCertificationDate(itemWrapper.dateStart, language.selectedLanguageId, "numeric") : meta.dateCompactFallback
     const certificationFields = [
         {
             label: "Issuer",
-            value: meta.issuer
+            value: meta.issuer,
+            wideValue: meta.issuerWide,
+            compactValue: meta.issuerCompact
         },
         {
-            label: "Target",
-            value: itemWrapper.dateStartDisplay || meta.dateFallback
+            label: meta.dateLabel || "Target",
+            value: dateTarget,
+            compactValue: compactDateTarget
         },
         {
             label: "Focus",
@@ -162,8 +171,14 @@ function ArticleEducationCertificationCard({ itemWrapper }) {
                     alt={itemWrapper.imageAlt}
                     className={`article-cards-item-avatar article-cards-item-education-certification-avatar`}/>
     )
+    const certificationAvatarContent = !meta.certificateHref && itemWrapper.link && itemWrapper.link.href ? (
+        <Link href={itemWrapper.link.href}
+              className={`article-cards-item-education-certification-avatar-link`}>
+            {certificationAvatar}
+        </Link>
+    ) : certificationAvatar
 
-    return (
+    const certificationCard = (
         <div className={`article-cards-item article-cards-item-education-certification article-cards-item-education-certification-${meta.tone}`}>
             {meta.tone === "ccna" && (
                 <span className="article-cards-item-education-certification-status" role="img" aria-label="Incoming certification">
@@ -172,12 +187,9 @@ function ArticleEducationCertificationCard({ itemWrapper }) {
             )}
             <div className={`article-cards-item-education-certification-frame`}>
                 <div className={`article-cards-item-education-certification-heading`}>
-                    {itemWrapper.link && itemWrapper.link.href ? (
-                        <Link href={itemWrapper.link.href}
-                              className={`article-cards-item-education-certification-avatar-link`}>
-                            {certificationAvatar}
-                        </Link>
-                    ) : certificationAvatar}
+                    <div className="article-cards-item-education-certification-avatar-stage">
+                        {certificationAvatarContent}
+                    </div>
 
                     <div className={`article-cards-item-education-certification-title-block`}>
                         <span className={`article-cards-item-education-certification-kicker`}>Certification path</span>
@@ -194,15 +206,44 @@ function ArticleEducationCertificationCard({ itemWrapper }) {
                     {certificationFields.map(field => (
                         <EducationCertificationField key={field.label}
                                                      label={field.label}
-                                                     value={field.value}/>
+                                                     value={field.value}
+                                                     wideValue={field.wideValue}
+                                                     compactValue={field.compactValue}/>
                     ))}
                 </div>
+                {meta.certificateHref && (
+                    <span className="article-cards-item-education-certification-link-mark" aria-hidden="true">
+                        <i className="fa-solid fa-file-pdf"/>
+                        <i className="fa-solid fa-arrow-up-right-from-square"/>
+                    </span>
+                )}
             </div>
         </div>
     )
+
+    if(meta.certificateHref) {
+        return (
+            <a className="article-cards-item-education-certification-link"
+               href={meta.certificateHref}
+               target="_blank"
+               rel="noopener noreferrer"
+               onClick={event => {
+                   if(event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+                       return
+
+                   event.preventDefault()
+                   window.open(meta.certificateHref, "_blank", "noopener,noreferrer")
+               }}
+               aria-label="Open AEVO certificate (PDF) in a new tab">
+                {certificationCard}
+            </a>
+        )
+    }
+
+    return certificationCard
 }
 
-function EducationCertificationField({ label, value }) {
+function EducationCertificationField({ label, value, wideValue, compactValue }) {
     if(!value)
         return null
 
@@ -211,10 +252,31 @@ function EducationCertificationField({ label, value }) {
             <span className={`article-cards-item-education-certification-field-label`}>
                 {label}
             </span>
-            <span className={`article-cards-item-education-certification-field-value`}
-                  dangerouslySetInnerHTML={{__html: value}}/>
+            <span className={`article-cards-item-education-certification-field-value${wideValue ? " article-cards-item-education-certification-field-value-has-wide" : ""}${compactValue ? " article-cards-item-education-certification-field-value-has-compact" : ""}`}>
+                {compactValue ? (
+                    <>
+                        <span className="article-cards-item-education-certification-field-value-full"
+                              dangerouslySetInnerHTML={{__html: value}}/>
+                        <span className="article-cards-item-education-certification-field-value-wide"
+                              aria-hidden="true">{wideValue}</span>
+                        <span className="article-cards-item-education-certification-field-value-compact"
+                              aria-hidden="true">{compactValue}</span>
+                    </>
+                ) : <span dangerouslySetInnerHTML={{__html: value}}/>}
+            </span>
         </div>
     )
+}
+
+function formatCertificationDate(date, locale, monthStyle) {
+    if(!date)
+        return null
+
+    const month = monthStyle === "numeric" ? "2-digit" : "long"
+    const day = monthStyle === "numeric" ? "2-digit" : "numeric"
+    return new Intl.DateTimeFormat(locale || undefined, {day, month, year: "numeric"})
+        .format(date)
+        .replace(/\d{4}/, year => `<strong>${year}</strong>`)
 }
 
 function isEducationCertificationCard(itemWrapper) {
@@ -228,9 +290,14 @@ function getEducationCertificationMeta(itemWrapper) {
     if(title.includes("aevo")) {
         return {
             tone: "aevo",
-            issuer: "IHK",
+            issuer: "Industrie- und Handelskammer",
+            issuerWide: "IHK — Industrie- und Handelskammer",
+            issuerCompact: "IHK",
+            certificateHref: "/documents/certificates/AEVO_Ausbilder_Eignungsverordnung_LovroMusic_04092026_Friedberg.pdf",
             focus: "Apprentice training",
-            dateFallback: "Sep 2026"
+            dateLabel: "Achieved",
+            dateFallback: "September 4, <strong>2026</strong>",
+            dateCompactFallback: "09/04/<strong>2026</strong>"
         }
     }
 
@@ -239,7 +306,8 @@ function getEducationCertificationMeta(itemWrapper) {
             tone: "ccna",
             issuer: "Cisco",
             focus: "Networking",
-            dateFallback: "Dec 2026"
+            dateFallback: "December <strong>2026</strong>",
+            dateCompactFallback: "12/<strong>2026</strong>"
         }
     }
 

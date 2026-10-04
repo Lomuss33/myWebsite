@@ -37,7 +37,9 @@ function LayeredCardCarousel({slides, onChange, onPin, onUnpin, onReplacePinned,
         if(!rail || !count) return
 
         const fitColumns = () => {
-            const maxColumns = Math.max(1, Math.min(count, Math.floor((rail.clientWidth + 4) / 26)))
+            const touchFriendly = rail.clientWidth <= 560 || window.matchMedia?.("(pointer: coarse)")?.matches
+            const minimumCellWidth = touchFriendly ? 44 : 26
+            const maxColumns = Math.max(1, Math.min(count, Math.floor((rail.clientWidth + 4) / minimumCellWidth)))
             let columns = maxColumns
             while(columns > Math.ceil(maxColumns / 2) && count % columns !== 0) columns--
             if(count % columns !== 0) columns = Math.ceil(count / Math.ceil(count / maxColumns))
@@ -134,7 +136,7 @@ function LayeredCardCarousel({slides, onChange, onPin, onUnpin, onReplacePinned,
     const onPointerDown = (event) => {
         pointerStartRef.current = null
         if(!enabled || event.pointerType === "mouse" || !event.isPrimary ||
-            event.target.closest(".article-web-art-gated-tile-open, button, a, input, select, textarea, [role='button']")) return
+            event.target.closest(".layered-card-carousel-pin, .layered-card-carousel-unpin, .article-web-art-gated-tile-pill, a, input, select, textarea")) return
         pointerStartRef.current = {id: event.pointerId, x: event.clientX, y: event.clientY}
     }
 

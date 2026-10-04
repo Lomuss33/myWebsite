@@ -224,11 +224,11 @@ function layoutPreparedParagraph(paragraph, typography, maxWidth, obstacle, offs
         const bandTop = lineTop
         const bandBottom = lineTop + typography.lineHeight
         const slots = getTextLineSlots(safeWidth, bandTop, bandBottom, obstacle)
-        const slot = pickPrimaryTextSlot(slots)
         let consumedOnBand = false
+        let done = false
         const startingCursorKey = createRichCursorKey(cursor)
 
-        if (slot) {
+        for (const slot of slots) {
             const slotWidth = slot.right - slot.left
             const lineRange = layoutNextRichInlineLineRange(paragraph.prepared, slotWidth, cursor)
             if (lineRange) {
@@ -249,10 +249,22 @@ function layoutPreparedParagraph(paragraph, typography, maxWidth, obstacle, offs
                     })
                     cursor = line.end
                 }
+            } else {
+                done = true
+                break
             }
+            if (!cursor) { done = true; break }
         }
 
-        lineTop += typography.lineHeight
+        // A full-width obstacle can block several bands. Skip those bands,
+        // preserving the cursor so no text disappears behind the obstacle.
+        if (slots.length === 0 && obstacle && bandTop < obstacle.top + obstacle.height + obstacle.verticalPadding) {
+            lineTop += typography.lineHeight
+            continue
+        }
+
+        if (consumedOnBand) lineTop += typography.lineHeight
+        if (done) break
 
         if (!consumedOnBand && startingCursorKey === createRichCursorKey(cursor)) {
             break
@@ -384,24 +396,6 @@ function carveTextLineSlots(base, blocked, minimumSlotWidth = 24) {
     }
 
     return slots.filter(slot => slot.right - slot.left >= minimumSlotWidth)
-}
-
-function pickPrimaryTextSlot(slots) {
-    if (!Array.isArray(slots) || slots.length === 0) return null
-
-    let widestSlot = slots[0]
-    let widestWidth = widestSlot.right - widestSlot.left
-
-    for (let index = 1; index < slots.length; index++) {
-        const slot = slots[index]
-        const slotWidth = slot.right - slot.left
-        if (slotWidth > widestWidth) {
-            widestSlot = slot
-            widestWidth = slotWidth
-        }
-    }
-
-    return widestSlot
 }
 
 function createFragment(item, fragment) {

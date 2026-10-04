@@ -59,6 +59,10 @@ function buildEducationTimelinePath(listElement) {
         return null
 
     const listRect = listElement.getBoundingClientRect()
+    const stageRect = listElement.closest('.article-timeline-items-stage--education')?.getBoundingClientRect()
+    const articleRect = listElement.closest('article')?.getBoundingClientRect()
+    const clipHeight = Math.max(0, (articleRect?.bottom ?? listRect.bottom) - listRect.top)
+    const pathHeight = Math.max(listRect.height, clipHeight)
     const avatars = [...listElement.querySelectorAll(":scope > .article-timeline-item .article-timeline-item-avatar-wrapper")]
     if(avatars.length < 2 || listRect.width <= 0 || listRect.height <= 0)
         return null
@@ -140,10 +144,29 @@ function buildEducationTimelinePath(listElement) {
         })
     }
 
+    // The final avatar also has a short continuation through the remaining
+    // article space. Earlier spans always use the full, unclipped item layout.
+    const lastPoint = points[points.length - 1]
+    const tailLength = pathHeight - lastPoint.y
+    if(tailLength > 0) {
+        const tailX = Math.min(listRect.width - 24, lastPoint.x + Math.min(lastPoint.size * 0.4, listRect.width * 0.1))
+        segments.push({
+            path: `M ${lastPoint.x} ${lastPoint.y} C ${lastPoint.x} ${lastPoint.y + tailLength * 0.3}, ${tailX} ${pathHeight - tailLength * 0.3}, ${lastPoint.x} ${pathHeight}`,
+            startX: lastPoint.x,
+            startY: lastPoint.y,
+            endX: lastPoint.x,
+            endY: pathHeight,
+            index: points.length - 1
+        })
+    }
+
     return {
         segments,
         width: listRect.width,
-        height: listRect.height
+        height: pathHeight,
+        left: listRect.left - (stageRect?.left ?? listRect.left),
+        top: listRect.top - (stageRect?.top ?? listRect.top),
+        clipHeight
     }
 }
 
@@ -327,6 +350,35 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
 
             if(isEducationTimeline) {
                 const itemElements = listElement.querySelectorAll(":scope > .article-timeline-item")
+                // Collapsed avatars follow the header; expanded avatars use
+                // the available space above it without crossing the prior row.
+                itemElements.forEach((itemElement, index) => {
+                    const header = itemElement.querySelector('.article-timeline-item-info-for-timelines-header')
+                    const avatar = itemElement.querySelector('.article-timeline-item-avatar-wrapper')
+                    if(!header || !avatar)
+                        return
+                    const itemRect = itemElement.getBoundingClientRect()
+                    const headerRect = header.getBoundingClientRect()
+                    const avatarTop = Math.max(8, headerRect.top - itemRect.top + (headerRect.height - avatar.offsetHeight) / 2)
+                    const offset = `${Math.round(avatarTop * 100) / 100}px`
+                    if(itemElement.style.getPropertyValue('--education-avatar-top') !== offset)
+                        itemElement.style.setProperty('--education-avatar-top', offset)
+
+                    const previousItem = itemElements[index - 1]
+                    const previousAvatar = previousItem?.querySelector('.article-timeline-item-avatar')
+                    const safeTop = Math.max(
+                        listRect.top,
+                        previousItem ? previousItem.getBoundingClientRect().bottom + 8 : listRect.top,
+                        previousAvatar ? previousAvatar.getBoundingClientRect().bottom + 8 : listRect.top
+                    )
+                    // Allow for the outer frame's rotation/scale and its edge
+                    // halo, including the logo's 120% expanded size.
+                    const frameClearance = Math.max(avatar.offsetWidth, avatar.offsetHeight) * 0.09 + 6
+                    const expandedTop = safeTop - itemRect.top + frameClearance
+                    const expandedOffset = `${Math.round(expandedTop * 100) / 100}px`
+                    if(itemElement.style.getPropertyValue('--education-avatar-expanded-top') !== expandedOffset)
+                        itemElement.style.setProperty('--education-avatar-expanded-top', expandedOffset)
+                })
                 const lastVisibleItem = itemElements[Math.max(0, Math.min(visibleItemCount, itemElements.length) - 1)]
                 const viewportHeightPx = lastVisibleItem ?
                     Math.ceil(lastVisibleItem.getBoundingClientRect().bottom - listRect.top) :
@@ -338,7 +390,11 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
 
                 const nextPath = buildEducationTimelinePath(listElement)
                 setEducationTimelinePath(current => {
-                    if(current?.path === nextPath?.path && current?.width === nextPath?.width && current?.height === nextPath?.height)
+                    if(current?.width === nextPath?.width && current?.height === nextPath?.height &&
+                        current?.left === nextPath?.left && current?.top === nextPath?.top &&
+                        current?.clipHeight === nextPath?.clipHeight &&
+                        current?.segments.length === nextPath?.segments.length &&
+                        current?.segments.every((segment, index) => segment.path === nextPath.segments[index].path))
                         return current
                     return nextPath
                 })
@@ -390,9 +446,46 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
 
         _updateOffsets()
 
+        // Moving the avatar does not resize its wrapper. Follow its CSS motion
+        // explicitly so the winding connector stays attached while it glides.
+        const movingAvatars = new Set()
+        let avatarAnimationFrame = null
+        const followAvatars = () => {
+            avatarAnimationFrame = null
+            _updateOffsets()
+            if(movingAvatars.size)
+                avatarAnimationFrame = requestAnimationFrame(followAvatars)
+        }
+        const onAvatarTransition = event => {
+            if(event.propertyName !== 'top' || !event.target.classList.contains('article-timeline-item-avatar-wrapper'))
+                return
+            if(event.type === 'transitionrun') {
+                movingAvatars.add(event.target)
+                if(avatarAnimationFrame === null)
+                    avatarAnimationFrame = requestAnimationFrame(followAvatars)
+            } else {
+                movingAvatars.delete(event.target)
+                _updateOffsets()
+            }
+        }
+        if(isEducationTimeline) {
+            listElement.addEventListener('transitionrun', onAvatarTransition)
+            listElement.addEventListener('transitionend', onAvatarTransition)
+            listElement.addEventListener('transitioncancel', onAvatarTransition)
+        }
+        const cleanupAvatarMotion = () => {
+            if(avatarAnimationFrame !== null)
+                cancelAnimationFrame(avatarAnimationFrame)
+            listElement.removeEventListener('transitionrun', onAvatarTransition)
+            listElement.removeEventListener('transitionend', onAvatarTransition)
+            listElement.removeEventListener('transitioncancel', onAvatarTransition)
+        }
+
         if(typeof ResizeObserver !== "undefined") {
             const resizeObserver = new ResizeObserver(() => _updateOffsets())
             resizeObserver.observe(listElement)
+            if(isEducationTimeline && listElement.closest('article'))
+                resizeObserver.observe(listElement.closest('article'))
             const itemSelector = isExperienceTimeline ?
                 ".article-timeline-item--experience" :
                 ".article-timeline-item"
@@ -402,12 +495,20 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
 
             listElement.querySelectorAll(itemSelector).forEach(itemElement => resizeObserver.observe(itemElement))
             listElement.querySelectorAll(avatarSelector).forEach(avatarElement => resizeObserver.observe(avatarElement))
-            return () => resizeObserver.disconnect()
+            if(isEducationTimeline)
+                listElement.querySelectorAll('.article-timeline-item-info-for-timelines-header').forEach(header => resizeObserver.observe(header))
+            return () => {
+                resizeObserver.disconnect()
+                cleanupAvatarMotion()
+            }
         }
 
         window.addEventListener("resize", _updateOffsets)
-        return () => window.removeEventListener("resize", _updateOffsets)
-    }, [isExperienceTimeline, isEducationTimeline, visibleItemWrappers.length, visibleItemCount, selectedItemCategoryId])
+        return () => {
+            window.removeEventListener("resize", _updateOffsets)
+            cleanupAvatarMotion()
+        }
+    }, [isExperienceTimeline, isEducationTimeline, visibleItemWrappers.length, visibleItemCount, selectedItemCategoryId, expandedEducationItemIds])
 
     useLayoutEffect(() => {
         if(!isMyArtTimeline)
@@ -530,39 +631,49 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
         return style
     }, [usesTimelineLineOffsets, isExperienceTimeline, isEducationTimeline, artItemHeightsPx, timelineOffsetsPx])
 
+    const TimelineClip = isEducationTimeline ? 'div' : React.Fragment
+
     return (
         <>
             <div className={`article-timeline-items-stage${isEducationTimeline ? " article-timeline-items-stage--education" : ""}`}
                  style={educationTimelineStageStyle}>
+                {isEducationTimeline && educationTimelinePath && (
+                    <svg className="article-timeline-education-snake"
+                         viewBox={`0 0 ${educationTimelinePath.width} ${educationTimelinePath.height}`}
+                         style={{
+                             left: educationTimelinePath.left,
+                             top: educationTimelinePath.top,
+                             width: educationTimelinePath.width,
+                             height: educationTimelinePath.height,
+                             clipPath: `inset(0 0 ${Math.max(0, educationTimelinePath.height - educationTimelinePath.clipHeight)}px 0)`
+                         }}
+                         preserveAspectRatio="none"
+                         aria-hidden="true">
+                        <defs>
+                            {educationTimelinePath.segments.map(segment => (
+                                <linearGradient id={`education-timeline-crystal-${segment.index}`}
+                                                gradientUnits="userSpaceOnUse"
+                                                x1={segment.startX}
+                                                y1={segment.startY}
+                                                x2={segment.endX}
+                                                y2={segment.endY}
+                                                key={segment.index}>
+                                    <stop offset="0%" stopColor={getEducationCrystalColor(timelineItemWrappers[segment.index]?.id)}/>
+                                    <stop offset="100%" stopColor={getEducationCrystalColor(timelineItemWrappers[Math.min(segment.index + 1, timelineItemWrappers.length - 1)]?.id)}/>
+                                </linearGradient>
+                            ))}
+                        </defs>
+                        {educationTimelinePath.segments.map(segment => (
+                            <path d={segment.path}
+                                  stroke={`url(#education-timeline-crystal-${segment.index})`}
+                                  key={segment.index}/>
+                        ))}
+                    </svg>
+                )}
+                <TimelineClip {...(isEducationTimeline ? {className: 'article-timeline-education-clip'} : {})}>
                 <ul className={`article-timeline-items${isEducationTimeline && educationTimelinePath ? " article-timeline-items-has-education-snake" : ""}`}
                     ref={listRef}
                     style={timelineLineOffsetsStyle || undefined}>
-                    {isEducationTimeline && educationTimelinePath && (
-                        <svg className="article-timeline-education-snake"
-                             viewBox={`0 0 ${educationTimelinePath.width} ${educationTimelinePath.height}`}
-                             preserveAspectRatio="none"
-                             aria-hidden="true">
-                            <defs>
-                                {educationTimelinePath.segments.map(segment => (
-                                    <linearGradient id={`education-timeline-crystal-${segment.index}`}
-                                                    gradientUnits="userSpaceOnUse"
-                                                    x1={segment.startX}
-                                                    y1={segment.startY}
-                                                    x2={segment.endX}
-                                                    y2={segment.endY}
-                                                    key={segment.index}>
-                                        <stop offset="0%" stopColor={getEducationCrystalColor(timelineItemWrappers[segment.index]?.id)}/>
-                                        <stop offset="100%" stopColor={getEducationCrystalColor(timelineItemWrappers[segment.index + 1]?.id)}/>
-                                    </linearGradient>
-                                ))}
-                            </defs>
-                            {educationTimelinePath.segments.map(segment => (
-                                <path d={segment.path}
-                                      stroke={`url(#education-timeline-crystal-${segment.index})`}
-                                      key={segment.index}/>
-                            ))}
-                        </svg>
-                    )}
                     {timelineItemWrappers.map((itemWrapper, key) => (
                         <ArticleTimelineItem itemWrapper={itemWrapper}
                                              itemIndex={key}
@@ -593,6 +704,7 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
                         ))}
                     </div>
                 )}
+                </TimelineClip>
             </div>
 
             {Boolean(canExpand) && (

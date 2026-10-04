@@ -1772,41 +1772,48 @@ article#article-1-section-education {
     div.article-timeline-item-info-for-timelines-header {
         align-items: stretch;
         width: 100%;
-        gap: clamp(0.65rem, 0.55rem + 0.22vw, 1rem);
+        gap: clamp(0.2rem, 0.16rem + 0.12vw, 0.3rem);
         text-align: center;
     }
 
     div.article-timeline-item-info-for-timelines-header-title {
         width: 100%;
         text-align: center;
-        margin-bottom: clamp(0.3rem, 0.22rem + 0.14vw, 0.42rem);
-        padding-bottom: clamp(0.42rem, 0.32rem + 0.18vw, 0.56rem);
+        margin-bottom: 0;
+        padding-bottom: 0;
         position: relative;
 
         &::after {
-            content: "";
-            position: absolute;
-            inset: auto 0 0 0;
-            height: 1px;
-            background: linear-gradient(
-                90deg,
-                color-mix(in srgb, var(--card-accent) 55%, transparent 45%),
-                color-mix(in srgb, var(--card-accent-2) 45%, transparent 55%)
-            );
-            opacity: 0.72;
+            content: none;
         }
     }
 
     div.article-timeline-item-info-for-timelines-header-main {
         width: 100%;
         justify-content: center;
+        position: relative;
+        isolation: isolate;
+
+        &::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            inset: 0;
+            border-radius: 1.1rem;
+            background: var(--education-title-surface, rgba(6, 12, 24, 0.8));
+            box-shadow:
+                0 3px 9px var(--education-title-shadow, rgba(0, 0, 0, 0.24)),
+                inset 0 1px 0 rgba(255, 255, 255, 0.045);
+            pointer-events: none;
+        }
 
         h5 {
             display: block;
+            box-sizing: border-box;
             width: 100%;
             max-width: 58ch;
             margin-inline: auto;
-            padding-bottom: 0;
+            padding: 0.42rem calc(var(--education-year-axis-width, 3rem) + 0.6rem);
             color: var(--card-text-strong);
             font-size: clamp(1.24rem, 1.08rem + 0.5vw, 1.58rem) !important;
             font-weight: 800;
@@ -1827,7 +1834,7 @@ article#article-1-section-education {
         flex-direction: column;
         flex-wrap: nowrap;
         align-items: stretch;
-        gap: clamp(0.28rem, 0.24rem + 0.12vw, 0.4rem);
+        gap: 0.08rem;
         width: 100%;
         margin-inline: auto;
         padding-inline: clamp(0.25rem, 0.2rem + 0.7vw, 1.5rem);
@@ -1861,17 +1868,22 @@ article#article-1-section-education {
             content: "";
             position: absolute;
             z-index: -1;
-            inset: 0;
-            border: 1px solid color-mix(in srgb, var(--card-border) 66%, var(--card-accent) 34%);
-            border-start-start-radius: 999px;
-            border-end-start-radius: 999px;
-            border-start-end-radius: 0;
-            border-end-end-radius: 0;
-            background: color-mix(in srgb, var(--theme-boards-background) 92%, var(--card-accent) 8%);
+            inset: -0.08rem 0;
+            border: 0;
+            border-radius: 42% 12% 34% 16% / 24% 48% 32% 55%;
+            background: color-mix(
+                in srgb,
+                color-mix(in srgb, var(--theme-boards-background) 88%, var(--card-accent) 12%) 76%,
+                transparent
+            );
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
-            -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 72%, rgba(0, 0, 0, 0.28) 92%, transparent 100%);
-            mask-image: linear-gradient(90deg, #000 0%, #000 72%, rgba(0, 0, 0, 0.28) 92%, transparent 100%);
+            -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 68%, rgba(0, 0, 0, 0.34) 88%, transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 68%, rgba(0, 0, 0, 0.34) 88%, transparent 100%);
             pointer-events: none;
+        }
+
+        &:nth-child(even)::before {
+            border-radius: 16% 34% 12% 42% / 55% 32% 48% 24%;
         }
 
         i.fa-icon {
@@ -1902,15 +1914,43 @@ article#article-1-section-education {
         font-weight: 700;
     }
 
+    div.article-timeline-item-info-for-timelines-education-meta-row--level {
+        color: var(--card-text-strong);
+        font-weight: 700;
+        letter-spacing: 0.015em;
+    }
+
     div.article-timeline-item-info-for-timelines-body {
         margin-top: clamp(0.4rem, 0.3rem + 0.2vw, 0.56rem);
         padding-top: clamp(0.5rem, 0.4rem + 0.2vw, 0.64rem);
         border-top: 1px solid color-mix(in srgb, var(--card-border) 74%, transparent 26%);
         color: var(--education-body-text);
         line-height: 1.74;
+        transition: margin-top 360ms cubic-bezier(0.4, 0, 0.2, 1),
+            padding-top 360ms cubic-bezier(0.4, 0, 0.2, 1), border-color 360ms ease;
+
+        div.article-timeline-education-details {
+            display: grid;
+            grid-template-rows: 0fr;
+            opacity: 0;
+            visibility: hidden;
+            transition: grid-template-rows 360ms cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 360ms cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 360ms;
+        }
+
+        div.article-timeline-education-details-inner {
+            min-height: 0;
+            overflow: hidden;
+        }
 
         div.article-timeline-item-info-for-timelines-body-text {
             color: inherit;
+            // The grid owns clipping in both directions; changing the text's
+            // intrinsic layout mid-transition would make collapse snap.
+            display: block;
+            max-height: none;
+            overflow: visible;
+            -webkit-line-clamp: unset;
         }
 
         ul.article-timeline-item-info-for-timelines-body-list {
@@ -1961,15 +2001,7 @@ article#article-1-section-education {
             flex-direction: column;
             margin-top: 0.12rem;
             padding-top: 0.1rem;
-            border-top: 0;
-
-            div.article-timeline-item-info-for-timelines-body-text {
-                display: none;
-            }
-
-            ul.article-timeline-item-info-for-timelines-body-list {
-                display: none;
-            }
+            border-top-color: transparent;
 
             div.article-timeline-item-info-for-timelines-body-expand-action {
                 align-self: stretch;
@@ -1986,16 +2018,13 @@ article#article-1-section-education {
             max-height: none;
             overflow: visible;
 
-            div.article-timeline-item-info-for-timelines-body-text {
-                display: block;
-                max-height: none;
-                overflow: visible;
-                -webkit-line-clamp: unset;
+            div.article-timeline-education-details {
+                grid-template-rows: 1fr;
+                opacity: 1;
+                visibility: visible;
+                transition-delay: 0s;
             }
 
-            ul.article-timeline-item-info-for-timelines-body-list {
-                display: block;
-            }
         }
     }
 
@@ -2004,24 +2033,25 @@ article#article-1-section-education {
         justify-content: center;
         margin-top: 0.32rem;
         padding: 0;
+        transition: margin-top 360ms cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     button.article-timeline-item-info-for-timelines-body-expand-button {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 0.42rem;
-        min-height: 2.25rem;
-        padding: 0.25rem 0.75rem;
-        border: 1px solid color-mix(in srgb, var(--card-accent) 28%, transparent 72%);
-        border-block-start-color: transparent;
+        gap: 0.35rem;
+        min-height: 2rem;
+        padding: 0.2rem 0.6rem;
+        border: 1px solid color-mix(in srgb, var(--education-crystal-color) 14%, transparent);
         border-radius: 0.35rem;
         background: transparent;
-        color: color-mix(in srgb, var(--card-accent) 62%, var(--card-text-strong) 38%);
-        font-size: 0.82rem;
-        font-weight: 700;
+        color: var(--card-text-mid);
+        font-size: 0.7rem;
+        font-weight: 600;
+        line-height: 1.25;
         letter-spacing: 0.01em;
-        box-shadow: none;
+        box-shadow: 0 1px 4px color-mix(in srgb, var(--education-crystal-color) 10%, transparent);
         opacity: 0.92;
         transition: background-color 160ms ease, color 160ms ease, opacity 160ms ease;
 
@@ -2030,6 +2060,7 @@ article#article-1-section-education {
             background: transparent;
             color: var(--education-body-strong);
             opacity: 1;
+            box-shadow: 0 2px 6px color-mix(in srgb, var(--education-crystal-color) 14%, transparent);
         }
 
         &:active {
@@ -2048,6 +2079,16 @@ article#article-1-section-education {
     }
 }
 
+@media (prefers-reduced-motion: reduce) {
+    article#article-1-section-education {
+        div.article-timeline-item-info-for-timelines-body,
+        div.article-timeline-education-details,
+        div.article-timeline-item-info-for-timelines-body-expand-action {
+            transition: none;
+        }
+    }
+}
+
 // Education copy follows the card's actual measure: compact on narrow cards,
 // comfortably readable on very wide displays, with firm bounds at both ends.
 @supports (font-size: 1cqi) {
@@ -2060,7 +2101,7 @@ article#article-1-section-education {
     }
 
     article#article-1-section-education div.article-timeline-item-info-for-timelines-education-meta {
-        gap: clamp(0.28rem, 0.45cqi, 0.42rem);
+        gap: clamp(0.06rem, 0.16cqi, 0.12rem);
         padding-inline: clamp(0.25rem, 2.4cqi, 1.5rem);
     }
 
@@ -2151,6 +2192,8 @@ article#article-1-section-education div.article-timeline-item-info-for-timelines
 
 [data-theme="light"] article#article-1-section-education div.article-timeline-item-info-for-timelines {
     --education-foreground: #000;
+    --education-title-surface: rgba(203, 213, 225, 0.72);
+    --education-title-shadow: rgba(15, 23, 42, 0.12);
     --card-text-strong: #000;
     --card-text-mid: #000;
     --card-text-soft: #000;
@@ -2161,6 +2204,8 @@ article#article-1-section-education div.article-timeline-item-info-for-timelines
 
 [data-theme="dark"] article#article-1-section-education div.article-timeline-item-info-for-timelines {
     --education-foreground: #fff;
+    --education-title-surface: rgba(6, 12, 24, 0.8);
+    --education-title-shadow: rgba(0, 0, 0, 0.24);
     --card-text-strong: #fff;
     --card-text-mid: #fff;
     --card-text-soft: #fff;
@@ -2178,7 +2223,7 @@ article#article-1-section-education div.article-timeline-item-info-for-timelines
 
 [data-theme="dark"] article#article-1-section-education div.article-timeline-item-info-for-timelines-education-meta-row::before {
     border-color: rgba(148, 163, 184, 0.24) !important;
-    background: rgba(8, 15, 29, 0.82) !important;
+    background: rgba(8, 15, 29, 0.58) !important;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
@@ -3107,8 +3152,8 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
 }
 
 [data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines {
-    --digital-text-fill: #000;
-    --digital-text-edge: #fff;
+    --digital-text-fill: #10243a;
+    --digital-text-edge: transparent;
 }
 
 article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines {
@@ -3117,7 +3162,7 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
     div.article-timeline-item-info-for-timelines-body-text *,
     div.article-item-preview-menu-button-list a.article-item-preview-menu-link {
         color: var(--digital-text-fill);
-        -webkit-text-stroke: 0.55px var(--digital-text-edge);
+        -webkit-text-stroke: 0;
         text-shadow: none;
     }
 
@@ -3125,6 +3170,14 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
         color: var(--digital-text-fill);
         -webkit-text-stroke: 0;
     }
+}
+
+[data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression li.article-timeline-item div.article-timeline-item-info-for-timelines-body-text {
+    padding: 0.55rem clamp(0.65rem, 1.2vw, 0.9rem);
+    border-radius: 0.7rem;
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.96), 0 2px 8px rgba(15, 23, 42, 0.08);
+    color: var(--digital-text-fill);
 }
 
 // The two-column view reads as two open pages: rounded outside edges and a

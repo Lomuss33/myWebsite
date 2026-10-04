@@ -592,6 +592,186 @@ const imageManifest = {
         "srcSet": "/images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_2-w160.webp 160w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_2-w320.webp 320w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_2-w480.webp 480w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_2-w640.webp 640w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_2-w960.webp 960w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_2-w1280.webp 1280w, /images/__responsive/images/writing/books/the-dragon-box/jeronim_i_ante_frame_2-w1448.webp 1448w",
         "width": 1448,
         "height": 1086
+    },
+    "/images/stickers/hardware-experiments/01-server-studio.png": {
+        "src": "/images/__responsive/images/stickers/hardware-experiments/01-server-studio-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/hardware-experiments/01-server-studio-w160.webp 160w, /images/__responsive/images/stickers/hardware-experiments/01-server-studio-w320.webp 320w, /images/__responsive/images/stickers/hardware-experiments/01-server-studio-w480.webp 480w, /images/__responsive/images/stickers/hardware-experiments/01-server-studio-w640.webp 640w",
+        "width": 640,
+        "height": 427
+    },
+    "/images/stickers/hardware-experiments/02-ethernet-holographic.png": {
+        "src": "/images/__responsive/images/stickers/hardware-experiments/02-ethernet-holographic-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/hardware-experiments/02-ethernet-holographic-w160.webp 160w, /images/__responsive/images/stickers/hardware-experiments/02-ethernet-holographic-w320.webp 320w, /images/__responsive/images/stickers/hardware-experiments/02-ethernet-holographic-w480.webp 480w, /images/__responsive/images/stickers/hardware-experiments/02-ethernet-holographic-w640.webp 640w",
+        "width": 640,
+        "height": 427
+    },
+    "/images/stickers/hardware-experiments/03-conveyor-isometric.png": {
+        "src": "/images/__responsive/images/stickers/hardware-experiments/03-conveyor-isometric-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/hardware-experiments/03-conveyor-isometric-w160.webp 160w, /images/__responsive/images/stickers/hardware-experiments/03-conveyor-isometric-w320.webp 320w, /images/__responsive/images/stickers/hardware-experiments/03-conveyor-isometric-w480.webp 480w, /images/__responsive/images/stickers/hardware-experiments/03-conveyor-isometric-w640.webp 640w",
+        "width": 640,
+        "height": 427
+    },
+    "/images/stickers/hardware-experiments/04-sensor-cyanotype.png": {
+        "src": "/images/__responsive/images/stickers/hardware-experiments/04-sensor-cyanotype-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/hardware-experiments/04-sensor-cyanotype-w160.webp 160w, /images/__responsive/images/stickers/hardware-experiments/04-sensor-cyanotype-w320.webp 320w, /images/__responsive/images/stickers/hardware-experiments/04-sensor-cyanotype-w480.webp 480w, /images/__responsive/images/stickers/hardware-experiments/04-sensor-cyanotype-w640.webp 640w",
+        "width": 640,
+        "height": 585
+    },
+    "/images/stickers/hardware-experiments/05-oven-chrome.png": {
+        "src": "/images/__responsive/images/stickers/hardware-experiments/05-oven-chrome-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/hardware-experiments/05-oven-chrome-w160.webp 160w, /images/__responsive/images/stickers/hardware-experiments/05-oven-chrome-w320.webp 320w, /images/__responsive/images/stickers/hardware-experiments/05-oven-chrome-w480.webp 480w, /images/__responsive/images/stickers/hardware-experiments/05-oven-chrome-w640.webp 640w",
+        "width": 640,
+        "height": 427
+    },
+    "/images/stickers/hardware-experiments/06-carwash-enamel.png": {
+        "src": "/images/__responsive/images/stickers/hardware-experiments/06-carwash-enamel-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/hardware-experiments/06-carwash-enamel-w160.webp 160w, /images/__responsive/images/stickers/hardware-experiments/06-carwash-enamel-w320.webp 320w, /images/__responsive/images/stickers/hardware-experiments/06-carwash-enamel-w480.webp 480w, /images/__responsive/images/stickers/hardware-experiments/06-carwash-enamel-w640.webp 640w",
+        "width": 640,
+        "height": 585
+    },
+    "/images/stickers/hardware-experiments/07-flag-acrylic.png": {
+        "src": "/images/__responsive/images/stickers/hardware-experiments/07-flag-acrylic-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/hardware-experiments/07-flag-acrylic-w160.webp 160w, /images/__responsive/images/stickers/hardware-experiments/07-flag-acrylic-w320.webp 320w, /images/__responsive/images/stickers/hardware-experiments/07-flag-acrylic-w480.webp 480w, /images/__responsive/images/stickers/hardware-experiments/07-flag-acrylic-w640.webp 640w",
+        "width": 640,
+        "height": 585
+    },
+    "/images/stickers/hardware-experiments/08-motors-risograph.png": {
+        "src": "/images/__responsive/images/stickers/hardware-experiments/08-motors-risograph-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/hardware-experiments/08-motors-risograph-w160.webp 160w, /images/__responsive/images/stickers/hardware-experiments/08-motors-risograph-w320.webp 320w, /images/__responsive/images/stickers/hardware-experiments/08-motors-risograph-w480.webp 480w, /images/__responsive/images/stickers/hardware-experiments/08-motors-risograph-w640.webp 640w",
+        "width": 640,
+        "height": 427
+    },
+    "/images/stickers/hardware-experiments/09-curtain-paper.png": {
+        "src": "/images/__responsive/images/stickers/hardware-experiments/09-curtain-paper-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/hardware-experiments/09-curtain-paper-w160.webp 160w, /images/__responsive/images/stickers/hardware-experiments/09-curtain-paper-w320.webp 320w, /images/__responsive/images/stickers/hardware-experiments/09-curtain-paper-w480.webp 480w, /images/__responsive/images/stickers/hardware-experiments/09-curtain-paper-w640.webp 640w",
+        "width": 640,
+        "height": 1137
+    },
+    "/images/stickers/hardware-experiments/10-sensor-ceramic.png": {
+        "src": "/images/__responsive/images/stickers/hardware-experiments/10-sensor-ceramic-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/hardware-experiments/10-sensor-ceramic-w160.webp 160w, /images/__responsive/images/stickers/hardware-experiments/10-sensor-ceramic-w320.webp 320w, /images/__responsive/images/stickers/hardware-experiments/10-sensor-ceramic-w480.webp 480w, /images/__responsive/images/stickers/hardware-experiments/10-sensor-ceramic-w640.webp 640w",
+        "width": 640,
+        "height": 427
+    },
+    "/images/stickers/hardware-experiments/11-houses-frosted.png": {
+        "src": "/images/__responsive/images/stickers/hardware-experiments/11-houses-frosted-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/hardware-experiments/11-houses-frosted-w160.webp 160w, /images/__responsive/images/stickers/hardware-experiments/11-houses-frosted-w320.webp 320w, /images/__responsive/images/stickers/hardware-experiments/11-houses-frosted-w480.webp 480w, /images/__responsive/images/stickers/hardware-experiments/11-houses-frosted-w640.webp 640w",
+        "width": 640,
+        "height": 427
+    },
+    "/images/stickers/hardware-experiments/12-panel-retrofuture.png": {
+        "src": "/images/__responsive/images/stickers/hardware-experiments/12-panel-retrofuture-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/hardware-experiments/12-panel-retrofuture-w160.webp 160w, /images/__responsive/images/stickers/hardware-experiments/12-panel-retrofuture-w320.webp 320w, /images/__responsive/images/stickers/hardware-experiments/12-panel-retrofuture-w480.webp 480w, /images/__responsive/images/stickers/hardware-experiments/12-panel-retrofuture-w640.webp 640w",
+        "width": 640,
+        "height": 585
+    },
+    "/images/stickers/hardware-experiments/13-ebike-airbrush.png": {
+        "src": "/images/__responsive/images/stickers/hardware-experiments/13-ebike-airbrush-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/hardware-experiments/13-ebike-airbrush-w160.webp 160w, /images/__responsive/images/stickers/hardware-experiments/13-ebike-airbrush-w320.webp 320w, /images/__responsive/images/stickers/hardware-experiments/13-ebike-airbrush-w480.webp 480w, /images/__responsive/images/stickers/hardware-experiments/13-ebike-airbrush-w640.webp 640w",
+        "width": 640,
+        "height": 427
+    },
+    "/images/stickers/hardware-experiments/14-drivetrain-titanium.png": {
+        "src": "/images/__responsive/images/stickers/hardware-experiments/14-drivetrain-titanium-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/hardware-experiments/14-drivetrain-titanium-w160.webp 160w, /images/__responsive/images/stickers/hardware-experiments/14-drivetrain-titanium-w320.webp 320w, /images/__responsive/images/stickers/hardware-experiments/14-drivetrain-titanium-w480.webp 480w, /images/__responsive/images/stickers/hardware-experiments/14-drivetrain-titanium-w640.webp 640w",
+        "width": 640,
+        "height": 585
+    },
+    "/images/stickers/hardware-experiments/15-pc-faceted.png": {
+        "src": "/images/__responsive/images/stickers/hardware-experiments/15-pc-faceted-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/hardware-experiments/15-pc-faceted-w160.webp 160w, /images/__responsive/images/stickers/hardware-experiments/15-pc-faceted-w320.webp 320w, /images/__responsive/images/stickers/hardware-experiments/15-pc-faceted-w480.webp 480w, /images/__responsive/images/stickers/hardware-experiments/15-pc-faceted-w640.webp 640w",
+        "width": 640,
+        "height": 595
+    },
+    "/images/stickers/hardware-experiments/16-gpu-linocut.png": {
+        "src": "/images/__responsive/images/stickers/hardware-experiments/16-gpu-linocut-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/hardware-experiments/16-gpu-linocut-w160.webp 160w, /images/__responsive/images/stickers/hardware-experiments/16-gpu-linocut-w320.webp 320w, /images/__responsive/images/stickers/hardware-experiments/16-gpu-linocut-w480.webp 480w, /images/__responsive/images/stickers/hardware-experiments/16-gpu-linocut-w640.webp 640w",
+        "width": 640,
+        "height": 427
+    },
+    "/images/stickers/software/01-germancro-language-flat.png": {
+        "src": "/images/__responsive/images/stickers/software/01-germancro-language-flat-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/01-germancro-language-flat-w160.webp 160w, /images/__responsive/images/stickers/software/01-germancro-language-flat-w320.webp 320w, /images/__responsive/images/stickers/software/01-germancro-language-flat-w480.webp 480w, /images/__responsive/images/stickers/software/01-germancro-language-flat-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/02-germancro-typing-ink.png": {
+        "src": "/images/__responsive/images/stickers/software/02-germancro-typing-ink-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/02-germancro-typing-ink-w160.webp 160w, /images/__responsive/images/stickers/software/02-germancro-typing-ink-w320.webp 320w, /images/__responsive/images/stickers/software/02-germancro-typing-ink-w480.webp 480w, /images/__responsive/images/stickers/software/02-germancro-typing-ink-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/03-belot-bela-flat.png": {
+        "src": "/images/__responsive/images/stickers/software/03-belot-bela-flat-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/03-belot-bela-flat-w160.webp 160w, /images/__responsive/images/stickers/software/03-belot-bela-flat-w320.webp 320w, /images/__responsive/images/stickers/software/03-belot-bela-flat-w480.webp 480w, /images/__responsive/images/stickers/software/03-belot-bela-flat-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/04-belot-trick-ink.png": {
+        "src": "/images/__responsive/images/stickers/software/04-belot-trick-ink-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/04-belot-trick-ink-w160.webp 160w, /images/__responsive/images/stickers/software/04-belot-trick-ink-w320.webp 320w, /images/__responsive/images/stickers/software/04-belot-trick-ink-w480.webp 480w, /images/__responsive/images/stickers/software/04-belot-trick-ink-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/05-pepper-tablet-flat.png": {
+        "src": "/images/__responsive/images/stickers/software/05-pepper-tablet-flat-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/05-pepper-tablet-flat-w160.webp 160w, /images/__responsive/images/stickers/software/05-pepper-tablet-flat-w320.webp 320w, /images/__responsive/images/stickers/software/05-pepper-tablet-flat-w480.webp 480w, /images/__responsive/images/stickers/software/05-pepper-tablet-flat-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/06-pepper-draw-ink.png": {
+        "src": "/images/__responsive/images/stickers/software/06-pepper-draw-ink-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/06-pepper-draw-ink-w160.webp 160w, /images/__responsive/images/stickers/software/06-pepper-draw-ink-w320.webp 320w, /images/__responsive/images/stickers/software/06-pepper-draw-ink-w480.webp 480w, /images/__responsive/images/stickers/software/06-pepper-draw-ink-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/07-villa-house-flat.png": {
+        "src": "/images/__responsive/images/stickers/software/07-villa-house-flat-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/07-villa-house-flat-w160.webp 160w, /images/__responsive/images/stickers/software/07-villa-house-flat-w320.webp 320w, /images/__responsive/images/stickers/software/07-villa-house-flat-w480.webp 480w, /images/__responsive/images/stickers/software/07-villa-house-flat-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/08-villa-trail-ink.png": {
+        "src": "/images/__responsive/images/stickers/software/08-villa-trail-ink-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/08-villa-trail-ink-w160.webp 160w, /images/__responsive/images/stickers/software/08-villa-trail-ink-w320.webp 320w, /images/__responsive/images/stickers/software/08-villa-trail-ink-w480.webp 480w, /images/__responsive/images/stickers/software/08-villa-trail-ink-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/09-family-nodes-flat.png": {
+        "src": "/images/__responsive/images/stickers/software/09-family-nodes-flat-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/09-family-nodes-flat-w160.webp 160w, /images/__responsive/images/stickers/software/09-family-nodes-flat-w320.webp 320w, /images/__responsive/images/stickers/software/09-family-nodes-flat-w480.webp 480w, /images/__responsive/images/stickers/software/09-family-nodes-flat-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/10-family-keyhole-ink.png": {
+        "src": "/images/__responsive/images/stickers/software/10-family-keyhole-ink-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/10-family-keyhole-ink-w160.webp 160w, /images/__responsive/images/stickers/software/10-family-keyhole-ink-w320.webp 320w, /images/__responsive/images/stickers/software/10-family-keyhole-ink-w480.webp 480w, /images/__responsive/images/stickers/software/10-family-keyhole-ink-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/11-latex-cv-flat.png": {
+        "src": "/images/__responsive/images/stickers/software/11-latex-cv-flat-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/11-latex-cv-flat-w160.webp 160w, /images/__responsive/images/stickers/software/11-latex-cv-flat-w320.webp 320w, /images/__responsive/images/stickers/software/11-latex-cv-flat-w480.webp 480w, /images/__responsive/images/stickers/software/11-latex-cv-flat-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/12-latex-typesetting-ink.png": {
+        "src": "/images/__responsive/images/stickers/software/12-latex-typesetting-ink-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/12-latex-typesetting-ink-w160.webp 160w, /images/__responsive/images/stickers/software/12-latex-typesetting-ink-w320.webp 320w, /images/__responsive/images/stickers/software/12-latex-typesetting-ink-w480.webp 480w, /images/__responsive/images/stickers/software/12-latex-typesetting-ink-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/13-portfolio-browser-flat.png": {
+        "src": "/images/__responsive/images/stickers/software/13-portfolio-browser-flat-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/13-portfolio-browser-flat-w160.webp 160w, /images/__responsive/images/stickers/software/13-portfolio-browser-flat-w320.webp 320w, /images/__responsive/images/stickers/software/13-portfolio-browser-flat-w480.webp 480w, /images/__responsive/images/stickers/software/13-portfolio-browser-flat-w640.webp 640w",
+        "width": 640,
+        "height": 640
+    },
+    "/images/stickers/software/14-portfolio-timeline-ink.png": {
+        "src": "/images/__responsive/images/stickers/software/14-portfolio-timeline-ink-w640.webp",
+        "srcSet": "/images/__responsive/images/stickers/software/14-portfolio-timeline-ink-w160.webp 160w, /images/__responsive/images/stickers/software/14-portfolio-timeline-ink-w320.webp 320w, /images/__responsive/images/stickers/software/14-portfolio-timeline-ink-w480.webp 480w, /images/__responsive/images/stickers/software/14-portfolio-timeline-ink-w640.webp 640w",
+        "width": 640,
+        "height": 640
     }
 }
 

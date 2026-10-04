@@ -5,6 +5,8 @@ import SectionBody from "./SectionBody.jsx"
 import SectionDecorationBand from "./SectionDecorationBand.jsx"
 import SectionDecorationLayer from "./decorations/SectionDecorationLayer.jsx"
 import SectionLoadingPlaceholder from "./SectionLoadingPlaceholder.jsx"
+import HardwareProjectStickerLayer from "./decorations/hardware/HardwareProjectStickerLayer.jsx"
+import SoftwareProjectStickerLayer from "./decorations/software/SoftwareProjectStickerLayer.jsx"
 
 function SectionContent({ section, shouldRenderContent = true }) {
     const shouldHideHeader = section?.hideHeader === true
@@ -54,6 +56,13 @@ function SectionContent({ section, shouldRenderContent = true }) {
                     </Suspense>
                 ) : loadingPlaceholder}
             </div>
+
+            {shouldRenderContent && section?.id === "my-hardware" && (
+                <HardwareProjectStickerLayer/>
+            )}
+            {shouldRenderContent && section?.id === "my-software" && (
+                <SoftwareProjectStickerLayer/>
+            )}
         </div>
     )
 }

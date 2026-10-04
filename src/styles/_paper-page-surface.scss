@@ -1,0 +1,22 @@
+@mixin paper-page-face {
+    --paper-sheet-surface:
+        color-mix(in srgb, var(--theme-card-background) 92%, var(--theme-background) 8%);
+    --paper-sheet-ink:
+        color-mix(in srgb, var(--theme-nav-divider) 42%, transparent);
+
+    background:
+        linear-gradient(90deg,
+            color-mix(in srgb, var(--theme-standard-borders-accent) 8%, transparent) 0,
+            transparent 42px),
+        repeating-linear-gradient(180deg,
+            transparent 0,
+            transparent 42px,
+            var(--paper-sheet-ink) 43px,
+            transparent 44px),
+        var(--paper-sheet-surface);
+    border-left: 1px solid color-mix(in srgb, var(--theme-standard-borders-accent) 48%, transparent);
+    border-radius: 12px 0 0 12px;
+    box-shadow:
+        -20px 0 38px -24px rgba(2, 6, 23, 0.58),
+        inset 1px 0 0 color-mix(in srgb, white 14%, transparent);
+}

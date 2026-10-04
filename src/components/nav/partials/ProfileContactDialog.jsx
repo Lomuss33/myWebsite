@@ -35,7 +35,7 @@ export default function ProfileContactDialog({profile, onClose}) {
             const viewport = window.visualViewport
             const width = viewport?.width || window.innerWidth
             const height = viewport?.height || window.innerHeight
-            const naturalWidth = Math.max(1, Math.min(512, width - 34))
+            const naturalWidth = Math.max(1, Math.min(400, width - 34))
             card.style.width = `${naturalWidth}px`
             const scale = Math.min(1, Math.max(1, height - 34) / Math.max(1, card.offsetHeight))
             card.style.zoom = String(scale)

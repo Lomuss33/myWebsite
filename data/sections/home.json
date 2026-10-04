@@ -1030,19 +1030,19 @@
           "locales": {
             "en": {
               "title": "Height: 200 cm",
-              "measurementExplanation": "200 cm equals 2 metres, or about 6 ft 7 in—a notably tall height."
+              "titleExplanation": "I’m 2 m tall—about 6 ft 7 in."
             },
             "de": {
               "title": "Größe: 200 cm",
-              "measurementExplanation": "200 cm entsprechen 2 Metern oder etwa 6 Fuß 7 Zoll – eine deutlich überdurchschnittliche Größe."
+              "titleExplanation": "Ich bin 2 m groß—etwa 6 Fuß 7 Zoll."
             },
             "hr": {
               "title": "Visina: 200 cm",
-              "measurementExplanation": "200 cm su 2 metra, odnosno oko 6 stopa i 7 inča — prilično iznadprosječna visina."
+              "titleExplanation": "Visok sam 2 m, oko 6 stopa i 7 inča."
             },
             "tr": {
               "title": "Boy: 200 cm",
-              "measurementExplanation": "200 cm, 2 metreye (yaklaşık 6 fit 7 inç) karşılık gelir; ortalamanın oldukça üzerinde bir boy."
+              "titleExplanation": "Boyum 2 m, yaklaşık 6 fit 7 inç."
             }
           }
         },
@@ -1063,19 +1063,19 @@
           "locales": {
             "en": {
               "title": "Weight: 100 kg",
-              "measurementExplanation": "100 kg is about 220 lb. It describes body mass, not strength or fitness."
+              "titleExplanation": "I weigh 100 kg—about 220 lb."
             },
             "de": {
               "title": "Gewicht: 100 kg",
-              "measurementExplanation": "100 kg entsprechen etwa 220 lb. Das beschreibt die Körpermasse, nicht Kraft oder Fitness."
+              "titleExplanation": "Ich wiege 100 kg—etwa 220 lb."
             },
             "hr": {
               "title": "Težina: 100 kg",
-              "measurementExplanation": "100 kg je oko 220 lb. To opisuje tjelesnu masu, ne snagu ni kondiciju."
+              "titleExplanation": "Težak sam 100 kg, oko 220 lb."
             },
             "tr": {
               "title": "Kilo: 100 kg",
-              "measurementExplanation": "100 kg yaklaşık 220 lb eder. Bu vücut kütlesini belirtir; güç ya da kondisyonu değil."
+              "titleExplanation": "100 kg ağırlığındayım—yaklaşık 220 lb."
             }
           }
         },
@@ -1095,16 +1095,20 @@
           },
           "locales": {
             "en": {
-              "title": "Bones: 206"
+              "title": "Bones: 206",
+              "titleExplanation": "My adult skeleton has about 206 bones."
             },
             "de": {
-              "title": "Knochen: 206"
+              "title": "Knochen: 206",
+              "titleExplanation": "Mein erwachsenes Skelett hat etwa 206 Knochen."
             },
             "hr": {
-              "title": "Kosti: 206"
+              "title": "Kosti: 206",
+              "titleExplanation": "Moj kostur odrasle osobe ima oko 206 kostiju."
             },
             "tr": {
-              "title": "Kemikler: 206"
+              "title": "Kemikler: 206",
+              "titleExplanation": "Yetişkin iskeletimde yaklaşık 206 kemik var."
             }
           }
         },
@@ -1124,16 +1128,20 @@
           },
           "locales": {
             "en": {
-              "title": "Water Content: 61%"
+              "title": "Water Content: 61%",
+              "titleExplanation": "About 61% of my body weight is water."
             },
             "de": {
-              "title": "Wassergehalt: 61%"
+              "title": "Wassergehalt: 61%",
+              "titleExplanation": "Etwa 61 % meines Körpergewichts ist Wasser."
             },
             "hr": {
-              "title": "Postotak vode: 61%"
+              "title": "Postotak vode: 61%",
+              "titleExplanation": "Oko 61 % moje tjelesne mase čini voda."
             },
             "tr": {
-              "title": "Su İçeriği: %61"
+              "title": "Su İçeriği: %61",
+              "titleExplanation": "Vücut ağırlığımın yaklaşık %61’i sudur."
             }
           }
         },
@@ -1153,16 +1161,20 @@
           },
           "locales": {
             "en": {
-              "title": "Blood Volume: 5.5 L"
+              "title": "Blood Volume: 5.5 L",
+              "titleExplanation": "I have about 5.5 L of blood."
             },
             "de": {
-              "title": "Blutvolumen: 5,5 L"
+              "title": "Blutvolumen: 5,5 L",
+              "titleExplanation": "Ich habe etwa 5,5 l Blut."
             },
             "hr": {
-              "title": "Količina krvi: 5,5 L"
+              "title": "Količina krvi: 5,5 L",
+              "titleExplanation": "Imam oko 5,5 l krvi."
             },
             "tr": {
-              "title": "Kan Hacmi: 5,5 L"
+              "title": "Kan Hacmi: 5,5 L",
+              "titleExplanation": "Yaklaşık 5,5 l kanım var."
             }
           }
         },
@@ -1182,16 +1194,20 @@
           },
           "locales": {
             "en": {
-              "title": "Finger Count: 20/20"
+              "title": "Finger Count: 20/20",
+              "titleExplanation": "10 fingers + 10 toes = 20 digits."
             },
             "de": {
-              "title": "Fingeranzahl: 20/20"
+              "title": "Fingeranzahl: 20/20",
+              "titleExplanation": "10 Finger + 10 Zehen = 20."
             },
             "hr": {
-              "title": "Broj prstiju: 20/20"
+              "title": "Broj prstiju: 20/20",
+              "titleExplanation": "10 prstiju ruku + 10 prstiju nogu = 20."
             },
             "tr": {
-              "title": "Parmak Sayısı: 20/20"
+              "title": "Parmak Sayısı: 20/20",
+              "titleExplanation": "10 el + 10 ayak parmağı = 20."
             }
           }
         },
@@ -1211,16 +1227,20 @@
           },
           "locales": {
             "en": {
-              "title": "Eyesight: 20/23"
+              "title": "Eyesight: 20/23",
+              "titleExplanation": "At 20 ft, I see what a typical eye sees at 23 ft."
             },
             "de": {
-              "title": "Sehkraft: 20/23"
+              "title": "Sehkraft: 20/23",
+              "titleExplanation": "Auf 20 Fuß sehe ich, was ein normales Auge auf 23 Fuß erkennt."
             },
             "hr": {
-              "title": "Vid: 20/23"
+              "title": "Vid: 20/23",
+              "titleExplanation": "Na 6 m vidim ono što prosječno oko vidi na 7 m."
             },
             "tr": {
-              "title": "Görme Keskinliği: 20/23"
+              "title": "Görme Keskinliği: 20/23",
+              "titleExplanation": "6 metrede, normal bir gözün 7 metrede gördüğünü görürüm."
             }
           }
         },
@@ -1240,16 +1260,20 @@
           },
           "locales": {
             "en": {
-              "title": "∅ Body Temp: 37°C"
+              "title": "∅ Body Temp: 37°C",
+              "titleExplanation": "My temperature is about 37°C (98.6°F)."
             },
             "de": {
-              "title": "∅ Körpertemperatur: 37°C"
+              "title": "∅ Körpertemperatur: 37°C",
+              "titleExplanation": "Meine Temperatur liegt bei etwa 37 °C (98,6 °F)."
             },
             "hr": {
-              "title": "∅ temperatura: 37°C"
+              "title": "∅ temperatura: 37°C",
+              "titleExplanation": "Temperatura mi je oko 37 °C (98,6 °F)."
             },
             "tr": {
-              "title": "∅ Vücut Isısı: 37°C"
+              "title": "∅ Vücut Isısı: 37°C",
+              "titleExplanation": "Vücut sıcaklığım yaklaşık 37°C (98,6°F)."
             }
           }
         },
@@ -1269,16 +1293,20 @@
           },
           "locales": {
             "en": {
-              "title": "Artificial Body Parts: 1"
+              "title": "Artificial Body Parts: 1",
+              "titleExplanation": "I have one dental implant."
             },
             "de": {
-              "title": "Künstliche Körperteile: 1"
+              "title": "Künstliche Körperteile: 1",
+              "titleExplanation": "Ich habe ein Zahnimplantat."
             },
             "hr": {
-              "title": "Vještački dijelovi tijela: 1"
+              "title": "Vještački dijelovi tijela: 1",
+              "titleExplanation": "Imam jedan zubni implantat."
             },
             "tr": {
-              "title": "Yapay Vücut Parçaları: 1"
+              "title": "Yapay Vücut Parçaları: 1",
+              "titleExplanation": "Bir diş implantım var."
             }
           }
         },
@@ -1298,16 +1326,20 @@
           },
           "locales": {
             "en": {
-              "title": "Blood Vessels: 100,000 km"
+              "title": "Blood Vessels: 100,000 km",
+              "titleExplanation": "My blood vessels add up to about 100,000 km."
             },
             "de": {
-              "title": "Blutgefäße: 100.000 km"
+              "title": "Blutgefäße: 100.000 km",
+              "titleExplanation": "Meine Blutgefäße sind zusammen etwa 100.000 km lang."
             },
             "hr": {
-              "title": "Krvne žile: 100.000 km"
+              "title": "Krvne žile: 100.000 km",
+              "titleExplanation": "Moje krvne žile zajedno su duge oko 100.000 km."
             },
             "tr": {
-              "title": "Kan Damarları: 100.000 km"
+              "title": "Kan Damarları: 100.000 km",
+              "titleExplanation": "Kan damarlarımın toplam uzunluğu yaklaşık 100.000 km."
             }
           }
         },
@@ -1327,16 +1359,20 @@
           },
           "locales": {
             "en": {
-              "title": "Brain’s Memory: 2.5 PB"
+              "title": "Brain’s Memory: 2.5 PB",
+              "titleExplanation": "2.5 PB equals about 2.5 million GB of estimated brain capacity."
             },
             "de": {
-              "title": "Gehirnspeicher: 2,5 PB"
+              "title": "Gehirnspeicher: 2,5 PB",
+              "titleExplanation": "2,5 PB entsprechen etwa 2,5 Millionen GB geschätzter Gehirnkapazität."
             },
             "hr": {
-              "title": "Memorija mozga: 2,5 PB"
+              "title": "Memorija mozga: 2,5 PB",
+              "titleExplanation": "2,5 PB iznosi oko 2,5 milijuna GB procijenjenog kapaciteta mozga."
             },
             "tr": {
-              "title": "Beyin Hafızası: 2,5 PB"
+              "title": "Beyin Hafızası: 2,5 PB",
+              "titleExplanation": "2,5 PB, yaklaşık 2,5 milyon GB tahmini beyin kapasitesine eşittir."
             }
           }
         },
@@ -1356,16 +1392,20 @@
           },
           "locales": {
             "en": {
-              "title": "Shedding Skin Cells: 45,000/min"
+              "title": "Shedding Skin Cells: 45,000/min",
+              "titleExplanation": "I shed about 45,000 skin cells each minute."
             },
             "de": {
-              "title": "Hautzellenabstoßung: 45.000/Min."
+              "title": "Hautzellenabstoßung: 45.000/Min.",
+              "titleExplanation": "Pro Minute verliere ich etwa 45.000 Hautzellen."
             },
             "hr": {
-              "title": "Gubljenje stanica kože: 45.000/min"
+              "title": "Gubljenje stanica kože: 45.000/min",
+              "titleExplanation": "Svake minute odbacim oko 45.000 stanica kože."
             },
             "tr": {
-              "title": "Deri Hücreleri Dökülmesi: 45.000/dk"
+              "title": "Deri Hücreleri Dökülmesi: 45.000/dk",
+              "titleExplanation": "Her dakika yaklaşık 45.000 deri hücresi döküyorum."
             }
           }
         },
@@ -1385,16 +1425,20 @@
           },
           "locales": {
             "en": {
-              "title": "Stomach Acid: Hydrochloric Acid"
+              "title": "Stomach Acid: Hydrochloric Acid",
+              "titleExplanation": "My stomach uses hydrochloric acid to digest food."
             },
             "de": {
-              "title": "Magensäure: Salzsäure"
+              "title": "Magensäure: Salzsäure",
+              "titleExplanation": "Mein Magen nutzt Salzsäure, um Nahrung zu verdauen."
             },
             "hr": {
-              "title": "Želučana kiselina: klorovodična kiselina"
+              "title": "Želučana kiselina: klorovodična kiselina",
+              "titleExplanation": "Moj želudac koristi solnu kiselinu za probavu hrane."
             },
             "tr": {
-              "title": "Mide Asidi: Hidroklorik Asit"
+              "title": "Mide Asidi: Hidroklorik Asit",
+              "titleExplanation": "Midemi, yiyecekleri sindirmek için hidroklorik asit kullanır."
             }
           }
         },
@@ -1414,16 +1458,20 @@
           },
           "locales": {
             "en": {
-              "title": "DNA: 60% Banana"
+              "title": "DNA: 60% Banana",
+              "titleExplanation": "The 60% compares genes; it does not mean 60% of my DNA is banana."
             },
             "de": {
-              "title": "DNA: 60% Banane"
+              "title": "DNA: 60% Banane",
+              "titleExplanation": "Die 60 % beziehen sich auf Gene, nicht darauf, dass 60 % meiner DNA Banane sind."
             },
             "hr": {
-              "title": "DNA: 60% banana"
+              "title": "DNA: 60% banana",
+              "titleExplanation": "Usporedba od 60 % odnosi se na gene, ne znači da je 60 % moje DNK bananino."
             },
             "tr": {
-              "title": "DNA: %60 Muz"
+              "title": "DNA: %60 Muz",
+              "titleExplanation": "%60, gen benzerliğini anlatır; DNA'mın %60'ının muz olduğu anlamına gelmez."
             }
           }
         },
@@ -1443,16 +1491,20 @@
           },
           "locales": {
             "en": {
-              "title": "Ancestry: 96% Neretva River Basin"
+              "title": "Ancestry: 96% Neretva River Basin",
+              "titleExplanation": "My 23andMe result: 96% Neretva-basin ancestry."
             },
             "de": {
-              "title": "Abstammung: 96% Neretva-Flussbecken"
+              "title": "Abstammung: 96% Neretva-Flussbecken",
+              "titleExplanation": "Mein 23andMe-Ergebnis: 96 % Herkunft aus dem Neretva-Becken."
             },
             "hr": {
-              "title": "Podrijetlo: 96% porječje rijeke Neretve"
+              "title": "Podrijetlo: 96% porječje rijeke Neretve",
+              "titleExplanation": "Moj 23andMe rezultat: 96 % podrijetla iz porječja Neretve."
             },
             "tr": {
-              "title": "Soy: %96 Neretva Nehri Havzası"
+              "title": "Soy: %96 Neretva Nehri Havzası",
+              "titleExplanation": "23andMe sonucum: kökenimin %96’sı Neretva Havzası."
             }
           }
         },
@@ -1472,16 +1524,20 @@
           },
           "locales": {
             "en": {
-              "title": "Sneeze Speed: 160 km/h"
+              "title": "Sneeze Speed: 160 km/h",
+              "titleExplanation": "160 km/h equals 44.4 m/s for my sneeze."
             },
             "de": {
-              "title": "Niesgeschwindigkeit: 160 km/h"
+              "title": "Niesgeschwindigkeit: 160 km/h",
+              "titleExplanation": "160 km/h entsprechen 44,4 m/s für mein Niesen."
             },
             "hr": {
-              "title": "Brzina kihanja: 160 km/h"
+              "title": "Brzina kihanja: 160 km/h",
+              "titleExplanation": "160 km/h za moje kihanje iznosi 44,4 m/s."
             },
             "tr": {
-              "title": "Hapşırma Hızı: 160 km/s"
+              "title": "Hapşırma Hızı: 160 km/s",
+              "titleExplanation": "Hapşırık hızım 160 km/sa, yani 44,4 m/sn."
             }
           }
         },
@@ -1501,16 +1557,20 @@
           },
           "locales": {
             "en": {
-              "title": "Nerve Speed: 431 km/h"
+              "title": "Nerve Speed: 431 km/h",
+              "titleExplanation": "My fastest nerve signals reach 120 m/s—about 431 km/h."
             },
             "de": {
-              "title": "Nervengeschwindigkeit: 431 km/h"
+              "title": "Nervengeschwindigkeit: 431 km/h",
+              "titleExplanation": "Meine schnellsten Nervensignale erreichen 120 m/s – etwa 431 km/h."
             },
             "hr": {
-              "title": "Brzina živaca: 431 km/h"
+              "title": "Brzina živaca: 431 km/h",
+              "titleExplanation": "Moji najbrži živčani signali dosežu 120 m/s, oko 431 km/h."
             },
             "tr": {
-              "title": "Sinir Hızı: 431 km/s"
+              "title": "Sinir Hızı: 431 km/s",
+              "titleExplanation": "En hızlı sinir sinyallerim 120 m/s'ye, yani yaklaşık 431 km/sa hıza ulaşır."
             }
           }
         },
@@ -1530,16 +1590,20 @@
           },
           "locales": {
             "en": {
-              "title": "Iron: 5.2 g"
+              "title": "Iron: 5.2 g",
+              "titleExplanation": "My body contains about 5.2 g of iron, mostly in my blood."
             },
             "de": {
-              "title": "Eisen: 5,2 g"
+              "title": "Eisen: 5,2 g",
+              "titleExplanation": "Mein Körper enthält etwa 5,2 g Eisen, vor allem im Blut."
             },
             "hr": {
-              "title": "Željezo: 5,2 g"
+              "title": "Željezo: 5,2 g",
+              "titleExplanation": "Moje tijelo sadrži oko 5,2 g željeza, najviše u krvi."
             },
             "tr": {
-              "title": "Demir: 5,2 g"
+              "title": "Demir: 5,2 g",
+              "titleExplanation": "Vücudumda çoğu kanımda bulunan yaklaşık 5,2 g demir var."
             }
           }
         },
@@ -1559,16 +1623,20 @@
           },
           "locales": {
             "en": {
-              "title": "Gold: 0.4 g"
+              "title": "Gold: 0.4 g",
+              "titleExplanation": "My body contains an estimated 0.4 g of gold."
             },
             "de": {
-              "title": "Gold: 0,4 g"
+              "title": "Gold: 0,4 g",
+              "titleExplanation": "Mein Körper enthält schätzungsweise 0,4 g Gold."
             },
             "hr": {
-              "title": "Zlato: 0,4 g"
+              "title": "Zlato: 0,4 g",
+              "titleExplanation": "U tijelu imam procijenjenih 0,4 g zlata."
             },
             "tr": {
-              "title": "Altın: 0,4 g"
+              "title": "Altın: 0,4 g",
+              "titleExplanation": "Vücudumda tahminen 0,4 g altın bulunur."
             }
           }
         },
@@ -1588,16 +1656,20 @@
           },
           "locales": {
             "en": {
-              "title": "Immune System: +1 Billion Antibodies"
+              "title": "Immune System: +1 Billion Antibodies",
+              "titleExplanation": "My immune system can make over a billion different antibodies."
             },
             "de": {
-              "title": "Immunsystem: +1 Milliarde Antikörper"
+              "title": "Immunsystem: +1 Milliarde Antikörper",
+              "titleExplanation": "Mein Immunsystem kann über eine Milliarde verschiedene Antikörper bilden."
             },
             "hr": {
-              "title": "Imunološki sustav: +1 milijarda antitijela"
+              "title": "Imunološki sustav: +1 milijarda antitijela",
+              "titleExplanation": "Moj imunosni sustav može stvoriti više od milijardu različitih antitijela."
             },
             "tr": {
-              "title": "Bağışıklık Sistemi: +1 Milyar Antikor"
+              "title": "Bağışıklık Sistemi: +1 Milyar Antikor",
+              "titleExplanation": "Bağışıklık sistemim bir milyardan fazla farklı antikor üretebilir."
             }
           }
         },
@@ -1617,16 +1689,20 @@
           },
           "locales": {
             "en": {
-              "title": "Favorite Feature: Blaschko’s Lines"
+              "title": "Favorite Feature: Blaschko’s Lines",
+              "titleExplanation": "Blaschko lines trace how my skin formed before birth."
             },
             "de": {
-              "title": "Lieblingsmerkmal: Blaschko-Linien"
+              "title": "Lieblingsmerkmal: Blaschko-Linien",
+              "titleExplanation": "Blaschko-Linien zeigen, wie meine Haut vor der Geburt entstand."
             },
             "hr": {
-              "title": "Omiljena značajka: Blaschkoove linije"
+              "title": "Omiljena značajka: Blaschkoove linije",
+              "titleExplanation": "Blaschkoove linije prate razvoj moje kože prije rođenja."
             },
             "tr": {
-              "title": "Favori Özellik: Blaschko Çizgileri"
+              "title": "Favori Özellik: Blaschko Çizgileri",
+              "titleExplanation": "Blaschko çizgileri, derimin doğumdan önceki gelişimini gösterir."
             }
           }
         },
@@ -1646,16 +1722,20 @@
           },
           "locales": {
             "en": {
-              "title": "Idle Heat: 120 W"
+              "title": "Idle Heat: 120 W",
+              "titleExplanation": "At rest, my body releases about 120 watts of heat."
             },
             "de": {
-              "title": "Leerlaufwärme: 120 W"
+              "title": "Leerlaufwärme: 120 W",
+              "titleExplanation": "Im Ruhezustand gibt mein Körper etwa 120 Watt Wärme ab."
             },
             "hr": {
-              "title": "Toplina u mirovanju: 120 W"
+              "title": "Toplina u mirovanju: 120 W",
+              "titleExplanation": "U mirovanju moje tijelo oslobađa oko 120 W topline."
             },
             "tr": {
-              "title": "Boşta Isı: 120 W"
+              "title": "Boşta Isı: 120 W",
+              "titleExplanation": "Dinlenirken vücudum yaklaşık 120 watt ısı yayar."
             }
           }
         },
@@ -1675,16 +1755,20 @@
           },
           "locales": {
             "en": {
-              "title": "Skin Cycle: 31 Days"
+              "title": "Skin Cycle: 31 Days",
+              "titleExplanation": "My skin renews in roughly 31 days."
             },
             "de": {
-              "title": "Hautzyklus: 31 Tage"
+              "title": "Hautzyklus: 31 Tage",
+              "titleExplanation": "Meine Haut erneuert sich in etwa 31 Tagen."
             },
             "hr": {
-              "title": "Ciklus kože: 31 dan"
+              "title": "Ciklus kože: 31 dan",
+              "titleExplanation": "Koža mi se obnavlja za otprilike 31 dan."
             },
             "tr": {
-              "title": "Cilt Döngüsü: 31 Gün"
+              "title": "Cilt Döngüsü: 31 Gün",
+              "titleExplanation": "Cildim yaklaşık 31 günde yenilenir."
             }
           }
         },
@@ -1704,16 +1788,20 @@
           },
           "locales": {
             "en": {
-              "title": "Digestive Rhythm: 72-h Renewal"
+              "title": "Digestive Rhythm: 72-h Renewal",
+              "titleExplanation": "My gut lining renews in about 72 hours."
             },
             "de": {
-              "title": "Verdauungsrhythmus: 72-Std.-Erneuerung"
+              "title": "Verdauungsrhythmus: 72-Std.-Erneuerung",
+              "titleExplanation": "Meine Darmschleimhaut erneuert sich in etwa 72 Stunden."
             },
             "hr": {
-              "title": "Ritam probave: 72-satna obnova"
+              "title": "Ritam probave: 72-satna obnova",
+              "titleExplanation": "Sluznica crijeva obnavlja mi se za oko 72 sata."
             },
             "tr": {
-              "title": "Sindirim Ritmi: 72 Saat Yenilenme"
+              "title": "Sindirim Ritmi: 72 Saat Yenilenme",
+              "titleExplanation": "Bağırsak duvarım yaklaşık 72 saatte yenilenir."
             }
           }
         }

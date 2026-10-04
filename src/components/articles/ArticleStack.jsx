@@ -454,12 +454,12 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
     const linkHref = itemWrapper.link?.href
     const linkTooltip = itemWrapper.link?.tooltip
     const emojiIconText = itemWrapper.iconText
-    const measurementExplanation = itemWrapper.locales.measurementExplanation
+    const titleExplanation = itemWrapper.locales.titleExplanation
     const bubbleMarkup = itemWrapper.locales.proofBubble ||
         (isHomeStack ? HOME_STACK_POPUP_COPY[selectedLanguageId]?.[itemWrapper.id] || HOME_STACK_POPUP_COPY.en?.[itemWrapper.id] : null) ||
         itemWrapper.locales.text ||
         "Placeholder text for this item."
-    const titleOverlayMarkup = measurementExplanation || bubbleMarkup
+    const titleOverlayMarkup = titleExplanation
     const isHomeBubbleEnabled = Boolean(isHomeStack && bubbleMarkup)
     const [activeHomeOverlay, setActiveHomeOverlay] = useState(null)
     const [isBubblePinned, setIsBubblePinned] = useState(false)
@@ -742,7 +742,8 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
                 </ArticleStackHomeBubble>
             </div>
 
-            <div className={`article-stack-item-home-content`}>
+            <div className={`article-stack-item-home-content`}
+                 onClick={handleTitleToggle}>
                 <div className={`article-stack-item-title`}
                      ref={titleRef}>
                     {isHomeBubbleEnabled ? (
@@ -751,7 +752,6 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
                                 aria-label={`${HOME_STACK_TITLE_TRIGGER_LABELS[selectedLanguageId] || HOME_STACK_TITLE_TRIGGER_LABELS.en}: ${title}`}
                                 aria-expanded={activeHomeOverlay === "title"}
                                 aria-controls={homeOverlayId}
-                                onMouseEnter={handleTitleMouseEnter}
                                 onFocus={handleTitleMouseEnter}
                                 onBlur={handleHomeOverlayBlur}
                                 onClick={handleTitleToggle}
@@ -759,11 +759,13 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
                             {displaySegmentedTitle.prefix && (
                                 <span className={`article-stack-item-title-prefix`}
                                      ref={titlePrefixRef}
+                                     onMouseEnter={handleTitleMouseEnter}
                                      dangerouslySetInnerHTML={{__html: displaySegmentedTitle.prefix}}/>
                             )}
 
                             <span className={`article-stack-item-title-main`}
                                  ref={titleMainRef}
+                                 onMouseEnter={handleTitleMouseEnter}
                                  dangerouslySetInnerHTML={{__html: displaySegmentedTitle.value}}/>
                         </button>
                     ) : (

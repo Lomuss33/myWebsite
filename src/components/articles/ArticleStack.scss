@@ -589,6 +589,7 @@ article.article.article-stack-home {
         width: 100%;
         min-width: 0;
         min-height: 0;
+        cursor: pointer;
     }
 
     div.article-stack-item-home div.article-stack-item-title {
@@ -823,7 +824,7 @@ article.article.article-stack-home {
     }
 
     div.article-stack-item-home-trigger {
-        z-index: 4;
+        z-index: 7;
     }
 
     div.article-stack-item-home-content {
@@ -1259,9 +1260,19 @@ article#article-4-section-my-art {
     }
 }
 
-// The title action reveals details in the card's lower area while preserving
-// the title as context and as a persistent interaction target.
+// The title action opens a centered explanation over the full card, including
+// the title area. The avatar proof bubble retains its separate overlap.
 article.article.article-stack-home {
+    // Fill the card interior so the explanation can use the complete box.
+    div.article-stack-item-home-title-bubble {
+        inset: 0 !important;
+        top: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        max-height: none !important;
+    }
+
     button.article-stack-item-home-unit-trigger {
         display: grid;
         grid-template-columns: minmax(0, 1fr);
@@ -1290,54 +1301,57 @@ article.article.article-stack-home {
     }
 
     div.article-stack-item.article-stack-item-home.article-stack-item-home-title-open > div.article-stack-item-home-content > div.article-stack-item-title {
-        position: absolute;
-        top: 3px;
-        right: 8px;
-        left: calc(var(--home-stack-card-pad-x) + var(--home-stack-icon-reserve));
-        z-index: 4;
-        width: auto;
-        max-width: 100%;
-        height: auto;
-        min-height: 0;
-        margin: 0;
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
     }
 
     div.article-stack-item.article-stack-item-home div.article-stack-item-home-title-bubble {
-        inset: auto 0 0 !important;
-        top: auto !important;
+        inset: 0 !important;
+        top: 0 !important;
         right: 0 !important;
         bottom: 0 !important;
         left: 0 !important;
-        z-index: 3;
-        max-height: 58%;
+        z-index: 6;
+        max-height: none !important;
 
         div.article-stack-item-home-bubble-inner {
-            height: auto;
+            height: 100%;
             max-height: 100%;
-            padding: clamp(8px, 1.4cqi, 14px)
-                clamp(8px, 1.4cqi, 14px)
-                clamp(8px, 1.4cqi, 14px)
-                calc(var(--home-stack-icon-reserve) + clamp(8px, 1.4cqi, 14px));
+            padding:
+                clamp(10px, 2cqi, 20px)
+                clamp(10px, 2cqi, 20px)
+                clamp(10px, 2cqi, 20px)
+                calc(var(--home-stack-icon-reserve) + clamp(10px, 2cqi, 20px));
+            justify-content: center;
+            text-align: center;
         }
 
         div.article-stack-item-home-bubble-copy {
+            flex: 1 1 auto;
+            min-height: 0;
             max-height: 100%;
             overflow: hidden;
+            text-align: center;
+            width: 100%;
+        }
+
+        div.article-stack-item-home-bubble-copy-content {
+            text-align: center;
         }
     }
 }
 
 @container article-stack (max-width: 300px) {
     article.article.article-stack-home div.article-stack-item-home-title-bubble {
-        max-height: 66%;
+        max-height: none !important;
 
         div.article-stack-item-home-bubble-inner {
-            padding-block: 6px;
-            padding-inline-end: 7px;
-            padding-inline-start: calc(var(--home-stack-icon-reserve) + 7px);
+            padding:
+                8px
+                8px
+                8px
+                calc(var(--home-stack-icon-reserve) + 8px);
         }
     }
 }

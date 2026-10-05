@@ -1083,6 +1083,10 @@ article#article-5-section-my-writings {
 // the shared article variants so the two six-item lists stay dense at every
 // viewport width.
 article:is(#article-4-section-my-writings, #article-5-section-my-writings) {
+    width: min(100%, 64rem);
+    margin-inline: auto;
+    justify-self: center;
+
     div.article-skills-items.article-skills-items-section-my-writings {
         --avatar-size: 30px;
         --avatar-wrapper-width: 42px;

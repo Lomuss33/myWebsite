@@ -244,6 +244,57 @@ test('resize keeps mode and navigation in agreement', async ({page})=>{
     }
 })
 
+test('Education mobile navigation fills its grid cells without oversized bands', async ({page})=>{
+    await preferences(page,'hr','dark')
+    await page.setViewportSize({width:1813,height:2549})
+    await openSection(page,'education')
+
+    for(const [width,height] of [[1813,2549],[1920,3840],[1440,2560],[768,1024],[390,844]]) {
+        await page.setViewportSize({width,height})
+        await expect(page.locator('html')).toHaveAttribute('data-layout','mobile')
+        await expect.poll(async()=>page.locator('#nav-link-pills-menu').evaluate(nav=>{
+            const issues=[]
+            const bounds=nav.getBoundingClientRect()
+            const buttons=[...nav.querySelectorAll(':scope > button')]
+            if(buttons.length!==2) issues.push('Education menu does not have both destinations')
+            if(bounds.height>112.5) issues.push('navigation band grows beyond its bounded control height')
+            for(const button of buttons) {
+                const target=button.getBoundingClientRect()
+                if(target.width<bounds.width*.48) issues.push('destination collapses inside its grid column')
+                if(target.height<44) issues.push('destination loses its touch target')
+                for(const child of button.querySelectorAll(':scope > i, :scope > span')) {
+                    const content=child.getBoundingClientRect()
+                    if(content.left<target.left-1 || content.right>target.right+1 || content.top<target.top-1 || content.bottom>target.bottom+1)
+                        issues.push('destination icon or label overflows the button')
+                }
+            }
+            const tabs=document.querySelector('nav.nav-tab-controller').getBoundingClientRect()
+            if(tabs.height>112.5 || tabs.bottom>innerHeight+1) issues.push('bottom navigation grows or leaves the viewport')
+            return issues
+        }),{message:`${width}x${height}: Education destinations stay readable and usable`}).toEqual([])
+    }
+
+    await page.setViewportSize({width:1813,height:2549})
+    await page.locator('#nav-link-pills-menu > button').first().click()
+    await expect(page).toHaveURL(/#experience$/)
+    await expect(page.locator('#section-experience')).toBeVisible()
+    await page.locator('#nav-link-pills-menu > button').nth(1).click()
+    await expect(page).toHaveURL(/#education$/)
+    await expect(page.locator('#section-education')).toBeVisible()
+
+    await openSection(page,'about',{reuse:true})
+    const overview=page.locator('#nav-link-pills-menu')
+    await expect(overview.locator(':scope > button')).toHaveCount(6)
+    await expect.poll(()=>overview.evaluate(nav=>{
+        const bounds=nav.getBoundingClientRect()
+        return [...nav.children].flatMap(button=>{
+            const target=button.getBoundingClientRect()
+            return target.width>=bounds.width*.16 && target.left>=bounds.left-1 && target.right<=bounds.right+1 ? [] :
+                [`${button.innerText}: button ${target.left},${target.right},${target.width}; nav ${bounds.left},${bounds.right},${bounds.width}; ${getComputedStyle(nav).gridTemplateColumns}`]
+        })
+    }),{message:'the six overview destinations also fill their grid cells'}).toEqual([])
+})
+
 test('desktop page uses a centered 72rem pane without CSS zoom', async ({page})=>{
     await preferences(page)
     await page.setViewportSize({width:1366,height:768})
@@ -1396,6 +1447,77 @@ test('Software and Hardware filters use only 2×2 or 1×4 layouts', async ({page
     }
 })
 
+test('Hardware wide cards remain readable and passive probe rows use their width', async ({page})=>{
+    await preferences(page,'hr','dark')
+    await page.setViewportSize({width:1801,height:2549})
+    await openSection(page,'my-hardware')
+
+    for(const [width,height] of [[1801,2549],[2333,2364],[3440,1440],[1366,768],[390,844]]) {
+        await page.setViewportSize({width,height})
+        await expect.poll(async()=>page.evaluate(()=>{
+            const issues=[]
+            const collection=document.querySelector('#article-1-section-my-hardware .article-portfolio-items')
+            if(collection.clientWidth>=1536) {
+                const card=collection.querySelector('.article-portfolio-item')
+                if(card.getBoundingClientRect().width<440) issues.push('wide projects keep adding small columns')
+                if(parseFloat(getComputedStyle(card.querySelector('.article-portfolio-item-title-main')).fontSize)<19)
+                    issues.push('wide project title remains too small')
+            }
+            const workspace=document.querySelector('#article-2-section-my-hardware > .article-content')
+            const style=getComputedStyle(workspace)
+            const contentWidth=workspace.clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight)
+            if(contentWidth>=896) {
+                const body=workspace.querySelector('.accent-passive .article-data-probe-item-body')
+                const metadata=body.querySelector('.article-data-probe-item-meta').getBoundingClientRect()
+                const value=body.querySelector('.article-data-probe-item-value').getBoundingClientRect()
+                if(metadata.right>value.left+1) issues.push('wide passive readings still stack explanations and values')
+                if(value.right>body.getBoundingClientRect().right+1) issues.push('probe value overflows its row')
+            }
+            if(document.documentElement.scrollWidth>innerWidth+1) issues.push('page overflows horizontally')
+            return issues
+        }),{message:`${width}x${height}: Hardware uses wide space without small cards or empty reading bands`}).toEqual([])
+    }
+})
+
+test('Writings word stage fills large articles and scales its interactive cloud', async ({page})=>{
+    await preferences(page,'hr','light')
+    await page.setViewportSize({width:1801,height:2549})
+    await openSection(page,'my-writings')
+    await expect(page.locator('.article-falling-words-stage')).toHaveClass(/falling-words-ready/)
+
+    for(const [width,height] of [[1801,2549],[2333,2364],[3440,1440],[1440,2560],[390,844]]) {
+        await page.setViewportSize({width,height})
+        await expect.poll(async()=>page.evaluate(()=>{
+            const issues=[]
+            const article=document.querySelector('.article-falling-words')
+            const parent=article.parentElement.getBoundingClientRect()
+            const bounds=article.getBoundingClientRect()
+            const stage=article.querySelector('.article-falling-words-stage').getBoundingClientRect()
+            if(bounds.width<parent.width*.95) issues.push('word article leaves unused page width')
+            if(stage.left<bounds.left-1 || stage.right>bounds.right+1) issues.push('word stage overflows the article')
+            if(article.clientWidth>=1536) {
+                const word=article.querySelector('.falling-word')
+                if(parseFloat(getComputedStyle(word).fontSize)<16) issues.push('wide word cloud retains phone type size')
+                if(stage.height<460) issues.push('wide word stage remains too short')
+            }
+            return issues
+        }),{message:`${width}x${height}: word stage uses its article width`}).toEqual([])
+    }
+
+    await page.setViewportSize({width:2333,height:2364})
+    await page.locator('.article-falling-words-stage .falling-word').first().evaluate(element=>{
+        const bounds=element.getBoundingClientRect()
+        const pointer={bubbles:true,cancelable:true,pointerId:7,pointerType:'mouse',button:0,
+            clientX:bounds.left+bounds.width/2,clientY:bounds.top+bounds.height/2}
+        element.dispatchEvent(new PointerEvent('pointerdown',pointer))
+        window.dispatchEvent(new PointerEvent('pointerup',pointer))
+    })
+    const definition=page.locator('.article-falling-words .falling-words-modal-card')
+    await expect(definition).toBeVisible()
+    await definition.getByRole('button',{name:/Close definition|Zatvori/}).click()
+    await expect(definition).toHaveCount(0)
+})
+
 test('Hardware desktop density compacts project cards and DataProbe without shrinking controls', async ({page})=>{
     await preferences(page)
 
@@ -1734,16 +1856,16 @@ test('Writings desktop density stays off in narrow landscape and mobile modes', 
     await expect(page.locator('#article-4-section-my-writings .article-skills-item').first()).toBeVisible()
     await expect(page.locator('#article-6-section-my-writings canvas.illustrated-manuscript-canvas')).toBeVisible()
     const phoneWordFont=await page.locator('#article-2-section-my-writings .falling-word').first().evaluate(element=>parseFloat(getComputedStyle(element).fontSize))
-    expect(phoneWordFont).toBeGreaterThanOrEqual(11)
-    expect(phoneWordFont).toBeLessThanOrEqual(16)
+    expect(phoneWordFont).toBeGreaterThanOrEqual(10)
+    expect(phoneWordFont).toBeLessThanOrEqual(14.4)
     expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(391)
 
     await page.setViewportSize({width:1440,height:2560})
     await expect(page.locator('html')).toHaveAttribute('data-layout','mobile')
     await expect(page.locator('#article-2-section-my-writings .article-falling-words-stage')).toBeVisible()
     const tallMobileWordFont=await page.locator('#article-2-section-my-writings .falling-word').first().evaluate(element=>parseFloat(getComputedStyle(element).fontSize))
-    expect(tallMobileWordFont).toBeGreaterThanOrEqual(11)
-    expect(tallMobileWordFont).toBeLessThanOrEqual(16)
+    expect(tallMobileWordFont).toBeGreaterThanOrEqual(10)
+    expect(tallMobileWordFont).toBeLessThanOrEqual(14.4)
     await expect(page.locator('#article-6-section-my-writings canvas.illustrated-manuscript-canvas')).toBeVisible()
 })
 
@@ -1787,6 +1909,142 @@ test('FallingWords hint wraps inside a content-height card without spacing gaps'
     }
 })
 
+test('Art spotlight fills its article and WebArt text shares the entry band when it fits', async ({page})=>{
+    await preferences(page,'hr','dark')
+    await page.setViewportSize({width:1366,height:768})
+    await openSection(page,'my-art')
+    const portraitSizes=[]
+
+    for(const [width,height] of [[1366,768],[390,844],[768,1024],[1440,2560],[2333,2364],[3840,2160]]) {
+        await page.setViewportSize({width,height})
+        await expect(page.locator('html')).toHaveAttribute('data-layout',resolveLayout(width,height))
+        await expect.poll(async()=>page.evaluate(()=>{
+            const content=document.querySelector('.article-artist-spotlight > .article-content').getBoundingClientRect()
+            const shell=document.querySelector('.artist-spotlight-shell').getBoundingClientRect()
+            const row=document.querySelector('.article-web-art-intro-guide-top-row').getBoundingClientRect()
+            const copy=document.querySelector('.article-web-art-intro-guide-lines').getBoundingClientRect()
+            const actions=document.querySelector('.article-web-art-intro-cover-buttons').getBoundingClientRect()
+            const issues=[]
+            if(Math.abs(content.width-shell.width)>2) issues.push('spotlight leaves unused article width')
+            if(copy.left<row.left-1 || copy.right>row.right+1 || actions.left<row.left-1 || actions.right>row.right+1)
+                issues.push('guide text or actions overflow their band')
+            if(row.width>=800 && (copy.right>actions.left+1 || copy.top>=actions.bottom || actions.top>=copy.bottom))
+                issues.push('wide guide does not share one band')
+            if(row.width>=800 && Math.abs(actions.right-row.right)>1) issues.push('wide actions are not right aligned')
+            if(row.width<600 && actions.top<copy.bottom-1) issues.push('narrow guide actions overlap the text')
+            return issues
+        }),{message:`${width}x${height}: spotlight and WebArt adapt to their available width`}).toEqual([])
+        portraitSizes.push(await page.locator('.artist-spotlight-shell').evaluate(shell=>({
+            width:shell.getBoundingClientRect().width,
+            portrait:shell.querySelector('.artist-spotlight-avatar-link').getBoundingClientRect().width
+        })))
+    }
+
+    const medium=portraitSizes[0]
+    const largest=portraitSizes.reduce((largest,size)=>size.width>largest.width?size:largest)
+    expect(largest.portrait).toBeGreaterThan(medium.portrait*1.5)
+
+    await page.locator('.article-web-art-intro-cover-button-primary').click()
+    await expect(page.locator('.article-web-art-intro-cover-hidden')).toBeVisible()
+    await expect.poll(async()=>page.locator('.article-web-art-intro-guide-top-row').evaluate(row=>{
+        const band=row.getBoundingClientRect()
+        const copy=row.querySelector('.article-web-art-intro-guide-lines').getBoundingClientRect()
+        const actions=row.querySelector('.article-web-art-intro-cover-buttons').getBoundingClientRect()
+        return copy.right<=actions.left+1 && Math.abs(actions.right-band.right)<=1 &&
+            copy.top<actions.bottom && actions.top<copy.bottom
+    }),{message:'open gallery keeps its actions beside the guide text'}).toBe(true)
+})
+
+test('Art wide layouts balance albums, digital cards, spotlight and educator icons', async ({page})=>{
+    await preferences(page,'hr','light')
+    await page.setViewportSize({width:2333,height:2364})
+    await openSection(page,'my-art')
+    await expect(page.locator('#article-4-section-my-art .article-stack-item-compact')).toHaveCount(71)
+
+    for(const [width,height] of [[2333,2364],[1920,2560],[1801,2549],[3440,1440],[1440,2560],[1366,768],[768,1024],[390,844]]) {
+        await page.setViewportSize({width,height})
+        await expect(page.locator('html')).toHaveAttribute('data-layout',resolveLayout(width,height))
+        await expect.poll(async()=>page.evaluate(()=>{
+            const issues=[]
+            const photo=document.querySelector('.article-timeline--art-photography')
+            const albums=[...photo.querySelectorAll('li.article-timeline-item')].slice(0,3).map(item=>item.getBoundingClientRect())
+            const digital=document.querySelector('.article-timeline--art-digital-expression .article-timeline-items')
+            const cards=[...digital.children].map(item=>item.getBoundingClientRect())
+            const columns=getComputedStyle(digital).gridTemplateColumns.split(' ').length
+            if(cards.length!==4 || ![1,2,4].includes(columns)) issues.push('digital cards leave an orphan row')
+            if(columns===4 && cards.some(card=>Math.abs(card.top-cards[0].top)>1)) issues.push('digital cards are not all on the same row')
+            if(photo.clientWidth>=1536) {
+                if(albums.some(album=>Math.abs(album.top-albums[0].top)>1)) issues.push('wide photo albums do not share one row')
+                const hero=document.querySelector('.artist-spotlight-hero').getBoundingClientRect()
+                const release=document.querySelector('.artist-spotlight-release').getBoundingClientRect()
+                if(hero.right>release.left+1 || Math.abs(hero.top-release.top)>1) issues.push('wide spotlight does not balance hero and player side by side')
+                const releaseElement=document.querySelector('.artist-spotlight-release')
+                const releaseStyle=getComputedStyle(releaseElement)
+                const main=releaseElement.querySelector('.artist-spotlight-release-main').getBoundingClientRect()
+                const availableHeight=releaseElement.clientHeight-parseFloat(releaseStyle.paddingTop)-parseFloat(releaseStyle.paddingBottom)
+                if(Math.abs(main.height-availableHeight)>2) issues.push('wide player leaves unused panel height')
+                const record=releaseElement.querySelector('.artist-spotlight-turntable').getBoundingClientRect()
+                if(record.width<main.width*0.35) issues.push('wide player record does not scale with its row')
+                const seek=releaseElement.querySelector('.artist-spotlight-local-player input').getBoundingClientRect()
+                if(record.right>seek.left+1 || seek.right>main.right+1 || seek.bottom>main.bottom+1)
+                    issues.push('wide player controls overlap or overflow the row')
+                const tile=document.querySelector('#article-4-section-my-art .article-stack-item-compact').getBoundingClientRect()
+                const icon=document.querySelector('#article-4-section-my-art .article-stack-item-avatar').getBoundingClientRect()
+                if(icon.width<tile.width*0.45) issues.push('educator icon remains too small for its tile')
+            }
+            return issues
+        }),{message:`${width}x${height}: Art wide layouts remain balanced`}).toEqual([])
+    }
+})
+
+test('Art photography actions fit their rows across large screens and mobile', async ({page})=>{
+    await preferences(page)
+    await page.setViewportSize({width:1366,height:768})
+    await openSection(page,'my-art')
+
+    for(const [width,height] of [[1366,768],[1920,1080],[3440,1440],[3840,2160],[1440,2560],[2333,2364],[390,844]]) {
+        await page.setViewportSize({width,height})
+        await expect(page.locator('html')).toHaveAttribute('data-layout',resolveLayout(width,height))
+        await expect.poll(async()=>page.locator('#article-1-section-my-art').evaluate(article=>{
+            const bounds=article.getBoundingClientRect()
+            return [...article.querySelectorAll('li.article-timeline-item')].flatMap((row,index)=>{
+                const rowBounds=row.getBoundingClientRect()
+                if(rowBounds.width===0) return []
+                if(rowBounds.left<bounds.left-1 || rowBounds.right>bounds.right+1)
+                    return [`row ${index}: extends past article`]
+                const card=row.querySelector('.article-timeline-item-content').getBoundingClientRect()
+                return [...row.querySelectorAll('.article-timeline-item-info-preview-footer')].flatMap(footer=>{
+                    const rail=footer.getBoundingClientRect()
+                    if(rail.width===0) return []
+                    const links=[...footer.querySelectorAll('a.article-item-preview-menu-link')]
+                    const first=links[0].getBoundingClientRect()
+                    const last=links[links.length-1].getBoundingClientRect()
+                    const outsideCard=rail.left>=card.right-1 || rail.right<=card.left+1
+                    const issues=[]
+                    if(outsideCard && Math.abs(rail.height-rowBounds.height)>1)
+                        issues.push(`row ${index}: action rail does not fill the row height`)
+                    if(Math.abs((first.top+last.bottom-rail.top-rail.bottom)/2)>1)
+                        issues.push(`row ${index}: action stack is not centered vertically`)
+                    return issues.concat(links.flatMap(link=>{
+                        const action=link.getBoundingClientRect()
+                        const button=link.querySelector('button').getBoundingClientRect()
+                        const contained=action.left>=rowBounds.left-1 && action.right<=rowBounds.right+1 &&
+                            action.top>=rowBounds.top-1 && action.bottom<=rowBounds.bottom+1
+                        const framed=Math.abs(action.width-button.width)<=2 && Math.abs(action.height-button.height)<=2
+                        const copy=row.querySelector('.article-timeline-item-info-for-timelines-body').getBoundingClientRect()
+                        const issues=[]
+                        if(!contained) issues.push(`row ${index}: action extends past row (${action.left},${action.right},${action.top},${action.bottom}) vs (${rowBounds.left},${rowBounds.right},${rowBounds.top},${rowBounds.bottom})`)
+                        if(!framed) issues.push(`row ${index}: button does not fit frame`)
+                        if(action.width<43.5 || action.height<43.5) issues.push(`row ${index}: action too small`)
+                        if(!outsideCard && copy.right>rail.left+1) issues.push(`row ${index}: action overlaps copy`)
+                        return issues
+                    }))
+                })
+            })
+        }),{message:`${width}x${height}: photography action frames stay inside the row and clear the story`}).toEqual([])
+    }
+})
+
 test('Art desktop density compacts timelines, WebArt, stack cards, and SecretPearls', async ({page})=>{
     test.setTimeout(150000)
     await preferences(page)
@@ -1799,6 +2057,7 @@ test('Art desktop density compacts timelines, WebArt, stack cards, and SecretPea
             await expect(page.locator('#article-1-section-my-art .article-timeline-item-info-for-timelines').first()).toBeVisible()
         }
         await expect(page.locator('html')).toHaveAttribute('data-layout',resolveLayout(width,height))
+        await expect(page.locator('#article-4-section-my-art .article-stack-item-compact')).toHaveCount(71,{timeout:10000})
 
         const metrics=await page.evaluate(()=>{
             const measure=(selector)=>{
@@ -1821,6 +2080,8 @@ test('Art desktop density compacts timelines, WebArt, stack cards, and SecretPea
                 stackGrid:measure('#article-4-section-my-art .article-stack-items-compact'),
                 stackCard:measure('#article-4-section-my-art .article-stack-item-compact'),
                 stackColumns:stack?getComputedStyle(stack).gridTemplateColumns.split(' ').length:0,
+                stackGap:stack?parseFloat(getComputedStyle(stack).columnGap):0,
+                stackTitleOverflow:stack?[...stack.querySelectorAll('.article-stack-item-title-main')].filter(title=>title.scrollWidth>title.clientWidth+1||title.scrollHeight>title.clientHeight+1).length:-1,
                 pearlGate:measure('#article-5-section-my-art .article-secret-pearls-gate-button'),
                 docWidth:document.documentElement.scrollWidth
             }
@@ -1840,13 +2101,27 @@ test('Art desktop density compacts timelines, WebArt, stack cards, and SecretPea
         expect(metrics.webStage.height).toBeGreaterThanOrEqual(1)
         expect(metrics.webStage.height).toBeLessThanOrEqual(380)
         expect(metrics.webEnter.height).toBeGreaterThanOrEqual(43.5)
-        // The creator revision uses five wider, square tiles per row.
-        expect(metrics.stackColumns).toBe(5)
-        expect(metrics.stackCard.width).toBeLessThan(240)
+        // The container-relative grid grows by adding tiles while bounding each one.
+        expect(metrics.stackColumns).toBeGreaterThanOrEqual(5)
+        expect(metrics.stackGap).toBeGreaterThanOrEqual(3)
+        expect(metrics.stackGap).toBeLessThanOrEqual(8)
+        expect(metrics.stackCard.width).toBeGreaterThanOrEqual(76)
+        expect(metrics.stackCard.width).toBeLessThanOrEqual(160)
         expect(Math.abs(metrics.stackCard.height-metrics.stackCard.width)).toBeLessThanOrEqual(1)
-        expect(metrics.stackGrid.height).toBeLessThan(3600)
+        expect(metrics.stackTitleOverflow).toBe(0)
+        expect(metrics.stackGrid.height).toBeLessThan(2000)
         expect(metrics.pearlGate.height).toBeGreaterThanOrEqual(43.5)
         expect(metrics.docWidth).toBeLessThanOrEqual(width+1)
+
+        const pearls=page.locator('#article-5-section-my-art')
+        await pearls.getByRole('button',{name:'Reveal Secret pearls'}).click()
+        await expect(pearls.locator('.article-secret-pearls-grid')).toBeVisible()
+        const pearlWidths=await pearls.evaluate(element=>({
+            grid:element.querySelector('.article-secret-pearls-grid').getBoundingClientRect().width,
+            description:element.querySelector('.article-secret-pearls-description').getBoundingClientRect().width
+        }))
+        expect(Math.abs(pearlWidths.grid-pearlWidths.description)).toBeLessThanOrEqual(1)
+        await pearls.getByRole('button',{name:'Show less'}).click()
 
         if(index===0) {
             await expect(page.locator('#article-1-section-my-art .article-timeline-item-info-for-timelines')).toHaveCount(3)
@@ -1859,7 +2134,6 @@ test('Art desktop density compacts timelines, WebArt, stack cards, and SecretPea
 
             const pearls=page.locator('#article-5-section-my-art')
             await pearls.getByRole('button',{name:'Reveal Secret pearls'}).click()
-            await expect(pearls.locator('.article-secret-pearls-grid')).toBeVisible()
             await expect(pearls.locator('.article-secret-pearls-gated-tile')).toHaveCount(4)
             const tileControlHeights=await pearls.locator('.article-secret-pearls-gated-tile-pill').evaluateAll(buttons=>buttons.map(button=>button.getBoundingClientRect().height))
             expect(tileControlHeights.every(height=>height>=43.5)).toBe(true)
@@ -1876,6 +2150,15 @@ test('Art desktop density stays off in narrow landscape and mobile modes', async
     await expect(page.locator('html')).toHaveAttribute('data-layout','normal')
     await expect(page.locator('#article-1-section-my-art .article-timeline-item-info-for-timelines').first()).toBeVisible()
     await expect(page.locator('#article-3-section-my-art .article-web-art-stage')).toBeVisible()
+    await expect(page.locator('#article-4-section-my-art .article-stack-item-compact').first()).toBeVisible()
+    const landscapeStack=await page.locator('#article-4-section-my-art .article-stack-items-compact').evaluate(stack=>({
+        columns:getComputedStyle(stack).gridTemplateColumns.split(' ').length,
+        gap:parseFloat(getComputedStyle(stack).columnGap),
+        card:stack.querySelector('.article-stack-item-compact')?.getBoundingClientRect().width
+    }))
+    expect(landscapeStack.columns).toBeGreaterThanOrEqual(2)
+    expect(landscapeStack.gap).toBeLessThanOrEqual(8)
+    expect(landscapeStack.card).toBeGreaterThanOrEqual(76)
     expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(569)
 
     await page.setViewportSize({width:390,height:844})
@@ -1883,6 +2166,24 @@ test('Art desktop density stays off in narrow landscape and mobile modes', async
     await expect(page.locator('#article-2-section-my-art .article-timeline-item-info-for-timelines').first()).toBeVisible()
     await expect(page.locator('#article-3-section-my-art .article-web-art-stage')).toBeVisible()
     await expect(page.locator('#article-5-section-my-art .article-secret-pearls-gate-button')).toBeVisible()
+    const phonePearls=page.locator('#article-5-section-my-art')
+    await phonePearls.getByRole('button',{name:'Reveal Secret pearls'}).click()
+    await expect(phonePearls.locator('.article-secret-pearls-grid')).toBeVisible()
+    const phonePearlWidths=await phonePearls.evaluate(element=>({
+        grid:element.querySelector('.article-secret-pearls-grid').getBoundingClientRect().width,
+        description:element.querySelector('.article-secret-pearls-description').getBoundingClientRect().width
+    }))
+    expect(Math.abs(phonePearlWidths.grid-phonePearlWidths.description)).toBeLessThanOrEqual(1)
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(391)
+    await phonePearls.getByRole('button',{name:'Show less'}).click()
+    const phoneStack=await page.locator('#article-4-section-my-art .article-stack-items-compact').evaluate(stack=>({
+        columns:getComputedStyle(stack).gridTemplateColumns.split(' ').length,
+        gap:parseFloat(getComputedStyle(stack).columnGap),
+        card:stack.querySelector('.article-stack-item-compact')?.getBoundingClientRect().width
+    }))
+    expect(phoneStack.columns).toBeGreaterThanOrEqual(2)
+    expect(phoneStack.gap).toBeLessThanOrEqual(8)
+    expect(phoneStack.card).toBeGreaterThanOrEqual(76)
     expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(391)
 
     await page.setViewportSize({width:1440,height:2560})
@@ -1917,6 +2218,13 @@ test('Contact desktop density compacts information, forms, and map panels withou
                 infoCard:measure('#article-1-section-contact .article-info-list-item'),
                 infoAvatar:measure('#article-1-section-contact .article-info-list-item-avatar'),
                 copyButtons:[...document.querySelectorAll('#article-1-section-contact button.copy-button')].map(button=>button.getBoundingClientRect().height),
+                completeContactText:[...document.querySelectorAll('#article-1-section-contact .article-info-list-item-info-title, #article-1-section-contact .copy-button-label')].every(element=>element.scrollWidth<=element.clientWidth+1&&element.scrollHeight<=element.clientHeight+1),
+                centeredContactText:[...document.querySelectorAll('#article-1-section-contact .article-info-list-item-info-title, #article-1-section-contact .article-info-list-item-info-text > span')].every(element=>getComputedStyle(element).textAlign==='center'),
+                rightAlignedCopyActions:[...document.querySelectorAll('#article-1-section-contact .copy-button-wrapper')].every(element=>{
+                    const parent=element.parentElement.getBoundingClientRect()
+                    return Math.abs(parent.right-element.getBoundingClientRect().right)<1
+                }),
+                copySurfaceHeights:[...document.querySelectorAll('#article-1-section-contact button.copy-button')].map(button=>parseFloat(getComputedStyle(button,'::before').height)),
                 copyLayout:[...document.querySelectorAll('#article-1-section-contact .article-info-list-item-info-text:has(button.copy-button)')].map(row=>({
                     descriptionBottom:row.querySelector(':scope > span').getBoundingClientRect().bottom,
                     actionTop:row.querySelector(':scope > .copy-button-wrapper').getBoundingClientRect().top
@@ -1946,6 +2254,10 @@ test('Contact desktop density compacts information, forms, and map panels withou
         expect(metrics.infoAvatar.width).toBeGreaterThanOrEqual(44)
         expect(metrics.copyButtons.length).toBeGreaterThan(0)
         expect(metrics.copyButtons.every(height=>height>=43.5)).toBe(true)
+        expect(metrics.completeContactText).toBe(true)
+        expect(metrics.centeredContactText).toBe(true)
+        expect(metrics.rightAlignedCopyActions).toBe(true)
+        expect(metrics.copySurfaceHeights.every(height=>height<=41)).toBe(true)
         expect(metrics.copyLayout.every(({descriptionBottom,actionTop})=>actionTop>=descriptionBottom)).toBe(true)
         expect(metrics.contactInput.height).toBeGreaterThanOrEqual(44)
         expect(metrics.contactTextarea.height).toBeLessThan(190)
@@ -1996,6 +2308,12 @@ test('Contact desktop density stays off in narrow landscape and mobile layouts',
         await expect(page.locator('#article-2-section-contact textarea.form-textarea')).toBeVisible()
         await expect(page.locator('#article-3-section-contact .location-compare-grid--ready')).toBeVisible()
         await expect(page.locator('#article-4-section-contact .article-complaint-form-select-trigger')).toBeVisible()
+        const contactTextFits=await page.locator('article.article-info-list-contact').evaluate(article=>[...article.querySelectorAll('.article-info-list-item-info-title, .copy-button-label')].every(element=>element.scrollWidth<=element.clientWidth+1&&element.scrollHeight<=element.clientHeight+1))
+        expect(contactTextFits).toBe(true)
+        const contactTextCentered=await page.locator('article.article-info-list-contact').evaluate(article=>[...article.querySelectorAll('.article-info-list-item-info-title, .article-info-list-item-info-text > span')].every(element=>getComputedStyle(element).textAlign==='center'))
+        expect(contactTextCentered).toBe(true)
+        const contactCopyTargets=await page.locator('#article-1-section-contact button.copy-button').evaluateAll(buttons=>buttons.map(button=>button.getBoundingClientRect().height))
+        expect(contactCopyTargets.every(height=>height>=43.5)).toBe(true)
         expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(width+1)
         expect(await page.locator('#article-2-section-contact textarea.form-textarea').evaluate(element=>getComputedStyle(element).getPropertyValue('--textarea-min-height').trim())).toBe('')
     }
@@ -2004,7 +2322,7 @@ test('Contact desktop density stays off in narrow landscape and mobile layouts',
 test('Contact location comparison stays compact and symmetrical across viewport widths', async ({page})=>{
     await preferences(page)
 
-    for(const [width,height] of [[320,700],[390,844],[430,932],[480,900],[768,1024],[1024,768],[1920,1080]]) {
+    for(const [width,height] of [[320,700],[390,844],[430,932],[480,900],[768,1024],[1024,768],[1920,1080],[3440,1440]]) {
         await page.setViewportSize({width,height})
         await openSection(page,'contact')
         const map=page.locator('#article-3-section-contact')
@@ -2123,11 +2441,12 @@ test('Contact location comparison stays compact and symmetrical across viewport 
                     const mapCanvas=card.querySelector('.location-compare-map').getBoundingClientRect()
                     const rails=[...card.querySelectorAll('.location-compare-place-rail')]
                     return {
-                        cardAspect:card.getBoundingClientRect().width/card.getBoundingClientRect().height,
+                        mapAspect:mapCanvas.width/mapCanvas.height,
                         left:mapCanvas.left-viewport.left,
                         right:viewport.right-mapCanvas.right,
                         railWidths:rails.map(rail=>rail.getBoundingClientRect().width),
-                        railText:rails.map(rail=>rail.innerText.trim()),
+                        railDisplays:rails.map(rail=>getComputedStyle(rail).display),
+                        railText:rails.map(rail=>rail.textContent.trim()),
                         writingModes:rails.map(rail=>getComputedStyle(rail.firstElementChild).writingMode)
                     }
                 }),
@@ -2167,7 +2486,9 @@ test('Contact location comparison stays compact and symmetrical across viewport 
         expect(metrics.presets).toHaveLength(3)
         expect(metrics.presets.every(preset=>preset.height>=(width<768?43.5:31))).toBe(true)
         expect(metrics.presets.every(preset=>hasVisibleHairline(preset.borderWidth) && preset.radius!=='0px')).toBe(true)
-        expect(metrics.presets.every(preset=>parseFloat(preset.labelFontSize)<=12 && parseFloat(preset.valueFontSize)<=11)).toBe(true)
+        const presetLabelMax=width>=1280?19:12
+        const presetValueMax=width>=1280?17:11
+        expect(metrics.presets.every(preset=>parseFloat(preset.labelFontSize)<=presetLabelMax && parseFloat(preset.valueFontSize)<=presetValueMax)).toBe(true)
         expect(Math.max(...metrics.presets.map(preset=>preset.top))-Math.min(...metrics.presets.map(preset=>preset.top))).toBeLessThan(1)
         expect(metrics.actions.every(action=>action.height>=(width<768?43.5:31) && hasVisibleHairline(action.borderWidth) && action.radius!=='0px')).toBe(true)
         expect(metrics.actions[0].width).toBeGreaterThan(metrics.actions[0].height)
@@ -2190,27 +2511,29 @@ test('Contact location comparison stays compact and symmetrical across viewport 
         expect(metrics.contactCardVerticalPadding.every(([top,bottom])=>top<=4 && bottom<=4),JSON.stringify({width,verticalPadding:metrics.contactCardVerticalPadding})).toBe(true)
         expect(metrics.contactLinkHint).toBe('none')
         if(width>=768) {
-            expect(metrics.presets.every(preset=>preset.height<=37)).toBe(true)
+            if(width<1280) expect(metrics.presets.every(preset=>preset.height<=37)).toBe(true)
             expect(metrics.actions.every(action=>action.height<=37)).toBe(true)
             expect(metrics.zoomControls.every(control=>control.width<=37 && control.height<=37)).toBe(true)
             expect(metrics.toolbar.width).toBeCloseTo(metrics.contentFrame.width,0)
         }
         if(width>=1280) {
-            expect(metrics.presets.every(preset=>preset.height<=33)).toBe(true)
+            expect(metrics.presets.every(preset=>preset.height>=42 && preset.height<=60),JSON.stringify({width,presets:metrics.presets})).toBe(true)
             expect(metrics.actions.every(action=>action.height<=33)).toBe(true)
             expect(metrics.zoomControls.every(control=>control.width<=33 && control.height<=33)).toBe(true)
         }
         expect(metrics.maps.every(mapSize=>mapSize.height>=140)).toBe(true)
         expect(metrics.mapInsets).toHaveLength(2)
-        expect(metrics.mapInsets.every(inset=>inset.cardAspect>=(width<768?1.25:1.45))).toBe(true)
-        expect(metrics.mapInsets.every(inset=>inset.left>=59 && inset.right>=59)).toBe(true)
-        expect(metrics.mapInsets.every(inset=>inset.railWidths.length===2 && inset.railWidths.every(width=>width>=59))).toBe(true)
+        expect(metrics.mapInsets.every(inset=>Math.abs(inset.mapAspect-1)<=0.01),JSON.stringify({width,height,mapInsets:metrics.mapInsets})).toBe(true)
+        expect(metrics.mapInsets.every(inset=>inset.railWidths.length===2)).toBe(true)
         expect(metrics.mapInsets.every(inset=>inset.railText.length===2 && inset.railText[0]===inset.railText[1])).toBe(true)
-        expect(metrics.mapInsets.every(inset=>inset.writingModes.every(mode=>mode==='vertical-rl'))).toBe(true)
         expect(metrics.mapCards).toHaveLength(2)
         if(height>width || width<768) {
             // Stacked cards share a flush horizontal seam, and the lower
             // selector stays at the bottom of its card below the map.
+            expect(metrics.mapInsets.every(inset=>inset.left>=59 && inset.right>=59)).toBe(true)
+            expect(metrics.mapInsets.every(inset=>inset.railWidths.every(railWidth=>railWidth>=59))).toBe(true)
+            expect(metrics.mapInsets.every(inset=>inset.railDisplays.every(display=>display!=='none'))).toBe(true)
+            expect(metrics.mapInsets.every(inset=>inset.writingModes.every(mode=>mode==='vertical-rl'))).toBe(true)
             expect(Math.abs(metrics.mapCards[0].bottom-metrics.mapCards[1].top)).toBeLessThanOrEqual(1)
             expect(Math.abs(metrics.mapCards[1].labelBottom-metrics.mapCards[1].bottom)).toBeLessThanOrEqual(1)
             expect(Math.abs(metrics.mapCards[1].viewportBottom-metrics.mapCards[1].labelTop)).toBeLessThanOrEqual(1)
@@ -2228,7 +2551,15 @@ test('Contact location comparison stays compact and symmetrical across viewport 
                 }),{timeout:1500}).toBeLessThanOrEqual(1)
             }
         } else {
-            // Side-by-side cards meet edge-to-edge without a gutter.
+            // Side-by-side maps meet directly; only the pair's outside rails remain.
+            expect(metrics.mapInsets[0].left).toBeGreaterThanOrEqual(59)
+            expect(metrics.mapInsets[0].right).toBeLessThanOrEqual(1)
+            expect(metrics.mapInsets[1].left).toBeLessThanOrEqual(1)
+            expect(metrics.mapInsets[1].right).toBeGreaterThanOrEqual(59)
+            expect(metrics.mapInsets[0].railDisplays).toEqual(['grid','none'])
+            expect(metrics.mapInsets[1].railDisplays).toEqual(['none','grid'])
+            // The only separation is the two adjoining 1px card borders.
+            expect(Math.abs(metrics.maps[0].right-metrics.maps[1].x)).toBeLessThanOrEqual(2)
             expect(Math.abs(metrics.mapCards[0].right-metrics.mapCards[1].left)).toBeLessThanOrEqual(1)
         }
         expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(width+1)

@@ -130,7 +130,7 @@ div.article-web-art-intro-cover-actions {
 div.article-web-art-intro-cover-buttons {
     min-width: 0;
     display: flex;
-    align-self: flex-end;
+    align-self: center;
     justify-self: end;
     align-items: center;
     justify-content: flex-end;
@@ -258,10 +258,10 @@ div.article-web-art-intro-guide-inner {
 }
 
 div.article-web-art-intro-guide-top-row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    align-items: stretch;
-    gap: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: clamp(12px, 2cqw, 28px);
 }
 
 div.article-web-art-intro-guide-hidden {
@@ -270,6 +270,9 @@ div.article-web-art-intro-guide-hidden {
 
 div.article-web-art-intro-guide-lines {
     display: grid;
+    flex: 1 1 24rem;
+    min-width: 0;
+    text-align: left;
     gap: 8px;
 }
 
@@ -493,6 +496,7 @@ button.article-web-art-intro-cover-button-secondary-active {
     }
 
     div.article-web-art-intro-guide-top-row {
+        display: grid;
         grid-template-columns: minmax(0, 1fr);
         gap: 8px;
     }

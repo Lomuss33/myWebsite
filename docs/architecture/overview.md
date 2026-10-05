@@ -1,6 +1,6 @@
 # Architecture and content model
 
-Verified: 2026-09-11 against source ownership and registry. Code-span paths are repository-relative.
+Verified: lifecycle bridge source reviewed 2026-10-05; source ownership and registry verified 2026-09-11. Code-span paths are repository-relative.
 
 [Documentation index](../README.md)
 
@@ -9,6 +9,8 @@ Verified: 2026-09-11 against source ownership and registry. Code-span paths are 
 ### App bootstrap
 
 - `src/main.jsx`
+
+Its lifecycle bridge emits `app:pause` for hidden documents, `pagehide`, and native document `freeze`, and `app:resume` for visible documents, `pageshow`, and native document `resume`. Graphics that release drawing surfaces while suspended must remeasure on return and handle their canvas context restoration separately; resume events do not make old WebGL resources valid again. See [background surface ownership](responsive-layout.md#styling-ownership).
 
 Responsibilities:
 

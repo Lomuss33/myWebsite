@@ -377,7 +377,7 @@ function ArticleArtistSpotlight({dataWrapper}) {
         <img className="artist-spotlight-portrait"
              src={profileImage.resolvedSrc || data.profileImage}
              srcSet={profileImage.srcSet || undefined}
-             sizes="(max-width: 560px) 28vw, 224px"
+             sizes="(max-width: 560px) 28vw, (min-width: 1440px) 384px, 224px"
              loading="lazy" decoding="async"
              alt={data.profileImageAlt || data.artistName || text("artistPortrait", "Artist portrait")}/>
     ) : (

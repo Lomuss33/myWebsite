@@ -53,7 +53,7 @@ article.article-falling-words {
 }
 
 article#article-2-section-my-writings {
-    width: min(100%, 1760px);
+    width: 100%;
     max-width: 100%;
     margin-inline: auto;
 
@@ -173,8 +173,6 @@ article#article-2-section-my-writings {
     }
 
     @include layout-mobile {
-        width: min(100%, 960px);
-
         div.article-falling-words-hint {
             height: auto;
             min-height: 0;
@@ -238,6 +236,21 @@ article#article-2-section-my-writings {
             min-height: min(200px, calc(100% - 16px));
             max-height: calc(100% - 16px);
             padding: 20px 16px;
+        }
+    }
+}
+
+// Tall, wide layouts still use mobile navigation, but their word stage has
+// room for a larger cloud. Size against the article rather than that mode.
+@container (min-width: 96rem) {
+    article#article-2-section-my-writings {
+        div.falling-words.article-falling-words-stage {
+            height: clamp(460px, 34cqw, 760px) !important;
+            min-height: clamp(460px, 34cqw, 760px) !important;
+        }
+
+        span.falling-word {
+            font-size: clamp(1rem, 1.35cqw, 1.6rem) !important;
         }
     }
 }

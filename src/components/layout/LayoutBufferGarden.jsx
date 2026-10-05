@@ -17,6 +17,8 @@ const REDUCED_TIME_SCALE = 0.08
 
 const MAX_DEVICE_PIXEL_RATIO = 1.5
 const REDUCED_MAX_DEVICE_PIXEL_RATIO = 1
+const MAX_RENDER_PIXELS = 2_000_000
+const MAX_RENDER_DIMENSION = 4096
 
 const DARK_PALETTE = {
     washA: "rgba(22, 96, 72, 0.24)",
@@ -573,12 +575,15 @@ function LayoutBufferGarden() {
         let resizeObserver = null
         let themeObserver = null
         let mounted = true
+        let paused = document.hidden
+        let contextLost = false
         const observedElements = new Set()
         let state = {
             active: false,
             dpr: 1,
             width: 0,
             height: 0,
+            renderHeight: 0,
             layoutKey: "",
             regions: [],
             palette: DARK_PALETTE,
@@ -592,12 +597,14 @@ function LayoutBufferGarden() {
 
         const isReducedMotion = () => reducedMotionQuery?.matches === true
 
-        const getPixelRatio = (reducedMotion, lowPerf) => {
+        const getPixelRatio = (reducedMotion, lowPerf, width = state.width, height = state.renderHeight) => {
             const cap = reducedMotion || lowPerf
                 ? REDUCED_MAX_DEVICE_PIXEL_RATIO
                 : MAX_DEVICE_PIXEL_RATIO
 
-            return Math.max(1, Math.min(cap, window.devicePixelRatio || 1))
+            return Math.min(Math.max(1, Math.min(cap, window.devicePixelRatio || 1)),
+                MAX_RENDER_DIMENSION / Math.max(1, width, height),
+                Math.sqrt(MAX_RENDER_PIXELS / Math.max(1, width * height)))
         }
 
         const measureRegions = () => {
@@ -606,6 +613,10 @@ function LayoutBufferGarden() {
             const page = wrapper.querySelector(".layout-navigation-children-inner")
             const width = Math.max(0, wrapperRect.width)
             const height = Math.max(0, wrapperRect.height)
+            const viewportTop = window.visualViewport?.offsetTop || 0
+            const viewportBottom = viewportTop + (window.visualViewport?.height || window.innerHeight)
+            const renderTop = Math.max(0, viewportTop - wrapperRect.top)
+            const renderHeight = Math.max(0, Math.min(height, viewportBottom - wrapperRect.top) - renderTop)
 
             observeElement(nav)
             observeElement(page)
@@ -614,6 +625,8 @@ function LayoutBufferGarden() {
                 return {
                     width,
                     height,
+                    renderTop,
+                    renderHeight,
                     regions: [],
                 }
             }
@@ -621,6 +634,8 @@ function LayoutBufferGarden() {
             return {
                 width,
                 height,
+                renderTop,
+                renderHeight,
                 regions: [
                     {
                         x: 0,
@@ -632,9 +647,9 @@ function LayoutBufferGarden() {
             }
         }
 
-        const syncCanvasSize = (width, height, dpr) => {
-            const nextWidth = Math.max(1, Math.round(width * dpr))
-            const nextHeight = Math.max(1, Math.round(height * dpr))
+        const syncCanvasSize = (width, height, dpr, renderTop) => {
+            const nextWidth = Math.max(1, Math.floor(width * dpr))
+            const nextHeight = Math.max(1, Math.floor(height * dpr))
 
             if(canvas.width !== nextWidth)
                 canvas.width = nextWidth
@@ -642,7 +657,11 @@ function LayoutBufferGarden() {
             if(canvas.height !== nextHeight)
                 canvas.height = nextHeight
 
-            context.setTransform(dpr, 0, 0, dpr, 0, 0)
+            canvas.style.top = `${renderTop}px`
+            canvas.style.bottom = "auto"
+            canvas.style.height = `${height}px`
+            // Preserve the full field's coordinates inside a viewport-sized surface.
+            context.setTransform(dpr, 0, 0, dpr, 0, -renderTop * dpr)
         }
 
         const getLayoutKey = (active, measurements, isLightTheme, reducedMotion, lowPerf, dpr) => {
@@ -675,22 +694,24 @@ function LayoutBufferGarden() {
         }
 
         const requestLoop = () => {
-            if(animationFrameId !== null || document.hidden || !state.active || state.regions.length === 0)
+            if(animationFrameId !== null || paused || contextLost || document.hidden || !state.active || state.renderHeight <= 0 || state.regions.length === 0)
                 return
 
             animationFrameId = window.requestAnimationFrame(tick)
         }
 
         const rebuild = (force = false) => {
+            if(!mounted || paused || contextLost || document.hidden)
+                return
             const active = true
             const measurements = measureRegions()
             const isLightTheme = getIsLightTheme()
             const reducedMotion = isReducedMotion()
             const lowPerf = getIsLowPerf()
-            const dpr = getPixelRatio(reducedMotion, lowPerf)
+            const dpr = getPixelRatio(reducedMotion, lowPerf, measurements.width, measurements.renderHeight)
             const layoutKey = getLayoutKey(active, measurements, isLightTheme, reducedMotion, lowPerf, dpr)
 
-            syncCanvasSize(measurements.width, measurements.height, dpr)
+            syncCanvasSize(measurements.width, measurements.renderHeight, dpr, measurements.renderTop)
 
             if(force || layoutKey !== state.layoutKey) {
                 const field = active
@@ -718,7 +739,9 @@ function LayoutBufferGarden() {
                 }
             }
 
+            state.renderHeight = measurements.renderHeight
             drawFrame(context, state, performance.now())
+            canvas.style.visibility = measurements.renderHeight > 0 ? "visible" : "hidden"
 
             if(state.active && state.regions.length > 0 && !document.hidden)
                 requestLoop()
@@ -727,7 +750,7 @@ function LayoutBufferGarden() {
         }
 
         const scheduleRebuild = (force = false) => {
-            if(rebuildFrameId !== null)
+            if(!mounted || paused || contextLost || document.hidden || rebuildFrameId !== null)
                 return
 
             rebuildFrameId = window.requestAnimationFrame(() => {
@@ -741,7 +764,7 @@ function LayoutBufferGarden() {
         function tick(timestamp) {
             animationFrameId = null
 
-            if(!mounted || document.hidden)
+            if(!mounted || paused || contextLost || document.hidden)
                 return
 
             const nextReducedMotion = isReducedMotion()
@@ -768,12 +791,34 @@ function LayoutBufferGarden() {
             requestLoop()
         }
 
-        const onVisibilityChange = () => {
-            if(document.hidden) {
-                cancelLoop()
-                return
+        const onPause = () => {
+            paused = true
+            cancelLoop()
+            if(rebuildFrameId !== null) {
+                window.cancelAnimationFrame(rebuildFrameId)
+                rebuildFrameId = null
             }
+            canvas.style.visibility = "hidden"
+            canvas.width = 1
+            canvas.height = 1
+        }
 
+        const onResume = () => {
+            if(!mounted || document.hidden)
+                return
+            paused = false
+            scheduleRebuild()
+        }
+
+        const onVisibilityChange = () => document.hidden ? onPause() : onResume()
+        const onContextLost = (event) => {
+            event.preventDefault()
+            contextLost = true
+            cancelLoop()
+            canvas.style.visibility = "hidden"
+        }
+        const onContextRestored = () => {
+            contextLost = false
             scheduleRebuild()
         }
 
@@ -819,7 +864,14 @@ function LayoutBufferGarden() {
         }
 
         window.addEventListener("resize", onWindowResize)
+        window.addEventListener("scroll", onWindowResize, { passive: true })
+        window.visualViewport?.addEventListener("resize", onWindowResize)
+        window.visualViewport?.addEventListener("scroll", onWindowResize)
+        window.addEventListener("app:pause", onPause)
+        window.addEventListener("app:resume", onResume)
         document.addEventListener("visibilitychange", onVisibilityChange)
+        canvas.addEventListener("contextlost", onContextLost)
+        canvas.addEventListener("contextrestored", onContextRestored)
         scheduleRebuild(true)
 
         return () => {
@@ -833,7 +885,16 @@ function LayoutBufferGarden() {
             themeObserver?.disconnect()
             removeReducedMotionListener()
             window.removeEventListener("resize", onWindowResize)
+            window.removeEventListener("scroll", onWindowResize)
+            window.visualViewport?.removeEventListener("resize", onWindowResize)
+            window.visualViewport?.removeEventListener("scroll", onWindowResize)
+            window.removeEventListener("app:pause", onPause)
+            window.removeEventListener("app:resume", onResume)
             document.removeEventListener("visibilitychange", onVisibilityChange)
+            canvas.removeEventListener("contextlost", onContextLost)
+            canvas.removeEventListener("contextrestored", onContextRestored)
+            canvas.width = 1
+            canvas.height = 1
         }
     }, [])
 

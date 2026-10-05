@@ -294,6 +294,8 @@ function ArticleSkillsItem({ itemWrapper }) {
                     iconText={itemWrapper.iconText}
                     style={avatarStyle}
                     alt={itemWrapper.imageAlt}
+                    loading={isEducationLanguageCard ? "eager" : "lazy"}
+                    decoding={isEducationLanguageCard ? "sync" : "async"}
                     className={`article-skills-item-avatar ${avatarClasses.join(` `)}`.trim()}/>
     )
 

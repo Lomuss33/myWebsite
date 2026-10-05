@@ -1,0 +1,165 @@
+{
+  "generator": "npm/generate-software-stickers-v5.js",
+  "revision": 5,
+  "status": "installed",
+  "artDirection": "Entirely new geometric editorial compositions. One coherent action or object per drawing, crisp perspective, substantial colour planes, controlled highlights, no diffuse glow or textured carrier.",
+  "themeTreatment": "Shared inline SVG geometry inherits authored CSS palettes. Light uses deeper colour and dark edges; dark uses luminous colours and cool bright edges. No brightness, saturation, inversion or contrast filters.",
+  "palettes": {
+    "dark": {
+      "ink": "#10263B",
+      "edge": "#98DAF3",
+      "surface": "#15324A",
+      "quiet": "#45647F",
+      "paper": "#DAEAFA",
+      "ice-shadow": "#A2BED5",
+      "blue": "#78AEFF",
+      "blue-light": "#ABCDFF",
+      "blue-deep": "#2562AD",
+      "cyan": "#57E0D4",
+      "cyan-light": "#A7F0E5",
+      "cyan-deep": "#208A98",
+      "violet": "#C29BFF",
+      "violet-light": "#DBC4FF",
+      "violet-deep": "#8554D2",
+      "rose": "#FF91B9",
+      "rose-light": "#FFC2D6",
+      "rose-deep": "#BF537F",
+      "highlight": "#EDFAFF"
+    },
+    "light": {
+      "ink": "#183048",
+      "edge": "#28536E",
+      "surface": "#E8F4FF",
+      "quiet": "#93B2CB",
+      "paper": "#F9FCFF",
+      "ice-shadow": "#CBE0EE",
+      "blue": "#2862C4",
+      "blue-light": "#63A2F5",
+      "blue-deep": "#14396E",
+      "cyan": "#16858C",
+      "cyan-light": "#64C7C4",
+      "cyan-deep": "#0C5B68",
+      "violet": "#6946B9",
+      "violet-light": "#AE96E2",
+      "violet-deep": "#482C83",
+      "rose": "#B44976",
+      "rose-light": "#EA9AB7",
+      "rose-deep": "#732D51",
+      "highlight": "#FFFFFF"
+    }
+  },
+  "stickers": [
+    {
+      "projectId": 1,
+      "filename": "01-language.svg",
+      "title": "A conversation across languages",
+      "idea": "Two interlocking, angled speech bubbles; large custom German and Croatian glyphs, with no miniature interface.",
+      "light": "modern-v5/light/01-language.svg",
+      "dark": "modern-v5/dark/01-language.svg"
+    },
+    {
+      "projectId": 1,
+      "filename": "02-practice.svg",
+      "title": "Listen, learn, complete",
+      "idea": "Headphones embrace one angled practice tile; a single large check is the focal point.",
+      "light": "modern-v5/light/02-practice.svg",
+      "dark": "modern-v5/dark/02-practice.svg"
+    },
+    {
+      "projectId": 2,
+      "filename": "03-cards.svg",
+      "title": "The Belot hand",
+      "idea": "A newly drawn diagonal three-card hand, with crisp folds and a large club on the foreground card.",
+      "light": "modern-v5/light/03-cards.svg",
+      "dark": "modern-v5/dark/03-cards.svg"
+    },
+    {
+      "projectId": 2,
+      "filename": "04-club.svg",
+      "title": "A winning Belot trick",
+      "idea": "An angular split-colour club medallion with two small ribbon tails; one clear game symbol.",
+      "light": "modern-v5/light/04-club.svg",
+      "dark": "modern-v5/dark/04-club.svg"
+    },
+    {
+      "projectId": 3,
+      "filename": "05-pepper.svg",
+      "title": "Pepper, ready to play",
+      "idea": "A new three-quarter Pepper portrait with an elongated ceramic face, optical eyes and visible neck joint.",
+      "light": "modern-v5/light/05-pepper.svg",
+      "dark": "modern-v5/dark/05-pepper.svg"
+    },
+    {
+      "projectId": 3,
+      "filename": "06-dealing.svg",
+      "title": "One precise deal",
+      "idea": "A diagonal two-joint robot arm lifts a single diamond card. The mechanism has clear, plausible articulation.",
+      "light": "modern-v5/light/06-dealing.svg",
+      "dark": "modern-v5/dark/06-dealing.svg"
+    },
+    {
+      "projectId": 4,
+      "filename": "07-house.svg",
+      "title": "Villa Bagara, in perspective",
+      "idea": "An architectural cutout of a compact mountain house: pitched roof, shaded side wall and generous windows.",
+      "light": "modern-v5/light/07-house.svg",
+      "dark": "modern-v5/dark/07-house.svg"
+    },
+    {
+      "projectId": 4,
+      "filename": "08-mountain.svg",
+      "title": "The mountain path",
+      "idea": "A new asymmetric mountain silhouette with strong geological planes and one winding path through the foreground.",
+      "light": "modern-v5/light/08-mountain.svg",
+      "dark": "modern-v5/dark/08-mountain.svg"
+    },
+    {
+      "projectId": 5,
+      "filename": "09-family.svg",
+      "title": "A family that branches",
+      "idea": "Three anonymous people form one growing family shape; a branching stem connects generations without tiny portraits.",
+      "light": "modern-v5/light/09-family.svg",
+      "dark": "modern-v5/dark/09-family.svg"
+    },
+    {
+      "projectId": 5,
+      "filename": "10-privacy.svg",
+      "title": "The guarded archive",
+      "idea": "A private archive folder is guarded by one broad shield with a large keyhole, using clear overlapping planes.",
+      "light": "modern-v5/light/10-privacy.svg",
+      "dark": "modern-v5/dark/10-privacy.svg"
+    },
+    {
+      "projectId": 6,
+      "filename": "11-cv.svg",
+      "title": "A carefully written CV",
+      "idea": "A new angled CV sheet with a strong editorial grid and a fountain pen crossing its edge. No tiny readable copy.",
+      "light": "modern-v5/light/11-cv.svg",
+      "dark": "modern-v5/dark/11-cv.svg"
+    },
+    {
+      "projectId": 6,
+      "filename": "12-type.svg",
+      "title": "TeX, drawn as type",
+      "idea": "A bespoke three-letter TeX composition with the lowered E, coloured cuts and generous negative space.",
+      "light": "modern-v5/light/12-type.svg",
+      "dark": "modern-v5/dark/12-type.svg"
+    },
+    {
+      "projectId": 7,
+      "filename": "13-website.svg",
+      "title": "A website in motion",
+      "idea": "A perspective browser canvas with two broad content blocks and a large cursor crossing its edge.",
+      "light": "modern-v5/light/13-website.svg",
+      "dark": "modern-v5/dark/13-website.svg"
+    },
+    {
+      "projectId": 7,
+      "filename": "14-code.svg",
+      "title": "The working code studio",
+      "idea": "A newly drawn perspective laptop with one bold code expression. The base and screen create a substantial silhouette.",
+      "light": "modern-v5/light/14-code.svg",
+      "dark": "modern-v5/dark/14-code.svg"
+    }
+  ]
+}

@@ -1981,6 +1981,51 @@ article#article-2-section-my-hardware pre.article-data-probe-item-value::before 
     }
 }
 
+// Wide passive readings remain one item per row, with explanations beside
+// the live value instead of several full-width, mostly empty bands.
+@container hardware-probe-content (min-width: 56rem) {
+    article#article-2-section-my-hardware {
+        section.article-data-probe-block {
+            padding-block: 1rem;
+        }
+
+        .accent-passive div.article-data-probe-item {
+            height: auto;
+            padding-block: .75rem;
+        }
+
+        .accent-passive div.article-data-probe-item-body {
+            display: grid;
+            grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+            align-items: start;
+            gap: .5rem 1.5rem;
+        }
+
+        .accent-passive div.article-data-probe-item-meta {
+            grid-column: 1;
+            grid-row: 1 / span 3;
+            row-gap: .4rem;
+        }
+
+        .accent-passive div.article-data-probe-item-meta-row + div.article-data-probe-item-meta-row {
+            padding-top: .4rem;
+        }
+
+        .accent-passive div.article-data-probe-item-value-toolbar {
+            grid-column: 2;
+            margin-top: 0;
+            padding-top: 0;
+            border-top: 0;
+        }
+
+        .accent-passive pre.article-data-probe-item-value {
+            grid-column: 2;
+            padding: .65rem .75rem;
+            line-height: 1.45;
+        }
+    }
+}
+
 // Compact by the available article width, not the device breakpoint. This
 // trims the side-pane layout without shrinking controls or desktop content.
 @container hardware-probe-content (max-width: 36rem) {

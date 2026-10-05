@@ -1,0 +1,192 @@
+import fs from 'node:fs/promises'
+import path from 'node:path'
+
+// Authoring source for the clean Software sticker collection. Keep generated
+// SVGs editable here; the app consumes the vector masters without rasterising.
+const root = process.cwd()
+const assetRoot = path.join(root, 'public/images/stickers/software')
+const output = path.join(assetRoot, 'clean-v4')
+const c = {
+    ink: '#17263F', rim: '#A9BBD0', ice: '#D0DFEF', slate: '#526987',
+    blue: '#4C80D6', blueShade: '#3664AF', teal: '#328F96',
+    violet: '#8D68C5', berry: '#BE5587', mint: '#80C6B5'
+}
+// A restrained enamel finish adds depth without adding more subjects or detail.
+const mix = (hex, target, amount) => '#' + [1, 3, 5].map(index =>
+    Math.round(parseInt(hex.slice(index, index + 2), 16) * (1 - amount) + target * amount).toString(16).padStart(2, '0')).join('')
+const paint = colour => `url(#surface-${colour.slice(1)})`
+const definitions = `<defs><linearGradient id="edge" x1="0" y1="0" x2="0.8" y2="1"><stop stop-color="#CFDDEB"/><stop offset=".48" stop-color="${c.rim}"/><stop offset="1" stop-color="#879FB9"/></linearGradient>${Object.values(c).map(colour => `<linearGradient id="surface-${colour.slice(1)}" x1="0" y1="0" x2=".65" y2="1"><stop stop-color="${mix(colour, 255, .18)}"/><stop offset=".42" stop-color="${colour}"/><stop offset="1" stop-color="${mix(colour, 0, .15)}"/></linearGradient>`).join('')}</defs>`
+const shape = (d, fill, width = 10) =>
+    `<path d="${d}" fill="${paint(fill)}" stroke="url(#edge)" stroke-width="${width + 7}" stroke-linejoin="round"/><path d="${d}" fill="${paint(fill)}" stroke="${c.ink}" stroke-width="${width}" stroke-linejoin="round"/>`
+const rect = (x, y, w, h, radius, fill) => shape(`M${x + radius} ${y}H${x + w - radius}Q${x + w} ${y} ${x + w} ${y + radius}V${y + h - radius}Q${x + w} ${y + h} ${x + w - radius} ${y + h}H${x + radius}Q${x} ${y + h} ${x} ${y + h - radius}V${y + radius}Q${x} ${y} ${x + radius} ${y}Z`, fill)
+const circle = (x, y, r, fill) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${fill}"/>`
+const disc = (x, y, r, fill) => `${circle(x, y, r + 8.5, 'url(#edge)')}${circle(x, y, r + 5, c.ink)}${circle(x, y, r, paint(fill))}`
+const line = (d, stroke, width = 10) => `<path d="${d}" fill="none" stroke="${stroke}" stroke-width="${width}" stroke-linecap="round" stroke-linejoin="round"/>`
+const rail = (d, stroke, width) => line(d, 'url(#edge)', width + 14) + line(d, c.ink, width + 8) + line(d, paint(stroke), width)
+const glint = d => `<g opacity=".35">${line(d, c.ice, 3.5)}</g>`
+const heart = `<path d="M128 168C112 155 89 140 89 120C89 99 116 92 128 110C140 92 167 99 167 120C167 140 144 155 128 168Z" fill="${paint(c.berry)}"/>`
+const person = (x, y) => `${circle(x, y - 7, 8, c.ice)}<path d="M${x - 15} ${y + 16}Q${x - 14} ${y + 1} ${x} ${y + 1}Q${x + 14} ${y + 1} ${x + 15} ${y + 16}Z" fill="${c.ice}"/>`
+const entries = [
+    {
+        id: 1, side: 'top-left', filename: '01-language.svg', title: 'Language conversation',
+        idea: 'One speech bubble with a bold German A-umlaut. Language, immediately recognisable.',
+        art: shape('M61 37H195Q221 37 221 63V158Q221 184 195 184H108L67 218V184H61Q35 184 35 158V63Q35 37 61 37Z', c.blue) +
+            `<path d="M61 42H195Q211 42 216 60H61Q45 60 40 72V63Q40 42 61 42Z" fill="${c.blueShade}"/>` +
+            line('M87 150L128 78L169 150M102 125H154', c.ice, 14) + circle(114, 61, 6.5, c.ice) + circle(142, 61, 6.5, c.ice) +
+            glint('M48 109V72Q48 52 68 52H91')
+    },
+    {
+        id: 1, side: 'top-right', filename: '02-practice.svg', title: 'Completed practice card',
+        idea: 'One flashcard stack with one large check. Learning through practice, without a dashboard.',
+        art: `<g transform="rotate(9 150 116)">${rect(76, 34, 126, 166, 16, c.teal)}</g>` + rect(44, 59, 133, 166, 16, c.violet) +
+            line('M73 143L101 172L151 113', c.ink, 24) + line('M73 143L101 172L151 113', c.mint, 14) +
+            glint('M56 107V85Q56 72 70 72H117')
+    },
+    {
+        id: 2, side: 'top-left', filename: '03-cards.svg', title: 'Belot card hand',
+        idea: 'Three broad cards forming a fan, with one large heart on the front. No ranks, portraits or miniature pips.',
+        art: `<g transform="rotate(-20 128 202)">${rect(70, 50, 116, 158, 13, c.violet)}</g><g transform="rotate(20 128 202)">${rect(70, 50, 116, 158, 13, c.teal)}</g>` +
+            rect(70, 42, 116, 166, 13, c.ice) + heart + glint('M81 97V69Q81 55 95 55H153')
+    },
+    {
+        id: 2, side: 'top-right', filename: '04-club.svg', title: 'Belot club suit',
+        idea: 'One club silhouette. A distinctive suit shape instead of a second busy card illustration.',
+        art: shape('M128 33C158 33 178 59 166 86C203 74 232 101 224 132C218 156 190 170 159 154C162 178 174 200 184 218H72C82 200 94 178 97 154C68 170 38 156 32 132C24 101 53 74 90 86C78 59 98 33 128 33Z', c.teal) +
+            `<path d="M128 42C103 42 89 60 97 82C98 61 112 53 128 53C144 53 159 61 160 80C168 59 151 42 128 42Z" fill="${c.mint}"/>`
+    },
+    {
+        id: 3, side: 'top-left', filename: '05-pepper.svg', title: 'Pepper robot',
+        idea: 'A single recognisable robot head: rounded shells, two optical eyes, camera and restrained smile. No player, table or monitor.',
+        art: rect(25, 96, 35, 70, 17, c.slate) + rect(196, 96, 35, 70, 17, c.slate) +
+            shape('M57 52Q128 13 199 52L206 146Q202 196 128 220Q54 196 50 146Z', c.ice) +
+            `<path d="M58 57Q128 21 198 57L196 75Q128 48 60 75Z" fill="${c.rim}"/>` +
+            circle(89, 126, 24, c.ink) + circle(167, 126, 24, c.ink) + circle(89, 126, 12, c.blue) + circle(167, 126, 12, c.blue) +
+            circle(128, 67, 7, c.ink) + line('M105 173Q128 187 151 173', c.ink, 9) +
+            circle(85, 122, 3.5, c.ice) + circle(163, 122, 3.5, c.ice) + glint('M66 89L70 64Q93 51 108 49')
+    },
+    {
+        id: 3, side: 'top-right', filename: '06-dealing.svg', title: 'Robotic card dealing',
+        idea: 'One simple robot gripper holding one diamond card. Mechanical dealing, with no flowchart.',
+        art: rect(107, 178, 42, 48, 10, c.slate) + rect(81, 31, 94, 124, 12, c.violet) +
+            `<path d="M128 63L154 94L128 125L102 94Z" fill="${c.ice}"/>` +
+            shape('M95 191L67 170V126L83 110L96 123V156H160V123L173 110L189 126V170L161 191Z', c.teal) +
+            circle(128, 174, 7, c.mint) + glint('M79 145V164L101 180')
+    },
+    {
+        id: 4, side: 'top-left', filename: '07-house.svg', title: 'Villa Bagara house',
+        idea: 'One simple house with a pitched roof, one window and one door. No before/after construction scene.',
+        art: rect(58, 98, 140, 119, 8, c.teal) +
+            shape('M30 114L128 36L226 114L208 136L128 72L48 136Z', c.violet) +
+            `<path d="M111 162Q111 156 117 156H142Q148 156 148 162V212H111Z" fill="${c.ink}"/>` +
+            `<rect x="78" y="144" width="24" height="27" rx="4" fill="${c.ice}"/>` +
+            glint('M48 113L128 50L165 79')
+    },
+    {
+        id: 4, side: 'top-right', filename: '08-mountain.svg', title: 'Mountain retreat',
+        idea: 'One bold mountain range with two peaks. Outdoor setting expressed through silhouette alone.',
+        art: shape('M26 209L106 48L145 117L172 76L230 209Z', c.blue) +
+            `<path d="M106 58L82 107L105 96L126 108Z" fill="${c.ice}"/><path d="M172 86L157 109L172 103L188 111Z" fill="${c.ice}"/>` +
+            `<path d="M106 110L60 202H132Z" fill="${c.blueShade}"/>`
+    },
+    {
+        id: 5, side: 'top-left', filename: '09-family.svg', title: 'Family connection',
+        idea: 'Three people joined by one clear family fork. No portraits, faces, archive or generation fan.',
+        art: rail('M80 110V139H176V110M128 139V183', c.slate, 12) +
+            disc(80, 78, 31, c.teal) + disc(176, 78, 31, c.berry) + disc(128, 193, 31, c.blue) +
+            person(80, 76) + person(176, 76) + person(128, 191)
+    },
+    {
+        id: 5, side: 'top-right', filename: '10-privacy.svg', title: 'Private family archive',
+        idea: 'One lock: the archive is private. No vault machinery or floating photographs.',
+        art: rail('M81 114V81Q81 35 128 35Q175 35 175 81V114', c.rim, 20) +
+            rect(51, 105, 154, 115, 21, c.violet) +
+            `<path d="M140 153A14 14 0 1 0 116 153L111 183H145Z" fill="${c.ice}"/>` +
+            glint('M65 151V134Q65 119 81 119H149')
+    },
+    {
+        id: 6, side: 'top-left', filename: '11-cv.svg', title: 'LaTeX CV',
+        idea: 'One CV sheet with a profile mark and three broad rules. Clear document hierarchy, without a tiny resume.',
+        art: shape('M67 30H155L200 75V213Q200 225 188 225H67Q55 225 55 213V42Q55 30 67 30Z', c.blue) +
+            `<path d="M155 33V75H197Z" fill="${c.ice}"/>` + line('M155 35V75H195', c.ink, 7) +
+            circle(89, 112, 15, c.ice) + line('M122 104H170M122 124H159M81 160H172M81 189H157', c.ice, 10) +
+            glint('M67 84V52Q67 43 77 43H138')
+    },
+    {
+        id: 6, side: 'top-right', filename: '12-type.svg', title: 'Precision typography',
+        idea: 'One custom serif T. Typography and LaTeX, without gears, pens or a printer.',
+        art: shape('M43 32H213V78H190Q187 53 153 53H144V189Q144 207 179 207V225H77V207Q112 207 112 189V53H103Q69 53 66 78H43Z', c.berry) +
+            `<path d="M51 38H205V48H51Z" fill="${c.violet}"/>`
+    },
+    {
+        id: 7, side: 'top-left', filename: '13-website.svg', title: 'Personal website',
+        idea: 'One browser window with a large cursor. A usable website, not a miniature portfolio collage.',
+        art: rect(27, 34, 202, 186, 19, c.teal) +
+            `<path d="M47 40H210Q223 40 223 53V79H33V53Q33 40 47 40Z" fill="${paint(c.slate)}"/>` +
+            circle(52, 59, 6, c.ice) + circle(75, 59, 6, c.ice) + circle(98, 59, 6, c.ice) +
+            shape('M88 102V188L110 168L129 203L149 192L129 158L164 157Z', c.ice, 8)
+    },
+    {
+        id: 7, side: 'top-right', filename: '14-code.svg', title: 'Software craft',
+        idea: 'One bold code-bracket mark. Coding, without hardware, plants, books or a project journey.',
+        art: shape('M94 44L119 65L62 128L119 191L94 212L34 146Q18 128 34 110Z', c.violet, 9) +
+            shape('M162 44L137 65L194 128L137 191L162 212L222 146Q238 128 222 110Z', c.blue, 9) +
+            rail('M143 82L113 174', c.teal, 13)
+    }
+]
+
+await fs.mkdir(output, {recursive: true})
+for(const entry of entries) {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256"><title>${entry.title}</title>${definitions}${entry.art}</svg>\n`
+    await fs.writeFile(path.join(output, entry.filename), svg)
+}
+const manifest = {
+    generator: 'npm/generate-software-stickers.js', mode: 'custom vector artwork', revision: 4,
+    finish: 'Restrained enamel gradients, cool bevelled rims and selective short highlights; original one-concept silhouettes retained.',
+    themeTreatment: {
+        dark: 'brightness(1.12) saturate(1.06) contrast(1.02) drop-shadow(0 2px 2px rgba(9, 18, 34, .32))',
+        light: 'brightness(.97) saturate(1.08) contrast(1.08) drop-shadow(0 2px 2px rgba(15, 23, 42, .20))'
+    },
+    status: 'installed', previousManifest: 'manifest-story-v3.json',
+    artDirection: 'One concept per sticker; consistent bold shapes; opaque colours; dark contour and cool rim for both themes. No text paragraphs, scenes, grain, paper backing or glow. Native SVG for all display sizes.',
+    stickers: entries.map(({art, ...entry}) => ({...entry, filename: `clean-v4/${entry.filename}`}))
+}
+await fs.writeFile(path.join(output, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n')
+await fs.writeFile(path.join(assetRoot, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n')
+const grid = entries.map(entry => `<figure><figcaption>${entry.title}<small>${entry.idea}</small></figcaption><div class="comparison">${['light', 'dark'].map(theme => `<div class="stage ${theme}"><b>${theme}</b><div class="sizes">${[40, 104, 256].map(size => `<div><img src="clean-v4/${entry.filename}" width="${size}" height="${size}" alt="${entry.title}"><small>${size}px</small></div>`).join('')}</div></div>`).join('')}</div></figure>`).join('\n')
+const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Clean Software stickers</title><style>*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,sans-serif;background:#10192b;color:#d7e2f1}main{max-width:1280px;margin:auto;padding:32px 20px}h1{font-size:clamp(28px,4vw,42px);letter-spacing:-.035em;line-height:1.12}p,small{color:#aabbd2}a{color:#91c5e0}figure{margin:24px 0;border:1px solid #34465e;border-radius:10px;overflow:hidden}figcaption{padding:16px 20px;font-weight:700}figcaption small{display:block;font-weight:400}.comparison{display:grid;grid-template-columns:1fr 1fr}.stage{padding:16px;min-width:0}.light{background:linear-gradient(135deg,#ffffff,#f6e2e9);color:#26344d}.dark{background:linear-gradient(135deg,#101c33,#52221f);color:#d7e2f1}.stage b{text-transform:uppercase;font-size:11px;letter-spacing:.1em}.sizes{display:flex;align-items:center;justify-content:space-evenly;gap:10px;padding:12px 0}.sizes>div{text-align:center}.sizes img{display:block;margin:auto;max-width:100%;object-fit:contain}.sizes small{display:block;color:inherit;opacity:.7;font-size:11px;margin-top:12px}@media(max-width:1050px){.comparison{grid-template-columns:1fr}}@media(max-width:540px){.sizes{justify-content:flex-start;overflow-x:auto}.sizes>div{flex-shrink:0}main{padding:20px 10px}}</style></head><body><main><h1>One idea. Clear at every size.</h1><p>14 custom vector stickers, shown unchanged on light and dark card surfaces at 40px, 104px and 256px. Native vector masters stay crisp when enlarged.</p><p><a href="clean-v4/manifest.json">Individual design briefs</a> · <a href="index-story-v3.html">Previous illustrations</a></p>${grid}</main></body></html>\n`
+const themeStyles = `.dark .sizes img{filter:${manifest.themeTreatment.dark}}.light .sizes img{filter:${manifest.themeTreatment.light}}`
+const themedHtml = html
+    .replace('</style>', `${themeStyles}</style>`)
+    .replace('shown unchanged on light and dark card surfaces', 'with the application\'s light and dark contrast filters')
+await fs.writeFile(path.join(assetRoot, 'index-clean-v4.html'), themedHtml)
+await fs.writeFile(path.join(assetRoot, 'index.html'), themedHtml)
+
+// These PNGs are optional local artwork previews, never application assets.
+if(process.argv.includes('--preview')) {
+    const {default: sharp} = await import('sharp')
+    const previewRoot = path.join(root, 'docs/tmp/software-stickers-v4')
+    await fs.mkdir(previewRoot, {recursive: true})
+    for(let project = 1; project <= 7; project++) {
+        const pair = entries.filter(entry => entry.id === project)
+        const layers = []
+        for(let row = 0; row < 2; row++) {
+            for(let col = 0; col < 2; col++) {
+                const x = col * 480
+                const y = row * 304
+                const panel = `<svg width="480" height="304"><rect width="480" height="304" fill="${col ? '#18243A' : '#FFF5F7'}"/><text x="18" y="25" fill="${col ? '#D0DFEF' : '#17263F'}" font-family="sans-serif" font-size="13">${pair[row].title} · ${col ? 'dark' : 'light'}</text></svg>`
+                layers.push({input: Buffer.from(panel), left: x, top: y})
+                for(const [i, size] of [40, 104, 256].entries()) {
+                    const image = await sharp(path.join(output, pair[row].filename)).resize(size, size).png().toBuffer()
+                    // Match the CSS filter order on the rasterised size, including
+                    // its fixed 2px shadow, rather than scaling a large shadow down.
+                    const [brightness, saturation, contrast, shadow, opacity] = col ?
+                        [1.12, 1.06, 1.02, '#091222', .32] : [.97, 1.08, 1.08, '#0F172A', .20]
+                    const themed = `<svg xmlns="http://www.w3.org/2000/svg" width="${size + 12}" height="${size + 12}"><defs><filter id="theme" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB"><feComponentTransfer>${['R', 'G', 'B'].map(channel => `<feFunc${channel} type="linear" slope="${brightness}"/>`).join('')}</feComponentTransfer><feColorMatrix type="saturate" values="${saturation}"/><feComponentTransfer>${['R', 'G', 'B'].map(channel => `<feFunc${channel} type="linear" slope="${contrast}" intercept="${(1 - contrast) / 2}"/>`).join('')}</feComponentTransfer><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="${shadow}" flood-opacity="${opacity}"/></filter></defs><image x="6" y="6" width="${size}" height="${size}" href="data:image/png;base64,${image.toString('base64')}" filter="url(#theme)"/></svg>`
+                    layers.push({input: Buffer.from(themed), left: x + [18, 90, 214][i] - 6, top: y + 34 + Math.round((256 - size) / 2)})
+                }
+            }
+        }
+        await sharp({create: {width: 960, height: 608, channels: 4, background: '#17263F'}}).composite(layers).png().toFile(path.join(previewRoot, `project-${project}.png`))
+    }
+}
+console.log(`Generated ${entries.length} clean vector stickers and their light/dark size gallery.`)

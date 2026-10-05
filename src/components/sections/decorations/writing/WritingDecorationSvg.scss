@@ -4,6 +4,7 @@ canvas.section-decoration-canvas-writing {
     left: 0;
     z-index: 2;
     display: block;
+    visibility: hidden;
     overflow: hidden;
     pointer-events: none;
     contain: strict;

@@ -11,7 +11,7 @@ function ArticleManuscript({ dataWrapper }) {
                  type={Article.Types.SPACING_DEFAULT}
                  dataWrapper={dataWrapper}
                  className={`article-manuscript`}>
-            <div className={`article-manuscript-stage`}>
+            <div className={`article-manuscript-stage`} tabIndex={0}>
                 <IllustratedManuscript storyHtml={manuscriptItem?.locales?.text || ""}
                                        imageSrc={manuscriptItem?.img || null}
                                        imageAlt={manuscriptItem?.imageAlt || ""}/>

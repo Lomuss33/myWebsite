@@ -33,10 +33,7 @@
                 --photo-action-size: calc((var(--photography-row-size) - var(--photo-action-gap)) / 2);
                 --photo-action-rail-width: calc(var(--photo-action-size) + 0.75rem);
                 --photography-side-buffer: clamp(0.75rem, 2.2vw, 2rem);
-                --photography-card-width: min(
-                    clamp(28rem, 46vw, 38rem),
-                    calc(100vw - var(--photography-row-size) - var(--photo-action-rail-width) - 4rem)
-                );
+                --photography-card-width: clamp(28rem, 46vw, 38rem);
                 --avatar-size: var(--photography-row-size);
                 --gap-between-avatar-and-content: clamp(0.65rem, 0.9vw, 0.85rem);
             }
@@ -126,8 +123,8 @@
             }
 
             div.article-stack-item-compact div.article-stack-item-avatar {
-                width: clamp(34px, 42cqi, 52px);
-                height: clamp(34px, 42cqi, 52px);
+                width: clamp(32px, 56cqi, 104px);
+                height: clamp(32px, 56cqi, 104px);
             }
 
             div.article-stack-item-compact div.article-stack-item-title {

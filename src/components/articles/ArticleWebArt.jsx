@@ -1239,6 +1239,17 @@ function WebArtIntroCover({ guide, buttonLabel, hidden, onEnter, secondaryButton
                     <div className={`article-web-art-intro-guide ${hidden ? "article-web-art-intro-guide-hidden" : "article-web-art-intro-guide-open"}`}>
                         <div className={`article-web-art-intro-guide-inner`}>
                             <div className={`article-web-art-intro-guide-top-row`}>
+                                <div className={`article-web-art-intro-guide-lines`}>
+                                    {guide.lines.slice(1).map((line, index) => {
+                                        return (
+                                            <p key={Array.isArray(line) ? line.map((fragment) => fragment?.text).join("") : line}
+                                               className={`article-web-art-intro-guide-line article-web-art-intro-guide-line-${index + 2}`}>
+                                                {_renderGuideLineContent(line)}
+                                            </p>
+                                        )
+                                    })}
+                                </div>
+
                                 <div className={`article-web-art-intro-cover-buttons`}>
                                     {secondaryButtonLabel ? (
                                         <button type={"button"}
@@ -1262,17 +1273,6 @@ function WebArtIntroCover({ guide, buttonLabel, hidden, onEnter, secondaryButton
                                         <span className={`article-web-art-intro-cover-button-text`}>{buttonLabel}</span>
                                     </button>
                                 </div>
-                            </div>
-
-                            <div className={`article-web-art-intro-guide-lines`}>
-                                {guide.lines.slice(1).map((line, index) => {
-                                    return (
-                                        <p key={Array.isArray(line) ? line.map((fragment) => fragment?.text).join("") : line}
-                                           className={`article-web-art-intro-guide-line article-web-art-intro-guide-line-${index + 2}`}>
-                                            {_renderGuideLineContent(line)}
-                                        </p>
-                                    )
-                                })}
                             </div>
                         </div>
                     </div>

@@ -2522,3 +2522,20 @@ article#article-1-section-my-hardware {
         }
     }
 }
+
+// Preserve comfortable project-card sizes when mobile navigation is used on
+// a very wide portrait screen; do not keep adding compact card columns.
+@container portfolio-filter-width (min-width: 96rem) {
+    html[data-layout] section#section-my-hardware article#article-1-section-my-hardware div.article-portfolio-items {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 28rem), 1fr));
+        --padding: 1.1rem 1.2rem 1rem;
+        --portfolio-inline-padding: 1.2rem;
+        --padding-bottom: 1rem;
+        --portfolio-card-title-size: clamp(1.25rem, 4.2cqw, 1.6rem);
+        --portfolio-card-category-size: clamp(.9rem, 3cqw, 1.05rem);
+        --portfolio-card-description-size: clamp(1rem, 3.3cqw, 1.15rem);
+        --portfolio-card-description-line-height: 1.5;
+        --portfolio-control-height: 3rem;
+        --portfolio-controls-separation: .75rem;
+    }
+}

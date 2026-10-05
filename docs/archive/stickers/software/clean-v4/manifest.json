@@ -1,0 +1,113 @@
+{
+  "generator": "npm/generate-software-stickers.js",
+  "mode": "custom vector artwork",
+  "revision": 4,
+  "finish": "Restrained enamel gradients, cool bevelled rims and selective short highlights; original one-concept silhouettes retained.",
+  "themeTreatment": {
+    "dark": "brightness(1.12) saturate(1.06) contrast(1.02) drop-shadow(0 2px 2px rgba(9, 18, 34, .32))",
+    "light": "brightness(.97) saturate(1.08) contrast(1.08) drop-shadow(0 2px 2px rgba(15, 23, 42, .20))"
+  },
+  "status": "installed",
+  "previousManifest": "manifest-story-v3.json",
+  "artDirection": "One concept per sticker; consistent bold shapes; opaque colours; dark contour and cool rim for both themes. No text paragraphs, scenes, grain, paper backing or glow. Native SVG for all display sizes.",
+  "stickers": [
+    {
+      "id": 1,
+      "side": "top-left",
+      "filename": "clean-v4/01-language.svg",
+      "title": "Language conversation",
+      "idea": "One speech bubble with a bold German A-umlaut. Language, immediately recognisable."
+    },
+    {
+      "id": 1,
+      "side": "top-right",
+      "filename": "clean-v4/02-practice.svg",
+      "title": "Completed practice card",
+      "idea": "One flashcard stack with one large check. Learning through practice, without a dashboard."
+    },
+    {
+      "id": 2,
+      "side": "top-left",
+      "filename": "clean-v4/03-cards.svg",
+      "title": "Belot card hand",
+      "idea": "Three broad cards forming a fan, with one large heart on the front. No ranks, portraits or miniature pips."
+    },
+    {
+      "id": 2,
+      "side": "top-right",
+      "filename": "clean-v4/04-club.svg",
+      "title": "Belot club suit",
+      "idea": "One club silhouette. A distinctive suit shape instead of a second busy card illustration."
+    },
+    {
+      "id": 3,
+      "side": "top-left",
+      "filename": "clean-v4/05-pepper.svg",
+      "title": "Pepper robot",
+      "idea": "A single recognisable robot head: rounded shells, two optical eyes, camera and restrained smile. No player, table or monitor."
+    },
+    {
+      "id": 3,
+      "side": "top-right",
+      "filename": "clean-v4/06-dealing.svg",
+      "title": "Robotic card dealing",
+      "idea": "One simple robot gripper holding one diamond card. Mechanical dealing, with no flowchart."
+    },
+    {
+      "id": 4,
+      "side": "top-left",
+      "filename": "clean-v4/07-house.svg",
+      "title": "Villa Bagara house",
+      "idea": "One simple house with a pitched roof, one window and one door. No before/after construction scene."
+    },
+    {
+      "id": 4,
+      "side": "top-right",
+      "filename": "clean-v4/08-mountain.svg",
+      "title": "Mountain retreat",
+      "idea": "One bold mountain range with two peaks. Outdoor setting expressed through silhouette alone."
+    },
+    {
+      "id": 5,
+      "side": "top-left",
+      "filename": "clean-v4/09-family.svg",
+      "title": "Family connection",
+      "idea": "Three people joined by one clear family fork. No portraits, faces, archive or generation fan."
+    },
+    {
+      "id": 5,
+      "side": "top-right",
+      "filename": "clean-v4/10-privacy.svg",
+      "title": "Private family archive",
+      "idea": "One lock: the archive is private. No vault machinery or floating photographs."
+    },
+    {
+      "id": 6,
+      "side": "top-left",
+      "filename": "clean-v4/11-cv.svg",
+      "title": "LaTeX CV",
+      "idea": "One CV sheet with a profile mark and three broad rules. Clear document hierarchy, without a tiny resume."
+    },
+    {
+      "id": 6,
+      "side": "top-right",
+      "filename": "clean-v4/12-type.svg",
+      "title": "Precision typography",
+      "idea": "One custom serif T. Typography and LaTeX, without gears, pens or a printer."
+    },
+    {
+      "id": 7,
+      "side": "top-left",
+      "filename": "clean-v4/13-website.svg",
+      "title": "Personal website",
+      "idea": "One browser window with a large cursor. A usable website, not a miniature portfolio collage."
+    },
+    {
+      "id": 7,
+      "side": "top-right",
+      "filename": "clean-v4/14-code.svg",
+      "title": "Software craft",
+      "idea": "One bold code-bracket mark. Coding, without hardware, plants, books or a project journey."
+    }
+  ]
+}

@@ -1577,4 +1577,34 @@ html[data-layout] section#section-experience div.article-feature-item.wood-proje
             font-size: clamp(.875rem, .8rem + .25cqi, 1rem);
         }
     }
+
+    // Older mobile browsers may not support container queries or cqi units.
+    // Keep the book stacked there too, so the text page can grow to its copy
+    // instead of being squeezed into half-width with a portrait aspect ratio.
+    @supports not (container-type: inline-size) {
+        @media (max-width: 40rem) {
+            grid-template-columns: minmax(0, 1fr);
+            grid-template-rows: auto auto;
+            grid-auto-rows: auto;
+            gap: 0;
+
+            .wood-project-flyer {
+                border-radius: 6px 6px 0 0;
+                box-shadow: none;
+
+                img { border-radius: 6px 6px 0 0; }
+            }
+
+            .wood-project-page {
+                aspect-ratio: auto;
+                border-radius: 0 0 6px 6px;
+                border-top: 1px solid #ffffff70;
+                box-shadow: none;
+                padding: clamp(.75rem, 3vw, 1.25rem);
+                gap: .5rem;
+                font-size: clamp(.875rem, .8rem + .4vw, 1rem);
+                line-height: 1.42;
+            }
+        }
+    }
 }

@@ -7,6 +7,8 @@ const LOW_FRAME_RATE_TIME_SCALE = 0.12
 const MAX_DEVICE_PIXEL_RATIO = 1.15
 const LOW_FRAME_RATE_MAX_DEVICE_PIXEL_RATIO = 0.55
 const DEFAULT_BAND_EDGE_INSET = 6
+const MAX_RENDER_PIXELS = 2_000_000
+const MAX_RENDER_DIMENSION = 4096
 
 const vertexSource = `#version 300 es
 in vec4 position;
@@ -19,6 +21,7 @@ precision highp float;
 
 out vec4 O;
 uniform vec2 resolution;
+uniform vec2 surfaceOffset;
 uniform float time;
 uniform vec4 activeBand;
 uniform float lightMode;
@@ -90,7 +93,8 @@ vec3 woodColor(float grain, float ring, float pore, float boardTone, float light
 }
 
 void main() {
-    vec2 uv = FC / R;
+    // Keep the original page-space grain while rendering only the visible crop.
+    vec2 uv = (FC + surfaceOffset) / R;
     vec2 aspectUv = uv;
     aspectUv.x *= R.x / max(R.y, 1.0);
 
@@ -161,18 +165,23 @@ function createShaderProgram(gl) {
     const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER)
     const program = gl.createProgram()
 
-    compileShader(gl, vertexShader, vertexSource)
-    compileShader(gl, fragmentShader, fragmentSource)
-
-    gl.attachShader(program, vertexShader)
-    gl.attachShader(program, fragmentShader)
-    gl.linkProgram(program)
-
-    if(!gl.getProgramParameter(program, gl.LINK_STATUS))
-        throw new Error(gl.getProgramInfoLog(program) || "Writing decoration shader link failed")
-
-    gl.deleteShader(vertexShader)
-    gl.deleteShader(fragmentShader)
+    try {
+        compileShader(gl, vertexShader, vertexSource)
+        compileShader(gl, fragmentShader, fragmentSource)
+        gl.attachShader(program, vertexShader)
+        gl.attachShader(program, fragmentShader)
+        gl.linkProgram(program)
+        if(!gl.getProgramParameter(program, gl.LINK_STATUS))
+            throw new Error(gl.getProgramInfoLog(program) || "Writing decoration shader link failed")
+    }
+    catch(error) {
+        gl.deleteProgram(program)
+        throw error
+    }
+    finally {
+        gl.deleteShader(vertexShader)
+        gl.deleteShader(fragmentShader)
+    }
 
     return program
 }
@@ -187,7 +196,7 @@ function setupShader(canvas) {
         preserveDrawingBuffer: false
     })
 
-    if(!gl)
+    if(!gl || gl.isContextLost())
         return null
 
     const program = createShaderProgram(gl)
@@ -201,11 +210,14 @@ function setupShader(canvas) {
     gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0)
 
     program.resolution = gl.getUniformLocation(program, "resolution")
+    program.surfaceOffset = gl.getUniformLocation(program, "surfaceOffset")
     program.time = gl.getUniformLocation(program, "time")
     program.activeBand = gl.getUniformLocation(program, "activeBand")
     program.lightMode = gl.getUniformLocation(program, "lightMode")
 
-    return { gl, program, buffer }
+    const viewportLimits = gl.getParameter(gl.MAX_VIEWPORT_DIMS)
+    const maxDimension = Math.min(MAX_RENDER_DIMENSION, gl.getParameter(gl.MAX_RENDERBUFFER_SIZE), ...viewportLimits)
+    return { gl, program, buffer, maxDimension }
 }
 
 function resolveBandEdgeInset(referenceElement) {
@@ -254,6 +266,15 @@ function measureLayout(canvas) {
     const layerRight = Math.max(...bandRects.map(rect => rect.x + rect.width))
     const layerTop = Math.min(...bandRects.map(rect => rect.y))
     const layerBottom = Math.max(...bandRects.map(rect => rect.y + rect.height))
+    const viewportTop = window.visualViewport?.offsetTop || 0
+    const viewportBottom = viewportTop + (window.visualViewport?.height || window.innerHeight)
+    const scrollable = wrapper.closest(".scrollable")
+    const scrollRect = scrollable?.getBoundingClientRect()
+    const usesInnerScroll = scrollable && !scrollable.classList.contains("scrollable-mobile-native")
+    const visibleTop = Math.max(viewportTop, usesInnerScroll ? scrollRect.top : viewportTop)
+    const visibleBottom = Math.min(viewportBottom, usesInnerScroll ? scrollRect.bottom : viewportBottom)
+    const renderTop = Math.max(layerTop, (visibleTop - wrapperRect.top) / safeScale)
+    const renderBottom = Math.min(layerBottom, (visibleBottom - wrapperRect.top) / safeScale)
 
     return {
         scale: safeScale,
@@ -261,6 +282,8 @@ function measureLayout(canvas) {
         top: layerTop,
         width: layerRight - layerLeft,
         height: layerBottom - layerTop,
+        renderTop: renderTop - layerTop,
+        renderHeight: Math.max(0, renderBottom - renderTop),
         bands: bandRects.map(rect => ({
             x: rect.x - layerLeft,
             y: rect.y - layerTop,
@@ -270,30 +293,38 @@ function measureLayout(canvas) {
     }
 }
 
-function resizeCanvas(canvas, gl, layout, maxDevicePixelRatio = MAX_DEVICE_PIXEL_RATIO, minDevicePixelRatio = 1) {
-    const pixelRatio = Math.max(minDevicePixelRatio, Math.min(maxDevicePixelRatio, (window.devicePixelRatio || 1) * 0.75))
-    const width = Math.max(1, Math.round(layout.width * pixelRatio))
-    const height = Math.max(1, Math.round(layout.height * pixelRatio))
+function resizeCanvas(canvas, shaderState, layout, maxDevicePixelRatio = MAX_DEVICE_PIXEL_RATIO, minDevicePixelRatio = 1) {
+    const preferredRatio = Math.max(minDevicePixelRatio, Math.min(maxDevicePixelRatio, (window.devicePixelRatio || 1) * 0.75))
+    const pixelRatio = Math.min(preferredRatio,
+        shaderState.maxDimension / Math.max(layout.width, layout.renderHeight),
+        Math.sqrt(MAX_RENDER_PIXELS / (layout.width * layout.renderHeight)))
+    const width = Math.max(1, Math.floor(layout.width * pixelRatio))
+    const height = Math.max(1, Math.floor(layout.renderHeight * pixelRatio))
 
     canvas.style.left = `${layout.left}px`
-    canvas.style.top = `${layout.top}px`
+    canvas.style.top = `${layout.top + layout.renderTop}px`
     canvas.style.width = `${layout.width}px`
-    canvas.style.height = `${layout.height}px`
+    canvas.style.height = `${layout.renderHeight}px`
 
     if(canvas.width !== width)
         canvas.width = width
     if(canvas.height !== height)
         canvas.height = height
 
-    gl.viewport(0, 0, width, height)
+    shaderState.gl.viewport(0, 0, width, height)
+    shaderState.resolution = [layout.width * pixelRatio, layout.height * pixelRatio]
+    shaderState.surfaceOffset = [0, (layout.height - layout.renderTop - layout.renderHeight) * pixelRatio]
 
     return pixelRatio
 }
 
 function getScissorRects(layout, pixelRatio) {
-    return layout.bands.map(band => ({
+    return layout.bands.map(band => ({ ...band,
+        y: Math.max(band.y, layout.renderTop),
+        height: Math.min(band.y + band.height, layout.renderTop + layout.renderHeight) - Math.max(band.y, layout.renderTop)
+    })).filter(band => band.height > 0).map(band => ({
         x: Math.max(0, Math.round(band.x * pixelRatio)),
-        y: Math.max(0, Math.round((layout.height - band.y - band.height) * pixelRatio)),
+        y: Math.max(0, Math.round((layout.renderTop + layout.renderHeight - band.y - band.height) * pixelRatio)),
         width: Math.max(1, Math.round(band.width * pixelRatio)),
         height: Math.max(1, Math.round(band.height * pixelRatio))
     }))
@@ -301,6 +332,8 @@ function getScissorRects(layout, pixelRatio) {
 
 function drawShader(shaderState, scissorRects, now) {
     const { gl, program, buffer } = shaderState
+    if(gl.isContextLost())
+        return
     const isLightMode = document.documentElement.getAttribute("data-theme") === "light"
 
     gl.disable(gl.SCISSOR_TEST)
@@ -308,7 +341,8 @@ function drawShader(shaderState, scissorRects, now) {
     gl.clear(gl.COLOR_BUFFER_BIT)
     gl.useProgram(program)
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
-    gl.uniform2f(program.resolution, gl.canvas.width, gl.canvas.height)
+    gl.uniform2f(program.resolution, ...shaderState.resolution)
+    gl.uniform2f(program.surfaceOffset, ...shaderState.surfaceOffset)
     gl.uniform1f(program.time, now * 0.001)
     gl.uniform1f(program.lightMode, isLightMode ? 1 : 0)
     gl.enable(gl.SCISSOR_TEST)
@@ -320,6 +354,8 @@ function drawShader(shaderState, scissorRects, now) {
     }
 
     gl.disable(gl.SCISSOR_TEST)
+    if(!gl.isContextLost())
+        gl.canvas.style.visibility = "visible"
 }
 
 function WritingDecorationSvg({ lowFrameRateMode = false }) {
@@ -337,23 +373,28 @@ function WritingDecorationSvg({ lowFrameRateMode = false }) {
         let shaderState = null
         let scissorRects = []
         let lastFrameTime = 0
+        let lastAnimationTime = 0
         let isIntersecting = false
+        let isPaused = document.hidden
+        let isContextLost = false
+        let disposed = false
         let observedBandElements = []
         const reducedMotionQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)") || null
 
-        try {
-            shaderState = setupShader(canvas)
+        const initializeShader = () => {
+            try {
+                shaderState = setupShader(canvas)
+            }
+            catch(error) {
+                console.error(error)
+                shaderState = null
+            }
         }
-        catch(error) {
-            console.error(error)
-            shaderState = null
-        }
-
-        if(!shaderState)
-            return
+        initializeShader()
 
         const isReducedMotion = () => Boolean(reducedMotionQuery?.matches)
-        const shouldAnimate = () => isIntersecting && !document.hidden && !isReducedMotion()
+        const canRender = () => !disposed && !isPaused && !document.hidden && !isContextLost && shaderState && !shaderState.gl.isContextLost()
+        const shouldAnimate = () => canRender() && isIntersecting && !isReducedMotion() && scissorRects.length > 0
         const getFrameInterval = () => lowFrameRateMode ? LOW_FRAME_RATE_INTERVAL_MS : FRAME_INTERVAL_MS
         const getAnimationTime = (timestamp) => lowFrameRateMode ? timestamp * LOW_FRAME_RATE_TIME_SCALE : timestamp
 
@@ -365,8 +406,8 @@ function WritingDecorationSvg({ lowFrameRateMode = false }) {
         }
 
         const drawStatic = () => {
-            if(scissorRects.length > 0)
-                drawShader(shaderState, scissorRects, 0)
+            if(canRender() && scissorRects.length > 0)
+                drawShader(shaderState, scissorRects, isReducedMotion() ? 0 : lastAnimationTime)
         }
 
         const step = (timestamp) => {
@@ -378,6 +419,7 @@ function WritingDecorationSvg({ lowFrameRateMode = false }) {
             if(scissorRects.length > 0 && timestamp - lastFrameTime >= getFrameInterval()) {
                 const animationTime = getAnimationTime(timestamp)
                 lastFrameTime = timestamp
+                lastAnimationTime = animationTime
                 drawShader(shaderState, scissorRects, animationTime)
             }
 
@@ -395,13 +437,23 @@ function WritingDecorationSvg({ lowFrameRateMode = false }) {
         }
 
         const rebuild = () => {
-            const layout = measureLayout(canvas)
-            if(!layout)
+            if(!canRender())
                 return
+            const layout = measureLayout(canvas)
+            const hasVisibleBand = layout?.bands.some(band =>
+                band.y < layout.renderTop + layout.renderHeight && band.y + band.height > layout.renderTop)
+            if(!layout || layout.renderHeight <= 0 || !hasVisibleBand) {
+                scissorRects = []
+                stopLoop()
+                canvas.style.visibility = "hidden"
+                canvas.width = 1
+                canvas.height = 1
+                return
+            }
 
             const pixelRatio = resizeCanvas(
                 canvas,
-                shaderState.gl,
+                shaderState,
                 layout,
                 lowFrameRateMode ? LOW_FRAME_RATE_MAX_DEVICE_PIXEL_RATIO : MAX_DEVICE_PIXEL_RATIO,
                 lowFrameRateMode ? LOW_FRAME_RATE_MAX_DEVICE_PIXEL_RATIO : 1
@@ -413,6 +465,8 @@ function WritingDecorationSvg({ lowFrameRateMode = false }) {
         }
 
         const scheduleRebuild = () => {
+            if(!canRender())
+                return
             if(rebuildFrameId !== null)
                 window.cancelAnimationFrame(rebuildFrameId)
 
@@ -423,6 +477,8 @@ function WritingDecorationSvg({ lowFrameRateMode = false }) {
         }
 
         const scheduleDelayedRebuild = () => {
+            if(disposed || isPaused || document.hidden)
+                return
             if(delayedRebuildId !== null)
                 window.clearTimeout(delayedRebuildId)
 
@@ -449,16 +505,60 @@ function WritingDecorationSvg({ lowFrameRateMode = false }) {
             return true
         }
 
-        const handleVisibilityChange = () => {
-            if(document.hidden) {
-                stopLoop()
-                return
+        const cancelPendingWork = () => {
+            stopLoop()
+            if(rebuildFrameId !== null) {
+                window.cancelAnimationFrame(rebuildFrameId)
+                rebuildFrameId = null
             }
-            startLoop()
+            if(delayedRebuildId !== null) {
+                window.clearTimeout(delayedRebuildId)
+                delayedRebuildId = null
+            }
+        }
+
+        const handleAppPause = () => {
+            isPaused = true
+            cancelPendingWork()
+            // Release the drawing surface while Android backgrounds the tab.
+            canvas.style.visibility = "hidden"
+            canvas.width = 1
+            canvas.height = 1
+        }
+
+        const handleAppResume = () => {
+            if(disposed || document.hidden)
+                return
+            isPaused = false
+            if(!shaderState && !isContextLost)
+                initializeShader()
+            scheduleRebuild()
+            scheduleDelayedRebuild()
+        }
+
+        const handleContextLost = (event) => {
+            event.preventDefault()
+            isContextLost = true
+            shaderState = null
+            cancelPendingWork()
+            canvas.style.visibility = "hidden"
+        }
+
+        const handleContextRestored = () => {
+            if(disposed)
+                return
+            isContextLost = false
+            // Restored contexts invalidate every old program, buffer and uniform.
+            initializeShader()
+            scheduleRebuild()
+        }
+
+        const handleVisibilityChange = () => {
+            if(document.hidden) handleAppPause()
+            else handleAppResume()
         }
 
         const handleWindowLoad = () => scheduleDelayedRebuild()
-        const handleAppResume = () => scheduleDelayedRebuild()
 
         const resizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => scheduleRebuild())
         const mutationObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(() => {
@@ -472,7 +572,7 @@ function WritingDecorationSvg({ lowFrameRateMode = false }) {
         })
         const intersectionObserver = typeof IntersectionObserver === "undefined" ? null : new IntersectionObserver((entries) => {
             isIntersecting = entries.some(entry => entry.isIntersecting)
-            if(isIntersecting) startLoop()
+            if(isIntersecting) scheduleRebuild()
             else stopLoop()
         }, { rootMargin: "160px" })
 
@@ -485,9 +585,15 @@ function WritingDecorationSvg({ lowFrameRateMode = false }) {
         themeObserver?.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] })
         intersectionObserver?.observe(wrapper)
         window.addEventListener("resize", scheduleRebuild, { passive: true })
+        window.addEventListener("scroll", scheduleRebuild, { passive: true, capture: true })
+        window.visualViewport?.addEventListener("resize", scheduleRebuild)
+        window.visualViewport?.addEventListener("scroll", scheduleRebuild)
         window.addEventListener("load", handleWindowLoad)
+        window.addEventListener("app:pause", handleAppPause)
         window.addEventListener("app:resume", handleAppResume)
         document.addEventListener("visibilitychange", handleVisibilityChange)
+        canvas.addEventListener("webglcontextlost", handleContextLost)
+        canvas.addEventListener("webglcontextrestored", handleContextRestored)
         reducedMotionQuery?.addEventListener?.("change", scheduleRebuild)
         document.fonts?.ready?.then?.(() => {
             scheduleDelayedRebuild()
@@ -502,19 +608,22 @@ function WritingDecorationSvg({ lowFrameRateMode = false }) {
         }
 
         return () => {
-            stopLoop()
-            if(rebuildFrameId !== null)
-                window.cancelAnimationFrame(rebuildFrameId)
-            if(delayedRebuildId !== null)
-                window.clearTimeout(delayedRebuildId)
+            disposed = true
+            cancelPendingWork()
             resizeObserver?.disconnect()
             mutationObserver?.disconnect()
             themeObserver?.disconnect()
             intersectionObserver?.disconnect()
             window.removeEventListener("resize", scheduleRebuild)
+            window.removeEventListener("scroll", scheduleRebuild, true)
+            window.visualViewport?.removeEventListener("resize", scheduleRebuild)
+            window.visualViewport?.removeEventListener("scroll", scheduleRebuild)
             window.removeEventListener("load", handleWindowLoad)
+            window.removeEventListener("app:pause", handleAppPause)
             window.removeEventListener("app:resume", handleAppResume)
             document.removeEventListener("visibilitychange", handleVisibilityChange)
+            canvas.removeEventListener("webglcontextlost", handleContextLost)
+            canvas.removeEventListener("webglcontextrestored", handleContextRestored)
             reducedMotionQuery?.removeEventListener?.("change", scheduleRebuild)
             observedBandElements = []
 
@@ -522,6 +631,8 @@ function WritingDecorationSvg({ lowFrameRateMode = false }) {
                 shaderState.gl.deleteBuffer(shaderState.buffer)
             if(shaderState?.program)
                 shaderState.gl.deleteProgram(shaderState.program)
+            canvas.width = 1
+            canvas.height = 1
         }
     }, [lowFrameRateMode])
 

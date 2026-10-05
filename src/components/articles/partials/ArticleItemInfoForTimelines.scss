@@ -483,19 +483,21 @@ article.article-timeline--art-photography div.article-timeline-item-info-for-tim
         display: none;
     }
 
-    article.article-timeline--art-photography div.article-timeline-item-info-preview-footer--outside {
+    article.article-timeline--art-photography div.article-timeline-item-info-preview-footer.article-timeline-item-info-preview-footer--outside {
         display: flex;
-        height: var(--photography-row-size);
+        flex: 0 0 var(--photo-action-rail-width);
+        width: var(--photo-action-rail-width);
+        height: auto;
         min-height: var(--photography-row-size);
         align-self: stretch;
 
         div.article-item-preview-menu,
         div.article-item-preview-menu-button-list {
-            height: 100%;
+            height: auto;
         }
 
         div.article-item-preview-menu-button-list {
-            justify-content: space-between;
+            justify-content: center;
         }
 
         a.article-item-preview-menu-link {

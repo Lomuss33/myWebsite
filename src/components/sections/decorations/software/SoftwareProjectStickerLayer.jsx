@@ -1,17 +1,17 @@
 import React, {useEffect, useRef, useState} from 'react'
-import {_imageUtils} from '../../../../hooks/utils/_image-utils.js'
+import {softwareStickerArt} from '../../../../data/generated/softwareStickerArt.generated.js'
+import './softwareStickerPalettes.generated.css'
 import './SoftwareProjectStickerLayer.scss'
 
-const ASSET_ROOT = '/images/stickers/software/'
 // Image, rotation, horizontal offset and vertical offset (fractions of size).
 const PROJECT_STICKERS = {
-    1: [['01-germancro-conversation-story-v3.png', -8, -0.08, -0.24], ['02-germancro-practice-story-v3.png', 7, 0.05, -0.05]],
-    2: [['03-belot-table-story-v3.png', 6, 0.16, -0.02], ['04-belot-engine-story-v3.png', -10, -0.18, -0.26]],
-    3: [['05-pepper-dealer-story-v3.png', -6, 0.04, -0.28], ['06-pepper-realtime-story-v3.png', 9, 0.14, 0.02]],
-    4: [['07-villa-renovation-story-v3.png', 9, -0.04, 0.01], ['08-villa-outdoors-story-v3.png', -7, -0.12, -0.20]],
-    5: [['09-family-generations-story-v3.png', -10, 0.20, -0.18], ['10-family-archive-story-v3.png', 5, 0.08, -0.02]],
-    6: [['11-latex-layout-story-v3.png', 5, 0.10, -0.04], ['12-latex-typesetter-story-v3.png', -9, -0.22, -0.24]],
-    7: [['13-portfolio-world-story-v3.png', -7, -0.06, -0.22], ['14-portfolio-journey-story-v3.png', 11, -0.03, 0.02]]
+    1: [['01-language.svg', -8, -0.08, -0.24], ['02-practice.svg', 7, 0.05, -0.05]],
+    2: [['03-cards.svg', 6, 0.16, -0.02], ['04-club.svg', -10, -0.18, -0.26]],
+    3: [['05-pepper.svg', -6, 0.04, -0.28], ['06-dealing.svg', 9, 0.14, 0.02]],
+    4: [['07-house.svg', 9, -0.04, 0.01], ['08-mountain.svg', -7, -0.12, -0.20]],
+    5: [['09-family.svg', -10, 0.20, -0.18], ['10-privacy.svg', 5, 0.08, -0.02]],
+    6: [['11-cv.svg', 5, 0.10, -0.04], ['12-type.svg', -9, -0.22, -0.24]],
+    7: [['13-website.svg', -7, -0.06, -0.22], ['14-code.svg', 11, -0.03, 0.02]]
 }
 
 // Section-level cutouts follow card rectangles without affecting their layout.
@@ -129,7 +129,7 @@ function SoftwareProjectStickerLayer() {
         <div ref={layerRef} className="software-project-sticker-layer" aria-hidden="true">
             {visibleProjects.flatMap(id => ['top-left', 'top-right'].map((position, index) => {
                 const [filename, rotation] = PROJECT_STICKERS[id][index]
-                const source = _imageUtils.normalizeSource(ASSET_ROOT + filename)
+                const artwork = softwareStickerArt[filename]
                 const key = `${id}-${position}`
                 return (
                     <div key={key}
@@ -140,15 +140,9 @@ function SoftwareProjectStickerLayer() {
                          className={`software-project-sticker software-project-sticker--${position}`}
                          data-sticker-project-id={id}
                          style={{'--sticker-rotation': `${rotation}deg`}}>
-                        <img src={source.resolvedSrc}
-                             srcSet={source.srcSet || undefined}
-                             sizes="104px"
-                             width={source.width || undefined}
-                             height={source.height || undefined}
-                             alt=""
-                             loading="lazy"
-                             decoding="async"
-                             draggable={false}/>
+                        <svg width="256" height="256" viewBox="0 0 256 256"
+                             aria-hidden="true" focusable="false"
+                             dangerouslySetInnerHTML={{__html: artwork.markup}}/>
                     </div>
                 )
             }))}

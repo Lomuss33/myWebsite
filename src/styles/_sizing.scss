@@ -194,16 +194,16 @@ html[data-layout="mobile"] {
     }
 }
 
-// One source for large mobile/touch geometry. Percent-like viewport values
-// size the bands; bounded tokens protect content and touch targets.
+// One source for large mobile/touch geometry. Navigation grows modestly with
+// viewport height while preserving room for page content and touch targets.
 @media (min-width: 90rem) {
     html[data-layout="mobile"] {
-        --mobile-nav-row-height: clamp(5.5rem, 10svh, 10rem);
+        --mobile-nav-row-height: clamp(5rem, 4svh, 7rem);
         --mobile-profile-row-max: none;
-        --mobile-nav-item-label-size: clamp(1rem, 2svh, 2rem);
-        --mobile-nav-item-icon-size: clamp(1.25rem, 2.4svh, 2.25rem);
-        --mobile-nav-item-gap: clamp(.375rem, 1svh, 1rem);
-        --mobile-nav-item-padding-block: clamp(.5rem, 1.5svh, 1.5rem);
+        --mobile-nav-item-label-size: clamp(1rem, 1.2svh, 1.5rem);
+        --mobile-nav-item-icon-size: clamp(1.25rem, 1.5svh, 1.75rem);
+        --mobile-nav-item-gap: clamp(.375rem, .4svh, .5rem);
+        --mobile-nav-item-padding-block: clamp(.5rem, .6svh, .75rem);
         --nav-tabs-height: var(--mobile-nav-row-height);
         --nav-pills-height: var(--mobile-nav-row-height);
         --mobile-profile-grid-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(8rem, 1.3fr) minmax(0, 1fr) minmax(0, 1fr);
@@ -258,7 +258,9 @@ html[data-layout="mobile"] {
         nav.nav-tab-controller > button.nav-tab-controller-link,
         nav.nav-link-pills-mobile > button.nav-link-pills-link {
             flex: 1 1 0;
-            width: 0;
+            // Auto width stretches inside grid cells and remains flexible in
+            // the bottom tab row. Zero width collapses two-destination grids.
+            width: auto;
             min-width: 0;
             height: 100%;
             min-height: 100%;

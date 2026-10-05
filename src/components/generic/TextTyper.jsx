@@ -14,7 +14,7 @@ const EASTER_EGG_MEASURE_STRING = [EASTER_EGG_PREFIX, ...EMOJI_POOL.slice(0, 10)
 const textWidthCache = new Map()
 const TEXT_WIDTH_CACHE_LIMIT = 200
 
-function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, displayTime = 1, className = "", fixedPrefix = "", randomOrder = false }) {
+function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, displayTime = 1, className = "", fixedPrefix = "", randomOrder = false, showCursor = false }) {
     const utils = useUtils()
     const navigation = useNavigation()
     const dynamicSpanRef = useRef(null)
@@ -54,7 +54,7 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, dis
 
         let nextWidth = 0
         candidateStrings.forEach(candidateString => {
-            const measuredText = applyTextTransform(`${candidateString}_`, textTransform)
+            const measuredText = applyTextTransform(showCursor ? `${candidateString}_` : candidateString, textTransform)
             const cacheKey = `${font}::${letterSpacing}::${measuredText}`
             let measuredWidth = textWidthCache.get(cacheKey)
 
@@ -68,7 +68,7 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, dis
         })
 
         setDynamicWidth(nextWidth || null)
-    }, [parsedStrings])
+    }, [parsedStrings, showCursor])
 
     const _reset = () => {
         setStatus(TextTyper.Status.INITIALIZING)
@@ -77,8 +77,10 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, dis
         setRandomQueue([])
         setCompletedCycles(0)
         setStatusElapsed(0)
-        setCursorVisible(false)
-        setCursorElapsed(0)
+        if(showCursor) {
+            setCursorVisible(false)
+            setCursorElapsed(0)
+        }
     }
 
     const _shuffleStrings = (items) => {
@@ -151,7 +153,7 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, dis
         }
 
         setStatusElapsed(prevState => prevState + event.currentTickElapsed)
-        setCursorElapsed(prevState => prevState + event.currentTickElapsed)
+        if(showCursor) setCursorElapsed(prevState => prevState + event.currentTickElapsed)
 
         const statusHandlers = {
             [TextTyper.Status.INITIALIZING]:        { hook: _onStatusInitializing },
@@ -161,8 +163,10 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, dis
         }
 
         if(navigation.isTransitioning()) {
-            if(targetWord?.length > 0) _toggleCursor(0.2)
-            else setCursorVisible(false)
+            if(showCursor) {
+                if(targetWord?.length > 0) _toggleCursor(0.2)
+                else setCursorVisible(false)
+            }
             return
         }
 
@@ -175,12 +179,12 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, dis
         setTargetWord(parsedStrings[0])
         if(randomOrder)
             setRandomQueue(_buildRandomQueue(parsedStrings[0]))
-        setCursorVisible(true)
+        if(showCursor) setCursorVisible(true)
         _nextStatus()
     }
 
     const _onStatusTyping = () => {
-        setCursorVisible(true)
+        if(showCursor) setCursorVisible(true)
 
         const currentDelay = _getTypingDelay()
         if(statusElapsed <= currentDelay)
@@ -202,7 +206,7 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, dis
     }
 
     const _onStatusDeleting = () => {
-        setCursorVisible(true)
+        if(showCursor) setCursorVisible(true)
 
         const currentDelay = _getDeletingDelay()
         if(statusElapsed <= currentDelay)
@@ -249,7 +253,7 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, dis
     }
 
     const _toggleCursor = (frequency) => {
-        if(cursorElapsed > frequency) {
+        if(showCursor && cursorElapsed > frequency) {
             setCursorVisible(!cursorVisible)
             setCursorElapsed(0)
         }
@@ -261,6 +265,7 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, dis
                   onEnterFrame={_update}>
             <TextTyperSpan currentText={currentText}
                            cursorVisible={cursorVisible}
+                           showCursor={showCursor}
                            dynamicWidth={dynamicWidth}
                            dynamicSpanRef={dynamicSpanRef}
                            fixedPrefix={fixedPrefix}/>
@@ -268,7 +273,7 @@ function TextTyper({ strings, id, typingSpeed = 0.11, deletingSpeed = 0.015, dis
     )
 }
 
-function TextTyperSpan({ currentText, cursorVisible, dynamicWidth, dynamicSpanRef, fixedPrefix }) {
+function TextTyperSpan({ currentText, cursorVisible, showCursor, dynamicWidth, dynamicSpanRef, fixedPrefix }) {
     const visibleClass = cursorVisible ?
         `text-typer-span-cursor-visible` :
         ``
@@ -293,7 +298,10 @@ function TextTyperSpan({ currentText, cursorVisible, dynamicWidth, dynamicSpanRe
                   className={`text-typer-span-dynamic`}
                   style={dynamicStyle}>
                 {currentText}
-                <span className={`text-typer-span-cursor ${visibleClass} ${transitionClass}`}>_</span>
+                {showCursor && (
+                    <span aria-hidden={`true`}
+                          className={`text-typer-span-cursor ${visibleClass} ${transitionClass}`}>_</span>
+                )}
             </span>
         </span>
     );

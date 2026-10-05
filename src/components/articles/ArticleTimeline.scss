@@ -201,13 +201,6 @@ article.article-timeline--my-art {
             --avatar-offset-merge-mode: 0px;
         }
 
-        @include content-breakpoint-up(lg) {
-            > li.article-timeline-item:nth-child(3):last-child {
-                grid-column: 1 / -1;
-                width: min(100%, 52rem);
-                justify-self: center;
-            }
-        }
     }
 
     li.article-timeline-item {
@@ -1759,10 +1752,7 @@ article.article-timeline--art-photography {
             --photo-action-gap: clamp(0.48rem, 0.74vw, 0.72rem);
             --photo-action-rail-width: calc(var(--photo-action-size) + clamp(0.7rem, 0.8vw, 0.95rem));
             --photography-side-buffer: clamp(1rem, 3.2vw, 3.25rem);
-            --photography-card-width: min(
-                clamp(33rem, 52vw, 43.5rem),
-                calc(100vw - var(--photography-row-size) - var(--photo-action-rail-width) - (var(--gap-between-avatar-and-content) * 2) - clamp(3rem, 6vw, 5rem))
-            );
+            --photography-card-width: clamp(33rem, 52vw, 43.5rem);
             --avatar-size: var(--photography-row-size);
             width: min(100%, 104rem);
             max-width: calc(100% - (var(--photography-side-buffer) * 2));
@@ -1811,7 +1801,9 @@ article.article-timeline--art-photography {
         }
 
         div.article-timeline-item-content {
-            flex: 0 0 var(--photography-card-width);
+            // The article and its last preview row can be narrower than the
+            // viewport. Let the story yield space to the fixed action rail.
+            flex: 0 1 var(--photography-card-width);
             width: var(--photography-card-width);
             max-width: var(--photography-card-width);
             min-height: var(--photography-row-size);
@@ -1952,8 +1944,69 @@ article.article-timeline--art-photography {
 }
 
 article.article-timeline--art-photography {
-    // Keep the photography story text as one centered, readable composition
-    // at every width, including the alternating wide-screen timeline rows.
+    // Wide articles show the albums together instead of alternating empty gaps.
+    @container (min-width: 96rem) {
+        ul.article-timeline-items {
+            --photography-row-size: clamp(8rem, 8cqw, 11rem);
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: clamp(1rem, 1.2cqw, 1.75rem);
+            width: 100%;
+            max-width: 100%;
+            margin-inline: 0;
+        }
+
+        ul.article-timeline-items > li.article-timeline-item {
+            display: block;
+            width: 100%;
+            align-self: stretch;
+        }
+
+        ul.article-timeline-items div.article-timeline-item-avatar-wrapper,
+        ul.article-timeline-items div.article-timeline-item-info-preview-footer.article-timeline-item-info-preview-footer--outside {
+            display: none;
+        }
+
+        ul.article-timeline-items li.article-timeline-item div.article-timeline-item-content {
+            --photo-action-size: calc((var(--photography-row-size) - var(--photo-action-gap)) / 2);
+            --photo-action-rail-width: calc(var(--photo-action-size) + 0.5rem);
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) var(--photo-action-rail-width);
+            grid-template-rows: auto minmax(0, 1fr);
+            width: 100%;
+            max-width: 100%;
+            height: 100%;
+            row-gap: 0.75rem;
+        }
+
+        ul.article-timeline-items div.article-timeline-item-info-for-timelines-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        ul.article-timeline-items div.article-timeline-item-info-for-timelines-body {
+            grid-row: 2;
+            justify-content: center;
+        }
+
+        ul.article-timeline-items div.article-timeline-item-info-preview-footer--mobile-card {
+            display: flex;
+            width: 100%;
+            height: auto;
+            min-width: 0;
+        }
+
+        ul.article-timeline-items li.article-timeline-item:nth-child(even) :is(
+            .article-timeline-item-info-for-timelines-header-main,
+            .article-timeline-item-info-for-timelines-header-meta-band,
+            .article-timeline-item-info-for-timelines-header-prop-list
+        ) {
+            justify-content: center;
+        }
+    }
+
+    // Keep the photography story text centered in both album cards and rows.
     div.article-timeline-item-info-for-timelines-header-title,
     div.article-timeline-item-info-for-timelines-header-main {
         justify-content: center;
@@ -2036,7 +2089,7 @@ article.article-timeline--art-digital-expression {
         }
 
         @container (min-width: 50rem) {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(4, minmax(0, 1fr));
         }
 
         @include content-breakpoint-down($timeline-merge-mode-breakpoint) {

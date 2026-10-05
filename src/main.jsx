@@ -282,6 +282,9 @@ function AppLifecycleBridge() {
             })
         }
 
+        const onFreeze = () => dispatchLifecycleEvent("app:pause", { source: "freeze", persisted: false })
+        const onResume = () => dispatchLifecycleEvent("app:resume", { source: "resume", persisted: false })
+
         const onVisibilityChange = () => {
             if(document.visibilityState === "visible") {
                 dispatchLifecycleEvent("app:resume", {
@@ -300,11 +303,15 @@ function AppLifecycleBridge() {
         window.addEventListener("pageshow", onPageShow)
         window.addEventListener("pagehide", onPageHide)
         document.addEventListener("visibilitychange", onVisibilityChange)
+        document.addEventListener("freeze", onFreeze)
+        document.addEventListener("resume", onResume)
 
         return () => {
             window.removeEventListener("pageshow", onPageShow)
             window.removeEventListener("pagehide", onPageHide)
             document.removeEventListener("visibilitychange", onVisibilityChange)
+            document.removeEventListener("freeze", onFreeze)
+            document.removeEventListener("resume", onResume)
         }
     }, [])
 

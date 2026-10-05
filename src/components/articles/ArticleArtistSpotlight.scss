@@ -13,7 +13,7 @@ article.article-artist-spotlight {
 
     .artist-spotlight-shell {
         position: relative;
-        width: min(100%, 54rem);
+        width: 100%;
         margin-inline: auto;
         container: artist-spotlight / inline-size;
         overflow: hidden;
@@ -683,6 +683,139 @@ article.article-artist-spotlight {
         }
     }
 
+}
+
+// Grow with the available article width on large portrait and desktop panes.
+// Compact cards retain their existing portrait, player, and type scales.
+@container artist-spotlight (min-width: 54rem) {
+    article.article-artist-spotlight {
+        .artist-spotlight-hero {
+            min-height: clamp(16rem, 24cqw, 30rem);
+        }
+
+        .artist-spotlight-identity {
+            grid-template-columns: minmax(0, 1fr) clamp(10rem, 18cqw, 24rem);
+            gap: clamp(1.6rem, 3cqw, 3rem);
+            padding: clamp(1.25rem, 2cqw, 2.5rem) clamp(1.1rem, 2cqw, 2.5rem) clamp(2rem, 4cqw, 4rem);
+        }
+
+        .artist-spotlight-identity-copy p.artist-spotlight-genre {
+            font-size: clamp(1.3rem, 2cqw, 2.6rem);
+        }
+
+        .artist-spotlight-volume-control {
+            width: clamp(8rem, 12cqw, 14rem);
+        }
+
+        .artist-spotlight-seam-cta {
+            min-height: clamp(3rem, 4cqw, 4.5rem);
+        }
+
+        .artist-spotlight-platform-link {
+            min-height: clamp(2.8rem, 3.6cqw, 4rem);
+            font-size: clamp(0.92rem, 1cqw, 1.2rem);
+            gap: clamp(0.2rem, 0.6cqw, 0.7rem);
+        }
+
+        .artist-spotlight-platform-link .artist-spotlight-platform-icon {
+            font-size: clamp(1.35rem, 1.6cqw, 2rem);
+        }
+
+        .artist-spotlight-release {
+            padding: clamp(1.6rem, 3cqw, 2.75rem) clamp(0.9rem, 2cqw, 2.5rem) clamp(0.45rem, 1cqw, 1.25rem);
+        }
+
+        .artist-spotlight-release-main {
+            grid-template-columns: clamp(8rem, 12cqw, 18rem) minmax(0, 1fr);
+            gap: clamp(0.8rem, 2cqw, 2rem);
+        }
+
+        .artist-spotlight-release-copy h3 {
+            font-size: clamp(1rem, 1.4cqw, 1.8rem);
+        }
+
+        .artist-spotlight-play {
+            width: clamp(2rem, 3cqw, 3.5rem);
+
+            svg {
+                width: clamp(0.68rem, 1.2cqw, 1.25rem);
+                height: clamp(0.68rem, 1.2cqw, 1.25rem);
+            }
+        }
+
+        .artist-spotlight-release-copy > p:first-of-type {
+            font-size: clamp(0.9rem, 1.2cqw, 1.5rem);
+        }
+
+        p.artist-spotlight-release-meta,
+        .artist-spotlight-play-hint,
+        .artist-spotlight-time {
+            font-size: clamp(0.7rem, 0.8cqw, 1rem);
+        }
+    }
+}
+
+@container (min-width: 96rem) {
+    article.article-artist-spotlight .artist-spotlight-shell {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    }
+}
+
+@container artist-spotlight (min-width: 96rem) {
+    article.article-artist-spotlight {
+        .artist-spotlight-hero {
+            min-height: clamp(20rem, 22cqw, 26rem);
+            border-radius: 1.1rem 0 0 1.1rem;
+        }
+
+        .artist-spotlight-identity {
+            grid-template-columns: minmax(0, 1fr) clamp(11rem, 14cqw, 20rem);
+            gap: clamp(1.25rem, 2cqw, 2.5rem);
+            padding: 1.5rem clamp(1.5rem, 2cqw, 2.5rem) 6rem;
+        }
+
+        .artist-spotlight-seam-cta {
+            transform: none;
+        }
+
+        .artist-spotlight-release {
+            display: flex;
+            align-items: stretch;
+            padding: clamp(1.5rem, 2cqw, 2.5rem);
+            border-top: 0;
+            border-left: 1px solid var(--spotlight-border);
+        }
+
+        .artist-spotlight-release-main {
+            width: 100%;
+            grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        }
+
+        .artist-spotlight-release-copy {
+            row-gap: clamp(0.3rem, 0.8cqw, 0.6rem);
+        }
+
+        .artist-spotlight-release-copy h3 {
+            font-size: clamp(1.3rem, 3.8cqw, 2.2rem);
+            white-space: normal;
+            text-wrap: balance;
+        }
+
+        .artist-spotlight-release-copy > p:first-of-type {
+            font-size: clamp(1.1rem, 3cqw, 1.65rem);
+        }
+
+        .artist-spotlight-local-player input[type="range"] {
+            height: 2.75rem;
+            background-size: 100% 6px;
+        }
+
+        .artist-spotlight-time {
+            margin-top: 0;
+            font-size: clamp(0.8rem, 1.6cqw, 1rem);
+        }
+    }
 }
 
 @keyframes artist-spotlight-spin {

@@ -169,7 +169,7 @@ function ItemPreviewMenuGalleryButton({ itemWrapper, galleryMetadata = null }) {
                     {isPhotographyTimeline && (
                         <img src={galleryPreviewImage.resolvedSrc || galleryPreviewSource}
                              srcSet={galleryPreviewImage.srcSet || undefined}
-                             sizes="56px"
+                             sizes="(min-width: 1280px) and (orientation: landscape) 72px, (min-width: 768px) 120px, 60px"
                              className={`article-item-preview-menu-gallery-image`}
                              alt={``}
                              aria-hidden={true}

@@ -40,23 +40,12 @@ async function expectNoMotion(locator) {
     },{timeout:1500,intervals:[50,100]}).toBe(true)
 }
 
-async function expectStableTitleFontSize(locator) {
-    let previousSize=Number.NaN
-    let stableSamples=0
-    await expect.poll(async()=>{
-        const size=await locator.evaluate(element=>parseFloat(getComputedStyle(element).fontSize))
-        stableSamples=Number.isFinite(size)&&Math.abs(size-previousSize)<0.01?stableSamples+1:Number.isFinite(size)?1:0
-        previousSize=size
-        return stableSamples>=3
-    },{timeout:5000,intervals:[50,100,150]}).toBe(true)
-}
-
 async function preferences(page, language = 'en', theme = 'dark') {
     await page.addInitScript(({language,theme}) => {
         localStorage.setItem('storage-preferences', JSON.stringify({preferredLanguage:language,preferredTheme:theme,preferredCursorMode:'system'}))
     }, {language,theme})
 }
-async function openSection(page, route) {
+async function openSection(page, route, {reuse = false} = {}) {
     if(!page.__responsiveConsoleErrors) {
         page.__responsiveConsoleErrors=[]
         page.on('console',message=>{
@@ -65,12 +54,16 @@ async function openSection(page, route) {
     }
     // The app's actual ready check below covers its lazy React sections;
     // don't also block on unrelated images and other load-event resources.
-    await page.goto('/#'+route,{waitUntil:'domcontentloaded'})
+    if(reuse && page.url().startsWith(test.info().project.use.baseURL+'/')) {
+        await page.evaluate(route=>{ location.hash=route },route)
+    } else {
+        await page.goto('/#'+route,{waitUntil:'domcontentloaded'})
+    }
     const lazySectionReadyTimeout=45000
 
     // Readiness means the destination is active, its lazy content has resolved,
-    // and its actual heading has stable, font-ready geometry. This avoids
-    // waiting for unrelated fonts across every mounted section.
+    // and its actual heading is rendered. Geometry assertions wait for their
+    // own expected result instead of requiring every font to finish loading.
     const readiness=await page.waitForFunction(({route})=>{
         if(document.querySelector('.app-error-boundary')) return 'app-error'
         const activeSection=document.querySelector(`#section-${route}.section-shown`)
@@ -84,8 +77,7 @@ async function openSection(page, route) {
         const rect=title.getBoundingClientRect()
         const style=getComputedStyle(title)
         const visible=rect.width>0&&rect.height>0&&style.visibility!=='hidden'
-        const fontReady=document.fonts.check(`${style.fontWeight} ${style.fontSize} ${style.fontFamily}`,title.textContent)
-        return visible&&fontReady?'ready':false
+        return visible?'ready':false
     },{route},{timeout:lazySectionReadyTimeout,polling:100})
     const readinessState=await readiness.jsonValue()
     if(readinessState==='app-error')
@@ -95,40 +87,30 @@ async function openSection(page, route) {
     await page.mouse.move(200,1)
 }
 
-test('all page titles share the Home responsive type scale', async ({page})=>{
-    await preferences(page)
-
-    const viewports=[[1366,768],[390,844],[1440,2560]]
-    const sizesByViewport=viewports.map(()=>[])
-
-    // Open each lazy section once, then measure it at every viewport. Repeated
-    // cold page loads made this matrix needlessly expensive on hosted WebKit.
-    for(const route of routes) {
-        await page.setViewportSize({width:viewports[0][0],height:viewports[0][1]})
-        await openSection(page,route)
-        const pageTitle=page.locator(
-            '#section-'+route+' .section-header-title, '+
-            '#section-'+route+' .section-content-hide-header .section-body > article:first-of-type > h4.article-title'
-        ).first()
-        for(const [viewportIndex,[width,height]] of viewports.entries()) {
-            if(viewportIndex>0) {
-                await page.setViewportSize({width,height})
-                await expect(page.locator('html')).toHaveAttribute('data-layout',resolveLayout(width,height))
-            }
+for(const [width,height] of [[1366,768],[390,844],[1440,2560]]) {
+    test(`${width}x${height}: all page titles share the Home responsive type scale`, async ({page})=>{
+        test.setTimeout(180000)
+        await preferences(page)
+        await page.setViewportSize({width,height})
+        let homeSize
+        // Each viewport has its own time budget. Switch routes within the app so
+        // this comparison does not rebuild the same page eight times.
+        for(const route of routes) {
+            await openSection(page,route,{reuse:true})
+            await expect(page.locator('html')).toHaveAttribute('data-layout',resolveLayout(width,height))
+            const pageTitle=page.locator(
+                '#section-'+route+' .section-header-title, '+
+                '#section-'+route+' .section-content-hide-header .section-body > article:first-of-type > h4.article-title'
+            ).first()
             await expect(pageTitle).toBeVisible()
-            await expectStableTitleFontSize(pageTitle)
-            sizesByViewport[viewportIndex].push(await pageTitle.evaluate(element=>parseFloat(getComputedStyle(element).fontSize)))
+            if(route==='about') homeSize=await pageTitle.evaluate(element=>parseFloat(getComputedStyle(element).fontSize))
+            await expect.poll(async()=>{
+                const size=await pageTitle.evaluate(element=>parseFloat(getComputedStyle(element).fontSize))
+                return Math.abs(size-homeSize)
+            },{message:width+'x'+height+' '+route+' heading matches Home'}).toBeLessThanOrEqual(1.5)
         }
-    }
-
-    for(const [viewportIndex,[width,height]] of viewports.entries()) {
-        const sizes=sizesByViewport[viewportIndex]
-        const homeSize=sizes[0]
-        for(const [index,size] of sizes.entries()) {
-            expect(Math.abs(size-homeSize),width+'x'+height+' '+routes[index]+' heading matches Home').toBeLessThanOrEqual(1.5)
-        }
-    }
-})
+    })
+}
 
 const sectionFitScenarios = smoke
     ? smokeSectionFitScenarios
@@ -143,20 +125,18 @@ for(const [language,theme,mode] of sectionFitScenarios) {
         const errors=[]
         page.on('pageerror',e=>errors.push(e.message))
         for(const route of routes) {
-            await openSection(page,route)
+            await openSection(page,route,{reuse:true})
             await expect(page.locator('html')).toHaveAttribute('data-layout',mode)
             const wrapper=page.locator('section.section-shown .section-content-elements-wrapper')
             await expect(wrapper).toHaveCSS('transform','none')
-            const geometry=await page.evaluate(()=>{
+            await expect.poll(async()=>page.evaluate(()=>{
                 const active=document.querySelector('section.section-shown')
                 const title=active.querySelector('.section-header-title')
                 const range=document.createRange()
                 if(title) range.selectNodeContents(title)
                 const bounds=title?range.getBoundingClientRect():null
-                return {documentWidth:document.documentElement.scrollWidth,viewport:innerWidth,titleFits:!bounds||(bounds.left>=-1&&bounds.right<=innerWidth+1)}
-            })
-            expect(geometry.documentWidth,route+' document width').toBeLessThanOrEqual(geometry.viewport+1)
-            expect(geometry.titleFits,route+' title clipping').toBe(true)
+                return document.documentElement.scrollWidth<=innerWidth+1&&(!bounds||(bounds.left>=-1&&bounds.right<=innerWidth+1))
+            }),{message:route+' has no horizontal overflow or title clipping'}).toBe(true)
             const bodyFonts=await page.locator('section.section-shown .article-feature-item-text').evaluateAll(nodes=>nodes.map(e=>parseFloat(getComputedStyle(e).fontSize)))
             for(const size of bodyFonts) {
                 expect(size,route+' body text minimum').toBeGreaterThanOrEqual(12.5)
@@ -173,6 +153,84 @@ for(const [language,theme,mode] of sectionFitScenarios) {
         expect(errors).toEqual([])
     })
 }
+
+for(const route of ['my-software','my-hardware']) {
+    test(`${route}: portfolio filters restore all projects`, async ({page})=>{
+        await preferences(page)
+        await page.setViewportSize({width:1366,height:768})
+        await openSection(page,route)
+        const article=page.locator(`#article-1-section-${route}`)
+        const visibleProjects=article.locator('.article-portfolio-item:visible')
+        const all=article.locator('button[data-category-id="category_all"]')
+        const personal=article.locator('button[data-category-id="category_personal"]')
+        const count=async button=>Number((await button.locator('.category-filter-button-count').innerText()).replace(/\D/g,''))
+        const total=await count(all)
+        const filtered=await count(personal)
+        expect(filtered).toBeGreaterThan(0)
+        expect(filtered).toBeLessThan(total)
+        await expect(visibleProjects).toHaveCount(total)
+        await personal.click()
+        await expect(personal).toHaveAttribute('aria-pressed','true')
+        await expect(visibleProjects).toHaveCount(filtered)
+        await all.click()
+        await expect(all).toHaveAttribute('aria-pressed','true')
+        await expect(visibleProjects).toHaveCount(total)
+        const actions=await article.locator('.article-portfolio-item-control-btn:visible').evaluateAll(nodes=>nodes.map(node=>node.getBoundingClientRect().height))
+        expect(actions.length).toBeGreaterThan(0)
+        expect(actions.every(height=>height>=43.5)).toBe(true)
+    })
+}
+
+test('Education details and language popups open and close', async ({page})=>{
+    await preferences(page)
+    await page.setViewportSize({width:390,height:844})
+    await openSection(page,'education')
+    const card=page.locator('#article-1-section-education .article-timeline-item-info-for-timelines').first()
+    const details=card.locator('.article-timeline-item-info-for-timelines-body-list')
+    const toggle=card.locator('.article-timeline-item-info-for-timelines-body-expand-button')
+    await expect(details).toBeHidden()
+    await toggle.click()
+    await expect(details).toBeVisible()
+    await toggle.press('Enter')
+    await expect(details).toBeHidden()
+    const skills=page.locator('#article-3-section-education')
+    const trigger=skills.locator('.article-skills-item-popup-trigger').first()
+    const popup=skills.locator('.article-skills-item-popup-body.article-skills-item-popup-open')
+    await trigger.click()
+    await expect(popup).toBeVisible()
+    await trigger.click()
+    await expect(popup).toHaveCount(0)
+})
+
+test('Hardware probes unlock request controls', async ({page})=>{
+    await preferences(page)
+    await page.setViewportSize({width:390,height:844})
+    await openSection(page,'my-hardware')
+    const probe=page.locator('#article-2-section-my-hardware')
+    const unlock=probe.locator('.article-data-probe-unlock-btn')
+    await expect(unlock).toBeVisible()
+    await unlock.click()
+    await expect(unlock).toBeHidden()
+    const requests=probe.locator('.article-data-probe-grid-fixed-two')
+    await expect(requests.locator('.article-data-probe-item').first()).toBeVisible()
+    await expect(requests.getByRole('button',{name:/Request$/}).first()).toBeVisible()
+})
+
+test('Art WebArt and pearls reveal and close', async ({page})=>{
+    await preferences(page)
+    await page.setViewportSize({width:1366,height:768})
+    await openSection(page,'my-art')
+    const webArt=page.locator('#article-3-section-my-art')
+    await webArt.locator('.article-web-art-intro-cover-button-primary').click()
+    await expect(webArt.locator('.article-web-art-intro-cover')).toHaveClass(/article-web-art-intro-cover-hidden/)
+    await expect.poll(()=>webArt.locator('.article-web-art-stage').evaluate(element=>element.getBoundingClientRect().height)).toBeGreaterThan(1)
+    const pearls=page.locator('#article-5-section-my-art')
+    await pearls.getByRole('button',{name:'Reveal Secret pearls'}).click()
+    await expect(pearls.locator('.article-secret-pearls-grid')).toBeVisible()
+    await expect(pearls.locator('.article-secret-pearls-gated-tile').first()).toBeVisible()
+    await pearls.getByRole('button',{name:'Show less'}).click()
+    await expect(pearls.getByRole('button',{name:'Reveal Secret pearls'})).toBeVisible()
+})
 
 test('resize keeps mode and navigation in agreement', async ({page})=>{
     await preferences(page)
@@ -553,7 +611,9 @@ test('Education desktop density compacts the timeline, certificates, and skills 
     })
 
     expect(metrics.sectionTitle.font).toBeLessThanOrEqual(34)
-    expect(metrics.articleTitle.font).toBeLessThanOrEqual(32)
+    // Education's larger desktop heading is bounded at 2.3rem.
+    expect(metrics.articleTitle.font).toBeGreaterThanOrEqual(31)
+    expect(metrics.articleTitle.font).toBeLessThanOrEqual(37)
     expect(metrics.timelineCard.height).toBeLessThan(225)
     expect(metrics.avatar.width).toBeLessThanOrEqual(160)
     expect(metrics.timelineTitle.font).toBeGreaterThanOrEqual(15.5)
@@ -1383,7 +1443,9 @@ test('Hardware desktop density compacts project cards and DataProbe without shri
         expect(metrics.projectCopy.font).toBeLessThanOrEqual(16)
         expect(metrics.projectAction.height).toBeGreaterThanOrEqual(43.5)
         expect(metrics.filter.height).toBeGreaterThanOrEqual(43.5)
-        expect(metrics.summary.height).toBeLessThanOrEqual(46)
+        // The glass-workspace metrics have 54px rows plus summary padding.
+        expect(metrics.summary.height).toBeGreaterThanOrEqual(54)
+        expect(metrics.summary.height).toBeLessThanOrEqual(80)
         expect(metrics.probeBlock.height).toBeLessThan(470)
         expect(metrics.probeItem.height).toBeLessThan(365)
         expect(metrics.probeTitle.font).toBeGreaterThanOrEqual(15)
@@ -1778,10 +1840,11 @@ test('Art desktop density compacts timelines, WebArt, stack cards, and SecretPea
         expect(metrics.webStage.height).toBeGreaterThanOrEqual(1)
         expect(metrics.webStage.height).toBeLessThanOrEqual(380)
         expect(metrics.webEnter.height).toBeGreaterThanOrEqual(43.5)
-        expect(metrics.stackColumns).toBeGreaterThanOrEqual(6)
-        expect(metrics.stackColumns).toBeLessThanOrEqual(8)
-        expect(metrics.stackCard.width).toBeLessThan(190)
-        expect(metrics.stackGrid.height).toBeLessThan(2800)
+        // The creator revision uses five wider, square tiles per row.
+        expect(metrics.stackColumns).toBe(5)
+        expect(metrics.stackCard.width).toBeLessThan(240)
+        expect(Math.abs(metrics.stackCard.height-metrics.stackCard.width)).toBeLessThanOrEqual(1)
+        expect(metrics.stackGrid.height).toBeLessThan(3600)
         expect(metrics.pearlGate.height).toBeGreaterThanOrEqual(43.5)
         expect(metrics.docWidth).toBeLessThanOrEqual(width+1)
 

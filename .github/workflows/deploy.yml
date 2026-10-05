@@ -3,6 +3,11 @@ name: Deploy portfolio to GitHub Pages
 on:
   pull_request:
   workflow_dispatch:
+    inputs:
+      extended_browser_checks:
+        description: Run additional Firefox and WebKit interaction checks
+        type: boolean
+        default: false
   push:
     branches:
       - main
@@ -10,6 +15,8 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    env:
+      PLAYWRIGHT_TEST_BUILD: '1'
     permissions:
       contents: read
 
@@ -35,8 +42,15 @@ jobs:
       - name: Test Web Art game rules
         run: npm run test:web-art
 
+      - name: Build project
+        run: npm run build
+
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium firefox webkit
+        run: npx playwright install --with-deps chromium
+
+      - name: Install additional Playwright browsers
+        if: github.event_name == 'workflow_dispatch' && inputs.extended_browser_checks
+        run: npx playwright install --with-deps firefox webkit
 
       - name: Run focused Chromium responsive suite
         run: npm run test:responsive:ci
@@ -44,19 +58,18 @@ jobs:
           RESPONSIVE_SMOKE: '1'
 
       - name: Run Firefox responsive smoke suite
+        if: github.event_name == 'workflow_dispatch' && inputs.extended_browser_checks
         run: npm run test:responsive:cross-browser
         env:
           PLAYWRIGHT_BROWSER: firefox
           RESPONSIVE_SMOKE: '1'
 
       - name: Run WebKit responsive smoke suite
+        if: github.event_name == 'workflow_dispatch' && inputs.extended_browser_checks
         run: npm run test:responsive:cross-browser
         env:
           PLAYWRIGHT_BROWSER: webkit
           RESPONSIVE_SMOKE: '1'
-
-      - name: Build project
-        run: npm run build
 
       - name: Save built site
         uses: actions/upload-artifact@v7

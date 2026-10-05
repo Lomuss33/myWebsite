@@ -1,0 +1,150 @@
+{
+  "purpose": "Sixteen deliberately varied hardware sticker style experiments. Not yet integrated into the article.",
+  "generator": "built-in image_gen",
+  "specs": [
+    {
+      "n": 1,
+      "projectId": 1,
+      "position": "top-right",
+      "subject": "Compact homelab server stack: three precise graphite-metal rack units in a small open rack, ventilation, tiny amber status LEDs, complete assembly, three-quarter view.",
+      "style": "Photorealistic luxury product photography. Real brushed metal, crisp mechanical edges, dramatic but restrained studio rim lighting. Graphite and amber.",
+      "name": "server-studio",
+      "prompt": "Use case: product-mockup.\nAsset type: oversized transparent hardware-project sticker, concept 1/16, top-right placement.\nSubject: Compact homelab server stack: three precise graphite-metal rack units in a small open rack, ventilation, tiny amber status LEDs, complete assembly, three-quarter view.\nVisual direction: Photorealistic luxury product photography. Real brushed metal, crisp mechanical edges, dramatic but restrained studio rim lighting. Graphite and amber.\nConstraints: Create ONE individual large website collage sticker, not a sheet or multiple versions. The object must be completely isolated on a genuinely transparent alpha background, including all gaps/openings; no painted checkerboard, scene, floor, pedestal, or backdrop. Entire subject visible, tight useful framing with a small clear margin, strong readable silhouette. No text, logos, watermarks, mascots, faces, cute anthropomorphism, extra props or random embellishments. Intentional polished construction, no melted geometry or duplicated parts. This is one of sixteen deliberately different style experiments; do not imitate any preceding image."
+    },
+    {
+      "n": 2,
+      "projectId": 1,
+      "position": "bottom-left",
+      "subject": "One looping Ethernet patch cable with exactly two recognizable RJ45 connectors, graceful open S curve, complete cable visible.",
+      "style": "Holographic foil physical sticker. Teal cable with tasteful silver iridescent reflections and sharply constructed transparent connectors. Thin metallic die-cut contour, modern editorial finish.",
+      "name": "ethernet-holographic",
+      "prompt": "Use case: stylized-concept.\nAsset type: oversized transparent hardware-project sticker, concept 2/16, bottom-left placement.\nSubject: One looping Ethernet patch cable with exactly two recognizable RJ45 connectors, graceful open S curve, complete cable visible.\nVisual direction: Holographic foil physical sticker. Teal cable with tasteful silver iridescent reflections and sharply constructed transparent connectors. Thin metallic die-cut contour, modern editorial finish.\nConstraints: Create ONE individual large website collage sticker, not a sheet or multiple versions. The object must be completely isolated on a genuinely transparent alpha background, including all gaps/openings; no painted checkerboard, scene, floor, pedestal, or backdrop. Entire subject visible, tight useful framing with a small clear margin, strong readable silhouette. No text, logos, watermarks, mascots, faces, cute anthropomorphism, extra props or random embellishments. Intentional polished construction, no melted geometry or duplicated parts. This is one of sixteen deliberately different style experiments; do not imitate any preceding image."
+    },
+    {
+      "n": 3,
+      "projectId": 4,
+      "position": "top-right",
+      "subject": "Miniature industrial conveyor belt with aluminium structure, dark rubber belt, and three distinct small material blocks. Entire assembly visible.",
+      "style": "Precise isometric architectural maquette render, matte off-white and gunmetal, one cobalt accent. Clean manufactured detail, sophisticated miniature scale.",
+      "name": "conveyor-isometric",
+      "prompt": "Use case: product-mockup.\nAsset type: oversized transparent hardware-project sticker, concept 3/16, top-right placement.\nSubject: Miniature industrial conveyor belt with aluminium structure, dark rubber belt, and three distinct small material blocks. Entire assembly visible.\nVisual direction: Precise isometric architectural maquette render, matte off-white and gunmetal, one cobalt accent. Clean manufactured detail, sophisticated miniature scale.\nConstraints: Create ONE individual large website collage sticker, not a sheet or multiple versions. The object must be completely isolated on a genuinely transparent alpha background, including all gaps/openings; no painted checkerboard, scene, floor, pedestal, or backdrop. Entire subject visible, tight useful framing with a small clear margin, strong readable silhouette. No text, logos, watermarks, mascots, faces, cute anthropomorphism, extra props or random embellishments. Intentional polished construction, no melted geometry or duplicated parts. This is one of sixteen deliberately different style experiments; do not imitate any preceding image."
+    },
+    {
+      "n": 4,
+      "projectId": 4,
+      "position": "bottom-left",
+      "subject": "Industrial optical sorting sensor and compact mechanical diverter together as one coherent assembly, clearly distinct lens, red indicator, pivoting metal gate.",
+      "style": "Technical cyanotype illustration cutout. Indigo blue shapes with fine cream engineering linework, rich screenprint texture, mechanically legible. Irregular silhouette follows objects, no rectangular blueprint page.",
+      "name": "sensor-cyanotype",
+      "prompt": "Use case: stylized-concept.\nAsset type: oversized transparent hardware-project sticker, concept 4/16, bottom-left placement.\nSubject: Industrial optical sorting sensor and compact mechanical diverter together as one coherent assembly, clearly distinct lens, red indicator, pivoting metal gate.\nVisual direction: Technical cyanotype illustration cutout. Indigo blue shapes with fine cream engineering linework, rich screenprint texture, mechanically legible. Irregular silhouette follows objects, no rectangular blueprint page.\nConstraints: Create ONE individual large website collage sticker, not a sheet or multiple versions. The object must be completely isolated on a genuinely transparent alpha background, including all gaps/openings; no painted checkerboard, scene, floor, pedestal, or backdrop. Entire subject visible, tight useful framing with a small clear margin, strong readable silhouette. No text, logos, watermarks, mascots, faces, cute anthropomorphism, extra props or random embellishments. Intentional polished construction, no melted geometry or duplicated parts. This is one of sixteen deliberately different style experiments; do not imitate any preceding image."
+    },
+    {
+      "n": 5,
+      "projectId": 5,
+      "position": "top-right",
+      "subject": "Compact commercial stainless steel pizza oven, front viewing aperture with warm glow, precise metal knobs, complete appliance three-quarter view.",
+      "style": "Sculptural brushed-chrome editorial object with restrained copper heat reflections. High-end industrial-design rendering, sharp surfaces, realistic aperture.",
+      "name": "oven-chrome",
+      "prompt": "Use case: product-mockup.\nAsset type: oversized transparent hardware-project sticker, concept 5/16, top-right placement.\nSubject: Compact commercial stainless steel pizza oven, front viewing aperture with warm glow, precise metal knobs, complete appliance three-quarter view.\nVisual direction: Sculptural brushed-chrome editorial object with restrained copper heat reflections. High-end industrial-design rendering, sharp surfaces, realistic aperture.\nConstraints: Create ONE individual large website collage sticker, not a sheet or multiple versions. The object must be completely isolated on a genuinely transparent alpha background, including all gaps/openings; no painted checkerboard, scene, floor, pedestal, or backdrop. Entire subject visible, tight useful framing with a small clear margin, strong readable silhouette. No text, logos, watermarks, mascots, faces, cute anthropomorphism, extra props or random embellishments. Intentional polished construction, no melted geometry or duplicated parts. This is one of sixteen deliberately different style experiments; do not imitate any preceding image."
+    },
+    {
+      "n": 6,
+      "projectId": 5,
+      "position": "bottom-left",
+      "subject": "Automated car wash gantry, structural arch, two blue cylindrical brushes, restrained spray jets. Compact complete assembly, no car.",
+      "style": "Refined enamel pin object. Dark raised metal outlines, glossy cobalt and ivory enamel fills, dimensional bevels, elegant engineered collectible.",
+      "name": "carwash-enamel",
+      "prompt": "Use case: stylized-concept.\nAsset type: oversized transparent hardware-project sticker, concept 6/16, bottom-left placement.\nSubject: Automated car wash gantry, structural arch, two blue cylindrical brushes, restrained spray jets. Compact complete assembly, no car.\nVisual direction: Refined enamel pin object. Dark raised metal outlines, glossy cobalt and ivory enamel fills, dimensional bevels, elegant engineered collectible.\nConstraints: Create ONE individual large website collage sticker, not a sheet or multiple versions. The object must be completely isolated on a genuinely transparent alpha background, including all gaps/openings; no painted checkerboard, scene, floor, pedestal, or backdrop. Entire subject visible, tight useful framing with a small clear margin, strong readable silhouette. No text, logos, watermarks, mascots, faces, cute anthropomorphism, extra props or random embellishments. Intentional polished construction, no melted geometry or duplicated parts. This is one of sixteen deliberately different style experiments; do not imitate any preceding image."
+    },
+    {
+      "n": 7,
+      "projectId": 7,
+      "position": "top-right",
+      "subject": "Interactive flag display in a slim rectangular frame, folded neutral unmarked fabric on a visible mechanical pivot, internal LED lighting, entire frame visible.",
+      "style": "Translucent smoked-glass and prismatic acrylic sculpture. Subtle cyan and pink edge refractions, realistic fabric, restrained museum exhibition object.",
+      "name": "flag-acrylic",
+      "prompt": "Use case: stylized-concept.\nAsset type: oversized transparent hardware-project sticker, concept 7/16, top-right placement.\nSubject: Interactive flag display in a slim rectangular frame, folded neutral unmarked fabric on a visible mechanical pivot, internal LED lighting, entire frame visible.\nVisual direction: Translucent smoked-glass and prismatic acrylic sculpture. Subtle cyan and pink edge refractions, realistic fabric, restrained museum exhibition object.\nConstraints: Create ONE individual large website collage sticker, not a sheet or multiple versions. The object must be completely isolated on a genuinely transparent alpha background, including all gaps/openings; no painted checkerboard, scene, floor, pedestal, or backdrop. Entire subject visible, tight useful framing with a small clear margin, strong readable silhouette. No text, logos, watermarks, mascots, faces, cute anthropomorphism, extra props or random embellishments. Intentional polished construction, no melted geometry or duplicated parts. This is one of sixteen deliberately different style experiments; do not imitate any preceding image."
+    },
+    {
+      "n": 8,
+      "projectId": 7,
+      "position": "bottom-left",
+      "subject": "Two small geared electric motors with coherent simple crank arms, neatly arranged as one twin-motor mechanism. Visible shafts and metal housings.",
+      "style": "Riso editorial cutout print: bold charcoal linework, warm orange and sea-green ink separations, tactile paper texture, accurate recognizable mechanical forms.",
+      "name": "motors-risograph",
+      "prompt": "Use case: stylized-concept.\nAsset type: oversized transparent hardware-project sticker, concept 8/16, bottom-left placement.\nSubject: Two small geared electric motors with coherent simple crank arms, neatly arranged as one twin-motor mechanism. Visible shafts and metal housings.\nVisual direction: Riso editorial cutout print: bold charcoal linework, warm orange and sea-green ink separations, tactile paper texture, accurate recognizable mechanical forms.\nConstraints: Create ONE individual large website collage sticker, not a sheet or multiple versions. The object must be completely isolated on a genuinely transparent alpha background, including all gaps/openings; no painted checkerboard, scene, floor, pedestal, or backdrop. Entire subject visible, tight useful framing with a small clear margin, strong readable silhouette. No text, logos, watermarks, mascots, faces, cute anthropomorphism, extra props or random embellishments. Intentional polished construction, no melted geometry or duplicated parts. This is one of sixteen deliberately different style experiments; do not imitate any preceding image."
+    },
+    {
+      "n": 9,
+      "projectId": 8,
+      "position": "top-right",
+      "subject": "Short motorized curtain rail assembly with motor housing and a naturally pleated curtain section attached. Complete recognizable assembly.",
+      "style": "Premium tactile paper collage: layered cut paper, warm linen fabric texture, charcoal rail, muted sand and terracotta. Crisp dimensional edges, restrained Scandinavian editorial feel.",
+      "name": "curtain-paper",
+      "prompt": "Use case: stylized-concept.\nAsset type: oversized transparent hardware-project sticker, concept 9/16, top-right placement.\nSubject: Short motorized curtain rail assembly with motor housing and a naturally pleated curtain section attached. Complete recognizable assembly.\nVisual direction: Premium tactile paper collage: layered cut paper, warm linen fabric texture, charcoal rail, muted sand and terracotta. Crisp dimensional edges, restrained Scandinavian editorial feel.\nConstraints: Create ONE individual large website collage sticker, not a sheet or multiple versions. The object must be completely isolated on a genuinely transparent alpha background, including all gaps/openings; no painted checkerboard, scene, floor, pedestal, or backdrop. Entire subject visible, tight useful framing with a small clear margin, strong readable silhouette. No text, logos, watermarks, mascots, faces, cute anthropomorphism, extra props or random embellishments. Intentional polished construction, no melted geometry or duplicated parts. This is one of sixteen deliberately different style experiments; do not imitate any preceding image."
+    },
+    {
+      "n": 10,
+      "projectId": 8,
+      "position": "bottom-left",
+      "subject": "Small light-sensor circuit board with a recognizable circular photoresistor, tidy electronic components and copper traces. Complete board tilted slightly.",
+      "style": "Porcelain-and-copper collectible object: creamy glazed ceramic substrate, crisp copper circuitry, subtle sage components, sophisticated material experiment with realistic electronics layout.",
+      "name": "sensor-ceramic",
+      "prompt": "Use case: stylized-concept.\nAsset type: oversized transparent hardware-project sticker, concept 10/16, bottom-left placement.\nSubject: Small light-sensor circuit board with a recognizable circular photoresistor, tidy electronic components and copper traces. Complete board tilted slightly.\nVisual direction: Porcelain-and-copper collectible object: creamy glazed ceramic substrate, crisp copper circuitry, subtle sage components, sophisticated material experiment with realistic electronics layout.\nConstraints: Create ONE individual large website collage sticker, not a sheet or multiple versions. The object must be completely isolated on a genuinely transparent alpha background, including all gaps/openings; no painted checkerboard, scene, floor, pedestal, or backdrop. Entire subject visible, tight useful framing with a small clear margin, strong readable silhouette. No text, logos, watermarks, mascots, faces, cute anthropomorphism, extra props or random embellishments. Intentional polished construction, no melted geometry or duplicated parts. This is one of sixteen deliberately different style experiments; do not imitate any preceding image."
+    },
+    {
+      "n": 11,
+      "projectId": 10,
+      "position": "top-right",
+      "subject": "Exactly three distinct miniature houses linked by two fine curved connection lines, warm illuminated windows, one compact composition.",
+      "style": "Elegant frosted-glass 3D miniatures, pale icy blue facades and amber interior light, understated architectural visualization. Sharp roof silhouettes, no fantasy scenery.",
+      "name": "houses-frosted",
+      "prompt": "Use case: product-mockup.\nAsset type: oversized transparent hardware-project sticker, concept 11/16, top-right placement.\nSubject: Exactly three distinct miniature houses linked by two fine curved connection lines, warm illuminated windows, one compact composition.\nVisual direction: Elegant frosted-glass 3D miniatures, pale icy blue facades and amber interior light, understated architectural visualization. Sharp roof silhouettes, no fantasy scenery.\nConstraints: Create ONE individual large website collage sticker, not a sheet or multiple versions. The object must be completely isolated on a genuinely transparent alpha background, including all gaps/openings; no painted checkerboard, scene, floor, pedestal, or backdrop. Entire subject visible, tight useful framing with a small clear margin, strong readable silhouette. No text, logos, watermarks, mascots, faces, cute anthropomorphism, extra props or random embellishments. Intentional polished construction, no melted geometry or duplicated parts. This is one of sixteen deliberately different style experiments; do not imitate any preceding image."
+    },
+    {
+      "n": 12,
+      "projectId": 10,
+      "position": "bottom-left",
+      "subject": "Smart-home touchscreen control panel tilted three-quarter view, clean abstract geometric controls and exactly three small location indicators, no written labels.",
+      "style": "Retro-future industrial design from the 1980s reinterpreted elegantly: cream ABS enclosure, dark charcoal screen, coral physical buttons, subtle grain, premium product illustration.",
+      "name": "panel-retrofuture",
+      "prompt": "Use case: product-mockup.\nAsset type: oversized transparent hardware-project sticker, concept 12/16, bottom-left placement.\nSubject: Smart-home touchscreen control panel tilted three-quarter view, clean abstract geometric controls and exactly three small location indicators, no written labels.\nVisual direction: Retro-future industrial design from the 1980s reinterpreted elegantly: cream ABS enclosure, dark charcoal screen, coral physical buttons, subtle grain, premium product illustration.\nConstraints: Create ONE individual large website collage sticker, not a sheet or multiple versions. The object must be completely isolated on a genuinely transparent alpha background, including all gaps/openings; no painted checkerboard, scene, floor, pedestal, or backdrop. Entire subject visible, tight useful framing with a small clear margin, strong readable silhouette. No text, logos, watermarks, mascots, faces, cute anthropomorphism, extra props or random embellishments. Intentional polished construction, no melted geometry or duplicated parts. This is one of sixteen deliberately different style experiments; do not imitate any preceding image."
+    },
+    {
+      "n": 13,
+      "projectId": 11,
+      "position": "top-right",
+      "subject": "Custom electric mountain bicycle, aluminium frame, exactly two large wheels, downtube battery, disc brakes, coherent pedals and chain. Full bike side profile.",
+      "style": "Airbrushed editorial illustration: precise black and emerald forms, luminous silver edge highlights, restrained soft gradients, striking sophisticated sporting poster cutout.",
+      "name": "ebike-airbrush",
+      "prompt": "Use case: stylized-concept.\nAsset type: oversized transparent hardware-project sticker, concept 13/16, top-right placement.\nSubject: Custom electric mountain bicycle, aluminium frame, exactly two large wheels, downtube battery, disc brakes, coherent pedals and chain. Full bike side profile.\nVisual direction: Airbrushed editorial illustration: precise black and emerald forms, luminous silver edge highlights, restrained soft gradients, striking sophisticated sporting poster cutout.\nConstraints: Create ONE individual large website collage sticker, not a sheet or multiple versions. The object must be completely isolated on a genuinely transparent alpha background, including all gaps/openings; no painted checkerboard, scene, floor, pedestal, or backdrop. Entire subject visible, tight useful framing with a small clear margin, strong readable silhouette. No text, logos, watermarks, mascots, faces, cute anthropomorphism, extra props or random embellishments. Intentional polished construction, no melted geometry or duplicated parts. This is one of sixteen deliberately different style experiments; do not imitate any preceding image."
+    },
+    {
+      "n": 14,
+      "projectId": 11,
+      "position": "bottom-left",
+      "subject": "Bicycle disc-brake rotor and drivetrain sprocket with a short chain segment, arranged as one compact engineering composition with coherent teeth and holes.",
+      "style": "Laser-etched titanium relief sticker: brushed silver with subtle oil-slick reflections, crisp engraved details, macro jewelry-like precision, no excessive rainbow glow.",
+      "name": "drivetrain-titanium",
+      "prompt": "Use case: stylized-concept.\nAsset type: oversized transparent hardware-project sticker, concept 14/16, bottom-left placement.\nSubject: Bicycle disc-brake rotor and drivetrain sprocket with a short chain segment, arranged as one compact engineering composition with coherent teeth and holes.\nVisual direction: Laser-etched titanium relief sticker: brushed silver with subtle oil-slick reflections, crisp engraved details, macro jewelry-like precision, no excessive rainbow glow.\nConstraints: Create ONE individual large website collage sticker, not a sheet or multiple versions. The object must be completely isolated on a genuinely transparent alpha background, including all gaps/openings; no painted checkerboard, scene, floor, pedestal, or backdrop. Entire subject visible, tight useful framing with a small clear margin, strong readable silhouette. No text, logos, watermarks, mascots, faces, cute anthropomorphism, extra props or random embellishments. Intentional polished construction, no melted geometry or duplicated parts. This is one of sixteen deliberately different style experiments; do not imitate any preceding image."
+    },
+    {
+      "n": 15,
+      "projectId": 22,
+      "position": "top-right",
+      "subject": "Custom gaming PC tower with glass side panel, coherent motherboard, cooling system and fans, graphite chassis, subtle violet RGB. Complete tower three-quarter view.",
+      "style": "High-end low-poly hard-surface 3D collectible, carefully faceted planes, sharp topology, matte charcoal and restrained violet emissive accents. Mature industrial aesthetic.",
+      "name": "pc-faceted",
+      "prompt": "Use case: stylized-concept.\nAsset type: oversized transparent hardware-project sticker, concept 15/16, top-right placement.\nSubject: Custom gaming PC tower with glass side panel, coherent motherboard, cooling system and fans, graphite chassis, subtle violet RGB. Complete tower three-quarter view.\nVisual direction: High-end low-poly hard-surface 3D collectible, carefully faceted planes, sharp topology, matte charcoal and restrained violet emissive accents. Mature industrial aesthetic.\nConstraints: Create ONE individual large website collage sticker, not a sheet or multiple versions. The object must be completely isolated on a genuinely transparent alpha background, including all gaps/openings; no painted checkerboard, scene, floor, pedestal, or backdrop. Entire subject visible, tight useful framing with a small clear margin, strong readable silhouette. No text, logos, watermarks, mascots, faces, cute anthropomorphism, extra props or random embellishments. Intentional polished construction, no melted geometry or duplicated parts. This is one of sixteen deliberately different style experiments; do not imitate any preceding image."
+    },
+    {
+      "n": 16,
+      "projectId": 22,
+      "position": "bottom-left",
+      "subject": "Graphics card with exactly two well-defined cooling fans, metal heatsink housing and coherent PCIe connector. Whole component visible at diagonal angle.",
+      "style": "Bold contemporary linocut editorial sticker: dense black, ivory and electric violet, clean carved shapes, disciplined hatch details, confident high-contrast printmaking.",
+      "name": "gpu-linocut",
+      "prompt": "Use case: stylized-concept.\nAsset type: oversized transparent hardware-project sticker, concept 16/16, bottom-left placement.\nSubject: Graphics card with exactly two well-defined cooling fans, metal heatsink housing and coherent PCIe connector. Whole component visible at diagonal angle.\nVisual direction: Bold contemporary linocut editorial sticker: dense black, ivory and electric violet, clean carved shapes, disciplined hatch details, confident high-contrast printmaking.\nConstraints: Create ONE individual large website collage sticker, not a sheet or multiple versions. The object must be completely isolated on a genuinely transparent alpha background, including all gaps/openings; no painted checkerboard, scene, floor, pedestal, or backdrop. Entire subject visible, tight useful framing with a small clear margin, strong readable silhouette. No text, logos, watermarks, mascots, faces, cute anthropomorphism, extra props or random embellishments. Intentional polished construction, no melted geometry or duplicated parts. This is one of sixteen deliberately different style experiments; do not imitate any preceding image."
+    }
+  ]
+}

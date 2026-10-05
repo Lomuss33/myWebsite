@@ -1,0 +1,111 @@
+{
+  "generator": "built-in image_gen",
+  "mode": "precise-object-edit",
+  "transparent_background": true,
+  "refinements": [
+    {
+      "filename": "01-germancro-conversation-story-v3.png",
+      "inputGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-24fe2f2b-fde3-4700-b26e-4933f0ce4396.png",
+      "passes": [
+        {
+          "prompt": "Use case: precise-object-edit. Edit the newly generated conversation sticker. Keep both adult learners, faces, anatomically correct hands, finely drawn clothing, shared translation console, dark contours, delicate cool rim and transparent alpha unchanged. Correct ONLY the THREE vocabulary tiles flowing from the woman toward the man: replace their current a / Japanese character / squiggle with exactly three Latin uppercase language codes, in sequence \"DE\", \"HR\", \"EN\". DE represents German, HR Croatian, EN English, the actual subject of this app. Set each code cleanly in a refined legible sans-serif, no other script or language symbols. Keep their coral-to-teal material and positions, keep the final organised text blocks and mint check. Remove tiny stray floating particles in the translation ribbon. No Japanese kana, no Chinese characters, no false flags, no repainting scene, no new background. Keep strong theme-safe contrast and true transparency.",
+          "outputPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-d36ebe0e-2d53-4071-b4a4-f0f25df3d084.png"
+        }
+      ]
+    },
+    {
+      "filename": "03-belot-table-story-v3.png",
+      "inputGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-e04a1d2d-65a2-4f7a-9651-58d9e368c62d.png",
+      "passes": [
+        {
+          "prompt": "Use case: precise-object-edit. Refine the new illustrated four-seat Belot table, retaining the exact table perspective, hand, scene layout, ornate blue/silver card backs, emerald cloth, arrow and transparent background. Fix card consistency precisely. The four large central trick cards must each have ONE matching suit in both upper-left and lower-right corners and as its large central pip: top is HEART (red heart), left is SPADE (dark spade), right is DIAMOND (red diamond), bottom is CLUB (dark club). In particular remove the wrong diamond from the bottom corner of the top heart card, remove the spade from the club card's top corner, and remove incorrect club-like marks from other corners. Foreground fan remains EXACTLY FIVE cards left-to-right K of HEARTS, Q of HEARTS, 10 of HEARTS, 9 of SPADES, 7 of CLUBS. Each card's rank in its two corners matches, with lower corner properly rotated, and suits match the indicated rank; rank 7 should be an actual clean 7, not Z. Maintain beautiful traditional court portrait ornament, but replace all crown/clothing yellow-gold with cool silver-blue, plum and ruby; no yellow/gold ink. Keep faces cool bluish silver, clean printed cards without aged paper or grain. Do not create new extra cards. No labels, unrelated symbols or white die-cut carrier. Preserve sophisticated detailed 2D illustration and dual-theme dark/light contours.",
+          "outputPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-1368202d-ba9b-4255-b1a5-0bc0f236c096.png"
+        },
+        {
+          "prompt": "Precise local correction, preserve every other detail of this Belot table illustration and alpha transparency. On the FOUR central trick cards ONLY, remove ALL small corner suit pips. Each of these four central cards should show its ONE large centred suit: top heart, left spade, right diamond, bottom club, plus existing delicate neutral corner ornaments. No small corner suit marks on any of these four. Keep the FIVE-card foreground fan, its ranks, all court portraits, hand, table rails, silver ornaments, arrow, colour and composition exactly unchanged. No new subjects or background.",
+          "outputPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-868e02c8-e829-4d9e-a7e6-95a89f6a7405.png"
+        }
+      ]
+    },
+    {
+      "filename": "04-belot-engine-story-v3.png",
+      "inputGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-34ae2c67-db6b-452c-ad88-473d3021654d.png",
+      "passes": [
+        {
+          "prompt": "Use case: precise-object-edit. Refine this NEW Belot engine-to-browser narrative illustration. Preserve exact composition, beautiful engraved mechanism, Java symbol, emerald interface, magenta routes, three rule tiles, panel layering and transparency. Remove tiny erroneous red glyphs, corner pseudoletters and marks from all the small card faces. Every miniature card should show only ONE crisp large suit symbol centred, no ranks or corner pips. The central browser trick contains four suits, one heart, one spade, one diamond, one club. The rule tile's four-card trick also has four clearly distinct suit symbols. Browser hand may retain its six cards, each with one suit only. Replace ivory card fills with light cool blue-grey and replace the thin GOLD table/frame ornament with brushed SILVER-BLUE. Replace the yellow browser control dot with violet. Leave all other story content and craft intact. No additional background or paper carrier. Retain dark contours and thin cool rim that allow the same artwork to sit over blush-white and rust-dark cards.",
+          "outputPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-a35a26bd-3d9a-48d3-80e3-3fda212e43e8.png"
+        }
+      ]
+    },
+    {
+      "filename": "05-pepper-dealer-story-v3.png",
+      "inputGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-05b18ba7-1887-4214-9d02-c50ad1b72687.png",
+      "passes": [
+        {
+          "prompt": "Precise framing correction of this new Pepper dealer story illustration. Preserve the robot, joint detail, open palm, five-card tablet, floating queen of clubs, human hand, lower realtime monitor strip, all contours and colours. Zoom the WHOLE composition out by about 8% within the same square canvas, giving it a clean transparent 4% safe margin on every side. Complete the tiny clipped crown/top curve of Pepper's rounded head so no head or hand pixels touch or are cut by the image boundary. The full head dome must be visible. Do not change character design, draw a new pose, add any object, border or background. Keep exact alpha outside all objects and in gaps, strong cool metal/navy contours suitable for both pale and dark card themes.",
+          "outputPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-14edb3fa-658e-4c4b-b4a9-c3b0f59854df.png"
+        }
+      ]
+    },
+    {
+      "filename": "06-pepper-realtime-story-v3.png",
+      "inputGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-e272b21f-8150-464d-9d0c-4dd187959007.png",
+      "passes": [
+        {
+          "prompt": "Use case: precise-object-edit. Refine this NEW robot wrist + card replacement + realtime monitor narrative illustration. Preserve precise gripper construction, cables, timing hub, sweeping blue ribbons, monitor position and entire composition. Fix game-state and card-symbol consistency only. Exactly five large physical cards along the ribbon, left-to-right SPADE, HEART, DIAMOND (the robot grips this middle card), CLUB, SPADE. Remove ALL rank letters/numbers and duplicate pips; each face has just one clean centred large suit. Fill card faces in cool blue-grey, not ivory cream. Red suits coral, black suits deep navy. Exactly TWO green hold-check badges: on first spade and fourth club only; remove the third check on the heart. Keep the ghosted replacement card below the robot's held middle diamond as a dotted outline with a single small diamond. The monitor should mirror the five-card hand: spade, heart, diamond, club, spade; its fourth club has a small green check, NOT a giant check replacing the card suit. Middle diamond retains active blue edge. No ranks/pseudoletters anywhere. Retain clear silver-blue contours, sophisticated technical 2D detail, opaque objects, transparent outer/background gaps, no new design.",
+          "outputPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-09c81f3f-4683-46f5-bf1c-1d2e1f3ec1b5.png"
+        }
+      ]
+    },
+    {
+      "filename": "10-family-archive-story-v3.png",
+      "inputGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-f9234030-6051-4168-afb9-34a708130286.png",
+      "passes": [
+        {
+          "prompt": "Precise material correction of the NEW opening family vault story illustration. Preserve the richly detailed steel vault, all family scenes, scene composition, branching ribbon, teal/plum palette, connector paths and alpha transparency. Replace the ivory/cream photograph borders with thin COOL SLATE-BLUE digital glass/metal frames; these are digital memory tiles, not paper prints. Leave the portrait scene interiors as beautifully painted vignettes. Remove any aged paper texture from tiles and the sheets stored inside the vault, replacing visible interiors with cool slate/blue-grey digital archive panels. Retain subtle graphite contour plus fine silver-blue rim for dual light/dark background contrast; do not introduce thick white borders. No new objects, badges or background. This is still a new narrative scene, not a genealogy emblem.",
+          "outputPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-b22b07c2-f823-46e5-83b0-a693ad6d91a9.png"
+        }
+      ]
+    },
+    {
+      "filename": "11-latex-layout-story-v3.png",
+      "inputGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-7376376e-d8a8-4190-a447-fd0807a2bae4.png",
+      "passes": [
+        {
+          "prompt": "Precise small content/material correction of this NEW LaTeX layout assembly illustration. Preserve page grid, clock, compass, ruler, floating sections, engineering guide lines, colours, all structure and true transparency. The CV portrait inset should contain a refined anonymous adult MAN with short dark hair, neutral professional expression, navy shirt/jacket, drawn in the SAME editorial style. It is a generic illustrative profile, not an invented likeness of the website owner. Do not change any other graphic or reflow the layout. Replace the clock's creamy ivory dial with cool LIGHT BLUE-GREY enamel, maintaining its coral 15-second sector and precise dark ticks. Remove the unnecessary decorative particles/sparkles outside measurement intersections; keep actual alignment crosses. Everything else unchanged. Preserve strong theme-safe outlines.",
+          "outputPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-adeebdc8-f9e3-4c1b-9bf4-1fb553d8ab3b.png"
+        }
+      ]
+    },
+    {
+      "filename": "12-latex-typesetter-story-v3.png",
+      "inputGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-b3271226-0681-48a5-bba9-ad2642b14a05.png",
+      "passes": [
+        {
+          "prompt": "Precise material and profile correction of this NEW code-to-typesetting narrative. Keep exact source-code panel, intricate interlocked gears/rollers, serif T band, engraved fountain nib, mechanism perspective and composition. Replace the CREAM/IVORY output CV face, page edges and T fill with COOL LIGHT SLATE-BLUE/SILVER tones, no yellow-white aged paper or visible paper grain. The output can remain a CV-shaped digital panel passing through the rollers, but must feel like a precise modern design surface. Nib and wheel highlights become neutral silver-blue rather than yellow-gold. The small portrait inset shows an anonymous adult MAN with short dark hair and neutral professional expression in a navy jacket, same sophisticated 2D editorial style, not an actual user likeness. Keep all output typography bars, hierarchy and document geometry unchanged. Keep the artwork entirely within canvas with at least 3% transparent space at its right edge; slightly zoom out only if necessary to prevent cropped document sides. No new objects, extra lettering, glow or background. True alpha.",
+          "outputPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-40f58dce-bf25-47ba-931a-bb524c04b81f.png"
+        }
+      ]
+    },
+    {
+      "filename": "13-portfolio-world-story-v3.png",
+      "inputGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-8664d97c-4575-47c4-9caa-c4181c871216.png",
+      "passes": [
+        {
+          "prompt": "Precise profile correction of this NEW portfolio digital world illustration. Preserve the entire composition, hardware processor board, art drawing interface, stylus, rich panel details, pointing hand, lilac ribbons, colours and transparency. The browser's small circular profile portrait must show an anonymous adult MAN with short dark hair, understated neutral expression and navy top in the same finely drawn 2D editorial style. It represents a generic personal software portfolio, not a specific likeness of its owner. Replace ONLY that small portrait and the yellow browser control dot with a cool lilac dot. Retain all three illustrated project tiles and code forms. No other redraw, no border carrier, no paper/grain, no background. Keep fine charcoal and silver-blue edge contrast on both dark and light themes.",
+          "outputPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-b25c12d8-f61b-4e51-84ce-64efc514b7ee.png"
+        }
+      ]
+    },
+    {
+      "filename": "14-portfolio-journey-story-v3.png",
+      "inputGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-d0de7456-d0b3-4741-8015-0fb3000dee2e.png",
+      "passes": [
+        {
+          "prompt": "Precise material refinement of this NEW learning-to-workshop-to-website story. Preserve beautiful detailed book diagrams, compass, soldering bench, board, tools, browser, landscape tiles, continuous teal ribbon, plants and overall composition. Change the CREAM/IVORY book page faces and exposed page edges to COOL LIGHT BLUE-GREY, clean smooth modern illustration surfaces without paper grain or yellow age. Preserve all technical diagram detail and binding contours. Change the amber wooden bench face to elegant GRAPHITE/COOL SLATE, maintaining deliberate plane shading and object placement; metal highlights stay neutral silver-blue. Change the yellow browser control dot to lilac. Do not repaint the plants, ribbons, card imagery or copper PCB pads. Add a narrow transparent safe margin at top/right so the outermost leaves/browser edge are fully visible rather than clipped; keep all important objects and their relationships. No new objects, paper carrier or glow backdrop. Sophisticated detailed 2D craftsmanship, true alpha and strong dark/light boundary contrast.",
+          "outputPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-0957ae1f-e12e-4b4a-b6f0-881b15cea152.png"
+        }
+      ]
+    }
+  ]
+}

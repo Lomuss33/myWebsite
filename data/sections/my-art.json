@@ -52,7 +52,7 @@
             "settings": {
                 "max_rows_collapse_threshold": 3,
                 "order_items_by": "date",
-                "order_items_sort": "asc",
+                "order_items_sort": "desc",
                 "timeline_variant": "art-photography"
             },
             "items": [
@@ -61,6 +61,10 @@
                     "date": {
                         "year": 2023,
                         "month": 8
+                    },
+                    "album_last_upload": {
+                        "date": { "year": 2025, "month": 12, "day": 21 },
+                        "verified_on": "2026-10-04"
                     },
                     "preview": {
                         "links": [
@@ -80,25 +84,25 @@
                         "en": {
                             "title": "Macedonia - VSCO Album",
                             "country": "Macedonia",
-                            "text": "Mountains, monasteries, city life and landscapes.",
+                            "text": "Skopje’s monuments give way to steep cliffs and quiet green water: two very different sides of the same journey.",
                             "medium": "Photography"
                         },
                         "de": {
                             "title": "Mazedonien - VSCO-Album",
                             "country": "Mazedonien",
-                            "text": "Berge, Klöster, Stadtleben und Landschaften.",
+                            "text": "Auf Skopjes Denkmäler folgen steile Felswände und stilles grünes Wasser: zwei ganz unterschiedliche Seiten derselben Reise.",
                             "medium": "Fotografie"
                         },
                         "hr": {
                             "title": "Makedonija - VSCO album",
                             "country": "Makedonija",
-                            "text": "Planine, samostani, gradski život i krajolici.",
+                            "text": "Od skopskih spomenika do strmih stijena i mirne zelene vode — dva sasvim različita lica istog putovanja.",
                             "medium": "Fotografija"
                         },
                         "tr": {
                             "title": "Makedonya - VSCO albümü",
                             "country": "Makedonya",
-                            "text": "Dağlar, manastırlar, şehir hayatı ve manzaralar.",
+                            "text": "Üsküp’ün anıtlarından sarp kayalıklara ve durgun yeşil sulara: aynı yolculuğun birbirinden çok farklı iki yüzü.",
                             "medium": "Fotoğrafçılık"
                         }
                     }
@@ -108,6 +112,10 @@
                     "date": {
                         "year": 2023,
                         "month": 7
+                    },
+                    "album_last_upload": {
+                        "date": { "year": 2025, "month": 12, "day": 1 },
+                        "verified_on": "2026-10-04"
                     },
                     "preview": {
                         "links": [
@@ -126,25 +134,25 @@
                         "en": {
                             "title": "Greece - VSCO Album",
                             "country": "Greece",
-                            "text": "Blue seas, islands, and sun-drenched villages.",
+                            "text": "At Meteora, the monastery seems suspended above the valley. Tiny figures at the lookout bring the immense landscape into scale.",
                             "medium": "Photography"
                         },
                         "de": {
                             "title": "Griechenland - VSCO-Album",
                             "country": "Griechenland",
-                            "text": "Blaue Meere, Inseln und sonnenverwöhnte Dörfer.",
+                            "text": "In Meteora scheint das Kloster über dem Tal zu schweben. Die kleinen Figuren am Aussichtspunkt machen die Weite erst greifbar.",
                             "medium": "Fotografie"
                         },
                         "hr": {
                             "title": "Grčka - VSCO album",
                             "country": "Grčka",
-                            "text": "Plava mora, otoci i suncem okupana sela.",
+                            "text": "Na Meteorima samostan kao da lebdi iznad doline. Sitne figure na vidikovcu otkrivaju koliko je krajolik zapravo golem.",
                             "medium": "Fotografija"
                         },
                         "tr": {
                             "title": "Yunanistan - VSCO albümü",
                             "country": "Yunanistan",
-                            "text": "Mavi denizler, adalar ve güneşle yıkanmış köyler.",
+                            "text": "Meteora’da manastır vadinin üzerinde asılı duruyor gibi. Seyir noktasındaki küçücük insanlar, manzaranın büyüklüğünü hissettiriyor.",
                             "medium": "Fotoğrafçılık"
                         }
                     }
@@ -154,6 +162,10 @@
                     "date": {
                         "year": 2023,
                         "month": 6
+                    },
+                    "album_last_upload": {
+                        "date": { "year": 2025, "month": 10, "day": 23 },
+                        "verified_on": "2026-10-04"
                     },
                     "preview": {
                         "links": [
@@ -173,25 +185,25 @@
                         "en": {
                             "title": "Bulgaria - VSCO Album",
                             "country": "Bulgaria",
-                            "text": "Urban and Black Sea — contemporary and classic moments.",
+                            "text": "Ornate domes, weathered stone, and a watchful lion. Bulgaria caught my eye through the architectural details you notice when you slow down.",
                             "medium": "Photography"
                         },
                         "de": {
                             "title": "Bulgarien - VSCO-Album",
                             "country": "Bulgarien",
-                            "text": "Stadt und Schwarzes Meer — zeitgenössische und klassische Momente.",
+                            "text": "Verzierte Kuppeln, verwitterter Stein und ein wachsamer Löwe. Bulgarien fiel mir durch die Architekturdetails auf, die man erst beim Innehalten entdeckt.",
                             "medium": "Fotografie"
                         },
                         "hr": {
                             "title": "Bugarska - VSCO album",
                             "country": "Bugarska",
-                            "text": "Grad i Crno more — suvremeni i klasični trenuci.",
+                            "text": "Ukrašene kupole, istrošeni kamen i lav na straži. Bugarsku pamtim po detaljima arhitekture koje primijetiš tek kad usporiš.",
                             "medium": "Fotografija"
                         },
                         "tr": {
                             "title": "Bulgaristan - VSCO albümü",
                             "country": "Bulgaristan",
-                            "text": "Şehir ve Karadeniz — modern ve klasik anlar.",
+                            "text": "İşlemeli kubbeler, zamanın izini taşıyan taşlar ve nöbet tutan bir aslan. Bulgaristan, yavaşlayınca fark edilen mimari ayrıntılarıyla aklımda kaldı.",
                             "medium": "Fotoğrafçılık"
                         }
                     }
@@ -201,6 +213,10 @@
                     "date": {
                         "year": 2023,
                         "month": 5
+                    },
+                    "album_last_upload": {
+                        "status": "empty",
+                        "verified_on": "2026-10-04"
                     },
                     "preview": {
                         "links": [
@@ -219,25 +235,25 @@
                         "en": {
                             "title": "Serbia - VSCO Album",
                             "country": "Serbia",
-                            "text": "Belgrade, brutalism, neighborhoods, and night views.",
+                            "text": "A red tram, overhead wires, and a church rising behind them. Belgrade’s everyday movement and older skyline meet in one frame.",
                             "medium": "Photography"
                         },
                         "de": {
                             "title": "Serbien - VSCO-Album",
                             "country": "Serbien",
-                            "text": "Belgrad, Brutalismus, Viertel und Nachtansichten.",
+                            "text": "Eine rote Straßenbahn, Oberleitungen und dahinter eine Kirche. Belgrads Alltagsbewegung und ältere Stadtsilhouette treffen in einem Bild zusammen.",
                             "medium": "Fotografie"
                         },
                         "hr": {
                             "title": "Srbija - VSCO album",
                             "country": "Srbija",
-                            "text": "Beograd, brutalizam, kvartovi i noćni prizori.",
+                            "text": "Crveni tramvaj, mreža žica i crkva koja se uzdiže iza njih. Svakodnevni pokret Beograda i njegova starija silueta u istom kadru.",
                             "medium": "Fotografija"
                         },
                         "tr": {
                             "title": "Sırbistan - VSCO albümü",
                             "country": "Sırbistan",
-                            "text": "Belgrad, brutalist mimari, mahalleler ve gece manzaraları.",
+                            "text": "Kırmızı bir tramvay, havai teller ve arkalarında yükselen bir kilise. Belgrad’ın gündelik hareketiyle eski şehir silueti tek karede buluşuyor.",
                             "medium": "Fotoğrafçılık"
                         }
                     }
@@ -247,6 +263,10 @@
                     "date": {
                         "year": 2022,
                         "month": 9
+                    },
+                    "album_last_upload": {
+                        "status": "empty",
+                        "verified_on": "2026-10-04"
                     },
                     "preview": {
                         "links": [
@@ -265,25 +285,25 @@
                         "en": {
                             "title": "Bosnia - VSCO Album",
                             "country": "Bosnia and Herzegovina",
-                            "text": "Sarajevo, bridges and rivers—history and modern life.",
+                            "text": "A green tractor rests inside a rough concrete garage. An ordinary working space becomes a portrait of rural life between tasks.",
                             "medium": "Photography"
                         },
                         "de": {
                             "title": "Bosnien - VSCO-Album",
                             "country": "Bosnien und Herzegowina",
-                            "text": "Sarajevo, Brücken und Flüsse—Geschichte und modernes Leben.",
+                            "text": "Ein grüner Traktor steht in einer schlichten Betongarage. Ein gewöhnlicher Arbeitsraum wird zum Bild des Landlebens zwischen zwei Einsätzen.",
                             "medium": "Fotografie"
                         },
                         "hr": {
                             "title": "Bosna - VSCO album",
                             "country": "Bosna i Hercegovina",
-                            "text": "Sarajevo, mostovi i rijeke—povijest i suvremeni život.",
+                            "text": "Zeleni traktor miruje u gruboj betonskoj garaži. Običan radni prostor postaje slika seoskog života u predahu između poslova.",
                             "medium": "Fotografija"
                         },
                         "tr": {
                             "title": "Bosna - VSCO albümü",
                             "country": "Bosna-Hersek",
-                            "text": "Saraybosna, köprüler ve nehirler—tarih ile modern yaşamın buluşması.",
+                            "text": "Yeşil bir traktör, sade bir beton garajda dinleniyor. Sıradan bir çalışma alanı, işlerin arasındaki molada kırsal hayatın portresine dönüşüyor.",
                             "medium": "Fotoğrafçılık"
                         }
                     }
@@ -293,6 +313,10 @@
                     "date": {
                         "year": 2022,
                         "month": 8
+                    },
+                    "album_last_upload": {
+                        "status": "empty",
+                        "verified_on": "2026-10-04"
                     },
                     "preview": {
                         "links": [
@@ -312,25 +336,25 @@
                         "en": {
                             "title": "Croatia - VSCO Album",
                             "country": "Croatia",
-                            "text": "Islands, Adriatic color, street moments from Split to Zagreb.",
+                            "text": "Beach umbrellas by day, Split’s stone towers and fireworks by night. The Adriatic summer changes its mood without losing its energy.",
                             "medium": "Photography"
                         },
                         "de": {
                             "title": "Kroatien - VSCO-Album",
                             "country": "Kroatien",
-                            "text": "Inseln, Adriatische Farben und Straßenszenen von Split bis Zagreb.",
+                            "text": "Tagsüber Sonnenschirme am Strand, nachts Splits steinerne Türme und Feuerwerk. Der Adriasommer wechselt die Stimmung, aber behält seine Energie.",
                             "medium": "Fotografie"
                         },
                         "hr": {
                             "title": "Hrvatska - VSCO album",
                             "country": "Hrvatska",
-                            "text": "Otoci, boje Jadrana i ulični trenuci od Splita do Zagreba.",
+                            "text": "Danju suncobrani na plaži, noću splitski kameni tornjevi i vatromet. Jadransko ljeto mijenja raspoloženje, ali ne gubi energiju.",
                             "medium": "Fotografija"
                         },
                         "tr": {
                             "title": "Hırvatistan - VSCO albümü",
                             "country": "Hırvatistan",
-                            "text": "Adalar, Adriyatik renkleri ve Split’ten Zagreb’e uzanan sokak anları.",
+                            "text": "Gündüz plaj şemsiyeleri, gece Split’in taş kuleleri ve havai fişekler. Adriyatik yazı havasını değiştiriyor, enerjisini koruyor.",
                             "medium": "Fotoğrafçılık"
                         }
                     }
@@ -340,6 +364,10 @@
                     "date": {
                         "year": 2022,
                         "month": 4
+                    },
+                    "album_last_upload": {
+                        "status": "unavailable",
+                        "verified_on": "2026-10-04"
                     },
                     "preview": {
                         "links": [
@@ -361,25 +389,25 @@
                         "en": {
                             "title": "Germany - VSCO Album",
                             "country": "Germany",
-                            "text": "Urban Hessen, culture, skylines, and city parks.",
+                            "text": "A cat in Eppstein, Frankfurt after dark, green outskirts, and a view through the flowers. Hessen seen from both the street and home.",
                             "medium": "Photography"
                         },
                         "de": {
                             "title": "Deutschland - VSCO-Album",
                             "country": "Deutschland",
-                            "text": "Urbanes Hessen, Kultur, Skylines und Stadtparks.",
+                            "text": "Eine Katze in Eppstein, Frankfurt bei Nacht, grüne Ortsränder und ein Blick durch die Blumen. Hessen, von der Straße und von zu Hause aus gesehen.",
                             "medium": "Fotografie"
                         },
                         "hr": {
                             "title": "Njemačka - VSCO album",
                             "country": "Njemačka",
-                            "text": "Urbani Hessen, kultura, gradski horizonti i parkovi.",
+                            "text": "Mačka u Eppsteinu, noćni Frankfurt, zeleni rubovi naselja i pogled kroz cvijeće. Hessen viđen i s ulice i iz doma.",
                             "medium": "Fotografija"
                         },
                         "tr": {
                             "title": "Almanya - VSCO albümü",
                             "country": "Almanya",
-                            "text": "Kentsel Hessen, kültür, gökdelen siluetleri ve şehir parkları.",
+                            "text": "Eppstein’da bir kedi, gece Frankfurt’u, yeşil kent çeperleri ve çiçeklerin arasından bir manzara. Hessen’e hem sokaktan hem evden bir bakış.",
                             "medium": "Fotoğrafçılık"
                         }
                     }
@@ -2344,8 +2372,8 @@
                     },
                     "labels": {
                         "en": {
-                            "genreLabel": "Genre:",
-                            "artistGenreStatement": "\u201cSongs\u201d that make you wonder: why so strange\u2014and why do they move me so much?",
+                            "genreLabel": "Guiding idea:",
+                            "artistGenreStatement": "Start with a sound you can't quite place. Follow it somewhere new.",
                             "artistSectionLabel": "Artist profile",
                             "bannerPlaceholder": "Artist banner",
                             "portraitPlaceholder": "Artist portrait",
@@ -2372,8 +2400,8 @@
                             "audioUnavailable": "Audio could not be loaded"
                         },
                         "de": {
-                            "genreLabel": "Genre:",
-                            "artistGenreStatement": "\u201eSongs\u201c, die dich fragen lassen: Warum sind sie so seltsam \u2013 und warum ber\u00fchren sie mich so sehr?",
+                            "genreLabel": "Leitgedanke:",
+                            "artistGenreStatement": "Beginne mit einem Klang, den du nicht einordnen kannst. Folge ihm, wohin er dich führt.",
                             "artistSectionLabel": "Künstlerprofil",
                             "bannerPlaceholder": "Künstlerbanner",
                             "portraitPlaceholder": "Künstlerporträt",
@@ -2400,8 +2428,8 @@
                             "audioUnavailable": "Audio konnte nicht geladen werden"
                         },
                         "hr": {
-                            "genreLabel": "Žanr:",
-                            "artistGenreStatement": "\u201ePjesme\u201c zbog kojih se pitaš: Zašto su tako neobične \u2014 i zašto me toliko diraju?",
+                            "genreLabel": "Misao vodilja:",
+                            "artistGenreStatement": "Počni zvukom koji je teško opisati. Prati kamo te vodi.",
                             "artistSectionLabel": "Profil umjetnika",
                             "bannerPlaceholder": "Naslovna slika umjetnika",
                             "portraitPlaceholder": "Portret umjetnika",
@@ -2428,8 +2456,8 @@
                             "audioUnavailable": "Zvuk se ne može učitati"
                         },
                         "tr": {
-                            "genreLabel": "Tür:",
-                            "artistGenreStatement": "\u201cŞarkılar\u201d: \u201cNeden bu kadar tuhaflar ve beni neden bu kadar derinden etkiliyorlar?\u201d dedirten.",
+                            "genreLabel": "Yol gösteren düşünce:",
+                            "artistGenreStatement": "Adını koyamadığın bir sesle başla. Seni nereye götürecekse peşinden git.",
                             "artistSectionLabel": "Sanatçı profili",
                             "bannerPlaceholder": "Sanatçı kapak görseli",
                             "portraitPlaceholder": "Sanatçı portresi",

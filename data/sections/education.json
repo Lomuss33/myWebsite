@@ -79,7 +79,8 @@
                     },
                     "locales": {
                         "en": {
-                            "title": "Erasmus+ Exchange — Computer Engineering",
+                            "title": "Computer Engineering",
+                            "level": "Erasmus+ exchange",
                             "institution": "International Balkan University (IBU)",
                             "country": "Skopje, North Macedonia",
                             "list": [
@@ -95,7 +96,8 @@
                             ]
                         },
                         "de": {
-                            "title": "Erasmus+ Austausch — Computer Engineering",
+                            "title": "Computer Engineering",
+                            "level": "Erasmus+ Austausch",
                             "institution": "International Balkan University (IBU)",
                             "country": "Skopje, Nordmazedonien",
                             "list": [
@@ -111,7 +113,8 @@
                             ]
                         },
                         "hr": {
-                            "title": "Erasmus+ razmjena — Računalno inženjerstvo",
+                            "title": "Računalno inženjerstvo",
+                            "level": "Erasmus+ razmjena",
                             "institution": "International Balkan University (IBU)",
                             "country": "Skopje, Sjeverna Makedonija",
                             "list": [
@@ -127,7 +130,8 @@
                             ]
                         },
                         "tr": {
-                            "title": "Erasmus+ Değişim — Bilgisayar Mühendisliği",
+                            "title": "Bilgisayar Mühendisliği",
+                            "level": "Erasmus+ değişimi",
                             "institution": "International Balkan University (IBU)",
                             "country": "Üsküp, Kuzey Makedonya",
                             "list": [
@@ -168,8 +172,9 @@
                     },
                     "locales": {
                         "en": {
-                            "title": "Training as Electronic Technician for Automation Technology",
-                            "institution": "Provadis",
+                            "title": "Electronics & Automation Technology",
+                            "level": "Vocational apprenticeship",
+                            "institution": "Provadis / Clariant",
                             "country": "Frankfurt am Main, Germany",
                             "list": [
                                 "Hands-on experience with automation systems",
@@ -182,8 +187,9 @@
                             ]
                         },
                         "de": {
-                            "title": "Ausbildung als Elektroniker für Automatisierungstechnik",
-                            "institution": "Clariant",
+                            "title": "Elektroniker für Automatisierungstechnik",
+                            "level": "Berufsausbildung",
+                            "institution": "Provadis / Clariant",
                             "country": "Frankfurt am Main, Deutschland",
                             "list": [
                                 "Praxis an Automatisierungssystemen",
@@ -196,8 +202,9 @@
                             ]
                         },
                         "hr": {
-                            "title": "Obuka za Elektroničara za Automatizaciju",
-                            "institution": "Clariant",
+                            "title": "Elektronika i automatizacija",
+                            "level": "Strukovno obrazovanje",
+                            "institution": "Provadis / Clariant",
                             "country": "Frankfurt am Main, Njemačka",
                             "list": [
                                 "Praktičan rad s automatizacijskim sustavima",
@@ -210,8 +217,9 @@
                             ]
                         },
                         "tr": {
-                            "title": "Otomasyon Teknolojisi Eğitimine Elektronik Teknisyeni",
-                            "institution": "Clariant",
+                            "title": "Elektronik ve Otomasyon Teknolojisi",
+                            "level": "Mesleki eğitim",
+                            "institution": "Provadis / Clariant",
                             "country": "Frankfurt am Main, Almanya",
                             "list": [
                                 "Otomasyon sistemlerinde uygulamalı çalışma",
@@ -249,6 +257,7 @@
                     "locales": {
                         "en": {
                             "title": "Engineering Computer Science",
+                            "level": "Bachelor of Science (B.Sc.)",
                             "institution": "Technische Hochschule Mittelhessen",
                             "country": "Gießen, Germany",
                             "list": [
@@ -263,6 +272,7 @@
                         },
                         "de": {
                             "title": "Ingenieurinformatik",
+                            "level": "Bachelor of Science (B.Sc.)",
                             "institution": "Technische Hochschule Mittelhessen - THM",
                             "country": "Gießen, Deutschland",
                             "list": [
@@ -277,6 +287,7 @@
                         },
                         "hr": {
                             "title": "Inženjerska informatika",
+                            "level": "Prijediplomski studij (B.Sc.)",
                             "institution": "Tehnička Visoka Škola Mittelhessen - THM",
                             "country": "Gießen, Njemačka",
                             "list": [
@@ -290,7 +301,8 @@
                             ]
                         },
                         "tr": {
-                            "title": "Mühendislik Bilgisayar Bilimi",
+                            "title": "Mühendislik Bilişimi",
+                            "level": "Lisans (B.Sc.)",
                             "institution": "Mittelhessen Teknik Üniversitesi - THM",
                             "country": "Gießen, Almanya",
                             "list": [
@@ -329,7 +341,8 @@
                     },
                     "locales": {
                         "en": {
-                            "title": "Vocational School",
+                            "title": "Electrical Engineering",
+                            "level": "Fachabitur",
                             "institution": "Brühlwiesenschule",
                             "country": "Hofheim am Taunus, Germany",
                             "list": [
@@ -343,7 +356,8 @@
                             ]
                         },
                         "de": {
-                            "title": "Fachschule",
+                            "title": "Elektrotechnik",
+                            "level": "Fachhochschulreife (Fachabitur)",
                             "institution": "Brühlwiesenschule",
                             "country": "Hofheim am Taunus, Deutschland",
                             "list": [
@@ -357,7 +371,8 @@
                             ]
                         },
                         "hr": {
-                            "title": "Stručna Škola",
+                            "title": "Elektrotehnika",
+                            "level": "Fachabitur",
                             "institution": "Brühlwiesenschule",
                             "country": "Hofheim am Taunus, Njemačka",
                             "list": [
@@ -371,7 +386,8 @@
                             ]
                         },
                         "tr": {
-                            "title": "Meslek Okulu",
+                            "title": "Elektrik Teknolojisi",
+                            "level": "Fachabitur",
                             "institution": "Brühlwiesenschule",
                             "country": "Hofheim am Taunus, Almanya",
                             "list": [
@@ -410,7 +426,8 @@
                     },
                     "locales": {
                         "en": {
-                            "title": "Secondary School",
+                            "title": "General Education",
+                            "level": "Secondary education (Realschule)",
                             "institution": "Eichendorffschule",
                             "country": "Kelkheim, Germany",
                             "text": "At Eichendorffschule in Kelkheim, I completed secondary school, adapted to a new school system, and chose a technical apprenticeship.",
@@ -421,8 +438,9 @@
                             ]
                         },
                         "de": {
-                            "title": "Realschule",
-                            "institution": "EichendorfSchule Kelkheim",
+                            "title": "Allgemeinbildung",
+                            "level": "Realschulabschluss",
+                            "institution": "Eichendorffschule",
                             "country": "Deutschland",
                             "text": "An der Eichendorffschule in Kelkheim schloss ich die Realschule ab, fand mich im neuen Schulsystem zurecht und entschied mich für eine technische Ausbildung.",
                             "list": [],
@@ -432,8 +450,9 @@
                             ]
                         },
                         "hr": {
-                            "title": "Srednja Škola",
-                            "institution": "EichendorfSchule Kelkheim",
+                            "title": "Opće obrazovanje",
+                            "level": "Srednje obrazovanje (Realschule)",
+                            "institution": "Eichendorffschule",
                             "country": "Njemačka",
                             "text": "U školi Eichendorffschule u Kelkheimu završio sam srednju školu, prilagodio se novom školskom sustavu i odabrao tehničko strukovno obrazovanje.",
                             "list": [],
@@ -443,8 +462,9 @@
                             ]
                         },
                         "tr": {
-                            "title": "Ortaokul",
-                            "institution": "EichendorfSchule Kelkheim",
+                            "title": "Genel Eğitim",
+                            "level": "Ortaöğretim (Realschule)",
+                            "institution": "Eichendorffschule",
                             "country": "Almanya",
                             "text": "Kelkheim'deki Eichendorffschule'de ortaöğrenimimi tamamlayıp yeni okul sistemine uyum sağladım ve teknik mesleki eğitime yöneldim.",
                             "list": [],
@@ -479,7 +499,8 @@
                     },
                     "locales": {
                         "en": {
-                            "title": "Primary School",
+                            "title": "Foundations of Learning",
+                            "level": "Basic education (Osnovna škola)",
                             "institution": "Osnovna škola fra Mijo Čuić",
                             "country": "Tomislavgrad, Bosnia",
                             "text": "From 2007 to 2018, I attended primary school in Brišnik, where school and village life shaped the close-knit community my generation grew up in.",
@@ -490,8 +511,9 @@
                             ]
                         },
                         "de": {
-                            "title": "Grundschule",
-                            "institution": "Tomislavgrad, Bosnien",
+                            "title": "Grundlagen des Lernens",
+                            "level": "Grundschule (Osnovna škola)",
+                            "institution": "Osnovna škola fra Mijo Čuić",
                             "country": "Bosnien und Herzegowina",
                             "text": "Von 2007 bis 2018 besuchte ich die Grundschule in Brišnik, wo Schule und Dorfleben die enge Gemeinschaft prägten, in der meine Generation aufwuchs.",
                             "list": [],
@@ -501,8 +523,9 @@
                             ]
                         },
                         "hr": {
-                            "title": "Osnovna Škola",
-                            "institution": "Tomislavgrad, Bosna",
+                            "title": "Temelji znanja i učenja",
+                            "level": "Osnovna škola",
+                            "institution": "Osnovna škola fra Mijo Čuić",
                             "country": "Bosna i Hercegovina",
                             "text": "Od 2007. do 2018. pohađao sam osnovnu školu u Brišniku, gdje su školski i seoski život oblikovali blisku zajednicu u kojoj je odrastala moja generacija.",
                             "list": [],
@@ -512,8 +535,9 @@
                             ]
                         },
                         "tr": {
-                            "title": "İlkokul",
-                            "institution": "Tomislavgrad, Bosna",
+                            "title": "Öğrenmenin Temelleri",
+                            "level": "Temel eğitim (Osnovna škola)",
+                            "institution": "Osnovna škola fra Mijo Čuić",
                             "country": "Bosna-Hersek",
                             "text": "2007-2018 arasında Brišnik'te ilkokula gittim; okul ve köy yaşamı, kuşağımın içinde büyüdüğü güçlü topluluk bağlarını şekillendirdi.",
                             "list": [],
@@ -601,7 +625,8 @@
                     },
                     "date": {
                         "year": 2026,
-                        "month": 9
+                        "month": 9,
+                        "day": 4
                     },
                     "link": {
                         "href": "https://www.frankfurt-main.ihk.de/aus-und-weiterbildung/weiterbildung/weiterbildungspruefungen/weiterbildungspruefungen-von-a-bis-z/a-z-liste/ausbildereignung-pruefung-5189130",
@@ -610,19 +635,19 @@
                     "locales": {
                         "en": {
                             "title": "{{AEVO}} Certification",
-                            "text": "The IHK AEVO qualification is planned for July 2026, with certification expected in September 2026. It authorizes me as a certified instructor to train apprentices in Germany."
+                            "text": "I passed the IHK AEVO examination on 4 September 2026. The qualification confirms the vocational and pedagogical skills required to train apprentices in Germany."
                         },
                         "de": {
                             "title": "{{AEVO}}-Zertifikat",
-                            "text": "Die IHK-AEVO-Qualifikation ist fuer Juli 2026 geplant, das Zertifikat wird im September 2026 erwartet. Sie berechtigt mich als zertifizierten Ausbilder zur Ausbildung von Auszubildenden in Deutschland."
+                            "text": "Am 4. September 2026 habe ich die Prüfung nach der Ausbilder-Eignungsverordnung bestanden. Damit sind meine berufs- und arbeitspädagogischen Kenntnisse für die Ausbildung von Auszubildenden in Deutschland nachgewiesen."
                         },
                         "hr": {
                             "title": "{{AEVO}} certifikat",
-                            "text": "IHK AEVO kvalifikacija planirana je za srpanj 2026., a certifikat se ocekuje u rujnu 2026. Time se stjece ovlast za strucno osposobljavanje pripravnika u Njemackoj."
+                            "text": "Ispit prema njemačkom propisu o osposobljenosti za obuku (AEVO) položio sam 4. rujna 2026. Potvrđuje moje stručne i pedagoške vještine za obuku pripravnika u Njemačkoj."
                         },
                         "tr": {
                             "title": "{{AEVO}} sertifikasi",
-                            "text": "IHK AEVO yeterliligi Temmuz 2026 icin planlandi, sertifikanin ise Eylul 2026'da gelmesi bekleniyor. Bu belge Almanya'da cirak egitimi verebilen sertifikali bir egitici olma yetkisi saglar."
+                            "text": "Almanya'daki AEVO eğitmenlik sınavını 4 Eylül 2026'da geçtim. Sertifika, çırakları eğitmek için gereken mesleki ve pedagojik yeterliliğimi doğruluyor."
                         }
                     }
                 },

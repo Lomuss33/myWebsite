@@ -1,0 +1,145 @@
+{
+  "generator": "built-in image_gen",
+  "mode": "generate with targeted refinements",
+  "revision": 3,
+  "status": "installed",
+  "themeCompatibility": "Identical artwork for light and dark themes; opaque medium-value colours, graphite contours and selective cool rim details.",
+  "promptFile": "prompts-story-v3.json",
+  "refinementPromptFile": "refinements-story-v3.json",
+  "previousManifest": "manifest-v2.json",
+  "stickers": [
+    {
+      "filename": "01-germancro-conversation-story-v3.png",
+      "title": "GermanCro · Conversation becomes understanding",
+      "style": "editorial character illustration",
+      "initialGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-24fe2f2b-fde3-4700-b26e-4933f0ce4396.png",
+      "selectedGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-d36ebe0e-2d53-4071-b4a4-f0f25df3d084.png",
+      "refinementOutputs": [
+        "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-d36ebe0e-2d53-4071-b4a4-f0f25df3d084.png"
+      ]
+    },
+    {
+      "filename": "02-germancro-practice-story-v3.png",
+      "title": "GermanCro · From typing to mastery",
+      "style": "technical editorial cutaway",
+      "initialGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-ffc5b5df-852a-4d6e-a082-72d16163e5b3.png",
+      "selectedGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-ffc5b5df-852a-4d6e-a082-72d16163e5b3.png",
+      "refinementOutputs": []
+    },
+    {
+      "filename": "03-belot-table-story-v3.png",
+      "title": "Belot · A four-seat trick",
+      "style": "geometric game-world illustration",
+      "initialGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-e04a1d2d-65a2-4f7a-9651-58d9e368c62d.png",
+      "selectedGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-868e02c8-e829-4d9e-a7e6-95a89f6a7405.png",
+      "refinementOutputs": [
+        "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-1368202d-ba9b-4255-b1a5-0bc0f236c096.png",
+        "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-868e02c8-e829-4d9e-a7e6-95a89f6a7405.png"
+      ]
+    },
+    {
+      "filename": "04-belot-engine-story-v3.png",
+      "title": "Belot · Rules power the interface",
+      "style": "exploded technical narrative",
+      "initialGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-34ae2c67-db6b-452c-ad88-473d3021654d.png",
+      "selectedGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-a35a26bd-3d9a-48d3-80e3-3fda212e43e8.png",
+      "refinementOutputs": [
+        "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-a35a26bd-3d9a-48d3-80e3-3fda212e43e8.png"
+      ]
+    },
+    {
+      "filename": "05-pepper-dealer-story-v3.png",
+      "title": "Robot poker · Pepper deals with you",
+      "style": "expressive robotics editorial",
+      "initialGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-05b18ba7-1887-4214-9d02-c50ad1b72687.png",
+      "selectedGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-14edb3fa-658e-4c4b-b4a9-c3b0f59854df.png",
+      "refinementOutputs": [
+        "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-14edb3fa-658e-4c4b-b4a9-c3b0f59854df.png"
+      ]
+    },
+    {
+      "filename": "06-pepper-realtime-story-v3.png",
+      "title": "Robot poker · One hand, synchronised systems",
+      "style": "kinetic systems illustration",
+      "initialGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-e272b21f-8150-464d-9d0c-4dd187959007.png",
+      "selectedGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-09c81f3f-4683-46f5-bf1c-1d2e1f3ec1b5.png",
+      "refinementOutputs": [
+        "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-09c81f3f-4683-46f5-bf1c-1d2e1f3ec1b5.png"
+      ]
+    },
+    {
+      "filename": "07-villa-renovation-story-v3.png",
+      "title": "Villa Bagara · Heritage becomes a retreat",
+      "style": "architectural transformation illustration",
+      "initialGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-4d229e13-2771-4492-88d5-e0366579162d.png",
+      "selectedGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-4d229e13-2771-4492-88d5-e0366579162d.png",
+      "refinementOutputs": []
+    },
+    {
+      "filename": "08-villa-outdoors-story-v3.png",
+      "title": "Villa Bagara · A route from home to the mountains",
+      "style": "topographic adventure editorial",
+      "initialGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-acdf0797-cc9d-4e86-95b3-9fbd2d511d45.png",
+      "selectedGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-acdf0797-cc9d-4e86-95b3-9fbd2d511d45.png",
+      "refinementOutputs": []
+    },
+    {
+      "filename": "09-family-generations-story-v3.png",
+      "title": "Family tree · Discovering the generations",
+      "style": "human-centred layered illustration",
+      "initialGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-e730ed5d-4b88-41b5-a2d9-3cc716021e48.png",
+      "selectedGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-e730ed5d-4b88-41b5-a2d9-3cc716021e48.png",
+      "refinementOutputs": []
+    },
+    {
+      "filename": "10-family-archive-story-v3.png",
+      "title": "Family archive · Private stories, protected connections",
+      "style": "intricate technical archive illustration",
+      "initialGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-f9234030-6051-4168-afb9-34a708130286.png",
+      "selectedGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-b22b07c2-f823-46e5-83b0-a693ad6d91a9.png",
+      "refinementOutputs": [
+        "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-b22b07c2-f823-46e5-83b0-a693ad6d91a9.png"
+      ]
+    },
+    {
+      "filename": "11-latex-layout-story-v3.png",
+      "title": "LaTeX CV · Dense information, precise hierarchy",
+      "style": "typographic architectural illustration",
+      "initialGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-7376376e-d8a8-4190-a447-fd0807a2bae4.png",
+      "selectedGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-adeebdc8-f9e3-4c1b-9bf4-1fb553d8ab3b.png",
+      "refinementOutputs": [
+        "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-adeebdc8-f9e3-4c1b-9bf4-1fb553d8ab3b.png"
+      ]
+    },
+    {
+      "filename": "12-latex-typesetter-story-v3.png",
+      "title": "LaTeX · Source becomes a readable document",
+      "style": "mechanical typographic storytelling",
+      "initialGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-b3271226-0681-48a5-bba9-ad2642b14a05.png",
+      "selectedGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-40f58dce-bf25-47ba-931a-bb524c04b81f.png",
+      "refinementOutputs": [
+        "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-40f58dce-bf25-47ba-931a-bb524c04b81f.png"
+      ]
+    },
+    {
+      "filename": "13-portfolio-world-story-v3.png",
+      "title": "Portfolio · A connected world of projects",
+      "style": "layered digital editorial scene",
+      "initialGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-8664d97c-4575-47c4-9caa-c4181c871216.png",
+      "selectedGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-b25c12d8-f61b-4e51-84ce-64efc514b7ee.png",
+      "refinementOutputs": [
+        "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-b25c12d8-f61b-4e51-84ce-64efc514b7ee.png"
+      ]
+    },
+    {
+      "filename": "14-portfolio-journey-story-v3.png",
+      "title": "Portfolio · Experiences become the next project",
+      "style": "cinematic flat technical collage",
+      "initialGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-d0de7456-d0b3-4741-8015-0fb3000dee2e.png",
+      "selectedGeneratedPath": "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-0957ae1f-e12e-4b4a-b6f0-881b15cea152.png",
+      "refinementOutputs": [
+        "C:\\Users\\LovroPC\\.codex\\generated_images\\01a081d0-a646-7b83-8fe1-7c7eba494dd3\\exec-0957ae1f-e12e-4b4a-b6f0-881b15cea152.png"
+      ]
+    }
+  ]
+}

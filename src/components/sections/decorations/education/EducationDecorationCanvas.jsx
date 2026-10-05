@@ -1,5 +1,7 @@
 import "./EducationDecorationCanvas.scss"
 import React, {useEffect, useRef} from 'react'
+import {getDecorationPixelRatio} from '../canvasSizing.js'
+import {createShaderSetupRetry} from '../shaderSetupRetry.js'
 
 const FRAME_INTERVAL_MS = 96
 const LOW_FRAME_RATE_INTERVAL_MS = 180
@@ -27,7 +29,7 @@ uniform vec2 resolution;
 #define T time
 #define S smoothstep
 #define MN min(R.x,R.y)
-#define SE(v,s) S(s+1./MN,s-1./MN,v)
+#define SE(v,s) (1.-S(s-1./MN,s+1./MN,v))
 
 float pattern(vec2 uv) {
     float d=.0;
@@ -41,10 +43,9 @@ float pattern(vec2 uv) {
 vec3 scene(vec2 uv) {
     vec3 col=vec3(0);
     uv=vec2(atan(uv.x,uv.y)*2./6.28318,-log(length(uv))-T);
-    for(float i=.0; i<3.; i++) {
-        int k=int(mod(i,3.));
-        col[k]+=pattern(uv+i*6./MN);
-    }
+    col.r=pattern(uv);
+    col.g=pattern(uv+6./MN);
+    col.b=pattern(uv+12./MN);
     return col;
 }
 
@@ -73,7 +74,7 @@ uniform vec4 bands[12];
 #define T time
 #define S smoothstep
 #define MN min(R.x,R.y)
-#define SE(v,a) S(a+1./MN,a-1./MN,v)
+#define SE(v,a) (1.-S(a-1./MN,a+1./MN,v))
 #define PI radians(180.)
 #define A (PI/4.)
 
@@ -127,7 +128,7 @@ void main() {
         q=q-vec2(.4,-.4);
         float cir=max(SE(length(q),.2),.0);
         float bbx=SE(box(p,.42,.0),.0);
-        float rs=S(.55,.45,sin(PI+22.*atan(q.y,q.x))*.5+.5);
+        float rs=1.-S(.45,.55,sin(PI+22.*atan(q.y,q.x))*.5+.5);
         rs=-max(-max(rs,cir),-bbx);
         col=mix(col,vec3(0),SE(box(p,.45,.0),.0)-SE(box(p,.42,.0),.0));
         col=mix(col,vec3(max(dx,dy))*.1,rs);
@@ -187,7 +188,7 @@ function setupShader(canvas, source = fragmentSource) {
         preserveDrawingBuffer: false
     })
 
-    if(!gl)
+    if(!gl || gl.isContextLost())
         return null
 
     const program = createShaderProgram(gl, source)
@@ -307,9 +308,9 @@ function getCanvasPixelRatio(layout) {
 }
 
 function resizeBandCanvas(canvas, gl, layout, band) {
-    const pixelRatio = getCanvasPixelRatio(layout)
-    const width = Math.max(1, Math.round(band.width * pixelRatio))
-    const height = Math.max(1, Math.round(band.height * pixelRatio))
+    const pixelRatio = getDecorationPixelRatio(band.width, band.height, getCanvasPixelRatio(layout), gl)
+    const width = Math.max(1, Math.floor(band.width * pixelRatio))
+    const height = Math.max(1, Math.floor(band.height * pixelRatio))
 
     canvas.style.left = `${layout.left + band.x}px`
     canvas.style.top = `${band.y}px`
@@ -341,10 +342,10 @@ function resizeBottomCanvas(canvas, gl, layout) {
     if(!layout.bottomBand)
         return null
 
-    const pixelRatio = getCanvasPixelRatio(layout)
     const band = layout.bottomBand
-    const width = Math.max(1, Math.round(band.width * pixelRatio))
-    const height = Math.max(1, Math.round(band.height * pixelRatio))
+    const pixelRatio = getDecorationPixelRatio(band.width, band.height, getCanvasPixelRatio(layout), gl)
+    const width = Math.max(1, Math.floor(band.width * pixelRatio))
+    const height = Math.max(1, Math.floor(band.height * pixelRatio))
 
     canvas.style.left = `${band.left}px`
     canvas.style.top = `${band.top}px`
@@ -376,6 +377,8 @@ function getBandUniforms(layout, pixelRatio, bandIndex = null) {
 }
 
 function drawShader(shaderState, layout, bandUniforms, now, bandCount = Math.min(layout.bands.length, MAX_BANDS), renderMetrics = null) {
+    if(!shaderState || shaderState.gl.isContextLost())
+        return
     const { gl, program, buffer } = shaderState
     const isDarkMode = document.documentElement.getAttribute("data-theme") !== "light"
     const patternResolution = renderMetrics?.patternResolution || {
@@ -404,6 +407,8 @@ function drawShader(shaderState, layout, bandUniforms, now, bandCount = Math.min
 }
 
 function drawBottomShader(shaderState, now) {
+    if(!shaderState || shaderState.gl.isContextLost())
+        return
     const { gl, program, buffer } = shaderState
 
     gl.clearColor(0, 0, 0, 0)
@@ -428,8 +433,9 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
 
         let animationFrameId = null
         let rebuildFrameId = null
+        let forceRebuildPending = false
         let layout = null
-        let bandShaderStates = []
+        const bandShaderStates = bandCanvases.map(() => null)
         let bandRenderStates = []
         let bottomShaderState = null
         let hasBottomShaderLayout = false
@@ -438,20 +444,18 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
         let isIntersecting = false
         let delayedRebuildId = null
         let observedBandElements = []
+        let disposed = false
         const reducedMotionQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)") || null
 
-        try {
-            bandShaderStates = bandCanvases.map(canvas => setupShader(canvas))
-            bottomShaderState = setupShader(bottomCanvas, bottomFragmentSource)
+        const createShaderState = (canvas, source = fragmentSource) => {
+            try {
+                return setupShader(canvas, source)
+            }
+            catch(error) {
+                console.error(error)
+                return null
+            }
         }
-        catch(error) {
-            console.error(error)
-            bandShaderStates = []
-            bottomShaderState = null
-        }
-
-        if(bandShaderStates.length === 0 || !bottomShaderState)
-            return
 
         const isReducedMotion = () => Boolean(reducedMotionQuery?.matches)
         const shouldAnimate = () => isIntersecting && !document.hidden && !isReducedMotion()
@@ -504,6 +508,8 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
         }
 
         const rebuild = (forceRedraw = false) => {
+            if(disposed)
+                return
             const nextLayout = measureLayout(bottomCanvas)
             if(!nextLayout)
                 return
@@ -516,23 +522,34 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
 
             lastLayoutSignature = nextLayoutSignature
             layout = nextLayout
-            bandRenderStates = layout.bands.slice(0, Math.min(layout.bands.length, bandShaderStates.length)).map((band, index) => {
+            const bandCount = Math.min(layout.bands.length, bandCanvases.length)
+            bandRenderStates = layout.bands.slice(0, bandCount).map((band, index) => {
                 const canvas = bandCanvases[index]
-                const shaderState = bandShaderStates[index]
+                // Only acquire contexts for actual bands, and retry unavailable ones on resume.
+                const shaderState = bandShaderStates[index] || createShaderState(canvas)
+                bandShaderStates[index] = shaderState
+                if(!shaderState || shaderState.gl.isContextLost()) {
+                    canvas.style.visibility = "hidden"
+                    return null
+                }
                 const metrics = resizeBandCanvas(canvas, shaderState.gl, layout, band)
+                canvas.style.visibility = "visible"
 
                 return {
                     shaderState,
                     metrics,
                     bandUniforms: getBandUniforms(layout, metrics.pixelRatio, index)
                 }
-            })
-            bandCanvases.slice(bandRenderStates.length).forEach(canvas => {
+            }).filter(Boolean)
+            bandCanvases.slice(bandCount).forEach(canvas => {
                 canvas.width = 1
                 canvas.height = 1
                 canvas.style.display = "none"
             })
-            hasBottomShaderLayout = resizeBottomCanvas(bottomCanvas, bottomShaderState.gl, layout) === true
+            bottomShaderState = bottomShaderState || createShaderState(bottomCanvas, bottomFragmentSource)
+            hasBottomShaderLayout = Boolean(bottomShaderState && !bottomShaderState.gl.isContextLost() &&
+                resizeBottomCanvas(bottomCanvas, bottomShaderState.gl, layout) === true)
+            bottomCanvas.style.visibility = hasBottomShaderLayout ? "visible" : "hidden"
             lastFrameTime = 0
             drawStatic()
             startLoop()
@@ -556,16 +573,23 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
         }
 
         const scheduleRebuild = (forceRedraw = false) => {
+            if(disposed)
+                return
+            forceRebuildPending = forceRebuildPending || forceRedraw === true
             if(rebuildFrameId !== null)
                 window.cancelAnimationFrame(rebuildFrameId)
 
             rebuildFrameId = window.requestAnimationFrame(() => {
                 rebuildFrameId = null
-                rebuild(forceRedraw)
+                const shouldForceRedraw = forceRebuildPending
+                forceRebuildPending = false
+                rebuild(shouldForceRedraw)
             })
         }
 
         const scheduleDelayedRebuild = () => {
+            if(disposed)
+                return
             if(delayedRebuildId !== null)
                 window.clearTimeout(delayedRebuildId)
 
@@ -578,6 +602,7 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
         const handleVisibilityChange = () => {
             if(document.hidden) {
                 stopLoop()
+                shaderSetupRetry.cancel()
                 return
             }
             startLoop()
@@ -585,7 +610,35 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
         const handleWindowResize = () => scheduleRebuild()
         const handleReducedMotionChange = () => scheduleRebuild(true)
         const handleWindowLoad = () => scheduleDelayedRebuild()
-        const handleAppResume = () => scheduleDelayedRebuild()
+        const handleAppResume = () => {
+            scheduleRebuild(true)
+            shaderSetupRetry.start()
+        }
+        const handleContextLost = (event) => {
+            event.preventDefault()
+            const canvas = event.currentTarget
+            canvas.style.visibility = "hidden"
+            const index = bandCanvases.indexOf(canvas)
+            if(index >= 0) {
+                bandRenderStates = bandRenderStates.filter(state => state.shaderState !== bandShaderStates[index])
+                bandShaderStates[index] = null
+            }
+            else {
+                bottomShaderState = null
+                hasBottomShaderLayout = false
+            }
+            lastLayoutSignature = null
+        }
+        const handleContextRestored = () => {
+            lastLayoutSignature = null
+            scheduleRebuild(true)
+            shaderSetupRetry.start()
+        }
+        const shaderSetupRetry = createShaderSetupRetry(() => {
+            rebuild(true)
+            return !layout || Boolean(bottomShaderState && layout.bands.slice(0, bandCanvases.length)
+                .every((_, index) => bandShaderStates[index]))
+        })
 
         const resizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => scheduleRebuild())
         const mutationObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(() => {
@@ -610,12 +663,19 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
         window.addEventListener("load", handleWindowLoad)
         window.addEventListener("app:resume", handleAppResume)
         document.addEventListener("visibilitychange", handleVisibilityChange)
+        const allCanvases = [...bandCanvases, bottomCanvas]
+        allCanvases.forEach(canvas => {
+            canvas.addEventListener("webglcontextlost", handleContextLost)
+            canvas.addEventListener("webglcontextrestored", handleContextRestored)
+        })
         reducedMotionQuery?.addEventListener?.("change", handleReducedMotionChange)
         document.fonts?.ready?.then?.(() => {
             scheduleDelayedRebuild()
         })
 
         rebuild()
+        if(!bottomShaderState || layout?.bands.slice(0, bandCanvases.length).some((_, index) => !bandShaderStates[index]))
+            shaderSetupRetry.start()
         scheduleDelayedRebuild()
 
         if(!intersectionObserver) {
@@ -624,6 +684,8 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
         }
 
         return () => {
+            disposed = true
+            shaderSetupRetry.dispose()
             stopLoop()
             if(rebuildFrameId !== null)
                 window.cancelAnimationFrame(rebuildFrameId)
@@ -636,6 +698,10 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
             window.removeEventListener("load", handleWindowLoad)
             window.removeEventListener("app:resume", handleAppResume)
             document.removeEventListener("visibilitychange", handleVisibilityChange)
+            allCanvases.forEach(canvas => {
+                canvas.removeEventListener("webglcontextlost", handleContextLost)
+                canvas.removeEventListener("webglcontextrestored", handleContextRestored)
+            })
             reducedMotionQuery?.removeEventListener?.("change", handleReducedMotionChange)
 
             bandShaderStates.forEach(shaderState => {

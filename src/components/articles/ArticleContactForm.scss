@@ -187,6 +187,52 @@ article.article-contact-form {
         }
     }
 
+    @media (min-width: 48rem) {
+        // Share the message field's natural or user-resized height across all
+        // three left fields, while leaving narrow layouts in their stacked flow.
+        div.row-form {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            align-items: stretch;
+        }
+
+        div.row-form-group.article-contact-form-left,
+        div.row-form-group.article-contact-form-right {
+            width: auto;
+            max-width: none;
+            min-width: 0;
+            margin-block: 5px 4px;
+        }
+
+        div.row-form-group.article-contact-form-left {
+            display: grid;
+            height: auto;
+            grid-template-rows: repeat(3, minmax(2.75rem, 1fr));
+            gap: 4px;
+
+            > div.row-form-group-item,
+            > div.row-form-group-item.article-contact-form-subject {
+                height: auto;
+                min-height: 0;
+                margin: 0;
+            }
+
+            > div.row-form-group-item > div.input-field-wrapper {
+                height: 100%;
+                min-height: 0;
+            }
+        }
+
+        div.row-form-group.article-contact-form-right {
+            height: auto;
+        }
+
+        div.row-form-group.article-contact-form-submit,
+        div.row-form-submit {
+            grid-column: 1 / -1;
+        }
+    }
+
     div.message-card {
         background: var(--contact-form-panel-surface) !important;
         border: 1px solid var(--contact-form-panel-border);

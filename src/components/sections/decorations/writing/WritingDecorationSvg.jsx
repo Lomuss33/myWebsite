@@ -1,5 +1,6 @@
 import "./WritingDecorationSvg.scss"
 import React, {useEffect, useRef} from 'react'
+import {createShaderSetupRetry} from '../shaderSetupRetry.js'
 
 const FRAME_INTERVAL_MS = 96
 const LOW_FRAME_RATE_INTERVAL_MS = 900
@@ -391,6 +392,16 @@ function WritingDecorationSvg({ lowFrameRateMode = false }) {
             }
         }
         initializeShader()
+        const shaderSetupRetry = createShaderSetupRetry(() => {
+            if(disposed || isContextLost)
+                return true
+            if(!shaderState)
+                initializeShader()
+            if(!shaderState)
+                return false
+            scheduleRebuild()
+            return true
+        })
 
         const isReducedMotion = () => Boolean(reducedMotionQuery?.matches)
         const canRender = () => !disposed && !isPaused && !document.hidden && !isContextLost && shaderState && !shaderState.gl.isContextLost()
@@ -518,6 +529,7 @@ function WritingDecorationSvg({ lowFrameRateMode = false }) {
         }
 
         const handleAppPause = () => {
+            shaderSetupRetry.cancel()
             isPaused = true
             cancelPendingWork()
             // Release the drawing surface while Android backgrounds the tab.
@@ -532,12 +544,15 @@ function WritingDecorationSvg({ lowFrameRateMode = false }) {
             isPaused = false
             if(!shaderState && !isContextLost)
                 initializeShader()
+            if(!shaderState && !isContextLost)
+                shaderSetupRetry.start()
             scheduleRebuild()
             scheduleDelayedRebuild()
         }
 
         const handleContextLost = (event) => {
             event.preventDefault()
+            shaderSetupRetry.cancel()
             isContextLost = true
             shaderState = null
             cancelPendingWork()
@@ -550,6 +565,8 @@ function WritingDecorationSvg({ lowFrameRateMode = false }) {
             isContextLost = false
             // Restored contexts invalidate every old program, buffer and uniform.
             initializeShader()
+            if(!shaderState)
+                shaderSetupRetry.start()
             scheduleRebuild()
         }
 
@@ -600,6 +617,8 @@ function WritingDecorationSvg({ lowFrameRateMode = false }) {
         })
 
         rebuild()
+        if(!shaderState)
+            shaderSetupRetry.start()
         scheduleDelayedRebuild()
 
         if(!intersectionObserver) {
@@ -609,6 +628,7 @@ function WritingDecorationSvg({ lowFrameRateMode = false }) {
 
         return () => {
             disposed = true
+            shaderSetupRetry.dispose()
             cancelPendingWork()
             resizeObserver?.disconnect()
             mutationObserver?.disconnect()

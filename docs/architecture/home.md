@@ -1,6 +1,6 @@
 # Home implementation and handoff
 
-Verified: 2026-10-04 against Home source, name-origin drag mechanics, story typography sizing, responsive header layout, and gravity-sweep pointer activation; not exhaustive pointer-device testing. The Home design is accepted; preserve it while fixing concrete defects.
+Verified: 2026-10-05 against Home skill proof-panel sizing and interaction, Home source, name-origin drag mechanics, story typography sizing, responsive header layout, and gravity-sweep pointer activation; not exhaustive pointer-device testing. The Home design is accepted; preserve it while fixing concrete defects.
 
 Route: `#about`. Data: [home.json](../../public/data/sections/home.json). Registry/order: [SectionBody.jsx](../../src/components/sections/SectionBody.jsx). Name origins precedes the human stack at the end.
 
@@ -36,7 +36,7 @@ Idle Home floating frames release permanent 3D/will-change layers; active tilt r
 
 No redesign is pending. All five cards have images: original main, `lovro-outdoors.webp`, original alternate, `ejajLovroMusicFinal.png`, and `ai_lovro_fifa26.png`. The placeholder remains only as an error fallback. Recent checks sampled four viewport/theme/language combinations, popup keyboard dismissal, cached reload/scroll visibility, and failed-placeholder loading. They were ad hoc checks, not a permanent full-device suite. See [known gaps](../guides/validation.md#known-gaps).
 
-Description sizing update (2026-09-12): Home skill descriptions use natural height without nested scrolling, with slightly smaller mobile type. Proof-panel scrolling remains separate. Focused checks at 240, 390, and 768px found no overflowing visible descriptions.
+Description sizing update (2026-09-12): Home skill descriptions use natural height without nested scrolling, with slightly smaller mobile type. Proof-panel scrolling remains separate. Skill proof previews cover the full text pane, including the title area, while the closed title and description retain their layout space. Short proof copy centers in that pane; long copy remains readable in a focusable scroll surface. Hover anywhere on the card or focus its icon to preview; moving between the icon and text keeps the preview open, clicking the icon pins it, and Escape or an outside interaction dismisses it. Text fitting uses the rendered panel width for every Home skill list and refreshes through ResizeObserver and font readiness, so reflow and translated copy use the current available area. The Home human-stack example retains its existing design and behavior. Focused browser checks sample all four languages, both themes, and 280px through very large screen layouts. Focused checks at 240, 390, and 768px found no overflowing visible descriptions.
 
 Home heading update (2026-09-13; shared title scale refined 2026-09-27): the Home SectionHeader title is the reference for the bounded responsive page-title scale. Shared tokens live on SectionContent and are consumed by visible section headings plus the first article heading on Software, Hardware, Writings, and Art, whose standalone section headers are intentionally hidden. Page-specific prefix/decorative treatments remain distinct. Home keeps a single line when space permits and wraps on narrow screens.
 

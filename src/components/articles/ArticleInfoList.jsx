@@ -63,12 +63,6 @@ const PROOF_BUBBLE_FIT_VARIABLES = [
     "--proof-bubble-line-height"
 ]
 
-const HOME_SKILL_PROOF_BUBBLE_ARTICLE_IDS = new Set([
-    "article-3-section-about",
-    "article-4-section-about",
-    "article-5-section-about"
-])
-
 const HOME_SKILL_PROOF_BUBBLE_DEFAULTS = {
     desktop: {
         fontSize: 1.18,
@@ -132,17 +126,17 @@ const getProofBubbleViewportBucket = (innerWidth) => {
     return "desktop"
 }
 
-const getProofBubbleDefaults = (innerWidth, articleId = null) => {
+const getProofBubbleDefaults = (innerWidth, isHomeInfoList = false) => {
     const bucket = getProofBubbleViewportBucket(innerWidth)
-    const defaults = HOME_SKILL_PROOF_BUBBLE_ARTICLE_IDS.has(articleId) ?
+    const defaults = isHomeInfoList ?
         HOME_SKILL_PROOF_BUBBLE_DEFAULTS :
         PROOF_BUBBLE_DEFAULTS
 
     return { ...defaults[bucket] }
 }
 
-const getProofBubbleFloors = (innerWidth, articleId = null) => {
-    if(HOME_SKILL_PROOF_BUBBLE_ARTICLE_IDS.has(articleId)) {
+const getProofBubbleFloors = (innerWidth, isHomeInfoList = false) => {
+    if(isHomeInfoList) {
         if(innerWidth < 576)
             return { ...HOME_SKILL_PROOF_BUBBLE_FLOORS.mobile }
         if(innerWidth < 992)
@@ -303,6 +297,7 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
             return
 
         let frameId = 0
+        let cancelled = false
 
         const fitProofBubbleText = () => {
             const bubbleInnerEl = bubbleInnerRef.current
@@ -311,10 +306,9 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
             if(!bubbleInnerEl || !bubbleCopyEl)
                 return
 
-            const articleId = itemWrapper.articleWrapper.uniqueId
-            const viewportWidth = viewport.innerWidth || window.innerWidth
-            const defaultFitValues = getProofBubbleDefaults(viewportWidth, articleId)
-            const floorFitValues = getProofBubbleFloors(viewportWidth, articleId)
+            const panelWidth = bubbleInnerEl.clientWidth
+            const defaultFitValues = getProofBubbleDefaults(panelWidth, isHomeInfoList)
+            const floorFitValues = getProofBubbleFloors(panelWidth, isHomeInfoList)
             const fitValues = { ...defaultFitValues }
 
             const doesOverflow = () => {
@@ -376,10 +370,20 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
             }
         }
 
-        frameId = window.requestAnimationFrame(fitProofBubbleText)
+        const scheduleFit = () => {
+            if(cancelled) return
+            window.cancelAnimationFrame(frameId)
+            frameId = window.requestAnimationFrame(fitProofBubbleText)
+        }
+        scheduleFit()
+        const observer = typeof ResizeObserver === "function" ? new ResizeObserver(scheduleFit) : null
+        if(bubbleInnerRef.current) observer?.observe(bubbleInnerRef.current)
+        document.fonts?.ready.then(scheduleFit)
 
         return () => {
+            cancelled = true
             window.cancelAnimationFrame(frameId)
+            observer?.disconnect()
         }
     }, [
         hasProofBubble,
@@ -458,10 +462,16 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
 
     return (
         <div className={`article-info-list-item ${hoverClass} ${pressedClass} ${bubbleItemOpenClass} ${homeClass}`}
+             onMouseEnter={hasProofBubble ? handleBubbleMouseEnter : undefined}
+             onMouseLeave={hasProofBubble ? handleBubbleMouseLeave : undefined}
+             onBlur={hasProofBubble ? event => {
+                 if(!isBubblePinned && !event.currentTarget.contains(event.relatedTarget) && !event.currentTarget.matches(':hover'))
+                     setIsBubbleOpen(false)
+             } : undefined}
              style={isContactInfoList ? {"--contact-accent": itemWrapper.faIconStyle?.color || "#60a5fa"} : undefined}>
             <div className={`article-info-list-item-avatar-shell ${bubbleClass}`}
                  onMouseEnter={handleBubbleMouseEnter}
-                 onMouseLeave={handleBubbleMouseLeave}>
+                 onMouseLeave={hasProofBubble ? undefined : handleBubbleMouseLeave}>
                 {itemWrapper.link?.href ? (
                     <Link href={itemWrapper.link?.href || null}
                           tooltip={itemWrapper.link?.tooltip}
@@ -486,6 +496,7 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
                             aria-expanded={isBubbleOpen}
                             aria-label={`Show proof of work for ${itemWrapper.locales.title || itemWrapper.placeholder}`}
                             onClick={handleBubbleToggle}
+                            onFocus={() => setIsBubbleOpen(true)}
                             ref={bubbleToggleRef}>
                         <AvatarView src={itemWrapper.img}
                                     faIcon={itemWrapper.faIconWithFallback}
@@ -515,6 +526,7 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
                              aria-hidden={!isBubbleOpen}
                              ref={bubbleRef}>
                             <div className={`article-info-list-item-text-bubble-inner`}
+                                 tabIndex={isBubbleOpen ? 0 : -1}
                                  ref={bubbleInnerRef}>
                                 <div className={`article-info-list-item-text-bubble-copy`}
                                      ref={bubbleCopyRef}

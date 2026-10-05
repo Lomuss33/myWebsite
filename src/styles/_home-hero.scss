@@ -191,6 +191,12 @@ html[data-layout] [data-theme="dark"] section#section-about .article-feature-ite
 // Keep skill cards stable while their proof text is open.
 html[data-layout] section#section-about article.article-info-list-home {
     .article-info-list-item.article-info-list-item-home {
+        .article-info-list-item-content.article-info-list-item-home {
+            position: relative;
+        }
+        .article-info-list-item-info-body {
+            position: static;
+        }
         .article-info-list-item-info-title {
             font-size: clamp(1.05rem, 1rem + .3cqi, 1.35rem) !important;
             line-height: 1.2 !important;
@@ -202,6 +208,8 @@ html[data-layout] section#section-about article.article-info-list-home {
             transform: none;
         }
         .article-info-list-item-text-bubble-inner {
+            display: flex;
+            flex-direction: column;
             border: 0;
             box-shadow: none;
             border-radius: 0;
@@ -210,6 +218,16 @@ html[data-layout] section#section-about article.article-info-list-home {
             overflow: auto;
             overscroll-behavior: contain;
             scrollbar-width: thin;
+        }
+        .article-info-list-item-text-bubble-copy {
+            flex: 0 0 auto;
+            margin-block: auto;
+            text-align: center;
+        }
+        &.article-info-list-item-bubble-open {
+            .article-info-list-item-text-bubble { pointer-events: auto; }
+            .article-info-list-item-info-title,
+            .article-info-list-item-info-text { visibility: hidden; }
         }
         .article-info-list-item-avatar-button:focus-visible {
             outline: 2px solid var(--theme-primary); outline-offset: 2px;

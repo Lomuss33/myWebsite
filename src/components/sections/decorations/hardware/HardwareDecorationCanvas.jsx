@@ -1,5 +1,7 @@
 import "./HardwareDecorationCanvas.scss"
 import React, {useEffect, useRef} from 'react'
+import {getDecorationPixelRatio} from '../canvasSizing.js'
+import {createShaderSetupRetry} from '../shaderSetupRetry.js'
 
 const FRAME_INTERVAL_MS = 72
 const LOW_FRAME_RATE_INTERVAL_MS = 280
@@ -137,7 +139,7 @@ function compileShader(gl, shader, source) {
     gl.compileShader(shader)
 
     if(!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
-        throw new Error(gl.getShaderInfoLog(shader) || "Art decoration shader compile failed")
+        throw new Error(gl.getShaderInfoLog(shader) || "Hardware decoration shader compile failed")
 }
 
 function createShaderProgram(gl) {
@@ -153,7 +155,7 @@ function createShaderProgram(gl) {
     gl.linkProgram(program)
 
     if(!gl.getProgramParameter(program, gl.LINK_STATUS))
-        throw new Error(gl.getProgramInfoLog(program) || "Art decoration shader link failed")
+        throw new Error(gl.getProgramInfoLog(program) || "Hardware decoration shader link failed")
 
     gl.deleteShader(vertexShader)
     gl.deleteShader(fragmentShader)
@@ -171,7 +173,7 @@ function setupShader(canvas) {
         preserveDrawingBuffer: false
     })
 
-    if(!gl)
+    if(!gl || gl.isContextLost())
         return null
 
     const program = createShaderProgram(gl)
@@ -261,9 +263,10 @@ function measureLayout(canvas) {
 }
 
 function resizeCanvas(canvas, gl, layout) {
-    const pixelRatio = Math.max(1, Math.min(MAX_DEVICE_PIXEL_RATIO, (window.devicePixelRatio || 1) * 0.75))
-    const width = Math.max(1, Math.round(layout.width * pixelRatio))
-    const height = Math.max(1, Math.round(layout.height * pixelRatio))
+    const preferredRatio = Math.max(1, Math.min(MAX_DEVICE_PIXEL_RATIO, (window.devicePixelRatio || 1) * 0.75))
+    const pixelRatio = getDecorationPixelRatio(layout.width, layout.height, preferredRatio, gl)
+    const width = Math.max(1, Math.floor(layout.width * pixelRatio))
+    const height = Math.max(1, Math.floor(layout.height * pixelRatio))
 
     canvas.style.left = `${layout.left}px`
     canvas.style.top = "0px"
@@ -342,6 +345,7 @@ function HardwareDecorationCanvas({ lowFrameRateMode = false }) {
         let isIntersecting = false
         let isContextLost = false
         let observedBandElements = []
+        let disposed = false
         const reducedMotionQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)") || null
 
         try {
@@ -351,9 +355,6 @@ function HardwareDecorationCanvas({ lowFrameRateMode = false }) {
             console.error(error)
             shaderState = null
         }
-
-        if(!shaderState)
-            return
 
         const isReducedMotion = () => Boolean(reducedMotionQuery?.matches)
         const shouldAnimate = () => isIntersecting && !document.hidden && !isReducedMotion()
@@ -409,7 +410,7 @@ function HardwareDecorationCanvas({ lowFrameRateMode = false }) {
         }
 
         const rebuild = () => {
-            if(isContextLost || !shaderState)
+            if(disposed || isContextLost || !shaderState || shaderState.gl.isContextLost())
                 return
 
             const layout = measureLayout(canvas)
@@ -418,12 +419,15 @@ function HardwareDecorationCanvas({ lowFrameRateMode = false }) {
 
             const pixelRatio = resizeCanvas(canvas, shaderState.gl, layout)
             regions = getRenderRegions(layout, pixelRatio)
+            canvas.style.visibility = "visible"
             lastFrameTime = 0
             drawStatic()
             startLoop()
         }
 
         const scheduleRebuild = () => {
+            if(disposed)
+                return
             if(rebuildFrameId !== null)
                 window.cancelAnimationFrame(rebuildFrameId)
 
@@ -434,6 +438,8 @@ function HardwareDecorationCanvas({ lowFrameRateMode = false }) {
         }
 
         const scheduleDelayedRebuild = () => {
+            if(disposed)
+                return
             if(delayedRebuildId !== null)
                 window.clearTimeout(delayedRebuildId)
 
@@ -462,7 +468,10 @@ function HardwareDecorationCanvas({ lowFrameRateMode = false }) {
 
         const handleContextLost = (event) => {
             event.preventDefault()
+            shaderSetupRetry.cancel()
             isContextLost = true
+            shaderState = null
+            canvas.style.visibility = "hidden"
             stopLoop()
             if(rebuildFrameId !== null) {
                 window.cancelAnimationFrame(rebuildFrameId)
@@ -479,22 +488,46 @@ function HardwareDecorationCanvas({ lowFrameRateMode = false }) {
             catch(error) {
                 console.error(error)
                 shaderState = null
-                return
             }
 
             scheduleRebuild()
+            if(!shaderState)
+                shaderSetupRetry.start()
         }
 
         const handleVisibilityChange = () => {
             if(document.hidden) {
                 stopLoop()
+                shaderSetupRetry.cancel()
                 return
             }
             startLoop()
         }
 
         const handleWindowLoad = () => scheduleDelayedRebuild()
-        const handleAppResume = () => scheduleDelayedRebuild()
+        const handleAppResume = () => {
+            if(!shaderState && !isContextLost)
+                handleContextRestored()
+            if(!shaderState && !isContextLost)
+                shaderSetupRetry.start()
+            scheduleDelayedRebuild()
+        }
+        const shaderSetupRetry = createShaderSetupRetry(() => {
+            if(disposed || isContextLost)
+                return true
+            if(!shaderState) {
+                try {
+                    shaderState = setupShader(canvas)
+                }
+                catch(error) {
+                    console.error(error)
+                    shaderState = null
+                }
+                if(shaderState)
+                    scheduleRebuild()
+            }
+            return Boolean(shaderState)
+        })
 
         const resizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => scheduleRebuild())
         const mutationObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(() => {
@@ -532,6 +565,8 @@ function HardwareDecorationCanvas({ lowFrameRateMode = false }) {
         })
 
         rebuild()
+        if(!shaderState)
+            shaderSetupRetry.start()
         scheduleDelayedRebuild()
 
         if(!intersectionObserver) {
@@ -540,6 +575,8 @@ function HardwareDecorationCanvas({ lowFrameRateMode = false }) {
         }
 
         return () => {
+            disposed = true
+            shaderSetupRetry.dispose()
             stopLoop()
             if(rebuildFrameId !== null)
                 window.cancelAnimationFrame(rebuildFrameId)

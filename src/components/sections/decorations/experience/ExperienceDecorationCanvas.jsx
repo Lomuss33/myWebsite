@@ -1,5 +1,7 @@
 import "./ExperienceDecorationCanvas.scss"
 import React, {useEffect, useRef} from 'react'
+import {getDecorationPixelRatio} from '../canvasSizing.js'
+import {createShaderSetupRetry} from '../shaderSetupRetry.js'
 
 const FRAME_INTERVAL_MS = 40
 const LOW_FRAME_RATE_INTERVAL_MS = 220
@@ -54,7 +56,7 @@ float noise(vec2 p) {
 float fbm(vec2 p) {
     float t=.0, a=1.;
     mat2 m=mat2(.5,-1.5,.75,.25);
-    for(float i=.0; i++<5.;) {
+    for(int i=0; i<5; i++) {
         t+=a*noise(p);
         p=2.*p*m;
         a*=.5;
@@ -120,7 +122,7 @@ function setupShader(canvas) {
         preserveDrawingBuffer: false
     })
 
-    if(!gl)
+    if(!gl || gl.isContextLost())
         return null
 
     const program = createShaderProgram(gl)
@@ -208,11 +210,10 @@ function measureLayout(canvas) {
 
 function resizeCanvas(canvas, gl, layout) {
     const basePixelRatio = Math.max(1, Math.min(MAX_DEVICE_PIXEL_RATIO, (window.devicePixelRatio || 1) * 0.75))
-    const widthRatioLimit = MAX_SHADER_RENDER_WIDTH / Math.max(layout.width, 1)
-    const heightRatioLimit = MAX_SHADER_RENDER_HEIGHT / Math.max(layout.height, 1)
-    const pixelRatio = Math.max(0.35, Math.min(basePixelRatio, widthRatioLimit, heightRatioLimit))
-    const width = Math.max(1, Math.round(layout.width * pixelRatio))
-    const height = Math.max(1, Math.round(layout.height * pixelRatio))
+    const pixelRatio = getDecorationPixelRatio(layout.width, layout.height, basePixelRatio, gl,
+        MAX_SHADER_RENDER_WIDTH, MAX_SHADER_RENDER_HEIGHT)
+    const width = Math.max(1, Math.floor(layout.width * pixelRatio))
+    const height = Math.max(1, Math.floor(layout.height * pixelRatio))
 
     canvas.style.left = `${layout.left}px`
     canvas.style.top = "0px"
@@ -239,6 +240,8 @@ function getScissorRects(layout, pixelRatio) {
 }
 
 function drawShader(shaderState, scissorRects, now) {
+    if(!shaderState || shaderState.gl.isContextLost())
+        return
     const { gl, program, buffer } = shaderState
     const isLightMode = document.documentElement.getAttribute("data-theme") === "light"
 
@@ -379,9 +382,8 @@ function resizeBottomCanvas(canvas, layout) {
 
     const basePixelRatio = Math.max(1, Math.min(BRANCH_MAX_DEVICE_PIXEL_RATIO, window.devicePixelRatio || 1))
     const band = layout.bottomBand
-    const widthRatioLimit = MAX_BRANCH_RENDER_WIDTH / Math.max(band.width, 1)
-    const heightRatioLimit = MAX_BRANCH_RENDER_HEIGHT / Math.max(band.height, 1)
-    const pixelRatio = Math.max(0.35, Math.min(basePixelRatio, widthRatioLimit, heightRatioLimit))
+    const pixelRatio = getDecorationPixelRatio(band.width, band.height, basePixelRatio, null,
+        MAX_BRANCH_RENDER_WIDTH, MAX_BRANCH_RENDER_HEIGHT)
     const width = Math.max(1, Math.round(band.width * pixelRatio))
     const height = Math.max(1, Math.round(band.height * pixelRatio))
 
@@ -455,6 +457,8 @@ function ExperienceDecorationCanvas({ lowFrameRateMode = false }) {
         let lastFrameTime = 0
         let isIntersecting = false
         let observedBandElements = []
+        let disposed = false
+        let isShaderContextLost = false
         const reducedMotionQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)") || null
 
         try {
@@ -464,9 +468,6 @@ function ExperienceDecorationCanvas({ lowFrameRateMode = false }) {
             console.error(error)
             shaderState = null
         }
-
-        if(!shaderState)
-            return
 
         const isReducedMotion = () => Boolean(reducedMotionQuery?.matches)
         const shouldAnimate = () => isIntersecting && !document.hidden && !isReducedMotion()
@@ -493,7 +494,7 @@ function ExperienceDecorationCanvas({ lowFrameRateMode = false }) {
                 return
             }
 
-            if(scissorRects.length > 0 && timestamp - lastFrameTime >= getFrameInterval()) {
+            if((scissorRects.length > 0 || bottomBranchState) && timestamp - lastFrameTime >= getFrameInterval()) {
                 const animationTime = getAnimationTime(timestamp)
                 lastFrameTime = timestamp
                 drawShader(shaderState, scissorRects, animationTime)
@@ -514,13 +515,22 @@ function ExperienceDecorationCanvas({ lowFrameRateMode = false }) {
         }
 
         const rebuild = () => {
+            if(disposed)
+                return
             const nextLayout = measureLayout(shaderCanvas)
             if(!nextLayout)
                 return
 
             layout = nextLayout
-            const pixelRatio = resizeCanvas(shaderCanvas, shaderState.gl, layout)
-            scissorRects = getScissorRects(layout, pixelRatio)
+            if(shaderState && !shaderState.gl.isContextLost()) {
+                const pixelRatio = resizeCanvas(shaderCanvas, shaderState.gl, layout)
+                scissorRects = getScissorRects(layout, pixelRatio)
+                shaderCanvas.style.visibility = "visible"
+            }
+            else {
+                scissorRects = []
+                shaderCanvas.style.visibility = "hidden"
+            }
             const bottomCanvasState = resizeBottomCanvas(bottomCanvas, layout)
             bottomBranchState = bottomCanvasState ? {
                 ...bottomCanvasState,
@@ -532,6 +542,8 @@ function ExperienceDecorationCanvas({ lowFrameRateMode = false }) {
         }
 
         const scheduleRebuild = () => {
+            if(disposed)
+                return
             if(rebuildFrameId !== null)
                 window.cancelAnimationFrame(rebuildFrameId)
 
@@ -542,6 +554,8 @@ function ExperienceDecorationCanvas({ lowFrameRateMode = false }) {
         }
 
         const scheduleDelayedRebuild = () => {
+            if(disposed)
+                return
             if(delayedRebuildId !== null)
                 window.clearTimeout(delayedRebuildId)
 
@@ -571,13 +585,51 @@ function ExperienceDecorationCanvas({ lowFrameRateMode = false }) {
         const handleVisibilityChange = () => {
             if(document.hidden) {
                 stopLoop()
+                shaderSetupRetry.cancel()
                 return
             }
             startLoop()
         }
 
+        const restoreShader = () => {
+            try {
+                shaderState = setupShader(shaderCanvas)
+            }
+            catch(error) {
+                console.error(error)
+                shaderState = null
+            }
+            scheduleRebuild()
+        }
+        const handleContextLost = (event) => {
+            event.preventDefault()
+            isShaderContextLost = true
+            shaderSetupRetry.cancel()
+            shaderState = null
+            scissorRects = []
+            shaderCanvas.style.visibility = "hidden"
+        }
+        const handleContextRestored = () => {
+            isShaderContextLost = false
+            restoreShader()
+            if(!shaderState)
+                shaderSetupRetry.start()
+        }
         const handleWindowLoad = () => scheduleDelayedRebuild()
-        const handleAppResume = () => scheduleDelayedRebuild()
+        const handleAppResume = () => {
+            if(!shaderState && !isShaderContextLost)
+                restoreShader()
+            if(!shaderState && !isShaderContextLost)
+                shaderSetupRetry.start()
+            scheduleDelayedRebuild()
+        }
+        const shaderSetupRetry = createShaderSetupRetry(() => {
+            if(disposed || isShaderContextLost)
+                return true
+            if(!shaderState)
+                restoreShader()
+            return Boolean(shaderState)
+        })
 
         const resizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => scheduleRebuild())
         const mutationObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(() => {
@@ -607,12 +659,16 @@ function ExperienceDecorationCanvas({ lowFrameRateMode = false }) {
         window.addEventListener("load", handleWindowLoad)
         window.addEventListener("app:resume", handleAppResume)
         document.addEventListener("visibilitychange", handleVisibilityChange)
+        shaderCanvas.addEventListener("webglcontextlost", handleContextLost)
+        shaderCanvas.addEventListener("webglcontextrestored", handleContextRestored)
         reducedMotionQuery?.addEventListener?.("change", scheduleRebuild)
         document.fonts?.ready?.then?.(() => {
             scheduleDelayedRebuild()
         })
 
         rebuild()
+        if(!shaderState)
+            shaderSetupRetry.start()
         scheduleDelayedRebuild()
 
         if(!intersectionObserver) {
@@ -621,6 +677,8 @@ function ExperienceDecorationCanvas({ lowFrameRateMode = false }) {
         }
 
         return () => {
+            disposed = true
+            shaderSetupRetry.dispose()
             stopLoop()
             if(rebuildFrameId !== null)
                 window.cancelAnimationFrame(rebuildFrameId)
@@ -634,6 +692,8 @@ function ExperienceDecorationCanvas({ lowFrameRateMode = false }) {
             window.removeEventListener("load", handleWindowLoad)
             window.removeEventListener("app:resume", handleAppResume)
             document.removeEventListener("visibilitychange", handleVisibilityChange)
+            shaderCanvas.removeEventListener("webglcontextlost", handleContextLost)
+            shaderCanvas.removeEventListener("webglcontextrestored", handleContextRestored)
             reducedMotionQuery?.removeEventListener?.("change", scheduleRebuild)
             observedBandElements = []
 

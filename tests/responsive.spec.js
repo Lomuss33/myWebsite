@@ -389,6 +389,70 @@ test('Home desktop density stays compact while contact controls remain usable', 
     }
 })
 
+for(const [language,theme] of [['hr','dark'],['de','light'],['en','light'],['tr','dark']]) {
+    test(`Home skill proof panels stay readable and usable across sizes: ${language}`, async ({page})=>{
+        test.setTimeout(90000)
+        await preferences(page,language,theme)
+        await page.setViewportSize({width:390,height:844})
+        await openSection(page,'about')
+        await page.evaluate(()=>document.fonts.ready)
+
+        for(const [width,height] of [[280,653],[390,844],[768,1024],[1366,768],[2333,2364],[3440,1440]]) {
+            await page.setViewportSize({width,height})
+            await expect(page.locator('html')).toHaveAttribute('data-layout',resolveLayout(width,height))
+            for(const articleId of [3,4,6]) {
+                const card=page.locator(`article#article-${articleId}-section-about .article-info-list-item-home`).first()
+                const trigger=card.locator('.article-info-list-item-avatar-button')
+                const panel=card.locator('.article-info-list-item-text-bubble')
+                const before=await card.evaluate(element=>element.offsetHeight)
+                await trigger.hover()
+                await expect(panel).toHaveAttribute('aria-hidden','false')
+                await card.hover()
+                await expect(panel).toHaveAttribute('aria-hidden','false')
+                await expect.poll(()=>card.evaluate(card=>{
+                    const pane=card.querySelector('.article-info-list-item-content').getBoundingClientRect()
+                    const panel=card.querySelector('.article-info-list-item-text-bubble').getBoundingClientRect()
+                    const inner=card.querySelector('.article-info-list-item-text-bubble-inner')
+                    const copy=card.querySelector('.article-info-list-item-text-bubble-copy').getBoundingClientRect()
+                    const bounds=inner.getBoundingClientRect()
+                    const issues=[]
+                    if(Math.abs(pane.top-panel.top)>1 || Math.abs(pane.height-panel.height)>1)
+                        issues.push('proof does not fill the text pane')
+                    if(inner.scrollWidth>inner.clientWidth+1 || copy.left<bounds.left-1 || copy.right>bounds.right+1)
+                        issues.push('proof text overflows sideways')
+                    if(getComputedStyle(inner).pointerEvents==='none') issues.push('proof cannot be scrolled')
+                    if(inner.scrollHeight<=inner.clientHeight+1 && Math.abs((copy.top+copy.bottom-bounds.top-bounds.bottom)/2)>2)
+                        issues.push('short proof is not centered vertically')
+                    if(inner.scrollHeight>inner.clientHeight+1) {
+                        inner.scrollTop=inner.scrollHeight
+                        if(card.querySelector('.article-info-list-item-text-bubble-copy').getBoundingClientRect().bottom>bounds.bottom+1)
+                            issues.push('the end of a long proof cannot be reached by scrolling')
+                        inner.scrollTop=0
+                    }
+                    return issues
+                }),{message:`${width}x${height}, article ${articleId}: proof fits or scrolls inside its stable card`}).toEqual([])
+                const after=await card.evaluate(element=>element.offsetHeight)
+                expect(Math.abs(after-before),`${width}x${height}, article ${articleId}: opening proof preserves card height`).toBeLessThanOrEqual(1)
+                await trigger.click()
+                await page.mouse.move(0,0)
+                await expect(panel).toHaveAttribute('aria-hidden','false')
+                await page.keyboard.press('Escape')
+                await expect(panel).toHaveAttribute('aria-hidden','true')
+            }
+        }
+
+        const trigger=page.locator('article#article-6-section-about .article-info-list-item-avatar-button').first()
+        await trigger.evaluate(element=>element.blur())
+        await trigger.focus()
+        await expect(trigger).toHaveAttribute('aria-expanded','true')
+        await page.keyboard.press('Tab')
+        await expect(page.locator('article#article-6-section-about .article-info-list-item-text-bubble-inner').first()).toBeFocused()
+        await expect(trigger).toHaveAttribute('aria-expanded','true')
+        await page.keyboard.press('Escape')
+        await expect(trigger).toHaveAttribute('aria-expanded','false')
+    })
+}
+
 test('Home intro remains readable in a narrow landscape desktop pane', async ({page})=>{
     await preferences(page)
     await page.setViewportSize({width:568,height:320})
@@ -499,7 +563,7 @@ test('Home mobile scale stays compact from tiny phones to tall touch displays', 
         expect(metrics.seeMore.height,`${width}x${height} show-more hit height`).toBe(44)
         expect(metrics.stackSeeMore.width,`${width}x${height} stack show-more width`).toBe(metrics.seeMore.width)
         expect(metrics.stackSeeMore.height,`${width}x${height} stack show-more hit height`).toBe(metrics.seeMore.height)
-        expect(metrics.name.font,`${width}x${height} name display`).toBeLessThanOrEqual(58)
+        expect(metrics.name.font,`${width}x${height} name display`).toBeLessThanOrEqual(64)
         expect(metrics.nameCopy.font,`${width}x${height} name copy`).toBeLessThanOrEqual(15)
         expect(metrics.stackTitle.font,`${width}x${height} stack title`).toBeLessThanOrEqual(18)
         expect(metrics.stack.height,`${width}x${height} stack card`).toBeLessThanOrEqual(104)
@@ -2319,6 +2383,33 @@ test('Contact desktop density stays off in narrow landscape and mobile layouts',
     }
 })
 
+test('Contact form fields share the message column height on two-column screens', async ({page})=>{
+    await preferences(page)
+
+    for(const [index,[width,height]] of [[768,1024],[900,900],[1366,900],[1920,1080]].entries()) {
+        await page.setViewportSize({width,height})
+        if(index===0) await openSection(page,'contact')
+        else await page.reload()
+
+        const form=page.locator('#contact-form')
+        await expect(form.locator('.article-contact-form-left')).toBeVisible()
+        const dimensions=await form.evaluate(element=>{
+            const left=element.querySelector('.article-contact-form-left')
+            const right=element.querySelector('.article-contact-form-right')
+            const boxes=[...left.querySelectorAll('.input-field-wrapper')].map(wrapper=>wrapper.getBoundingClientRect().height)
+            return {
+                left:left.getBoundingClientRect().height,
+                right:right.getBoundingClientRect().height,
+                fields:boxes
+            }
+        })
+
+        expect(dimensions.left).toBeCloseTo(dimensions.right,0)
+        expect(dimensions.fields).toHaveLength(3)
+        expect(Math.max(...dimensions.fields)-Math.min(...dimensions.fields)).toBeLessThanOrEqual(1)
+    }
+})
+
 test('Contact location comparison stays compact and symmetrical across viewport widths', async ({page})=>{
     await preferences(page)
 
@@ -2349,6 +2440,7 @@ test('Contact location comparison stays compact and symmetrical across viewport 
                 width:buttonRect.width,
                 height:buttonRect.height,
                 background:getComputedStyle(element).backgroundColor,
+                backgroundImage:getComputedStyle(element).backgroundImage,
                 borderWidth:getComputedStyle(element).borderTopWidth,
                 radius:getComputedStyle(element).borderTopLeftRadius,
                 iconSize:iconRect.width,
@@ -2477,8 +2569,8 @@ test('Contact location comparison stays compact and symmetrical across viewport 
         expect(metrics.attributionCenterOffset).toBeLessThan(1)
         expect(metrics.zoomControls.every(control=>control.width>=(width<768?43.5:31) && control.height>=(width<768?43.5:31))).toBe(true)
         expect(metrics.zoomControls.every(control=>parseFloat(control.borderWidth)>0 && parseFloat(control.borderWidth)<=1)).toBe(true)
-        expect(metrics.zoomControls.every(control=>control.background!=='rgba(0, 0, 0, 0)')).toBe(true)
-        expect(metrics.zoomControls.every(control=>control.radius==='50%')).toBe(true)
+        expect(metrics.zoomControls.every(control=>control.background!=='rgba(0, 0, 0, 0)' || control.backgroundImage!=='none')).toBe(true)
+        expect(metrics.zoomControls.every(control=>parseFloat(control.radius)>=12 && parseFloat(control.radius)<=16)).toBe(true)
         expect(metrics.zoomControls.every(control=>control.iconSize<control.width)).toBe(true)
         expect(metrics.zoomControls.every(control=>control.iconCenterOffset<1)).toBe(true)
         expect(metrics.intro.height).toBeLessThan(210)

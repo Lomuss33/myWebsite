@@ -1,5 +1,7 @@
 import "./SoftwareDecorationCanvases.scss"
 import React, {useEffect, useRef} from 'react'
+import {getDecorationPixelRatio} from '../canvasSizing.js'
+import {createShaderSetupRetry} from '../shaderSetupRetry.js'
 
 const RAIN_FRAME_INTERVAL_MS = 72
 const SHADER_FRAME_INTERVAL_MS = 84
@@ -218,9 +220,10 @@ function measureLayout(rainCanvas, shaderCanvas) {
 }
 
 function resize2dCanvas(canvas, layout) {
-    const pixelRatio = Math.min(window.devicePixelRatio || 1, RAIN_MAX_DEVICE_PIXEL_RATIO)
-    const pixelWidth = Math.max(1, Math.round(layout.width * pixelRatio))
-    const pixelHeight = Math.max(1, Math.round(layout.height * pixelRatio))
+    const preferredRatio = Math.min(window.devicePixelRatio || 1, RAIN_MAX_DEVICE_PIXEL_RATIO)
+    const pixelRatio = getDecorationPixelRatio(layout.width, layout.height, preferredRatio)
+    const pixelWidth = Math.max(1, Math.floor(layout.width * pixelRatio))
+    const pixelHeight = Math.max(1, Math.floor(layout.height * pixelRatio))
 
     canvas.style.left = `${layout.left}px`
     canvas.style.width = `${layout.width}px`
@@ -237,9 +240,10 @@ function resize2dCanvas(canvas, layout) {
 }
 
 function resizeWebGlCanvas(canvas, gl, layout) {
-    const pixelRatio = Math.max(1, Math.min(SHADER_MAX_DEVICE_PIXEL_RATIO, window.devicePixelRatio * 0.5))
-    const width = Math.max(1, Math.round(layout.width * pixelRatio))
-    const height = Math.max(1, Math.round(layout.height * pixelRatio))
+    const preferredRatio = Math.max(1, Math.min(SHADER_MAX_DEVICE_PIXEL_RATIO, (window.devicePixelRatio || 1) * 0.5))
+    const pixelRatio = getDecorationPixelRatio(layout.width, layout.height, preferredRatio, gl)
+    const width = Math.max(1, Math.floor(layout.width * pixelRatio))
+    const height = Math.max(1, Math.floor(layout.height * pixelRatio))
 
     canvas.style.left = `${layout.left}px`
     canvas.style.top = `${layout.top}px`
@@ -333,7 +337,7 @@ function setupShader(canvas) {
         preserveDrawingBuffer: false
     })
 
-    if(!gl)
+    if(!gl || gl.isContextLost())
         return null
 
     const program = createShaderProgram(gl)
@@ -387,6 +391,7 @@ function SoftwareDecorationCanvases({ lowFrameRateMode = false }) {
         let isIntersecting = false
         let isShaderContextLost = false
         let observedBandElements = []
+        let disposed = false
         const reducedMotionQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)") || null
 
         try {
@@ -419,11 +424,6 @@ function SoftwareDecorationCanvases({ lowFrameRateMode = false }) {
         }
 
         const step = (timestamp) => {
-            if(isShaderContextLost) {
-                stopLoop()
-                return
-            }
-
             if(!shouldAnimate()) {
                 stopLoop()
                 return
@@ -436,7 +436,7 @@ function SoftwareDecorationCanvases({ lowFrameRateMode = false }) {
                 drawRain(context, layout, columns, cellSize, false)
             }
 
-            if(shaderState && timestamp - lastShaderTime >= getShaderFrameInterval()) {
+            if(shaderState && !isShaderContextLost && timestamp - lastShaderTime >= getShaderFrameInterval()) {
                 lastShaderTime = timestamp
                 drawShader(shaderState, timestamp)
             }
@@ -445,11 +445,6 @@ function SoftwareDecorationCanvases({ lowFrameRateMode = false }) {
         }
 
         const startLoop = () => {
-            if(isShaderContextLost) {
-                drawStatic()
-                return
-            }
-
             if(!shouldAnimate()) {
                 drawStatic()
                 return
@@ -460,6 +455,8 @@ function SoftwareDecorationCanvases({ lowFrameRateMode = false }) {
         }
 
         const rebuild = () => {
+            if(disposed)
+                return
             const nextLayout = measureLayout(rainCanvas, shaderCanvas)
             if(!nextLayout)
                 return
@@ -469,8 +466,12 @@ function SoftwareDecorationCanvases({ lowFrameRateMode = false }) {
             cellSize = getVisibleCellSize() / layout.scale
             columns = createColumns(layout.rain.width, layout.rain.height, cellSize)
 
-            if(shaderState && !isShaderContextLost && layout.shader)
+            if(shaderState && !isShaderContextLost && layout.shader) {
                 resizeWebGlCanvas(shaderCanvas, shaderState.gl, layout.shader)
+                shaderCanvas.style.visibility = "visible"
+            }
+            else
+                shaderCanvas.style.visibility = "hidden"
 
             lastRainTime = 0
             lastShaderTime = 0
@@ -479,6 +480,8 @@ function SoftwareDecorationCanvases({ lowFrameRateMode = false }) {
         }
 
         const scheduleRebuild = () => {
+            if(disposed)
+                return
             if(rebuildFrameId !== null)
                 window.cancelAnimationFrame(rebuildFrameId)
 
@@ -489,6 +492,8 @@ function SoftwareDecorationCanvases({ lowFrameRateMode = false }) {
         }
 
         const scheduleDelayedRebuild = () => {
+            if(disposed)
+                return
             if(delayedRebuildId !== null)
                 window.clearTimeout(delayedRebuildId)
 
@@ -517,12 +522,10 @@ function SoftwareDecorationCanvases({ lowFrameRateMode = false }) {
 
         const handleContextLost = (event) => {
             event.preventDefault()
+            shaderSetupRetry.cancel()
             isShaderContextLost = true
-            stopLoop()
-            if(rebuildFrameId !== null) {
-                window.cancelAnimationFrame(rebuildFrameId)
-                rebuildFrameId = null
-            }
+            shaderState = null
+            shaderCanvas.style.visibility = "hidden"
         }
 
         const handleContextRestored = () => {
@@ -534,22 +537,46 @@ function SoftwareDecorationCanvases({ lowFrameRateMode = false }) {
             catch(error) {
                 console.error(error)
                 shaderState = null
-                return
             }
 
             scheduleRebuild()
+            if(!shaderState)
+                shaderSetupRetry.start()
         }
 
         const handleVisibilityChange = () => {
             if(document.hidden) {
                 stopLoop()
+                shaderSetupRetry.cancel()
                 return
             }
             startLoop()
         }
 
         const handleWindowLoad = () => scheduleDelayedRebuild()
-        const handleAppResume = () => scheduleDelayedRebuild()
+        const handleAppResume = () => {
+            if(!shaderState && !isShaderContextLost)
+                handleContextRestored()
+            if(!shaderState && !isShaderContextLost)
+                shaderSetupRetry.start()
+            scheduleDelayedRebuild()
+        }
+        const shaderSetupRetry = createShaderSetupRetry(() => {
+            if(disposed || isShaderContextLost)
+                return true
+            if(!shaderState) {
+                try {
+                    shaderState = setupShader(shaderCanvas)
+                }
+                catch(error) {
+                    console.error(error)
+                    shaderState = null
+                }
+                if(shaderState)
+                    scheduleRebuild()
+            }
+            return Boolean(shaderState)
+        })
 
         const resizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => scheduleRebuild())
         const mutationObserver = typeof MutationObserver === "undefined" ? null : new MutationObserver(() => {
@@ -582,6 +609,8 @@ function SoftwareDecorationCanvases({ lowFrameRateMode = false }) {
         })
 
         rebuild()
+        if(!shaderState)
+            shaderSetupRetry.start()
         scheduleDelayedRebuild()
 
         if(!intersectionObserver) {
@@ -590,6 +619,8 @@ function SoftwareDecorationCanvases({ lowFrameRateMode = false }) {
         }
 
         return () => {
+            disposed = true
+            shaderSetupRetry.dispose()
             stopLoop()
             if(rebuildFrameId !== null)
                 window.cancelAnimationFrame(rebuildFrameId)

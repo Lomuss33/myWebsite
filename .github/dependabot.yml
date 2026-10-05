@@ -8,6 +8,15 @@ updates:
       time: "09:00"
       timezone: Europe/Berlin
     open-pull-requests-limit: 5
+    # React's ESLint plugin does not support ESLint 10 yet. Upgrade together
+    # after the React plugins declare support for the next ESLint major.
+    ignore:
+      - dependency-name: eslint
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "@eslint/js"
+        update-types:
+          - "version-update:semver-major"
     groups:
       development-tool-patches:
         applies-to: version-updates

@@ -925,12 +925,11 @@ function createIllustratedManuscript({
             spawnFire(dragon, sprites)
         }
 
-        let hasFire = hasActiveFire(dragon)
+        const hasFire = hasActiveFire(dragon)
         if (hasFire) {
             updateFire(dragon, time)
         }
 
-        hasFire = hasActiveFire(dragon)
         const dropCapExclusions = [{
             x: layout.margin - 4,
             y: layout.margin - 4,

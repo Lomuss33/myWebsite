@@ -29,7 +29,7 @@ function hslToRgb(h, s, l) {
     const x = c * (1 - Math.abs(((hh / 60) % 2) - 1))
     const m = ll - c / 2
 
-    let r1 = 0, g1 = 0, b1 = 0
+    let r1, g1, b1
     if(hh < 60) { r1 = c; g1 = x; b1 = 0 }
     else if(hh < 120) { r1 = x; g1 = c; b1 = 0 }
     else if(hh < 180) { r1 = 0; g1 = c; b1 = x }

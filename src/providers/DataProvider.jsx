@@ -120,7 +120,7 @@ function DataProvider({ children, settings }) {
             if(!sectionJsonPath)
                 return
 
-            let jSectionData = {}
+            let jSectionData
 
             try {
                 jSectionData = await utils.file.loadJSON(sectionJsonPath)

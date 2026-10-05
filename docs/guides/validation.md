@@ -8,6 +8,8 @@ Use Node.js 24 LTS and `npm ci` for a lockfile-based install. Dependency engine 
 
 Dependabot checks npm and GitHub Actions weekly. Development-tool patch updates are grouped; security and major updates remain separately reviewable. See [.github/dependabot.yml](../../.github/dependabot.yml).
 
+`eslint` and `@eslint/js` are pinned together to 9.39.5 because the installed React lint plugins do not declare ESLint 10 support. Dependabot ignores major updates for these two packages until a compatible plugin upgrade is reviewed. Keep their major versions aligned, regenerate the lockfile, and verify a strict `npm ci` plus lint when updating this toolchain.
+
 | Change | Checks |
 |---|---|
 | Documentation | Relative links, source paths, commands, status labels |
@@ -65,5 +67,7 @@ Real mobile keyboards/safe areas, browser zoom, weak GPUs, and device rendering 
 ## Deployment
 
 The workflow verifies pull requests and runs on `main` pushes or manual dispatch. After lint, unit checks, the production build, and the focused Chromium suite pass, it publishes the same tested `dist/` artifact to GitHub Pages with CNAME `lovro-music.de` and `keep_files: true`. Enabling extended browser checks also requires the Firefox and WebKit interaction suites to pass before publishing.
+
+Pages serves the root of the `gh-pages` branch. A push to `main` updates the live site only after the **Deploy portfolio to GitHub Pages** workflow passes verification and deployment. A failed verification leaves the previous site online. When a change is missing, check that the intended commit exists on remote `main`, inspect that commit's deployment run and first failing step, then compare the `gh-pages` commit message (`deploy: <source SHA>`) with the intended source commit. A successful Dependabot run does not mean the site deployed. Investigate caching after confirming that the published branch contains the expected build.
 
 Author sources, not generated output. Documentation work does not require publishing. Before intended deployment, review runtime compatibility and generated changes; the workflow is the operational source of truth.

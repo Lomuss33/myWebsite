@@ -36,6 +36,9 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Check documentation paths
+        run: npm run validate:docs
+
       - name: Test responsive layout resolver
         run: npm run test:layout
 

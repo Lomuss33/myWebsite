@@ -15,6 +15,7 @@
         "resume:make:article": "node npm/npm-resume-new-article.js",
         "resume:clear": "node npm/npm-resume-clear.js",
         "validate:i18n": "node npm/validate-i18n-text.js",
+        "validate:docs": "node npm/validate-docs.js",
         "test:layout": "node --test npm/responsive-layout.test.js",
         "test:web-art": "node --test npm/web-art-minesweeper.test.js",
         "test:responsive": "playwright test",

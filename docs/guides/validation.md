@@ -12,7 +12,7 @@ Dependabot checks npm and GitHub Actions weekly. Development-tool patch updates 
 
 | Change | Checks |
 |---|---|
-| Documentation | Relative links, source paths, commands, status labels |
+| Documentation | `npm run validate:docs` for current local links and linked source paths; manually check commands, anchors, intent and status labels |
 | JSON/locales | Parse JSON, `npm run validate:i18n`, inspect rendered content |
 | Code/styles | `npm run lint`, `npm run build`, focused behavior checks |
 | Mode resolver | `npm run test:layout` |
@@ -22,6 +22,8 @@ Dependabot checks npm and GitHub Actions weekly. Development-tool patch updates 
 | Images | `npm run images:generate`, inspect output, build |
 
 ESLint alone does not validate JSON content. `npm run build` runs prebuild resume preparation, CV generation, and locale validation. `npx vite build` bypasses prebuild; distinguish them in reports.
+
+The documentation path checker also runs in CI. Its default scope excludes historical task/evidence/archive contents and disposable files, while checking their routing READMEs. Pass explicit Markdown paths after `--` for a focused scan. It checks existence, not whether prose is correct or a heading anchor is valid. The [feature workflow](feature-documentation.md) covers concise contracts and upkeep. Added 2026-10-06; validation scope is reported by the command.
 
 ## Browser checks
 

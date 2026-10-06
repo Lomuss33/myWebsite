@@ -10,12 +10,27 @@ Current documents describe implementation; archives explain history.
 | Data and component ownership | [Architecture](architecture/overview.md) |
 | Layout and navigation | [Responsive layout](architecture/responsive-layout.md) |
 | Finished Home behavior | [Home implementation](architecture/home.md) |
+| Explore the edges / Explore the sidebar / navigation spotlight | [Startup navigation guide](architecture/startup-guide.md) |
 | Content and extension tasks | [Maintenance](guides/maintenance.md) |
 | Checks and deployment | [Validation](guides/validation.md) |
 | Reasons behind tradeoffs | [Decisions](decisions/README.md) |
 | Resume unfinished work | [Active work](work/README.md) |
 | Older investigations | [Archive](archive/README.md) |
 | Recorded measurements | [Evidence](evidence/README.md) |
+
+## Find a feature
+
+Match the description when your wording differs from the aliases. Read the linked contract, then its owner links; use `rg` on a likely alias or owner name if needed. Add useful phrases during real tasks, not a list of every possible typo.
+
+| Feature and purpose | Search names | Contract and owners |
+|---|---|---|
+| Home navigation guide: highlights where visitors can navigate and change settings | Explore the edges, explore the sidebar, look around, navigation hint, spotlight, dimmed background | [Startup guide](architecture/startup-guide.md) |
+| Career story rail: dragging an icon changes the story's position | Slider, drag rail, tractor handle, resistance, pull back to center | [Career rail](architecture/drag-interactions.md#career-story-rail) |
+| Home name interactions: pull a lineage or move an animated name through its story | Name origins, tug, names chain, movable word, text flows around name | [Name dragging](architecture/drag-interactions.md#home-name-dragging) |
+| Decorative bands: animated artwork separating sections and ending their pages | Decoration strip, bottom buffer, curtain, garden, shader, gradient only, sad-face background | [Decorative bands](architecture/decorative-bands.md) |
+| Project stickers: floating cutouts follow project cards without changing spacing | Cutouts, corner artwork, overlapping stickers, top right, bottom left, software dark set | [Project stickers](architecture/project-stickers.md) |
+
+Use the [short feature template and upkeep workflow](guides/feature-documentation.md) when adding or changing guidance. These five entries are a small starting set; expand when a real task needs it.
 
 ## Keeping documentation useful
 
@@ -29,4 +44,4 @@ Update current guidance in the same change as behavior. Record enduring tradeoff
 
 Use `docs/tmp/` for disposable screenshots, logs, and scripts; it is ignored except for its README. Retain compact reproducible results under `evidence/<date>-<topic>/` with command, revision, environment, and limitations. Never commit credentials or private browser profiles.
 
-Documentation-only validation checks relative links, paths, commands, and current/historical labels. It does not need an application build unless runtime files change.
+Run `npm run validate:docs` for current local links and linked owner paths; manually check commands, intent and current/historical labels. Documentation-only changes do not need an application build.

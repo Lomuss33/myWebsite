@@ -8,5 +8,6 @@ Archived files are not current instructions. Preserve dates/findings and mark su
 - [Verification and revisions](2026-09-responsive-sizing/verification.md)
 - [My Art artist spotlight masterplan and completion record](2026-09-27-my-art-artist-spotlight.md)
 - [Historical Software sticker artwork](stickers/software/README.md)
+- [Completed five-feature documentation pilot](2026-10-06-feature-documentation-plan.md)
 
 Current rules: [responsive layout](../architecture/responsive-layout.md). Measurements: [evidence](../evidence/README.md).

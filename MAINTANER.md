@@ -13,6 +13,7 @@ Start with the [README](README.md), [user guide](USER_GUIDE.md), or [documentati
 | State and application behavior | `src/providers/` and hooks; [architecture](docs/architecture/overview.md) |
 | Sizing and navigation | [Responsive layout](docs/architecture/responsive-layout.md) |
 | Home behavior | [Home implementation](docs/architecture/home.md) |
+| A feature described in unfamiliar wording | [Feature names, purposes and owners](docs/README.md#find-a-feature) |
 | Generated CV/images | [Generated files](docs/guides/maintenance.md#generated-files) |
 
 ## Working sequence
@@ -21,7 +22,7 @@ Start with the [README](README.md), [user guide](USER_GUIDE.md), or [documentati
 2. Change the smallest correct layer, avoiding competing overrides.
 3. Regenerate outputs when their sources change.
 4. Run [targeted checks](docs/guides/validation.md); report actual coverage and limitations.
-5. Update current guidance when behavior changes; record incomplete work under [active work](docs/work/README.md).
+5. Update affected feature rules, aliases, owner links and actual verification scope using the [small feature workflow](docs/guides/feature-documentation.md); record incomplete work under [active work](docs/work/README.md).
 
 Home is `#about`, sourced from `home.json`. The registry also changes Home display order. Historical plans are not specifications. Generated outputs are not authoring sources. Pushes to `main` trigger deployment; see [deployment](docs/guides/validation.md#deployment).
 

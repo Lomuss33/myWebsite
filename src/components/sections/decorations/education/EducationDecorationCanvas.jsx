@@ -258,6 +258,7 @@ function measureLayout(canvas) {
     const layerHeight = Math.max(...bandRects.map(rect => rect.y + rect.height))
     const bottomBand = bandRects.find(rect => rect.element.classList.contains("section-decoration-band-page-bottom")) || null
     const bands = bandRects.slice(0, MAX_BANDS).map(rect => ({
+        element: rect.element,
         x: rect.x - layerLeft,
         y: rect.y,
         width: rect.width,
@@ -307,7 +308,7 @@ function getCanvasPixelRatio(layout) {
     return Math.max(0.5, Math.min(MAX_DEVICE_PIXEL_RATIO, scaledPixelRatio))
 }
 
-function resizeBandCanvas(canvas, gl, layout, band) {
+function resizeBandCanvas(canvas, gl, layout, band, previousMetrics = null) {
     const pixelRatio = getDecorationPixelRatio(band.width, band.height, getCanvasPixelRatio(layout), gl)
     const width = Math.max(1, Math.floor(band.width * pixelRatio))
     const height = Math.max(1, Math.floor(band.height * pixelRatio))
@@ -325,10 +326,19 @@ function resizeBandCanvas(canvas, gl, layout, band) {
 
     gl.viewport(0, 0, width, height)
 
+    // Page reflow moves the band, but must not change its artwork coordinates.
+    // Only a change to this surface's size or pixel density needs new metrics.
+    const patternWidth = Math.max(1, Math.round(layout.width * pixelRatio))
+    if(previousMetrics?.width === width && previousMetrics.height === height &&
+        previousMetrics.pixelRatio === pixelRatio && previousMetrics.patternResolution.width === patternWidth)
+        return previousMetrics
+
     return {
+        width,
+        height,
         pixelRatio,
         patternResolution: {
-            width: Math.max(1, Math.round(layout.width * pixelRatio)),
+            width: patternWidth,
             height: Math.max(1, Math.round(layout.height * pixelRatio))
         },
         patternOffset: {
@@ -361,18 +371,12 @@ function resizeBottomCanvas(canvas, gl, layout) {
     return true
 }
 
-function getBandUniforms(layout, pixelRatio, bandIndex = null) {
+function getBandUniforms(metrics) {
     const values = new Float32Array(MAX_BANDS * 4)
-    const bands = bandIndex === null ? layout.bands : [layout.bands[bandIndex]].filter(Boolean)
-
-    bands.forEach((band, index) => {
-        const offset = index * 4
-        values[offset] = band.x * pixelRatio
-        values[offset + 1] = (layout.height - band.y - band.height) * pixelRatio
-        values[offset + 2] = band.width * pixelRatio
-        values[offset + 3] = band.height * pixelRatio
-    })
-
+    values[0] = metrics.patternOffset.x
+    values[1] = metrics.patternOffset.y
+    values[2] = metrics.width
+    values[3] = metrics.height
     return values
 }
 
@@ -436,6 +440,7 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
         let forceRebuildPending = false
         let layout = null
         const bandShaderStates = bandCanvases.map(() => null)
+        const bandArtworkMetrics = new WeakMap()
         let bandRenderStates = []
         let bottomShaderState = null
         let hasBottomShaderLayout = false
@@ -469,13 +474,14 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
             }
         }
 
-        const drawStatic = () => {
+        const drawCurrentFrame = () => {
+            const animationTime = isReducedMotion() ? 0 : getAnimationTime(window.performance.now())
             if(layout)
                 bandRenderStates.forEach(renderState => {
-                    drawShader(renderState.shaderState, layout, renderState.bandUniforms, 0, 1, renderState.metrics)
+                    drawShader(renderState.shaderState, layout, renderState.bandUniforms, animationTime, 1, renderState.metrics)
                 })
             if(hasBottomShaderLayout)
-                drawBottomShader(bottomShaderState, 0)
+                drawBottomShader(bottomShaderState, animationTime)
         }
 
         const step = (timestamp) => {
@@ -498,10 +504,8 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
         }
 
         const startLoop = () => {
-            if(!shouldAnimate()) {
-                drawStatic()
+            if(!shouldAnimate())
                 return
-            }
 
             if(animationFrameId === null)
                 animationFrameId = window.requestAnimationFrame(step)
@@ -522,23 +526,28 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
 
             lastLayoutSignature = nextLayoutSignature
             layout = nextLayout
+            let needsRedraw = forceRedraw
             const bandCount = Math.min(layout.bands.length, bandCanvases.length)
             bandRenderStates = layout.bands.slice(0, bandCount).map((band, index) => {
                 const canvas = bandCanvases[index]
                 // Only acquire contexts for actual bands, and retry unavailable ones on resume.
-                const shaderState = bandShaderStates[index] || createShaderState(canvas)
+                const previousShaderState = bandShaderStates[index]
+                const shaderState = previousShaderState || createShaderState(canvas)
                 bandShaderStates[index] = shaderState
                 if(!shaderState || shaderState.gl.isContextLost()) {
                     canvas.style.visibility = "hidden"
                     return null
                 }
-                const metrics = resizeBandCanvas(canvas, shaderState.gl, layout, band)
+                const previousMetrics = bandArtworkMetrics.get(band.element)
+                const metrics = resizeBandCanvas(canvas, shaderState.gl, layout, band, previousMetrics)
+                bandArtworkMetrics.set(band.element, metrics)
+                needsRedraw = needsRedraw || metrics !== previousMetrics || shaderState !== previousShaderState
                 canvas.style.visibility = "visible"
 
                 return {
                     shaderState,
                     metrics,
-                    bandUniforms: getBandUniforms(layout, metrics.pixelRatio, index)
+                    bandUniforms: getBandUniforms(metrics)
                 }
             }).filter(Boolean)
             bandCanvases.slice(bandCount).forEach(canvas => {
@@ -546,12 +555,17 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
                 canvas.height = 1
                 canvas.style.display = "none"
             })
+            const previousBottomShaderState = bottomShaderState
+            const previousBottomWidth = bottomCanvas.width
+            const previousBottomHeight = bottomCanvas.height
             bottomShaderState = bottomShaderState || createShaderState(bottomCanvas, bottomFragmentSource)
             hasBottomShaderLayout = Boolean(bottomShaderState && !bottomShaderState.gl.isContextLost() &&
                 resizeBottomCanvas(bottomCanvas, bottomShaderState.gl, layout) === true)
             bottomCanvas.style.visibility = hasBottomShaderLayout ? "visible" : "hidden"
-            lastFrameTime = 0
-            drawStatic()
+            needsRedraw = needsRedraw || bottomShaderState !== previousBottomShaderState ||
+                bottomCanvas.width !== previousBottomWidth || bottomCanvas.height !== previousBottomHeight
+            if(needsRedraw)
+                drawCurrentFrame()
             startLoop()
         }
 
@@ -605,6 +619,7 @@ function EducationDecorationCanvas({ lowFrameRateMode = false }) {
                 shaderSetupRetry.cancel()
                 return
             }
+            drawCurrentFrame()
             startLoop()
         }
         const handleWindowResize = () => scheduleRebuild()

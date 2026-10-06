@@ -1,3 +1,5 @@
+import {startupGuideLabels} from "../data/startupGuideI18n.js"
+
 const APP_READY_CLASS = "body-theme"
 const HOME_SECTION_SELECTOR = "section#section-about.section-shown"
 const HOME_STATE_OBSERVE_ROOT_SELECTOR = "#root"
@@ -6,27 +8,12 @@ const DESKTOP_TARGET_SELECTOR = ".nav-tools"
 const DESKTOP_RAIL_SELECTOR = ".nav-sidebar-card-wrapper"
 const DESKTOP_RESUME_BAND_SELECTOR = ".nav-short-rail-resume-band"
 const MOBILE_TOP_TARGET_SELECTOR = ".nav-link-pills-fixed-wrapper-shown"
+const MOBILE_HEADER_SELECTOR = ".nav-header-mobile"
 const MOBILE_BOTTOM_TARGET_SELECTOR = ".nav-tab-controller-wrapper"
-const ACTIVE_DIALOG_SELECTOR = '[role="dialog"][aria-modal="true"], .modal.show'
-
-const GUIDE_HINT_LABELS = {
-    en: {
-        desktop: "Look around.",
-        mobile: "Explore the edges.",
-    },
-    de: {
-        desktop: "Schau dich um.",
-        mobile: "Kanten erkunden.",
-    },
-    hr: {
-        desktop: "Pogledaj oko sebe.",
-        mobile: "Istrazi rubove.",
-    },
-    tr: {
-        desktop: "Etrafa bak.",
-        mobile: "Kenarlari kesfet.",
-    },
-}
+const NAVIGATION_SELECTOR = ".layout-navigation-wrapper, .nav-sidebar, .nav-header-mobile, .nav-tab-controller-wrapper, .nav-link-pills-sticky-slot"
+const TARGET_SELECTOR = [DESKTOP_TARGET_SELECTOR, DESKTOP_RAIL_SELECTOR, DESKTOP_RESUME_BAND_SELECTOR,
+    MOBILE_TOP_TARGET_SELECTOR, MOBILE_HEADER_SELECTOR, MOBILE_BOTTOM_TARGET_SELECTOR].join(", ")
+const ACTIVE_DIALOG_SELECTOR = '[role="dialog"][aria-modal="true"], .modal.show, .dropdown-menu.show'
 
 const APP_READY_TIMEOUT_MS = 10000
 const DOCUMENT_COMPLETE_TIMEOUT_MS = 10000
@@ -76,13 +63,25 @@ function createController() {
         root: null,
         overlay: null,
         label: null,
+        heading: null,
+        detail: null,
+        topCaption: null,
+        bottomCaption: null,
         observers: new Set(),
         timeouts: new Set(),
         cleanupHooks: new Set(),
         eventListeners: [],
         rafId: null,
         ambientRafId: null,
+        geometryRafId: null,
+        resizeObserver: null,
+        observedTargets: [],
+        targets: null,
+        run: null,
+        isDismissing: false,
+        showRecorded: false,
         destroyed: false,
+        isPaused: false,
 
         isHomeActive: false,
         isVisible: false,
@@ -185,13 +184,18 @@ function registerGlobalListeners(state) {
         handleMouseMove(state, event)
     }, { passive: true })
 
+    addWindowListener(state, "pointermove", (event) => {
+        if(event.pointerType === "pen")
+            handleMouseMove(state, event)
+    }, { passive: true })
+
     addWindowListener(state, "wheel", () => {
         handleInteraction(state, { dismissVisibleGuide: true })
     }, { passive: true })
 
     addWindowListener(state, "scroll", () => {
         handleInteraction(state, { dismissVisibleGuide: true })
-    }, { passive: true })
+    }, { passive: true, capture: true })
 
     addWindowListener(state, "touchstart", () => {
         handleInteraction(state, { dismissVisibleGuide: true })
@@ -213,11 +217,51 @@ function registerGlobalListeners(state) {
         handleInteraction(state, { dismissVisibleGuide: true })
     }, { passive: true })
 
+    addWindowListener(state, "keydown", () => {
+        handleInteraction(state, { dismissVisibleGuide: true })
+    })
+
+    addWindowListener(state, "pointerdown", () => {
+        handleInteraction(state, { dismissVisibleGuide: true })
+    }, { passive: true })
+
+    addWindowListener(state, "resize", () => scheduleGeometryUpdate(state), { passive: true })
+    addWindowListener(state, "storage", () => scheduleGeometryUpdate(state))
+    const pause = () => {
+        state.isPaused = true
+        clearGuideTimers(state)
+        hideGuide(state, { immediate: true })
+    }
+    const resume = () => {
+        state.isPaused = false
+        syncHomeState(state)
+        scheduleGeometryUpdate(state)
+    }
+    addWindowListener(state, "app:pause", pause)
+    addWindowListener(state, "app:resume", resume)
+    const motionQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)")
+    const updateMotion = () => {
+        if(state.root && !state.isDismissing) {
+            cancelGuideRun(state)
+            stopAmbientMotion(state)
+            completeGuideShow(state)
+            state.root.style.setProperty("--startup-guide-opacity", "1")
+            scheduleGeometryUpdate(state)
+        }
+    }
+    motionQuery?.addEventListener?.("change", updateMotion)
+    addCleanupHook(state, () => motionQuery?.removeEventListener?.("change", updateMotion))
+    for(const type of ["resize", "scroll"]) {
+        const updateGeometry = () => scheduleGeometryUpdate(state)
+        window.visualViewport?.addEventListener(type, updateGeometry, { passive: true })
+        addCleanupHook(state, () => window.visualViewport?.removeEventListener(type, updateGeometry))
+    }
+
     addDocumentListener(state, "visibilitychange", () => {
         if(document.hidden)
-            hideGuide(state, { immediate: true })
-        else if(state.isHomeActive)
-            scheduleInactivityReplay(state)
+            pause()
+        else
+            resume()
     })
 }
 
@@ -228,8 +272,21 @@ function observeDomChanges(state) {
     if(!observerTarget)
         return
 
-    const observer = new MutationObserver(() => {
-        syncHomeState(state)
+    const observer = new MutationObserver((records) => {
+        const relevant = records.some(record => {
+            const target = record.target.nodeType === 1 ? record.target : record.target.parentElement
+            if(target?.closest?.(".text-typer"))
+                return false
+            if(record.type === "attributes")
+                return target?.matches?.("section#section-about, " + TARGET_SELECTOR + ", .nav-sidebar, .modal, .dropdown-menu")
+            if(target?.closest?.(NAVIGATION_SELECTOR) && !target?.closest?.(".layout-navigation-children-wrapper"))
+                return true
+            return [...record.addedNodes, ...record.removedNodes].some(node =>
+                node.nodeType === 1 && (node.matches?.("section#section-about, " + TARGET_SELECTOR) ||
+                    node.querySelector?.("section#section-about, " + TARGET_SELECTOR)))
+        })
+        if(relevant)
+            scheduleGeometryUpdate(state)
     })
 
     state.observers.add(observer)
@@ -239,6 +296,16 @@ function observeDomChanges(state) {
         attributes: true,
         attributeFilter: ["class"]
     })
+
+    const layoutObserver = new MutationObserver(() => scheduleGeometryUpdate(state))
+    state.observers.add(layoutObserver)
+    layoutObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["data-layout", "data-theme", "lang"],
+    })
+    state.resizeObserver = typeof ResizeObserver === "function" ?
+        new ResizeObserver(() => scheduleGeometryUpdate(state)) : null
+    document.fonts?.ready?.then?.(() => scheduleGeometryUpdate(state))
 }
 
 function syncHomeState(state) {
@@ -252,15 +319,18 @@ function syncHomeState(state) {
     if(!isHomeActive) {
         state.lastPointerPosition = null
         state.initialMovementDistance = 0
-        clearTrackedTimeout(state, state.initialShowTimeoutId)
-        state.initialShowTimeoutId = null
-        clearTrackedTimeout(state, state.inactivityReplayTimeoutId)
-        state.inactivityReplayTimeoutId = null
+        clearGuideTimers(state)
         hideGuide(state, { immediate: true })
         return
     }
 
-    if(!resolveGuideTargets()) {
+    state.targets = resolveGuideTargets()
+    syncTargetObservers(state)
+    if(!state.targets) {
+        // Layout mode changes before React replaces the navigation. Retain the
+        // visible guide during that gap; the navigation observer measures again.
+        if(state.root && !state.isDismissing)
+            return
         hideGuide(state, { immediate: true })
         return
     }
@@ -278,16 +348,18 @@ function syncHomeState(state) {
 }
 
 function scheduleInitialShow(state) {
-    if(state.destroyed || !state.isHomeActive || state.hasAttemptedInitialShow)
+    if(state.destroyed || !state.isHomeActive || state.hasAttemptedInitialShow ||
+        state.initialShowTimeoutId !== null || document.hidden || state.isPaused)
         return
 
-    clearTrackedTimeout(state, state.initialShowTimeoutId)
     state.initialShowTimeoutId = trackTimeout(state, async () => {
         state.initialShowTimeoutId = null
         state.hasAttemptedInitialShow = true
 
-        if(!canShowGuide(state))
+        if(!canShowGuide(state)) {
+            scheduleInactivityReplay(state)
             return
+        }
 
         if(state.initialMovementDistance > INITIAL_MOVEMENT_THRESHOLD_PX) {
             scheduleInactivityReplay(state)
@@ -299,11 +371,13 @@ function scheduleInitialShow(state) {
     }, INITIAL_SHOW_DELAY_MS)
 }
 
-function scheduleInactivityReplay(state) {
-    if(state.destroyed || !state.isHomeActive || state.isVisible || state.isAnimating || document.hidden)
+function scheduleInactivityReplay(state, { restart = false } = {}) {
+    if(state.destroyed || !state.isHomeActive || state.isVisible || state.isAnimating || document.hidden || state.isPaused)
         return
 
     const replayDelayMs = state.nextInactivityReplayMs
+    if(state.inactivityReplayTimeoutId !== null && !restart)
+        return
     clearTrackedTimeout(state, state.inactivityReplayTimeoutId)
     state.inactivityReplayTimeoutId = trackTimeout(state, async () => {
         state.inactivityReplayTimeoutId = null
@@ -352,12 +426,16 @@ function handleMouseMove(state, event) {
 }
 
 function handleInteraction(state, { dismissVisibleGuide }) {
+    if(state.destroyed)
+        return
+    if(dismissVisibleGuide && !state.hasAttemptedInitialShow)
+        state.initialMovementDistance = INITIAL_MOVEMENT_THRESHOLD_PX + 1
     if((state.isVisible || state.isAnimating) && dismissVisibleGuide) {
         hideGuide(state)
     }
 
     if(state.isHomeActive && !state.isVisible && !state.isAnimating)
-        scheduleInactivityReplay(state)
+        scheduleInactivityReplay(state, { restart: true })
 }
 
 async function showGuide(state) {
@@ -372,10 +450,14 @@ async function showGuide(state) {
     if(!root)
         return
     setGuideLayoutMode(state, guideTargets.layoutMode)
+    state.targets = guideTargets
+    syncTargetObservers(state)
     const isReplay = state.hasShownGuideAtLeastOnce
     state.root.toggleAttribute("data-replay", isReplay)
 
     state.isAnimating = true
+    state.isDismissing = false
+    const run = beginGuideRun(state)
 
     const startSpotlight = {
         x: window.innerWidth / 2,
@@ -392,10 +474,12 @@ async function showGuide(state) {
 
     const useSimpleFade = guideTargets.layoutMode === "mobile" || prefersReducedMotion() || isReplay
     const finalSpotlight = spotlightSteps[spotlightSteps.length - 1].spotlight
-    applyLabelPosition(state, guideTargets.layoutMode, finalSpotlight)
+    updateGuideLabels(state, guideTargets.layoutMode)
+    applyMobileLighting(state, guideTargets)
+    applyLabelPosition(state, guideTargets, finalSpotlight)
 
     applySpotlight(state, startSpotlight)
-    if(!await waitForNextFrame(state))
+    if(!await waitForNextFrame(state, run))
         return
 
     setOverlayOpacityTransition(state, FADE_IN_MS, "ease-out")
@@ -405,7 +489,7 @@ async function showGuide(state) {
             ...finalSpotlight,
             opacity: 1,
         })
-        if(!await waitForDuration(state, FADE_IN_MS))
+        if(!await waitForDuration(state, FADE_IN_MS, run))
             return
     }
     else {
@@ -413,7 +497,7 @@ async function showGuide(state) {
             ...startSpotlight,
             opacity: 1,
         })
-        if(!await waitForDuration(state, FADE_IN_MS))
+        if(!await waitForDuration(state, FADE_IN_MS, run))
             return
 
         let currentSpotlight = {
@@ -425,71 +509,69 @@ async function showGuide(state) {
             if(!await animateSpotlight(state, {
                 from: currentSpotlight,
                 to: step.spotlight,
-                durationMs: step.durationMs
+                durationMs: step.durationMs,
+                run,
             })) {
                 return
             }
 
             currentSpotlight = step.spotlight
 
-            if(step.pauseMs > 0 && !await waitForDuration(state, step.pauseMs))
+            if(step.pauseMs > 0 && !await waitForDuration(state, step.pauseMs, run))
                 return
         }
     }
 
-    state.isAnimating = false
-    state.isVisible = true
-    clearTrackedTimeout(state, state.inactivityReplayTimeoutId)
-    state.inactivityReplayTimeoutId = null
+    if(!isGuideRunActive(state, run))
+        return
+    completeGuideShow(state)
 
     if(!useSimpleFade)
         startAmbientMotion(state, guideTargets)
 
-    if(state.hasShownGuideAtLeastOnce) {
-        state.nextInactivityReplayMs += INACTIVITY_REPLAY_STEP_MS
-    }
-
-    state.hasShownGuideAtLeastOnce = true
 }
 
-function hideGuide(state, { immediate = false } = {}) {
-    if(!state.root)
-        return
+function completeGuideShow(state) {
+    state.isAnimating = false
+    state.isVisible = true
+    clearTrackedTimeout(state, state.inactivityReplayTimeoutId)
+    state.inactivityReplayTimeoutId = null
+    if(!state.showRecorded) {
+        if(state.hasShownGuideAtLeastOnce)
+            state.nextInactivityReplayMs += INACTIVITY_REPLAY_STEP_MS
+        state.hasShownGuideAtLeastOnce = true
+        state.showRecorded = true
+    }
+}
 
+async function hideGuide(state, { immediate = false } = {}) {
+    if(state.isDismissing && !immediate)
+        return
+    cancelGuideRun(state)
     state.isVisible = false
     stopAmbientMotion(state)
 
-    if(immediate || state.destroyed) {
+    if(immediate || state.destroyed || !state.root) {
         removeGuideElements(state)
         state.isAnimating = false
-        if(state.isHomeActive)
-            scheduleInactivityReplay(state)
-        return
-    }
-
-    if(state.isAnimating) {
-        removeGuideElements(state)
-        state.isAnimating = false
+        state.isDismissing = false
         if(state.isHomeActive)
             scheduleInactivityReplay(state)
         return
     }
 
     state.isAnimating = true
+    state.isDismissing = true
+    const run = beginGuideRun(state)
     setOverlayOpacityTransition(state, FADE_OUT_MS, "ease-in")
-    applySpotlight(state, {
-        ...resolveCurrentSpotlight(state),
-        opacity: 0,
-    })
-
-    const fadeOutTimeoutId = trackTimeout(state, () => {
-        removeGuideElements(state)
-        state.isAnimating = false
-        if(state.isHomeActive)
-            scheduleInactivityReplay(state)
-    }, FADE_OUT_MS)
-
-    addCleanupHook(state, () => clearTrackedTimeout(state, fadeOutTimeoutId))
+    state.root.style.setProperty("--startup-guide-opacity", "0")
+    if(!await waitForDuration(state, FADE_OUT_MS, run))
+        return
+    removeGuideElements(state)
+    state.isAnimating = false
+    state.isDismissing = false
+    if(state.isHomeActive)
+        scheduleInactivityReplay(state)
 }
 
 function ensureGuideElements(state) {
@@ -508,15 +590,29 @@ function ensureGuideElements(state) {
 
     const label = document.createElement("div")
     label.className = "startup-guide-overlay-label"
-    label.textContent = getGuideLabel(resolveLayoutMode())
+    const heading = document.createElement("span")
+    heading.className = "startup-guide-heading"
+    const detail = document.createElement("span")
+    detail.className = "startup-guide-detail"
+    label.append(heading, detail)
+    const topCaption = document.createElement("div")
+    topCaption.className = "startup-guide-edge-caption startup-guide-edge-caption-top"
+    const bottomCaption = document.createElement("div")
+    bottomCaption.className = "startup-guide-edge-caption startup-guide-edge-caption-bottom"
 
     root.appendChild(overlay)
     root.appendChild(label)
+    root.append(topCaption, bottomCaption)
     document.body.appendChild(root)
 
     state.root = root
     state.overlay = overlay
     state.label = label
+    state.heading = heading
+    state.detail = detail
+    state.topCaption = topCaption
+    state.bottomCaption = bottomCaption
+    state.showRecorded = false
     return root
 }
 
@@ -528,6 +624,11 @@ function removeGuideElements(state) {
     state.root = null
     state.overlay = null
     state.label = null
+    state.heading = null
+    state.detail = null
+    state.topCaption = null
+    state.bottomCaption = null
+    syncTargetObservers(state)
 }
 
 function setGuideLayoutMode(state, layoutMode) {
@@ -537,27 +638,43 @@ function setGuideLayoutMode(state, layoutMode) {
     state.root.setAttribute("data-layout", layoutMode === "mobile" ? "mobile" : "desktop")
 }
 
-function applyLabelPosition(state, layoutMode, spotlight) {
+function applyLabelPosition(state, targets, spotlight) {
     if(!state.root || !spotlight)
         return
 
-    if(layoutMode === "mobile") {
-        state.root.style.setProperty("--startup-guide-label-x", "50vw")
-        state.root.style.setProperty("--startup-guide-label-y", "50vh")
-        state.root.setAttribute("data-label-side", "center")
-        return
-    }
-
-    const horizontalMargin = 24
-    const labelX = clamp(spotlight.x + spotlight.radius + 22, 150, window.innerWidth - horizontalMargin)
-    const labelY = clamp(spotlight.y, 64, window.innerHeight - 64)
+    const bounds = targets.viewport
+    const margin = Math.min(20, bounds.width * 0.04)
+    state.root.style.setProperty("--startup-guide-label-max-width", `${Math.max(1, bounds.width - margin * 2)}px`)
+    const labelRect = state.label.getBoundingClientRect()
+    const mobile = targets.layoutMode === "mobile"
+    const desiredX = mobile ? bounds.left + (bounds.width - labelRect.width) / 2 : spotlight.x + spotlight.radius + 22
+    const contentTop = targets.topRect?.bottom ?? bounds.top
+    const contentBottom = targets.bottomRect?.top ?? bounds.bottom
+    const desiredY = mobile ? (contentTop + contentBottom) / 2 : spotlight.y
+    const labelX = clamp(desiredX, bounds.left + margin, Math.max(bounds.left + margin, bounds.right - labelRect.width - margin))
+    const labelY = clamp(desiredY, bounds.top + margin + labelRect.height / 2,
+        Math.max(bounds.top + margin + labelRect.height / 2, bounds.bottom - margin - labelRect.height / 2))
     state.root.style.setProperty("--startup-guide-label-x", `${roundTo(labelX, 2)}px`)
     state.root.style.setProperty("--startup-guide-label-y", `${roundTo(labelY, 2)}px`)
-    state.root.setAttribute("data-label-side", "right")
+    const edgeInset = resolveMobileFeather(targets)
+    for(const [caption, edge, offset] of [[state.topCaption, targets.topRect?.bottom, edgeInset],
+        [state.bottomCaption, targets.bottomRect?.top, -edgeInset]]) {
+        if(!caption)
+            continue
+        caption.hidden = !mobile || edge === undefined
+        if(caption.hidden)
+            continue
+        const rect = caption.getBoundingClientRect()
+        const y = edge + offset + (offset > 0 ? rect.height / 2 : -rect.height / 2)
+        // Keep captions separate from the main message on very short screens.
+        caption.hidden = Math.abs(y - labelY) < (rect.height + labelRect.height) / 2 + 16
+        caption.style.left = `${bounds.left + bounds.width / 2}px`
+        caption.style.top = `${clamp(y, bounds.top + rect.height / 2 + margin, bounds.bottom - rect.height / 2 - margin)}px`
+    }
 }
 
 function canShowGuide(state) {
-    if(state.destroyed || !state.isHomeActive || state.isVisible || state.isAnimating || document.hidden)
+    if(state.destroyed || !state.isHomeActive || state.isVisible || state.isAnimating || document.hidden || state.isPaused)
         return false
 
     if(document.querySelector(ACTIVE_DIALOG_SELECTOR))
@@ -567,10 +684,13 @@ function canShowGuide(state) {
     return !activeElement?.matches?.("input, textarea, select, [contenteditable='true']")
 }
 
-function getGuideLabel(layoutMode) {
-    const selectedLanguageId = getPreferredLanguageId()
-    const labels = GUIDE_HINT_LABELS[selectedLanguageId] || GUIDE_HINT_LABELS.en
-    return labels[layoutMode] || labels.desktop || GUIDE_HINT_LABELS.en.desktop
+function updateGuideLabels(state, layoutMode) {
+    const labels = startupGuideLabels[getPreferredLanguageId()] || startupGuideLabels.en
+    state.heading.textContent = labels[layoutMode] || labels.desktop
+    state.detail.textContent = layoutMode === "mobile" ? labels.mobileDetail : labels.desktopDetail
+    state.detail.hidden = !state.detail.textContent
+    state.topCaption.textContent = labels.top
+    state.bottomCaption.textContent = labels.bottom
 }
 
 function getPreferredLanguageId() {
@@ -579,7 +699,7 @@ function getPreferredLanguageId() {
         if(raw) {
             const parsed = JSON.parse(raw)
             const preferredLanguageId = parsed?.preferredLanguage
-            if(typeof preferredLanguageId === "string" && GUIDE_HINT_LABELS[preferredLanguageId])
+            if(typeof preferredLanguageId === "string" && startupGuideLabels[preferredLanguageId])
                 return preferredLanguageId
         }
     }
@@ -588,7 +708,7 @@ function getPreferredLanguageId() {
     }
 
     const browserLanguage = String(navigator.language || "en").trim().toLowerCase().split("-")[0]
-    return GUIDE_HINT_LABELS[browserLanguage] ? browserLanguage : "en"
+    return startupGuideLabels[browserLanguage] ? browserLanguage : "en"
 }
 
 function applySpotlight(state, { x, y, radius, opacity }) {
@@ -602,43 +722,157 @@ function applySpotlight(state, { x, y, radius, opacity }) {
 }
 
 function resolveLayoutMode() {
-    const topTarget = getVisibleElement(MOBILE_TOP_TARGET_SELECTOR)
-    const bottomTarget = getVisibleElement(MOBILE_BOTTOM_TARGET_SELECTOR)
-    return topTarget || bottomTarget ? "mobile" : "desktop"
+    return document.documentElement.dataset.layout === "mobile" ? "mobile" : "desktop"
 }
 
 function resolveGuideTargets() {
     const layoutMode = resolveLayoutMode()
+    const viewport = getViewportRect()
+    const elements = []
+    const measure = (selector) => {
+        const element = document.querySelector(selector)
+        const rect = getElementRect(element, viewport)
+        if(rect)
+            elements.push(element)
+        return rect
+    }
 
     if(layoutMode === "mobile") {
-        const topTarget = getVisibleElement(MOBILE_TOP_TARGET_SELECTOR)
-        const bottomTarget = getVisibleElement(MOBILE_BOTTOM_TARGET_SELECTOR)
+        const topRect = mergeRects(measure(MOBILE_HEADER_SELECTOR), measure(MOBILE_TOP_TARGET_SELECTOR))
+        const bottomRect = measure(MOBILE_BOTTOM_TARGET_SELECTOR)
 
-        if(!topTarget && !bottomTarget)
+        if(!topRect && !bottomRect)
             return null
 
         return {
             layoutMode,
-            topRect: getElementRect(topTarget),
-            bottomRect: getElementRect(bottomTarget),
+            viewport,
+            elements,
+            topRect,
+            bottomRect,
         }
     }
 
-    const rail = getVisibleElement(DESKTOP_RAIL_SELECTOR)
-    const navTools = getVisibleElement(DESKTOP_TARGET_SELECTOR)
-    const resumeBand = getVisibleElement(DESKTOP_RESUME_BAND_SELECTOR)
-    const railRect = getElementRect(rail)
-    const toolsRect = getElementRect(navTools)
-    const lowerRailRect = mergeRects(toolsRect, getElementRect(resumeBand))
+    const railRect = measure(DESKTOP_RAIL_SELECTOR)
+    const lowerRailRect = mergeRects(measure(DESKTOP_TARGET_SELECTOR), measure(DESKTOP_RESUME_BAND_SELECTOR))
 
     if(!railRect && !lowerRailRect)
         return null
 
     return {
         layoutMode,
+        viewport,
+        elements,
         railRect,
         lowerRailRect: lowerRailRect || railRect,
     }
+}
+
+function getViewportRect() {
+    const viewport = window.visualViewport
+    const left = viewport?.offsetLeft || 0
+    const top = viewport?.offsetTop || 0
+    const width = viewport?.width || window.innerWidth
+    const height = viewport?.height || window.innerHeight
+    return { left, top, width, height, right: left + width, bottom: top + height }
+}
+
+function targetSignature(targets) {
+    if(!targets)
+        return ""
+    return [targets.layoutMode, ...[targets.viewport, targets.topRect, targets.bottomRect,
+        targets.railRect, targets.lowerRailRect].flatMap(rect => rect ?
+        [rect.left, rect.top, rect.width, rect.height].map(value => roundTo(value, 2)) : [null])].join("|")
+}
+
+function syncTargetObservers(state) {
+    if(!state.resizeObserver || state.destroyed)
+        return
+    const elements = [...(state.targets?.elements || []), ...(state.label ? [state.label] : [])]
+    state.observedTargets.filter(element => !elements.includes(element))
+        .forEach(element => state.resizeObserver.unobserve(element))
+    elements.filter(element => !state.observedTargets.includes(element))
+        .forEach(element => state.resizeObserver.observe(element))
+    state.observedTargets = elements
+}
+
+function scheduleGeometryUpdate(state) {
+    if(state.destroyed || state.geometryRafId !== null)
+        return
+    state.geometryRafId = requestAnimationFrame(() => {
+        state.geometryRafId = null
+        if(document.hidden || state.isPaused)
+            return
+        const previousSignature = targetSignature(state.targets)
+        syncHomeState(state)
+        if(!state.root || !state.targets || state.isDismissing)
+            return
+        const changed = previousSignature !== targetSignature(state.targets)
+        if(changed) {
+            cancelGuideRun(state)
+            stopAmbientMotion(state)
+        }
+        setGuideLayoutMode(state, state.targets.layoutMode)
+        updateGuideLabels(state, state.targets.layoutMode)
+        applyMobileLighting(state, state.targets)
+        const steps = resolveSpotlightSteps(state.targets)
+        const finalSpotlight = steps[steps.length - 1]?.spotlight
+        if(!finalSpotlight)
+            return
+        applyLabelPosition(state, state.targets, finalSpotlight)
+        if(changed) {
+            applySpotlight(state, { ...finalSpotlight, opacity: 1 })
+            completeGuideShow(state)
+        }
+        if(state.isVisible && !state.root.hasAttribute("data-replay"))
+            startAmbientMotion(state)
+    })
+}
+
+function resolveMobileFeather(targets) {
+    const top = targets.topRect?.bottom ?? targets.viewport.top
+    const bottom = targets.bottomRect?.top ?? targets.viewport.bottom
+    return Math.min(clamp(targets.viewport.height * 0.085, 48, 112), Math.max(0, (bottom - top) / 2))
+}
+
+function applyMobileLighting(state, targets) {
+    if(targets.layoutMode !== "mobile" || !state.root)
+        return
+    const top = targets.topRect?.bottom ?? targets.viewport.top
+    const bottom = targets.bottomRect?.top ?? targets.viewport.bottom
+    const feather = resolveMobileFeather(targets)
+    for(const [property, value] of Object.entries({
+        "top-clear": top,
+        "top-soft": top + feather * 0.4,
+        "top-shade": top + feather,
+        "bottom-shade": bottom - feather,
+        "bottom-soft": bottom - feather * 0.4,
+        "bottom-clear": bottom,
+    }))
+        state.root.style.setProperty(`--startup-guide-${property}`, `${roundTo(value, 2)}px`)
+}
+
+function clearGuideTimers(state) {
+    clearTrackedTimeout(state, state.initialShowTimeoutId)
+    clearTrackedTimeout(state, state.inactivityReplayTimeoutId)
+    state.initialShowTimeoutId = null
+    state.inactivityReplayTimeoutId = null
+}
+
+function beginGuideRun(state) {
+    cancelGuideRun(state)
+    const run = new AbortController()
+    state.run = run
+    return run
+}
+
+function cancelGuideRun(state) {
+    state.run?.abort()
+    state.run = null
+}
+
+function isGuideRunActive(state, run) {
+    return !state.destroyed && state.run === run && !run.signal.aborted && Boolean(state.root) && state.isHomeActive
 }
 
 function resolveSpotlightSteps(targets) {
@@ -652,9 +886,10 @@ function resolveSpotlightSteps(targets) {
 }
 
 function startAmbientMotion(state, initialTargets) {
-    stopAmbientMotion(state)
+    if(state.ambientRafId !== null || prefersReducedMotion())
+        return
 
-    const targets = initialTargets || resolveGuideTargets()
+    const targets = initialTargets || state.targets
     if(!targets || !state.root)
         return
     if(targets.layoutMode === "mobile")
@@ -663,12 +898,13 @@ function startAmbientMotion(state, initialTargets) {
     const startedAt = performance.now()
 
     const tick = (now) => {
-        if(state.destroyed || !state.root || !state.isVisible || state.isAnimating || !state.isHomeActive) {
+        if(state.destroyed || !state.root || !state.isVisible || state.isAnimating || !state.isHomeActive ||
+            document.hidden || state.isPaused || prefersReducedMotion() || state.targets?.layoutMode !== "desktop") {
             stopAmbientMotion(state)
             return
         }
 
-        const freshTargets = resolveGuideTargets() || targets
+        const freshTargets = state.targets || targets
         const elapsedMs = now - startedAt
         const ambientSpotlight = resolveAmbientSpotlight(freshTargets, elapsedMs)
         if(ambientSpotlight)
@@ -808,21 +1044,20 @@ function resolveWeightedSpotlight(targetRect, {
     }
 }
 
-function getVisibleElement(selector) {
-    const element = document.querySelector(selector)
-    const rect = getElementRect(element)
-    return rect ? element : null
-}
-
-function getElementRect(element) {
+function getElementRect(element, viewport = getViewportRect()) {
     if(!element)
         return null
 
     const rect = element.getBoundingClientRect()
-    if(rect.width <= 0 || rect.height <= 0)
+    const style = getComputedStyle(element)
+    if(rect.width <= 0 || rect.height <= 0 || style.visibility === "hidden" || style.display === "none")
         return null
 
-    return rect
+    const left = Math.max(rect.left, viewport.left)
+    const top = Math.max(rect.top, viewport.top)
+    const right = Math.min(rect.right, viewport.right)
+    const bottom = Math.min(rect.bottom, viewport.bottom)
+    return right > left && bottom > top ? { left, top, right, bottom, width: right - left, height: bottom - top } : null
 }
 
 function mergeRects(rectA, rectB) {
@@ -848,40 +1083,22 @@ function mergeRects(rectA, rectB) {
     }
 }
 
-function resolveCurrentSpotlight(state) {
-    if(!state.root) {
-        return {
-            x: window.innerWidth / 2,
-            y: window.innerHeight / 2,
-            radius: INITIAL_RADIUS_PX,
-            opacity: 0,
-        }
-    }
-
-    const style = getComputedStyle(state.root)
-    return {
-        x: parseFloat(style.getPropertyValue("--spotlight-x")) || (window.innerWidth / 2),
-        y: parseFloat(style.getPropertyValue("--spotlight-y")) || (window.innerHeight / 2),
-        radius: parseFloat(style.getPropertyValue("--spotlight-radius")) || INITIAL_RADIUS_PX,
-        opacity: parseFloat(style.getPropertyValue("--startup-guide-opacity")) || 0,
-    }
-}
-
 function setOverlayOpacityTransition(state, durationMs, timingFunction) {
-    if(!state.overlay)
+    if(!state.root)
         return
 
-    state.overlay.style.transition = `opacity ${durationMs}ms ${timingFunction}`
+    state.root.style.transition = `opacity ${durationMs}ms ${timingFunction}`
 }
 
-function animateSpotlight(state, { from, to, durationMs }) {
+function animateSpotlight(state, { from, to, durationMs, run }) {
     return new Promise(resolve => {
-        if(state.destroyed) {
+        if(!isGuideRunActive(state, run)) {
             resolve(false)
             return
         }
 
         let settled = false
+        let frameId = null
         const startedAt = performance.now()
 
         const finish = (value) => {
@@ -889,18 +1106,19 @@ function animateSpotlight(state, { from, to, durationMs }) {
                 return
 
             settled = true
-            removeCleanupHook()
-            if(state.rafId !== null) {
-                cancelAnimationFrame(state.rafId)
+            run.signal.removeEventListener("abort", abort)
+            if(frameId !== null)
+                cancelAnimationFrame(frameId)
+            if(state.rafId === frameId)
                 state.rafId = null
-            }
-            resolve(value)
+            resolve(value && isGuideRunActive(state, run))
         }
 
-        const removeCleanupHook = addCleanupHook(state, () => finish(false))
+        const abort = () => finish(false)
+        run.signal.addEventListener("abort", abort, { once: true })
 
         const tick = (now) => {
-            if(state.destroyed || !state.root || !state.overlay || !state.isHomeActive) {
+            if(!isGuideRunActive(state, run)) {
                 finish(false)
                 return
             }
@@ -921,43 +1139,48 @@ function animateSpotlight(state, { from, to, durationMs }) {
                 return
             }
 
-            state.rafId = requestAnimationFrame(tick)
+            frameId = requestAnimationFrame(tick)
+            state.rafId = frameId
         }
 
-        state.rafId = requestAnimationFrame(tick)
+        frameId = requestAnimationFrame(tick)
+        state.rafId = frameId
     })
 }
 
-function waitForNextFrame(state) {
+function waitForNextFrame(state, run) {
     return new Promise(resolve => {
-        if(state.destroyed) {
+        if(!isGuideRunActive(state, run)) {
             resolve(false)
             return
         }
 
         let settled = false
+        let frameId = null
 
         const finish = (value) => {
             if(settled)
                 return
 
             settled = true
-            removeCleanupHook()
-            if(state.rafId !== null) {
-                cancelAnimationFrame(state.rafId)
+            run.signal.removeEventListener("abort", abort)
+            if(frameId !== null)
+                cancelAnimationFrame(frameId)
+            if(state.rafId === frameId)
                 state.rafId = null
-            }
-            resolve(value)
+            resolve(value && isGuideRunActive(state, run))
         }
 
-        const removeCleanupHook = addCleanupHook(state, () => finish(false))
-        state.rafId = requestAnimationFrame(() => finish(true))
+        const abort = () => finish(false)
+        run.signal.addEventListener("abort", abort, { once: true })
+        frameId = requestAnimationFrame(() => finish(true))
+        state.rafId = frameId
     })
 }
 
-function waitForDuration(state, durationMs) {
+function waitForDuration(state, durationMs, run) {
     return new Promise(resolve => {
-        if(state.destroyed) {
+        if(!isGuideRunActive(state, run)) {
             resolve(false)
             return
         }
@@ -969,12 +1192,13 @@ function waitForDuration(state, durationMs) {
                 return
 
             settled = true
-            removeCleanupHook()
+            run.signal.removeEventListener("abort", abort)
             clearTrackedTimeout(state, timeoutId)
-            resolve(value)
+            resolve(value && isGuideRunActive(state, run))
         }
 
-        const removeCleanupHook = addCleanupHook(state, () => finish(false))
+        const abort = () => finish(false)
+        run.signal.addEventListener("abort", abort, { once: true })
         const timeoutId = trackTimeout(state, () => finish(true), durationMs)
     })
 }
@@ -1019,6 +1243,10 @@ function destroyController(state) {
         return
 
     state.destroyed = true
+    cancelGuideRun(state)
+    state.resizeObserver?.disconnect()
+    if(state.geometryRafId !== null)
+        cancelAnimationFrame(state.geometryRafId)
 
     for(const callback of state.cleanupHooks)
         callback()

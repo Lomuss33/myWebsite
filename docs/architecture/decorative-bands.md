@@ -3,7 +3,7 @@
 Feature ID: `section-decoration-bands`. Search names: decoration strip, bottom buffer, shader, gradient only, curtain, garden, sad-face background.
 Purpose: animated artwork separates articles and ends decorated sections without competing with navigation or changing the accepted artwork.
 
-Verified: 2026-10-07 for the Work/Education header opt-outs: JSON parsing and desktop preview DOM checks confirmed no standalone header, preserved article titles and all four bands on each page, and a top band flush with its content edge with zero top padding. Mobile uses the same reviewed flag/render path but was not device-tested. Earlier 2026-10-06 review covered band mounting, sizing/retry helpers and existing renderer/layout guidance. Firefox diagnostics and Android observations retain their original limits in the [Firefox investigation](../work/2026-10-05-firefox-decoration-context.md); no new renderer recovery or physical suspension checks were run.
+Verified: 2026-10-07 against the revised Home roller groups and position-seeded motifs in 20 native-preview size/theme samples, scroll/reflow and animation checks, lint and the production build; details and limits are below. Work/Education header opt-outs were separately checked through JSON parsing and desktop preview DOM checks: no standalone header, preserved article titles and all four bands on each page, and a top band flush with its content edge. Their mobile flag/render path was reviewed but not device-tested. Earlier 2026-10-06 review covered band mounting, sizing/retry helpers and existing renderer/layout guidance. Firefox diagnostics and Android observations retain their original limits in the [Firefox investigation](../work/2026-10-05-firefox-decoration-context.md); no new renderer recovery or physical suspension checks were run.
 
 ## Accepted behavior
 
@@ -36,7 +36,11 @@ Verified: 2026-10-07 for the Work/Education header opt-outs: JSON parsing and de
 
 ## Home band verification
 
-On 2026-10-07, 14 native-preview size/theme combinations (280×653, 390×844, 768×1024, 1440×2560, 568×320, 1366×768 and 3440×1440 in both themes) retained all eight Home bands, matching the shared 28–48px top/middle base and sevenfold bottom height. Top bands were flush with the section edge and terminal gaps were under 0.4px at maximum scroll. A fitted phone preview observed moving rollers, an offscreen top band paused, and bottom-band pause/resume responding to app lifecycle events. The reduced-motion rule was source-reviewed rather than tested with a physical device preference. These samples used the current Croatian page content; they do not certify every browser/device.
+The 2026-10-07 artwork revision passed lint, the production build (including prebuild locale/CV preparation), documentation-link validation and 270 deterministic/finite pattern-generation samples. Native-preview checks covered 20 size/theme combinations: 240×568, 280×653, 390×844, 728×1000, 950×1300, 1440×2560, 568×320, 1366×768, 1920×1080 and 3440×1440 in both themes, waiting for the actual mobile/normal/ultrawide mode to settle. All eight bands kept their shared heights, top-piece counts matched the measured band width, all six middle motifs/seeds differed, the bottom artwork covered both sides, and the page gained no horizontal overflow.
+
+A settled 390×844 sample kept seeds unchanged on instant scroll, changed them after a temporary 96px content reflow, and restored them when that change was removed. The final band met the navigation edge within 0.03px. Five phases across the paired-roller cycle still covered both horizontal edges; app pause/resume stopped/restarted its activity. SVG path samples confirmed the six motifs' mirrored geometry within 0.004 SVG units. Both themes were visually inspected. Reduced-motion handling was source-reviewed, not tested with a physical device preference. These samples used current Croatian content in a temporary same-origin preview frame and do not certify every browser/device.
+
+Earlier sizing checks, before this artwork revision, covered 14 size/theme combinations, with flush top bands and terminal gaps under 0.4px. Those observations establish the retained boundary layout, not the current motif design.
 
 ## Confirmed issues and limits
 

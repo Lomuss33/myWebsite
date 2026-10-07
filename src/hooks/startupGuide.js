@@ -3,7 +3,6 @@ import {renderStartupGuideCaption} from "./startupGuideCaption.js"
 
 const APP_READY_CLASS = "body-theme"
 const HOME_SECTION_SELECTOR = "section#section-about.section-shown"
-const HOME_STATE_OBSERVE_ROOT_SELECTOR = "#root"
 const STORAGE_PREFERENCES_KEY = "storage-preferences"
 const DESKTOP_TARGET_SELECTOR = ".nav-tools"
 const DESKTOP_RAIL_SELECTOR = ".nav-sidebar-card-wrapper"
@@ -18,6 +17,7 @@ const TARGET_SELECTOR = [DESKTOP_TARGET_SELECTOR, DESKTOP_RAIL_SELECTOR, DESKTOP
     DESKTOP_RESUME_SELECTOR, DESKTOP_PAGES_SELECTOR,
     MOBILE_TOP_TARGET_SELECTOR, MOBILE_HEADER_SELECTOR, MOBILE_BOTTOM_TARGET_SELECTOR].join(", ")
 const ACTIVE_DIALOG_SELECTOR = '[role="dialog"][aria-modal="true"], .modal.show, .dropdown-menu.show'
+const DIALOG_SELECTOR = '[role="dialog"], .modal, .dropdown-menu'
 
 const APP_READY_TIMEOUT_MS = 10000
 const DOCUMENT_COMPLETE_TIMEOUT_MS = 10000
@@ -87,7 +87,6 @@ function createController() {
         targets: null,
         run: null,
         isDismissing: false,
-        showRecorded: false,
         destroyed: false,
         isPaused: false,
 
@@ -254,9 +253,9 @@ function registerGlobalListeners(state) {
 }
 
 function observeDomChanges(state) {
-    const observerTarget = document.querySelector(HOME_STATE_OBSERVE_ROOT_SELECTOR)
-        || document.body
-        || document.documentElement
+    // React dialogs can be portaled directly to body, outside the app root.
+    // Filter their mutations together with navigation; ignore guide paint.
+    const observerTarget = document.body || document.documentElement
     if(!observerTarget)
         return
 
@@ -266,12 +265,12 @@ function observeDomChanges(state) {
             if(target?.closest?.(".text-typer"))
                 return false
             if(record.type === "attributes")
-                return target?.matches?.("section#section-about, " + TARGET_SELECTOR + ", .nav-sidebar, .modal, .dropdown-menu")
+                return target?.matches?.("section#section-about, " + TARGET_SELECTOR + ", .nav-sidebar, " + DIALOG_SELECTOR)
             if(target?.closest?.(NAVIGATION_SELECTOR) && !target?.closest?.(".layout-navigation-children-wrapper"))
                 return true
             return [...record.addedNodes, ...record.removedNodes].some(node =>
-                node.nodeType === 1 && (node.matches?.("section#section-about, " + TARGET_SELECTOR) ||
-                    node.querySelector?.("section#section-about, " + TARGET_SELECTOR)))
+                node.nodeType === 1 && (node.matches?.("section#section-about, " + TARGET_SELECTOR + ", " + DIALOG_SELECTOR) ||
+                    node.querySelector?.("section#section-about, " + TARGET_SELECTOR + ", " + DIALOG_SELECTOR)))
         })
         if(relevant)
             scheduleGeometryUpdate(state)
@@ -282,7 +281,7 @@ function observeDomChanges(state) {
         childList: true,
         subtree: true,
         attributes: true,
-        attributeFilter: ["class"]
+        attributeFilter: ["class", "role", "aria-modal", "aria-hidden", "hidden"]
     })
 
     const layoutObserver = new MutationObserver(() => scheduleGeometryUpdate(state))
@@ -305,6 +304,7 @@ function syncHomeState(state) {
     state.isHomeActive = isHomeActive
 
     if(!isHomeActive) {
+        state.targets = null
         state.lastPointerPosition = null
         state.initialMovementDistance = 0
         clearGuideTimers(state)
@@ -525,10 +525,7 @@ function completeGuideShow(state) {
     state.root?.toggleAttribute("data-guiding", true)
     clearTrackedTimeout(state, state.inactivityReplayTimeoutId)
     state.inactivityReplayTimeoutId = null
-    if(!state.showRecorded) {
-        state.hasShownGuideAtLeastOnce = true
-        state.showRecorded = true
-    }
+    state.hasShownGuideAtLeastOnce = true
 }
 
 async function hideGuide(state, { immediate = false } = {}) {
@@ -612,7 +609,6 @@ function ensureGuideElements(state) {
     state.middleCaption = middleCaption
     state.bottomCaption = bottomCaption
     state.navigationCues = navigationCues
-    state.showRecorded = false
     return root
 }
 
@@ -665,6 +661,7 @@ function applyLabelPosition(state, targets, spotlight) {
 
     state.middleCaption.hidden = true
     const labelRect = state.label.getBoundingClientRect()
+    let labelHeight = labelRect.height
     state.root.style.setProperty("--startup-guide-label-x", `${roundTo(bounds.left + (bounds.width - labelRect.width) / 2, 2)}px`)
     const contentTop = targets.topRect?.bottom ?? bounds.top
     const contentBottom = targets.bottomRect?.top ?? bounds.bottom
@@ -677,7 +674,9 @@ function applyLabelPosition(state, targets, spotlight) {
     }
     const fitCaptions = () => {
         const visible = captions.filter(item => !item.caption.hidden)
-        const usedHeight = labelRect.height + visible.reduce((sum, item) => sum + item.rect.height + gap, 0)
+        const hasHeading = !state.label.hidden
+        const gaps = hasHeading ? visible.length : Math.max(0, visible.length - 1)
+        const usedHeight = labelHeight + visible.reduce((sum, item) => sum + item.rect.height, 0) + gaps * gap
         // Use the available vertical space before omitting instructions on a
         // tiny screen. The shade keeps its independent, longer feather.
         const inset = Math.min(resolveMobileFeather(targets), Math.max(margin,
@@ -690,8 +689,8 @@ function applyLabelPosition(state, targets, spotlight) {
         const upper = visible.find(item => item.upper)
         const lower = visible.find(item => !item.upper)
         return {
-            min: (upper ? upper.top + upper.rect.height + gap : contentTop + margin) + labelRect.height / 2,
-            max: (lower ? lower.top - gap : contentBottom - margin) - labelRect.height / 2,
+            min: (upper ? upper.top + upper.rect.height + (hasHeading || lower ? gap : 0) : contentTop + margin) + labelHeight / 2,
+            max: (lower ? lower.top - (hasHeading ? gap : 0) : contentBottom - margin) - labelHeight / 2,
         }
     }
     let range = fitCaptions()
@@ -701,13 +700,28 @@ function applyLabelPosition(state, targets, spotlight) {
         range = fitCaptions()
     }
     if(range.min > range.max) {
-        state.bottomCaption.hidden = true
+        // On cramped screens, useful navigation takes priority over a headline.
+        state.heading.hidden = true
+        state.label.hidden = true
+        labelHeight = 0
         range = fitCaptions()
     }
+    if(range.min > range.max) {
+        state.bottomCaption.hidden = true
+        state.heading.hidden = false
+        state.label.hidden = false
+        labelHeight = labelRect.height
+        range = fitCaptions()
+    }
+    if(range.min > range.max) {
+        // Never move lettering over the navigation bars to force it to fit.
+        state.heading.hidden = true
+        state.label.hidden = true
+        labelHeight = 0
+    }
     const desiredY = (contentTop + contentBottom) / 2
-    const y = range.min <= range.max ? clamp(desiredY, range.min, range.max) :
-        clamp(desiredY, bounds.top + margin + labelRect.height / 2, bounds.bottom - margin - labelRect.height / 2)
-    state.root.style.setProperty("--startup-guide-label-y", `${roundTo(y - labelRect.height / 2, 2)}px`)
+    const y = range.min <= range.max ? clamp(desiredY, range.min, range.max) : desiredY
+    state.root.style.setProperty("--startup-guide-label-y", `${roundTo(y - labelHeight / 2, 2)}px`)
 }
 
 function applyDesktopCaptionPositions(state, targets, left, margin) {
@@ -764,11 +778,17 @@ function canShowGuide(state) {
     if(state.destroyed || !state.isHomeActive || state.isVisible || state.isAnimating || document.hidden || state.isPaused)
         return false
 
-    if(document.querySelector(ACTIVE_DIALOG_SELECTOR))
-        return false
+    return !isGuideBlockedByUI()
+}
 
+function isGuideBlockedByUI() {
     const activeElement = document.activeElement
-    return !activeElement?.matches?.("input, textarea, select, [contenteditable='true']")
+    // isContentEditable includes empty/plaintext attributes and descendants.
+    if(activeElement?.isContentEditable || activeElement?.matches?.("input, textarea, select"))
+        return true
+
+    return [...document.querySelectorAll(ACTIVE_DIALOG_SELECTOR)].some(dialog =>
+        dialog.getAttribute("aria-hidden") !== "true" && getElementRect(dialog))
 }
 
 function updateGuideLabels(state, layoutMode) {
@@ -904,6 +924,10 @@ function scheduleGeometryUpdate(state) {
             return
         const previousSignature = targetSignature(state.targets)
         syncHomeState(state)
+        if(state.root && isGuideBlockedByUI()) {
+            hideGuide(state, { immediate: true })
+            return
+        }
         if(!state.root || !state.targets || state.isDismissing)
             return
         const changed = previousSignature !== targetSignature(state.targets)

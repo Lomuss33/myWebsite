@@ -70,6 +70,8 @@ The Android robot foreground canvas uses normal alpha compositing at every width
 
 All section headings and article headings share the responsive type scale in [_heading-layout.scss](../../src/styles/_heading-layout.scss): `clamp(1.125rem, 1rem + 0.9vw, 1.625rem)`, 800 weight, 1.2 line height, and shared tracking. At the default root size this spans 18–26px. Longer translations wrap instead of shrinking individual titles. Article titles use equal top/bottom margins and balanced left/right text padding; the Art video emblem reserves equal space on both sides and scales with the text. Page-specific gradients, prefixes, underlines, and separators retain their colours and artwork. The named important cascade layer owns heading geometry ahead of legacy page and density rules. [SectionContent.scss](../../src/components/sections/SectionContent.scss) exposes compatibility aliases; the Home header fitter only sizes its eyebrow, leaving the title on the common scale.
 
+Home's welcome/contact block uses a local opening-spacing scale of 0.5; other pages default to 1. It halves its heading spacing and section opening insets, including the large-mobile inset overrides, without changing the shared title font scale or later article headings. See the [Home spacing contract](home.md#handoff) for ownership and current checks.
+
 Focused Chromium checks compare every rendered section/article heading across all eight routes in six viewport/language/theme scenarios, from 280px to 3440px wide. They sample all four languages, both themes, and all three layout modes, and assert shared font size, symmetric spacing, and text containment. This is a sampled matrix, not physical-device or exhaustive browser coverage.
 
 

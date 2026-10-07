@@ -8,7 +8,7 @@ div.section-content {
     --padding-top: 0.85rem;
     --padding-x: 1.35rem;
     --padding-bottom: 2.35rem;
-    --padding: var(--padding-top) var(--padding-x) var(--padding-bottom);
+    --padding: calc(var(--padding-top) * var(--section-opening-spacing-scale, 1)) var(--padding-x) var(--padding-bottom);
     --section-decoration-bleed-inline: var(--padding-x);
     --section-decoration-full-width: calc(
         100% + (2 * var(--section-decoration-bleed-inline))
@@ -104,7 +104,7 @@ div.section-content-border-decoration-top-left {
 
 div.section-content-elements-wrapper {
     position: relative;
-    padding: 4px 0 0 0;
+    padding: calc(4px * var(--section-opening-spacing-scale, 1)) 0 0;
     width: 100%;
     transform: none;
     transform-origin: top left;

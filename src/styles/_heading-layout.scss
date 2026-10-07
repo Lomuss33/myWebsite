@@ -67,13 +67,13 @@
     }
 
     .section-content header.section-header {
-        margin-block: var(--heading-gap) !important;
-        gap: 0.35rem !important;
+        margin-block: calc(var(--heading-gap) * var(--section-opening-spacing-scale, 1)) !important;
+        gap: calc(0.35rem * var(--section-opening-spacing-scale, 1)) !important;
     }
 
     .section-content h2.section-header-title {
         margin: 0 !important;
-        padding: 0.22em 0.2em !important;
+        padding: calc(0.22em * var(--section-opening-spacing-scale, 1)) calc(0.2em * var(--section-opening-spacing-scale, 1)) !important;
     }
 
     // The play emblem stays on the right, with equal space reserved on the

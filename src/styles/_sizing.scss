@@ -282,10 +282,10 @@ html[data-layout="mobile"] {
 
         .layout-content .section-content {
             padding-inline: clamp(1rem, 3vw, 4rem);
-            padding-top: clamp(1.5rem, 3svh, 4rem) !important;
+            padding-top: calc(clamp(1.5rem, 3svh, 4rem) * var(--section-opening-spacing-scale, 1)) !important;
         }
         .section-content-elements-wrapper {
-            padding-top: clamp(.75rem, 1.5svh, 2rem) !important;
+            padding-top: calc(clamp(.75rem, 1.5svh, 2rem) * var(--section-opening-spacing-scale, 1)) !important;
         }
 
         // Headerless pages start with their top decoration band. Keep that band

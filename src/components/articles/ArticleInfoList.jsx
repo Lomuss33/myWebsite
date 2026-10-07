@@ -419,11 +419,11 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
             setIsBubbleOpen(false)
         }
 
-        document.addEventListener("pointerdown", handlePointerDown)
+        document.addEventListener("pointerdown", handlePointerDown, true)
         document.addEventListener("keydown", handleKeyDown)
 
         return () => {
-            document.removeEventListener("pointerdown", handlePointerDown)
+            document.removeEventListener("pointerdown", handlePointerDown, true)
             document.removeEventListener("keydown", handleKeyDown)
         }
     }, [hasProofBubble, isBubbleOpen])
@@ -446,31 +446,26 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
         setIsBubbleOpen(false)
     }
 
-    const handleBubbleToggle = (event) => {
+    const handleBubblePin = (event) => {
         if (!hasProofBubble)
             return
 
         event.preventDefault()
         event.stopPropagation()
 
-        setIsBubblePinned((currentState) => {
-            const nextState = !currentState
-            setIsBubbleOpen(nextState)
-            return nextState
-        })
+        setIsBubblePinned(true)
+        setIsBubbleOpen(true)
     }
 
     return (
         <div className={`article-info-list-item ${hoverClass} ${pressedClass} ${bubbleItemOpenClass} ${homeClass}`}
-             onMouseEnter={hasProofBubble ? handleBubbleMouseEnter : undefined}
-             onMouseLeave={hasProofBubble ? handleBubbleMouseLeave : undefined}
              onBlur={hasProofBubble ? event => {
-                 if(!isBubblePinned && !event.currentTarget.contains(event.relatedTarget) && !event.currentTarget.matches(':hover'))
+                 if(!isBubblePinned && !event.currentTarget.contains(event.relatedTarget) && !bubbleToggleRef.current?.matches(':hover'))
                      setIsBubbleOpen(false)
              } : undefined}
              style={isContactInfoList ? {"--contact-accent": itemWrapper.faIconStyle?.color || "#60a5fa"} : undefined}>
             <div className={`article-info-list-item-avatar-shell ${bubbleClass}`}
-                 onMouseEnter={handleBubbleMouseEnter}
+                 onMouseEnter={hasProofBubble ? undefined : handleBubbleMouseEnter}
                  onMouseLeave={hasProofBubble ? undefined : handleBubbleMouseLeave}>
                 {itemWrapper.link?.href ? (
                     <Link href={itemWrapper.link?.href || null}
@@ -495,7 +490,9 @@ function ArticleInfoListItem({ itemWrapper, isHomeInfoList, isContactInfoList })
                             className={`article-info-list-item-avatar-button`}
                             aria-expanded={isBubbleOpen}
                             aria-label={`Show proof of work for ${itemWrapper.locales.title || itemWrapper.placeholder}`}
-                            onClick={handleBubbleToggle}
+                            onMouseEnter={handleBubbleMouseEnter}
+                            onMouseLeave={handleBubbleMouseLeave}
+                            onClick={handleBubblePin}
                             onFocus={() => setIsBubbleOpen(true)}
                             ref={bubbleToggleRef}>
                         <AvatarView src={itemWrapper.img}

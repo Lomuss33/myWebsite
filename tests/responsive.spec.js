@@ -405,9 +405,14 @@ for(const [language,theme] of [['hr','dark'],['de','light'],['en','light'],['tr'
                 const trigger=card.locator('.article-info-list-item-avatar-button')
                 const panel=card.locator('.article-info-list-item-text-bubble')
                 const before=await card.evaluate(element=>element.offsetHeight)
+                await card.locator('.article-info-list-item-content').hover()
+                await expect(panel).toHaveAttribute('aria-hidden','true')
                 await trigger.hover()
                 await expect(panel).toHaveAttribute('aria-hidden','false')
-                await card.hover()
+                await card.locator('.article-info-list-item-content').hover()
+                await expect(panel).toHaveAttribute('aria-hidden','true')
+                await trigger.click()
+                await card.locator('.article-info-list-item-content').hover()
                 await expect(panel).toHaveAttribute('aria-hidden','false')
                 await expect.poll(()=>card.evaluate(card=>{
                     const pane=card.querySelector('.article-info-list-item-content').getBoundingClientRect()
@@ -436,8 +441,12 @@ for(const [language,theme] of [['hr','dark'],['de','light'],['en','light'],['tr'
                 await trigger.click()
                 await page.mouse.move(0,0)
                 await expect(panel).toHaveAttribute('aria-hidden','false')
+                const otherTrigger=page.locator(`article#article-${articleId}-section-about .article-info-list-item.article-info-list-item-home`).nth(1).locator('.article-info-list-item-avatar-button')
+                await otherTrigger.click()
+                await expect(panel).toHaveAttribute('aria-hidden','true')
                 await page.keyboard.press('Escape')
                 await expect(panel).toHaveAttribute('aria-hidden','true')
+                await expect(otherTrigger).toHaveAttribute('aria-expanded','false')
             }
         }
 
@@ -450,6 +459,73 @@ for(const [language,theme] of [['hr','dark'],['de','light'],['en','light'],['tr'
         await expect(trigger).toHaveAttribute('aria-expanded','true')
         await page.keyboard.press('Escape')
         await expect(trigger).toHaveAttribute('aria-expanded','false')
+    })
+}
+
+for(const [input,width,height] of [['wheel',390,844],['wheel',1366,768],['touch',390,844]]) {
+    test(`Home popup edges let the whole page scroll: ${input} ${width}x${height}`, async ({browser})=>{
+        test.skip(input==='touch' && browser.browserType().name()!=='chromium','Native touch gestures use Chromium CDP.')
+        const context=await browser.newContext({viewport:{width,height},hasTouch:input==='touch',reducedMotion:'reduce'})
+        const page=await context.newPage()
+        try {
+            await preferences(page)
+            await openSection(page,'about')
+            await page.evaluate(()=>document.fonts.ready)
+            const session=input==='touch' ? await context.newCDPSession(page) : null
+            if(session) await session.send('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:1})
+            const scrollPosition=()=>page.evaluate(()=>{
+                const scroller=document.documentElement.dataset.layout==='mobile'
+                    ? document.scrollingElement : document.querySelector('#scrollable-about')
+                return scroller.scrollTop
+            })
+            const popupCases=[
+                ...[3,4,6].flatMap(id=>[0,1].map(index=>({
+                    card:`#article-${id}-section-about .article-info-list-item.article-info-list-item-home`,index,
+                    trigger:'.article-info-list-item-avatar-button',panel:'.article-info-list-item-text-bubble',
+                    inner:'.article-info-list-item-text-bubble-inner'
+                }))),
+                ...['.article-stack-item-home-bubble-button','.article-stack-item-home-unit-trigger'].flatMap(trigger=>
+                    [0,1].map(index=>({card:'#article-7-section-about .article-stack-item-home',index,trigger,
+                        panel:'.article-stack-item-home-bubble',inner:'.article-stack-item-home-bubble-inner'})))
+            ]
+            for(const popup of popupCases) {
+                const card=page.locator(popup.card).nth(popup.index)
+                await card.locator(popup.trigger).click()
+                const panel=card.locator(popup.panel)
+                await expect(panel).toHaveAttribute('aria-hidden','false')
+                const inner=card.locator(popup.inner)
+                await inner.evaluate(element=>{
+                    element.scrollIntoView({block:'center',behavior:'instant'})
+                    element.scrollTop=0
+                })
+                const before=await scrollPosition()
+                const bounds=await inner.boundingBox()
+                const x=bounds.x+bounds.width/2
+                const y=bounds.y+bounds.height/2
+                if(session) {
+                    await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{id:1,x,y}]})
+                    for(let step=1;step<=8;step++) {
+                        await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{id:1,x,y:y+step*20}]})
+                        await page.evaluate(()=>new Promise(requestAnimationFrame))
+                    }
+                    await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]})
+                } else {
+                    await page.mouse.move(x,y)
+                    await page.mouse.wheel(0,-160)
+                }
+                await expect.poll(scrollPosition,{message:`${popup.card} ${popup.index}: scroll escapes ${popup.trigger}`}).toBeLessThan(before-20)
+                // Stats overlays intentionally let pointer input pass through;
+                // their existing outside-touch dismissal must not block scrolling.
+                if(input==='wheel' || popup.trigger==='.article-info-list-item-avatar-button')
+                    await expect(panel).toHaveAttribute('aria-hidden','false')
+                await page.mouse.move(0,0)
+                await page.keyboard.press('Escape')
+                await expect(panel).toHaveAttribute('aria-hidden','true')
+            }
+            await session?.detach()
+        } finally {
+            await context.close()
+        }
     })
 }
 

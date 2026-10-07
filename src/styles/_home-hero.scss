@@ -216,7 +216,8 @@ html[data-layout] section#section-about article.article-info-list-home {
             background: var(--theme-boards-background);
             color: var(--theme-texts) !important;
             overflow: auto;
-            overscroll-behavior: contain;
+            // Short proofs and the edges of long proofs pass gestures to the page.
+            overscroll-behavior: auto;
             scrollbar-width: thin;
         }
         .article-info-list-item-text-bubble-copy {

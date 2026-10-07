@@ -1,4 +1,5 @@
 import {startupGuideLabels} from "../data/startupGuideI18n.js"
+import {renderStartupGuideCaption} from "./startupGuideCaption.js"
 
 const APP_READY_CLASS = "body-theme"
 const HOME_SECTION_SELECTOR = "section#section-about.section-shown"
@@ -19,9 +20,11 @@ const APP_READY_TIMEOUT_MS = 10000
 const DOCUMENT_COMPLETE_TIMEOUT_MS = 10000
 const INITIAL_SHOW_DELAY_MS = 1100
 const INACTIVITY_REPLAY_START_MS = 5000
-const INACTIVITY_REPLAY_STEP_MS = 5000
+const PRESS_REPLAY_DELAY_MS = 10000
 
 const INITIAL_MOVEMENT_THRESHOLD_PX = 28
+const DESKTOP_RAIL_CLEARANCE_PX = 16
+const DESKTOP_RAIL_FADE_PX = 40
 
 const FADE_IN_MS = 140
 const TRAVEL_MS = 650
@@ -67,6 +70,7 @@ function createController() {
         detail: null,
         topCaption: null,
         bottomCaption: null,
+        navigationCues: null,
         observers: new Set(),
         timeouts: new Set(),
         cleanupHooks: new Set(),
@@ -91,6 +95,7 @@ function createController() {
         initialMovementDistance: 0,
         lastPointerPosition: null,
         inactivityReplayTimeoutId: null,
+        inactivityReplayDueAt: null,
         initialShowTimeoutId: null,
         nextInactivityReplayMs: INACTIVITY_REPLAY_START_MS,
     }
@@ -180,50 +185,29 @@ function waitForDocumentComplete(state) {
 }
 
 function registerGlobalListeners(state) {
-    addWindowListener(state, "mousemove", (event) => {
-        handleMouseMove(state, event)
-    }, { passive: true })
-
-    addWindowListener(state, "pointermove", (event) => {
-        if(event.pointerType === "pen")
+    // Capture activity even when a control stops propagation. Pointer and
+    // compatibility mouse events share coordinates, so movement is deduplicated.
+    addWindowListener(state, "mousemove", event => handleMouseMove(state, event), { passive: true, capture: true })
+    addWindowListener(state, "pointermove", event => {
+        if(event.pointerType === "mouse" || event.pointerType === "pen")
             handleMouseMove(state, event)
-    }, { passive: true })
-
-    addWindowListener(state, "wheel", () => {
-        handleInteraction(state, { dismissVisibleGuide: true })
-    }, { passive: true })
-
-    addWindowListener(state, "scroll", () => {
-        handleInteraction(state, { dismissVisibleGuide: true })
     }, { passive: true, capture: true })
 
-    addWindowListener(state, "touchstart", () => {
-        handleInteraction(state, { dismissVisibleGuide: true })
-    }, { passive: true })
-
-    addWindowListener(state, "touchmove", () => {
-        handleInteraction(state, { dismissVisibleGuide: true })
-    }, { passive: true })
-
-    addWindowListener(state, "mousedown", () => {
-        handleInteraction(state, { dismissVisibleGuide: true })
-    }, { passive: true })
-
-    addWindowListener(state, "click", () => {
-        handleInteraction(state, { dismissVisibleGuide: true })
-    }, { passive: true })
-
-    addWindowListener(state, "focusin", () => {
-        handleInteraction(state, { dismissVisibleGuide: true })
-    }, { passive: true })
-
-    addWindowListener(state, "keydown", () => {
-        handleInteraction(state, { dismissVisibleGuide: true })
-    })
-
-    addWindowListener(state, "pointerdown", () => {
-        handleInteraction(state, { dismissVisibleGuide: true })
-    }, { passive: true })
+    for(const type of ["pointerdown", "mousedown", "click", "touchstart", "keydown", "focusin"]) {
+        addWindowListener(state, type, () => handleInteraction(state, {
+            dismissVisibleGuide: true,
+            replayDelayMs: PRESS_REPLAY_DELAY_MS,
+        }), {
+            passive: true,
+            capture: true,
+        })
+    }
+    for(const type of ["touchmove", "wheel", "scroll"]) {
+        addWindowListener(state, type, () => handleInteraction(state, {
+            dismissVisibleGuide: true,
+            replayDelayMs: INACTIVITY_REPLAY_START_MS,
+        }), { passive: true, capture: true })
+    }
 
     addWindowListener(state, "resize", () => scheduleGeometryUpdate(state), { passive: true })
     addWindowListener(state, "storage", () => scheduleGeometryUpdate(state))
@@ -335,9 +319,8 @@ function syncHomeState(state) {
         return
     }
 
-    if(didChange) {
+    if(didChange)
         state.lastPointerPosition = null
-    }
 
     if(!state.hasAttemptedInitialShow) {
         scheduleInitialShow(state)
@@ -375,12 +358,14 @@ function scheduleInactivityReplay(state, { restart = false } = {}) {
     if(state.destroyed || !state.isHomeActive || state.isVisible || state.isAnimating || document.hidden || state.isPaused)
         return
 
-    const replayDelayMs = state.nextInactivityReplayMs
+    const replayDelayMs = state.inactivityReplayDueAt === null ? state.nextInactivityReplayMs :
+        Math.max(0, state.inactivityReplayDueAt - performance.now())
     if(state.inactivityReplayTimeoutId !== null && !restart)
         return
     clearTrackedTimeout(state, state.inactivityReplayTimeoutId)
     state.inactivityReplayTimeoutId = trackTimeout(state, async () => {
         state.inactivityReplayTimeoutId = null
+        state.inactivityReplayDueAt = null
 
         if(!canShowGuide(state)) {
             scheduleInactivityReplay(state)
@@ -394,47 +379,46 @@ function scheduleInactivityReplay(state, { restart = false } = {}) {
 }
 
 function handleMouseMove(state, event) {
-    const point = {
-        x: event.clientX,
-        y: event.clientY
-    }
-
-    if(state.isVisible || state.isAnimating) {
-        state.lastPointerPosition = point
-        handleInteraction(state, { dismissVisibleGuide: true })
+    if(!state.isHomeActive)
         return
-    }
 
+    const point = { x: event.clientX, y: event.clientY }
     const previousPoint = state.lastPointerPosition
+    if(previousPoint && getDistance(previousPoint, point) === 0)
+        return
     state.lastPointerPosition = point
-
-    if(previousPoint) {
-        const distance = getDistance(previousPoint, point)
-
-        if(!state.hasAttemptedInitialShow)
-            state.initialMovementDistance += distance
-
-        if(state.isVisible || state.isAnimating) {
-            handleInteraction(state, { dismissVisibleGuide: true })
-            return
-        }
-    }
+    if(previousPoint && !state.hasAttemptedInitialShow)
+        state.initialMovementDistance += getDistance(previousPoint, point)
 
     handleInteraction(state, {
-        dismissVisibleGuide: false
+        dismissVisibleGuide: state.isVisible || state.isAnimating,
+        replayDelayMs: INACTIVITY_REPLAY_START_MS,
+        keepLaterReplay: true,
     })
 }
 
-function handleInteraction(state, { dismissVisibleGuide }) {
-    if(state.destroyed)
+function handleInteraction(state, { dismissVisibleGuide, replayDelayMs = null, restartReplay = true, keepLaterReplay = false }) {
+    if(state.destroyed || !state.isHomeActive || state.isPaused)
         return
     if(dismissVisibleGuide && !state.hasAttemptedInitialShow)
         state.initialMovementDistance = INITIAL_MOVEMENT_THRESHOLD_PX + 1
+
+    const wasShowing = state.isVisible || (state.isAnimating && !state.isDismissing)
+    if(replayDelayMs !== null)
+        state.nextInactivityReplayMs = replayDelayMs
+    if(restartReplay || wasShowing) {
+        const dueAt = performance.now() + state.nextInactivityReplayMs
+        // Mouse activity requires five quiet seconds without shortening a
+        // click/key's existing ten-second pause. Swipes still use their own delay.
+        state.inactivityReplayDueAt = keepLaterReplay ?
+            Math.max(state.inactivityReplayDueAt ?? 0, dueAt) : dueAt
+    }
+
     if((state.isVisible || state.isAnimating) && dismissVisibleGuide) {
         hideGuide(state)
     }
 
-    if(state.isHomeActive && !state.isVisible && !state.isAnimating)
+    if(!state.isVisible && !state.isAnimating && (restartReplay || wasShowing))
         scheduleInactivityReplay(state, { restart: true })
 }
 
@@ -475,7 +459,7 @@ async function showGuide(state) {
     const useSimpleFade = guideTargets.layoutMode === "mobile" || prefersReducedMotion() || isReplay
     const finalSpotlight = spotlightSteps[spotlightSteps.length - 1].spotlight
     updateGuideLabels(state, guideTargets.layoutMode)
-    applyMobileLighting(state, guideTargets)
+    applyGuideLighting(state, guideTargets)
     applyLabelPosition(state, guideTargets, finalSpotlight)
 
     applySpotlight(state, startSpotlight)
@@ -534,11 +518,10 @@ async function showGuide(state) {
 function completeGuideShow(state) {
     state.isAnimating = false
     state.isVisible = true
+    state.root?.toggleAttribute("data-guiding", true)
     clearTrackedTimeout(state, state.inactivityReplayTimeoutId)
     state.inactivityReplayTimeoutId = null
     if(!state.showRecorded) {
-        if(state.hasShownGuideAtLeastOnce)
-            state.nextInactivityReplayMs += INACTIVITY_REPLAY_STEP_MS
         state.hasShownGuideAtLeastOnce = true
         state.showRecorded = true
     }
@@ -549,6 +532,7 @@ async function hideGuide(state, { immediate = false } = {}) {
         return
     cancelGuideRun(state)
     state.isVisible = false
+    state.root?.toggleAttribute("data-guiding", false)
     stopAmbientMotion(state)
 
     if(immediate || state.destroyed || !state.root) {
@@ -600,9 +584,16 @@ function ensureGuideElements(state) {
     const bottomCaption = document.createElement("div")
     bottomCaption.className = "startup-guide-edge-caption startup-guide-edge-caption-bottom"
 
-    root.appendChild(overlay)
-    root.appendChild(label)
-    root.append(topCaption, bottomCaption)
+    const paint = document.createElement("div")
+    paint.className = "startup-guide-paint"
+    paint.append(overlay, label, topCaption, bottomCaption)
+    const navigationCues = Object.fromEntries(["left", "top", "bottom"].map(edge => {
+        const cue = document.createElement("div")
+        cue.className = `startup-guide-navigation-cue startup-guide-navigation-cue-${edge}`
+        cue.hidden = true
+        return [edge, cue]
+    }))
+    root.append(paint, ...Object.values(navigationCues))
     document.body.appendChild(root)
 
     state.root = root
@@ -612,6 +603,7 @@ function ensureGuideElements(state) {
     state.detail = detail
     state.topCaption = topCaption
     state.bottomCaption = bottomCaption
+    state.navigationCues = navigationCues
     state.showRecorded = false
     return root
 }
@@ -628,6 +620,7 @@ function removeGuideElements(state) {
     state.detail = null
     state.topCaption = null
     state.bottomCaption = null
+    state.navigationCues = null
     syncTargetObservers(state)
 }
 
@@ -644,19 +637,29 @@ function applyLabelPosition(state, targets, spotlight) {
 
     const bounds = targets.viewport
     const margin = Math.min(20, bounds.width * 0.04)
-    state.root.style.setProperty("--startup-guide-label-max-width", `${Math.max(1, bounds.width - margin * 2)}px`)
-    const labelRect = state.label.getBoundingClientRect()
     const mobile = targets.layoutMode === "mobile"
-    const desiredX = mobile ? bounds.left + (bounds.width - labelRect.width) / 2 : spotlight.x + spotlight.radius + 22
+    const leftEdge = mobile ? bounds.left + margin :
+        Math.max(bounds.left + margin, resolveDesktopClearEdge(targets) + DESKTOP_RAIL_FADE_PX)
+    state.root.style.setProperty("--startup-guide-label-max-width", `${Math.max(1, bounds.right - leftEdge - margin)}px`)
+    if(state.heading)
+        state.heading.hidden = false
+    let labelRect = state.label.getBoundingClientRect()
+    // Keep the actionable instructions readable on short landscape screens.
+    if(!mobile && state.heading && labelRect.height > bounds.height - margin * 2) {
+        state.heading.hidden = true
+        labelRect = state.label.getBoundingClientRect()
+    }
+    const desiredX = mobile ? bounds.left + (bounds.width - labelRect.width) / 2 :
+        Math.max(leftEdge, spotlight.x + spotlight.radius + 22)
     const contentTop = targets.topRect?.bottom ?? bounds.top
     const contentBottom = targets.bottomRect?.top ?? bounds.bottom
     const desiredY = mobile ? (contentTop + contentBottom) / 2 : spotlight.y
-    const labelX = clamp(desiredX, bounds.left + margin, Math.max(bounds.left + margin, bounds.right - labelRect.width - margin))
-    const labelY = clamp(desiredY, bounds.top + margin + labelRect.height / 2,
+    const labelX = clamp(desiredX, leftEdge, Math.max(leftEdge, bounds.right - labelRect.width - margin))
+    let labelY = clamp(desiredY, bounds.top + margin + labelRect.height / 2,
         Math.max(bounds.top + margin + labelRect.height / 2, bounds.bottom - margin - labelRect.height / 2))
     state.root.style.setProperty("--startup-guide-label-x", `${roundTo(labelX, 2)}px`)
-    state.root.style.setProperty("--startup-guide-label-y", `${roundTo(labelY, 2)}px`)
     const edgeInset = resolveMobileFeather(targets)
+    const captionBounds = []
     for(const [caption, edge, offset] of [[state.topCaption, targets.topRect?.bottom, edgeInset],
         [state.bottomCaption, targets.bottomRect?.top, -edgeInset]]) {
         if(!caption)
@@ -666,11 +669,43 @@ function applyLabelPosition(state, targets, spotlight) {
             continue
         const rect = caption.getBoundingClientRect()
         const y = edge + offset + (offset > 0 ? rect.height / 2 : -rect.height / 2)
-        // Keep captions separate from the main message on very short screens.
-        caption.hidden = Math.abs(y - labelY) < (rect.height + labelRect.height) / 2 + 16
-        caption.style.left = `${bounds.left + bounds.width / 2}px`
-        caption.style.top = `${clamp(y, bounds.top + rect.height / 2 + margin, bounds.bottom - rect.height / 2 - margin)}px`
+        const center = clamp(y, bounds.top + rect.height / 2 + margin, bounds.bottom - rect.height / 2 - margin)
+        // Center mobile captions with measured coordinates over the shared shade.
+        caption.style.left = `${roundTo(bounds.left + (bounds.width - rect.width) / 2, 2)}px`
+        caption.style.top = `${roundTo(center - rect.height / 2, 2)}px`
+        captionBounds.push({caption, top: center - rect.height / 2, bottom: center + rect.height / 2, upper: caption === state.topCaption})
     }
+    if(mobile) {
+        // Fit the heading into the actual free space before omitting a hint.
+        // Symmetric placement alone unnecessarily hid the upper instructions.
+        const gap = 16
+        const headingRange = () => {
+            const upper = captionBounds.find(item => item.upper && !item.caption.hidden)
+            const lower = captionBounds.find(item => !item.upper && !item.caption.hidden)
+            return {
+                min: (upper ? upper.bottom + gap : contentTop + margin) + labelRect.height / 2,
+                max: (lower ? lower.top - gap : contentBottom - margin) - labelRect.height / 2,
+            }
+        }
+        let range = headingRange()
+        if(range.min > range.max) {
+            // Keep the section-navigation hint first on a short screen.
+            for(const item of captionBounds) {
+                if(item.upper)
+                    item.caption.hidden = true
+            }
+            range = headingRange()
+        }
+        if(range.min > range.max) {
+            for(const item of captionBounds)
+                item.caption.hidden = true
+            range = headingRange()
+        }
+        if(range.min <= range.max)
+            labelY = clamp(desiredY, range.min, range.max)
+    }
+    const labelTop = mobile ? labelY - labelRect.height / 2 : labelY
+    state.root.style.setProperty("--startup-guide-label-y", `${roundTo(labelTop, 2)}px`)
 }
 
 function canShowGuide(state) {
@@ -687,10 +722,11 @@ function canShowGuide(state) {
 function updateGuideLabels(state, layoutMode) {
     const labels = startupGuideLabels[getPreferredLanguageId()] || startupGuideLabels.en
     state.heading.textContent = labels[layoutMode] || labels.desktop
-    state.detail.textContent = layoutMode === "mobile" ? labels.mobileDetail : labels.desktopDetail
-    state.detail.hidden = !state.detail.textContent
-    state.topCaption.textContent = labels.top
-    state.bottomCaption.textContent = labels.bottom
+    const detail = layoutMode === "mobile" ? labels.mobileDetail : labels.desktopDetail
+    renderStartupGuideCaption(state.detail, detail)
+    state.detail.hidden = detail.length === 0
+    renderStartupGuideCaption(state.topCaption, labels.top)
+    renderStartupGuideCaption(state.bottomCaption, labels.bottom)
 }
 
 function getPreferredLanguageId() {
@@ -788,7 +824,9 @@ function targetSignature(targets) {
 function syncTargetObservers(state) {
     if(!state.resizeObserver || state.destroyed)
         return
-    const elements = [...(state.targets?.elements || []), ...(state.label ? [state.label] : [])]
+    // Font loading can change either edge caption's wrapping independently.
+    const captions = [state.label, state.topCaption, state.bottomCaption].filter(Boolean)
+    const elements = [...(state.targets?.elements || []), ...captions]
     state.observedTargets.filter(element => !elements.includes(element))
         .forEach(element => state.resizeObserver.unobserve(element))
     elements.filter(element => !state.observedTargets.includes(element))
@@ -814,7 +852,7 @@ function scheduleGeometryUpdate(state) {
         }
         setGuideLayoutMode(state, state.targets.layoutMode)
         updateGuideLabels(state, state.targets.layoutMode)
-        applyMobileLighting(state, state.targets)
+        applyGuideLighting(state, state.targets)
         const steps = resolveSpotlightSteps(state.targets)
         const finalSpotlight = steps[steps.length - 1]?.spotlight
         if(!finalSpotlight)
@@ -835,21 +873,66 @@ function resolveMobileFeather(targets) {
     return Math.min(clamp(targets.viewport.height * 0.085, 48, 112), Math.max(0, (bottom - top) / 2))
 }
 
-function applyMobileLighting(state, targets) {
-    if(targets.layoutMode !== "mobile" || !state.root)
+function resolveDesktopClearEdge(targets) {
+    const railRight = Math.max(targets.railRect?.right ?? targets.viewport.left,
+        targets.lowerRailRect?.right ?? targets.viewport.left)
+    return Math.min(targets.viewport.right, railRight + DESKTOP_RAIL_CLEARANCE_PX)
+}
+
+function applyGuideLighting(state, targets) {
+    if(!state.root)
         return
+    applyNavigationCueGeometry(state, targets)
+    if(targets.layoutMode === "desktop") {
+        state.root.style.setProperty("--startup-guide-rail-right", `${roundTo(resolveDesktopClearEdge(targets), 2)}px`)
+        state.root.style.setProperty("--startup-guide-rail-fade", `${DESKTOP_RAIL_FADE_PX}px`)
+        return
+    }
     const top = targets.topRect?.bottom ?? targets.viewport.top
     const bottom = targets.bottomRect?.top ?? targets.viewport.bottom
-    const feather = resolveMobileFeather(targets)
+    const contentHeight = Math.max(0, bottom - top)
+    // A single soft silhouette spans the content. Scale its feather for large
+    // portrait displays, with enough horizontal bleed to avoid a visible panel.
+    const blur = Math.min(clamp(Math.min(targets.viewport.width, contentHeight) * 0.075, 24, 96), contentHeight / 4)
+    // Put the solid silhouette slightly beneath each navigation edge; only its
+    // long feather reaches farther into the bars. Copy keeps a uniform backing.
+    const overlap = blur * 0.6
     for(const [property, value] of Object.entries({
-        "top-clear": top,
-        "top-soft": top + feather * 0.4,
-        "top-shade": top + feather,
-        "bottom-shade": bottom - feather,
-        "bottom-soft": bottom - feather * 0.4,
-        "bottom-clear": bottom,
+        "shade-left": targets.viewport.left - blur * 3,
+        "shade-top": top - overlap,
+        "shade-width": targets.viewport.width + blur * 6,
+        "shade-height": contentHeight + overlap * 2,
+        "shade-blur": blur,
     }))
         state.root.style.setProperty(`--startup-guide-${property}`, `${roundTo(value, 2)}px`)
+}
+
+function applyNavigationCueGeometry(state, targets) {
+    if(!state.navigationCues)
+        return
+    const mobile = targets.layoutMode === "mobile"
+    const rects = mobile ? {top: targets.topRect, bottom: targets.bottomRect} :
+        {left: mergeRects(targets.railRect, targets.lowerRailRect)}
+    // Each sweep spans the actual controls, including the whole mobile header.
+    // Large screens get a slower pass; geometry is never read by the animation.
+    const duration = mobile ? clamp(targets.viewport.width / 160, 7.2, 11.2) :
+        clamp((rects.left?.height ?? 0) / 140, 6.4, 10)
+    for(const [edge, cue] of Object.entries(state.navigationCues)) {
+        const rect = rects[edge]
+        cue.hidden = !rect || rect.width <= 0 || rect.height <= 0
+        if(cue.hidden)
+            continue
+        const length = mobile ? rect.width : rect.height
+        const span = Math.min(length, clamp(length * 0.24, 48, 200))
+        for(const [property, value] of Object.entries({
+            left: rect.left, top: rect.top, width: rect.width, height: rect.height,
+        }))
+            cue.style[property] = `${roundTo(value, 2)}px`
+        cue.style.setProperty("--startup-guide-cue-width", `${roundTo(rect.width, 2)}px`)
+        cue.style.setProperty("--startup-guide-cue-height", `${roundTo(rect.height, 2)}px`)
+        cue.style.setProperty("--startup-guide-cue-span", `${roundTo(span, 2)}px`)
+        cue.style.setProperty("--startup-guide-cue-duration", `${roundTo(duration, 2)}s`)
+    }
 }
 
 function clearGuideTimers(state) {
@@ -857,6 +940,7 @@ function clearGuideTimers(state) {
     clearTrackedTimeout(state, state.inactivityReplayTimeoutId)
     state.initialShowTimeoutId = null
     state.inactivityReplayTimeoutId = null
+    state.inactivityReplayDueAt = null
 }
 
 function beginGuideRun(state) {
@@ -996,7 +1080,8 @@ function resolveDesktopAmbientSpotlight({ railRect, lowerRailRect }, elapsedMs) 
         x: interpolate(upperRailSpotlight.x, lowerRailSpotlight.x, travel),
         y: interpolate(upperRailSpotlight.y, lowerRailSpotlight.y, travel) + startDip,
         radius: interpolate(upperRailSpotlight.radius, lowerRailSpotlight.radius, travel) + interpolate(-3, 6, glow),
-        opacity: 0.9 + (glow * 0.1),
+        // Keep the shade and caption steady while the navigation light moves.
+        opacity: 1,
     }
 }
 
@@ -1274,9 +1359,7 @@ function destroyController(state) {
 }
 
 function getDistance(from, to) {
-    const deltaX = to.x - from.x
-    const deltaY = to.y - from.y
-    return Math.sqrt((deltaX * deltaX) + (deltaY * deltaY))
+    return Math.hypot(to.x - from.x, to.y - from.y)
 }
 
 function interpolate(from, to, progress) {

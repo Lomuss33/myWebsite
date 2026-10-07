@@ -24,7 +24,7 @@ nav.nav-header-mobile {
     div.nav-header-mobile-card-wrapper > div.nav-profile-card {
         --nav-profile-card-inline-padding: 10px;
         margin: 0;
-        padding-top: 12px;
+        padding-top: var(--mobile-profile-card-top-padding, 12px);
         padding-left: 0;
         padding-right: 0;
         border-radius: 0;

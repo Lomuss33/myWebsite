@@ -1,10 +1,16 @@
 section#section-about .section-content.section-content-has-decoration-bands {
     --padding-top: 0px;
-    --section-article-separator-buffer-top: clamp(6px, .6vw, 10px);
-    --section-article-separator-buffer-bottom: clamp(8px, .8vw, 14px);
+    --home-article-divider-gap: clamp(10px, .9vw, 14px);
+    --section-article-separator-buffer-top: var(--home-article-divider-gap);
+    --section-article-separator-buffer-bottom: var(--home-article-divider-gap);
     --section-header-separator-buffer-bottom: calc(.75rem * var(--section-opening-spacing-scale, .5));
 
     > .section-content-elements-wrapper { padding-top: 0; }
+    .section-body > article.article { --heading-gap: var(--home-article-divider-gap); }
+    // Headerless articles need the same opening gap as the heading-led ones.
+    .section-decoration-boundary-between-articles + article.article:not(:has(> h4.article-title)) {
+        padding-top: var(--home-article-divider-gap);
+    }
     .section-decoration-band {
         --section-decoration-band-background: #030b16;
         --section-decoration-edge-start: #34d9ed;
@@ -105,9 +111,17 @@ html[data-theme="light"] .home-decoration-art {
 }
 
 .home-decoration-art--bottom {
+    .home-roller-halves { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); height: 100%; }
+    .home-roller-half {
+        position: relative;
+        overflow: hidden;
+        perspective: 2000px;
+        perspective-origin: 50% 0;
+        &[data-mirror="true"] { transform: scaleX(-1); }
+    }
     .home-roller-scene {
-        // A quarter turn spreads the fourteen rows horizontally. The fitted
-        // 10% overscan covers both edges through the complete rolling cycle.
+        // Both clipped halves share geometry, timing and their own perspective.
+        // Overscan fills the outer edges and the centre join throughout the roll.
         transform: scale(var(--scene-stretch-x), var(--scene-stretch-y)) rotateX(62deg) rotateZ(90deg);
     }
     .home-roller-strip { width: 12em; background-color: var(--home-band-surface); }

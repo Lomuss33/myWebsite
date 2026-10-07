@@ -15,6 +15,9 @@ const ROWS = Array.from({length: 14}, (_, index) => {
     const bottomRadius = 1.5 / (i === 1 ? 1 : Math.sin(halfAngle))
     return {i, sides, angle, topLength, topRadius, bottomInset, bottomRadius}
 })
+// Seven progressively larger polygon pairs on each half. Mirror the complete
+// projected scene, including its animation, rather than just reversing sizes.
+const BOTTOM_ROWS = ROWS.filter(row => row.i % 2 === 1)
 
 function useBandActivity(ref) {
     useEffect(() => {
@@ -108,7 +111,7 @@ function Roller({row, bottom, trailing = false}) {
 function RollerGroup({rows, bottom = false, segment = 0}) {
     return <div className="home-roller-scene">
         {rows.map((row, localIndex) => <div key={row.i} className="home-roller-assembly" style={{
-            '--row-y': `${bottom ? -5 * row.i : -7 * localIndex}em`,
+            '--row-y': `${bottom ? -5 * (localIndex + 1) : -7 * localIndex}em`,
             '--travel': `${bottom ? 3 : row.topLength}em`,
             '--segment-width': `${bottom ? 3 : row.topLength}em`,
             '--phase': `${-row.i * 0.13 - segment * 0.31}s`,
@@ -133,12 +136,13 @@ function HomeDecorationBand({type, index = 0}) {
     const pattern = useMemo(() => createBandPattern(index, seed, width), [index, seed, width])
     const unit = bottom ? Math.max(3, Math.min(12, height / 27)) : height / 6
     const panelWidth = width / segments
-    const stretchX = bottom ? width * 1.1 / (69 * unit) : panelWidth * 1.05 / (25 * unit)
+    const bottomHalfWidth = width / 2
+    const stretchX = bottom ? bottomHalfWidth * 1.2 / (34 * unit) : panelWidth * 1.05 / (25 * unit)
     const styles = {
         '--scene-unit': `${unit}px`,
         '--scene-stretch-x': stretchX,
         '--scene-stretch-y': bottom ? height * 1.08 / (30 * unit) : 1,
-        '--scene-left': bottom ? `${-3 * unit * stretchX - width * 0.05}px` : `${2 * unit * stretchX - panelWidth * 0.025}px`,
+        '--scene-left': bottom ? `${-3 * unit * stretchX - bottomHalfWidth * 0.05}px` : `${2 * unit * stretchX - panelWidth * 0.025}px`,
         '--scene-top': bottom ? '37%' : '62%',
         '--home-top-segments': segments,
         '--home-signal-duration': `${pattern.duration.toFixed(2)}s`,
@@ -164,7 +168,11 @@ function HomeDecorationBand({type, index = 0}) {
                 </pattern>
             </defs>
             <rect width={width} height="40" fill={`url(#${id})`}/>
-        </svg> : bottom ? <RollerGroup rows={ROWS} bottom/> :
+        </svg> : bottom ? <div className="home-roller-halves">
+            {[false, true].map(mirror => <div className="home-roller-half" key={String(mirror)} data-mirror={mirror}>
+                <RollerGroup rows={BOTTOM_ROWS} bottom/>
+            </div>)}
+        </div> :
             <div className="home-roller-panels">
                 {Array.from({length: segments}, (_, segment) => <div className="home-roller-panel" key={segment} data-mirror={segment % 2 === 1}>
                     <RollerGroup rows={Array.from({length: 4}, (_, row) => ROWS[(segment * 3 + row) % ROWS.length])} segment={segment}/>

@@ -2,7 +2,8 @@
 html[data-layout="mobile"] nav.nav-header-mobile {
     .nav-header-mobile-card-wrapper { container: mobile-profile-card / inline-size; }
     div.nav-profile-card {
-        --mobile-profile-avatar-size: clamp(2.75rem, min(24cqi, 9svh), 5rem);
+        --mobile-profile-avatar-size: clamp(2.75rem, min(20cqi, 12svh), 5.5rem);
+        --mobile-profile-card-top-padding: 0px;
         --mobile-profile-action-size: clamp(3rem, min(9.5cqi, 6svh), 3.3rem);
         --avatar-size: var(--mobile-profile-avatar-size);
         --avatar-frame-radius: clamp(0.375rem, 2.5cqi, 1.25rem);
@@ -10,8 +11,12 @@ html[data-layout="mobile"] nav.nav-header-mobile {
         --mobile-action-size: var(--mobile-profile-action-size);
         --mobile-action-visual-scale: 1;
         --mobile-action-footprint: var(--mobile-action-size);
-        padding-top: 0.375rem;
-        div.nav-profile-card-header { width: 100%; padding-inline: 0; }
+        padding-top: 0;
+        div.nav-profile-card-header {
+            width: 100%;
+            padding: 0;
+            row-gap: 0.125rem;
+        }
         div.nav-profile-card-main-row {
             display: grid;
             grid-template-columns: var(--mobile-profile-grid-columns, minmax(2.75rem, 1fr) max-content max-content max-content minmax(2.75rem, 1fr));
@@ -21,7 +26,7 @@ html[data-layout="mobile"] nav.nav-header-mobile {
             column-gap: var(--mobile-profile-column-gap, clamp(0.375rem, 1.2cqi, 0.75rem));
             width: 100%; max-width: var(--mobile-profile-row-max, 52rem);
             min-height: 0; margin-inline: auto;
-            padding: 0.25rem var(--mobile-profile-gutter, 0.5rem) 0.375rem;
+            padding: 0 var(--mobile-profile-gutter, 0.5rem) 0.125rem;
             box-sizing: border-box;
         }
         div.nav-profile-card-info, h1.nav-profile-card-name, span.nav-profile-card-name-text {
@@ -44,6 +49,8 @@ html[data-layout="mobile"] nav.nav-header-mobile {
             grid-area: portrait;
             width: max-content; min-width: 0; margin: 0;
             justify-self: center;
+            align-self: start;
+            padding: 0;
         }
         div.nav-profile-card-mobile-action-stack {
             display: flex; flex-direction: row; flex-wrap: wrap;
@@ -71,7 +78,7 @@ html[data-layout="mobile"] nav.nav-header-mobile {
             width: 100%;
             min-width: 0;
             max-width: 100%;
-            font-size: clamp(0.75rem, min(3.2cqi, 2.25svh), 1rem) !important;
+            font-size: clamp(0.75rem, min(3.6cqi, 2.5svh), 1rem) !important;
             line-height: 1.1 !important;
             white-space: nowrap !important;
         }
@@ -86,11 +93,11 @@ html[data-layout="mobile"] nav.nav-header-mobile {
 @container mobile-profile-card (max-width: 26rem) {
     html[data-layout="mobile"] nav.nav-header-mobile div.nav-profile-card {
         // Preserve a 44px hit target while making its painted disc proportional.
-        --mobile-profile-action-size: clamp(2rem, min(9cqi, 4.5svh), 2.75rem);
+        --mobile-profile-action-size: clamp(2.25rem, min(10cqi, 6svh), 2.75rem);
         --mobile-action-size: 2.75rem;
         --mobile-action-footprint: var(--mobile-action-size);
         --mobile-profile-action-gap: clamp(0.125rem, 0.8cqi, 0.375rem);
-        --mobile-action-icon-size: clamp(0.75rem, 3.5cqi, 1rem);
+        --mobile-action-icon-size: clamp(0.75rem, 3.9cqi, 1rem);
         div.nav-profile-card-header div.nav-profile-card-mobile-action-stack {
             display: flex;
             flex-direction: row;
@@ -150,6 +157,9 @@ html[data-layout="mobile"] nav.nav-header-mobile {
 // allocated side tracks. The avatar owns the center track across both rows.
 @container mobile-profile-card (max-width: 24rem) {
     html[data-layout="mobile"] nav.nav-header-mobile div.nav-profile-card {
+        // The portrait fills the identity band up to the card's top edge.
+        // Reserve both control pairs before allowing the center square to grow.
+        --mobile-profile-avatar-size: clamp(2.75rem, min(26cqi, 15svh, calc(100cqi - var(--mobile-action-size) * 4 - 1rem)), 6rem);
         --mobile-action-size: clamp(1.75rem, min(14cqi, 2.75rem), 2.75rem);
         --mobile-action-footprint: var(--mobile-action-size);
         height: auto;
@@ -168,6 +178,9 @@ html[data-layout="mobile"] nav.nav-header-mobile {
             span.nav-profile-card-name-line {
                 justify-self: center;
                 max-width: 100%;
+                // These tracks have no side controls on the name row.
+                // Center each word over its pair instead of hugging the avatar.
+                text-align: center;
                 font-size: clamp(0.8125rem, min(5.2cqi, 2.5svh), 1rem) !important;
             }
         }
@@ -206,7 +219,7 @@ html[data-layout="mobile"] nav.nav-header-mobile {
 // compact two-row controls, so no side pair is forced into a vertical stack.
 @container mobile-profile-card (max-width: 15.0625rem) {
     html[data-layout="mobile"] nav.nav-header-mobile div.nav-profile-card {
-        --mobile-profile-avatar-size: clamp(2rem, min(16cqi, 7svh), 3rem);
+        --mobile-profile-avatar-size: clamp(2rem, min(20cqi, 9svh), 3rem);
         --mobile-profile-name-size: clamp(0.75rem, min(4.5cqi, 2.25svh), 0.9375rem);
         --mobile-profile-action-size: clamp(1.375rem, min(12cqi, 2rem), 2rem);
         --mobile-action-size: var(--mobile-profile-action-size);
@@ -323,8 +336,6 @@ html[data-layout="mobile"] {
 @media (min-width: 30rem) and (min-height: 40rem) and (pointer: coarse) {
     html[data-layout="mobile"] {
         nav.nav-header-mobile div.nav-profile-card {
-            padding-top: .5rem;
-            .nav-profile-card-main-row { padding-block: .5rem; }
             .nav-profile-card-mobile-action-stack { gap: var(--mobile-profile-action-gap, .375rem); }
         }
         .nav-tab-controller-link span { font-size: var(--mobile-nav-item-label-size); line-height: 1.2; }

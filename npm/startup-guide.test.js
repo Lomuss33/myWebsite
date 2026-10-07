@@ -53,7 +53,8 @@ function harness() {
         globalThis.api = {createController, registerGlobalListeners, scheduleInitialShow,
             resolveDesktopClearEdge, applyGuideLighting, applyLabelPosition, applyNavigationCueGeometry,
             canShowGuide, scheduleGeometryUpdate, observeDomChanges, syncHomeState, syncTargetObservers,
-            beginGuideRun, waitForDuration, waitForNextFrame, destroyController, completeGuideShow}
+            beginGuideRun, waitForDuration, waitForNextFrame, destroyController, completeGuideShow,
+            recordGuideAppearance, scheduleInactivityReplay}
     `, context)
     const state = context.api.createController()
     state.isHomeActive = true
@@ -315,7 +316,7 @@ await check('editable descendants and plaintext editors suppress reminders', h =
     assert.equal(h.api.canShowGuide(h.state), false)
 })
 
-await check('each completed appearance adds five seconds, without counting geometry updates', async h => {
+await check('each appearance adds five seconds, without counting geometry updates', async h => {
     h.api.completeGuideShow(h.state)
     h.api.completeGuideShow(h.state)
     assert.equal(h.state.showCount, 1)
@@ -334,6 +335,80 @@ await check('each completed appearance adds five seconds, without counting geome
     assert.equal(h.shows(), 1)
     await h.to(30000)
     assert.equal(h.shows(), 2)
+})
+
+await check('four appearances exhaust the page budget without expiring the fourth guide', async h => {
+    let time = 0
+    for(let appearance = 1; appearance <= 4; appearance++) {
+        h.state.currentShowRecorded = false
+        h.api.recordGuideAppearance(h.state)
+        h.api.completeGuideShow(h.state)
+        h.api.completeGuideShow(h.state)
+        assert.equal(h.state.showCount, appearance)
+        if(appearance < 4) {
+            h.fire('wheel')
+            time += 5000 + appearance * 5000
+            await h.to(time - 1)
+            assert.equal(h.shows(), appearance - 1)
+            await h.to(time)
+            assert.equal(h.shows(), appearance)
+        }
+    }
+    await h.to(time + 3600000)
+    assert.equal(h.state.isVisible, true)
+    h.fire('click')
+    assert.equal(h.state.isVisible, false)
+    assert.equal(h.timers.size, 0)
+    h.api.scheduleInactivityReplay(h.state, {restart: true})
+    h.state.hasAttemptedInitialShow = false
+    h.api.scheduleInitialShow(h.state)
+    assert.equal(h.timers.size, 0)
+    await h.to(time + 7200000)
+    assert.equal(h.shows(), 3)
+})
+
+await check('the cap survives leaving Home and controller recreation; a new page resets it', async h => {
+    for(let appearance = 0; appearance < 4; appearance++) {
+        h.state.currentShowRecorded = false
+        h.api.recordGuideAppearance(h.state)
+    }
+    h.api.syncHomeState(h.state)
+    assert.equal(h.state.isHomeActive, false)
+    vm.runInContext('resolveGuideTargets = () => ({elements: []})', h.context)
+    h.context.document.querySelector = selector => selector.startsWith('section#section-about') ? {} : null
+    h.api.syncHomeState(h.state)
+    assert.equal(h.state.isHomeActive, true)
+    assert.equal(h.api.canShowGuide(h.state), false)
+    assert.equal(h.timers.size, 0)
+    h.api.destroyController(h.state)
+    const recreated = h.api.createController()
+    recreated.isHomeActive = true
+    assert.equal(recreated.showCount, 4)
+    assert.equal(h.api.canShowGuide(recreated), false)
+    h.api.scheduleInactivityReplay(recreated)
+    assert.equal(h.timers.size, 0)
+    const refreshed = harness()
+    assert.equal(refreshed.state.showCount, 0)
+    assert.equal(refreshed.api.canShowGuide(refreshed.state), true)
+    refreshed.state.hasAttemptedInitialShow = false
+    refreshed.api.scheduleInitialShow(refreshed.state)
+    await refreshed.to(1099)
+    assert.equal(refreshed.shows(), 0)
+    await refreshed.to(1100)
+    assert.equal(refreshed.shows(), 1)
+})
+
+await check('dismissal during entrance still consumes one appearance', h => {
+    for(let appearance = 1; appearance <= 4; appearance++) {
+        h.state.currentShowRecorded = false
+        h.state.isAnimating = true
+        h.api.recordGuideAppearance(h.state)
+        h.fire('click')
+        assert.equal(h.state.showCount, appearance)
+        assert.equal(h.state.isVisible, false)
+    }
+    assert.equal(h.api.canShowGuide(h.state), false)
+    assert.equal(h.timers.size, 0)
 })
 
 await check('continuous movement extends the progressive pause without shortening a click', async h => {

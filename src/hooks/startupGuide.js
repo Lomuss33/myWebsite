@@ -25,6 +25,7 @@ const INITIAL_SHOW_DELAY_MS = 1100
 const INACTIVITY_REPLAY_START_MS = 5000
 const PRESS_REPLAY_DELAY_MS = 10000
 const REPLAY_INCREMENT_MS = 5000
+const MAX_GUIDE_APPEARANCES = 4
 
 const INITIAL_MOVEMENT_THRESHOLD_PX = 28
 const DESKTOP_RAIL_CLEARANCE_PX = 16
@@ -48,6 +49,9 @@ function prefersReducedMotion() {
 }
 
 let controller = null
+// In-memory page lifetime: navigation/controller recreation keeps the budget;
+// refreshing the document creates a fresh module and resets it.
+let pageShowCount = 0
 
 export function destroyStartupGuide() {
     if(controller)
@@ -94,9 +98,9 @@ function createController() {
         isHomeActive: false,
         isVisible: false,
         isAnimating: false,
-        hasAttemptedInitialShow: false,
-        hasShownGuideAtLeastOnce: false,
-        showCount: 0,
+        hasAttemptedInitialShow: pageShowCount > 0,
+        hasShownGuideAtLeastOnce: pageShowCount > 0,
+        showCount: pageShowCount,
         currentShowRecorded: false,
         initialMovementDistance: 0,
         lastPointerPosition: null,
@@ -338,7 +342,7 @@ function syncHomeState(state) {
 }
 
 function scheduleInitialShow(state) {
-    if(state.destroyed || !state.isHomeActive || state.hasAttemptedInitialShow ||
+    if(state.showCount >= MAX_GUIDE_APPEARANCES || state.destroyed || !state.isHomeActive || state.hasAttemptedInitialShow ||
         state.initialShowTimeoutId !== null || document.hidden || state.isPaused)
         return
 
@@ -362,7 +366,7 @@ function scheduleInitialShow(state) {
 }
 
 function scheduleInactivityReplay(state, { restart = false } = {}) {
-    if(state.destroyed || !state.isHomeActive || state.isVisible || state.isAnimating || document.hidden || state.isPaused)
+    if(state.showCount >= MAX_GUIDE_APPEARANCES || state.destroyed || !state.isHomeActive || state.isVisible || state.isAnimating || document.hidden || state.isPaused)
         return
 
     const replayDelayMs = state.inactivityReplayDueAt === null ? replayDelay(state) :
@@ -431,7 +435,7 @@ function handleInteraction(state, { dismissVisibleGuide, replayDelayMs = null, r
 
 function replayDelay(state) {
     // The first appearance has no surcharge; each subsequent appearance waits
-    // five seconds longer. Count completed shows, never resize reconciliations.
+    // five seconds longer. Count entrances, never resize reconciliations.
     return state.nextInactivityReplayMs + state.showCount * REPLAY_INCREMENT_MS
 }
 
@@ -479,6 +483,7 @@ async function showGuide(state) {
     if(!await waitForNextFrame(state, run))
         return
 
+    recordGuideAppearance(state)
     setOverlayOpacityTransition(state, FADE_IN_MS, "ease-out")
 
     if(useSimpleFade) {
@@ -534,10 +539,16 @@ function completeGuideShow(state) {
     state.root?.toggleAttribute("data-guiding", true)
     clearTrackedTimeout(state, state.inactivityReplayTimeoutId)
     state.inactivityReplayTimeoutId = null
-    state.hasShownGuideAtLeastOnce = true
+    recordGuideAppearance(state)
+}
+
+function recordGuideAppearance(state) {
     if(!state.currentShowRecorded) {
-        state.showCount++
+        state.showCount = ++pageShowCount
+        state.hasShownGuideAtLeastOnce = true
         state.currentShowRecorded = true
+        if(state.showCount >= MAX_GUIDE_APPEARANCES)
+            clearGuideTimers(state)
     }
 }
 
@@ -791,7 +802,7 @@ function applyDesktopCaptionPositions(state, targets, left, margin) {
 }
 
 function canShowGuide(state) {
-    if(state.destroyed || !state.isHomeActive || state.isVisible || state.isAnimating || document.hidden || state.isPaused)
+    if(state.showCount >= MAX_GUIDE_APPEARANCES || state.destroyed || !state.isHomeActive || state.isVisible || state.isAnimating || document.hidden || state.isPaused)
         return false
 
     return !isGuideBlockedByUI()

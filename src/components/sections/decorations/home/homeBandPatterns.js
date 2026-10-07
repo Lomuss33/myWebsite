@@ -50,26 +50,41 @@ export function createBandPattern(index, seed, width) {
             addPair(folds * 4, t => strength * 17 * (1 - 4 * Math.abs((t * folds % 1) - 0.5)))
         }
     } else if(family === 2) {
-        // Closed Lissajous orbits; odd/even frequencies mirror in both axes.
-        const frequency = random() > 0.5 ? 3 : 5
-        for(const size of [1, 0.7]) {
-            paths.push(sampledPath(160, t => [tileWidth * (0.5 + 0.48 * size * Math.sin(t * Math.PI * 2 * frequency)),
-                20 + 17 * size * Math.sin(t * Math.PI * 4)], true))
+        // Linked ribbon loops: every strand traverses the whole tile. The
+        // backtracking stays inside it, so neighboring repeats never clip a loop.
+        const curl = 0.21 + random() * 0.02
+        for(const strength of [1, 0.68]) {
+            for(const sign of [-1, 1]) {
+                paths.push(sampledPath(160, t => [tileWidth * (t + curl * Math.sin(t * Math.PI * 2)),
+                    20 + sign * strength * 16 * Math.sin(t * Math.PI * 2)]))
+            }
         }
     } else if(family === 3) {
-        // Symmetric fan lattice: seeded spacing makes a repeated optical weave.
-        const spokes = Array.from({length: 5}, () => 0.05 + random() * 0.4).sort((a, b) => a - b)
-        for(const offset of spokes) {
-            for(const mirror of [false, true]) {
-                const x = tileWidth * (mirror ? 1 - offset : offset)
-                paths.push(`M${point(x, 3)} Q${point(tileWidth / 2, 20)} ${point(tileWidth - x, 37)}`)
+        // A swept silk lattice: strands fan out and cross in one continuous
+        // weave, with matching horizontal tangents at every repeating seam.
+        const bend = 0.18 + random() * 0.06
+        const spreads = Array.from({length: 5}, (_, i) => 3 + i * 3.3 + random() * 0.6)
+        for(const spread of spreads) {
+            for(const sign of [-1, 1]) {
+                const from = 20 + sign * spread
+                const to = 20 - sign * spread
+                paths.push(`M${point(0, from)} C${point(tileWidth * bend, from)} ` +
+                    `${point(tileWidth * (0.5 - bend), to)} ${point(tileWidth / 2, to)} ` +
+                    `C${point(tileWidth * (0.5 + bend), to)} ${point(tileWidth * (1 - bend), from)} ${point(tileWidth, from)}`)
             }
         }
     } else if(family === 4) {
-        // Standing-wave rosettes with a different envelope for each strand.
-        const frequency = random() > 0.5 ? 2 : 4
-        for(const strength of [1, 0.58]) {
-            addPair(128, t => strength * 17 * Math.cos(t * Math.PI * 2) * Math.cos(t * Math.PI * 2 * frequency))
+        // Nested rounded links: quiet straight runs and curved shoulders give
+        // this chain its own silhouette rather than another oscillating wave.
+        const shoulder = 0.18 + random() * 0.08
+        for(const spread of [16, 10, 4]) {
+            for(const sign of [-1, 1]) {
+                const y = 20 + sign * spread
+                paths.push(`M${point(0, 20)} C${point(tileWidth * shoulder / 3, 20)} ` +
+                    `${point(tileWidth * shoulder / 2, y)} ${point(tileWidth * shoulder, y)} ` +
+                    `H${(tileWidth * (1 - shoulder)).toFixed(2)} ` +
+                    `C${point(tileWidth * (1 - shoulder / 2), y)} ${point(tileWidth * (1 - shoulder / 3), 20)} ${point(tileWidth, 20)}`)
+            }
         }
     } else {
         // Mirrored stepped circuits: a tiny repeatable sequence, never text.

@@ -10,12 +10,14 @@
       "id": "experience",
       "categoryId": "history",
       "jsonPath": "/data/sections/experience.json",
+      "hideHeader": true,
       "faIcon": "fa-solid fa-tools"
     },
     {
       "id": "education",
       "categoryId": "history",
       "jsonPath": "/data/sections/education.json",
+      "hideHeader": true,
       "faIcon": "fa-solid fa-brain"
     },
     {

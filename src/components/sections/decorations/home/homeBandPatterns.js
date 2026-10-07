@@ -74,18 +74,22 @@ export function createBandPattern(index, seed, width) {
             }
         }
     } else if(family === 4) {
-        // Nested rounded links: quiet straight runs and curved shoulders give
-        // this chain its own silhouette rather than another oscillating wave.
-        const shoulder = 0.18 + random() * 0.08
-        for(const spread of [16, 10, 4]) {
+        // A folded prism web: uneven diagonal runs meet vertical ribs. Mirror
+        // the seeded half-cell so its apparent chaos still joins and repeats.
+        const halfWidths = Array.from({length: 3}, () => 0.7 + random() * 0.6)
+        const widths = [...halfWidths, ...halfWidths.slice().reverse()]
+        const total = widths.reduce((sum, value) => sum + value, 0)
+        const knots = [0]
+        widths.forEach(value => knots.push(knots.at(-1) + value / total * tileWidth))
+        const halfNecks = [4, 3 + random() * 6, 3 + random() * 6, 5 + random() * 4]
+        const necks = [...halfNecks, ...halfNecks.slice(0, -1).reverse()]
+        for(const strength of [1, 0.5]) {
             for(const sign of [-1, 1]) {
-                const y = 20 + sign * spread
-                paths.push(`M${point(0, 20)} C${point(tileWidth * shoulder / 3, 20)} ` +
-                    `${point(tileWidth * shoulder / 2, y)} ${point(tileWidth * shoulder, y)} ` +
-                    `H${(tileWidth * (1 - shoulder)).toFixed(2)} ` +
-                    `C${point(tileWidth * (1 - shoulder / 2), y)} ${point(tileWidth * (1 - shoulder / 3), 20)} ${point(tileWidth, 20)}`)
+                paths.push(knots.map((x, i) => `${i ? 'L' : 'M'}${point(x,
+                    20 + sign * strength * (i % 2 ? -1 : 1) * (20 - necks[i]))}`).join(' '))
             }
         }
+        knots.slice(1, -1).forEach((x, i) => paths.push(`M${point(x, necks[i + 1])} V${(40 - necks[i + 1]).toFixed(2)}`))
     } else {
         // Mirrored stepped circuits: a tiny repeatable sequence, never text.
         const half = [3, ...Array.from({length: 5}, () => 4 + Math.round(random() * 13))]
@@ -103,7 +107,7 @@ export function createBandPattern(index, seed, width) {
     return {
         family, tileWidth, paths,
         palette: seed % 3,
-        duration: 6 + random() * 4,
+        duration: family === 4 ? 4 + random() * 2 : 6 + random() * 4,
         phase: -random() * 10,
     }
 }

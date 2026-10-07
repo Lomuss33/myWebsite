@@ -51,24 +51,15 @@ html[data-theme="light"] .home-decoration-art {
     left: var(--scene-left);
     top: var(--scene-top);
     font-size: var(--scene-unit);
-    transform: scale(var(--scene-stretch-x), var(--scene-stretch-y)) rotateX(70deg) rotateZ(90deg);
+    transform: scale(var(--scene-stretch-x), var(--scene-stretch-y)) rotateX(60deg) rotateZ(var(--scene-tilt));
     &, * { transform-style: preserve-3d; }
-}
-
-.home-roller-panels { display: grid; grid-template-columns: repeat(var(--home-top-segments), minmax(0, 1fr)); height: 100%; }
-.home-roller-panel {
-    position: relative;
-    overflow: hidden;
-    perspective: 900px;
-    perspective-origin: 50% 50%;
-    &[data-mirror="true"] { transform: scaleX(-1); }
 }
 
 .home-roller-assembly {
     position: absolute;
     top: 0;
     left: 0;
-    transform: translate(0, var(--row-y));
+    transform: translate(var(--row-x), var(--row-y));
     animation: home-roller-slide 2.4s ease-in-out var(--phase) infinite;
 }
 
@@ -160,7 +151,7 @@ html[data-theme="light"] .home-decoration-art {
 }
 
 .home-decoration-art[data-running="false"] * { animation-play-state: paused; }
-@keyframes home-roller-slide { to { transform: translate(var(--travel), var(--row-y)); } }
+@keyframes home-roller-slide { to { transform: translate(calc(var(--row-x) + var(--travel)), var(--row-y)); } }
 @keyframes home-roller-roll { to { transform: var(--roller-end); } }
 @keyframes home-signal-flow { to { stroke-dashoffset: -100; } }
 @media (prefers-reduced-motion: reduce) {

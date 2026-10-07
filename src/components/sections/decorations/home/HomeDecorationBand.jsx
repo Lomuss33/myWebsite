@@ -18,6 +18,8 @@ const ROWS = Array.from({length: 14}, (_, index) => {
 // Seven progressively larger polygon pairs on each half. Mirror the complete
 // projected scene, including its animation, rather than just reversing sizes.
 const BOTTOM_ROWS = ROWS.filter(row => row.i % 2 === 1)
+const TOP_TILT = 65
+const TOP_ROW_STEP = 5
 
 function useBandActivity(ref) {
     useEffect(() => {
@@ -108,13 +110,15 @@ function Roller({row, bottom, trailing = false}) {
     </div>
 }
 
-function RollerGroup({rows, bottom = false, segment = 0}) {
+function RollerGroup({rows, bottom = false}) {
     return <div className="home-roller-scene">
-        {rows.map((row, localIndex) => <div key={row.i} className="home-roller-assembly" style={{
-            '--row-y': `${bottom ? -5 * (localIndex + 1) : -7 * localIndex}em`,
+        {rows.map((row, localIndex) => <div key={localIndex} className="home-roller-assembly" style={{
+            '--row-y': `${bottom ? -5 * (localIndex + 1) : -TOP_ROW_STEP * localIndex}em`,
+            // Level the row centres while retaining the oblique polygon view.
+            '--row-x': `${bottom ? 0 : TOP_ROW_STEP * localIndex / Math.tan(TOP_TILT * Math.PI / 180)}em`,
             '--travel': `${bottom ? 3 : row.topLength}em`,
             '--segment-width': `${bottom ? 3 : row.topLength}em`,
-            '--phase': `${-row.i * 0.13 - segment * 0.31}s`,
+            '--phase': `${-row.i * 0.13 - (bottom ? 0 : localIndex * 0.08)}s`,
             zIndex: bottom ? 15 - row.i : undefined,
         }}>
             <div className="home-roller-strip"/>
@@ -132,18 +136,20 @@ function HomeDecorationBand({type, index = 0}) {
     const bottom = type === 'page-bottom'
     const middle = type === 'between-articles'
     const segments = topSegmentCount(width)
+    const topRows = useMemo(() => Array.from({length: segments * 4}, (_, column) => ROWS[column % ROWS.length]), [segments])
     const seed = bandSeed(index, verticalSlot)
     const pattern = useMemo(() => createBandPattern(index, seed, width), [index, seed, width])
     const unit = bottom ? Math.max(3, Math.min(12, height / 27)) : height / 6
-    const panelWidth = width / segments
     const bottomHalfWidth = width / 2
-    const stretchX = bottom ? bottomHalfWidth * 1.2 / (34 * unit) : panelWidth * 1.05 / (25 * unit)
+    const topSpan = (topRows.length - 1) * TOP_ROW_STEP / Math.sin(TOP_TILT * Math.PI / 180) + 6
+    const stretchX = bottom ? bottomHalfWidth * 1.2 / (34 * unit) : width * 1.08 / (topSpan * unit)
     const styles = {
         '--scene-unit': `${unit}px`,
         '--scene-stretch-x': stretchX,
         '--scene-stretch-y': bottom ? height * 1.08 / (30 * unit) : 1,
-        '--scene-left': bottom ? `${-3 * unit * stretchX - bottomHalfWidth * 0.05}px` : `${2 * unit * stretchX - panelWidth * 0.025}px`,
-        '--scene-top': bottom ? '37%' : '62%',
+        '--scene-left': bottom ? `${-3 * unit * stretchX - bottomHalfWidth * 0.05}px` : `${2 * unit * stretchX - width * 0.04}px`,
+        '--scene-top': bottom ? '37%' : '70%',
+        '--scene-tilt': `${TOP_TILT}deg`,
         '--home-top-segments': segments,
         '--home-signal-duration': `${pattern.duration.toFixed(2)}s`,
         '--home-signal-phase': `${pattern.phase.toFixed(2)}s`,
@@ -163,7 +169,8 @@ function HomeDecorationBand({type, index = 0}) {
                     {pattern.paths.map((path, line) => <React.Fragment key={line}>
                         <path className="home-signal-track" d={path} stroke={`url(#${id}-ink)`}/>
                         <path className="home-signal-pulse" d={path} stroke={`url(#${id}-ink)`} pathLength="100"
-                              style={{animationDelay: `${pattern.phase - line * 0.7}s`}}/>
+                              style={{animationDelay: `${pattern.phase - line * 0.7}s`,
+                                  animationDirection: pattern.family === 4 && line % 2 ? 'reverse' : undefined}}/>
                     </React.Fragment>)}
                 </pattern>
             </defs>
@@ -172,12 +179,7 @@ function HomeDecorationBand({type, index = 0}) {
             {[false, true].map(mirror => <div className="home-roller-half" key={String(mirror)} data-mirror={mirror}>
                 <RollerGroup rows={BOTTOM_ROWS} bottom/>
             </div>)}
-        </div> :
-            <div className="home-roller-panels">
-                {Array.from({length: segments}, (_, segment) => <div className="home-roller-panel" key={segment} data-mirror={segment % 2 === 1}>
-                    <RollerGroup rows={Array.from({length: 4}, (_, row) => ROWS[(segment * 3 + row) % ROWS.length])} segment={segment}/>
-                </div>)}
-            </div>}
+        </div> : <RollerGroup rows={topRows}/>}
     </div>
 }
 

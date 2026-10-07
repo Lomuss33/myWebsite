@@ -1,0 +1,98 @@
+// One scale for page and article headings. Long titles wrap at this size;
+// their wording and the width of a particular article do not shrink the type.
+:root {
+    --heading-size: clamp(1.125rem, 1rem + 0.9vw, 1.625rem);
+    --heading-line-height: 1.2;
+    --heading-tracking: -0.02em;
+    --heading-gap: clamp(0.75rem, 1vw, 1.125rem);
+}
+
+// Important declarations in this named layer own heading geometry, ahead of
+// legacy unlayered page/density rules. Colours and artwork remain page-owned.
+@layer heading-layout {
+    .section-content :is(h2.section-header-title, h4.article-title) {
+        box-sizing: border-box !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        font-size: var(--heading-size) !important;
+        font-weight: 800 !important;
+        line-height: var(--heading-line-height) !important;
+        letter-spacing: var(--heading-tracking) !important;
+        text-align: center !important;
+        text-wrap: balance !important;
+        white-space: normal !important;
+        overflow-wrap: anywhere !important;
+    }
+
+    .section-content :is(.article-title-text, h2.section-header-title) span {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        letter-spacing: inherit !important;
+        white-space: normal !important;
+    }
+
+    .section-content h4.article-title {
+        position: relative !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0 !important;
+        margin: var(--heading-gap) 0 !important;
+        padding: 0 !important;
+    }
+
+    .section-content .article-title-text {
+        box-sizing: border-box !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin-inline: 0 !important;
+        padding: 0.22em var(--heading-text-gutter, 0.85em) !important;
+        font-size: inherit !important;
+        line-height: inherit !important;
+        letter-spacing: inherit !important;
+        text-align: center !important;
+    }
+
+    .section-content .article-title-prefix {
+        position: absolute !important;
+        inset-inline-start: 0.15em !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        line-height: 1 !important;
+    }
+
+    .section-content header.section-header {
+        margin-block: var(--heading-gap) !important;
+        gap: 0.35rem !important;
+    }
+
+    .section-content h2.section-header-title {
+        margin: 0 !important;
+        padding: 0.22em 0.2em !important;
+    }
+
+    // The play emblem stays on the right, with equal space reserved on the
+    // left so the text itself remains centered. Scale the emblem with the type.
+    #article-4-section-my-art .article-title-text {
+        --heading-text-gutter: 1.8em;
+    }
+
+    #article-4-section-my-art .article-title-text::before {
+        right: 0.15em !important;
+        width: 1.5em !important;
+        height: 1em !important;
+        border-radius: 0.3em !important;
+    }
+
+    #article-4-section-my-art .article-title-text::after {
+        right: 0.6em !important;
+        border-top-width: 0.28em !important;
+        border-bottom-width: 0.28em !important;
+        border-left-width: 0.42em !important;
+    }
+}

@@ -87,10 +87,17 @@ async function openSection(page, route, {reuse = false} = {}) {
     await page.mouse.move(200,1)
 }
 
-for(const [width,height] of [[1366,768],[390,844],[1440,2560]]) {
-    test(`${width}x${height}: all page titles share the Home responsive type scale`, async ({page})=>{
+for(const [width,height,language,theme] of [
+    [1366,768,'en','dark'],
+    [390,844,'de','light'],
+    [1440,2560,'hr','dark'],
+    [280,653,'tr','light'],
+    [797,788,'hr','light'],
+    [3440,1440,'en','dark'],
+]) {
+    test(`${width}x${height} ${language}/${theme}: all page and article headings share the Home responsive type scale`, async ({page})=>{
         test.setTimeout(180000)
-        await preferences(page)
+        await preferences(page,language,theme)
         await page.setViewportSize({width,height})
         let homeSize
         // Each viewport has its own time budget. Switch routes within the app so
@@ -107,7 +114,32 @@ for(const [width,height] of [[1366,768],[390,844],[1440,2560]]) {
             await expect.poll(async()=>{
                 const size=await pageTitle.evaluate(element=>parseFloat(getComputedStyle(element).fontSize))
                 return Math.abs(size-homeSize)
-            },{message:width+'x'+height+' '+route+' heading matches Home'}).toBeLessThanOrEqual(1.5)
+            },{message:width+'x'+height+' '+route+' heading matches Home'}).toBeLessThanOrEqual(0.1)
+            const headings=page.locator('#section-'+route+' :is(.section-header-title, h4.article-title)')
+            await expect.poll(()=>headings.evaluateAll((elements,expected)=>{
+                const issues=[]
+                for(const heading of elements) {
+                    const rect=heading.getBoundingClientRect()
+                    if(!rect.width || !rect.height) continue
+                    const css=getComputedStyle(heading)
+                    if(Math.abs(parseFloat(css.fontSize)-expected)>0.1)
+                        issues.push(heading.textContent.trim()+': inconsistent size')
+                    if(rect.left< -1 || rect.right>innerWidth+1)
+                        issues.push(heading.textContent.trim()+': outside viewport')
+                    const text=heading.querySelector('.article-title-text') || heading
+                    const textCss=getComputedStyle(text)
+                    if(Math.abs(parseFloat(textCss.paddingLeft)-parseFloat(textCss.paddingRight))>0.1)
+                        issues.push(heading.textContent.trim()+': asymmetric decoration space')
+                    const range=document.createRange()
+                    range.selectNodeContents(text)
+                    const ink=range.getBoundingClientRect()
+                    if(ink.left<rect.left-1 || ink.right>rect.right+1)
+                        issues.push(heading.textContent.trim()+': text overflow')
+                    if(heading.matches('.article-title') && Math.abs(parseFloat(css.marginTop)-parseFloat(css.marginBottom))>0.1)
+                        issues.push(heading.textContent.trim()+': asymmetric vertical spacing')
+                }
+                return issues
+            },homeSize),{message:route+' titles keep a common size, symmetric spacing and contained text'}).toEqual([])
         }
     })
 }
@@ -404,9 +436,11 @@ for(const [language,theme] of [['hr','dark'],['de','light'],['en','light'],['tr'
                 const card=page.locator(`article#article-${articleId}-section-about .article-info-list-item-home`).first()
                 const trigger=card.locator('.article-info-list-item-avatar-button')
                 const panel=card.locator('.article-info-list-item-text-bubble')
-                const before=await card.evaluate(element=>element.offsetHeight)
                 await card.locator('.article-info-list-item-content').hover()
                 await expect(panel).toHaveAttribute('aria-hidden','true')
+                // Let the hover action wait for the resized card to settle
+                // before comparing its closed and open heights.
+                const before=await card.evaluate(element=>element.offsetHeight)
                 await trigger.hover()
                 await expect(panel).toHaveAttribute('aria-hidden','false')
                 await card.locator('.article-info-list-item-content').hover()

@@ -16,7 +16,9 @@ function SectionHeader({ section }) {
         const fit = () => {
             if (disposed || !header.clientWidth) return
             const available = Math.max(1, header.clientWidth - 2)
-            for (const line of header.children) {
+            // Only fit the decorative eyebrow. Titles use the shared scale
+            // and wrap naturally, just like every other page/article title.
+            for (const line of header.querySelectorAll('.section-header-prefix')) {
                 line.style.removeProperty("font-size")
                 for (let attempt = 0; attempt < 3; attempt++) {
                     const width = line.scrollWidth

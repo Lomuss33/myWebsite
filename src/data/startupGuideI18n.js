@@ -1,17 +1,26 @@
 // Home navigation guidance. Describe the controls actually available on Home:
 // mobile profile tools above and section navigation below, or the desktop rail.
-// Preserve sentence copy; rows and emphasis carry the visual hierarchy.
+// Give each action its own row; emphasis carries the visual hierarchy.
 export const startupGuideLabels = {
     en: {
         desktop: "Explore the sidebar",
         mobile: "Explore the site",
-        desktopDetail: [
-            {icon: "left", text: "Open a **page** on the left."},
-            {icon: "settings", tone: "tools", text: "Below the page links, choose your **language** or switch **light/dark mode**."},
+        desktopDetail: [],
+        desktopTop: [
+            {icon: "left", tone: "download", text: "View or download my **résumé** here."},
+        ],
+        desktopMiddle: [
+            {icon: "left", text: "Open a **page** here."},
+        ],
+        desktopBottom: [
+            {icon: "theme", tone: "tools", text: "Switch **light/dark mode** here."},
+            {icon: "language", tone: "tools", text: "Change the **language** here."},
         ],
         mobileDetail: [],
         top: [
-            {icon: "up", tone: "tools", accents: ["tools", "tools", "download"], text: "Use the buttons above to change **language**, switch **light/dark mode** or download my **résumé**."},
+            {icon: "language", tone: "tools", text: "Change the **language** above."},
+            {icon: "theme", tone: "tools", text: "Switch **light/dark mode** above."},
+            {icon: "resume", tone: "download", text: "View or download my **résumé**."},
         ],
         bottom: [
             {icon: "down", text: "Choose a **section** below."},
@@ -21,13 +30,22 @@ export const startupGuideLabels = {
     de: {
         desktop: "Entdecke das Menü",
         mobile: "Entdecke die Website",
-        desktopDetail: [
-            {icon: "left", text: "Öffne links eine **Seite**."},
-            {icon: "settings", tone: "tools", text: "Unter den Seitenlinks kannst du die **Sprache** wählen oder zwischen **Hell und Dunkel** wechseln."},
+        desktopDetail: [],
+        desktopTop: [
+            {icon: "left", tone: "download", text: "Hier meinen **Lebenslauf** ansehen oder herunterladen."},
+        ],
+        desktopMiddle: [
+            {icon: "left", text: "Hier eine **Seite** öffnen."},
+        ],
+        desktopBottom: [
+            {icon: "theme", tone: "tools", text: "Hier **Hell/Dunkel** wechseln."},
+            {icon: "language", tone: "tools", text: "Hier die **Sprache** ändern."},
         ],
         mobileDetail: [],
         top: [
-            {icon: "up", tone: "tools", accents: ["tools", "tools", "download"], text: "Oben kannst du die **Sprache** wählen, zwischen **Hell und Dunkel** wechseln oder meinen **Lebenslauf** herunterladen."},
+            {icon: "language", tone: "tools", text: "Oben die **Sprache** ändern."},
+            {icon: "theme", tone: "tools", text: "Oben **Hell/Dunkel** wechseln."},
+            {icon: "resume", tone: "download", text: "**Lebenslauf** ansehen / herunterladen."},
         ],
         bottom: [
             {icon: "down", text: "Wähle unten einen **Bereich**."},
@@ -37,13 +55,22 @@ export const startupGuideLabels = {
     hr: {
         desktop: "Istraži bočni izbornik",
         mobile: "Upoznaj stranicu",
-        desktopDetail: [
-            {icon: "left", text: "Otvori **stranicu** lijevo."},
-            {icon: "settings", tone: "tools", text: "Ispod poveznica možeš promijeniti **jezik** ili odabrati **svijetli ili tamni prikaz**."},
+        desktopDetail: [],
+        desktopTop: [
+            {icon: "left", tone: "download", text: "Ovdje otvori ili preuzmi moj **životopis**."},
+        ],
+        desktopMiddle: [
+            {icon: "left", text: "Ovdje otvori **stranicu**."},
+        ],
+        desktopBottom: [
+            {icon: "theme", tone: "tools", text: "Ovdje odaberi **svijetli/tamni prikaz**."},
+            {icon: "language", tone: "tools", text: "Ovdje promijeni **jezik**."},
         ],
         mobileDetail: [],
         top: [
-            {icon: "up", tone: "tools", accents: ["tools", "tools", "download"], text: "Gore možeš promijeniti **jezik**, odabrati **svijetli ili tamni prikaz** ili preuzeti moj **životopis**."},
+            {icon: "language", tone: "tools", text: "Gore promijeni **jezik**."},
+            {icon: "theme", tone: "tools", text: "Gore odaberi **svijetli/tamni prikaz**."},
+            {icon: "resume", tone: "download", text: "Otvori ili preuzmi moj **životopis**."},
         ],
         bottom: [
             {icon: "down", text: "Dolje odaberi **odjeljak**."},
@@ -53,13 +80,22 @@ export const startupGuideLabels = {
     tr: {
         desktop: "Yan menüyü keşfet",
         mobile: "Siteyi keşfet",
-        desktopDetail: [
-            {icon: "left", text: "Soldan bir **sayfa** aç."},
-            {icon: "settings", tone: "tools", text: "Sayfa bağlantılarının altından **dili** ve **açık/koyu görünümü** değiştirebilirsin."},
+        desktopDetail: [],
+        desktopTop: [
+            {icon: "left", tone: "download", text: "**Özgeçmişimi** buradan görüntüle veya indir."},
+        ],
+        desktopMiddle: [
+            {icon: "left", text: "Buradan bir **sayfa** aç."},
+        ],
+        desktopBottom: [
+            {icon: "theme", tone: "tools", text: "**Açık/koyu görünümü** buradan değiştir."},
+            {icon: "language", tone: "tools", text: "**Dili** buradan değiştir."},
         ],
         mobileDetail: [],
         top: [
-            {icon: "up", tone: "tools", accents: ["tools", "tools", "download"], text: "Yukarıdaki düğmelerden **dili** ve **açık/koyu görünümü** değiştirebilir, **özgeçmişimi** indirebilirsin."},
+            {icon: "language", tone: "tools", text: "**Dili** yukarıdan değiştir."},
+            {icon: "theme", tone: "tools", text: "**Açık/koyu görünümü** yukarıdan değiştir."},
+            {icon: "resume", tone: "download", text: "**Özgeçmişimi** görüntüle veya indir."},
         ],
         bottom: [
             {icon: "down", text: "Alttan bir **bölüm** seç."},

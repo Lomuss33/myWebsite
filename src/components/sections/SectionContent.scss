@@ -2,10 +2,8 @@
 
 div.section-content {
     /* Keep the section anchored higher while preserving comfortable side and bottom spacing. */
-    --section-title-size: clamp(1.4rem, 1.18rem + 0.7cqi, 1.625rem);
-    --section-title-size-md: clamp(1.05rem, 1.05rem + 1.1cqi, 1.625rem);
-    --section-title-size-sm: clamp(1.05rem, 4.8vw, 1.55rem);
-    --section-title-tracking: -0.025em;
+    --section-title-size: var(--heading-size);
+    --section-title-tracking: var(--heading-tracking);
     --section-content-min-height: calc(100vh - #{$default-card-spacing * 5});
     --padding-top: 0.85rem;
     --padding-x: 1.35rem;
@@ -52,14 +50,6 @@ div.section-content {
         --padding-top: 0.5rem;
         --padding-x: 0.75rem;
         --padding-bottom: 0;
-    }
-
-    @include media-breakpoint-down(lg) {
-        --section-title-size: var(--section-title-size-md);
-    }
-
-    @include media-breakpoint-down(sm) {
-        --section-title-size: var(--section-title-size-sm);
     }
 
     @media (max-width: 380px) {

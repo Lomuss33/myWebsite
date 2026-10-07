@@ -8,11 +8,14 @@ const STORAGE_PREFERENCES_KEY = "storage-preferences"
 const DESKTOP_TARGET_SELECTOR = ".nav-tools"
 const DESKTOP_RAIL_SELECTOR = ".nav-sidebar-card-wrapper"
 const DESKTOP_RESUME_BAND_SELECTOR = ".nav-short-rail-resume-band"
+const DESKTOP_RESUME_SELECTOR = ".nav-profile-card-desktop-resume-toggle"
+const DESKTOP_PAGES_SELECTOR = ".nav-link-list-shell"
 const MOBILE_TOP_TARGET_SELECTOR = ".nav-link-pills-fixed-wrapper-shown"
 const MOBILE_HEADER_SELECTOR = ".nav-header-mobile"
 const MOBILE_BOTTOM_TARGET_SELECTOR = ".nav-tab-controller-wrapper"
 const NAVIGATION_SELECTOR = ".layout-navigation-wrapper, .nav-sidebar, .nav-header-mobile, .nav-tab-controller-wrapper, .nav-link-pills-sticky-slot"
 const TARGET_SELECTOR = [DESKTOP_TARGET_SELECTOR, DESKTOP_RAIL_SELECTOR, DESKTOP_RESUME_BAND_SELECTOR,
+    DESKTOP_RESUME_SELECTOR, DESKTOP_PAGES_SELECTOR,
     MOBILE_TOP_TARGET_SELECTOR, MOBILE_HEADER_SELECTOR, MOBILE_BOTTOM_TARGET_SELECTOR].join(", ")
 const ACTIVE_DIALOG_SELECTOR = '[role="dialog"][aria-modal="true"], .modal.show, .dropdown-menu.show'
 
@@ -69,6 +72,7 @@ function createController() {
         heading: null,
         detail: null,
         topCaption: null,
+        middleCaption: null,
         bottomCaption: null,
         navigationCues: null,
         observers: new Set(),
@@ -581,19 +585,22 @@ function ensureGuideElements(state) {
     label.append(heading, detail)
     const topCaption = document.createElement("div")
     topCaption.className = "startup-guide-edge-caption startup-guide-edge-caption-top"
+    const middleCaption = document.createElement("div")
+    middleCaption.className = "startup-guide-edge-caption startup-guide-edge-caption-middle"
     const bottomCaption = document.createElement("div")
     bottomCaption.className = "startup-guide-edge-caption startup-guide-edge-caption-bottom"
 
     const paint = document.createElement("div")
     paint.className = "startup-guide-paint"
-    paint.append(overlay, label, topCaption, bottomCaption)
+    paint.append(overlay, topCaption, middleCaption, bottomCaption)
     const navigationCues = Object.fromEntries(["left", "top", "bottom"].map(edge => {
         const cue = document.createElement("div")
         cue.className = `startup-guide-navigation-cue startup-guide-navigation-cue-${edge}`
         cue.hidden = true
         return [edge, cue]
     }))
-    root.append(paint, ...Object.values(navigationCues))
+    // Center the headline in the viewport independently of the rail's shade mask.
+    root.append(paint, label, ...Object.values(navigationCues))
     document.body.appendChild(root)
 
     state.root = root
@@ -602,6 +609,7 @@ function ensureGuideElements(state) {
     state.heading = heading
     state.detail = detail
     state.topCaption = topCaption
+    state.middleCaption = middleCaption
     state.bottomCaption = bottomCaption
     state.navigationCues = navigationCues
     state.showRecorded = false
@@ -619,6 +627,7 @@ function removeGuideElements(state) {
     state.heading = null
     state.detail = null
     state.topCaption = null
+    state.middleCaption = null
     state.bottomCaption = null
     state.navigationCues = null
     syncTargetObservers(state)
@@ -638,74 +647,117 @@ function applyLabelPosition(state, targets, spotlight) {
     const bounds = targets.viewport
     const margin = Math.min(20, bounds.width * 0.04)
     const mobile = targets.layoutMode === "mobile"
-    const leftEdge = mobile ? bounds.left + margin :
+    const captionLeft = mobile ? bounds.left + margin :
         Math.max(bounds.left + margin, resolveDesktopClearEdge(targets) + DESKTOP_RAIL_FADE_PX)
-    state.root.style.setProperty("--startup-guide-label-max-width", `${Math.max(1, bounds.right - leftEdge - margin)}px`)
+    state.root.style.setProperty("--startup-guide-label-max-width", `${Math.max(1, bounds.width - margin * 2)}px`)
+    state.root.style.setProperty("--startup-guide-caption-max-width", `${Math.max(1, bounds.right - captionLeft - margin)}px`)
+    state.label.hidden = false
     if(state.heading)
         state.heading.hidden = false
-    let labelRect = state.label.getBoundingClientRect()
-    // Keep the actionable instructions readable on short landscape screens.
-    if(!mobile && state.heading && labelRect.height > bounds.height - margin * 2) {
-        state.heading.hidden = true
-        labelRect = state.label.getBoundingClientRect()
+    if(!mobile) {
+        const x = bounds.left + bounds.width / 2
+        const y = bounds.top + bounds.height / 2 - clamp(bounds.height * 0.1, 32, 96)
+        state.root.style.setProperty("--startup-guide-label-x", `${roundTo(x, 2)}px`)
+        state.root.style.setProperty("--startup-guide-label-y", `${roundTo(y, 2)}px`)
+        applyDesktopCaptionPositions(state, targets, captionLeft, margin)
+        return
     }
-    const desiredX = mobile ? bounds.left + (bounds.width - labelRect.width) / 2 :
-        Math.max(leftEdge, spotlight.x + spotlight.radius + 22)
+
+    state.middleCaption.hidden = true
+    const labelRect = state.label.getBoundingClientRect()
+    state.root.style.setProperty("--startup-guide-label-x", `${roundTo(bounds.left + (bounds.width - labelRect.width) / 2, 2)}px`)
     const contentTop = targets.topRect?.bottom ?? bounds.top
     const contentBottom = targets.bottomRect?.top ?? bounds.bottom
-    const desiredY = mobile ? (contentTop + contentBottom) / 2 : spotlight.y
-    const labelX = clamp(desiredX, leftEdge, Math.max(leftEdge, bounds.right - labelRect.width - margin))
-    let labelY = clamp(desiredY, bounds.top + margin + labelRect.height / 2,
-        Math.max(bounds.top + margin + labelRect.height / 2, bounds.bottom - margin - labelRect.height / 2))
-    state.root.style.setProperty("--startup-guide-label-x", `${roundTo(labelX, 2)}px`)
-    const edgeInset = resolveMobileFeather(targets)
-    const captionBounds = []
-    for(const [caption, edge, offset] of [[state.topCaption, targets.topRect?.bottom, edgeInset],
-        [state.bottomCaption, targets.bottomRect?.top, -edgeInset]]) {
-        if(!caption)
-            continue
-        caption.hidden = !mobile || edge === undefined
-        if(caption.hidden)
-            continue
-        const rect = caption.getBoundingClientRect()
-        const y = edge + offset + (offset > 0 ? rect.height / 2 : -rect.height / 2)
-        const center = clamp(y, bounds.top + rect.height / 2 + margin, bounds.bottom - rect.height / 2 - margin)
-        // Center mobile captions with measured coordinates over the shared shade.
-        caption.style.left = `${roundTo(bounds.left + (bounds.width - rect.width) / 2, 2)}px`
-        caption.style.top = `${roundTo(center - rect.height / 2, 2)}px`
-        captionBounds.push({caption, top: center - rect.height / 2, bottom: center + rect.height / 2, upper: caption === state.topCaption})
+    const gap = clamp((contentBottom - contentTop) * 0.025, 10, 24)
+    const captions = []
+    for(const [caption, target, upper] of [[state.topCaption, targets.topRect, true], [state.bottomCaption, targets.bottomRect, false]]) {
+        caption.hidden = !target
+        if(!caption.hidden)
+            captions.push({caption, rect: caption.getBoundingClientRect(), upper})
     }
-    if(mobile) {
-        // Fit the heading into the actual free space before omitting a hint.
-        // Symmetric placement alone unnecessarily hid the upper instructions.
-        const gap = 16
-        const headingRange = () => {
-            const upper = captionBounds.find(item => item.upper && !item.caption.hidden)
-            const lower = captionBounds.find(item => !item.upper && !item.caption.hidden)
-            return {
-                min: (upper ? upper.bottom + gap : contentTop + margin) + labelRect.height / 2,
-                max: (lower ? lower.top - gap : contentBottom - margin) - labelRect.height / 2,
-            }
+    const fitCaptions = () => {
+        const visible = captions.filter(item => !item.caption.hidden)
+        const usedHeight = labelRect.height + visible.reduce((sum, item) => sum + item.rect.height + gap, 0)
+        // Use the available vertical space before omitting instructions on a
+        // tiny screen. The shade keeps its independent, longer feather.
+        const inset = Math.min(resolveMobileFeather(targets), Math.max(margin,
+            (contentBottom - contentTop - usedHeight) / 2))
+        for(const item of visible) {
+            item.top = item.upper ? contentTop + inset : contentBottom - inset - item.rect.height
+            item.caption.style.left = `${roundTo(bounds.left + (bounds.width - item.rect.width) / 2, 2)}px`
+            item.caption.style.top = `${roundTo(item.top, 2)}px`
         }
-        let range = headingRange()
-        if(range.min > range.max) {
-            // Keep the section-navigation hint first on a short screen.
-            for(const item of captionBounds) {
-                if(item.upper)
-                    item.caption.hidden = true
-            }
-            range = headingRange()
+        const upper = visible.find(item => item.upper)
+        const lower = visible.find(item => !item.upper)
+        return {
+            min: (upper ? upper.top + upper.rect.height + gap : contentTop + margin) + labelRect.height / 2,
+            max: (lower ? lower.top - gap : contentBottom - margin) - labelRect.height / 2,
         }
-        if(range.min > range.max) {
-            for(const item of captionBounds)
-                item.caption.hidden = true
-            range = headingRange()
-        }
-        if(range.min <= range.max)
-            labelY = clamp(desiredY, range.min, range.max)
     }
-    const labelTop = mobile ? labelY - labelRect.height / 2 : labelY
-    state.root.style.setProperty("--startup-guide-label-y", `${roundTo(labelTop, 2)}px`)
+    let range = fitCaptions()
+    if(range.min > range.max) {
+        // Keep section navigation first when the content gap is too short.
+        state.topCaption.hidden = true
+        range = fitCaptions()
+    }
+    if(range.min > range.max) {
+        state.bottomCaption.hidden = true
+        range = fitCaptions()
+    }
+    const desiredY = (contentTop + contentBottom) / 2
+    const y = range.min <= range.max ? clamp(desiredY, range.min, range.max) :
+        clamp(desiredY, bounds.top + margin + labelRect.height / 2, bounds.bottom - margin - labelRect.height / 2)
+    state.root.style.setProperty("--startup-guide-label-y", `${roundTo(y - labelRect.height / 2, 2)}px`)
+}
+
+function applyDesktopCaptionPositions(state, targets, left, margin) {
+    const bounds = targets.viewport
+    const gap = clamp(bounds.height * 0.025, 10, 24)
+    const captions = []
+    for(const [caption, target] of [[state.topCaption, targets.resumeRect],
+        [state.middleCaption, targets.pagesRect], [state.bottomCaption, targets.toolsRect]]) {
+        caption.hidden = !target
+        if(!caption.hidden) {
+            caption.style.left = `${roundTo(left, 2)}px`
+            captions.push({caption, target, rect: caption.getBoundingClientRect()})
+        }
+    }
+    let cursor = bounds.top + margin
+    for(const [index, item] of captions.entries()) {
+        const reserved = captions.slice(index).reduce((sum, next) => sum + next.rect.height, 0)
+            + gap * (captions.length - index - 1)
+        const max = Math.max(cursor, bounds.bottom - margin - reserved)
+        item.top = clamp((item.target.top + item.target.bottom - item.rect.height) / 2, cursor, max)
+        cursor = item.top + item.rect.height + gap
+    }
+    const middle = captions.find(item => item.caption === state.middleCaption)
+    const upper = captions.find(item => item.caption === state.topCaption)
+    const lower = captions.find(item => item.caption === state.bottomCaption)
+    const heading = state.label.getBoundingClientRect()
+    let minY = bounds.top + margin + heading.height / 2
+    if(upper && left < heading.right + gap && left + upper.rect.width > heading.left - gap)
+        minY = Math.max(minY, upper.top + upper.rect.height + gap + heading.height / 2)
+    let maxY = middle ? middle.top - gap - heading.height / 2 : bounds.bottom - margin - heading.height / 2
+    if(minY > maxY && middle) {
+        // Reserve room above the page hint on short desktop screens. Keep the
+        // actionable hint below the headline and above the settings.
+        const latestTop = (lower ? lower.top - gap : bounds.bottom - margin) - middle.rect.height
+        const neededTop = minY + heading.height / 2 + gap
+        if(neededTop <= latestTop) {
+            middle.top = neededTop
+            maxY = minY
+        }
+    }
+    if(minY <= maxY) {
+        const desiredY = bounds.top + bounds.height / 2 - clamp(bounds.height * 0.1, 32, 96)
+        state.root.style.setProperty("--startup-guide-label-y", `${roundTo(clamp(desiredY, minY, maxY), 2)}px`)
+    }
+    else if(state.heading) {
+        state.heading.hidden = true
+        state.label.hidden = true
+    }
+    for(const {caption, top} of captions)
+        caption.style.top = `${roundTo(top, 2)}px`
 }
 
 function canShowGuide(state) {
@@ -725,8 +777,10 @@ function updateGuideLabels(state, layoutMode) {
     const detail = layoutMode === "mobile" ? labels.mobileDetail : labels.desktopDetail
     renderStartupGuideCaption(state.detail, detail)
     state.detail.hidden = detail.length === 0
-    renderStartupGuideCaption(state.topCaption, labels.top)
-    renderStartupGuideCaption(state.bottomCaption, labels.bottom)
+    const mobile = layoutMode === "mobile"
+    renderStartupGuideCaption(state.topCaption, mobile ? labels.top : labels.desktopTop)
+    renderStartupGuideCaption(state.middleCaption, mobile ? labels.mobileDetail : labels.desktopMiddle)
+    renderStartupGuideCaption(state.bottomCaption, mobile ? labels.bottom : labels.desktopBottom)
 }
 
 function getPreferredLanguageId() {
@@ -790,7 +844,11 @@ function resolveGuideTargets() {
     }
 
     const railRect = measure(DESKTOP_RAIL_SELECTOR)
-    const lowerRailRect = mergeRects(measure(DESKTOP_TARGET_SELECTOR), measure(DESKTOP_RESUME_BAND_SELECTOR))
+    const toolsRect = measure(DESKTOP_TARGET_SELECTOR)
+    const resumeBandRect = measure(DESKTOP_RESUME_BAND_SELECTOR)
+    const resumeRect = mergeRects(measure(DESKTOP_RESUME_SELECTOR), resumeBandRect)
+    const pagesRect = measure(DESKTOP_PAGES_SELECTOR)
+    const lowerRailRect = mergeRects(toolsRect, resumeBandRect)
 
     if(!railRect && !lowerRailRect)
         return null
@@ -801,6 +859,9 @@ function resolveGuideTargets() {
         elements,
         railRect,
         lowerRailRect: lowerRailRect || railRect,
+        resumeRect,
+        pagesRect,
+        toolsRect,
     }
 }
 
@@ -817,7 +878,7 @@ function targetSignature(targets) {
     if(!targets)
         return ""
     return [targets.layoutMode, ...[targets.viewport, targets.topRect, targets.bottomRect,
-        targets.railRect, targets.lowerRailRect].flatMap(rect => rect ?
+        targets.railRect, targets.lowerRailRect, targets.resumeRect, targets.pagesRect, targets.toolsRect].flatMap(rect => rect ?
         [rect.left, rect.top, rect.width, rect.height].map(value => roundTo(value, 2)) : [null])].join("|")
 }
 
@@ -825,7 +886,7 @@ function syncTargetObservers(state) {
     if(!state.resizeObserver || state.destroyed)
         return
     // Font loading can change either edge caption's wrapping independently.
-    const captions = [state.label, state.topCaption, state.bottomCaption].filter(Boolean)
+    const captions = [state.label, state.topCaption, state.middleCaption, state.bottomCaption].filter(Boolean)
     const elements = [...(state.targets?.elements || []), ...captions]
     state.observedTargets.filter(element => !elements.includes(element))
         .forEach(element => state.resizeObserver.unobserve(element))

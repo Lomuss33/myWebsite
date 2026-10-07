@@ -305,9 +305,10 @@ div.startup-guide-overlay {
 
 div.startup-guide-overlay-label {
     position: absolute;
+    z-index: 2;
     left: var(--startup-guide-label-x);
     top: var(--startup-guide-label-y);
-    transform: translateY(-50%);
+    transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -343,15 +344,15 @@ span.startup-guide-detail {
 
 div.startup-guide-edge-caption {
     position: absolute;
-    transform: translate(-50%, -50%);
+    transform: none;
     width: max-content;
-    max-width: min(24rem, var(--startup-guide-label-max-width, calc(100vw - 2rem)));
+    max-width: min(25rem, var(--startup-guide-caption-max-width, calc(100vw - 2rem)));
     box-sizing: border-box;
     padding: 0;
     font-size: clamp(0.875rem, 0.2vw + 0.8rem, 1rem);
     font-weight: 400;
     line-height: 1.55;
-    text-align: center;
+    text-align: left;
     text-wrap: balance;
 }
 
@@ -402,15 +403,6 @@ strong.startup-guide-caption-action {
     font-weight: 700;
 }
 
-div.startup-guide-root[data-layout="desktop"] div.startup-guide-overlay-label {
-    align-items: stretch;
-    text-align: left;
-
-    .startup-guide-heading {
-        padding-left: 1.7rem;
-    }
-}
-
 div.startup-guide-overlay-label,
 div.startup-guide-edge-caption {
     isolation: isolate;
@@ -448,6 +440,24 @@ html div.startup-guide-root[data-layout="mobile"] {
     .startup-guide-overlay-label::before,
     .startup-guide-edge-caption::before {
         content: none;
+    }
+
+    .startup-guide-edge-caption {
+        // One information row per action; use the phone's available width.
+        width: min(42rem, var(--startup-guide-caption-max-width));
+        max-width: var(--startup-guide-caption-max-width);
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 0.55em;
+        text-align: center;
+    }
+
+    .startup-guide-caption-row {
+        // Center each icon/phrase together; wrapped copy keeps its own center.
+        justify-self: center;
+        width: fit-content;
+        min-width: 0;
+        max-width: 100%;
+        text-align: center;
     }
 }
 

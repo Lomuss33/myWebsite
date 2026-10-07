@@ -13,13 +13,13 @@ export const startupGuideLabels = {
             {icon: "left", text: "Open a **page** here."},
         ],
         desktopBottom: [
-            {icon: "theme", tone: "tools", text: "Switch **light/dark mode** here."},
-            {icon: "language", tone: "tools", text: "Change the **language** here."},
+            {icon: "theme", tone: "tools", accents: ["light", "dark"], text: "Switch **light**/**dark** mode here."},
+            {icon: "language", tone: "language", text: "Change the **language** here."},
         ],
         mobileDetail: [],
         top: [
-            {icon: "language", tone: "tools", text: "Change the **language** above."},
-            {icon: "theme", tone: "tools", text: "Switch **light/dark mode** above."},
+            {icon: "language", tone: "language", text: "Change the **language** above."},
+            {icon: "theme", tone: "tools", accents: ["light", "dark"], text: "Switch **light**/**dark** mode above."},
             {icon: "resume", tone: "download", text: "View or download my **résumé**."},
         ],
         bottom: [
@@ -38,13 +38,13 @@ export const startupGuideLabels = {
             {icon: "left", text: "Hier eine **Seite** öffnen."},
         ],
         desktopBottom: [
-            {icon: "theme", tone: "tools", text: "Hier **Hell/Dunkel** wechseln."},
-            {icon: "language", tone: "tools", text: "Hier die **Sprache** ändern."},
+            {icon: "theme", tone: "tools", accents: ["light", "dark"], text: "Hier **Hell**/**Dunkel** wechseln."},
+            {icon: "language", tone: "language", text: "Hier die **Sprache** ändern."},
         ],
         mobileDetail: [],
         top: [
-            {icon: "language", tone: "tools", text: "Oben die **Sprache** ändern."},
-            {icon: "theme", tone: "tools", text: "Oben **Hell/Dunkel** wechseln."},
+            {icon: "language", tone: "language", text: "Oben die **Sprache** ändern."},
+            {icon: "theme", tone: "tools", accents: ["light", "dark"], text: "Oben **Hell**/**Dunkel** wechseln."},
             {icon: "resume", tone: "download", text: "**Lebenslauf** ansehen / herunterladen."},
         ],
         bottom: [
@@ -63,13 +63,13 @@ export const startupGuideLabels = {
             {icon: "left", text: "Ovdje otvori **stranicu**."},
         ],
         desktopBottom: [
-            {icon: "theme", tone: "tools", text: "Ovdje odaberi **svijetli/tamni prikaz**."},
-            {icon: "language", tone: "tools", text: "Ovdje promijeni **jezik**."},
+            {icon: "theme", tone: "tools", accents: ["light", "dark"], text: "Ovdje odaberi **svijetli**/**tamni** prikaz."},
+            {icon: "language", tone: "language", text: "Ovdje promijeni **jezik**."},
         ],
         mobileDetail: [],
         top: [
-            {icon: "language", tone: "tools", text: "Gore promijeni **jezik**."},
-            {icon: "theme", tone: "tools", text: "Gore odaberi **svijetli/tamni prikaz**."},
+            {icon: "language", tone: "language", text: "Gore promijeni **jezik**."},
+            {icon: "theme", tone: "tools", accents: ["light", "dark"], text: "Gore odaberi **svijetli**/**tamni** prikaz."},
             {icon: "resume", tone: "download", text: "Otvori ili preuzmi moj **životopis**."},
         ],
         bottom: [
@@ -88,13 +88,13 @@ export const startupGuideLabels = {
             {icon: "left", text: "Buradan bir **sayfa** aç."},
         ],
         desktopBottom: [
-            {icon: "theme", tone: "tools", text: "**Açık/koyu görünümü** buradan değiştir."},
-            {icon: "language", tone: "tools", text: "**Dili** buradan değiştir."},
+            {icon: "theme", tone: "tools", accents: ["light", "dark"], text: "**Açık**/**koyu** görünümü buradan değiştir."},
+            {icon: "language", tone: "language", text: "**Dili** buradan değiştir."},
         ],
         mobileDetail: [],
         top: [
-            {icon: "language", tone: "tools", text: "**Dili** yukarıdan değiştir."},
-            {icon: "theme", tone: "tools", text: "**Açık/koyu görünümü** yukarıdan değiştir."},
+            {icon: "language", tone: "language", text: "**Dili** yukarıdan değiştir."},
+            {icon: "theme", tone: "tools", accents: ["light", "dark"], text: "**Açık**/**koyu** görünümü yukarıdan değiştir."},
             {icon: "resume", tone: "download", text: "**Özgeçmişimi** görüntüle veya indir."},
         ],
         bottom: [

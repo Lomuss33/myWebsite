@@ -102,12 +102,15 @@ div.startup-guide-root {
     --startup-guide-veil-rgb: 0 0 0;
     --startup-guide-veil-soft: 0.25;
     --startup-guide-veil-strength: 0.84;
-    --startup-guide-heading-ink: #f7faff;
-    --startup-guide-ink: #eaf1fb;
-    --startup-guide-secondary-ink: #ccd9eb;
+    --startup-guide-heading-ink: #fff;
+    --startup-guide-ink: #dfe5ed;
+    --startup-guide-secondary-ink: #bec7d3;
     --startup-guide-navigation-ink: #7de3ee;
     --startup-guide-tools-ink: #cdbaff;
     --startup-guide-download-ink: #ffd28a;
+    --startup-guide-language-ink: #ffafcb;
+    --startup-guide-light-ink: var(--startup-guide-download-ink);
+    --startup-guide-dark-ink: var(--startup-guide-tools-ink);
     --startup-guide-accent-ink: var(--startup-guide-navigation-ink);
     --startup-guide-cue-rgb: 103 232 249;
     --startup-guide-label-width: 23rem;
@@ -135,12 +138,13 @@ html[data-theme="light"] div.startup-guide-root {
     --startup-guide-veil-rgb: 212 226 242;
     --startup-guide-veil-soft: 0.25;
     --startup-guide-veil-strength: 0.88;
-    --startup-guide-heading-ink: #0b1933;
-    --startup-guide-ink: #14243d;
-    --startup-guide-secondary-ink: #243650;
+    --startup-guide-heading-ink: #000;
+    --startup-guide-ink: #283448;
+    --startup-guide-secondary-ink: #435065;
     --startup-guide-navigation-ink: #064e63;
     --startup-guide-tools-ink: #50308a;
     --startup-guide-download-ink: #683d0e;
+    --startup-guide-language-ink: #7b1746;
     --startup-guide-cue-rgb: 13 111 178;
     // Avoid washing out dark glyph edges with a pale text halo.
     --startup-guide-text-shadow: none;
@@ -336,6 +340,12 @@ span.startup-guide-heading {
     text-wrap: pretty;
 }
 
+div.startup-guide-root[data-layout="desktop"] .startup-guide-overlay-label {
+    transform: translate(-100%, -50%);
+    align-items: flex-end;
+    text-align: right;
+}
+
 span.startup-guide-detail {
     max-width: 25em;
     color: var(--startup-guide-secondary-ink);
@@ -377,6 +387,12 @@ div.startup-guide-root [data-tone="tools"] {
 
 div.startup-guide-root [data-tone="download"] {
     --startup-guide-accent-ink: var(--startup-guide-download-ink);
+}
+
+@each $tone in language, light, dark {
+    div.startup-guide-root [data-tone="#{$tone}"] {
+        --startup-guide-accent-ink: var(--startup-guide-#{$tone}-ink);
+    }
 }
 
 span.startup-guide-caption-row {
@@ -437,7 +453,7 @@ div.startup-guide-root [hidden] {
 }
 
 html div.startup-guide-root[data-layout="mobile"] {
-    --startup-guide-veil-strength: 0.98;
+    --startup-guide-veil-strength: 0.8;
 
     .startup-guide-overlay-label,
     .startup-guide-edge-caption {

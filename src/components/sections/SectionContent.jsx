@@ -10,7 +10,8 @@ import SoftwareProjectStickerLayer from "./decorations/software/SoftwareProjectS
 
 function SectionContent({ section, shouldRenderContent = true }) {
     const shouldHideHeader = section?.hideHeader === true
-    const shouldShowDecorationBands = section?.id !== "about" && section?.id !== "contact"
+    const isHome = section?.id === "about"
+    const shouldShowDecorationBands = section?.id !== "contact"
 
     const decorationClassName = [
         shouldShowDecorationBands ? "section-content-has-decoration-bands" : "",
@@ -30,7 +31,7 @@ function SectionContent({ section, shouldRenderContent = true }) {
                     <Suspense fallback={loadingPlaceholder}>
                         <SectionDecorationLayer section={section}/>
 
-                        {shouldShowDecorationBands && shouldHideHeader && (
+                        {shouldShowDecorationBands && (shouldHideHeader || isHome) && (
                             <SectionDecorationBand type="page-top"
                                                    sectionId={section?.id}/>
                         )}
@@ -39,7 +40,7 @@ function SectionContent({ section, shouldRenderContent = true }) {
                             <>
                                 <SectionHeader section={section}/>
 
-                                {shouldShowDecorationBands && (
+                                {shouldShowDecorationBands && !isHome && (
                                     <SectionDecorationBand type="after-header"
                                                            sectionId={section?.id}/>
                                 )}

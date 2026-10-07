@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react'
 import {softwareStickerArt} from '../../../../data/generated/softwareStickerArt.generated.js'
+import {measureStickerSpace, containStickerX} from '../projectStickerGeometry.js'
 import './softwareStickerPalettes.generated.css'
 import './SoftwareProjectStickerLayer.scss'
 
@@ -31,34 +32,34 @@ function SoftwareProjectStickerLayer() {
         let disposed = false
 
         const measure = () => {
-            const sectionRect = sectionContent.getBoundingClientRect()
-            if(sectionRect.width <= 0 || sectionContent.offsetWidth <= 0) {
+            const space = measureStickerSpace(layer)
+            if(!space) {
                 layer.style.visibility = 'hidden'
                 return
             }
 
             layer.style.visibility = 'visible'
-            const scale = sectionRect.width / sectionContent.offsetWidth
-            const pageWidth = sectionContent.offsetWidth
+            const {rect: layerRect, width: pageWidth, scaleX, scaleY} = space
             const body = sectionContent.querySelector('.section-body') || sectionContent
             const bodyOpacity = Number(getComputedStyle(body).opacity)
 
             for(const card of cards) {
                 const id = card.dataset.softwareProjectId
                 const rect = card.getBoundingClientRect()
-                const width = rect.width / scale
-                const left = (rect.left - sectionRect.left) / scale
-                const top = (rect.top - sectionRect.top) / scale
+                const width = rect.width / scaleX
+                const left = (rect.left - layerRect.left) / scaleX
+                const top = (rect.top - layerRect.top) / scaleY
                 const revealWrapper = card.closest('.transitionable-item')
                 const opacity = rect.width > 0 ? bodyOpacity * (revealWrapper ? Number(getComputedStyle(revealWrapper).opacity) : 1) : 0
-                const size = Math.min(104, Math.max(40, width * 0.16))
+                const size = Math.min(104, Math.max(40, width * 0.16), width * 0.26)
 
                 for(const [index, position] of ['top-left', 'top-right'].entries()) {
                     const sticker = stickerRefs.current.get(`${id}-${position}`)
                     if(!sticker) continue
-                    const [, , offsetX, offsetY] = PROJECT_STICKERS[id][index]
+                    const [, rotation, offsetX, offsetY] = PROJECT_STICKERS[id][index]
                     const anchor = index === 0 ? left + size * 0.08 : left + width - size * 0.92
-                    const x = Math.max(10, Math.min(pageWidth - size - 10, anchor + size * offsetX))
+                    const x = containStickerX({left: anchor + size * offsetX, width: size, height: size,
+                        rotation, pageWidth, cardLeft: left, cardWidth: width, gutter: 10})
                     const y = Math.max(0, top + size * offsetY)
 
                     sticker.style.width = `${size}px`

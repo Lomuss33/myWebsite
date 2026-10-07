@@ -11,7 +11,7 @@ const icons = {
 }
 
 const renderedCopy = new WeakMap()
-const tones = new Set(["navigation", "tools", "download"])
+const tones = new Set(["navigation", "tools", "download", "language", "light", "dark"])
 
 export function renderStartupGuideCaption(element, rows) {
     if(renderedCopy.get(element) === rows)

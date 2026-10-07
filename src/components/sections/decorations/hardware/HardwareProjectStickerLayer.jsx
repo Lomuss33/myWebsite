@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react'
 import {_imageUtils} from '../../../../hooks/utils/_image-utils.js'
+import {measureStickerSpace, containStickerX} from '../projectStickerGeometry.js'
 import './HardwareProjectStickerLayer.scss'
 
 const ASSET_ROOT = '/images/stickers/hardware-experiments/'
@@ -33,24 +34,23 @@ function HardwareProjectStickerLayer() {
         let disposed = false
 
         const measure = () => {
-            const sectionRect = sectionContent.getBoundingClientRect()
-            if(sectionRect.width <= 0 || sectionContent.offsetWidth <= 0) {
+            const space = measureStickerSpace(layer)
+            if(!space) {
                 layer.style.visibility = 'hidden'
                 return
             }
 
             layer.style.visibility = 'visible'
-            const scale = sectionRect.width / sectionContent.offsetWidth
-            const pageWidth = sectionContent.offsetWidth
+            const {rect: layerRect, width: pageWidth, scaleX, scaleY} = space
             const bodyOpacity = Number(getComputedStyle(sectionContent.querySelector('.section-body') || sectionContent).opacity)
 
             for(const card of cards) {
                 const id = card.dataset.hardwareProjectId
                 const rect = card.getBoundingClientRect()
-                const width = rect.width / scale
-                const height = rect.height / scale
-                const left = (rect.left - sectionRect.left) / scale
-                const top = (rect.top - sectionRect.top) / scale
+                const width = rect.width / scaleX
+                const height = rect.height / scaleY
+                const left = (rect.left - layerRect.left) / scaleX
+                const top = (rect.top - layerRect.top) / scaleY
                 const revealWrapper = card.closest('.transitionable-item')
                 const opacity = rect.width > 0 ? bodyOpacity * (revealWrapper ? Number(getComputedStyle(revealWrapper).opacity) : 1) : 0
 
@@ -61,12 +61,15 @@ function HardwareProjectStickerLayer() {
                     const isTop = position === 'top-right'
                     const baseWidth = Math.min(isTop ? 240 : 210, Math.max(isTop ? 100 : 90, width * (isTop ? 0.35 : 0.30)))
                     const baseHeight = Math.min(baseWidth, height * (isTop ? 0.42 : 0.36), isTop ? 210 : 180)
-                    const sizeScale = (id === '8' && isTop ? 0.5 : 1) * (1.4 / 3)
+                    const normalScale = (id === '8' && isTop ? 0.5 : 1) * (1.4 / 3)
+                    const sizeScale = Math.min(normalScale, width * 0.26 / baseWidth)
                     const stickerWidth = baseWidth * sizeScale
                     const stickerHeight = baseHeight * sizeScale
                     const horizontalOffset = PROJECT_STICKERS[id][isTop ? 4 : 5] * stickerWidth
                     const proposedLeft = (isTop ? left + width - stickerWidth * 0.88 : left - stickerWidth * 0.10) + horizontalOffset
-                    const x = Math.max(16, Math.min(pageWidth - stickerWidth - 16, proposedLeft))
+                    const rotation = PROJECT_STICKERS[id][isTop ? 2 : 3]
+                    const x = containStickerX({left: proposedLeft, width: stickerWidth, height: stickerHeight,
+                        rotation, pageWidth, cardLeft: left, cardWidth: width, gutter: 16})
                     const y = Math.max(0, isTop ? top - stickerHeight * 0.15 : top + height - stickerHeight * 1.10)
 
                     sticker.style.width = `${stickerWidth}px`

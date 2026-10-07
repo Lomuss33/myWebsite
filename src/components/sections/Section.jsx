@@ -90,8 +90,8 @@ function SectionRenderer({ section, status, shouldRenderContent, shouldResetScro
     const viewport = useViewport()
     const layoutConstraints = viewport.getLayoutConstraints()
     const canToggleFullscreen = layoutConstraints.canToggleFullscreen
-    const hasDecorationBands = section?.id !== "about" && section?.id !== "contact"
-    const hasHeaderlessDecorationBands = hasDecorationBands && section?.hideHeader === true
+    const hasDecorationBands = section?.id !== "contact"
+    const hasLeadingDecorationBand = hasDecorationBands && (section?.hideHeader === true || section?.id === "about")
 
     const statusClassName = `section-${status}`
 
@@ -103,7 +103,7 @@ function SectionRenderer({ section, status, shouldRenderContent, shouldResetScro
             )}
 
             <Scrollable id={`scrollable-${section.id}`}
-                        className={`section-scrollable ${hasDecorationBands ? "section-scrollable-decorated" : ""} ${canToggleFullscreen ? "section-scrollable-with-fullscreen-cap" : ""} ${hasHeaderlessDecorationBands ? "section-scrollable-headerless-decorated" : ""}`.trim()}
+                        className={`section-scrollable ${hasDecorationBands ? "section-scrollable-decorated" : ""} ${canToggleFullscreen ? "section-scrollable-with-fullscreen-cap" : ""} ${hasLeadingDecorationBand ? "section-scrollable-headerless-decorated" : ""}`.trim()}
                         shouldResetScroll={shouldResetScroll}
                         setShouldResetScroll={setShouldResetScroll}>
                 <SectionContent section={section}

@@ -1,5 +1,6 @@
 import React from 'react'
 import ArtDecorationBandCanvas from "./decorations/art/ArtDecorationBandCanvas.jsx"
+import HomeDecorationBand from "./decorations/home/HomeDecorationBand.jsx"
 
 function SectionDecorationBand({ index = null, sectionId = null, type }) {
     const dataAttributes = index === null ? {} : { "data-section-decoration-band-index": index }
@@ -26,6 +27,7 @@ function SectionDecorationBand({ index = null, sectionId = null, type }) {
                     <ArtDecorationBandCanvas index={index}
                                              type={type}/>
                 )}
+                {sectionId === "about" && <HomeDecorationBand type={type} index={index}/>}
             </div>
 
             {showLineAfter && (

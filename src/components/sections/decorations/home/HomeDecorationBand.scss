@@ -1,0 +1,155 @@
+section#section-about .section-content.section-content-has-decoration-bands {
+    --padding-top: 0px;
+    --section-article-separator-buffer-top: clamp(6px, .6vw, 10px);
+    --section-article-separator-buffer-bottom: clamp(8px, .8vw, 14px);
+    --section-header-separator-buffer-bottom: calc(.75rem * var(--section-opening-spacing-scale, .5));
+
+    > .section-content-elements-wrapper { padding-top: 0; }
+    .section-decoration-band {
+        --section-decoration-band-background: #030b16;
+        --section-decoration-edge-start: #34d9ed;
+        --section-decoration-edge-end: #a48cfa;
+    }
+}
+
+.home-decoration-art {
+    --home-band-accent: #47e3ee;
+    --home-band-secondary: #ac91ff;
+    --home-band-surface: #030b16;
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    container-type: size;
+    perspective: 2000px;
+    perspective-origin: 50% 0;
+    color: var(--home-band-accent);
+    background: radial-gradient(ellipse at 45% 80%, #15314b 0%, var(--home-band-surface) 75%);
+
+    &[data-variant="1"] { --home-band-secondary: #5ce3c2; }
+    &[data-variant="2"] { --home-band-secondary: #fa8ebd; }
+    *, *::before, *::after { box-sizing: border-box; }
+}
+
+html[data-theme="light"] .home-decoration-art {
+    --home-band-accent: #087389;
+    --home-band-secondary: #6743b8;
+    --home-band-surface: #eaf3fb;
+    background: radial-gradient(ellipse at 45% 80%, #d4e9f7, var(--home-band-surface) 75%);
+    &[data-variant="1"] { --home-band-secondary: #167764; }
+    &[data-variant="2"] { --home-band-secondary: #a03571; }
+}
+
+.home-roller-scene {
+    position: absolute;
+    left: var(--scene-left);
+    top: var(--scene-top);
+    font-size: var(--scene-unit);
+    transform: scale(var(--scene-stretch-x), var(--scene-stretch-y)) rotateX(70deg) rotateZ(90deg);
+    &, * { transform-style: preserve-3d; }
+}
+
+.home-roller-panels { display: grid; grid-template-columns: repeat(var(--home-top-segments), minmax(0, 1fr)); height: 100%; }
+.home-roller-panel {
+    position: relative;
+    overflow: hidden;
+    perspective: 900px;
+    perspective-origin: 50% 50%;
+    &[data-mirror="true"] { transform: scaleX(-1); }
+}
+
+.home-roller-assembly {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(0, var(--row-y));
+    animation: home-roller-slide 2.4s ease-in-out var(--phase) infinite;
+}
+
+.home-roller-strip {
+    position: absolute;
+    top: -2em;
+    left: -1px;
+    width: 160em;
+    height: 4em;
+    border: .125em solid currentColor;
+    background-image: linear-gradient(90deg, currentColor .125em, transparent 0);
+    background-size: var(--segment-width) 100%;
+}
+
+.home-roller {
+    position: absolute;
+    transform: var(--roller-start);
+    animation: home-roller-roll 2.4s ease-in-out var(--phase) infinite;
+}
+
+.home-roller-side {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 4em;
+    margin-top: -2em;
+    margin-left: calc(var(--segment-width) / -2);
+    border: .125em solid currentColor;
+    &::before, &::after {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: .125em;
+        background: currentColor;
+        transform: rotateX(90deg);
+        content: '';
+    }
+    &::before { top: -1px; }
+    &::after { bottom: -1px; }
+}
+
+.home-decoration-art--bottom {
+    .home-roller-scene {
+        // A quarter turn spreads the fourteen rows horizontally. The fitted
+        // 10% overscan covers both edges through the complete rolling cycle.
+        transform: scale(var(--scene-stretch-x), var(--scene-stretch-y)) rotateX(62deg) rotateZ(90deg);
+    }
+    .home-roller-strip { width: 12em; background-color: var(--home-band-surface); }
+    .home-roller-trailing { margin-left: 12em; z-index: -1; }
+    .home-roller-side {
+        border: 0;
+        &::before, &::after {
+            transform: none;
+            background: var(--home-band-surface);
+            backface-visibility: hidden;
+        }
+        &::before {
+            top: 100%;
+            height: var(--face-inset);
+            border-top: .125em solid currentColor;
+            transform-origin: 50% 0;
+            transform: rotateX(-90deg);
+        }
+        &::after { top: 0; height: 100%; border: .125em solid currentColor; }
+    }
+}
+
+.home-decoration-art--middle {
+    background: var(--home-band-surface);
+}
+
+.home-signal-pattern { width: 100%; height: 100%; display: block; }
+.home-signal-track, .home-signal-pulse { fill: none; vector-effect: non-scaling-stroke; }
+.home-signal-track { stroke-width: .8px; opacity: .65; stroke-linejoin: round; }
+.home-signal-pulse {
+    stroke-width: 1.5px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 5 95;
+    animation: home-signal-flow var(--home-signal-duration) linear var(--home-signal-phase) infinite;
+}
+
+.home-decoration-art[data-running="false"] * { animation-play-state: paused; }
+@keyframes home-roller-slide { to { transform: translate(var(--travel), var(--row-y)); } }
+@keyframes home-roller-roll { to { transform: var(--roller-end); } }
+@keyframes home-signal-flow { to { stroke-dashoffset: -100; } }
+@media (prefers-reduced-motion: reduce) {
+    .home-decoration-art * { animation: none !important; }
+}
+html.low-perf .home-decoration-art * { animation: none !important; }

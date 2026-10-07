@@ -16,6 +16,8 @@ Dependabot checks npm and GitHub Actions weekly. Development-tool patch updates 
 | JSON/locales | Parse JSON, `npm run validate:i18n`, inspect rendered content |
 | Code/styles | `npm run lint`, `npm run build`, focused behavior checks |
 | Mode resolver | `npm run test:layout` |
+| Home navigation guide | `npm run test:startup-guide`, then native rendered layout/caption checks |
+| Project sticker placement | `npm run test:stickers`, then rendered card/rotation/resize/filter checks |
 | Minesweeper Web Art rules | `npm run test:web-art` |
 | Responsive behavior | Relevant Playwright spec |
 | CV | `npm run cv:generate`, inspect output, build |

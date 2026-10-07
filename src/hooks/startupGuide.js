@@ -24,6 +24,7 @@ const DOCUMENT_COMPLETE_TIMEOUT_MS = 10000
 const INITIAL_SHOW_DELAY_MS = 1100
 const INACTIVITY_REPLAY_START_MS = 5000
 const PRESS_REPLAY_DELAY_MS = 10000
+const REPLAY_INCREMENT_MS = 5000
 
 const INITIAL_MOVEMENT_THRESHOLD_PX = 28
 const DESKTOP_RAIL_CLEARANCE_PX = 16
@@ -95,6 +96,8 @@ function createController() {
         isAnimating: false,
         hasAttemptedInitialShow: false,
         hasShownGuideAtLeastOnce: false,
+        showCount: 0,
+        currentShowRecorded: false,
         initialMovementDistance: 0,
         lastPointerPosition: null,
         inactivityReplayTimeoutId: null,
@@ -362,7 +365,7 @@ function scheduleInactivityReplay(state, { restart = false } = {}) {
     if(state.destroyed || !state.isHomeActive || state.isVisible || state.isAnimating || document.hidden || state.isPaused)
         return
 
-    const replayDelayMs = state.inactivityReplayDueAt === null ? state.nextInactivityReplayMs :
+    const replayDelayMs = state.inactivityReplayDueAt === null ? replayDelay(state) :
         Math.max(0, state.inactivityReplayDueAt - performance.now())
     if(state.inactivityReplayTimeoutId !== null && !restart)
         return
@@ -411,9 +414,9 @@ function handleInteraction(state, { dismissVisibleGuide, replayDelayMs = null, r
     if(replayDelayMs !== null)
         state.nextInactivityReplayMs = replayDelayMs
     if(restartReplay || wasShowing) {
-        const dueAt = performance.now() + state.nextInactivityReplayMs
-        // Mouse activity requires five quiet seconds without shortening a
-        // click/key's existing ten-second pause. Swipes still use their own delay.
+        const dueAt = performance.now() + replayDelay(state)
+        // Movement keeps its quiet-time base plus the session increment without
+        // shortening a click/key deadline. Swipes still replace the press base.
         state.inactivityReplayDueAt = keepLaterReplay ?
             Math.max(state.inactivityReplayDueAt ?? 0, dueAt) : dueAt
     }
@@ -424,6 +427,12 @@ function handleInteraction(state, { dismissVisibleGuide, replayDelayMs = null, r
 
     if(!state.isVisible && !state.isAnimating && (restartReplay || wasShowing))
         scheduleInactivityReplay(state, { restart: true })
+}
+
+function replayDelay(state) {
+    // The first appearance has no surcharge; each subsequent appearance waits
+    // five seconds longer. Count completed shows, never resize reconciliations.
+    return state.nextInactivityReplayMs + state.showCount * REPLAY_INCREMENT_MS
 }
 
 async function showGuide(state) {
@@ -526,6 +535,10 @@ function completeGuideShow(state) {
     clearTrackedTimeout(state, state.inactivityReplayTimeoutId)
     state.inactivityReplayTimeoutId = null
     state.hasShownGuideAtLeastOnce = true
+    if(!state.currentShowRecorded) {
+        state.showCount++
+        state.currentShowRecorded = true
+    }
 }
 
 async function hideGuide(state, { immediate = false } = {}) {
@@ -609,6 +622,7 @@ function ensureGuideElements(state) {
     state.middleCaption = middleCaption
     state.bottomCaption = bottomCaption
     state.navigationCues = navigationCues
+    state.currentShowRecorded = false
     return root
 }
 
@@ -651,7 +665,9 @@ function applyLabelPosition(state, targets, spotlight) {
     if(state.heading)
         state.heading.hidden = false
     if(!mobile) {
-        const x = bounds.left + bounds.width / 2
+        const rightInset = clamp(bounds.width * 0.04, 24, 96)
+        const x = bounds.right - rightInset
+        state.root.style.setProperty("--startup-guide-label-max-width", `${Math.max(1, x - captionLeft)}px`)
         const y = bounds.top + bounds.height / 2 - clamp(bounds.height * 0.1, 32, 96)
         state.root.style.setProperty("--startup-guide-label-x", `${roundTo(x, 2)}px`)
         state.root.style.setProperty("--startup-guide-label-y", `${roundTo(y, 2)}px`)

@@ -53,7 +53,7 @@ function harness() {
         globalThis.api = {createController, registerGlobalListeners, scheduleInitialShow,
             resolveDesktopClearEdge, applyGuideLighting, applyLabelPosition, applyNavigationCueGeometry,
             canShowGuide, scheduleGeometryUpdate, observeDomChanges, syncHomeState, syncTargetObservers,
-            beginGuideRun, waitForDuration, waitForNextFrame, destroyController}
+            beginGuideRun, waitForDuration, waitForNextFrame, destroyController, completeGuideShow}
     `, context)
     const state = context.api.createController()
     state.isHomeActive = true
@@ -179,7 +179,7 @@ await check('other pages and paused apps do not schedule reminders', async h => 
     assert.equal(h.shows(), 0)
 })
 
-function layoutHarness(h, headingHeight = 56, heights = [48, 45, 88]) {
+function layoutHarness(h, headingHeight = 56, heights = [48, 45, 88], mobile = false) {
     const values = new Map()
     h.state.root = {style: {setProperty: (key, value) => values.set(key, value)}}
     h.state.heading = {hidden: false}
@@ -188,7 +188,8 @@ function layoutHarness(h, headingHeight = 56, heights = [48, 45, 88]) {
         const height = h.state.heading.hidden ? 0 : headingHeight
         const x = parseFloat(values.get('--startup-guide-label-x')) || 0
         const y = parseFloat(values.get('--startup-guide-label-y')) || 0
-        return {left: x - width / 2, top: y - height / 2, right: x + width / 2, bottom: y + height / 2, width, height}
+        return {left: x - (mobile ? width / 2 : width), top: y - height / 2,
+            right: x + (mobile ? width / 2 : 0), bottom: y + height / 2, width, height}
     }}
     for(const [index, key] of ['topCaption', 'middleCaption', 'bottomCaption'].entries()) {
         h.state[key] = {hidden: false, style: {}, getBoundingClientRect: () => ({
@@ -198,7 +199,7 @@ function layoutHarness(h, headingHeight = 56, heights = [48, 45, 88]) {
     return values
 }
 
-await check('desktop headline stays horizontally centered above the page hint; rail captions remain clear', async h => {
+await check('desktop headline is right aligned with a bounded inset above the page hint', async h => {
     for(const [width, railWidth] of [[480, 96], [640, 160], [1366, 240], [3440, 384]]) {
         const values = layoutHarness(h)
         const targets = {layoutMode: 'desktop',
@@ -212,7 +213,7 @@ await check('desktop headline stays horizontally centered above the page hint; r
         const clearEdge = parseFloat(values.get('--startup-guide-rail-right'))
         assert.equal(clearEdge, railWidth + 16)
         assert.equal(values.get('--startup-guide-rail-fade'), '40px')
-        assert.equal(x, width / 2)
+        assert.equal(x, width - Math.max(24, Math.min(96, width * .04)))
         assert.ok(parseFloat(values.get('--startup-guide-label-y')) < targets.viewport.height / 2)
         assert.ok(h.state.label.getBoundingClientRect().bottom <= parseFloat(h.state.middleCaption.style.top) - 9.99)
         for(const key of ['topCaption', 'middleCaption', 'bottomCaption']) {
@@ -283,7 +284,7 @@ await check('tight desktop layout keeps actionable hints and restores the headli
 })
 
 await check('mobile hints use available width and recover from a short content gap without overlap', async h => {
-    const values = layoutHarness(h, 56, [144, 0, 88])
+    const values = layoutHarness(h, 56, [144, 0, 88], true)
     const targets = {layoutMode: 'mobile', viewport: {left: 0, top: 0, right: 280, bottom: 653, width: 280, height: 653},
         topRect: {top: 0, bottom: 170}, bottomRect: {top: 589, bottom: 653}}
     const apply = () => h.api.applyLabelPosition(h.state, targets, {x: 140, y: 400, radius: 80})
@@ -312,6 +313,41 @@ await check('mobile hints use available width and recover from a short content g
 await check('editable descendants and plaintext editors suppress reminders', h => {
     h.context.document.activeElement = {isContentEditable: true, matches: () => false}
     assert.equal(h.api.canShowGuide(h.state), false)
+})
+
+await check('each completed appearance adds five seconds, without counting geometry updates', async h => {
+    h.api.completeGuideShow(h.state)
+    h.api.completeGuideShow(h.state)
+    assert.equal(h.state.showCount, 1)
+    h.fire('wheel')
+    await h.to(9999)
+    assert.equal(h.shows(), 0)
+    await h.to(10000)
+    assert.equal(h.shows(), 1)
+    // A new overlay gets a new recording latch; reflow of that overlay does not.
+    h.state.currentShowRecorded = false
+    h.api.completeGuideShow(h.state)
+    h.api.completeGuideShow(h.state)
+    assert.equal(h.state.showCount, 2)
+    h.fire('click')
+    await h.to(29999)
+    assert.equal(h.shows(), 1)
+    await h.to(30000)
+    assert.equal(h.shows(), 2)
+})
+
+await check('continuous movement extends the progressive pause without shortening a click', async h => {
+    h.api.completeGuideShow(h.state)
+    h.fire('click')
+    await h.to(1000)
+    h.fire('mousemove', {clientX: 20, clientY: 20})
+    await h.to(14999)
+    assert.equal(h.shows(), 0)
+    h.fire('mousemove', {clientX: 21, clientY: 20})
+    await h.to(24998)
+    assert.equal(h.shows(), 0)
+    await h.to(24999)
+    assert.equal(h.shows(), 1)
 })
 
 function dialogNode({hidden = false} = {}) {
@@ -367,7 +403,7 @@ await check('leaving Home releases navigation size observations', h => {
 })
 
 await check('a short mobile gap keeps navigation before the generic headline', h => {
-    layoutHarness(h, 56, [144, 0, 88])
+    layoutHarness(h, 56, [144, 0, 88], true)
     const targets = {layoutMode: 'mobile', viewport: {left: 0, top: 0, right: 280, bottom: 653, width: 280, height: 653},
         topRect: {top: 0, bottom: 459}, bottomRect: {top: 589, bottom: 653}}
     h.api.applyLabelPosition(h.state, targets, {x: 140, y: 520, radius: 80})

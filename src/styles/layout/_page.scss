@@ -102,11 +102,12 @@ div.startup-guide-root {
     --startup-guide-veil-rgb: 0 0 0;
     --startup-guide-veil-soft: 0.25;
     --startup-guide-veil-strength: 0.84;
-    --startup-guide-ink: #f4f9ff;
-    --startup-guide-secondary-ink: #d9e9fb;
-    --startup-guide-navigation-ink: #b8eff2;
-    --startup-guide-tools-ink: #d9ceff;
-    --startup-guide-download-ink: #ffe3ae;
+    --startup-guide-heading-ink: #f7faff;
+    --startup-guide-ink: #eaf1fb;
+    --startup-guide-secondary-ink: #ccd9eb;
+    --startup-guide-navigation-ink: #7de3ee;
+    --startup-guide-tools-ink: #cdbaff;
+    --startup-guide-download-ink: #ffd28a;
     --startup-guide-accent-ink: var(--startup-guide-navigation-ink);
     --startup-guide-cue-rgb: 103 232 249;
     --startup-guide-label-width: 23rem;
@@ -134,11 +135,12 @@ html[data-theme="light"] div.startup-guide-root {
     --startup-guide-veil-rgb: 212 226 242;
     --startup-guide-veil-soft: 0.25;
     --startup-guide-veil-strength: 0.88;
-    --startup-guide-ink: #041020;
-    --startup-guide-secondary-ink: var(--startup-guide-ink);
-    --startup-guide-navigation-ink: #08494e;
-    --startup-guide-tools-ink: #45216b;
-    --startup-guide-download-ink: #654214;
+    --startup-guide-heading-ink: #0b1933;
+    --startup-guide-ink: #14243d;
+    --startup-guide-secondary-ink: #243650;
+    --startup-guide-navigation-ink: #064e63;
+    --startup-guide-tools-ink: #50308a;
+    --startup-guide-download-ink: #683d0e;
     --startup-guide-cue-rgb: 13 111 178;
     // Avoid washing out dark glyph edges with a pale text halo.
     --startup-guide-text-shadow: none;
@@ -327,6 +329,7 @@ div.startup-guide-overlay-label {
 }
 
 span.startup-guide-heading {
+    color: var(--startup-guide-heading-ink);
     font-weight: 700;
     font-size: clamp(1.25rem, 0.7vw + 1rem, 1.65rem);
     line-height: 1.4;
@@ -363,6 +366,11 @@ div.startup-guide-edge-caption {
     text-wrap: pretty;
 }
 
+// Resolve each tone where it is used, including an action inside another tone.
+div.startup-guide-root [data-tone="navigation"] {
+    --startup-guide-accent-ink: var(--startup-guide-navigation-ink);
+}
+
 div.startup-guide-root [data-tone="tools"] {
     --startup-guide-accent-ink: var(--startup-guide-tools-ink);
 }
@@ -395,6 +403,8 @@ i.startup-guide-caption-icon {
 
 span.startup-guide-caption-copy {
     min-width: 0;
+    // Ordinary words retain the guide ink independently of the page palette.
+    color: var(--startup-guide-ink);
     overflow-wrap: anywhere;
 }
 

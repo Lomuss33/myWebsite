@@ -119,6 +119,7 @@ function RollerGroup({rows, bottom = false}) {
             '--travel': `${bottom ? 3 : row.topLength}em`,
             '--segment-width': `${bottom ? 3 : row.topLength}em`,
             '--phase': `${-row.i * 0.13 - (bottom ? 0 : localIndex * 0.08)}s`,
+            color: localIndex % 4 === 2 ? 'var(--home-band-secondary)' : undefined,
             zIndex: bottom ? 15 - row.i : undefined,
         }}>
             <div className="home-roller-strip"/>
@@ -136,26 +137,26 @@ function HomeDecorationBand({type, index = 0}) {
     const bottom = type === 'page-bottom'
     const middle = type === 'between-articles'
     const segments = topSegmentCount(width)
-    const topRows = useMemo(() => Array.from({length: segments * 4}, (_, column) => ROWS[column % ROWS.length]), [segments])
+    const topRows = useMemo(() => Array.from({length: segments * 4}, (_, column) => ROWS[column * 5 % ROWS.length]), [segments])
     const seed = bandSeed(index, verticalSlot)
     const pattern = useMemo(() => createBandPattern(index, seed, width), [index, seed, width])
-    const unit = bottom ? Math.max(3, Math.min(12, height / 27)) : height / 6
+    const unit = bottom ? Math.max(3, Math.min(12, height / 27)) : height / 10.8
     const bottomHalfWidth = width / 2
     const topSpan = (topRows.length - 1) * TOP_ROW_STEP / Math.sin(TOP_TILT * Math.PI / 180) + 6
     const stretchX = bottom ? bottomHalfWidth * 1.2 / (34 * unit) : width * 1.08 / (topSpan * unit)
     const styles = {
         '--scene-unit': `${unit}px`,
         '--scene-stretch-x': stretchX,
-        '--scene-stretch-y': bottom ? height * 1.08 / (30 * unit) : 1,
+        '--scene-stretch-y': bottom ? height * 0.9 / (30 * unit) : 1,
         '--scene-left': bottom ? `${-3 * unit * stretchX - bottomHalfWidth * 0.05}px` : `${2 * unit * stretchX - width * 0.04}px`,
-        '--scene-top': bottom ? '37%' : '70%',
+        '--scene-top': bottom ? '37%' : '58%',
         '--scene-tilt': `${TOP_TILT}deg`,
-        '--home-top-segments': segments,
         '--home-signal-duration': `${pattern.duration.toFixed(2)}s`,
         '--home-signal-phase': `${pattern.phase.toFixed(2)}s`,
     }
     return <div ref={ref} className={`home-decoration-art home-decoration-art--${middle ? 'middle' : bottom ? 'bottom' : 'top'}`}
                 style={styles} data-running="false" data-variant={pattern.palette}
+                data-top-groups={!middle && !bottom ? segments : undefined}
                 data-pattern={middle ? pattern.family : undefined} data-seed={middle ? seed : undefined}
                 data-vertical-slot={middle ? verticalSlot : undefined} aria-hidden="true">
         {middle ? <svg className="home-signal-pattern" viewBox={`0 0 ${width} 40`} preserveAspectRatio="none" focusable="false">
@@ -170,7 +171,7 @@ function HomeDecorationBand({type, index = 0}) {
                         <path className="home-signal-track" d={path} stroke={`url(#${id}-ink)`}/>
                         <path className="home-signal-pulse" d={path} stroke={`url(#${id}-ink)`} pathLength="100"
                               style={{animationDelay: `${pattern.phase - line * 0.7}s`,
-                                  animationDirection: pattern.family === 4 && line % 2 ? 'reverse' : undefined}}/>
+                                  animationDirection: pattern.family >= 4 && line % 2 ? 'reverse' : undefined}}/>
                     </React.Fragment>)}
                 </pattern>
             </defs>

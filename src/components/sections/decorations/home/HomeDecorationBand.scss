@@ -30,7 +30,7 @@ section#section-about .section-content.section-content-has-decoration-bands {
     perspective: 2000px;
     perspective-origin: 50% 0;
     color: var(--home-band-accent);
-    background: radial-gradient(ellipse at 45% 80%, #15314b 0%, var(--home-band-surface) 75%);
+    background: radial-gradient(ellipse at 50% 65%, #15314b 0%, var(--home-band-surface) 75%);
 
     &[data-variant="1"] { --home-band-secondary: #5ce3c2; }
     &[data-variant="2"] { --home-band-secondary: #fa8ebd; }
@@ -41,7 +41,7 @@ html[data-theme="light"] .home-decoration-art {
     --home-band-accent: #087389;
     --home-band-secondary: #6743b8;
     --home-band-surface: #eaf3fb;
-    background: radial-gradient(ellipse at 45% 80%, #d4e9f7, var(--home-band-surface) 75%);
+    background: radial-gradient(ellipse at 50% 65%, #d4e9f7, var(--home-band-surface) 75%);
     &[data-variant="1"] { --home-band-secondary: #167764; }
     &[data-variant="2"] { --home-band-secondary: #a03571; }
 }
@@ -136,7 +136,8 @@ html[data-theme="light"] .home-decoration-art {
 }
 
 .home-decoration-art--middle {
-    background: var(--home-band-surface);
+    background: radial-gradient(ellipse at 50% 50%,
+        color-mix(in srgb, var(--home-band-secondary) 8%, var(--home-band-surface)), var(--home-band-surface) 75%);
 }
 
 .home-signal-pattern { width: 100%; height: 100%; display: block; }

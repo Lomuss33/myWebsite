@@ -27,7 +27,7 @@ function sampledPath(samples, getPoint, close = false) {
 export function createBandPattern(index, seed, width) {
     const random = randomSequence(seed)
     const family = ((index - 1) % 6 + 6) % 6
-    const repeats = Math.max(2, Math.round(width / (130 + random() * 70)))
+    const repeats = Math.max(2, Math.min(24, Math.round(width / (130 + random() * 70))))
     const tileWidth = width / repeats
     const paths = []
     const addPair = (samples, amplitude) => {
@@ -112,7 +112,7 @@ export function createBandPattern(index, seed, width) {
     }
 
     return {
-        family, tileWidth, paths,
+        family, repeats, tileWidth, paths,
         palette: seed % 3,
         duration: family === 4 ? 4 + random() * 2 : 6 + random() * 4,
         phase: -random() * 10,

@@ -21,33 +21,86 @@ const BOTTOM_ROWS = ROWS.filter(row => row.i % 2 === 1)
 const TOP_TILT = 65
 const TOP_ROW_STEP = 5
 
+// One coalesced check for all Home bands, including native pane scrolling.
+// Intersection delivery can lag while a browser restores its rendering surface.
+const visibilityChecks = new Set()
+let visibilityCheckTimer = null
+function scheduleVisibilityChecks() {
+    if(visibilityCheckTimer !== null) return
+    visibilityCheckTimer = window.setTimeout(() => {
+        visibilityCheckTimer = null
+        visibilityChecks.forEach(check => check())
+    }, 32)
+}
+
+function watchVisibilityChanges(check) {
+    if(visibilityChecks.size === 0) {
+        window.addEventListener('scroll', scheduleVisibilityChecks, {capture: true, passive: true})
+        window.addEventListener('resize', scheduleVisibilityChecks, {passive: true})
+    }
+    visibilityChecks.add(check)
+    return () => {
+        visibilityChecks.delete(check)
+        if(visibilityChecks.size !== 0) return
+        window.removeEventListener('scroll', scheduleVisibilityChecks, true)
+        window.removeEventListener('resize', scheduleVisibilityChecks)
+        window.clearTimeout(visibilityCheckTimer)
+        visibilityCheckTimer = null
+    }
+}
+
 function useBandActivity(ref) {
     useEffect(() => {
         const band = ref.current
         const section = band?.closest('section')
         if(!band || !section) return undefined
-        let visible = false
+        const frame = band.closest('.section-decoration-band') || band
+        const scrollport = band.closest('.scrollable')
+        let visible = true
         let paused = false
         const update = () => {
-            band.dataset.running = String(visible && !paused && !document.hidden && section.classList.contains('section-shown'))
+            const running = String(visible && !paused && !document.hidden && section.classList.contains('section-shown'))
+            if(band.dataset.running !== running) band.dataset.running = running
         }
-        const observer = new IntersectionObserver(entries => {
-            visible = entries.some(entry => entry.isIntersecting)
+        // Start from actual layout instead of waiting for the first observer
+        // delivery. Recheck it on return, when cached intersections can be stale.
+        const measure = () => {
+            const rect = frame.getBoundingClientRect()
+            const clip = scrollport?.getBoundingClientRect()
+            visible = rect.width > 0 && rect.height > 0 &&
+                rect.bottom > Math.max(-80, clip?.top ?? -80) &&
+                rect.top < Math.min(window.innerHeight + 80, clip?.bottom ?? Infinity) &&
+                rect.right > Math.max(0, clip?.left ?? 0) &&
+                rect.left < Math.min(window.innerWidth, clip?.right ?? Infinity)
             update()
-        }, {rootMargin: '80px'})
-        const sectionObserver = new MutationObserver(update)
+        }
+        // Notifications may have queued before a resume or layout change.
+        // Use current geometry instead of restoring an old intersection state.
+        const observer = typeof IntersectionObserver === 'undefined' ? null : new IntersectionObserver(measure, {rootMargin: '80px'})
+        const sectionObserver = new MutationObserver(measure)
         const pause = () => {paused = true; update()}
-        const resume = () => {paused = false; update()}
-        observer.observe(band)
+        const resume = () => {paused = false; measure()}
+        const onVisibilityChange = () => document.hidden ? pause() : resume()
+        const stopWatchingVisibility = watchVisibilityChanges(measure)
+        observer?.observe(frame)
         sectionObserver.observe(section, {attributes: true, attributeFilter: ['class']})
-        document.addEventListener('visibilitychange', update)
+        document.addEventListener('visibilitychange', onVisibilityChange)
+        document.addEventListener('freeze', pause)
+        document.addEventListener('resume', resume)
+        window.addEventListener('pagehide', pause)
+        window.addEventListener('pageshow', resume)
         window.addEventListener('app:pause', pause)
         window.addEventListener('app:resume', resume)
-        update()
+        measure()
         return () => {
-            observer.disconnect()
+            stopWatchingVisibility()
+            observer?.disconnect()
             sectionObserver.disconnect()
-            document.removeEventListener('visibilitychange', update)
+            document.removeEventListener('visibilitychange', onVisibilityChange)
+            document.removeEventListener('freeze', pause)
+            document.removeEventListener('resume', resume)
+            window.removeEventListener('pagehide', pause)
+            window.removeEventListener('pageshow', resume)
             window.removeEventListener('app:pause', pause)
             window.removeEventListener('app:resume', resume)
         }
@@ -74,6 +127,7 @@ function useBandLayout(ref, index) {
                 verticalSlot: Math.round((rect.top - contentRect.top) / 24),
             }
             setLayout(previous => Object.keys(next).every(key => previous[key] === next[key]) ? previous : next)
+            scheduleVisibilityChecks()
         }
         const schedule = () => {
             if(!frame) frame = requestAnimationFrame(measure)
@@ -140,6 +194,9 @@ function HomeDecorationBand({type, index = 0}) {
     const topRows = useMemo(() => Array.from({length: segments * 4}, (_, column) => ROWS[column * 5 % ROWS.length]), [segments])
     const seed = bandSeed(index, verticalSlot)
     const pattern = useMemo(() => createBandPattern(index, seed, width), [index, seed, width])
+    const tileOrigin = (width - pattern.tileWidth) / 2
+    const firstTile = -Math.ceil((pattern.repeats - 1) / 2)
+    const tileCount = pattern.repeats + (pattern.repeats % 2 === 0 ? 1 : 0)
     const unit = bottom ? Math.max(3, Math.min(12, height / 27)) : height / 10.8
     const bottomHalfWidth = width / 2
     const topSpan = (topRows.length - 1) * TOP_ROW_STEP / Math.sin(TOP_TILT * Math.PI / 180) + 6
@@ -166,16 +223,22 @@ function HomeDecorationBand({type, index = 0}) {
                     <stop offset=".5" stopColor="var(--home-band-secondary)"/>
                     <stop offset="1" stopColor="var(--home-band-accent)"/>
                 </linearGradient>
-                <pattern id={id} width={pattern.tileWidth} height="40" x={(width - pattern.tileWidth) / 2} patternUnits="userSpaceOnUse">
-                    {pattern.paths.map((path, line) => <React.Fragment key={line}>
-                        <path className="home-signal-track" d={path} stroke={`url(#${id}-ink)`}/>
-                        <path className="home-signal-pulse" d={path} stroke={`url(#${id}-ink)`} pathLength="100"
-                              style={{animationDelay: `${pattern.phase - line * 0.7}s`,
-                                  animationDirection: pattern.family >= 4 && line % 2 ? 'reverse' : undefined}}/>
-                    </React.Fragment>)}
+                {pattern.paths.map((path, line) => <path key={line} id={`${id}-path-${line}`} d={path}
+                    fill="none" vectorEffect="non-scaling-stroke" pathLength="100"/>)}
+                <pattern id={id} width={pattern.tileWidth} height="40" x={tileOrigin} patternUnits="userSpaceOnUse">
+                    {pattern.paths.map((_, line) => <use key={line} href={`#${id}-path-${line}`}
+                        className="home-signal-track" stroke={`url(#${id}-ink)`}/>)}
                 </pattern>
             </defs>
             <rect width={width} height="40" fill={`url(#${id})`}/>
+            {/* Keep animation on rendered instances, outside the pattern's tile cache. */}
+            {Array.from({length: tileCount}, (_, tile) => <g key={tile}
+                transform={`translate(${tileOrigin + (firstTile + tile) * pattern.tileWidth} 0)`}>
+                {pattern.paths.map((_, line) => <use key={line} href={`#${id}-path-${line}`}
+                    className="home-signal-pulse" stroke={`url(#${id}-ink)`}
+                    style={{animationDelay: `${pattern.phase - line * 0.7}s`,
+                        animationDirection: pattern.family >= 4 && line % 2 ? 'reverse' : undefined}}/>)}
+            </g>)}
         </svg> : bottom ? <div className="home-roller-halves">
             {[false, true].map(mirror => <div className="home-roller-half" key={String(mirror)} data-mirror={mirror}>
                 <RollerGroup rows={BOTTOM_ROWS} bottom/>

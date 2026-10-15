@@ -27,7 +27,7 @@ Match the description when your wording differs from the aliases. Read the linke
 | Home navigation guide: highlights where visitors can navigate and change settings | Explore the edges, explore the sidebar, look around, navigation hint, spotlight, dimmed background | [Startup guide](architecture/startup-guide.md) |
 | Career story rail: dragging an icon changes the story's position | Slider, drag rail, tractor handle, resistance, pull back to center | [Career rail](architecture/drag-interactions.md#career-story-rail) |
 | Home name interactions: pull a lineage or move an animated name through its story | Name origins, tug, names chain, movable word, text flows around name | [Name dragging](architecture/drag-interactions.md#home-name-dragging) |
-| Decorative bands: animated artwork separating sections and ending their pages | Decoration strip, bottom buffer, curtain, garden, shader, gradient only, sad-face background | [Decorative bands](architecture/decorative-bands.md) |
+| Decorative bands: animated artwork separating sections and ending their pages | Decoration strip, bottom buffer, curtain, garden, shader, stuck Home animation, gradient only, sad-face background | [Decorative bands](architecture/decorative-bands.md) |
 | Project stickers: floating cutouts follow project cards without changing spacing | Cutouts, corner artwork, overlapping stickers, top right, bottom left, software dark set | [Project stickers](architecture/project-stickers.md) |
 
 Use the [short feature template and upkeep workflow](guides/feature-documentation.md) when adding or changing guidance. These five entries are a small starting set; expand when a real task needs it.

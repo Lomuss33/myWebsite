@@ -1,0 +1,341 @@
+@use "sass:list";
+
+// Writings' light palette. Keep paint here and responsive geometry in its
+// component/density owners; the dark palette and authored illustrations stay intact.
+html[data-theme="light"] section#section-my-writings {
+    --writings-text-strong: #292e2c;
+    --writings-text-mid: #47524e;
+    --writings-text-soft: #5d665e;
+    --writings-paper: #fffdf7;
+    --writings-edge: #d8cbb3;
+    --writings-accent-blue: #35666b;
+    --writings-accent-gold: #a87921;
+    --writings-accent-red: #a65338;
+    --writings-title-start: #373a2d;
+    --writings-title-mid: #885c20;
+    --writings-title-end: #925a37;
+    --writings-title-shadow: none;
+    color: var(--writings-text-strong);
+
+    div.article-content,
+    h4.article-title {
+        color: var(--writings-text-strong);
+    }
+
+    div.section-decoration-boundary {
+        --section-decoration-edge-start: #b78b3e;
+        --section-decoration-edge-end: #73908a;
+    }
+
+    div.section-content-border-decoration-top-left {
+        border-color: var(--writings-edge);
+    }
+
+    article:is(
+        #article-1-section-my-writings,
+        #article-2-section-my-writings,
+        #article-3-section-my-writings,
+        #article-4-section-my-writings,
+        #article-5-section-my-writings,
+        #article-6-section-my-writings
+    ) {
+        --writings-current-title-start: var(--writings-title-start);
+        --writings-current-title-mid: var(--writings-title-mid);
+        --writings-current-title-end: var(--writings-title-end);
+        --writings-current-title-shadow: none;
+    }
+
+    article:is(#article-2-section-my-writings, #article-4-section-my-writings) {
+        --writings-current-title-mid: #35666b;
+        --writings-current-title-end: #586742;
+    }
+
+    article:is(#article-3-section-my-writings, #article-5-section-my-writings) {
+        --writings-current-title-mid: #985430;
+        --writings-current-title-end: #865044;
+    }
+
+    article#article-6-section-my-writings {
+        --writings-current-title-mid: #86504a;
+        --writings-current-title-end: #8b672d;
+    }
+
+    article#article-1-section-my-writings {
+        // Adjacent gradients share an endpoint, preserving the continuous rail.
+        $rail-colors: #b76238, #b7892d, #4e8470, #356b83, #77546b, #a75345, #b76238;
+        $icon-colors: #8a531f, #486c48, #315f74, #6c4964, #874b42, #965334;
+        @for $i from 1 through 6 {
+            li.article-timeline-item:nth-child(6n + #{$i}) {
+                --timeline-writing-gradient: linear-gradient(180deg, #{list.nth($rail-colors, $i)}, #{list.nth($rail-colors, $i + 1)});
+                --timeline-rail-entry-color: #{list.nth($rail-colors, $i + 1)};
+                --timeline-writing-ink: #{list.nth($icon-colors, $i)};
+
+                div.article-timeline-item-info-for-timelines {
+                    --timeline-rule-color: var(--timeline-rail-entry-color);
+                }
+            }
+        }
+
+        div.article-timeline-item-info-for-timelines {
+            --card-text-strong: var(--writings-text-strong);
+            --card-text-mid: var(--writings-text-mid);
+            --card-text-soft: var(--writings-text-soft);
+            --card-accent: var(--timeline-writing-ink);
+            --card-accent-2: var(--timeline-rail-entry-color);
+        }
+
+        div.article-timeline-item-info-for-timelines-header-main h5,
+        div.article-timeline-item-info-for-timelines-body :is(strong, b) {
+            color: var(--writings-text-strong);
+        }
+
+        div.article-timeline-item-info-for-timelines-body,
+        div.article-timeline-item-info-for-timelines-header-meta-row {
+            color: var(--writings-text-mid);
+        }
+
+        div.article-timeline-item-info-for-timelines-body a {
+            color: var(--timeline-writing-ink);
+        }
+
+        div.article-timeline-item-avatar.article-timeline-item-avatar--button,
+        a.article-timeline-item-avatar-link:is(:hover, :focus-visible) div.article-timeline-item-avatar--button {
+            color: var(--timeline-writing-ink);
+            background:
+                linear-gradient(#ffffff, var(--writings-paper)) padding-box,
+                var(--timeline-writing-gradient) border-box;
+            box-shadow: 0 8px 20px rgba(76, 61, 29, 0.12), inset 0 1px 0 #fff;
+        }
+
+        // Existing preview controls use important paint declarations. Match that
+        // cascade without touching their independently sized mobile satellites.
+        div.article-timeline-item-info-preview-footer {
+            button.article-item-preview-menu-circular-button,
+            button.article-item-preview-menu-website-button-compact,
+            button.article-item-preview-menu-website-button {
+                color: var(--timeline-writing-ink) !important;
+                border-color: color-mix(in srgb, var(--timeline-rail-entry-color) 60%, #e8dfcd) !important;
+                background:
+                    linear-gradient(#ffffff, var(--writings-paper)) padding-box,
+                    var(--timeline-writing-gradient) border-box !important;
+                box-shadow: 0 5px 12px rgba(76, 61, 29, 0.1), inset 0 1px 0 #fff !important;
+            }
+        }
+
+        button.standard-button.btn-contrast.article-timeline-see-more-button {
+            --timeline-see-more-edge: #b58a39;
+            --timeline-see-more-surface-top: #ffffff;
+            --timeline-see-more-surface-mid: #fffbef;
+            --timeline-see-more-surface-bottom: #f1e6cb;
+            --timeline-see-more-text: #584019;
+            box-shadow: 0 6px 16px rgba(76, 61, 29, 0.12), inset 0 1px 0 #fff;
+
+            &:is(:hover, :active) {
+                box-shadow: 0 9px 20px rgba(76, 61, 29, 0.18), inset 0 1px 0 #fff;
+            }
+        }
+    }
+
+    article#article-2-section-my-writings {
+        div.article-falling-words-hint {
+            color: var(--writings-text-strong);
+            border-color: var(--writings-edge);
+            background: linear-gradient(120deg, #fffefb, #faf5e8);
+            box-shadow: 0 8px 20px rgba(76, 61, 29, 0.08), inset 0 1px 0 #fff;
+
+            &::before {
+                color: #73501c;
+                border-color: #e0c88f;
+                background: linear-gradient(135deg, #fff8df, #ebd7a4);
+                box-shadow: 0 3px 10px rgba(76, 61, 29, 0.12);
+            }
+
+            &::after {
+                background: linear-gradient(90deg, transparent, #c1a268, #73908a);
+                box-shadow: none;
+            }
+        }
+
+        div.falling-words.article-falling-words-stage,
+        div.falling-words-modal-card {
+            border-color: var(--writings-edge);
+            background: linear-gradient(150deg, #ffffff, var(--writings-paper));
+            box-shadow: 0 10px 26px rgba(76, 61, 29, 0.08), inset 0 1px 0 #fff;
+        }
+
+        span.falling-word {
+            --falling-word-color: #35666b;
+            color: var(--falling-word-color);
+            text-shadow: none;
+        }
+
+        span.falling-word:nth-child(4n + 2) { --falling-word-color: #73562d; }
+        span.falling-word:nth-child(4n + 3) { --falling-word-color: #605573; }
+        span.falling-word:nth-child(4n) { --falling-word-color: #496650; }
+
+        span.falling-word:is(.falling-word-highlighted, .falling-word-selected, .falling-word-held) {
+            --falling-word-color: #8a491e;
+            color: var(--falling-word-color);
+            text-shadow: none;
+            filter: none;
+        }
+
+        span.falling-word:is(.falling-word-red-hold, .falling-word-red-permanent) {
+            color: #a22e40 !important;
+        }
+
+        div.falling-words-overlay {
+            background: rgba(65, 60, 44, 0.12);
+        }
+
+        div.falling-words-modal-heading,
+        div.falling-words-modal-definition {
+            border-color: var(--writings-edge);
+        }
+
+        a.falling-words-modal-title-word-link {
+            color: var(--writings-text-strong);
+            -webkit-text-stroke: 0;
+            text-shadow: none;
+        }
+
+        div.falling-words-modal-definition {
+            color: var(--writings-text-mid);
+            border-left-color: var(--writings-accent-gold);
+            background: var(--writings-paper);
+
+            span.falling-words-modal-definition-mark {
+                color: #95651e;
+            }
+        }
+
+        button.falling-words-modal-close,
+        a.falling-words-modal-search-link {
+            color: var(--writings-text-mid);
+            border-color: var(--writings-edge);
+            background: var(--writings-paper);
+        }
+
+        a.falling-words-modal-search-link > span:first-child {
+            color: var(--writings-text-strong);
+        }
+
+        a.falling-words-modal-search-link > span:last-child {
+            color: var(--writings-text-soft);
+        }
+
+        :is(a.falling-words-modal-title-word-link, a.falling-words-modal-search-link, button.falling-words-modal-close):is(:hover, :focus-visible) {
+            color: #7a521a;
+            border-color: #a87921;
+        }
+    }
+
+    article#article-3-section-my-writings {
+        div.article-feature-item-text {
+            color: var(--writings-text-mid);
+        }
+
+        div.article-feature-item-image {
+            border-color: var(--writings-edge);
+            box-shadow: 0 10px 26px rgba(76, 61, 29, 0.14);
+        }
+
+        span.pretext-interactive-text-fragment-highlight,
+        span.pretext-interactive-text-fragment-highlight span.pretext-interactive-text-grapheme {
+            background-image: linear-gradient(90deg, #875224, #9b4e36, #506b56);
+            filter: none;
+        }
+    }
+
+    article:is(#article-4-section-my-writings, #article-5-section-my-writings) {
+        --writings-skill-accent: #35666b;
+        --writings-skill-accent-2: #8a6b2e;
+        --writings-skill-text-strong: var(--writings-text-strong);
+        --writings-skill-text-mid: var(--writings-text-mid);
+        --writings-skill-text-soft: var(--writings-text-soft);
+
+        div.article-skills-item {
+            border-color: #ded8c9;
+            background: linear-gradient(110deg, #ffffff, rgba(255, 253, 247, 0.88));
+            box-shadow: inset 0 1px 0 #fff;
+
+            &:is(:hover, :focus-within) {
+                border-color: #b5a684;
+                box-shadow: 0 6px 16px rgba(76, 61, 29, 0.09), inset 0 1px 0 #fff;
+            }
+        }
+
+        div.article-skills-item-avatar {
+            // Avatar data supplies a shared inline fill for both themes.
+            background-color: #f3eddf !important;
+            border-color: #ded3bc;
+        }
+
+        span.article-skills-item-title-main,
+        span.article-skills-item-title-percentage {
+            color: var(--writings-text-strong);
+        }
+
+        span.article-skills-item-title-prefix,
+        span.article-skills-item-title-label,
+        div.article-skills-item-description,
+        div.article-skills-item-experience {
+            color: var(--writings-text-mid);
+        }
+
+        div.article-skills-item-progress {
+            background: #e9e4d9;
+        }
+
+        div.article-skills-items-section-my-writings > div.collapsable-item > div.article-skills-item {
+            --skill-fill-start: #35666b;
+            --skill-fill-end: #607f6e;
+            --skill-fill-tip: #35666b;
+
+            .progress-bar,
+            .progress-bar::after {
+                box-shadow: none;
+            }
+
+            &:nth-child(2n) {
+                --skill-fill-start: #6c6040;
+                --skill-fill-end: #8e793f;
+                --skill-fill-tip: #7c672e;
+            }
+
+            &:nth-child(3n) {
+                --skill-fill-start: #4b7060;
+                --skill-fill-end: #6d886e;
+                --skill-fill-tip: #4b7060;
+            }
+        }
+    }
+
+    article#article-5-section-my-writings {
+        --writings-skill-accent: #985430;
+        --writings-skill-accent-2: #9c7440;
+
+        div.article-skills-items-section-my-writings > div.collapsable-item > div.article-skills-item {
+            --skill-fill-start: #985430;
+            --skill-fill-end: #a87240;
+            --skill-fill-tip: #985430;
+
+            &:nth-child(2n) {
+                --skill-fill-start: #956e2b;
+                --skill-fill-end: #997b35;
+                --skill-fill-tip: #956e2b;
+            }
+
+            &:nth-child(3n) {
+                --skill-fill-start: #8a5050;
+                --skill-fill-end: #9b695f;
+                --skill-fill-tip: #8a5050;
+            }
+        }
+    }
+
+    article#article-6-section-my-writings div.illustrated-manuscript {
+        border-color: var(--writings-edge);
+        box-shadow: 0 12px 30px rgba(76, 61, 29, 0.13), inset 0 1px 0 #fff;
+    }
+}

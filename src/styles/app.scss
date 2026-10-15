@@ -16,9 +16,12 @@
 @use "./home-hero";
 @use "./experience-density";
 @use "./education-density";
+@use "./themes/education-palette";
 @use "./software-density";
 @use "./hardware-density";
 @use "./writings-density";
+@use "./themes/writings-light";
 @use "./art-density";
+@use "./themes/art-light";
 @use "./contact-density";
 @use "./heading-layout";

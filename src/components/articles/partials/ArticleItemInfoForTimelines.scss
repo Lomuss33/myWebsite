@@ -2963,12 +2963,6 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
         transform-style: flat;
     }
 
-    &::before {
-        // Keep the inset decorative frame clear of the action buttons.
-        -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - 5.25rem), transparent calc(100% - 4.25rem));
-        mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - 5.25rem), transparent calc(100% - 4.25rem));
-    }
-
     // The card's generic direct-child rule gives every child z-index: 1.
     // Place the opaque artwork above both decorative layers, then text above it.
     > div.digital-expression-layer-stack { z-index: 3; }
@@ -3180,38 +3174,6 @@ article#article-2-section-my-art.article-timeline--art-digital-expression li.art
     background: rgba(255, 255, 255, 0.88);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.96), 0 2px 8px rgba(15, 23, 42, 0.08);
     color: var(--digital-text-fill);
-}
-
-// The two-column view reads as two open pages: rounded outside edges and a
-// restrained center seam. Match the inset frame and accent rail to each page.
-@container (min-width: 30rem) and (max-width: 49.99rem) {
-    article#article-2-section-my-art.article-timeline--art-digital-expression {
-        li.article-timeline-item--visual-neo-surface { --digital-book-outer-radius: 34px; }
-        li.article-timeline-item--visual-orb-glass { --digital-book-outer-radius: 38px; }
-        li.article-timeline-item--visual-crystal-facet { --digital-book-outer-radius: 30px; }
-
-        li.article-timeline-item:nth-child(odd) div.article-timeline-item-info-for-timelines {
-            border-radius: var(--digital-book-outer-radius) 10px 10px var(--digital-book-outer-radius);
-        }
-
-        li.article-timeline-item:nth-child(even) div.article-timeline-item-info-for-timelines {
-            border-radius: 10px var(--digital-book-outer-radius) var(--digital-book-outer-radius) 10px;
-        }
-
-        li.article-timeline-item:nth-child(odd) div.article-timeline-item-info-for-timelines::before {
-            border-radius: calc(var(--digital-book-outer-radius) - 9px) 3px 3px calc(var(--digital-book-outer-radius) - 9px);
-            clip-path: none;
-        }
-
-        li.article-timeline-item:nth-child(even) div.article-timeline-item-info-for-timelines::before {
-            border-radius: 3px calc(var(--digital-book-outer-radius) - 9px) calc(var(--digital-book-outer-radius) - 9px) 3px;
-            clip-path: none;
-        }
-
-        li.article-timeline-item:nth-child(even) div.article-timeline-item-info-for-timelines::after {
-            inset: 0 0 0 auto;
-        }
-    }
 }
 
 @include content-breakpoint-down(md) {
@@ -3576,4 +3538,58 @@ article#article-1-section-education div.article-timeline-item-info-for-timelines
 [data-theme="light"] article#article-2-section-my-art.article-timeline--art-digital-expression ul.article-timeline-items > li:nth-child(4) div.article-timeline-item-info-for-timelines::after {
     background: none;
     box-shadow: none;
+}
+
+// One continuous rim owns the Digital Expression edges in every grid mode.
+// Keep its geometry independent of the legacy timeline merge corners and the
+// individual card fills; the profile card retains its neutral surface too.
+section#section-my-art article#article-2-section-my-art.article-timeline--art-digital-expression
+li.article-timeline-item div.article-timeline-item-info-for-timelines {
+    --digital-card-radius: clamp(1rem, 2.8cqi, 1.5rem);
+    border-color: transparent;
+    // Shared timeline merge rules use important corner declarations.
+    border-radius: var(--digital-card-radius) !important;
+
+    &::before {
+        content: "";
+        display: block;
+        box-sizing: border-box;
+        position: absolute;
+        inset: -1px;
+        width: auto;
+        height: auto;
+        padding: 1.25px;
+        border: 0;
+        border-radius: inherit;
+        background: linear-gradient(135deg,
+            color-mix(in srgb, var(--card-accent) 65%, white),
+            color-mix(in srgb, var(--card-accent) 32%, transparent) 38%,
+            color-mix(in srgb, var(--card-accent-2) 34%, transparent) 64%,
+            color-mix(in srgb, var(--card-accent-2) 70%, white));
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        mask-composite: exclude;
+        clip-path: none;
+        box-shadow: none;
+        transform: none;
+        opacity: 1;
+        pointer-events: none;
+        z-index: 7;
+    }
+
+    &::after {
+        content: none;
+        display: none;
+    }
+
+    // The flush actions finish the same outer curve instead of being clipped
+    // by a larger card corner. Their inner corners keep the shared button shape.
+    a.article-item-preview-menu-link--digital-action:first-child {
+        border-bottom-left-radius: calc(var(--digital-card-radius) - 1px);
+    }
+
+    a.article-item-preview-menu-link--digital-action:last-child {
+        border-bottom-right-radius: calc(var(--digital-card-radius) - 1px);
+    }
 }

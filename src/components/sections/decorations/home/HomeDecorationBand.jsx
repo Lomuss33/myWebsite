@@ -20,6 +20,8 @@ const ROWS = Array.from({length: 14}, (_, index) => {
 const BOTTOM_ROWS = ROWS.filter(row => row.i % 2 === 1)
 const TOP_TILT = 65
 const TOP_ROW_STEP = 5
+const MIDDLE_MOTIONS = ['right', 'left', 'down', 'sway', 'zoom', 'down']
+const MIDDLE_MOTION_SECONDS = [36, 28, 22, 18, 16, 22]
 
 // One coalesced check for all Home bands, including native pane scrolling.
 // Intersection delivery can lag while a browser restores its rendering surface.
@@ -194,9 +196,13 @@ function HomeDecorationBand({type, index = 0}) {
     const topRows = useMemo(() => Array.from({length: segments * 4}, (_, column) => ROWS[column * 5 % ROWS.length]), [segments])
     const seed = bandSeed(index, verticalSlot)
     const pattern = useMemo(() => createBandPattern(index, seed, width), [index, seed, width])
+    const motion = MIDDLE_MOTIONS[pattern.family]
+    const verticalFlow = motion === 'down'
     const tileOrigin = (width - pattern.tileWidth) / 2
-    const firstTile = -Math.ceil((pattern.repeats - 1) / 2)
-    const tileCount = pattern.repeats + (pattern.repeats % 2 === 0 ? 1 : 0)
+    // One spare tile on each side keeps translated patterns edge-to-edge.
+    // Downward loops also carry one identical row above the visible one.
+    const firstTile = -Math.ceil((pattern.repeats - 1) / 2) - 1
+    const tileCount = pattern.repeats + (pattern.repeats % 2 === 0 ? 1 : 0) + 2
     const unit = bottom ? Math.max(3, Math.min(12, height / 27)) : height / 10.8
     const bottomHalfWidth = width / 2
     const topSpan = (topRows.length - 1) * TOP_ROW_STEP / Math.sin(TOP_TILT * Math.PI / 180) + 6
@@ -210,11 +216,14 @@ function HomeDecorationBand({type, index = 0}) {
         '--scene-tilt': `${TOP_TILT}deg`,
         '--home-signal-duration': `${pattern.duration.toFixed(2)}s`,
         '--home-signal-phase': `${pattern.phase.toFixed(2)}s`,
+        '--home-signal-step': `${pattern.tileWidth}px`,
+        '--home-signal-motion-duration': `${MIDDLE_MOTION_SECONDS[pattern.family]}s`,
     }
     return <div ref={ref} className={`home-decoration-art home-decoration-art--${middle ? 'middle' : bottom ? 'bottom' : 'top'}`}
                 style={styles} data-running="false" data-variant={pattern.palette}
                 data-top-groups={!middle && !bottom ? segments : undefined}
                 data-pattern={middle ? pattern.family : undefined} data-seed={middle ? seed : undefined}
+                data-motion={middle ? motion : undefined}
                 data-vertical-slot={middle ? verticalSlot : undefined} aria-hidden="true">
         {middle ? <svg className="home-signal-pattern" viewBox={`0 0 ${width} 40`} preserveAspectRatio="none" focusable="false">
             <defs>
@@ -230,15 +239,20 @@ function HomeDecorationBand({type, index = 0}) {
                         className="home-signal-track" stroke={`url(#${id}-ink)`}/>)}
                 </pattern>
             </defs>
-            <rect width={width} height="40" fill={`url(#${id})`}/>
-            {/* Keep animation on rendered instances, outside the pattern's tile cache. */}
-            {Array.from({length: tileCount}, (_, tile) => <g key={tile}
-                transform={`translate(${tileOrigin + (firstTile + tile) * pattern.tileWidth} 0)`}>
-                {pattern.paths.map((_, line) => <use key={line} href={`#${id}-path-${line}`}
-                    className="home-signal-pulse" stroke={`url(#${id}-ink)`}
-                    style={{animationDelay: `${pattern.phase - line * 0.7}s`,
-                        animationDirection: pattern.family >= 4 && line % 2 ? 'reverse' : undefined}}/>)}
-            </g>)}
+            <g className="home-signal-motion">
+                <rect x={-pattern.tileWidth} y={verticalFlow ? -40 : 0}
+                      width={width + pattern.tileWidth * 2} height={verticalFlow ? 80 : 40} fill={`url(#${id})`}/>
+                {/* Keep highlights on rendered instances, outside the pattern's tile cache. */}
+                {(verticalFlow ? [-1, 0] : [0]).map(row => <g key={row} transform={`translate(0 ${row * 40})`}>
+                    {Array.from({length: tileCount}, (_, tile) => <g key={tile}
+                        transform={`translate(${tileOrigin + (firstTile + tile) * pattern.tileWidth} 0)`}>
+                        {pattern.paths.map((_, line) => <use key={line} href={`#${id}-path-${line}`}
+                            className="home-signal-pulse" stroke={`url(#${id}-ink)`}
+                            style={{animationDelay: `${pattern.phase - line * 0.7}s`,
+                                animationDirection: motion === 'left' || (pattern.family >= 4 && line % 2) ? 'reverse' : undefined}}/>)}
+                    </g>)}
+                </g>)}
+            </g>
         </svg> : bottom ? <div className="home-roller-halves">
             {[false, true].map(mirror => <div className="home-roller-half" key={String(mirror)} data-mirror={mirror}>
                 <RollerGroup rows={BOTTOM_ROWS} bottom/>

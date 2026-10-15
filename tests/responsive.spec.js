@@ -13,6 +13,17 @@ const smokeSectionFitScenarios = [
     ['tr','light','ultrawide']
 ]
 const hasVisibleHairline = width => parseFloat(width) > 0 && parseFloat(width) <= 1
+const colorLuminance = color => {
+    const [r,g,b]=color.match(/[\d.]+/g).slice(0,3).map(value=>{
+        const channel=Number(value)/255
+        return channel<=0.04045 ? channel/12.92 : ((channel+0.055)/1.055)**2.4
+    })
+    return 0.2126*r+0.7152*g+0.0722*b
+}
+const colorContrast = (foreground,background) => {
+    const values=[colorLuminance(foreground),colorLuminance(background)].sort((a,b)=>b-a)
+    return (values[0]+0.05)/(values[1]+0.05)
+}
 const matrixTranslateY = transform => {
     if(transform === 'none') return 0
     const matrix3d = transform.match(/^matrix3d\(([^)]+)\)$/)?.[1].split(',')
@@ -1123,12 +1134,17 @@ test('Education language ratings keep strong contrast in light mode', async ({pa
         rankColor:getComputedStyle(element.querySelector('.article-skills-item-title-suffix')).color,
         percentageColor:getComputedStyle(element.querySelector('.article-skills-item-title-rating-percentage')).color,
         percentageTextShadow:getComputedStyle(element.querySelector('.article-skills-item-title-rating-percentage')).textShadow,
-        separatorColor:getComputedStyle(element.querySelector('.article-skills-item-title-rating-separator')).backgroundColor
+        separatorColor:getComputedStyle(element.querySelector('.article-skills-item-title-rating-separator')).backgroundColor,
+        surfaces:getComputedStyle(element.closest('.article-skills-item')).backgroundImage.match(/rgba?\([^)]+\)/g)
     }))
-    expect(styles.rankColor).toBe('rgb(146, 64, 14)')
-    expect(styles.percentageColor).toBe('rgb(51, 65, 85)')
+    expect(styles.surfaces.length).toBeGreaterThan(0)
+    for(const surface of styles.surfaces) {
+        expect(colorContrast(styles.rankColor,surface),'CEFR level contrast').toBeGreaterThanOrEqual(4.5)
+        expect(colorContrast(styles.percentageColor,surface),'percentage contrast').toBeGreaterThanOrEqual(4.5)
+    }
+    expect(styles.rankColor).not.toBe(styles.percentageColor)
     expect(styles.percentageTextShadow).toBe('none')
-    expect(styles.separatorColor).toBe('rgba(51, 65, 85, 0.48)')
+    expect(styles.separatorColor).not.toBe('rgba(0, 0, 0, 0)')
 })
 
 test('Education language cards use a balanced frame and readable phrase rows in both themes', async ({page})=>{
@@ -1150,6 +1166,7 @@ test('Education language cards use a balanced frame and readable phrase rows in 
         await card.locator('.article-skills-item-popup-trigger').click()
         const popup=card.locator('.article-skills-item-popup-body-inner')
         await expect(popup).toBeVisible()
+        const popupSurface=await popup.evaluate(element=>getComputedStyle(element).backgroundColor)
         const rows=await card.locator('.article-skills-item-popup-row').evaluateAll(elements=>elements.map(element=>({
             text:element.textContent.trim(),
             color:getComputedStyle(element).color,
@@ -1161,7 +1178,7 @@ test('Education language cards use a balanced frame and readable phrase rows in 
         })))
         expect(rows.length).toBeGreaterThan(1)
         expect(rows.every((row,index)=>row.text && row.height>0 && row.background==='none' && row.radius==='0px' && row.separator===(index===rows.length-1?'none':'solid') && row.shadow==='none')).toBeTruthy()
-        expect(rows.every(row=>row.color===(theme==='light'?'rgb(23, 36, 58)':'rgb(236, 244, 255)')),JSON.stringify({theme,rows})).toBeTruthy()
+        expect(rows.every(row=>colorContrast(row.color,popupSurface)>=4.5),JSON.stringify({theme,rows,popupSurface})).toBeTruthy()
 
         if(themePage!==page)
             await themePage.close()
@@ -1302,16 +1319,13 @@ test('Education connector stays visible through card surfaces in both themes', a
         expect(layers.detailPillSurface).not.toBe('rgba(0, 0, 0, 0)')
         expect(layers.cardSurface).toBe('none')
         expect(layers.cardSurfaceShadow).toBe('none')
-        if(theme==='light') {
-            expect(layers.connectorOpacity,JSON.stringify(layers)).toBe('0.48')
-            expect(layers.connectorFilter).toBe('none')
-            expect(layers.metaPillSurface).toBe('rgba(255, 255, 255, 0.82)')
-            expect(layers.detailPillSurface).toBe('rgba(255, 255, 255, 0.7)')
-            expect(layers.schoolFactPillSurfaces).toEqual(['rgba(255, 255, 255, 0.7)','rgba(255, 255, 255, 0.7)'])
-        } else {
-            expect(layers.metaPillSurface).toBe('rgba(8, 15, 29, 0.82)')
-            expect(layers.detailPillSurface).toBe('rgba(8, 15, 29, 0.7)')
-            expect(layers.schoolFactPillSurfaces).toEqual(['rgba(8, 15, 29, 0.7)','rgba(8, 15, 29, 0.7)'])
+        expect(Number(layers.connectorOpacity),JSON.stringify(layers)).toBeGreaterThan(0.25)
+        expect(Number(layers.connectorOpacity)).toBeLessThan(0.8)
+        expect(layers.connectorFilter).toBe('none')
+        for(const surface of [layers.metaPillSurface,layers.detailPillSurface,...layers.schoolFactPillSurfaces]) {
+            const alpha=Number(surface.match(/,\s*([\d.]+)\)$/)?.[1] ?? 1)
+            expect(alpha,'text bands shield the copy while remaining translucent').toBeGreaterThanOrEqual(0.75)
+            expect(alpha).toBeLessThan(1)
         }
         expect(layers.transform).toBe('none')
         expect(layers.item).toBe('auto')
@@ -1370,7 +1384,7 @@ test('Education hover motion stays restrained and stops for reduced motion', asy
     }
 })
 
-test('Education card copy is pure black in light mode over transparent surfaces', async ({page})=>{
+test('Education card copy uses clear hierarchical inks in light mode over transparent surfaces', async ({page})=>{
     await page.setViewportSize({width:390,height:844})
     await preferences(page,'en','light')
     await openSection(page,'education')
@@ -1380,24 +1394,25 @@ test('Education card copy is pure black in light mode over transparent surfaces'
     await expect(firstCard).toBeVisible()
 
     const colors=await firstCard.evaluate(element=>[element,...element.querySelectorAll('*')].map(node=>getComputedStyle(node).color))
-    expect(new Set(colors)).toEqual(new Set(['rgb(0, 0, 0)']))
+    expect(new Set(colors).size).toBeGreaterThan(1)
+    const luminances=colors.map(colorLuminance)
+    expect(Math.max(...luminances),'light surfaces need dark, readable inks').toBeLessThan(0.18)
     expect(await firstCard.evaluate(element=>getComputedStyle(element).backgroundColor)).toBe('rgba(0, 0, 0, 0)')
 
     const timelineShadows=await page.locator('#article-1-section-education .article-timeline-item-info-for-timelines-header-main h5').evaluateAll(elements=>elements.map(element=>getComputedStyle(element).textShadow))
     expect(timelineShadows.length).toBeGreaterThan(1)
-    expect(timelineShadows.every(shadow=>shadow.includes('2px'))).toBeTruthy()
-    expect(timelineShadows[0]).not.toBe(timelineShadows[1])
+    expect(timelineShadows.every(shadow=>shadow==='none')).toBeTruthy()
 
     const certificationShadows=await page.locator('#article-2-section-education .article-cards-item-education-certification-frame *').evaluateAll(elements=>elements.map(element=>getComputedStyle(element).textShadow))
     expect(certificationShadows.length).toBeGreaterThan(0)
-    expect(certificationShadows.every(shadow=>shadow.includes('2px'))).toBeTruthy()
+    expect(certificationShadows.every(shadow=>shadow==='none')).toBeTruthy()
 
     const skillShadows=await page.locator('#article-3-section-education .article-skills-item-info .article-skills-item-title-main, #article-3-section-education .article-skills-item-info .article-skills-item-experience, #article-3-section-education .article-skills-item-info .article-skills-item-description').evaluateAll(elements=>elements.map(element=>getComputedStyle(element).textShadow))
     expect(skillShadows.length).toBeGreaterThan(0)
-    expect(skillShadows.every(shadow=>shadow.includes('2px'))).toBeTruthy()
+    expect(skillShadows.every(shadow=>shadow==='none')).toBeTruthy()
 })
 
-test('Education card copy is pure white in dark mode over transparent surfaces', async ({page})=>{
+test('Education card copy uses clear hierarchical inks in dark mode over transparent surfaces', async ({page})=>{
     await page.setViewportSize({width:390,height:844})
     await preferences(page,'en','dark')
     await openSection(page,'education')
@@ -1407,21 +1422,22 @@ test('Education card copy is pure white in dark mode over transparent surfaces',
     await expect(firstCard).toBeVisible()
 
     const colors=await firstCard.evaluate(element=>[element,...element.querySelectorAll('*')].map(node=>getComputedStyle(node).color))
-    expect(new Set(colors)).toEqual(new Set(['rgb(255, 255, 255)']))
+    expect(new Set(colors).size).toBeGreaterThan(1)
+    const luminances=colors.map(colorLuminance)
+    expect(Math.min(...luminances),'dark surfaces need bright, readable inks').toBeGreaterThan(0.45)
     expect(await firstCard.evaluate(element=>getComputedStyle(element).backgroundColor)).toBe('rgba(0, 0, 0, 0)')
 
     const timelineShadows=await page.locator('#article-1-section-education .article-timeline-item-info-for-timelines-header-main h5').evaluateAll(elements=>elements.map(element=>getComputedStyle(element).textShadow))
     expect(timelineShadows.length).toBeGreaterThan(1)
-    expect(timelineShadows.every(shadow=>shadow.includes('2px'))).toBeTruthy()
-    expect(timelineShadows[0]).not.toBe(timelineShadows[1])
+    expect(timelineShadows.every(shadow=>shadow==='none')).toBeTruthy()
 
     const certificationShadows=await page.locator('#article-2-section-education .article-cards-item-education-certification-frame *').evaluateAll(elements=>elements.map(element=>getComputedStyle(element).textShadow))
     expect(certificationShadows.length).toBeGreaterThan(0)
-    expect(certificationShadows.every(shadow=>shadow.includes('2px'))).toBeTruthy()
+    expect(certificationShadows.every(shadow=>shadow==='none')).toBeTruthy()
 
     const skillShadows=await page.locator('#article-3-section-education .article-skills-item-info .article-skills-item-title-main, #article-3-section-education .article-skills-item-info .article-skills-item-experience, #article-3-section-education .article-skills-item-info .article-skills-item-description').evaluateAll(elements=>elements.map(element=>getComputedStyle(element).textShadow))
     expect(skillShadows.length).toBeGreaterThan(0)
-    expect(skillShadows.every(shadow=>shadow.includes('2px'))).toBeTruthy()
+    expect(skillShadows.every(shadow=>shadow==='none')).toBeTruthy()
 })
 
 test('Portfolio project actions stay left and visit links stay right at every layout width', async ({page})=>{

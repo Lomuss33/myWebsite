@@ -141,6 +141,24 @@ html[data-theme="light"] .home-decoration-art {
 }
 
 .home-signal-pattern { width: 100%; height: 100%; display: block; }
+.home-signal-motion {
+    transform-box: view-box;
+    transform-origin: 50% 50%;
+    animation: var(--home-signal-motion-name) var(--home-signal-motion-duration) linear var(--home-signal-phase) infinite;
+}
+.home-decoration-art {
+    &[data-motion="right"] { --home-signal-motion-name: home-signal-drift-right; }
+    &[data-motion="left"] { --home-signal-motion-name: home-signal-drift-left; }
+    &[data-motion="down"] { --home-signal-motion-name: home-signal-drift-down; }
+    &[data-motion="sway"] {
+        --home-signal-motion-name: home-signal-sway;
+        .home-signal-motion { animation-timing-function: ease-in-out; }
+    }
+    &[data-motion="zoom"] {
+        --home-signal-motion-name: home-signal-zoom;
+        .home-signal-motion { animation-timing-function: ease-in-out; }
+    }
+}
 .home-signal-track, .home-signal-pulse { fill: none; vector-effect: non-scaling-stroke; }
 .home-signal-track { stroke-width: .8px; opacity: .65; stroke-linejoin: round; }
 .home-signal-pulse {
@@ -155,6 +173,17 @@ html[data-theme="light"] .home-decoration-art {
 @keyframes home-roller-slide { to { transform: translate(calc(var(--row-x) + var(--travel)), var(--row-y)); } }
 @keyframes home-roller-roll { to { transform: var(--roller-end); } }
 @keyframes home-signal-flow { to { stroke-dashoffset: -100; } }
+@keyframes home-signal-drift-right { to { transform: translateX(var(--home-signal-step)); } }
+@keyframes home-signal-drift-left { to { transform: translateX(calc(-1 * var(--home-signal-step))); } }
+@keyframes home-signal-drift-down { to { transform: translateY(40px); } }
+@keyframes home-signal-sway {
+    0%, 100% { transform: translateX(calc(-.18 * var(--home-signal-step))); }
+    50% { transform: translateX(calc(.18 * var(--home-signal-step))); }
+}
+@keyframes home-signal-zoom {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.18); }
+}
 @media (prefers-reduced-motion: reduce) {
     .home-decoration-art * { animation: none !important; }
 }

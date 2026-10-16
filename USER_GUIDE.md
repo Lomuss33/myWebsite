@@ -168,7 +168,9 @@ If enabled, the site can also send resume links through the configured resume em
 
 ### Gallery modal
 
-- used for screenshots, albums, and image previews
+- All photo albums and screenshots open in the same fullscreen viewer.
+- Swipe left/right, use the arrow buttons, or press Left/A and Right/D to change images. Pinch, double-tap or use the zoom button for detail.
+- Close with the × button, Spacebar, Escape, Back, a tap beside the image or a vertical swipe when unzoomed. You return to the same place on the page.
 
 ### YouTube modal
 

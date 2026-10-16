@@ -179,13 +179,11 @@ function FeedbacksProvider({ children, canHaveAnimatedCursor }) {
         setDisplayingYoutubeVideo(null)
     }
 
-    const displayGallery = (images, type, title, options = {}) => {
+    const displayGallery = (images, title, opener = null) => {
         setDisplayingGallery({
             images: images,
-            type: type,
             title: title,
-            direction: options.direction,
-            focus: options.focus
+            opener: opener
         })
     }
 

@@ -19,6 +19,7 @@ Dependabot checks npm and GitHub Actions weekly. Development-tool patch updates 
 | Home navigation guide | `npm run test:startup-guide`, then native rendered layout/caption checks |
 | Project sticker placement | `npm run test:stickers`, then rendered card/rotation/resize/filter checks |
 | Minesweeper Web Art rules | `npm run test:web-art` |
+| Image gallery | `npm run test:gallery`, then native viewer/gesture inspection; see [gallery contract](../architecture/image-galleries.md) |
 | Responsive behavior | Relevant Playwright spec |
 | CV | `npm run cv:generate`, inspect output, build |
 | Images | `npm run images:generate`, inspect output, build |

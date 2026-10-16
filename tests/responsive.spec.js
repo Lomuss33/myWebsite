@@ -3050,10 +3050,16 @@ test('gallery stays fullscreen and dismissible across mode changes', async ({pag
     for(const [width,height] of [[3440,1440],[320,568],[568,320]]) {
         await page.setViewportSize({width,height})
         await expect(page.locator('html')).toHaveAttribute('data-layout',resolveLayout(width,height))
-        await expect(modal.locator('.modal-dialog')).toHaveCSS('max-width','100%')
-        const close=modal.locator('.modal-header button').first()
+        await expect(modal).toHaveJSProperty('open',true)
+        await expect.poll(()=>modal.evaluate(element=>{
+            const rect=element.getBoundingClientRect()
+            return Math.abs(rect.width-innerWidth)<=1 && Math.abs(rect.height-innerHeight)<=1 &&
+                rect.left===0 && rect.top===0
+        })).toBe(true)
+        await expect(modal.locator('.gallery-swiper')).toHaveClass(/swiper-horizontal/)
+        const close=modal.locator('.gallery-close')
         await expect(close).toBeInViewport()
     }
-    await modal.locator('.modal-header button').first().click()
+    await modal.locator('.gallery-close').click()
     await expect(modal).toHaveCount(0)
 })

@@ -757,7 +757,6 @@ function ArticleTimelineItem({
     const [myArtAvatarSizePx, setMyArtAvatarSizePx] = useState(null)
 
     const screenshots = itemWrapper.preview?.screenshots || []
-    const screenshotsAspectRatio = itemWrapper.preview?.screenshotsAspectRatio
     const canOpenGallery = Boolean(screenshots?.length)
     const previewLinks = itemWrapper.preview?.links || []
     const primaryPreviewLink = previewLinks.find(link => isNonEmptyHref(link?.href) && link?.faIcon === avatarFaIcon) ||
@@ -788,16 +787,11 @@ function ArticleTimelineItem({
             splitTitle :
             language.getString("get_to_know_more")
 
-        const shouldUseSharedHorizontalGallery = isPhotographyTimeline || isDigitalExpressionTimeline
-
         return {
             title: title,
             images: screenshots,
-            aspectRatio: screenshotsAspectRatio,
-            galleryDirection: shouldUseSharedHorizontalGallery ? "horizontal" : undefined,
-            galleryFocus: shouldUseSharedHorizontalGallery ? "showcase" : undefined,
         }
-    }, [canOpenGallery, isDigitalExpressionTimeline, isPhotographyTimeline, itemWrapper.locales?.title, language, screenshots, screenshotsAspectRatio, utils])
+    }, [canOpenGallery, itemWrapper.locales?.title, language, screenshots, utils])
 
     const previewFooter = !isWritingsTimeline && !isPhotographyTimeline ? (
         <ArticleItemInfoForTimelinesPreviewFooter itemWrapper={itemWrapper}

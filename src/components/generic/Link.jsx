@@ -62,17 +62,18 @@ function Link({
         e.preventDefault()
 
         if(!onClickTimeout) {
-            _open()
+            _open(e.currentTarget)
             return
         }
 
         scheduler.clearAllWithTag("link-timeout")
+        const opener = e.currentTarget
         scheduler.schedule(() => {
-            _open()
+            _open(opener)
         }, onClickTimeout, "link-timeout")
     }
 
-    const _open = () => {
+    const _open = (opener) => {
         if(!href)
             return
 
@@ -81,7 +82,7 @@ function Link({
         else if(href.startsWith("#phone-qr:open"))
             _openPhoneQr()
         else if(href.startsWith("#gallery:open"))
-            _openGalleryLink()
+            _openGalleryLink(opener)
         else if(href.startsWith("#"))
             _goToSectionHash(href.slice(1))
         else if(openYoutubeInModal && (href.includes("youtube.com/embed") || href.includes("youtube.com/watch?v=")))
@@ -118,18 +119,14 @@ function Link({
         )
     }
 
-    const _openGalleryLink = () => {
+    const _openGalleryLink = (opener) => {
         if(!metadata || !metadata.images?.length)
             return
 
         feedbacks.displayGallery(
             metadata.images,
-            metadata.aspectRatio || "1:1",
             metadata.title || language.getString("gallery"),
-            {
-                direction: metadata.galleryDirection,
-                focus: metadata.galleryFocus
-            }
+            opener
         )
     }
 

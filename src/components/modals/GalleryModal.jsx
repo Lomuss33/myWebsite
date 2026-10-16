@@ -1,432 +1,241 @@
 import "./GalleryModal.scss"
-import "swiper/swiper-bundle.css"
-import React, {useEffect, useRef, useState} from 'react'
-import {ModalWrapper, ModalWrapperTitle, ModalWrapperBody} from "./base/ModalWrapper"
-import {Swiper, SwiperSlide} from 'swiper/react'
-import {Navigation, Pagination} from "swiper/modules"
-import {useUtils} from "../../hooks/utils.js"
-import {useViewport} from "../../providers/ViewportProvider.jsx"
+import "swiper/css"
+import "swiper/css/zoom"
+import React, {useCallback, useId, useLayoutEffect, useRef, useState} from "react"
+import {createPortal} from "react-dom"
+import {Swiper, SwiperSlide} from "swiper/react"
+import {A11y, Zoom} from "swiper/modules"
 import {Spinner} from "react-bootstrap"
 import {BaseImage} from "../generic/ImageView.jsx"
+import {useUtils} from "../../hooks/utils.js"
+import {useLanguage} from "../../providers/LanguageProvider.jsx"
+import {galleryLabels} from "../../data/galleryI18n.js"
 import {IMAGE_LIFECYCLE_STATUS} from "../../hooks/useImageStatus.js"
 
-function GalleryModal({ target, onDismiss }) {
+// Every album uses this viewer, independent of image shape, page or viewport.
+export default function GalleryModal({target, onDismiss}) {
     const utils = useUtils()
-    const viewport = useViewport()
-    const images = target?.images || []
-    const type = target?.type
-    const title = target?.title
-    const isMobile = !viewport.isBreakpoint("lg")
-
+    const language = useLanguage()
+    const labels = galleryLabels[language.selectedLanguageId] || galleryLabels.en
+    const images = target.images
+    const title = utils.string.stripHTMLTags(target.title || language.getString("gallery"))
+    const titleId = useId()
+    const dialogRef = useRef(null)
+    const swiperRef = useRef(null)
+    const pointerRef = useRef(null)
+    const touchPointersRef = useRef(new Set())
+    const pinchingRef = useRef(false)
+    const historyIdRef = useRef(null)
+    const closingRef = useRef(false)
+    const dismissRef = useRef(onDismiss)
     const [activeIndex, setActiveIndex] = useState(0)
-    const [didLoadInitialImages, setDidLoadInitialImages] = useState(false)
+    const [zoomed, setZoomed] = useState(false)
     const [imageStates, setImageStates] = useState({})
-    const [imageDimensions, setImageDimensions] = useState({})
-    const [shouldDismiss, setShouldDismiss] = useState(false)
-    const pointerDownRef = useRef(null)
-    const parameterOptions = [
-        {id: "9:16", suffix: "portrait", direction: "horizontal"},
-        {id: "16:9", suffix: "landscape", direction: isMobile ? "vertical" : "horizontal"},
-        {id: "1:1", suffix: "default", direction: isMobile ? "vertical" : "horizontal"},
-    ]
-    const fallbackParameters = parameterOptions.find(item => item.id === "1:1")
-    const parameters = target ?
-        utils.array.withId(parameterOptions, type, "default") || fallbackParameters :
-        fallbackParameters
-    const galleryDirection = target?.direction === "horizontal" || target?.direction === "vertical" ?
-        target.direction :
-        parameters.direction
-    const galleryFocus = target?.focus === "showcase" ? "showcase" : "auto"
-    const resolvedParameters = {
-        ...parameters,
-        direction: galleryDirection,
-        focus: galleryFocus
-    }
+    const canZoom = imageStates[activeIndex] === IMAGE_LIFECYCLE_STATUS.LOADED
 
-    const initialReadyIndices = _getInitialReadyIndices(resolvedParameters.direction, images.length)
-    const shouldShowSpinner = images.length > 0 && !didLoadInitialImages
-    const modalCustomClass = shouldShowSpinner ? `gallery-modal-loading` : ``
+    useLayoutEffect(() => { dismissRef.current = onDismiss }, [onDismiss])
 
-    useEffect(() => {
-        setActiveIndex(0)
-        setDidLoadInitialImages(false)
-        setImageStates({})
-        setImageDimensions({})
+    const close = useCallback(() => {
+        // History traversal is asynchronous. Ignore extra taps/Escape events
+        // until the first close completes, rather than leaving the album page.
+        if(closingRef.current) return
+        closingRef.current = true
+        if(historyIdRef.current && history.state?.galleryViewer === historyIdRef.current) {
+            // Back closes the viewer before leaving the current page.
+            history.back()
+        } else {
+            dismissRef.current()
+        }
+    }, [])
+
+    useLayoutEffect(() => {
+        const dialog = dialogRef.current
+        const opener = target.opener || document.activeElement
+        const historyId = crypto.randomUUID()
+        closingRef.current = false
+        historyIdRef.current = historyId
+        history.pushState({...history.state, galleryViewer: historyId}, "")
+        const onBack = () => {
+            if(history.state?.galleryViewer !== historyId) {
+                closingRef.current = true
+                dismissRef.current()
+            }
+        }
+        window.addEventListener("popstate", onBack)
+        document.documentElement.classList.add("gallery-modal-open")
+        dialog.showModal()
+        dialog.querySelector(".gallery-close").focus({preventScroll: true})
+        return () => {
+            window.removeEventListener("popstate", onBack)
+            dialog.close()
+            document.documentElement.classList.remove("gallery-modal-open")
+            if(history.state?.galleryViewer === historyId)
+                history.back()
+            if(opener?.isConnected)
+                opener.focus({preventScroll: true})
+        }
     }, [target])
 
-    useEffect(() => {
-        setShouldDismiss(false)
-    }, [target])
-
-    useEffect(() => {
-        if(!target || resolvedParameters.direction !== "horizontal" || typeof document === "undefined")
-            return
-
-        const handlePointerDown = (event) => {
-            pointerDownRef.current = {
-                x: event.clientX,
-                y: event.clientY
-            }
-        }
-
-        const handleClickCapture = (event) => {
-            const pointerDown = pointerDownRef.current
-            pointerDownRef.current = null
-            if(pointerDown) {
-                const deltaX = Math.abs(event.clientX - pointerDown.x)
-                const deltaY = Math.abs(event.clientY - pointerDown.y)
-                if(deltaX > 8 || deltaY > 8)
-                    return
-            }
-
-            _onHorizontalChromeClick(event)
-        }
-
-        document.body.classList.add("gallery-modal-horizontal-open")
-        document.addEventListener("pointerdown", handlePointerDown, true)
-        document.addEventListener("click", handleClickCapture, true)
-
-        return () => {
-            document.body.classList.remove("gallery-modal-horizontal-open")
-            document.removeEventListener("pointerdown", handlePointerDown, true)
-            document.removeEventListener("click", handleClickCapture, true)
-        }
-    }, [target, resolvedParameters.direction])
-
-    useEffect(() => {
-        if(didLoadInitialImages)
-            return
-
-        if(!initialReadyIndices.length) {
-            setDidLoadInitialImages(true)
+    const onPointerDown = event => {
+        // A second finger starts a pinch, never a dismissal gesture.
+        if(event.pointerType === "touch")
+            touchPointersRef.current.add(event.pointerId)
+        if(touchPointersRef.current.size > 1) {
+            pinchingRef.current = true
+            swiperRef.current.allowTouchMove = false
+            pointerRef.current = null
             return
         }
-
-        const didSettleEveryInitialImage = initialReadyIndices.every(index => {
-            const state = imageStates[index]
-            return state === IMAGE_LIFECYCLE_STATUS.LOADED || state === IMAGE_LIFECYCLE_STATUS.ERROR
-        })
-
-        if(didSettleEveryInitialImage) {
-            setDidLoadInitialImages(true)
+        if(!event.isPrimary) {
+            pointerRef.current = null
+            return
         }
-    }, [didLoadInitialImages, imageStates, initialReadyIndices])
-
-    useEffect(() => {
-        if(!images.length)
+        pointerRef.current = {x: event.clientX, y: event.clientY, type: event.pointerType}
+    }
+    const releasePinch = event => {
+        touchPointersRef.current.delete(event.pointerId)
+        if(pinchingRef.current && touchPointersRef.current.size === 0) {
+            // Keep slide navigation disabled through both pointer-up handlers.
+            // Otherwise the first finger's travel can advance the album when
+            // the pinch ends, immediately throwing away its zoom.
+            requestAnimationFrame(() => {
+                pinchingRef.current = false
+                if(swiperRef.current && !swiperRef.current.destroyed)
+                    swiperRef.current.allowTouchMove = true
+            })
+        }
+    }
+    const onPointerUp = event => {
+        releasePinch(event)
+        if(pinchingRef.current) return
+        const start = pointerRef.current
+        if(!start) return
+        const dx = Math.abs(event.clientX - start.x)
+        const dy = Math.abs(event.clientY - start.y)
+        // Keep the delta through click so a swipe cannot become a backdrop tap.
+        pointerRef.current = {...start, moved: dx > 8 || dy > 8}
+        if(start.type === "touch" && dy > 80 && dy > dx * 1.5 && !zoomed)
+            close()
+    }
+    const onStageClick = event => {
+        const pointer = pointerRef.current
+        pointerRef.current = null
+        if(pointer?.moved || swiperRef.current?.allowClick === false || zoomed)
             return
+        const image = event.target.closest(".swiper-slide-active")?.querySelector("img")
+        if(image) {
+            const rect = image.getBoundingClientRect()
+            if(event.clientX >= rect.left && event.clientX <= rect.right &&
+                event.clientY >= rect.top && event.clientY <= rect.bottom)
+                return
+        }
+        close()
+    }
+    const navigate = delta => {
+        const swiper = swiperRef.current
+        if(!swiper || swiper.destroyed || closingRef.current) return
+        swiper.zoom.out()
+        // Explicit indices avoid slidePrev's fractional snap rounding skipping
+        // an image in Firefox/WebKit. Buttons and keys share the same step.
+        swiper.slideTo(Math.max(0, Math.min(images.length - 1, swiper.activeIndex + delta)))
+    }
+    const onSlideChange = swiper => {
+        setActiveIndex(swiper.activeIndex)
+        setZoomed(false)
+        const focused = document.activeElement
+        // Disabling the focused arrow can send focus to the document body,
+        // where dialog shortcuts no longer receive keyboard events.
+        if((swiper.activeIndex === 0 && focused?.classList.contains("gallery-previous")) ||
+            (swiper.activeIndex === images.length - 1 && focused?.classList.contains("gallery-next")))
+            dialogRef.current.querySelector(".gallery-close").focus({preventScroll: true})
+    }
 
-        const candidates = [
-            images[activeIndex - 1],
-            images[activeIndex + 1]
-        ].filter(Boolean)
-
-        candidates.forEach(candidate => {
-            const prewarm = new window.Image()
-            prewarm.decoding = "async"
-            prewarm.src = utils.file.resolvePath(candidate)
-        })
-    }, [activeIndex, images, utils.file])
-
-    useEffect(() => {
-        if(!images.length)
-            return
-
-        let cancelled = false
-        const loaders = images.map((image, index) => {
-            const loader = new window.Image()
-            loader.decoding = "async"
-            loader.onload = () => {
-                if(cancelled || loader.naturalWidth <= 0 || loader.naturalHeight <= 0)
-                    return
-
-                setImageDimensions(previousDimensions => {
-                    const previous = previousDimensions[index]
-                    const next = {
-                        width: loader.naturalWidth,
-                        height: loader.naturalHeight
+    return createPortal(
+        <dialog id="gallery-modal" ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby={titleId}
+                onKeyDown={event => {
+                    if(event.altKey || event.ctrlKey || event.metaKey) return
+                    if(event.key === "Tab") {
+                        // Keep cycling through the viewer controls, including
+                        // when loading/boundary states disable a button.
+                        const controls = event.currentTarget.querySelectorAll("button:not(:disabled)")
+                        const first = controls[0]
+                        const last = controls[controls.length - 1]
+                        if(event.shiftKey && document.activeElement === first) {
+                            event.preventDefault()
+                            last.focus()
+                        } else if(!event.shiftKey && document.activeElement === last) {
+                            event.preventDefault()
+                            first.focus()
+                        }
+                        return
                     }
-
-                    if(previous?.width === next.width && previous?.height === next.height)
-                        return previousDimensions
-
-                    return {
-                        ...previousDimensions,
-                        [index]: next
-                    }
-                })
-            }
-            loader.src = utils.file.resolvePath(image)
-            return loader
-        })
-
-        return () => {
-            cancelled = true
-            for(const loader of loaders) {
-                loader.onload = null
-                loader.onerror = null
-            }
-        }
-    }, [images, utils.file])
-
-    if(!target)
-        return <></>
-
-    const visibilityClassName = didLoadInitialImages ?
-        `visible` :
-        `invisible`
-
-    const _onImageStatus = (index, nextStatus) => {
-        const settledStatus = nextStatus === IMAGE_LIFECYCLE_STATUS.IDLE ?
-            IMAGE_LIFECYCLE_STATUS.ERROR :
-            nextStatus
-
-        setImageStates(previousState => {
-            if(previousState[index] === settledStatus) {
-                return previousState
-            }
-
-            return {
-                ...previousState,
-                [index]: settledStatus
-            }
-        })
-    }
-
-    const _onClose = () => {
-        setShouldDismiss(true)
-    }
-
-    const _onHorizontalChromeClick = (event) => {
-        if(resolvedParameters.direction !== "horizontal")
-            return
-
-        if(isProtectedHorizontalGalleryClick(event))
-            return
-
-        _onClose()
-    }
-
-    return (
-        <ModalWrapper id={`gallery-modal`}
-                      className={`${modalCustomClass} gallery-modal-${resolvedParameters.direction}`}
-                      dialogClassName={`modal-fullscreen`}
-                      shouldDismiss={shouldDismiss}
-                      onDismiss={onDismiss}>
-            <ModalWrapperTitle title={title}
-                               faIcon={`fa-regular fa-image`}
-                               onClose={_onClose}
-                               tooltip={"hidden"}
-                               className={resolvedParameters.direction === "horizontal" ? `gallery-modal-dismiss-zone` : ``}
-                               onClick={resolvedParameters.direction === "horizontal" ? _onHorizontalChromeClick : null}/>
-
-            <ModalWrapperBody className={`gallery-modal-body`}
-                              onClick={_onHorizontalChromeClick}>
-                {resolvedParameters.direction === "horizontal" && (
-                    <GalleryModalSwiper className={visibilityClassName}
-                                        images={images}
-                                        type={parameters.suffix}
-                                        focus={resolvedParameters.focus}
-                                        imageDimensions={imageDimensions}
-                                        activeIndex={activeIndex}
-                                        onActiveIndexChange={setActiveIndex}
-                                        onImageStatus={_onImageStatus}
-                                        onChromeClick={_onHorizontalChromeClick}/>
-                )}
-
-                {resolvedParameters.direction === "vertical" && (
-                    <GalleryModalImageStack className={visibilityClassName}
-                                            images={images}
-                                            onImageStatus={_onImageStatus}/>
-                )}
-
-                {shouldShowSpinner && (
-                    <GalleryModalSpinner/>
-                )}
-            </ModalWrapperBody>
-        </ModalWrapper>
-    )
-}
-
-function GalleryModalSwiper({ className, images, type, focus, imageDimensions, activeIndex, onActiveIndexChange, onImageStatus, onChromeClick }) {
-    const utils = useUtils()
-    const focusClassName = focus === "showcase" ? "gallery-swiper-showcase-focus" : ""
-
-    return (
-        <div className={`gallery-swiper-dismiss-capture`}
-             onClickCapture={onChromeClick}>
-            <Swiper slidesPerView={"auto"}
-                    direction={"horizontal"}
-                    spaceBetween={15}
-                    centeredSlides={true}
-                    pagination={{clickable: true}}
-                    navigation={true}
-                    modules={[Pagination, Navigation]}
-                    onSlideChange={swiper => onActiveIndexChange(swiper.activeIndex)}
-                    className={`gallery-swiper gallery-swiper-${type} ${focusClassName} ${className}`}>
-                {images.map((image, key) => {
-                    const shouldPrioritize = Math.abs(key - activeIndex) <= 1
-                    const dimensions = imageDimensions?.[key]
-                    const slideStyle = getGallerySlideStyle(dimensions)
-
-                    return (
-                        <SwiperSlide key={key}
-                                     className={`gallery-swiper-slide`}
-                                     style={slideStyle}>
-                            <GalleryModalImage className={`swiper-image`}
-                                               alt={`img-` + key}
-                                               src={utils.file.resolvePath(image)}
-                                               shouldPrioritize={shouldPrioritize}
-                                               onStatus={(status) => onImageStatus(key, status)}/>
-                        </SwiperSlide>
-                    )
-                })}
-            </Swiper>
-        </div>
-    )
-}
-
-function GalleryModalImageStack({ className, images, onImageStatus }) {
-    const utils = useUtils()
-
-    return (
-        <div className={`gallery-modal-image-stack ${className}`}>
-            {images.map((image, key) => (
-                <div key={key}
-                     className={`gallery-modal-image-stack-item`}>
-                    <GalleryModalImage className={`swiper-image`}
-                                       alt={`img-` + key}
-                                       src={utils.file.resolvePath(image)}
-                                       shouldPrioritize={key === 0}
-                                       onStatus={(status) => onImageStatus(key, status)}/>
+                    const key = event.key.toLowerCase()
+                    const direction = {arrowleft: -1, a: -1, arrowright: 1, d: 1}[key]
+                    const shouldClose = key === " " || key === "escape"
+                    if(!direction && !shouldClose) return
+                    event.preventDefault()
+                    event.stopPropagation()
+                    // Space closes even when an arrow/zoom button has focus;
+                    // prevent its default button activation before dismissing.
+                    if(shouldClose) close()
+                    else navigate(direction)
+                }}
+                onCancel={event => { event.preventDefault(); close() }}>
+            <div className="gallery-viewer">
+                <header className="gallery-toolbar">
+                    <h2 id={titleId}>{title}</h2>
+                    <button type="button" className="gallery-zoom" aria-label={zoomed ? labels.zoomOut : labels.zoomIn}
+                            aria-pressed={zoomed} disabled={!canZoom} onClick={() => swiperRef.current?.zoom.toggle()}>
+                        <i className={zoomed ? "fa-solid fa-magnifying-glass-minus" : "fa-solid fa-magnifying-glass-plus"} aria-hidden="true"/>
+                    </button>
+                    <button type="button" className="gallery-close" aria-label={language.getString("close_window")}
+                            aria-keyshortcuts="Escape Space"
+                            onClick={close} autoFocus>
+                        <i className="fa-solid fa-xmark" aria-hidden="true"/>
+                    </button>
+                </header>
+                <div className="gallery-stage" onPointerDownCapture={onPointerDown}
+                     onPointerUpCapture={onPointerUp} onPointerCancel={event => { releasePinch(event); pointerRef.current = null }}
+                     onDragStart={event => event.preventDefault()}
+                     onClick={onStageClick}>
+                    <Swiper className="gallery-swiper" slidesPerView={1} spaceBetween={16}
+                            direction="horizontal" modules={[A11y, Zoom]}
+                            zoom={{maxRatio: 4, toggle: false}}
+                            a11y={{containerMessage: title, slideLabelMessage: "{{index}} / {{slidesLength}}"}}
+                            speed={window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 220}
+                            onSwiper={swiper => { swiperRef.current = swiper }}
+                            onDoubleTap={swiper => { if(canZoom) swiper.zoom.toggle() }}
+                            onZoomChange={(_swiper, scale) => setZoomed(scale > 1)}
+                            onSlideChange={onSlideChange}>
+                        {images.map((image, index) => (
+                            <SwiperSlide key={index} className="gallery-slide">
+                                {Math.abs(index - activeIndex) <= 1 && (
+                                    <div className="swiper-zoom-container">
+                                        <BaseImage src={utils.file.resolvePath(image)} alt={title + " — " + (index + 1) + " / " + images.length}
+                                                   className="gallery-image" loading="eager" decoding="async"
+                                                   fetchPriority={index === activeIndex ? "high" : "auto"} sizes="100vw"
+                                                   onStatus={status => setImageStates(previous => previous[index] === status ? previous : {...previous, [index]: status})}
+                                                   renderLoading={() => <div className="gallery-image-state" role="status" aria-label={language.getString("loading")}><Spinner/></div>}
+                                                   renderError={() => <div className="gallery-image-state" role="status"><i className="fa-regular fa-image" aria-hidden="true"/><span>{labels.unavailable}</span></div>}/>
+                                    </div>
+                                )}
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
                 </div>
-            ))}
-        </div>
-    )
-}
-
-function GalleryModalImage({ className, alt, src, shouldPrioritize, onStatus }) {
-    const sizes = getGalleryImageSizes(className)
-
-    return (
-        <BaseImage src={src}
-                   alt={alt}
-                   className={`gallery-modal-image-surface ${className}`}
-                    loading={shouldPrioritize ? "eager" : "lazy"}
-                   decoding={`async`}
-                   fetchPriority={shouldPrioritize ? "high" : "auto"}
-                   sizes={sizes}
-                   onStatus={onStatus}
-                   renderLoading={() => (
-                       <div className={`gallery-modal-image-state gallery-modal-image-state-loading`}>
-                           <Spinner/>
-                       </div>
-                   )}
-                   renderError={() => (
-                       <div className={`gallery-modal-image-state gallery-modal-image-state-error`}
-                            aria-hidden={true}>
-                           <i className={`fa-regular fa-image`}/>
-                           <span>Image unavailable</span>
-                       </div>
-                   )}/>
-    )
-}
-
-function GalleryModalSpinner() {
-    return (
-        <div className={`gallery-modal-spinner`}>
-            <Spinner/>
-        </div>
-    )
-}
-
-export default GalleryModal
-
-function _getInitialReadyIndices(direction, imageCount) {
-    if(imageCount <= 0)
-        return []
-
-    if(direction === "horizontal")
-        return imageCount === 1 ? [0] : [0, 1]
-
-    return [0]
-}
-
-function isProtectedHorizontalGalleryClick(event) {
-    const target = event.target
-    if(!target?.closest)
-        return false
-
-    if(target.closest(".swiper-button-prev, .swiper-button-next"))
-        return true
-
-    const image = target.closest(".gallery-modal-image-surface img.image-frame-img")
-    if(!image)
-        return false
-
-    const imageBounds = getContainedImageBounds(image)
-    if(!imageBounds)
-        return false
-
-    return (
-        event.clientX >= imageBounds.left &&
-        event.clientX <= imageBounds.right &&
-        event.clientY >= imageBounds.top &&
-        event.clientY <= imageBounds.bottom
-    )
-}
-
-function getContainedImageBounds(image) {
-    const bounds = image.getBoundingClientRect()
-    const naturalWidth = image.naturalWidth || Number(image.getAttribute("width"))
-    const naturalHeight = image.naturalHeight || Number(image.getAttribute("height"))
-
-    if(!bounds.width || !bounds.height || !naturalWidth || !naturalHeight)
-        return bounds
-
-    const frameRatio = bounds.width / bounds.height
-    const imageRatio = naturalWidth / naturalHeight
-
-    if(imageRatio > frameRatio) {
-        const renderedHeight = bounds.width / imageRatio
-        const offsetY = (bounds.height - renderedHeight) / 2
-        return {
-            left: bounds.left,
-            right: bounds.right,
-            top: bounds.top + offsetY,
-            bottom: bounds.bottom - offsetY
-        }
-    }
-
-    const renderedWidth = bounds.height * imageRatio
-    const offsetX = (bounds.width - renderedWidth) / 2
-    return {
-        left: bounds.left + offsetX,
-        right: bounds.right - offsetX,
-        top: bounds.top,
-        bottom: bounds.bottom
-    }
-}
-
-function getGalleryImageSizes(className) {
-    if(className.includes("portrait"))
-        return "(max-width: 991.98px) 100vw, 56vw"
-
-    if(className.includes("landscape"))
-        return "(max-width: 991.98px) 100vw, 90vw"
-
-    return "(max-width: 991.98px) 100vw, 70vw"
-}
-
-function getGallerySlideStyle(dimensions) {
-    const width = Number(dimensions?.width)
-    const height = Number(dimensions?.height)
-
-    if(!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0)
-        return undefined
-
-    return {
-        "--gallery-image-aspect-ratio": `${width} / ${height}`,
-        "--gallery-image-aspect-ratio-value": width / height
-    }
+                <footer className="gallery-controls">
+                    <button type="button" className="gallery-previous" aria-label={labels.previous}
+                            aria-keyshortcuts="ArrowLeft A"
+                            disabled={activeIndex === 0} onClick={() => navigate(-1)}>
+                        <i className="fa-solid fa-chevron-left" aria-hidden="true"/>
+                    </button>
+                    <output aria-live="polite" aria-atomic="true">{activeIndex + 1} / {images.length}</output>
+                    <button type="button" className="gallery-next" aria-label={labels.next}
+                            aria-keyshortcuts="ArrowRight D"
+                            disabled={activeIndex === images.length - 1} onClick={() => navigate(1)}>
+                        <i className="fa-solid fa-chevron-right" aria-hidden="true"/>
+                    </button>
+                </footer>
+            </div>
+        </dialog>, document.body)
 }

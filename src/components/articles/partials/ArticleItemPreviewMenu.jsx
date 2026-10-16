@@ -122,7 +122,6 @@ function ItemPreviewMenuGalleryButton({ itemWrapper, galleryMetadata = null }) {
     const utils = useUtils()
 
     const screenshots = itemWrapper.preview?.screenshots
-    const screenshotsAspectRatio = itemWrapper.preview?.screenshotsAspectRatio
     const galleryPreviewSource = screenshots?.[screenshots.length - 1] || itemWrapper.img || screenshots?.[0]
     const galleryPreviewImage = utils.image.normalizeSource(galleryPreviewSource)
     const isPhotographyTimeline = itemWrapper?.articleWrapper?.settings?.timelineVariant === "art-photography"
@@ -143,7 +142,6 @@ function ItemPreviewMenuGalleryButton({ itemWrapper, galleryMetadata = null }) {
         return {
             title: title,
             images: screenshots,
-            aspectRatio: screenshotsAspectRatio,
         }
     })()
 

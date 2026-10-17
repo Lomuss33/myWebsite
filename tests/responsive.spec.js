@@ -507,6 +507,65 @@ for(const [language,theme] of [['hr','dark'],['de','light'],['en','light'],['tr'
     })
 }
 
+for(const [width,height,theme] of [[390,844,'dark'],[768,1024,'light']]) {
+    test(`Home human stack opens and pins details from a central touch: ${width} ${theme}`, async ({browser})=>{
+        const context=await browser.newContext({viewport:{width,height},hasTouch:true,reducedMotion:'reduce'})
+        const page=await context.newPage()
+        try {
+            await preferences(page,'en',theme)
+            await openSection(page,'about')
+            const cards=page.locator('#article-7-section-about .article-stack-item-home')
+            const first=cards.nth(0)
+            const second=cards.nth(1)
+            const panel=first.locator('.article-stack-item-home-bubble')
+            // Tap the card itself, as on a phone, rather than targeting a button
+            // that can disappear when touch synthesizes hover/focus events.
+            await first.tap()
+            await expect(first).toHaveClass(/article-stack-item-home-title-open/)
+            await expect(first).toHaveClass(/article-stack-item-pinned/)
+            await expect(panel).toHaveAttribute('aria-hidden','false')
+            await expect(panel).toContainText('2 m')
+            await first.tap()
+            await expect(panel).toHaveAttribute('aria-hidden','true')
+            // Padding around the text belongs to the same title touch target.
+            const bounds=await first.boundingBox()
+            await first.tap({position:{x:bounds.width/2,y:bounds.height-3}})
+            await expect(first).toHaveClass(/article-stack-item-pinned/)
+            await second.tap()
+            await expect(panel).toHaveAttribute('aria-hidden','true')
+            await expect(second).toHaveClass(/article-stack-item-home-title-open/)
+            await page.keyboard.press('Escape')
+            await expect(second.locator('.article-stack-item-home-bubble')).toHaveAttribute('aria-hidden','true')
+            await first.locator('.article-stack-item-home-bubble-button').tap()
+            await expect(first).toHaveClass(/article-stack-item-pinned/)
+            await expect(first).not.toHaveClass(/article-stack-item-home-title-open/)
+            await expect(panel).toHaveAttribute('aria-hidden','false')
+        } finally {
+            await context.close()
+        }
+    })
+}
+
+test('Home human stack keeps desktop title hover and keyboard details', async ({page})=>{
+    await preferences(page)
+    await page.setViewportSize({width:1366,height:768})
+    await openSection(page,'about')
+    const first=page.locator('#article-7-section-about .article-stack-item-home').first()
+    const panel=first.locator('.article-stack-item-home-bubble')
+    await first.locator('.article-stack-item-title-main').hover()
+    await expect(first).toHaveClass(/article-stack-item-home-title-open/)
+    await expect(first).not.toHaveClass(/article-stack-item-pinned/)
+    await page.mouse.move(0,0)
+    await expect(panel).toHaveAttribute('aria-hidden','true')
+    const title=first.locator('.article-stack-item-home-unit-trigger')
+    await title.focus()
+    await expect(panel).toHaveAttribute('aria-hidden','false')
+    await page.keyboard.press('Enter')
+    await expect(first).toHaveClass(/article-stack-item-pinned/)
+    await page.keyboard.press('Escape')
+    await expect(panel).toHaveAttribute('aria-hidden','true')
+})
+
 for(const [input,width,height] of [['wheel',390,844],['wheel',1366,768],['touch',390,844]]) {
     test(`Home popup edges let the whole page scroll: ${input} ${width}x${height}`, async ({browser})=>{
         test.skip(input==='touch' && browser.browserType().name()!=='chromium','Native touch gestures use Chromium CDP.')

@@ -1302,7 +1302,7 @@ article.article.article-stack-home {
 
     div.article-stack-item.article-stack-item-home.article-stack-item-home-title-open > div.article-stack-item-home-content > div.article-stack-item-title {
         opacity: 0;
-        visibility: hidden;
+        // Keep the title button focused while its explanation covers the text.
         pointer-events: none;
     }
 

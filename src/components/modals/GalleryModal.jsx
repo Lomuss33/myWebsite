@@ -12,13 +12,22 @@ import {useLanguage} from "../../providers/LanguageProvider.jsx"
 import {galleryLabels} from "../../data/galleryI18n.js"
 import {IMAGE_LIFECYCLE_STATUS} from "../../hooks/useImageStatus.js"
 
+function imageTitleFromPath(path) {
+    let filename = path.split(/[?#]/)[0].split("/").pop()
+    try { filename = decodeURIComponent(filename) } catch { /* Keep malformed URL text readable. */ }
+    return filename.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ").trim()
+        .replace(/\bai\b/gi, "AI")
+        .replace(/\p{L}+/gu, word => word[0].toUpperCase() + word.slice(1))
+}
+
 // Every album uses this viewer, independent of image shape, page or viewport.
 export default function GalleryModal({target, onDismiss}) {
     const utils = useUtils()
     const language = useLanguage()
     const labels = galleryLabels[language.selectedLanguageId] || galleryLabels.en
     const images = target.images
-    const title = utils.string.stripHTMLTags(target.title || language.getString("gallery"))
+    const albumTitle = utils.string.stripHTMLTags(target.title || language.getString("gallery"))
+    const imageTitles = images.map((image, index) => imageTitleFromPath(image) || `${language.getString("gallery")} ${index + 1}`)
     const titleId = useId()
     const dialogRef = useRef(null)
     const swiperRef = useRef(null)
@@ -183,7 +192,7 @@ export default function GalleryModal({target, onDismiss}) {
                 onCancel={event => { event.preventDefault(); close() }}>
             <div className="gallery-viewer">
                 <header className="gallery-toolbar">
-                    <h2 id={titleId}>{title}</h2>
+                    <h2 id={titleId} aria-live="polite">{imageTitles[activeIndex]}</h2>
                     <button type="button" className="gallery-zoom" aria-label={zoomed ? labels.zoomOut : labels.zoomIn}
                             aria-pressed={zoomed} disabled={!canZoom} onClick={() => swiperRef.current?.zoom.toggle()}>
                         <i className={zoomed ? "fa-solid fa-magnifying-glass-minus" : "fa-solid fa-magnifying-glass-plus"} aria-hidden="true"/>
@@ -201,7 +210,7 @@ export default function GalleryModal({target, onDismiss}) {
                     <Swiper className="gallery-swiper" slidesPerView={1} spaceBetween={16}
                             direction="horizontal" modules={[A11y, Zoom]}
                             zoom={{maxRatio: 4, toggle: false}}
-                            a11y={{containerMessage: title, slideLabelMessage: "{{index}} / {{slidesLength}}"}}
+                            a11y={{containerMessage: albumTitle, slideLabelMessage: "{{index}} / {{slidesLength}}"}}
                             speed={window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 220}
                             onSwiper={swiper => { swiperRef.current = swiper }}
                             onDoubleTap={swiper => { if(canZoom) swiper.zoom.toggle() }}
@@ -211,7 +220,7 @@ export default function GalleryModal({target, onDismiss}) {
                             <SwiperSlide key={index} className="gallery-slide">
                                 {Math.abs(index - activeIndex) <= 1 && (
                                     <div className="swiper-zoom-container">
-                                        <BaseImage src={utils.file.resolvePath(image)} alt={title + " — " + (index + 1) + " / " + images.length}
+                                        <BaseImage src={utils.file.resolvePath(image)} alt={imageTitles[index] + " — " + (index + 1) + " / " + images.length}
                                                    className="gallery-image" loading="eager" decoding="async"
                                                    fetchPriority={index === activeIndex ? "high" : "auto"} sizes="100vw"
                                                    onStatus={status => setImageStates(previous => previous[index] === status ? previous : {...previous, [index]: status})}

@@ -630,7 +630,9 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
         const handlePointerDown = (event) => {
             const target = event.target
 
-            if(bubbleRef.current?.contains(target) || bubbleToggleRef.current?.contains(target) || titleToggleRef.current?.contains(target))
+            // The overlay lets touches pass through to the card. A tap there
+            // belongs to its title toggle, rather than an outside dismissal.
+            if(cardRef.current?.contains(target))
                 return
 
             setIsBubblePinned(false)
@@ -738,7 +740,8 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
     const content = isHomeStack ? (
         <div className={`article-stack-item ${homeClass} ${compactClass} ${bubbleClass} ${titleOverlayClass} ${isBubblePinned ? "article-stack-item-pinned" : ""}`.trim()}
              ref={cardRef}
-             onMouseLeave={handleBubbleMouseLeave}>
+             onMouseLeave={handleBubbleMouseLeave}
+             onClick={handleTitleToggle}>
             <div className={`article-stack-item-home-trigger`}>
                 <ArticleStackHomeBubble itemWrapper={itemWrapper}
                                         isBubbleOpen={isBubbleOpen}
@@ -751,8 +754,7 @@ function ArticleStackItem({ itemWrapper, articleId, isHomeStack, isCompactStack 
                 </ArticleStackHomeBubble>
             </div>
 
-            <div className={`article-stack-item-home-content`}
-                 onClick={handleTitleToggle}>
+            <div className={`article-stack-item-home-content`}>
                 <div className={`article-stack-item-title`}
                      ref={titleRef}>
                     {isHomeBubbleEnabled ? (

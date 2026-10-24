@@ -8,7 +8,7 @@ Mobile uses one continuous, softly curved shade behind all three text groups, wi
 
 Route: `#about` (Home). This is visual guidance for the existing navigation, not a modal or an interactive control.
 
-The desktop page veil uses at most 80% opacity in both themes, with a 24% transition stop around the clear spotlight. The shade/rail-hint layer is masked to at most 15% opacity over the measured left rail, including hint-shadow overlap. The mask stays faint through 16px beyond the rail for the toggle, then returns to full strength over 40px. Rail hints start beyond that fade; the separate headline keeps readable ink at a 24–96px right inset. Idle spotlight motion keeps opacity steady rather than pulsing the guide. Its clear area and movement keep their existing geometry. Mobile uses an 80% source opacity in both themes for its single blurred silhouette; the feather naturally lowers opacity near navigation. Separate accent-light sweeps follow the navigation controls without animating the main shade or text.
+The desktop page veil uses at most 88% opacity in both themes, with a 28% transition stop around the clear spotlight. The shade/rail-hint layer is masked to at most 15% opacity over the measured left rail, including hint-shadow overlap. The mask stays faint through 16px beyond the rail for the toggle, then returns to full strength over 40px. Rail hints start beyond that fade; the separate headline keeps readable ink at a 24–96px right inset. Idle spotlight motion keeps opacity steady rather than pulsing the guide. Its clear area and movement keep their existing geometry. Mobile uses an 88% source opacity in both themes for its single blurred silhouette; the feather naturally lowers opacity near navigation. Separate accent-light sweeps follow the navigation controls without animating the main shade or text.
 
 ## Accepted behavior
 
@@ -59,6 +59,8 @@ Use the [targeted validation guidance](../guides/validation.md). These checks de
 5. Check that ordinary navigation remains clickable and focusable, dialogs/editable controls do not receive a new guide, and animations perform no per-frame target/label layout measurements.
 
 ## Latest rendered verification
+
+Opacity refinement (2026-10-24): the desktop veil and mobile silhouette increased from 80% to 88% source opacity in both themes; the desktop spotlight transition increased from 24% to 28%. Existing feathering, navigation masking, colours and timing remain. Rendered Chromium checks confirmed the 88% black/white paint in all four theme/layout combinations, with phone and desktop screenshots inspected. All 24 controller checks, lint, full production build and focused documentation validation passed. The collaborative preview connection failed during capture, so these rendered checks used the repository's Playwright browser tools; physical devices and other engines were not checked.
 
 Light palette revision (2026-10-15): the page veil, feathered caption backing and local caption shadow now share neutral white (255 255 255), removing the former blue cast and matching the white navigation more closely. The existing opacity, spotlight geometry, text/action colours and dark palette remain. Native preview confirmed the revised desktop appearance; theme/layout style probes checked the shared white surface in mobile and desktop and the retained dark surface. This is a colour-only adjustment, not a new device or timing audit.
 

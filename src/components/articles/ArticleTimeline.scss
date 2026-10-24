@@ -1231,6 +1231,8 @@ article#article-1-section-education button.standard-button.btn-contrast.article-
 }
 
 article#article-1-section-experience {
+    container-name: experience-timeline;
+
     ul.article-timeline-items {
         --experience-avatar-size: 104px;
         --experience-description-right-buffer: 0.95rem;
@@ -1317,8 +1319,12 @@ article#article-1-section-experience {
         gap: 16px;
         overflow: visible;
 
+        @include content-breakpoint-down(md) {
+            --experience-avatar-size: 92px;
+        }
+
         @include content-breakpoint-down(sm) {
-            --experience-avatar-size: clamp(84px, 20vw, 96px);
+            --experience-avatar-size: clamp(72px, 18vw, 84px);
             --experience-description-right-buffer: 0.98rem;
             --experience-rail-width: 60px;
             --experience-avatar-vertical-offset: 0px;
@@ -1477,8 +1483,7 @@ article#article-1-section-experience {
         z-index: 4;
 
         @include content-breakpoint-down(md) {
-            top: 74%;
-            transform: translateY(-50%);
+            top: 66%;
         }
     }
 

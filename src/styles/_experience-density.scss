@@ -28,9 +28,6 @@
 
             div.article-timeline-item-info-for-timelines {
                 --content-padding: .85rem 1rem;
-                --timeline-title-size: clamp(1rem, .96rem + .5cqi, 1.18rem);
-                --timeline-meta-size: clamp(.82rem, .78rem + .28cqi, .9rem);
-                --timeline-body-size: clamp(.9rem, .84rem + .3cqi, .98rem);
                 --experience-meta-time-size: var(--timeline-meta-size);
                 --experience-meta-grid-gap: .45rem;
                 --experience-meta-split-gap: .55rem;
@@ -51,10 +48,8 @@
             }
 
             div.article-timeline-item-info-for-timelines-body {
-                --experience-description-right-offset: max(.7rem, var(--experience-description-right-buffer, 0px));
                 margin-top: .4rem;
                 padding-top: .45rem;
-                line-height: 1.48;
 
                 ul.article-timeline-item-info-for-timelines-body-list {
                     margin-top: .2rem;

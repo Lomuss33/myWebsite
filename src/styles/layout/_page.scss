@@ -153,8 +153,8 @@ html[data-theme="light"] div.startup-guide-root {
 html div.startup-guide-root[data-layout="desktop"] {
     // Deep shade keeps the underlying page visible beneath the guide captions.
     // Match the theme selector's specificity in both palettes.
-    --startup-guide-veil-soft: 0.24;
-    --startup-guide-veil-strength: 0.8;
+    --startup-guide-veil-soft: 0.28;
+    --startup-guide-veil-strength: 0.88;
     --startup-guide-label-width: 26rem;
     --startup-guide-caption-inset: -1rem -1.5rem;
     --startup-guide-caption-blur: 16px;
@@ -453,7 +453,7 @@ div.startup-guide-root [hidden] {
 }
 
 html div.startup-guide-root[data-layout="mobile"] {
-    --startup-guide-veil-strength: 0.8;
+    --startup-guide-veil-strength: 0.88;
 
     .startup-guide-overlay-label,
     .startup-guide-edge-caption {

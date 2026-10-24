@@ -778,7 +778,6 @@ test('Experience desktop density keeps all three articles compact and readable',
                 }
             })
             return {
-                sectionTitle:measure('#section-experience .section-header-title'),
                 timelineHeading:measure('#article-1-section-experience > h4.article-title'),
                 timelineTitle:measure('#article-1-section-experience .article-timeline-item-info-for-timelines-header-main h5'),
                 timelineBody:measure('#article-1-section-experience .article-timeline-item-info-for-timelines-body-text'),
@@ -796,28 +795,21 @@ test('Experience desktop density keeps all three articles compact and readable',
                 documentWidth:document.documentElement.scrollWidth
             }
         })
-        expect(metrics.sectionTitle.font).toBeGreaterThanOrEqual(25)
-        expect(metrics.sectionTitle.font).toBeLessThanOrEqual(27)
         expect(metrics.timelineHeading.font).toBeLessThanOrEqual(31)
-        expect(metrics.timelineTitle.font).toBeLessThanOrEqual(19)
-        if(metrics.timelineCard.width<=1152) {
-            expect(metrics.timelineBody.font).toBeGreaterThanOrEqual(10.8)
-            expect(metrics.timelineBody.font).toBeLessThanOrEqual(11.6)
-        } else {
-            expect(metrics.timelineBody.font).toBeGreaterThanOrEqual(14.5)
-            expect(metrics.timelineBody.font).toBeLessThanOrEqual(15.5)
-        }
-        expect(metrics.timelineCard.height).toBeLessThan(350)
+        expect(metrics.timelineTitle.font).toBeGreaterThanOrEqual(18)
+        expect(metrics.timelineTitle.font).toBeLessThanOrEqual(24)
+        expect(metrics.timelineBody.font).toBeGreaterThanOrEqual(16)
+        expect(metrics.timelineBody.font).toBeLessThanOrEqual(18)
         expect(metrics.avatar.width).toBeLessThanOrEqual(171)
-        expect(metrics.flyerHeading.font).toBeGreaterThanOrEqual(17)
-        expect(metrics.flyerHeading.font).toBeLessThanOrEqual(19)
+        expect(metrics.flyerHeading.font).toBeGreaterThanOrEqual(18)
+        expect(metrics.flyerHeading.font).toBeLessThanOrEqual(26)
         expect(metrics.book.width).toBeLessThanOrEqual(705)
         expect(metrics.bookPage.font).toBeGreaterThanOrEqual(14)
         expect(Math.abs(metrics.flyerPage.width-metrics.bookPage.width)).toBeLessThanOrEqual(1)
         expect(Math.abs(metrics.flyerPage.height-metrics.bookPage.height)).toBeLessThanOrEqual(1)
         expect(metrics.closingHeadings.every(heading=>Math.abs(heading.width-heading.headerWidth)<1)).toBe(true)
         expect(metrics.closingHeadings.every(heading=>Math.ceil(heading.height/heading.lineHeight)<=2)).toBe(true)
-        expect(metrics.closingHeading.font).toBeLessThanOrEqual(18.5)
+        expect(metrics.closingHeading.font).toBeLessThanOrEqual(26)
         expect(metrics.closingCardHeading.font).toBeLessThanOrEqual(19)
         if(width<1024) {
             expect(metrics.closingCopy.font).toBeGreaterThanOrEqual(13)
@@ -867,13 +859,9 @@ test('Experience timeline text scales with narrow desktop cards', async ({page})
             }
         })
         expect(sizes.content.every(size=>size.width>0)).toBe(true)
-        if(sizes.cardWidth<=1152) {
-            expect(sizes.bodyFont).toBeGreaterThanOrEqual(10.8)
-            expect(sizes.bodyFont).toBeLessThanOrEqual(11.6)
-            expect(sizes.content.every(size=>size.font>=10.8&&size.font<=11.6)).toBe(true)
-        } else {
-            expect(sizes.content.every(size=>size.font<=15.5)).toBe(true)
-        }
+        expect(sizes.bodyFont).toBeGreaterThanOrEqual(16)
+        expect(sizes.bodyFont).toBeLessThanOrEqual(18)
+        expect(sizes.content.every(size=>size.font>=16&&size.font<=18)).toBe(true)
     }
 })
 

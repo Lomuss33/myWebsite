@@ -129,9 +129,9 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
     --card-accent-2: #facc15;
     --content-padding: 1.08rem 1.25rem;
     // Keep usable values on older Android browsers that do not understand cqi.
-    --timeline-title-size: clamp(1.08rem, 1rem + 0.45vw, 1.42rem);
-    --timeline-meta-size: clamp(0.8rem, 0.76rem + 0.18vw, 1.02rem);
-    --timeline-body-size: clamp(0.92rem, 0.84rem + 0.28vw, 1.12rem);
+    --timeline-title-size: clamp(1.125rem, 1rem + 0.45vw, 1.5rem);
+    --timeline-meta-size: clamp(0.875rem, 0.83rem + 0.18vw, 1rem);
+    --timeline-body-size: clamp(1rem, 0.94rem + 0.18vw, 1.125rem);
     --experience-meta-time-size: var(--timeline-meta-size);
     --experience-meta-grid-gap: 0.62rem;
     --experience-meta-split-gap: 0.78rem;
@@ -171,9 +171,9 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
         filter 180ms ease;
 
     @supports (width: 1cqi) {
-        --timeline-title-size: clamp(1rem, 0.95rem + 1.05cqi, 1.42rem);
-        --timeline-meta-size: clamp(0.78rem, 0.74rem + 0.45cqi, 1rem);
-        --timeline-body-size: clamp(0.9rem, 0.82rem + 0.9cqi, 1.12rem);
+        --timeline-title-size: clamp(1.125rem, 1rem + 0.7cqi, 1.5rem);
+        --timeline-meta-size: clamp(0.875rem, 0.82rem + 0.3cqi, 1rem);
+        --timeline-body-size: clamp(1rem, 0.94rem + 0.25cqi, 1.125rem);
         --experience-description-right-offset: max(15cqi, calc(var(--experience-description-right-buffer, 0px) * 3.4));
     }
 
@@ -1443,6 +1443,7 @@ article#article-1-section-experience {
     }
 
     div.article-timeline-item-info-for-timelines-header-meta-row--time {
+        flex-wrap: wrap;
         justify-content: center;
         text-align: center;
         font-size: var(--experience-meta-time-size);
@@ -1713,6 +1714,7 @@ article#article-1-section-experience {
             width: 100%;
         }
     }
+
 }
 
 @container (min-width: 2000px) {
@@ -1731,9 +1733,6 @@ article#article-1-section-experience {
         --experience-meta-segment-radius: 0.92rem;
 
         @supports (width: 1cqi) {
-            --timeline-title-size: clamp(1rem, 0.95rem + 1.05cqi, 1.42rem);
-            --timeline-meta-size: clamp(0.78rem, 0.74rem + 0.45cqi, 1rem);
-            --timeline-body-size: clamp(0.9rem, 0.82rem + 0.9cqi, 1.12rem);
             --timeline-badge-size: clamp(0.92rem, 0.82rem + 0.32cqi, 1.28rem);
         }
     }
@@ -3372,7 +3371,7 @@ article.article-timeline--art-photography div.article-timeline-item-content ul.a
     --card-shadow: 0 18px 38px rgba(15, 23, 42, 0.12);
     --card-shadow-hover: 0 24px 52px rgba(71, 85, 105, 0.18);
     --card-text-strong: #0f172a;
-    --card-text-mid: rgba(30, 41, 59, 0.86);
+    --card-text-mid: #334155;
     --card-text-soft: rgba(71, 85, 105, 0.76);
     border-color: var(--experience-card-border-current, var(--card-border));
     background:
@@ -3395,81 +3394,38 @@ article.article-timeline--art-photography div.article-timeline-item-content ul.a
         linear-gradient(135deg, rgba(148, 163, 184, 0.16), transparent 48%);
 }
 
-// Compact experience prose; retain natural height and room for card decoration.
+// One readable scale for every Experience paragraph and responsibility row.
+// Cards grow naturally; narrower panes wrap instead of shrinking their copy.
 html[data-layout] article#article-1-section-experience div.article-timeline-item-info-for-timelines-body {
-    --experience-description-right-offset: max(.5rem, var(--experience-description-right-buffer, 0px));
-    margin-top: .5rem;
-    padding-top: .375rem;
+    // Only the two description blocks reserve room for the side-floating logo.
+    // The title, dates, metadata and divider retain the card's complete width.
+    --experience-description-right-offset: max(.5rem, calc(var(--experience-card-overlap) + var(--experience-overlay-shift-max) + var(--experience-avatar-size) * (var(--experience-avatar-scale-direct) - 1) * 0.5));
+    margin-top: .75rem;
+    padding-top: .625rem;
+    font-size: var(--timeline-body-size);
+    line-height: 1.6;
 
     div.article-timeline-item-info-for-timelines-body-text,
-    ul.article-timeline-item-info-for-timelines-body-list {
-        font-size: clamp(.9rem, calc(.82rem + .25vw), 1.08rem) !important;
-        line-height: 1.5;
-        padding-top: .25rem;
+    ul.article-timeline-item-info-for-timelines-body-list,
+    li.article-timeline-item-info-for-timelines-body-list-item {
+        font-size: inherit !important;
+        line-height: inherit;
         overflow-wrap: anywhere;
     }
 
-    @supports (width: 1cqi) {
-        div.article-timeline-item-info-for-timelines-body-text,
-        ul.article-timeline-item-info-for-timelines-body-list {
-            font-size: clamp(.9rem, calc(.82rem + .9cqi), 1.12rem) !important;
-        }
+    @container experience-timeline (max-width: 47.999rem) {
+        --experience-description-right-offset: max(.5rem, var(--experience-description-right-buffer, 0px));
     }
+
     ul.article-timeline-item-info-for-timelines-body-list {
-        margin-top: .25rem;
-        li.article-timeline-item-info-for-timelines-body-list-item { margin-bottom: .25rem; }
+        margin-top: .5rem;
+        li.article-timeline-item-info-for-timelines-body-list-item { margin-bottom: .5rem; }
+        li.article-timeline-item-info-for-timelines-body-list-item:last-child { margin-bottom: 0; }
     }
+
+    div.article-timeline-item-info-for-timelines-body-text,
     div.article-timeline-item-info-for-timelines-body-text + ul.article-timeline-item-info-for-timelines-body-list,
     ul.article-timeline-item-info-for-timelines-body-list:first-child { padding-top: .25rem; }
-}
-
-// On desktop/tablet landscape, base Experience copy on the card's actual
-// width and cap its growth. The general timeline scale was too steep for
-// narrow desktop cards (e.g. 410px of usable text width).
-@media (min-width: 48rem) {
-    html:is([data-layout="normal"], [data-layout="ultrawide"]) article#article-1-section-experience div.article-timeline-item-info-for-timelines-body {
-        div.article-timeline-item-info-for-timelines-body-text,
-        ul.article-timeline-item-info-for-timelines-body-list {
-            font-size: clamp(.84rem, calc(.8rem + .3cqi), .96rem) !important;
-            line-height: 1.46;
-        }
-
-        ul.article-timeline-item-info-for-timelines-body-list {
-            li.article-timeline-item-info-for-timelines-body-list-item {
-                font-size: inherit !important;
-                line-height: inherit;
-            }
-        }
-    }
-}
-
-// Compact Experience cards can happen at any viewport width because the
-// navigation rail and centered page shell reduce their inline space. Keep
-// the wrapper and every prose/list child on one card-relative scale.
-@media (min-width: 48rem) {
-    @container experience-timeline-card (max-width: 72rem) {
-        html:is([data-layout="normal"], [data-layout="ultrawide"]) article#article-1-section-experience div.article-timeline-item-info-for-timelines-body {
-            font-size: clamp(.68rem, calc(.67rem + .1cqi), .72rem) !important;
-            line-height: 1.46;
-
-            div.article-timeline-item-info-for-timelines-body-text,
-            ul.article-timeline-item-info-for-timelines-body-list,
-            ul.article-timeline-item-info-for-timelines-body-list li.article-timeline-item-info-for-timelines-body-list-item {
-                font-size: inherit !important;
-                line-height: inherit;
-            }
-        }
-    }
-}
-
-// The container-relative desktop scale above grows too aggressively on wide
-// mobile cards. Keep Experience prose compact and readable on phones/tablets.
-html[data-layout="mobile"] article#article-1-section-experience div.article-timeline-item-info-for-timelines-body {
-    div.article-timeline-item-info-for-timelines-body-text,
-    ul.article-timeline-item-info-for-timelines-body-list {
-        font-size: clamp(.76rem, calc(.68rem + .4cqi), .875rem) !important;
-        line-height: 1.48;
-    }
 }
 
 // Let the mobile experience surface meet the section's left edge while

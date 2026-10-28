@@ -7,6 +7,15 @@ section#section-about .section-content.section-content-has-decoration-bands {
 
     > .section-content-elements-wrapper { padding-top: 0; }
     .section-body > article.article { --heading-gap: var(--home-article-divider-gap); }
+    // The disabled first divider leaves a direct contact-to-introduction join.
+    // Keep all three contributing gaps compact without shrinking the controls.
+    .section-body > article#article-1-section-about {
+        padding-bottom: clamp(3px, .3vw, 5px);
+    }
+    .section-body > article#article-2-section-about {
+        --heading-gap: clamp(3px, .3vw, 5px);
+        margin-top: clamp(1px, .1vw, 2px);
+    }
     // Headerless articles need the same opening gap as the heading-led ones.
     .section-decoration-boundary-between-articles + article.article:not(:has(> h4.article-title)) {
         padding-top: var(--home-article-divider-gap);

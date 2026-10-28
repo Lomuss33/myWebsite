@@ -45,7 +45,7 @@ function IllustratedManuscript({
     }, [assetBasePath, imageSrc, storyText])
 
     return (
-        <div className={`illustrated-manuscript ${className}`.trim()}>
+        <div className={`illustrated-manuscript ${className}`.trim()} data-status={status}>
             {status === "error" && (
                 <div className={`illustrated-manuscript-overlay`}
                      role={`status`}

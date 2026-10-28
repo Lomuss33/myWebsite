@@ -520,23 +520,43 @@ function PretextLocationNarrative({text}) {
     useEffect(() => {
         const element = elementRef.current
         if(!element) return
+        let active = true
+        let preparedText = null
+        let preparedFont = null
+        let preparedLetterSpacing = null
 
         const layoutText = () => {
+            // A resize notification may arrive after React removes this section,
+            // before passive-effect cleanup disconnects the observer.
+            if(!active || !element.isConnected || element.clientWidth <= 0) return
             const styles = window.getComputedStyle(element)
+            const fontSize = Number.parseFloat(styles.fontSize)
+            if(!Number.isFinite(fontSize) || fontSize <= 0 || !styles.fontFamily.trim()) return
             const font = `${styles.fontStyle} ${styles.fontWeight} ${styles.fontSize} ${styles.fontFamily}`
-            const lineHeight = Number.parseFloat(styles.lineHeight) || Number.parseFloat(styles.fontSize) * 1.62
+            const lineHeight = Number.parseFloat(styles.lineHeight) || fontSize * 1.62
             const letterSpacing = Number.parseFloat(styles.letterSpacing) || 0
-            const width = Math.max(1, element.clientWidth)
-            const prepared = prepareWithSegments(text, font, {letterSpacing})
-            const nextLines = layoutWithLines(prepared, width, lineHeight).lines.map(line => line.text)
-            setLines(nextLines.length ? nextLines : [text])
+            if(!preparedText || font !== preparedFont || letterSpacing !== preparedLetterSpacing) {
+                preparedText = prepareWithSegments(text, font, {letterSpacing})
+                preparedFont = font
+                preparedLetterSpacing = letterSpacing
+            }
+            const nextLines = layoutWithLines(preparedText, element.clientWidth, lineHeight).lines.map(line => line.text)
+            const displayedLines = nextLines.length ? nextLines : [text]
+            setLines(current => current.length === displayedLines.length &&
+                current.every((line, index) => line === displayedLines[index]) ? current : displayedLines)
         }
 
         layoutText()
         const observer = new ResizeObserver(layoutText)
         observer.observe(element)
+        document.fonts?.ready.then(() => {
+            // Font loading can change glyph widths without changing the font string.
+            preparedText = null
+            layoutText()
+        })
 
         return () => {
+            active = false
             observer.disconnect()
         }
     }, [text])

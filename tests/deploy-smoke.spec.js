@@ -47,6 +47,13 @@ for(const route of ['experience','education','my-software','my-hardware','my-wri
     test(`direct link loads ${route}`, async ({page})=>{
         await open(page,route)
         await expect(page.locator('.app-error-boundary')).toHaveCount(0)
+        if(route === 'my-writings') {
+            // Loading the article shell alone does not cover async manuscript
+            // initialization, which previously locked the page in a layout loop.
+            await expect(page.locator('.illustrated-manuscript')).toHaveAttribute('data-status','ready')
+            await page.getByRole('button',{name:'Contact',exact:true}).filter({visible:true}).first().click()
+            await expect(page.locator('#section-contact.section-shown input.form-input').first()).toBeVisible()
+        }
     })
 }
 

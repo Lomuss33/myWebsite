@@ -1,10 +1,10 @@
 # Validation and deployment
 
-Functional deployment gate verified 2026-10-28: all 14 production-build Chromium checks passed locally on Windows in 35.2 seconds; lint and documentation path checks passed. GitHub Linux execution remains unverified. Other validation guidance last source-reviewed 2026-10-05 against [package.json](../../package.json), [Playwright config](../../playwright.config.js), [deploy workflow](../../.github/workflows/deploy.yml), and desktop density assertions in [responsive.spec.js](../../tests/responsive.spec.js).
+Functional deployment gate verified 2026-10-28 after `npm ci`: all 14 production-build Chromium checks passed locally on Windows in 34.5 seconds using locked Pretext 1.0.0 and Playwright 1.64.1. The earlier 35.2-second result used stale installed dependencies and did not reproduce CI. Two focused text-layout lifecycle checks also passed (9.7 seconds). See [reproduction and verification](../evidence/2026-10-28-pretext-ci/verification.md). GitHub Linux execution of these fixes remains unverified. Other validation guidance last source-reviewed 2026-10-05 against [package.json](../../package.json), [Playwright config](../../playwright.config.js), [deploy workflow](../../.github/workflows/deploy.yml), and desktop density assertions in [responsive.spec.js](../../tests/responsive.spec.js).
 
 ## Checks by change
 
-Use Node.js 24 LTS and `npm ci` for a lockfile-based install. Dependency engine requirements come from packages/lockfile. The workflow verifies lint, focused layout and browser checks, and the production build before deploying; pull requests run verification without deployment.
+Use Node.js 24 LTS and `npm ci` for a lockfile-based install. Re-run `npm ci` after pulling dependency or lockfile changes, and `npx playwright install chromium` after a Playwright update. A successful test using stale `node_modules` is not verification of the checked-out lockfile. Dependency engine requirements come from packages/lockfile. The workflow verifies lint, focused layout and browser checks, and the production build before deploying; pull requests run verification without deployment.
 
 Dependabot checks npm and GitHub Actions weekly. Development-tool patch updates are grouped; security and major updates remain separately reviewable. See [.github/dependabot.yml](../../.github/dependabot.yml).
 
@@ -30,7 +30,7 @@ The documentation path checker also runs in CI. Its default scope excludes histo
 
 ## Browser checks
 
-`npm run test:responsive:ci` is the routine CI gate: 14 independent Chromium behavior checks in [deploy-smoke.spec.js](../../tests/deploy-smoke.spec.js). They cover mobile/desktop navigation and browser Back, contact input, direct links to the other six sections, Software/Hardware filtering and reset, Education expansion, profile-contact dismissal, gallery navigation/dismissal, and Art reveals. Each case checks for uncaught application errors and has a 60-second budget. Checks use English/dark and ordinary mobile/desktop viewports rather than a locale/theme/size matrix.
+`npm run test:responsive:ci` is the routine CI gate: 14 independent Chromium behavior checks in [deploy-smoke.spec.js](../../tests/deploy-smoke.spec.js). They cover mobile/desktop navigation and browser Back, contact input, direct links to the other six sections (including asynchronous Writing manuscript readiness and navigation away), Software/Hardware filtering and reset, Education expansion, profile-contact dismissal, gallery navigation/dismissal, and Art reveals. Each case checks for uncaught application errors and has a 60-second budget. Checks use English/dark and ordinary mobile/desktop viewports rather than a locale/theme/size matrix.
 
 **Deployment testing contract:** assert visitor actions and observable results. Do not gate publishing on exact fonts, colours, spacing, sizes, transforms, card counts, screenshot matches, layout-mode attributes, or component arrangement. Use roles and accessible names where available; use scoped component selectors for controls without semantic identifiers. Derive counts from loaded content. Update functional tests when a feature's behavior intentionally changes, not when its appearance changes. Existing visual/layout tests remain optional diagnostic tools through the full suite and focused commands. Lint, locale validation, unit checks and the production build remain required; browser behavior checks do not constitute a security audit. Tests do not send contact messages or request device permissions.
 
@@ -54,6 +54,8 @@ npm run test:responsive:cross-browser
 Remove-Item Env:RESPONSIVE_SMOKE
 Remove-Item Env:PLAYWRIGHT_BROWSER
 ```
+
+For focused Pretext lifecycle regression checks after a production build, run `npx playwright test tests/text-layout.spec.js` with `PLAYWRIGHT_TEST_BUILD=1`. These two optional behavior checks cover manuscript initialization/resizing, Contact text resizing, browser Back/Forward and usable input after returning, with desktop normal motion/dark and mobile reduced motion/light. They do not impose appearance requirements or expand the routine 14-test gate.
 
 The default local Playwright config starts/reuses the development server on localhost:5173. `PLAYWRIGHT_TEST_BUILD=1` selects the built site on localhost:4173 and requires an existing production build. Both modes default to reduced motion and write `test-results/`. Check that the server serves the intended tree. Inspect assertions before treating tests as current product requirements. ESLint ignores disposable `docs/tmp/` experiments and generated scratch bundles, matching that directory's Git policy.
 

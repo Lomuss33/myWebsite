@@ -171,6 +171,16 @@ function getPreparedSegments(story, font, cachedPrepared = null) {
     }
 }
 
+function nextManuscriptLine(prepared, width, cursor) {
+    // Pretext 1.x takes width before the cursor, matching its rich-inline API.
+    const line = layoutNextLineRange(prepared, width, cursor)
+    if(line && !(line.end.segmentIndex > cursor.segmentIndex ||
+        (line.end.segmentIndex === cursor.segmentIndex && line.end.graphemeIndex > cursor.graphemeIndex))) {
+        throw new Error("Manuscript text layout did not advance its cursor")
+    }
+    return line
+}
+
 function measureGraphemeWidth(context, font, grapheme) {
     const cacheKey = `${font}::${grapheme}`
     const cachedWidth = graphemeWidthCache.get(cacheKey)
@@ -527,7 +537,7 @@ function createIllustratedManuscript({
             let finished = false
 
             for (const range of ranges) {
-                const lineRange = layoutNextLineRange(activePrepared.segments, cursor, range.right - range.left)
+                const lineRange = nextManuscriptLine(activePrepared.segments, range.right - range.left, cursor)
                 if (lineRange === null) {
                     finished = true
                     break
@@ -799,7 +809,7 @@ function createIllustratedManuscript({
 
             for (const range of ranges) {
                 const width = range.right - range.left
-                const lineRange = layoutNextLineRange(prepared.segments, cursor, width)
+                const lineRange = nextManuscriptLine(prepared.segments, width, cursor)
                 if (lineRange === null) {
                     done = true
                     break

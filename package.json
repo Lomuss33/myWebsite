@@ -26,8 +26,8 @@
         "test:responsive:cross-browser": "playwright test tests/responsive.spec.js tests/mobile-profile.spec.js --grep \"mobile profile centers|Education hover motion|Contact keeps native wheel scrolling|gallery stays fullscreen\""
     },
     "dependencies": {
-        "@chenglou/pretext": "^0.0.9",
-        "@emailjs/browser": "^4.4.1",
+        "@chenglou/pretext": "^1.0.0",
+        "@emailjs/browser": "^5.0.3",
         "@fortawesome/fontawesome-free": "^7.3.1",
         "bootstrap": "^5.3.8",
         "leaflet": "^1.9.4",
@@ -44,7 +44,7 @@
     },
     "devDependencies": {
         "@eslint/js": "9.39.5",
-        "@playwright/test": "^1.63.0",
+        "@playwright/test": "^1.64.0",
         "@types/react": "^19.3.0",
         "@types/react-dom": "^19.3.0",
         "@vitejs/plugin-react": "^6.1.1",

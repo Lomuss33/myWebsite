@@ -1,6 +1,6 @@
 # Validation and deployment
 
-Verified: 2026-10-05 against [package.json](../../package.json), [Playwright config](../../playwright.config.js), [deploy workflow](../../.github/workflows/deploy.yml), and desktop density assertions in [responsive.spec.js](../../tests/responsive.spec.js).
+Functional deployment gate verified 2026-10-28: all 14 production-build Chromium checks passed locally on Windows in 35.2 seconds; lint and documentation path checks passed. GitHub Linux execution remains unverified. Other validation guidance last source-reviewed 2026-10-05 against [package.json](../../package.json), [Playwright config](../../playwright.config.js), [deploy workflow](../../.github/workflows/deploy.yml), and desktop density assertions in [responsive.spec.js](../../tests/responsive.spec.js).
 
 ## Checks by change
 
@@ -30,7 +30,9 @@ The documentation path checker also runs in CI. Its default scope excludes histo
 
 ## Browser checks
 
-`npm run test:responsive:ci` is the routine CI gate. It runs Chromium checks for page loading, overflow, navigation, profile containment, project filtering, Education expansion, Hardware probe unlock, Art reveals, map gestures, and gallery dismissal. The section-fit subset samples six combinations that collectively cover all four locales, both themes, and mobile, normal, and ultrawide layouts. Exact typography, card density, decorative motion, and map styling remain in the full suite so intentional design revisions do not block ordinary deployment.
+`npm run test:responsive:ci` is the routine CI gate: 14 independent Chromium behavior checks in [deploy-smoke.spec.js](../../tests/deploy-smoke.spec.js). They cover mobile/desktop navigation and browser Back, contact input, direct links to the other six sections, Software/Hardware filtering and reset, Education expansion, profile-contact dismissal, gallery navigation/dismissal, and Art reveals. Each case checks for uncaught application errors and has a 60-second budget. Checks use English/dark and ordinary mobile/desktop viewports rather than a locale/theme/size matrix.
+
+**Deployment testing contract:** assert visitor actions and observable results. Do not gate publishing on exact fonts, colours, spacing, sizes, transforms, card counts, screenshot matches, layout-mode attributes, or component arrangement. Use roles and accessible names where available; use scoped component selectors for controls without semantic identifiers. Derive counts from loaded content. Update functional tests when a feature's behavior intentionally changes, not when its appearance changes. Existing visual/layout tests remain optional diagnostic tools through the full suite and focused commands. Lint, locale validation, unit checks and the production build remain required; browser behavior checks do not constitute a security audit. Tests do not send contact messages or request device permissions.
 
 The workflow builds once before browser checks, then serves that same `dist/` artifact on localhost:4173 with `PLAYWRIGHT_TEST_BUILD=1`. Built-site runs allow one retry for a transient failure; persistent failures still fail verification. They never reuse an unrelated local server. Firefox and WebKit interaction checks are available by enabling **extended_browser_checks** on manual workflow dispatch, or through the local cross-browser command.
 
@@ -39,9 +41,7 @@ The workflow builds once before browser checks, then serves that same `dist/` ar
 ```powershell
 npm run build
 $env:PLAYWRIGHT_TEST_BUILD = '1'
-$env:RESPONSIVE_SMOKE = '1'
 npm run test:responsive:ci
-Remove-Item Env:RESPONSIVE_SMOKE
 Remove-Item Env:PLAYWRIGHT_TEST_BUILD
 ```
 
@@ -69,11 +69,11 @@ Retained evidence records revision/dirty-tree state, viewport, browser, theme, l
 
 ## Known gaps
 
-Real mobile keyboards/safe areas, browser zoom, weak GPUs, and device rendering still require manual verification. The focused Chromium matrix samples all supported locales, both themes, and all three viewport classes, but not every possible combination. Optional Firefox and WebKit checks cover targeted English/dark interactions; routine pushes run Chromium only. These checks do not replace physical-device or other operating-system testing.
+Real mobile keyboards/safe areas, browser zoom, weak GPUs, and device rendering still require manual verification. The routine functional checks use English/dark on mobile and desktop; other locales, themes, ultrawide layouts, visual quality, and detailed gesture behavior require optional broader suites and manual inspection. Optional Firefox and WebKit checks cover targeted English/dark interactions; routine pushes run Chromium only. These checks do not replace physical-device or other operating-system testing.
 
 ## Deployment
 
-The workflow verifies pull requests and runs on `main` pushes or manual dispatch. After lint, unit checks, the production build, and the focused Chromium suite pass, it publishes the same tested `dist/` artifact to GitHub Pages with CNAME `lovro-music.de` and `keep_files: true`. Enabling extended browser checks also requires the Firefox and WebKit interaction suites to pass before publishing.
+The workflow verifies pull requests and runs on `main` pushes or manual dispatch. After lint, unit checks, the production build, and the Chromium functional checks pass, it publishes the same tested `dist/` artifact to GitHub Pages with CNAME `lovro-music.de` and `keep_files: true`. Enabling extended browser checks also requires the Firefox and WebKit interaction suites to pass before publishing.
 
 The deploy job uses the shared `portfolio-gh-pages` concurrency group with active-run cancellation disabled. Verification may run concurrently, but publishing jobs cannot push to `gh-pages` simultaneously. This prevents the observed `fetch first` push rejection when two deployments race. GitHub concurrency retains at most one pending job; it does not guarantee commit-order publishing. Source-reviewed 2026-10-05; the workflow change has not been deployed or exercised in Actions.
 

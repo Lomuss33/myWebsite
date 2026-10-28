@@ -55,10 +55,8 @@ jobs:
         if: github.event_name == 'workflow_dispatch' && inputs.extended_browser_checks
         run: npx playwright install --with-deps firefox webkit
 
-      - name: Run focused Chromium responsive suite
+      - name: Run Chromium functional checks
         run: npm run test:responsive:ci
-        env:
-          RESPONSIVE_SMOKE: '1'
 
       - name: Run Firefox responsive smoke suite
         if: github.event_name == 'workflow_dispatch' && inputs.extended_browser_checks

@@ -14,7 +14,8 @@ section#section-about .section-content.section-content-has-decoration-bands {
     }
     .section-body > article#article-2-section-about {
         --heading-gap: clamp(3px, .3vw, 5px);
-        margin-top: clamp(1px, .1vw, 2px);
+        --heading-gap-before: 0px;
+        margin-top: 0;
     }
     // Headerless articles need the same opening gap as the heading-led ones.
     .section-decoration-boundary-between-articles + article.article:not(:has(> h4.article-title)) {

@@ -151,7 +151,11 @@ for(const [width,height,language,theme] of [
                     const ink=range.getBoundingClientRect()
                     if(ink.left<rect.left-1 || ink.right>rect.right+1)
                         issues.push(heading.textContent.trim()+': text overflow')
-                    if(heading.matches('.article-title') && Math.abs(parseFloat(css.marginTop)-parseFloat(css.marginBottom))>0.1)
+                    if(heading.matches('#article-2-section-about > h4.article-title')) {
+                        const contact=document.querySelector('#article-1-section-about').getBoundingClientRect()
+                        if(Math.abs(rect.top-contact.bottom)>1)
+                            issues.push('Home contact and introduction have an external gap')
+                    } else if(heading.matches('.article-title') && Math.abs(parseFloat(css.marginTop)-parseFloat(css.marginBottom))>0.1)
                         issues.push(heading.textContent.trim()+': asymmetric vertical spacing')
                 }
                 return issues

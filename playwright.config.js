@@ -17,6 +17,7 @@ export default defineConfig({
         browserName: process.env.PLAYWRIGHT_BROWSER || 'chromium',
         reducedMotion: 'reduce',
         screenshot: 'only-on-failure',
+        trace: 'retain-on-failure',
         launchOptions: process.env.PLAYWRIGHT_EXECUTABLE_PATH ? {executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH} : {},
     },
     webServer: {

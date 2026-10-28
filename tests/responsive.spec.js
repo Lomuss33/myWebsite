@@ -93,9 +93,9 @@ async function openSection(page, route, {reuse = false} = {}) {
     const readinessState=await readiness.jsonValue()
     if(readinessState==='app-error')
         throw new Error(`App error while opening #${route}: ${page.__responsiveConsoleErrors.slice(-3).join(' | ')}`)
-    // Stop the decorative onboarding spotlight by normal pointer movement.
-    await page.mouse.move(1,1)
-    await page.mouse.move(200,1)
+    // Only Home owns the guide. Its keyboard dismissal avoids unrelated
+    // pointer hit-testing/compositor work after every route.
+    if(route === 'about') await page.keyboard.press('Escape')
 }
 
 for(const [width,height,language,theme] of [
@@ -114,7 +114,7 @@ for(const [width,height,language,theme] of [
         // Each viewport has its own time budget. Switch routes within the app so
         // this comparison does not rebuild the same page eight times.
         for(const route of routes) {
-            await openSection(page,route,{reuse:true})
+            await test.step('Open #'+route,()=>openSection(page,route,{reuse:true}))
             await expect(page.locator('html')).toHaveAttribute('data-layout',resolveLayout(width,height))
             const pageTitle=page.locator(
                 '#section-'+route+' .section-header-title, '+
@@ -177,7 +177,7 @@ for(const [language,theme,mode] of sectionFitScenarios) {
         const errors=[]
         page.on('pageerror',e=>errors.push(e.message))
         for(const route of routes) {
-            await openSection(page,route,{reuse:true})
+            await test.step('Open #'+route,()=>openSection(page,route,{reuse:true}))
             await expect(page.locator('html')).toHaveAttribute('data-layout',mode)
             const wrapper=page.locator('section.section-shown .section-content-elements-wrapper')
             await expect(wrapper).toHaveCSS('transform','none')

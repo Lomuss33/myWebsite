@@ -18,7 +18,7 @@
         font-weight: 800 !important;
         line-height: var(--heading-line-height) !important;
         letter-spacing: var(--heading-tracking) !important;
-        text-align: center !important;
+        text-align: var(--heading-alignment, center) !important;
         text-wrap: balance !important;
         white-space: normal !important;
         overflow-wrap: anywhere !important;
@@ -52,7 +52,12 @@
         font-size: inherit !important;
         line-height: inherit !important;
         letter-spacing: inherit !important;
-        text-align: center !important;
+        text-align: var(--heading-alignment, center) !important;
+    }
+
+    #section-about h4.article-title {
+        --heading-alignment: left;
+        --heading-text-gutter: clamp(1.25rem, 2.5cqi, 2rem);
     }
 
     .section-content .article-title-prefix {

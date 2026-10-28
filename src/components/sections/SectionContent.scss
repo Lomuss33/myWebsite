@@ -130,7 +130,7 @@ div.section-content.section-content-has-decoration-bands {
 
 div.section-content.section-content-no-decoration-bands {
     --section-content-terminal-reserve: calc(
-        (var(--section-decoration-band-between-height, clamp(28px, 3.4vw, 48px)) * 7) +
+        (var(--section-decoration-band-between-height, clamp(24px, 2.8vw, 36px)) * 7) +
         var(--section-decoration-band-safe-bottom, 0px)
     );
 }
@@ -158,8 +158,11 @@ div.section-content.section-content-has-decoration-bands header.section-header {
 
 div.section-decoration-band {
     --section-decoration-band-background: #000;
-    --section-decoration-band-between-height: clamp(28px, 3.4vw, 48px);
-    --section-decoration-band-height: clamp(26px, 3.2vw, 46px);
+    --section-decoration-band-between-height: clamp(24px, 2.8vw, 36px);
+    --section-decoration-band-height: var(--section-decoration-band-between-height);
+    @supports (width: 1cqi) {
+        --section-decoration-band-between-height: clamp(24px, 2.8cqi, 36px);
+    }
     --section-decoration-edge-start: var(--theme-primary);
     --section-decoration-edge-end: var(--theme-secondary);
     display: block;
@@ -244,18 +247,21 @@ div.section-decoration-line {
    all viewports; article and header pseudo-lines are suppressed instead. */
 div.section-content.section-content-has-decoration-bands {
     --section-decoration-line-height: var(--section-separator-line-height);
+    @include layout-desktop {
+        --section-decoration-line-height: calc(var(--section-separator-line-height) / 2);
+    }
 }
 
 div.section-content.section-content-has-decoration-bands div.section-decoration-boundary-after-header,
 div.section-content.section-content-has-decoration-bands div.section-decoration-boundary-between-articles,
 div.section-content.section-content-has-decoration-bands div.section-decoration-boundary-page-bottom {
-    padding-top: var(--section-separator-line-overlap);
+    padding-top: calc(var(--section-decoration-line-height) / 2);
 }
 
 div.section-content.section-content-has-decoration-bands div.section-decoration-boundary-after-header,
 div.section-content.section-content-has-decoration-bands div.section-decoration-boundary-between-articles,
 div.section-content.section-content-has-decoration-bands div.section-decoration-boundary-page-top {
-    padding-bottom: var(--section-separator-line-overlap);
+    padding-bottom: calc(var(--section-decoration-line-height) / 2);
 }
 
 div.section-content.section-content-has-decoration-bands div.section-decoration-line {

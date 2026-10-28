@@ -420,15 +420,7 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
             const articleRect = listElement.closest("article")?.getBoundingClientRect()
             const firstRect = avatarElements[0].getBoundingClientRect()
             const lastRect = avatarElements[avatarElements.length - 1].getBoundingClientRect()
-            const firstExperienceItem = isExperienceTimeline ?
-                listElement.querySelector(".article-timeline-item--experience") :
-                null
-            const firstExperienceItemRect = firstExperienceItem?.getBoundingClientRect()
-            const topOffsetPx = firstExperienceItemRect ?
-                Math.max(0, Math.round(
-                    (firstExperienceItemRect.top - listRect.top) + firstExperienceItemRect.height * (2 / 3)
-                )) :
-                Math.max(0, Math.round((firstRect.top - listRect.top) + firstRect.height / 2))
+            const topOffsetPx = Math.max(0, Math.round((firstRect.top - listRect.top) + firstRect.height / 2))
             const bottomOffsetPx = isExperienceTimeline ?
                 Math.max(0, Math.round((articleRect?.bottom ?? listRect.bottom) - listRect.bottom)) :
                 Math.max(0, Math.round(listRect.bottom - (lastRect.top + lastRect.height / 2)))
@@ -473,7 +465,14 @@ function ArticleTimelineItems({ dataWrapper, selectedItemCategoryId, isMyArtTime
             listElement.addEventListener('transitionend', onAvatarTransition)
             listElement.addEventListener('transitioncancel', onAvatarTransition)
         }
+        // The text-gap anchor can move without resizing either the row or its
+        // avatar. Follow that first-row style update as well as size changes.
+        const firstExperienceRow = isExperienceTimeline ? listElement.querySelector('.article-timeline-item--experience') : null
+        const positionObserver = firstExperienceRow && typeof MutationObserver !== 'undefined' ? new MutationObserver(_updateOffsets) : null
+        if(positionObserver)
+            positionObserver.observe(firstExperienceRow, {attributes: true, attributeFilter: ['style']})
         const cleanupAvatarMotion = () => {
+            positionObserver?.disconnect()
             if(avatarAnimationFrame !== null)
                 cancelAnimationFrame(avatarAnimationFrame)
             listElement.removeEventListener('transitionrun', onAvatarTransition)
@@ -797,6 +796,38 @@ function ArticleTimelineItem({
         <ArticleItemInfoForTimelinesPreviewFooter itemWrapper={itemWrapper}
                                                   galleryMetadata={isDigitalExpressionTimeline ? galleryMetadata : null}/>
     ) : null
+
+    useLayoutEffect(() => {
+        if(!isExperienceTimeline) return
+        const row = itemRef.current
+        const card = contentRef.current
+        const paragraph = card?.querySelector('.article-timeline-item-info-for-timelines-body-text')
+        const list = card?.querySelector('.article-timeline-item-info-for-timelines-body-list')
+        if(!row || !card || !paragraph || !list) return
+
+        let disposed = false
+        const alignAvatar = () => {
+            if(disposed) return
+            // Cancel the card's hover translation and page scroll, retaining
+            // the gap's layout coordinate relative to the avatar's row.
+            const cardTop = card.getBoundingClientRect().top
+            const gapCenter = (paragraph.getBoundingClientRect().bottom + list.getBoundingClientRect().top) / 2
+            const offset = `${Math.max(0, gapCenter - cardTop + card.offsetTop).toFixed(2)}px`
+            if(row.style.getPropertyValue('--experience-text-gap-y') !== offset)
+                row.style.setProperty('--experience-text-gap-y', offset)
+        }
+        alignAvatar()
+        const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(alignAvatar) : null
+        for(const element of [row, card, paragraph, list]) observer?.observe(element)
+        window.addEventListener('resize', alignAvatar)
+        document.fonts?.ready.then(alignAvatar)
+        return () => {
+            disposed = true
+            observer?.disconnect()
+            window.removeEventListener('resize', alignAvatar)
+            row.style.removeProperty('--experience-text-gap-y')
+        }
+    }, [isExperienceTimeline, itemWrapper.locales.text])
 
     useLayoutEffect(() => {
         if(!isMyArtTimeline)

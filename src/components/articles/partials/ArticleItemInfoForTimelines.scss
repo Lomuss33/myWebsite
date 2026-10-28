@@ -131,7 +131,7 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
     // Keep usable values on older Android browsers that do not understand cqi.
     --timeline-title-size: clamp(1.125rem, 1rem + 0.45vw, 1.5rem);
     --timeline-meta-size: clamp(0.875rem, 0.83rem + 0.18vw, 1rem);
-    --timeline-body-size: clamp(1rem, 0.94rem + 0.18vw, 1.125rem);
+    --timeline-body-size: clamp(0.8125rem, 0.75rem + 0.5vw, 1.125rem);
     --experience-meta-time-size: var(--timeline-meta-size);
     --experience-meta-grid-gap: 0.62rem;
     --experience-meta-split-gap: 0.78rem;
@@ -173,7 +173,7 @@ article#article-1-section-experience div.article-timeline-item-info-for-timeline
     @supports (width: 1cqi) {
         --timeline-title-size: clamp(1.125rem, 1rem + 0.7cqi, 1.5rem);
         --timeline-meta-size: clamp(0.875rem, 0.82rem + 0.3cqi, 1rem);
-        --timeline-body-size: clamp(1rem, 0.94rem + 0.25cqi, 1.125rem);
+        --timeline-body-size: clamp(0.8125rem, 0.75rem + 0.5cqi, 1.125rem);
         --experience-description-right-offset: max(15cqi, calc(var(--experience-description-right-buffer, 0px) * 3.4));
     }
 
@@ -3395,7 +3395,7 @@ article.article-timeline--art-photography div.article-timeline-item-content ul.a
 }
 
 // One readable scale for every Experience paragraph and responsibility row.
-// Cards grow naturally; narrower panes wrap instead of shrinking their copy.
+// Paragraphs and list rows shrink together with the available card width.
 html[data-layout] article#article-1-section-experience div.article-timeline-item-info-for-timelines-body {
     // Only the two description blocks reserve room for the side-floating logo.
     // The title, dates, metadata and divider retain the card's complete width.

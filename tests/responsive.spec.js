@@ -139,6 +139,11 @@ for(const [width,height,language,theme] of [
                         issues.push(heading.textContent.trim()+': outside viewport')
                     const text=heading.querySelector('.article-title-text') || heading
                     const textCss=getComputedStyle(text)
+                    const expectedAlignment=heading.matches('#section-about h4.article-title') ? 'left' : 'center'
+                    if(textCss.textAlign!==expectedAlignment)
+                        issues.push(heading.textContent.trim()+': incorrect title alignment')
+                    if(expectedAlignment==='left' && parseFloat(textCss.paddingLeft)<20)
+                        issues.push(heading.textContent.trim()+': missing Home title inset')
                     if(Math.abs(parseFloat(textCss.paddingLeft)-parseFloat(textCss.paddingRight))>0.1)
                         issues.push(heading.textContent.trim()+': asymmetric decoration space')
                     const range=document.createRange()
@@ -798,7 +803,7 @@ test('Experience desktop density keeps all three articles compact and readable',
         expect(metrics.timelineHeading.font).toBeLessThanOrEqual(31)
         expect(metrics.timelineTitle.font).toBeGreaterThanOrEqual(18)
         expect(metrics.timelineTitle.font).toBeLessThanOrEqual(24)
-        expect(metrics.timelineBody.font).toBeGreaterThanOrEqual(16)
+        expect(metrics.timelineBody.font).toBeGreaterThanOrEqual(13)
         expect(metrics.timelineBody.font).toBeLessThanOrEqual(18)
         expect(metrics.avatar.width).toBeLessThanOrEqual(171)
         expect(metrics.flyerHeading.font).toBeGreaterThanOrEqual(18)
@@ -828,7 +833,7 @@ test('Experience desktop density does not leak into narrow landscape or mobile',
     await page.setViewportSize({width:568,height:320})
     await openSection(page,'experience')
     const landscape=await page.locator('#article-1-section-experience .article-timeline-item-info-for-timelines-body-text').first().evaluate(element=>parseFloat(getComputedStyle(element).fontSize))
-    expect(landscape).toBeGreaterThanOrEqual(15.5)
+    expect(landscape).toBeGreaterThanOrEqual(13)
 
     await page.setViewportSize({width:390,height:844})
     await expect(page.locator('html')).toHaveAttribute('data-layout','mobile')
@@ -859,9 +864,9 @@ test('Experience timeline text scales with narrow desktop cards', async ({page})
             }
         })
         expect(sizes.content.every(size=>size.width>0)).toBe(true)
-        expect(sizes.bodyFont).toBeGreaterThanOrEqual(16)
+        expect(sizes.bodyFont).toBeGreaterThanOrEqual(13)
         expect(sizes.bodyFont).toBeLessThanOrEqual(18)
-        expect(sizes.content.every(size=>size.font>=16&&size.font<=18)).toBe(true)
+        expect(sizes.content.every(size=>size.font>=13&&size.font<=18)).toBe(true)
     }
 })
 

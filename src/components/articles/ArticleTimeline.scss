@@ -1428,9 +1428,7 @@ article#article-1-section-experience {
     }
 
     ul.article-timeline-items:before {
-        // The rail grows upward from the bottom of the timeline. Its top endpoint
-        // is measured from the first card rather than from the floating avatar,
-        // whose breakpoint-dependent position made the rail jump while resizing.
+        // Keep the top endpoint attached to the first floating avatar's center.
         top: var(--timeline-line-top-offset, calc(var(--avatar-size) / 2));
         bottom: calc(-1 * var(--timeline-line-bottom-offset, 0px));
         left: auto;
@@ -1483,7 +1481,7 @@ article#article-1-section-experience {
         z-index: 4;
 
         @include content-breakpoint-down(md) {
-            top: 66%;
+            top: var(--experience-text-gap-y, 66%);
         }
     }
 

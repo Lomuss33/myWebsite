@@ -17,7 +17,11 @@ test('mobile profile centers the portrait between names and reflows controls', a
             const selectors=['.nav-profile-card-name-line-first','.nav-profile-card-media','.nav-profile-card-name-line-last','.nav-profile-card-mobile-action-stack-middle','.nav-profile-card-mobile-action-stack-right']
             const nodes=selectors.map(s=>e.querySelector(s))
             const r=nodes.map(n=>n.getBoundingClientRect())
+            const header=e.closest('.nav-profile-card-header').getBoundingClientRect()
+            const role=e.closest('.nav-profile-card-header').querySelector('.nav-profile-card-role').getBoundingClientRect()
             return {
+                portraitTopGap:r[1].top-header.top,
+                portraitBottomGap:role.top-r[1].bottom,
                 inside:r.every(b=>b.left>=box.left-1&&b.right<=box.right+1&&b.top>=box.top-1&&b.bottom<=box.bottom+1),
                 separate:r.every((a,i)=>r.slice(i+1).every(b=>Math.min(a.right,b.right)-Math.max(a.left,b.left)<=1||Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)<=1)),
                 ordered:r[0].right<=r[1].left+1&&r[1].right<=r[2].left+1,
@@ -29,6 +33,7 @@ test('mobile profile centers the portrait between names and reflows controls', a
             }
         })
         expect(result.inside,`${width} containment`).toBe(true)
+        expect(Math.abs(result.portraitTopGap-result.portraitBottomGap),`${width} balanced portrait buffers`).toBeLessThanOrEqual(1)
         expect(result.separate,`${width} overlap`).toBe(true)
         expect(result.ordered,`${width} name order`).toBe(true)
         if(width===568) {

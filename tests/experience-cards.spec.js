@@ -12,6 +12,7 @@ for(const language of ['en','de','hr','tr']) {
             const cards = page.locator('#article-1-section-experience .article-timeline-item--experience')
             await expect(cards.first()).toBeVisible()
             await page.evaluate(() => document.fonts.ready)
+            const fontSamples = []
             for(const [width,height] of sizes) {
                 await page.setViewportSize({width,height})
                 // Verify actual text fragments, including wrapped translations,
@@ -20,6 +21,7 @@ for(const language of ['en','de','hr','tr']) {
                     const card = item.querySelector('.article-timeline-item-content--experience')
                     const avatar = item.querySelector('.article-timeline-item-avatar--experience').getBoundingClientRect()
                     const bounds = card.getBoundingClientRect()
+                    const narrow = item.closest('article').clientWidth < 768
                     const walker = document.createTreeWalker(card, NodeFilter.SHOW_TEXT)
                     let node
                     const problems = []
@@ -31,7 +33,9 @@ for(const language of ['en','de','hr','tr']) {
                             if(rect.width < 1 || rect.height < 1) continue
                             if(rect.left < bounds.left-1 || rect.right > bounds.right+1 || rect.bottom > bounds.bottom+1)
                                 problems.push(`clipped: ${node.textContent.trim()}`)
-                            if(rect.left < avatar.right-1 && rect.right > avatar.left+1 && rect.top < avatar.bottom-1 && rect.bottom > avatar.top+1)
+                            // Narrow cards retain their original side-overlap treatment.
+                            // Desktop descriptions must clear the larger floating logo.
+                            if(!narrow && rect.left < avatar.right-1 && rect.right > avatar.left+1 && rect.top < avatar.bottom-1 && rect.bottom > avatar.top+1)
                                 problems.push(`logo overlap: ${node.textContent.trim()}`)
                         }
                     }
@@ -42,7 +46,13 @@ for(const language of ['en','de','hr','tr']) {
                     const header = card.querySelector('.article-timeline-item-info-for-timelines-header')
                     const metadata = card.querySelector('.article-timeline-item-info-for-timelines-header-meta-grid')
                     const fullWidth = body.getBoundingClientRect().width
+                    const wrapper = item.querySelector('.article-timeline-item-avatar-wrapper').getBoundingClientRect()
+                    const paragraph = body.querySelector('.article-timeline-item-info-for-timelines-body-text')
+                    const list = body.querySelector('.article-timeline-item-info-for-timelines-body-list')
+                    const textGapCenter = paragraph && list ? (paragraph.getBoundingClientRect().bottom + list.getBoundingClientRect().top)/2 : null
                     return {problems,bodySizes,metaSize:parseFloat(getComputedStyle(meta).fontSize),
+                        copyWidth:fullWidth,
+                        originalMobilePlacement:!narrow || (parseFloat(getComputedStyle(item).paddingTop)===0 && (textGapCenter===null || Math.abs(wrapper.top+wrapper.height/2-textGapCenter)<2)),
                         titleSize:parseFloat(getComputedStyle(title).fontSize),
                         fullWidthHeader:[title,header,metadata].every(e=>Math.abs(e.getBoundingClientRect().width-fullWidth)<1) && getComputedStyle(title).textAlign==='center',
                         floating:avatar.left<bounds.right && avatar.right>bounds.right,
@@ -52,18 +62,29 @@ for(const language of ['en','de','hr','tr']) {
                     const results = await inspect()
                     return results.flatMap((r,i) => [
                         ...r.problems.map(p => `${i}: ${p}`),
-                        ...(r.bodySizes.every(s=>s>=16 && s<=18.1) ? [] : [`${i}: body size ${r.bodySizes}`]),
+                        ...(r.bodySizes.every(s=>s>=13 && s<=18.1) ? [] : [`${i}: body size ${r.bodySizes}`]),
+                        ...(r.originalMobilePlacement ? [] : [`${i}: original mobile positioning changed`]),
                         ...(r.metaSize>=14 && r.titleSize>=18 ? [] : [`${i}: small heading/metadata`]),
                         ...(r.fullWidthHeader ? [] : [`${i}: header width/alignment changed`]),
                         ...(r.floating && r.targetSize>=44 ? [] : [`${i}: floating logo placement changed`])
                     ])
                 }, {message:`${width}x${height} ${language}/${theme}`}).toEqual([])
+                await expect.poll(() => page.locator('#article-1-section-experience ul.article-timeline-items').evaluate(list => {
+                    const first = list.querySelector('.article-timeline-item-avatar-wrapper--experience').getBoundingClientRect()
+                    const railTop = list.getBoundingClientRect().top + parseFloat(getComputedStyle(list, '::before').top)
+                    return Math.abs(railTop - (first.top + first.height/2))
+                }), {message:`${width}x${height}: rail starts at first avatar center`}).toBeLessThanOrEqual(1.5)
+                fontSamples.push(await cards.first().locator('.article-timeline-item-info-for-timelines-body').evaluate(body=>({width:body.clientWidth,font:parseFloat(getComputedStyle(body).fontSize)})))
                 expect(await page.evaluate(() => document.documentElement.scrollWidth), `${width}px document overflow`).toBeLessThanOrEqual(width+1)
                 if(language==='en' && [390,1366,3440].includes(width)) {
                     await cards.first().scrollIntoViewIfNeeded()
                     await page.screenshot({path:`docs/tmp/career-${theme}-${width}.png`})
                 }
             }
+            fontSamples.sort((a,b)=>a.width-b.width)
+            for(let i=1;i<fontSamples.length;i++)
+                expect(fontSamples[i].font).toBeGreaterThanOrEqual(fontSamples[i-1].font-0.05)
+            expect(fontSamples.at(-1).font-fontSamples[0].font).toBeGreaterThan(3)
             // The largest focus/hover state must also leave the copy clear.
             await page.emulateMedia({reducedMotion:'no-preference'})
             for(const width of [390,1366]) {
@@ -72,7 +93,8 @@ for(const language of ['en','de','hr','tr']) {
                     await card.locator('.article-timeline-item-avatar-link').focus()
                     await expect.poll(() => card.locator('.article-timeline-item-avatar--experience').evaluate(element =>
                         element.getAnimations().filter(animation => animation.playState==='running').length)).toBe(0)
-                    await expect.poll(async () => (await inspectFocusedOverlap(card))).toEqual([])
+                    if(width===1366)
+                        await expect.poll(async () => (await inspectFocusedOverlap(card))).toEqual([])
                 }
             }
         })

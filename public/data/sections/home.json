@@ -1,4 +1,5 @@
 {
+  "disabledArticleDividerIndexes": [1],
   "title": {
     "locales": {
       "en": {

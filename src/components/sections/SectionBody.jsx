@@ -155,7 +155,7 @@ function SectionBody({ section, showDecorationBands = true }) {
                 const Component = ARTICLE_COMPONENTS[dataWrapper.component] || ArticleNotFound
                 return (
                     <React.Fragment key={dataWrapper.uniqueId}>
-                        {showDecorationBands && key > 0 && (
+                        {showDecorationBands && key > 0 && !section?.data?.disabledArticleDividerIndexes?.includes(key) && (
                             <SectionDecorationBand type="between-articles"
                                                    sectionId={section?.id}
                                                    index={key}/>

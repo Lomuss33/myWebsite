@@ -1,6 +1,24 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {createMinesweeperBoard, floodRevealMinesweeper, isMinesweeperVictory} from '../src/components/articles/webArt/minesweeper.js'
+import {
+    applyCarouselSlideSwaps,
+    buildAllWebArtTileIds,
+    DESIRED_WEB_ART_ITEM_ORDER,
+    getItemTileLabel,
+    orderWebArtItems
+} from '../src/components/articles/webArt/registry/webArtRegistryData.js'
+import {
+    getOpenAllWebArtTileIds,
+    limitWebArtTileSetForMobile,
+    MOBILE_WEB_ART_OPEN_TILE_LIMIT,
+    tileSetContainsAll
+} from '../src/components/articles/webArt/hooks/webArtDomUtils.js'
+import {
+    getWebArtCarouselLabels,
+    getWebArtIntroCopy,
+    resolveWebArtActionLabels
+} from '../src/components/articles/webArt/i18n/webArtCopy.js'
 
 const boardWithMineAtBottomRight = {
     rows: 3,
@@ -62,4 +80,66 @@ test('victory accepts all safe cells or the exact mine flags only', () => {
     assert.equal(isMinesweeperVictory(board, new Set(), new Set([3])), true)
     assert.equal(isMinesweeperVictory(board, new Set(), new Set([2])), false)
     assert.equal(isMinesweeperVictory(board, new Set([0,1]), new Set()), false)
+})
+
+test('registry orders items in desired visual order and appends unknown ids last', () => {
+    const raw = [
+        { id: 1, uniqueId: 'u-1' },
+        { id: 4, uniqueId: 'u-4' },
+        { id: 99, uniqueId: 'u-99' },
+        { id: 5, uniqueId: 'u-5' }
+    ]
+    const ordered = orderWebArtItems(raw)
+    assert.deepEqual(ordered.map((item) => item.id), [4, 5, 1, 99])
+    assert.equal(DESIRED_WEB_ART_ITEM_ORDER.length, 15)
+    assert.equal(getItemTileLabel({ id: 4 }, 0), 'Poly')
+    assert.equal(getItemTileLabel({ id: 5 }, 1), 'Click')
+    assert.equal(getItemTileLabel({ id: 99 }, 3), '4')
+})
+
+test('carousel presentation swaps place Julia first and swap Plop with Click', () => {
+    const baseSlides = [
+        { id: 's-poly', label: 'Poly' },
+        { id: 's-click', label: 'Click' },
+        { id: 's-wave', label: 'Wave' },
+        { id: 's-plop', label: 'Plop' },
+        { id: 's-julia', label: 'Julia' }
+    ]
+    const swapped = applyCarouselSlideSwaps(baseSlides)
+    assert.equal(swapped[0].label, 'Julia')
+    assert.equal(swapped[1].label, 'Plop')
+    assert.equal(swapped[2].label, 'Poly')
+    assert.equal(swapped[3].label, 'Click')
+    assert.equal(swapped[4].label, 'Wave')
+})
+
+test('mobile tile set helpers cap open tiles to MOBILE_WEB_ART_OPEN_TILE_LIMIT', () => {
+    const allIds = buildAllWebArtTileIds('art-1', [{ uniqueId: 'item-1' }, { uniqueId: 'item-2' }])
+    assert.equal(allIds.size, 14)
+
+    const mobileOpenAll = getOpenAllWebArtTileIds(allIds, true)
+    assert.equal(mobileOpenAll.size, MOBILE_WEB_ART_OPEN_TILE_LIMIT)
+    assert.equal(tileSetContainsAll(mobileOpenAll, mobileOpenAll), true)
+
+    const desktopOpenAll = getOpenAllWebArtTileIds(allIds, false)
+    assert.equal(desktopOpenAll.size, allIds.size)
+
+    const slidingWindow = limitWebArtTileSetForMobile(
+        ['a', 'b', 'c', 'd', 'e', 'f', 'g'],
+        true
+    )
+    assert.deepEqual([...slidingWindow], ['b', 'c', 'd', 'e', 'f', 'g'])
+})
+
+test('webArtCopy resolves localized intro copy, carousel labels and fallback action labels', () => {
+    for(const lang of ['en', 'de', 'hr', 'tr']) {
+        const intro = getWebArtIntroCopy(lang)
+        const carousel = getWebArtCarouselLabels(lang)
+        const actions = resolveWebArtActionLabels({ getString: (key) => `locale:${key}` }, lang)
+        assert.ok(intro.button.length > 0)
+        assert.equal(intro.guide.lines.length, 3)
+        assert.ok(carousel.gallery.length > 0)
+        assert.ok(actions.submitTileLabel.length > 0)
+        assert.ok(actions.clickTileLabel.length > 0)
+    }
 })

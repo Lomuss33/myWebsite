@@ -64,7 +64,7 @@ Run the highest-value interaction flows in Firefox and WebKit. Fix genuine engin
 
 ### 6. Reassess rewrite candidates from evidence
 
-The initial inventory found `ArticleWebArt.jsx` at roughly 5,800 lines, followed by `PretextInteractiveText.jsx` (~1,370), `ArticleDataProbe.jsx` (~1,340), and `ArticleFeature.jsx` (~1,030). `ArticleWebArt` already has standalone artwork engines, but its controller, tile components, and game rules share one file. The Minesweeper rules are now extracted and covered. Next, map imports/state/style boundaries for a single tile component before moving it; do not mass-split the file. Responsive styles have 13 files with media/container queries and many intentional route-specific rules, so defer a broad consolidation until cascade ownership and duplicate declarations are inventoried.
+- The initial inventory found `ArticleWebArt.jsx` at roughly 5,800 lines, followed by `PretextInteractiveText.jsx` (~1,370), `ArticleDataProbe.jsx` (~1,340), and `ArticleFeature.jsx` (~1,030). `ArticleWebArt.jsx` has now been restructured to a ~235-line orchestrator backed by modular subdirectories under `src/components/articles/webArt/` (`i18n/`, `hooks/`, `components/`, `registry/`, and `tiles/`), shared canvas lifecycle/pointer hooks (`useCanvasArtEngine.js`, `useNormalizedPointer.js`), and 8 focused unit tests in `npm/web-art-minesweeper.test.js`. Responsive styles have 13 files with media/container queries and many intentional route-specific rules, so defer a broad consolidation until cascade ownership and duplicate declarations are inventoried.
 
 **Done when:** each extracted module has clear ownership, unchanged user behavior, focused tests, and a smaller or simpler source boundary.
 

@@ -20,7 +20,15 @@ The 1.108.2 registry archive includes both compiler files. `npm update sass-embe
 
 Attempt 1 failed because Ubuntu archive/security servers could not be resolved during Playwright's system-dependency installation. Browser tests never ran in that attempt. The successful retry used the same source commit; no workflow or test weakening was applied.
 
-The baseline hosted publication above predates the Zod/Sass fixes. The maintenance commit includes only the lockfile and verification documentation; the restored DataProbe work remains outside it. Confirm publication of the maintenance commit separately by matching the source SHA in the new Actions run and the `gh-pages` commit message.
+The baseline hosted publication above predates the Zod/Sass fixes. The maintenance commit includes only the lockfile and verification documentation; the restored DataProbe work remains outside it. For maintenance commits, verify the source SHA in the new Actions run. If the output is unchanged, the no-change deploy log is authoritative and the `gh-pages` source message can remain at the baseline SHA.
+
+## Hosted maintenance verification
+
+Maintenance commit `53e9a76ebba6ddb3c99789611241e77c45ae924e` was pushed to `main`. [Actions run 43626945153](https://github.com/Lomuss33/myWebsite/actions/runs/43626945153) passed verification and deployment. The clean Linux install reported zero vulnerabilities; all 14 browser checks passed in 44.2 seconds. Deploy completed at 2026-11-14 18:32:42 UTC.
+
+The tested output matched the existing site exactly. The deploy log reported `nothing to commit, working tree clean`, `skip commit` and `Everything up-to-date`. Therefore `gh-pages` legitimately remains at publication commit `516b8b6b2424afbc5f677a32a8b7725ab5b443e1`, whose source message is the earlier `cbf99c5`. Both the live homepage and resume PDF returned HTTP 200 after the maintenance run. No empty commit was forced.
+
+The maintenance commit contains only the dependency lockfile and verification documentation. The DataProbe extraction, new files/test/script and roadmap edit remain uncommitted and intact, with the original checkpoint retained.
 
 ## Local results
 
@@ -40,4 +48,4 @@ All checks below ran against synchronized source `cbf99c5` plus the preserved Da
 
 ## Limits
 
-The hosted result recorded above applies to baseline source `cbf99c5`; local checks additionally include the preserved DataProbe work and Zod/Sass patches. Local verification does not replace hosted CI for the maintenance commit. No full visual matrix or physical-device audit was performed. The ESLint 9 pin remains per the existing plugin-compatibility policy.
+Hosted verification covers maintenance commit `53e9a76`; local checks additionally include the uncommitted DataProbe work. That unpublished refactor has not been checked by hosted CI. No full visual matrix or physical-device audit was performed. The ESLint 9 pin remains per the existing plugin-compatibility policy.

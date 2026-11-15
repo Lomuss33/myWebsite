@@ -13,18 +13,24 @@ DISABLE_AI_TRIAGE = "false"
 DISABLE_AI_REPAIR = "false"
 DISABLE_GITHUB_ISSUES = "true"
 DISABLE_GITHUB_PRS = "true"
+GITHUB_REPOSITORY = "Lomuss33/myWebsite"
+AI_MODEL = "gpt-4o-mini"
 MAX_DAILY_AI_TRIAGE_JOBS = "20"
 MAX_DAILY_REPAIR_ATTEMPTS = "3"
 MAX_DAILY_GLOBAL_REPORTS = "60"
 
-# Bind a D1 database for durable rate limiting, deduplication, and report storage:
-# [[d1_databases]]
-# binding = "DB"
-# database_name = "grain_of_salt_db"
-# database_id = "<YOUR_D1_DATABASE_ID>"
+# Durable D1 database binding (REQUIRED in production; Worker fails closed with 503 durable_storage_unconfigured if absent):
+[[d1_databases]]
+binding = "DB"
+database_name = "grain_of_salt_db"
+database_id = "<YOUR_D1_DATABASE_ID>"
+
+# Optional Cloudflare Workers AI binding (alternative to AI_API_KEY + AI_API_URL):
+# [ai]
+# binding = "AI"
 
 # Required secrets (set via `wrangler secret put <NAME>`, never in frontend or git):
-# - TURNSTILE_SECRET_KEY
+# - TURNSTILE_SECRET_KEY (REQUIRED in production; Worker fails closed with 503 turnstile_unconfigured if absent)
 # - SOURCE_HASH_SALT
-# - AI_API_KEY (optional; when absent, deterministic Stage 2 triage runs without paid AI calls)
-# - GITHUB_APP_TOKEN (optional; scoped strictly to issues/PRs on non-protected paths)
+# - AI_API_KEY (optional; when absent and [ai] is unbound, deterministic Stage 2 triage runs without paid AI calls)
+# - GITHUB_APP_TOKEN (optional; used to dispatch `.github/workflows/grain-of-salt-triage.yml` when DISABLE_GITHUB_PRS="false")

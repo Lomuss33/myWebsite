@@ -907,6 +907,13 @@ article.article-complaint-form {
         box-shadow: 0 0 0 2px color-mix(in srgb, var(--complaint-accent) 18%, transparent);
     }
 
+    div.article-complaint-form-turnstile {
+        display: flex;
+        align-items: center;
+        min-height: 0;
+        overflow-x: auto;
+    }
+
     p.article-complaint-form-privacy-note {
         margin: 0;
         color: var(--complaint-muted);

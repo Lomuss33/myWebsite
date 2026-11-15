@@ -77,6 +77,7 @@ function ArticleComplaintFormContent({ dataWrapper }) {
     const [expectedBehavior, setExpectedBehavior] = useState("")
     const [replyEmail, setReplyEmail] = useState("")
     const [honeypot, setHoneypot] = useState("")
+    const [turnstileToken, setTurnstileToken] = useState("")
     const [arrivedViaSaltShaker, setArrivedViaSaltShaker] = useState(false)
 
     const sendButtonWrapperRef = useRef(null)
@@ -88,6 +89,11 @@ function ArticleComplaintFormContent({ dataWrapper }) {
     const pendingTimeoutIdsRef = useRef(new Set())
     const mountedRef = useRef(true)
     const previousComplaintPopupCountRef = useRef(0)
+    const turnstileContainerRef = useRef(null)
+    const turnstileWidgetIdRef = useRef(null)
+
+    const settings = dataWrapper.settings || {}
+    const turnstileSiteKey = String(settings.turnstileSiteKey || import.meta.env.VITE_TURNSTILE_SITE_KEY || "").trim()
 
     const complaintEmail = dataWrapper.locales.complaintEmailLabel || "trash@lovro-music.de"
     const complaintNote = String(dataWrapper.locales.complaintNote || "").trim()
@@ -516,6 +522,88 @@ function ArticleComplaintFormContent({ dataWrapper }) {
         }
     }
 
+    useEffect(() => {
+        if(!isBugReportMode || !turnstileSiteKey || typeof window === "undefined" || typeof document === "undefined") {
+            return
+        }
+
+        let cancelled = false
+
+        const mountWidget = () => {
+            if(cancelled || !mountedRef.current || !turnstileContainerRef.current || !window.turnstile?.render) {
+                return
+            }
+
+            if(turnstileWidgetIdRef.current !== null && window.turnstile?.remove) {
+                try {
+                    window.turnstile.remove(turnstileWidgetIdRef.current)
+                }
+                catch (_error) {
+                    // ignore widget cleanup error
+                }
+                turnstileWidgetIdRef.current = null
+            }
+
+            turnstileContainerRef.current.innerHTML = ""
+            turnstileWidgetIdRef.current = window.turnstile.render(turnstileContainerRef.current, {
+                sitekey: turnstileSiteKey,
+                theme: selectedThemeId === "light" ? "light" : "dark",
+                callback: (token) => {
+                    if(mountedRef.current) {
+                        setTurnstileToken(String(token || ""))
+                    }
+                },
+                "expired-callback": () => {
+                    if(mountedRef.current) {
+                        setTurnstileToken("")
+                    }
+                },
+                "error-callback": () => {
+                    if(mountedRef.current) {
+                        setTurnstileToken("")
+                    }
+                }
+            })
+        }
+
+        if(window.turnstile?.render) {
+            mountWidget()
+        }
+        else {
+            const scriptId = "cloudflare-turnstile-api-script"
+            let scriptEl = document.getElementById(scriptId)
+            const handleLoad = () => {
+                mountWidget()
+            }
+
+            if(!scriptEl) {
+                scriptEl = document.createElement("script")
+                scriptEl.id = scriptId
+                scriptEl.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+                scriptEl.async = true
+                scriptEl.defer = true
+                scriptEl.addEventListener("load", handleLoad, { once: true })
+                document.head.appendChild(scriptEl)
+            }
+            else {
+                scriptEl.addEventListener("load", handleLoad, { once: true })
+            }
+        }
+
+        return () => {
+            cancelled = true
+            if(turnstileWidgetIdRef.current !== null && window.turnstile?.remove) {
+                try {
+                    window.turnstile.remove(turnstileWidgetIdRef.current)
+                }
+                catch (_error) {
+                    // ignore widget cleanup error
+                }
+                turnstileWidgetIdRef.current = null
+            }
+        }
+    }, [isBugReportMode, selectedThemeId, turnstileSiteKey])
+
     async function handleBugReportSubmit() {
         const diagnostics = collectBrowserDiagnostics({
             section: affectedSection || navigation?.activeSectionId || dataWrapper.sectionId || "contact",
@@ -526,6 +614,20 @@ function ArticleComplaintFormContent({ dataWrapper }) {
             source: arrivedViaSaltShaker ? "salt-shaker" : "complaint-form"
         })
 
+        const resolvedTurnstileToken = String(
+            turnstileToken ||
+            (typeof window !== "undefined" ? window.__mockTurnstileToken : "") ||
+            ""
+        ).trim()
+
+        if(turnstileSiteKey && !resolvedTurnstileToken) {
+            setValidationError({
+                errorCode: constants.ErrorCodes.MESSAGE_SUBMIT_FAILED
+            })
+            setStatusMessage(null)
+            return
+        }
+
         const validation = api.validators.validateBugReportRequest({
             type: "bug_report",
             description: message,
@@ -535,6 +637,7 @@ function ArticleComplaintFormContent({ dataWrapper }) {
             expectedBehavior,
             replyEmail,
             honeypot,
+            turnstileToken: resolvedTurnstileToken,
             diagnostics
         })
 
@@ -544,7 +647,6 @@ function ArticleComplaintFormContent({ dataWrapper }) {
             return
         }
 
-        const settings = dataWrapper.settings || {}
         setValidationError(null)
         setStatusMessage(null)
         setIsSending(true)
@@ -556,13 +658,7 @@ function ArticleComplaintFormContent({ dataWrapper }) {
 
         try {
             const response = await api.handlers.submitBugReportRequest(validation.bundle, {
-                endpoint: settings.reportApiEndpoint,
-                emailJsFallback: {
-                    publicKey: settings.emailJsPublicKey,
-                    serviceId: settings.emailJsServiceId,
-                    templateId: settings.emailJsComplaintTemplateId || settings.emailJsTemplateId,
-                    recipientEmail: complaintEmail
-                }
+                endpoint: settings.reportApiEndpoint
             })
 
             if(!mountedRef.current)
@@ -584,6 +680,15 @@ function ArticleComplaintFormContent({ dataWrapper }) {
             setSteps("")
             setExpectedBehavior("")
             setIsDetailsExpanded(false)
+            setTurnstileToken("")
+            if(turnstileWidgetIdRef.current !== null && typeof window !== "undefined" && window.turnstile?.reset) {
+                try {
+                    window.turnstile.reset(turnstileWidgetIdRef.current)
+                }
+                catch (_error) {
+                    // ignore reset error
+                }
+            }
             setStatusMessage([complaintBugSentTitle, formattedBody].filter(Boolean).join(" "))
         }
         catch (_error) {
@@ -834,6 +939,12 @@ function ArticleComplaintFormContent({ dataWrapper }) {
                                        onChange={(e) => setExpectedBehavior(e.target.value)}/>
                             </label>
                         </div>
+                    )}
+
+                    {isBugReportMode && turnstileSiteKey && (
+                        <div ref={turnstileContainerRef}
+                             className={`article-complaint-form-turnstile`}
+                             data-testid={`grain-of-salt-turnstile`}/>
                     )}
 
                     {isBugReportMode && complaintBugPrivacyNote && (

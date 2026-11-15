@@ -1,0 +1,158 @@
+name: Grain of Salt Bounded Triage & Draft PR
+
+on:
+  repository_dispatch:
+    types:
+      - grain_of_salt_actionable_bug
+  workflow_dispatch:
+    inputs:
+      report_id:
+        description: Report ID (e.g. GOS-MANUAL01)
+        required: true
+        default: GOS-MANUAL01
+      affected_section:
+        description: Affected section ID
+        required: true
+        default: contact
+      description:
+        description: Bug description
+        required: true
+        default: Manual dry-run of the Grain of Salt bounded triage pipeline.
+      reproducibility:
+        description: Reproducibility (always, sometimes, once, unsure)
+        required: false
+        default: sometimes
+      enable_bounded_ai_patch:
+        description: Allow bounded AI code patch generation (when AI_API_KEY secret is set)
+        type: boolean
+        default: false
+
+concurrency:
+  group: grain-of-salt-triage-${{ github.event.client_payload.reportId || inputs.report_id || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  triage-and-draft-pr:
+    runs-on: ubuntu-latest
+    if: vars.DISABLE_AI_REPAIR != 'true'
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      DISABLE_AI_REPAIR: ${{ vars.DISABLE_AI_REPAIR || 'false' }}
+      ENABLE_BOUNDED_AI_PATCH: ${{ inputs.enable_bounded_ai_patch && 'true' || vars.ENABLE_BOUNDED_AI_PATCH || 'false' }}
+      AI_API_KEY: ${{ secrets.AI_API_KEY }}
+      AI_API_URL: ${{ vars.AI_API_URL || 'https://api.openai.com/v1/chat/completions' }}
+      AI_MODEL: ${{ vars.AI_MODEL || 'gpt-4o-mini' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run bounded Grain of Salt agent & policy check
+        id: agent
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          DISPATCH_PAYLOAD: ${{ toJson(github.event.client_payload) }}
+          INPUT_REPORT_ID: ${{ inputs.report_id }}
+          INPUT_SECTION: ${{ inputs.affected_section }}
+          INPUT_DESCRIPTION: ${{ inputs.description }}
+          INPUT_REPRODUCIBILITY: ${{ inputs.reproducibility }}
+        run: |
+          node --input-type=module -e '
+            import fs from "node:fs";
+            import { executeBoundedRepairAgent } from "./npm/run-grain-of-salt-agent.js";
+
+            const payload = process.env.EVENT_NAME === "repository_dispatch"
+              ? JSON.parse(process.env.DISPATCH_PAYLOAD || "{}")
+              : {
+                  reportId: process.env.INPUT_REPORT_ID,
+                  affectedSection: process.env.INPUT_SECTION,
+                  description: process.env.INPUT_DESCRIPTION,
+                  reproducibility: process.env.INPUT_REPRODUCIBILITY,
+                  classification: "actionable_bug",
+                  confidence: 0.9
+                };
+
+            const outcome = await executeBoundedRepairAgent(payload);
+            if (!outcome.permitted) {
+              console.error("Blocked by repair policy:", outcome.reason);
+              process.exit(2);
+            }
+
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, `report_id=${outcome.reportId}\n`);
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, `branch_name=${outcome.branchName}\n`);
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, `dossier_path=${outcome.dossierPath}\n`);
+          '
+
+      - name: Enforce protected-file denylist on git working tree
+        run: |
+          node --input-type=module -e '
+            import { execSync } from "node:child_process";
+            import { evaluateRepairFilePath } from "./workers/grain-of-salt/src/repairPolicy.js";
+
+            const statusOut = execSync("git status --porcelain", { encoding: "utf8" });
+            const touched = statusOut
+              .split(/\r?\n/)
+              .map((line) => line.slice(3).trim())
+              .filter(Boolean);
+
+            for (const filePath of touched) {
+              const check = evaluateRepairFilePath(filePath);
+              if (!check.allowed) {
+                console.error(`SECURITY VIOLATION: touched forbidden path ${filePath} (${check.reason})`);
+                process.exit(1);
+              }
+            }
+            console.log("Verified touched files:", touched);
+          '
+
+      - name: Run mandatory validation gates
+        run: |
+          npm run validate:i18n
+          npm run lint
+          npm run test:grain-of-salt
+          npm run test:data-probe
+          npm run test:layout
+          npm run test:web-art
+          npm run build
+
+      - name: Create branch and open Draft Pull Request for human review
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ steps.agent.outputs.branch_name }}
+          REPORT_ID: ${{ steps.agent.outputs.report_id }}
+          DOSSIER_PATH: ${{ steps.agent.outputs.dossier_path }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$BRANCH_NAME"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "chore(grain-of-salt): triage report $REPORT_ID"
+          git push --force-with-lease origin "$BRANCH_NAME"
+
+          EXISTING_PR=$(gh pr list --head "$BRANCH_NAME" --base main --json url --jq '.[0].url')
+          if [ -z "$EXISTING_PR" ]; then
+            gh pr create \
+              --base main \
+              --head "$BRANCH_NAME" \
+              --draft \
+              --title "chore(grain-of-salt): review report $REPORT_ID" \
+              --body-file "$DOSSIER_PATH"
+          else
+            echo "Updated existing Draft PR: $EXISTING_PR"
+          fi

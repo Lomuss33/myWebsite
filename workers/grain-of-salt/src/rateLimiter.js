@@ -2,8 +2,14 @@
  * @description Shared durable state store & rate-limiting / budget / deduplication engine
  * for Project Directive: The Grain of Salt.
  *
- * Works against Cloudflare D1 (SQLite) in production and provides a deterministic,
- * atomic in-memory adapter for unit/integration tests and local development.
+ * Provides:
+ * 1. `createD1GatewayStore(d1Database)` — production adapter backed by Cloudflare D1 (`env.DB`)
+ *    using atomic conditional `INSERT ... ON CONFLICT DO UPDATE ... WHERE counter < ?` SQL statements
+ *    so concurrent requests across Worker isolates cannot bypass rate limits or daily cost budgets.
+ * 2. `createMemoryGatewayStore()` — deterministic in-memory adapter with an explicit mutex lock chain
+ *    for local Node.js unit/integration tests when `ALLOW_IN_MEMORY_FALLBACK="true"`.
+ * 3. `resolveGatewayStore(env, deps)` — resolves `deps.store`, `env.DB` (via `createD1GatewayStore`),
+ *    or throws/rejects unless `ALLOW_IN_MEMORY_FALLBACK="true"` is explicitly enabled.
  */
 
 export const DEFAULT_RATE_LIMITS = {
@@ -17,8 +23,8 @@ export const DEFAULT_RATE_LIMITS = {
 }
 
 /**
- * Computes a privacy-safe salted hash of an IP + User-Agent + time window so raw IPs
- * are never stored in the database or forwarded to external services.
+ * Computes a privacy-safe salted hash of an IP + User-Agent so raw IPs
+ * are never stored in D1 or forwarded to external services.
  *
  * @param {string} ip
  * @param {string} userAgent
@@ -52,7 +58,319 @@ export async function computeSourceHash(ip = "0.0.0.0", userAgent = "", salt = "
 }
 
 /**
- * Creates a concurrency-safe shared state store for rate limits, budgets, and reports.
+ * Production Cloudflare D1 adapter (`env.DB`).
+ * Uses atomic SQL conditional upserts (`WHERE rate_limits.expires_at <= ? OR rate_limits.counter < ?`)
+ * so concurrent requests cannot race past per-source, global, or AI budget ceilings.
+ *
+ * @param {Object} db Cloudflare D1 binding (`env.DB`)
+ */
+export function createD1GatewayStore(db) {
+    if(!db || typeof db.prepare !== "function") {
+        throw new Error("Invalid Cloudflare D1 database binding passed to createD1GatewayStore")
+    }
+
+    const CONSUME_BUCKET_SQL = `
+        INSERT INTO rate_limits (bucket_key, counter, window_start, expires_at)
+        VALUES (?1, 1, ?2, ?3)
+        ON CONFLICT(bucket_key) DO UPDATE SET
+            counter = CASE
+                WHEN rate_limits.expires_at <= ?2 THEN 1
+                ELSE rate_limits.counter + 1
+            END,
+            window_start = CASE
+                WHEN rate_limits.expires_at <= ?2 THEN ?2
+                ELSE rate_limits.window_start
+            END,
+            expires_at = CASE
+                WHEN rate_limits.expires_at <= ?2 THEN ?3
+                ELSE rate_limits.expires_at
+            END
+        WHERE rate_limits.expires_at <= ?2 OR rate_limits.counter < ?4
+    `
+
+    async function tryIncrementBucket(bucketKey, windowMs, ceiling, now) {
+        const expiresAt = now + windowMs
+        const result = await db
+            .prepare(CONSUME_BUCKET_SQL)
+            .bind(bucketKey, now, expiresAt, ceiling)
+            .run()
+
+        const changes = Number(result?.meta?.changes ?? result?.changes ?? 0)
+        if(changes < 1) {
+            return { allowed: false, used: ceiling }
+        }
+
+        const row = await db
+            .prepare("SELECT counter FROM rate_limits WHERE bucket_key = ?1")
+            .bind(bucketKey)
+            .first()
+
+        return {
+            allowed: true,
+            used: Number(row?.counter || 1)
+        }
+    }
+
+    async function decrementBucket(bucketKey) {
+        await db
+            .prepare("UPDATE rate_limits SET counter = MAX(0, counter - 1) WHERE bucket_key = ?1")
+            .bind(bucketKey)
+            .run()
+    }
+
+    return {
+        backend: "d1",
+
+        async checkAndConsumeSubmissionQuota(sourceHash, config = {}, now = Date.now()) {
+            const limits = { ...DEFAULT_RATE_LIMITS, ...config }
+            const hourBucket = Math.floor(now / 3600000)
+            const dayBucket = Math.floor(now / 86400000)
+
+            const checks = [
+                { key: `src:hr:${sourceHash}:${hourBucket}`, windowMs: 3600000, ceiling: limits.perSourceHourly, reason: "source_hourly_limit_exceeded" },
+                { key: `src:day:${sourceHash}:${dayBucket}`, windowMs: 86400000, ceiling: limits.perSourceDaily, reason: "source_daily_limit_exceeded" },
+                { key: `glb:hr:${hourBucket}`, windowMs: 3600000, ceiling: limits.globalHourly, reason: "global_hourly_limit_exceeded" },
+                { key: `glb:day:${dayBucket}`, windowMs: 86400000, ceiling: limits.globalDaily, reason: "global_daily_limit_exceeded" }
+            ]
+
+            const incrementedKeys = []
+            const counts = {}
+
+            for(const item of checks) {
+                const res = await tryIncrementBucket(item.key, item.windowMs, item.ceiling, now)
+                if(!res.allowed) {
+                    for(const prevKey of incrementedKeys) {
+                        await decrementBucket(prevKey)
+                    }
+                    return {
+                        allowed: false,
+                        reason: item.reason
+                    }
+                }
+                incrementedKeys.push(item.key)
+                counts[item.key] = res.used
+            }
+
+            return {
+                allowed: true,
+                remainingHourly: Math.max(0, limits.perSourceHourly - (counts[checks[0].key] || 1)),
+                remainingDaily: Math.max(0, limits.perSourceDaily - (counts[checks[1].key] || 1))
+            }
+        },
+
+        async checkAndConsumeBudget(budgetType = "triage", config = {}, now = Date.now()) {
+            const limits = { ...DEFAULT_RATE_LIMITS, ...config }
+            const dayBucket = Math.floor(now / 86400000)
+            const key = `budget:${budgetType}:${dayBucket}`
+            const ceiling = budgetType === "repair" ?
+                limits.dailyRepairAttempts :
+                limits.dailyAiTriageJobs
+
+            const res = await tryIncrementBucket(key, 86400000, ceiling, now)
+            if(!res.allowed) {
+                return {
+                    allowed: false,
+                    reason: `${budgetType}_daily_budget_exhausted`,
+                    used: ceiling,
+                    ceiling
+                }
+            }
+
+            return {
+                allowed: true,
+                used: res.used,
+                ceiling,
+                remaining: Math.max(0, ceiling - res.used)
+            }
+        },
+
+        async upsertReport(reportRecord, now = Date.now()) {
+            const windowCutoff = now - DEFAULT_RATE_LIMITS.duplicateWindowMs
+            const dupUpdate = await db
+                .prepare(`
+                    UPDATE reports
+                    SET duplicate_count = duplicate_count + 1,
+                        updated_at = ?2
+                    WHERE fingerprint = ?1 AND created_at >= ?3
+                `)
+                .bind(reportRecord.fingerprint, now, windowCutoff)
+                .run()
+
+            const dupChanges = Number(dupUpdate?.meta?.changes ?? dupUpdate?.changes ?? 0)
+            if(dupChanges > 0) {
+                const existing = await db
+                    .prepare("SELECT * FROM reports WHERE fingerprint = ?1")
+                    .bind(reportRecord.fingerprint)
+                    .first()
+
+                return {
+                    duplicate: true,
+                    report: normalizeD1ReportRow(existing)
+                }
+            }
+
+            await db
+                .prepare(`
+                    INSERT INTO reports (
+                        report_id, fingerprint, report_type, status, classification,
+                        affected_section, reproducibility, description, steps,
+                        expected_behavior, reply_email, diagnostics_json, triage_json,
+                        duplicate_count, source_hash, created_at, updated_at
+                    ) VALUES (
+                        ?1, ?2, ?3, ?4, ?5,
+                        ?6, ?7, ?8, ?9,
+                        ?10, ?11, ?12, ?13,
+                        1, ?14, ?15, ?15
+                    )
+                    ON CONFLICT(fingerprint) DO UPDATE SET
+                        duplicate_count = reports.duplicate_count + 1,
+                        updated_at = ?15
+                `)
+                .bind(
+                    reportRecord.reportId,
+                    reportRecord.fingerprint,
+                    reportRecord.type || "bug_report",
+                    reportRecord.status || "accepted",
+                    reportRecord.classification || "pending",
+                    reportRecord.affectedSection || "",
+                    reportRecord.reproducibility || "unsure",
+                    reportRecord.description,
+                    reportRecord.steps || "",
+                    reportRecord.expectedBehavior || "",
+                    reportRecord.replyEmail || "",
+                    JSON.stringify(reportRecord.diagnostics || {}),
+                    JSON.stringify(reportRecord.triage || {}),
+                    reportRecord.sourceHash || "",
+                    now
+                )
+                .run()
+
+            const stored = await db
+                .prepare("SELECT * FROM reports WHERE fingerprint = ?1")
+                .bind(reportRecord.fingerprint)
+                .first()
+
+            const normalized = normalizeD1ReportRow(stored)
+            return {
+                duplicate: normalized.duplicateCount > 1,
+                report: normalized
+            }
+        },
+
+        async updateReportTriage(reportId, triageUpdate = {}, now = Date.now()) {
+            const existing = await db
+                .prepare("SELECT * FROM reports WHERE report_id = ?1")
+                .bind(reportId)
+                .first()
+
+            if(!existing)
+                return null
+
+            const nextStatus = triageUpdate.status || existing.status
+            const nextClassification = triageUpdate.classification || existing.classification
+            const nextTriageJson = triageUpdate.triage ?
+                JSON.stringify(triageUpdate.triage) :
+                existing.triage_json
+
+            await db
+                .prepare(`
+                    UPDATE reports
+                    SET status = ?2,
+                        classification = ?3,
+                        triage_json = ?4,
+                        updated_at = ?5
+                    WHERE report_id = ?1
+                `)
+                .bind(reportId, nextStatus, nextClassification, nextTriageJson, now)
+                .run()
+
+            const updated = await db
+                .prepare("SELECT * FROM reports WHERE report_id = ?1")
+                .bind(reportId)
+                .first()
+
+            return normalizeD1ReportRow(updated)
+        },
+
+        async getReportById(reportId) {
+            const row = await db
+                .prepare("SELECT * FROM reports WHERE report_id = ?1")
+                .bind(reportId)
+                .first()
+
+            return row ? normalizeD1ReportRow(row) : null
+        }
+    }
+}
+
+function normalizeD1ReportRow(row) {
+    if(!row)
+        return null
+
+    let diagnostics = {}
+    let triage = null
+    try {
+        diagnostics = row.diagnostics_json ? JSON.parse(row.diagnostics_json) : {}
+    }
+    catch (_e) {
+        diagnostics = {}
+    }
+    try {
+        triage = row.triage_json ? JSON.parse(row.triage_json) : null
+    }
+    catch (_e) {
+        triage = null
+    }
+
+    return {
+        reportId: row.report_id,
+        fingerprint: row.fingerprint,
+        type: row.report_type,
+        status: row.status,
+        classification: row.classification,
+        affectedSection: row.affected_section,
+        reproducibility: row.reproducibility,
+        description: row.description,
+        steps: row.steps,
+        expectedBehavior: row.expected_behavior,
+        replyEmail: row.reply_email,
+        diagnostics,
+        triage,
+        duplicateCount: Number(row.duplicate_count || 1),
+        sourceHash: row.source_hash,
+        createdAt: Number(row.created_at || 0),
+        updatedAt: Number(row.updated_at || 0)
+    }
+}
+
+/**
+ * Resolves the active gateway store:
+ * - Uses `deps.store` if injected (unit tests)
+ * - Uses `createD1GatewayStore(env.DB)` if Cloudflare D1 binding `env.DB` is present
+ * - Otherwise requires explicit `env.ALLOW_IN_MEMORY_FALLBACK === "true"`
+ */
+export function resolveGatewayStore(env = {}, deps = {}, fallbackMemoryStore = null) {
+    if(deps.store) {
+        return { ok: true, store: deps.store }
+    }
+
+    if(env.DB && typeof env.DB.prepare === "function") {
+        return { ok: true, store: createD1GatewayStore(env.DB) }
+    }
+
+    const allowMemory = String(env.ALLOW_IN_MEMORY_FALLBACK || "").trim().toLowerCase() === "true"
+    if(allowMemory && fallbackMemoryStore) {
+        return { ok: true, store: fallbackMemoryStore }
+    }
+
+    return {
+        ok: false,
+        errorCode: "durable_storage_unconfigured"
+    }
+}
+
+/**
+ * Creates a concurrency-safe in-memory state store for local unit/integration testing.
  */
 export function createMemoryGatewayStore() {
     const buckets = new Map()
@@ -98,9 +416,8 @@ export function createMemoryGatewayStore() {
     }
 
     return {
-        /**
-         * Atomically checks and consumes submission rate-limit quotas.
-         */
+        backend: "memory",
+
         async checkAndConsumeSubmissionQuota(sourceHash, config = {}, now = Date.now()) {
             return withAtomicLock(async () => {
                 pruneExpired(now)
@@ -140,9 +457,6 @@ export function createMemoryGatewayStore() {
             })
         },
 
-        /**
-         * Atomically checks and consumes daily AI triage / repair budgets.
-         */
         async checkAndConsumeBudget(budgetType = "triage", config = {}, now = Date.now()) {
             return withAtomicLock(async () => {
                 pruneExpired(now)
@@ -172,9 +486,6 @@ export function createMemoryGatewayStore() {
             })
         },
 
-        /**
-         * Stores or deduplicates a validated report by content fingerprint.
-         */
         async upsertReport(reportRecord, now = Date.now()) {
             return withAtomicLock(async () => {
                 const existing = reportsByFingerprint.get(reportRecord.fingerprint)

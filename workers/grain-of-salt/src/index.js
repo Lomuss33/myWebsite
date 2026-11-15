@@ -19,9 +19,14 @@ import {
 } from "../../../src/utils/bugReportValidator.js"
 import {
     computeSourceHash,
-    createMemoryGatewayStore
+    createMemoryGatewayStore,
+    resolveGatewayStore
 } from "./rateLimiter.js"
-import { runTriagePipeline } from "./triagePipeline.js"
+import {
+    createEnvAiClassifier,
+    runTriagePipeline,
+    triggerGitHubRepairWorkflow
+} from "./triagePipeline.js"
 
 const defaultStore = createMemoryGatewayStore()
 
@@ -67,15 +72,35 @@ function jsonResponse(body, status = 200, extraHeaders = {}) {
 }
 
 /**
- * Verifies a Cloudflare Turnstile token server-side when TURNSTILE_SECRET_KEY is configured.
+ * Verifies a Cloudflare Turnstile token server-side.
+ * Fails closed (503 turnstile_unconfigured) when TURNSTILE_SECRET_KEY is not configured,
+ * unless `allowUnverified` (`ALLOW_UNVERIFIED_TURNSTILE="true"`) is explicitly set for local tests.
  */
-export async function verifyTurnstileToken({ token, secretKey, remoteIp, verifyImpl }) {
-    if(!secretKey) {
-        return { success: true, skipped: true }
+export async function verifyTurnstileToken({
+    token,
+    secretKey,
+    remoteIp,
+    verifyImpl,
+    allowUnverified = false,
+    fetchImpl = fetch
+}) {
+    if(!secretKey || typeof secretKey !== "string" || secretKey.trim().length === 0) {
+        if(allowUnverified) {
+            return { success: true, skipped: true }
+        }
+        return {
+            success: false,
+            status: 503,
+            errorCode: "turnstile_unconfigured"
+        }
     }
 
     if(!token || typeof token !== "string" || token.trim().length === 0) {
-        return { success: false, errorCode: "missing_turnstile_token" }
+        return {
+            success: false,
+            status: 403,
+            errorCode: "missing_turnstile_token"
+        }
     }
 
     if(typeof verifyImpl === "function") {
@@ -90,7 +115,7 @@ export async function verifyTurnstileToken({ token, secretKey, remoteIp, verifyI
             formData.set("remoteip", remoteIp)
         }
 
-        const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+        const res = await fetchImpl("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: formData.toString()
@@ -99,12 +124,14 @@ export async function verifyTurnstileToken({ token, secretKey, remoteIp, verifyI
         const outcome = await res.json()
         return {
             success: Boolean(outcome?.success),
+            status: outcome?.success ? 200 : 403,
             errorCode: outcome?.success ? undefined : "invalid_turnstile_token"
         }
     }
     catch (_error) {
         return {
             success: false,
+            status: 503,
             errorCode: "turnstile_verification_failed"
         }
     }
@@ -122,7 +149,6 @@ export async function handleReportRequest(request, env = {}, deps = {}) {
     const origin = request.headers.get("Origin") || ""
     const corsHeaders = getCorsHeaders(origin, env.ALLOWED_ORIGINS)
     const now = typeof deps.now === "function" ? deps.now() : Date.now()
-    const store = deps.store || defaultStore
 
     if(request.method === "OPTIONS") {
         return new Response(null, { status: 204, headers: corsHeaders })
@@ -148,6 +174,16 @@ export async function handleReportRequest(request, env = {}, deps = {}) {
             corsHeaders
         )
     }
+
+    const resolvedStore = resolveGatewayStore(env, deps, defaultStore)
+    if(!resolvedStore.store) {
+        return jsonResponse(
+            { ok: false, errorCode: resolvedStore.errorCode || "durable_storage_unconfigured" },
+            503,
+            corsHeaders
+        )
+    }
+    const store = resolvedStore.store
 
     const contentLengthHeader = Number(request.headers.get("Content-Length") || 0)
     if(contentLengthHeader > MAX_RAW_BODY_BYTES) {
@@ -199,13 +235,15 @@ export async function handleReportRequest(request, env = {}, deps = {}) {
         token: validation.sanitized.turnstileToken,
         secretKey: env.TURNSTILE_SECRET_KEY,
         remoteIp: clientIp,
-        verifyImpl: deps.verifyTurnstile
+        verifyImpl: deps.verifyTurnstile,
+        allowUnverified: parseBooleanFlag(env.ALLOW_UNVERIFIED_TURNSTILE, false),
+        fetchImpl: deps.fetch || fetch
     })
 
     if(!turnstileCheck.success) {
         return jsonResponse(
             { ok: false, errorCode: turnstileCheck.errorCode || "challenge_failed" },
-            403,
+            turnstileCheck.status || 403,
             corsHeaders
         )
     }
@@ -257,17 +295,38 @@ export async function handleReportRequest(request, env = {}, deps = {}) {
         )
     }
 
+    const aiClassifier = deps.aiClassifier || createEnvAiClassifier(env, deps.fetch || fetch)
+
     const triage = await runTriagePipeline(validation.sanitized, {
         disableAiTriage: parseBooleanFlag(env.DISABLE_AI_TRIAGE, false),
         disableAiRepair: parseBooleanFlag(env.DISABLE_AI_REPAIR, false),
         consumeTriageBudget: () => store.checkAndConsumeBudget("triage", rateLimitConfig, now),
-        aiClassifier: deps.aiClassifier
+        aiClassifier
     })
+
+    let repairDispatch = { triggered: false, reason: "not_eligible" }
+    if(triage.repairEligibility?.permitted) {
+        repairDispatch = await triggerGitHubRepairWorkflow({
+            reportId,
+            report: validation.sanitized,
+            triageResult: triage,
+            githubToken: env.GITHUB_APP_TOKEN,
+            githubRepo: env.GITHUB_REPOSITORY || "Lomuss33/myWebsite",
+            disableGithubPrs: parseBooleanFlag(env.DISABLE_GITHUB_PRS, true),
+            consumeRepairBudget: () => store.checkAndConsumeBudget("repair", rateLimitConfig, now),
+            fetchImpl: deps.fetch || fetch
+        })
+    }
+
+    const enrichedTriage = {
+        ...triage,
+        repairDispatch
+    }
 
     await store.updateReportTriage(reportId, {
         status: triage.classification === "spam_or_abuse" ? "rejected_abuse" : "triaged",
         classification: triage.classification,
-        triage
+        triage: enrichedTriage
     }, now)
 
     return jsonResponse(
@@ -276,7 +335,8 @@ export async function handleReportRequest(request, env = {}, deps = {}) {
             reportId,
             duplicate: false,
             classification: triage.classification,
-            stage: triage.stage
+            stage: triage.stage,
+            repairDispatched: Boolean(repairDispatch.triggered)
         },
         202,
         corsHeaders

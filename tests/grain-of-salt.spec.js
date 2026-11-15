@@ -190,3 +190,40 @@ test('existing playful complaint destinations (Nowhere and Chaos mode) continue 
     await page.keyboard.press('Escape')
     await expect(page.locator('.article-complaint-form-popup')).toHaveCount(29)
 })
+
+test('bug report flow does not bypass security gateway via EmailJS when Worker returns 404 or 503 kill switch', async ({page}) => {
+    await page.setViewportSize({width: 1366, height: 768})
+    const emailJsCalls = []
+
+    await page.route('**/api.emailjs.com/**', async (route) => {
+        emailJsCalls.push(route.request().url())
+        await route.fulfill({status: 200, body: 'OK'})
+    })
+
+    await page.route('**/api/grain-of-salt/report', async (route) => {
+        await route.fulfill({
+            status: 503,
+            contentType: 'application/json',
+            body: JSON.stringify({
+                ok: false,
+                errorCode: 'submissions_disabled',
+                message: 'Automated reporting is temporarily paused.'
+            })
+        })
+    })
+
+    await openSection(page, 'contact')
+    await page.locator('button.layout-salt-shaker').click()
+
+    const complaintArticle = page.locator('#article-4-section-contact')
+    const textarea = complaintArticle.locator('#complaint-form-textarea')
+    await textarea.fill('In the Contact section on desktop, testing that 503 kill switch does not fall back to EmailJS.')
+
+    await complaintArticle.locator('button.article-complaint-form-send-button').click()
+
+    const errorBanner = complaintArticle.locator('.article-complaint-form-message-error')
+    await expect(errorBanner).toBeVisible()
+    await expect(errorBanner).toContainText('Automated bug reporting is not connected in this static preview yet')
+    expect(emailJsCalls).toHaveLength(0)
+})
+

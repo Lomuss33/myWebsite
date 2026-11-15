@@ -45,6 +45,12 @@ jobs:
       - name: Test Web Art game rules
         run: npm run test:web-art
 
+      - name: Test Data Probe helpers
+        run: npm run test:data-probe
+
+      - name: Test Grain of Salt security & triage gateway
+        run: npm run test:grain-of-salt
+
       - name: Build project
         run: npm run build
 

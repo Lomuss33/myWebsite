@@ -267,40 +267,6 @@ export const useApi = () => {
                 }
 
                 if(response.status === 404 || response.status === 405 || response.status === 503) {
-                    if(options.emailJsFallback?.publicKey && options.emailJsFallback?.serviceId && options.emailJsFallback?.templateId) {
-                        const fallbackBundle = {
-                            to_email: options.emailJsFallback.recipientEmail || "trash@lovro-music.de",
-                            recipient_email: options.emailJsFallback.recipientEmail || "trash@lovro-music.de",
-                            name: "Grain of Salt Bug Report",
-                            from_name: "Grain of Salt Bug Report",
-                            from_email: reportBundle.replyEmail || "anonymous@lovro-music.de",
-                            reply_to: reportBundle.replyEmail || "anonymous@lovro-music.de",
-                            custom_subject: `[Bug Report] ${reportBundle.affectedSection || "website"} (${reportBundle.reproducibility || "unsure"})`,
-                            message: [
-                                `Description:\n${reportBundle.description}`,
-                                reportBundle.steps ? `Steps:\n${reportBundle.steps}` : "",
-                                reportBundle.expectedBehavior ? `Expected vs Actual:\n${reportBundle.expectedBehavior}` : "",
-                                `Diagnostics:\n${JSON.stringify(reportBundle.diagnostics || {})}`
-                            ].filter(Boolean).join("\n\n"),
-                            custom_source: utils.url.getAbsoluteLocation(),
-                            custom_source_name: "Grain of Salt Bug Intake"
-                        }
-
-                        const emailRes = await handlers.sendEmailRequest(
-                            fallbackBundle,
-                            options.emailJsFallback.publicKey,
-                            options.emailJsFallback.serviceId,
-                            options.emailJsFallback.templateId
-                        )
-
-                        if(emailRes.success) {
-                            return {
-                                success: true,
-                                reportId: `GOS-${Date.now().toString(36).toUpperCase().slice(-6)}`
-                            }
-                        }
-                    }
-
                     return {
                         success: false,
                         errorCode: constants.ErrorCodes.REPORT_UNAVAILABLE
@@ -317,11 +283,19 @@ export const useApi = () => {
 
                 const data = await response.json()
                 if(!response.ok || !data?.ok) {
+                    const mappedErrorCode = data?.errorCode === "rate_limited" ?
+                        constants.ErrorCodes.REPORT_RATE_LIMITED :
+                        (
+                            data?.errorCode === "submissions_disabled" ||
+                            data?.errorCode === "turnstile_unconfigured" ||
+                            data?.errorCode === "durable_storage_unconfigured"
+                        ) ?
+                            constants.ErrorCodes.REPORT_UNAVAILABLE :
+                            constants.ErrorCodes.MESSAGE_SUBMIT_FAILED
+
                     return {
                         success: false,
-                        errorCode: data?.errorCode === "rate_limited" ?
-                            constants.ErrorCodes.REPORT_RATE_LIMITED :
-                            constants.ErrorCodes.MESSAGE_SUBMIT_FAILED
+                        errorCode: mappedErrorCode
                     }
                 }
 

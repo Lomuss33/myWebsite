@@ -10,7 +10,9 @@ import {
 } from "../src/utils/bugReportValidator.js"
 import {
     computeSourceHash,
-    createMemoryGatewayStore
+    createD1GatewayStore,
+    createMemoryGatewayStore,
+    resolveGatewayStore
 } from "../workers/grain-of-salt/src/rateLimiter.js"
 import {
     evaluateRepairFilePath,
@@ -18,10 +20,13 @@ import {
 } from "../workers/grain-of-salt/src/repairPolicy.js"
 import {
     buildIsolatedTriagePrompt,
+    createEnvAiClassifier,
     runTriagePipeline,
+    triggerGitHubRepairWorkflow,
     validateStructuredTriageOutput
 } from "../workers/grain-of-salt/src/triagePipeline.js"
-import { handleReportRequest } from "../workers/grain-of-salt/src/index.js"
+import { handleReportRequest, verifyTurnstileToken } from "../workers/grain-of-salt/src/index.js"
+import { executeBoundedRepairAgent } from "./run-grain-of-salt-agent.js"
 
 test("validateReportPayload accepts valid bug report and sanitizes diagnostics", () => {
     const result = validateReportPayload({
@@ -295,4 +300,359 @@ test("computeSourceHash produces deterministic anonymized hashes and never leaks
     assert.equal(hashA, hashB)
     assert.notEqual(hashA, hashDifferentSalt)
     assert.equal(hashA.includes("198.51.100.7"), false)
+})
+
+test("verifyTurnstileToken and handleReportRequest fail closed when TURNSTILE_SECRET_KEY or D1 DB is unconfigured", async () => {
+    const missingSecretCheck = await verifyTurnstileToken({
+        token: "some-token",
+        secretKey: ""
+    })
+    assert.equal(missingSecretCheck.success, false)
+    assert.equal(missingSecretCheck.status, 503)
+    assert.equal(missingSecretCheck.errorCode, "turnstile_unconfigured")
+
+    const makeReq = () => new Request("https://lovro-music.de/api/grain-of-salt/report", {
+        method: "POST",
+        headers: {
+            "Origin": "https://lovro-music.de",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            type: "bug_report",
+            description: "In the Contact section on mobile, the destination menu is clipped.",
+            turnstileToken: "token-123"
+        })
+    })
+
+    // 1. Missing D1 binding in production (no deps.store, no env.DB, no ALLOW_IN_MEMORY_FALLBACK) -> 503 durable_storage_unconfigured
+    const noDbRes = await handleReportRequest(makeReq(), {
+        ALLOWED_ORIGINS: "https://lovro-music.de",
+        TURNSTILE_SECRET_KEY: "prod-secret"
+    })
+    assert.equal(noDbRes.status, 503)
+    const noDbData = await noDbRes.json()
+    assert.equal(noDbData.errorCode, "durable_storage_unconfigured")
+
+    // 2. Missing TURNSTILE_SECRET_KEY in production -> 503 turnstile_unconfigured
+    const noTurnstileRes = await handleReportRequest(
+        makeReq(),
+        {
+            ALLOWED_ORIGINS: "https://lovro-music.de",
+            ALLOW_IN_MEMORY_FALLBACK: "true",
+            TURNSTILE_SECRET_KEY: ""
+        }
+    )
+    assert.equal(noTurnstileRes.status, 503)
+    const noTurnstileData = await noTurnstileRes.json()
+    assert.equal(noTurnstileData.errorCode, "turnstile_unconfigured")
+})
+
+/**
+ * Creates a deterministic in-memory D1 SQLite mock implementing `.prepare(sql).bind(...args).run()/.first()`
+ * to verify `createD1GatewayStore` SQL queries, atomic conditional rate-limit increments, rollbacks, and deduplication.
+ */
+function createMockD1Database() {
+    const rateLimits = new Map()
+    const reports = new Map()
+
+    return {
+        _rateLimits: rateLimits,
+        _reports: reports,
+        prepare(sql) {
+            const normalizedSql = sql.replace(/\s+/g, " ").trim()
+            return {
+                bind(...params) {
+                    return {
+                        async run() {
+                            if(normalizedSql.startsWith("INSERT INTO rate_limits")) {
+                                const [key, nowMs, expiresMs, maxAllowed] = params
+                                const existing = rateLimits.get(key)
+                                if(!existing) {
+                                    rateLimits.set(key, { counter: 1, window_start: nowMs, expires_at: expiresMs })
+                                    return { meta: { changes: 1 } }
+                                }
+                                if(existing.expires_at <= nowMs) {
+                                    rateLimits.set(key, { counter: 1, window_start: nowMs, expires_at: expiresMs })
+                                    return { meta: { changes: 1 } }
+                                }
+                                if(existing.counter < maxAllowed) {
+                                    existing.counter += 1
+                                    return { meta: { changes: 1 } }
+                                }
+                                return { meta: { changes: 0 } }
+                            }
+
+                            if(normalizedSql.startsWith("UPDATE rate_limits SET counter = MAX(0, counter - 1)")) {
+                                const [key] = params
+                                const existing = rateLimits.get(key)
+                                if(existing && existing.counter > 0) {
+                                    existing.counter -= 1
+                                }
+                                return { meta: { changes: 1 } }
+                            }
+
+                            if(normalizedSql.startsWith("UPDATE reports SET duplicate_count = duplicate_count + 1")) {
+                                const [fingerprint, nowMs, windowCutoff] = params
+                                const existing = reports.get(fingerprint)
+                                if(existing && existing.created_at >= windowCutoff) {
+                                    existing.duplicate_count += 1
+                                    existing.updated_at = nowMs
+                                    return { meta: { changes: 1 } }
+                                }
+                                return { meta: { changes: 0 } }
+                            }
+
+                            if(normalizedSql.startsWith("INSERT INTO reports")) {
+                                const [
+                                    reportId,
+                                    fingerprint,
+                                    reportType,
+                                    status,
+                                    classification,
+                                    affectedSection,
+                                    reproducibility,
+                                    description,
+                                    steps,
+                                    expectedBehavior,
+                                    replyEmail,
+                                    diagnosticsJson,
+                                    triageJson,
+                                    sourceHash,
+                                    nowMs
+                                ] = params
+                                const existing = reports.get(fingerprint)
+                                if(existing) {
+                                    existing.duplicate_count += 1
+                                    existing.updated_at = nowMs
+                                }
+                                else {
+                                    reports.set(fingerprint, {
+                                        report_id: reportId,
+                                        fingerprint,
+                                        report_type: reportType,
+                                        status,
+                                        classification,
+                                        affected_section: affectedSection,
+                                        reproducibility,
+                                        description,
+                                        steps,
+                                        expected_behavior: expectedBehavior,
+                                        reply_email: replyEmail,
+                                        diagnostics_json: diagnosticsJson,
+                                        triage_json: triageJson,
+                                        duplicate_count: 1,
+                                        source_hash: sourceHash,
+                                        created_at: nowMs,
+                                        updated_at: nowMs
+                                    })
+                                }
+                                return { meta: { changes: 1 } }
+                            }
+
+                            if(normalizedSql.startsWith("UPDATE reports SET status = ?2")) {
+                                const [reportId, nextStatus, nextClassification, nextTriageJson, nowMs] = params
+                                for(const row of reports.values()) {
+                                    if(row.report_id === reportId) {
+                                        row.status = nextStatus
+                                        row.classification = nextClassification
+                                        row.triage_json = nextTriageJson
+                                        row.updated_at = nowMs
+                                    }
+                                }
+                                return { meta: { changes: 1 } }
+                            }
+
+                            throw new Error(`Unhandled SQL in mock D1 run(): ${normalizedSql}`)
+                        },
+                        async first() {
+                            if(normalizedSql.startsWith("SELECT counter FROM rate_limits")) {
+                                const [key] = params
+                                return rateLimits.get(key) || null
+                            }
+                            if(normalizedSql.startsWith("SELECT * FROM reports WHERE fingerprint = ?1")) {
+                                const [fingerprint] = params
+                                return reports.get(fingerprint) || null
+                            }
+                            if(normalizedSql.startsWith("SELECT * FROM reports WHERE report_id = ?1")) {
+                                const [reportId] = params
+                                for(const row of reports.values()) {
+                                    if(row.report_id === reportId) {
+                                        return row
+                                    }
+                                }
+                                return null
+                            }
+                            throw new Error(`Unhandled SQL in mock D1 first(): ${normalizedSql}`)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+test("createD1GatewayStore persists rate limits, rolls back partial multi-bucket increments, and deduplicates across Worker instances", async () => {
+    const mockDb = createMockD1Database()
+    const now = 1760000000000
+
+    // Simulate two separate Worker instances sharing the same D1 binding
+    const workerInstanceA = resolveGatewayStore({ DB: mockDb }).store
+    const workerInstanceB = resolveGatewayStore({ DB: mockDb }).store
+
+    const config = {
+        perSourceHourly: 2,
+        perSourceDaily: 5,
+        globalDaily: 3,
+        dailyAiTriageJobs: 1,
+        dailyRepairAttempts: 1
+    }
+
+    // Concurrent burst from same source across two Worker instances
+    const [q1, q2, q3] = await Promise.all([
+        workerInstanceA.checkAndConsumeSubmissionQuota("src-1", config, now),
+        workerInstanceB.checkAndConsumeSubmissionQuota("src-1", config, now),
+        workerInstanceA.checkAndConsumeSubmissionQuota("src-1", config, now)
+    ])
+
+    const allowedCount = [q1, q2, q3].filter((q) => q.allowed).length
+    assert.equal(allowedCount, 2)
+    assert.equal(q3.allowed, false)
+    assert.equal(q3.reason, "source_hourly_limit_exceeded")
+
+    // Verify per-source daily and global counters were not over-incremented when the 3rd request failed the first check
+    const globalKey = Array.from(mockDb._rateLimits.keys()).find((k) => k.startsWith("glb:day:"))
+    assert.equal(mockDb._rateLimits.get(globalKey).counter, 2)
+
+    // Cross-instance report deduplication in D1
+    const firstInsert = await workerInstanceA.upsertReport({
+        reportId: "GOS-D1TEST01",
+        fingerprint: "fp-shared-01",
+        type: "bug_report",
+        affectedSection: "contact",
+        reproducibility: "always",
+        description: "Mobile contact form overlap",
+        sourceHash: "src-1"
+    }, now)
+    assert.equal(firstInsert.duplicate, false)
+
+    await workerInstanceA.updateReportTriage("GOS-D1TEST01", {
+        status: "triaged",
+        classification: "actionable_bug",
+        triage: { classification: "actionable_bug", stage: "stage3_ai_structured" }
+    }, now)
+
+    const secondInsertOnInstanceB = await workerInstanceB.upsertReport({
+        reportId: "GOS-D1TEST01",
+        fingerprint: "fp-shared-01",
+        type: "bug_report",
+        affectedSection: "contact",
+        reproducibility: "always",
+        description: "Mobile contact form overlap",
+        sourceHash: "src-2"
+    }, now + 1000)
+
+    assert.equal(secondInsertOnInstanceB.duplicate, true)
+    assert.equal(secondInsertOnInstanceB.report.duplicateCount, 2)
+    assert.equal(secondInsertOnInstanceB.report.classification, "actionable_bug")
+})
+
+test("createEnvAiClassifier and triggerGitHubRepairWorkflow connect Worker to AI model and GitHub repository_dispatch", async () => {
+    const mockDb = createMockD1Database()
+    const dispatchedCalls = []
+
+    const mockFetch = async (url, init) => {
+        if(url.includes("challenges.cloudflare.com/turnstile")) {
+            return new Response(JSON.stringify({ success: true }), { status: 200 })
+        }
+        if(url.includes("api.openai.com/v1/chat/completions")) {
+            return new Response(JSON.stringify({
+                choices: [
+                    {
+                        message: {
+                            content: JSON.stringify({
+                                classification: "actionable_bug",
+                                severity: "high",
+                                confidence: 0.94,
+                                summary: "Salt shaker arrival focus does not land on textarea in Safari",
+                                suspectedSection: "contact",
+                                candidateFiles: ["src/components/articles/ArticleComplaintForm.jsx"]
+                            })
+                        }
+                    }
+                ]
+            }), { status: 200 })
+        }
+        if(url.includes("api.github.com/repos/Lomuss33/myWebsite/dispatches")) {
+            dispatchedCalls.push({ url, body: JSON.parse(init.body) })
+            return new Response(null, { status: 204 })
+        }
+        throw new Error(`Unexpected fetch URL: ${url}`)
+    }
+
+    const env = {
+        DB: mockDb,
+        ALLOWED_ORIGINS: "https://lovro-music.de",
+        TURNSTILE_SECRET_KEY: "live-turnstile-secret",
+        AI_API_KEY: "sk-test-ai-key",
+        AI_MODEL: "gpt-4o-mini",
+        DISABLE_GITHUB_PRS: "false",
+        GITHUB_APP_TOKEN: "ghs_test_token",
+        GITHUB_REPOSITORY: "Lomuss33/myWebsite"
+    }
+
+    const req = new Request("https://lovro-music.de/api/grain-of-salt/report", {
+        method: "POST",
+        headers: {
+            "Origin": "https://lovro-music.de",
+            "Content-Type": "application/json",
+            "CF-Connecting-IP": "198.51.100.99"
+        },
+        body: JSON.stringify({
+            type: "bug_report",
+            affectedSection: "contact",
+            reproducibility: "always",
+            description: "When clicking the salt shaker in the navbar on mobile, the Contact section opens but focus does not move to the complaint textarea.",
+            steps: "1. Tap salt shaker 2. Observe focus",
+            turnstileToken: "cf-turnstile-valid-token"
+        })
+    })
+
+    const res = await handleReportRequest(req, env, { fetch: mockFetch, now: () => 1760000000000 })
+    assert.equal(res.status, 202)
+    const body = await res.json()
+    assert.equal(body.ok, true)
+    assert.equal(body.stage, "stage3_ai_structured")
+    assert.equal(body.repairDispatched, true)
+    assert.equal(dispatchedCalls.length, 1)
+    assert.equal(dispatchedCalls[0].body.event_type, "grain_of_salt_actionable_bug")
+    assert.equal(dispatchedCalls[0].body.client_payload.reportId, body.reportId)
+})
+
+test("executeBoundedRepairAgent enforces protected-file denylist and generates human-reviewable triage dossier", async () => {
+    const blockedResult = await executeBoundedRepairAgent(
+        {
+            reportId: "GOS-SEC01",
+            classification: "actionable_bug",
+            affectedSection: "contact",
+            description: "Attempt to modify GitHub workflow",
+            candidateFiles: [".github/workflows/deploy.yml"]
+        },
+        { writeDossier: false, env: { DISABLE_AI_REPAIR: "false" } }
+    )
+    assert.equal(blockedResult.permitted, false)
+    assert.match(blockedResult.reason, /^protected_file_denylist/)
+
+    const allowedResult = await executeBoundedRepairAgent(
+        {
+            reportId: "GOS-SAFE01",
+            classification: "actionable_bug",
+            affectedSection: "contact",
+            description: "Complaint form button label wraps awkwardly on narrow screens",
+            candidateFiles: ["src/components/articles/ArticleComplaintForm.jsx"]
+        },
+        { writeDossier: false, env: { DISABLE_AI_REPAIR: "false" } }
+    )
+    assert.equal(allowedResult.permitted, true)
+    assert.equal(allowedResult.branchName, "grain-of-salt/fix-gos-safe01")
+    assert.equal(allowedResult.dossierPath, "docs/reports/grain-of-salt/GOS-SAFE01.md")
 })

@@ -448,7 +448,8 @@
         "email_js_service_id": "myWebsite",
         "email_js_template_id": "template_puj7mco",
         "email_js_complaint_template_id": "template_puj7mco",
-        "report_api_endpoint": "/api/grain-of-salt/report"
+        "report_api_endpoint": "https://grain-of-salt-gateway.social-github.workers.dev/api/grain-of-salt/report",
+        "turnstile_site_key": "0x4AAAAAAGCXyxnSiMF8MCBG"
       },
       "locales": {
         "en": {

@@ -193,6 +193,9 @@ test('existing playful complaint destinations (Nowhere and Chaos mode) continue 
 
 test('bug report flow does not bypass security gateway via EmailJS when Worker returns 404 or 503 kill switch', async ({page}) => {
     await page.setViewportSize({width: 1366, height: 768})
+    await page.addInitScript(() => {
+        window.__mockTurnstileToken = 'mock-turnstile-token'
+    })
     const emailJsCalls = []
 
     await page.route('**/api.emailjs.com/**', async (route) => {

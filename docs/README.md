@@ -30,6 +30,7 @@ Match the description when your wording differs from the aliases. Read the linke
 | Decorative bands: animated artwork separating sections and ending their pages | Decoration strip, bottom buffer, curtain, garden, shader, stuck Home animation, gradient only, sad-face background | [Decorative bands](architecture/decorative-bands.md) |
 | Project stickers: floating cutouts follow project cards without changing spacing | Cutouts, corner artwork, overlapping stickers, top right, bottom left, software dark set | [Project stickers](architecture/project-stickers.md) |
 | Image gallery: open every photo album in the same swipe/zoom viewer | One gallery, fullscreen viewer, lightbox, photo album, pinch zoom, swipe images | [Shared image gallery](architecture/image-galleries.md) |
+| Grain of Salt bug reporting & complaint box: salt shaker jumps to Contact complaint form with bug intake & triage gateway | Salt shaker, take it with a grain of salt, complaint box, bug report, chaos mode, Anzeige raus | [Grain of Salt](architecture/grain-of-salt.md) |
 
 Use the [short feature template and upkeep workflow](guides/feature-documentation.md) when adding or changing guidance. These entries are a small starting set; expand when a real task needs it.
 

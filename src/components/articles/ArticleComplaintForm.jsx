@@ -5,13 +5,22 @@ import {useApi} from "../../hooks/api.js"
 import {useConstants} from "../../hooks/constants.js"
 import {useFeedbacks} from "../../providers/FeedbacksProvider.jsx"
 import {useLanguage} from "../../providers/LanguageProvider.jsx"
+import {useNavigation} from "../../providers/NavigationProvider.jsx"
 import {useTheme} from "../../providers/ThemeProvider.jsx"
+import {useViewport} from "../../providers/ViewportProvider.jsx"
+import {
+    ALLOWED_REPRODUCIBILITY,
+    ALLOWED_SECTIONS,
+    collectBrowserDiagnostics,
+    evaluateDescriptionQuality
+} from "../../utils/bugReportValidator.js"
 import Article from "./base/Article.jsx"
 import Textarea from "../forms/fields/Textarea.jsx"
 import StandardButton from "../buttons/StandardButton.jsx"
 
-const DESTINATIONS = {
+export const DESTINATIONS = {
     NOWHERE: "nowhere",
+    BUG_REPORT: "bug_report",
     YOU_WHERE: "you_where",
     KNJIGA: "knjiga_zalbi",
     ANZEIGE: "anzeige_raus",
@@ -25,6 +34,7 @@ const NOWHERE_SPARK_COLORS_LIGHT = ["#1d4ed8", "#d97706", "#0f766e", "#7c3aed", 
 function createDestinationOptions(labels) {
     return [
         { value: DESTINATIONS.NOWHERE, label: labels.nowhereLabel },
+        { value: DESTINATIONS.BUG_REPORT, label: labels.bugReportLabel },
         { value: DESTINATIONS.YOU_WHERE, label: labels.youWhereLabel },
         { value: DESTINATIONS.KNJIGA, label: labels.knjigaLabel },
         { value: DESTINATIONS.ANZEIGE, label: labels.anzeigeLabel },
@@ -47,7 +57,9 @@ function ArticleComplaintFormContent({ dataWrapper }) {
     const constants = useConstants()
     const feedbacks = useFeedbacks()
     const language = useLanguage()
+    const navigation = useNavigation()
     const theme = useTheme()
+    const viewport = useViewport()
     const selectedThemeId = theme.getSelectedTheme()?.id || "dark"
 
     const [message, setMessage] = useState("")
@@ -58,6 +70,14 @@ function ArticleComplaintFormContent({ dataWrapper }) {
     const [isSending, setIsSending] = useState(false)
     const [nowhereBursts, setNowhereBursts] = useState([])
     const [isDestinationMenuOpen, setIsDestinationMenuOpen] = useState(false)
+    const [isDetailsExpanded, setIsDetailsExpanded] = useState(false)
+    const [affectedSection, setAffectedSection] = useState("")
+    const [reproducibility, setReproducibility] = useState("sometimes")
+    const [steps, setSteps] = useState("")
+    const [expectedBehavior, setExpectedBehavior] = useState("")
+    const [replyEmail, setReplyEmail] = useState("")
+    const [honeypot, setHoneypot] = useState("")
+    const [arrivedViaSaltShaker, setArrivedViaSaltShaker] = useState(false)
 
     const sendButtonWrapperRef = useRef(null)
     const destinationMenuRef = useRef(null)
@@ -73,17 +93,48 @@ function ArticleComplaintFormContent({ dataWrapper }) {
     const complaintNote = String(dataWrapper.locales.complaintNote || "").trim()
     const complaintDestinationLabel = dataWrapper.locales.complaintDestinationLabel || "destination"
     const complaintNowhereLabel = dataWrapper.locales.complaintNowhereLabel || "nowhere"
+    const complaintBugReportLabel = dataWrapper.locales.complaintBugReportLabel || "Report a website bug"
+    const complaintFeedbackLabel = dataWrapper.locales.complaintFeedbackLabel || "Send complaint / feedback"
     const complaintYouWhereLabel = dataWrapper.locales.complaintYouWhereLabel || "actual hate"
     const complaintKnjigaLabel = dataWrapper.locales.complaintKnjigaLabel || "Knjiga zalbi"
     const complaintAnzeigeLabel = dataWrapper.locales.complaintAnzeigeLabel || "Anzeige raus"
     const complaintSendLabel = dataWrapper.locales.complaintSendLabel || language.getString("send_message")
+    const complaintBugSendLabel = dataWrapper.locales.complaintBugSendLabel || complaintSendLabel
     const complaintYouWhereTitle = dataWrapper.locales.complaintYouWhereTitle || complaintYouWhereLabel
     const complaintYouWhereBody = dataWrapper.locales.complaintYouWhereBody || complaintYouWhereLabel
     const complaintSentTitle = dataWrapper.locales.complaintSentTitle || ""
     const complaintSentBody = dataWrapper.locales.complaintSentBody || ""
+    const complaintBugSentTitle = dataWrapper.locales.complaintBugSentTitle || complaintSentTitle
+    const complaintBugSentBody = dataWrapper.locales.complaintBugSentBody || complaintSentBody
     const complaintPopupTitle = dataWrapper.locales.complaintPopupTitle || "Anzeige raus"
+    const complaintBugPlaceholder = dataWrapper.locales.complaintBugPlaceholder || "complaint"
+    const complaintBugBannerTitle = dataWrapper.locales.complaintBugBannerTitle || complaintBugReportLabel
+    const complaintBugBannerHint = dataWrapper.locales.complaintBugBannerHint || ""
+    const complaintBugDetailsToggleOpen = dataWrapper.locales.complaintBugDetailsToggleOpen || "Add reproduction details"
+    const complaintBugDetailsToggleClose = dataWrapper.locales.complaintBugDetailsToggleClose || "Hide reproduction details"
+    const complaintBugSectionLabel = dataWrapper.locales.complaintBugSectionLabel || "Affected section"
+    const complaintBugSectionAuto = dataWrapper.locales.complaintBugSectionAuto || "Current section (auto)"
+    const complaintBugReproducibilityLabel = dataWrapper.locales.complaintBugReproducibilityLabel || "Reproducibility"
+    const complaintBugReproAlways = dataWrapper.locales.complaintBugReproAlways || "Every time"
+    const complaintBugReproSometimes = dataWrapper.locales.complaintBugReproSometimes || "Sometimes"
+    const complaintBugReproOnce = dataWrapper.locales.complaintBugReproOnce || "Once"
+    const complaintBugReproUnsure = dataWrapper.locales.complaintBugReproUnsure || "Not sure"
+    const complaintBugStepsLabel = dataWrapper.locales.complaintBugStepsLabel || "Steps to reproduce"
+    const complaintBugStepsPlaceholder = dataWrapper.locales.complaintBugStepsPlaceholder || ""
+    const complaintBugExpectedLabel = dataWrapper.locales.complaintBugExpectedLabel || "Expected vs. actual result"
+    const complaintBugExpectedPlaceholder = dataWrapper.locales.complaintBugExpectedPlaceholder || ""
+    const complaintBugReplyEmailLabel = dataWrapper.locales.complaintBugReplyEmailLabel || "Reply email (optional)"
+    const complaintBugReplyEmailPlaceholder = dataWrapper.locales.complaintBugReplyEmailPlaceholder || ""
+    const complaintBugPrivacyNote = dataWrapper.locales.complaintBugPrivacyNote || ""
+    const complaintBugQualityHint = dataWrapper.locales.complaintBugQualityHint || ""
+
+    const isBugReportMode = destination === DESTINATIONS.BUG_REPORT
+    const activeSubmitLabel = isBugReportMode ? complaintBugSendLabel : complaintSendLabel
+    const activePlaceholder = isBugReportMode ? complaintBugPlaceholder : "complaint"
+
     const destinationOptions = createDestinationOptions({
         nowhereLabel: complaintNowhereLabel,
+        bugReportLabel: complaintBugReportLabel,
         youWhereLabel: complaintYouWhereLabel,
         knjigaLabel: complaintKnjigaLabel,
         anzeigeLabel: complaintAnzeigeLabel
@@ -93,8 +144,24 @@ function ArticleComplaintFormContent({ dataWrapper }) {
     const destinationTriggerLabelId = `${dataWrapper.uniqueId}-destination-trigger-label`
     const destinationTriggerValueId = `${dataWrapper.uniqueId}-destination-trigger-value`
     const complaintPopupsTitleIdPrefix = `${dataWrapper.uniqueId}-complaint-popup`
+    const detailsPanelId = `${dataWrapper.uniqueId}-bug-details-panel`
     const errorMessage = validationError ? language.getString(validationError.errorCode) : null
     const hasComplaintNote = complaintNote.length > 0
+
+    const descriptionQuality = isBugReportMode ?
+        evaluateDescriptionQuality(message, {
+            affectedSection,
+            steps,
+            expectedBehavior
+        }) :
+        { isWeak: false }
+
+    const reproducibilityLabels = {
+        always: complaintBugReproAlways,
+        sometimes: complaintBugReproSometimes,
+        once: complaintBugReproOnce,
+        unsure: complaintBugReproUnsure
+    }
 
     useEffect(() => {
         return () => {
@@ -104,14 +171,86 @@ function ArticleComplaintFormContent({ dataWrapper }) {
     }, [])
 
     useEffect(() => {
-        if(destination !== DESTINATIONS.NOWHERE)
+        const pendingFocus = navigation?.pendingArticleFocus
+        if(!pendingFocus || pendingFocus.articleUniqueId !== dataWrapper.uniqueId)
             return
 
-        setMessage("")
-        setValidationError(null)
-        setStatusMessage(null)
-        setComplaintPopups([])
-    }, [destination])
+        let cancelled = false
+        let observer = null
+        let rafId = 0
+
+        const isArticleReady = () => {
+            if(typeof document === "undefined")
+                return false
+
+            const sectionEl = document.getElementById(`section-${dataWrapper.sectionId}`)
+            const articleEl = document.getElementById(dataWrapper.uniqueId)
+            if(!sectionEl || !articleEl)
+                return false
+
+            if(!sectionEl.classList.contains("section-shown"))
+                return false
+
+            const contentReady = sectionEl.querySelector(".section-content-page-ready")
+            const loadingPlaceholder = sectionEl.querySelector(".section-loading-placeholder")
+            return Boolean(contentReady && !loadingPlaceholder)
+        }
+
+        const completeArrival = () => {
+            if(cancelled || !mountedRef.current)
+                return
+
+            const articleEl = document.getElementById(dataWrapper.uniqueId)
+            if(!articleEl)
+                return
+
+            if(pendingFocus.mode === "report") {
+                setDestination(DESTINATIONS.BUG_REPORT)
+                setArrivedViaSaltShaker(true)
+                setValidationError(null)
+                setStatusMessage(null)
+            }
+
+            scrollComplaintArticleIntoView(articleEl, dataWrapper.sectionId, Boolean(viewport?.isMobileLayout?.()))
+
+            rafId = window.requestAnimationFrame(() => {
+                if(cancelled || !mountedRef.current)
+                    return
+
+                const textareaEl = articleEl.querySelector("#complaint-form-textarea")
+                const focusTarget = textareaEl || destinationButtonRef.current || articleEl
+                focusTarget?.focus?.({ preventScroll: true })
+                navigation?.clearPendingArticleFocus?.(pendingFocus.requestId)
+            })
+        }
+
+        if(isArticleReady()) {
+            rafId = window.requestAnimationFrame(completeArrival)
+        }
+        else if(typeof MutationObserver !== "undefined" && typeof document !== "undefined") {
+            const observeTarget = document.getElementById(`section-${dataWrapper.sectionId}`) || document.body
+            observer = new MutationObserver(() => {
+                if(isArticleReady()) {
+                    observer?.disconnect()
+                    observer = null
+                    rafId = window.requestAnimationFrame(completeArrival)
+                }
+            })
+            observer.observe(observeTarget, {
+                attributes: true,
+                childList: true,
+                subtree: true
+            })
+        }
+
+        return () => {
+            cancelled = true
+            observer?.disconnect()
+            if(rafId && typeof window !== "undefined") {
+                window.cancelAnimationFrame(rafId)
+            }
+        }
+    }, [dataWrapper.sectionId, dataWrapper.uniqueId, navigation, viewport])
 
     useEffect(() => {
         if(!isDestinationMenuOpen)
@@ -190,7 +329,7 @@ function ArticleComplaintFormContent({ dataWrapper }) {
         setDestination(nextDestination)
         closeDestinationMenu({ focusTrigger: true })
 
-        if(nextDestination === DESTINATIONS.ANZEIGE) {
+        if(nextDestination === DESTINATIONS.ANZEIGE || nextDestination === DESTINATIONS.NOWHERE) {
             setComplaintPopups([])
         }
     }
@@ -306,6 +445,11 @@ function ArticleComplaintFormContent({ dataWrapper }) {
             return
         }
 
+        if(destination === DESTINATIONS.BUG_REPORT) {
+            await handleBugReportSubmit()
+            return
+        }
+
         if(destination !== DESTINATIONS.KNJIGA) {
             return
         }
@@ -372,8 +516,94 @@ function ArticleComplaintFormContent({ dataWrapper }) {
         }
     }
 
+    async function handleBugReportSubmit() {
+        const diagnostics = collectBrowserDiagnostics({
+            section: affectedSection || navigation?.activeSectionId || dataWrapper.sectionId || "contact",
+            language: language.getSelectedLanguage()?.id || "en",
+            theme: selectedThemeId,
+            layoutMode: viewport?.getLayoutConstraints?.()?.layoutMode || "",
+            cursorMode: feedbacks?.cursorMode || "magic",
+            source: arrivedViaSaltShaker ? "salt-shaker" : "complaint-form"
+        })
+
+        const validation = api.validators.validateBugReportRequest({
+            type: "bug_report",
+            description: message,
+            affectedSection: affectedSection || diagnostics.section,
+            reproducibility,
+            steps,
+            expectedBehavior,
+            replyEmail,
+            honeypot,
+            diagnostics
+        })
+
+        if(!validation.success) {
+            setValidationError(validation)
+            setStatusMessage(null)
+            return
+        }
+
+        const settings = dataWrapper.settings || {}
+        setValidationError(null)
+        setStatusMessage(null)
+        setIsSending(true)
+        feedbacks.setActivitySpinnerVisible(
+            true,
+            dataWrapper.uniqueId,
+            language.getString("sending_bug_report") || language.getString("sending_message")
+        )
+
+        try {
+            const response = await api.handlers.submitBugReportRequest(validation.bundle, {
+                endpoint: settings.reportApiEndpoint,
+                emailJsFallback: {
+                    publicKey: settings.emailJsPublicKey,
+                    serviceId: settings.emailJsServiceId,
+                    templateId: settings.emailJsComplaintTemplateId || settings.emailJsTemplateId,
+                    recipientEmail: complaintEmail
+                }
+            })
+
+            if(!mountedRef.current)
+                return
+
+            if(!response?.success) {
+                setValidationError({
+                    errorCode: response?.errorCode || constants.ErrorCodes.MESSAGE_SUBMIT_FAILED
+                })
+                return
+            }
+
+            const reportRefId = response.reportId || "GOS-OK"
+            const formattedBody = complaintBugSentBody.includes("{id}") ?
+                complaintBugSentBody.replace("{id}", reportRefId) :
+                complaintBugSentBody
+
+            setMessage("")
+            setSteps("")
+            setExpectedBehavior("")
+            setIsDetailsExpanded(false)
+            setStatusMessage([complaintBugSentTitle, formattedBody].filter(Boolean).join(" "))
+        }
+        catch (_error) {
+            if(!mountedRef.current)
+                return
+
+            setValidationError({
+                errorCode: constants.ErrorCodes.MESSAGE_SUBMIT_FAILED
+            })
+        }
+        finally {
+            feedbacks.setActivitySpinnerVisible(false, dataWrapper.uniqueId)
+            if(mountedRef.current) {
+                setIsSending(false)
+            }
+        }
+    }
+
     return (
-        <form className={`article-complaint-form-shell`}
+        <form className={`article-complaint-form-shell ${isBugReportMode ? "article-complaint-form-shell-bug-mode" : ""}`}
               noValidate={true}
               onSubmit={handleSubmit}>
             <div className={`article-complaint-form-main`}>
@@ -382,21 +612,21 @@ function ArticleComplaintFormContent({ dataWrapper }) {
                               name={`message`}
                               model={message}
                               setModel={setMessage}
-                              faIconPrefix={`fa-solid fa-comment-dots`}
-                              placeholder={`complaint`}
+                              faIconPrefix={isBugReportMode ? `fa-solid fa-bug` : `fa-solid fa-comment-dots`}
+                              placeholder={activePlaceholder}
                               className={`text-4`}
                               required={false}/>
                 </div>
 
                 <div ref={sendButtonWrapperRef}
                      className={`article-complaint-form-send-button-wrapper`}>
-                    <StandardButton label={complaintSendLabel}
-                                    faIcon={`fa-solid fa-paper-plane`}
+                    <StandardButton label={activeSubmitLabel}
+                                    faIcon={isBugReportMode ? `fa-solid fa-shield-halved` : `fa-solid fa-paper-plane`}
                                     type={`submit`}
                                     className={`article-complaint-form-send-button`}
                                     variant={`primary`}
                                     size={StandardButton.Size.DEFAULT}
-                                    tooltip={complaintSendLabel}
+                                    tooltip={activeSubmitLabel}
                                     status={isSending ? StandardButton.Status.DISABLED : StandardButton.Status.ENABLED}/>
                 </div>
 
@@ -490,6 +720,141 @@ function ArticleComplaintFormContent({ dataWrapper }) {
                     )}
                 </div>
             </div>
+
+            {(isBugReportMode || arrivedViaSaltShaker) && (
+                <section className={`article-complaint-form-report-drawer`}
+                         aria-label={complaintBugBannerTitle}>
+                    <div className={`article-complaint-form-report-header`}>
+                        <div className={`article-complaint-form-report-mode-switch`}
+                             role={`group`}
+                             aria-label={complaintBugBannerTitle}>
+                            <button type={`button`}
+                                    className={`article-complaint-form-mode-pill ${destination === DESTINATIONS.BUG_REPORT ? "is-active" : ""}`}
+                                    aria-pressed={destination === DESTINATIONS.BUG_REPORT}
+                                    onClick={() => handleDestinationChange(DESTINATIONS.BUG_REPORT)}>
+                                <i className={`fa-solid fa-bug`} aria-hidden={`true`} />
+                                <span>{complaintBugReportLabel}</span>
+                            </button>
+
+                            <button type={`button`}
+                                    className={`article-complaint-form-mode-pill ${destination === DESTINATIONS.KNJIGA ? "is-active" : ""}`}
+                                    aria-pressed={destination === DESTINATIONS.KNJIGA}
+                                    onClick={() => handleDestinationChange(DESTINATIONS.KNJIGA)}>
+                                <i className={`fa-solid fa-envelope-open-text`} aria-hidden={`true`} />
+                                <span>{complaintFeedbackLabel}</span>
+                            </button>
+                        </div>
+
+                        {isBugReportMode && (
+                            <button type={`button`}
+                                    className={`article-complaint-form-details-toggle`}
+                                    aria-expanded={isDetailsExpanded}
+                                    aria-controls={detailsPanelId}
+                                    onClick={() => setIsDetailsExpanded((prev) => !prev)}>
+                                <span>{isDetailsExpanded ? complaintBugDetailsToggleClose : complaintBugDetailsToggleOpen}</span>
+                                <i className={`fa-solid ${isDetailsExpanded ? "fa-chevron-up" : "fa-chevron-down"}`} aria-hidden={`true`} />
+                            </button>
+                        )}
+                    </div>
+
+                    {isBugReportMode && complaintBugBannerHint && (
+                        <p className={`article-complaint-form-report-hint text-2`}>
+                            {complaintBugBannerHint}
+                        </p>
+                    )}
+
+                    {isBugReportMode && descriptionQuality.isWeak && (
+                        <p className={`article-complaint-form-quality-hint text-2`}
+                           role={`status`}>
+                            <i className={`fa-solid fa-circle-info`} aria-hidden={`true`} />
+                            <span>{complaintBugQualityHint}</span>
+                        </p>
+                    )}
+
+                    {isBugReportMode && isDetailsExpanded && (
+                        <div id={detailsPanelId}
+                             className={`article-complaint-form-details-grid`}>
+                            <label className={`article-complaint-form-detail-field`}>
+                                <span className={`article-complaint-form-detail-label text-2`}>{complaintBugSectionLabel}</span>
+                                <select className={`article-complaint-form-detail-input text-2`}
+                                        name={`affectedSection`}
+                                        value={affectedSection}
+                                        onChange={(e) => setAffectedSection(e.target.value)}>
+                                    <option value="">{complaintBugSectionAuto}</option>
+                                    {ALLOWED_SECTIONS.map((secId) => (
+                                        <option key={secId} value={secId}>{secId}</option>
+                                    ))}
+                                </select>
+                            </label>
+
+                            <label className={`article-complaint-form-detail-field`}>
+                                <span className={`article-complaint-form-detail-label text-2`}>{complaintBugReproducibilityLabel}</span>
+                                <select className={`article-complaint-form-detail-input text-2`}
+                                        name={`reproducibility`}
+                                        value={reproducibility}
+                                        onChange={(e) => setReproducibility(e.target.value)}>
+                                    {ALLOWED_REPRODUCIBILITY.map((reproKey) => (
+                                        <option key={reproKey} value={reproKey}>
+                                            {reproducibilityLabels[reproKey] || reproKey}
+                                        </option>
+                                    ))}
+                                </select>
+                            </label>
+
+                            <label className={`article-complaint-form-detail-field`}>
+                                <span className={`article-complaint-form-detail-label text-2`}>{complaintBugReplyEmailLabel}</span>
+                                <input type={`email`}
+                                       className={`article-complaint-form-detail-input text-2`}
+                                       name={`replyEmail`}
+                                       maxLength={160}
+                                       placeholder={complaintBugReplyEmailPlaceholder}
+                                       value={replyEmail}
+                                       onChange={(e) => setReplyEmail(e.target.value)}/>
+                            </label>
+
+                            <label className={`article-complaint-form-detail-field article-complaint-form-detail-field-wide`}>
+                                <span className={`article-complaint-form-detail-label text-2`}>{complaintBugStepsLabel}</span>
+                                <input type={`text`}
+                                       className={`article-complaint-form-detail-input text-2`}
+                                       name={`steps`}
+                                       maxLength={600}
+                                       placeholder={complaintBugStepsPlaceholder}
+                                       value={steps}
+                                       onChange={(e) => setSteps(e.target.value)}/>
+                            </label>
+
+                            <label className={`article-complaint-form-detail-field article-complaint-form-detail-field-wide`}>
+                                <span className={`article-complaint-form-detail-label text-2`}>{complaintBugExpectedLabel}</span>
+                                <input type={`text`}
+                                       className={`article-complaint-form-detail-input text-2`}
+                                       name={`expectedBehavior`}
+                                       maxLength={400}
+                                       placeholder={complaintBugExpectedPlaceholder}
+                                       value={expectedBehavior}
+                                       onChange={(e) => setExpectedBehavior(e.target.value)}/>
+                            </label>
+                        </div>
+                    )}
+
+                    {isBugReportMode && complaintBugPrivacyNote && (
+                        <p className={`article-complaint-form-privacy-note text-1`}>
+                            {complaintBugPrivacyNote}
+                        </p>
+                    )}
+
+                    <div className={`article-complaint-form-honeypot`} aria-hidden={`true`}>
+                        <label>
+                            <span>Website URL</span>
+                            <input type={`text`}
+                                   name={`website_url_confirm`}
+                                   tabIndex={-1}
+                                   autoComplete={`off`}
+                                   value={honeypot}
+                                   onChange={(e) => setHoneypot(e.target.value)}/>
+                        </label>
+                    </div>
+                </section>
+            )}
 
             {typeof document !== "undefined" && createPortal(
                 <>
@@ -639,6 +1004,41 @@ function ArticleComplaintFormContent({ dataWrapper }) {
     function closeTopComplaintPopup() {
         setComplaintPopups((current) => current.slice(0, -1))
     }
+}
+
+function scrollComplaintArticleIntoView(articleEl, sectionId, isMobileLayout) {
+    if(typeof window === "undefined" || !articleEl)
+        return
+
+    const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches
+    const scrollBehavior = prefersReducedMotion ? "auto" : "smooth"
+
+    if(!isMobileLayout) {
+        const scrollableContainer = document.getElementById(`scrollable-${sectionId}`)
+        if(scrollableContainer) {
+            const containerRect = scrollableContainer.getBoundingClientRect()
+            const articleRect = articleEl.getBoundingClientRect()
+            const topOffset = 18
+            const targetTop = Math.max(
+                0,
+                scrollableContainer.scrollTop + (articleRect.top - containerRect.top) - topOffset
+            )
+
+            scrollableContainer.scrollTo({
+                top: targetTop,
+                behavior: scrollBehavior
+            })
+            return
+        }
+    }
+
+    const articleRect = articleEl.getBoundingClientRect()
+    const topSafeOffset = 16
+    const targetWindowY = Math.max(0, window.scrollY + articleRect.top - topSafeOffset)
+    window.scrollTo({
+        top: targetWindowY,
+        behavior: scrollBehavior
+    })
 }
 
 function createComplaintPopups(title) {

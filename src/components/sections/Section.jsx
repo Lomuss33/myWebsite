@@ -4,6 +4,7 @@ import {useScheduler} from "../../hooks/scheduler.js"
 import Scrollable from "../capabilities/Scrollable.jsx"
 import {useFeedbacks} from "../../providers/FeedbacksProvider.jsx"
 import {useInput} from "../../providers/InputProvider.jsx"
+import {useNavigation} from "../../providers/NavigationProvider.jsx"
 import {useViewport} from "../../providers/ViewportProvider.jsx"
 import {useConstants} from "../../hooks/constants.js"
 import SectionContent from "./SectionContent.jsx"
@@ -170,10 +171,13 @@ function SectionTransitionManager({ section, visible, shouldTransition, status, 
 function SectionFocusManager({ section, status }) {
     const feedbacks = useFeedbacks()
     const input = useInput()
+    const navigation = useNavigation()
     const viewport = useViewport()
 
+    const hasPendingArticleTarget = navigation?.pendingArticleFocus?.sectionId === section?.id
     const isFocusingForbidden = viewport.isMobileLayout() ||
         feedbacks.isBlockedByOverlay() ||
+        hasPendingArticleTarget ||
         status !== SECTION_STATUS.SHOWN
 
     useEffect(() => {

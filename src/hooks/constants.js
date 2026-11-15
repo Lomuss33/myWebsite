@@ -12,7 +12,10 @@ export const useConstants = () => {
         VALIDATION_EMPTY_FIELDS: "error_validation_empty_fields",
         VALIDATION_EMAIL: "error_validation_email",
         VALIDATION_MESSAGE_LENGTH: "error_validation_message_length",
-        VALIDATION_MESSAGE_SPAM: "error_validation_message_spam"
+        VALIDATION_MESSAGE_SPAM: "error_validation_message_spam",
+        REPORT_RATE_LIMITED: "error_report_rate_limited",
+        REPORT_UNAVAILABLE: "error_report_unavailable",
+        REPORT_DESCRIPTION_SHORT: "error_report_description_short"
     }
 
     /** @const */

@@ -445,8 +445,58 @@ function NavigationProvider({ children, sections, categories }) {
         setCategoryLinks(categoryLinks)
     }
 
+    const [pendingArticleFocus, setPendingArticleFocus] = useState(null)
+    const pendingArticleFocusCounterRef = useRef(0)
+
     const forceScrollToTop = () => {
         setShouldForceScrollToTopCount(prev => prev + 1)
+    }
+
+    const requestArticleNavigation = (sectionId, articleUniqueId, options = {}) => {
+        const section = sections.find(({ id }) => id === sectionId)
+        if(!section || !articleUniqueId)
+            return
+
+        preloadSectionArticles(section)
+        _setTransitionEnabled(true)
+
+        const requestId = ++pendingArticleFocusCounterRef.current
+        setPendingArticleFocus({
+            requestId,
+            sectionId,
+            articleUniqueId,
+            source: options.source || "navigation",
+            mode: options.mode || null
+        })
+
+        const targetSectionId = targetSectionRef.current?.id || null
+        const nextSectionId = nextSectionRef.current?.id || null
+        const scheduledNextSectionId = scheduledNextSectionRef.current?.id || null
+
+        if(transitionStatusRef.current === NavigationProvider.TransitionStatus.NONE && !nextSectionId) {
+            if(targetSectionId !== sectionId) {
+                _setNextSectionState(section)
+            }
+            return
+        }
+
+        if(nextSectionId === sectionId || scheduledNextSectionId === sectionId)
+            return
+
+        _setScheduledNextSectionState(section)
+        if(resettingScrollYToRef.current !== null) {
+            _startTransitionAfterScroll(resettingScrollYToRef.current)
+        }
+    }
+
+    const clearPendingArticleFocus = (requestId) => {
+        setPendingArticleFocus((current) => {
+            if(!current)
+                return null
+            if(requestId !== undefined && current.requestId !== requestId)
+                return current
+            return null
+        })
     }
 
     return (
@@ -459,9 +509,12 @@ function NavigationProvider({ children, sections, categories }) {
             categoryLinks,
             transitionStatus,
             shouldForceScrollToTopCount,
+            pendingArticleFocus,
             navigateToSectionWithLink,
             navigateToSection,
             navigateToSectionWithId,
+            requestArticleNavigation,
+            clearPendingArticleFocus,
             isTransitioning,
             forceScrollToTop
         }}>

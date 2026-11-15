@@ -98,18 +98,33 @@ function LayoutSaltShaker() {
         }
     }, [])
 
-    const handleDesktopClick = () => {
-        if (!isInteractiveDesktop) {
-            return
+    const handleShakerClick = () => {
+        if (isInteractiveDesktop) {
+            feedbacks.toggleCursorMode(true)
         }
 
-        feedbacks.toggleCursorMode(true)
+        if (navigation?.requestArticleNavigation) {
+            navigation.requestArticleNavigation("contact", "article-4-section-contact", {
+                source: "salt-shaker",
+                mode: "report"
+            })
+        } else if (navigation?.navigateToSectionWithId) {
+            navigation.navigateToSectionWithId("contact")
+        }
     }
+
+    const reportActionLabel = language?.getStringOrFallback?.(
+        "salt_shaker_report_action",
+        "Open complaint box and report a bug"
+    )
+    const accessibleButtonLabel = isInteractiveDesktop
+        ? `${cursorActionLabel} · ${reportActionLabel}`
+        : `${tooltipLabel} — ${reportActionLabel}`
 
     const stateClass = !isInteractiveDesktop || !isMedievalMode
         ? "layout-salt-shaker-mode-magic"
         : "layout-salt-shaker-mode-medieval"
-    const interactiveClass = isInteractiveDesktop ? "layout-salt-shaker-interactive" : ""
+    const interactiveClass = "layout-salt-shaker-interactive"
     const pausedClass = (isPaused || isIdlePaused) ? "layout-salt-shaker-paused" : ""
 
     return (
@@ -125,9 +140,9 @@ function LayoutSaltShaker() {
             <button id="layout-salt-shaker"
                     type="button"
                     className={`layout-salt-shaker ${stateClass} ${interactiveClass}`.trim()}
-                    aria-label={isInteractiveDesktop ? cursorActionLabel : tooltipLabel}
+                    aria-label={accessibleButtonLabel}
                     aria-pressed={isInteractiveDesktop ? isMedievalMode : undefined}
-                    onClick={handleDesktopClick}>
+                    onClick={handleShakerClick}>
                 <SaltShakerSvg/>
             </button>
         </div>

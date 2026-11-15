@@ -1,0 +1,30 @@
+# Example Cloudflare Wrangler configuration for The Grain of Salt intake gateway
+# Copy to wrangler.toml when provisioning external Cloudflare Worker + D1 in owner account.
+# Do NOT commit live account IDs, database IDs, or secret tokens.
+
+name = "grain-of-salt-gateway"
+main = "src/index.js"
+compatibility_date = "2026-01-01"
+
+[vars]
+ALLOWED_ORIGINS = "https://lovro-music.de,http://localhost:5173,http://127.0.0.1:4173"
+DISABLE_SUBMISSIONS = "false"
+DISABLE_AI_TRIAGE = "false"
+DISABLE_AI_REPAIR = "false"
+DISABLE_GITHUB_ISSUES = "true"
+DISABLE_GITHUB_PRS = "true"
+MAX_DAILY_AI_TRIAGE_JOBS = "20"
+MAX_DAILY_REPAIR_ATTEMPTS = "3"
+MAX_DAILY_GLOBAL_REPORTS = "60"
+
+# Bind a D1 database for durable rate limiting, deduplication, and report storage:
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "grain_of_salt_db"
+# database_id = "<YOUR_D1_DATABASE_ID>"
+
+# Required secrets (set via `wrangler secret put <NAME>`, never in frontend or git):
+# - TURNSTILE_SECRET_KEY
+# - SOURCE_HASH_SALT
+# - AI_API_KEY (optional; when absent, deterministic Stage 2 triage runs without paid AI calls)
+# - GITHUB_APP_TOKEN (optional; scoped strictly to issues/PRs on non-protected paths)

@@ -33,7 +33,7 @@ Verified: 2026-11-15 against `LayoutSaltShaker.jsx`, `NavigationProvider.jsx`, `
    - All four original destinations (`nowhere`, `you_where`, `knjiga_zalbi`, `anzeige_raus`) remain intact. EmailJS is used **only** for the classic `knjiga_zalbi` ("Complaint inbox") destination.
    - Technical bug reports (`bug_report`) **never** fall back to EmailJS on `404`/`405`/`503`. If the Worker gateway is not yet bound or `DISABLE_SUBMISSIONS="true"` returns `503`, `submitBugReportRequest` surfaces `error_report_unavailable` so the security gateway and kill switch can never be bypassed.
    - When `turnstileSiteKey` (`settings.turnstileSiteKey` or `VITE_TURNSTILE_SITE_KEY`) is configured, `ArticleComplaintForm.jsx` renders the Cloudflare Turnstile widget inside `.article-complaint-form-report-drawer` and attaches `turnstileToken` to the submission.
-   - The progressive bug-report drawer renders outside `.article-complaint-form-main` and only when `bug_report` mode or salt-shaker arrival is active, preserving the default `#contact` desktop density contract (`.article-complaint-form-main` height `< 250px`).
+   - Bug-report mode transforms the existing `.article-complaint-form-main` in place: the report controls and form share one article surface, and the complaint destination rail is replaced by the bug/feedback mode switch. The report controls appear only after choosing bug-report mode or arriving via the salt shaker, preserving the default `#contact` desktop density contract (`.article-complaint-form-main` height `< 250px`).
 
 ## Serverless Gateway, Security & Cost Guardrails
 

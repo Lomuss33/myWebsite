@@ -50,15 +50,21 @@ test('desktop salt shaker toggles cursor mode and navigates to Contact complaint
     await expect(complaintArticle).toBeVisible()
 
     // Verify bug-report mode was preselected on arrival from salt shaker
-    const destinationTriggerValue = complaintArticle.locator('.article-complaint-form-select-value')
-    await expect(destinationTriggerValue).toHaveText('Report a website bug')
-
-    // Verify progressive disclosure drawer is visible and focus landed inside the complaint form
+    // Bug reporting transforms the existing complaint article in place; it is not a second segment below it.
     const reportDrawer = complaintArticle.locator('.article-complaint-form-report-drawer')
     await expect(reportDrawer).toBeVisible()
+    await expect(complaintArticle.locator('.article-complaint-form-main')).toContainText('Report a website bug')
+    await expect(complaintArticle.locator('.article-complaint-form-main > .article-complaint-form-report-drawer')).toHaveCount(1)
+    await expect(complaintArticle.locator('.article-complaint-form-rail')).toHaveCount(0)
+    await expect(complaintArticle.locator('.article-complaint-form-mode-pill.is-active')).toContainText('Report a website bug')
 
     const storedPrefs = await page.evaluate(() => JSON.parse(localStorage.getItem('storage-preferences') || '{}'))
     expect(storedPrefs.preferredCursorMode).toBe('medieval')
+
+    await complaintArticle.getByRole('button', {name: 'Send complaint / feedback'}).click()
+    await expect(reportDrawer).toHaveCount(0)
+    await expect(complaintArticle.locator('.article-complaint-form-rail')).toBeVisible()
+    await expect(complaintArticle.locator('.article-complaint-form-select-value')).toHaveText('Complaint inbox')
 
     // Verify browser Back returns to #about cleanly
     await page.goBack()
@@ -78,7 +84,7 @@ test('mobile salt shaker tap navigates to Contact and scrolls complaint form int
     const complaintArticle = page.locator('#article-4-section-contact')
     await expect(complaintArticle).toBeVisible()
 
-    await expect(complaintArticle.locator('.article-complaint-form-select-value')).toHaveText('Report a website bug')
+    await expect(complaintArticle.locator('.article-complaint-form-mode-pill.is-active')).toContainText('Report a website bug')
 
     // Wait until scroll settles so the complaint textarea is visible inside the viewport
     await expect.poll(async () => {
@@ -105,7 +111,7 @@ test('already on Contact: clicking salt shaker scrolls to complaint box and pres
 
     await page.locator('button.layout-salt-shaker').click()
 
-    await expect(complaintArticle.locator('.article-complaint-form-select-value')).toHaveText('Report a website bug')
+    await expect(complaintArticle.locator('.article-complaint-form-mode-pill.is-active')).toContainText('Report a website bug')
     await expect(textarea).toHaveValue('Draft started before clicking salt shaker')
 
     await expect.poll(async () => {

@@ -120,6 +120,17 @@
                 row-gap: 0.25rem;
             }
 
+            div.article-complaint-form-main-bug-mode {
+                grid-template-columns: minmax(0, 1fr);
+                grid-template-rows: auto minmax(10.5rem, auto) auto auto;
+                grid-template-areas:
+                    "report"
+                    "message"
+                    "send"
+                    "feedback";
+                row-gap: 0.6rem;
+            }
+
             div.article-complaint-form-message-column,
             .article-complaint-form-rail {
                 padding: 0.6rem 0.65rem 0;

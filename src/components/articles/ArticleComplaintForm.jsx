@@ -333,6 +333,9 @@ function ArticleComplaintFormContent({ dataWrapper }) {
         setValidationError(null)
         setStatusMessage(null)
         setDestination(nextDestination)
+        if(nextDestination !== DESTINATIONS.BUG_REPORT) {
+            setArrivedViaSaltShaker(false)
+        }
         closeDestinationMenu({ focusTrigger: true })
 
         if(nextDestination === DESTINATIONS.ANZEIGE || nextDestination === DESTINATIONS.NOWHERE) {
@@ -713,7 +716,7 @@ function ArticleComplaintFormContent({ dataWrapper }) {
         <form className={`article-complaint-form-shell ${isBugReportMode ? "article-complaint-form-shell-bug-mode" : ""}`}
               noValidate={true}
               onSubmit={handleSubmit}>
-            <div className={`article-complaint-form-main`}>
+            <div className={`article-complaint-form-main ${isBugReportMode ? "article-complaint-form-main-bug-mode" : ""}`}>
                 <div className={`article-complaint-form-message-column`}>
                     <Textarea id={`complaint-form-textarea`}
                               name={`message`}
@@ -737,7 +740,7 @@ function ArticleComplaintFormContent({ dataWrapper }) {
                                     status={isSending ? StandardButton.Status.DISABLED : StandardButton.Status.ENABLED}/>
                 </div>
 
-                <aside className={`article-complaint-form-rail`}>
+                {!isBugReportMode && <aside className={`article-complaint-form-rail`}>
                     {hasComplaintNote && (
                         <p className={`article-complaint-form-note text-2`}>
                             {complaintNote}
@@ -809,7 +812,7 @@ function ArticleComplaintFormContent({ dataWrapper }) {
                             )}
                         </div>
                     </div>
-                </aside>
+                </aside>}
 
                 <div className={`article-complaint-form-message-error-slot`}
                      aria-live={`polite`}
@@ -826,8 +829,6 @@ function ArticleComplaintFormContent({ dataWrapper }) {
                         <span className={`article-complaint-form-message-error-placeholder`} aria-hidden={`true`} />
                     )}
                 </div>
-            </div>
-
             {(isBugReportMode || arrivedViaSaltShaker) && (
                 <section className={`article-complaint-form-report-drawer`}
                          aria-label={complaintBugBannerTitle}>
@@ -968,6 +969,7 @@ function ArticleComplaintFormContent({ dataWrapper }) {
                     </div>
                 </section>
             )}
+            </div>
 
             {typeof document !== "undefined" && createPortal(
                 <>
